@@ -9,4 +9,9 @@ export default [
     //   requiresAuth: true,
     // },
   },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('./views/about.vue'),
+  },
 ];
