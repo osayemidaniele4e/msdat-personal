@@ -285,9 +285,10 @@
 
 <script>
 import PageFooter from '../components/pageFooter.vue';
+
 export default {
   components: {
-    PageFooter
+    PageFooter,
     // AppTable,
   },
   data() {
