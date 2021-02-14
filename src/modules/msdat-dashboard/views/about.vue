@@ -279,12 +279,15 @@
         </div>
       </section>
     </main>
+    <page-footer />
   </div>
 </template>
 
 <script>
+import PageFooter from '../components/pageFooter.vue';
 export default {
   components: {
+    PageFooter
     // AppTable,
   },
   data() {
@@ -404,6 +407,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-</style>
