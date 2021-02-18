@@ -1,21 +1,19 @@
 <template>
   <b-container fluid>
-  <!-- Content here -->
-  <div>
-  <b-jumbotron fluid header="BootstrapVue" lead="Bootstrap v4 Components for Vue.js 2">
-    <p>For more information visit website</p>
-    <b-button variant="primary" href="#">More Info</b-button>
-  </b-jumbotron>
-</div>
-</b-container>
+    <!-- Content here -->
+    <Footer/>
+  </b-container>
 </template>
 
 <script>
-export default {
+import Footer from '../components/footer.vue';
 
+export default {
+  name: 'landing',
+  components: {
+    Footer,
+  },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

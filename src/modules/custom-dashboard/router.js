@@ -9,7 +9,7 @@ export default new Router({
   routes: [
     {
       path: '/custom',
-      name: 'cus',
+      name: 'custom-dashboard',
       component: () => import(/* webpackChunkName: "about" */ './views/landing.vue'),
     },
   ],
