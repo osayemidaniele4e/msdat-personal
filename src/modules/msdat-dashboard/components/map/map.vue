@@ -11,12 +11,12 @@
       </div>
     </section>
     <section>
-      <highcharts 
+      <highcharts
         :constructor-type="'mapChart'"
         :options="mapOptions"
       ></highcharts>
     </section>
-   
+
   </div>
 </template>
 
@@ -61,43 +61,43 @@ export default {
         ['ng-pl', 33],
         ['ng-na', 34],
         ['ng-ji', 35],
-        ['ng-kn', 36]
+        ['ng-kn', 36],
       ],
       mapOptions: {
         chart: {
-          map: 'ng_Map'
+          map: 'ng_Map',
         },
         title: {
-          text: 'Highmaps basic demo'
+          text: 'Highmaps basic demo',
         },
         subtitle: {
-          text: 'Source map: <a href="http://code.highcharts.com/mapdata/countries/ng/ng-all.js">Nigeria</a>'
+          text: 'Source map: <a href="http://code.highcharts.com/mapdata/countries/ng/ng-all.js">Nigeria</a>',
         },
         mapNavigation: {
           enabled: true,
           buttonOptions: {
-            verticalAlign: 'bottom'
-          }
+            verticalAlign: 'bottom',
+          },
         },
         colorAxis: {
           min: 0,
-          max: 'blue'
+          max: 'blue',
         },
         series: [{
           // data: this.data,
           name: 'Random data',
           states: {
             hover: {
-              color: '#BADA55'
-            }
+              color: '#BADA55',
+            },
           },
           dataLabels: {
             enabled: true,
-            format: '{point.name}'
-          }
-        }]     
-      }
-    }
-  }
-}
+            format: '{point.name}',
+          },
+        }],
+      },
+    };
+  },
+};
 </script>
