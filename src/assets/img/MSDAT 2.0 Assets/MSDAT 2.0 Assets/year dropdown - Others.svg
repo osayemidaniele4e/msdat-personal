@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="181" height="259" viewBox="0 0 181 259">
+  <defs>
+    <filter id="Rectangle_143" x="-10.5" y="-5.5" width="202" height="270" filterUnits="userSpaceOnUse">
+      <feOffset dy="5" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-year_dropdown_-_Others">
+      <rect width="181" height="259"/>
+    </clipPath>
+  </defs>
+  <g id="year_dropdown_-_Others" data-name="year dropdown - Others" clip-path="url(#clip-year_dropdown_-_Others)">
+    <g id="main_ctrpnl_dropdown" data-name="main ctrpnl dropdown">
+      <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_143)">
+        <g id="Rectangle_143-2" data-name="Rectangle 143" transform="translate(0)" fill="#fff" stroke="#cfcfcf" stroke-width="1">
+          <path d="M0,0H176a5,5,0,0,1,5,5V244a5,5,0,0,1-5,5H5a5,5,0,0,1-5-5V0A0,0,0,0,1,0,0Z" stroke="none"/>
+          <path d="M1,.5H176A4.5,4.5,0,0,1,180.5,5V244a4.5,4.5,0,0,1-4.5,4.5H5A4.5,4.5,0,0,1,.5,244V1A.5.5,0,0,1,1,.5Z" fill="none"/>
+        </g>
+      </g>
+      <rect id="Rectangle_2423" data-name="Rectangle 2423" width="180.74" height="34" transform="translate(0 105)" fill="#e6e6e6"/>
+      <rect id="Rectangle_228" data-name="Rectangle 228" width="154" height="36" transform="translate(9 36)" fill="#fff"/>
+      <text id="_2014" data-name="2014" transform="translate(19 95)" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">2014</tspan></text>
+      <text id="_2013" data-name="2013" transform="translate(19 128)" fill="#707070" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">2013</tspan></text>
+      <text id="_2012" data-name="2012" transform="translate(19 162)" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">2012</tspan></text>
+      <text id="_2011" data-name="2011" transform="translate(19 195)" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">2011</tspan></text>
+      <text id="_2010" data-name="2010" transform="translate(19 228)" fill="#6d6868" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">2010</tspan></text>
+      <text id="_2016" data-name="2016" transform="translate(19 61)" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">2016</tspan></text>
+      <text id="_2017" data-name="2017" transform="translate(19 28)" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">2017</tspan></text>
+    </g>
+  </g>
+</svg>

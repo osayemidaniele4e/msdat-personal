@@ -5,6 +5,8 @@ import './plugins/bootstrap-vue';
 import './scss/main.scss';
 import router from './router';
 import store from './store';
+import './assets/styles/styles.css';
+import './assets/styles/fonts.css';
 
 Vue.config.productionTip = false;
 

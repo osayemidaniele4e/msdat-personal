@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="616" height="364" viewBox="0 0 616 364">
+  <defs>
+    <filter id="Rectangle_143" x="-10.5" y="-5.5" width="637" height="365" filterUnits="userSpaceOnUse">
+      <feOffset dy="5" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-mul_data_source_dropdown_">
+      <rect width="616" height="364"/>
+    </clipPath>
+  </defs>
+  <g id="mul_data_source_dropdown_" data-name="mul data source dropdown  " clip-path="url(#clip-mul_data_source_dropdown_)">
+    <g id="main_ctrpnl_dropdown" data-name="main ctrpnl dropdown" transform="translate(-665 -288)">
+      <g id="Group_466" data-name="Group 466" transform="translate(665 288)">
+        <g id="main_ctrpnl_dropdown-2" data-name="main ctrpnl dropdown">
+          <g id="data_set_" data-name="data set ">
+            <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_143)">
+              <g id="Rectangle_143-2" data-name="Rectangle 143" fill="#fff" stroke="#cfcfcf" stroke-width="1">
+                <path d="M0,0H611a5,5,0,0,1,5,5V339a5,5,0,0,1-5,5H5a5,5,0,0,1-5-5V0A0,0,0,0,1,0,0Z" stroke="none"/>
+                <path d="M1,.5H611A4.5,4.5,0,0,1,615.5,5V339a4.5,4.5,0,0,1-4.5,4.5H5A4.5,4.5,0,0,1,.5,339V1A.5.5,0,0,1,1,.5Z" fill="none"/>
+              </g>
+            </g>
+            <text id="MICS_2011" data-name="MICS 2011" transform="translate(22.195 94)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">MICS 2011</tspan></text>
+            <text id="NHMIS_2016" data-name="NHMIS 2016" transform="translate(22.195 262)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">NHMIS 2016</tspan></text>
+            <text id="MICS_2007" data-name="MICS 2007" transform="translate(22.195 127)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">MICS 2007</tspan></text>
+            <text id="NHMIS_2015" data-name="NHMIS 2015" transform="translate(22.195 296)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">NHMIS 2015</tspan></text>
+            <text id="MICS_1999" data-name="MICS 1999" transform="translate(22.195 161)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">MICS 1999</tspan></text>
+            <text id="NHMIS_2014" data-name="NHMIS 2014" transform="translate(22.195 330)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">NHMIS 2014</tspan></text>
+            <g id="Rectangle_145" data-name="Rectangle 145" transform="translate(0 169.234)" fill="#d4e4de" stroke="#5fb0ff" stroke-width="1">
+              <rect width="614.832" height="41" stroke="none"/>
+              <rect x="0.5" y="0.5" width="613.832" height="40" fill="none"/>
+            </g>
+            <text id="NHMIS" transform="translate(22.195 195)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">NHMIS</tspan></text>
+            <text id="MICS_2016" data-name="MICS 2016" transform="translate(22.195 60)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">MICS 2016</tspan></text>
+            <text id="NHMIS_2017" data-name="NHMIS 2017" transform="translate(22.195 229)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">NHMIS 2017</tspan></text>
+            <g id="Rectangle_144" data-name="Rectangle 144" fill="#d4e4de" stroke="#5fb0ff" stroke-width="1">
+              <rect width="614.832" height="41" stroke="none"/>
+              <rect x="0.5" y="0.5" width="613.832" height="40" fill="none"/>
+            </g>
+            <text id="MICS" transform="translate(22.195 26)" fill="#232323" font-size="16" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">MICS</tspan></text>
+            <g id="Rectangle_1591" data-name="Rectangle 1591" transform="translate(575.894 50)" fill="#fff" stroke="#707070" stroke-width="1">
+              <rect width="22.195" height="19" stroke="none"/>
+              <rect x="0.5" y="0.5" width="21.195" height="18" fill="none"/>
+            </g>
+            <g id="Rectangle_1598" data-name="Rectangle 1598" transform="translate(575.894 219.704)" fill="#fff" stroke="#707070" stroke-width="1">
+              <rect width="22.195" height="19" stroke="none"/>
+              <rect x="0.5" y="0.5" width="21.195" height="18" fill="none"/>
+            </g>
+            <g id="Rectangle_1592" data-name="Rectangle 1592" transform="translate(575.894 78.972)" fill="#fff" stroke="#707070" stroke-width="1">
+              <rect width="22.195" height="19" stroke="none"/>
+              <rect x="0.5" y="0.5" width="21.195" height="18" fill="none"/>
+            </g>
+            <g id="Rectangle_1597" data-name="Rectangle 1597" transform="translate(575.894 248.053)" fill="#fff" stroke="#707070" stroke-width="1">
+              <rect width="22.195" height="19" stroke="none"/>
+              <rect x="0.5" y="0.5" width="21.195" height="18" fill="none"/>
+            </g>
+            <g id="Rectangle_1593" data-name="Rectangle 1593" transform="translate(575.894 107.321)" fill="#fff" stroke="#707070" stroke-width="1">
+              <rect width="22.195" height="19" stroke="none"/>
+              <rect x="0.5" y="0.5" width="21.195" height="18" fill="none"/>
+            </g>
+            <g id="Rectangle_1596" data-name="Rectangle 1596" transform="translate(575.894 277)" fill="#fff" stroke="#707070" stroke-width="1">
+              <rect width="22.195" height="19" stroke="none"/>
+              <rect x="0.5" y="0.5" width="21.195" height="18" fill="none"/>
+            </g>
+            <g id="Rectangle_1594" data-name="Rectangle 1594" transform="translate(575.894 135.67)" fill="#fff" stroke="#707070" stroke-width="1">
+              <rect width="22.195" height="19" stroke="none"/>
+              <rect x="0.5" y="0.5" width="21.195" height="18" fill="none"/>
+            </g>
+            <g id="Rectangle_1595" data-name="Rectangle 1595" transform="translate(575.894 305)" fill="#fff" stroke="#707070" stroke-width="1">
+              <rect width="22.195" height="19" stroke="none"/>
+              <rect x="0.5" y="0.5" width="21.195" height="18" fill="none"/>
+            </g>
+            <path id="ic_done_24px" d="M9.942,16.2,5.035,12,3.4,13.4,9.942,19,23.959,7,22.324,5.6Z" transform="translate(572.494 217.094)"/>
+            <path id="ic_done_24px-2" data-name="ic_done_24px" d="M9.942,16.2,5.035,12,3.4,13.4,9.942,19,23.959,7,22.324,5.6Z" transform="translate(572.494 75.38)"/>
+            <path id="ic_done_24px-3" data-name="ic_done_24px" d="M9.942,16.2,5.035,12,3.4,13.4,9.942,19,23.959,7,22.324,5.6Z" transform="translate(572.494 274.4)"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

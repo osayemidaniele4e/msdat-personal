@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="248" height="397" viewBox="0 0 248 397">
+  <defs>
+    <filter id="Rectangle_1414" x="-10.5" y="-5.5" width="265" height="411" filterUnits="userSpaceOnUse">
+      <feOffset dy="5" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-MSDAT_-_Chart_Menu">
+      <rect width="248" height="397"/>
+    </clipPath>
+  </defs>
+  <g id="MSDAT_-_Chart_Menu" data-name="MSDAT - Chart Menu" clip-path="url(#clip-MSDAT_-_Chart_Menu)">
+    <g id="menu" transform="translate(-1577.544 -358)">
+      <g transform="matrix(1, 0, 0, 1, 1577.54, 358)" filter="url(#Rectangle_1414)">
+        <g id="Rectangle_1414-2" data-name="Rectangle 1414" fill="#fff" stroke="#cfcfcf" stroke-width="1">
+          <path d="M0,0H239a5,5,0,0,1,5,5V385a5,5,0,0,1-5,5H5a5,5,0,0,1-5-5V0A0,0,0,0,1,0,0Z" stroke="none"/>
+          <path d="M1,.5H239A4.5,4.5,0,0,1,243.5,5V385a4.5,4.5,0,0,1-4.5,4.5H5A4.5,4.5,0,0,1,.5,385V1A.5.5,0,0,1,1,.5Z" fill="none"/>
+        </g>
+      </g>
+      <text id="Download_PNG_Image" data-name="Download PNG Image" transform="translate(1672.544 448)" font-size="15" font-family="WorkSans-Regular, Work Sans"><tspan x="-79.41" y="0">Download PNG Image</tspan></text>
+      <text id="Print_chart" data-name="Print chart" transform="translate(1632.544 392)" font-size="15" font-family="WorkSans-Regular, Work Sans"><tspan x="-39.015" y="0">Print chart</tspan></text>
+      <text id="Download_JPEG_Image" data-name="Download JPEG Image" transform="translate(1676.544 490)" font-size="15" font-family="WorkSans-Regular, Work Sans"><tspan x="-82.642" y="0">Download JPEG Image</tspan></text>
+      <text id="Download_PDF" data-name="Download PDF" transform="translate(1593.544 532)" font-size="15" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Download PDF</tspan></text>
+      <text id="Download_SVG_vector_image" data-name="Download SVG vector image" transform="translate(1593.544 574)" font-size="15" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Download SVG vector image</tspan></text>
+      <text id="Download_CSV" data-name="Download CSV" transform="translate(1593.544 637)" font-size="15" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Download CSV</tspan></text>
+      <text id="Download_XLS" data-name="Download XLS" transform="translate(1593.544 679)" font-size="15" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Download XLS</tspan></text>
+      <text id="Open_in_HighCharts_cloud" data-name="Open in HighCharts cloud" transform="translate(1593.544 721)" font-size="15" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Open in HighCharts cloud</tspan></text>
+      <line id="Line_157" data-name="Line 157" x2="239.248" transform="translate(1580.336 412.648)" fill="none" stroke="#cfcfcf" stroke-width="1"/>
+      <line id="Line_165" data-name="Line 165" x2="239.248" transform="translate(1580.336 599.648)" fill="none" stroke="#cfcfcf" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

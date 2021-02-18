@@ -1,31 +1,45 @@
 <template>
   <div id="app">
+    <!-- Navbar here -->
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <panel></panel>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
+<script>
+
+import panel from './components/ControlPanel/Panel.vue';
+
+export default {
+  components: {
+    panel,
+  },
+};
+</script>
+
 <style lang="scss">
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
 }
 
 #nav {
-  padding: 30px;
 
   a {
-    font-weight: bold;
-    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color:white;
+    padding: 4px 10px;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: white;
+     background: #154736 0% 0% no-repeat padding-box;
+   border-radius: 5px;
+    }
+    &:hover{
+      text-decoration: none;
     }
   }
 }

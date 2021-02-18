@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&display=swap');
+:root {
+    --primary-green: #007D53
+}
+
+body {
+    font-family: 'Muli';
+}
+
+.primary-green {
+    color: var(--primary-green)
+}
+
+.contain {
+    padding: 0px 30px
+}

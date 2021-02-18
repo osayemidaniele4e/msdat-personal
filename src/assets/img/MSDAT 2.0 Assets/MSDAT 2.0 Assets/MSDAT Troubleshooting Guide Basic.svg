@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1072" viewBox="0 0 1920 1072">
+  <defs>
+    <filter id="Rectangle_1241" x="452" y="155" width="1015.455" height="768.848" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_1363" x="477" y="831.848" width="181" height="73" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-MSDAT_-_Troubleshooting_Guide_-_Basic">
+      <rect width="1920" height="1072"/>
+    </clipPath>
+  </defs>
+  <g id="MSDAT_-_Troubleshooting_Guide_-_Basic" data-name="MSDAT - Troubleshooting Guide - Basic" clip-path="url(#clip-MSDAT_-_Troubleshooting_Guide_-_Basic)">
+    <rect width="1920" height="1072" fill="#f2efef"/>
+    <g id="Group_1747" data-name="Group 1747">
+      <rect id="Rectangle_2265" data-name="Rectangle 2265" width="1921" height="1071.964" transform="translate(-1)" opacity="0.84"/>
+    </g>
+    <g id="Group_2138" data-name="Group 2138" transform="translate(0 49)">
+      <g transform="matrix(1, 0, 0, 1, 0, -49)" filter="url(#Rectangle_1241)">
+        <rect id="Rectangle_1241-2" data-name="Rectangle 1241" width="997.455" height="750.847" rx="7" transform="translate(461 161)" fill="#fff"/>
+      </g>
+      <path id="Path_4241" data-name="Path 4241" d="M7.014,0H990.441a7.007,7.007,0,0,1,7.014,7V85H0V7A7.007,7.007,0,0,1,7.014,0Z" transform="translate(461 112)" fill="#fff"/>
+      <text id="MSDAT_Dashboard_not_Loading_" data-name="MSDAT Dashboard not Loading?" transform="translate(562 164)" fill="#232323" font-size="22" font-family="WorkSans-Bold, Work Sans" font-weight="700"><tspan x="0" y="0">MSDAT Dashboard not Loading?</tspan></text>
+      <g transform="matrix(1, 0, 0, 1, 0, -49)" filter="url(#Rectangle_1363)">
+        <rect id="Rectangle_1363-2" data-name="Rectangle 1363" width="163" height="55" rx="7" transform="translate(486 837.85)" fill="#d92959"/>
+      </g>
+      <text id="CLOSE" transform="translate(536.838 822.734)" fill="#fff" font-size="19" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">CLOSE</tspan></text>
+      <line id="Line_174" data-name="Line 174" x2="996.845" transform="translate(461.5 771.347)" fill="none" stroke="#a9a9a9" stroke-width="1"/>
+      <line id="Line_203" data-name="Line 203" x2="996.845" transform="translate(461.5 198.301)" fill="none" stroke="#a9a9a9" stroke-width="1"/>
+      <g id="Group_1746" data-name="Group 1746" transform="translate(1410.219 147.374)">
+        <line id="Line_172" data-name="Line 172" x2="14.252" y2="14.252" fill="none" stroke="#7e7e7e" stroke-linecap="round" stroke-width="2"/>
+        <line id="Line_173" data-name="Line 173" x1="14.252" y2="14.252" fill="none" stroke="#7e7e7e" stroke-linecap="round" stroke-width="2"/>
+      </g>
+      <text id="section2HeaderText" transform="translate(494.249 235)" fill="#232323" font-size="26" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="24">This is quite unusual, but for some reason the MSDAT Dashboard is not </tspan><tspan x="0" y="66">loading. We are really sorry about this.</tspan></text>
+      <text id="section2HeaderText-2" data-name="section2HeaderText" transform="translate(494.249 374)" fill="#232323" font-size="22" font-family="WorkSans-Bold, Work Sans" font-weight="700"><tspan x="0" y="0">Here are a few things you could try:</tspan></text>
+      <text id="section2HeaderText-3" data-name="section2HeaderText" transform="translate(494.249 712)" fill="#232323" font-size="22" font-family="WorkSans-SemiBold, Work Sans" font-weight="600"><tspan x="0" y="0">If you get this frequently, please</tspan></text>
+      <g id="Group_2084" data-name="Group 2084" transform="translate(849.432 688.312)">
+        <text id="drop_us_a_line" data-name="drop us a line" transform="translate(4 24)" fill="#007d53" font-size="22" font-family="WorkSans-Regular, Work Sans" text-decoration="underline"><tspan x="0" y="0">drop us a line</tspan></text>
+        <g id="external-link-symbol" transform="translate(158.317 6)">
+          <g id="Group_2083" data-name="Group 2083">
+            <path id="Path_4220" data-name="Path 4220" d="M16.8,82.466h-.781a.377.377,0,0,0-.391.391v3.907a1.958,1.958,0,0,1-1.953,1.953H3.516a1.881,1.881,0,0,1-1.38-.574,1.881,1.881,0,0,1-.574-1.38V76.606a1.881,1.881,0,0,1,.574-1.379,1.881,1.881,0,0,1,1.38-.574h8.595a.376.376,0,0,0,.391-.391V73.48a.376.376,0,0,0-.391-.39H3.516a3.387,3.387,0,0,0-2.485,1.032A3.387,3.387,0,0,0,0,76.606V86.764a3.386,3.386,0,0,0,1.032,2.484A3.387,3.387,0,0,0,3.516,90.28H13.674a3.523,3.523,0,0,0,3.516-3.516V82.857a.377.377,0,0,0-.391-.391Z" transform="translate(0 -71.527)" fill="#007d53" stroke="#007d53" stroke-width="0.3"/>
+            <path id="Path_4221" data-name="Path 4221" d="M208.851,36.779a.751.751,0,0,0-.549-.232h-6.251a.777.777,0,0,0-.549,1.331l2.149,2.149-7.96,7.96a.384.384,0,0,0,0,.562l1.392,1.392a.384.384,0,0,0,.562,0l7.96-7.96,2.149,2.149a.781.781,0,0,0,1.331-.549V37.328A.751.751,0,0,0,208.851,36.779Z" transform="translate(-187.205 -36.547)" fill="#007d53" stroke="#007d53" stroke-width="0.3"/>
+          </g>
+        </g>
+      </g>
+      <g id="Group_2134" data-name="Group 2134" transform="translate(0 52)">
+        <ellipse id="Ellipse_27" data-name="Ellipse 27" cx="4.876" cy="4.876" rx="4.876" ry="4.876" transform="translate(512.946 361)" fill="#232323"/>
+        <g id="national_" data-name="national " transform="translate(536 348)">
+          <text id="Force_a_refresh_by_pressing_Shift_F5." data-name="Force a refresh by pressing Shift+F5." transform="translate(0 26)" fill="#232323" font-size="22" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Force a refresh by pressing Shift+F5.</tspan></text>
+        </g>
+      </g>
+      <g id="Group_2135" data-name="Group 2135" transform="translate(0 106)">
+        <ellipse id="Ellipse_27-2" data-name="Ellipse 27" cx="4.876" cy="4.876" rx="4.876" ry="4.876" transform="translate(512.946 361)" fill="#232323"/>
+        <g id="national_2" data-name="national " transform="translate(536 348)">
+          <text id="Open_the_dashboard_in_a_new_tab_by_clicking_here." data-name="Open the dashboard in a new tab by clicking here." transform="translate(0 26)" fill="#232323" font-size="22" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Open the dashboard in a new tab by </tspan><tspan y="0" fill="#007d53" text-decoration="underline">clicking here</tspan><tspan y="0" font-family="WorkSans-Bold, Work Sans" font-weight="700">.</tspan></text>
+        </g>
+      </g>
+      <g id="Group_2136" data-name="Group 2136" transform="translate(0 160)">
+        <ellipse id="Ellipse_27-3" data-name="Ellipse 27" cx="4.876" cy="4.876" rx="4.876" ry="4.876" transform="translate(512.946 361)" fill="#232323"/>
+        <g id="national_3" data-name="national " transform="translate(536 348)">
+          <text id="Open_the_dashboard_in_Incognito_mode." data-name="Open the dashboard in Incognito mode." transform="translate(0 26)" fill="#232323" font-size="22" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Open the dashboard in Incognito mode.</tspan></text>
+        </g>
+      </g>
+      <g id="Group_2137" data-name="Group 2137" transform="translate(0 214)">
+        <ellipse id="Ellipse_27-4" data-name="Ellipse 27" cx="4.876" cy="4.876" rx="4.876" ry="4.876" transform="translate(512.946 361)" fill="#232323"/>
+        <g id="national_4" data-name="national " transform="translate(536 348)">
+          <text id="Clear_browser_cache_and_try_again." data-name="Clear browser cache and try again." transform="translate(0 26)" fill="#232323" font-size="22" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Clear browser cache and try again.</tspan></text>
+        </g>
+      </g>
+      <text id="Learn_how_to_clear_browser_cache_on_Google_Chrome_Safari_Opera_Mozilla_Firefox" data-name="Learn how to clear browser cache on Google Chrome, Safari, Opera, Mozilla Firefox" transform="translate(536 632)" fill="#232323" font-size="20" font-family="WorkSans-Regular, Work Sans"><tspan x="0" y="0">Learn how to clear browser cache on </tspan><tspan y="0" fill="#007d53" font-family="WorkSans-SemiBold, Work Sans" font-weight="600" text-decoration="underline">Google Chrome</tspan><tspan y="0" fill="#007d53" font-family="WorkSans-SemiBold, Work Sans" font-weight="600">,</tspan><tspan y="0"> </tspan><tspan y="0" fill="#007d53" font-family="WorkSans-SemiBold, Work Sans" font-weight="600" text-decoration="underline">Safari</tspan><tspan y="0" fill="#007d53" font-family="WorkSans-SemiBold, Work Sans" font-weight="600">, </tspan><tspan y="0" fill="#007d53" font-family="WorkSans-SemiBold, Work Sans" font-weight="600" text-decoration="underline">Opera</tspan><tspan y="0" fill="#007d53" font-family="WorkSans-SemiBold, Work Sans" font-weight="600">, </tspan><tspan y="0" fill="#007d53" font-family="WorkSans-SemiBold, Work Sans" font-weight="600" text-decoration="underline">Mozilla Firefox</tspan></text>
+      <g id="danger-sing" transform="translate(493.655 106.157)">
+        <path id="Path_4240" data-name="Path 4240" d="M39.091,70.259H7.6A7.589,7.589,0,0,1,1.028,58.876L16.774,31.6a7.589,7.589,0,0,1,13.144,0L45.663,58.876a7.589,7.589,0,0,1-6.572,11.383ZM23.346,29.991a5.353,5.353,0,0,0-4.683,2.7L2.917,59.967A5.408,5.408,0,0,0,7.6,68.078H39.091a5.408,5.408,0,0,0,4.683-8.112L28.029,32.695A5.352,5.352,0,0,0,23.346,29.991Zm19.035,30.1L27.2,33.793a4.449,4.449,0,0,0-7.706,0L4.311,60.09a4.449,4.449,0,0,0,3.853,6.673H38.528a4.449,4.449,0,0,0,3.853-6.673ZM20.6,42a2.749,2.749,0,0,1,5.5,0v8.922a2.749,2.749,0,0,1-5.5,0Zm2.749,19.782a2.817,2.817,0,1,1,2.817-2.817A2.821,2.821,0,0,1,23.346,61.781Z" transform="translate(0)" fill="#f58c00"/>
+      </g>
+    </g>
+  </g>
+</svg>
