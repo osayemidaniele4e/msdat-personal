@@ -1,4 +1,11 @@
 <template>
+<div class="position-relative">
+
+<!--Side Menu here-->
+<div class="position-absolute side-menu">
+<sideMenu v-show="isMenuVisible" ></sideMenu>
+</div>
+
   <header>
     <nav class="contain py-2">
       <div class="d-flex">
@@ -21,32 +28,54 @@
                 <li>Main Dashboard</li>
               </router-link>
 
-              <router-link class="nav-link" to="/Analysis">
-                <li>NHMIS Analysis</li>
-              </router-link>
-
-              <router-link class="nav-link" to="/facility">
-                <li>Health Facility Survey</li>
-              </router-link>
-
-              <router-link class="nav-link" to="/updtake">
+              <router-link class="nav-link" to="/update">
                 <li>COVID-19: Service Uptake</li>
               </router-link>
 
-              <router-link class="nav-link" to="/other">
-                <li>Other Dashboards</li>
+                  <router-link class="nav-link" to="/custom">
+                <li>Custom Dashboard</li>
               </router-link>
 
-              <router-link class="nav-link" to="/dot">
-                <li>three dots</li>
+              <router-link class="nav-link" to="/other">
+                <li>Other Dashboards </li>
               </router-link>
+
+                  <router-link class="nav-link" to="/login">
+                <li>Login/Register</li>
+              </router-link>
+
+              <button class="nav-link dotted-btn text-white" to @click="showSideMenu">
+                <li >three dots</li>
+              </button>
             </ul>
           </div>
         </div>
       </div>
     </nav>
   </header>
+</div>
 </template>
+
+<script>
+import sideMenu from '@/components/generic/side-menu.vue';
+
+export default {
+  data() {
+    return {
+      isMenuVisible: false,
+    };
+  },
+  components: {
+    sideMenu,
+  },
+
+  methods: {
+    showSideMenu() {
+      this.isMenuVisible = !this.isMenuVisible;
+    },
+  },
+};
+</script>
 
 <style  scoped>
 nav {
@@ -80,5 +109,10 @@ ul li {
   align-content: center;
   align-items: center;
   font-size: 0.63rem;
+}
+
+.side-menu{
+  top: 65px;
+    right: 37px;
 }
 </style>

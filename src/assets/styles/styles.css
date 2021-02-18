@@ -14,3 +14,12 @@ body {
 .contain {
     padding: 0px 30px
 }
+
+.dotted-btn {
+    border: none;
+    background: inherit;
+}
+
+.dotted-btn:focus {
+    outline: none;
+}
