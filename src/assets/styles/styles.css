@@ -23,3 +23,25 @@ body {
 .dotted-btn:focus {
     outline: none;
 }
+
+
+/* drop down styles here */
+
+.panel-label {
+    color: #171717;
+    opacity: 0.87;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: "Work Sans", sans-serif;
+}
+
+.multiselect__tags {
+    border: 1px solid #348481 !important;
+    height: 39px !important;
+}
+
+.multiselect__select:before {
+    border-color: #348481 transparent !important;
+    border-width: 8px 10px 0px !important;
+}

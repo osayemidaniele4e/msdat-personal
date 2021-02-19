@@ -1,7 +1,6 @@
 <template>
   <transition name="fade">
     <div class="card-holder pt-3 pb-3">
-
       <!-- First Section here -->
       <div class="d-flex flex-column px-25">
         <button
