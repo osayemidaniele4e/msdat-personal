@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+
+div#msdat-map {
+  // map container
+  &>div {
+    font-family: 'Work Sans', sans-serif;
+    svg {
+      .highcharts-credits {
+        display: none;
+      }
+    }
+  }
+}
