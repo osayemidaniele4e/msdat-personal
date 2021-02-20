@@ -44,15 +44,12 @@
         </p>
       </div>
 
-  <!--Contents here -->
-<div class="mt-1">
-
-<div class="">
-<indicatorOverview v-if="activetab ==1"/>
-</div>
-
-</div>
-
+      <!--Contents here -->
+      <div class="mt-1">
+        <div class="">
+          <indicatorOverview v-if="activetab == 1" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -64,7 +61,6 @@ export default {
   data() {
     return {
       activetab: 1,
-
     };
   },
 
