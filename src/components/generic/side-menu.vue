@@ -123,7 +123,7 @@
           type="button"
           class="dotted-btn menu-item d-flex align-items-center mb-3"
         >
-          <img src="@/assets/img/Hamburger Icons/ic_share.svg" alt="share" />
+          <img src="@/assets/img/Hamburger Icons/ic_update.svg" alt="share" />
           <span class="ml-25">See Updates</span>
         </button>
         <button
@@ -131,7 +131,7 @@
           type="button"
           class="dotted-btn menu-item d-flex align-items-center mb-3"
         >
-          <img src="@/assets/img/Hamburger Icons/ic_print.svg" alt="print" />
+          <img src="@/assets/img/Hamburger Icons/ic_feedback.svg" alt="print" />
           <span class="ml-25">Feedback</span>
         </button>
         <button

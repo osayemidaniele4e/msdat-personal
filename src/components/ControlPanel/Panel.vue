@@ -41,16 +41,22 @@
                   <li>Other Dashboards</li>
                 </router-link>
 
-                <router-link class="nav-link" to="/login">
-                  <li>Login/Register</li>
-                </router-link>
+                <button class="nav-link login-button d-flex align-items-center">
+                  <img
+                    src="@/assets/img/Hamburger Icons/Icon awesome-user-circle.svg"
+                    alt="user-icon"
+                  />
+                  <li class="ml-1">Login/Register</li>
+                </button>
 
-                <button
-                  class="nav-link dotted-btn text-white"
-                  to
-                  @click="showSideMenu"
-                >
-                  <li>three dots</li>
+                <button class="dotted-btn text-white" to @click="showSideMenu">
+                  <li>
+                    <img
+                      src="../../assets/img/Hamburger Icons/ic_dots.svg"
+                      class="dots"
+                      alt="dots"
+                    />
+                  </li>
                 </button>
               </ul>
             </div>
@@ -59,11 +65,10 @@
       </nav>
     </header>
 
-      <!--Input Control panel  here-->
-      <div>
-      <selectInput/>
-      </div>
-
+    <!--Input Control panel  here-->
+    <div>
+      <selectInput />
+    </div>
   </div>
 </template>
 
@@ -128,6 +133,22 @@ ul li {
 .side-menu {
   top: 65px;
   right: 37px;
-      z-index: 1;
+  z-index: 1;
+}
+.dots {
+  position: relative;
+  height: 30px;
+  bottom: 5px;
+}
+.dotted-btn {
+  height: 1px;
+}
+.login-button {
+  border: none;
+  background: inherit;
+  color: white;
+}
+.login-button:focus {
+  outline: none;
 }
 </style>
