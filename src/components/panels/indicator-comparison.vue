@@ -1,29 +1,13 @@
 <template>
   <div class="d-flex">
-    <!-- Indicator here -->
-    <div class="d-flex flex-column w-30">
-      <label class="panel-label">Indicator</label>
+    <!-- Compare by here -->
+    <div class="d-flex flex-column w-10">
+      <label class="panel-label">compare by</label>
 
       <div>
         <multiselect
           v-model="payload.indicator"
-          :options="indicatorOptions"
-          :searchable="false"
-          :close-on-select="true"
-          :show-labels="false"
-          :preselect-first="true"
-        ></multiselect>
-      </div>
-    </div>
-
-    <!-- Location here -->
-    <div class="d-flex flex-column w-20 ml-3">
-      <label class="panel-label">location</label>
-
-      <div>
-        <multiselect
-          v-model="payload.location"
-          :options="locationOptions"
+          :options="compareOptions"
           :searchable="false"
           :close-on-select="true"
           :show-labels="false"
@@ -64,11 +48,33 @@
       </div>
     </div>
 
+    <!-- Indicator here -->
+    <div class="d-flex flex-column w-30 ml-3">
+      <label class="panel-label">Indicator</label>
+
+      <div>
+        <multiselect
+          v-model="payload.value"
+          :options="indicatorOptions"
+          :multiple="true"
+          :close-on-select="false"
+          :clear-on-select="false"
+          :preserve-search="true"
+          :max=2
+          placeholder="Pick some"
+          label="name"
+          track-by="name"
+          :preselect-first="false"
+        >
+        </multiselect>
+      </div>
+    </div>
+
     <!-- Targets here -->
     <div class="d-flex flex-column w-20 ml-3">
       <label class="panel-label">Targets</label>
 
-      <div class="d-flex justify-content-between">
+      <div class="d-flex">
         <!-- National Target here -->
         <div class="d-flex">
           <CCheckbox />
@@ -82,47 +88,27 @@
         </div>
       </div>
     </div>
-
-    <!-- Toggle here -->
-    <div class="d-flex flex-column mt-3 ml-4">
-      <label class="panel-label"></label>
-
-      <div class="d-flex">
-        <toggle class="mt-1" />
-        <p class="px-4 numerator">Numerator/ Denominator</p>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import Multiselect from 'vue-multiselect';
 import CCheckbox from '@/components/generic/checkbox.vue';
-import toggle from '@/components/generic/toggle-switch.vue';
 
 export default {
   data() {
     return {
       activetab: 1,
-      value: [],
+
       payload: {
-        indicator: '',
-        location: '',
+        compareBy: '',
         data: '',
         year: '',
+        indicator: '',
+        value: [],
       },
-      indicatorOptions: [
-        'MORTALITY',
-        'INFANT MORTALITY RATE',
-        'MATERNAL MORTALITY RATIO',
-        'UNDER 5 MORTALITY RATE',
-        'NEONATAL MORTALITY RATE',
-        'RMNCH + N',
-        'SKILLED ATTENDANCE AT DELIVERY OR BIRTH',
-        'ANC COVERAGE (AT LEAST 1 VISIT)',
-        'ANC COVERAGE (4 VISITS)',
-        'CONTRACEPTIVE PREVALENCE RATE',
-      ],
+      compareOptions: ['Period', 'States'],
+
       locationOptions: [
         'National',
         'Abia',
@@ -143,42 +129,36 @@ export default {
         'WHO-GHO',
         'WUENIC',
       ],
-      yearOptions: [
-        'Latest Available',
-        '2017',
-        '2016',
-        '2014',
-        '2013',
-        '2012',
-        '2011',
-      ],
+      yearOptions: ['2017', '2016', '2014', '2013', '2012', '2011'],
 
-      options: [
-        { name: 'Vue.js', language: 'JavaScript' },
-        { name: 'Adonis', language: 'JavaScript' },
-        { name: 'Rails', language: 'Ruby' },
-        { name: 'Sinatra', language: 'Ruby' },
-        { name: 'Laravel', language: 'PHP' },
-        { name: 'Phoenix', language: 'Elixir' },
+      indicatorOptions: [
+        { name: 'MORTALITY' },
+        { name: 'INFANT MORTALITY RATE' },
+        { name: 'MATERNAL MORTALITY RATIO' },
+        { name: 'UNDER 5 MORTALITY RATE' },
+        { name: 'NEONATAL MORTALITY RATE' },
+        { name: 'RMNCH + N' },
+        { name: 'SKILLED ATTENDANCE AT DELIVERY OR BIRTH' },
+        { name: 'ANC COVERAGE (AT LEAST 1 VISIT)' },
+        { name: 'ANC COVERAGE (4 VISITS)' },
+        { name: 'CONTRACEPTIVE PREVALENCE RATE' },
       ],
     };
   },
-  components: { Multiselect, CCheckbox, toggle },
+  components: { Multiselect, CCheckbox },
 };
 </script>
 
 <style scoped>
-.numerator {
-  color: #353535;
-  font-family: "Work Sans", sans-serif;
-  font-size: 0.875rem;
-}
 
 .w-30 {
   width: 421px;
 }
 .w-20 {
   width: 200px;
+}
+.w-10{
+    width: 120px;
 }
 .w-25 {
   width: 25px;

@@ -54,12 +54,6 @@ export default {
     isActive() {
       return this.currentState;
     },
-    enableText() {
-      return this.labelEnableText;
-    },
-    disabledText() {
-      return this.labelDisableText;
-    },
     checkedValue: {
       get() {
         return this.currentState;

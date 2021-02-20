@@ -46,9 +46,11 @@
 
       <!--Contents here -->
       <div class="mt-1">
-        <div class="">
+
           <indicatorOverview v-if="activetab == 1" />
-        </div>
+          <zonalAnalysis v-if="activetab ==2"/>
+          <indicatorComparison v-if="activetab ==3"/>
+          <datasetComparison v-if="activetab ==4"/>
       </div>
     </div>
   </div>
@@ -56,6 +58,9 @@
 
 <script>
 import indicatorOverview from '../panels/indicator-overview.vue';
+import zonalAnalysis from '../panels/zonal-analysis.vue';
+import indicatorComparison from '../panels/indicator-comparison.vue';
+import datasetComparison from '../panels/dataset-comparison.vue';
 
 export default {
   data() {
@@ -66,6 +71,9 @@ export default {
 
   components: {
     indicatorOverview,
+    zonalAnalysis,
+    indicatorComparison,
+    datasetComparison,
   },
 };
 </script>

@@ -37,9 +37,15 @@
                   <li>Custom Dashboard</li>
                 </router-link>
 
-                <router-link class="nav-link" to="/other">
-                  <li>Other Dashboards</li>
-                </router-link>
+                <button class="nav-link login-button d-flex align-items-center">
+                  <li class="mr-1">OtherDashboards</li>
+                  <img
+                    src="@/assets/img/Hamburger Icons/ic_dropdown.svg"
+                    alt="dropdown"
+                    class="dropdown"
+                    height="5"
+                  />
+                </button>
 
                 <button class="nav-link login-button d-flex align-items-center">
                   <img
@@ -140,6 +146,7 @@ ul li {
   height: 30px;
   bottom: 5px;
 }
+
 .dotted-btn {
   height: 1px;
 }
