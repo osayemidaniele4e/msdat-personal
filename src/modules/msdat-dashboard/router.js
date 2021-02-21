@@ -1,4 +1,5 @@
-import Home from './views/index.vue';
+// import Home from './views/index.vue';
+import Home from './components/table.vue';
 
 export default [
   {
