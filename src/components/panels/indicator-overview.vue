@@ -8,7 +8,7 @@
         <multiselect
           v-model="payload.indicator"
           :options="indicatorOptions"
-          :searchable="false"
+          :searchable="true"
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
@@ -24,7 +24,7 @@
         <multiselect
           v-model="payload.location"
           :options="locationOptions"
-          :searchable="false"
+          :searchable="true"
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"

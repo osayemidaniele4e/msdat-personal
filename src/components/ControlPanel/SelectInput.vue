@@ -48,9 +48,10 @@
       <div class="mt-1">
 
           <indicatorOverview v-if="activetab == 1" />
-          <zonalAnalysis v-if="activetab ==2"/>
-          <indicatorComparison v-if="activetab ==3"/>
-          <datasetComparison v-if="activetab ==4"/>
+          <zonalAnalysis v-if="activetab == 2"/>
+          <indicatorComparison v-if="activetab == 3"/>
+          <datasetComparison v-if="activetab == 4"/>
+          <multiSource v-if="activetab == 5"/>
       </div>
     </div>
   </div>
@@ -61,6 +62,7 @@ import indicatorOverview from '../panels/indicator-overview.vue';
 import zonalAnalysis from '../panels/zonal-analysis.vue';
 import indicatorComparison from '../panels/indicator-comparison.vue';
 import datasetComparison from '../panels/dataset-comparison.vue';
+import multiSource from '../panels/multi-indicator.vue';
 
 export default {
   data() {
@@ -74,6 +76,7 @@ export default {
     zonalAnalysis,
     indicatorComparison,
     datasetComparison,
+    multiSource,
   },
 };
 </script>

@@ -38,7 +38,8 @@ body {
 
 .multiselect__tags {
     border: 1px solid #348481 !important;
-    height: 39px !important;
+    height: 38px !important;
+    min-height: 38px !important;
 }
 
 .multiselect__select:before {
