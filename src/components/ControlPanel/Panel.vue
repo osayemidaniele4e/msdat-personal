@@ -1,52 +1,105 @@
 <template>
-  <header>
-    <nav class="contain py-2">
-      <div class="d-flex">
-        <!--Logos here -->
+  <div class="position-relative panel">
+    <!--Side Menu here-->
+    <div class="position-absolute side-menu">
+      <sideMenu v-show="isMenuVisible"></sideMenu>
+    </div>
+
+    <header>
+      <nav class="contain py-2">
         <div class="d-flex">
-          <img src="@/assets/img/Logo.svg" alt="Logo" />
+          <!--Logos here -->
+          <div class="d-flex">
+            <div>
+              <img src="@/assets/img/Logo.svg" alt="Logo" />
+            </div>
 
-          <div class="vl ml-5 mr-4"></div>
+            <div class="vl ml-5 mr-4"></div>
 
-          <div class="d-flex flex-column mx-2 pt-2 align-items-center">
-            <h1 class="header">MSDAT PLATFORM</h1>
-            <h4 class="sub">ANALYSIS OF KEY HEALTH INDICATORS</h4>
+            <div class="d-flex flex-column mx-2 pt-2">
+              <h1 class="header">MSDAT PLATFORM</h1>
+              <h4 class="sub">ANALYSIS OF KEY HEALTH INDICATORS</h4>
+            </div>
+          </div>
+
+          <div class="ml-auto py-3 align-items-center">
+            <div class=" ">
+              <ul class="d-inline-flex">
+                <router-link class="nav-link" to="/">
+                  <li>Main Dashboard</li>
+                </router-link>
+
+                <router-link class="nav-link" to="/update">
+                  <li>COVID-19: Service Uptake</li>
+                </router-link>
+
+                <router-link class="nav-link" to="/custom">
+                  <li>Custom Dashboard</li>
+                </router-link>
+
+                <button class="nav-link login-button d-flex align-items-center">
+                  <li class="mr-1">OtherDashboards</li>
+                  <img
+                    src="@/assets/img/Hamburger Icons/ic_dropdown.svg"
+                    alt="dropdown"
+                    class="dropdown"
+                    height="5"
+                  />
+                </button>
+
+                <button class="nav-link login-button d-flex align-items-center">
+                  <img
+                    src="@/assets/img/Hamburger Icons/Icon awesome-user-circle.svg"
+                    alt="user-icon"
+                  />
+                  <li class="ml-1">Login/Register</li>
+                </button>
+
+                <button class="dotted-btn text-white" to @click="showSideMenu">
+                  <li>
+                    <img
+                      src="../../assets/img/Hamburger Icons/ic_dots.svg"
+                      class="dots"
+                      alt="dots"
+                    />
+                  </li>
+                </button>
+              </ul>
+            </div>
           </div>
         </div>
+      </nav>
+    </header>
 
-        <div class="ml-auto py-3 align-items-center">
-          <div class=" ">
-            <ul class="d-inline-flex">
-              <router-link class="nav-link" to="/">
-                <li>Main Dashboard</li>
-              </router-link>
-
-              <router-link class="nav-link" to="/Analysis">
-                <li>NHMIS Analysis</li>
-              </router-link>
-
-              <router-link class="nav-link" to="/facility">
-                <li>Health Facility Survey</li>
-              </router-link>
-
-              <router-link class="nav-link" to="/updtake">
-                <li>COVID-19: Service Uptake</li>
-              </router-link>
-
-              <router-link class="nav-link" to="/other">
-                <li>Other Dashboards</li>
-              </router-link>
-
-              <router-link class="nav-link" to="/dot">
-                <li>three dots</li>
-              </router-link>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+    <!--Input Control panel  here-->
+    <div>
+      <selectInput />
+    </div>
+  </div>
 </template>
+
+<script>
+import sideMenu from '@/components/generic/side-menu.vue';
+import selectInput from './SelectInput.vue';
+
+export default {
+  data() {
+    return {
+      isMenuVisible: false,
+    };
+  },
+  components: {
+    sideMenu,
+    selectInput,
+  },
+
+  methods: {
+    showSideMenu() {
+      this.isMenuVisible = !this.isMenuVisible;
+    },
+  },
+};
+</script>
 
 <style  scoped>
 nav {
@@ -70,6 +123,7 @@ nav {
 .vl {
   border-left: 2px solid #e8e8e8;
   opacity: 0.2;
+  height: 55px;
 }
 ul li {
   padding: 0;
@@ -80,5 +134,28 @@ ul li {
   align-content: center;
   align-items: center;
   font-size: 0.63rem;
+}
+
+.side-menu {
+  top: 65px;
+  right: 37px;
+  z-index: 1;
+}
+.dots {
+  position: relative;
+  height: 30px;
+  bottom: 5px;
+}
+
+.dotted-btn {
+  height: 1px;
+}
+.login-button {
+  border: none;
+  background: inherit;
+  color: white;
+}
+.login-button:focus {
+  outline: none;
 }
 </style>

@@ -14,3 +14,49 @@ body {
 .contain {
     padding: 0px 30px
 }
+
+.dotted-btn {
+    border: none;
+    background: inherit;
+}
+
+.dotted-btn:focus {
+    outline: none;
+}
+
+
+/* drop down styles here */
+
+.panel-label {
+    color: #171717;
+    opacity: 0.87;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: "Work Sans", sans-serif;
+}
+
+.multiselect__tags {
+    border: 1px solid #348481 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+}
+
+.multiselect__select:before {
+    border-color: #348481 transparent !important;
+    border-width: 6px 8px 0px !important;
+}
+
+.multiselect__option {
+    font-size: 0.75rem !important;
+    color: #000000 !important;
+    font-family: "Work Sans", sans-serif !important;
+    font-weight: 500;
+}
+
+.multiselect__single {
+    font-size: 0.75rem !important;
+    color: #000000 !important;
+    font-family: "Work Sans", sans-serif !important;
+    font-weight: 500;
+}
