@@ -46,12 +46,11 @@
 
       <!--Contents here -->
       <div class="mt-1">
-
-          <indicatorOverview v-if="activetab == 1" />
-          <zonalAnalysis v-if="activetab == 2"/>
-          <indicatorComparison v-if="activetab == 3"/>
-          <datasetComparison v-if="activetab == 4"/>
-          <multiSource v-if="activetab == 5"/>
+        <indicatorOverview v-if="activetab == 1" />
+        <zonalAnalysis v-if="activetab == 2" />
+        <indicatorComparison v-if="activetab == 3" />
+        <datasetComparison v-if="activetab == 4" />
+        <multiSource v-if="activetab == 5" />
       </div>
     </div>
   </div>
