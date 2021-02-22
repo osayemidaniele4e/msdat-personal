@@ -4,6 +4,7 @@
     <div id="nav">
       <panel></panel>
     </div>
+
     <router-view />
   </div>
 </template>
