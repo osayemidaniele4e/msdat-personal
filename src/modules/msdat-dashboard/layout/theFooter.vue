@@ -1,5 +1,5 @@
 <template>
-  <footer id="page-footer">
+  <footer id="the-footer">
     <div>Built with <b-icon-heart-fill/> by eHealth4everyone</div>
     <div>
       <p>46 Indicators, 16 Data sources</p>
