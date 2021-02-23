@@ -4,7 +4,7 @@
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="2" lg="2">
           <img
-            src="../../../assets/img/fmoh_logo.png"
+            src="../../../assets/img/Logo.svg"
             alt="FMOH Logo"
             class="img-fluid"
           >
