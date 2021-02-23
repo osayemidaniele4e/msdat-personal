@@ -1,6 +1,6 @@
 <template>
   <div id="about-wrap">
-    <header class="border sticky-top">
+    <header id="the-header" class="border sticky-top">
       <b-container fluid>
         <b-row class="d-flex justify-content-between align-items-center">
           <b-col cols md="2" lg="2">
@@ -279,17 +279,16 @@
         </div>
       </section>
     </main>
-    <page-footer />
+    <the-footer />
   </div>
 </template>
 
 <script>
-import PageFooter from '../components/pageFooter.vue';
+import TheFooter from '../layout/theFooter.vue';
 
 export default {
   components: {
-    PageFooter,
-    // AppTable,
+    TheFooter
   },
   data() {
     return {
