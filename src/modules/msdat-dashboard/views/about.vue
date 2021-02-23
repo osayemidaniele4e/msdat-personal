@@ -8,7 +8,7 @@
           <b-row>
             <b-col cols lg="5">
               <div>
-                <img src="../../../assets/img/About-Dashboard-image.png" alt="Macbook">
+                <img src="../../../assets/img/About-Dashboard-image.svg" alt="Macbook">
               </div>
             </b-col>
             <b-col cols lg="7">
