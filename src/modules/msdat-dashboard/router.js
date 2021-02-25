@@ -1,6 +1,4 @@
-// import Home from './views/index.vue';
-import Home from './components/map/map';
-
+import Home from './views/index.vue';
 
 export default [
   {

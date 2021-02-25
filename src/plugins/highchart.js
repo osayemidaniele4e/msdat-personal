@@ -1,4 +1,4 @@
 import Vue from 'vue';
-import HighchartsVue from 'highcharts-vue';
+import HighchartsVue from 'vue-highcharts';
 
 Vue.use(HighchartsVue);

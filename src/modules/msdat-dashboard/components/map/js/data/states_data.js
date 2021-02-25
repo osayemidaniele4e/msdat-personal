@@ -38,4 +38,4 @@ var states_data = [
   ['ng-kn', 36]
 ]
 
-module.exports = states_data
+module.exports = statesData
