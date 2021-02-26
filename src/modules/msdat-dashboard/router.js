@@ -1,5 +1,5 @@
 // import Home from './views/index.vue';
-import Home from './components/table.vue';
+import Home from './components/table/TableComponent.vue';
 
 export default [
   {
@@ -7,7 +7,7 @@ export default [
     name: 'Dashboard',
     component: Home,
     meta: {
-      requiresAuth: true,
-    },
-  },
-];
+      requiresAuth: true
+    }
+  }
+]
