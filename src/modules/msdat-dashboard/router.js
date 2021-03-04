@@ -1,5 +1,3 @@
-import Home from './views/index.vue';
-
 export default [
   {
     path: '/',
@@ -12,6 +10,6 @@ export default [
   {
     path: '/about',
     name: 'About',
-    component: () => import('./views/about.vue'),
+    component: () => import('./about/views/index.vue'),
   },
 ];

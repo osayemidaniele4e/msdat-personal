@@ -1,3 +1,16 @@
+<template>
+  <footer id="the-footer">
+    <div>Built with <b-icon-heart-fill/> by eHealth4everyone</div>
+    <div>
+      <span>46 Indicators, 16 Data sources</span>
+      <span>Last Updated 12 Mar, 2019</span>
+    </div>
+  </footer>
+</template>
+
+<style lang="scss" scoped>
+$msdat-green: #007D53;
+
 footer#the-footer {
   height: fit-content;
   position: sticky;
@@ -7,7 +20,7 @@ footer#the-footer {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5% 2%;
+  padding: 1% 2%;
   font-size: 12.5px;
   color: #ffffff;
 
@@ -21,14 +34,22 @@ footer#the-footer {
       font-size: 12px;
       display: flex;
       flex-direction: column;
-      text-align: right;
+      align-items: flex-end;
+
+      span {
+        text-align: right;
+
+        &:first-child {
+          margin-bottom: 1.5%;
+        }
+      }
     }
   }
 }
 
 // Media Query
 @media (max-width: 567px) {
-  footer#page-footer {
+  footer#the-footer {
     flex-direction: column-reverse;
     justify-content: start;
     align-items: start;
@@ -40,12 +61,14 @@ footer#the-footer {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: start;
         margin-bottom: 1.5%;
 
-        p{
+        span{
           width: fit-content;
         }
       }
     }
-  } 
+  }
 }
+</style>
