@@ -1,10 +1,8 @@
-import Home from './views/index.vue';
-
 export default [
   {
     path: '/',
     name: 'Dashboard',
-    component: Home,
+    // component: () => import('./about/views/index.vue'),
     meta: {
       requiresAuth: true,
     },
@@ -12,6 +10,6 @@ export default [
   {
     path: '/about',
     name: 'About',
-    component: () => import('./views/about.vue'),
+    component: () => import('./about/views/index.vue'),
   },
 ];
