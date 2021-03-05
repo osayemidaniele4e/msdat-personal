@@ -5,82 +5,82 @@
     <ul class="list-unstyled">
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_info.svg" alt="">
+          <img src="@/assets/img/icons/ic_info.svg" alt="">
           <span>About Dashboard</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_play.svg" alt="">
+          <img src="@/assets/img/icons/ic_play.svg" alt="">
           <span>Play Tour Guide</span>
         </router-link>
       </li>
       <div class="divider"></div>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_share.svg" alt="">
+          <img src="@/assets/img/icons/ic_share.svg" alt="">
           <span>Share</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_print.svg" alt="">
+          <img src="@/assets/img/icons/ic_print.svg" alt="">
           <span>Print</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_download.svg" alt="">
+          <img src="@/assets/img/icons/ic_download.svg" alt="">
           <span>Download Data</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_zoom.svg" alt="">
+          <img src="@/assets/img/icons/ic_zoom.svg" alt="">
           <span>View Fullscreen</span>
         </router-link>
       </li>
       <div class="divider"></div>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_upload.svg" alt="">
+          <img src="@/assets/img/icons/ic_upload.svg" alt="">
           <span>Submit New Data Source</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_recommendation.svg" alt="">
+          <img src="@/assets/img/icons/ic_recommendation.svg" alt="">
           <span>Suggest Indicator/Data Source</span>
         </router-link>
       </li>
       <div class="divider"></div>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_update.svg" alt="">
+          <img src="@/assets/img/icons/ic_update.svg" alt="">
           <span>See Updates</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_feedback.svg" alt="">
+          <img src="@/assets/img/icons/ic_feedback.svg" alt="">
           <span>Feedback</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_contact.svg" alt="">
+          <img src="@/assets/img/icons/ic_contact.svg" alt="">
           <span>Contact</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_help.svg" alt="">
+          <img src="@/assets/img/icons/ic_help.svg" alt="">
           <span>Help and FAQs</span>
         </router-link>
       </li>
       <li>
         <router-link to="/">
-          <img src="../../../../assets/img/icons/ic_email.svg" alt="">
+          <img src="@/assets/img/icons/ic_email.svg" alt="">
           <span>Subscribe to our newsletter</span>
         </router-link>
       </li>

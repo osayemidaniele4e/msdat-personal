@@ -4,7 +4,7 @@
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="2" lg="2">
           <img
-            src="../../../../assets/img/Logo.svg"
+            src="@/assets/img/Logo.svg"
             alt="FMOH Logo"
             class="img-fluid"
           >
@@ -33,7 +33,8 @@
         </b-col>
         <b-col class="">
           <h4>About the MSDAT Dashboard</h4>
-          <p>This dashboard is developed and managed by the Department of Health Planning Reseach and Statistics (DHPRS)</p>
+          <p>This dashboard is developed and managed by the Department of Health Planning
+            Research and Statistics (DHPRS)</p>
         </b-col>
       </b-row>
     </b-container>
