@@ -1,3 +1,5 @@
+import aboutRoute from './views/about/router';
+
 export default [
   {
     path: '/',
@@ -7,9 +9,5 @@ export default [
     //   requiresAuth: true,
     // },
   },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import('./about/views/index.vue'),
-  },
+  ...aboutRoute,
 ];
