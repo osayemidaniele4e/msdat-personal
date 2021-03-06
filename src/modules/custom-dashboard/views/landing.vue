@@ -38,11 +38,11 @@
     <div class="image-scroll">
    <b-list-group horizontal class="overflow-auto">
     <b-list-group-item><img src="@/assets/img/Image 3.png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births).png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births) (NHMIS - 2019).png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births) NDHS_2018.png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births) (NHMIS - 2019) (1).png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births) 2.png" alt=""></b-list-group-item>
+    <b-list-group-item><img src="@/assets/img/(per 1000 live births).png" alt=""></b-list-group-item>
+    <b-list-group-item><img src="@/assets/img/(per 1000 live births) (NHMIS - 2019).png" alt=""></b-list-group-item>
+    <b-list-group-item><img src="@/assets/img/(per 1000 live births) NDHS_2018.png" alt=""></b-list-group-item>
+    <b-list-group-item><img src="@/assets/img/(per 1000 live births) (NHMIS - 2019) (1).png" alt=""></b-list-group-item>
+    <b-list-group-item><img src="@/assets/img/(per 1000 live births) 2.png" alt=""></b-list-group-item>
   </b-list-group>
     </div>
 
@@ -77,11 +77,11 @@
           </b-col>
         </b-row>
       </b-col>
-      <b-col md="5" sm="12"> 
+      <b-col md="5" sm="12">
         <div>
           <img class="img-fluid d-block mx-auto" src="@/assets/img/Group 81.png" alt="">
         </div>
-        
+
       </b-col>
     </b-row>
     <Footer />
@@ -89,14 +89,15 @@
 </template>
 
 <script>
-import Footer from "../components/footer.vue";
-import customDashboardSvg from "../svg/customDashboardSvgs.vue";
+import Footer from '../components/footer.vue';
+import customDashboardSvg from '../svg/customDashboardSvgs.vue';
+
 export default {
-  name: "landing",
+  name: 'landing',
   components: {
     Footer,
-    customDashboardSvg
-  }
+    customDashboardSvg,
+  },
 };
 </script>
 
@@ -126,7 +127,6 @@ export default {
   background-color: #3f8994;
   color: #ffffff;
   max-width: 253.500000063px;
-  // max-height: 48.000000012px;
   text-transform: uppercase;
 }
 .nav {
@@ -182,7 +182,7 @@ a {
 .svg {
   flex-grow: 0;
   margin-top: 62.250000016px;
-  
+
   p {
     font-weight: normal;
     font-size: 27.000000007px;

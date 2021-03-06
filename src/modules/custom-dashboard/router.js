@@ -12,5 +12,10 @@ export default new Router({
       name: 'custom-dashboard',
       component: () => import(/* webpackChunkName: "about" */ './views/landing.vue'),
     },
+    {
+      path: '/custom/details',
+      name: 'dashboard-details',
+      component: () => import(/* webpackChunkName: "about" */ './views/dashboardDetails.vue'),
+    },
   ],
 });

@@ -1267,13 +1267,46 @@
         stroke-width="2"
       />
     </svg>
+    <svg
+      v-if="name == upload"
+      xmlns="http://www.w3.org/2000/svg"
+      width="165"
+      height="165"
+      viewBox="0 0 165 165"
+    >
+      <g id="Group_2429" data-name="Group 2429" transform="translate(-1046 -413)">
+        <circle
+          id="Ellipse_179"
+          data-name="Ellipse 179"
+          cx="82.5"
+          cy="82.5"
+          r="82.5"
+          transform="translate(1046 413)"
+          fill="#eaeaea"
+        />
+        <g id="Upload" transform="translate(1106 470)">
+          <path
+            id="ic_vertical_align_top_24px"
+            d="M13.778,24.165h8.54V52.633h5.694V24.165h8.54L25.165,12.778Z"
+            transform="translate(-2.261 -12.778)"
+            fill="#a7a7a7"
+          />
+          <path
+            id="ic_space_bar_24px"
+            d="M43.855,9V20.387H9.694V9H4V26.081H49.548V9Z"
+            transform="translate(-4 25.808)"
+            fill="#a7a7a7"
+          />
+        </g>
+      </g>
+    </svg>
   </div>
 </template>
 
 <script>
 export default {
-  name: "customDashboardSvg",
-  props: ["name"]
+  name: 'customDashboardSvg',
+  props: ['name'],
 };
 </script>
 
