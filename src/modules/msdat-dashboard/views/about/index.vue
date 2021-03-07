@@ -8,7 +8,7 @@
           <b-row>
             <b-col cols lg="5">
               <div>
-                <!-- <img :src="require('../assets/About-Dashboard-image.jpg')" alt="Macbook"> -->
+                <img :src="macBookImg" alt="Macbook">
               </div>
             </b-col>
             <b-col cols lg="7">
@@ -286,6 +286,7 @@ export default {
   data() {
     return {
       selected: null,
+      macBookImg: require('./assets/About-Dashboard-image.svg'),
       indicators: [
         {
           name: 'Mortality',
