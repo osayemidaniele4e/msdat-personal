@@ -11,11 +11,19 @@
 
 <script>
 import panel from './components/ControlPanel/Panel.vue';
+// import { EventBus } from './main';
 
 export default {
   components: {
     panel,
   },
+
+  // mounted() {
+  //   EventBus.$on('option', (data) => {
+  //     console.log('received:::', data);
+  //   });
+  // },
+
 };
 </script>
 

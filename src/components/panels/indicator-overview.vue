@@ -12,6 +12,7 @@
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
+          @input="sendData(payload.indicator)"
         ></multiselect>
       </div>
     </div>
@@ -99,6 +100,7 @@
 import Multiselect from 'vue-multiselect';
 import CCheckbox from '@/components/generic/checkbox.vue';
 import toggle from '@/components/generic/toggle-switch.vue';
+// import { EventBus } from '../../main';
 
 export default {
   data() {
@@ -164,6 +166,13 @@ export default {
     };
   },
   components: { Multiselect, CCheckbox, toggle },
+
+  // methods: {
+  //   sendData(data) {
+  //     console.log('sending:::', data);
+  //     EventBus.$emit('option', data);
+  //   },
+  // },
 };
 </script>
 
