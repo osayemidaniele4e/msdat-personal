@@ -21,9 +21,10 @@
           title:{
             text:'Hello world'
           },
-        }" :level="level" :lgaState="'Kano'"  />
+        }" :level="level" :lgaState="stateName"  />
         <button class="btn btn-lg btn-primary" @click="level = 2">Change Level</button>
-         <button class="btn btn-lg btn-primary" @click="level = 3"> Change Level Lga</button>
+        <input type="text" name="" class="input block" v-model="stateName">
+        <button class="btn btn-lg btn-primary" @click="level = 3"> Change Level Lga</button>
     </div>
 </template>
 
@@ -34,6 +35,7 @@ export default {
   data() {
     return {
       level: 1,
+      stateName: 'Delta',
     };
   },
   components: {

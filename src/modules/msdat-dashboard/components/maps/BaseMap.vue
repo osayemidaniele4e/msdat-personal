@@ -2,7 +2,7 @@
   <div>
     <h1 class="h1">map Base</h1>
     <!-- <h3>{{ mapObject }}</h3> -->
-    <h3>{{ defaultOptions.plotOptions.map }}</h3>
+    <!-- <h3>{{ defaultOptions.plotOptions.map }}</h3> -->
     <Highmaps :options="defaultOptions" />
   </div>
 </template>
@@ -57,90 +57,50 @@ import {
 import defaultOptions from './defaultOptions';
 
 loadMap(Highcharts);
-// import NigerianMapData from './js/data/states_data';
-const lgaMapData = {
-  Jigawa,
-  Kano,
-  Katsina,
-  Kebbi,
-  Sokoto,
-  Kaduna,
-  Zamfara,
-  Nasarawa,
-  Niger,
-  Plateau,
-  Kwara,
-  Kogi,
-  Benue,
-  Fct,
-  Abia,
-  Ebonyi,
-  Imo,
-  Enugu,
-  Anambra,
-  Ondo,
-  Ogun,
-  Osun,
-  Lagos,
-  Ekiti,
-  Oyo,
-  AkwaIbom,
-  Bayelsa,
-  CrossRiver,
-  Rivers,
-  Delta,
-  Edo,
-  Adamawa,
-  Bauchi,
-  Borno,
-  Gombe,
-  Taraba,
-  Yobe,
-};
 export default {
   name: 'BaseMap',
   data() {
     return {
       defaultOptions,
-      // lgaMapData: {
-      //   Jigawa,
-      //   Kano,
-      //   Katsina,
-      //   Kebbi,
-      //   Sokoto,
-      //   Kaduna,
-      //   Zamfara,
-      //   Nasarawa,
-      //   Niger,
-      //   Plateau,
-      //   Kwara,
-      //   Kogi,
-      //   Benue,
-      //   Fct,
-      //   Abia,
-      //   Ebonyi,
-      //   Imo,
-      //   Enugu,
-      //   Anambra,
-      //   Ondo,
-      //   Ogun,
-      //   Osun,
-      //   Lagos,
-      //   Ekiti,
-      //   Oyo,
-      //   AkwaIbom,
-      //   Bayelsa,
-      //   CrossRiver,
-      //   Rivers,
-      //   Delta,
-      //   Edo,
-      //   Adamawa,
-      //   Bauchi,
-      //   Borno,
-      //   Gombe,
-      //   Taraba,
-      //   Yobe,
-      // },
+      lgaMapData: {
+        Jigawa,
+        Kano,
+        Katsina,
+        Kebbi,
+        Sokoto,
+        Kaduna,
+        Zamfara,
+        Nasarawa,
+        Niger,
+        Plateau,
+        Kwara,
+        Kogi,
+        Benue,
+        Fct,
+        Abia,
+        Ebonyi,
+        Imo,
+        Enugu,
+        Anambra,
+        Ondo,
+        Ogun,
+        Osun,
+        Lagos,
+        Ekiti,
+        Oyo,
+        AkwaIbom,
+        Bayelsa,
+        CrossRiver,
+        Rivers,
+        Delta,
+        Edo,
+        Adamawa,
+        Bauchi,
+        Borno,
+        Gombe,
+        Taraba,
+        Yobe,
+      },
     };
   },
   props: {
@@ -173,10 +133,7 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = regionsMap;
           break;
         case 3:
-          console.log(this.lgaState);
-          this.defaultOptions.plotOptions.map.mapData = regionsMap;
-          this.defaultOptions.plotOptions.map.mapData = lgaMapData[this.lgaState];
-          // console.log(this.defaultOptions.map.mapData);
+          this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[this.lgaState].data;
           break;
         default:
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
@@ -190,6 +147,7 @@ export default {
   },
   created() {
     this.defaultOptions.plotOptions.map.mapData = NigerianMap;
+    console.log(this.lgaMapData[this.lgaState]);
   },
 };
 </script>

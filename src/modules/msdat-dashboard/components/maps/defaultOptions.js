@@ -34,10 +34,10 @@ export default {
         // color: '#FFFFFF',
         formatter() {
           if (this.point.value) {
-            console.log(this.point);
+            // console.log(this.point);
             return this.point.name;
           }
-          return null;
+          return this.point.name;
         },
       },
       colorAxis: {

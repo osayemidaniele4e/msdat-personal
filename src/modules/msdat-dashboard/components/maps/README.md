@@ -1,4 +1,4 @@
-## This is Readme docs for the Map Component
+## About
 
 ## dependencies
 
@@ -7,8 +7,8 @@
 - @highcharts/map-collection;
 
 ## props
-## how to uses
-
+## How to uses
+This BaseMap Component is when initialized has a default map object set the option set in the highchart plotOption api visit highchart docs
 ### example
  ```js
  <BaseMap 
