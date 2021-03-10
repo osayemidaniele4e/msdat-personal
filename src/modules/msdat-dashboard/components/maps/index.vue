@@ -22,7 +22,8 @@
             text:'Hello world'
           },
         }" :level="level" :lgaState="'Kano'"  />
-        <button class="btn btn-lg btn-primary" @click="level = 2"> Change Level</button>
+        <button class="btn btn-lg btn-primary" @click="level = 2">Change Level</button>
+         <button class="btn btn-lg btn-primary" @click="level = 3"> Change Level Lga</button>
     </div>
 </template>
 
