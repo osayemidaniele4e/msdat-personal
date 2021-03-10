@@ -1,4 +1,5 @@
-var states_data = [
+/* eslint-disable camelcase */
+const states_data = [
   ['ng-ri', 0],
   ['ng-kt', 1],
   ['ng-so', 2],
@@ -35,7 +36,7 @@ var states_data = [
   ['ng-pl', 33],
   ['ng-na', 34],
   ['ng-ji', 35],
-  ['ng-kn', 36]
-]
+  ['ng-kn', 36],
+];
 
-module.exports = statesData
+module.exports = states_data;
