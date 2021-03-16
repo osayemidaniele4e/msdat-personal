@@ -22,19 +22,10 @@ export default {
   plotOptions: {
     map: {
       joinBy: ['name', 'hc-key'],
-      //   mapData: NigerianMap,
-      // mapNavigation: {
-      //   enabled: true,
-      //   buttonOptions: {
-      //     verticalAlign: 'bottom',
-      //   },
-      // },
       dataLabels: {
         enabled: true,
-        // color: '#FFFFFF',
         formatter() {
           if (this.point.value) {
-            // console.log(this.point);
             return this.point.name;
           }
           return this.point.name;

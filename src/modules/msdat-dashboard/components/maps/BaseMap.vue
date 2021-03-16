@@ -1,8 +1,5 @@
 <template>
   <div>
-    <h1 class="h1">map Base</h1>
-    <!-- <h3>{{ mapObject }}</h3> -->
-    <!-- <h3>{{ defaultOptions.plotOptions.map }}</h3> -->
     <Highmaps :options="defaultOptions" />
   </div>
 </template>
@@ -11,40 +8,16 @@
 import Highcharts from 'highcharts';
 import loadMap from 'highcharts/modules/map';
 import { genComponent } from 'vue-highcharts';
+
+// default map
 import NigerianMap from '@highcharts/map-collection/countries/ng/ng-all.geo.json';
-import {
-  Abia, Ebonyi, Imo, Enugu, Anambra,
-} from './mapData/south-east';
-import {
-  Ondo, Ogun, Osun, Lagos, Ekiti, Oyo,
-} from './mapData/south-west';
-import {
-  Adamawa,
-  Bauchi,
-  Borno,
-  Gombe,
-  Taraba,
-  Yobe,
-} from './mapData/north-east';
+
+// default map options
+import defaultOptions from './defaultOptions';
+
+// map data
 import regionsMap from './mapData/regions';
-import {
-  Jigawa,
-  Kano,
-  Katsina,
-  Kebbi,
-  Sokoto,
-  Kaduna,
-  Zamfara,
-} from './mapData/north-west';
-import {
-  Nasarawa,
-  Niger,
-  Plateau,
-  Kwara,
-  Kogi,
-  Benue,
-  Fct,
-} from './mapData/north-central';
+
 import {
   AkwaIbom,
   Bayelsa,
@@ -54,11 +27,64 @@ import {
   Edo,
 } from './mapData/south-south';
 
-import defaultOptions from './defaultOptions';
+import {
+  Abia, Ebonyi, Imo, Enugu, Anambra,
+} from './mapData/south-east';
 
+import {
+  Ondo, Ogun, Osun, Lagos, Ekiti, Oyo,
+} from './mapData/south-west';
+
+import {
+  Adamawa,
+  Bauchi,
+  Borno,
+  Gombe,
+  Taraba,
+  Yobe,
+} from './mapData/north-east';
+
+import {
+  Jigawa,
+  Kano,
+  Katsina,
+  Kebbi,
+  Sokoto,
+  Kaduna,
+  Zamfara,
+} from './mapData/north-west';
+
+import {
+  Nasarawa,
+  Niger,
+  Plateau,
+  Kwara,
+  Kogi,
+  Benue,
+  Fct,
+} from './mapData/north-central';
+
+// load map
 loadMap(Highcharts);
+
 export default {
   name: 'BaseMap',
+  components: {
+    Highmaps: genComponent('Highmaps', Highcharts),
+  },
+  props: {
+    mapObject: {
+      type: Object,
+      default: () => ({}),
+    },
+    level: {
+      type: Number,
+      default: 0,
+    },
+    lgaState: {
+      type: String,
+    }
+  },
   data() {
     return {
       defaultOptions,
@@ -100,32 +126,12 @@ export default {
         Gombe,
         Taraba,
         Yobe,
-      },
+      }
     };
   },
-  props: {
-    mapObject: {
-      type: Object,
-      default: () => ({}),
-    },
-    level: {
-      type: Number,
-      default: 1,
-    },
-    lgaState: {
-      type: String,
-    },
-  },
-  watch: {
-    mapObject: {
-      handler(newVal) {
-        this.defaultOptions = Object.assign(this.defaultOptions, newVal);
-      },
-      immediate: true,
-      deep: true,
-    },
-    level(newVal) {
-      switch (newVal) {
+  methods: {
+    plotMapLevel(level) {
+      switch (level) {
         case 1:
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
@@ -139,15 +145,22 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
       }
-      console.log(this.defaultOptions);
-    },
+    }
   },
-  components: {
-    Highmaps: genComponent('Highmaps', Highcharts),
+  watch: {
+    mapObject: {
+      handler(newVal) {
+        this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+      },
+      immediate: true,
+      deep: true
+    },
+    level(newVal) {
+      this.plotMapLevel(newVal)
+    }
   },
   created() {
-    this.defaultOptions.plotOptions.map.mapData = NigerianMap;
-    console.log(this.lgaMapData[this.lgaState]);
-  },
-};
+    this.plotMapLevel(this.level)
+  }
+}
 </script>
