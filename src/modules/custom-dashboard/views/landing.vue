@@ -113,18 +113,18 @@
         </div>
       </b-col>
     </b-row>
-    <Footer />
+    <CdFooter />
   </b-container>
 </template>
 
 <script>
-import Footer from '../components/footer.vue';
+import CdFooter from '../components/footer.vue';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
 export default {
   name: 'landing',
   components: {
-    Footer,
+    CdFooter,
     customDashboardSvg,
   },
 };

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { router as MSDAT_ROUTE } from '../modules/msdat-dashboard';
+import { router as CUSTOM_DASHBOARD_ROUTE } from '../modules/custom-dashboard';
 
 Vue.use(VueRouter);
 
@@ -14,6 +15,7 @@ const routes = [
   //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   // },
   ...MSDAT_ROUTE,
+  ...CUSTOM_DASHBOARD_ROUTE,
 ];
 
 const router = new VueRouter({
