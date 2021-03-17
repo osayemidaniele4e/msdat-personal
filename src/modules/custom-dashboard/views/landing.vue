@@ -36,29 +36,53 @@
       <p id="samples">View samples here</p>
     </div>
     <div class="image-scroll">
-   <b-list-group horizontal class="overflow-auto">
-    <b-list-group-item><img src="@/assets/img/Image 3.png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births).png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births) (NHMIS - 2019).png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births) NDHS_2018.png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births) (NHMIS - 2019) (1).png" alt=""></b-list-group-item>
-    <b-list-group-item><img src="@/assets/img/Neonatal mortality rate (per 1000 live births) 2.png" alt=""></b-list-group-item>
-  </b-list-group>
+      <b-list-group horizontal class="overflow-auto">
+        <b-list-group-item
+          ><img src="@/assets/img/Image 3.png" alt=""
+        /></b-list-group-item>
+        <b-list-group-item
+          ><img
+            src="@/assets/img/Neonatal mortality rate (per 1000 live births).png"
+            alt=""
+        /></b-list-group-item>
+        <b-list-group-item
+          ><img
+            src="@/assets/img/Neonatal mortality rate (per 1000 live births) (NHMIS - 2019).png"
+            alt=""
+        /></b-list-group-item>
+        <b-list-group-item
+          ><img
+            src="@/assets/img/Neonatal mortality rate (per 1000 live births) NDHS_2018.png"
+            alt=""
+        /></b-list-group-item>
+        <b-list-group-item
+          ><img
+            src="@/assets/img/Neonatal mortality rate (per 1000 live births) (NHMIS - 2019) (1).png"
+            alt=""
+        /></b-list-group-item>
+        <b-list-group-item
+          ><img
+            src="@/assets/img/Neonatal mortality rate (per 1000 live births) 2.png"
+            alt=""
+        /></b-list-group-item>
+      </b-list-group>
     </div>
 
-    <b-row style="padding-left: 105.000000026px; padding-right: 105.000000026px;">
+    <b-row
+      style="padding-left: 105.000000026px; padding-right: 105.000000026px"
+    >
       <b-col md="7" sm="12" class="p-0 text-left">
         <b-row class="features">
           <b-col>
-            <h4>
-              Available health data
-            </h4>
+            <h4>Available health data</h4>
             <p class="d-flex">
-              Our platform helps you to set up your custom dashboard to suit your needs. The
-              dashboard comes with cleaned data on the certain key health indicators in Nigeria.
-              This data can be made available for your use. The platform allows for sectioning of
-              your charts. So you can section your visualizations into any section of your choice,
-              giving you control over your data and making it easier to analyse
+              Our platform helps you to set up your custom dashboard to suit
+              your needs. The dashboard comes with cleaned data on the certain
+              key health indicators in Nigeria. This data can be made available
+              for your use. The platform allows for sectioning of your charts.
+              So you can section your visualizations into any section of your
+              choice, giving you control over your data and making it easier to
+              analyse
             </p>
             <b-button>Design your dashboard</b-button>
           </b-col>
@@ -67,21 +91,26 @@
           <b-col>
             <h4>Customizable Data</h4>
             <p>
-              GOODNEWS! This platform is not just limited to the available data, you can also upload
-              the data you are tracking in your team. You will be able to input your data and choose
-              any visualization of your choice. This feature is being developed and we are eager to
-              capture your requirements into the design. If you are interested in contributing to
-              the development of this feature, please indicate your interest below.
+              GOODNEWS! This platform is not just limited to the available data,
+              you can also upload the data you are tracking in your team. You
+              will be able to input your data and choose any visualization of
+              your choice. This feature is being developed and we are eager to
+              capture your requirements into the design. If you are interested
+              in contributing to the development of this feature, please
+              indicate your interest below.
             </p>
             <b-button>INDICATE INTEREST HERE</b-button>
           </b-col>
         </b-row>
       </b-col>
-      <b-col md="5" sm="12"> 
+      <b-col md="5" sm="12">
         <div>
-          <img class="img-fluid d-block mx-auto" src="@/assets/img/Group 81.png" alt="">
+          <img
+            class="img-fluid d-block mx-auto"
+            src="@/assets/img/Group 81.png"
+            alt=""
+          />
         </div>
-        
       </b-col>
     </b-row>
     <Footer />
@@ -89,14 +118,15 @@
 </template>
 
 <script>
-import Footer from "../components/footer.vue";
-import customDashboardSvg from "../svg/customDashboardSvgs.vue";
+import Footer from '../components/footer.vue';
+import customDashboardSvg from '../svg/customDashboardSvgs.vue';
+
 export default {
-  name: "landing",
+  name: 'landing',
   components: {
     Footer,
-    customDashboardSvg
-  }
+    customDashboardSvg,
+  },
 };
 </script>
 
@@ -182,7 +212,7 @@ a {
 .svg {
   flex-grow: 0;
   margin-top: 62.250000016px;
-  
+
   p {
     font-weight: normal;
     font-size: 27.000000007px;
@@ -193,7 +223,7 @@ a {
 }
 .list-group-item {
   border: none;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
 }
 .list-group {
   margin-top: 54.000000014px;

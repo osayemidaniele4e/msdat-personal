@@ -1,16 +1,7 @@
-import Vue from 'vue';
-import App from '@/App.vue';
-import '@/registerServiceWorker';
-import '@/plugins/bootstrap-vue';
-import '@/plugins/highchart';
-import '@/scss/main.scss';
-import router from '@/modules/msdat-dashboard/router';
-import store from '@/modules/msdat-dashboard/store';
+import router from './router';
+import store from './store';
 
-Vue.config.productionTip = true;
-
-new Vue({
+export {
   router,
   store,
-  render: (h) => h(App),
-}).$mount('#app');
+};
