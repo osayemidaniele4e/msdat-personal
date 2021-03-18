@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>MSDAT DASHBOARD</h1>
+    <!-- <h1>MSDAT DASHBOARD</h1> -->
     <BasePanel
       :tabs="[
         'Indicator Overview',
@@ -13,27 +13,41 @@
     >
       <template v-slot:default="{ currentTab }">
         <indicatorOverviewPanel v-if="currentTab == 0" @data:options="log" />
-        <!-- <ComparismSection v-if="currentTab == 1" /> -->
+        <zonalAnalysisPanel v-if="currentTab == 1" />
+        <indicatorComparisonPanel v-if="currentTab == 2" />
+        <datasetComparisonPanel v-if="currentTab == 3" />
+        <multisourceIndicatorPanel v-if="currentTab == 4" />
       </template>
     </BasePanel>
 
     <!-- <ComparismSection/> -->
-     <button @click="position = 1" class="btn btn-primary">Hello World</button>
+    <!-- <button @click="position = 1" class="btn btn-primary">Hello World</button> -->
   </div>
 </template>
 
 <script>
-import { BasePanel, indicatorOverviewPanel } from '@/components/ControlPanel';
+import {
+  BasePanel,
+  indicatorOverviewPanel,
+  zonalAnalysisPanel,
+  indicatorComparisonPanel,
+  datasetComparisonPanel,
+  multisourceIndicatorPanel,
+} from '@/components/ControlPanel';
 
 export default {
   data() {
     return {
-      position: '',
+      position: 0,
     };
   },
   components: {
     indicatorOverviewPanel,
     BasePanel,
+    zonalAnalysisPanel,
+    indicatorComparisonPanel,
+    datasetComparisonPanel,
+    multisourceIndicatorPanel,
   },
   methods: {
     log(data) {

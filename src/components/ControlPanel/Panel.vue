@@ -70,17 +70,11 @@
         </div>
       </nav>
     </header>
-
-    <!--Input Control panel  here-->
-    <div>
-      <selectInput />
-    </div>
   </div>
 </template>
 
 <script>
 import sideMenu from '@/components/generic/side-menu.vue';
-import selectInput from './SelectInput.vue';
 
 export default {
   data() {
@@ -90,7 +84,6 @@ export default {
   },
   components: {
     sideMenu,
-    selectInput,
   },
 
   methods: {

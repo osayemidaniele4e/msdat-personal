@@ -8,7 +8,7 @@
         <multiselect
           v-model="payload.indicator"
           :options="indicatorOptions"
-          :searchable="true"
+          :searchable="false"
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
@@ -24,7 +24,7 @@
         <multiselect
           v-model="payload.location"
           :options="locationOptions"
-          :searchable="true"
+          :searchable="false"
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
@@ -68,7 +68,7 @@
     <div class="d-flex flex-column w-20 ml-3">
       <label class="panel-label">Targets</label>
 
-      <div class="d-flex justify-content-between">
+      <div class="d-flex">
         <!-- National Target here -->
         <div class="d-flex">
           <CCheckbox />
@@ -82,23 +82,12 @@
         </div>
       </div>
     </div>
-
-    <!-- Toggle here -->
-    <div class="d-flex flex-column mt-3 ml-4">
-      <label class="panel-label"></label>
-
-      <div class="d-flex">
-        <toggle class="mt-1" />
-        <p class="px-4 numerator">Numerator/ Denominator</p>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import Multiselect from 'vue-multiselect';
 import CCheckbox from '@/components/generic/checkbox.vue';
-import toggle from '@/components/generic/toggle-switch.vue';
 
 export default {
   data() {
@@ -134,7 +123,6 @@ export default {
         'Borno',
       ],
       dataSources: [
-        'NHMIS',
         'MICS',
         'NNHS',
         'NDHS',
@@ -163,27 +151,11 @@ export default {
       ],
     };
   },
-
-  watch: {
-    payload: {
-      handler(newValue) {
-        this.$emit('data:options', newValue);
-      },
-
-      immediate: true,
-      deep: false,
-    },
-  },
-  components: { Multiselect, CCheckbox, toggle },
+  components: { Multiselect, CCheckbox },
 };
 </script>
 
 <style scoped>
-.numerator {
-  color: #353535;
-  font-family: "Work Sans", sans-serif;
-  font-size: 0.875rem;
-}
 
 .w-30 {
   width: 421px;

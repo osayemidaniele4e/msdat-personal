@@ -12,7 +12,7 @@
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
-          @input="sendData(payload.indicator)"
+
         ></multiselect>
       </div>
     </div>

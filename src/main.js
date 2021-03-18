@@ -10,8 +10,6 @@ import './assets/styles/styles.css';
 import './assets/styles/fonts.css';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 
-export default new Vue();
-
 Vue.config.productionTip = false;
 
 new Vue({
