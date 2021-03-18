@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <!-- Navbar here -->
-    <div id="nav">
-      <panel></panel>
+
+    <div class="mt-5">
+    <bar/>
     </div>
 
     <router-view />
@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import panel from './components/ControlPanel/Panel.vue';
+import bar from './modules/msdat-dashboard/components/barchart/index.vue';
 
 export default {
   components: {
-    panel,
+    bar,
   },
 };
 </script>
