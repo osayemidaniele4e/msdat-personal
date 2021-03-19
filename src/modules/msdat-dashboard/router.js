@@ -6,9 +6,9 @@ export default [
     path: '/',
     name: 'Dashboard',
     component: Home,
-    // meta: {
-    //   requiresAuth: true,
-    // },
+    meta: {
+      requiresAuth: true,
+    },
   },
   ...aboutRoute,
 ];
