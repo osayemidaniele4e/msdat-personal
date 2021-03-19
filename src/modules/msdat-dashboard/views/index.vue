@@ -1,6 +1,6 @@
 <template>
     <div>
-    <router-view/>
+        <h1>MSDAT DASHBOARD</h1>
     </div>
 </template>
 
