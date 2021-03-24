@@ -1,5 +1,11 @@
-## BasePanel Component
+## Panel Component
 
+
+**Need to know**
+
+The Base Panel as the name Implies, is the root panel; It houses the different tabs. Tabs are the clickable elements that toggle the view of various control Panels. So an example would be `indicator overview`, This tab when clicked shows the `indicator overview` panel. Likewise, `Zonal analysis` tab displays the `zonal analysis` panel. The panels section of this file, houses a table of the different panels present. All control panels are within the `generic-control panels` folder.
+
+<br>
 
 ## Slots
 
@@ -7,13 +13,16 @@
 | --------- | --------------------------------------- |
 | `default` | Use this slot to set different control panel for the site |
 
+<br>
 
 ## Props
 
 | Name            | Type            | Description                                                                                                                                                  | Default                      |
 | --------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
-| `tabs`       | `Array`        |  The Take and array of the Tabs Title |                              |
+| `tabs`       | `Array`        |  This Takes and array of the Tabs Title |                              |
 | `position`   | `String` | Used to set the position of the tabs for the parent.                                                                                 |                              |
+
+<br>
 
 ## Panels
 
@@ -25,8 +34,12 @@
 | `Dataset Comparison` | All Multiselect dropdows for Dataset comparison are here |
 | `Multisource comparison` | All Multiselect dropdowns for multisource comparison are here |
 
+<br>
 
-**Example**
+**Examples**
+
+This is an overview of what the base panel looks like. Visit the props section to see the accepted props.
+<br>
 
 ```js
 <BasePanel
@@ -48,7 +61,7 @@
 **Note**
  when using the currentTab to identify your panel remember that the first index starts from 0 
  
-  The generic folder gouses the generic components, such as the toggle bar and custom checkbox. The side menu for the navigation bar is housed here as well.
+The generic folder gouses the generic components, such as the toggle bar and custom checkbox. The side menu for the navigation bar is housed here as well.
   
   
 

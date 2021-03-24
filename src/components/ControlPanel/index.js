@@ -1,9 +1,9 @@
 import BasePanel from './Panels/BasePanel/index.vue';
-import indicatorOverviewPanel from './Panels/IndicatorOverviewPanel/index.vue';
-import zonalAnalysisPanel from './Panels/ZonalAnalysisPanel/index.vue';
-import indicatorComparisonPanel from './Panels/IndicatorComparisonPanel/index.vue';
-import datasetComparisonPanel from './Panels/DatasetComparisonPanel/index.vue';
-import multisourceIndicatorPanel from './Panels/MultisourceIndicatorPanel/index.vue';
+import indicatorOverviewPanel from './Panels/generic-control panels/indicatorOverview.vue';
+import zonalAnalysisPanel from './Panels/generic-control panels/zonalAnalysis.vue';
+import indicatorComparisonPanel from './Panels/generic-control panels/indicatorComparison.vue';
+import datasetComparisonPanel from './Panels/generic-control panels/datasetComparison.vue';
+import multisourceIndicatorPanel from './Panels/generic-control panels/MultisourceIndicatorPanel/index.vue';
 // import store from './store';
 
 export {
