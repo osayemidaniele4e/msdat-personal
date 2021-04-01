@@ -15,6 +15,7 @@ The Base Panel as the name Implies, is the root panel; It houses the different t
 
 <br>
 
+
 ## Props
 
 | Name            | Type            | Description                                                                                                                                                  | Default                      |
@@ -57,6 +58,30 @@ This is an overview of what the base panel looks like. Visit the props section t
       </template>
     </BasePanel>
 ```
+
+## Events
+
+| Name      | Description                             |
+| --------- | --------------------------------------- |
+| `data:options` | This event is triggered by the watcher in the panels. It houses the data payload from each panel. This would give us access to the various payload housed by the  panels |
+
+<br>
+
+**Example**
+```js
+  watch: {
+    payload: {
+      handler(newValue) {
+        this.$emit('data:options', newValue);
+      },
+
+      immediate: true,
+      deep: false,
+    },
+  },
+```
+
+<br>
 
 **Note**
  when using the currentTab to identify your panel remember that the first index starts from 0 
