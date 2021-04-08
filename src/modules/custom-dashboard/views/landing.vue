@@ -45,27 +45,27 @@
         /></b-list-group-item>
         <b-list-group-item
           ><img
-            src="@/assets/img/Neonatal mortality rate (per 1000 live births).png"
+            src="@/assets/img/(per 1000 live births).png"
             alt=""
         /></b-list-group-item>
         <b-list-group-item
           ><img
-            src="@/assets/img/Neonatal mortality rate (per 1000 live births) (NHMIS - 2019).png"
+            src="@/assets/img/(per 1000 live births) (NHMIS - 2019).png"
             alt=""
         /></b-list-group-item>
         <b-list-group-item
           ><img
-            src="@/assets/img/Neonatal mortality rate (per 1000 live births) NDHS_2018.png"
+            src="@/assets/img/(per 1000 live births) NDHS_2018.png"
             alt=""
         /></b-list-group-item>
         <b-list-group-item
           ><img
-            src="@/assets/img/Neonatal mortality rate (per 1000 live births) (NHMIS - 2019) (1).png"
+            src="@/assets/img/(per 1000 live births) (NHMIS - 2019) (1).png"
             alt=""
         /></b-list-group-item>
         <b-list-group-item
           ><img
-            src="@/assets/img/Neonatal mortality rate (per 1000 live births) 2.png"
+            src="@/assets/img/(per 1000 live births) 2.png"
             alt=""
         /></b-list-group-item>
       </b-list-group>
