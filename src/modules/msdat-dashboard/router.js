@@ -1,3 +1,4 @@
+import aboutRoute from './views/about/router';
 import Home from './views/index.vue';
 
 export default [
@@ -5,8 +6,9 @@ export default [
     path: '/',
     name: 'Dashboard',
     component: Home,
-    // meta: {
-    //   requiresAuth: true,
-    // },
+    meta: {
+      requiresAuth: true,
+    },
   },
+  ...aboutRoute,
 ];

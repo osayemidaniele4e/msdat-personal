@@ -7,7 +7,7 @@
           <b-nav-item>Login</b-nav-item>
         </b-nav>
       </div>
-      <div class="header-text">
+      <div class="header-text text-center">
         <h1>The Custom Dashboard</h1>
         <h2>Design your dashboard, customize your data</h2>
         <h3>No coding skills required!</h3>
@@ -32,8 +32,11 @@
           <p>Visualize Dashboard</p>
         </b-col>
       </b-row>
-      <b-button id="get-started">Get Started Here</b-button>
+      <div class="text-center">
+        <b-button id="get-started">Get Started Here</b-button>
       <p id="samples">View samples here</p>
+      </div>
+
     </div>
     <div class="image-scroll">
       <b-list-group horizontal class="overflow-auto">
@@ -113,18 +116,18 @@
         </div>
       </b-col>
     </b-row>
-    <Footer />
+    <CdFooter />
   </b-container>
 </template>
 
 <script>
-import Footer from '../components/footer.vue';
+import CdFooter from '../components/footer.vue';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
 export default {
   name: 'landing',
   components: {
-    Footer,
+    CdFooter,
     customDashboardSvg,
   },
 };
@@ -230,8 +233,5 @@ a {
 }
 .list-group::-webkit-scrollbar {
   display: none;
-}
-img {
-  // overflow: hidden;
 }
 </style>

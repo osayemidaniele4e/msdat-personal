@@ -1,5 +1,10 @@
 <template>
-  <b-jumbotron fluid="true" container-fluid text-variant="black" border-variant="null">
+  <b-jumbotron
+    fluid
+    container-fluid
+    text-variant="black"
+    border-variant="null"
+  >
     <b-row class="text-left">
       <b-col>
         <p>Platform</p>
@@ -22,8 +27,8 @@
         <p>Company</p>
         <ul>
           <li>
-            The Custom Dashboard is a product of eHealth4everyone, a leading digital health
-            enterprise.
+            The Custom Dashboard is a product of eHealth4everyone, a leading
+            digital health enterprise.
           </li>
           <li>About eHealth4everyone</li>
           <li>More Products</li>
@@ -33,15 +38,22 @@
       <b-col>
         <p>Stay Updated</p>
         <ul>
-          <li>Subscribe to the newsletter for updated on new features, discounts.</li>
+          <li>
+            Subscribe to the newsletter for updated on new features, discounts.
+          </li>
         </ul>
-        <b-form-input v-model="text" placeholder="Your Email Address"></b-form-input>
+        <b-form-input
+          v-model="text"
+          placeholder="Your Email Address"
+        ></b-form-input>
         <b-button>Subscribe</b-button>
       </b-col>
     </b-row>
     <b-row class="text-left">
       <b-col>
-        <p class="copy-right">Copyright © 2020 Custom Dashboard. All rights reserved.</p>
+        <p class="copy-right">
+          Copyright © 2020 Custom Dashboard. All rights reserved.
+        </p>
       </b-col>
     </b-row>
   </b-jumbotron>
@@ -49,7 +61,12 @@
 
 <script>
 export default {
-  name: "footer"
+  name: 'cd-footer',
+  data() {
+    return {
+      text: '',
+    };
+  },
 };
 </script>
 
