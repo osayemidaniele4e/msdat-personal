@@ -17,5 +17,10 @@ export default new Router({
       name: 'dashboard-details',
       component: () => import(/* webpackChunkName: "about" */ './views/dashboardDetails.vue'),
     },
+    {
+      path: '/custom/preferences',
+      name: 'dashboard-preferences',
+      component: () => import(/* webpackChunkName: "about" */ './views/preferences.vue'),
+    },
   ],
 });
