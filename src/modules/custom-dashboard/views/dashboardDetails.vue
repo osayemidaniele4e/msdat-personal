@@ -2,7 +2,7 @@
   <b-container class="text-justify px-5"  fluid>
     <p class="welcome">Welcome Matthias,</p>
     <b-row>
-      <b-col class="forms">
+      <b-col cols="12" lg="6" class="forms">
         <div class="field-detail">
           <p>Give your dashboard a name</p>
           <b-form-input
@@ -19,9 +19,9 @@
         </div>
       </b-col>
       <b-col>
-        <b-row>
-          <b-col class="text-md-right"> <customDashboardSvg :name="upload"></customDashboardSvg> </b-col>
-          <b-col>
+        <b-row class="text-left text-lg-center">
+          <b-col cols="auto"> <customDashboardSvg :name="upload"></customDashboardSvg> </b-col>
+          <b-col cols="12" lg="4">
             <p>
               Logo size should be 200px by 200px Not bigger than 5 MB Logo should be representative
               of your dashboard content
@@ -85,7 +85,7 @@ p {
 .welcome {
   font-weight: normal;
   font-size: 30px;
-  margin-bottom: 15.000000004px;
+  font-family: "DM Sans", sans-serif;
 }
 .form-control {
   background-color: #eaeaea;
