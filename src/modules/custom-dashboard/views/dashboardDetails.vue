@@ -1,5 +1,5 @@
 <template>
-  <b-container class="text-justify px-5"  fluid>
+  <b-container class="text-justify px-5" fluid>
     <p class="welcome">Welcome Matthias,</p>
     <b-row>
       <b-col cols="12" lg="6" class="forms">
@@ -22,7 +22,7 @@
         <b-row class="text-left text-lg-center">
           <b-col cols="auto"> <customDashboardSvg :name="upload"></customDashboardSvg> </b-col>
           <b-col cols="12" lg="4">
-            <p>
+            <p class="text-left my-4 my-md-0">
               Logo size should be 200px by 200px Not bigger than 5 MB Logo should be representative
               of your dashboard content
             </p>
@@ -32,32 +32,28 @@
     </b-row>
     <p><b>Select dashboard data</b></p>
     <p>
-      Go through our database and select the data that is relevant to your dashboard.<br> Select your
-      indicators, your preferred data source, the years and the coverage area (National or
-      subnational).
+      Go through our database and select the data that is relevant to your dashboard.<br />
+      Select your indicators, your preferred data source, the years and the coverage area (National
+      or subnational).
     </p>
     <b-row id="bottom-row">
-      <b-col>
-        <b-row>
-          <b-col cols="auto">
-            <b-button id="individual">SELECT INDIVIDUAL DATA</b-button>
-          </b-col>
-          <b-col>
-            <p class="help-text">
-              I know the exact data I want, I will choose just the ones I need
-            </p>
-          </b-col>
-        </b-row>
+      <b-col cols="auto">
+        <b-button id="individual">SELECT INDIVIDUAL DATA</b-button>
       </b-col>
-      <b-col>
-        <b-row>
-          <b-col cols="auto">
-            <b-button id="available">SELECT all available DATA</b-button>
-          </b-col>
-          <b-col>
-            <p class="help-text">Skip the data table, I want all the available data</p>
-          </b-col>
-        </b-row>
+      <b-col cols="auto" xl="3" md="6" sm="12">
+        <p class="help-text">
+          I know the exact data I want,<br />
+          I will choose just the ones I need
+        </p>
+      </b-col>
+      <b-col cols="auto" class="mt-5 mt-lg-5 mt-xl-0">
+        <b-button id="available">SELECT all available DATA</b-button>
+      </b-col>
+      <b-col cols="auto" lg="3" md="6" sm="12" class="mt-0 mt-md-5 mt-xs-5 mt-xl-0">
+        <p class="help-text">
+          Skip the data table,<br />
+          I want all the available data
+        </p>
       </b-col>
     </b-row>
   </b-container>
@@ -76,7 +72,7 @@ export default {
 
 <style lang="scss" scoped>
 .container-fluid {
-//   padding: 0px 105.000000026px;
+  //   padding: 0px 105.000000026px;
 }
 p {
   color: #202020;
@@ -112,6 +108,8 @@ p {
   border: none;
   border-radius: 7.500000002px;
   font-weight: bold;
+  padding: 0px 30px 0px 30px;
+  white-space: nowrap;
 }
 #available {
   max-width: 267.750000067px;
@@ -121,8 +119,9 @@ p {
 .help-text {
   color: #696767;
   display: inline;
+  margin-right: 20px;
 }
 #bottom-row {
-    margin-top: 56.250000014px;
+  margin-top: 56.250000014px;
 }
 </style>
