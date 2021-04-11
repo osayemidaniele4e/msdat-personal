@@ -20,7 +20,12 @@
       </b-col>
       <b-col>
         <b-row class="text-left text-lg-center">
-          <b-col cols="auto"> <customDashboardSvg :name="upload"></customDashboardSvg> </b-col>
+          <b-col cols="auto">
+            <input type="file" id="file-input" accept="image/*" hidden @change="onImageSelected">
+            <label class="file-input-label" for="file-input">
+             <customDashboardSvg :name="upload"></customDashboardSvg>
+             </label>
+              </b-col>
           <b-col cols="12" lg="4">
             <p class="text-left my-4 my-md-0">
               Logo size should be 200px by 200px Not bigger than 5 MB Logo should be representative
@@ -67,17 +72,27 @@ export default {
   components: {
     customDashboardSvg,
   },
-
+  data() {
+    return {
+      selectedImage: null,
+    };
+  },
   mounted() {
     this.$store.commit('updateStep', 1);
+  },
+  methods: {
+    onImageSelected(event) {
+      [this.selectedImage] = event.target.files;
+    },
+    onUpload() {
+      const fd = new FormData();
+      fd.append('Image', this.selectedImage, this.selectedImage.name);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.container-fluid {
-  //   padding: 0px 105.000000026px;
-}
 p {
   color: #202020;
   font-family: "DM Sans", sans-serif;
@@ -124,6 +139,11 @@ p {
   color: #696767;
   display: inline;
   margin-right: 20px;
+}
+.file-input-label {
+  :hover {
+    cursor: pointer;
+  }
 }
 #bottom-row {
   margin-top: 56.250000014px;
