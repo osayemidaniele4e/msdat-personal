@@ -5,8 +5,12 @@
 
 export default {
   state: {
+    step: 0,
   },
   mutations: {
+    updateStep(state, payload) {
+      state.step = payload;
+    },
   },
   actions: {
   },
