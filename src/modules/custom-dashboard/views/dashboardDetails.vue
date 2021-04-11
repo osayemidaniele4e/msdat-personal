@@ -67,6 +67,10 @@ export default {
   components: {
     customDashboardSvg,
   },
+
+  mounted() {
+    this.$store.commit('updateStep', 1);
+  },
 };
 </script>
 
