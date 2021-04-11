@@ -5,7 +5,7 @@
     <p id="link-to-about"><b>View datasheet</b>- see all available data in database</p>
     <b-card>
       <b-row>
-        <b-col sm="12" md="4">
+        <b-col sm="12" lg="3">
           <b class="selection-header">indicators selection</b><br />
           <div class="scroll">
             <div v-for="p in programAreas" :key="p">
@@ -58,7 +58,7 @@
             </div>
           </div>
         </b-col>
-        <b-col sm="12" md="8">
+        <b-col sm="12" lg="9">
           <div v-for="area in programAreas" :key=area.name>
             <b-table outlined :class="area == programAreas[0] ? 'first-table' : 'other-tables'" responsive :fields="fields" :items="items">
               <template #head()="data">
@@ -111,8 +111,11 @@
 <script>
 
 export default {
-  name: 'dashboard-preferences',
+  name: 'data-preferences',
   components: { },
+  mounted() {
+    this.$store.commit('updateStep', 2);
+  },
   data() {
     return {
       selected: [],
@@ -264,5 +267,8 @@ thead {
   text-transform: uppercase;
   border-color: #3f8994;
   font-size: 15.00000375px;
+}
+#link-to-about {
+  color: #1496B1;
 }
 </style>
