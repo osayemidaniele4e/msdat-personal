@@ -1,5 +1,6 @@
-// import Home from './views/index.vue';
-import Home from './components/table/TableComponent.vue';
+import Home from './views/index.vue';
+// import Home from './components/table/TableComponent.vue';
+import table from './components/table/tableComp.vue';
 
 export default [
   {
@@ -7,7 +8,15 @@ export default [
     name: 'Dashboard',
     component: Home,
     meta: {
-      requiresAuth: true
-    }
-  }
-]
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/table',
+    name: 'Dashboard',
+    component: table,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+];
