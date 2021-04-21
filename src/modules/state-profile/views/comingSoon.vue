@@ -32,7 +32,7 @@
               />
             </b-col>
             <b-col cols="12" sm="5" class="">
-              <b-button type="submit" class="btn btn-primary mb-2 pr-4 pl-4">
+              <b-button type="submit" class="btn btn-primary pr-4 pl-4">
                 Keep me Updated!
               </b-button>
             </b-col>
@@ -66,8 +66,6 @@ export default {};
 </script>
 
 <style lang="scss">
-@import url("https://use.typekit.net/sgl7yjq.css");
-
 .msg {
   font-weight: normal;
   color: #232323;
