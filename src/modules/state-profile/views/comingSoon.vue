@@ -115,4 +115,8 @@ export default {};
 img {
   margin-left: 20%;
 }
+.form-control {
+    height: auto;
+    margin-top: 0px;
+}
 </style>
