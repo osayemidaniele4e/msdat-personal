@@ -125,7 +125,7 @@ export default {
   /* Modal footer */
   >>> .footer {
     display: flex;
-    justify-content: start !important;
+    justify-content: flex-start !important;
     padding-top: 1% !important;
     padding-bottom: 1% !important;
   }

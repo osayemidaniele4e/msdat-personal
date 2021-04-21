@@ -260,121 +260,123 @@
             </td>
           </tr>
         </tbody>
+
+        <!-- modal -->
+        <modal-component
+          :modalSize="'lg'"
+          v-model="showModal"
+        >
+          <!-- modal title -->
+          <span 
+            slot="modal-title"
+            class="d-flex flex-column align-items-start flex-md-row align-items-md-center"
+          >
+            <span>Indicator:</span>
+            <span>{{selectedIndicator}}</span>
+          </span>
+
+          <!-- modal body -->
+          <b-tabs>
+            <b-tab
+              v-for="(dataSource, index) in dataSources" :key="index"
+            >
+              <template #title>
+                <span>{{dataSource}}</span>
+              </template>
+              <div class="my-2">
+                <p>
+                  <span class="mr-1">Indicator Name:</span>
+                  <span>Deliveries by skilled birth attendants</span>
+                </p>
+                <p>
+                  <span class="mr-1">Indicator short Name:</span>
+                  <span>Skilled birth attendance</span>
+                </p>
+                <p>
+                  <span class="mr-1">Indicator definition:</span>
+                  <span>The percentage of live births in the health facility attended to by a skilled birth attendant</span>
+                </p>
+                <p class="d-flex flex-column align-items-start">
+                  <span class="mr-1">measurement:</span>
+                  <span>
+                    <b>Numerator:</b> Deliveries by skilled birth attendants
+                  </span>
+                  <span>
+                    <b>Denominator:</b> Total number of live births
+                  </span>
+                </p>
+                <p>
+                  <span class="mr-1">multiplier factor:</span>
+                  <span>100</span>
+                </p>
+                <p>
+                  <span class="mr-1">frequency:</span>
+                  <span>Monthly</span>
+                </p>
+                <p>
+                  <span class="mr-1">Type of Indicator:</span>
+                  <span>Outcome</span>
+                </p>
+                <p>
+                  <span class="mr-1">reference:</span>
+                  <span>
+                    <a class="modal-lnk mr-1" href="#">https://www.samplereport.com,</a>
+                    <span>Page 10, Table 2, Column 5</span>
+                  </span>
+                </p>
+                <p>
+                  <span class="mr-1">Level Of Data Available:</span>
+                  <span class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center">
+                    <div class="available d-flex align-items-center mr-3">
+                      <span class="mr-1">National</span>
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
+                    </div>
+                    <div class="d-flex align-items-center mr-3">
+                      <span class="mr-1">Geopolitical Zone</span>
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
+                    </div>
+                    <div class="available d-flex align-items-center mr-3">
+                      <span class="mr-1">State Level</span>
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
+                    </div>
+                    <div class="d-flex align-items-center mr-3">
+                      <span class="mr-1">Senatorial Level</span>
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
+                    </div>
+                    <div class="d-flex align-items-center mr-3">
+                      <span class="mr-1">Local Govt Area</span>
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
+                    </div>
+                  </span>
+                </p>
+                <p>
+                  <a class="modal-lnk d-flex align-items-center" href="#">
+                    <span class="mr-1">Open Meta-Data library</span>
+                    <b-icon-box-arrow-up-right scale="0.9 "/>
+                  </a>
+                </p>
+              </div>
+            </b-tab>
+          </b-tabs>
+
+          <!-- modal footer -->
+          <div slot="modal-footer">
+            <button @click="closeModal" class="btn btn-danger text-uppercase small px-4">close</button>
+          </div>
+        </modal-component>
       </table>
     </div>
-    <!-- modal -->
-    <modal-component
-      :modalSize="'lg'"
-      v-model="showModal"
-    >
-      <!-- modal title -->
-      <span 
-        slot="modal-title"
-        class="d-flex flex-column align-items-start flex-md-row align-items-md-center"
-      >
-        <span>Indicator:</span>
-        <span>{{selectedIndicator}}</span>
-      </span>
-
-      <!-- modal body -->
-      <b-tabs>
-        <b-tab
-          v-for="(dataSource, index) in dataSources" :key="index"
-        >
-          <template #title>
-            <span>{{dataSource}}</span>
-          </template>
-          <div class="my-2">
-            <p>
-              <span class="mr-1">Indicator Name:</span>
-              <span>Deliveries by skilled birth attendants</span>
-            </p>
-            <p>
-              <span class="mr-1">Indicator short Name:</span>
-              <span>Skilled birth attendance</span>
-            </p>
-            <p>
-              <span class="mr-1">Indicator definition:</span>
-              <span>The percentage of live births in the health facility attended to by a skilled birth attendant</span>
-            </p>
-            <p class="d-flex flex-column align-items-start">
-              <span class="mr-1">measurement:</span>
-              <span>
-                <b>Numerator:</b> Deliveries by skilled birth attendants
-              </span>
-              <span>
-                <b>Denominator:</b> Total number of live births
-              </span>
-            </p>
-            <p>
-              <span class="mr-1">multiplier factor:</span>
-              <span>100</span>
-            </p>
-            <p>
-              <span class="mr-1">frequency:</span>
-              <span>Monthly</span>
-            </p>
-            <p>
-              <span class="mr-1">Type of Indicator:</span>
-              <span>Outcome</span>
-            </p>
-            <p>
-              <span class="mr-1">reference:</span>
-              <span>
-                <a class="modal-lnk mr-1" href="#">https://www.samplereport.com,</a>
-                <span>Page 10, Table 2, Column 5</span>
-              </span>
-            </p>
-            <p>
-              <span class="mr-1">Level Of Data Available:</span>
-              <span class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center">
-                <div class="available d-flex align-items-center mr-3">
-                  <span class="mr-1">National</span>
-                  <b-icon-check-circle-fill
-                    scale="0.9"
-                  />
-                </div>
-                <div class="d-flex align-items-center mr-3">
-                  <span class="mr-1">Geopolitical Zone</span>
-                  <b-icon-check-circle-fill
-                    scale="0.9"
-                  />
-                </div>
-                <div class="available d-flex align-items-center mr-3">
-                  <span class="mr-1">State Level</span>
-                  <b-icon-check-circle-fill
-                    scale="0.9"
-                  />
-                </div>
-                <div class="d-flex align-items-center mr-3">
-                  <span class="mr-1">Senatorial Level</span>
-                  <b-icon-check-circle-fill
-                    scale="0.9"
-                  />
-                </div>
-                <div class="d-flex align-items-center mr-3">
-                  <span class="mr-1">Local Govt Area</span>
-                  <b-icon-check-circle-fill
-                    scale="0.9"
-                  />
-                </div>
-              </span>
-            </p>
-            <p>
-              <a class="modal-lnk d-flex align-items-center" href="#">
-                <span class="mr-1">Open Meta-Data library</span>
-                <b-icon-box-arrow-up-right scale="0.9 "/>
-              </a>
-            </p>
-          </div>
-        </b-tab>
-      </b-tabs>
-
-      <!-- modal footer -->
-      <div slot="modal-footer">
-        <button @click="closeModal" class="btn btn-danger text-uppercase small px-4">close</button>
-      </div>
-    </modal-component>
+    
   </div>
 </template>
 
@@ -439,7 +441,7 @@ export default {
 
   #table-wrap {
     table {
-      width: 650px;
+      // width: 650px;
 
       svg {
         cursor: pointer;
