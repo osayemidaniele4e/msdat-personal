@@ -23,7 +23,7 @@
         <form class="mb-4" v-on:submit.prevent="newInterest()">
           <b-row class="mt-4" no-gutters>
             <b-col cols="12" sm="7" class="">
-              <input
+              <b-form-input
                 type="email"
                 name="email"
                 class="form-control ml-0"
