@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="px-md-5 mx-md-5 overflow-hidden">
+  <b-container fluid class="px-md-5 mx-md-5 px-xs-5 overflow-hidden">
     <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
         <p class=" mt-3 mb-4 tittle">
