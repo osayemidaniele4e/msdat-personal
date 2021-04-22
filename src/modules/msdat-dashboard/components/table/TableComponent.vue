@@ -4,11 +4,10 @@
       <table ref="msdat-table">
         <thead>
           <tr>
-            <td rowspan="2"></td>
+            <td rowspan="4"></td>
             <th rowspan="2">
               <div class="d-flex justify-content-between">
                 <span>indicators</span>
-                <b-icon-arrow-counterclockwise @click="resetTable" />
               </div>
             </th>
             <td>routine</td>
@@ -22,7 +21,8 @@
                 class="active-data-source"
                 accordion="indicator"
                 @click="updateTable('nhis')"
-              >nhmis</span>
+                >nhmis</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
@@ -30,7 +30,8 @@
                 ref="ndhs"
                 accordion="indicator"
                 @click="updateTable('ndhs')"
-              >ndhs</span>
+                >ndhs</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
@@ -38,7 +39,8 @@
                 ref="mics"
                 accordion="indicator"
                 @click="updateTable('mics')"
-              >mics</span>
+                >mics</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
@@ -46,7 +48,8 @@
                 ref="nars"
                 accordion="indicator"
                 @click="updateTable('nars')"
-              >narhs</span>
+                >narhs</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
@@ -54,7 +57,8 @@
                 ref="ihme"
                 accordion="indicator"
                 @click="updateTable('ihme')"
-              >ihme</span>
+                >ihme</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
@@ -62,7 +66,8 @@
                 ref="ihme_sdg"
                 accordion="indicator"
                 @click="updateTable('ihme_sdg')"
-              >ihme sdg</span>
+                >ihme sdg</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
           </tr>
@@ -74,15 +79,25 @@
             </td>
             <td>
               <div class="d-flex flex-column">
-                <select
-                  @change="indicatorChanged"
-                  v-model="selectedIndicator"
-                >
-                  <option class="py-2" value="skilled attendance at delivery Or birth">skilled attendance at delivery Or birth</option>
-                  <option class="py-2" value="data source2">data source 2</option>
-                  <option class="py-2" value="data source 3">data source 3</option>
-                  <option class="py-2" value="data source 4">data source 4</option>
-                  <option class="py-2" value="data source 5">data source 5</option>
+                <select @change="indicatorChanged" v-model="selectedIndicator">
+                  <option
+                    class="py-2"
+                    value="skilled attendance at delivery Or birth"
+                  >
+                    skilled attendance at delivery Or birth
+                  </option>
+                  <option class="py-2" value="data source2">
+                    data source 2
+                  </option>
+                  <option class="py-2" value="data source 3">
+                    data source 3
+                  </option>
+                  <option class="py-2" value="data source 4">
+                    data source 4
+                  </option>
+                  <option class="py-2" value="data source 5">
+                    data source 5
+                  </option>
                 </select>
                 <span>in percentage</span>
               </div>
@@ -133,10 +148,12 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <b>numerator:</b> <span>Total number of doses - 858,814</span>
+                    <b>numerator:</b>
+                    <span>Total number of doses - 858,814</span>
                   </div>
                   <div>
-                    <b>denominator:</b> <span>total number of children - 923,456</span>
+                    <b>denominator:</b>
+                    <span>total number of children - 923,456</span>
                   </div>
                 </div>
               </div>
@@ -212,7 +229,9 @@
               <div class="d-flex flex-column">
                 <div class="d-flex flex-column">
                   <select>
-                    <option value="">anc coverage (at least 1 visit visit)</option>
+                    <option value="">
+                      anc coverage (at least 1 visit visit)
+                    </option>
                     <option value="">data source 2</option>
                     <option value="">data source 3</option>
                     <option value="">data source 4</option>
@@ -381,283 +400,296 @@
 </template>
 
 <script>
-import ModalComponent from '../modal/ModalComponent.vue'
+import ModalComponent from '../modal/ModalComponent.vue';
+
 export default {
-	components: { ModalComponent },
+  components: { ModalComponent },
   data() {
     return {
       selectedIndicator: 'skilled attendance at delivery or birth',
       dataSources: [
-        'NHMIS', 'NDHS', 'MICS', 'NNHS', 'NARHS', 'WHO-GO', 'World Bank', 'IHME'
-      ]
-    }
+        'NHMIS',
+        'NDHS',
+        'MICS',
+        'NNHS',
+        'NARHS',
+        'WHO-GO',
+        'World Bank',
+        'IHME',
+      ],
+    };
   },
   methods: {
     showModal() {
-      this.$bvModal.show(`'modal-${this.modalSize}`)
+      this.$bvModal.show(`'modal-${this.modalSize}`);
     },
-    closeModal () {
-      this.$bvModal.hide('modal')
+    closeModal() {
+      this.$bvModal.hide('modal');
     },
-    updateTable (ref) {
+    updateTable(ref) {
       // console.log(this.$refs)
-      const sources = this.$refs
-      for (const source in sources) {
-        const element = sources[source];
-        element.classList = ''
-        // console.log(element.classList);
-      }
+      // const sources = this.$refs;
+      // for (const source in sources) {
+      //   const element = sources[source];
+      //   element.classList = '';
+      //   // console.log(element.classList);
+      // }
       // this.$refs[ref].className = ('active-data-source')
-      this.$refs[ref].classList.toggle('active-data-source')
+      this.$refs[ref].classList.toggle('active-data-source');
     },
-    resetTable () {
-      alert('Resetting table...')
+    resetTable() {
+      // alert('Resetting table...');
     },
-    indicatorChanged () {
-      alert('indicator changed successfully')
-    }
-  }
-}
+    indicatorChanged() {
+      // alert('indicator changed successfully');
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
 
-  $msdat-darkgreen: #2B5D5B;
-  $msdat-leafgreen: #007D53;
+$msdat-darkgreen: #2b5d5b;
+$msdat-leafgreen: #007d53;
 
-
-  ::-webkit-scrollbar {
-    height: 8px;
-    border: 1px solid #B7B7B7;
-  }
-  ::-webkit-scrollbar-track {
-    height: 8px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #BEBEBE;
-    border-radius: 4px;
-  }
+::-webkit-scrollbar {
+  height: 8px;
+  border: 1px solid #b7b7b7;
+}
+::-webkit-scrollbar-track {
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #bebebe;
+  border-radius: 4px;
+}
 
   #table-wrap {
     table {
       // width: 650px;
 
-      svg {
-        cursor: pointer;
-        z-index: 1;
+    svg {
+      cursor: pointer;
+      z-index: 1;
 
-        &.bi-arrow-counterclockwise {
-          font-size: 20px;
-          color: #87AEAE;
-        }
-        &.bi-exclamation-circle-fill {
-          font-size: 12px;
-          color: $msdat-darkgreen;
+      &.bi-arrow-counterclockwise {
+        font-size: 20px;
+        color: #87aeae;
+      }
+      &.bi-exclamation-circle-fill {
+        font-size: 12px;
+        color: $msdat-darkgreen;
 
-          &:focus {
-            outline-offset: 1px;
-            outline-color: $msdat-darkgreen !important;
-          }
+        &:focus {
+          outline-offset: 1px;
+          outline-color: $msdat-darkgreen !important;
         }
       }
+    }
 
-      select {
-        background: transparent;
+    select {
+      background: transparent;
+      border: none;
+      font-size: 9px;
+      font-weight: bolder;
+      text-transform: uppercase;
+
+      &:focus,
+      &:active {
         border: none;
+        outline: none;
+        outline-offset: 0;
+      }
+      option {
+        background-color: #ffffff;
+        font-size: 10.3px;
+        font-weight: 500;
+        color: #000000;
+      }
+      & ~ span {
         font-size: 9px;
-        font-weight: bolder;
-        text-transform: uppercase;
-
-        &:focus, &:active {
-          border: none;
-          outline: none;
-          outline-offset: 0;
-        }
-        option {
-          background-color: #ffffff;
-          font-size: 10.3px;
-          font-weight: 500;
-          color: #000000;
-        }
-        &~span {
-          font-size: 9px;
-        }
       }
+    }
 
-      th, td {
-        border: 1px solid #c5c5c5;
+    th,
+    td {
+      border: 1px solid #c5c5c5;
 
-        &:not(:nth-child(2)) {
-          width: fit-content;
-        }
+      &:not(:nth-child(2)) {
+        width: fit-content;
       }
+    }
 
-      td:first-child {
-        border: none;
-        padding-right: 5px;
+    td:first-child {
+      border: none;
+      padding-right: 5px;
+    }
+
+    tr:nth-child(3) {
+      td:nth-child(2) {
+        padding: 0.5% 1%;
       }
+    }
 
-      tr:nth-child(3) {
-        td:nth-child(2) {
-          padding: 0.5% 1%;
-        }
-      }
+    thead {
+      text-transform: uppercase;
 
-      thead {
-        text-transform: uppercase;
-
-        tr {
-          th,td {
+      tr {
+        th,
+        td {
           border: 1px solid #515151;
+        }
+
+        &:first-child {
+          font-size: 9px;
+          font-weight: lighter;
+          color: #171717;
+
+          & > *:nth-child(2) {
+            width: 35%;
+            font-size: 13px;
+            color: #000000;
+            padding: 0.5% 1%;
           }
+        }
+        &:last-child {
+          font-size: 10px;
+          color: #404040;
 
-          &:first-child {
-            font-size: 9px;
-            font-weight: lighter;
-            color: #171717;
+          & > * {
+            padding: 9px 0;
+            transition: all 0.6s;
 
-            &>*:nth-child(2) {
-              width: 35%;
-              font-size: 13px;
-              color: #000000;
-              padding: 0.5% 1%;
-            }
-          }
-          &:last-child {
-            font-size: 10px;
-            color: #404040;
-            
-            &>* {
-              padding: 9px 0;
-              transition: all 0.6s;
+            span {
+              margin-right: 3%;
+              padding: 1px 3px;
+              cursor: pointer;
+              transition: font-weight 0.5s;
 
-              span {
-                margin-right: 3%;
-                padding: 1px 3px;
-                cursor: pointer;
-                transition: font-weight 0.5s;
-
-                &.active-data-source {
-                  font-weight: 750;
-                  color: #348481;
-                }
+              &.active-data-source {
+                font-weight: 750;
+                color: #348481;
               }
             }
           }
         }
       }
+    }
 
-      tbody {
-        tr {
-          th,td {
-            padding-top: 10px;
-            padding-bottom: 10px;
+    tbody {
+      tr {
+        th,
+        td {
+          padding-top: 10px;
+          padding-bottom: 10px;
 
-            span:first-child {
-              font-size: 11px;
-              font-weight: bolder;
-              text-transform: uppercase;
-              
-              &~span {
-                font-size: 9px;
-              }
-            }
+          span:first-child {
+            font-size: 11px;
+            font-weight: bolder;
+            text-transform: uppercase;
 
-            &:nth-child(2) {
-              text-align: start;
-
-              select {
-                margin: auto 1%;
-                color: #005D59;
-      
-                &~span {
-                  margin-left: 3%;
-                }
-              }
-            }
-          }
-
-          &:nth-child(1), &:nth-child(2) {
-            color: #ffffff;
-
-            select {
-              color: #FFFFFF !important;
-            }
-
-            &>:not(:first-child) {
-              background-color: $msdat-darkgreen;
+            & ~ span {
+              font-size: 9px;
             }
           }
 
           &:nth-child(2) {
-            td {
-              padding: 1%;
+            text-align: start;
 
-              &:last-child {
-                &>div {
-                  &>div:first-child {
-                    width: 15%;
-                    
-                    span {
-                      font-size: 10.5px;
-                    }
-                  }
-                  &>div:last-child {
-                    width: 85%;
-                    background-color: #ffffff;
-                    border-radius: 4px;
-                    padding: 0.7% 1.5%;
-                    color: #000000;
+            select {
+              margin: auto 1%;
+              color: #005d59;
+
+              & ~ span {
+                margin-left: 3%;
+              }
+            }
+          }
+        }
+
+        &:nth-child(1),
+        &:nth-child(2) {
+          color: #ffffff;
+
+          select {
+            color: #ffffff !important;
+          }
+
+          & > :not(:first-child) {
+            background-color: $msdat-darkgreen;
+          }
+        }
+
+        &:nth-child(2) {
+          td {
+            padding: 1%;
+
+            &:last-child {
+              & > div {
+                & > div:first-child {
+                  width: 15%;
+
+                  span {
                     font-size: 10.5px;
-                    text-transform: capitalize;
+                  }
+                }
+                & > div:last-child {
+                  width: 85%;
+                  background-color: #ffffff;
+                  border-radius: 4px;
+                  padding: 0.7% 1.5%;
+                  color: #000000;
+                  font-size: 10.5px;
+                  text-transform: capitalize;
 
-                    span:last-child {
-                      font-weight: lighter !important;
-                    }
+                  span:last-child {
+                    font-weight: lighter !important;
                   }
                 }
               }
             }
           }
+        }
 
-          // related indicators
-          &:nth-child(3) {
-            td:last-child {
-              border: none;
-              padding-top: 2.2%;
-              padding-bottom: 1%;
-              font-size: 12px;
-              font-weight: bolder;
-              text-transform: uppercase;
-              color: #515151;
-            }
-
-            &~div {
-              margin: 12px 0;
-            }
+        // related indicators
+        &:nth-child(3) {
+          td:last-child {
+            border: none;
+            padding-top: 2.2%;
+            padding-bottom: 1%;
+            font-size: 12px;
+            font-weight: bolder;
+            text-transform: uppercase;
+            color: #515151;
           }
 
-          &:nth-child(4), &:last-child {
-            span:first-child {
-              color: #515151;
+          & ~ div {
+            margin: 12px 0;
+          }
+        }
 
-              &~span {
-                color: #888888;
+        &:nth-child(4),
+        &:last-child {
+          span:first-child {
+            color: #515151;
+
+            & ~ span {
+              color: #888888;
+            }
+          }
+          td:nth-child(2) {
+            span:first-child {
+              color: #005d59;
+
+              & ~ span {
+                color: #171717;
               }
             }
-            td:nth-child(2) {
-              span:first-child {
-                color: #005D59;
-                
-                &~span {
-                  color: #171717;
-                }
-              }
-            }
-          }        
+          }
         }
       }
     }
   }
+}
 </style>
