@@ -2,10 +2,10 @@
   <label>
     <input
       type="checkbox"
-      class="focus:outline-none"
+      class="focus:outline-none rounded-0"
       @change="$emit('input', $event.target.checked)"
     />
-    <span></span>
+    <span class="rounded-0"></span>
   </label>
 </template>
 <script>

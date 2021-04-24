@@ -6,7 +6,7 @@
     </div>
 
     <header>
-      <nav class="contain py-2">
+      <nav class="contain py-2 bg-success">
         <div class="d-flex">
           <!--Logos here -->
           <div class="d-flex">
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import sideMenu from '@/components/generic/side-menu.vue';
+import sideMenu from './components/side-menu.vue';
 
 export default {
   data() {

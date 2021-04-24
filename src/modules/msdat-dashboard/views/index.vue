@@ -1,22 +1,23 @@
 <template>
   <div>
     <!-- <h1>MSDAT DASHBOARD</h1> -->
-    <BasePanel
-      :tabs="[
-        'Indicator Overview',
-        'Zonal Analysis',
-        'Indicator Comparison',
-        'Dataset Comparison',
-        'Multi-source Indicator Comparison',
-      ]"
-      :position="position"
-    >
-      <template v-slot:default="{ currentTab }">
-        <indicatorOverviewPanel v-if="currentTab == 0" @data:options="log" />
-        <zonalAnalysisPanel v-if="currentTab == 1" />
-        <indicatorComparisonPanel v-if="currentTab == 2" />
-        <datasetComparisonPanel v-if="currentTab == 3" />
-        <multisourceIndicatorPanel v-if="currentTab == 4" />
+    <BasePanel :position="position">
+      <template v-slot:default>
+        <ControlBase :title="'Indicator Overview'">
+          <IndicatorOverviewPanel />
+        </ControlBase>
+        <ControlBase :title="'Zonal Analysis'">
+          <ZonalAnalysisPanel />
+        </ControlBase>
+        <ControlBase :title="'DataSet Comparison'">
+          <DatasetComparisonPanel />
+        </ControlBase>
+        <ControlBase :title="'Multi-source Indicator'">
+          <MultiSourceIndicatorPanel />
+        </ControlBase>
+        <ControlBase :title="'Indicator Comparison'">
+          <IndicatorComparisonPanel />
+        </ControlBase>
       </template>
     </BasePanel>
 
@@ -28,26 +29,28 @@
 <script>
 import {
   BasePanel,
-  indicatorOverviewPanel,
-  zonalAnalysisPanel,
-  indicatorComparisonPanel,
-  datasetComparisonPanel,
-  multisourceIndicatorPanel,
+  ControlBase,
+  IndicatorOverviewPanel,
+  ZonalAnalysisPanel,
+  IndicatorComparisonPanel,
+  DatasetComparisonPanel,
+  MultiSourceIndicatorPanel,
 } from '@/components/ControlPanel';
 
 export default {
   data() {
     return {
-      position: 0,
+      position: 3,
     };
   },
   components: {
-    indicatorOverviewPanel,
+    ControlBase,
+    IndicatorOverviewPanel,
     BasePanel,
-    zonalAnalysisPanel,
-    indicatorComparisonPanel,
-    datasetComparisonPanel,
-    multisourceIndicatorPanel,
+    ZonalAnalysisPanel,
+    IndicatorComparisonPanel,
+    DatasetComparisonPanel,
+    MultiSourceIndicatorPanel,
   },
   methods: {
     log(data) {
