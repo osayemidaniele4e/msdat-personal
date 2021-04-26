@@ -3,10 +3,10 @@
 
   <!-- Toggleable tab links here -->
     <ul
-      class="d-flex list-unstyled justify-content-between border-b mx-4 cursor-pointer"
+      class="d-flex list-unstyled justify-content-between border-b mx-5 cursor-pointer"
     >
       <li
-        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans-font"
+        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans"
         :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
         v-for="(control, index) in controls"
         :key="index"
@@ -18,7 +18,7 @@
     </ul>
 
     <!-- Multiselect dropdown here -->
-    <div class="mx-4">
+    <div class="mx-5">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
@@ -47,7 +47,6 @@ export default {
   },
   methods: {
     selectControl(controlIndex) {
-      console.log(controlIndex);
       this.selectedIndex = controlIndex;
       // loop over all the tabs
       this.controls.forEach((control, index) => {
@@ -59,6 +58,7 @@ export default {
 
   watch: {
     position(newValue) {
+      // debugger;
       this.selectedIndex = newValue;
       this.selectControl(this.selectedIndex);
     },
@@ -82,18 +82,6 @@ $primary: #2b5d5b;
 .bg-tab-color{
   color:#515151;
 }
-
-.work-sans-font{
-   font-family: "Work Sans", sans-serif;
-}
-
-// .tab-link {
-//   padding: 12px 40px;
-//   font-size: 0.875rem;
-//   color: #515151;
-//   font-weight: 500;
-//   font-family: "Work Sans", sans-serif;
-// }
 
 .tab-link.active {
   border-bottom: 2.5px solid $primary;

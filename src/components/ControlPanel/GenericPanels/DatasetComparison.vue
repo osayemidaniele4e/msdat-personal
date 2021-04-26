@@ -1,8 +1,8 @@
 <template>
   <div class="row">
     <!-- Indicator here -->
-    <div class="col-md-4">
-      <label class="text-uppercase font-weight-bold">indicator</label>
+    <div class="col-md-5">
+      <label class="h6 text-uppercase work-sans">indicator</label>
       <div>
         <multiselect
           v-model="payload.indicator"
@@ -16,8 +16,8 @@
     </div>
 
     <!-- Data sources here -->
-    <div class="col">
-      <label class="text-uppercase font-weight-bold">data sources</label>
+    <div class="col-md-5">
+    <label class="h6 text-uppercase work-sans">data sources</label>
       <div>
         <multiselect
           v-model="payload.data"
@@ -38,7 +38,7 @@
 
     <!-- Targets here -->
     <div class="col">
-      <label class="text-uppercase font-weight-bold">Targets</label>
+      <label class="h6 text-uppercase work-sans">Targets</label>
 
       <div class="d-flex">
         <!-- National Target here -->

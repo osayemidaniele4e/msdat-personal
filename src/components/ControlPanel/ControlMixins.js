@@ -96,7 +96,6 @@ export default {
   watch: {
     payload: {
       handler(newValue) {
-        console.log(newValue);
         this.$emit('data:options', newValue);
       },
       immediate: false,
@@ -104,7 +103,7 @@ export default {
     },
   },
   mounted() {
-    this.$emit('data:options', this.payload);
+    // this.$emit('data:options', this.payload);
   },
 
 };

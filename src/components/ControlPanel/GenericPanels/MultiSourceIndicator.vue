@@ -2,8 +2,8 @@
   <div class="">
     <!-- Indicator1 here -->
     <div class="row">
-      <div class="col">
-        <label class="text-uppercase font-weight-bold">indicators</label>
+      <div class="col work-sans">
+        <label class="h6 text-uppercase work-sans">indicators</label>
         <div>
           <multiselect
             v-model="payload.indicator"
@@ -12,6 +12,7 @@
             :close-on-select="true"
             :show-labels="false"
             :preselect-first="true"
+            class="work-sans"
           ></multiselect>
         </div>
       </div>
@@ -20,24 +21,22 @@
     <!-- filter-tab here -->
     <div class="row">
       <div class="col">
-        <label class="text-uppercase font-weight-bold"
-          >Select Visualization</label
-        >
+      <label class="h6 text-uppercase work-sans">Select Visualization</label>
         <div class="row">
           <div class="col">
-            <div class="btn-group btn-block mb-1" role="group">
+            <div class="btn-group btn-block mb-1 work-sans" role="group">
               <button
                 type="button"
                 @click="payload.visualization = 'zonal_map'"
                 class="btn btn-sm btn-outline-secondary"
                 :class="{ active:  (payload.visualization === 'zonal_map') }"
               >
+                Zones Map
                 <img
                   :src="require('../svg/zonal_map.svg')"
                   alt=""
                   srcset=""
                 />
-                Zones Map
               </button>
               <button
                 type="button"
@@ -45,12 +44,13 @@
                 class="btn btn-sm btn-outline-secondary"
                 :class="{ active:  (payload.visualization === 'state_map') }"
               >
-                <img
+               State Map
+               <img
                   class="text-danger"
                   :src="require('../svg/state_map.svg')"
                   alt=""
                   srcset=""
-                />State Map
+                />
               </button>
               <button
                 type="button"
@@ -58,7 +58,7 @@
                 class="btn btn-sm btn-outline-secondary"
                 :class="{ active:  (payload.visualization === 'line') }"
               >
-                <img :src="require('../svg/line.svg')" alt="" srcset="" />Line
+               Line <img :src="require('../svg/line.svg')" alt="" srcset="" />
               </button>
               <button
                 type="button"
@@ -66,11 +66,11 @@
                 class="btn btn-sm btn-outline-secondary"
                 :class="{ active:  (payload.visualization === 'column') }"
               >
-                <img
+               Column<img
                   :src="require('../svg/column.svg')"
                   alt=""
                   srcset=""
-                />Column
+                />
               </button>
             </div>
           </div>
@@ -81,7 +81,7 @@
     <div class="row">
       <!-- data sources here -->
       <div class="col">
-        <label class="text-uppercase font-weight-bold">data sources</label>
+        <label class="h6 text-uppercase work-sans">data sources</label>
 
         <div>
           <multiselect
@@ -97,7 +97,7 @@
 
       <!-- year here -->
       <div class="col">
-        <label class="text-uppercase font-weight-bold"> year</label>
+      <label class="h6 text-uppercase work-sans">year</label>
         <div>
           <multiselect
             v-model="payload.year"

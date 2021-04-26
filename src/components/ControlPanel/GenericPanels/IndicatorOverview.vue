@@ -1,7 +1,7 @@
 <template>
     <div class="row">
     <div class="col-md-4">
-      <label class="text-uppercase font-weight-bold">Indicator</label>
+      <label class="h6 text-uppercase work-sans">Indicator</label>
 
       <div>
         <multiselect
@@ -17,7 +17,7 @@
 
     <!-- Location here -->
     <div class="col">
-      <label class="text-uppercase font-weight-bold">location</label>
+      <label class="h6 text-uppercase work-sans">location</label>
 
       <div>
         <multiselect
@@ -33,7 +33,7 @@
 
     <!-- Data sources here -->
     <div class="col">
-      <label class="text-uppercase font-weight-bold">data sources</label>
+     <label class="h6 text-uppercase work-sans">data sources</label>
 
       <div>
         <multiselect
@@ -49,7 +49,7 @@
 
     <!-- year here -->
     <div class="col">
-      <label class="text-uppercase font-weight-bold">year</label>
+    <label class="h6 text-uppercase work-sans">year</label>
 
       <div>
         <multiselect
@@ -65,7 +65,7 @@
 
     <!-- Targets here -->
    <div class="col">
-      <label class="text-uppercase font-weight-bold">Targets</label>
+      <label class="h6 text-uppercase work-sans">Targets</label>
 
       <div class="d-flex">
         <!-- National Target here -->
