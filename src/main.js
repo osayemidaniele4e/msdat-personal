@@ -7,6 +7,10 @@ import './scss/main.scss';
 import router from './router';
 import store from './store';
 
+import './assets/styles/fonts.css';
+import 'vue-multiselect/dist/vue-multiselect.min.css';
+import './assets/styles/MultiSelectOverrides.css';
+
 Vue.config.productionTip = false;
 
 new Vue({
