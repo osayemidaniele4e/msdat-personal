@@ -6,9 +6,6 @@ import './plugins/highchart';
 import './scss/main.scss';
 import router from './router';
 import store from './store';
-import './assets/styles/styles.css';
-import './assets/styles/fonts.css';
-import 'vue-multiselect/dist/vue-multiselect.min.css';
 
 Vue.config.productionTip = false;
 
