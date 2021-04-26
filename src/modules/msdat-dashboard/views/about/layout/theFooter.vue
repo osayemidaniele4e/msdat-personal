@@ -51,7 +51,7 @@ footer#the-footer {
 @media (max-width: 567px) {
   footer#the-footer {
     flex-direction: column-reverse;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: start;
     padding: 0.8% 2%;
 
