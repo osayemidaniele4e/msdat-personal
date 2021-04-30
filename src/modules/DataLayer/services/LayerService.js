@@ -68,7 +68,7 @@ export default class DataBase {
       this.valuetypes.clear();
       this.datasources.clear();
       /**
-       * indicator ID are stored iht local storage to keep track of the available
+       * indicator ID are stored in local storage to keep track of the available
        * reason is to avoid making multiple queries in the database
        */
 
@@ -81,7 +81,7 @@ export default class DataBase {
       console.log('fetching other endpoint');
       /**
        * The apiServices returns all the and array of response for the
-       * axios call of all tother apiEndpoints.getOtherEndpoint
+       * axios call of all other apiEndpoints.getOtherEndpoint
        * it uses and {Promise.all()}
        *
        * @see {@link apiServices.getOtherEndpoint()}
@@ -91,7 +91,7 @@ export default class DataBase {
        * we would also need to created a component then display the activities  of the service layer
        * per time
        */
-      console.log('storting other endpoint to index db');
+      console.log('storing other endpoint to index db');
       const val = await this.storeDataForOtherEndPointToDB(data);
       console.log(val);
       this.addDataToStore(data);
@@ -153,8 +153,12 @@ export default class DataBase {
      *This compares then the indicator Array with the indicator Array of the dashboard
      *
      * */
+    // Check directly from idb if the ids are available
     const arrOfIndicatorIDInDB = JSON.parse(localStorage.getItem(this.localStorageKey));
+    // console.log({arrOfIndicatorIDInDB})
+    // console.log(this.indicatorList)
     const indicatorsNotInDB = difference(this.indicatorList, arrOfIndicatorIDInDB);
+    // console.log({indicatorsNotInDB})
     /**
      * This groups indicator in arrays of  length 3
      */
