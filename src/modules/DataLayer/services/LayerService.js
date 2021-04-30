@@ -1,4 +1,4 @@
-import { chunk, difference } from 'lodash';
+import { chunk, difference, pullAll } from 'lodash';
 import apiServices from './ApiServices';
 
 const DATA = 'data';
@@ -43,15 +43,17 @@ export default class DataBase {
   }
 
   /**
-   * data initialization
+   * data layer initialization
    */
 
-  async init() {
+  async init(object) {
+    this.setup(object);
     // this.updatedStoreAvailableIndicator();
     console.time('fetching');
-    console.log(JSON.parse(localStorage.getItem(this.localStorageKey)));
+    // console.log(JSON.parse(localStorage.getItem(this.localStorageKey)));
     const count = await this.data.count();
     console.log('DB count is', count);
+
     if (count <= 0) {
       /**
        * clear data  other table in the db so they can be fetched again to aviod
@@ -69,8 +71,12 @@ export default class DataBase {
        * indicator ID are stored iht local storage to keep track of the available
        * reason is to avoid making multiple queries in the database
        */
+
+      /**
+       * i suggest we make a table in indexed DB to track this
+       * possible refactoring idea
+       */
       localStorage.setItem(this.localStorageKey, JSON.stringify([]));
-      this.updatedStoreAvailableIndicator();
 
       console.log('fetching other endpoint');
       /**
@@ -83,50 +89,66 @@ export default class DataBase {
       const data = await apiServices.getOtherEndpoint();
       /**
        * we would also need to created a component then display the activities  of the service layer
-       * pet time
+       * per time
        */
       console.log('storting other endpoint to index db');
       const val = await this.storeDataForOtherEndPointToDB(data);
       console.log(val);
-      this.storeOtherEndpointsInState(data);
+      this.addDataToStore(data);
       console.log('done');
       const dataValue = await this.getIndicatorsAndRelatedIndicators(this.defaultIndicators);
       if (dataValue.length > 0) {
         await this.storeDataInDB(dataValue, this.defaultIndicators);
       }
 
-      this.storeOtherEndpointsInState(dataValue, DATA);
+      this.addDataToStore(dataValue, DATA);
     } else {
       /**
        * need to find a way to check if it already exist in the store
        * before querying the DB
+       * but it just assumed that the data already exist in the database
        */
       let dataItem = await this.DSI.toArray();
-      this.setOtherTableInStore(dataItem, DSI);
-
+      this.setDataInStore(dataItem, DSI);
       dataItem = await this.location.toArray();
-      this.setOtherTableInStore(dataItem, LOCATION);
-
+      this.setDataInStore(dataItem, LOCATION);
       dataItem = await this.indicators.toArray();
-      this.setOtherTableInStore(dataItem, INDICATORS);
-
+      this.setDataInStore(dataItem, INDICATORS);
       dataItem = await this.datasources.toArray();
-      this.setOtherTableInStore(dataItem, DATA_SOURCE);
-
+      this.setDataInStore(dataItem, DATA_SOURCE);
       dataItem = await this.valuetypes.toArray();
-      this.setOtherTableInStore(dataItem, VALUE_TYPES);
-
+      this.setDataInStore(dataItem, VALUE_TYPES);
       dataItem = await this.factors.toArray();
-      this.setOtherTableInStore(dataItem, FACTORS);
+      this.setDataInStore(dataItem, FACTORS);
+      /**
+       * This gets the default indicator from the Indexed DB database
+       * reason for this is to initialize the dashboard with minimum data required
+       */
+      dataItem = await this.getIndicatorDataThatExistInDB(this.defaultIndicators);
+      /**
+       * Then stores the data from the default indicators to the Store
+       */
+      this.setDataInStore(dataItem, DATA);
 
-      dataItem = await this.getIndicatorDataThatExistInDB();
-      this.setOtherTableInStore(dataItem, DATA);
-      // this.storeOtherEndpointsInState(['james testing stuff']);
+      setTimeout(async () => {
+        const indicatorsExceptDefault = pullAll(this.indicatorList, this.defaultIndicators);
+        /**
+         * getting the indicators one after the order seems to help the performance
+         * as against getting it all at once
+         */
 
-      // updated store indicator Array
-      this.updatedStoreAvailableIndicator();
+        /**
+         * also alway ensure to use for Loop with async operations
+         * forEach loop don't take asynchronous operations into consideration
+         */
+        for (let index = 0; index < indicatorsExceptDefault.length; index += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          const dataArray = await this.getIndicatorFromDB(indicatorsExceptDefault[index]);
+          this.addDataToStore(dataArray, DATA);
+        }
+      }, 500);
     }
-
+    this.updatedStoreAvailableIndicator();
     /*
      *This compares then the indicator Array with the indicator Array of the dashboard
      *
@@ -134,23 +156,32 @@ export default class DataBase {
     const arrOfIndicatorIDInDB = JSON.parse(localStorage.getItem(this.localStorageKey));
     const indicatorsNotInDB = difference(this.indicatorList, arrOfIndicatorIDInDB);
     /**
-     * This spilt the array into 3
+     * This groups indicator in arrays of  length 3
      */
     const arrayGrouped = chunk(indicatorsNotInDB, 3);
 
-    arrayGrouped.forEach((arrayItems) => {
+    for (let index = 0; index < arrayGrouped.length; index += 1) {
       setTimeout(async () => {
-        console.log(arrayItems);
-        const dataValue = await this.getIndicatorsAndRelatedIndicators(arrayItems);
+        console.log('in async');
+        const dataValue = await this.getIndicatorsAndRelatedIndicators(arrayGrouped[index]);
         if (dataValue.length > 0) {
-          await this.storeDataInDB(dataValue, arrayItems);
-          this.storeOtherEndpointsInState(dataValue);
+          await this.storeDataInDB(dataValue, arrayGrouped[index]);
+          this.addDataToStore(dataValue);
         }
       }, 3000);
-    });
+    }
+
     console.timeEnd('fetching');
     return Promise.resolve(true);
   }
+
+  /**
+   *
+   * @param {Promise} data
+   * @description let be cautions with this function so cause it follows the same other as
+   * it follow the id of the return time
+   * anyways i will suggest a refactoring  of this function
+   */
 
   async storeDataForOtherEndPointToDB(data) {
     return this.db.transaction('rw', this.DSI, this.location, this.indicators, this.valuetypes, this.factors, this.datasources, async () => {
@@ -163,11 +194,13 @@ export default class DataBase {
     });
   }
 
-  storeOtherEndpointsInState(data, table) {
+  addDataToStore(data, table) {
     console.log('storing in vue state');
     const stateTableName = table || false;
-    if (typeof data[0] === 'object') {
-    /**
+    if (!stateTableName) {
+    // }
+      // if (typeof data[0] === 'object') {
+      /**
      * because we know ths the data
      * coming is a return  of a Promise.all()
      */
@@ -186,7 +219,7 @@ export default class DataBase {
       });
     } else {
       this.store.commit('DL/ADD_DATA', {
-        stateTableName,
+        tableName: stateTableName,
         data,
       });
     }
@@ -206,24 +239,20 @@ export default class DataBase {
    * @param {array} indicatorIDs indicator id to be stored
    */
   async storeDataInDB(data, indicatorIDs) {
-    await this.db.transaction('rw', this.data, async () => {
-      data.forEach(async (dataArray) => this.data.bulkAdd(dataArray.data));
+    this.db.transaction('rw', this.data, async () => {
+      const mapOutData = data.map((item) => item.data);
+      // for (let index = 0; index < data.length; index += 1) {
+      await this.data.bulkAdd(...mapOutData);
+      // }
       this.storeIndicatorIdInLocalStorage(indicatorIDs);
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  storeDataInState(data) {
-    // data.forEach((dataArray: []) => this.$store.commit(dataArray))
-    // this.store.commit
-    console.log(data);
+  async getIndicatorDataThatExistInDB(arrayOfIndicatorIds) {
+    return this.db.transaction('r', this.data, () => this.db.data.where('indicator').anyOf(arrayOfIndicatorIds).toArray());
   }
 
-  async getIndicatorDataThatExistInDB() {
-    return this.db.transaction('r', this.data, async () => this.db.data.where('indicator').anyOf(this.indicatorList).toArray());
-  }
-
-  setOtherTableInStore(data, tableName) {
+  setDataInStore(data, tableName) {
     this.store.commit('DL/SET_DATA', {
       tableName,
       data,
@@ -234,11 +263,17 @@ export default class DataBase {
    * @param {array} ids and array of indicator to be store in local Storage
    */
   storeIndicatorIdInLocalStorage(ids) {
+    let indicatorIds = ids;
+    if (typeof ids === 'number') {
+      indicatorIds = [ids];
+    }
+
     if (localStorage.getItem(this.localStorageKey) === null) {
       localStorage.setItem(this.localStorageKey, JSON.stringify([]));
     }
+
     const indicatorsIDs = JSON.parse(localStorage.getItem(this.localStorageKey));
-    indicatorsIDs.push(...ids);
+    indicatorsIDs.push(...indicatorIds);
     localStorage.setItem(this.localStorageKey, JSON.stringify(indicatorsIDs));
 
     this.updatedStoreAvailableIndicator();
@@ -250,5 +285,10 @@ export default class DataBase {
       tableName: 'dashboardIndicator',
       data: indicatorsIDs,
     });
+  }
+
+  getIndicatorFromDB(id) {
+    console.log(this.data);
+    return this.data.where('indicator').equals(id).toArray();
   }
 }
