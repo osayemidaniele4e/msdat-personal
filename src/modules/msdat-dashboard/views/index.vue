@@ -14,7 +14,7 @@ export default {
   async mounted() {
     await this.$DL.init(
       {
-        dashboardIndicators: MSDAT.dashboardIndicators,
+        dashboardIndicators: MSDAT.indicators,
         defaultIndicators: MSDAT.defaultIndicators,
       },
     );
