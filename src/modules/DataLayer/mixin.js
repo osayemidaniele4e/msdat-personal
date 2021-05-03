@@ -29,19 +29,19 @@ export default {
   },
   computed: {
     ...mapState({
-      data: (state) => state.data,
-      datasource: (state) => state.datasources,
-      indicator: (state) => state.indicators,
-      location: (state) => state.location,
-      value_type: (state) => state.valuetypes,
-      dashboardIndicator: (state) => state.dashboardIndicator,
-      factors: (state) => state.factors,
+      dlData: (state) => state.data,
+      dlDatasource: (state) => state.datasources,
+      dlIndicator: (state) => state.indicators,
+      dlLocation: (state) => state.location,
+      dlValue_type: (state) => state.valuetypes,
+      dlDashboardIndicator: (state) => state.dashboardIndicator,
+      dlFactors: (state) => state.factors,
     }),
     // ...mapGetters([
     //   'indicators',
     // ]),
     // dL_getIndicator() {
-    //   return this.indicators;
+    //   return this.dlIndicators;
     // },
   },
   methods: {
@@ -49,7 +49,7 @@ export default {
       const map = arr.map((x) => {
         const newObject = {};
         if (x.datasource !== undefined) {
-          newObject.datasource = this.datasource.find((datasrc) => datasrc.id === x.datasource);
+          newObject.datasource = this.dlDatasource.find((datasrc) => datasrc.id === x.datasource);
         }
         newObject.value = x.value;
         return newObject;
@@ -57,7 +57,7 @@ export default {
       console.log(map);
     },
     map(arr) {
-      console.log(this.datasource);
+      console.log(this.dlDatasource);
       console.time('test');
       const map = arr.map((x) => {
         const newObject = {};
@@ -81,7 +81,7 @@ export default {
     },
 
     optionsIndicators() {
-      return this.indicator.filter((e) => this.dashboardIndicator.includes(e.id));
+      return this.dlIndicator.filter((e) => this.dlDashboardIndicator.includes(e.id));
     },
 
     /**
@@ -89,7 +89,7 @@ export default {
      * @returns {dataObjectType}
      */
     dlQuery(queryObject) {
-      return filter(this.data, matches(queryObject));
+      return filter(this.dlData, matches(queryObject));
     },
 
     /**
@@ -119,20 +119,22 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetIndicatorDataObject(id) {
-      return this.indicator.find((item) => item.id === id);
+      return this.dlIndicator.find((item) => item.id === id);
     },
     /**
      * @param {number} id The Factore ID
      * @return {indicatorObjectType}
      */
     dlGetFactor(id) {
-      return this.factors.find((item) => item.id === id);
+      return this.dlFactors.find((item) => item.id === id);
     },
     dlGetDataSource(id) {
       debugger;
-      return this.datasource.find((item) => item.id === id);
+      return this.dlDatasource.find((item) => item.id === id);
     },
-
+    dlGetAvailableIndicators() {
+      return this.dlDashboardIndicator;
+    },
   },
   mounted() {
   },

@@ -25,7 +25,7 @@ export default class DataBase {
     this.datasources = this.db.table(DATA_SOURCE);
     this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
     this.defaultIndicators = [7, 5, 8];
-    this.localStorageKey = 'storedIndicatorIDs';
+    this.indicatorsInIdb = this.checkIndicatorsInIdb();
   }
 
   /**
@@ -43,14 +43,24 @@ export default class DataBase {
   }
 
   /**
+   * Gets ids of all indicators from the
+   * indicators list and populates the @param {this.indicatorList}
+   * with all of it then populates the @param {this.defaultIndicators}
+   * with the first three in the list
+   */
+  async setAllIndicators() {
+    const allIndicators = await this.listAllIndicators();
+    this.indicatorList = allIndicators;
+    this.defaultIndicators = allIndicators.slice(0, 3);
+  }
+
+  /**
    * data layer initialization
    */
 
   async init(object) {
     this.setup(object);
-    // this.updatedStoreAvailableIndicator();
     console.time('fetching');
-    // console.log(JSON.parse(localStorage.getItem(this.localStorageKey)));
     const count = await this.data.count();
     console.log('DB count is', count);
 
@@ -76,8 +86,7 @@ export default class DataBase {
        * i suggest we make a table in indexed DB to track this
        * possible refactoring idea
        */
-      localStorage.setItem(this.localStorageKey, JSON.stringify([]));
-
+      this.storeTimestampInLocal();
       console.log('fetching other endpoint');
       /**
        * The apiServices returns all the and array of response for the
@@ -96,13 +105,17 @@ export default class DataBase {
       console.log(val);
       this.addDataToStore(data);
       console.log('done');
+      if (this.defaultIndicators.length <= 0) {
+        this.setAllIndicators();
+      }
       const dataValue = await this.getIndicatorsAndRelatedIndicators(this.defaultIndicators);
       if (dataValue.length > 0) {
-        await this.storeDataInDB(dataValue, this.defaultIndicators);
+        await this.storeDataInDB(dataValue);
       }
 
       this.addDataToStore(dataValue, DATA);
     } else {
+      const savedIndicators = await this.indicatorsInIdb;
       /**
        * need to find a way to check if it already exist in the store
        * before querying the DB
@@ -124,11 +137,25 @@ export default class DataBase {
        * This gets the default indicator from the Indexed DB database
        * reason for this is to initialize the dashboard with minimum data required
        */
-      dataItem = await this.getIndicatorDataThatExistInDB(this.defaultIndicators);
-      /**
-       * Then stores the data from the default indicators to the Store
-       */
-      this.setDataInStore(dataItem, DATA);
+      if (this.defaultIndicators.length <= 0) {
+        this.setAllIndicators();
+      }
+      for (let index = 0; index < this.defaultIndicators.length; index+= 1) {
+        // console.log({savedIndicators})
+        if (savedIndicators.indexOf(this.defaultIndicators[index]) >= 0) {
+          dataItem = await this.getIndicatorFromDB(this.defaultIndicators[index]);
+          /**
+           * Then stores the data from the default indicators to the Store
+           */
+          this.setDataInStore(dataItem, DATA);
+        } else {
+          const dataValue = await this.getIndicatorsAndRelatedIndicators(this.defaultIndicators[index]);
+          if (dataValue.length > 0) {
+            await this.storeDataInDB(dataValue);
+            this.addDataToStore(dataValue);
+          }
+        }
+      }
 
       setTimeout(async () => {
         const indicatorsExceptDefault = pullAll(this.indicatorList, this.defaultIndicators);
@@ -138,13 +165,21 @@ export default class DataBase {
          */
 
         /**
-         * also alway ensure to use for Loop with async operations
+         * also always ensure to use for Loop with async operations
          * forEach loop don't take asynchronous operations into consideration
          */
         for (let index = 0; index < indicatorsExceptDefault.length; index += 1) {
-          // eslint-disable-next-line no-await-in-loop
-          const dataArray = await this.getIndicatorFromDB(indicatorsExceptDefault[index]);
-          this.addDataToStore(dataArray, DATA);
+          if (savedIndicators.indexOf(this.defaultIndicators[index]) >= 0) {
+            // eslint-disable-next-line no-await-in-loop
+            const dataArray = await this.getIndicatorFromDB(indicatorsExceptDefault[index]);
+            this.addDataToStore(dataArray, DATA);
+          } else {
+            const dataValue = await this.getIndicatorsAndRelatedIndicators(indicatorsExceptDefault[index]);
+            if (dataValue.length > 0) {
+              await this.storeDataInDB(dataValue);
+              this.addDataToStore(dataValue);
+            }
+          }
         }
       }, 500);
     }
@@ -154,7 +189,7 @@ export default class DataBase {
      *
      * */
     // Check directly from idb if the ids are available
-    const arrOfIndicatorIDInDB = JSON.parse(localStorage.getItem(this.localStorageKey));
+    const arrOfIndicatorIDInDB = await this.indicatorsInIdb;
     // console.log({arrOfIndicatorIDInDB})
     // console.log(this.indicatorList)
     const indicatorsNotInDB = difference(this.indicatorList, arrOfIndicatorIDInDB);
@@ -169,7 +204,7 @@ export default class DataBase {
         console.log('in async');
         const dataValue = await this.getIndicatorsAndRelatedIndicators(arrayGrouped[index]);
         if (dataValue.length > 0) {
-          await this.storeDataInDB(dataValue, arrayGrouped[index]);
+          await this.storeDataInDB(dataValue);
           this.addDataToStore(dataValue);
         }
       }, 3000);
@@ -177,6 +212,87 @@ export default class DataBase {
 
     console.timeEnd('fetching');
     return Promise.resolve(true);
+  }
+
+  /**
+   *
+   * @returns {true or false} based on if the data
+   * on the dashboard is up to date or not
+   */
+  async isDataUpToDate() {
+    const serverDate = await apiServices.getLatestDate();
+    const localDate = localStorage.getItem('dataTimestamp');
+    console.log({ serverDate, localDate });
+    // Check if its more recent than the date in localStorage
+    const oldDateObject = new Date(localDate);
+    const newDateObject = new Date(serverDate.data);
+    if (oldDateObject.getTime() === newDateObject.getTime()) {
+      return true;
+    } if (oldDateObject <= newDateObject) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   *
+   * @param {string} theDate, a date string in JSON format
+   * @returns a date object formatted to fit the API requirements
+   */
+  formatDate(theDate) {
+    const theDateParts = theDate.split('T');
+    const theTime = theDateParts[1].split('.');
+    const formatted = `${theDateParts[0]} ${theTime[0]}`;
+    return formatted;
+  }
+
+  // Returns an array of indicator Ids from a an array
+  // of data objects
+  // extractIndicatorIds(dataArray) {
+  //   let uniqueIds = dataArray.map(el => el.indicator)
+  //   return [...new Set(uniqueIds)]
+  // }
+
+  /**
+   * this does the actual updating of the data
+   */
+  async updateData() {
+    const truthyVal = await this.isDataUpToDate();
+    const localDate = localStorage.getItem('dataTimestamp');
+    if (!truthyVal) {
+      apiServices.getUpdatedData(this.formatDate(localDate)).then((val) => {
+        const { created, updated } = val.data;
+        if (created.length !== 0) {
+          this.storeDataInDB(created);
+          this.addDataToStore(created);
+        }
+        if (updated.length !== 0) {
+          this.storeDataInDB(updated);
+          this.addDataToStore(updated);
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+
+  /**
+   *
+   * @returns {array} a unique array of all the indicator
+     * indexes available in iDB.
+     * This is considerably less cpu-intensive than toArray()
+   */
+  async checkIndicatorsInIdb() {
+    return this.db.data.orderBy('indicator').uniqueKeys();
+  }
+
+  /**
+   *
+   * @returns {array} containing a list of all indicator ids
+   * available to the api
+   */
+  async listAllIndicators() {
+    return this.indicators.orderBy('id').uniqueKeys();
   }
 
   /**
@@ -197,6 +313,12 @@ export default class DataBase {
       await this.datasources.bulkAdd(data[7].data);
     });
   }
+
+  /**
+   *
+   * @param {array} data, array of data objects
+   * @param {string} table
+   */
 
   addDataToStore(data, table) {
     console.log('storing in vue state');
@@ -227,35 +349,67 @@ export default class DataBase {
         data,
       });
     }
+
     console.log('done storing in the state');
   }
 
+  /**
+   *
+   * @param {array|number} indicators
+   * @returns {array} all data objects in the database related to
+   * the given indicator(s)
+   */
   // eslint-disable-next-line class-methods-use-this
   async getIndicatorsAndRelatedIndicators(indicators) {
-    // need a way to store ids of indicators fetch in local storage;
-    const data = await Promise.all(indicators.map((id) => apiServices.getSingleIndicator(id)));
+    let data;
+    if (Array.isArray(indicators)) {
+      data = await Promise.all(indicators.map((id) => apiServices.getSingleIndicator(id)));
+      return data;
+    }
+    data = await apiServices.getSingleIndicator(indicators);
     return data;
+  }
+
+  /**
+   * sets data timestamp to localStorage.
+   * Also to vuex using @method this.setDataInStore
+   */
+  storeTimestampInLocal() {
+    const currentDate = JSON.stringify(new Date().toJSON());
+    localStorage.setItem('dataTimestamp', currentDate);
+    this.setDataInStore(currentDate, 'dataTimestamp');
   }
 
   /**
    *
    * @param {array} data array of indicator data
-   * @param {array} indicatorIDs indicator id to be stored
+   *
    */
-  async storeDataInDB(data, indicatorIDs) {
+  async storeDataInDB(data) {
     this.db.transaction('rw', this.data, async () => {
       const mapOutData = data.map((item) => item.data);
-      // for (let index = 0; index < data.length; index += 1) {
-      await this.data.bulkAdd(...mapOutData);
-      // }
-      this.storeIndicatorIdInLocalStorage(indicatorIDs);
+      await this.data.bulkPut(...mapOutData);
+      this.updatedStoreAvailableIndicator();
     });
+    this.storeTimestampInLocal();
+    // provide a mixin for getting this from store
   }
 
+  /**
+   *
+   * @param {array} arrayOfIndicatorIds
+   * @returns {array} data from the database related to
+   * the given ids
+   */
   async getIndicatorDataThatExistInDB(arrayOfIndicatorIds) {
     return this.db.transaction('r', this.data, () => this.db.data.where('indicator').anyOf(arrayOfIndicatorIds).toArray());
   }
 
+  /**
+   *
+   * @param {array} data, array of data objects
+   * @param {string} tableName
+   */
   setDataInStore(data, tableName) {
     this.store.commit('DL/SET_DATA', {
       tableName,
@@ -264,33 +418,22 @@ export default class DataBase {
   }
 
   /**
-   * @param {array} ids and array of indicator to be store in local Storage
+   * Fetches a unique list of indicators available in iDB
    */
-  storeIndicatorIdInLocalStorage(ids) {
-    let indicatorIds = ids;
-    if (typeof ids === 'number') {
-      indicatorIds = [ids];
-    }
 
-    if (localStorage.getItem(this.localStorageKey) === null) {
-      localStorage.setItem(this.localStorageKey, JSON.stringify([]));
-    }
-
-    const indicatorsIDs = JSON.parse(localStorage.getItem(this.localStorageKey));
-    indicatorsIDs.push(...indicatorIds);
-    localStorage.setItem(this.localStorageKey, JSON.stringify(indicatorsIDs));
-
-    this.updatedStoreAvailableIndicator();
-  }
-
-  updatedStoreAvailableIndicator() {
-    const indicatorsIDs = JSON.parse(localStorage.getItem(this.localStorageKey));
+  async updatedStoreAvailableIndicator() {
+    const indicatorsIDs = await this.indicatorsInIdb;
     this.store.commit('DL/SET_DATA', {
       tableName: 'dashboardIndicator',
       data: indicatorsIDs,
     });
   }
 
+  /**
+   *
+   * @param {number} id , an indicator id
+   * @returns {array} of data objects for the indicator
+   */
   getIndicatorFromDB(id) {
     console.log(this.data);
     return this.data.where('indicator').equals(id).toArray();

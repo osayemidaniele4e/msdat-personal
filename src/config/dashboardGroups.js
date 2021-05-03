@@ -9,3 +9,9 @@ export const AnotherDashboard = {
   defaultIndicators: [7, 5, 8],
   dataSources: [],
 };
+
+export const customDashboard = {
+  dashboardIndicators: [],
+  defaultIndicators: [],
+  dataSources: [],
+};
