@@ -1,15 +1,19 @@
 <template>
   <div>
     <template v-if="cellData">
-      <div class="d-flex flex-column">
-          <div>
-        <h5 class="font-weight-bold">
-          {{cellData.value}}{{ cellData.factor }}
-        </h5>
-          </div>
-          <div>
-               <span>{{ cellData.year }}</span>
-          </div>
+      <div class="data-cell-values d-flex flex-column">
+        <div>
+          <h5
+            class="font-weight-bold"
+            :style="`color: ${dataColors.split(' ')[0]}`"
+          >
+            {{cellData.value}}{{ cellData.factor }}
+          </h5>
+        </div>
+        <div
+          :style="`color: ${dataColors.split(' ')[1]}`">
+          <span>{{ cellData.year }}</span>
+        </div>
       </div>
     </template>
     <template v-else>
@@ -26,9 +30,26 @@ export default {
       required: false,
       validator: (prop) => typeof prop === 'object' || prop === null,
     },
+    dataColors: {
+      type: String
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
+  div {
+    & .data-cell-values {
+      &>div {
+        // percentage value
+        &:first-child h5{
+          font-size: 15px;
+        }
+        // year
+        &:last-child {
+          font-size: 12px;
+        }
+      }
+    }
+  }
 </style>

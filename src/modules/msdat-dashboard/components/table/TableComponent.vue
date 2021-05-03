@@ -6,8 +6,9 @@
           <tr>
             <td rowspan="4"></td>
             <th rowspan="2">
-              <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-between align-items-center">
                 <span>indicators</span>
+                <b-icon-arrow-clockwise />
               </div>
             </th>
             <td>routine</td>
@@ -465,7 +466,7 @@ $msdat-leafgreen: #007d53;
   border-radius: 4px;
 }
 
-  #table-wrap {
+#table-wrap {
     table {
       // width: 650px;
 
@@ -621,6 +622,7 @@ $msdat-leafgreen: #007d53;
           }
         }
 
+        // num-denom row
         &:nth-child(2) {
           td {
             padding: 1%;
