@@ -49,25 +49,7 @@
 
           <TableDataRow class="bg-primary text-white" :rowData="dataArray[0]">
             <template #indicator>
-              <!-- <slot name="indicator-0"></slot> -->
-              <!-- main indicator dropdown select -->
-              <select
-                @change="indicatorChanged"
-                v-model="selectedIndicator"
-                class="main-indicator"
-              >
-                <optgroup>
-                  <option class="indicator-group" disabled>mortality</option>
-                  <option
-                    class="py-3"
-                    value="skilled attendance at delivery or birth"
-                  >skilled attendance at delivery Or birth</option>
-                  <option
-                      class="py-3"
-                      value="skilled attendance at delivery or birth2"
-                    >skilled attendance at delivery Or birth2</option>
-                </optgroup>
-              </select>
+              <slot name="indicator-0"></slot>
             </template>
             <template #default>
               <td
@@ -91,23 +73,7 @@
               <td class="border-0"></td>
               <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
               <td colspan="8" class="num-denom">
-                <!-- <slot name="NHMIS-DETAILS"> -->
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-flex">
-                    <span class="mr-1">nhmis</span> <span>2016</span>
-                  </div>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                      <b>numerator:</b>
-                      <span>Total number of doses - 858,814</span>
-                    </div>
-                    <div>
-                      <b>denominator:</b>
-                      <span>total number of children - 923,456</span>
-                    </div>
-                  </div>
-                </div>
-                <!-- </slot> -->
+                <slot name="NHMIS-DETAILS"></slot>
               </td>
             </tr>
           </transition>
@@ -121,45 +87,36 @@
 
           <!-- This loops  the the other indicator of the array of indicators -->
           <template v-for="(indicatorData, index) in dataArray">
-            <TableDataRow
-              :key="indicatorData.indicator"
-              v-if="index > 0"
-              :rowData="indicatorData"
-            >
-              <template #indicator>
-                <!-- <slot :name="`indicator-${index}`"></slot> -->
-                <select
-                  @change="indicatorChanged"
-                  v-model="selectedIndicator"
-                  class="rel-indicator"
-                >
-                  <optgroup>
-                    <option class="indicator-group" disabled>mortality</option>
-                    <option
-                      class="py-3"
-                      value="skilled attendance at delivery or birth"
-                    >skilled attendance at delivery Or birth</option>
-                    <option
-                        class="py-3"
-                        value="skilled attendance at delivery or birth2"
-                      >skilled attendance at delivery Or birth2</option>
-                  </optgroup>
-                </select>
-              </template>
-              <template #default>
-                <td
-                  class="text-center p-2"
-                  v-for="(dt, index) in source"
-                  :key="index"
-                  scope="col"
-                >
-                  <TableDataCell
-                    :cellData="getValueForColumn(indicatorData.values, dt)"
-                    :dataColors="'#515151; #888888;'"
-                  />
-                </td>
-              </template>
-            </TableDataRow>
+              <TableDataRow
+                :key="indicatorData.indicator"
+                v-if="index > 0"
+                :rowData="indicatorData"
+              >
+                <template #indicator>
+                  <slot :name="`indicator-${index}`"></slot>
+                </template>
+
+                <template #default>
+                  <td
+                    class="text-center p-2"
+                    v-for="(dt, index) in source"
+                    :key="index"
+                    scope="col"
+                  >
+                    <TableDataCell
+                      :cellData="getValueForColumn(indicatorData.values, dt)"
+                      :dataColors="'#515151; #888888;'"
+                    />
+                  </td>
+                </template>
+              </TableDataRow>
+
+              <!-- This craetes a space between the related indicators table rows -->
+              <div
+                :key="index"
+                v-if="index===1"
+                class="py-2"
+              ></div>
           </template>
         </tbody>
       </table>
@@ -231,11 +188,7 @@ export default {
       /**
        * This store the all the data sources available in the data parsed
        */
-      source: [],
-      /* main indicator selected */
-      selectedIndicator: 'skilled attendance at delivery or birth',
-      /* related indicator selected */
-      relatedIndicator: 'related skilled attendance at delivery or birth'
+      source: []
     };
   },
   methods: {
@@ -313,10 +266,6 @@ export default {
       this.selectedSource = e;
       this.$emit('selected:source', e);
       // this.rowShow = !this.rowShow;
-    },
-    /** updates data for selected indicator */
-    indicatorChanged (indicator) {
-      console.log(indicator);
     }
   },
   watch: {
@@ -352,8 +301,7 @@ export default {
   table.table {
     // selected data source
     .table-active {
-      background-color: transparent;
-      color: #348481;
+      background-color: #2b5d5b;
     }
 
     .classification-row {
@@ -381,85 +329,10 @@ export default {
           }
         }
       }
-      // dropdown select for main and related indicators
-      select {
-        background: transparent;
-        border: none;
-        font-size: 12px;
-        font-weight: bolder;
-        text-transform: uppercase;
-
-        // main indicator multiselect
-        &.main-indicator {
-          color: #ffffff;
-        }
-
-        // related indicator(s) multiselect
-        &.rel-indicator {
-          color: #005d59;
-        }
-
-        &:focus,
-        &:active {
-          border: none;
-          outline: none;
-          outline-offset: 0;
-        }
-
-        optgroup {
-          border: 1px solid #E0E2E4;
-          color: #000000;
-
-          option {
-            font-family: 'Work Sans';
-            font-size: 13px;
-            font-weight: 500;
-            text-align: left;
-            letter-spacing: 0px;
-            background-color: #ffffff;
-            color: #000000;
-
-            // indicator group
-            &.indicator-group {
-              border: 1px solid #E0E2E4;
-              font-size: 14px;
-              font-weight: bolder;
-              background-color: #D4E4DE;
-              color: #000000 !important;
-            }
-          }
-        }
-      }
 
       // numerator - denominator section
       td.num-denom {
         background-color: #2b5d5b;
-
-        & > div {
-          & > div:first-child {
-            width: 20%;
-
-            span {
-              font-size: 12px;
-              font-weight: bolder;
-              text-transform: uppercase;
-              color: #ffffff;
-            }
-          }
-          & > div:last-child {
-            width: 80%;
-            background-color: #ffffff;
-            border-radius: 4px;
-            padding: 0.7% 1.5%;
-            color: #000000;
-            font-size: 12px;
-            text-transform: capitalize;
-
-            span:last-child {
-              font-weight: lighter !important;
-            }
-          }
-        }
       }
     }
   }

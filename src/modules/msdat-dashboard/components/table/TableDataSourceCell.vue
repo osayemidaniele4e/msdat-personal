@@ -2,7 +2,7 @@
   <th
     class="text-center align-middle"
     scope="col"
-    :class="[selectedSource === source ? 'table-active text-whit' : '']"
+    :class="[selectedSource === source ? 'table-active text-white' : '']"
   >
     <div class="d-flex align-items-center justify-content-center">
       <span
@@ -11,7 +11,7 @@
       >{{ source }}
       </span>
       <b-icon-exclamation-circle-fill
-        :variant="[(selectedSource === source) ? '' : 'primary']"
+        :variant="(selectedSource === source) ? '' : 'primary'"
         @click="$emit('source-info:click', source)"
         class="data-source-info"
        />
