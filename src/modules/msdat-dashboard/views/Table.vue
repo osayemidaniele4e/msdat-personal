@@ -1,8 +1,9 @@
 <template>
     <div>
         <h1>MSDAT DASHBOARD</h1>
-        <table-component />
-        <table-comp :dataArray="exampleData">
+        <table-component2 />
+        <TableComponent
+        :dataArray="exampleData">
           <!-- nhmis details (numerator - denominator) -->
           <template #NHMIS-DETAILS>
             <div class="nhmis-details d-flex justify-content-between align-items-center">
@@ -21,7 +22,7 @@
               </div>
             </div>
           </template>
-          
+
           <!-- main indicator dropdown select -->
           <template
             v-for="(n, index) in ['indicator-0', 'indicator-1', 'indicator-2']"
@@ -46,13 +47,13 @@
               </optgroup>
             </select>
           </template>
-        </table-comp>
+        </TableComponent>
     </div>
 </template>
 
 <script>
+import TableComponent2 from '../components/table/TableComponent2.vue';
 import TableComponent from '../components/table/TableComponent.vue';
-import tableComp from '../components/table/tableComp.vue';
 import exampleData from '../components/table/data-format.example';
 
 export default {
@@ -62,16 +63,16 @@ export default {
       /* main indicator selected */
       selectedIndicator: 'skilled attendance at delivery or birth',
       /* related indicator selected */
-      relatedIndicator: 'related skilled attendance at delivery or birth'
-    }
+      relatedIndicator: 'related skilled attendance at delivery or birth',
+    };
   },
-  components: { tableComp, TableComponent },
+  components: { TableComponent, TableComponent2 },
   methods: {
     /** updates data for selected indicator */
-    indicatorChanged (indicator) {
+    indicatorChanged(indicator) {
       console.log(indicator);
-    }
-  }
+    },
+  },
 };
 </script>
 

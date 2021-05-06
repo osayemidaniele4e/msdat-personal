@@ -3,7 +3,9 @@
     <template>
       <td class="align-middle">
         <div class="d-flex justify-content-center">
-          <b-icon-exclamation-circle-fill />
+          <b-icon-exclamation-circle-fill
+          @click="$emit('indicator-info:clicked',rowData.indicators)"
+          />
         </div>
       </td>
       <td
