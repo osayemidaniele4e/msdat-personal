@@ -1,5 +1,8 @@
 import aboutRoute from './views/about/router';
 import Home from './views/index.vue';
+import TableHome from './views/Table.vue';
+// import Home from './components/table/TableComponent.vue';
+// import table from './components/table/TableComponent.vue';
 
 export default [
   {
@@ -11,4 +14,12 @@ export default [
     },
   },
   ...aboutRoute,
+  {
+    path: '/table',
+    name: 'table',
+    component: TableHome,
+    meta: {
+      requiresAuth: true,
+    },
+  },
 ];
