@@ -26,15 +26,17 @@
           <!-- main indicator dropdown select -->
           <template
             v-for="(n, index) in ['indicator-0', 'indicator-1', 'indicator-2']"
-            v-slot:[n]
+            v-slot:[n]="{indicator}"
           >
             <select
               :key="index"
               @change="indicatorChanged"
               v-model="selectedIndicator"
               :class="`indicator-${index}`"
+              :value="indicator.indicator"
             >
               <optgroup>
+                <option class="indicator-group" disabled>{{indicator.indicator}}</option>
                 <option class="indicator-group" disabled>mortality</option>
                 <option
                   class="py-3"

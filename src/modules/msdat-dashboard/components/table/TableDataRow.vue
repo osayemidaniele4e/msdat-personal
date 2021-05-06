@@ -16,6 +16,7 @@
         <div class="d-flex flex-column">
           <slot
             :name="`indicator`"
+            :indicator="rowData.indicators"
           >
             {{ rowData.indicators }}
           </slot>

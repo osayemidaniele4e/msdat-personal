@@ -50,8 +50,8 @@
           <TableDataRow class="bg-primary text-white"
           :rowData="dataArray[0]"
           @indicator-info:clicked="$emit('selected:indicator-info',$event)">
-            <template #indicator>
-              <slot name="indicator-0"></slot>
+            <template  v-slot:indicator="props">
+              <slot name="indicator-0" :indicator="props"></slot>
             </template>
             <template #default>
               <td
@@ -95,8 +95,8 @@
                 :rowData="indicatorData"
                 @indicator-info:clicked="$emit('selected:indicator-info',$event)"
               >
-                <template #indicator>
-                  <slot :name="`indicator-${index}`"></slot>
+                <template   v-slot:indicator="props">
+                  <slot  :name="`indicator-${index}`" :indicator="props"></slot>
                 </template>
 
                 <template #default>
