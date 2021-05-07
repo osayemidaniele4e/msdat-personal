@@ -60,7 +60,7 @@ export default class DataBase {
 
   async init(object) {
     this.setup(object);
-    console.time('fetching');
+    // console.time('fetching');
     const count = await this.data.count();
     console.log('DB count is', count);
 
@@ -102,14 +102,15 @@ export default class DataBase {
        */
       console.log('storing other endpoint to index db');
       const val = await this.storeDataForOtherEndPointToDB(data);
-      console.log(val);
+    //  console.log(val);
       this.addDataToStore(data);
-      console.log('done');
+     // console.log('done');
       if (this.defaultIndicators.length <= 0) {
         this.setAllIndicators();
       }
       const dataValue = await this.getIndicatorsAndRelatedIndicators(this.defaultIndicators);
       if (dataValue.length > 0) {
+       // console.log(1, {dataValue})
         await this.storeDataInDB(dataValue);
       }
 
@@ -151,6 +152,7 @@ export default class DataBase {
         } else {
           const dataValue = await this.getIndicatorsAndRelatedIndicators(this.defaultIndicators[index]);
           if (dataValue.length > 0) {
+          //  console.log(2, {dataValue})
             await this.storeDataInDB(dataValue);
             this.addDataToStore(dataValue);
           }
@@ -176,6 +178,7 @@ export default class DataBase {
           } else {
             const dataValue = await this.getIndicatorsAndRelatedIndicators(indicatorsExceptDefault[index]);
             if (dataValue.length > 0) {
+             // console.log(3, {dataValue})
               await this.storeDataInDB(dataValue);
               this.addDataToStore(dataValue);
             }
@@ -204,6 +207,7 @@ export default class DataBase {
         console.log('in async');
         const dataValue = await this.getIndicatorsAndRelatedIndicators(arrayGrouped[index]);
         if (dataValue.length > 0) {
+          // console.log(4, {dataValue})
           await this.storeDataInDB(dataValue);
           this.addDataToStore(dataValue);
         }
@@ -257,6 +261,7 @@ export default class DataBase {
    * this does the actual updating of the data
    */
   async updateData() {
+   // console.log('updating')
     const truthyVal = await this.isDataUpToDate();
     const localDate = localStorage.getItem('dataTimestamp');
     if (!truthyVal) {
@@ -305,12 +310,12 @@ export default class DataBase {
 
   async storeDataForOtherEndPointToDB(data) {
     return this.db.transaction('rw', this.DSI, this.location, this.indicators, this.valuetypes, this.factors, this.datasources, async () => {
-      await this.DSI.bulkAdd(data[6].data);
-      await this.location.bulkAdd(data[0].data);
-      await this.indicators.bulkAdd(data[1].data);
-      await this.valuetypes.bulkAdd(data[3].data);
-      await this.factors.bulkAdd(data[5].data);
-      await this.datasources.bulkAdd(data[7].data);
+      await this.DSI.bulkPut(data[6].data);
+      await this.location.bulkPut(data[0].data);
+      await this.indicators.bulkPut(data[1].data);
+      await this.valuetypes.bulkPut(data[3].data);
+      await this.factors.bulkPut(data[5].data);
+      await this.datasources.bulkPut(data[7].data);
     });
   }
 
@@ -375,7 +380,7 @@ export default class DataBase {
    * Also to vuex using @method this.setDataInStore
    */
   storeTimestampInLocal() {
-    const currentDate = JSON.stringify(new Date().toJSON());
+    const currentDate = new Date().toJSON();
     localStorage.setItem('dataTimestamp', currentDate);
     this.setDataInStore(currentDate, 'dataTimestamp');
   }
@@ -435,7 +440,6 @@ export default class DataBase {
    * @returns {array} of data objects for the indicator
    */
   getIndicatorFromDB(id) {
-    console.log(this.data);
     return this.data.where('indicator').equals(id).toArray();
   }
 }
