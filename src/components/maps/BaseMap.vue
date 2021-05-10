@@ -131,8 +131,6 @@ export default {
   },
   methods: {
     plotMapLevel(level) {
-      debugger;
-      console.log(this.defaultOptions);
       switch (level) {
         case 1:
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
