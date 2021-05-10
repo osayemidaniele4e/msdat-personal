@@ -1,5 +1,5 @@
+import routertest from '@/components/maps/router';
 import Home from './views/index.vue';
-import routertest from './components/maps/router';
 
 export default [
   {
