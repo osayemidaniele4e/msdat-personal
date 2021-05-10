@@ -2,9 +2,6 @@
 
 exports[`Mounted BarChart Component  renders correctly 1`] = `
 <highcharts-stub
-  constructortype="chart"
-  deepcopyonupdate="true"
   options="[object Object]"
-  updateargs="true,true"
 />
 `;
