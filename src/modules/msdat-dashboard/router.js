@@ -1,3 +1,4 @@
+import routertest from '@/components/maps/router';
 import aboutRoute from './views/about/router';
 import Home from './views/index.vue';
 import TableHome from './views/Table.vue';
@@ -22,4 +23,6 @@ export default [
       requiresAuth: true,
     },
   },
+
+  ...routertest,
 ];
