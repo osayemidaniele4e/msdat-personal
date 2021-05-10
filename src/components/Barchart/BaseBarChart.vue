@@ -9,16 +9,15 @@
 /**
  * highchart package imports
  */
-import { Chart } from 'highcharts-vue';
 import Highcharts from 'highcharts';
-import stockInit from 'highcharts/modules/stock';
-
+import loadMap from 'highcharts/modules/map';
+import { genComponent } from 'vue-highcharts';
 /**
  * The default options
  */
 import defaultOptions from './defaultOption';
 
-stockInit(Highcharts);
+loadMap(Highcharts);
 
 export default {
   data() {
@@ -56,7 +55,7 @@ export default {
     },
   },
   components: {
-    highcharts: Chart,
+    highcharts: genComponent('Highcharts', Highcharts),
   },
 };
 </script>
