@@ -83,11 +83,11 @@ export default {
     },
     lgaState: {
       type: String,
-    }
+    },
   },
   data() {
     return {
-      defaultOptions,
+      defaultOptions: { ...defaultOptions },
       lgaMapData: {
         Jigawa,
         Kano,
@@ -126,11 +126,13 @@ export default {
         Gombe,
         Taraba,
         Yobe,
-      }
+      },
     };
   },
   methods: {
     plotMapLevel(level) {
+      debugger;
+      console.log(this.defaultOptions);
       switch (level) {
         case 1:
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
@@ -145,7 +147,8 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
       }
-    }
+      this.defaultOptions = { ...this.defaultOptions };
+    },
   },
   watch: {
     mapObject: {
@@ -153,14 +156,14 @@ export default {
         this.defaultOptions = Object.assign(this.defaultOptions, newVal);
       },
       immediate: true,
-      deep: true
+      deep: true,
     },
     level(newVal) {
-      this.plotMapLevel(newVal)
-    }
+      this.plotMapLevel(newVal);
+    },
   },
   created() {
-    this.plotMapLevel(this.level)
-  }
-}
+    this.plotMapLevel(this.level);
+  },
+};
 </script>
