@@ -1,4 +1,6 @@
-import { chunk, difference, pullAll } from 'lodash';
+/* eslint-disable no-await-in-loop */
+import { pullAll } from 'lodash';
+import { formatDate } from './helper';
 import apiServices from './ApiServices';
 
 const DATA = 'data';
@@ -25,7 +27,8 @@ export default class DataBase {
     this.datasources = this.db.table(DATA_SOURCE);
     this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
     this.defaultIndicators = [7, 5, 8];
-    this.indicatorsInIdb = this.checkIndicatorsInIdb();
+    this.indicatorsInIdb = [];
+    this.LOCAL_STORAGE_KEY = 'dataTimestamp';
   }
 
   /**
@@ -40,16 +43,24 @@ export default class DataBase {
   setup(object) {
     this.indicatorList = object.dashboardIndicators;
     this.defaultIndicators = object.defaultIndicators;
+
+    /**
+       * This gets the default indicator from the Indexed DB database
+       * reason for this is to initialize the dashboard with minimum data required
+       */
+    if (this.defaultIndicators.length <= 0) {
+      this.setAllIndicators();
+    }
   }
 
   /**
    * Gets ids of all indicators from the
-   * indicators list and populates the @param {this.indicatorList}
-   * with all of it then populates the @param {this.defaultIndicators}
+   * indicators list and populates the
+   * with all of it then populates the
    * with the first three in the list
    */
-  async setAllIndicators() {
-    const allIndicators = await this.listAllIndicators();
+  setAllIndicators() {
+    const allIndicators = this.listAllIndicators();
     this.indicatorList = allIndicators;
     this.defaultIndicators = allIndicators.slice(0, 3);
   }
@@ -60,32 +71,10 @@ export default class DataBase {
 
   async init(object) {
     this.setup(object);
-    // console.time('fetching');
     const count = await this.data.count();
     console.log('DB count is', count);
 
     if (count <= 0) {
-      /**
-       * clear data  other table in the db so they can be fetched again to aviod
-       * error with indexedDB db
-       */
-      this.countries.clear();
-      this.indicators.clear();
-      this.location.clear();
-      this.factors.clear();
-      this.DSI.clear();
-      this.location_hierarchy_level.clear();
-      this.valuetypes.clear();
-      this.datasources.clear();
-      /**
-       * indicator ID are stored in local storage to keep track of the available
-       * reason is to avoid making multiple queries in the database
-       */
-
-      /**
-       * i suggest we make a table in indexed DB to track this
-       * possible refactoring idea
-       */
       this.storeTimestampInLocal();
       console.log('fetching other endpoint');
       /**
@@ -101,121 +90,85 @@ export default class DataBase {
        * per time
        */
       console.log('storing other endpoint to index db');
-      const val = await this.storeDataForOtherEndPointToDB(data);
-    //  console.log(val);
+      await this.storeDataForOtherEndPointToDB(data);
       this.addDataToStore(data);
-     // console.log('done');
-      if (this.defaultIndicators.length <= 0) {
-        this.setAllIndicators();
-      }
-      const dataValue = await this.getIndicatorsAndRelatedIndicators(this.defaultIndicators);
+
+      const dataValue = await this.getIndicatorsFromApi(this.defaultIndicators);
+
       if (dataValue.length > 0) {
-       // console.log(1, {dataValue})
         await this.storeDataInDB(dataValue);
       }
-
       this.addDataToStore(dataValue, DATA);
     } else {
-      const savedIndicators = await this.indicatorsInIdb;
-      /**
-       * need to find a way to check if it already exist in the store
-       * before querying the DB
-       * but it just assumed that the data already exist in the database
-       */
-      let dataItem = await this.DSI.toArray();
-      this.setDataInStore(dataItem, DSI);
-      dataItem = await this.location.toArray();
-      this.setDataInStore(dataItem, LOCATION);
-      dataItem = await this.indicators.toArray();
-      this.setDataInStore(dataItem, INDICATORS);
-      dataItem = await this.datasources.toArray();
-      this.setDataInStore(dataItem, DATA_SOURCE);
-      dataItem = await this.valuetypes.toArray();
-      this.setDataInStore(dataItem, VALUE_TYPES);
-      dataItem = await this.factors.toArray();
-      this.setDataInStore(dataItem, FACTORS);
-      /**
-       * This gets the default indicator from the Indexed DB database
-       * reason for this is to initialize the dashboard with minimum data required
-       */
-      if (this.defaultIndicators.length <= 0) {
-        this.setAllIndicators();
-      }
-      for (let index = 0; index < this.defaultIndicators.length; index+= 1) {
-        // console.log({savedIndicators})
-        if (savedIndicators.indexOf(this.defaultIndicators[index]) >= 0) {
-          dataItem = await this.getIndicatorFromDB(this.defaultIndicators[index]);
-          /**
-           * Then stores the data from the default indicators to the Store
-           */
-          this.setDataInStore(dataItem, DATA);
-        } else {
-          const dataValue = await this.getIndicatorsAndRelatedIndicators(this.defaultIndicators[index]);
-          if (dataValue.length > 0) {
-          //  console.log(2, {dataValue})
-            await this.storeDataInDB(dataValue);
-            this.addDataToStore(dataValue);
-          }
-        }
-      }
-
-      setTimeout(async () => {
-        const indicatorsExceptDefault = pullAll(this.indicatorList, this.defaultIndicators);
-        /**
-         * getting the indicators one after the order seems to help the performance
-         * as against getting it all at once
-         */
-
-        /**
-         * also always ensure to use for Loop with async operations
-         * forEach loop don't take asynchronous operations into consideration
-         */
-        for (let index = 0; index < indicatorsExceptDefault.length; index += 1) {
-          if (savedIndicators.indexOf(this.defaultIndicators[index]) >= 0) {
-            // eslint-disable-next-line no-await-in-loop
-            const dataArray = await this.getIndicatorFromDB(indicatorsExceptDefault[index]);
-            this.addDataToStore(dataArray, DATA);
-          } else {
-            const dataValue = await this.getIndicatorsAndRelatedIndicators(indicatorsExceptDefault[index]);
-            if (dataValue.length > 0) {
-             // console.log(3, {dataValue})
-              await this.storeDataInDB(dataValue);
-              this.addDataToStore(dataValue);
-            }
-          }
-        }
-      }, 500);
+      this.initOtherTablesFromDB();
+      this.initData(this.defaultIndicators);
     }
+
+    setTimeout(async () => {
+      const indicatorsExceptDefault = pullAll(this.indicatorList, this.defaultIndicators);
+      /**
+       * getting the indicators one after the order seems to help the performance
+       * as against getting it all at once
+       */
+
+      /**
+       * also always ensure to use for Loop with async operations
+       * forEach loop doesn't  take asynchronous operations into consideration
+       */
+      // console.log(this.indicatorsInIdb);
+      this.initData(indicatorsExceptDefault);
+    }, 500);
+
     this.updatedStoreAvailableIndicator();
     /*
      *This compares then the indicator Array with the indicator Array of the dashboard
-     *
      * */
-    // Check directly from idb if the ids are available
-    const arrOfIndicatorIDInDB = await this.indicatorsInIdb;
-    // console.log({arrOfIndicatorIDInDB})
-    // console.log(this.indicatorList)
-    const indicatorsNotInDB = difference(this.indicatorList, arrOfIndicatorIDInDB);
-    // console.log({indicatorsNotInDB})
-    /**
-     * This groups indicator in arrays of  length 3
-     */
-    const arrayGrouped = chunk(indicatorsNotInDB, 3);
+    console.timeEnd('fetching');
 
-    for (let index = 0; index < arrayGrouped.length; index += 1) {
-      setTimeout(async () => {
-        console.log('in async');
-        const dataValue = await this.getIndicatorsAndRelatedIndicators(arrayGrouped[index]);
+    setTimeout(() => {
+      this.updateData();
+    }, 200);
+
+    return Promise.resolve(true);
+  }
+
+  async initOtherTablesFromDB() {
+    let dataItem = await this.DSI.toArray();
+    this.setDataInStore(dataItem, DSI);
+    dataItem = await this.location.toArray();
+    this.setDataInStore(dataItem, LOCATION);
+    dataItem = await this.indicators.toArray();
+    this.setDataInStore(dataItem, INDICATORS);
+    dataItem = await this.datasources.toArray();
+    this.setDataInStore(dataItem, DATA_SOURCE);
+    dataItem = await this.valuetypes.toArray();
+    this.setDataInStore(dataItem, VALUE_TYPES);
+    dataItem = await this.factors.toArray();
+    this.setDataInStore(dataItem, FACTORS);
+  }
+
+  async initData(indicator) {
+    const indicatorInDB = await this.checkIndicatorsInIdb();
+    for (let index = 0; index < indicator.length; index += 1) {
+      if (indicatorInDB.indexOf(indicator[index]) >= 0) {
+        // eslint-disable-next-line no-await-in-loop
+        const dataItem = await this.getIndicatorFromDB(indicator[index]);
+        /**
+         * Then stores the data from the default indicators to the Store
+         */
+        this.setDataInStore(dataItem, DATA);
+      } else {
+        // eslint-disable-next-line no-await-in-loop
+        const dataValue = await this.getIndicatorsFromApi(
+          indicator[index],
+        );
         if (dataValue.length > 0) {
-          // console.log(4, {dataValue})
+          // eslint-disable-next-line no-await-in-loop
           await this.storeDataInDB(dataValue);
           this.addDataToStore(dataValue);
         }
-      }, 3000);
+      }
     }
-
-    console.timeEnd('fetching');
-    return Promise.resolve(true);
   }
 
   /**
@@ -225,7 +178,7 @@ export default class DataBase {
    */
   async isDataUpToDate() {
     const serverDate = await apiServices.getLatestDate();
-    const localDate = localStorage.getItem('dataTimestamp');
+    const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
     console.log({ serverDate, localDate });
     // Check if its more recent than the date in localStorage
     const oldDateObject = new Date(localDate);
@@ -239,33 +192,14 @@ export default class DataBase {
   }
 
   /**
-   *
-   * @param {string} theDate, a date string in JSON format
-   * @returns a date object formatted to fit the API requirements
-   */
-  formatDate(theDate) {
-    const theDateParts = theDate.split('T');
-    const theTime = theDateParts[1].split('.');
-    const formatted = `${theDateParts[0]} ${theTime[0]}`;
-    return formatted;
-  }
-
-  // Returns an array of indicator Ids from a an array
-  // of data objects
-  // extractIndicatorIds(dataArray) {
-  //   let uniqueIds = dataArray.map(el => el.indicator)
-  //   return [...new Set(uniqueIds)]
-  // }
-
-  /**
    * this does the actual updating of the data
    */
   async updateData() {
-   // console.log('updating')
+    // console.log('updating')
     const truthyVal = await this.isDataUpToDate();
-    const localDate = localStorage.getItem('dataTimestamp');
+    const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
     if (!truthyVal) {
-      apiServices.getUpdatedData(this.formatDate(localDate)).then((val) => {
+      apiServices.getUpdatedData(formatDate(localDate)).then((val) => {
         const { created, updated } = val.data;
         if (created.length !== 0) {
           this.storeDataInDB(created);
@@ -296,7 +230,7 @@ export default class DataBase {
    * @returns {array} containing a list of all indicator ids
    * available to the api
    */
-  async listAllIndicators() {
+  listAllIndicators() {
     return this.indicators.orderBy('id').uniqueKeys();
   }
 
@@ -329,8 +263,6 @@ export default class DataBase {
     console.log('storing in vue state');
     const stateTableName = table || false;
     if (!stateTableName) {
-    // }
-      // if (typeof data[0] === 'object') {
       /**
      * because we know ths the data
      * coming is a return  of a Promise.all()
@@ -365,7 +297,7 @@ export default class DataBase {
    * the given indicator(s)
    */
   // eslint-disable-next-line class-methods-use-this
-  async getIndicatorsAndRelatedIndicators(indicators) {
+  async getIndicatorsFromApi(indicators) {
     let data;
     if (Array.isArray(indicators)) {
       data = await Promise.all(indicators.map((id) => apiServices.getSingleIndicator(id)));
@@ -381,8 +313,8 @@ export default class DataBase {
    */
   storeTimestampInLocal() {
     const currentDate = new Date().toJSON();
-    localStorage.setItem('dataTimestamp', currentDate);
-    this.setDataInStore(currentDate, 'dataTimestamp');
+    localStorage.setItem(this.LOCAL_STORAGE_KEY, currentDate);
+    this.setDataInStore(currentDate, this.LOCAL_STORAGE_KEY);
   }
 
   /**
