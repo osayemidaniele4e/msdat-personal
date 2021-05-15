@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h1>MSDAT DASHBOARD</h1>
-        <table-component2 />
+        <!-- <h1>MSDAT DASHBOARD</h1> -->
+        <!-- <table-component2 /> -->
         <TableComponent
         :dataArray="exampleData">
           <!-- nhmis details (numerator - denominator) -->
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import TableComponent2 from '../components/table/TableComponent2.vue';
+// import TableComponent2 from '../components/table/TableComponent2.vue';
 import TableComponent from '../components/table/TableComponent.vue';
 import exampleData from '../components/table/data-format.example';
 
@@ -68,7 +68,7 @@ export default {
       relatedIndicator: 'related skilled attendance at delivery or birth',
     };
   },
-  components: { TableComponent, TableComponent2 },
+  components: { TableComponent },
   methods: {
     /** updates data for selected indicator */
     indicatorChanged(indicator) {
