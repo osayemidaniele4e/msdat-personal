@@ -115,6 +115,9 @@ export default {
         ['Grouped x-axis', 143],
         ['ReactJS plugin', 137],
         ['3D surface charts', 134],
+        {
+          name: 'HEHEH', y: 216.4, color: 'blue', marker: { fillColor: 'red', radius: 10 },
+        },
         ['Draw lines', 118],
         ['Data module', 118],
         ['Draggable points', 117],

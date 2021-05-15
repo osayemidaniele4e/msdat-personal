@@ -199,14 +199,14 @@ export default class DataBase {
     const truthyVal = await this.isDataUpToDate();
     const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
     if (!truthyVal) {
-      apiServices.getUpdatedData(formatDate(localDate)).then((val) => {
+      apiServices.getUpdatedData(formatDate(localDate)).then(async (val) => {
         const { created, updated } = val.data;
         if (created.length !== 0) {
-          this.storeDataInDB(created);
+          await this.storeDataInDB(created);
           this.addDataToStore(created);
         }
         if (updated.length !== 0) {
-          this.storeDataInDB(updated);
+          await this.storeDataInDB(updated);
           this.addDataToStore(updated);
         }
       }).catch((err) => {
