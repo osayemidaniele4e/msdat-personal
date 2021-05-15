@@ -1,26 +1,26 @@
 <template>
-  <div class="card border-secondary">
-    <div class="card-header d-flex justify-content-between
-                bg-secondary border-bottom-0 align-items-center">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
+      :style="{backgroundColor}">
       <div class="title w-100">
         <slot name="title"> slot title fallback </slot>
       </div>
-      <div class="action-icon d-flex justify-content-around align-items-center">
+      <div class="action-icon d-flex justify-content-around align-items-center" v-if="showControls">
         <b-icon
           icon="arrows-fullscreen"
           @click="$emit('clicked-fullscreen-icon')"
-          class="mx-1"
+          class="mx-1 font-weight-bold"
           font-scale="1.1"
         ></b-icon>
         <b-icon
           icon="three-dots-vertical"
           @click="showMenu = !showMenu"
-          class="mx-1"
+          class="mx-1 font-weight-bold"
           font-scale="1.1"
         ></b-icon>
       </div>
     </div>
-    <div class="card-body" style="height: 300px; position: relative">
+    <div class="card-body" style="position: relative">
       <ul class="dropdown-menu-icon" v-show="showMenu">
         <li><span class="dropdown-item-text">Dropdown item text</span></li>
         <li><a class="dropdown-item" href="#">Action</a></li>
@@ -43,10 +43,17 @@ export default {
     };
   },
   props: {
-    msg: String,
+    showControls: {
+      type: Boolean,
+      default: () => false,
+    },
     color: {
       type: String,
       default: 'red',
+    },
+    backgroundColor: {
+      type: String,
+      default: '#DFF3F3',
     },
   },
 };
