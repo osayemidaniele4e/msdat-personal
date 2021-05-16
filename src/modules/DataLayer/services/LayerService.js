@@ -43,11 +43,13 @@ export default class DataBase {
   setup(object) {
     this.indicatorList = object.dashboardIndicators;
     this.defaultIndicators = object.defaultIndicators;
+  }
 
-    /**
+  /**
        * This gets the default indicator from the Indexed DB database
        * reason for this is to initialize the dashboard with minimum data required
        */
+  populateIndicatorsForCustomDashboard() {
     if (this.defaultIndicators.length <= 0) {
       this.setAllIndicators();
     }
@@ -92,7 +94,7 @@ export default class DataBase {
       console.log('storing other endpoint to index db');
       await this.storeDataForOtherEndPointToDB(data);
       this.addDataToStore(data);
-
+      this.populateIndicatorsForCustomDashboard();
       const dataValue = await this.getIndicatorsFromApi(this.defaultIndicators);
 
       if (dataValue.length > 0) {
@@ -101,6 +103,7 @@ export default class DataBase {
       this.addDataToStore(dataValue, DATA);
     } else {
       this.initOtherTablesFromDB();
+      this.populateIndicatorsForCustomDashboard();
       this.initData(this.defaultIndicators);
     }
 
