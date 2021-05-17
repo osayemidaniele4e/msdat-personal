@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="px-md-5 mx-md-5 px-xs-5 overflow-hidden">
+  <b-container class="overflow-hidden">
     <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
         <p class=" mt-3 mb-4 tittle">
@@ -16,51 +16,59 @@
         <b-row align-h="start">
           <b-col cols="auto">
             <b-button class="program-areas shadow">
-              <img src="@/assets/svg/pregnant.svg" class="img-fluid" alt="rmnch" />
+              <img src="@/assets/state-profile/svg/pregnant.svg" class="img-fluid" alt="rmnch" />
             </b-button>
             <p class="text-center program-areas-text">RMNCH</p>
           </b-col>
           <b-col cols="auto">
             <b-button class="program-areas shadow">
-              <img src="@/assets/svg/salad.svg" class="img-fluid" alt="nutrition" />
+              <img src="@/assets/state-profile/svg/salad.svg" class="img-fluid" alt="nutrition" />
             </b-button>
             <p class="text-center program-areas-text">Nutrition</p>
           </b-col>
           <b-col cols="auto">
             <b-button class="program-areas shadow">
-              <img src="@/assets/svg/injection.svg" class="img-fluid" alt="immunization" />
+              <img
+                src="@/assets/state-profile/svg/injection.svg"
+                class="img-fluid"
+                alt="immunization"
+              />
             </b-button>
             <p class="text-center program-areas-text">Immunization</p>
           </b-col>
           <b-col cols="auto">
             <b-button class="program-areas shadow">
-              <img src="@/assets/svg/mosquito.svg" class="img-fluid" alt="malaria" />
+              <img src="@/assets/state-profile/svg/mosquito.svg" class="img-fluid" alt="malaria" />
             </b-button>
             <p class="text-center program-areas-text">Malaria</p>
           </b-col>
 
           <b-col cols="auto">
             <b-button class="program-areas shadow">
-              <img src="@/assets/svg/ribbon.svg" class="img-fluid" alt="hiv/aids" />
+              <img src="@/assets/state-profile/svg/ribbon.svg" class="img-fluid" alt="hiv/aids" />
             </b-button>
             <p class="text-center program-areas-text">HIV/AIDS</p>
           </b-col>
           <b-col cols="auto">
             <b-button class="program-areas shadow">
-              <img src="@/assets/svg/patient.svg" class="img-fluid" alt="mortality" />
+              <img src="@/assets/state-profile/svg/patient.svg" class="img-fluid" alt="mortality" />
             </b-button>
             <p class="text-center program-areas-text">Mortality</p>
           </b-col>
           <b-col cols="auto" class="">
             <b-button class="program-areas shadow">
-              <img src="@/assets/svg/hospital.svg" class="img-fluid" alt="health facility survey" />
+              <img
+                src="@/assets/state-profile/svg/hospital.svg"
+                class="img-fluid"
+                alt="health facility survey"
+              />
             </b-button>
             <p class="text-center program-areas-text">Health Facility Survey</p>
           </b-col>
         </b-row>
       </b-col>
       <b-col sm="12" md="5" class="mt-5">
-        <img class="img-fluid" src="@/assets/svg/intro-map.svg" alt="">
+        <img class="img-fluid" src="@/assets/state-profile/svg/intro-map.svg" alt="" />
         <!-- <stateProfileSvg :name="'map'"> </stateProfileSvg> -->
         <p class="mt-5 text-center map-text">Select a state on the map to view state profile</p>
       </b-col>
@@ -69,7 +77,7 @@
 </template>
 
 <script>
-// import stateProfileSvg from "../svg/stateprofileSvg.vue";
+// import stateProfileSvg from "../state-profile/svg/stateprofileSvg.vue";
 
 export default {
   name: 'intro',

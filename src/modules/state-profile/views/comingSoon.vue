@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="px-md-5 mx-md-5 px-xs-5 overflow-hidden">
+  <b-container class="overflow-hidden">
     <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
         <b-button class="btn-outline-primary disabled">COMING SOON</b-button>
@@ -55,7 +55,11 @@
         class="bg-white right pr-0 pl-0 pt-1 d-none d-md-inline-block"
         id="image"
       >
-        <img src="@/assets/img/stateprofile.jpg" class="img-fluid" alt="State Profile Image" />
+        <img
+          src="@/assets/state-profile/img/stateprofile.jpg"
+          class="img-fluid"
+          alt="State Profile Image"
+        />
       </b-col>
     </b-row>
   </b-container>
@@ -116,7 +120,7 @@ img {
   margin-left: 20%;
 }
 .form-control {
-    height: auto;
-    margin-top: 0px;
+  height: auto;
+  margin-top: 0px;
 }
 </style>
