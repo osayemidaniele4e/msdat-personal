@@ -165,7 +165,7 @@ export default {
         defaultIndicators: MSDAT.defaultIndicators,
       },
     );
-
+    debugger;
     const data = this.dlQuery({ datasource: 8, indicator: 7 });
     console.log({ query: data });
   },
