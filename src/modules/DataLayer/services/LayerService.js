@@ -45,9 +45,9 @@ export default class DataBase {
     this.defaultIndicators = object.defaultIndicators;
 
     /**
-       * This gets the default indicator from the Indexed DB database
-       * reason for this is to initialize the dashboard with minimum data required
-       */
+     * This gets the default indicator from the Indexed DB database
+     * reason for this is to initialize the dashboard with minimum data required
+     */
     if (this.defaultIndicators.length <= 0) {
       this.setAllIndicators();
     }
@@ -94,17 +94,21 @@ export default class DataBase {
       this.addDataToStore(data);
 
       const dataValue = await this.getIndicatorsFromApi(this.defaultIndicators);
-
+      // debugger;
       if (dataValue.length > 0) {
-        await this.storeDataInDB(dataValue);
+        for (let index = 0; index < dataValue.length; index += 1) {
+          const element = dataValue[index].data;
+          await this.storeDataInDB(element);
+          this.addDataToStore(element, DATA);
+        }
       }
-      this.addDataToStore(dataValue, DATA);
     } else {
-      this.initOtherTablesFromDB();
-      this.initData(this.defaultIndicators);
+      await this.initOtherTablesFromDB();
+      await this.initData(this.defaultIndicators);
     }
 
     setTimeout(async () => {
+      // debugger;
       const indicatorsExceptDefault = pullAll(this.indicatorList, this.defaultIndicators);
       /**
        * getting the indicators one after the order seems to help the performance
@@ -116,7 +120,8 @@ export default class DataBase {
        * forEach loop doesn't  take asynchronous operations into consideration
        */
       // console.log(this.indicatorsInIdb);
-      this.initData(indicatorsExceptDefault);
+      console.log('in set timeout');
+      await this.initData(indicatorsExceptDefault);
     }, 500);
 
     this.updatedStoreAvailableIndicator();
@@ -125,9 +130,9 @@ export default class DataBase {
      * */
     console.timeEnd('fetching');
 
-    setTimeout(() => {
-      this.updateData();
-    }, 200);
+    // setTimeout(() => {
+    //   this.updateData();
+    // }, 2000);
 
     return Promise.resolve(true);
   }
@@ -149,23 +154,29 @@ export default class DataBase {
 
   async initData(indicator) {
     const indicatorInDB = await this.checkIndicatorsInIdb();
+    // debugger;
     for (let index = 0; index < indicator.length; index += 1) {
+      console.log(indicatorInDB.indexOf(indicator[index]) >= 0);
       if (indicatorInDB.indexOf(indicator[index]) >= 0) {
         // eslint-disable-next-line no-await-in-loop
         const dataItem = await this.getIndicatorFromDB(indicator[index]);
+        // debugger;
         /**
          * Then stores the data from the default indicators to the Store
          */
         this.setDataInStore(dataItem, DATA);
       } else {
         // eslint-disable-next-line no-await-in-loop
-        const dataValue = await this.getIndicatorsFromApi(
-          indicator[index],
-        );
-        if (dataValue.length > 0) {
+        const dataValue = await this.getIndicatorsFromApi(indicator[index]);
+
+        console.log(dataValue.data);
+        if (dataValue.data.length > 0) {
           // eslint-disable-next-line no-await-in-loop
-          await this.storeDataInDB(dataValue);
-          this.addDataToStore(dataValue);
+          console.log(dataValue.data);
+          await this.storeDataInDB(dataValue.data);
+          // debugger;
+
+          this.addDataToStore(dataValue.data, DATA);
         }
       }
     }
@@ -185,7 +196,8 @@ export default class DataBase {
     const newDateObject = new Date(serverDate.data);
     if (oldDateObject.getTime() === newDateObject.getTime()) {
       return true;
-    } if (oldDateObject <= newDateObject) {
+    }
+    if (oldDateObject <= newDateObject) {
       return false;
     }
     return true;
@@ -199,27 +211,30 @@ export default class DataBase {
     const truthyVal = await this.isDataUpToDate();
     const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
     if (!truthyVal) {
-      apiServices.getUpdatedData(formatDate(localDate)).then(async (val) => {
-        const { created, updated } = val.data;
-        if (created.length !== 0) {
-          await this.storeDataInDB(created);
-          this.addDataToStore(created);
-        }
-        if (updated.length !== 0) {
-          await this.storeDataInDB(updated);
-          this.addDataToStore(updated);
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
+      apiServices
+        .getUpdatedData(formatDate(localDate))
+        .then(async (val) => {
+          const { created, updated } = val.data;
+          if (created.length !== 0) {
+            await this.storeDataInDB(created);
+            this.addDataToStore(created);
+          }
+          if (updated.length !== 0) {
+            await this.storeDataInDB(updated);
+            this.addDataToStore(updated);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
   /**
    *
    * @returns {array} a unique array of all the indicator
-     * indexes available in iDB.
-     * This is considerably less cpu-intensive than toArray()
+   * indexes available in iDB.
+   * This is considerably less cpu-intensive than toArray()
    */
   async checkIndicatorsInIdb() {
     return this.db.data.orderBy('indicator').uniqueKeys();
@@ -243,14 +258,23 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
-    return this.db.transaction('rw', this.DSI, this.location, this.indicators, this.valuetypes, this.factors, this.datasources, async () => {
-      await this.DSI.bulkPut(data[6].data);
-      await this.location.bulkPut(data[0].data);
-      await this.indicators.bulkPut(data[1].data);
-      await this.valuetypes.bulkPut(data[3].data);
-      await this.factors.bulkPut(data[5].data);
-      await this.datasources.bulkPut(data[7].data);
-    });
+    return this.db.transaction(
+      'rw',
+      this.DSI,
+      this.location,
+      this.indicators,
+      this.valuetypes,
+      this.factors,
+      this.datasources,
+      async () => {
+        await this.DSI.bulkPut(data[6].data);
+        await this.location.bulkPut(data[0].data);
+        await this.indicators.bulkPut(data[1].data);
+        await this.valuetypes.bulkPut(data[3].data);
+        await this.factors.bulkPut(data[5].data);
+        await this.datasources.bulkPut(data[7].data);
+      },
+    );
   }
 
   /**
@@ -264,15 +288,15 @@ export default class DataBase {
     const stateTableName = table || false;
     if (!stateTableName) {
       /**
-     * because we know ths the data
-     * coming is a return  of a Promise.all()
-     */
-      data.forEach((e) => {
-      /**
-       * The logic to this is
-       * the configUrl follow the same name as the state
-       * object keys for the data
+       * because we know ths the data
+       * coming is a return  of a Promise.all()
        */
+      data.forEach((e) => {
+        /**
+         * The logic to this is
+         * the configUrl follow the same name as the state
+         * object keys for the data
+         */
         const configUrl = e.config.url;
         const tableName = configUrl.replace(/\\|\/|\?.*/g, '');
         this.store.commit('DL/ADD_DATA', {
@@ -323,12 +347,16 @@ export default class DataBase {
    *
    */
   async storeDataInDB(data) {
-    this.db.transaction('rw', this.data, async () => {
-      const mapOutData = data.map((item) => item.data);
-      await this.data.bulkPut(...mapOutData);
-      this.updatedStoreAvailableIndicator();
+    return this.db.transaction('rw', this.data, async () => {
+      // debugger;
+      // const mapOutData = data.map((item) => item.data);
+      // console.log(...mapOutData);
+      // debugger;
+      await this.data.bulkPut(data);
+      this.storeTimestampInLocal();
+      // this.updatedStoreAvailableIndicator();
     });
-    this.storeTimestampInLocal();
+
     // provide a mixin for getting this from store
   }
 
@@ -339,7 +367,10 @@ export default class DataBase {
    * the given ids
    */
   async getIndicatorDataThatExistInDB(arrayOfIndicatorIds) {
-    return this.db.transaction('r', this.data, () => this.db.data.where('indicator').anyOf(arrayOfIndicatorIds).toArray());
+    return this.db.transaction('r', this.data, () => this.db.data
+      .where('indicator')
+      .anyOf(arrayOfIndicatorIds)
+      .toArray());
   }
 
   /**
@@ -372,6 +403,9 @@ export default class DataBase {
    * @returns {array} of data objects for the indicator
    */
   getIndicatorFromDB(id) {
-    return this.data.where('indicator').equals(id).toArray();
+    return this.data
+      .where('indicator')
+      .equals(id)
+      .toArray();
   }
 }
