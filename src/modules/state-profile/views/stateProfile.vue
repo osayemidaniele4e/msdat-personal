@@ -28,7 +28,7 @@
         </div>
         <h3 style="font-size: 15px">State Health Profile</h3>
       </b-col>
-      <b-col class="my-auto">
+      <b-col cols="12" class="my-auto">
         <b-row align-h="end" class="mx-auto">
           <p class="mr-3">Last Updated: 12.03.2020</p>
           <share/>
@@ -153,7 +153,7 @@ export default {
           name: 'Immunization',
           icon: 'injection',
           detail:
-            'This section includes a set of immunization indicators. The graph shows the percentage of the target population receiving coverage for select interventions. NOTE: sources for each of the indicators in the graph below were selected based on most recent and most reliable estimates.',
+            'This section includes a set of immunization indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
           definitions: [
@@ -173,7 +173,7 @@ export default {
           name: 'Malaria',
           icon: 'mosquito',
           detail:
-            'This section includes a set of malaria indicators. The graph shows the percentage of the target population receiving coverage for select interventions. NOTE: sources for each of the indicators in the graph below were selected based on most recent and most reliable estimates.',
+            'This section includes a set of malaria indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
           definitions: [
@@ -194,7 +194,7 @@ export default {
           name: 'HIV',
           icon: 'ribbon',
           detail:
-            'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for select interventions. NOTE: sources for each of the indicators in the graph below were selected based on most recent and most reliable estimates.',
+            'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
           definitions: [
@@ -214,7 +214,7 @@ export default {
           name: 'mortality',
           icon: 'patient',
           details:
-            'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions. NOTE: sources for each of the indicators in the graph below were selected based on most recent and most reliable estimates.',
+            'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS)',
           definitions: [
             '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
@@ -233,7 +233,7 @@ export default {
           name: 'Health Facility Survey',
           icon: 'hospital',
           details:
-            'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions. NOTE: sources for each of the indicators in the graph below were selected based on most recent and most reliable estimates.',
+            'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
           definitions: [
