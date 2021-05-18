@@ -2,7 +2,7 @@
   <b-container fluid>
     <hr style="  border-top: 1px dashed #CCCCCC;" class="mb-5 mt-5" />
     <b-row class="mb-5">
-      <program-area-icon :programArea="this.programArea"/>
+      <program-area-icon :programArea="this.programArea" />
       <h2 class="my-auto">
         <b>{{ this.programArea.name.toUpperCase() }}</b>
       </h2>
@@ -28,7 +28,10 @@
           <b-icon icon="caret-up-fill"></b-icon>
         </b-button>
       </b-col>
-      <b-col :cols="this.programArea.name == 'Health Facility Survey' ? 'auto' : ''">
+      <b-col
+        sm="12"
+        :md="this.programArea.name == 'Health Facility Survey' ? 'auto' : '8'"
+      >
         <div class="ml-3" v-show="this.programArea.name == 'mortality'">
           <b-row>
             <b-col>
