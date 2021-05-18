@@ -28,7 +28,7 @@
         </div>
         <h3 style="font-size: 15px">State Health Profile</h3>
       </b-col>
-      <b-col class="my-auto">
+      <b-col cols="12" class="my-auto">
         <b-row align-h="end" class="mx-auto">
           <p class="mr-3">Last Updated: 12.03.2020</p>
           <share/>
