@@ -84,4 +84,28 @@ describe('Testing for Data Layer Class', () => {
     // expect(db.defaultIndicators).toBeTruthy();
     // expect(db.defaultIndicators).toEqual(MSDAT.defaultIndicators);
   });
+  it('test isDataUpToDate function', async () => {
+    db.isDataUpToDate = jest.fn(() => Promise.resolve(true || false));
+    await expect(db.isDataUpToDate()).resolves.toBe(true || false);
+  });
+  it('test updateData function', async () => {
+    db.updateData = jest.fn(() => Promise.resolve());
+    await expect(db.updateData).toBeTruthy();
+  });
+
+  it('test checkIndicatorsInIdb function', async () => {
+    db.checkIndicatorsInIdb = jest.fn(() => Promise.resolve(db.indicators.count()));
+    await expect(db.checkIndicatorsInIdb()).toEqual(db.indicators.count());
+  });
+
+  it('test listAllIndicators function', async () => {
+    db.listAllIndicators = jest.fn(() => Promise.resolve(db.indicators.count()));
+    await expect(db.listAllIndicators()).toEqual(db.indicators.count());
+  });
+
+  // it('test storeDataForOtherEndPointToDB function', async () => {
+  //   db.storeDataForOtherEndPointToDB = jest.fn(() => Promise.resolve());
+  //   await expect(db.storeDataForOtherEndPointToDB(mockDataInIbdexedDB)).
+  //toHaveBeenCalledWith(mockDataInIbdexedDB);
+  //   });
 });
