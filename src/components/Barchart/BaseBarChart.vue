@@ -1,8 +1,5 @@
 <template>
-    <highcharts
-      :options="options"
-      ref="lineCharts"
-    ></highcharts>
+  <highcharts :options="options" ref="lineCharts"></highcharts>
 </template>
 
 <script>
@@ -48,7 +45,7 @@ export default {
      */
     chartOptions: {
       handler(passedObj) {
-        this.options = { ...this.options, ...passedObj };
+        this.options = Object.assign(this.options, passedObj);
       },
       deep: true,
       immediate: true,

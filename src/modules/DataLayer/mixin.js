@@ -1,5 +1,7 @@
 import { createNamespacedHelpers } from 'vuex';
-import { filter, matches } from 'lodash';
+import {
+  filter, matches, has, omit, isMatch,
+} from 'lodash';
 // import SampleData from './sample_data';
 import { MSDAT } from '@/config/dashboardGroups';
 
@@ -23,9 +25,7 @@ const { mapState } = createNamespacedHelpers('DL');
 
 export default {
   data() {
-    return {
-
-    };
+    return {};
   },
   computed: {
     ...mapState({
@@ -45,41 +45,6 @@ export default {
     // },
   },
   methods: {
-    dlMapping(arr) {
-      const map = arr.map((x) => {
-        const newObject = {};
-        if (x.datasource !== undefined) {
-          newObject.datasource = this.dlDatasource.find((datasrc) => datasrc.id === x.datasource);
-        }
-        newObject.value = x.value;
-        return newObject;
-      });
-      console.log(map);
-    },
-    map(arr) {
-      console.log(this.dlDatasource);
-      console.time('test');
-      const map = arr.map((x) => {
-        const newObject = {};
-        const objectKey = Object.keys(x);
-        const notIncludedKeys = ['id', 'period', 'value', 'created_at', 'updated_at'];
-        objectKey.forEach((e) => {
-          debugger;
-          if (!notIncludedKeys.includes(e)) {
-            if (x[e] !== undefined) {
-              newObject[e] = this[e].find((datasrc) => datasrc.id === x[e]);
-            }
-          } else {
-            newObject[e] = x[e];
-          }
-        });
-
-        return newObject;
-      });
-      console.timeEnd('test');
-      console.log(map);
-    },
-
     optionsIndicators() {
       return this.dlIndicator.filter((e) => this.dlDashboardIndicator.includes(e.id));
     },
@@ -89,21 +54,34 @@ export default {
      * @returns {dataObjectType}
      */
     dlQuery(queryObject) {
+      if (has(queryObject, 'location.level')) {
+        const { location } = queryObject;
+        const newQueryObject = omit(queryObject, ['location']);
+        const resultValue = filter(this.dlData, matches(newQueryObject));
+        return filter(resultValue, (item) => {
+          const locationValue = this.dlGetLocation(item.location);
+          if (isMatch(locationValue, location)) {
+            return item;
+          }
+          return null;
+        });
+      }
       return filter(this.dlData, matches(queryObject));
     },
 
     /**
-   * @param {Object} queryObject  The query Object
-   * @param {number} queryObject.indicator The id of the indicator
-   * @param {number} queryObject.datasource The id of the datasource
-   * @returns {dataObjectType}
-   */
+     * @param {Object} queryObject  The query Object
+     * @param {number} queryObject.indicator The id of the indicator
+     * @param {number} queryObject.datasource The id of the datasource
+     * @returns {dataObjectType}
+     */
     dlGetLatestSourceAndIndicatorData(queryObject) {
       debugger;
       const filteredIndicator = this.dlQuery(queryObject);
       if (filteredIndicator.length > 0) {
-        const maxValue = filteredIndicator.reduce((prev, current) => (
-          (Number(prev.period) > Number(current.period)) ? prev : current));
+        const maxValue = filteredIndicator.reduce(
+          (prev, current) => (Number(prev.period) > Number(current.period) ? prev : current),
+        );
         if (maxValue) {
           return maxValue;
         }
@@ -118,13 +96,16 @@ export default {
      * @param {number} id The indicator ID
      * @return {indicatorObjectType}
      */
-    dlGetIndicatorDataObject(id) {
+    dlGetIndicator(id) {
       return this.dlIndicator.find((item) => item.id === id);
     },
     /**
-     * @param {number} id The Factore ID
+     * @param {number} id The Location ID
      * @return {indicatorObjectType}
      */
+    dlGetLocation(id) {
+      return this.dlLocation.find((item) => item.id === id);
+    },
     dlGetFactor(id) {
       return this.dlFactors.find((item) => item.id === id);
     },
@@ -136,7 +117,5 @@ export default {
       return this.dlDashboardIndicator;
     },
   },
-  mounted() {
-  },
-
+  mounted() {},
 };
