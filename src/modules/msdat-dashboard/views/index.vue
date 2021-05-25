@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-if="loading">
     <!-- <h1>MSDAT DASHBOARD</h1> -->
 
     <!-- <h1>MSDAT DASHBOARD</h1>
         <button @click="execute()" class="btn btn-primary rounded-0">GO</button> -->
-
+    <button @click="tryIt()" class="btn btn-primary rounded-0">TEST</button>
     <BasePanel :position="position">
       <template v-slot:default>
         <ControlBase :title="'Indicator Overview'">
@@ -80,7 +80,7 @@
               <div class="row">
                 <div class="col-md-8">
                   <SubCard showControls>
-                    <h1>HEHHEH</h1>
+                    <h1></h1>
                   </SubCard>
                 </div>
                 <div class="col-md-4">
@@ -92,7 +92,7 @@
                         The Country. Source:<b> NHMIS 2017</b>
                       </h6>
                     </template>
-                    <BarChart />
+                    <BarChart :chartOptions="BarChartOptions" />
                   </SubCard>
                 </div>
               </div>
@@ -125,6 +125,8 @@ export default {
   data() {
     return {
       position: 3,
+      BarChartOptions: {},
+      loading: false,
     };
   },
   components: {
@@ -149,27 +151,45 @@ export default {
       debugger;
       const indicatorObject = this.dlGetIndicatorDataObject(7);
       dataSources.forEach((item) => {
-        data.push(this.dlGetLatestSourceAndIndicatorData(
-          { indicator: 7, datasource: item, location: 1 },
-        ));
+        data.push(
+          this.dlGetLatestSourceAndIndicatorData({
+            indicator: 7,
+            datasource: item,
+            location: 1,
+          }),
+        );
       });
 
       console.log(data);
       console.log(this.tableComponentDataFormatter(indicatorObject, data));
     },
+    tryIt() {
+      const data = this.dlQuery({
+        datasource: 4,
+        indicator: 5,
+        period: '2015',
+        location: {
+          level: 3,
+        },
+      });
+      this.BarChartOptions = this.genHighChartOption(data, {
+        target: {
+          value: this.dlGetIndicator(18).national_target,
+        },
+      });
+    },
   },
   async mounted() {
-    await this.$DL.init(
-      {
-        dashboardIndicators: MSDAT.indicators,
-        defaultIndicators: MSDAT.defaultIndicators,
-      },
-    );
-    debugger;
-    const data = this.dlQuery({ datasource: 8, indicator: 7 });
+    this.loading = false;
+    await this.$DL.init({
+      dashboardIndicators: MSDAT.indicators,
+      defaultIndicators: MSDAT.defaultIndicators,
+    });
+    this.loading = true;
+
+    const data = this.dlQuery({ indicator: 7 });
     console.log({ query: data });
   },
-
 };
 </script>
 

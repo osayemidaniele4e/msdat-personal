@@ -75,7 +75,7 @@ export default class DataBase {
     this.setup(object);
     const count = await this.data.count();
     console.log('DB count is', count);
-
+    console.time('fetching');
     if (count <= 0) {
       this.storeTimestampInLocal();
       console.log('fetching other endpoint');
@@ -96,7 +96,7 @@ export default class DataBase {
       this.addDataToStore(data);
       this.populateIndicatorsForCustomDashboard();
       const dataValue = await this.getIndicatorsFromApi(this.defaultIndicators);
-      // debugger;
+      //
       if (dataValue.length > 0) {
         for (let index = 0; index < dataValue.length; index += 1) {
           const element = dataValue[index].data;
@@ -110,7 +110,7 @@ export default class DataBase {
     }
 
     setTimeout(async () => {
-      // debugger;
+      //
       const indicatorsExceptDefault = pullAll(this.indicatorList, this.defaultIndicators);
       /**
        * getting the indicators one after the order seems to help the performance
@@ -156,27 +156,25 @@ export default class DataBase {
 
   async initData(indicator) {
     const indicatorInDB = await this.checkIndicatorsInIdb();
-    // debugger;
+    //
     for (let index = 0; index < indicator.length; index += 1) {
-      console.log(indicatorInDB.indexOf(indicator[index]) >= 0);
       if (indicatorInDB.indexOf(indicator[index]) >= 0) {
         // eslint-disable-next-line no-await-in-loop
         const dataItem = await this.getIndicatorFromDB(indicator[index]);
-        // debugger;
+
         /**
          * Then stores the data from the default indicators to the Store
          */
-        this.setDataInStore(dataItem, DATA);
+        this.addDataToStore(dataItem, DATA);
       } else {
         // eslint-disable-next-line no-await-in-loop
         const dataValue = await this.getIndicatorsFromApi(indicator[index]);
 
-        console.log(dataValue.data);
         if (dataValue.data.length > 0) {
           // eslint-disable-next-line no-await-in-loop
-          console.log(dataValue.data);
+
           await this.storeDataInDB(dataValue.data);
-          // debugger;
+          //
 
           this.addDataToStore(dataValue.data, DATA);
         }
@@ -350,10 +348,10 @@ export default class DataBase {
    */
   async storeDataInDB(data) {
     return this.db.transaction('rw', this.data, async () => {
-      // debugger;
+      //
       // const mapOutData = data.map((item) => item.data);
       // console.log(...mapOutData);
-      // debugger;
+      //
       await this.data.bulkPut(data);
       this.storeTimestampInLocal();
       // this.updatedStoreAvailableIndicator();

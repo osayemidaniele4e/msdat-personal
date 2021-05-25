@@ -1,14 +1,14 @@
 export default {
   chart: {
     type: 'bar',
-    // zoomType: 'xy',
+    zoomType: 'xy',
     height: 800,
   },
   title: {
     enabled: false,
-    // text: 'Loading...',
+    // text: 'L',
     style: {
-      fontSize: '16px',
+      fontSize: '13px',
       fontFamily: '"Muli", sans-serif',
       fontWeight: 'normal',
     },
@@ -19,7 +19,6 @@ export default {
     style: {
       fontSize: '14px',
       fontFamily: '"Muli", sans-serif',
-
     },
   },
   xAxis: {
@@ -27,7 +26,7 @@ export default {
     labels: {
       // rotation: 180,
       style: {
-        fontSize: '14px',
+        fontSize: '11px',
         fontFamily: '"Muli", sans-serif',
         fontWeight: 'normal',
       },
@@ -40,7 +39,7 @@ export default {
     title: {
       text: 'Values',
       style: {
-        fontSize: '16px',
+        fontSize: '13px',
         fontFamily: '"Muli", sans-serif',
       },
     },
@@ -54,10 +53,13 @@ export default {
         fontFamily: '"Muli", sans-serif',
       },
     },
-    // plotLines: [{
-    //   width: 2,
-    //   value: 0,
-    // }],
+    plotLines: [
+      {
+        width: 2,
+        value: 80,
+        name: 'NT',
+      },
+    ],
   },
   credits: {
     enabled: false,
@@ -67,7 +69,7 @@ export default {
     // verticalAlign: 'middle',
     // layout: 'vertical'
     itemStyle: {
-      fontSize: '14px',
+      fontSize: '11px',
       fontFamily: '"Muli", sans-serif',
       fontWeight: 400,
     },
@@ -78,7 +80,7 @@ export default {
       // borderWidth: 0,
     },
     series: {
-      // pointWidth: 16,
+      pointWidth: 10,
       // pointPlacement: 'between',
       // borderWidth: 0,
     },
@@ -87,7 +89,7 @@ export default {
         enabled: true,
         // format: '{y}%',
         style: {
-          fontSize: '14px',
+          fontSize: '10px',
           fontFamily: '"Muli", sans-serif',
         },
       },
@@ -116,37 +118,73 @@ export default {
         ['ReactJS plugin', 137],
         ['3D surface charts', 134],
         {
-          name: 'HEHEH', y: 216.4, color: 'blue', marker: { fillColor: 'red', radius: 10 },
+          name: 'HEHEH',
+          y: 216.4,
+          color: 'blue',
+          marker: { fillColor: 'red', radius: 10 },
         },
         ['Draw lines', 118],
         ['Data module', 118],
         ['Draggable points', 117],
       ],
     },
+    {
+      name: ' Not Votes',
+      color: 'gray',
+      data: [
+        ['Gantt chart1', 1000],
+        ['Autocalculation1 ', 575],
+        ['Allow navigator1 ', 523],
+        ['Implement1 ', 427],
+        ['Multiple1 ', 399],
+        ['Stacked1', 309],
+        ['Adap1t ', 278],
+        ['Export1 ', 239],
+        ['Toggle 1l', 235],
+        ['Venn Diagram1', 203],
+        ['Add ability1', 182],
+        ['Draggable1', 157],
+        ['Sankey Diagram1', 149],
+        ['Add Navigation1', 144],
+        ['Grouped x-axis1', 143],
+        ['ReactJS plugin1', 137],
+        ['3D surface charts1', 134],
+        {
+          name: 'HEHEH!',
+          y: 216.4,
+          color: 'blue',
+          marker: { fillColor: 'red', radius: 10 },
+        },
+        ['Draw lines1', 118],
+        ['Data module1', 118],
+        ['Draggable points1', 117],
+      ],
+    },
   ],
   responsive: {
-    rules: [{
-      condition: {
-        maxWidth: 500,
-      },
-      chartOptions: {
-        chart: {
-          type: 'bar',
-          height: 700,
+    rules: [
+      {
+        condition: {
+          maxWidth: 500,
         },
-        xAxis: {
-          type: 'category',
+        chartOptions: {
+          chart: {
+            type: 'bar',
+            height: 700,
+          },
+          xAxis: {
+            type: 'category',
 
-          labels: {
-            rotation: 0,
-            style: {
-              fontSize: '13px',
-              fontFamily: '"Muli", sans-serif',
-
+            labels: {
+              rotation: 0,
+              style: {
+                fontSize: '10px',
+                fontFamily: '"Muli", sans-serif',
+              },
             },
           },
         },
       },
-    }],
+    ],
   },
 };
