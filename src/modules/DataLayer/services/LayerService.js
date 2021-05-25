@@ -2,29 +2,20 @@
 import { pullAll } from 'lodash';
 import { formatDate } from './helper';
 import apiServices from './ApiServices';
+import DB from './indexedDB';
 
 const DATA = 'data';
 const INDICATORS = 'indicators';
 const FACTORS = 'factors';
 const DSI = 'datasource_specific_indicator';
-const LINK = 'links';
 const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
 
-export default class DataBase {
-  constructor(db, store) {
-    this.db = db;
+export default class DataLayer {
+  constructor(store) {
+    this.DB = new DB();
     this.store = store;
-    this.data = this.db.table(DATA);
-    this.countries = this.db.table('countries');
-    this.indicators = this.db.table(INDICATORS);
-    this.location = this.db.table(LOCATION);
-    this.factors = this.db.table(FACTORS);
-    this.DSI = this.db.table(DSI);
-    this.location_hierarchy_level = this.db.table(LINK);
-    this.valuetypes = this.db.table(VALUE_TYPES);
-    this.datasources = this.db.table(DATA_SOURCE);
     this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
     this.defaultIndicators = [7, 5, 8];
     this.indicatorsInIdb = [];
@@ -60,7 +51,7 @@ export default class DataBase {
    * with the first three in the list
    */
   setAllIndicators() {
-    const allIndicators = this.listAllIndicators();
+    const allIndicators = this.DB.listAllIndicators();
     this.indicatorList = allIndicators;
     this.defaultIndicators = allIndicators.slice(0, 3);
   }
@@ -71,7 +62,7 @@ export default class DataBase {
 
   async init(object) {
     this.setup(object);
-    const count = await this.data.count();
+    const count = await this.DB.data.count();
     console.log('DB count is', count);
     console.time('fetching');
     if (count <= 0) {
@@ -90,7 +81,7 @@ export default class DataBase {
        * per time
        */
       console.log('storing other endpoint to index db');
-      await this.storeDataForOtherEndPointToDB(data);
+      await this.DB.storeDataForOtherEndPointToDB(data);
       this.addDataToStore(data);
 
       const dataValue = await this.getIndicatorsFromApi(this.defaultIndicators);
@@ -98,7 +89,7 @@ export default class DataBase {
       if (dataValue.length > 0) {
         for (let index = 0; index < dataValue.length; index += 1) {
           const element = dataValue[index].data;
-          await this.storeDataInDB(element);
+          await this.DB.storeDataInDB(element);
           this.addDataToStore(element, DATA);
         }
       }
@@ -138,27 +129,27 @@ export default class DataBase {
   }
 
   async initOtherTablesFromDB() {
-    let dataItem = await this.DSI.toArray();
+    let dataItem = await this.DB.DSI.toArray();
     this.setDataInStore(dataItem, DSI);
-    dataItem = await this.location.toArray();
+    dataItem = await this.DB.location.toArray();
     this.setDataInStore(dataItem, LOCATION);
-    dataItem = await this.indicators.toArray();
+    dataItem = await this.DB.indicators.toArray();
     this.setDataInStore(dataItem, INDICATORS);
-    dataItem = await this.datasources.toArray();
+    dataItem = await this.DB.datasources.toArray();
     this.setDataInStore(dataItem, DATA_SOURCE);
-    dataItem = await this.valuetypes.toArray();
+    dataItem = await this.DB.valuetypes.toArray();
     this.setDataInStore(dataItem, VALUE_TYPES);
-    dataItem = await this.factors.toArray();
+    dataItem = await this.DB.factors.toArray();
     this.setDataInStore(dataItem, FACTORS);
   }
 
   async initData(indicator) {
-    const indicatorInDB = await this.checkIndicatorsInIdb();
+    const indicatorInDB = await this.DB.checkIndicatorsInIdb();
     //
     for (let index = 0; index < indicator.length; index += 1) {
       if (indicatorInDB.indexOf(indicator[index]) >= 0) {
         // eslint-disable-next-line no-await-in-loop
-        const dataItem = await this.getIndicatorFromDB(indicator[index]);
+        const dataItem = await this.DB.getIndicatorFromDB(indicator[index]);
 
         /**
          * Then stores the data from the default indicators to the Store
@@ -171,7 +162,7 @@ export default class DataBase {
         if (dataValue.data.length > 0) {
           // eslint-disable-next-line no-await-in-loop
 
-          await this.storeDataInDB(dataValue.data);
+          await this.DB.storeDataInDB(dataValue.data);
           //
 
           this.addDataToStore(dataValue.data, DATA);
@@ -226,53 +217,6 @@ export default class DataBase {
           console.log(err);
         });
     }
-  }
-
-  /**
-   *
-   * @returns {array} a unique array of all the indicator
-   * indexes available in iDB.
-   * This is considerably less cpu-intensive than toArray()
-   */
-  async checkIndicatorsInIdb() {
-    return this.db.data.orderBy('indicator').uniqueKeys();
-  }
-
-  /**
-   *
-   * @returns {array} containing a list of all indicator ids
-   * available to the api
-   */
-  listAllIndicators() {
-    return this.indicators.orderBy('id').uniqueKeys();
-  }
-
-  /**
-   *
-   * @param {Promise} data
-   * @description let be cautions with this function so cause it follows the same other as
-   * it follow the id of the return time
-   * anyways i will suggest a refactoring  of this function
-   */
-
-  async storeDataForOtherEndPointToDB(data) {
-    return this.db.transaction(
-      'rw',
-      this.DSI,
-      this.location,
-      this.indicators,
-      this.valuetypes,
-      this.factors,
-      this.datasources,
-      async () => {
-        await this.DSI.bulkPut(data[6].data);
-        await this.location.bulkPut(data[0].data);
-        await this.indicators.bulkPut(data[1].data);
-        await this.valuetypes.bulkPut(data[3].data);
-        await this.factors.bulkPut(data[5].data);
-        await this.datasources.bulkPut(data[7].data);
-      },
-    );
   }
 
   /**
@@ -341,38 +285,6 @@ export default class DataBase {
 
   /**
    *
-   * @param {array} data array of indicator data
-   *
-   */
-  async storeDataInDB(data) {
-    return this.db.transaction('rw', this.data, async () => {
-      //
-      // const mapOutData = data.map((item) => item.data);
-      // console.log(...mapOutData);
-      //
-      await this.data.bulkPut(data);
-      this.storeTimestampInLocal();
-      // this.updatedStoreAvailableIndicator();
-    });
-
-    // provide a mixin for getting this from store
-  }
-
-  /**
-   *
-   * @param {array} arrayOfIndicatorIds
-   * @returns {array} data from the database related to
-   * the given ids
-   */
-  async getIndicatorDataThatExistInDB(arrayOfIndicatorIds) {
-    return this.db.transaction('r', this.data, () => this.db.data
-      .where('indicator')
-      .anyOf(arrayOfIndicatorIds)
-      .toArray());
-  }
-
-  /**
-   *
    * @param {array} data, array of data objects
    * @param {string} tableName
    */
@@ -393,17 +305,5 @@ export default class DataBase {
       tableName: 'dashboardIndicator',
       data: indicatorsIDs,
     });
-  }
-
-  /**
-   *
-   * @param {number} id , an indicator id
-   * @returns {array} of data objects for the indicator
-   */
-  getIndicatorFromDB(id) {
-    return this.data
-      .where('indicator')
-      .equals(id)
-      .toArray();
   }
 }
