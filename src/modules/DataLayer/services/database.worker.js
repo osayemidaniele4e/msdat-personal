@@ -54,6 +54,7 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
+    console.log(data);
     return this.db.transaction(
       'rw',
       this.DSI,
@@ -73,6 +74,12 @@ export default class DataBase {
     );
   }
 
+  async storeDataInDBTable(data, tableName) {
+    return this.db.transaction('rw', this.db.table(tableName), async () => {
+      await this.db.table(tableName).bulkPut(data);
+    });
+  }
+
   /**
    *
    * @param {array} data array of indicator data
@@ -80,12 +87,7 @@ export default class DataBase {
    */
   async storeDataInDB(data) {
     return this.db.transaction('rw', this.data, async () => {
-      //
-      // const mapOutData = data.map((item) => item.data);
-      // console.log(...mapOutData);
-      //
       await this.data.bulkPut(data);
-      // this.updatedStoreAvailableIndicator();
     });
 
     // provide a mixin for getting this from store
