@@ -2,8 +2,11 @@
 import { pullAll } from 'lodash';
 import { formatDate } from './helper';
 import apiServices from './ApiServices';
-import DB from './indexedDB';
+import Database from './database.worker';
+// import Database from './indexedDB';
 
+// console.log(MyClass);
+// debugger;
 const DATA = 'data';
 const INDICATORS = 'indicators';
 const FACTORS = 'factors';
@@ -14,11 +17,10 @@ const LOCATION = 'location';
 
 export default class DataLayer {
   constructor(store) {
-    this.DB = new DB();
+    this.DB = '';
     this.store = store;
     this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
     this.defaultIndicators = [7, 5, 8];
-    this.indicatorsInIdb = [];
     this.LOCAL_STORAGE_KEY = 'dataTimestamp';
   }
 
@@ -61,9 +63,11 @@ export default class DataLayer {
    */
 
   async init(object) {
+    this.DB = await new Database();
     this.setup(object);
     const count = await this.DB.data.count();
     console.log('DB count is', count);
+
     console.time('fetching');
     if (count <= 0) {
       this.storeTimestampInLocal();
@@ -81,7 +85,16 @@ export default class DataLayer {
        * per time
        */
       console.log('storing other endpoint to index db');
-      await this.DB.storeDataForOtherEndPointToDB(data);
+      console.log(await this.DB.listAllIndicators());
+
+      await this.DB.storeDataInDBTable(data[6].data, DSI);
+      await this.DB.storeDataInDBTable(data[0].data, LOCATION);
+      await this.DB.storeDataInDBTable(data[1].data, INDICATORS);
+      await this.DB.storeDataInDBTable(data[3].data, VALUE_TYPES);
+      await this.DB.storeDataInDBTable(data[5].data, FACTORS);
+      await this.DB.storeDataInDBTable(data[7].data, DATA_SOURCE);
+
+      // await this.DB.storeOtherEndPointTableToDB(data);
       this.addDataToStore(data);
 
       const dataValue = await this.getIndicatorsFromApi(this.defaultIndicators);
@@ -91,6 +104,7 @@ export default class DataLayer {
           const element = dataValue[index].data;
           await this.DB.storeDataInDB(element);
           this.addDataToStore(element, DATA);
+          this.updatedStoreAvailableIndicator(this.defaultIndicators);
         }
       }
     } else {
@@ -110,12 +124,10 @@ export default class DataLayer {
        * also always ensure to use for Loop with async operations
        * forEach loop doesn't  take asynchronous operations into consideration
        */
-      // console.log(this.indicatorsInIdb);
       console.log('in set timeout');
       await this.initData(indicatorsExceptDefault);
     }, 500);
 
-    this.updatedStoreAvailableIndicator();
     /*
      *This compares then the indicator Array with the indicator Array of the dashboard
      * */
@@ -145,27 +157,23 @@ export default class DataLayer {
 
   async initData(indicator) {
     const indicatorInDB = await this.DB.checkIndicatorsInIdb();
-    //
     for (let index = 0; index < indicator.length; index += 1) {
       if (indicatorInDB.indexOf(indicator[index]) >= 0) {
         // eslint-disable-next-line no-await-in-loop
         const dataItem = await this.DB.getIndicatorFromDB(indicator[index]);
-
         /**
          * Then stores the data from the default indicators to the Store
          */
         this.addDataToStore(dataItem, DATA);
+        this.updatedStoreAvailableIndicator(indicator[index]);
       } else {
         // eslint-disable-next-line no-await-in-loop
         const dataValue = await this.getIndicatorsFromApi(indicator[index]);
-
         if (dataValue.data.length > 0) {
           // eslint-disable-next-line no-await-in-loop
-
           await this.DB.storeDataInDB(dataValue.data);
-          //
-
           this.addDataToStore(dataValue.data, DATA);
+          this.updatedStoreAvailableIndicator(indicator[index]);
         }
       }
     }
@@ -299,11 +307,15 @@ export default class DataLayer {
    * Fetches a unique list of indicators available in iDB
    */
 
-  async updatedStoreAvailableIndicator() {
-    const indicatorsIDs = await this.indicatorsInIdb;
-    this.store.commit('DL/SET_DATA', {
-      tableName: 'dashboardIndicator',
-      data: indicatorsIDs,
+  async updatedStoreAvailableIndicator(indicatorsIDs) {
+    let indicators = indicatorsIDs;
+    if (!Array.isArray(indicatorsIDs)) {
+      indicators = [indicatorsIDs];
+    }
+
+    this.store.commit('DL/ADD_DATA', {
+      tableName: 'indicatorsInStore',
+      data: indicators,
     });
   }
 }
