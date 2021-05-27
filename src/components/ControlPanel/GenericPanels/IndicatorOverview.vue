@@ -8,6 +8,8 @@
           v-model="payload.indicator"
           :options="indicatorOptions"
           :searchable="true"
+           track-by="id"
+           label="short_name"
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
@@ -27,6 +29,8 @@
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
+          track-by="id"
+          label="name"
         ></multiselect>
       </div>
     </div>
@@ -43,6 +47,8 @@
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
+          track-by="id"
+          label="datasource"
         ></multiselect>
       </div>
     </div>
