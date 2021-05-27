@@ -7,6 +7,8 @@
         <multiselect
           v-model="payload.indicator"
           :options="indicatorOptions"
+           track-by="id"
+           label="short_name"
           :searchable="false"
           :close-on-select="true"
           :show-labels="false"
@@ -28,8 +30,8 @@
           :preserve-search="true"
           :max="3"
           placeholder="Pick some"
-          label="name"
-          track-by="name"
+          track-by="id"
+          label="datasource"
           :preselect-first="false"
         >
         </multiselect>

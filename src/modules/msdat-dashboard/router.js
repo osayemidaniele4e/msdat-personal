@@ -1,16 +1,19 @@
 import routertest from '@/components/maps/router';
 import aboutRoute from './views/about/router';
-import Home from './views/index.vue';
+import Dashboard from './views/index.vue';
 import TableHome from './views/Table.vue';
 
 export default [
   {
     path: '/',
-    name: 'Dashboard',
-    component: Home,
+    component: Dashboard,
     meta: {
       requiresAuth: true,
     },
+    children: [{
+      path: '',
+      component: () => import('./views/dashboard/dashboard.vue'),
+    }],
   },
   ...aboutRoute,
   {

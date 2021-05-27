@@ -34,18 +34,12 @@ export default {
       dlIndicator: (state) => state.indicators,
       dlLocation: (state) => state.location,
       dlValue_type: (state) => state.valuetypes,
-      dlDashboardIndicator: (state) => state.dashboardIndicator,
+      dlDashboardIndicator: (state) => state.indicatorsInStore,
       dlFactors: (state) => state.factors,
     }),
-    // ...mapGetters([
-    //   'indicators',
-    // ]),
-    // dL_getIndicator() {
-    //   return this.dlIndicators;
-    // },
   },
   methods: {
-    optionsIndicators() {
+    dlGetAvailableIndicators() {
       return this.dlIndicator.filter((e) => this.dlDashboardIndicator.includes(e.id));
     },
 
@@ -90,7 +84,7 @@ export default {
       return null;
     },
     dlGetDashboardDataSource() {
-      return MSDAT.dataSources;
+      return this.dlDatasource.filter((e) => MSDAT.dataSources.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
@@ -113,9 +107,9 @@ export default {
       debugger;
       return this.dlDatasource.find((item) => item.id === id);
     },
-    dlGetAvailableIndicators() {
-      return this.dlDashboardIndicator;
-    },
+    // dlGetAvailableIndicators() {
+    //   return this.dlDashboardIndicator;
+    // },
   },
   mounted() {},
 };
