@@ -124,6 +124,7 @@ export default {
       position: 3,
       BarChartOptions: {},
       controlPanel: {},
+      bbb: 1,
     };
   },
   components: {
@@ -140,7 +141,7 @@ export default {
   methods: {
     log(data) {
       console.log(data);
-      this.controlPanelOptions = Object.assign(this.controlPanel, data);
+      this.controlPanel = Object.assign(this.controlPanel, data);
       console.log(this.controlPanel);
     },
     execute() {
@@ -163,17 +164,23 @@ export default {
       console.log(this.tableComponentDataFormatter(indicatorObject, data));
     },
     tryIt() {
+      debugger;
+      this.bbb = 2020;
+      const {
+        datasource, indicator, location, year,
+      } = this.controlPanel;
       const data = this.dlQuery({
-        datasource: 4,
-        indicator: 5,
-        period: '2015',
+        datasource: datasource.id,
+        indicator: indicator.id,
+        period: year,
         location: {
-          level: 3,
+          level: location.id === 1 ? 3 : location.parent,
         },
       });
+      console.log(data);
       this.BarChartOptions = this.genHighChartOption(data, {
         target: {
-          value: this.dlGetIndicator(18).national_target,
+          value: this.dlGetIndicator(indicator.id).national_target,
         },
       });
     },

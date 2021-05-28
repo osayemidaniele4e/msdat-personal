@@ -22,7 +22,7 @@
     <label class="h6 text-uppercase work-sans">data sources</label>
       <div>
         <multiselect
-          v-model="payload.data"
+          v-model="payload.datasource"
           :options="dataSourceOptions"
           :multiple="true"
           :close-on-select="false"
