@@ -42,7 +42,7 @@
 
       <div>
         <multiselect
-          v-model="payload.data"
+          v-model="payload.datasource"
           :options="dataSourceOptions"
           :searchable="false"
           :close-on-select="true"
