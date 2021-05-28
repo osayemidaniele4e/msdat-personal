@@ -2,7 +2,7 @@
   <div>
     <button @click="contactbtn = true" class="send bi bi-alarm-fill"> Contact</button>
 
-    <MODAL v-show="contactbtn" v-on:closeContact="closeContactform"
+    <Modal v-show="contactbtn" v-on:closeContact="closeContactform"
     v-on:submitContact="conformSend"
      :nofields="nofields" :successmessage="successmessage">
 
@@ -23,7 +23,7 @@
           cols="55"
           rows="5"/>
         <span slot="top3" class="feedback">*we will get back to you as soon as possible</span>
-        <strong slot="bottom1"> or send an email </strong>
+        <strong slot="bottom1"> send an email </strong>
         <input
             slot="bottom2"
             type="email"
@@ -32,17 +32,17 @@
             v-model="contactFormFields.email"
         />
 
-    </MODAL>
+    </Modal>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import MODAL from '../ui-components/modal/modal.vue';
+import Modal from '../ui-components/modal/modal.vue';
 
 export default {
   components: {
-    MODAL,
+    Modal,
   },
   data() {
     return {
@@ -70,9 +70,11 @@ export default {
 
     conformSend() {
       // this.loader = true;
-      const headers = {
-        Authorization: 'Bearer 054d817a3b1a3a2c5edf656959334969e1264e84',
-      };
+      // const obj = JSON.stringify(this.contactFormFields);
+      // const headers = {
+      //   Authorization: 'Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b',
+
+      // };
       if (
         this.validFields(this.contactFormFields.name)
         && this.validEmail(this.contactFormFields.email)
@@ -81,7 +83,7 @@ export default {
         // this.contactFormFields.email != "" ||
       ) {
         console.log('passed validation ish');
-        console.log(this.apiFormat(this.contactFormFields));
+
         this.errormessage = false;
         if (
           this.contactFormFields.name
@@ -90,9 +92,9 @@ export default {
         ) {
           axios
             .post(
-              'https://msdatapi.fmohconnect.gov.ng/api/account/contact/',
+              'http://209.182.232.228:7000/api/account/contact/',
               this.contactFormFields,
-              { headers },
+              // { headers },
             )
             .then((response) => {
               console.log(this.apiFormat(this.contactFormFields));
@@ -114,19 +116,8 @@ export default {
         }
       } else {
         this.nofields = true;
+        console.log('failed to post');
       }
-    },
-
-    apiFormat(value) {
-      const parentArray = [];
-      const childArray = [];
-      childArray.push(
-        value.name,
-        value.email,
-        value.feedback,
-      );
-      parentArray.push(childArray);
-      return JSON.stringify({ data: parentArray });
     },
 
     closeContactform() {
@@ -152,6 +143,7 @@ export default {
 }
 input {
   margin: 10px 0px;
+   padding: 0px 10px;
   outline: none;
   -webkit-appearance: none;
 }
@@ -161,6 +153,7 @@ input {
 }
 
 textarea {
+   padding: 0px 10px;
     resize: none;
     outline: none;
     display: block;

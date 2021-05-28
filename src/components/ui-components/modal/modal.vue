@@ -140,7 +140,8 @@ export default {
 
     position: relative;
     z-index: 50;
-    width: 650px;
+    width: 600px;
+    height: 550px;
     min-width: 370px;
     border-radius: 5px;
     background: #fff;
@@ -174,6 +175,8 @@ export default {
 .modal_footer {
     border-top: 2px solid #eee;
     text-align: left;
+    position: relative;
+    bottom: 1.3rem;
     }
 
 .form-group {
