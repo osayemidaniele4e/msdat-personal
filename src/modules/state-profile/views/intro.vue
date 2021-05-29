@@ -68,7 +68,7 @@
         </b-row>
       </b-col>
       <b-col sm="12" md="5" class="mt-5">
-        <img class="img-fluid" src="@/assets/state-profile/svg/intro-map.svg" alt="" />
+        <BaseMap :level="1" :mapObject="mapOptions"/>
         <!-- <stateProfileSvg :name="'map'"> </stateProfileSvg> -->
         <p class="mt-5 text-center map-text">Select a state on the map to view state profile</p>
       </b-col>
@@ -78,12 +78,18 @@
 
 <script>
 // import stateProfileSvg from "../state-profile/svg/stateprofileSvg.vue";
+import BaseMap from '@/components/maps/BaseMap.vue';
 
 export default {
   name: 'intro',
   components: {
     // stateProfileSvg
+    BaseMap,
   },
+
+  mounted() {
+  },
+
   data() {
     return {
       programAreas: [
@@ -95,6 +101,102 @@ export default {
         'malaria',
         'survey',
       ],
+      mapOptions: {
+        title: {
+          text: '',
+        },
+        subtitle: {
+          text: '',
+        },
+        plotOptions: {
+          map: {
+            joinBy: ['name', 'hc-key'],
+            dataLabels: {
+              color: '#3F6040',
+              enabled: true,
+              formatter() {
+                if (this.point.value) {
+                  return this.point.name;
+                }
+                return this.point.name;
+              },
+            },
+            colorAxis: {
+              min: 0,
+            },
+          },
+        },
+        series: [{
+          name: 'Nigeria',
+          point: {
+            events: {
+              click: (event) => {
+                console.log(event.point.name);
+                const state = event.point.name;
+                this.$router.push({ name: 'state-profile', params: { state } });
+              },
+            },
+          },
+          borderColor: 'white',
+          borderWidth: 3,
+          data: [
+            ['Kano', 1],
+            ['Delta', 1],
+            ['Jigawa', 1],
+            ['Kano', 1],
+            ['Katsina', 1],
+            ['Kebbi', 1],
+            ['Sokoto'],
+            ['Kaduna', 1],
+            ['Zamfara', 1],
+            ['Nasarawa', 1],
+            ['Niger', 1],
+            ['Plateau', 1],
+            ['Kwara', 1],
+            ['Kogi', 1],
+            ['Benue', 1],
+            ['Federal Capital Territory', 1],
+            ['Abia', 1],
+            ['Ebonyi', 1],
+            ['Imo', 1],
+            ['Enugu', 1],
+            ['Anambra', 1],
+            ['Ondo', 1],
+            ['Ogun', 1],
+            ['Osun', 1],
+            ['Lagos', 1],
+            ['Ekiti', 1],
+            ['Oyo', 1],
+            ['Akwa Ibom', 1],
+            ['Bayelsa', 1],
+            ['Cross River', 1],
+            ['Rivers', 1],
+            ['Delta', 1],
+            ['Edo', 1],
+            ['Adamawa', 1],
+            ['Bauchi', 1],
+            ['Borno', 1],
+            ['Gombe', 1],
+            ['Taraba', 1],
+            ['Yobe', 1],
+            ['Sokoto', 123],
+            ['Nassarawa', 780],
+          ],
+        }],
+        colors: ['#F3C382'],
+        legend: {
+          enabled: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        credits: {
+          enabled: false,
+        },
+        mapNavigation: {
+          enabled: false,
+        },
+      },
     };
   },
 };
