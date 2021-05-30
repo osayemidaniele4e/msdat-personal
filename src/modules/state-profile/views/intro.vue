@@ -110,6 +110,9 @@ export default {
         },
         plotOptions: {
           map: {
+            nullColor: '#EFA43E',
+            nullInteraction: true,
+            color: '#EFA43E',
             joinBy: ['name', 'hc-key'],
             dataLabels: {
               color: '#3F6040',
@@ -132,56 +135,14 @@ export default {
             events: {
               click: (event) => {
                 console.log(event.point.name);
-                const state = event.point.name;
+                let state = event.point.name;
+                state = state.replace(/\s+/g, '');
                 this.$router.push({ name: 'state-profile', params: { state } });
               },
             },
           },
           borderColor: 'white',
           borderWidth: 3,
-          data: [
-            ['Kano', 1],
-            ['Delta', 1],
-            ['Jigawa', 1],
-            ['Kano', 1],
-            ['Katsina', 1],
-            ['Kebbi', 1],
-            ['Sokoto'],
-            ['Kaduna', 1],
-            ['Zamfara', 1],
-            ['Nasarawa', 1],
-            ['Niger', 1],
-            ['Plateau', 1],
-            ['Kwara', 1],
-            ['Kogi', 1],
-            ['Benue', 1],
-            ['Federal Capital Territory', 1],
-            ['Abia', 1],
-            ['Ebonyi', 1],
-            ['Imo', 1],
-            ['Enugu', 1],
-            ['Anambra', 1],
-            ['Ondo', 1],
-            ['Ogun', 1],
-            ['Osun', 1],
-            ['Lagos', 1],
-            ['Ekiti', 1],
-            ['Oyo', 1],
-            ['Akwa Ibom', 1],
-            ['Bayelsa', 1],
-            ['Cross River', 1],
-            ['Rivers', 1],
-            ['Delta', 1],
-            ['Edo', 1],
-            ['Adamawa', 1],
-            ['Bauchi', 1],
-            ['Borno', 1],
-            ['Gombe', 1],
-            ['Taraba', 1],
-            ['Yobe', 1],
-            ['Sokoto', 123],
-            ['Nassarawa', 780],
-          ],
         }],
         colors: ['#F3C382'],
         legend: {
