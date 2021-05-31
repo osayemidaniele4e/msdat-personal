@@ -5,7 +5,8 @@
     <!-- <h1>MSDAT DASHBOARD</h1>
         <button @click="execute()" class="btn btn-primary rounded-0">GO</button> -->
     <button @click="tryIt()" class="btn btn-primary rounded-0">TEST</button>
-    <BasePanel :position="position">
+    <b-overlay :show="cpIsLoading">
+      <BasePanel :position="position">
       <template v-slot:default>
         <ControlBase :title="'Indicator Overview'">
           <IndicatorOverviewPanel
@@ -14,7 +15,6 @@
             :locationOptions="cpLocation"
             :dataSourceOptions="cpDataSources"
             :yearOptions="cpAvailableYears"
-            :compareOptions="['2019']"
           />
         </ControlBase>
         <ControlBase :title="'Zonal Analysis'">
@@ -63,6 +63,7 @@
         </ControlBase>
       </template>
     </BasePanel>
+    </b-overlay>
     <!-- control Panels ends here  -->
     <div class="container-fluid">
       <div class="row">
@@ -124,7 +125,6 @@ export default {
       position: 3,
       BarChartOptions: {},
       controlPanel: {},
-      bbb: 1,
     };
   },
   components: {
@@ -139,10 +139,25 @@ export default {
     BarChart,
   },
   methods: {
-    log(data) {
+    async log(optionsObject) {
+      const {
+        datasource, indicator, location, year,
+      } = optionsObject;
+      const data = await this.dlQuery({
+        datasource: datasource.id,
+        indicator: indicator.id,
+        period: year,
+        value_type: 2,
+        location: {
+          level: location.id === 1 ? 3 : location.parent,
+        },
+      });
       console.log(data);
-      this.controlPanel = Object.assign(this.controlPanel, data);
-      console.log(this.controlPanel);
+      this.BarChartOptions = this.genHighChartOption(data, {
+        target: {
+          value: this.dlGetIndicator(indicator.id).national_target,
+        },
+      });
     },
     execute() {
       const data = [];
@@ -164,8 +179,6 @@ export default {
       console.log(this.tableComponentDataFormatter(indicatorObject, data));
     },
     async tryIt() {
-      debugger;
-      this.bbb = 2020;
       const {
         datasource, indicator, location, year,
       } = this.controlPanel;
