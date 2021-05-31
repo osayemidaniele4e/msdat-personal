@@ -35,7 +35,7 @@
           <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <img class="img-fluid" src="@/assets/state-profile/svg/locals.svg" alt="local-governments"/>
+        <BaseMap :level="3" :lgaState="state" :mapObject="mapOptions"/>
         <b-row>
           <b-col cols="auto">
             <p>Land Area</p>
@@ -52,8 +52,13 @@
 </template>
 
 <script>
+import BaseMap from '@/components/maps/BaseMap.vue';
+
 export default {
   name: 'demographics',
+  components: {
+    BaseMap,
+  },
   props: {
     state: String,
     stateDemographics: Array,
@@ -68,7 +73,62 @@ export default {
   },
   data() {
     return {
-
+      mapOptions: {
+        title: {
+          text: '',
+        },
+        subtitle: {
+          text: '',
+        },
+        plotOptions: {
+          map: {
+            nullColor: '#EFA43E',
+            nullInteraction: true,
+            color: '#EFA43E',
+            joinBy: ['name', 'hc-key'],
+            dataLabels: {
+              color: '#3F6040',
+              enabled: true,
+              formatter() {
+                if (this.point.value) {
+                  return this.point.name;
+                }
+                return this.point.name;
+              },
+            },
+            colorAxis: {
+              min: 0,
+            },
+          },
+        },
+        series: [{
+          name: 'Nigeria',
+          point: {
+            events: {
+              click: (event) => {
+                console.log(event.point.name);
+                const state = event.point.name;
+                this.$router.push({ name: 'state-profile', params: { state } });
+              },
+            },
+          },
+          borderColor: 'white',
+          borderWidth: 3,
+        }],
+        colors: ['#F3C382'],
+        legend: {
+          enabled: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        credits: {
+          enabled: false,
+        },
+        mapNavigation: {
+          enabled: false,
+        },
+      },
     };
   },
 };

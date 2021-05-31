@@ -68,7 +68,7 @@
         </b-row>
       </b-col>
       <b-col sm="12" md="5" class="mt-5">
-        <img class="img-fluid" src="@/assets/state-profile/svg/intro-map.svg" alt="" />
+        <BaseMap :level="1" :mapObject="mapOptions"/>
         <!-- <stateProfileSvg :name="'map'"> </stateProfileSvg> -->
         <p class="mt-5 text-center map-text">Select a state on the map to view state profile</p>
       </b-col>
@@ -78,12 +78,18 @@
 
 <script>
 // import stateProfileSvg from "../state-profile/svg/stateprofileSvg.vue";
+import BaseMap from '@/components/maps/BaseMap.vue';
 
 export default {
   name: 'intro',
   components: {
     // stateProfileSvg
+    BaseMap,
   },
+
+  mounted() {
+  },
+
   data() {
     return {
       programAreas: [
@@ -95,6 +101,63 @@ export default {
         'malaria',
         'survey',
       ],
+      mapOptions: {
+        title: {
+          text: '',
+        },
+        subtitle: {
+          text: '',
+        },
+        plotOptions: {
+          map: {
+            nullColor: '#EFA43E',
+            nullInteraction: true,
+            color: '#EFA43E',
+            joinBy: ['name', 'hc-key'],
+            dataLabels: {
+              color: '#3F6040',
+              enabled: true,
+              formatter() {
+                if (this.point.value) {
+                  return this.point.name;
+                }
+                return this.point.name;
+              },
+            },
+            colorAxis: {
+              min: 0,
+            },
+          },
+        },
+        series: [{
+          name: 'Nigeria',
+          point: {
+            events: {
+              click: (event) => {
+                console.log(event.point.name);
+                let state = event.point.name;
+                state = state.replace(/\s+/g, '');
+                this.$router.push({ name: 'state-profile', params: { state } });
+              },
+            },
+          },
+          borderColor: 'white',
+          borderWidth: 3,
+        }],
+        colors: ['#F3C382'],
+        legend: {
+          enabled: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        credits: {
+          enabled: false,
+        },
+        mapNavigation: {
+          enabled: false,
+        },
+      },
     };
   },
 };

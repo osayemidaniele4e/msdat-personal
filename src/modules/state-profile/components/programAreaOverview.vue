@@ -28,10 +28,7 @@
           <b-icon icon="caret-up-fill"></b-icon>
         </b-button>
       </b-col>
-      <b-col
-        sm="12"
-        :md="this.programArea.name == 'Health Facility Survey' ? 'auto' : '8'"
-      >
+      <b-col sm="12" :md="this.programArea.name == 'Health Facility Survey' ? 'auto' : '8'">
         <div class="ml-3" v-show="this.programArea.name == 'mortality'">
           <b-row>
             <b-col>
@@ -101,29 +98,30 @@
           </b-row>
         </div>
         <div class="mb-4">
-          <p class="blue-heading">HR Guideline and Workforce</p>
+          <p class="blue-heading">Financing</p>
           <b-row>
             <b-col>
               <p class="hfs-details">
-                Proportion of PHF health workers interviewed who had received prior training in IMCI
+                Proportion of PHCs receiving funds in cash and kind
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">54.3%</p>
+              <p class="value text-right">78.1%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
         </div>
         <div>
-          <p class="blue-heading">HR Guideline and Workforce</p>
+          <p class="blue-heading">Facility Management</p>
           <b-row>
             <b-col>
               <p class="hfs-details">
-                Proportion of PHF health workers interviewed who had received prior training in IMCI
+                Percentage of PHFs who ISS documentation contain recommendations on QOC or facility
+                supervision
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">54.3%</p>
+              <p class="value text-right">23.4%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -134,43 +132,57 @@
       </b-col>
       <b-col class="text-left" v-show="this.programArea.name == 'Health Facility Survey'">
         <div class="mb-4">
-          <p class="blue-heading">HR Guideline and Workforce</p>
+          <p class="blue-heading">Facility readiness to deliver services</p>
           <b-row>
             <b-col>
               <p class="hfs-details">
-                Proportion of PHF health workers interviewed who had received prior training in IMCI
+                Percentage of facilities with malaria test capacity
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">54.3%</p>
+              <p class="value text-right">93.6%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
         </div>
         <div class="mb-4">
-          <p class="blue-heading">HR Guideline and Workforce</p>
+          <!-- <p class="blue-heading">HR Guideline and Workforce</p> -->
           <b-row>
             <b-col>
               <p class="hfs-details">
-                Proportion of PHF health workers interviewed who had received prior training in IMCI
+                Percentage of PHFs that offer HIV testing as part of routine ANC
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">54.3%</p>
+              <p class="value text-right">87.2%</p>
+              <p class="source text-right">Source: NHFS 2018</p>
+            </b-col>
+          </b-row>
+        </div>
+        <div class="mb-4">
+          <p class="blue-heading">Drugs and Commodities</p>
+          <b-row>
+            <b-col>
+              <p class="hfs-details">
+                Proportion of essential drugs available in health facilities
+              </p>
+            </b-col>
+            <b-col>
+              <p class="value text-right">65.8%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
         </div>
         <div>
-          <p class="blue-heading">HR Guideline and Workforce</p>
+          <!-- <p class="blue-heading">HR Guideline and Workforce</p> -->
           <b-row>
             <b-col>
               <p class="hfs-details">
-                Proportion of PHF health workers interviewed who had received prior training in IMCI
+                Proportion of health facilities with basic medical equipment
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">54.3%</p>
+              <p class="value text-right">89.7%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -211,11 +223,24 @@ export default {
       iconUrl: `@/assets/state-profile/svg/${this.programArea.icon}.svg`,
       isDefinitionVisible: false,
       barChartOptions: {
+        annotations: [
+          {
+            visible: true,
+          },
+        ],
         plotOptions: {
           column: {
             grouping: false,
             shadow: false,
             borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{y} %',
+              style: {
+                textOverflow: 'ellipsis',
+                fontWeight: 'normal',
+              },
+            },
           },
         },
         legend: {
@@ -258,16 +283,16 @@ export default {
         series: [
           {
             name: 'National',
-            color: this.programArea.colors[1],
+            color: this.programArea.colors[0],
             data: [
-              ['Prevalence of HIV (NAIIS 2019)', 278],
+              ['Prevalence of HIV (NAIIS 2019)', 20],
               [
                 'Percentage of people age 15-49 who have been tested for HIV and know their results (MICS 2016)',
-                143,
+                19,
               ],
-              ['Measles immunization coverage (NHMIS 2018)', 575],
-              ['Under-5 mortality rate (NHDS 2018)', 523],
-              ['Adapt chart height to legend height', 278],
+              ['Measles immunization coverage (NHMIS 2018)', 9],
+              ['Under-5 mortality rate (NHDS 2018)', 17],
+              ['Adapt chart height to legend height', 4],
             ],
             pointPadding: 0.1,
             pointPlacement: 0,
@@ -275,16 +300,34 @@ export default {
           {
             name: this.state,
             className: 'test',
-            color: this.programArea.colors[0],
+            color: this.programArea.colors[1],
             data: [
-              ['Prevalence of HIV (NAIIS 2019)', 278],
-              [
-                'Percentage of people age 15-49 who have been tested for HIV and know their results (MICS 2016)',
-                143,
-              ],
-              ['Measles immunization coverage (NHMIS 2018)', 575],
-              ['Under-5 mortality rate (NHDS 2018)', 523],
-              ['Adapt chart height to legend height', 278],
+              {
+                y: 9,
+                name: 'Prevalence of HIV (NAIIS 2019)',
+                color: this.programArea.colors[1],
+              },
+              {
+                y: 6,
+                name:
+                  'Percentage of people age 15-49 who have been tested for HIV and know their results (MICS 2016)',
+                color: this.programArea.colors[2],
+              },
+              {
+                y: 30,
+                name: 'Measles immunization coverage (NHMIS 2018)',
+                color: this.programArea.colors[3],
+              },
+              {
+                y: 11,
+                name: 'Under-5 mortality rate (NHDS 2018)',
+                color: this.programArea.colors[4],
+              },
+              {
+                y: 4,
+                name: 'Adapt chart height to legend height',
+                color: this.programArea.colors[5],
+              },
             ],
             pointPadding: 0.3,
             pointPlacement: 0,
