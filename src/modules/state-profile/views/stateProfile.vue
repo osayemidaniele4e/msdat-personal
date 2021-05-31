@@ -31,8 +31,8 @@
       <b-col cols="12" class="my-auto">
         <b-row align-h="end" class="mx-auto">
           <p class="mr-3">Last Updated: 12.03.2020</p>
-          <share/>
-          <print/>
+          <share />
+          <print />
         </b-row>
       </b-col>
     </b-row>
@@ -52,17 +52,14 @@ import print from '../components/print.vue';
 
 export default {
   name: 'state-profile',
-  props: [
-    'state',
-  ],
+  props: ['state'],
   components: {
     PAoverview: programAreaOverview,
     demographics,
     share,
     print,
   },
-  created() {
-  },
+  created() {},
   methods: {
     navigateToState(state) {
       this.$router.push({ name: 'state-profile', params: { state } });
@@ -128,7 +125,16 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions across the continuum of care',
-          colors: ['rgba(238, 150, 50, 1)', 'rgba(238, 150, 50, 0.12)'],
+          colors: [
+            '#EBF4F1',
+            '#054A80',
+            '#2C8CCA',
+            '#3F7299',
+            '#43893B',
+            '#2C9F35',
+            'rgba(238, 150, 50, 1)',
+            'rgba(238, 150, 50, 0.12)',
+          ],
         },
         {
           name: 'nutrition',
@@ -147,7 +153,7 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions in Nutrition',
-          colors: ['rgba(143, 180, 56, 1)', 'rgba(143, 180, 56, 0.1)'],
+          colors: ['#F4F7EA', '#8FB438', '#8FB438', '#8FB438', '#8FB438', '#8FB438'],
         },
         {
           name: 'Immunization',
@@ -167,7 +173,7 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions in Immunization',
-          colors: ['rgba(238, 150, 50, 1)', 'rgba(238, 150, 50, 0.12)'],
+          colors: ['#FBF0E4', '#EE9632', '#EE9632', '#EE9632', '#EE9632', '#EE9632'],
         },
         {
           name: 'Malaria',
@@ -187,7 +193,7 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions in Malaria',
-          colors: ['rgba(67, 137, 59, 1)', 'rgba(67, 137, 59, 0.1)'],
+          colors: ['#ECF3EB', '#43893B', '#43893B', '#43893B', '#43893B', '#43893B'],
         },
 
         {
@@ -208,7 +214,7 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions in HIV',
-          colors: ['rgba(234, 27, 75, 1)', 'rgba(234, 27, 75, 0.1)'],
+          colors: ['#FBE5EA', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B'],
         },
         {
           name: 'mortality',
@@ -227,7 +233,7 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Other Mortality Indicators',
-          colors: ['rgba(49, 49, 49, 1)', 'rgba(49, 49, 49, 0.1)'],
+          colors: ['#EAEAEA', '#313131', '#313131', '#313131', '#313131', '#313131'],
         },
         {
           name: 'Health Facility Survey',
