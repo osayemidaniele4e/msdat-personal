@@ -11,9 +11,9 @@
           <IndicatorOverviewPanel
             @data:options="log($event)"
             :indicatorOptions="cpIndicators"
-            :locationOptions="cpGetLocation"
+            :locationOptions="cpLocation"
             :dataSourceOptions="cpDataSources"
-            :yearOptions="cpGetAvailableYears"
+            :yearOptions="cpAvailableYears"
             :compareOptions="['2019']"
           />
         </ControlBase>
@@ -21,9 +21,9 @@
           <ZonalAnalysisPanel
             @data:options="log($event)"
             :indicatorOptions="cpIndicators"
-            :locationOptions="cpGetLocation"
+            :locationOptions="cpLocation"
             :dataSourceOptions="cpDataSources"
-            :yearOptions="cpGetAvailableYears"
+            :yearOptions="cpAvailableYears"
             :compareOptions="['2019']"
           />
         </ControlBase>
@@ -33,7 +33,7 @@
             :indicatorOptions="cpIndicators"
             :locationOptions="['abj', 'Lag', 'sokoto']"
             :dataSourceOptions="cpDataSources"
-            :yearOptions="cpGetAvailableYears"
+            :yearOptions="cpAvailableYears"
             :compareOptions="['2019']"
           />
         </ControlBase>
@@ -53,9 +53,9 @@
               :class="[n === 2 ? 'border-left border-right' : '']"
               @data:options="log($event)"
               :indicatorOptions="cpIndicators"
-              :locationOptions="cpGetLocation"
+              :locationOptions="cpLocation"
               :dataSourceOptions="cpDataSources"
-              :yearOptions="cpGetAvailableYears"
+              :yearOptions="cpAvailableYears"
               :compareOptions="['2019']"
             />
             <!-- </div> -->
@@ -163,16 +163,17 @@ export default {
       console.log(data);
       console.log(this.tableComponentDataFormatter(indicatorObject, data));
     },
-    tryIt() {
+    async tryIt() {
       debugger;
       this.bbb = 2020;
       const {
         datasource, indicator, location, year,
       } = this.controlPanel;
-      const data = this.dlQuery({
+      const data = await this.dlQuery({
         datasource: datasource.id,
         indicator: indicator.id,
         period: year,
+        value_type: 2,
         location: {
           level: location.id === 1 ? 3 : location.parent,
         },
@@ -185,9 +186,11 @@ export default {
       });
     },
   },
-  mounted() {
-    const data = this.dlQuery({ indicator: 7 });
+  async mounted() {
+    const data = await this.dlQuery({ indicator: 7 });
     console.log({ query: data });
+    // console.log('in query mount');
+    // await this.newQuery({ indicator: 5, datasource: 4, period: '2015' });
   },
 };
 </script>

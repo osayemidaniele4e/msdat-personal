@@ -14,6 +14,8 @@
             :close-on-select="true"
             :show-labels="false"
             :preselect-first="true"
+            group-values="indicators"
+            group-label="program_area"
             class="work-sans"
           ></multiselect>
         </div>
