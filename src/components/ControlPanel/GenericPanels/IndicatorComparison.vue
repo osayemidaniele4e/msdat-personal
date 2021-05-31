@@ -69,6 +69,8 @@
           label="name"
           track-by="id"
           :preselect-first="false"
+           group-values="indicators"
+           group-label="program_area"
         >
         </multiselect>
       </div>

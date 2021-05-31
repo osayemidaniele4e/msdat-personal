@@ -12,6 +12,8 @@
            label="short_name"
           :close-on-select="true"
           :show-labels="false"
+          group-values="indicators"
+          group-label="program_area"
           :preselect-first="true"
         ></multiselect>
       </div>
