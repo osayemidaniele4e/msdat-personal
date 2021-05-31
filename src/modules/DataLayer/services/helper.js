@@ -1,3 +1,4 @@
+import apiServices from './ApiServices';
 /**
    *
    * @param {string} theDate, a date string in JSON format
@@ -10,10 +11,18 @@ export const formatDate = (theDate) => {
   return formatted;
 };
 
-export const formatDate2 = (theDate) => {
-  const theDateParts = theDate.split('T');
-  const theTime = theDateParts[1].split('.');
-  const formatted = `${theDateParts[0]} ${theTime[0]}`;
-  console.log(formatted);
-  return formatted;
+/**
+   *
+   * @param {array|number} indicators
+   * @returns {array} all data objects in the database related to
+   * the given indicator(s)
+   */
+export const getIndicatorsFromApi = async (indicators) => {
+  let data;
+  if (Array.isArray(indicators)) {
+    data = await Promise.all(indicators.map((id) => apiServices.getSingleIndicator(id)));
+    return data;
+  }
+  data = await apiServices.getSingleIndicator(indicators);
+  return data;
 };

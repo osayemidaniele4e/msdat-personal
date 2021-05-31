@@ -1,12 +1,9 @@
 /* eslint-disable no-await-in-loop */
-import { pullAll } from 'lodash';
-import { formatDate } from './helper';
+import { difference } from 'lodash';
+import { formatDate, getIndicatorsFromApi } from './helper';
 import apiServices from './ApiServices';
 import Database from './database.worker';
-// import Database from './indexedDB';
 
-// console.log(MyClass);
-// debugger;
 const DATA = 'data';
 const INDICATORS = 'indicators';
 const FACTORS = 'factors';
@@ -14,6 +11,7 @@ const DSI = 'datasource_specific_indicator';
 const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
+const AVAILABLE_DASHBOARD_INDICATOR = 'availableDashboardIndicator';
 
 export default class DataLayer {
   constructor(store) {
@@ -22,6 +20,7 @@ export default class DataLayer {
     this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
     this.defaultIndicators = [7, 5, 8];
     this.LOCAL_STORAGE_KEY = 'dataTimestamp';
+    this.Changes = [];
   }
 
   /**
@@ -61,10 +60,10 @@ export default class DataLayer {
   /**
    * data layer initialization
    */
-
   async init(object) {
     this.DB = await new Database();
     this.setup(object);
+
     const count = await this.DB.data.count();
     console.log('DB count is', count);
 
@@ -80,12 +79,12 @@ export default class DataLayer {
        * @see {@link apiServices.getOtherEndpoint()}
        */
       const data = await apiServices.getOtherEndpoint();
+
       /**
        * we would also need to created a component then display the activities  of the service layer
        * per time
        */
       console.log('storing other endpoint to index db');
-      console.log(await this.DB.listAllIndicators());
 
       await this.DB.storeDataInDBTable(data[6].data, DSI);
       await this.DB.storeDataInDBTable(data[0].data, LOCATION);
@@ -94,27 +93,34 @@ export default class DataLayer {
       await this.DB.storeDataInDBTable(data[5].data, FACTORS);
       await this.DB.storeDataInDBTable(data[7].data, DATA_SOURCE);
 
-      // await this.DB.storeOtherEndPointTableToDB(data);
-      this.addDataToStore(data);
+      console.log('done');
 
-      const dataValue = await this.getIndicatorsFromApi(this.defaultIndicators);
+      console.log('init other Tables');
+
+      await this.initOtherTablesFromDB();
+
+      console.log(' done');
+
+      const dataValue = await getIndicatorsFromApi(this.defaultIndicators);
       //
       if (dataValue.length > 0) {
         for (let index = 0; index < dataValue.length; index += 1) {
           const element = dataValue[index].data;
+          console.log('store data in db', index);
           await this.DB.storeDataInDB(element);
-          this.addDataToStore(element, DATA);
-          this.updatedStoreAvailableIndicator(this.defaultIndicators);
+          console.log('Done');
         }
       }
+      await this.setAvailableDashboardIndicator();
     } else {
       await this.initOtherTablesFromDB();
-      await this.initData(this.defaultIndicators);
+      await this.DB.initData(this.defaultIndicators);
+      await this.setAvailableDashboardIndicator();
     }
 
     setTimeout(async () => {
       //
-      const indicatorsExceptDefault = pullAll(this.indicatorList, this.defaultIndicators);
+      const indicatorsExceptDefault = difference(this.indicatorList, this.defaultIndicators);
       /**
        * getting the indicators one after the order seems to help the performance
        * as against getting it all at once
@@ -125,18 +131,16 @@ export default class DataLayer {
        * forEach loop doesn't  take asynchronous operations into consideration
        */
       console.log('in set timeout');
-      await this.initData(indicatorsExceptDefault);
+      //
+      await this.DB.initData(indicatorsExceptDefault);
+      await this.setAvailableDashboardIndicator();
+      await this.updateData();
     }, 500);
 
     /*
      *This compares then the indicator Array with the indicator Array of the dashboard
      * */
     console.timeEnd('fetching');
-
-    // setTimeout(() => {
-    //   this.updateData();
-    // }, 2000);
-
     return Promise.resolve(true);
   }
 
@@ -153,30 +157,6 @@ export default class DataLayer {
     this.setDataInStore(dataItem, VALUE_TYPES);
     dataItem = await this.DB.factors.toArray();
     this.setDataInStore(dataItem, FACTORS);
-  }
-
-  async initData(indicator) {
-    const indicatorInDB = await this.DB.checkIndicatorsInIdb();
-    for (let index = 0; index < indicator.length; index += 1) {
-      if (indicatorInDB.indexOf(indicator[index]) >= 0) {
-        // eslint-disable-next-line no-await-in-loop
-        const dataItem = await this.DB.getIndicatorFromDB(indicator[index]);
-        /**
-         * Then stores the data from the default indicators to the Store
-         */
-        this.addDataToStore(dataItem, DATA);
-        this.updatedStoreAvailableIndicator(indicator[index]);
-      } else {
-        // eslint-disable-next-line no-await-in-loop
-        const dataValue = await this.getIndicatorsFromApi(indicator[index]);
-        if (dataValue.data.length > 0) {
-          // eslint-disable-next-line no-await-in-loop
-          await this.DB.storeDataInDB(dataValue.data);
-          this.addDataToStore(dataValue.data, DATA);
-          this.updatedStoreAvailableIndicator(indicator[index]);
-        }
-      }
-    }
   }
 
   /**
@@ -213,72 +193,16 @@ export default class DataLayer {
         .then(async (val) => {
           const { created, updated } = val.data;
           if (created.length !== 0) {
-            await this.storeDataInDB(created);
-            this.addDataToStore(created);
+            await this.DB.storeDataInDB(created, DATA);
           }
           if (updated.length !== 0) {
-            await this.storeDataInDB(updated);
-            this.addDataToStore(updated);
+            await this.DB.storeDataInDB(updated, DATA);
           }
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }
-
-  /**
-   *
-   * @param {array} data, array of data objects
-   * @param {string} table
-   */
-
-  addDataToStore(data, table) {
-    console.log('storing in vue state');
-    const stateTableName = table || false;
-    if (!stateTableName) {
-      /**
-       * because we know ths the data
-       * coming is a return  of a Promise.all()
-       */
-      data.forEach((e) => {
-        /**
-         * The logic to this is
-         * the configUrl follow the same name as the state
-         * object keys for the data
-         */
-        const configUrl = e.config.url;
-        const tableName = configUrl.replace(/\\|\/|\?.*/g, '');
-        this.store.commit('DL/ADD_DATA', {
-          tableName,
-          data: e.data,
-        });
-      });
-    } else {
-      this.store.commit('DL/ADD_DATA', {
-        tableName: stateTableName,
-        data,
-      });
-    }
-
-    console.log('done storing in the state');
-  }
-
-  /**
-   *
-   * @param {array|number} indicators
-   * @returns {array} all data objects in the database related to
-   * the given indicator(s)
-   */
-  // eslint-disable-next-line class-methods-use-this
-  async getIndicatorsFromApi(indicators) {
-    let data;
-    if (Array.isArray(indicators)) {
-      data = await Promise.all(indicators.map((id) => apiServices.getSingleIndicator(id)));
-      return data;
-    }
-    data = await apiServices.getSingleIndicator(indicators);
-    return data;
   }
 
   /**
@@ -317,5 +241,17 @@ export default class DataLayer {
       tableName: 'indicatorsInStore',
       data: indicators,
     });
+  }
+
+  /**
+   * set dashboard available  indicator in store
+   */
+  async setAvailableDashboardIndicator() {
+    const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
+
+    const dashboardIndicators = indicatorsInDB.filter(
+      (item) => this.indicatorList.includes(item),
+    );
+    this.setDataInStore(dashboardIndicators, AVAILABLE_DASHBOARD_INDICATOR);
   }
 }
