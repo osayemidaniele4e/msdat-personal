@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 
 import dexie from '../config/dexie';
+import { getIndicatorsFromApi } from './helper';
 
 const DATA = 'data';
 const INDICATORS = 'indicators';
@@ -116,5 +117,27 @@ export default class DataBase {
       .where('indicator')
       .equals(id)
       .toArray();
+  }
+
+  async initData(indicator) {
+    const indicatorInDB = await this.checkIndicatorsInIdb();
+    debugger;
+    for (let index = 0; index < indicator.length; index += 1) {
+      if (!(indicatorInDB.indexOf(indicator[index]) >= 0)) {
+        const dataValue = await getIndicatorsFromApi(indicator[index]);
+        if (dataValue.data.length > 0) {
+          await this.storeDataInDB(dataValue.data);
+        }
+      }
+    }
+  }
+
+  /**
+ *
+ * @param {*} query the objet  to be queried
+ * @returns {array} result of the Query
+ */
+  static async queryDB(query = {}) {
+    return dexie.table(DATA).where(query).toArray();
   }
 }

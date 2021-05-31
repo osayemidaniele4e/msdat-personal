@@ -1,9 +1,10 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, matches, has, omit, isMatch,
+  filter, has, omit, isMatch,
 } from 'lodash';
 // import SampleData from './sample_data';
 import { MSDAT } from '@/config/dashboardGroups';
+import DB from './services/database.worker';
 
 const { mapState } = createNamespacedHelpers('DL');
 
@@ -29,12 +30,11 @@ export default {
   },
   computed: {
     ...mapState({
-      dlData: (state) => state.data,
       dlDatasource: (state) => state.datasources,
       dlIndicator: (state) => state.indicators,
       dlLocation: (state) => state.location,
       dlValue_type: (state) => state.valuetypes,
-      dlDashboardIndicator: (state) => state.indicatorsInStore,
+      dlDashboardIndicator: (state) => state.availableDashboardIndicator,
       dlFactors: (state) => state.factors,
     }),
   },
@@ -47,11 +47,11 @@ export default {
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
      * @returns {dataObjectType}
      */
-    dlQuery(queryObject) {
+    async dlQuery(queryObject) {
       if (has(queryObject, 'location.level')) {
         const { location } = queryObject;
         const newQueryObject = omit(queryObject, ['location']);
-        const resultValue = filter(this.dlData, matches(newQueryObject));
+        const resultValue = await DB.queryDB(newQueryObject);
         return filter(resultValue, (item) => {
           const locationValue = this.dlGetLocation(item.location);
           if (isMatch(locationValue, location)) {
@@ -60,7 +60,8 @@ export default {
           return null;
         });
       }
-      return filter(this.dlData, matches(queryObject));
+      const result = await DB.queryDB(queryObject);
+      return result;
     },
 
     /**
@@ -107,9 +108,6 @@ export default {
       debugger;
       return this.dlDatasource.find((item) => item.id === id);
     },
-    // dlGetAvailableIndicators() {
-    //   return this.dlDashboardIndicator;
-    // },
   },
   mounted() {},
 };
