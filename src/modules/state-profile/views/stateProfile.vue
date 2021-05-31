@@ -94,9 +94,9 @@ export default {
         {
           name: 'Total Fertility Rate (TFR) (total births per woman)',
           source: 'MNCH 2018',
-          value: '60%',
-          previousValue: '55%',
-          change: '+5',
+          value: '5.80',
+          previousValue: '5.6',
+          change: '-2',
         },
         {
           name: 'Under-5 Population (UFP)',
