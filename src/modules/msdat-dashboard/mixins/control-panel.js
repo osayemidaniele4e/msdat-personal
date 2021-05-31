@@ -85,9 +85,9 @@ export default {
     },
   },
   async mounted() {
-    this.cpIsLoading = false;
+    this.cpIsLoading = true;
     this.cpAvailableYears = await this.cpGetAvailableYears();
     this.cpLocation = await this.cpGetLocation();
-    this.cpIsLoading = true;
+    this.cpIsLoading = false;
   },
 };

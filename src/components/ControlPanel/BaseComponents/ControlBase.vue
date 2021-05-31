@@ -19,8 +19,6 @@ export default {
   },
   data() {
     return {
-      payload: 'value',
-      indicatorOptions: ['heh', 'heheh'],
       active: true,
     };
   },
