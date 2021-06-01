@@ -278,12 +278,6 @@ h2 {
 h1 {
   font-size: 56px;
 }
-.btn-secondary {
-  background-color: #f2f2f2;
-  border: 1px solid #cccccc;
-  height: 38.250103125px;
-  color: #3a3a3a;
-}
 .program-icon {
   border-radius: 50%;
   background-color: #ffffff;

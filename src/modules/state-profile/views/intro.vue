@@ -87,9 +87,6 @@ export default {
     BaseMap,
   },
 
-  mounted() {
-  },
-
   data() {
     return {
       programAreas: [
@@ -131,6 +128,9 @@ export default {
         },
         series: [{
           name: 'Nigeria',
+          data: [
+            ['Fct', 1],
+          ],
           point: {
             events: {
               click: (event) => {
