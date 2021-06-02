@@ -35,7 +35,7 @@
           <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <BaseMap :level="3" :lgaState="state" :mapObject="mapOptions"/>
+        <BaseMap :level="3" :lgaState="state" :mapObject="this.mapOptions"/>
         <b-row>
           <b-col cols="auto">
             <p>Land Area</p>
@@ -105,11 +105,12 @@ export default {
           name: 'Nigeria',
           point: {
             events: {
-              click: (event) => {
-                console.log(event.point.name);
-                const state = event.point.name;
-                this.$router.push({ name: 'state-profile', params: { state } });
-              },
+              // //-----function to fire with point name --------//
+              // click: (event) => {
+              //   console.log(event.point.name);
+              //   const state = event.point.name;
+              //   this.$router.push({ name: 'state-profile', params: { state } });
+              // },
             },
           },
           borderColor: 'white',
