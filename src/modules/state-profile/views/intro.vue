@@ -128,9 +128,6 @@ export default {
         },
         series: [{
           name: 'Nigeria',
-          data: [
-            ['Fct', 1],
-          ],
           point: {
             events: {
               click: (event) => {
