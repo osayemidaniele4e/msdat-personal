@@ -16,4 +16,5 @@ export default new Vuex.Store({
     MSDAT_STORE,
     CUSTOM_DASHBOARD_STORE,
   },
+  strict: process.env.NODE_ENV !== 'production',
 });

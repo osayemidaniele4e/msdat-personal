@@ -281,12 +281,14 @@
 import theHeader from './layout/theHeader.vue';
 import theFooter from './layout/theFooter.vue';
 
+const macBookImg = require('./assets/About-Dashboard-image.svg');
+
 export default {
   components: { theHeader, theFooter },
   data() {
     return {
       selected: null,
-      macBookImg: require('./assets/About-Dashboard-image.svg'),
+      macBookImg,
       indicators: [
         {
           name: 'Mortality',
@@ -463,7 +465,7 @@ $msdat-darkgrey: #dedede;
           }
           & > div:first-child {
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
             align-items: center;
             img {
               width: 400px;
