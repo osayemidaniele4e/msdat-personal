@@ -10,7 +10,7 @@ import loadMap from 'highcharts/modules/map';
 import { genComponent } from 'vue-highcharts';
 
 // default map
-import NigerianMap from '@highcharts/map-collection/countries/ng/ng-all.geo.json';
+import NigerianMap from './ng-all.geo.json';
 
 // default map options
 import defaultOptions from './defaultOptions';
