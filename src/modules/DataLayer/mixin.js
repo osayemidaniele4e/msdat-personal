@@ -1,6 +1,6 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, has, omit, isMatch,
+  filter, has, omit, isMatch, matches,
 } from 'lodash';
 // import SampleData from './sample_data';
 import { MSDAT } from '@/config/dashboardGroups';
@@ -71,7 +71,6 @@ export default {
      * @returns {dataObjectType}
      */
     dlGetLatestSourceAndIndicatorData(queryObject) {
-      debugger;
       const filteredIndicator = this.dlQuery(queryObject);
       if (filteredIndicator.length > 0) {
         const maxValue = filteredIndicator.reduce(
@@ -95,17 +94,20 @@ export default {
       return this.dlIndicator.find((item) => item.id === id);
     },
     /**
-     * @param {number} id The Location ID
+     * @param {number|array} values The Location ID or and Object you like to get
+     *
      * @return {indicatorObjectType}
      */
-    dlGetLocation(id) {
-      return this.dlLocation.find((item) => item.id === id);
+    dlGetLocation(values) {
+      if (typeof values === 'object') {
+        return filter(this.dlLocation, matches(values));
+      }
+      return this.dlLocation.find((item) => item.id === values);
     },
     dlGetFactor(id) {
       return this.dlFactors.find((item) => item.id === id);
     },
     dlGetDataSource(id) {
-      debugger;
       return this.dlDatasource.find((item) => item.id === id);
     },
   },

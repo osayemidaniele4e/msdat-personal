@@ -58,7 +58,6 @@ export default {
 
   watch: {
     position(newValue) {
-      // debugger;
       this.selectedIndex = newValue;
       this.selectControl(this.selectedIndex);
     },
