@@ -2,9 +2,9 @@ export default {
   data() {
     return {
       payload: {
-        indicator: '',
+        indicator: 'indicator 2',
         location: '',
-        datasource: '',
+        datasource: 'NHMIS 1',
         year: '',
         visualization: '',
         target: {
@@ -15,29 +15,6 @@ export default {
       },
     };
   },
-  props: {
-    indicatorOptions: {
-      type: Array,
-      default: () => ([]),
-    },
-    locationOptions: {
-      type: Array,
-      default: () => ([]),
-    },
-    dataSourceOptions: {
-      type: Array,
-      default: () => ([]),
-    },
-    yearOptions: {
-      type: Array,
-      default: () => ([]),
-    },
-    compareOptions: {
-      type: Array,
-      default: () => ([]),
-    },
-  },
-
   watch: {
     payload: {
       handler(newValue) {
@@ -47,8 +24,4 @@ export default {
       deep: true,
     },
   },
-  mounted() {
-    // this.$emit('data:options', this.payload);
-  },
-
 };

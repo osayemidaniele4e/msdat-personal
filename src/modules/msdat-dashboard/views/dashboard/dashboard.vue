@@ -1,69 +1,25 @@
 <template>
   <div>
-    <!-- <h1>MSDAT DASHBOARD</h1> -->
-
-    <!-- <h1>MSDAT DASHBOARD</h1>
-        <button @click="execute()" class="btn btn-primary rounded-0">GO</button> -->
-    <button @click="tryIt()" class="btn btn-primary rounded-0">TEST</button>
-    <b-overlay :show="cpIsLoading">
-      <BasePanel :position="position">
-      <template v-slot:default>
-        <ControlBase :title="'Indicator Overview'">
-          <IndicatorOverviewPanel
-            @data:options="log($event)"
-            :indicatorOptions="cpIndicators"
-            :locationOptions="cpLocation"
-            :dataSourceOptions="cpDataSources"
-            :yearOptions="cpAvailableYears"
-          />
-        </ControlBase>
-        <ControlBase :title="'Zonal Analysis'">
-          <ZonalAnalysisPanel
-            @data:options="log($event)"
-            :indicatorOptions="cpIndicators"
-            :locationOptions="cpLocation"
-            :dataSourceOptions="cpDataSources"
-            :yearOptions="cpAvailableYears"
-            :compareOptions="['2019']"
-          />
-        </ControlBase>
-        <ControlBase :title="'Indicator Comparison'">
-          <IndicatorComparisonPanel
-            @data:options="log($event)"
-            :indicatorOptions="cpIndicators"
-            :locationOptions="['abj', 'Lag', 'sokoto']"
-            :dataSourceOptions="cpDataSources"
-            :yearOptions="cpAvailableYears"
-            :compareOptions="['2019']"
-          />
-        </ControlBase>
-        <ControlBase :title="'Dataset Comparison'">
-          <DatasetComparisonPanel
-            @data:options="log($event)"
-            :indicatorOptions="cpIndicators"
-            :dataSourceOptions="cpDataSources"
-          />
-        </ControlBase>
-        <ControlBase class="row" :title="'Multi-source Indicator'">
-          <template v-for="n in 3">
-            <!-- <div> -->
-            <MultiSourceIndicatorPanel
-              :key="n"
-              class="col-md-4 col-sm-12"
-              :class="[n === 2 ? 'border-left border-right' : '']"
-              @data:options="log($event)"
-              :indicatorOptions="cpIndicators"
-              :locationOptions="cpLocation"
-              :dataSourceOptions="cpDataSources"
-              :yearOptions="cpAvailableYears"
-              :compareOptions="['2019']"
+    <!-- <b-overlay :show="cpIsLoading"> -->
+      <BasePanel :position="position" v-if="cpIsLoading">
+        <template v-slot:default>
+          <ControlBase
+            v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+            :key="index"
+            :title="control.label"
+          >
+            <ControlPanel
+              @data:options="slog($event,index)"
+              :setup="control.setup"
+              :defaultIndicator="defaultIndicator"
+              :defaultDataSource="defaultDataSource"
+              :defaultLocation="defaultLocation"
+              :defaultYear="defaultYear"
             />
-            <!-- </div> -->
-          </template>
-        </ControlBase>
-      </template>
-    </BasePanel>
-    </b-overlay>
+          </ControlBase>
+        </template>
+      </BasePanel>
+    <!-- </b-overlay> -->
     <!-- control Panels ends here  -->
     <div class="container-fluid">
       <div class="row">
@@ -78,7 +34,8 @@
               <div class="row">
                 <div class="col-md-8">
                   <SubCard showControls>
-                    <h1></h1>
+                    <h1>
+                    </h1>
                   </SubCard>
                 </div>
                 <div class="col-md-4">
@@ -106,37 +63,30 @@
 import {
   BasePanel,
   ControlBase,
-  IndicatorOverviewPanel,
-  ZonalAnalysisPanel,
-  IndicatorComparisonPanel,
-  DatasetComparisonPanel,
-  MultiSourceIndicatorPanel,
+  ControlPanel,
 } from '@/components/ControlPanel';
 
 import SubCard from '@/components/ui-components/SubCard.vue';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '../../mixins/formatter';
-import controlPanel from '../../mixins/control-panel';
+import controlPanelSetup from '../../mixins/control-panel-setup';
 
 export default {
-  mixins: [formatter, controlPanel],
+  mixins: [formatter, controlPanelSetup],
   data() {
     return {
       position: 3,
       BarChartOptions: {},
       controlPanel: {},
+      lect: '',
     };
   },
   components: {
     ControlBase,
-    IndicatorOverviewPanel,
     BasePanel,
-    ZonalAnalysisPanel,
-    IndicatorComparisonPanel,
-    DatasetComparisonPanel,
-    MultiSourceIndicatorPanel,
     SubCard,
     BarChart,
+    ControlPanel,
   },
   methods: {
     async log(optionsObject) {
@@ -159,11 +109,15 @@ export default {
         },
       });
     },
+    slog(data, index) {
+      console.log('data ooo', index);
+      console.log(data);
+    },
     execute() {
       const data = [];
       const dataSources = this.dlGetDashboardDataSource();
       console.log(dataSources);
-      debugger;
+
       const indicatorObject = this.dlGetIndicatorDataObject(7);
       dataSources.forEach((item) => {
         data.push(
@@ -200,11 +154,11 @@ export default {
     },
   },
   async mounted() {
+    console.log(this.$store.state.MSDAT_STORE.controlConfig);
     const data = await this.dlQuery({ indicator: 7 });
     console.log({ query: data });
-    // console.log('in query mount');
-    // await this.newQuery({ indicator: 5, datasource: 4, period: '2015' });
   },
+
 };
 </script>
 

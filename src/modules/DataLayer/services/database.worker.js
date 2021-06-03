@@ -15,7 +15,6 @@ const LOCATION = 'location';
 export default class DataBase {
   constructor() {
     this.db = dexie;
-    console.log(this.db);
     this.data = this.db.table(DATA);
     this.countries = this.db.table('countries');
     this.indicators = this.db.table(INDICATORS);
@@ -55,7 +54,6 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
-    console.log(data);
     return this.db.transaction(
       'rw',
       this.DSI,
@@ -121,7 +119,6 @@ export default class DataBase {
 
   async initData(indicator) {
     const indicatorInDB = await this.checkIndicatorsInIdb();
-    debugger;
     for (let index = 0; index < indicator.length; index += 1) {
       if (!(indicatorInDB.indexOf(indicator[index]) >= 0)) {
         const dataValue = await getIndicatorsFromApi(indicator[index]);
