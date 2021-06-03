@@ -87,9 +87,6 @@ export default {
     BaseMap,
   },
 
-  mounted() {
-  },
-
   data() {
     return {
       programAreas: [
