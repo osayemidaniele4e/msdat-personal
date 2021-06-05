@@ -8,29 +8,64 @@
 
         <h1 slot="title">Contact Us</h1>
         <strong slot="body_msg"> Send a message to the MSDAT Team</strong>
+         <input
+            slot="top1"
+            type="email"
+            class="form-control fonttxt"
+            placeholder="E-mail"
+            v-model="contactFormFields.email"
+        />
         <input
             slot="top1"
             type="text"
-            class="form-control"
+            class="form-control fonttxt"
             placeholder="Type your name"
             v-model="contactFormFields.name"
         />
+
+         <input
+            slot="top1"
+            type="text"
+            class="form-control fonttxt"
+            placeholder="Profession"
+            v-model="contactFormFields.profession"
+        />
+
+         <input
+            slot="top1"
+            type="text"
+            class="form-control fonttxt"
+            placeholder="organisation"
+            v-model="contactFormFields.organisation"
+        />
+
+        <select
+          slot="top1" class="fonttxt"
+         v-bind="contactFormFields.category" value="complains">
+          <option
+           :value="selected" selected disabled>
+           {{ selected }}</option>
+           <option  v-for="item in categories" :key="item.id" >
+           {{item}}
+          </option>
+         </select>
+
         <textarea
           slot="top2"
-          class="form-control"
+          class="form-control fonttxt"
           placeholder="Type your message"
           v-model="contactFormFields.feedback"
           cols="55"
           rows="5"/>
         <span slot="top3" class="feedback">*we will get back to you as soon as possible</span>
-        <strong slot="bottom1"> send an email </strong>
+        <!-- <strong slot="bottom1"> send an email </strong>
         <input
             slot="bottom2"
             type="email"
             class="form-control emailField"
             placeholder="Send an e-mail to hello@msdat-team.com"
             v-model="contactFormFields.email"
-        />
+        /> -->
 
     </Modal>
   </div>
@@ -39,6 +74,7 @@
 <script>
 import axios from 'axios';
 import Modal from '../ui-components/modal/modal.vue';
+import './input';
 
 export default {
   components: {
@@ -50,11 +86,19 @@ export default {
       nofields: false,
       successmessage: false,
       errormessage: false,
+      selected: 'Select a Category',
       contactFormFields: {
+        profession: '',
+        organisation: '',
+        category: '',
         name: '',
         email: '',
         feedback: '',
       },
+      categories:
+       ['Suggestion', 'Complaints',
+         'Ideas', 'General Feedback',
+       ],
       error: false,
     };
   },
@@ -69,6 +113,7 @@ export default {
     },
 
     conformSend() {
+      console.log(this.validFields(this.contactFormFields.name));
       // this.loader = true;
       // const obj = JSON.stringify(this.contactFormFields);
       // const headers = {
@@ -77,43 +122,48 @@ export default {
       // };
       if (
         this.validFields(this.contactFormFields.name)
-        && this.validEmail(this.contactFormFields.email)
-        && this.validFields(this.contactFormFields.feedback)
+        // && this.validEmail(this.contactFormFields.email)
+        // && this.validFields(this.contactFormFields.feedback)
         // this.contactFormFields.name != "" ||
         // this.contactFormFields.email != "" ||
       ) {
         console.log('passed validation ish');
 
         this.errormessage = false;
-        if (
-          this.contactFormFields.name
-          && this.contactFormFields.email
-          && this.contactFormFields.category
-        ) {
-          axios
-            .post(
-              'http://209.182.232.228:7000/api/account/contact/',
-              this.contactFormFields,
-              // { headers },
-            )
-            .then((response) => {
-              console.log(this.apiFormat(this.contactFormFields));
+        this.nofields = false;
+        // if (
+        //   this.contactFormFields.name
+        //   && this.contactFormFields.email
+        //   && this.contactFormFields.category
+        // ) {
+        console.log('passed validation ish agaun');
+        console.log(this.contactFormFields);
 
-              if (response.status === 201) {
-                this.successmessage = true;
-                this.contactFormFields.name = '';
-                this.contactFormFields.email = '';
-                this.contactFormFields.feedback = '';
-              } else {
-                this.errormessage = true;
-              }
-            })
-            .catch((e) => {
-              console.log(e);
+        axios
+          .post(
+            'http://209.182.232.228:7000/api/account/contact/',
+            this.contactFormFields,
+            // { headers },
+          )
+          .then((response) => {
+            // console.log(this.apiFormat(this.contactFormFields));
+
+            if (response.status === 201) {
+              this.successmessage = true;
+              this.contactFormFields.name = '';
+              this.contactFormFields.email = '';
+              this.contactFormFields.feedback = '';
+            } else {
               this.errormessage = true;
-            });
-          // console.log("testing form");
-        }
+              console.log('failed to post');
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+            this.errormessage = true;
+          });
+        // console.log("testing form");
+        // }
       } else {
         this.nofields = true;
         console.log('failed to post');
@@ -138,60 +188,5 @@ export default {
 </script>
 
 <style scoped>
-.fonttxt {
-   font-family:  "adobe-clean", sans-serif
-}
-input {
-  margin: 10px 0px;
-   padding: 0px 10px;
-  outline: none;
-  -webkit-appearance: none;
-}
-.form-control:focus{
-
-     box-shadow:none;
-}
-
-textarea {
-   padding: 0px 10px;
-    resize: none;
-    outline: none;
-    display: block;
-}
-.send {
-    position: relative;
-    color: white;
-    background-color: #007D53;
-    border-radius: 3px;
-    font-size: 15px;
-    border: none;
-    cursor: pointer;
-    padding: 13px 20px;
-    margin: 10px;
-    outline: none;
-    }
-
-h1 {
-    font-weight: 1000;
-    font-size: 17px;
-
-    }
-strong {
-  color: rgb(78, 68, 68);
-}
-
-.modal {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    inset: 0;
-    }
-
-.emailField {
-    background-color:rgb(240, 247, 248);
-    margin: 10px 0;
-    width: 80%;
-    padding: 15px 30px;
-    border: 1px solid rgb(193, 223, 240);
-    }
+@import './contact.css'
 </style>

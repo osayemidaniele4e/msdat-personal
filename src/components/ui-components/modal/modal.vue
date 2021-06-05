@@ -19,7 +19,7 @@
           <slot name="body_msg"></slot>
           <p v-show="nofields" class="alert alert-warning">Email or a comment is required</p>
           <p v-show="successmessage"
-             class="alert alert-success "
+             class="alert alert-success fonttxt"
              role="alert">
              Thank you.
              We will keep you informed about the latest updates to the MSDAT Platform.</p>
@@ -31,24 +31,27 @@
                 <slot name="top2"></slot>
                 <slot name="top3" class="feedback"></slot>
               </div>
-              <div class="sendButton">
+              <div class="sendButton send--send">
                   <button class="send send--right white--text"
                    @click="submitbtn">
                     SEND
                   <!-- <v-icon style="color: white;" right>send</v-icon> -->
                   </button>
               </div>
-              <hr>
-              <div class="bottom">
-                <slot name="bottom1"></slot>
+              <!-- <hr> -->
+              <!-- <div class="bottom">
+
                 <div class="form-group" style="margin-bottom: 50px;">
-                    <slot name="bottom2"></slot>
+
                 </div>
-              </div>
+              </div> -->
               <div class="modal_footer rounded">
+                 <slot name="bottom1"></slot>
+                  <slot name="bottom2"></slot>
                 <button class="send send--close red--text" @click="closeContactform">CLOSE
                  <!-- <v-icon style="color: white;" right>send</v-icon> -->
                 </button>
+
               </div>
 
         </div>
@@ -115,6 +118,9 @@ export default {
   padding: 8px 35px;
 
 }
+.send--send {
+  top: -20px;
+}
 
 .darkScreen{
     position: absolute;
@@ -137,11 +143,11 @@ export default {
     }
 
 .modal_content {
-
+    top: -30px;
+    height: 630px;
     position: relative;
     z-index: 50;
     width: 600px;
-    height: 550px;
     min-width: 370px;
     border-radius: 5px;
     background: #fff;
@@ -191,5 +197,10 @@ export default {
     margin-top: 20px;
     text-align: left;
     }
+.fonttxt {
+   font-family:  "adobe-clean", sans-serif;
 
+     padding: 0px 10px;
+
+}
 </style>
