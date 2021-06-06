@@ -1,12 +1,6 @@
 <template>
 <div>
   <div>
-
-    <!-- review comments
-    change font style
-    style 404 page
-    fix api
-    smaller header -->
     <div>
          <div v-if="toggleModal" class="darkScreen"></div>
     </div>
@@ -17,7 +11,7 @@
         </div>
         <div class="modal_body">
           <slot name="body_msg"></slot>
-          <p v-show="nofields" class="alert alert-warning">Email or a comment is required</p>
+          <p v-show="nofields" class="alert alert-warning">Please fill all fields correctly</p>
           <p v-show="successmessage"
              class="alert alert-success fonttxt"
              role="alert">
@@ -35,16 +29,9 @@
                   <button class="send send--right white--text"
                    @click="submitbtn">
                     SEND
-                  <!-- <v-icon style="color: white;" right>send</v-icon> -->
                   </button>
               </div>
-              <!-- <hr> -->
-              <!-- <div class="bottom">
 
-                <div class="form-group" style="margin-bottom: 50px;">
-
-                </div>
-              </div> -->
               <div class="modal_footer rounded">
                  <slot name="bottom1"></slot>
                   <slot name="bottom2"></slot>
@@ -181,8 +168,8 @@ export default {
 .modal_footer {
     border-top: 2px solid #eee;
     text-align: left;
-    position: relative;
-    bottom: 1.3rem;
+    position: absolute;
+    bottom: 1rem;
     }
 
 .form-group {
@@ -199,6 +186,7 @@ export default {
     }
 .fonttxt {
    font-family:  "adobe-clean", sans-serif;
+   color: rgb(109, 106, 106);
 
      padding: 0px 10px;
 

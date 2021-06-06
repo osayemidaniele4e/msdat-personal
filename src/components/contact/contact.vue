@@ -15,11 +15,12 @@
             placeholder="E-mail"
             v-model="contactFormFields.email"
         />
+
         <input
             slot="top1"
             type="text"
             class="form-control fonttxt"
-            placeholder="Type your name"
+             placeholder="Type your name"
             v-model="contactFormFields.name"
         />
 
@@ -35,16 +36,16 @@
             slot="top1"
             type="text"
             class="form-control fonttxt"
-            placeholder="organisation"
-            v-model="contactFormFields.organisation"
+            placeholder="organization"
+            v-model="contactFormFields.organization"
         />
 
         <select
           slot="top1" class="fonttxt"
-         v-bind="contactFormFields.category" value="complains">
+         v-model="contactFormFields.category" :value="selected">
           <option
            :value="selected" selected disabled>
-           {{ selected }}</option>
+            {{selected}}</option>
            <option  v-for="item in categories" :key="item.id" >
            {{item}}
           </option>
@@ -74,7 +75,6 @@
 <script>
 import axios from 'axios';
 import Modal from '../ui-components/modal/modal.vue';
-import './input';
 
 export default {
   components: {
@@ -89,7 +89,7 @@ export default {
       selected: 'Select a Category',
       contactFormFields: {
         profession: '',
-        organisation: '',
+        organization: '',
         category: '',
         name: '',
         email: '',
@@ -111,62 +111,55 @@ export default {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
+    noInputs() {
+      this.contactFormFields.name = '';
+      this.contactFormFields.feedback = '';
+      this.contactFormFields.email = '';
+      this.contactFormFields.feedback = '';
+      this.contactFormFields.profession = '';
+      this.contactFormFields.organization = '';
+      this.contactFormFields.category = this.selected;
+    },
 
     conformSend() {
-      console.log(this.validFields(this.contactFormFields.name));
-      // this.loader = true;
-      // const obj = JSON.stringify(this.contactFormFields);
-      // const headers = {
-      //   Authorization: 'Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b',
-
-      // };
       if (
         this.validFields(this.contactFormFields.name)
-        // && this.validEmail(this.contactFormFields.email)
-        // && this.validFields(this.contactFormFields.feedback)
-        // this.contactFormFields.name != "" ||
-        // this.contactFormFields.email != "" ||
+       && this.validEmail(this.contactFormFields.email)
+
       ) {
         console.log('passed validation ish');
 
         this.errormessage = false;
         this.nofields = false;
-        // if (
-        //   this.contactFormFields.name
-        //   && this.contactFormFields.email
-        //   && this.contactFormFields.category
-        // ) {
-        console.log('passed validation ish agaun');
-        console.log(this.contactFormFields);
-
-        axios
-          .post(
-            'http://209.182.232.228:7000/api/account/contact/',
-            this.contactFormFields,
-            // { headers },
-          )
-          .then((response) => {
-            // console.log(this.apiFormat(this.contactFormFields));
-
-            if (response.status === 201) {
-              this.successmessage = true;
-              this.contactFormFields.name = '';
-              this.contactFormFields.email = '';
-              this.contactFormFields.feedback = '';
-            } else {
+        if (
+          this.contactFormFields.name
+          && this.contactFormFields.email
+        ) {
+          console.log(`bout to post${this.contactFormFields}`);
+          axios
+            .post(
+              'http://209.182.232.228:7000/api/account/contact/',
+              this.contactFormFields,
+            )
+            .then((response) => {
+              if (response.status === 201) {
+                this.successmessage = true;
+                this.noInputs();
+              } else {
+                this.errormessage = true;
+                console.log('failed to post');
+              }
+            })
+            .catch((e) => {
+              console.log(e);
               this.errormessage = true;
-              console.log('failed to post');
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-            this.errormessage = true;
-          });
-        // console.log("testing form");
-        // }
+            });
+        } else {
+          this.nofields = true;
+          console.log('failed to post');
+        }
       } else {
         this.nofields = true;
-        console.log('failed to post');
       }
     },
 
@@ -178,10 +171,12 @@ export default {
       this.loader = false;
       this.nofields = false;
       this.successmessage = false;
-      this.contactFormFields.name = '';
-      this.contactFormFields.feedback = '';
-      this.contactFormFields.email_address = '';
+      this.noInputs();
     },
+  },
+
+  mounted() {
+    this.contactFormFields.category = this.selected;
   },
 
 };
