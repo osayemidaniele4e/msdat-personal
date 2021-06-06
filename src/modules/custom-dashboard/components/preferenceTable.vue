@@ -8,27 +8,23 @@
         <b-col sm="12" lg="3">
           <b class="selection-header">indicators selection</b><br />
           <div class="scroll">
-            <div v-for="p in programAreas" :key="p">
+            <div v-for="(p, index) in programAreas" :key="index">
               <div class="program-areas my-2 ">
                 <input
-                  value="true"
-                  @click="toggleAll"
-                  v-model="allSelected"
-                  @change="toggleAll"
+                  :checked="isAllSelected(p.indicators, 'indicators')"
+                  @click="toggleAll(p.indicators, 'indicators')"
                   type="checkbox"
                   aria-label="Checkbox for following text input"
                 />
                 {{ p.name }}
                 <span style="float: right">▼</span>
               </div>
-              <div v-for="i in p.indicators" :key="i" class="indicators">
+              <div v-for="(i, index) in p.indicators" :key="index" class="indicators">
                 <input
                   class=""
                   id=""
-                  value="true"
-                  @click="toggleAll"
-                  v-model="allSelected"
-                  @change="toggleAll"
+                  :checked="isSelected(i, 'indicators')"
+                  @click="toggle(i, 'indicators')"
                   type="checkbox"
                 />
                 <span>{{ i }}</span>
@@ -38,29 +34,27 @@
 
           <b class="selection-header">Data Source Selection</b><br />
           <div class="scroll">
-            <div v-for="c in category" :key="c">
+            <div v-for="(c, index) in category" :key="index">
               <div class="program-areas my-2 ">
                 {{ c.name }}
                 <span style="float: right">▼</span>
               </div>
-              <div v-for="s in c.sources" :key="s" class="indicators">
-                <input
-                  class=""
-                  id=""
-                  value="true"
-                  @click="toggleAll"
-                  v-model="allSelected"
-                  @change="toggleAll"
-                  type="checkbox"
-                />
+              <div v-for="(s, index) in c.sources" :key="index" class="indicators">
+                <input class="" id="" @change="toggle(s, 'sources')" type="checkbox" />
                 {{ s }}
               </div>
             </div>
           </div>
         </b-col>
         <b-col sm="12" lg="9">
-          <div v-for="area in programAreas" :key=area.name>
-            <b-table outlined :class="area == programAreas[0] ? 'first-table' : 'other-tables'" responsive :fields="fields" :items="items">
+          <div v-for="(area, index) in programAreas" :key="index">
+            <b-table
+              outlined
+              :class="area == programAreas[0] ? 'first-table' : 'other-tables'"
+              responsive
+              :fields="fields"
+              :items="items"
+            >
               <template #head()="data">
                 <p class="main-table-header text-center m-0">{{ data.label.toUpperCase() }}</p>
               </template>
@@ -71,21 +65,21 @@
               </template>
               <template #cell(datasource)="data">
                 <b-row align-h="start">
-                  <b-col cols="auto" class="" v-for="i in data.value" :key=data.value.indexOf(i)
+                  <b-col cols="auto" class="" v-for="i in data.value" :key="data.value.indexOf(i)"
                     ><span>{{ i }}</span></b-col
                   >
                 </b-row>
               </template>
               <template #cell(level)="data">
                 <b-row align-h="start">
-                  <b-col cols="auto" class="" v-for="i in data.value" :key=data.value.indexOf(i)
+                  <b-col cols="auto" class="" v-for="i in data.value" :key="data.value.indexOf(i)"
                     ><span>{{ i }}</span></b-col
                   >
                 </b-row>
               </template>
               <template #cell(year)="data">
                 <b-row align-h="start">
-                  <b-col cols="auto" class="" v-for="i in data.value" :key=data.value.indexOf(i)
+                  <b-col cols="auto" class="" v-for="i in data.value" :key="data.value.indexOf(i)"
                     ><span>{{ parseInt(i) }}</span></b-col
                   >
                 </b-row>
@@ -98,8 +92,10 @@
             <b-col cols="auto">Period: <b>10 Years</b></b-col>
             <b-col cols="auto">Levels: <b>National, Zonal, Subnational</b></b-col>
           </b-row>
-          <b-row  align-h="end" class="mt-5 text-right">
-            <b-col class="align-baseline" cols="auto"><p class="baseline">Save for Later</p> </b-col>
+          <b-row align-h="end" class="mt-5 text-right">
+            <b-col class="align-baseline" cols="auto"
+              ><p class="baseline">Save for Later</p>
+            </b-col>
             <b-col cols="auto"><b-button>approve Data</b-button></b-col>
           </b-row>
         </b-col>
@@ -109,17 +105,20 @@
 </template>
 
 <script>
-
 export default {
   name: 'data-preferences',
-  components: { },
+  components: {},
   mounted() {
     this.$store.commit('updateStep', 2);
   },
   data() {
     return {
-      selected: [],
-      allSelected: false,
+      selected: {
+        indicators: [],
+        period: [],
+        sources: [],
+      },
+      allSelected: true,
       indeterminate: false,
       programAreas: [
         {
@@ -146,7 +145,7 @@ export default {
       category: [
         {
           name: 'ROUTINE',
-          sources: ['NHMIS Annual', 'NHMIS Quarterly', 'NHMIS Quarterly'],
+          sources: ['NHMIS Annual', 'NHMIS Quarterly', 'NHMIS Monthly'],
         },
         {
           name: 'SURVEYS',
@@ -190,8 +189,43 @@ export default {
     };
   },
   methods: {
-    toggleAll(checked) {
-      this.selected = checked ? this.flavours.slice() : [];
+    isAllSelected(available, selected) {
+      let value = true;
+      available.every((element) => {
+        if (!this.selected[selected].includes(element)) {
+          value = false;
+          return false;
+        }
+        value = true;
+        return true;
+      });
+      return value;
+    },
+    toggle(item, arr) {
+      if (this.selected[arr].includes(item)) {
+        const index = this.selected[arr].indexOf(item);
+        if (index > -1) {
+          this.selected[arr].splice(index, 1);
+        }
+      } else {
+        this.selected[arr].push(item);
+      }
+    },
+    toggleAll(available, selected) {
+      if (this.isAllSelected(available, selected)) {
+        this.selected[selected] = [];
+      } else {
+        available.forEach((element) => {
+          if (!this.selected[selected].includes(element)) {
+            this.selected[selected].push(element);
+          }
+        });
+      }
+    },
+    isSelected(item, collection) {
+      return (
+        this.selected[collection].includes(item)
+      );
     },
   },
 };
@@ -256,7 +290,7 @@ thead {
 
 .other-tables {
   thead {
-  display: none;
+    display: none;
   }
 }
 
@@ -269,6 +303,6 @@ thead {
   font-size: 15.00000375px;
 }
 #link-to-about {
-  color: #1496B1;
+  color: #1496b1;
 }
 </style>
