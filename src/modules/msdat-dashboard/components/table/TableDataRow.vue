@@ -16,9 +16,9 @@
         <div class="d-flex flex-column">
           <slot
             :name="`indicator`"
-            :indicator="rowData.indicators"
+            :indicator="rowData.indicator.id"
           >
-            {{ rowData.indicators }}
+            {{ rowData.indicator.short_name }}
           </slot>
           <span
             style="font-size: 10px; margin: 0 5px"

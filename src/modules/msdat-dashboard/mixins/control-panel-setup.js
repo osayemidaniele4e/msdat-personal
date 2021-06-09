@@ -23,6 +23,8 @@ export default {
       const indicator = groupIndicator(this.dlGetAvailableIndicators(), 'program_area');
       const datasource = this.dlGetDashboardDataSource();
       const location = this.dlGetLocation({ level: 3 });
+      // add nigeria to the top of the array
+      location.unshift(this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location));
 
       const dataValue = await this.dlQuery({
         datasource: this.defaultDataSource.id,

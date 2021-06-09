@@ -90,7 +90,7 @@
           <!-- This loops  the the other indicator of the array of indicators -->
           <template v-for="(indicatorData, index) in dataArray">
               <TableDataRow
-                :key="indicatorData.indicator"
+                :key="indicatorData.indicator.id"
                 v-if="index > 0"
                 :rowData="indicatorData"
                 @indicator-info:clicked="$emit('selected:indicator-info',$event)"
@@ -273,7 +273,8 @@ export default {
   },
   watch: {
     dataArray: {
-      handler() {
+      handler(newValues) {
+        console.log(newValues);
         this.getAvailableDataSources();
         this.getDataSourcesClassification();
       },
