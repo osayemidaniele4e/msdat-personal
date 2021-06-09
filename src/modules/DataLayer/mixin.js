@@ -70,16 +70,18 @@ export default {
      * @param {number} queryObject.datasource The id of the datasource
      * @returns {dataObjectType}
      */
-    dlGetLatestSourceAndIndicatorData(queryObject) {
-      const filteredIndicator = this.dlQuery(queryObject);
+    async dlGetLatestSourceAndIndicatorData(queryObject) {
+      const filteredIndicator = await this.dlQuery(queryObject);
+      // console.log(filteredIndicator);
       if (filteredIndicator.length > 0) {
-        const maxValue = filteredIndicator.reduce(
-          (prev, current) => (Number(prev.period) > Number(current.period) ? prev : current),
+        return filteredIndicator.reduce(
+          (max, currentValues) => {
+            if (currentValues.period > max.period) {
+              return currentValues;
+            }
+            return max;
+          },
         );
-        if (maxValue) {
-          return maxValue;
-        }
-        return null;
       }
       return null;
     },

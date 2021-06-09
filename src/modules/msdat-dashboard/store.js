@@ -8,7 +8,7 @@ export default {
     },
     controlConfig: [
       {
-        label: 'indicator Overview',
+        label: 'indicator Overview Control',
         setup: [
           {
             type: 'dropdown',
@@ -124,6 +124,60 @@ export default {
             type: 'toggle',
             label: 'Num/Denum',
             key: 'numdenum',
+          },
+        ],
+      },
+      {
+        label: 'Zonal Analysis',
+        setup: [
+          {
+            type: 'dropdown',
+            class: ['col-md-4'],
+            label: 'indicator 1',
+            key: 'indicator',
+            options: [],
+            dropdownProps: {
+              // multiple: true,
+              'group-values': 'indicators',
+              'group-label': 'program_area',
+              label: 'short_name',
+            },
+          },
+          {
+            class: ['col'],
+            type: 'dropdown',
+            label: 'data Source ',
+            key: 'datasource',
+            options: [],
+            dropdownProps: {
+              label: 'datasource',
+            },
+          },
+          {
+            class: ['col'],
+            type: 'dropdown',
+            label: 'location',
+            key: 'location',
+            options: [],
+            dropdownProps: {
+              label: 'name',
+            },
+          },
+          {
+            class: ['col'],
+            type: 'dropdown',
+            label: 'Year',
+            key: 'year',
+            dropdownProps: {
+              'preselect-first': true,
+            },
+            options: [],
+          },
+          {
+            class: ['col'],
+            type: 'checkbox',
+            label: 'Target',
+            key: 'target',
           },
         ],
       },

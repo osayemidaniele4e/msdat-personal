@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <b-overlay :show="cpIsLoading"> -->
+    <!-- <b-overlay :show="!cpIsLoading"> -->
       <BasePanel :position="position" v-if="cpIsLoading">
         <template v-slot:default>
           <ControlBase
@@ -9,7 +9,7 @@
             :title="control.label"
           >
             <ControlPanel
-              @data:options="slog($event,index)"
+              @data:options="log($event,index)"
               :setup="control.setup"
               :defaultIndicator="defaultIndicator"
               :defaultDataSource="defaultDataSource"
@@ -33,22 +33,13 @@
             <template>
               <div class="row">
                 <div class="col-md-8">
-                  <SubCard showControls>
-                    <h1>
-                    </h1>
-                  </SubCard>
+                 <TheTable :values="TableValues" />
                 </div>
                 <div class="col-md-4">
-                  <SubCard showControls>
-                    <template #title>
-                      <h6 class="work-sans">
-                        Distribution Of
-                        <b>Skilled Attendance At Delivery Or Birth</b> Across
-                        The Country. Source:<b> NHMIS 2017</b>
-                      </h6>
-                    </template>
-                    <BarChart :chartOptions="BarChartOptions" />
-                  </SubCard>
+                  <TheStateBarChart
+                  v-if="cpIsLoading"
+                  :values="stateBarValue"
+                  />
                 </div>
               </div>
             </template>
@@ -67,9 +58,10 @@ import {
 } from '@/components/ControlPanel';
 
 import SubCard from '@/components/ui-components/SubCard.vue';
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
+import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
+import TheTable from '../../components/sections/TheTable.vue';
 
 export default {
   mixins: [formatter, controlPanelSetup],
@@ -79,58 +71,61 @@ export default {
       BarChartOptions: {},
       controlPanel: {},
       lect: '',
+      stateBarValue: '',
+      TableValues: '',
     };
   },
   components: {
     ControlBase,
     BasePanel,
     SubCard,
-    BarChart,
     ControlPanel,
+    TheStateBarChart,
+    TheTable,
   },
   methods: {
-    async log(optionsObject) {
-      const {
-        datasource, indicator, location, year,
-      } = optionsObject;
-      const data = await this.dlQuery({
-        datasource: datasource.id,
-        indicator: indicator.id,
-        period: year,
-        value_type: 2,
-        location: {
-          level: location.id === 1 ? 3 : location.parent,
-        },
-      });
-      console.log(data);
-      this.BarChartOptions = this.genHighChartOption(data, {
-        target: {
-          value: this.dlGetIndicator(indicator.id).national_target,
-        },
-      });
+    /**
+     * @param optionsObject The return a control Options objects when ever any control
+     * in a control panel changes
+     * @param index The index of the control panel that changes
+     * you can use this to check which control panel changed
+     *
+     */
+    async log(optionsObject, index) {
+      console.log(optionsObject, index);
+      switch (index) {
+        case 0:
+          this.stateBarValue = optionsObject;
+          this.TableValues = optionsObject;
+          break;
+
+        default:
+          break;
+      }
     },
     slog(data, index) {
       console.log('data ooo', index);
       console.log(data);
     },
     execute() {
-      const data = [];
-      const dataSources = this.dlGetDashboardDataSource();
-      console.log(dataSources);
-
-      const indicatorObject = this.dlGetIndicatorDataObject(7);
-      dataSources.forEach((item) => {
-        data.push(
-          this.dlGetLatestSourceAndIndicatorData({
-            indicator: 7,
-            datasource: item,
-            location: 1,
-          }),
-        );
+      const indicators = [7, 5, 8];
+      const formattedData = [];
+      indicators.forEach((indicatorID) => {
+        const data = [];
+        const dataSources = this.dlGetDashboardDataSource();
+        const indicatorObject = this.dlGetIndicatorDataObject(indicatorID);
+        dataSources.forEach((item) => {
+          data.push(
+            this.dlGetLatestSourceAndIndicatorData({
+              indicator: 7,
+              datasource: item,
+              location: 1,
+            }),
+          );
+        });
+        formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
       });
-
-      console.log(data);
-      console.log(this.tableComponentDataFormatter(indicatorObject, data));
+      console.log(formattedData);
     },
     async tryIt() {
       const {
