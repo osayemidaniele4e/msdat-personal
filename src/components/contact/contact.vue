@@ -182,6 +182,6 @@ export default {
 };
 </script>
 
-<style scoped>
-@import './contact.css'
+<style src='./contact.css' scoped>
+
 </style>

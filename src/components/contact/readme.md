@@ -11,18 +11,6 @@ The Contact component is a user form. As the name implies, it houses our base co
 - the send button which is in the first section of the modal body
 - and the close button which is in the second section of the modal body and also performs the same   fuction as the close button
 
-## slots
-| Name            | location        |             
-| --------------- | --------------- | 
- title            |  modal header
-  body_msg        |  modal body
-  top1            |  first body section
-  top2            |  first body section
-  top3            |  first body section
-  bottom1         |  second body section
-  bottom2         |  second body section
-
----------------------------------------------------------------------------------
 
 
 ## Dependencies
@@ -70,16 +58,33 @@ export default {
   },
 };
 </script>
-
+```
  
 <br /><br />
 ## Props
 
-| Name            | Type      | Description
-| `nofields`      | `Boolean` | show message when there are no user inputs
-| `successmessage`| `Boolean` | shows success message on succesful submition to api
+
+
+| Name            | Type      | Description                                         |
+| --------------- | --------- | -------------------------------------- |
+| nofields        | Boolean   | show message when there are no user inputs          |
+| successmessage  | Boolean   | shows success message on succesful submition to api |
+---------------------------------------------------------------------------------
 
 <br /><br />
+## slots
+| Name            | location              |             
+| --------------- | ----------------------| 
+|title            |  modal header
+|  body_msg       |  modal body           |
+|  top1           |  first body section   |
+|  top2           |  first body section   |
+|  top3           |  first body section   |
+|  bottom1        |  second body section  |
+|  bottom2        |  second body section  |
+
+
+---------------------------------------------------------------------------------
 
 ## Need to Know
 To change anything in the contact component simply make the changes in comtact.vue and pass it in as a slot.
