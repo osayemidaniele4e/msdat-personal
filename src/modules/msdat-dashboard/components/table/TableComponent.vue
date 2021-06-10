@@ -21,12 +21,12 @@
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
-              v-for="(value, name) in classify"
-              :key="name"
-              :colspan="value"
+              v-for="(value, index) in classify"
+              :key="index"
+              :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
-              {{ name }}
+              {{ value[0] }}
             </td>
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
@@ -175,7 +175,7 @@ export default {
     orderSourceBy: {
       type: [Array],
       required: false,
-      default: () => (['NHMIS', 'MICS', 'NDHS', 'NARHS', 'IHME', 'IHME SDG']),
+      default: () => (['NHMIS', 'MICS', 'NDHS', 'NARHS', 'NNHS', 'World Bank', 'WHO-GHO', 'IHME', 'IHME SDG', 'NMIS']),
     },
   },
   data() {
@@ -192,6 +192,8 @@ export default {
        * This store the all the data sources available in the data parsed
        */
       source: [],
+
+      classificationOrder: ['Routine', 'Estimate', 'Survey'],
     };
   },
   methods: {
@@ -227,10 +229,10 @@ export default {
       /**
        * order AvailableSources according to the OrderSourceBy Array;
        */
-      allAvailableSources.sort(
+      const sortedSource = allAvailableSources.sort(
         (a, b) => this.orderSourceBy.indexOf(a) - this.orderSourceBy.indexOf(b),
       );
-      this.source = allAvailableSources;
+      this.source = sortedSource;
     },
     /**
      * This gets the maximum amount to dataSource classification
@@ -257,7 +259,12 @@ export default {
           }
         });
       });
-      this.classify = classic;
+      // Order classification following the Order
+      const result = Object.keys(classic).map((key) => [key, classic[key]]);
+      const resultSorted = result.sort(
+        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
+      );
+      this.classify = resultSorted;
     },
 
     log(e) {
@@ -287,7 +294,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
+  // @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
 
   // table scroll bar
   ::-webkit-scrollbar {
