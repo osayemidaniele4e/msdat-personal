@@ -2,6 +2,7 @@ import {
   isObject, map, takeWhile, difference,
 } from 'lodash';
 import defaultObject from '@/components/Barchart/defaultOption';
+import { formatFactor } from '@/util/helper';
 import { sortHighChartDataFormat } from './util';
 
 export default {
@@ -27,7 +28,7 @@ export default {
           data.values.push({
             dataSources: datasource.datasource,
             value: e.value,
-            factor: factor.display_factor,
+            factor: formatFactor(factor.display_factor),
             year: e.period,
             classification: datasource.classification,
           });
