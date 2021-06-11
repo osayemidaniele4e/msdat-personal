@@ -63,28 +63,6 @@ export default {
       const result = await DB.queryDB(queryObject);
       return result;
     },
-
-    /**
-     * @param {Object} queryObject  The query Object
-     * @param {number} queryObject.indicator The id of the indicator
-     * @param {number} queryObject.datasource The id of the datasource
-     * @returns {dataObjectType}
-     */
-    async dlGetLatestSourceAndIndicatorData(queryObject) {
-      const filteredIndicator = await this.dlQuery(queryObject);
-      // console.log(filteredIndicator);
-      if (filteredIndicator.length > 0) {
-        return filteredIndicator.reduce(
-          (max, currentValues) => {
-            if (currentValues.period > max.period) {
-              return currentValues;
-            }
-            return max;
-          },
-        );
-      }
-      return null;
-    },
     dlGetDashboardDataSource() {
       return this.dlDatasource.filter((e) => MSDAT.dataSources.includes(e.id));
     },

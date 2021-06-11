@@ -13,7 +13,6 @@
               rowspan="2"
               scope="col"
               class="align-middle text-center text-uppercase h6 font-weight-bold"
-              width="1200px"
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
@@ -85,7 +84,7 @@
 
           <tr class="">
             <td class="border-0"></td>
-            <td colspan="8"  class="border-0">
+            <td colspan="30"  class="border-0">
               <h6 class="text-uppercase font-weight-bold">Related Indicators</h6>
             </td>
           </tr>
@@ -107,8 +106,7 @@
                     class="text-center p-2"
                     v-for="(dt, index) in source"
                     :key="index"
-                    scope="col"
-                  >
+                    scope="col">
                     <TableDataCell
                       :cellData="getValueForColumn(indicatorData.values, dt)"
                       :dataColors="'#515151; #888888;'"

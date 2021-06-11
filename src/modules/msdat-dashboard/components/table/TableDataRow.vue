@@ -22,7 +22,7 @@
           </slot>
           <span
             style="font-size: 10px; margin: 0 5px"
-          >in percentage</span>
+          >{{factor}}</span>
         </div>
       </td>
       <!-- the default slot for the system -->
@@ -37,6 +37,11 @@ export default {
     rowData: {
       type: [Object, String],
       required: false,
+    },
+  },
+  computed: {
+    factor() {
+      return this.dlGetFactor(this.rowData.indicator.factor).display_factor;
     },
   },
 };
