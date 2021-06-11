@@ -1,11 +1,13 @@
 import Vue from 'vue';
+import '@/components/ui-components/index';
+import './scss/main.scss';
 import DataLayer from '@/modules/DataLayer';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';
 import './plugins/highchart';
 import './plugins/multiselect';
-import './scss/main.scss';
+
 import router from './router';
 import store from './store';
 
