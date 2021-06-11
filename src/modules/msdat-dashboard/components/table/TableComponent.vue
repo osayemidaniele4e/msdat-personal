@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!loading" class="table-responsive">
-      <table class="table table-bordered align-middle">
+      <table class="table table-bordered align-middle text-nowrap">
         <tbody>
           <tr>
             <td
@@ -13,10 +13,11 @@
               rowspan="2"
               scope="col"
               class="align-middle text-center text-uppercase h6 font-weight-bold"
+              width="1200px"
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
-                <span id="reset" @click="$emit('reset')"><b-icon-arrow-clockwise   /></span>
+                <span id="reset" @click="$emit('reset')"><b-icon-arrow-clockwise /></span>
               </div>
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
@@ -74,8 +75,10 @@
             <tr class="border-0" v-show="selectedSource === 'NHMIS'">
               <td class="border-0"></td>
               <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
-              <td colspan="8" class="num-denom">
-                <slot name="NHMIS-DETAILS"></slot>
+              <td colspan="30" class="num-denom">
+                <slot name="NHMIS-DETAILS">
+                  <h5>NUM DENUM SLOTS</h5>
+                </slot>
               </td>
             </tr>
           </transition>
@@ -117,7 +120,6 @@
               <!-- This creates a space between the related indicators table rows -->
               <div
                 :key="index"
-                v-if="index>=1 && index < dataArray.length -1"
                 class="py-2"
               ></div>
           </template>
