@@ -1,8 +1,7 @@
 <template>
   <div>
-    <button @click="contactbtn = true" class="send bi bi-alarm-fill"> Contact</button>
 
-    <Modal v-show="contactbtn" v-on:closeContact="closeContactform"
+    <Modal  v-on:closeContact="closeContactform"
     v-on:submitContact="conformSend"
      :nofields="nofields" :successmessage="successmessage">
 
@@ -82,7 +81,7 @@ export default {
   },
   data() {
     return {
-      contactbtn: false,
+      contactbtn: true,
       nofields: false,
       successmessage: false,
       errormessage: false,
@@ -172,6 +171,7 @@ export default {
       this.nofields = false;
       this.successmessage = false;
       this.noInputs();
+      this.$emit('closeContact');
     },
   },
 
