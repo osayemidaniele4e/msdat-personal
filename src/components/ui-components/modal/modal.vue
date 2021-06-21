@@ -130,8 +130,8 @@ export default {
     }
 
 .modal_content {
-    bottom: 7rem;
-    height: 630px;
+    bottom: 4rem;
+    height: auto;
     position: relative;
     z-index: 50;
     width: 600px;

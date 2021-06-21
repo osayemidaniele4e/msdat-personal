@@ -6,7 +6,10 @@
      :nofields="nofields" :successmessage="successmessage">
 
         <h1 slot="title">Contact Us</h1>
-        <strong slot="body_msg"> Send a message to the MSDAT Team</strong>
+        <strong slot="body_msg" > Send a message to the MSDAT Team</strong>
+
+        <div class= " newGrid grid mt-4" slot="top1">
+
          <input
             slot="top1"
             type="email"
@@ -38,6 +41,7 @@
             placeholder="organization"
             v-model="contactFormFields.organization"
         />
+        </div>
 
         <select
           slot="top1" class="fonttxt"
@@ -183,5 +187,15 @@ export default {
 </script>
 
 <style src='./contact.css' scoped>
+
+.newGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+/*
+.secondGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+} */
 
 </style>

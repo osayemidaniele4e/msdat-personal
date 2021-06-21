@@ -1,9 +1,17 @@
 .fonttxt {
    font-family:  "adobe-clean", sans-serif;
-    margin: 5px 2px;
+    margin: 5px 2px 2px 2px;
      padding: 5px 10px;
+     width: 100%;
     
    border-color: rgb(206, 212, 218);
+}
+
+
+.newGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 15px;
 }
 
 input select {
