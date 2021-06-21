@@ -3,25 +3,22 @@
     <base-sub-card showControls v-if="values">
       <template #title>
         <h6 class="work-sans">
-          Distribution Of
-          <b>{{ values.indicator.short_name }}</b> Across The Country. Source:<b>
-            {{ values.datasource.datatsource }} {{ values.year }}</b
-          >
+          Comparison Of <b>{{ values.indicator.short_name }}</b> Across Different Data Source
         </h6>
       </template>
-      <BarChart :chartOptions="BarChartOptions" />
+      <!-- <BarChart :chartOptions="BarChartOptions" /> -->
     </base-sub-card>
   </base-overlay>
 </template>
 
 <script>
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
+// import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '../../mixins/formatter';
 
 export default {
   mixins: [formatter],
   components: {
-    BarChart,
+    // BarChart,
   },
   data() {
     return {
@@ -39,15 +36,14 @@ export default {
     },
   },
   watch: {
-    values: {
+    'values.indicator': {
       async handler(newValues) {
         this.loading = true;
-        const data = await this.getData(newValues);
-        this.BarChartOptions = this.genHighChartOption(data, {
-          target: {
-            value: this.dlGetIndicator(newValues.indicator.id).national_target,
-          },
+        const data = await this.dlQuery({
+          indicator: newValues.id,
         });
+        console.log(data);
+        // const data = await this.getData(newValues);
         this.loading = false;
       },
       deep: true,

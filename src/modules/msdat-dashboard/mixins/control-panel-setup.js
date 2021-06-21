@@ -37,7 +37,6 @@ export default {
         this.defaultYear = years[0];
       }
 
-      console.table(years);
       this.$store.state.MSDAT_STORE.controlConfig.forEach((item, panelIndex) => {
         item.setup.forEach((controlItem, controlIndex) => {
           if ((controlItem.key === 'indicator')) {
