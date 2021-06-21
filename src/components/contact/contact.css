@@ -1,0 +1,72 @@
+.fonttxt {
+   font-family:  "adobe-clean", sans-serif;
+    margin: 5px 2px 2px 2px;
+     padding: 5px 10px;
+     width: 100%;
+    
+   border-color: rgb(206, 212, 218);
+}
+
+
+.newGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 15px;
+}
+
+input select {
+  margin: 10px 10px;
+   padding: 0px 10px;
+   background-color: rgb(206, 212, 218);
+   border-color: rgb(206, 212, 218);
+  outline: none;
+  -webkit-appearance: none;
+ 
+}
+.form-control:focus{
+
+     box-shadow:none;
+}
+
+textarea {
+   padding: 0px 10px;
+    resize: none;
+    outline: none;
+    display: block;
+}
+.send {
+    position: relative;
+    color: white;
+    background-color: #007D53;
+    border-radius: 3px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    padding: 13px 20px;
+   
+    outline: none;
+    }
+
+h1 {
+    font-weight: 1000;
+    font-size: 17px;
+
+    }
+strong {
+  color: rgb(78, 68, 68);
+}
+
+.modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    inset: 0;
+    }
+
+.emailField {
+    background-color:rgb(240, 247, 248);
+    margin: 10px 0;
+    width: 80%;
+    padding: 15px 30px;
+    border: 1px solid rgb(193, 223, 240);
+    }
