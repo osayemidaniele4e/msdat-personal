@@ -24,7 +24,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <SubCard :backgroundColor="'#348481'">
+          <base-sub-card :backgroundColor="'#348481'">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Indicator Overview
@@ -33,7 +33,14 @@
             <template>
               <div class="row">
                 <div class="col-md-8">
-                 <TheTable :values="TableValues" />
+                  <div class="row">
+                    <div class="col-md-12">
+                      <TheTable :values="TableValues" />
+                    </div>
+                    <div class="col-md-12">
+                      <IDCC :values="indicatorComparison" />
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-4">
                   <TheStateBarChart
@@ -43,7 +50,7 @@
                 </div>
               </div>
             </template>
-          </SubCard>
+          </base-sub-card>
         </div>
       </div>
     </div>
@@ -57,11 +64,11 @@ import {
   ControlPanel,
 } from '@/components/ControlPanel';
 
-import SubCard from '@/components/ui-components/SubCard.vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
 import TheTable from '../../components/sections/TheTable.vue';
+import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
 
 export default {
   mixins: [formatter, controlPanelSetup],
@@ -73,15 +80,16 @@ export default {
       lect: '',
       stateBarValue: '',
       TableValues: '',
+      indicatorComparison: '',
     };
   },
   components: {
     ControlBase,
     BasePanel,
-    SubCard,
     ControlPanel,
     TheStateBarChart,
     TheTable,
+    IDCC,
   },
   methods: {
     /**
@@ -92,64 +100,21 @@ export default {
      *
      */
     async log(optionsObject, index) {
-      console.log(optionsObject, index);
+      // console.log(optionsObject, index);
       switch (index) {
         case 0:
           this.stateBarValue = optionsObject;
           this.TableValues = optionsObject;
+          this.indicatorComparison = optionsObject;
           break;
 
         default:
           break;
       }
     },
-    slog(data, index) {
-      console.log('data ooo', index);
-      console.log(data);
-    },
-    execute() {
-      const indicators = [7, 5, 8];
-      const formattedData = [];
-      indicators.forEach((indicatorID) => {
-        const data = [];
-        const dataSources = this.dlGetDashboardDataSource();
-        const indicatorObject = this.dlGetIndicatorDataObject(indicatorID);
-        dataSources.forEach((item) => {
-          data.push(
-            this.dlGetLatestSourceAndIndicatorData({
-              indicator: 7,
-              datasource: item,
-              location: 1,
-            }),
-          );
-        });
-        formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
-      });
-      console.log(formattedData);
-    },
-    async tryIt() {
-      const {
-        datasource, indicator, location, year,
-      } = this.controlPanel;
-      const data = await this.dlQuery({
-        datasource: datasource.id,
-        indicator: indicator.id,
-        period: year,
-        value_type: 2,
-        location: {
-          level: location.id === 1 ? 3 : location.parent,
-        },
-      });
-      console.log(data);
-      this.BarChartOptions = this.genHighChartOption(data, {
-        target: {
-          value: this.dlGetIndicator(indicator.id).national_target,
-        },
-      });
-    },
   },
   async mounted() {
-    console.log(this.$store.state.MSDAT_STORE.controlConfig);
+    // console.log(this.$store.state.MSDAT_STORE.controlConfig);
     const data = await this.dlQuery({ indicator: 7 });
     console.log({ query: data });
   },
