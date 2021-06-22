@@ -40,10 +40,8 @@ export default {
   },
   methods: {
     log() {
-      // this.barObject = {};
       this.barObject.series = this.data;
       this.barObject = { ...this.barObject };
-      console.log(this.barObject);
     },
   },
 };

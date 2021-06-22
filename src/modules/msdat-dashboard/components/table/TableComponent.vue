@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!loading" class="table-responsive">
-      <table class="table table-bordered align-middle">
+      <table class="table table-bordered align-middle text-nowrap">
         <tbody>
           <tr>
             <td
@@ -16,17 +16,17 @@
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
-                <span id="reset" @click="$emit('reset')"><b-icon-arrow-clockwise   /></span>
+                <span id="reset" @click="$emit('reset')"><b-icon-arrow-clockwise /></span>
               </div>
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
-              v-for="(value, name) in classify"
-              :key="name"
-              :colspan="value"
+              v-for="(value, index) in classify"
+              :key="index"
+              :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
-              {{ name }}
+              {{ value[0] }}
             </td>
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
@@ -74,15 +74,17 @@
             <tr class="border-0" v-show="selectedSource === 'NHMIS'">
               <td class="border-0"></td>
               <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
-              <td colspan="8" class="num-denom">
-                <slot name="NHMIS-DETAILS"></slot>
+              <td colspan="30" class="num-denom">
+                <slot name="NHMIS-DETAILS">
+                  <h5>NUM DENUM SLOTS</h5>
+                </slot>
               </td>
             </tr>
           </transition>
 
           <tr class="">
             <td class="border-0"></td>
-            <td colspan="8"  class="border-0">
+            <td colspan="30"  class="border-0">
               <h6 class="text-uppercase font-weight-bold">Related Indicators</h6>
             </td>
           </tr>
@@ -90,7 +92,7 @@
           <!-- This loops  the the other indicator of the array of indicators -->
           <template v-for="(indicatorData, index) in dataArray">
               <TableDataRow
-                :key="indicatorData.indicator"
+                :key="indicatorData.indicator.id"
                 v-if="index > 0"
                 :rowData="indicatorData"
                 @indicator-info:clicked="$emit('selected:indicator-info',$event)"
@@ -104,8 +106,7 @@
                     class="text-center p-2"
                     v-for="(dt, index) in source"
                     :key="index"
-                    scope="col"
-                  >
+                    scope="col">
                     <TableDataCell
                       :cellData="getValueForColumn(indicatorData.values, dt)"
                       :dataColors="'#515151; #888888;'"
@@ -117,7 +118,6 @@
               <!-- This creates a space between the related indicators table rows -->
               <div
                 :key="index"
-                v-if="index>=1 && index < dataArray.length -1"
                 class="py-2"
               ></div>
           </template>
@@ -175,7 +175,7 @@ export default {
     orderSourceBy: {
       type: [Array],
       required: false,
-      default: () => (['NHMIS', 'MICS', 'NDHS', 'NARHS', 'IHME', 'IHME SDG']),
+      default: () => (['NHMIS', 'MICS', 'NDHS', 'NARHS', 'NNHS', 'World Bank', 'WHO-GHO', 'IHME', 'IHME SDG', 'NMIS']),
     },
   },
   data() {
@@ -192,6 +192,8 @@ export default {
        * This store the all the data sources available in the data parsed
        */
       source: [],
+
+      classificationOrder: ['Routine', 'Estimate', 'Survey'],
     };
   },
   methods: {
@@ -227,10 +229,10 @@ export default {
       /**
        * order AvailableSources according to the OrderSourceBy Array;
        */
-      allAvailableSources.sort(
+      const sortedSource = allAvailableSources.sort(
         (a, b) => this.orderSourceBy.indexOf(a) - this.orderSourceBy.indexOf(b),
       );
-      this.source = allAvailableSources;
+      this.source = sortedSource;
     },
     /**
      * This gets the maximum amount to dataSource classification
@@ -257,7 +259,12 @@ export default {
           }
         });
       });
-      this.classify = classic;
+      // Order classification following the Order
+      const result = Object.keys(classic).map((key) => [key, classic[key]]);
+      const resultSorted = result.sort(
+        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
+      );
+      this.classify = resultSorted;
     },
 
     log(e) {
@@ -273,7 +280,8 @@ export default {
   },
   watch: {
     dataArray: {
-      handler() {
+      handler(newValues) {
+        console.log(newValues);
         this.getAvailableDataSources();
         this.getDataSourcesClassification();
       },
@@ -286,7 +294,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
+  // @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
 
   // table scroll bar
   ::-webkit-scrollbar {

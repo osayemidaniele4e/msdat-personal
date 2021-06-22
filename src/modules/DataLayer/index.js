@@ -1,6 +1,5 @@
 import store from './store/index';
-import DB from './config/dexie';
-import DataBase from './services/LayerService';
+import DataLayer from './services/LayerService';
 import mixin from './mixin';
 import ActivityLogger from './components/ActivityLogger.vue';
 
@@ -16,7 +15,7 @@ export default {
     // install components
     Vue.component(ActivityLogger);
 
-    const db = new DataBase(DB, options.store);
+    const db = new DataLayer(options.store);
     // eslint-disable-next-line no-param-reassign
     Vue.prototype.$DL = db;
   },

@@ -1,4 +1,20 @@
+import {
+  isObject, map, takeWhile, difference,
+} from 'lodash';
+import defaultObject from '@/components/Barchart/defaultOption';
+import { formatFactor } from '@/util/helper';
+import { sortHighChartDataFormat } from './util';
+
 export default {
+  data() {
+    return {
+      series: '',
+      color: {
+        green: '#00AC40',
+        red: 'red',
+      },
+    };
+  },
 
   methods: {
     tableComponentDataFormatter(indicatorObject, dataObjectArray) {
@@ -12,7 +28,7 @@ export default {
           data.values.push({
             dataSources: datasource.datasource,
             value: e.value,
-            factor: factor.display_factor,
+            factor: formatFactor(factor.display_factor),
             year: e.period,
             classification: datasource.classification,
           });
@@ -20,6 +36,65 @@ export default {
       });
       return data;
     },
-  },
+    toHighChartDataArrayFormat(data) {
+      const dataValue = map(data, (item) => {
+        const locationName = this.dlGetLocation(item.location);
+        return [locationName.name, Number(item.value)];
+      });
+      return dataValue.sort(sortHighChartDataFormat);
+    },
+    diffBaseOnTarget(data, targetValue) {
+      const aboveTargetData = takeWhile(data, (item) => item[1] >= targetValue);
+      console.log(data);
+      const belowTargetData = difference(data, aboveTargetData);
 
+      return {
+        aboveTargetData,
+        belowTargetData,
+      };
+    },
+    setPlotLineObject(value) {
+      return {
+        width: 1,
+        value,
+      };
+    },
+    genHighChartOption(data, options = {}) {
+      const dataValue = this.toHighChartDataArrayFormat(data);
+      if (isObject(options.target)) {
+        const dataObjectWithTarget = this.diffBaseOnTarget(dataValue, options.target.value);
+        const plotLines = [];
+        plotLines.push(this.setPlotLineObject(options.target.value));
+        const series = [];
+        series.push({
+          name: 'On Target',
+          color: this.color.green,
+          data: dataObjectWithTarget.aboveTargetData,
+        });
+        series.push({
+          name: 'Below Target',
+          color: this.color.red,
+          data: dataObjectWithTarget.belowTargetData,
+        });
+        // yAxis.plotLine = plotLine;
+        let { yAxis } = defaultObject;
+        yAxis = Object.assign(yAxis, { plotLines });
+
+        return {
+          yAxis,
+          series,
+        };
+      }
+      const color = this.color.green;
+      return {
+        series: [
+          {
+            name: 'state',
+            color,
+            data: dataValue,
+          },
+        ],
+      };
+    },
+  },
 };

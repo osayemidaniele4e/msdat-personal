@@ -1,14 +1,25 @@
-export default {
-  namespaced: true,
-  state: {
-    default: {
-      indicator: 5,
-      datasource: 4,
-      location: 1,
-    },
-    controlConfig: [
+# Control Panel
+The Control Panel component encompassed the [SelectDropdown](./SelectDropdown.md) the Toggle an National target checkbox. follow the MSDAT design mockup it loop through all the inputs for a single control panel
+
+## Diagram
+
+
+## Props
+
+| Name               | Type     | Description   | Default   |
+| ------------------ | -------- | ------------- | --------- |
+| `setup` | `Array`  | The setup prop take an object for the of a control panel and all it required feature|
+| `defaultIndicator` | `Array`  | This takes in the default indicator for initialization usually and indicator object | 
+| `defaultDataSource` | `Array`  |  This takes in the default datasource for initialization usually and datasource object |
+| `defaultLocation` | `Array`  | This takes in the default location for initialization usually and locations object|
+| `defaultYear` | `String`  | This takes in the default year for initialization using a string|
+ 
+
+ ## more the setup
+ ```js
+[
       {
-        label: 'indicator Overview Control',
+        label: 'indicator Overview',
         setup: [
           {
             type: 'dropdown',
@@ -77,7 +88,7 @@ export default {
             key: 'indicator',
             options: [],
             dropdownProps: {
-              // multiple: true,
+               multiple: true,
               'group-values': 'indicators',
               'group-label': 'program_area',
               label: 'short_name',
@@ -127,79 +138,25 @@ export default {
           },
         ],
       },
-      {
-        label: 'Zonal Analysis',
-        setup: [
-          {
-            type: 'dropdown',
-            class: ['col-md-4'],
-            label: 'indicator 1',
-            key: 'indicator',
-            options: [],
-            dropdownProps: {
-              // multiple: true,
-              'group-values': 'indicators',
-              'group-label': 'program_area',
-              label: 'short_name',
-            },
-          },
-          {
-            class: ['col'],
-            type: 'dropdown',
-            label: 'data Source ',
-            key: 'datasource',
-            options: [],
-            dropdownProps: {
-              label: 'datasource',
-            },
-          },
-          {
-            class: ['col'],
-            type: 'dropdown',
-            label: 'location',
-            key: 'location',
-            options: [],
-            dropdownProps: {
-              label: 'name',
-            },
-          },
-          {
-            class: ['col'],
-            type: 'dropdown',
-            label: 'Year',
-            key: 'year',
-            dropdownProps: {
-              'preselect-first': true,
-            },
-            options: [],
-          },
-          {
-            class: ['col'],
-            type: 'checkbox',
-            label: 'Target',
-            key: 'target',
-          },
-        ],
-      },
-    ],
-  },
-  mutations: {
-    ADD_DATA: (state, data) => {
-      state.localData.push(data);
-    },
-    /**
-     * This just set the Option on the state for all the defaults
-     * @param {*} payload The payload for the data values
-     * @param {*} payload.panelIndex this get th index of the current control panel you want
-     * to change the options
-     * @param {*} payload.controlIndex this actual control
-     * @param {*} payload.values The data you wish to change
-     */
-    SETUP_CONTROL_OPTIONS: (state, payload) => {
-      state.controlConfig[payload.panelIndex].setup[payload.controlIndex].options = payload.values;
-    },
-  },
-  actions: {
+    ]
+```
 
-  },
-};
+### explanation of the key  available  in the setup object
+
+| Name   | Type     | Description  | example   |
+| -------| -------- | ------------ | --------- |
+| `label` | `string`| this is the title of the control panel passed into the base [ControlBase Component](../BaseComponents/ControlBase.vue) |
+| `setup` | `array`| this is array of allowing the you set the form component that will exist in the Panels  |
+| `setup[].key` | `string`| The set the the available key to unique identify the each form input component | available keys "{indicator,datasource,year,numdenum,target}"  |
+| `setup[].type` | `string`| The type of input that you will to see | available input "{dropdown,toggle,checkbox}"|
+| `setup[].class` | `Array`| An array of classes to be added on the form component |
+| `setup[].dropdownProps`| `Object`| Prop to be passed to the multi-select component |
+  
+
+
+
+## Contributing
+
+## License
+
+> use **ctrl+shift+v** to preview in MD file

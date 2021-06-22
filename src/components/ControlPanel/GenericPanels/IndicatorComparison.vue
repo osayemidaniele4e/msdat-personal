@@ -8,6 +8,8 @@
         <multiselect
           v-model="payload.indicator"
           :options="compareOptions"
+          track-by="id"
+           label="short_name"
           :searchable="false"
           :close-on-select="true"
           :show-labels="false"
@@ -22,12 +24,14 @@
 
       <div>
         <multiselect
-          v-model="payload.data"
+          v-model="payload.datasource"
           :options="dataSourceOptions"
           :searchable="false"
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
+          track-by="id"
+          label="datasource"
         ></multiselect>
       </div>
     </div>
@@ -63,8 +67,10 @@
           :max=2
           placeholder="Pick some"
           label="name"
-          track-by="name"
+          track-by="id"
           :preselect-first="false"
+           group-values="indicators"
+           group-label="program_area"
         >
         </multiselect>
       </div>

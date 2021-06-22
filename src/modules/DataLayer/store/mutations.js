@@ -13,7 +13,7 @@ export default {
      * related to the data
      */
   ADD_DATA(state, payload) {
-    console.log(state[payload.tableName]);
+    // console.log(state[payload.tableName]);
     state[payload.tableName].push(...payload.data);
   },
 
