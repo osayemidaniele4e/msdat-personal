@@ -38,9 +38,9 @@ export default class DataLayer {
   }
 
   /**
-       * This gets the default indicator from the Indexed DB database
-       * reason for this is to initialize the dashboard with minimum data required
-       */
+  * This gets the default indicator from the Indexed DB database
+  * reason for this is to initialize the dashboard with minimum data required
+  */
   populateIndicatorsForCustomDashboard() {
     if (this.defaultIndicators.length <= 0) {
       this.setAllIndicators();
