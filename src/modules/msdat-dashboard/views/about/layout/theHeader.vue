@@ -17,7 +17,7 @@
               icon="three-dots-vertical"
               font-scale="1.5"
             />
-            <header-option v-if="toggleOption" />
+            <header-option v-if="toggleOption" v-on:showContact=" contactbtn = true"/>
           </div>
 
         </b-col>
@@ -38,19 +38,23 @@
         </b-col>
       </b-row>
     </b-container>
+    <Contact v-show="contactbtn" v-on:closeContact=" contactbtn = false" />
   </header>
 </template>
 
 <script>
 import HeaderOption from '../components/HeaderOption.vue';
+import Contact from '../../../../../components/contact/contact.vue';
 
 export default {
   components: {
     HeaderOption,
+    Contact,
   },
   data() {
     return {
       toggleOption: false,
+      contactbtn: false,
     };
   },
 };
