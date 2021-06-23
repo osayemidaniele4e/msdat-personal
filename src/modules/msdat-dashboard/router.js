@@ -2,6 +2,7 @@ import routertest from '@/components/maps/router';
 import aboutRoute from './views/about/router';
 import Dashboard from './views/index.vue';
 import TableHome from './views/Table.vue';
+import NotFound from './views/NotFound.vue';
 
 export default [
   {
@@ -23,6 +24,11 @@ export default [
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: '*',
+    name: 'NotFound',
+    component: NotFound,
   },
 
   ...routertest,
