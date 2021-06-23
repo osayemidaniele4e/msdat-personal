@@ -27,7 +27,7 @@ export default [
     },
   },
   {
-    path: '/:catchAll(.*)',
+    path: '*',
     name: 'NotFound',
     component: NotFound,
   },
