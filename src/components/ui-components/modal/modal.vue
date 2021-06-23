@@ -2,7 +2,7 @@
 <div>
   <div>
     <div>
-         <div v-if="toggleModal" class="darkScreen"></div>
+         <div v-if="toggleModal" class="darkScreen" @click="closeContactform"></div>
     </div>
       <div v-show= "toggleModal" class="modal_content">
         <div class="modal_header">
@@ -130,8 +130,8 @@ export default {
     }
 
 .modal_content {
-    top: -30px;
-    height: 630px;
+    bottom: 4rem;
+    height: auto;
     position: relative;
     z-index: 50;
     width: 600px;

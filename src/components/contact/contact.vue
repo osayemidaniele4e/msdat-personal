@@ -1,13 +1,15 @@
 <template>
   <div>
-    <button @click="contactbtn = true" class="send bi bi-alarm-fill"> Contact</button>
 
-    <Modal v-show="contactbtn" v-on:closeContact="closeContactform"
+    <Modal  v-on:closeContact="closeContactform"
     v-on:submitContact="conformSend"
      :nofields="nofields" :successmessage="successmessage">
 
         <h1 slot="title">Contact Us</h1>
-        <strong slot="body_msg"> Send a message to the MSDAT Team</strong>
+        <strong slot="body_msg" > Send a message to the MSDAT Team</strong>
+
+        <div class= " newGrid grid mt-4" slot="top1">
+
          <input
             slot="top1"
             type="email"
@@ -39,6 +41,7 @@
             placeholder="organization"
             v-model="contactFormFields.organization"
         />
+        </div>
 
         <select
           slot="top1" class="fonttxt"
@@ -82,7 +85,7 @@ export default {
   },
   data() {
     return {
-      contactbtn: false,
+      contactbtn: true,
       nofields: false,
       successmessage: false,
       errormessage: false,
@@ -172,6 +175,7 @@ export default {
       this.nofields = false;
       this.successmessage = false;
       this.noInputs();
+      this.$emit('closeContact');
     },
   },
 
@@ -183,5 +187,15 @@ export default {
 </script>
 
 <style src='./contact.css' scoped>
+
+.newGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+/*
+.secondGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+} */
 
 </style>

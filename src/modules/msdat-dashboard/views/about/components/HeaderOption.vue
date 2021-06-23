@@ -66,8 +66,8 @@
           <span>Feedback</span>
         </router-link>
       </li>
-      <li>
-        <router-link to="/">
+      <li  @click="$emit('showContact')">
+        <router-link to="#" >
           <img src="@/assets/img/icons/ic_contact.svg" alt="">
           <span>Contact</span>
         </router-link>
