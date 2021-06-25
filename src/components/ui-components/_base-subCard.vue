@@ -1,14 +1,25 @@
 <template>
   <div class="card">
-    <div class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
-      :style="{backgroundColor}">
+    <div
+      class="
+        card-header
+        d-flex
+        justify-content-between
+        border-bottom-0
+        align-items-center
+      "
+      :style="{ backgroundColor }"
+    >
       <div class="title w-100">
         <slot name="title"> slot title fallback </slot>
       </div>
-      <div class="action-icon d-flex justify-content-around align-items-center" v-if="showControls">
+      <div
+        class="action-icon d-flex justify-content-around align-items-center"
+        v-if="showControls"
+      >
         <b-icon
           icon="arrows-fullscreen"
-          @click="$emit('clicked-fullscreen-icon')"
+          @click="showModal = !showModal"
           class="mx-1 font-weight-bold"
           font-scale="1.1"
         ></b-icon>
@@ -31,6 +42,16 @@
         <p class="card-text">The SubCard fallback.</p>
       </slot>
     </div>
+    <base-modal :showModal="showModal">
+      <template #title>
+        <slot name="title"> slot for modal title fallback </slot>
+      </template>
+      <template>
+        <slot>
+
+      </slot>
+      </template>
+    </base-modal>
   </div>
 </template>
 
@@ -40,6 +61,7 @@ export default {
   data() {
     return {
       showMenu: false,
+      showModal: false,
     };
   },
   props: {
