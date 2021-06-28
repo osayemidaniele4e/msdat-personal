@@ -2,6 +2,14 @@
   <div
     id="header-option"
   >
+  <base-modal :showModal="modal" v-on:hidden="modal = false" v-on:submitContact="alert('working')" >
+              <strong slot="title"> Contact Us</strong>
+               <div slot="footer-btn" >
+                   <button class="btn work-sans send" @click="submitContactForm">SEND</button>
+
+              </div>
+              <contact  v-on:submitContact="alert('working')" :submitForm="submit"> </contact>
+                </base-modal>
     <ul class="list-unstyled">
       <li>
         <router-link to="/">
@@ -66,7 +74,8 @@
           <span>Feedback</span>
         </router-link>
       </li>
-      <li  @click="$emit('showContact')">
+      <!-- <li  @click="$emit('showContact')"> -->
+        <li  @click="togglemodal">
         <router-link to="#" >
           <img src="@/assets/img/icons/ic_contact.svg" alt="">
           <span>Contact</span>
@@ -89,11 +98,47 @@
 </template>
 
 <script>
+import contact from '../../../../../components/contact/contact.vue';
+
 export default {
+  components: { contact },
+  data() {
+    return {
+      modal: false,
+      submit: false,
+    };
+  },
+  methods: {
+    togglemodal() {
+      this.modal = !this.modal;
+    },
+
+    submitContactForm() {
+      this.submit = !this.submit;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+
+.send {
+    position: relative;
+    color: white;
+    background-color: #007D53;
+    border-radius: 3px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    padding: 9px 20px;
+    margin: 10px;
+    outline: none;
+    }
+.sendButton {
+    position: relative;
+    text-align: right;
+    }
+
   ::-webkit-scrollbar {
     width: 2px;
   }
