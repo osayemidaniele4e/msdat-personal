@@ -37,19 +37,16 @@
             Research and Statistics (DHPRS)</p>
         </b-col>
       </b-row>
-    </b-container>
-    <Contact v-show="contactbtn" v-on:closeContact=" contactbtn = false" />
+    </b-container>   
   </header>
 </template>
 
 <script>
 import HeaderOption from '../components/HeaderOption.vue';
-import Contact from '../../../../../components/contact/contact.vue';
 
 export default {
   components: {
     HeaderOption,
-    Contact,
   },
   data() {
     return {
