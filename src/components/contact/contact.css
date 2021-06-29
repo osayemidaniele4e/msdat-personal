@@ -6,6 +6,15 @@
    border-color: rgb(206, 212, 218);
 }
 
+
+.font {
+  font-family: "work-sans";
+}
+
+.alerts {
+      display: inline-block;
+}
+
 .lineHeight {
   line-height: 3px;
 }
@@ -85,3 +94,9 @@ strong {
     padding: 15px 4px;
     border: 1px solid rgb(193, 223, 240);
     }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

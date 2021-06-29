@@ -2,14 +2,14 @@
   <div class="lineHeight">
         <!-- <h1 slot="title">Contact Us</h1> -->
         <p slot="body_msg" class="bold my-0" > Send a message to the MSDAT Team</p>
-         <p v-show="nofields" class="alert alert-warning mt-3">Please fill all fields correctly</p>
+         <p v-show="nofields" class="alert alert-warning mt-3 mb-0 alerts">Please fill all fields correctly</p>
           <p v-show="successmessage"
-             class="alert alert-success fonttxt mt-2"
+             class="alert alert-success fonttxt mt-2 alerts mb-0"
              role="alert">
              Thank you.
              We will keep you informed about any latest updates </p>
           <p v-show="errormessage"
-           class="alert alert-danger rounded">
+           class="alert alert-danger rounded alerts mb-0">
            An error occured, please try again later.</p>
         <div class= " newGrid grid mt-4" slot="top1">
 
@@ -89,7 +89,7 @@
           rows="5"/>
 
         <div class=" d-flex flex-row-reverse">
-              <a class="mt-2" href = "mailto:msdatfeedback@e4email.net?subject = Feedback&body = Message">
+              <a class="mt-2" href = "mailto:msdatfeedback@e4email.net">
             or send an e-mail to msdatfeedback@e4email.net
             </a>
         </div>
@@ -138,15 +138,9 @@ export default {
     },
   },
   watch: {
-    submitForm(newValue) {
-      console.log('yada');
-      if (newValue) {
-        console.log('it has changed o');
-        console.log(newValue);
-        this.conformSend();
-      } else {
-        console.log('other one');
-      }
+    submitForm() {
+      console.log('submitting form'); 
+       this.conformSend();       
     },
   },
   methods: {
@@ -164,8 +158,7 @@ export default {
       this.contactFormFields.email = '';
       this.contactFormFields.feedback = '';
       this.firstName = '';
-      this.lastName = '';
-      this.submitForm = false;
+      this.lastName = '';      
       // this.contactFormFields.organization = '';
       // this.contactFormFields.category = this.selected;
     },
@@ -240,5 +233,4 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-
 </style>

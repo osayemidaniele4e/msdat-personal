@@ -8,7 +8,7 @@
                    <button class="btn work-sans send" @click="submitContactForm">SEND</button>
 
               </div>
-              <contact  v-on:submitContact="alert('working')" :submitForm="submit"> </contact>
+              <contact :submitForm="submit"> </contact>
                 </base-modal>
     <ul class="list-unstyled">
       <li>
@@ -126,8 +126,10 @@ export default {
     position: relative;
     color: white;
     background-color: #007D53;
-    border-radius: 3px;
-    font-size: 15px;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight:400;
+    font-family: "work-sans",  sans-serif;
     border: none;
     cursor: pointer;
     padding: 9px 20px;
