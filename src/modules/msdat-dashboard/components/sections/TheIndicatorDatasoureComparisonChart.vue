@@ -39,10 +39,23 @@ export default {
     'values.indicator': {
       async handler(newValues) {
         this.loading = true;
+        // Query the data from db;
         const data = await this.dlQuery({
           indicator: newValues.id,
+          location: 1, // id 1 is for National Nigeria
+          value_type: 2, // value_types 2 is for values
         });
-        console.log(data);
+
+        const dataSources = this.dlGetDashboardDataSource();
+        // debugger;
+        for (let index = 0; index < dataSources.length; index += 1) {
+          const element = dataSources[index];
+          const filterDatasource = data.filter((item) => item.datasource === element.id);
+          console.log(filterDatasource);
+        }
+        // const filterDatasource = data.filter((item) => item.datasource === 2);
+        // console.log(filterDatasource);
+        // console.log(data);
         // const data = await this.getData(newValues);
         this.loading = false;
       },
