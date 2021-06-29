@@ -23,7 +23,7 @@
         #modal-footer="{ close }"
       >
         <div class="d-flex">
-          <button class="btn btn-danger work-sans" @click="close()">close</button>
+          <button class="btn btn-danger work-sans" @click="close()">CLOSE</button>
         </div>
         <slot name="footer-btn" class="flex-shrink-1 p-2"> </slot>
       </template>
