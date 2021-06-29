@@ -3,26 +3,28 @@
     <base-sub-card showControls v-if="values">
       <template #title>
         <h6 class="work-sans">
-          Comparison Of <b>{{ values.indicator.short_name }}</b> Across Different Data Source
+          Comparison Of <b>{{ values.indicator.short_name }}</b> Across
+          Different Data Source
         </h6>
       </template>
-      <!-- <BarChart :chartOptions="BarChartOptions" /> -->
+      <BarChart :chartOptions="ChartOptions" />
     </base-sub-card>
   </base-overlay>
 </template>
 
 <script>
-// import BarChart from '@/components/Barchart/BaseBarChart.vue';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
+import { sortBy } from 'lodash';
 import formatter from '../../mixins/formatter';
 
 export default {
   mixins: [formatter],
   components: {
-    // BarChart,
+    BarChart,
   },
   data() {
     return {
-      BarChartOptions: {},
+      ChartOptions: {},
       loading: false,
     };
   },
@@ -46,13 +48,46 @@ export default {
           value_type: 2, // value_types 2 is for values
         });
 
+        /*
+        * Sort data
+        *
+        */
+        // const sortedData = data.sort((a, b) => Number(a.period) - Number(b.period));
+        // console.log(sortedData);
+        // const sortedData = sortBy(data, ['period']);
+        // console.log(sortedData);
         const dataSources = this.dlGetDashboardDataSource();
         // debugger;
+        const ChartSeriesObject = [];
         for (let index = 0; index < dataSources.length; index += 1) {
           const element = dataSources[index];
-          const filterDatasource = data.filter((item) => item.datasource === element.id);
-          console.log(filterDatasource);
+          const filterDatasource = data.filter(
+            (item) => item.datasource === element.id,
+          );
+          // console.log(filterDatasource);
+          const arry = filterDatasource.map((item) => [
+            item.period,
+            parseFloat(item.value),
+          ]);
+          console.log(arry);
+          const sortedData = sortBy(arry, ['period']);
+          const seriesObj = {
+            name: element.datasource,
+            data: sortedData,
+          };
+          ChartSeriesObject.push(seriesObj);
+
+          // console.log(seriesObj);
         }
+        this.ChartOptions = {
+          chart: {
+            type: 'line',
+            zoomType: 'xy',
+          },
+          series: ChartSeriesObject,
+        };
+        // this.ChartOptions.series = ChartSeriesObject;
+        // console.log(ChartSeriesObject);
         // const filterDatasource = data.filter((item) => item.datasource === 2);
         // console.log(filterDatasource);
         // console.log(data);
