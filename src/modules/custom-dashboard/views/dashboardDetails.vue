@@ -1,5 +1,5 @@
 <template>
-  <b-container class="text-justify px-5" fluid>
+  <b-container class="text-justify px-5 pb-5">
     <p class="welcome">Welcome Matthias,</p>
     <b-row>
       <b-col cols="12" lg="6" class="forms">
@@ -42,24 +42,32 @@
       or subnational).
     </p>
     <b-row id="bottom-row">
-      <b-col cols="auto">
+      <b-col cols="auto mb-5" >
         <b-button id="individual">SELECT INDIVIDUAL DATA</b-button>
+        <p class="help-text">
+          I know the exact data I want,
+          I will choose just the ones I need
+        </p>
       </b-col>
-      <b-col cols="auto" xl="3" md="6" sm="12">
+      <!-- <b-col cols="auto" xl="3" md="6" sm="12">
         <p class="help-text">
           I know the exact data I want,<br />
           I will choose just the ones I need
         </p>
-      </b-col>
+      </b-col> -->
       <b-col cols="auto" class="mt-5 mt-lg-5 mt-xl-0">
         <b-button id="available">SELECT all available DATA</b-button>
+        <p class="help-text">
+          Skip the data table,
+          I want all the available data
+        </p>
       </b-col>
-      <b-col cols="auto" lg="3" md="6" sm="12" class="mt-0 mt-md-5 mt-xs-5 mt-xl-0">
+      <!-- <b-col cols="auto" lg="3" md="6" sm="12" class="mt-0 mt-md-5 mt-xs-5 mt-xl-0">
         <p class="help-text">
           Skip the data table,<br />
           I want all the available data
         </p>
-      </b-col>
+      </b-col> -->
     </b-row>
   </b-container>
 </template>
