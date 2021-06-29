@@ -2,8 +2,21 @@
    font-family:  "adobe-clean", "Work Sans";
     margin: 5px 2px;
      padding: 5px 10px;
-    
+     word-wrap: break-word;    
    border-color: rgb(206, 212, 218);
+}
+
+
+.font {
+  font-family: "work-sans";
+}
+
+.alerts {
+      display: inline-block;
+}
+
+.lineHeight {
+  line-height: 3px;
 }
 
 .newGrid {
@@ -11,19 +24,32 @@
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
+.inputMargin {
+  margin-top: 0.5rem
+ }
 
-input select {
+
+input, select {
   margin: 10px 10px;
    padding: 0px 10px;
-   background-color: rgb(206, 212, 218);
-   border-color: rgb(206, 212, 218);
+   border-radius: 0px;
+   /* background-color: rgb(206, 212, 218);
+   border-color: rgb(206, 212, 218); */
   outline: none;
   -webkit-appearance: none;
  
 }
+
 .form-control:focus{
 
      box-shadow:none;
+}
+label, .bold{
+  margin-left: 3px;
+  font-weight: 500;
+}
+.form-control {
+  border-radius: 0px;
 }
 
 textarea {
@@ -40,7 +66,7 @@ textarea {
     font-size: 15px;
     border: none;
     cursor: pointer;
-    padding: 13px 20px;
+    padding: 5px 20px;
    
     outline: none;
     }
@@ -63,8 +89,14 @@ strong {
 
 .emailField {
     background-color:rgb(240, 247, 248);
-    margin: 10px 0;
+    margin: 2px;
     width: 80%;
-    padding: 15px 30px;
+    padding: 15px 4px;
     border: 1px solid rgb(193, 223, 240);
     }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

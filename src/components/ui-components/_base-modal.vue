@@ -1,12 +1,13 @@
 <template>
   <div>
     <b-modal
-      footer-class="justify-content-start"
+      footer-class="justify-content-between"
       header-class="header-color"
       header-bg-variant="secondary"
       ref="main-modal"
       centered
-      size="lg"
+      size="md"
+      v-on:hidden="hide"
     >
       <template #modal-header="{ close }">
         <slot name="title"> modal slot title fallback </slot>
@@ -18,13 +19,13 @@
       </template>
       <slot> modal content </slot>
       <template
-        class="bg-dark"
-        footer-class="edit-footer-class"
+
         #modal-footer="{ close }"
       >
         <div class="d-flex">
-          <button class="btn btn-danger work-sans" @click="close()">close</button>
+          <button class="btn btn-danger work-sans" @click="close()">CLOSE</button>
         </div>
+        <slot name="footer-btn" class="flex-shrink-1 p-2"> </slot>
       </template>
     </b-modal>
   </div>
@@ -50,6 +51,11 @@ export default {
       this.$refs['main-modal'].hide();
     },
   },
+  methods: {
+    hide() {
+      this.$emit('hidden');
+    },
+  },
 };
 </script>
 
@@ -58,6 +64,6 @@ export default {
   background-color: #ececec !important;
 }
 .edit-footer-class {
-  justify-content: flex-start !important;
+  justify-content: space-between !important;
 }
 </style>
