@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../scss/custom.scss";
+// @import "../scss/custom.scss";
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
 ul {
   list-style-type: none;
