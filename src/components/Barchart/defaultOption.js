@@ -5,9 +5,10 @@ export default {
     height: 800,
   },
   title: {
-    text: 'Loading...',
+    enabled: false,
+    // text: 'L',
     style: {
-      fontSize: '16px',
+      fontSize: '13px',
       fontFamily: '"Muli", sans-serif',
       fontWeight: 'normal',
     },
@@ -18,7 +19,6 @@ export default {
     style: {
       fontSize: '14px',
       fontFamily: '"Muli", sans-serif',
-
     },
   },
   xAxis: {
@@ -26,7 +26,7 @@ export default {
     labels: {
       // rotation: 180,
       style: {
-        fontSize: '14px',
+        fontSize: '11px',
         fontFamily: '"Muli", sans-serif',
         fontWeight: 'normal',
       },
@@ -39,7 +39,7 @@ export default {
     title: {
       text: 'Values',
       style: {
-        fontSize: '16px',
+        fontSize: '13px',
         fontFamily: '"Muli", sans-serif',
       },
     },
@@ -53,10 +53,13 @@ export default {
         fontFamily: '"Muli", sans-serif',
       },
     },
-    // plotLines: [{
-    //   width: 2,
-    //   value: 0,
-    // }],
+    plotLines: [
+      {
+        width: 2,
+        value: 80,
+        name: 'NT',
+      },
+    ],
   },
   credits: {
     enabled: false,
@@ -66,7 +69,7 @@ export default {
     // verticalAlign: 'middle',
     // layout: 'vertical'
     itemStyle: {
-      fontSize: '14px',
+      fontSize: '11px',
       fontFamily: '"Muli", sans-serif',
       fontWeight: 400,
     },
@@ -77,15 +80,16 @@ export default {
       // borderWidth: 0,
     },
     series: {
-      // pointWidth: 17,
+      pointWidth: 10,
       // pointPlacement: 'between',
+      // borderWidth: 0,
     },
     bar: {
       dataLabels: {
         enabled: true,
         // format: '{y}%',
         style: {
-          fontSize: '14px',
+          fontSize: '10px',
           fontFamily: '"Muli", sans-serif',
         },
       },
@@ -97,51 +101,90 @@ export default {
       color: '#00AC40',
       data: [
         ['Gantt chart', 1000],
-        ['Autocalculation and plotting of trend lines', 575],
-        ['Allow navigator to have multiple data series', 523],
-        ['Implement dynamic font size', 427],
-        ['Multiple axis alignment control', 399],
-        ['Stacked area (spline etc) in irregular datetime series', 309],
-        ['Adapt chart height to legend height', 278],
-        ['Export charts in excel sheet', 239],
-        ['Toggle legend box', 235],
+        ['Autocalculation ', 575],
+        ['Allow navigator ', 523],
+        ['Implement ', 427],
+        ['Multiple ', 399],
+        ['Stacked', 309],
+        ['Adapt ', 278],
+        ['Export ', 239],
+        ['Toggle l', 235],
         ['Venn Diagram', 203],
-        ['Add ability to change Rangeselector position', 182],
-        ['Draggable legend box', 157],
+        ['Add ability', 182],
+        ['Draggable', 157],
         ['Sankey Diagram', 149],
-        ['Add Navigation bar for Y-Axis in Highstock', 144],
+        ['Add Navigation', 144],
         ['Grouped x-axis', 143],
         ['ReactJS plugin', 137],
         ['3D surface charts', 134],
-        ['Draw lines over a stock chart, for analysis purpose', 118],
-        ['Data module for database tables', 118],
+        {
+          name: 'HEHEH',
+          y: 216.4,
+          color: 'blue',
+          marker: { fillColor: 'red', radius: 10 },
+        },
+        ['Draw lines', 118],
+        ['Data module', 118],
         ['Draggable points', 117],
+      ],
+    },
+    {
+      name: ' Not Votes',
+      color: 'gray',
+      data: [
+        ['Gantt chart1', 1000],
+        ['Autocalculation1 ', 575],
+        ['Allow navigator1 ', 523],
+        ['Implement1 ', 427],
+        ['Multiple1 ', 399],
+        ['Stacked1', 309],
+        ['Adap1t ', 278],
+        ['Export1 ', 239],
+        ['Toggle 1l', 235],
+        ['Venn Diagram1', 203],
+        ['Add ability1', 182],
+        ['Draggable1', 157],
+        ['Sankey Diagram1', 149],
+        ['Add Navigation1', 144],
+        ['Grouped x-axis1', 143],
+        ['ReactJS plugin1', 137],
+        ['3D surface charts1', 134],
+        {
+          name: 'HEHEH!',
+          y: 216.4,
+          color: 'blue',
+          marker: { fillColor: 'red', radius: 10 },
+        },
+        ['Draw lines1', 118],
+        ['Data module1', 118],
+        ['Draggable points1', 117],
       ],
     },
   ],
   responsive: {
-    rules: [{
-      condition: {
-        maxWidth: 500,
-      },
-      chartOptions: {
-        chart: {
-          type: 'bar',
-          height: 700,
+    rules: [
+      {
+        condition: {
+          maxWidth: 500,
         },
-        xAxis: {
-          type: 'category',
+        chartOptions: {
+          chart: {
+            type: 'bar',
+            height: 700,
+          },
+          xAxis: {
+            type: 'category',
 
-          labels: {
-            rotation: 0,
-            style: {
-              fontSize: '8px',
-              fontFamily: '"Muli", sans-serif',
-
+            labels: {
+              rotation: 0,
+              style: {
+                fontSize: '10px',
+                fontFamily: '"Muli", sans-serif',
+              },
             },
           },
         },
       },
-    }],
+    ],
   },
 };

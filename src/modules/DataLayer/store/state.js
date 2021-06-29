@@ -8,5 +8,5 @@ export default () => ({
   factors: [],
   datasource_specific_indicator: [],
   datasources: [],
-  dashboardIndicator: [],
+  availableDashboardIndicator: [],
 });

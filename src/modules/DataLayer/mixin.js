@@ -1,7 +1,10 @@
 import { createNamespacedHelpers } from 'vuex';
-import { filter, matches } from 'lodash';
+import {
+  filter, has, omit, isMatch, matches,
+} from 'lodash';
 // import SampleData from './sample_data';
 import { MSDAT } from '@/config/dashboardGroups';
+import DB from './services/database.worker';
 
 const { mapState } = createNamespacedHelpers('DL');
 
@@ -23,64 +26,20 @@ const { mapState } = createNamespacedHelpers('DL');
 
 export default {
   data() {
-    return {
-
-    };
+    return {};
   },
   computed: {
     ...mapState({
-      dlData: (state) => state.data,
       dlDatasource: (state) => state.datasources,
       dlIndicator: (state) => state.indicators,
       dlLocation: (state) => state.location,
       dlValue_type: (state) => state.valuetypes,
-      dlDashboardIndicator: (state) => state.dashboardIndicator,
+      dlDashboardIndicator: (state) => state.availableDashboardIndicator,
       dlFactors: (state) => state.factors,
     }),
-    // ...mapGetters([
-    //   'indicators',
-    // ]),
-    // dL_getIndicator() {
-    //   return this.dlIndicators;
-    // },
   },
   methods: {
-    dlMapping(arr) {
-      const map = arr.map((x) => {
-        const newObject = {};
-        if (x.datasource !== undefined) {
-          newObject.datasource = this.dlDatasource.find((datasrc) => datasrc.id === x.datasource);
-        }
-        newObject.value = x.value;
-        return newObject;
-      });
-      console.log(map);
-    },
-    map(arr) {
-      console.log(this.dlDatasource);
-      console.time('test');
-      const map = arr.map((x) => {
-        const newObject = {};
-        const objectKey = Object.keys(x);
-        const notIncludedKeys = ['id', 'period', 'value', 'created_at', 'updated_at'];
-        objectKey.forEach((e) => {
-          debugger;
-          if (!notIncludedKeys.includes(e)) {
-            if (x[e] !== undefined) {
-              newObject[e] = this[e].find((datasrc) => datasrc.id === x[e]);
-            }
-          } else {
-            newObject[e] = x[e];
-          }
-        });
-
-        return newObject;
-      });
-      console.timeEnd('test');
-      console.log(map);
-    },
-
-    optionsIndicators() {
+    dlGetAvailableIndicators() {
       return this.dlIndicator.filter((e) => this.dlDashboardIndicator.includes(e.id));
     },
 
@@ -88,55 +47,50 @@ export default {
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
      * @returns {dataObjectType}
      */
-    dlQuery(queryObject) {
-      return filter(this.dlData, matches(queryObject));
-    },
-
-    /**
-   * @param {Object} queryObject  The query Object
-   * @param {number} queryObject.indicator The id of the indicator
-   * @param {number} queryObject.datasource The id of the datasource
-   * @returns {dataObjectType}
-   */
-    dlGetLatestSourceAndIndicatorData(queryObject) {
-      debugger;
-      const filteredIndicator = this.dlQuery(queryObject);
-      if (filteredIndicator.length > 0) {
-        const maxValue = filteredIndicator.reduce((prev, current) => (
-          (Number(prev.period) > Number(current.period)) ? prev : current));
-        if (maxValue) {
-          return maxValue;
-        }
-        return null;
+    async dlQuery(queryObject) {
+      if (has(queryObject, 'location.level')) {
+        const { location } = queryObject;
+        const newQueryObject = omit(queryObject, ['location']);
+        const resultValue = await DB.queryDB(newQueryObject);
+        return filter(resultValue, (item) => {
+          const locationValue = this.dlGetLocation(item.location);
+          if (isMatch(locationValue, location)) {
+            return item;
+          }
+          return null;
+        });
       }
-      return null;
+      const result = await DB.queryDB(queryObject);
+      return result;
     },
     dlGetDashboardDataSource() {
-      return MSDAT.dataSources;
+      return this.dlDatasource.filter((e) => MSDAT.dataSources.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
      * @return {indicatorObjectType}
      */
-    dlGetIndicatorDataObject(id) {
+    dlGetIndicator(id) {
       return this.dlIndicator.find((item) => item.id === id);
     },
     /**
-     * @param {number} id The Factore ID
+     * @param {number|array} values The Location ID or and Object you like to get
+     *
      * @return {indicatorObjectType}
      */
+    dlGetLocation(values) {
+      if (typeof values === 'object') {
+        return filter(this.dlLocation, matches(values));
+      }
+      return this.dlLocation.find((item) => item.id === values);
+    },
     dlGetFactor(id) {
       return this.dlFactors.find((item) => item.id === id);
     },
     dlGetDataSource(id) {
-      debugger;
       return this.dlDatasource.find((item) => item.id === id);
-    },
-    dlGetAvailableIndicators() {
-      return this.dlDashboardIndicator;
     },
   },
   mounted() {
   },
-
 };

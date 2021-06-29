@@ -8,8 +8,12 @@
           v-model="payload.indicator"
           :options="indicatorOptions"
           :searchable="true"
+           track-by="id"
+           label="short_name"
           :close-on-select="true"
           :show-labels="false"
+          group-values="indicators"
+          group-label="program_area"
           :preselect-first="true"
         ></multiselect>
       </div>
@@ -27,6 +31,8 @@
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
+          track-by="id"
+          label="name"
         ></multiselect>
       </div>
     </div>
@@ -37,12 +43,14 @@
 
       <div>
         <multiselect
-          v-model="payload.data"
+          v-model="payload.datasource"
           :options="dataSourceOptions"
           :searchable="false"
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
+          track-by="id"
+          label="datasource"
         ></multiselect>
       </div>
     </div>

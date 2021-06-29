@@ -1,5 +1,5 @@
 <template>
-    <div v-if="active">
+    <div v-show="active">
         <slot></slot>
     </div>
 </template>
@@ -19,8 +19,6 @@ export default {
   },
   data() {
     return {
-      payload: 'value',
-      indicatorOptions: ['heh', 'heheh'],
       active: true,
     };
   },

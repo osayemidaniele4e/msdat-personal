@@ -17,7 +17,7 @@
               icon="three-dots-vertical"
               font-scale="1.5"
             />
-            <header-option v-if="toggleOption" />
+            <header-option v-if="toggleOption" v-on:showContact=" contactbtn = true"/>
           </div>
 
         </b-col>
@@ -37,7 +37,7 @@
             Research and Statistics (DHPRS)</p>
         </b-col>
       </b-row>
-    </b-container>
+    </b-container>   
   </header>
 </template>
 
@@ -51,6 +51,7 @@ export default {
   data() {
     return {
       toggleOption: false,
+      contactbtn: false,
     };
   },
 };
