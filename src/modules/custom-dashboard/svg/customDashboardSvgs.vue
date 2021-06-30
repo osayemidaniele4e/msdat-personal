@@ -1,3 +1,6 @@
+/* eslint-disable max-len */
+/* eslint-disable max-len */
+
 <template>
   <div>
     <svg
@@ -1267,13 +1270,66 @@
         stroke-width="2"
       />
     </svg>
+    <svg v-if="name == upload" xmlns="http://www.w3.org/2000/svg" width="273" height="301" viewBox="0 0 273 301">
+      <g id="Group_2586" data-name="Group 2586" transform="translate(-1012 -363)">
+        <g id="Group_2431" data-name="Group 2431" transform="translate(0 12)">
+          <g id="Group_2429" data-name="Group 2429" transform="translate(20 -12)">
+            <circle
+              id="Ellipse_179"
+              data-name="Ellipse 179"
+              cx="82.5"
+              cy="82.5"
+              r="82.5"
+              transform="translate(1046 413)"
+              fill="#eaeaea"
+            />
+            <g id="Upload" transform="translate(1106 470)">
+              <path
+                id="ic_vertical_align_top_24px"
+                d="M13.778,24.165h8.54V52.633h5.694V24.165h8.54L25.165,12.778Z"
+                transform="translate(-2.261 -12.778)"
+                fill="#a7a7a7"
+              />
+              <path
+                id="ic_space_bar_24px"
+                d="M43.855,9V20.387H9.694V9H4V26.081H49.548V9Z"
+                transform="translate(-4 25.808)"
+                fill="#a7a7a7"
+              />
+            </g>
+          </g>
+          <text
+            id="Upload_Dashboard_Logo"
+            data-name="Upload Dashboard Logo"
+            transform="translate(1066 597)"
+            fill="#a7a7a7"
+            font-size="15"
+            font-family="DMSans-Bold, DM Sans"
+            font-weight="700"
+          >
+            <tspan x="0" y="0">Upload Dashboard Logo</tspan>
+          </text>
+        </g>
+        <g
+          id="Rectangle_2918"
+          data-name="Rectangle 2918"
+          transform="translate(1012 363)"
+          fill="none"
+          stroke="#d3d3d3"
+          stroke-width="1"
+        >
+          <rect width="273" height="301" stroke="none" />
+          <rect x="0.5" y="0.5" width="272" height="300" fill="none" />
+        </g>
+      </g>
+    </svg>
   </div>
 </template>
 
 <script>
 export default {
-  name: "customDashboardSvg",
-  props: ["name"]
+  name: 'customDashboardSvg',
+  props: ['name'],
 };
 </script>
 
