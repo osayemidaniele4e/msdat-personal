@@ -81,6 +81,7 @@ export default {
     },
     series: {
       pointWidth: 10,
+      connectNulls: true,
       // pointPlacement: 'between',
       // borderWidth: 0,
     },

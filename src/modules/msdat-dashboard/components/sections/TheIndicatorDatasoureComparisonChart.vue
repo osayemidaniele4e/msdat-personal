@@ -1,6 +1,6 @@
 <template>
   <base-overlay :show="loading">
-    <base-sub-card showControls v-if="values">
+    <base-sub-card showControls v-if="values" buttonToggle>
       <template #title>
         <h6 class="work-sans">
           Comparison Of <b>{{ values.indicator.short_name }}</b> Across

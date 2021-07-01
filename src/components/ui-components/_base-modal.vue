@@ -46,7 +46,7 @@ export default {
      */
     size: {
       type: String,
-      default: () => ('lg'),
+      default: () => ('xl'),
     },
   },
   watch: {
