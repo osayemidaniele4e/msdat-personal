@@ -6,10 +6,10 @@ export default {
   },
   title: {
     enabled: false,
-    // text: 'L',
+    text: '',
     style: {
       fontSize: '13px',
-      fontFamily: '"Muli", sans-serif',
+      fontFamily: '"Work Sans", sans-serif',
       fontWeight: 'normal',
     },
   },
@@ -18,7 +18,7 @@ export default {
     // text: '',
     style: {
       fontSize: '14px',
-      fontFamily: '"Muli", sans-serif',
+      fontFamily: '"Work Sans", sans-serif',
     },
   },
   xAxis: {
@@ -27,7 +27,7 @@ export default {
       // rotation: 180,
       style: {
         fontSize: '11px',
-        fontFamily: '"Muli", sans-serif',
+        fontFamily: '"Work Sans", sans-serif',
         fontWeight: 'normal',
       },
     },
@@ -40,7 +40,7 @@ export default {
       text: 'Values',
       style: {
         fontSize: '13px',
-        fontFamily: '"Muli", sans-serif',
+        fontFamily: '"Work Sans", sans-serif',
       },
     },
     gridLineWidth: 0,
@@ -50,15 +50,15 @@ export default {
       // format: '{value} %',
       style: {
         fontSize: '11px',
-        fontFamily: '"Muli", sans-serif',
+        fontFamily: '"Work Sans", sans-serif',
       },
     },
     plotLines: [
-      {
-        width: 2,
-        value: 80,
-        name: 'NT',
-      },
+      // {
+      //   width: 2,
+      //   value: 80,
+      //   name: 'NT',
+      // },
     ],
   },
   credits: {
@@ -70,7 +70,7 @@ export default {
     // layout: 'vertical'
     itemStyle: {
       fontSize: '11px',
-      fontFamily: '"Muli", sans-serif',
+      fontFamily: '"Work Sans", sans-serif',
       fontWeight: 400,
     },
   },
@@ -81,6 +81,7 @@ export default {
     },
     series: {
       pointWidth: 10,
+      connectNulls: true,
       // pointPlacement: 'between',
       // borderWidth: 0,
     },
@@ -90,7 +91,7 @@ export default {
         // format: '{y}%',
         style: {
           fontSize: '10px',
-          fontFamily: '"Muli", sans-serif',
+          fontFamily: '"Work Sans", sans-serif',
         },
       },
     },

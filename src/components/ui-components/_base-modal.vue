@@ -6,7 +6,7 @@
       header-bg-variant="secondary"
       ref="main-modal"
       centered
-      size="md"
+      :size="size"
       v-on:hidden="hide"
     >
       <template #modal-header="{ close }">
@@ -40,6 +40,13 @@ export default {
     showModal: {
       type: Boolean,
       default: () => false,
+    },
+    /**
+     * align with bootstrap-vue
+     */
+    size: {
+      type: String,
+      default: () => ('xl'),
     },
   },
   watch: {
