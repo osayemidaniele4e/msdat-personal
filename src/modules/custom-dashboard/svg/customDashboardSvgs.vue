@@ -1272,8 +1272,8 @@
 
 <script>
 export default {
-  name: "customDashboardSvg",
-  props: ["name"]
+  name: 'customDashboardSvg',
+  props: ['name'],
 };
 </script>
 

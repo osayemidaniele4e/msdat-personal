@@ -1,18 +1,26 @@
 <template>
-    <div>
-        <h1>login Pages</h1>
-        <p class="bg-text">Hello secret</p>
-    </div>
+  <div>
+    <Navbar />
+    <h1>signup</h1>
+    <Footer />
+  </div>
 </template>
 
 <script>
-export default {
+import Navbar from '../../components/navbar';
+import Footer from '../../components/footer';
 
+export default {
+  name: 'signup',
+  components: {
+    Navbar,
+    Footer,
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-.bg-text{
-   color: $HEALTH_THINK_COLOR;
+<style lang="scss">
+.bg-text {
+  color: $HEALTH_THINK_COLOR;
 }
 </style>
