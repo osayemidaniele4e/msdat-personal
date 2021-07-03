@@ -5,9 +5,14 @@
       :disabled="loading"
       :style="
         `min-width:${width};
-        max-width:${width}; height:${height}; border-radius:${radius};
+                font-size: ${textSize};
+
+        max-width:${width};
+        height:${height};
+        border-radius:${radius};
         color:${colorsec};
-        box-shadow:${shadow};background-color: ${bgcolor};
+        box-shadow:${shadow};
+        background-color: ${bgcolor};
         border: ${btnOutline};`
       "
       :class="
@@ -28,6 +33,9 @@ export default {
   name: 'button',
   props: {
     btnOutline: {
+      type: String,
+    },
+    textSize: {
       type: String,
     },
     hover: {
