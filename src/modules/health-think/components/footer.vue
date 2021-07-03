@@ -1,12 +1,12 @@
 <template>
   <b-container fluid class="bg-body container-style">
-    <b-row class="bg-text">
+    <b-row class="">
       <b-col cols="2">
         <!-- Logo -->
         <b-row>
           <b-col
             ><img
-              src="../../../assets/img/health-think/healththink official  logo.svg"
+              src="../../../assets/img/health-think/healththink official  logo (2).svg"
               alt="healthink logo"
           /></b-col>
           <b-col>
@@ -14,7 +14,7 @@
           </b-col>
         </b-row>
       </b-col>
-      <b-col cols="7">
+      <b-col cols="6">
         <b-row>
           <!-- About tab-->
           <b-col>
@@ -63,16 +63,36 @@
           </b-col>
         </b-row>
       </b-col>
-      <b-col cols="3">
+      <b-col cols="4">
         <b-row>
           <b-col>
             <h2>Subscribe to HealthThink via Email</h2>
-            <ul>
-              <li>+2349021720570</li>
-              <li>info@ehealth4everyone.com</li>
-            </ul>
-          </b-col></b-row
-        >
+            <b-row>
+              <b-col>
+                <BaseInput
+                  width="224px"
+                  height="27px"
+                  placeholder="Email Address"
+                  bgcolor="#413A76"
+                  btnOutline="1px solid #9188FF"
+                  colorsec="#FFFFFF"
+                  color="white"
+                  textSize="11px"
+                />
+              </b-col>
+              <b-col>
+                <Button
+                  text="SUBSCRIBE"
+                  classes="mt-1 ml-0"
+                  bgcolor="#FFFFFF"
+                  colorsec="#222222"
+                  width="90px"
+                  height="27px"
+                  textSize="11px"
+                />
+              </b-col>
+            </b-row> </b-col
+        ></b-row>
       </b-col>
 
       <!-- Subscribe tab -->
@@ -80,9 +100,15 @@
   </b-container>
 </template>
 <script>
+import BaseInput from './forms/input.vue';
+import Button from './forms/button.vue';
+
 export default {
   name: 'Footer',
-  components: {},
+  components: {
+    BaseInput,
+    Button,
+  },
 };
 </script>
 
@@ -90,6 +116,7 @@ export default {
 .footer-info {
   text-align: left;
   font-size: 11px;
+  margin-left: 1.5rem;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -100,7 +127,7 @@ export default {
 h2 {
   text-align: left;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
@@ -119,5 +146,12 @@ li {
 }
 .container-style {
   padding: 3rem 0;
+  background-color: #413a76;
+}
+img {
+  width: 10rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
