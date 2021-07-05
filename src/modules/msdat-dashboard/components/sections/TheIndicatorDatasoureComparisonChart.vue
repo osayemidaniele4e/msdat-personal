@@ -1,6 +1,15 @@
 <template>
   <base-overlay :show="loading">
-    <base-sub-card showControls v-if="values" buttonToggle>
+    <base-sub-card
+      buttonToggle
+      showControls
+      sideControl="true"
+      :dataSourceOptions="dataSourcesOptions"
+      @toggled-button="updateChart($event)"
+      @selected-datasource="onSelectedSource($event)"
+      @toggle-confidence-range="onConfidenceRangeClicked($event)"
+      v-if="values"
+    >
       <template #title>
         <h6 class="work-sans">
           Comparison Of <b>{{ values.indicator.short_name }}</b> Across
@@ -27,6 +36,20 @@ export default {
     return {
       ChartOptions: {},
       loading: false,
+      dataSourcesOptions: [
+        {
+          id: 8,
+          datasource: 'IHME',
+        },
+        {
+          id: 5,
+          datasource: 'NNHS',
+        },
+        {
+          id: 9,
+          datasource: 'WHO-GHO',
+        },
+      ],
     };
   },
   props: {
@@ -53,15 +76,17 @@ export default {
         for (let index = 0; index < dataSources.length; index += 1) {
           const element = dataSources[index];
           /*
-          * filter data for a particular dataSource
-          */
+           * filter data for a particular dataSource
+           */
           const filterDatasource = data.filter(
             (item) => item.datasource === element.id,
           );
           const dataSourceDataArray = [];
           // find data for year on each values for the dataSource;
           sortedYear.forEach((yearItem) => {
-            const dataFoundForYear = filterDatasource.find((item) => item.period === yearItem);
+            const dataFoundForYear = filterDatasource.find(
+              (item) => item.period === yearItem,
+            );
             if (dataFoundForYear) {
               dataSourceDataArray.push(parseFloat(dataFoundForYear.value));
             } else {
@@ -77,8 +102,8 @@ export default {
           ChartSeriesObject.push(seriesObj);
         }
         /*
-       * according to the highChart options also according to mockup
-       */
+         * according to the highChart options also according to mockup
+         */
         this.ChartOptions = {
           xAxis: {
             ...defaultOptions.xAxis,
@@ -97,6 +122,7 @@ export default {
         this.loading = false;
       },
       deep: true,
+      immediate: true,
     },
   },
   methods: {
@@ -107,6 +133,17 @@ export default {
         value_type: 2, // value_types 2 is for values
       });
       return data;
+    },
+    updateChart(e) {
+      this.ChartOptions.chart.type = e;
+    },
+    onSelectedSource(e) {
+      console.log(e);
+    },
+    onConfidenceRangeClicked(e) {
+      console.log(e);
+      // if (e === 'ON') {
+      // }
     },
   },
 };
