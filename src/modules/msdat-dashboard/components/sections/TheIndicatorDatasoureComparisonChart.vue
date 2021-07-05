@@ -8,6 +8,7 @@
       @toggled-button="updateChart($event)"
       @selected-datasource="onSelectedSource($event)"
       @toggle-confidence-range="onConfidenceRangeClicked($event)"
+      :dataSourceOptionsSelected="selectedDS"
       v-if="values"
     >
       <template #title>
@@ -50,6 +51,7 @@ export default {
           datasource: 'WHO-GHO',
         },
       ],
+      selectedDS: [],
     };
   },
   props: {
@@ -141,10 +143,18 @@ export default {
       console.log(e);
     },
     onConfidenceRangeClicked(e) {
-      console.log(e);
-      // if (e === 'ON') {
-      // }
+      /**
+       * initially set the first data source
+       */
+      if (e === 'ON') {
+        this.selectedDS.push(this.dataSourcesOptions[0]);
+      } else {
+        this.selectedDS = [];
+      }
     },
+  },
+  mounted() {
+    // this.selectedDS.push(this.dataSourcesOptions[0]);
   },
 };
 </script>

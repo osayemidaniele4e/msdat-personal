@@ -18,6 +18,7 @@
         <div class="my-3">
           <b-form-group v-slot="{ ariaDescribedby }">
             <b-form-checkbox-group
+              v-model="selected"
               :options="bootstrapFormattedOptions"
               :aria-describedby="ariaDescribedby"
               stacked
@@ -45,10 +46,16 @@ export default {
       //   ],
       switchValues: '',
       bootstrapFormattedOptions: [],
+      selected: [],
+      // selectedOptions: [],
     };
   },
   props: {
     options: {
+      type: Array,
+      default: () => [],
+    },
+    selectedOptions: {
       type: Array,
       default: () => [],
     },
@@ -63,6 +70,11 @@ export default {
         this.bootstrapFormattedOptions = format;
       },
       immediate: true,
+    },
+    selectedOptions: {
+      handler(newValue) {
+        this.selected = newValue;
+      },
     },
   },
 };
