@@ -31,31 +31,43 @@
         ></b-icon>
       </div>
     </div>
-    <div class="card-body" style="position: relative">
-      <ul class="dropdown-menu-icon" v-show="showMenu">
-        <li><span class="dropdown-item-text">Dropdown item text</span></li>
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-      </ul>
-      <slot>
-        <p class="card-text">The SubCard fallback.</p>
-      </slot>
+    <div class="card-body work-sans p-0" style="position: relative">
+      <SubCardDropdown v-show="showMenu" />
+      <div class="row no-gutters">
+        <div class="col p-3" :class="[sideControl ? 'col-10' : '']">
+          <div v-if="buttonToggle" class="d-flex justify-content-end">
+            <SubCardToggleButton
+              @button-clicked="$emit('toggled-button', $event)"
+            />
+          </div>
+          <slot>
+            <p class="card-text">The SubCard fallback.</p>
+          </slot>
+        </div>
+        <SubCardSideControl
+          :options="dataSourceOptions"
+          @confidence-button="$emit('toggle-confidence-range', $event)"
+          @datasources-selected="$emit('selected-datasource', $event)"
+          v-if="sideControl"
+        />
+      </div>
     </div>
     <base-modal :showModal="showModal">
       <template #title>
         <slot name="title"> slot for modal title fallback </slot>
       </template>
       <template>
-        <slot>
-
-      </slot>
+        <slot> </slot>
       </template>
     </base-modal>
   </div>
 </template>
 
 <script>
+import SubCardToggleButton from './base-subcard/SubCardToggleButton.vue';
+import SubCardDropdown from './base-subcard/SubCardDropdown.vue';
+import SubCardSideControl from './base-subcard/SubCardSideControl.vue';
+
 export default {
   name: 'SubCard',
   data() {
@@ -63,6 +75,11 @@ export default {
       showMenu: false,
       showModal: false,
     };
+  },
+  components: {
+    SubCardToggleButton,
+    SubCardDropdown,
+    SubCardSideControl,
   },
   props: {
     showControls: {
@@ -77,29 +94,23 @@ export default {
       type: String,
       default: '#DFF3F3',
     },
+    buttonToggle: {
+      type: Boolean,
+      default: () => false,
+    },
+    sideControl: {
+      true: Boolean,
+      default: () => false,
+    },
+    dataSourceOptions: {
+      type: Array,
+      default: () => [],
+    },
   },
 };
 </script>
 
-<style scoped>
-.dropdown-menu-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 1000;
-  float: left;
-  min-width: 10rem;
-  padding: 0.5rem 0;
-  margin: 0px;
-  font-size: 1rem;
-  color: #212529;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
-}
+<style lang="scss" scoped>
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
