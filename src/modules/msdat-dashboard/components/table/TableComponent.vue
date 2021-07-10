@@ -280,8 +280,8 @@ export default {
   },
   watch: {
     dataArray: {
-      handler(newValues) {
-        console.log(newValues);
+      handler() {
+        // console.log(newValues);
         this.getAvailableDataSources();
         this.getDataSourcesClassification();
       },

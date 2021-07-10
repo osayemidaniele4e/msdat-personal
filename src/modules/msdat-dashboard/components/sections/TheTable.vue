@@ -79,8 +79,8 @@ export default {
      */
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const filteredIndicator = await this.dlQuery(queryObject);
-      console.log(queryObject);
-      console.log(filteredIndicator);
+      // console.log(queryObject);
+      // console.log(filteredIndicator);
       if (filteredIndicator.length > 0) {
         return filteredIndicator.reduce(
           (max, currentValues) => {

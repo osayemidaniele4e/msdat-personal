@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 <template>
   <base-overlay :show="loading">
     <base-sub-card
@@ -65,24 +66,13 @@ export default {
   },
   watch: {
     'values.indicator': {
-      async handler(newValues) {
-        debugger;
+      async handler() {
         this.loading = true;
-        // Query the data from db;
-        console.log(newValues);
-        // const data = await this.getData(newValues);
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const queryObject = {
-          indicator: newValues.id,
-          location: 1,
-          value_type: 2,
-        };
-        const {
-          sortedYear,
-          ChartSeriesObject,
-        } = await this.formatToHighChartSeries(queryObject, dataSources);
-        this.setUpHighChartConfig(sortedYear, ChartSeriesObject);
-        console.log(ChartSeriesObject);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          dataSources,
+        );
+        this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
       deep: true,
@@ -90,7 +80,17 @@ export default {
     },
   },
   methods: {
-    setUpHighChartConfig(sortedYear, ChartSeriesObject) {
+    /**
+     * @typedef {Object} HighChartObject
+     * @property {Array} seriesArray - the seriesArray for the HighChart Series Options
+     * @property {Array} years - An array of all the years that exist in all the values
+     */
+
+    /**
+     * @param {HighChartObject}  ChartSeriesObject
+     * @param {Array} sortedYear - an arrays of years
+     */
+    setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
         xAxis: {
           ...defaultOptions.xAxis,
@@ -107,103 +107,144 @@ export default {
         series: ChartSeriesObject,
       };
     },
-    async formatToHighChartSeries(addSearchObject, dataSources) {
-      const mappedRequest = dataSources.map((item) => this.dlQuery({
-        ...addSearchObject,
-        datasource: item.id,
-      }));
-      const arrayOfResponses = await Promise.all(mappedRequest);
-      console.log(arrayOfResponses);
-      const allYears = [];
-      arrayOfResponses.forEach((item) => {
-        const periodsArray = item.map((items2) => items2.period);
-        allYears.push(...periodsArray);
-      });
-      const sortedYear = sortBy(uniq(allYears));
-      const ChartSeriesObject = [];
-      for (let index = 0; index < dataSources.length; index += 1) {
-        const dataSourceObject = dataSources[index];
-        // Knowing fully well that the datasource follows the same array position
-        // as the Promise.all result
-        const dataSourceData = arrayOfResponses[index];
-        const dataSourceDataArray = [];
-
-        sortedYear.forEach((yearItem) => {
-          const dataFound = dataSourceData.find(
-            (item) => item.period === yearItem,
-          );
-          if (dataFound) {
-            dataSourceDataArray.push(parseFloat(dataFound.value));
-          } else {
-            dataSourceDataArray.push(null);
-          }
-        });
-        const seriesObj = {
-          name: dataSourceObject.datasource,
-          data: dataSourceDataArray,
-        };
-        ChartSeriesObject.push(seriesObj);
-      }
-      return {
-        ChartSeriesObject,
-        sortedYear,
-      };
-    },
-    async getData(controlObject) {
-      const data = await this.dlQuery({
-        indicator: controlObject.id,
-        location: 1, // id 1 is for National Nigeria
-        value_type: 2, // value_types 2 is for values
-      });
-      return data;
-    },
     updateChart(e) {
       this.ChartOptions.chart.type = e;
     },
-    async onSelectedSource(e) {
-      console.log(e);
-      const dataSourcesSelected = e.map((datasource) => this.dlGetDataSource(datasource.id));
-      const queryObject = {
-        indicator: this.values.indicator.id,
-        location: 1,
-        value_type: [2, 3, 4],
-      };
 
-      const {
-        sortedYear,
-        ChartSeriesObject,
-      } = await this.formatToHighChartSeries(queryObject, dataSourcesSelected);
-      this.setUpHighChartConfig(sortedYear, ChartSeriesObject);
+    /**
+     * To get series Data for the HighChart js series API
+     * comparing datasource
+     * @param {array} dataSources - An array of datasource.
+     * @param {array} valueTypeObject - An array ofValueType.
+     * @param {Object} parameterObject
+     * @return {HighChartObject}
+     * */
+    async toHighChartSeriesSetup(
+      dataSources,
+      valueTypeArray = [2],
+      parameterObject = {
+        indicator: this.values.indicator.id,
+        location: this.values.location.id,
+      },
+    ) {
+      const chartSeriesArray = [];
+      const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
+      const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
+      const queryArray = [];
+      /**
+       * ideas here
+       * is to try all map out all the the search parameters required for the
+       * visualization
+       *
+       * the visualization requires all the datasource for the dashboard against a single
+       * indicator so we make a loop for all visualization
+       *
+       * also take into consideration that sometimes the visualization may require a particular
+       * Value type
+       */
+      mappedDataSource.forEach((datasource) => {
+        const searchDataSource = parameterObject;
+        searchDataSource.datasource = datasource.id;
+        if (mappedValueTypes.length > 0) {
+          mappedValueTypes.forEach((valueType) => {
+            // The Object.assign help copy if Object before pushing it into the array
+            // else it tends to push the same values again and again
+            searchDataSource.value_type = valueType.id;
+            queryArray.push({ ...searchDataSource });
+          });
+        } else {
+          // The Object.assign help copy if Object before pushing it into the array
+          // else it tends to push the same values again and again
+          queryArray.push({ ...searchDataSource });
+        }
+      });
+
+      const mappedRequest = queryArray.map((item) => this.dlQuery(item));
+      const mappedResponse = await Promise.all(mappedRequest);
+
+      // mapping out all the years
+      const allYears = [];
+      mappedResponse.forEach((item) => {
+        const years = item.map((itemObject) => itemObject.period);
+        allYears.push(...years);
+      });
+      // sort and get only unique ears for the categories
+      const sortedYear = sortBy(uniq(allYears));
+
+      // cause we know the queryArray  array
+      // follows the same index as the mappedResponse array
+      let sortedData = [];
+      mappedResponse.forEach((item, index) => {
+        debugger;
+        const data = item.map((Object) => [
+          Object.period,
+          Number.parseFloat(Object.value),
+        ]);
+        sortedData = data.sort(
+          // eslint-disable-next-line radix
+          (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
+        );
+        const datasource = this.dlGetDataSource(queryArray[index].datasource);
+        let seriesObject = {};
+        if (mappedValueTypes.length > 0) {
+          const valueType = this.dlGetValueTypes(queryArray[index].value_type);
+          console.log(datasource);
+          seriesObject = this.createSeriesObject(
+            valueType,
+            datasource.datasource,
+            sortedData,
+          );
+        } else {
+          seriesObject = { name: datasource.datasource, data: sortedData };
+        }
+        chartSeriesArray.push(seriesObject);
+      });
+      return {
+        seriesArray: chartSeriesArray,
+        years: sortedYear,
+      };
+    },
+    createSeriesObject(valueType, name, data) {
+      if (valueType.id === 3 || valueType.id === 4) {
+        return {
+          name: `${name} ${valueType.value_type}`,
+          data,
+        };
+      }
+      return { name, data };
+    },
+    async onSelectedSource(datasourceArray) {
+      this.loading = true;
+      const valueType = [2, 4, 3];
+      const { seriesArray, years } = await this.toHighChartSeriesSetup(
+        datasourceArray,
+        valueType,
+
+      );
+      this.setUpHighChartConfig(seriesArray, years);
+      this.loading = false;
     },
     async onConfidenceRangeClicked(e) {
       /**
-       * initially set the first data source
-       */
+      * initially set the first data source
+      */
       this.loading = true;
       if (e === 'ON') {
         this.selectedDS.push(this.dataSourcesOptions[0]);
-        const dataSourcesSelected = this.selectedDS.map(
-          (datasource) => this.dlGetDataSource(datasource.id),
+        const valueType = [2, 4, 3];
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          this.selectedDS,
+          valueType,
         );
-        const queryObject = {
-          indicator: this.values.indicator.id,
-          location: 1,
-          value_type: 2,
-        };
-
-        const {
-          sortedYear,
-          ChartSeriesObject,
-        } = await this.formatToHighChartSeries(queryObject, dataSourcesSelected);
-        this.setUpHighChartConfig(sortedYear, ChartSeriesObject);
+        this.setUpHighChartConfig(seriesArray, years);
       } else {
         this.selectedDS = [];
+        const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        this.setUpHighChartConfig(seriesArray, years);
       }
       this.loading = false;
     },
-  },
-  mounted() {
-    // this.selectedDS.push(this.dataSourcesOptions[0]);
   },
 };
 </script>
