@@ -44,8 +44,8 @@
                 </div>
                 <div class="col-md-4">
                   <TheStateBarChart
-                  v-if="cpIsLoading"
-                  :values="stateBarValue"
+                    v-if="cpIsLoading"
+                    :values="stateBarValue"
                   />
                 </div>
               </div>

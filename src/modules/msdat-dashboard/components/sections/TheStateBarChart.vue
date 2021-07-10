@@ -66,7 +66,6 @@ export default {
         datasource: datasource.id,
         indicator: indicator.id,
         period: year,
-        value_type: 2,
         location: locationValue,
       });
       return data;
