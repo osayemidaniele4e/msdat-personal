@@ -21,7 +21,7 @@
       </BasePanel>
     <!-- </b-overlay> -->
     <!-- control Panels ends here  -->
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
@@ -53,7 +53,8 @@
           </base-sub-card>
         </div>
       </div>
-    </div>
+    </div> -->
+  <DataSetComparism  :datasetProps="datasetProps"/>
   </div>
 </template>
 
@@ -66,9 +67,10 @@ import {
 
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
-import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
-import TheTable from '../../components/sections/TheTable.vue';
-import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
+// import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
+// import TheTable from '../../components/sections/TheTable.vue';
+// import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
+import DataSetComparism from '../../components/sections/datasetComparism.vue';
 
 export default {
   mixins: [formatter, controlPanelSetup],
@@ -81,15 +83,14 @@ export default {
       stateBarValue: '',
       TableValues: '',
       indicatorComparison: '',
+      datasetProps: {},
     };
   },
   components: {
     ControlBase,
     BasePanel,
     ControlPanel,
-    TheStateBarChart,
-    TheTable,
-    IDCC,
+    DataSetComparism,
   },
   methods: {
     /**
@@ -106,8 +107,8 @@ export default {
           this.stateBarValue = optionsObject;
           this.TableValues = optionsObject;
           this.indicatorComparison = optionsObject;
+          this.datasetProps = optionsObject;
           break;
-
         default:
           break;
       }

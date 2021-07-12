@@ -1,3 +1,5 @@
+import datasetComparismControls from '../../config/datasetControlPanel';
+
 export default {
   namespaced: true,
   state: {
@@ -67,6 +69,7 @@ export default {
           },
         ],
       },
+      ...datasetComparismControls,
       {
         label: 'indicator Overview 2',
         setup: [
