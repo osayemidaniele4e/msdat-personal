@@ -3,8 +3,7 @@
     <button
       :type="type"
       :disabled="loading"
-      :style="
-        `min-width:${width};
+      :style="`min-width:${width};
                 font-size: ${textSize};
 
         max-width:${width};
@@ -13,13 +12,10 @@
         color:${colorsec};
         box-shadow:${shadow};
         background-color: ${bgcolor};
-        border: ${btnOutline};`
-      "
-      :class="
-        `'ml-n1' ${classes}
+        border: ${btnOutline};`"
+      :class="`'ml-n1' ${classes}
 
-      hasHover`
-      "
+      hasHover`"
       @click="$emit('click')"
     >
       <b-spinner v-if="loading" small></b-spinner>

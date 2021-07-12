@@ -6,6 +6,7 @@
         <b-row>
           <b-col
             ><img
+              class="logo"
               src="../../../assets/img/health-think/healththink official  logo (2).svg"
               alt="healthink logo"
           /></b-col>
@@ -149,7 +150,7 @@ li {
   background-color: #413a76;
 }
 img {
-  width: 10rem;
+  width: 9rem;
   display: block;
   margin-left: auto;
   margin-right: auto;
