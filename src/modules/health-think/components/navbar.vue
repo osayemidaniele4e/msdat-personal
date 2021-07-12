@@ -3,6 +3,7 @@
     <b-navbar toggleable="sm" class="container-style">
       <b-navbar-brand href="#">
         <img
+          class="logo"
           src="../../../assets/img/health-think/healththink official  logo.svg"
           alt="healthink logo"
         />
@@ -20,25 +21,30 @@
 
         <!-- Right aligned buttons -->
         <b-navbar-nav class="ml-auto mr-10">
-          <Button
-            text="LOGIN"
-            classes="mx-3"
-            width="154px"
-            height="39px"
-            colorsec="#222222"
-            bgcolor="white"
-            btnOutline="2px solid #494299"
-          />
-          <Button
-            text="START FOR FREE"
-            classes="mx-2"
-            bgcolor="#494299"
-            colorsec="#FFFFFF"
-            width="174px"
-            height="39px"
-            shadow="0px 2px 5px #493F9B5F"
-            :hover="true"
-          />
+          <b-row>
+            <b-col sm="12" md="6">
+              <Button
+                text="LOGIN"
+                classes="sm-my-2"
+                width="154px"
+                height="39px"
+                colorsec="#222222"
+                bgcolor="white"
+                btnOutline="2px solid #494299"
+              />
+            </b-col>
+            <b-col sm="12" md="6">
+              <Button
+                text="START FOR FREE"
+                classes=""
+                bgcolor="#494299"
+                colorsec="#FFFFFF"
+                width="174px"
+                height="39px"
+                shadow="0px 2px 5px #493F9B5F"
+                :hover="true"
+            /></b-col>
+          </b-row>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -56,9 +62,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container-style {
-  // padding:0px 95px !important;
-}
+// .container-style {
+//   padding:0px 95px !important;
+// }
 .navbar-brand {
   top: 24px;
   left: 140px;
@@ -69,5 +75,11 @@ export default {
   font-size: 15px;
   font-weight: 600;
   color: black !important;
+}
+.logo {
+  width: 75%;
+}
+button {
+  float: left;
 }
 </style>
