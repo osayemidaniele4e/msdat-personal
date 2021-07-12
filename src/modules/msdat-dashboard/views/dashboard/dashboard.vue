@@ -1,24 +1,24 @@
 <template>
   <div>
     <!-- <b-overlay :show="!cpIsLoading"> -->
-      <BasePanel :position="position" v-if="cpIsLoading">
-        <template v-slot:default>
-          <ControlBase
-            v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
-            :key="index"
-            :title="control.label"
-          >
-            <ControlPanel
-              @data:options="log($event,index)"
-              :setup="control.setup"
-              :defaultIndicator="defaultIndicator"
-              :defaultDataSource="defaultDataSource"
-              :defaultLocation="defaultLocation"
-              :defaultYear="defaultYear"
-            />
-          </ControlBase>
-        </template>
-      </BasePanel>
+    <BasePanel :position="position" v-if="cpIsLoading">
+      <template v-slot:default>
+        <ControlBase
+          v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+          :key="index"
+          :title="control.label"
+        >
+          <ControlPanel
+            @data:options="log($event, index)"
+            :setup="control.setup"
+            :defaultIndicator="defaultIndicator"
+            :defaultDataSource="defaultDataSource"
+            :defaultLocation="defaultLocation"
+            :defaultYear="defaultYear"
+          />
+        </ControlBase>
+      </template>
+    </BasePanel>
     <!-- </b-overlay> -->
     <!-- control Panels ends here  -->
     <div class="container-fluid">
@@ -44,8 +44,8 @@
                 </div>
                 <div class="col-md-4">
                   <TheStateBarChart
-                  v-if="cpIsLoading"
-                  :values="stateBarValue"
+                    v-if="cpIsLoading"
+                    :values="stateBarValue"
                   />
                 </div>
               </div>
@@ -118,7 +118,6 @@ export default {
     const data = await this.dlQuery({ indicator: 7 });
     console.log({ query: data });
   },
-
 };
 </script>
 

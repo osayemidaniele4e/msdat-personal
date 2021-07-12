@@ -90,6 +90,10 @@ export default {
     dlGetDataSource(id) {
       return this.dlDatasource.find((item) => item.id === id);
     },
+    dlGetValueTypes(id) {
+      console.log(this.dlValue_type);
+      return this.dlValue_type.find((item) => item.id === id);
+    },
   },
   mounted() {
   },
