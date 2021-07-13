@@ -3,12 +3,10 @@
     <b-tabs
       align="left"
       active-nav-item-class="active-main-tab"
-      class="testing"
-      nav-link="abc"
+      nav-item-class="mr-4"
       active-tab-class="sub-tab"
       nav-class="main-tab"
       no-nav-style
-      nav-wrapper-class="w-30"
     >
       <!-- first Tab for profile settings -->
       <b-tab active no-body>
@@ -52,7 +50,8 @@
             </b-col>
           </b-row>
         </template>
-        Plans Information Area
+        <Plan />
+        <Billing />
       </b-tab>
       <!-- Third Tab for Recent Activity -->
       <b-tab no-body>
@@ -81,6 +80,8 @@
 import BasicProfile from './tabs/profile-tab/basic-profile.vue';
 import Preferences from './tabs/profile-tab/preferences.vue';
 import Delete from './tabs/profile-tab/delete.vue';
+import Plan from './tabs/plan/plan.vue';
+import Billing from './tabs/plan/billing.vue';
 
 export default {
   name: 'iconsTile',
@@ -88,10 +89,16 @@ export default {
     BasicProfile,
     Preferences,
     Delete,
+    Plan,
+    Billing,
   },
 };
 </script>
 <style>
+.some {
+  width: 5rem;
+  margin-right: 2rem;
+}
 .img-style {
   width: 40px;
   display: block;
@@ -105,7 +112,7 @@ h4 {
 }
 .active-main-tab {
   background-color: white !important;
-  margin: 0;
+  /* margin: 0; */
   /* width: 300px; */
 }
 /* .main-tab {
@@ -121,7 +128,7 @@ h4 {
 /* .nav-link .testing:not(.active) {
   background-color: red !important;
 } */
-.abc:not(.active) {
+/* .abc:not(.active) {
   background-color: red;
-}
+} */
 </style>
