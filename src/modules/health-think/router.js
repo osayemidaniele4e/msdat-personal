@@ -11,6 +11,10 @@ export default [
         path: 'signup',
         component: () => import(/* webpackChunkName: "about" */ './views/auth/signup.vue'),
       },
+      {
+        path: 'profile',
+        component: () => import(/* webpackChunkName: "about" */ './views/auth/profile.vue'),
+      },
     ],
   },
 ];
