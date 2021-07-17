@@ -1,24 +1,24 @@
 <template>
   <div>
     <!-- <b-overlay :show="!cpIsLoading"> -->
-      <BasePanel :position="position" v-if="cpIsLoading">
-        <template v-slot:default>
-          <ControlBase
-            v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
-            :key="index"
-            :title="control.label"
-          >
-            <ControlPanel
-              @data:options="log($event,index)"
-              :setup="control.setup"
-              :defaultIndicator="defaultIndicator"
-              :defaultDataSource="defaultDataSource"
-              :defaultLocation="defaultLocation"
-              :defaultYear="defaultYear"
-            />
-          </ControlBase>
-        </template>
-      </BasePanel>
+    <BasePanel :position="position" v-if="cpIsLoading">
+      <template v-slot:default>
+        <ControlBase
+          v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+          :key="index"
+          :title="control.label"
+        >
+          <ControlPanel
+            @data:options="log($event, index)"
+            :setup="control.setup"
+            :defaultIndicator="defaultIndicator"
+            :defaultDataSource="defaultDataSource"
+            :defaultLocation="defaultLocation"
+            :defaultYear="defaultYear"
+          />
+        </ControlBase>
+      </template>
+    </BasePanel>
     <!-- </b-overlay> -->
     <!-- control Panels ends here  -->
     <!-- <div class="container-fluid">
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div> -->
-  <DataSetComparism  :datasetProps="datasetProps"/>
+    <DataSetComparism :values="datasetProps" />
   </div>
 </template>
 
@@ -107,6 +107,9 @@ export default {
           this.stateBarValue = optionsObject;
           this.TableValues = optionsObject;
           this.indicatorComparison = optionsObject;
+          // this.datasetProps = optionsObject;
+          break;
+        case 1:
           this.datasetProps = optionsObject;
           break;
         default:
@@ -119,7 +122,6 @@ export default {
     const data = await this.dlQuery({ indicator: 7 });
     console.log({ query: data });
   },
-
 };
 </script>
 

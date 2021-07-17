@@ -27,9 +27,20 @@ export default [
         dropdownProps: {
           multiple: true,
           label: 'datasource',
+          'track-by': 'id',
         },
         label: 'Data source(s)',
         key: 'datasource',
+        options: [],
+      },
+      {
+        class: ['col'],
+        type: 'dropdown',
+        label: 'Year',
+        key: 'year',
+        dropdownProps: {
+          'preselect-first': true,
+        },
         options: [],
       },
       {
