@@ -37,6 +37,7 @@
         <div class="col p-3" :class="[sideControl ? 'col-10' : '']">
           <div v-if="buttonToggle" class="d-flex justify-content-end">
             <SubCardToggleButton
+            v-if="showToggle"
               @button-clicked="$emit('toggled-button', $event)"
             />
           </div>
@@ -115,7 +116,11 @@ export default {
     ConfidenceOptions: {
       type: Boolean,
       default: true,
-    }
+    },
+    showToggle: {
+      type: Boolean,
+      default: true,
+    },
   },
 };
 </script>
