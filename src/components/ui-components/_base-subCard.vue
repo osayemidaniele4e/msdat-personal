@@ -47,6 +47,7 @@
         <SubCardSideControl
           :selectedOptions.sync="dataSourceOptionsSelected"
           :options="dataSourceOptions"
+          :showConfidenceRangeOpt="ConfidenceOptions"
           @confidence-button="$emit('toggle-confidence-range', $event)"
           @datasources-selected="$emit('selected-datasource', $event)"
           v-if="sideControl"
@@ -111,6 +112,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    ConfidenceOptions: {
+      type: Boolean,
+      default: true,
+    }
   },
 };
 </script>

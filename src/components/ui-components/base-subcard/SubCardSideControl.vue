@@ -14,7 +14,7 @@
         unchecked-value="OFF"
         @change="$emit('confidence-button', $event)"
       ></b-form-checkbox>
-      <template v-if="options.length > 0">
+      <template v-if="options.length > 0 && showConfidenceRangeOpt">
         <div class="my-3">
           <b-form-group v-slot="{ ariaDescribedby }">
             <b-form-checkbox-group
@@ -59,6 +59,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    showConfidenceRangeOpt: {
+      type: Boolean,
+      default: true,
+    }
   },
   watch: {
     options: {
