@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <b-overlay :show="!cpIsLoading"> -->
+    <b-overlay :show="!cpIsLoading">
     <BasePanel :position="position" v-if="cpIsLoading">
       <template v-slot:default>
         <ControlBase
@@ -19,9 +19,9 @@
         </ControlBase>
       </template>
     </BasePanel>
-    <!-- </b-overlay> -->
+    </b-overlay>
     <!-- control Panels ends here  -->
-    <!-- <div class="container-fluid">
+     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
@@ -51,6 +51,24 @@
               </div>
             </template>
           </base-sub-card>
+          <base-sub-card :backgroundColor="'#348481'">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Indicator Comparison - By Period
+                </h5>
+            </template>
+            <template>
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                      <!-- <IDCC :values="indicatorComparisonData" /> -->
+                      <indicatorComparison :values="indicatorComparisonData">
+                        </indicatorComparison>
+                    </div>
+                </div>
+              </div>
+            </template>
+          </base-sub-card>
         </div>
       </div>
     </div> -->
@@ -67,9 +85,10 @@ import {
 
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
-// import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
-// import TheTable from '../../components/sections/TheTable.vue';
-// import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
+import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
+import TheTable from '../../components/sections/TheTable.vue';
+import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
+import indicatorComparison from '../../components/sections/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/datasetComparism.vue';
 
 export default {
@@ -84,6 +103,7 @@ export default {
       TableValues: '',
       indicatorComparison: '',
       datasetProps: {},
+      indicatorComparisonData: '',
     };
   },
   components: {
@@ -91,6 +111,10 @@ export default {
     BasePanel,
     ControlPanel,
     DataSetComparism,
+    TheStateBarChart,
+    TheTable,
+    IDCC,
+    indicatorComparison,
   },
   methods: {
     /**
@@ -111,6 +135,9 @@ export default {
           break;
         case 1:
           this.datasetProps = optionsObject;
+          break;
+        case 3:
+          this.indicatorComparisonData = optionsObject;
           break;
         default:
           break;
