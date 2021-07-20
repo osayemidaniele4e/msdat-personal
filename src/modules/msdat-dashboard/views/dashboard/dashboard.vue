@@ -69,8 +69,12 @@
           </base-sub-card>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-12">
+          <DataSetComparism :values="datasetProps" />
+        </div>
+      </div>
     </div>
-    <DataSetComparism :values="datasetProps" />
   </div>
 </template>
 
