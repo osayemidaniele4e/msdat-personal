@@ -57,13 +57,13 @@ export default {
   },
   mounted() {
     this.SET_CONTROL_OPTIONS({
-      panelIndex: 0,
+      panelIndex: 1,
       controlIndex: 0,
       values: this.defaultIndicatorDropdown,
     });
 
     this.SET_CONTROL_OPTIONS({
-      panelIndex: 0,
+      panelIndex: 1,
       controlIndex: 1,
       values: this.defaultDataSourceDropdown,
     });

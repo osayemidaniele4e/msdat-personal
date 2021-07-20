@@ -9,7 +9,7 @@ export default {
       defaultIndicator: '',
       defaultDataSource: '',
       defaultLocation: '',
-      defaultYear: '',
+      defaultYear: '2015',
       defaultIndicatorDropdown: [],
       defaultDataSourceDropdown: [],
       defaultLocationDropdown: [],
