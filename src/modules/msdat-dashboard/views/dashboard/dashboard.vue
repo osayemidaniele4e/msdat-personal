@@ -11,10 +11,26 @@
           <ControlPanel
             @data:options="log($event, index)"
             :setup="control.setup"
-            :defaultIndicator="defaultIndicator"
-            :defaultDataSource="defaultDataSource"
-            :defaultLocation="defaultLocation"
-            :defaultYear="defaultYear"
+            :defaultIndicator="
+              control.defaults.indicator != null
+                ? control.defaults.indicator
+                : defaultIndicator
+            "
+            :defaultDataSource="
+              control.defaults.dataSource != null
+                ? control.defaults.dataSource
+                : defaultDataSource
+            "
+            :defaultLocation="
+              control.defaults.location != null
+                ? control.defaults.location
+                : defaultLocation
+            "
+            :defaultYear="
+              control.defaults.year != null
+                ? control.defaults.year
+                : defaultYear
+            "
           />
         </ControlBase>
       </template>
@@ -70,7 +86,7 @@ import controlPanelSetup from '../../mixins/control-panel-setup';
 // import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
 // import TheTable from '../../components/sections/TheTable.vue';
 // import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
-import DataSetComparism from '../../components/sections/datasetComparism.vue';
+import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
 
 export default {
   mixins: [formatter, controlPanelSetup],
@@ -103,13 +119,13 @@ export default {
     async log(optionsObject, index) {
       // console.log(optionsObject, index);
       switch (index) {
-        case 0:
+        case 1:
           this.stateBarValue = optionsObject;
           this.TableValues = optionsObject;
           this.indicatorComparison = optionsObject;
           // this.datasetProps = optionsObject;
           break;
-        case 1:
+        case 0:
           this.datasetProps = optionsObject;
           break;
         default:

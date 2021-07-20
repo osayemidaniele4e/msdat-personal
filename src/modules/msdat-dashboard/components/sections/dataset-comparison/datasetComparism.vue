@@ -25,19 +25,27 @@
 </template>
 
 <script>
-import DataComparismChartConfig from '../../../../config/datasetColumnChartConfig';
-import BaseChart from '../../../../components/Barchart/BaseBarChart.vue';
-import dataPipelineMixin from '../../mixins/dataPipeline';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
+import { mapActions } from 'vuex';
+import BaseChart from '../../../../../components/Barchart/BaseBarChart.vue';
+import dataPipelineMixin from '../../../mixins/dataPipeline';
 
 export default {
-  mixins: [dataPipelineMixin],
+  mixins: [dataPipelineMixin, ControlPanelSetup],
   components: {
     BaseChart,
   },
   data() {
     return {
-      chartConfig: DataComparismChartConfig,
+      chartConfig: {},
+      // DataSetConfig: cloneDeep(DataSetConfig),
     };
+  },
+  methods: {
+    ...mapActions('MSDAT_STORE', [
+      'SET_CONTROL_OPTIONS', // -> this.foo()
+      'add',
+    ]),
   },
   props: {
     values: {
@@ -47,22 +55,18 @@ export default {
       },
     },
   },
-  methods: {
-    // async plot() {
-    //   const params = {
-    //     datasource: this.v.datasource.id,
-    //     indicator: this.datasetProps.indicator.id,
-    //     period: '2015',
-    //   };
-    //   const values = await this.dlQuery(params);
-    //   const locationArray = values.map((items) => items.location);
-    //   const locations = await this.getLocations(locationArray);
-    //   const locationsAndValues = this.mapLocationsToValues(locations, values);
-    //   this.chartConfig = this.mapStatesToXaxisAndValues(locationsAndValues);
-    // },
-  },
   mounted() {
-    // this.plot();
+    this.SET_CONTROL_OPTIONS({
+      panelIndex: 0,
+      controlIndex: 0,
+      values: this.defaultIndicatorDropdown,
+    });
+
+    this.SET_CONTROL_OPTIONS({
+      panelIndex: 0,
+      controlIndex: 1,
+      values: this.defaultDataSourceDropdown,
+    });
   },
 
   watch: {
@@ -71,7 +75,7 @@ export default {
         const queryObject = data.datasource.map((element) => ({
           indicator: data.indicator.id,
           datasource: element.id,
-          period: data.year,
+          period: '2015',
           location: {
             level: 3,
           },
