@@ -108,8 +108,8 @@ export default {
       default: () => [],
     },
     dataSourceOptionsSelected: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => {},
     },
   },
 };

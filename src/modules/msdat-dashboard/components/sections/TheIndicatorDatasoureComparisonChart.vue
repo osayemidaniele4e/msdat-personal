@@ -52,7 +52,7 @@ export default {
           datasource: 'WHO-GHO',
         },
       ],
-      selectedDS: [],
+      selectedDS: {},
     };
   },
   props: {
@@ -216,10 +216,14 @@ export default {
     async onSelectedSource(datasourceArray) {
       this.loading = true;
       const valueType = [2, 4, 3];
+      /**
+       * Bear in mind the the confidence Range options is a
+       * radio button so it only returns/ selectees a single Object
+       * at a time
+       */
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
-        datasourceArray,
+        [datasourceArray],
         valueType,
-
       );
       this.setUpHighChartConfig(seriesArray, years);
       this.loading = false;
@@ -230,15 +234,16 @@ export default {
       */
       this.loading = true;
       if (e === 'ON') {
-        this.selectedDS.push(this.dataSourcesOptions[0]);
+        const [firstObject] = this.dataSourcesOptions;
+        this.selectedDS = firstObject;
         const valueType = [2, 4, 3];
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
-          this.selectedDS,
+          [this.selectedDS],
           valueType,
         );
         this.setUpHighChartConfig(seriesArray, years);
       } else {
-        this.selectedDS = [];
+        this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
         this.setUpHighChartConfig(seriesArray, years);
