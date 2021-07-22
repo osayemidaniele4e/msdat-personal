@@ -61,7 +61,6 @@
               <div class="row">
                 <div class="col-md-12">
                     <div class="col-md-12">
-                      <!-- <IDCC :values="indicatorComparisonData" /> -->
                       <indicatorComparison :values="indicatorComparisonData">
                         </indicatorComparison>
                     </div>
@@ -136,7 +135,7 @@ export default {
         case 1:
           this.datasetProps = optionsObject;
           break;
-        case 3:
+        case 4:
           this.indicatorComparisonData = optionsObject;
           break;
         default:
