@@ -30,7 +30,7 @@
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 // import { sortBy, uniq, get } from 'lodash';
 import defaultOptions from '@/components/Barchart/defaultOption';
-import formatter from '../../mixins/formatter';
+import formatter from '../../../mixins/formatter';
 
 export default {
   mixins: [formatter],

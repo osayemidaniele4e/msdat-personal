@@ -70,7 +70,7 @@
           </base-sub-card>
         </div>
       </div>
-    </div> -->
+    </div>
     <DataSetComparism :values="datasetProps" />
   </div>
 </template>
@@ -87,7 +87,7 @@ import controlPanelSetup from '../../mixins/control-panel-setup';
 import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
 import TheTable from '../../components/sections/TheTable.vue';
 import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
-import indicatorComparison from '../../components/sections/TheIndicatorComparisonSection.vue';
+import indicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/datasetComparism.vue';
 
 export default {
