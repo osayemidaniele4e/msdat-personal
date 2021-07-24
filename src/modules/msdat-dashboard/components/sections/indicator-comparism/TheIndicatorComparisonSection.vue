@@ -1,5 +1,9 @@
 <template>
 <base-overlay :show="loading">
+<!-- the props ConfidenceOptions and showToggle show the cofidence range component
+ and the chart type component respectively
+ note: the confidence range prop just makes the this section look more like the mock-up
+ and might need to be removed entirely -->
    <base-sub-card
      buttonToggle
       showControls
@@ -11,6 +15,8 @@
       v-if="values"
     >
         <template #title>
+        <!-- the indicator property is eith an object when alone
+        or an array when compared aganist another  -->
     <h6 class="work-sans" v-if="!values.indicator.length">
           Comparison Of <b>{{ values.indicator.short_name }}</b>
            according to the <b> {{values.datasource.datasource}} </b> across time
@@ -28,7 +34,7 @@
 
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
-// import { sortBy, uniq, get } from 'lodash';
+import { sortBy } from 'lodash';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '../../../mixins/formatter';
 
@@ -69,7 +75,6 @@ export default {
       },
 
       loading: false,
-      years: [],
       sortedYear: null,
       data: {},
       forChart: {},
@@ -78,9 +83,6 @@ export default {
     };
   },
   methods: {
-    changeYear() {
-      this.ChartOptions.xAxis.categories = this.years;
-    },
 
     async onSelectedSource(datasourceArray) {
       console.log(' you selected');
@@ -99,7 +101,7 @@ export default {
 
   watch: {
     values: {
-      // so the idea here is to plot the chart for either
+      // so the idea here is to always empty the chart and re-plot the chart for either
       // single object or an array depending on the size of the indicator parameter/parameters
       async handler(options) {
         this.loading = true;
@@ -114,18 +116,18 @@ export default {
               indicator: options.indicator[i].id,
               location: 1,
             });
-            // create the various object for the chart series
+            // create the various objects for the chart series
             const seriesObject = {
               name: this.dlGetIndicator(options.indicator[i].id).short_name,
               data: [],
             };
-            // data.slice(0, 7)
             data.map((series) => seriesObject.data.push(
               [Number(series.period), Number(series.value)],
             ));
+            const mappedData = sortBy(seriesObject.data, [(o) => o[0]]);
+            seriesObject.data = mappedData;
             this.ChartOptions.series.push(seriesObject);
-            console.log('new query and series', seriesObject);
-            console.log('break');
+            console.log('new series', seriesObject);
           }
         } else {
           const data = await this.dlQuery({
@@ -147,11 +149,7 @@ export default {
     },
 
   },
-  mounted() {
-    for (let i = 1990; i <= 2018; i += 1) {
-      this.years.push(i);
-    }
-  },
+  mounted() {},
 };
 
 </script>
