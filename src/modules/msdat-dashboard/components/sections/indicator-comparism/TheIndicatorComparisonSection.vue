@@ -48,7 +48,6 @@ export default {
       ChartOptions: {
         xAxis: {
           ...defaultOptions.xAxis,
-          categories: [1998, 1999, 2003, 2004],
         },
         yAxis: {
           min: 0,
@@ -139,8 +138,9 @@ export default {
             name: this.dlGetIndicator(options.indicator.id).short_name,
             data: [],
           };
-          data.slice(0, 7)
-            .map((series) => seriesObject.data.push([Number(series.period), Number(series.value)]));
+          data.map((series) => seriesObject.data.push(
+            [Number(series.period), Number(series.value)],
+          ));
           this.ChartOptions.series.push(seriesObject);
         }
         this.loading = false;
