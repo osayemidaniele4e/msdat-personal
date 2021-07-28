@@ -64,7 +64,7 @@
           :close-on-select="false"
           :clear-on-select="false"
           :preserve-search="true"
-          :max=2
+          :max="2"
           placeholder="Pick some"
           label="name"
           track-by="id"
