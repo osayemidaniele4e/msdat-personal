@@ -61,6 +61,6 @@ export default {
     indicator: null,
     dataSource: null,
     location: null,
-    year: null,
+    year: '2015',
   },
 };

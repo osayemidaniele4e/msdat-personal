@@ -8,30 +8,66 @@
             :key="index"
             :title="control.label"
           >
-            <ControlPanel
-              @data:options="log($event, index)"
-              :setup="control.setup"
-              :defaultIndicator="
-                control.defaults.indicator != null
-                  ? control.defaults.indicator
-                  : defaultIndicator
-              "
-              :defaultDataSource="
-                control.defaults.dataSource != null
-                  ? control.defaults.dataSource
-                  : defaultDataSource
-              "
-              :defaultLocation="
-                control.defaults.location != null
-                  ? control.defaults.location
-                  : defaultLocation
-              "
-              :defaultYear="
-                control.defaults.year != null
-                  ? control.defaults.year
-                  : defaultYear
-              "
-            />
+            <template v-if="!Array.isArray(control.setup[0])">
+              <ControlPanel
+                @data:options="log($event, index)"
+                :setup="control.setup"
+                :defaultIndicator="
+                  control.defaults.indicator != null
+                    ? control.defaults.indicator
+                    : defaultIndicator
+                "
+                :defaultDataSource="
+                  control.defaults.dataSource != null
+                    ? control.defaults.dataSource
+                    : defaultDataSource
+                "
+                :defaultLocation="
+                  control.defaults.location != null
+                    ? control.defaults.location
+                    : defaultLocation
+                "
+                :defaultYear="
+                  control.defaults.year != null
+                    ? control.defaults.year
+                    : defaultYear
+                "
+              />
+            </template>
+            <template v-else>
+              <div class="row">
+                <div
+                  class="col-md-4"
+                  v-for="(item, index2) in control.setup"
+                  :key="index2"
+                >
+                  <ControlPanel
+                    @data:options="log($event, index, index2)"
+                    :setup="item"
+                    :defaultIndicator="
+                      control.defaults.indicator != null
+                        ? control.defaults.indicator
+                        : defaultIndicator
+                    "
+                    :defaultDataSource="
+                      control.defaults.dataSource != null
+                        ? control.defaults.dataSource
+                        : defaultDataSource
+                    "
+                    :defaultLocation="
+                      control.defaults.location != null
+                        ? control.defaults.location
+                        : defaultLocation
+                    "
+                    :defaultYear="
+                      control.defaults.year != null
+                        ? control.defaults.year
+                        : defaultYear
+                    "
+                  />
+                </div>
+              </div>
+            </template>
           </ControlBase>
         </template>
       </BasePanel>
@@ -89,6 +125,11 @@
           <DataSetComparism :values="datasetProps" />
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-12">
+          <MultiSourceCompare :values="datasetProps" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -107,6 +148,8 @@ import TheTable from '../../components/sections/TheTable.vue';
 import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
 import indicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
+
+import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
 
 export default {
   mixins: [formatter, controlPanelSetup],
@@ -132,6 +175,7 @@ export default {
     TheTable,
     IDCC,
     indicatorComparison,
+    MultiSourceCompare,
   },
   methods: {
     /**
@@ -141,7 +185,7 @@ export default {
      * you can use this to check which control panel changed
      *
      */
-    async log(optionsObject, index) {
+    async log(optionsObject, index, index2) {
       // console.log(optionsObject, index);
       switch (index) {
         case 0:
@@ -155,6 +199,10 @@ export default {
           break;
         case 2:
           this.indicatorComparisonData = optionsObject;
+          break;
+        case 3:
+          console.log({ index, index2 });
+          // this.indicatorComparisonData = optionsObject;
           break;
         default:
           break;
