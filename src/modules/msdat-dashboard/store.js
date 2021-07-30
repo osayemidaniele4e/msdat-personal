@@ -1,5 +1,6 @@
 import datasetComparismControls from '@/modules/msdat-dashboard/components/sections/dataset-comparison/datasetControlPanelConfig';
 import indicatorOverviewConfig from '@/modules/msdat-dashboard/components/sections/indicator-overview/control-panel-config';
+import indicatorComparismConfig from '@/modules/msdat-dashboard/components/sections/indicator-comparism/indicator-comparism-config';
 
 export default {
   namespaced: true,
@@ -9,7 +10,7 @@ export default {
       datasource: 4,
       location: 1,
     },
-    controlConfig: [indicatorOverviewConfig, datasetComparismControls],
+    controlConfig: [indicatorOverviewConfig, datasetComparismControls, indicatorComparismConfig],
   },
   mutations: {
     ADD_DATA: (state, data) => {
