@@ -26,6 +26,21 @@ export default {
       },
     },
     {
+      class: ['col'],
+      type: 'dropdown',
+      label: 'Year',
+      key: 'year',
+      options: [
+        { id: 1, year: '2010' },
+        { id: 2, year: '2015' },
+      ],
+      dropdownProps: {
+        'track-by': 'id',
+        label: 'year',
+        preselectFirst: true,
+      },
+    },
+    {
       type: 'dropdown',
       class: ['col-md-6'],
       label: 'indicator',
