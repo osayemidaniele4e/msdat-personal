@@ -1,44 +1,94 @@
 <template>
   <div>
-    <!-- <b-overlay :show="!cpIsLoading"> -->
-    <BasePanel :position="position" v-if="cpIsLoading">
-      <template v-slot:default>
-        <ControlBase
-          v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
-          :key="index"
-          :title="control.label"
-        >
-          <ControlPanel
-            @data:options="log($event, index)"
-            :setup="control.setup"
-            :defaultIndicator="
-              control.defaults.indicator != null
-                ? control.defaults.indicator
-                : defaultIndicator
-            "
-            :defaultDataSource="
-              control.defaults.dataSource != null
-                ? control.defaults.dataSource
-                : defaultDataSource
-            "
-            :defaultLocation="
-              control.defaults.location != null
-                ? control.defaults.location
-                : defaultLocation
-            "
-            :defaultYear="
-              control.defaults.year != null
-                ? control.defaults.year
-                : defaultYear
-            "
-          />
-        </ControlBase>
-      </template>
-    </BasePanel>
-    <!-- </b-overlay> -->
+    <b-overlay :show="!cpIsLoading">
+      <BasePanel :position="position" v-if="cpIsLoading">
+        <template v-slot:default>
+          <ControlBase
+            v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+            :key="index"
+            :title="control.label"
+          >
+            <ControlPanel
+              @data:options="log($event, index)"
+              :setup="control.setup"
+              :defaultIndicator="
+                control.defaults.indicator != null
+                  ? control.defaults.indicator
+                  : defaultIndicator
+              "
+              :defaultDataSource="
+                control.defaults.dataSource != null
+                  ? control.defaults.dataSource
+                  : defaultDataSource
+              "
+              :defaultLocation="
+                control.defaults.location != null
+                  ? control.defaults.location
+                  : defaultLocation
+              "
+              :defaultYear="
+                control.defaults.year != null
+                  ? control.defaults.year
+                  : defaultYear
+              "
+            />
+          </ControlBase>
+        </template>
+      </BasePanel>
+    </b-overlay>
     <!-- control Panels ends here  -->
     <div class="container-fluid">
-      <ZonalAnalysis :controlPanelProps="zonalProps" />
+      <div class="row">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Indicator Overview
+              </h5>
+            </template>
+            <template>
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <TheTable :values="TableValues" />
+                    </div>
+                    <div class="col-md-12">
+                      <IDCC :values="indicatorComparison" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <TheStateBarChart
+                    v-if="cpIsLoading"
+                    :values="stateBarValue"
+                  />
+                </div>
+              </div>
+            </template>
+          </base-sub-card>
+          <base-sub-card :backgroundColor="'#348481'">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Indicator Comparison - By Period
+              </h5>
+            </template>
+            <template>
+              <div class="row">
+                <div class="col-md-12">
+                  <indicatorComparison :values="indicatorComparisonData">
+                  </indicatorComparison>
+                </div>
+              </div>
+            </template>
+          </base-sub-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <DataSetComparism :values="datasetProps" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,7 +102,11 @@ import {
 
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
-import ZonalAnalysis from '../../components/sections/zonal-analysis/zonalSection.vue';
+import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
+import TheTable from '../../components/sections/TheTable.vue';
+import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
+import indicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
+import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
 
 export default {
   mixins: [formatter, controlPanelSetup],
@@ -66,14 +120,18 @@ export default {
       TableValues: '',
       indicatorComparison: '',
       datasetProps: {},
-      zonalProps: {},
+      indicatorComparisonData: '',
     };
   },
   components: {
     ControlBase,
     BasePanel,
     ControlPanel,
-    ZonalAnalysis,
+    DataSetComparism,
+    TheStateBarChart,
+    TheTable,
+    IDCC,
+    indicatorComparison,
   },
   methods: {
     /**
@@ -94,6 +152,9 @@ export default {
           break;
         case 1:
           // this.datasetProps = optionsObject;
+          break;
+        case 2:
+          this.indicatorComparisonData = optionsObject;
           break;
         default:
           break;

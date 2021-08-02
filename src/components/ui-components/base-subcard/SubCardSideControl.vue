@@ -17,7 +17,7 @@
       <template v-if="options.length > 0">
         <div class="my-3">
           <b-form-group v-slot="{ ariaDescribedby }">
-             <b-form-radio-group
+            <b-form-radio-group
               v-model="selected"
               :options="bootstrapFormattedOptions"
               :aria-describedby="ariaDescribedby"

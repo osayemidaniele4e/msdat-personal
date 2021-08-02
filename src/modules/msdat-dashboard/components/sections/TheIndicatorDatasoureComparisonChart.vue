@@ -230,8 +230,8 @@ export default {
     },
     async onConfidenceRangeClicked(e) {
       /**
-      * initially set the first data source
-      */
+       * initially set the first data source
+       */
       this.loading = true;
       if (e === 'ON') {
         const [firstObject] = this.dataSourcesOptions;
@@ -245,7 +245,9 @@ export default {
       } else {
         this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          dataSources,
+        );
         this.setUpHighChartConfig(seriesArray, years);
       }
       this.loading = false;

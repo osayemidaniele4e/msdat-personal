@@ -6,6 +6,7 @@ export default {
         location: '',
         datasource: 'NHMIS 1',
         year: '',
+        compareBy: '',
         visualization: '',
         target: {
           national: false,
