@@ -111,7 +111,7 @@ export default {
       } else if (datas.year_available.includes('-')) {
         // if the years are seperated with a dash, loop through the first year to the last year
         const bounds = datas.year_available.split('-');
-        for (let i = Number(bounds[0]); i <= Number(bounds[1] + 1); i += 1) {
+        for (let i = Number(bounds[0]); i <= Number(bounds[1]); i += 1) {
           list.push(i.toString());
         }
       }
@@ -182,7 +182,7 @@ export default {
           // const listYear = stringYear;
 
           // console.log('checkit is ', checkit.yea.map((e) => `${e}`));
-          console.log('years available ', options.datasource.year_available);
+          // console.log('years available ', options.datasource.year_available);
           const queryObject2 = options.indicator.map((element) => ({
             indicator: element.id,
             datasource: options.datasource.id,
@@ -190,8 +190,8 @@ export default {
             location: 1,
           }));
           const promises2 = queryObject2.map((item) => this.dlQuery(item));
-          const result2 = await Promise.all(promises2);
-          console.log('for national', result2);
+          // const result2 = await Promise.all(promises2);
+          // console.log('for national', result2);
 
           const queryObject = options.indicator.map((element) => ({
             indicator: element.id,
@@ -232,9 +232,9 @@ export default {
         // change the year to the available years in the datasource
 
         const availableYears = this.getAvailableDataSourceYears(data);
-        console.log('formatted years', availableYears);
+        // console.log('formatted years', availableYears);
         const mappedYears = availableYears.map((each, i) => ({ id: i + 1, year: each }));
-        console.log('mapped years', mappedYears);
+        // console.log('mapped years', mappedYears);
         this.SET_CONTROL_OPTIONS({
           panelIndex: 2,
           controlIndex: 2,
