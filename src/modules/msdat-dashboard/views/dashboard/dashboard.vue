@@ -38,42 +38,7 @@
     <!-- </b-overlay> -->
     <!-- control Panels ends here  -->
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Indicator Overview
-              </h5>
-            </template>
-            <template>
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <TheTable :values="TableValues" />
-                    </div>
-                    <div class="col-md-12">
-                      <IDCC :values="indicatorComparison" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <TheStateBarChart
-                    v-if="cpIsLoading"
-                    :values="stateBarValue"
-                  />
-                </div>
-              </div>
-            </template>
-          </base-sub-card>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <DataSetComparism :values="datasetProps" />
-        </div>
-      </div>
+      <ZonalAnalysis :controlPanelProps="zonalProps" />
     </div>
   </div>
 </template>
@@ -87,10 +52,7 @@ import {
 
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
-import TheStateBarChart from '../../components/sections/indicator-overview/TheStateBarChart.vue';
-import TheTable from '../../components/sections/indicator-overview/TheTable.vue';
-import IDCC from '../../components/sections/indicator-overview/TheIndicatorDatasoureComparisonChart.vue';
-import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
+import ZonalAnalysis from '../../components/sections/zonal-analysis/zonalSection.vue';
 
 export default {
   mixins: [formatter, controlPanelSetup],
@@ -104,16 +66,14 @@ export default {
       TableValues: '',
       indicatorComparison: '',
       datasetProps: {},
+      zonalProps: {},
     };
   },
   components: {
     ControlBase,
     BasePanel,
     ControlPanel,
-    DataSetComparism,
-    IDCC,
-    TheStateBarChart,
-    TheTable,
+    ZonalAnalysis,
   },
   methods: {
     /**
@@ -130,10 +90,10 @@ export default {
           this.stateBarValue = optionsObject;
           this.TableValues = optionsObject;
           this.indicatorComparison = optionsObject;
-          // this.datasetProps = optionsObject;
+          this.zonalProps = optionsObject;
           break;
         case 1:
-          this.datasetProps = optionsObject;
+          // this.datasetProps = optionsObject;
           break;
         default:
           break;
