@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 <template>
 <div>
   <base-sub-card :backgroundColor="'#348481'">
@@ -25,13 +26,13 @@
         or an array when compared aganist another  -->
         <h6 class="work-sans" v-if="!values.indicator.length">
           Comparison Of <b>{{ values.indicator.short_name }}</b> according to
-          the <b> {{ values.datasource.datasource }} </b> across time
+          the <b> {{ values.datasource.datasource }} </b> across {{values.compareBy.name}}
         </h6>
         <h6 class="work-sans" v-else>
           Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
           <b> {{ dlGetIndicator(values.indicator[1].id).short_name }} </b>
           according to the <b> {{ values.datasource.datasource }} </b> across
-          time
+          {{values.compareBy.name}}s
         </h6>
       </template>
       <BarChart :chartOptions="ChartOptions" />
@@ -48,6 +49,7 @@ import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy } from 'lodash';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '../../../mixins/formatter';
+import controlPanelOptions from './indicator-comparism-config';
 
 export default {
   mixins: [formatter, ControlPanelSetup],
@@ -117,6 +119,27 @@ export default {
       }
       return list;
     },
+
+    displayFactor(factor) {
+      const dpfactor = factor;
+      let sign;
+      switch (dpfactor) {
+        case 'in percentage':
+          sign = '%';
+          break;
+        default:
+          sign = '';
+      }
+
+      return sign;
+    },
+
+    removeYearOption() {
+      controlPanelOptions.setup = controlPanelOptions.setup.filter((option) => option.label !== 'Year');
+    },
+    addYearOption() {
+      controlPanelOptions.setup.splice(2, 0, this.yearOptions);
+    },
   },
   props: {
     values: {
@@ -136,7 +159,66 @@ export default {
         const chartChange = options.compareBy.name;
         if (chartChange === 'Period') {
         // check if the indicator parameter is alone or is going to be compared with another one
-          if (this.values.indicator.length) {
+        // if the indicator is an array of 2
+          if (this.values.indicator.length > 1) {
+            const indicatorDisplayFactor1 = this.dlGetFactor(
+              options.indicator[0].factor,
+            ).display_factor;
+            const indicatorDisplayFactor2 = this.dlGetFactor(
+              options.indicator[1].factor,
+            ).display_factor;
+
+            const indicatorTarget1 = options.indicator[0].national_target;
+            const indicatorTarget2 = options.indicator[1].national_target;
+
+            this.ChartOptions = {
+              yAxis: [{
+                lineWidth: 0,
+                gridLineWidth: 0,
+                title: {
+                  text: indicatorDisplayFactor1,
+                },
+                plotLines: [{
+                  value: indicatorTarget1,
+                  color: 'black',
+                  width: 2,
+                  label: {
+                    style: {
+                      fontSize: '20px',
+                    },
+                    text: `NT: ${indicatorTarget1}`,
+                    align: 'right',
+                    rotation: 90,
+                  },
+                },
+                ],
+              },
+              {
+                opposite: true,
+                title: {
+                  text: indicatorDisplayFactor2,
+                },
+
+                plotLines: [{
+                  value: indicatorTarget2,
+                  color: 'black',
+                  width: 2,
+                  label: {
+                    style: {
+                      fontSize: '20px',
+                    },
+                    text: `NT: ${indicatorTarget2}`,
+                    align: 'right',
+                    rotation: 90,
+                  },
+                },
+                ],
+              }],
+              chart: {
+                type: 'line',
+              },
+              series: [],
+            };
             for (let i = 0; i <= options.indicator.length - 1; i += 1) {
               // eslint-disable-next-line no-await-in-loop
               const data = await this.dlQuery({
@@ -146,6 +228,7 @@ export default {
               });
               // create the various objects for the chart series
               const seriesObject = {
+                yAxis: i,
                 name: this.dlGetIndicator(options.indicator[i].id).short_name,
                 data: [],
               };
@@ -155,11 +238,27 @@ export default {
               ]));
               const mappedData = sortBy(seriesObject.data, [(o) => o[0]]);
               seriesObject.data = mappedData;
-              this.ChartOptions.chart.type = 'line';
               this.ChartOptions.series.push(seriesObject);
               console.log('new series', seriesObject);
             }
-          } else {
+          } else if (this.values.indicator.length === 1) { // if the indicator array is alone
+            const data = await this.dlQuery({
+              datasource: options.datasource.id,
+              indicator: options.indicator[0].id,
+              location: 1,
+            });
+            const seriesObject = {
+              name: this.dlGetIndicator(options.indicator[0].id).short_name,
+              data: [],
+            };
+            data.map((series) => seriesObject.data.push([
+              series.period,
+              Number(series.value),
+            ]));
+            this.ChartOptions.yAxis.splice(1, 1);
+            this.ChartOptions.chart.type = 'line';
+            this.ChartOptions.series.push(seriesObject);
+          } else { // if the indicator is an object
             const data = await this.dlQuery({
               datasource: options.datasource.id,
               indicator: options.indicator.id,
@@ -176,13 +275,6 @@ export default {
             this.ChartOptions.series.push(seriesObject);
           }
         } else if (chartChange === 'State') {
-          // const listYear = options.year.year.toString;
-          // const stringYear = `\'${options.year.year.toString()}\'`;
-          // console.log('seledted year is', stringYear);
-          // const listYear = stringYear;
-
-          // console.log('checkit is ', checkit.yea.map((e) => `${e}`));
-          // console.log('years available ', options.datasource.year_available);
           const queryObject2 = options.indicator.map((element) => ({
             indicator: element.id,
             datasource: options.datasource.id,
@@ -190,8 +282,7 @@ export default {
             location: 1,
           }));
           const promises2 = queryObject2.map((item) => this.dlQuery(item));
-          // const result2 = await Promise.all(promises2);
-          // console.log('for national', result2);
+          console.log(promises2);
 
           const queryObject = options.indicator.map((element) => ({
             indicator: element.id,
@@ -212,14 +303,87 @@ export default {
             const indicator = this.dlGetIndicator(item.indicator).short_name;
 
             return {
+              yAxis: index,
               name: indicator,
               data: dataValues,
             };
           });
           const mappedData = sortBy(orderResult.data, [(o) => o[0]]);
           orderResult.data = mappedData;
-          this.ChartOptions.chart.type = 'column';
-          this.ChartOptions.series = orderResult;
+          const indicatorDisplayFactor1 = this.dlGetFactor(
+            options.indicator[0].factor,
+          )
+            .display_factor;
+          const indicatorDisplayFactor2 = this.dlGetFactor(
+            options.indicator[1].factor,
+          ).display_factor;
+          const indicatorTarget1 = options.indicator[0].national_target;
+          const indicatorTarget2 = options.indicator[1].national_target;
+
+          const displayFactorSign1 = this.displayFactor(indicatorDisplayFactor1);
+          // const displayFactorSign2 = this.displayFactor(indicatorDisplayFactor2);
+          this.ChartOptions = {
+            yAxis: [{
+              lineWidth: 0,
+              gridLineWidth: 0,
+              title: {
+                text: indicatorDisplayFactor1,
+              },
+              plotLines: [{
+                value: indicatorTarget1,
+                color: 'black',
+                width: 2,
+                label: {
+                  style: {
+                    fontSize: '2px',
+                  },
+                  text: `NT: ${indicatorTarget1}`,
+                  align: 'right',
+                  rotation: 90,
+                },
+              },
+              ],
+            },
+            {
+              opposite: true,
+              title: {
+                text: indicatorDisplayFactor2,
+                rotation: 270,
+              },
+
+              plotLines: [{
+                value: indicatorTarget2,
+                color: 'black',
+                width: 2,
+                label: {
+                  style: {
+                    fontSize: '10px',
+                  },
+                  text: `NT: ${indicatorTarget2}`,
+                  align: 'right',
+                  rotation: 90,
+                },
+              },
+              ],
+            }],
+
+            plotOptions: {
+              column: {
+                dataLabels: {
+                  enabled: true,
+                  formatter() {
+                    return `${this.point.y}${displayFactorSign1}`;
+                  },
+                },
+              },
+            },
+            chart: {
+              type: 'column',
+            },
+            series: orderResult,
+          };
+          // this.ChartOptions.chart.type = 'column';
+          // this.ChartOptions.series = orderResult;
           console.log('chart series is', this.ChartOptions.series);
         }
         this.loading = false;
@@ -232,9 +396,7 @@ export default {
         // change the year to the available years in the datasource
 
         const availableYears = this.getAvailableDataSourceYears(data);
-        // console.log('formatted years', availableYears);
         const mappedYears = availableYears.map((each, i) => ({ id: i + 1, year: each }));
-        // console.log('mapped years', mappedYears);
         this.SET_CONTROL_OPTIONS({
           panelIndex: 2,
           controlIndex: 2,
