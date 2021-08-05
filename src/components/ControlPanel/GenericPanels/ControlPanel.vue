@@ -1,36 +1,40 @@
 <template>
   <div class="row">
-    <div
-      class=""
-      :class="values.class"
-      v-for="(values, index) in setup"
-      :key="index"
-    >
-      <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
-      <selectWrapper
-        v-if="values.type === 'dropdown'"
-        v-model="payload[values.key]"
-        :options="values.options"
-        :multiSelectProps="values.dropdownProps"
-      />
-      <toggle
-        v-if="values.type === 'toggle'"
-        @change="payload[values.key] = $event"
+    <template v-for="(values, index) in setup">
+      <div
+        class=""
+        :class="values.class"
+        :key="index"
+        v-show="values.visibility === undefined ? true : values.visibility"
+      >
+        <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
+        <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
+        <selectWrapper
+          v-if="values.type === 'dropdown'"
+          v-model="payload[values.key]"
+          :options="values.options"
+          :multiSelectProps="values.dropdownProps"
+        />
+        <!-- </div> -->
+        <toggle
+          v-if="values.type === 'toggle'"
+          @change="payload[values.key] = $event"
         />
 
-      <div class="d-flex" v-if="values.type === 'checkbox'">
-        <!-- National Target here -->
-        <div class="d-flex">
-          <BaseCheckbox @input="payload.target.national = $event" />
-          <p class="check-label ml-1">National</p>
-        </div>
-        <!-- SDG Target here -->
-        <div class="d-flex ml-3">
-          <BaseCheckbox @input="payload.target.sdg = $event" />
-          <p class="check-label ml-1">SDG</p>
+        <div class="d-flex" v-if="values.type === 'checkbox'">
+          <!-- National Target here -->
+          <div class="d-flex">
+            <BaseCheckbox @input="payload.target.national = $event" />
+            <p class="check-label ml-1">National</p>
+          </div>
+          <!-- SDG Target here -->
+          <div class="d-flex ml-3">
+            <BaseCheckbox @input="payload.target.sdg = $event" />
+            <p class="check-label ml-1">SDG</p>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 

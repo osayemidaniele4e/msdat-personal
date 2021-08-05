@@ -26,6 +26,7 @@ export default {
       },
     },
     {
+      visibility: true,
       class: ['col'],
       type: 'dropdown',
       label: 'Year',
