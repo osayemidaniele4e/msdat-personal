@@ -408,6 +408,16 @@ export default {
       deep: true,
 
     },
+    'values.compareBy': {
+      handler(data) {
+        if (data.name === 'Period') {
+          this.removeYearOption();
+        } else if (data.name === 'State') {
+          this.addYearOption();
+        }
+      },
+      immediate: false,
+    },
   },
   mounted() {
     this.SET_CONTROL_OPTIONS({
