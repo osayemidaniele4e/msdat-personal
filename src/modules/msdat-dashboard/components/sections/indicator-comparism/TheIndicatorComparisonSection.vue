@@ -1,44 +1,46 @@
 /* eslint-disable max-len */
 <template>
-<div>
-  <base-sub-card :backgroundColor="'#348481'">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Indicator Comparison - By {{values.compareBy.name}}
-              </h5>
-            </template>
-  <base-overlay :show="loading">
-    <!-- the props ConfidenceOptions and showToggle show the cofidence range component
+  <div>
+    <base-sub-card :backgroundColor="'#348481'">
+      <template #title>
+        <h5 class="font-weight-bold work-sans text-white">
+          Indicator Comparison - By {{ values.compareBy.name }}
+        </h5>
+      </template>
+      <base-overlay :show="loading">
+        <!-- the props ConfidenceOptions and showToggle show the cofidence range component
  and the chart type component respectively
  note: the confidence range prop just makes the this section look more like the mock-up
  and might need to be removed entirely -->
-    <base-sub-card
-      buttonToggle
-      showControls
-      sideControl="true"
-      :ConfidenceOptions="false"
-      :showToggle="false"
-      @toggle-confidence-range="onConfidenceRangeClicked($event)"
-      v-if="values"
-    >
-      <template #title>
-        <!-- the indicator property is eith an object when alone
+        <base-sub-card
+          buttonToggle
+          showControls
+          sideControl="true"
+          :ConfidenceOptions="false"
+          :showToggle="false"
+          @toggle-confidence-range="onConfidenceRangeClicked($event)"
+          v-if="values"
+        >
+          <template #title>
+            <!-- the indicator property is eith an object when alone
         or an array when compared aganist another  -->
-        <h6 class="work-sans" v-if="!values.indicator.length">
-          Comparison Of <b>{{ values.indicator.short_name }}</b> according to
-          the <b> {{ values.datasource.datasource }} </b> across {{values.compareBy.name}}
-        </h6>
-        <h6 class="work-sans" v-else>
-          Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
-          <b> {{ dlGetIndicator(values.indicator[1].id).short_name }} </b>
-          according to the <b> {{ values.datasource.datasource }} </b> across
-          {{values.compareBy.name}}s
-        </h6>
-      </template>
-      <BarChart :chartOptions="ChartOptions" />
+            <h6 class="work-sans" v-if="!values.indicator.length">
+              Comparison Of <b>{{ values.indicator.short_name }}</b> according
+              to the <b> {{ values.datasource.datasource }} </b> across
+              {{ values.compareBy.name }}
+            </h6>
+            <h6 class="work-sans" v-else>
+              Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
+              <b> {{ dlGetIndicator(values.indicator[1].id).short_name }} </b>
+              according to the
+              <b> {{ values.datasource.datasource }} </b> across
+              {{ values.compareBy.name }}s
+            </h6>
+          </template>
+          <BarChart :chartOptions="ChartOptions" />
+        </base-sub-card>
+      </base-overlay>
     </base-sub-card>
-  </base-overlay>
-  </base-sub-card>
   </div>
 </template>
 
@@ -135,7 +137,9 @@ export default {
     },
 
     removeYearOption() {
-      controlPanelOptions.setup = controlPanelOptions.setup.filter((option) => option.label !== 'Year');
+      controlPanelOptions.setup = controlPanelOptions.setup.filter(
+        (option) => option.label !== 'Year',
+      );
     },
     addYearOption() {
       controlPanelOptions.setup.splice(2, 0, this.yearOptions);
@@ -158,8 +162,8 @@ export default {
         this.ChartOptions.series = [];
         const chartChange = options.compareBy.name;
         if (chartChange === 'Period') {
-        // check if the indicator parameter is alone or is going to be compared with another one
-        // if the indicator is an array of 2
+          // check if the indicator parameter is alone or is going to be compared with another one
+          // if the indicator is an array of 2
           if (this.values.indicator.length > 1) {
             const indicatorDisplayFactor1 = this.dlGetFactor(
               options.indicator[0].factor,
@@ -172,48 +176,52 @@ export default {
             const indicatorTarget2 = options.indicator[1].national_target;
 
             this.ChartOptions = {
-              yAxis: [{
-                lineWidth: 0,
-                gridLineWidth: 0,
-                title: {
-                  text: indicatorDisplayFactor1,
-                },
-                plotLines: [{
-                  value: indicatorTarget1,
-                  color: 'black',
-                  width: 2,
-                  label: {
-                    style: {
-                      fontSize: '20px',
-                    },
-                    text: `NT: ${indicatorTarget1}`,
-                    align: 'right',
-                    rotation: 90,
+              yAxis: [
+                {
+                  lineWidth: 0,
+                  gridLineWidth: 0,
+                  title: {
+                    text: indicatorDisplayFactor1,
                   },
+                  plotLines: [
+                    {
+                      value: indicatorTarget1,
+                      color: 'black',
+                      width: 2,
+                      label: {
+                        style: {
+                          fontSize: '20px',
+                        },
+                        text: `NT: ${indicatorTarget1}`,
+                        align: 'right',
+                        rotation: 90,
+                      },
+                    },
+                  ],
                 },
-                ],
-              },
-              {
-                opposite: true,
-                title: {
-                  text: indicatorDisplayFactor2,
-                },
+                {
+                  opposite: true,
+                  title: {
+                    text: indicatorDisplayFactor2,
+                  },
 
-                plotLines: [{
-                  value: indicatorTarget2,
-                  color: 'black',
-                  width: 2,
-                  label: {
-                    style: {
-                      fontSize: '20px',
+                  plotLines: [
+                    {
+                      value: indicatorTarget2,
+                      color: 'black',
+                      width: 2,
+                      label: {
+                        style: {
+                          fontSize: '20px',
+                        },
+                        text: `NT: ${indicatorTarget2}`,
+                        align: 'right',
+                        rotation: 90,
+                      },
                     },
-                    text: `NT: ${indicatorTarget2}`,
-                    align: 'right',
-                    rotation: 90,
-                  },
+                  ],
                 },
-                ],
-              }],
+              ],
               chart: {
                 type: 'line',
               },
@@ -241,7 +249,8 @@ export default {
               this.ChartOptions.series.push(seriesObject);
               console.log('new series', seriesObject);
             }
-          } else if (this.values.indicator.length === 1) { // if the indicator array is alone
+          } else if (this.values.indicator.length === 1) {
+            // if the indicator array is alone
             const data = await this.dlQuery({
               datasource: options.datasource.id,
               indicator: options.indicator[0].id,
@@ -251,14 +260,12 @@ export default {
               name: this.dlGetIndicator(options.indicator[0].id).short_name,
               data: [],
             };
-            data.map((series) => seriesObject.data.push([
-              series.period,
-              Number(series.value),
-            ]));
+            data.map((series) => seriesObject.data.push([series.period, Number(series.value)]));
             this.ChartOptions.yAxis.splice(1, 1);
             this.ChartOptions.chart.type = 'line';
             this.ChartOptions.series.push(seriesObject);
-          } else { // if the indicator is an object
+          } else {
+            // if the indicator is an object
             const data = await this.dlQuery({
               datasource: options.datasource.id,
               indicator: options.indicator.id,
@@ -312,60 +319,65 @@ export default {
           orderResult.data = mappedData;
           const indicatorDisplayFactor1 = this.dlGetFactor(
             options.indicator[0].factor,
-          )
-            .display_factor;
+          ).display_factor;
           const indicatorDisplayFactor2 = this.dlGetFactor(
             options.indicator[1].factor,
           ).display_factor;
           const indicatorTarget1 = options.indicator[0].national_target;
           const indicatorTarget2 = options.indicator[1].national_target;
 
-          const displayFactorSign1 = this.displayFactor(indicatorDisplayFactor1);
+          const displayFactorSign1 = this.displayFactor(
+            indicatorDisplayFactor1,
+          );
           // const displayFactorSign2 = this.displayFactor(indicatorDisplayFactor2);
           this.ChartOptions = {
-            yAxis: [{
-              lineWidth: 0,
-              gridLineWidth: 0,
-              title: {
-                text: indicatorDisplayFactor1,
-              },
-              plotLines: [{
-                value: indicatorTarget1,
-                color: 'black',
-                width: 2,
-                label: {
-                  style: {
-                    fontSize: '2px',
-                  },
-                  text: `NT: ${indicatorTarget1}`,
-                  align: 'right',
-                  rotation: 90,
+            yAxis: [
+              {
+                lineWidth: 0,
+                gridLineWidth: 0,
+                title: {
+                  text: indicatorDisplayFactor1,
                 },
+                plotLines: [
+                  {
+                    value: indicatorTarget1,
+                    color: 'black',
+                    width: 2,
+                    label: {
+                      style: {
+                        fontSize: '2px',
+                      },
+                      text: `NT: ${indicatorTarget1}`,
+                      align: 'right',
+                      rotation: 90,
+                    },
+                  },
+                ],
               },
-              ],
-            },
-            {
-              opposite: true,
-              title: {
-                text: indicatorDisplayFactor2,
-                rotation: 270,
-              },
+              {
+                opposite: true,
+                title: {
+                  text: indicatorDisplayFactor2,
+                  rotation: 270,
+                },
 
-              plotLines: [{
-                value: indicatorTarget2,
-                color: 'black',
-                width: 2,
-                label: {
-                  style: {
-                    fontSize: '10px',
+                plotLines: [
+                  {
+                    value: indicatorTarget2,
+                    color: 'black',
+                    width: 2,
+                    label: {
+                      style: {
+                        fontSize: '10px',
+                      },
+                      text: `NT: ${indicatorTarget2}`,
+                      align: 'right',
+                      rotation: 90,
+                    },
                   },
-                  text: `NT: ${indicatorTarget2}`,
-                  align: 'right',
-                  rotation: 90,
-                },
+                ],
               },
-              ],
-            }],
+            ],
 
             plotOptions: {
               column: {
@@ -396,17 +408,20 @@ export default {
         // change the year to the available years in the datasource
 
         const availableYears = this.getAvailableDataSourceYears(data);
-        const mappedYears = availableYears.map((each, i) => ({ id: i + 1, year: each }));
+        const mappedYears = availableYears.map((each, i) => ({
+          id: i + 1,
+          year: each,
+        }));
         this.SET_CONTROL_OPTIONS({
           panelIndex: 2,
           controlIndex: 2,
           values: mappedYears ?? [
             { id: 1, year: '2010' },
-            { id: 2, year: '2015' }],
+            { id: 2, year: '2015' },
+          ],
         });
       },
       deep: true,
-
     },
     'values.compareBy': {
       handler(data) {
