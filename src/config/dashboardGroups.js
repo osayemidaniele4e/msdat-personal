@@ -6,8 +6,10 @@ export const MSDAT = {
   dashboardIndicators: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18],
 };
 
-export const AnotherDashboard = {
-  dashboardIndicators: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18],
+export const StateProfileDashboard = {
+  // More needs to be added to this
+  dashboardIndicators: 
+  [3, 4, 5, 7, 8, 13, 18, 10, 17, 14, 15, 16, 20, 21, 22, 23, 24, 25, 26, 27, 28],
   defaultIndicators: [7, 5, 8],
   dataSources: [],
 };

@@ -45,14 +45,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+// import { StateProfileDashboard } from '@/config/dashboardGroups';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
 import share from '../components/share.vue';
 import print from '../components/print.vue';
+import dataMixins from '../../DataLayer/mixin';
 
 export default {
   name: 'state-profile',
   props: ['state'],
+  mixins: [dataMixins],
   components: {
     PAoverview: programAreaOverview,
     demographics,
@@ -60,15 +64,31 @@ export default {
     print,
   },
   created() {},
+  computed: {
+    ...mapState([]),
+    states() {
+      const allLocations = this.$store.state.DL.location;
+      const states = [];
+      allLocations.map(el => {
+        if (el.level == 3) {
+          states.push(el.name);
+        }
+      });
+      // console.log(states)
+
+      return states;
+    },
+  },
   methods: {
     navigateToState(state) {
+      // state.preventDefault()
       this.$router.push({ name: 'state-profile', params: { state } });
       this.$router.go();
     },
   },
   data() {
     return {
-      states: ['Kano', 'kanduna', 'Enugu', 'Yola', 'Niger', 'Lagos'],
+
       demographics: [
         {
           name: 'Population',
@@ -135,6 +155,48 @@ export default {
             'rgba(238, 150, 50, 1)',
             'rgba(238, 150, 50, 0.12)',
           ],
+          specificIndicators: [
+            {
+              indicator: 4,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 5,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 7,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 8,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 13,
+              dataSource: 1,
+              year: 2016,
+            },
+            {
+              indicator: 18,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 10,
+              dataSource: 5,
+              year: 2018,
+            },
+            {
+              indicator: 17,
+              dataSource: 2,
+              year: 2018,
+            },
+          ],
         },
         {
           name: 'nutrition',
@@ -154,6 +216,28 @@ export default {
           ],
           chartTitle: 'Coverage for key interventions in Nutrition',
           colors: ['#F4F7EA', '#8FB438', '#8FB438', '#8FB438', '#8FB438', '#8FB438'],
+          specificIndicators: [
+            {
+              indicator: 14,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 15,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 16,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 17,
+              dataSource: 2,
+              year: 2018,
+            },
+          ],
         },
         {
           name: 'Immunization',
@@ -174,6 +258,23 @@ export default {
           ],
           chartTitle: 'Coverage for key interventions in Immunization',
           colors: ['#FBF0E4', '#EE9632', '#EE9632', '#EE9632', '#EE9632', '#EE9632'],
+          specificIndicators: [
+            {
+              indicator: 18,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 20,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 21,
+              dataSource: 2,
+              year: 2018,
+            },
+          ],
         },
         {
           name: 'Malaria',
@@ -194,6 +295,28 @@ export default {
           ],
           chartTitle: 'Coverage for key interventions in Malaria',
           colors: ['#ECF3EB', '#43893B', '#43893B', '#43893B', '#43893B', '#43893B'],
+          specificIndicators: [
+            {
+              indicator: 22,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 23,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 24,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 13,
+              dataSource: 1,
+              year: 2016,
+            },
+          ],
         },
 
         {
@@ -215,6 +338,23 @@ export default {
           ],
           chartTitle: 'Coverage for key interventions in HIV',
           colors: ['#FBE5EA', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B'],
+          specificIndicators: [
+            {
+              indicator: 26,
+              dataSource: 16,
+              year: 2019,
+            },
+            {
+              indicator: 27,
+              dataSource: 1,
+              year: 2016,
+            },
+            {
+              indicator: 28,
+              dataSource: 5,
+              year: 2018,
+            },
+          ],
         },
         {
           name: 'mortality',
@@ -234,6 +374,28 @@ export default {
           ],
           chartTitle: 'Other Mortality Indicators',
           colors: ['#EAEAEA', '#313131', '#313131', '#313131', '#313131', '#313131'],
+          specificIndicators: [
+            {
+              indicator: 29,
+              dataSource: 6,
+              year: 2019,
+            },
+            {
+              indicator: 30,
+              dataSource: 1,
+              year: 2016,
+            },
+            {
+              indicator: 31,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 32,
+              dataSource: 2,
+              year: 2018,
+            },
+          ],
         },
         {
           name: 'Health Facility Survey',
@@ -254,9 +416,54 @@ export default {
           ],
           chartTitle: '',
           colors: ['rgba(5, 146, 189, 1)'],
+          specificIndicators: [
+            {
+              indicator: 4,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 5,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 7,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 8,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 13,
+              dataSource: 1,
+              year: 2016,
+            },
+            {
+              indicator: 18,
+              dataSource: 2,
+              year: 2018,
+            },
+            {
+              indicator: 10,
+              dataSource: 5,
+              year: 2018,
+            },
+            {
+              indicator: 17,
+              dataSource: 2,
+              year: 2018,
+            },
+          ],
         },
       ],
     };
+  },
+  mounted() {
+
   },
 };
 </script>

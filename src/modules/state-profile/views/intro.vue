@@ -79,6 +79,7 @@
 <script>
 // import stateProfileSvg from "../state-profile/svg/stateprofileSvg.vue";
 import BaseMap from '@/components/maps/BaseMap.vue';
+import { StateProfileDashboard } from '@/config/dashboardGroups';
 
 export default {
   name: 'intro',
@@ -131,7 +132,6 @@ export default {
           point: {
             events: {
               click: (event) => {
-                console.log(event.point.name);
                 let state = event.point.name;
                 state = state.replace(/\s+/g, '');
                 this.$router.push({ name: 'state-profile', params: { state } });
@@ -156,6 +156,12 @@ export default {
         },
       },
     };
+  },
+  async mounted() {
+    await this.$DL.init({
+      dashboardIndicators: StateProfileDashboard.indicators,
+      defaultIndicators: StateProfileDashboard.defaultIndicators,
+    });
   },
 };
 </script>
