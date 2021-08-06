@@ -16,3 +16,16 @@ export default [
     props: true,
   },
 ];
+
+// {
+//   path: '/state-profile/:state',
+//   name: 'state-profile',
+//   component: () => import('./views/intro.vue'),
+//   props: true,
+//   children: [{
+//     path: '/:state/',
+//     name: 'state',
+//     component: () => import('./views/stateProfile.vue'),
+//     props: true,
+//   }],
+// },

@@ -37,11 +37,11 @@
             </b-col>
             <b-col cols="auto">
               <p>National</p>
-              <p class="grey-value">232.5</p>
+              <p class="grey-value">{{this.singleNational}}</p>
             </b-col>
             <b-col cols="auto">
               <p>{{ this.state }}</p>
-              <p class="red-value">183.7</p>
+              <p class="red-value">{{this.singleState}}</p>
               <p class="source">Source: NDHS 2018</p>
             </b-col>
           </b-row>
@@ -58,23 +58,31 @@
         >
           <b-col
             class="px-auto"
-            style="background-color: #054A80; border: 1px solid white; height: 20px"
+            style="
+            background-color: #054A80;
+            border: 1px solid white;
+            height: 40px"
           >
             <p class="mx-auto">Pre-pregnancy</p>
           </b-col>
-          <b-col style="background-color: #2C8CCA; border: 1px solid white">
+          <b-col style="background-color: #2C8CCA; border: 1px solid white;
+            height: 40px">
             <p>Pregnancy</p>
           </b-col>
-          <b-col style="background-color: #3F7299; border: 1px solid white">
+          <b-col style="background-color: #3F7299; border: 1px solid white;
+            height: 40px">
             <p>Birth</p>
           </b-col>
-          <b-col style="background-color: #43893B; border: 1px solid white">
+          <b-col style="background-color: #43893B; border: 1px solid white;
+            height: 40px">
             <p>Postnatal</p>
           </b-col>
-          <b-col style="background-color: #2C9F35; border: 1px solid white">
+          <b-col style="background-color: #2C9F35; border: 1px solid white;
+            height: 40px">
             <p>Infancy</p>
           </b-col>
-          <b-col style="background-color: #8FB438; border: 1px solid white">
+          <b-col style="background-color: #8FB438; border: 1px solid white;
+            height: 40px">
             <p>Childhood</p>
           </b-col>
         </b-row>
@@ -207,6 +215,7 @@
 <script>
 import BaseBar from '@/components/Barchart/BaseBarChart.vue';
 import ProgramAreaIcon from './programAreaIcon.vue';
+import dataMixins from '../../DataLayer/mixin';
 
 export default {
   name: 'programAreaOverview',
@@ -214,6 +223,7 @@ export default {
     BaseBar,
     ProgramAreaIcon,
   },
+  mixins: [dataMixins],
   props: {
     state: String,
     programArea: Object,
@@ -222,6 +232,10 @@ export default {
     return {
       iconUrl: `@/assets/state-profile/svg/${this.programArea.icon}.svg`,
       isDefinitionVisible: false,
+      nationalObjects: [],
+      stateObjects: [],
+      singleNational: 100,
+      singleState: 10,
       barChartOptions: {
         annotations: [
           {
@@ -271,7 +285,9 @@ export default {
         },
         xAxis: {
           type: 'category',
+          categories: [
 
+          ],
           labels: {
             rotation: 0,
             style: {
@@ -340,6 +356,82 @@ export default {
     toggleDefinition() {
       this.isDefinitionVisible = !this.isDefinitionVisible;
     },
+    getIndicatorShortName(id) {
+      return this.dlGetIndicator(id).short_name;
+    },
+    getDataSource(id) {
+      return this.dlGetDataSource(id).datasource;
+    },
+    presentData() {
+      const data = [];
+      // format
+      //  ['Under-5 mortality rate (NHDS 2018)', 17],
+      this.nationalObjects.map(val => {
+        data.push([`${this.getIndicatorShortName(val.indicator)} (${this.getDataSource(val.datasource)} ${val.period}), `, Number(val.value)]);
+      });
+      this.singleNational = data[0][1];
+      this.barChartOptions.series[0].data = data;
+      //  console.log({data})
+    },
+    populateCategories() {
+      const indicatorShortNames = [];
+      this.programArea.specificIndicators.map(id => {
+        indicatorShortNames.push(this.getIndicatorShortName(id.indicator));
+      });
+      // console.log(indicatorShortNames)
+      this.barChartOptions.xAxis.categories = indicatorShortNames;
+    },
+    presentStateData() {
+      const data = [];
+      // format
+      // {
+      //   y: 9,
+      //   name: 'Prevalence of HIV (NAIIS 2019)',
+      //   color: this.programArea.colors[1],
+      // }
+      this.stateObjects.map(val => {
+        data.push({
+          y: Number(val.value),
+          name: `${this.getIndicatorShortName(val.indicator)} (${this.getDataSource(val.datasource)} ${val.period})`,
+          color: this.programArea.colors[1],
+        });
+      });
+      this.singleState = data[0].y;
+      // console.log({data})
+      this.barChartOptions.series[1].data = data;
+    },
+    extractNationalDataObjects() {
+      this.programArea.specificIndicators.map(async val => {
+        const runner = await this.dlQuery({
+          datasource: val.dataSource,
+          indicator: val.indicator,
+          location: 1,
+          period: JSON.stringify(val.year),
+          value_type: 2,
+        });
+        this.nationalObjects.push(runner[0]);
+        this.presentData();
+      });
+    },
+    extractStateObjects() {
+      this.programArea.specificIndicators.map(async val => {
+        const runner = await this.dlQuery({
+          datasource: val.dataSource,
+          indicator: val.indicator,
+          location: 3,
+          period: JSON.stringify(val.year),
+          value_type: 2,
+        });
+        this.stateObjects.push(runner[0]);
+        this.presentStateData();
+      });
+      // console.log(this.stateObjects)
+    },
+  },
+  mounted() {
+    this.populateCategories();
+    this.extractNationalDataObjects();
+    this.extractStateObjects();
   },
 };
 </script>

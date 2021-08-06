@@ -175,7 +175,7 @@ export default {
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
-        debugger;
+        // debugger;
         const data = item.map((Object) => [
           Object.period,
           Number.parseFloat(Object.value),
