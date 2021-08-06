@@ -136,14 +136,6 @@ export default {
       return sign;
     },
 
-    removeYearOption() {
-      controlPanelOptions.setup = controlPanelOptions.setup.filter(
-        (option) => option.label !== 'Year',
-      );
-    },
-    addYearOption() {
-      controlPanelOptions.setup.splice(2, 0, this.yearOptions);
-    },
   },
   props: {
     values: {
@@ -241,9 +233,10 @@ export default {
                 data: [],
               };
               data.map((series) => seriesObject.data.push([
-                Number(series.period),
+                series.period,
                 Number(series.value),
               ]));
+              // sort the values according to the year they appear
               const mappedData = sortBy(seriesObject.data, [(o) => o[0]]);
               seriesObject.data = mappedData;
               this.ChartOptions.series.push(seriesObject);
@@ -276,7 +269,7 @@ export default {
               data: [],
             };
             data.map((series) => seriesObject.data.push([
-              Number(series.period),
+              series.period,
               Number(series.value),
             ]));
             this.ChartOptions.series.push(seriesObject);
@@ -285,16 +278,28 @@ export default {
           const queryObject2 = options.indicator.map((element) => ({
             indicator: element.id,
             datasource: options.datasource.id,
-            period: '2015', // `${options.year.year}`',
+            period: '2015',
             location: 1,
           }));
           const promises2 = queryObject2.map((item) => this.dlQuery(item));
-          console.log(promises2);
+          const nationalData = await Promise.all(promises2);
+          const orderNational = queryObject2.map((item, index) => {
+            const response = nationalData[index];
+            const dataValues = response.map((element) => [
+              'National',
+              parseFloat(element.value),
+            ]);
+            return {
+              yAxis: index,
+              data: dataValues,
+            };
+          });
+          console.log('national', orderNational);
 
           const queryObject = options.indicator.map((element) => ({
             indicator: element.id,
             datasource: options.datasource.id,
-            period: '2015', // `${options.year.year}`',
+            period: '2015', // tried to make this dynamic
             location: {
               level: 3,
             },
@@ -426,9 +431,9 @@ export default {
     'values.compareBy': {
       handler(data) {
         if (data.name === 'Period') {
-          this.removeYearOption();
+          controlPanelOptions.setup[2].visibility = false;
         } else if (data.name === 'State') {
-          this.addYearOption();
+          controlPanelOptions.setup[2].visibility = true;
         }
       },
       immediate: false,
