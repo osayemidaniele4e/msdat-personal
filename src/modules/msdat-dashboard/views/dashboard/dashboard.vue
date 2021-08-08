@@ -103,6 +103,10 @@
               </div>
             </template>
           </base-sub-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
@@ -127,7 +131,25 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <MultiSourceCompare :values="datasetProps" />
+          <base-sub-card :backgroundColor="'#348481'">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Multi-Source Indicator Comparison
+              </h5>
+            </template>
+            <template>
+              <div class="row">
+                <template v-for="n in 3">
+                  <div :key="n" class="col-md-4">
+                    <MultiSourceCompare
+                      v-if="MultiSourceCompareValue[n - 1]"
+                      :values="MultiSourceCompareValue[n - 1]"
+                    />
+                  </div>
+                </template>
+              </div>
+            </template>
+          </base-sub-card>
         </div>
       </div>
     </div>
@@ -164,6 +186,7 @@ export default {
       indicatorComparison: '',
       datasetProps: {},
       indicatorComparisonData: '',
+      MultiSourceCompareValue: [],
     };
   },
   components: {
@@ -201,19 +224,14 @@ export default {
           this.indicatorComparisonData = optionsObject;
           break;
         case 3:
-          console.log({ index, index2 });
-          // this.indicatorComparisonData = optionsObject;
+          this.MultiSourceCompareValue[index2] = optionsObject;
           break;
         default:
           break;
       }
     },
   },
-  async mounted() {
-    // console.log(this.$store.state.MSDAT_STORE.controlConfig);
-    const data = await this.dlQuery({ indicator: 7 });
-    console.log({ query: data });
-  },
+  mounted() {},
 };
 </script>
 
