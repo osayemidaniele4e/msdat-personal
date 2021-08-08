@@ -7,7 +7,7 @@ export default {
         datasource: 'NHMIS 1',
         year: '',
         compareBy: '',
-        visualization: '',
+        visualization: 'state_map',
         target: {
           national: false,
           sdg: false,
@@ -21,7 +21,7 @@ export default {
       handler(newValue) {
         this.$emit('data:options', newValue);
       },
-      immediate: false,
+      immediate: true,
       deep: true,
     },
   },
