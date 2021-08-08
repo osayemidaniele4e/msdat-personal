@@ -25,8 +25,8 @@
 <script>
 import Maps from '@/components/maps/BaseMap.vue';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
-import sortHighChartDataFormat from '../../../mixins/util';
-// export const sortHighChartDataFormat = (a, b) => b[1] - a[1];
+import { sortHighChartDataFormat } from '../../../mixins/util';
+
 export default {
   name: 'MultiSource',
   components: { BaseMap: Maps, BarChart },
