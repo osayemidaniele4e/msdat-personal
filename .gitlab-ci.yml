@@ -7,6 +7,7 @@ variables:
 
 stages:
   - ver
+  - test
   - deploy
 
 cache:
@@ -18,6 +19,22 @@ ver:
   script:
     - node --version
     - whoami
+
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+code_quality:
+  stage: test
+  variables:
+    REPORT_FORMAT: html
+  artifacts:
+    paths: [gl-code-quality-report.html]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: always
+      allow_failure: true
+    - when: always
+
 
 deploy_develop:
   stage: deploy
