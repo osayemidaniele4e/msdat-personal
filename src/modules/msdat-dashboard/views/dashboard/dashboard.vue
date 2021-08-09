@@ -8,30 +8,66 @@
             :key="index"
             :title="control.label"
           >
-            <ControlPanel
-              @data:options="log($event, index)"
-              :setup="control.setup"
-              :defaultIndicator="
-                control.defaults.indicator != null
-                  ? control.defaults.indicator
-                  : defaultIndicator
-              "
-              :defaultDataSource="
-                control.defaults.dataSource != null
-                  ? control.defaults.dataSource
-                  : defaultDataSource
-              "
-              :defaultLocation="
-                control.defaults.location != null
-                  ? control.defaults.location
-                  : defaultLocation
-              "
-              :defaultYear="
-                control.defaults.year != null
-                  ? control.defaults.year
-                  : defaultYear
-              "
-            />
+            <template v-if="!Array.isArray(control.setup[0])">
+              <ControlPanel
+                @data:options="log($event, index)"
+                :setup="control.setup"
+                :defaultIndicator="
+                  control.defaults.indicator != null
+                    ? control.defaults.indicator
+                    : defaultIndicator
+                "
+                :defaultDataSource="
+                  control.defaults.dataSource != null
+                    ? control.defaults.dataSource
+                    : defaultDataSource
+                "
+                :defaultLocation="
+                  control.defaults.location != null
+                    ? control.defaults.location
+                    : defaultLocation
+                "
+                :defaultYear="
+                  control.defaults.year != null
+                    ? control.defaults.year
+                    : defaultYear
+                "
+              />
+            </template>
+            <template v-else>
+              <div class="row">
+                <div
+                  class="col-md-4"
+                  v-for="(item, index2) in control.setup"
+                  :key="index2"
+                >
+                  <ControlPanel
+                    @data:options="log($event, index, index2)"
+                    :setup="item"
+                    :defaultIndicator="
+                      control.defaults.indicator != null
+                        ? control.defaults.indicator
+                        : defaultIndicator
+                    "
+                    :defaultDataSource="
+                      control.defaults.dataSource != null
+                        ? control.defaults.dataSource
+                        : defaultDataSource
+                    "
+                    :defaultLocation="
+                      control.defaults.location != null
+                        ? control.defaults.location
+                        : defaultLocation
+                    "
+                    :defaultYear="
+                      control.defaults.year != null
+                        ? control.defaults.year
+                        : defaultYear
+                    "
+                  />
+                </div>
+              </div>
+            </template>
           </ControlBase>
         </template>
       </BasePanel>
@@ -67,6 +103,10 @@
               </div>
             </template>
           </base-sub-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
@@ -89,6 +129,29 @@
           <DataSetComparism :values="datasetProps" />
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Multi-Source Indicator Comparison
+              </h5>
+            </template>
+            <template>
+              <div class="row">
+                <template v-for="n in 3">
+                  <div :key="n" class="col-md-4">
+                    <MultiSourceCompare
+                      v-if="MultiSourceCompareValue[n - 1]"
+                      :values="MultiSourceCompareValue[n - 1]"
+                    />
+                  </div>
+                </template>
+              </div>
+            </template>
+          </base-sub-card>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -108,6 +171,8 @@ import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart
 import indicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
 
+import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
+
 export default {
   mixins: [formatter, controlPanelSetup],
   data() {
@@ -121,6 +186,7 @@ export default {
       indicatorComparison: '',
       datasetProps: {},
       indicatorComparisonData: '',
+      MultiSourceCompareValue: [],
     };
   },
   components: {
@@ -132,6 +198,7 @@ export default {
     TheTable,
     IDCC,
     indicatorComparison,
+    MultiSourceCompare,
   },
   methods: {
     /**
@@ -141,7 +208,7 @@ export default {
      * you can use this to check which control panel changed
      *
      */
-    async log(optionsObject, index) {
+    async log(optionsObject, index, index2) {
       // console.log(optionsObject, index);
       switch (index) {
         case 0:
@@ -156,16 +223,15 @@ export default {
         case 2:
           this.indicatorComparisonData = optionsObject;
           break;
+        case 3:
+          this.MultiSourceCompareValue[index2] = optionsObject;
+          break;
         default:
           break;
       }
     },
   },
-  async mounted() {
-    // console.log(this.$store.state.MSDAT_STORE.controlConfig);
-    const data = await this.dlQuery({ indicator: 7 });
-    console.log({ query: data });
-  },
+  mounted() {},
 };
 </script>
 
