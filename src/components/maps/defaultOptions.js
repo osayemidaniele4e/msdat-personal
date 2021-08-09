@@ -1,17 +1,34 @@
 export default {
-  chart: {
-  },
+  chart: {},
   title: {
     text: '...',
+    style: {
+      fontSize: '13px',
+      fontFamily: '"Work Sans", sans-serif',
+      fontWeight: 'normal',
+    },
   },
   subtitle: {
     text: '..',
+    style: {
+      fontSize: '13px',
+      fontFamily: '"Work Sans", sans-serif',
+      fontWeight: 'normal',
+    },
   },
-  legend: {
-    enabled: true,
-  },
+  credit: false,
   colorAxis: {
     min: 0,
+  },
+  legend: {
+    align: 'right',
+    verticalAlign: 'bottom',
+    floating: false,
+    // layout: 'vertical',
+    valueDecimals: 10,
+    // backgroundColor: 'rgba(255,255,255,0.9)',
+    symbolRadius: 10,
+    symbolHeight: 14,
   },
   mapNavigation: {
     enabled: true,
@@ -30,9 +47,11 @@ export default {
           }
           return this.point.name;
         },
-      },
-      colorAxis: {
-        min: 0,
+        style: {
+          fontSize: '10px',
+          fontFamily: '"Work Sans", sans-serif',
+          fontWeight: 'normal',
+        },
       },
     },
   },

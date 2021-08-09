@@ -17,7 +17,7 @@ export default {
     enabled: false,
     // text: '',
     style: {
-      fontSize: '14px',
+      fontSize: '13px',
       fontFamily: '"Work Sans", sans-serif',
     },
   },
@@ -162,30 +162,30 @@ export default {
       ],
     },
   ],
-  responsive: {
-    rules: [
-      {
-        condition: {
-          maxWidth: 500,
-        },
-        chartOptions: {
-          chart: {
-            type: 'bar',
-            height: 700,
-          },
-          xAxis: {
-            type: 'category',
+  // responsive: {
+  //   rules: [
+  //     {
+  //       condition: {
+  //         maxWidth: 500,
+  //       },
+  //       chartOptions: {
+  //         chart: {
+  //           type: 'bar',
+  //           height: 700,
+  //         },
+  //         xAxis: {
+  //           type: 'category',
 
-            labels: {
-              rotation: 0,
-              style: {
-                fontSize: '10px',
-                fontFamily: '"Muli", sans-serif',
-              },
-            },
-          },
-        },
-      },
-    ],
-  },
+  //           labels: {
+  //             rotation: 0,
+  //             style: {
+  //               fontSize: '10px',
+  //               fontFamily: '"Muli", sans-serif',
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   ],
+  // },
 };

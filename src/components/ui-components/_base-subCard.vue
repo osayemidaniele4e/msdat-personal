@@ -34,7 +34,7 @@
     <div class="card-body work-sans p-0" style="position: relative">
       <SubCardDropdown v-show="showMenu" />
       <div class="row no-gutters">
-        <div class="col p-3" :class="[sideControl ? 'col-10' : '']">
+        <div class="col" :class="[sideControl ? 'col-10' : '']">
           <div v-if="buttonToggle" class="d-flex justify-content-end">
             <SubCardToggleButton
               @button-clicked="$emit('toggled-button', $event)"
