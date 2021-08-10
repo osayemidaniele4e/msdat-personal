@@ -8,6 +8,7 @@
  */
 import Highcharts from 'highcharts';
 import loadMap from 'highcharts/modules/map';
+import loadDrilldown from 'highcharts/modules/drilldown';
 import { genComponent } from 'vue-highcharts';
 /**
  * The default options
@@ -15,7 +16,7 @@ import { genComponent } from 'vue-highcharts';
 import defaultOptions from './defaultOption';
 
 loadMap(Highcharts);
-
+loadDrilldown(Highcharts);
 export default {
   data() {
     return {

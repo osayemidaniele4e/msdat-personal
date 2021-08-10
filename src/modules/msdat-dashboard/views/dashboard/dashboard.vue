@@ -73,85 +73,8 @@
       </BasePanel>
     </b-overlay>
     <!-- control Panels ends here  -->
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Indicator Overview
-              </h5>
-            </template>
-            <template>
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <TheTable :values="TableValues" />
-                    </div>
-                    <div class="col-md-12">
-                      <IDCC :values="indicatorComparison" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <TheStateBarChart
-                    v-if="cpIsLoading"
-                    :values="stateBarValue"
-                  />
-                </div>
-              </div>
-            </template>
-          </base-sub-card>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Indicator Comparison - By Period
-              </h5>
-            </template>
-            <template>
-              <div class="row">
-                <div class="col-md-12">
-                  <indicatorComparison :values="indicatorComparisonData">
-                  </indicatorComparison>
-                </div>
-              </div>
-            </template>
-          </base-sub-card>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <DataSetComparism :values="datasetProps" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Multi-Source Indicator Comparison
-              </h5>
-            </template>
-            <template>
-              <div class="row">
-                <template v-for="n in 3">
-                  <div :key="n" class="col-md-4">
-                    <MultiSourceCompare
-                      v-if="MultiSourceCompareValue[n - 1]"
-                      :values="MultiSourceCompareValue[n - 1]"
-                    />
-                  </div>
-                </template>
-              </div>
-            </template>
-          </base-sub-card>
-        </div>
-      </div>
+    <div class="container-fluid mt-5">
+      <ZonalChart :controlPanelProps="zonalAnalysis" />
     </div>
   </div>
 </template>
@@ -162,16 +85,9 @@ import {
   ControlBase,
   ControlPanel,
 } from '@/components/ControlPanel';
-
+import ZonalChart from '../../components/sections/zonal-analysis/zonalSection.vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
-import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
-import TheTable from '../../components/sections/TheTable.vue';
-import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
-import indicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
-import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
-
-import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
 
 export default {
   mixins: [formatter, controlPanelSetup],
@@ -187,18 +103,14 @@ export default {
       datasetProps: {},
       indicatorComparisonData: '',
       MultiSourceCompareValue: [],
+      zonalAnalysis: {},
     };
   },
   components: {
     ControlBase,
     BasePanel,
     ControlPanel,
-    DataSetComparism,
-    TheStateBarChart,
-    TheTable,
-    IDCC,
-    indicatorComparison,
-    MultiSourceCompare,
+    ZonalChart,
   },
   methods: {
     /**
@@ -212,10 +124,10 @@ export default {
       // console.log(optionsObject, index);
       switch (index) {
         case 0:
-          this.stateBarValue = optionsObject;
-          this.TableValues = optionsObject;
-          this.indicatorComparison = optionsObject;
-          this.zonalProps = optionsObject;
+          // this.stateBarValue = optionsObject;
+          // this.TableValues = optionsObject;
+          // this.indicatorComparison = optionsObject;
+          // this.zonalProps = optionsObject;
           break;
         case 1:
           // this.datasetProps = optionsObject;
@@ -225,6 +137,9 @@ export default {
           break;
         case 3:
           this.MultiSourceCompareValue[index2] = optionsObject;
+          break;
+        case 4:
+          this.zonalAnalysis = optionsObject;
           break;
         default:
           break;
