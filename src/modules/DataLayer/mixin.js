@@ -1,6 +1,6 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, has, omit, isMatch, matches, isObject
+  filter, has, omit, isMatch, matches, isObject,
 } from 'lodash';
 // import SampleData from './sample_data';
 import { MSDAT } from '@/config/dashboardGroups';
