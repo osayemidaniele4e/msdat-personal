@@ -1,0 +1,40 @@
+async drawNationalMap() {
+      const {
+        year, datasource, indicator, location,
+      } = this.chartProps;
+
+      const data = await this.dlQuery({
+        period: '2015',
+        datasource: datasource.id,
+        indicator: indicator.id,
+      });
+
+      const valueAndLocaton = data.map((items) => {
+        const locations = this.dlGetLocation(items.location);
+        if (locations.id === items.location) {
+          return {
+            name: locations.name,
+            parent: locations.parent,
+            level: locations.level,
+            value: items.value,
+          };
+        }
+      });
+
+      const valuesByZones = this.generateGeoPoliticalZoneValues(valueAndLocaton);
+      this.chart = {
+        ...defaultOptions,
+        plotOptions: {
+          map: {
+            ...defaultOptions.plotOptions.map,
+            events: {
+              click: (e) => {
+                this.stateName = e.point.name;
+                this.drawStateMap(e.point.name);
+              },
+            },
+          },
+        },
+        series: valuesByZones,
+      };
+    },

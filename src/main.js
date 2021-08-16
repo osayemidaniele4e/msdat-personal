@@ -1,4 +1,5 @@
 import Vue from 'vue';
+
 import '@/components/ui-components/index';
 import './scss/main.scss';
 import DataLayer from '@/modules/DataLayer';

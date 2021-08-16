@@ -74,7 +74,19 @@
     </b-overlay>
     <!-- control Panels ends here  -->
     <div class="container-fluid mt-5">
-      <ZonalChart :controlPanelProps="zonalAnalysis" />
+      <div class="row">
+        <div class="col-md-8">
+          <ZonalColumnChart :controlPanelProps="zonalAnalysis"
+          @zonal-chart-state="setState"
+          :mapSelectedState="selectedMapName"/>
+        </div>
+        <div class="col-md-4">
+          <ZonalMap :chartProps="zonalAnalysis"
+          @state-name="setState"
+          :stateVal="selectedMapName" />
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -85,7 +97,9 @@ import {
   ControlBase,
   ControlPanel,
 } from '@/components/ControlPanel';
-import ZonalChart from '../../components/sections/zonal-analysis/zonalSection.vue';
+import ZonalMap from '../../components/sections/zonal-analysis/map.vue';
+import ZonalColumnChart from '../../components/sections/zonal-analysis/zonalSection.vue';
+
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 
@@ -104,13 +118,16 @@ export default {
       indicatorComparisonData: '',
       MultiSourceCompareValue: [],
       zonalAnalysis: {},
+      mapValues: {},
+      selectedMapName: null,
     };
   },
   components: {
     ControlBase,
     BasePanel,
     ControlPanel,
-    ZonalChart,
+    ZonalMap,
+    ZonalColumnChart,
   },
   methods: {
     /**
@@ -120,6 +137,13 @@ export default {
      * you can use this to check which control panel changed
      *
      */
+
+    /**
+     * *
+     */
+    setState(val) {
+      this.selectedMapName = val;
+    },
     async log(optionsObject, index, index2) {
       // console.log(optionsObject, index);
       switch (index) {
@@ -144,6 +168,13 @@ export default {
         default:
           break;
       }
+    },
+  },
+  watch: {
+    mapSelectedState: {
+      handler(val) {
+        console.log(val);
+      },
     },
   },
   mounted() {},

@@ -1,5 +1,6 @@
 <template>
   <div class="">
+      <base-overlay :show="loader">
       <base-sub-card showControls>
         <template #title>
           <h6 class="text-dark">
@@ -11,10 +12,9 @@
               {{ controlPanelProps.datasource.datasource }}</span> {{ controlPanelProps.year }}
           </h6>
         </template>
-        <BarChart ref="chartRef" :chartOptions="chartConfigs" />
+        <BarChart ref="chartRef" :chartOptions="chart" />
       </base-sub-card>
-      <button @click="plot">Test</button>
-
+      </base-overlay>
   </div>
 </template>
 
@@ -30,6 +30,9 @@ export default {
     BarChart,
   },
   props: {
+    mapSelectedState: {
+      type: String,
+    },
     controlPanelProps: {
       types: Object,
       default() {
@@ -43,26 +46,126 @@ export default {
       'SET_CONTROL_OPTIONS',
     ]),
 
-    async plot() {
+    async plotStateLevelChart(val) {
+      this.chart = {
+        ...this.chartConfigs,
+      };
+      /**
+       * * plot single state data on column state
+       * ! Unable to get LGA data using dlQuery
+       */
+      if (typeof val === 'string') {
+        this.$emit('zonal-chart-state', val);
+        const stateData = {};
+        const {
+          indicator, year, datasource,
+        } = this.controlPanelProps;
+
+        const state = this.dlGetByName(val);
+        const stateLevelData = await this.dlQuery({
+          indicator: indicator.id,
+          datasource: datasource.id,
+          location: state.id,
+        });
+        const chartMapOptions = stateLevelData.map((item) => ({
+          name: state.name,
+          y: Number(item.value),
+          color: 'black',
+        }));
+
+        stateData.name = 'Single state';
+        stateData.color = 'black';
+        stateData.data = chartMapOptions;
+        this.chart.series = [stateData];
+      } else {
+        /**
+         * * plot state data from dropdown
+         */
+        const stateData = {};
+        const {
+          location, indicator, year, datasource,
+        } = val;
+        const data = await this.dlQuery({
+          indicator: indicator.id,
+          datasource: datasource.id,
+          location: {
+            level: 1,
+          },
+        });
+        console.log(data);
+        // const chartMapOptions = data.map((item) => {
+        //   const stateName = this.dlGetLocation(item.location);
+        //   return {
+        //     name: stateName.name,
+        //     y: Number(item.value),
+        //     color: 'black',
+        //   };
+        // });
+
+        // stateData.name = 'Single state';
+        // stateData.color = 'black';
+        // stateData.data = chartMapOptions;
+
+        // this.chart.series.push(stateData);
+        // console.log(this.chart);
+      }
+    },
+
+    /**
+     * * plot national column
+     */
+    async plotNationalLevelChart() {
+      this.loader = true;
       const { datasource, indicator } = this.controlPanelProps;
       const queryObj = {
         datasource: datasource.id,
         indicator: indicator.id,
-        year: '2015',
+        period: '2015',
       };
 
       const data = await this.dlQuery(queryObj);
-      console.log(data);
+      const highChart = data.map((items) => {
+        const locations = this.dlGetLocation(items.location);
+        return {
+          name: locations.name,
+          parent: locations.parent,
+          level: locations.level,
+          value: items.value,
+          id: locations.id,
+        };
+      });
+      this.states = highChart;
+      const chartData = this.anotherFunction(highChart);
+      // console.log(chartData);
+      this.chart = {
+        ...this.chartConfigs,
+      };
+      this.chart.series = chartData;
+      this.loader = false;
     },
   },
 
   data() {
     return {
+      stateName: null,
+      chart: {},
+      loader: false,
+      states: null,
       chartConfigs: {
+        series: [],
         chart: {
           type: 'column',
           zoomType: 'xy',
           marginRight: 50,
+        },
+        plotOptions: {
+          column: {
+            events: {
+              click: (e) => {
+                this.plotStateLevelChart(e.point.name);
+              },
+            },
+          },
         },
         xAxis: {
           type: 'category',
@@ -98,20 +201,29 @@ export default {
           ],
           minorTicks: true,
         },
-        series: [],
-        drilldown: {},
       },
     };
   },
 
   watch: {
     controlPanelProps: {
-      handler() {
-        this.plot();
+      handler(val) {
+        /**
+           ** check if location is national or state level
+           */
+        if (val.location.level === 1) {
+          this.plotNationalLevelChart();
+        } else {
+          this.plotStateLevelChart(val);
+        }
       },
-
       deep: true,
       immediate: true,
+    },
+    mapSelectedState: {
+      handler(val) {
+        this.plotStateLevelChart(val);
+      },
     },
   },
 

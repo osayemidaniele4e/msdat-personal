@@ -1,6 +1,6 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, has, omit, isMatch, matches,
+  filter, has, omit, isMatch, matches, isObject
 } from 'lodash';
 // import SampleData from './sample_data';
 import { MSDAT } from '@/config/dashboardGroups';
@@ -48,7 +48,7 @@ export default {
      * @returns {dataObjectType}
      */
     async dlQuery(queryObject) {
-      if (has(queryObject, 'location.level')) {
+      if (isObject(queryObject.location)) {
         const { location } = queryObject;
         const newQueryObject = omit(queryObject, ['location']);
         const resultValue = await DB.queryDB(newQueryObject);
@@ -83,6 +83,9 @@ export default {
         return filter(this.dlLocation, matches(values));
       }
       return this.dlLocation.find((item) => item.id === values);
+    },
+    dlGetByName(values) {
+      return this.dlLocation.find((item) => item.name === values);
     },
     dlGetFactor(id) {
       return this.dlFactors.find((item) => item.id === id);

@@ -17,9 +17,9 @@ export default {
     },
   },
   credit: false,
-  colorAxis: {
-    min: 0,
-  },
+  // colorAxis: {
+  //   min: 0,
+  // },
   legend: {
     align: 'right',
     verticalAlign: 'bottom',
