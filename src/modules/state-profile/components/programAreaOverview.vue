@@ -214,6 +214,7 @@
 
 <script>
 import BaseBar from '@/components/Barchart/BaseBarChart.vue';
+import { mapState } from 'vuex';
 import ProgramAreaIcon from './programAreaIcon.vue';
 import dataMixins from '../../DataLayer/mixin';
 
@@ -227,6 +228,23 @@ export default {
   props: {
     state: String,
     programArea: Object,
+  },
+  computed: {
+    ...mapState([]),
+    stateObj() {
+      const allLocations = this.$store.state.DL.location;
+      let states = '';
+      const val = this.state;
+      console.log(val);
+      allLocations.map((el) => {
+        if (el.name == val) {
+          states = el;
+        }
+      });
+      // console.log(states)
+
+      return states;
+    },
   },
   data() {
     return {
@@ -301,14 +319,6 @@ export default {
             name: 'National',
             color: this.programArea.colors[0],
             data: [
-              ['Prevalence of HIV (NAIIS 2019)', 20],
-              [
-                'Percentage of people age 15-49 who have been tested for HIV and know their results (MICS 2016)',
-                19,
-              ],
-              ['Measles immunization coverage (NHMIS 2018)', 9],
-              ['Under-5 mortality rate (NHDS 2018)', 17],
-              ['Adapt chart height to legend height', 4],
             ],
             pointPadding: 0.1,
             pointPlacement: 0,
@@ -318,32 +328,7 @@ export default {
             className: 'test',
             color: this.programArea.colors[1],
             data: [
-              {
-                y: 9,
-                name: 'Prevalence of HIV (NAIIS 2019)',
-                color: this.programArea.colors[1],
-              },
-              {
-                y: 6,
-                name:
-                  'Percentage of people age 15-49 who have been tested for HIV and know their results (MICS 2016)',
-                color: this.programArea.colors[2],
-              },
-              {
-                y: 30,
-                name: 'Measles immunization coverage (NHMIS 2018)',
-                color: this.programArea.colors[3],
-              },
-              {
-                y: 11,
-                name: 'Under-5 mortality rate (NHDS 2018)',
-                color: this.programArea.colors[4],
-              },
-              {
-                y: 4,
-                name: 'Adapt chart height to legend height',
-                color: this.programArea.colors[5],
-              },
+
             ],
             pointPadding: 0.3,
             pointPlacement: 0,
@@ -359,14 +344,14 @@ export default {
     getIndicatorShortName(id) {
       return this.dlGetIndicator(id).short_name;
     },
-    getDataSource(id) {
-      return this.dlGetDataSource(id).datasource;
+    getDataSource(src) {
+      return this.dlGetDataSource(src).datasource;
     },
     presentData() {
       const data = [];
       // format
       //  ['Under-5 mortality rate (NHDS 2018)', 17],
-      this.nationalObjects.map(val => {
+      this.nationalObjects.map((val) => {
         data.push([`${this.getIndicatorShortName(val.indicator)} (${this.getDataSource(val.datasource)} ${val.period}), `, Number(val.value)]);
       });
       this.singleNational = data[0][1];
@@ -375,10 +360,9 @@ export default {
     },
     populateCategories() {
       const indicatorShortNames = [];
-      this.programArea.specificIndicators.map(id => {
+      this.programArea.specificIndicators.map((id) => {
         indicatorShortNames.push(this.getIndicatorShortName(id.indicator));
       });
-      // console.log(indicatorShortNames)
       this.barChartOptions.xAxis.categories = indicatorShortNames;
     },
     presentStateData() {
@@ -389,7 +373,7 @@ export default {
       //   name: 'Prevalence of HIV (NAIIS 2019)',
       //   color: this.programArea.colors[1],
       // }
-      this.stateObjects.map(val => {
+      this.stateObjects.map((val) => {
         data.push({
           y: Number(val.value),
           name: `${this.getIndicatorShortName(val.indicator)} (${this.getDataSource(val.datasource)} ${val.period})`,
@@ -397,35 +381,35 @@ export default {
         });
       });
       this.singleState = data[0].y;
-      // console.log({data})
       this.barChartOptions.series[1].data = data;
     },
     extractNationalDataObjects() {
-      this.programArea.specificIndicators.map(async val => {
+      this.programArea.specificIndicators.map(async (val) => {
         const runner = await this.dlQuery({
           datasource: val.dataSource,
           indicator: val.indicator,
           location: 1,
           period: JSON.stringify(val.year),
-          value_type: 2,
         });
-        this.nationalObjects.push(runner[0]);
+        const filtered = runner.filter((el) => el.value_type !== 3 && el.value_type !== 4);
+        this.nationalObjects.push(filtered[0]);
         this.presentData();
       });
     },
     extractStateObjects() {
-      this.programArea.specificIndicators.map(async val => {
+      this.programArea.specificIndicators.map(async (val) => {
         const runner = await this.dlQuery({
           datasource: val.dataSource,
           indicator: val.indicator,
-          location: 3,
           period: JSON.stringify(val.year),
-          value_type: 2,
+          location: this.stateObj.id,
         });
-        this.stateObjects.push(runner[0]);
+
+        const filtered = runner.filter((el) => el.value_type !== 3 && el.value_type !== 4);
+
+        this.stateObjects.push(filtered[0]);
         this.presentStateData();
       });
-      // console.log(this.stateObjects)
     },
   },
   mounted() {

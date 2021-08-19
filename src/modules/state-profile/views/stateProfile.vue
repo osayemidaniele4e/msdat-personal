@@ -37,10 +37,11 @@
       </b-col>
     </b-row>
     <hr style="border-top: 1px dashed #CCCCCC;" class="mb-4" />
-    <demographics :state="state" :stateDemographics="demographics"></demographics>
+    <demographics :state="state" :lgas='lgaNames' :stateDemographics="demographics"></demographics>
     <div class="mt-5" v-for="programArea in programAreas" :key="programArea.name">
       <PAoverview :state="state" :programArea="programArea"></PAoverview>
     </div>
+     <p class="text-center final-text">This state profile dashboard has been curated majorly from the MSDAT Dashboard available at <span><a href="https://www.msdat.fmohconnect.gov.ng" target='_blank'>msdat.fmohconnect.gov.ng</a></span></p>
   </b-container>
 </template>
 
@@ -66,10 +67,14 @@ export default {
   created() {},
   computed: {
     ...mapState([]),
+    allLocations() {
+      return this.$store.state.DL.location;
+    },
     states() {
-      const allLocations = this.$store.state.DL.location;
+      // Dynamically populating the list
+      // of states in the dropdown
       const states = [];
-      allLocations.map(el => {
+      this.allLocations.map((el) => {
         if (el.level == 3) {
           states.push(el.name);
         }
@@ -77,6 +82,11 @@ export default {
       // console.log(states)
 
       return states;
+    },
+    lgaNames() {
+      const chosenState = this.allLocations.filter((el) => el.name.includes(this.state) && el.level == 3)[0];
+      const lgaObjects = this.allLocations.filter((val) => val.parent == chosenState.id && val.level == 4);
+      return lgaObjects;
     },
   },
   methods: {
@@ -471,6 +481,17 @@ export default {
 <style lang="scss">
 .state-select {
   color: #3a3a3a;
+}
+p.final-text{
+  margin-bottom: 9vh ;
+  margin-top: 11vh !important;
+  span a{
+    color: #007D53;
+    font-weight: bolder;
+  }
+}
+p.final-text span a:hover{
+  text-decoration: none;
 }
 .btn:focus {
   box-shadow: none;

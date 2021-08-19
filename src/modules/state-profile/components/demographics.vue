@@ -62,6 +62,7 @@ export default {
   props: {
     state: String,
     stateDemographics: Array,
+    lgas: Array,
   },
   methods: {
     getChangeIcon(change) {
@@ -102,7 +103,10 @@ export default {
           },
         },
         series: [{
-          name: 'Nigeria',
+          name: this.state,
+          data: [
+            // ['Edu', 23]
+          ],
           point: {
             events: {
               // //-----function to fire with point name --------//
@@ -121,7 +125,7 @@ export default {
           enabled: false,
         },
         tooltip: {
-          enabled: false,
+          enabled: true,
         },
         credits: {
           enabled: false,
@@ -132,6 +136,9 @@ export default {
       },
     };
   },
+  // mounted(){
+  //   console.log(this.lgas)
+  // }
 };
 </script>
 <style lang="scss" scoped>
