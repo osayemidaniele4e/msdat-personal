@@ -36,7 +36,7 @@
       <div class="row no-gutters">
         <div class="col" :class="[sideControl ? 'col-10' : '']">
           <div v-if="buttonToggle" class="d-flex justify-content-end">
-            <SubCardToggleButton
+            <SubCardToggleButton v-show="showToggle"
               @button-clicked="$emit('toggled-button', $event)"
             />
           </div>
@@ -86,6 +86,10 @@ export default {
     showControls: {
       type: Boolean,
       default: () => false,
+    },
+    showToggle: {
+      type: Boolean,
+      default: () => true,
     },
     color: {
       type: String,

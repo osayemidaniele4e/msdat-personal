@@ -104,25 +104,9 @@
               </div>
             </template>
           </base-sub-card>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Indicator Comparison - By Period
-              </h5>
-            </template>
-            <template>
-              <div class="row">
-                <div class="col-md-12">
                   <indicatorComparison :values="indicatorComparisonData">
                   </indicatorComparison>
-                </div>
-              </div>
-            </template>
-          </base-sub-card>
+
         </div>
       </div>
       <div class="row">
@@ -192,6 +176,7 @@ export default {
       datasetProps: {},
       indicatorComparisonData: '',
       MultiSourceCompareValue: [],
+      availableYears: [],
     };
   },
   components: {

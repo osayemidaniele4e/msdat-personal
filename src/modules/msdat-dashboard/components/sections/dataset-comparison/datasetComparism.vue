@@ -14,7 +14,7 @@
             <p class="text-dark">
               Comparison of
               <span class="font-weight-bold">
-                {{ values.indicator.full_name}} </span
+                {{ values.datasource.full_name }} </span
               >across <span class="font-weight-bold">different sources </span>by
               <span class="font-weight-bold">states</span>
             </p>
@@ -48,20 +48,6 @@ export default {
       'SET_CONTROL_OPTIONS', // -> this.foo()
       'add',
     ]),
-
-    displayFactor(factor) {
-      const dpfactor = factor;
-      let sign;
-      switch (dpfactor) {
-        case 'in percentage':
-          sign = '%';
-          break;
-        default:
-          sign = '';
-      }
-
-      return sign;
-    },
   },
   props: {
     values: {
@@ -96,73 +82,42 @@ export default {
             level: 3,
           },
         }));
+        console.log(queryObject);
         const promises = queryObject.map((item) => this.dlQuery(item));
         const result = await Promise.all(promises);
-        const indicatorDisplayFactor = this.dlGetFactor(data.indicator.factor).display_factor;
-        const indicatorTarget = data.indicator.national_target;
-        // console.log(indicatorDisplayFactor);
-        const displayFactorSign = this.displayFactor(indicatorDisplayFactor);
+
         const orderResult = queryObject.map((item, index) => {
           const response = result[index];
           const dataValues = response.map((element) => [
             this.dlGetLocation(element.location).name,
             parseFloat(element.value),
           ]);
+          debugger;
           const dataSource = this.dlGetDataSource(item.datasource).datasource;
+
           return {
             name: dataSource,
             data: dataValues,
           };
         });
+        console.log(orderResult);
         this.chartConfig = {
-          title: {
-            text: data.indicator.full_name,
-          },
-          yAxis: {
-            lineWidth: 0,
-            gridLineWidth: 0,
-            title: {
-              text: indicatorDisplayFactor,
-              style: {
-                fontSize: '15px',
-              },
-            },
-            plotLines: [{
-              value: indicatorTarget,
-              color: 'black',
-              width: 2,
-              label: {
-                style: {
-                  fontSize: '15px',
-                },
-                text: `NT: ${indicatorTarget}`,
-                align: 'right',
-                textAlign: 'center',
-                rotation: 90,
-              },
-            },
-            ],
-          },
           plotOptions: {
             column: {
 
               dataLabels: {
                 enabled: true,
-                formatter() {
-                  return `${this.point.y}${displayFactorSign}`;
-                },
               },
             },
           },
           chart: {
             type: 'column',
-
-            marginRight: 50,
           },
           colors: [
             '#17606B', '#E85D58', '#58B74E',
           ],
         };
+        console.log(this.chartConfig);
         this.chartConfig.series = orderResult;
       },
       deep: true,
