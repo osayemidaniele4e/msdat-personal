@@ -21,7 +21,7 @@
           <span>About Dashboard</span>
         </router-link>
       </li>
-      <li>
+      <li @click="$emit('tour')">
         <router-link to="/">
           <img src="@/assets/img/icons/ic_play.svg" alt="" />
           <span>Play Tour Guide</span>
