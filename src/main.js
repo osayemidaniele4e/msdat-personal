@@ -12,7 +12,6 @@ import router from './router';
 import store from './store';
 
 import './assets/styles/fonts.css';
-import './assets/styles/tour.css';
 // console.log(process.env.VUE_APP_API_BASE_URL);
 // const dbd = new Db(dexie);
 

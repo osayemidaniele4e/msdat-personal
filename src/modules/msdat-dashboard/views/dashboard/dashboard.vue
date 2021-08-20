@@ -165,8 +165,6 @@ import {
   ControlBase,
   ControlPanel,
 } from '@/components/ControlPanel';
-import introJs from 'intro.js';
-import 'intro.js/introjs.css';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
@@ -174,14 +172,14 @@ import TheTable from '../../components/sections/TheTable.vue';
 import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
 import indicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
-import tour from '../onboarding/tourOptions';
+import tour from '../../mixins/tour';
 import Header from '../about/layout/theHeader.vue';
 import Footer from '../about/layout/theFooter.vue';
 
 import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
 
 export default {
-  mixins: [formatter, controlPanelSetup],
+  mixins: [formatter, controlPanelSetup, tour],
   data() {
     return {
       position: 3,
@@ -210,14 +208,6 @@ export default {
     Footer,
   },
   methods: {
-    runIntro() {
-      introJs().addHints().setOptions({
-        tooltipClass: 'customTooltip customTooltips',
-        highlightClass: 'customHighlight customHighlights',
-        disableInteraction: true,
-        steps: tour.steps,
-      }).start();
-    },
     /**
      * @param optionsObject The return a control Options objects when ever any control
      * in a control panel changes
