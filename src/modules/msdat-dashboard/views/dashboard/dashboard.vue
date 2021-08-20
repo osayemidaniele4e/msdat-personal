@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header v-on:tour="runIntro"></Header>
     <b-overlay :show="!cpIsLoading">
       <BasePanel :position="position" v-if="cpIsLoading">
         <template v-slot:default>
@@ -153,6 +154,8 @@
         </div>
       </div>
     </div>
+
+  <Footer class="visible"> </Footer>
   </div>
 </template>
 
@@ -162,7 +165,6 @@ import {
   ControlBase,
   ControlPanel,
 } from '@/components/ControlPanel';
-
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
@@ -170,11 +172,14 @@ import TheTable from '../../components/sections/TheTable.vue';
 import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
 import indicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
+import tour from '../../mixins/tour';
+import Header from '../about/layout/theHeader.vue';
+import Footer from '../about/layout/theFooter.vue';
 
 import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
 
 export default {
-  mixins: [formatter, controlPanelSetup],
+  mixins: [formatter, controlPanelSetup, tour],
   data() {
     return {
       position: 3,
@@ -199,6 +204,8 @@ export default {
     IDCC,
     indicatorComparison,
     MultiSourceCompare,
+    Header,
+    Footer,
   },
   methods: {
     /**
@@ -231,9 +238,13 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.visible{
+  z-index: 9999;
+}
 </style>

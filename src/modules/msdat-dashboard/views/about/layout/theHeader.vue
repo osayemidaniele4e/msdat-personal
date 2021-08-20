@@ -17,12 +17,15 @@
               icon="three-dots-vertical"
               font-scale="1.5"
             />
-            <header-option v-if="toggleOption" v-on:showContact=" contactbtn = true"/>
+            <header-option
+             v-if="toggleOption"
+             v-on:showContact=" contactbtn = true"
+             v-on:tour="runIntro"/>
           </div>
 
         </b-col>
       </b-row>
-      <b-row>
+      <b-row  v-show="aboutPage">
         <b-col cols="1">
           <a href="">
             <b-icon
@@ -37,7 +40,7 @@
             Research and Statistics (DHPRS)</p>
         </b-col>
       </b-row>
-    </b-container>   
+    </b-container>
   </header>
 </template>
 
@@ -52,7 +55,28 @@ export default {
     return {
       toggleOption: false,
       contactbtn: false,
+      aboutPage: false,
     };
+  },
+  methods: {
+    runIntro() {
+      this.toggleOption = !this.toggleOption;
+      this.$emit('tour');
+    },
+  },
+  watch: {
+    $route: {
+      // eslint-disable-next-line object-shorthand
+      handler(e) {
+        if (e.name === 'About') {
+          this.aboutPage = true;
+        } else {
+          this.aboutPage = false;
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 };
 </script>

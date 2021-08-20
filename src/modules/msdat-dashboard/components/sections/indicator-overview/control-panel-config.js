@@ -3,7 +3,7 @@ export default {
   setup: [
     {
       type: 'dropdown',
-      class: ['col-md-4'],
+      class: ['col-md-4 step-indicator'],
       dropdownProps: {
         // multiple: true,
         'group-values': 'indicators',
@@ -15,7 +15,7 @@ export default {
       options: [],
     },
     {
-      class: ['col'],
+      class: ['col step-datasource'],
       type: 'dropdown',
       label: 'data Source',
       key: 'datasource',
@@ -25,7 +25,7 @@ export default {
       options: [],
     },
     {
-      class: ['col'],
+      class: ['col step-location'],
       type: 'dropdown',
       label: 'location',
       key: 'location',
