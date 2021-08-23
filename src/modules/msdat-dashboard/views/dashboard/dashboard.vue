@@ -74,19 +74,7 @@
     </b-overlay>
     <!-- control Panels ends here  -->
     <div class="container-fluid mt-5">
-      <div class="row">
-        <div class="col-md-8">
-          <ZonalColumnChart :controlPanelProps="zonalAnalysis"
-          @zonal-chart-state="setState"
-          :mapSelectedState="selectedMapName"/>
-        </div>
-        <div class="col-md-4">
-          <ZonalMap :chartProps="zonalAnalysis"
-          @state-name="setState"
-          :stateVal="selectedMapName" />
-        </div>
-      </div>
-
+      <ZonalAnalysisSection :controlPanelProps="zonalAnalysis" />
     </div>
   </div>
 </template>
@@ -97,8 +85,7 @@ import {
   ControlBase,
   ControlPanel,
 } from '@/components/ControlPanel';
-import ZonalMap from '../../components/sections/zonal-analysis/map.vue';
-import ZonalColumnChart from '../../components/sections/zonal-analysis/zonalSection.vue';
+import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
@@ -126,8 +113,7 @@ export default {
     ControlBase,
     BasePanel,
     ControlPanel,
-    ZonalMap,
-    ZonalColumnChart,
+    ZonalAnalysisSection,
   },
   methods: {
     /**
