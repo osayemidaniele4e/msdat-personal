@@ -7,9 +7,10 @@ export const MSDAT = {
 };
 
 export const StateProfileDashboard = {
-  // More needs to be added to this
-  dashboardIndicators: 
-  [3, 4, 5, 7, 8, 13, 18, 10, 17, 14, 15, 16, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+  dashboardIndicators:
+  [4, 5, 7, 8, 13, 18, 10, 17, 14, 15, 16, 20,
+    21, 22, 23, 24, 25, 26, 27, 28, 30, 31,
+    32, 34, 39, 41, 49, 50, 58, 61],
   defaultIndicators: [7, 5, 8],
   dataSources: [],
 };
