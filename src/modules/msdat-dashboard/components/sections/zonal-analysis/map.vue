@@ -5,7 +5,9 @@
         <template #title>
           <h6 class="text-dark">
             Distribution of
-            <span class="font-weight-bold"> {{ chartProps.indicator.full_name }} </span>Across the
+            <span class="font-weight-bold">
+              {{ chartProps.indicator.full_name }} </span
+            >Across the
             <span class="font-weight-bold"> zones in the Country.</span> Source:
             <span class="font-weight-bold">
               {{ chartProps.datasource.datasource }} {{ chartProps.year }}</span
@@ -13,7 +15,7 @@
           </h6>
         </template>
         <div>
-          <BaseMap :mapObject="mapObject" :level="level" :lgaState="stateName" />
+          <BaseMap :mapObject="chart" :level="level" :lgaState="stateName" />
         </div>
       </base-sub-card>
     </base-overlay>
@@ -27,8 +29,8 @@ import { mapActions } from 'vuex';
 import BaseMap from '@/components/maps/BaseMap.vue';
 import defaultOptions from '@/components/maps/defaultOptions';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
-import _ from 'lodash';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
+import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
   mixins: [ControlPanelSetup, dataPipelineMixin],
@@ -109,22 +111,6 @@ export default {
         navigation: {
           buttonOptions: {
             enabled: false,
-          },
-        },
-        exporting: {
-          buttons: {
-            customButton: {
-              text: 'Custom Button',
-              onclick() {
-                alert('You pressed the button!');
-              },
-            },
-            anotherButton: {
-              text: 'Another Button',
-              onclick() {
-                alert('You pressed another button!');
-              },
-            },
           },
         },
         subtitle: {
@@ -214,6 +200,7 @@ export default {
             value: items.value,
           };
         }
+        return null;
       });
 
       /**
@@ -228,6 +215,7 @@ export default {
       /**
        * * set map options
        */
+      console.log(valuesByZones);
       this.chart.series = valuesByZones;
       this.loader = false;
       // console.log(this.chart);
@@ -236,12 +224,69 @@ export default {
 
   watch: {
     chartProps: {
-      handler(val) {
-        if (val.location.level === 1) {
-          this.plotNatioalMap();
-        } else {
-          this.plotStateMap(val);
+      async handler(val) {
+        const data = await this.dlQuery({
+          indicator: val.indicator.id,
+          datasource: val.datasource.id,
+          period: '2015',
+        });
+
+        const formatToHighChart = (dataValues) => dataValues.map((item) => [
+          this.dlGetLocation(item.location).name,
+          parseFloat(item.value),
+        ]);
+
+        const chartSeries = [];
+        const zonalArray = [
+          {
+            id: 2,
+            color: '#737A33',
+          },
+
+          {
+            id: 3,
+            color: '#8B9A9B',
+          },
+          {
+            id: 7,
+            color: '#7D8ADE',
+          },
+          {
+            id: 4,
+            color: '#9E7796',
+          },
+          {
+            id: 5,
+            color: '#54858D',
+          },
+          {
+            id: 6,
+            color: '#CCCC17',
+          },
+        ];
+        // let zonalArray =  [2,3,4,5,6,7]; // already know the zonal levels/parent of all the value
+        for (let index = 0; index < zonalArray.length; index += 1) {
+          const group = data.filter(
+            (item) => this.dlGetLocation(item.location).parent === zonalArray[index].id,
+          );
+          const formattedData = formatToHighChart(group);
+          const sortedData = formattedData.sort(sortHighChartDataFormat);
+          const series = this.dlGetLocation(zonalArray[index].id);
+          console.log(zonalArray[index], series);
+          chartSeries.push({
+            color: zonalArray[index].color,
+            name: series.name,
+            data: sortedData,
+          });
         }
+
+        console.log(chartSeries);
+
+        this.chart = {
+          series: chartSeries,
+        };
+
+        console.log(val);
       },
       deep: true,
       immediate: true,

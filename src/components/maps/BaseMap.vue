@@ -139,7 +139,6 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = regionsMap;
           break;
         case 3:
-          debugger;
           this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[this.lgaState].data;
           break;
         default:

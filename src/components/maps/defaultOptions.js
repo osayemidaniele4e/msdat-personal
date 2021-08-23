@@ -1,7 +1,8 @@
 export default {
   chart: {},
   title: {
-    text: '...',
+    enabled: false,
+    text: '',
     style: {
       fontSize: '13px',
       fontFamily: '"Work Sans", sans-serif',
@@ -9,14 +10,16 @@ export default {
     },
   },
   subtitle: {
-    text: '..',
+    text: '',
     style: {
       fontSize: '13px',
       fontFamily: '"Work Sans", sans-serif',
       fontWeight: 'normal',
     },
   },
-  credit: false,
+  credit: {
+    enabled: false,
+  },
   // colorAxis: {
   //   min: 0,
   // },
@@ -38,6 +41,9 @@ export default {
   },
   plotOptions: {
     map: {
+      borderColor: 'white',
+      borderWidth: 3,
+      allAreas: false,
       joinBy: ['name', 'hc-key'],
       dataLabels: {
         enabled: true,

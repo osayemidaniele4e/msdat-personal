@@ -1,20 +1,23 @@
 <template>
   <div class="">
-      <base-overlay :show="loader">
+    <base-overlay :show="loader">
       <base-sub-card showControls>
         <template #title>
           <h6 class="text-dark">
             Distribution of
-            <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }}
-              </span>Across the
+            <span class="font-weight-bold"
+              >{{ controlPanelProps.indicator.full_name }} </span
+            >Across the
             <span class="font-weight-bold"> zones in the Country.</span> Source:
             <span class="font-weight-bold">
-              {{ controlPanelProps.datasource.datasource }}</span> {{ controlPanelProps.year }}
+              {{ controlPanelProps.datasource.datasource }}</span
+            >
+            {{ controlPanelProps.year }}
           </h6>
         </template>
         <BarChart ref="chartRef" :chartOptions="chart" />
       </base-sub-card>
-      </base-overlay>
+    </base-overlay>
   </div>
 </template>
 
@@ -23,6 +26,7 @@ import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-se
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { mapActions } from 'vuex';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
+import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
   mixins: [dataPipelineMixin, ControlPanelSetup],
@@ -35,16 +39,12 @@ export default {
     },
     controlPanelProps: {
       types: Object,
-      default() {
-        return {};
-      },
+      required: true,
     },
   },
 
   methods: {
-    ...mapActions('MSDAT_STORE', [
-      'SET_CONTROL_OPTIONS',
-    ]),
+    ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
 
     async plotStateLevelChart(val) {
       this.chart = {
@@ -57,9 +57,7 @@ export default {
       if (typeof val === 'string') {
         this.$emit('zonal-chart-state', val);
         const stateData = {};
-        const {
-          indicator, year, datasource,
-        } = this.controlPanelProps;
+        const { indicator, datasource } = this.controlPanelProps;
 
         const state = this.dlGetByName(val);
         const stateLevelData = await this.dlQuery({
@@ -81,10 +79,8 @@ export default {
         /**
          * * plot state data from dropdown
          */
-        const stateData = {};
-        const {
-          location, indicator, year, datasource,
-        } = val;
+        // const stateData = {};
+        const { indicator, datasource } = val;
         const data = await this.dlQuery({
           indicator: indicator.id,
           datasource: datasource.id,
@@ -143,10 +139,102 @@ export default {
       this.chart.series = chartData;
       this.loader = false;
     },
+
+    formatToHighChart(dataSeries) {
+      this.chart = {
+        chart: {
+          type: 'column',
+          zoomType: 'xy',
+        },
+        series: dataSeries,
+      };
+    },
+
+    getZonalDataInHighChartFormat(data) {
+      const zonesSeries = [];
+      for (let index = 1; index < this.zonalArray.length; index += 1) {
+        const zonal = data.find(
+          (item) => item.location === this.zonalArray[index].id,
+        );
+        const series = this.dlGetLocation(this.zonalArray[index].id);
+        const { color } = this.zonalArray.find(
+          (item) => item.id === this.zonalArray[index].id,
+        );
+        debugger;
+        if (zonal) {
+          zonesSeries.push({
+            name: series.name,
+            y: parseFloat(zonal.value),
+            color,
+          });
+        }
+      }
+      // sort Zonal series data in ascending order
+      return zonesSeries.sort((a, b) => b.y - a.y);
+    },
+
+    getStateDataAccordingToRegionInHighChartFormat(data) {
+      // add this function to a mixin later
+      const formatToHighChart = (dataValues) => dataValues.map((item) => [
+        this.dlGetLocation(item.location).name,
+        parseFloat(item.value),
+      ]);
+
+      // already know the zonal levels/parent of all the value
+      // index starts at one to skip region data for the series
+      const chartSeries = [];
+      for (let index = 1; index < this.zonalArray.length; index += 1) {
+        const group = data.filter(
+          (item) => this.dlGetLocation(item.location).parent
+            === this.zonalArray[index].id,
+        );
+        const formattedData = formatToHighChart(group);
+        const sortedData = formattedData.sort(sortHighChartDataFormat);
+        const series = this.dlGetLocation(this.zonalArray[index].id);
+        chartSeries.push({
+          color: this.zonalArray[index].color,
+          name: series.name,
+          data: sortedData,
+        });
+      }
+      return chartSeries;
+    },
   },
 
   data() {
     return {
+      // later someone can add the name property
+      // so that we can know to the zones as against to searching for the ids
+      zonalArray: [
+        {
+          id: 1,
+          color: 'black',
+        },
+        {
+          id: 2,
+          color: '#737A33',
+        },
+        {
+          id: 3,
+          color: '#8B9A9B',
+        },
+        {
+          id: 7,
+          color: '#7D8ADE',
+        },
+        {
+          id: 4,
+          color: '#9E7796',
+        },
+        {
+          id: 5,
+          color: '#54858D',
+        },
+        {
+          id: 6,
+          color: '#CCCC17',
+        },
+      ],
       stateName: null,
       chart: {},
       loader: false,
@@ -184,20 +272,21 @@ export default {
           },
           lineWidth: 0,
           gridLineWidth: 0,
-          plotLines: [{
-            value: 100,
-            color: 'black',
-            width: 2,
-            label: {
-              style: {
-                fontSize: '20px',
+          plotLines: [
+            {
+              value: 100,
+              color: 'black',
+              width: 2,
+              label: {
+                style: {
+                  fontSize: '20px',
+                },
+                text: 'NT:',
+                align: 'right',
+                textAlign: 'center',
+                rotation: -90,
               },
-              text: 'NT:',
-              align: 'right',
-              textAlign: 'center',
-              rotation: -90,
             },
-          },
           ],
           minorTicks: true,
         },
@@ -207,15 +296,69 @@ export default {
 
   watch: {
     controlPanelProps: {
-      handler(val) {
-        /**
-           ** check if location is national or state level
-           */
-        if (val.location.level === 1) {
-          this.plotNationalLevelChart();
-        } else {
-          this.plotStateLevelChart(val);
+      async handler(val) {
+        this.chart = {};
+        const data = await this.dlQuery({
+          indicator: val.indicator.id,
+          datasource: val.datasource.id,
+          period: '2015',
+        });
+
+        console.trace(data);
+
+        if (val.location.id !== 1) {
+          const filteredLGADataForState = data.filter(
+            (item) => this.dlGetLocation(item.location).parent === val.location.id,
+          );
+
+          const formatToHighChart = (dataValues) => dataValues.map((item) => [
+            this.dlGetLocation(item.location).name,
+            parseFloat(item.value),
+          ]);
+          const chartSeries = [];
+          const formattedData = formatToHighChart(filteredLGADataForState);
+          const sortedData = formattedData.sort(sortHighChartDataFormat);
+          const stateObject = this.dlGetLocation(val.location.id);
+          const stateData = data.find(
+            (item) => item.location === val.location.id,
+          );
+
+          sortedData.unshift({
+            name: stateObject.name,
+            y: parseFloat(stateData.value),
+            color: this.zonalArray[0].color,
+          });
+          chartSeries.push({
+            color: this.zonalArray[stateObject.parent].color,
+            name: stateObject.name,
+            data: sortedData,
+          });
+          this.formatToHighChart(chartSeries);
+
+          // console.log(filteredZonal);
+          return;
         }
+        // already know the zonal levels/parent of all the value
+        // index starts at one to skip region data for the series
+        const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
+        const zonalSeries = this.getZonalDataInHighChartFormat(data);
+
+        // add national to top of the zonal series series
+        const national = data.find((item) => item.location === 1);
+        zonalSeries.unshift({
+          name: 'National',
+          y: parseFloat(national.value),
+          color: this.zonalArray[0].color,
+        });
+
+        const zonalZee = {
+          name: 'Nigeria',
+          data: zonalSeries,
+          color: this.zonalArray[0].color,
+        };
+        // add zonal series to top of main the series
+        chartSeries.unshift(zonalZee);
+        this.formatToHighChart(chartSeries);
       },
       deep: true,
       immediate: true,

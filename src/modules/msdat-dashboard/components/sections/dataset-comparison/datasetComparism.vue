@@ -90,7 +90,6 @@ export default {
             this.dlGetLocation(element.location).name,
             parseFloat(element.value),
           ]);
-          debugger;
           const dataSource = this.dlGetDataSource(item.datasource).datasource;
 
           return {
