@@ -104,9 +104,26 @@
               </div>
             </template>
           </base-sub-card>
-                  <indicatorComparison :values="indicatorComparisonData">
-                  </indicatorComparison>
-
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Zonal Analysis Section
+              </h5>
+            </template>
+            <template>
+              <ZonalAnalysisSection :controlPanelProps="zonalAnalysis" />
+            </template>
+          </base-sub-card>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <indicatorComparison :values="indicatorComparisonData">
+          </indicatorComparison>
         </div>
       </div>
       <div class="row">
@@ -139,7 +156,7 @@
       </div>
     </div>
 
-  <Footer class="visible"> </Footer>
+    <Footer class="visible"> </Footer>
   </div>
 </template>
 
@@ -149,6 +166,7 @@ import {
   ControlBase,
   ControlPanel,
 } from '@/components/ControlPanel';
+import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
@@ -177,6 +195,9 @@ export default {
       indicatorComparisonData: '',
       MultiSourceCompareValue: [],
       availableYears: [],
+      zonalAnalysis: {},
+      mapValues: {},
+      selectedMapName: null,
     };
   },
   components: {
@@ -191,6 +212,7 @@ export default {
     MultiSourceCompare,
     Header,
     Footer,
+    ZonalAnalysisSection,
   },
   methods: {
     /**
@@ -200,6 +222,13 @@ export default {
      * you can use this to check which control panel changed
      *
      */
+
+    /**
+     * *
+     */
+    setState(val) {
+      this.selectedMapName = val;
+    },
     async log(optionsObject, index, index2) {
       // console.log(optionsObject, index);
       switch (index) {
@@ -207,7 +236,7 @@ export default {
           this.stateBarValue = optionsObject;
           this.TableValues = optionsObject;
           this.indicatorComparison = optionsObject;
-          // this.datasetProps = optionsObject;
+          this.zonalProps = optionsObject;
           break;
         case 1:
           this.datasetProps = optionsObject;
@@ -218,18 +247,20 @@ export default {
         case 3:
           this.MultiSourceCompareValue[index2] = optionsObject;
           break;
+        case 4:
+          this.zonalAnalysis = optionsObject;
+          break;
         default:
           break;
       }
     },
   },
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 
 <style lang="scss" scoped>
-.visible{
+.visible {
   z-index: 9999;
 }
 </style>

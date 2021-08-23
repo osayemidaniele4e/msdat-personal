@@ -3,21 +3,24 @@
     <router-view v-if="loading"></router-view>
 
     <!-- <p v-else>loading</p> -->
-<!-- loading screen starts here -->
-    <Loading v-else
-     :noBackdrop="false"
-     :showBackground="false" class="over" v-on:hidden="tutorial">
-      <div class="center" >
-        <img :src="img" alt="first_img" width="250px">
+    <!-- loading screen starts here -->
+    <Loading
+      v-else
+      :noBackdrop="false"
+      :showBackground="false"
+      class="over"
+      v-on:hidden="tutorial"
+    >
+      <div class="center">
+        <img :src="img" alt="first_img" width="250px" />
         <div class="mr-4">
-        <h3> Initialising{{loadingTitle}} </h3>
-        <p> {{loadingContent}}</p>
+          <h3>Initialising{{ loadingTitle }}</h3>
+          <p>{{ loadingContent }}</p>
         </div>
       </div>
     </Loading>
 
-    <Onboarding v-if="firstTime"  v-on:closeOnboard="closeOnboard">
-  </Onboarding>
+    <Onboarding v-if="firstTime" v-on:closeOnboard="closeOnboard"> </Onboarding>
   </div>
 </template>
 
@@ -42,7 +45,6 @@ export default {
   components: {
     Onboarding,
     Loading,
-
   },
   methods: {
     tutorial() {
@@ -55,7 +57,7 @@ export default {
     changeLoadingData() {
       for (let i = 1; i < 4; i += 1) {
         setInterval(() => {
-          console.log(i);
+          // console.log(i);
           this.loadingData = i;
         }, i * 1000);
       }
@@ -82,7 +84,7 @@ export default {
           break;
 
         default:
-    // code block
+        // code block
       }
     },
   },
@@ -108,14 +110,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.center{
+.center {
   text-align: center;
 }
-.text{
- font-family: "Work Sans", sans-serif !important;
-
-  }
-.over{
+.text {
+  font-family: 'Work Sans', sans-serif !important;
+}
+.over {
   z-index: 999999;
 }
 </style>

@@ -33,6 +33,61 @@
             <p class="check-label ml-1">SDG</p>
           </div>
         </div>
+        <div
+          v-if="values.type === 'visualization'"
+          class="btn-group d-flex"
+          role="group"
+        >
+          <button
+            type="button"
+            @click="
+              (payload[values.key] = 'zonal_map'),
+                (activeToggleButton = 'zonal_map')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
+          >
+            Zones Map
+            <img :src="require('../svg/zonal_map.svg')" alt="" srcset="" />
+          </button>
+          <button
+            type="button"
+            @click="
+              (payload[values.key] = 'state_map'),
+                (activeToggleButton = 'state_map')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'state_map' ? 'active' : '']"
+          >
+            State Map
+            <img
+              class="text-danger"
+              :src="require('../svg/state_map.svg')"
+              alt=""
+              srcset=""
+            />
+          </button>
+          <button
+            type="button"
+            @click="
+              (payload[values.key] = 'line'), (activeToggleButton = 'line')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'line' ? 'active' : '']"
+          >
+            Line <b-icon icon="graph-up"></b-icon>
+          </button>
+          <button
+            type="button"
+            @click="
+              (payload[values.key] = 'column'), (activeToggleButton = 'column')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'column' ? 'active' : '']"
+          >
+            Column <b-icon icon="bar-chart-fill"></b-icon>
+          </button>
+        </div>
       </div>
     </template>
   </div>

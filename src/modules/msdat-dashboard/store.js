@@ -2,6 +2,7 @@ import datasetComparismControls from '@/modules/msdat-dashboard/components/secti
 import indicatorOverviewConfig from '@/modules/msdat-dashboard/components/sections/indicator-overview/control-panel-config';
 import indicatorComparismConfig from '@/modules/msdat-dashboard/components/sections/indicator-comparism/indicator-comparism-config';
 import multiIndicatorComparismConfig from '@/modules/msdat-dashboard/components/sections/multi-source-compare/control-config';
+import zonalAnalysisConfig from '@/modules/msdat-dashboard/components/sections/zonal-analysis/control-config';
 
 export default {
   namespaced: true,
@@ -17,6 +18,7 @@ export default {
       datasetComparismControls,
       indicatorComparismConfig,
       multiIndicatorComparismConfig,
+      zonalAnalysisConfig,
     ],
   },
   mutations: {
@@ -45,7 +47,6 @@ export default {
      * control panel let give each panel and id
      */
     setControlOptions: (state, payload) => {
-      debugger;
       state.controlConfig[payload.panelIndex].setup[payload.controlIndex].options = payload.values;
     },
   },
