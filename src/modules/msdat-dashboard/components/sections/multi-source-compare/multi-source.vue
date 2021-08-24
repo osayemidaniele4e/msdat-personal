@@ -101,11 +101,18 @@ export default {
             fontWeight: 'normal',
           },
         },
+        colors: ['#114663'],
+        colorAxis: {
+          min: 0,
+          minColor: '#E6E6E6',
+          maxColor: '#114663',
+        },
         series: [
           {
+            //  borderColor: 'white',
+            borderWidth: 0,
             name: 'Nigeria',
             data,
-            color: 'red',
           },
         ],
       };
