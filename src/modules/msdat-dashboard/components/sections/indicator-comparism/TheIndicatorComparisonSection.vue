@@ -15,7 +15,7 @@
         <base-sub-card
           buttonToggle
           showControls
-          sideControl="true"
+          :sideControl="false"
           :ConfidenceOptions="false"
           :showToggle="false"
           @toggle-confidence-range="onConfidenceRangeClicked($event)"

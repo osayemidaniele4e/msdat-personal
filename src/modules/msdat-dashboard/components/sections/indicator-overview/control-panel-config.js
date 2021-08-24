@@ -1,5 +1,5 @@
 export default {
-  label: 'indicator Overview Control',
+  label: 'Indicator Overview Control',
   setup: [
     {
       type: 'dropdown',
