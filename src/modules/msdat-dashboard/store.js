@@ -15,10 +15,10 @@ export default {
     },
     controlConfig: [
       indicatorOverviewConfig,
-      datasetComparismControls,
-      indicatorComparismConfig,
-      multiIndicatorComparismConfig,
       zonalAnalysisConfig,
+      indicatorComparismConfig,
+      datasetComparismControls,
+      multiIndicatorComparismConfig,
     ],
   },
   mutations: {

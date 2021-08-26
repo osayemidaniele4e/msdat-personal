@@ -1,8 +1,9 @@
 <template>
   <div>
     <Header v-on:tour="runIntro"></Header>
-    <b-overlay :show="!cpIsLoading">
-      <BasePanel :position="position" v-if="cpIsLoading">
+    <div class="sticky">
+    <b-overlay :show="!cpIsLoading" >
+      <BasePanel :position="position" v-if="cpIsLoading" v-on:showSection="showSection($event)" >
         <template v-slot:default>
           <ControlBase
             v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
@@ -73,9 +74,11 @@
         </template>
       </BasePanel>
     </b-overlay>
+    </div>
     <!-- control Panels ends here  -->
-    <div class="container-fluid">
-      <div class="row">
+
+    <div class="container-fluid" id="observer-root" >
+      <div class="row observable" id="0" ref="0">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
@@ -106,7 +109,7 @@
           </base-sub-card>
         </div>
       </div>
-      <div class="row">
+      <div id="1" class="row observable" ref="1">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
@@ -120,18 +123,19 @@
           </base-sub-card>
         </div>
       </div>
-      <div class="row">
+      <div class="row observable" id="2" ref="2">
         <div class="col-md-12">
-          <indicatorComparison :values="indicatorComparisonData">
-          </indicatorComparison>
+          <IndicatorComparison :values="indicatorComparisonData">
+          </IndicatorComparison>
         </div>
       </div>
-      <div class="row">
+      <div class="row observable" id="3" ref="3">
         <div class="col-md-12">
           <DataSetComparism :values="datasetProps" />
         </div>
       </div>
-      <div class="row">
+
+      <div class="row observable" id="4" ref="4">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
@@ -172,16 +176,17 @@ import controlPanelSetup from '../../mixins/control-panel-setup';
 import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
 import TheTable from '../../components/sections/TheTable.vue';
 import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
-import indicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
+import IndicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import tour from '../../mixins/tour';
 import Header from '../about/layout/theHeader.vue';
 import Footer from '../about/layout/theFooter.vue';
+import scroll from '../../mixins/onscroll';
 
 import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
 
 export default {
-  mixins: [formatter, controlPanelSetup, tour],
+  mixins: [formatter, controlPanelSetup, tour, scroll],
   data() {
     return {
       position: 3,
@@ -208,7 +213,7 @@ export default {
     TheStateBarChart,
     TheTable,
     IDCC,
-    indicatorComparison,
+    IndicatorComparison,
     MultiSourceCompare,
     Header,
     Footer,
@@ -239,27 +244,35 @@ export default {
           this.zonalProps = optionsObject;
           break;
         case 1:
-          this.datasetProps = optionsObject;
+          this.zonalAnalysis = optionsObject;
           break;
         case 2:
           this.indicatorComparisonData = optionsObject;
           break;
         case 3:
-          this.MultiSourceCompareValue[index2] = optionsObject;
+          this.datasetProps = optionsObject;
           break;
         case 4:
-          this.zonalAnalysis = optionsObject;
+          this.MultiSourceCompareValue[index2] = optionsObject;
           break;
         default:
           break;
       }
     },
   },
-  mounted() {},
+  mounted() { },
 };
 </script>
 
 <style lang="scss" scoped>
+.sticky{
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0px;
+  z-index: 999;
+  background-color: white;
+  box-shadow: 0px 3px 8px 0px #888888;
+}
 .visible {
   z-index: 9999;
 }

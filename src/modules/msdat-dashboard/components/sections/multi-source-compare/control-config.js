@@ -14,6 +14,12 @@ const indicatorSetConfig = [
   },
   {
     class: ['col-md-12'],
+    type: 'visualization',
+    label: 'select visualizations',
+    key: 'visualization',
+  },
+  {
+    class: ['col-md-4'],
     type: 'dropdown',
     label: 'data Source',
     key: 'datasource',
@@ -21,12 +27,6 @@ const indicatorSetConfig = [
       label: 'datasource',
     },
     options: [],
-  },
-  {
-    class: ['col-md-12'],
-    type: 'visualization',
-    label: 'select visualizations',
-    key: 'visualization',
   },
   {
     class: ['col-md-4'],

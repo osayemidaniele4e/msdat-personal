@@ -10,7 +10,7 @@
         :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
         v-for="(control, index) in controls"
         :key="index"
-        @click='selectControl(index)'
+        @click='changeControl(index)'
       >
         {{ control.title }}
 
@@ -46,6 +46,10 @@ export default {
     },
   },
   methods: {
+    changeControl(index) {
+      this.selectControl(index);
+      this.$emit('showSection', index);
+    },
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
