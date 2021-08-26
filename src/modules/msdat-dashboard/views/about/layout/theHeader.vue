@@ -1,5 +1,5 @@
 <template>
-  <header id="the-header" class="border sticky-top">
+  <header id="the-header" class="border ">
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="2" lg="2">

@@ -50,7 +50,7 @@ const indicatorSetConfig = [
   },
 ];
 export default {
-  label: 'Multi-source compare',
+  label: 'Multi-source comparison',
   setup: [indicatorSetConfig, indicatorSetConfig, indicatorSetConfig],
   defaults: {
     indicator: null,

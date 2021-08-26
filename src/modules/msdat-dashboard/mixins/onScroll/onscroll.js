@@ -24,14 +24,12 @@ export default {
     },
     changeScroll(refName) {
       const element = this.$refs[refName];
-      console.log(element);
       const top = element.offsetTop;
       window.scrollTo({
         top: top - 150,
         left: 0,
         behavior: 'smooth',
       });
-      element.click();
     },
   },
   mounted() {

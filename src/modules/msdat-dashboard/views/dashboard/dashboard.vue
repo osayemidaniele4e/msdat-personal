@@ -181,7 +181,7 @@ import DataSetComparism from '../../components/sections/dataset-comparison/datas
 import tour from '../../mixins/tour';
 import Header from '../about/layout/theHeader.vue';
 import Footer from '../about/layout/theFooter.vue';
-import scroll from '../../mixins/onscroll';
+import scroll from '../../mixins/onScroll/onscroll';
 
 import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
 
@@ -269,11 +269,11 @@ export default {
   position: sticky;
   position: -webkit-sticky;
   top: 0px;
-  z-index: 999;
+  z-index: 2;
   background-color: white;
   box-shadow: 0px 3px 8px 0px #888888;
 }
 .visible {
-  z-index: 9999;
+  z-index: 0;
 }
 </style>
