@@ -1,12 +1,12 @@
 const steps = [
   {
-    element: 'div:nth-child(1) > div.b-overlay-wrap.position-relative > div > ul',
+    element: '.step-sections',
     intro: 'Select different types of analysis combinations <br/> <img src="https://i.ibb.co/jkFbv2S/onboard1.png" height= "40px"/> ',
     title: 'Sections',
     position: 'bottom',
   },
   {
-    element: 'div:nth-child(1) > div.b-overlay-wrap.position-relative > div > div > div:nth-child(1)',
+    element: '.step-controls ',
     intro: 'Controls all sections and variables from the control panel,  it changes per section. <br/> <img src="https://i.ibb.co/jkFbv2S/onboard1.png" height= "40px"/> ',
     title: 'Controls',
     position: 'bottom',

@@ -1,7 +1,20 @@
 export default {
+  data() {
+    return {
+      observer: null,
+    };
+  },
   methods: {
     showSection(index) {
+      // stops observer
+      const observedElements = document.querySelectorAll('.observable');
+      observedElements.forEach((el) => this.observer.unobserve(el));
+      // scroll to section
       this.changeScroll(index);
+      // resume observer
+      setTimeout(() => {
+        observedElements.forEach((el) => this.observer.observe(el));
+      }, 1000);
     },
     changeSection(index) {
       this.position = index;
@@ -16,11 +29,11 @@ export default {
         });
       };
 
-      const observer = new IntersectionObserver(callback, {
+      this.observer = new IntersectionObserver(callback, {
         // root: document.querySelector('#observer-root'),
-        threshold: 0.6,
+        threshold: 0.5,
       });
-      document.querySelectorAll('.observable').forEach((el) => observer.observe(el));
+      document.querySelectorAll('.observable').forEach((el) => this.observer.observe(el));
     },
     changeScroll(refName) {
       const element = this.$refs[refName];

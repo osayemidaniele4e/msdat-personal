@@ -77,7 +77,7 @@
     </div>
     <!-- control Panels ends here  -->
 
-    <div class="container-fluid" id="observer-root" >
+    <div class="container-fluid lessVisible" id="observer-root" >
       <div class="row observable" id="0" ref="0">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
@@ -178,10 +178,10 @@ import TheTable from '../../components/sections/TheTable.vue';
 import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
 import IndicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
-import tour from '../../mixins/tour';
+import tour from '../onboarding/tour';
 import Header from '../about/layout/theHeader.vue';
 import Footer from '../about/layout/theFooter.vue';
-import scroll from '../../mixins/onScroll/onscroll';
+import scroll from '../../modules/onScroll/onscroll';
 
 import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
 
@@ -274,6 +274,9 @@ export default {
   box-shadow: 0px 3px 8px 0px #888888;
 }
 .visible {
-  z-index: 0;
+  z-index: 10;
+}
+.lessVisible{
+  z-index: -1;
 }
 </style>

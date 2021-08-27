@@ -83,9 +83,7 @@ export default {
 
 <style lang="scss" scoped>
 $msdat-green:  #007D53;
-.sticky-top{
-  z-index: 998;
-}
+
 header#the-header {
   &>.container-fluid {
     &>.row {
