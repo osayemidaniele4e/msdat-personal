@@ -1,17 +1,13 @@
 /* eslint-disable max-len */
 <template>
   <div>
-    <base-sub-card :backgroundColor="'#348481'">
-      <template #title>
-        <h5 class="font-weight-bold work-sans text-white">
-          Indicator Comparison - By {{ values.compareBy.name }}
-        </h5>
-      </template>
+    <!-- <base-sub-card :backgroundColor="'#348481'"> -->
+
       <base-overlay :show="loading">
-        <!-- the props ConfidenceOptions and showToggle show the cofidence range component
- and the chart type component respectively
- note: the confidence range prop just makes the this section look more like the mock-up
- and might need to be removed entirely -->
+            <!-- the props ConfidenceOptions and showToggle show the cofidence range component
+            and the chart type component respectively
+            note: the confidence range prop just makes the this section look more like the mock-up
+            and might need to be removed entirely -->
         <base-sub-card
           buttonToggle
           showControls
@@ -40,7 +36,7 @@
           <BarChart :chartOptions="ChartOptions" />
         </base-sub-card>
       </base-overlay>
-    </base-sub-card>
+    <!-- </base-sub-card> -->
   </div>
 </template>
 

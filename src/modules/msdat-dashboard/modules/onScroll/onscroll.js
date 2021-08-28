@@ -6,8 +6,8 @@ export default {
   },
   methods: {
     showSection(index) {
-      // stops observer
       const observedElements = document.querySelectorAll('.observable');
+      // stop observer
       observedElements.forEach((el) => this.observer.unobserve(el));
       // scroll to section
       this.changeScroll(index);
@@ -30,7 +30,6 @@ export default {
       };
 
       this.observer = new IntersectionObserver(callback, {
-        // root: document.querySelector('#observer-root'),
         threshold: 0.5,
       });
       document.querySelectorAll('.observable').forEach((el) => this.observer.observe(el));

@@ -1,13 +1,13 @@
 <template>
   <div class="">
-    <base-sub-card
+    <!-- <base-sub-card
     showControls
     :backgroundColor="'#348481'">
       <template #title>
         <h5 class="font-weight-bold work-sans text-white">
           Datasets Comparison - By States
         </h5>
-      </template>
+      </template> -->
       <div class="py-0">
         <base-sub-card :backgroundColor="'#DFF3F3'">
           <template #title>
@@ -22,7 +22,7 @@
           <BaseChart :chartOptions="chartConfig" />
         </base-sub-card>
       </div>
-    </base-sub-card>
+    <!-- </base-sub-card> -->
   </div>
 </template>
 

@@ -41,7 +41,7 @@
             />
           </div>
           <slot>
-            <p class="card-text">The SubCard fallback.</p>
+            <!-- <p class="card-text">The SubCard fallback.</p> -->
           </slot>
         </div>
         <SubCardSideControl
