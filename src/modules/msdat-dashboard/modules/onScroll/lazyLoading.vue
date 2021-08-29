@@ -1,15 +1,13 @@
 <template>
-<div  ref="lazy">
-<div :class="loader" >
-    <slot v-if="showComp"></slot>
-</div>
-</div>
+  <div ref="lazy">
+    <div :class="loader">
+      <slot v-if="showComp"></slot>
+    </div>
+  </div>
 </template>
 
 <script>
-
 export default {
-
   data() {
     return {
       showComp: false,
@@ -37,17 +35,15 @@ export default {
       });
     },
   },
-
 };
 </script>
 
 <style>
 .loader {
-    height: 400px;
-    background-color: rgb(52, 132, 129);
+  height: 400px;
+  background-color: rgb(255, 255, 255);
 }
 .load {
-    height: auto;
-
+  height: auto;
 }
 </style>
