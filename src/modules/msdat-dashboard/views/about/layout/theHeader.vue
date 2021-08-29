@@ -1,5 +1,5 @@
 <template>
-  <header id="the-header" class="border sticky-top">
+  <header id="the-header" class="border ">
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="2" lg="2">
@@ -83,9 +83,7 @@ export default {
 
 <style lang="scss" scoped>
 $msdat-green:  #007D53;
-.sticky-top{
-  z-index: 998;
-}
+
 header#the-header {
   &>.container-fluid {
     &>.row {

@@ -1,13 +1,13 @@
 <template>
   <div class="">
-    <base-sub-card
+    <!-- <base-sub-card
     showControls
     :backgroundColor="'#348481'">
       <template #title>
         <h5 class="font-weight-bold work-sans text-white">
           Datasets Comparison - By States
         </h5>
-      </template>
+      </template> -->
       <div class="py-0">
         <base-sub-card :backgroundColor="'#DFF3F3'">
           <template #title>
@@ -22,7 +22,7 @@
           <BaseChart :chartOptions="chartConfig" />
         </base-sub-card>
       </div>
-    </base-sub-card>
+    <!-- </base-sub-card> -->
   </div>
 </template>
 
@@ -59,13 +59,13 @@ export default {
   },
   mounted() {
     this.SET_CONTROL_OPTIONS({
-      panelIndex: 1,
+      panelIndex: 3,
       controlIndex: 0,
       values: this.defaultIndicatorDropdown,
     });
 
     this.SET_CONTROL_OPTIONS({
-      panelIndex: 1,
+      panelIndex: 3,
       controlIndex: 1,
       values: this.defaultDataSourceDropdown,
     });

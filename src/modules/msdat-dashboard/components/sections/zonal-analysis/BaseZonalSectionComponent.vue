@@ -72,22 +72,22 @@ export default {
   },
   mounted() {
     this.SET_CONTROL_OPTIONS({
-      panelIndex: 4,
+      panelIndex: 1,
       controlIndex: 0,
       values: this.defaultIndicatorDropdown,
     });
     this.SET_CONTROL_OPTIONS({
-      panelIndex: 4,
+      panelIndex: 1,
       controlIndex: 1,
       values: this.defaultLocationDropdown,
     });
     this.SET_CONTROL_OPTIONS({
-      panelIndex: 4,
+      panelIndex: 1,
       controlIndex: 2,
       values: this.defaultDataSourceDropdown,
     });
     this.SET_CONTROL_OPTIONS({
-      panelIndex: 4,
+      panelIndex: 1,
       controlIndex: 3,
       values: this.defaultYearDropdown,
     });
