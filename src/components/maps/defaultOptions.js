@@ -1,5 +1,11 @@
 export default {
-  chart: {},
+  chart: {
+    style: {
+      // fontSize: '10px',
+      fontFamily: '"Work Sans", sans-serif',
+      // fontWeight: 'normal'
+    },
+  },
   title: {
     enabled: false,
     text: '',
