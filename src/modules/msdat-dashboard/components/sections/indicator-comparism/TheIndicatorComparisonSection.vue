@@ -3,39 +3,39 @@
   <div>
     <!-- <base-sub-card :backgroundColor="'#348481'"> -->
 
-      <base-overlay :show="loading">
-            <!-- the props ConfidenceOptions and showToggle show the cofidence range component
+    <base-overlay :show="loading">
+      <!-- the props ConfidenceOptions and showToggle show the cofidence range component
             and the chart type component respectively
             note: the confidence range prop just makes the this section look more like the mock-up
             and might need to be removed entirely -->
-        <base-sub-card
-          buttonToggle
-          showControls
-          :sideControl="false"
-          :ConfidenceOptions="false"
-          :showToggle="false"
-          @toggle-confidence-range="onConfidenceRangeClicked($event)"
-          v-if="values"
-        >
-          <template #title>
-            <!-- the indicator property is eith an object when alone
+      <base-sub-card
+        buttonToggle
+        showControls
+        :sideControl="false"
+        :ConfidenceOptions="false"
+        :showToggle="false"
+        @toggle-confidence-range="onConfidenceRangeClicked($event)"
+        v-if="values"
+      >
+        <template #title>
+          <!-- the indicator property is eith an object when alone
         or an array when compared aganist another  -->
-            <h6 class="work-sans" v-if="!values.indicator.length">
-              Comparison Of <b>{{ values.indicator.short_name }}</b> according
-              to the <b> {{ values.datasource.datasource }} </b> across
-              {{ values.compareBy.name }}
-            </h6>
-            <h6 class="work-sans" v-else>
-              Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
-              <b> {{ dlGetIndicator(values.indicator[1].id).short_name }} </b>
-              according to the
-              <b> {{ values.datasource.datasource }} </b> across
-              {{ values.compareBy.name }}s
-            </h6>
-          </template>
-          <BarChart :chartOptions="ChartOptions" />
-        </base-sub-card>
-      </base-overlay>
+          <h6 class="work-sans" v-if="!values.indicator.length">
+            Comparison Of <b>{{ values.indicator.short_name }}</b> according to
+            the <b> {{ values.datasource.datasource }} </b> across
+            {{ values.compareBy.name }}
+          </h6>
+          <h6 class="work-sans" v-else>
+            Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
+            <b> {{ dlGetIndicator(values.indicator[1].id).short_name }} </b>
+            according to the
+            <b> {{ values.datasource.datasource }} </b> across
+            {{ values.compareBy.name }}s
+          </h6>
+        </template>
+        <BarChart :chartOptions="ChartOptions" />
+      </base-sub-card>
+    </base-overlay>
     <!-- </base-sub-card> -->
   </div>
 </template>
@@ -131,7 +131,6 @@ export default {
 
       return sign;
     },
-
   },
   props: {
     values: {
@@ -228,10 +227,7 @@ export default {
                 name: this.dlGetIndicator(options.indicator[i].id).short_name,
                 data: [],
               };
-              data.map((series) => seriesObject.data.push([
-                series.period,
-                Number(series.value),
-              ]));
+              data.map((series) => seriesObject.data.push([series.period, Number(series.value)]));
               // sort the values according to the year they appear
               const mappedData = sortBy(seriesObject.data, [(o) => o[0]]);
               seriesObject.data = mappedData;
@@ -264,10 +260,7 @@ export default {
               name: this.dlGetIndicator(options.indicator.id).short_name,
               data: [],
             };
-            data.map((series) => seriesObject.data.push([
-              series.period,
-              Number(series.value),
-            ]));
+            data.map((series) => seriesObject.data.push([series.period, Number(series.value)]));
             this.ChartOptions.series.push(seriesObject);
           }
         } else if (chartChange === 'State') {
@@ -435,7 +428,9 @@ export default {
       immediate: false,
     },
   },
-  mounted() {
+  async mounted() {
+    const setYearDropdown = await this.setYearDropdown();
+    console.trace(setYearDropdown);
     this.SET_CONTROL_OPTIONS({
       panelIndex: 2,
       controlIndex: 3,
@@ -450,10 +445,7 @@ export default {
     this.SET_CONTROL_OPTIONS({
       panelIndex: 2,
       controlIndex: 2,
-      values: [
-        { id: 1, year: '2010' },
-        { id: 2, year: '2015' },
-      ],
+      values: setYearDropdown,
     });
   },
 };

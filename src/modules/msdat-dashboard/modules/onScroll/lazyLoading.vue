@@ -26,7 +26,7 @@ export default {
   methods: {
     handleIntersect(entries, observer) {
       entries.forEach((entry) => {
-        console.log('entry', entry);
+        // console.log('entry', entry);
         if (entry.isIntersecting) {
           this.showComp = entry.isIntersecting;
           this.loader = 'load';
@@ -40,7 +40,7 @@ export default {
 
 <style>
 .loader {
-  height: 400px;
+  height: 500px;
   background-color: rgb(255, 255, 255);
 }
 .load {

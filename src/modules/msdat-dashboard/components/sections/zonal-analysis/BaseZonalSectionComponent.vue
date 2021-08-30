@@ -70,7 +70,8 @@ export default {
   methods: {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
   },
-  mounted() {
+  async mounted() {
+    const setYearDropdown = await this.setYearDropdown();
     this.SET_CONTROL_OPTIONS({
       panelIndex: 1,
       controlIndex: 0,
@@ -89,7 +90,7 @@ export default {
     this.SET_CONTROL_OPTIONS({
       panelIndex: 1,
       controlIndex: 3,
-      values: this.defaultYearDropdown,
+      values: setYearDropdown,
     });
   },
 };
