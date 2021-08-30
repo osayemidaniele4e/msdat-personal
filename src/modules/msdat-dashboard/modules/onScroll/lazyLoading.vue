@@ -40,7 +40,7 @@ export default {
 
 <style>
 .loader {
-  height: 500px;
+  height: 400px;
   background-color: rgb(255, 255, 255);
 }
 .load {

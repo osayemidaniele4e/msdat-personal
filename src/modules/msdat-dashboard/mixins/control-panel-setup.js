@@ -24,7 +24,7 @@ export default {
       const uniqueYears = uniq(years);
       return sortBy(uniqueYears);
     },
-    async setUpControlPanelDropDown() {
+    setUpControlPanelDropDown() {
       this.defaultIndicatorDropdown = groupIndicator(
         this.dlGetAvailableIndicators(),
         'program_area',
@@ -72,8 +72,8 @@ export default {
   },
   async created() {
     this.setDefaults();
-    await this.setUpControlPanelDropDown();
-    await this.setYearDropdown();
+    this.setUpControlPanelDropDown();
+    // await this.setYearDropdown();
     this.cpIsLoading = true;
   },
 };
