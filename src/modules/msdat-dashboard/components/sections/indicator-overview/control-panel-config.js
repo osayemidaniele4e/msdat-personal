@@ -1,5 +1,5 @@
 export default {
-  label: 'Indicator Overview Control',
+  label: 'Indicator Overview',
   setup: [
     {
       type: 'dropdown',
@@ -10,7 +10,7 @@ export default {
         'group-label': 'program_area',
         label: 'short_name',
       },
-      label: 'indicator 1',
+      label: 'indicator',
       key: 'indicator',
       options: [],
     },

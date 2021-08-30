@@ -94,24 +94,9 @@
             <!-- the first section doesn't need the component
                  since it will be mounted first -->
             <template>
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <TheTable :values="TableValues" />
-                    </div>
-                    <div class="col-md-12">
-                      <IDCC :values="indicatorComparison" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <TheStateBarChart
-                    v-if="cpIsLoading"
-                    :values="stateBarValue"
-                  />
-                </div>
-              </div>
+              <BaseIndicatorOverview
+                :controlPanelProps="BaseIndicatorOverviewProp"
+              />
             </template>
           </base-sub-card>
         </div>
@@ -205,9 +190,10 @@ import {
 import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
-import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
-import TheTable from '../../components/sections/TheTable.vue';
-import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
+// import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
+import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
+// import TheTable from '../../components/sections/TheTable.vue';
+// import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
 import IndicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import tour from '../onboarding/tour';
@@ -226,9 +212,7 @@ export default {
       BarChartOptions: {},
       controlPanel: {},
       lect: '',
-      stateBarValue: '',
-      TableValues: '',
-      indicatorComparison: '',
+      BaseIndicatorOverviewProp: {},
       datasetProps: {},
       indicatorComparisonData: '',
       MultiSourceCompareValue: [],
@@ -243,9 +227,7 @@ export default {
     BasePanel,
     ControlPanel,
     DataSetComparism,
-    TheStateBarChart,
-    TheTable,
-    IDCC,
+    BaseIndicatorOverview,
     IndicatorComparison,
     MultiSourceCompare,
     Header,
@@ -272,10 +254,11 @@ export default {
       // console.log(optionsObject, index);
       switch (index) {
         case 0:
-          this.stateBarValue = optionsObject;
-          this.TableValues = optionsObject;
-          this.indicatorComparison = optionsObject;
-          this.zonalProps = optionsObject;
+          // this.stateBarValue = optionsObject;
+          // this.TableValues = optionsObject;
+          // this.indicatorComparison = optionsObject;
+          // this.zonalProps = optionsObject;
+          this.BaseIndicatorOverviewProp = optionsObject;
           break;
         case 1:
           this.zonalAnalysis = optionsObject;

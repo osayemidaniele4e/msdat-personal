@@ -51,6 +51,7 @@ export default {
         this.loading = false;
       },
       deep: true,
+      immediate: true,
     },
   },
   methods: {

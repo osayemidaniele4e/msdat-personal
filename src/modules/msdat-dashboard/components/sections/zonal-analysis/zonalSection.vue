@@ -122,65 +122,70 @@ export default {
   watch: {
     controlPanelProps: {
       async handler(val) {
+        // debugger;
         this.chart = {};
         this.loader = true;
         const data = await this.dlQuery({
           indicator: val.indicator.id,
           datasource: val.datasource.id,
-          period: '2015',
+          period: val.year,
         });
-        // Plot for LGAs
-        if (val.location.id !== 1) {
-          const filteredLGADataForState = data.filter(
-            (item) => this.dlGetLocation(item.location).parent === val.location.id,
-          );
+        console.log(data);
+        if (data.length > 0) {
+          if (val.location.id !== 1) {
+            const filteredLGADataForState = data.filter(
+              (item) => this.dlGetLocation(item.location).parent === val.location.id,
+            );
 
-          const formatToHighChart = (dataValues) => dataValues.map((item) => [
-            this.dlGetLocation(item.location).name,
-            parseFloat(item.value),
-          ]);
+            const formatToHighChart = (dataValues) => dataValues.map((item) => [
+              this.dlGetLocation(item.location).name,
+              parseFloat(item.value),
+            ]);
 
-          const chartSeries = [];
-          const formattedData = formatToHighChart(filteredLGADataForState);
-          const sortedData = formattedData.sort(sortHighChartDataFormat);
-          const stateObject = this.dlGetLocation(val.location.id);
-          const stateData = data.find(
-            (item) => item.location === val.location.id,
-          );
+            const chartSeries = [];
+            const formattedData = formatToHighChart(filteredLGADataForState);
+            const sortedData = formattedData.sort(sortHighChartDataFormat);
+            const stateObject = this.dlGetLocation(val.location.id);
+            const stateData = data.find(
+              (item) => item.location === val.location.id,
+            );
 
-          sortedData.unshift({
-            name: stateObject.name,
-            y: parseFloat(stateData.value),
-            color: this.colors[0].color,
-          });
-          chartSeries.push({
-            color: this.colors[stateObject.parent].color,
-            name: stateObject.name,
-            data: sortedData,
-          });
-          this.formatToHighChart(chartSeries);
-        } else {
-          // already know the zonal levels/parent of all the value
-          // index starts at one to skip region data for the series
-          const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
-          const zonalSeries = this.getZonalDataInHighChartFormat(data);
-          // add national to top of the zonal series series
-          const national = data.find((item) => item.location === 1);
-          zonalSeries.unshift({
-            name: 'National',
-            y: parseFloat(national.value),
-            color: this.colors[0].color,
-          });
+            sortedData.unshift({
+              name: stateObject.name,
+              y: parseFloat(stateData.value),
+              color: this.colors[0].color,
+            });
+            chartSeries.push({
+              color: this.colors[stateObject.parent].color,
+              name: stateObject.name,
+              data: sortedData,
+            });
+            this.formatToHighChart(chartSeries);
+          } else {
+            // already know the zonal levels/parent of all the value
+            // index starts at one to skip region data for the series
+            const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
+            const zonalSeries = this.getZonalDataInHighChartFormat(data);
+            // add national to top of the zonal series series
+            const national = data.find((item) => item.location === 1);
+            zonalSeries.unshift({
+              name: 'National',
+              y: parseFloat(national.value),
+              color: this.colors[0].color,
+            });
 
-          const zonalZee = {
-            name: 'Nigeria',
-            data: zonalSeries,
-            color: this.colors[0].color,
-          };
-          // add zonal series to top of main the series
-          chartSeries.unshift(zonalZee);
-          this.formatToHighChart(chartSeries);
+            const zonalZee = {
+              name: 'Nigeria',
+              data: zonalSeries,
+              color: this.colors[0].color,
+            };
+            // add zonal series to top of main the series
+            chartSeries.unshift(zonalZee);
+            this.formatToHighChart(chartSeries);
+          }
         }
+        // Plot for LGAs
+
         this.loader = false;
       },
       deep: true,
