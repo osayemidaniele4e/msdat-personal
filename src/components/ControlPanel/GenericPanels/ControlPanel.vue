@@ -138,7 +138,7 @@ export default {
     this.payload.indicator = this.defaultIndicator;
     this.payload.datasource = this.defaultDataSource;
     this.payload.location = this.defaultLocation;
-    // this.payload.indicator = this.defaultIndicator;
+    this.payload.year = this.defaultYear;
   },
 };
 </script>

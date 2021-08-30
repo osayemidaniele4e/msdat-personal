@@ -44,7 +44,11 @@ export default {
       });
     },
   },
-  mounted() {
-    this.startScroll();
+  async mounted() {
+    console.log('on scroll mixins');
+    await this.$nextTick();
+    setTimeout(() => {
+      this.startScroll();
+    }, 2000);
   },
 };

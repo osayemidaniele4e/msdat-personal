@@ -66,14 +66,19 @@ export default {
       const sortedYears = unqiueYears.sort((a, b) => b - a);
       // debugger;
       this.defaultYearDropdown = sortedYears;
+      if (sortedYears.length > 0) {
+        const firstItem = 0;
+        this.defaultYear = sortedYears[firstItem];
+      }
       return sortedYears;
       // console.log(sortedYears);
     },
   },
-  async created() {
+  async mounted() {
     this.setDefaults();
     this.setUpControlPanelDropDown();
-    // await this.setYearDropdown();
+    await this.setYearDropdown();
     this.cpIsLoading = true;
+    // console.log(defaultYearDropdown);
   },
 };

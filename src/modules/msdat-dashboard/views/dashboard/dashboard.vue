@@ -81,7 +81,7 @@
     </div>
     <!-- control Panels ends here  -->
 
-    <div class="container-fluid lessVisible">
+    <div class="container-fluid lessVisible" v-if="cpIsLoading">
       <div class="row observable" id="0" ref="0">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
@@ -95,13 +95,14 @@
                  since it will be mounted first -->
             <template>
               <BaseIndicatorOverview
+                v-if="BaseIndicatorOverviewProp"
                 :controlPanelProps="BaseIndicatorOverviewProp"
               />
             </template>
           </base-sub-card>
         </div>
       </div>
-      <div id="1" class="row observable" ref="1">
+      <div class="row observable" id="1" ref="1">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
@@ -111,13 +112,16 @@
             </template>
             <template>
               <LazyLoading>
-                <ZonalAnalysisSection :controlPanelProps="zonalAnalysis" />
+                <ZonalAnalysisSection
+                  v-if="zonalAnalysis"
+                  :controlPanelProps="zonalAnalysis"
+                />
               </LazyLoading>
             </template>
           </base-sub-card>
         </div>
       </div>
-      <div id="2" class="row observable" ref="2">
+      <div class="row observable" id="2" ref="2">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
@@ -127,23 +131,26 @@
             </template>
             <template>
               <LazyLoading>
-                <IndicatorComparison :values="indicatorComparisonData" />
+                <IndicatorComparison
+                  v-if="indicatorComparisonData"
+                  :values="indicatorComparisonData"
+                />
               </LazyLoading>
             </template>
           </base-sub-card>
         </div>
       </div>
-      <div id="3" class="row observable" ref="3">
+      <div class="row observable" id="3" ref="3">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
-                Dataset Comparism
+                Dataset Comparison
               </h5>
             </template>
             <template>
               <LazyLoading>
-                <DataSetComparism :values="datasetProps" />
+                <DataSetComparism v-if="datasetProps" :values="datasetProps" />
               </LazyLoading>
             </template>
           </base-sub-card>
