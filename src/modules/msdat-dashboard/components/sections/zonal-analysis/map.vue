@@ -3,7 +3,7 @@
     <base-overlay :show="loader">
       <base-sub-card showControls>
         <template #title>
-          <h6 class="text-dark">
+          <p class="text-dark work-sans mb-0 line-height">
             Distribution of
             <span class="font-weight-bold">
               {{ controlPanelProps.indicator.full_name }} </span
@@ -13,7 +13,7 @@
               {{ controlPanelProps.datasource.datasource }}
               {{ controlPanelProps.year }}</span
             >
-          </h6>
+          </p>
         </template>
         <div>
           <BaseMap :mapObject="chart" :level="level" :lgaState="stateName" />

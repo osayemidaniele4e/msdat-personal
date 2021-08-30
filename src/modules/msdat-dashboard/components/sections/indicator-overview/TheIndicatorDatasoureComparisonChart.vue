@@ -13,10 +13,10 @@
       v-if="values"
     >
       <template #title>
-        <h6 class="work-sans">
+        <p class="work-sans mb-0 line-height">
           Comparison Of <b>{{ values.indicator.short_name }}</b> Across
           Different Data Source
-        </h6>
+        </p>
       </template>
       <BarChart :chartOptions="ChartOptions" />
     </base-sub-card>

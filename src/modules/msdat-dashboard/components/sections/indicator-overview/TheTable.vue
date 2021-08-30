@@ -3,10 +3,10 @@
   <base-overlay :show="loading">
     <base-sub-card showControls v-if="values">
       <template #title>
-        <h6 class="work-sans">
+        <p class="work-sans mb-0 line-height">
           <b>{{ values.indicator.short_name }}</b> And Related Indicators With
           Years Of Latest Value Across The <b>Country</b>
-        </h6>
+        </p>
       </template>
       <TableComponent
         class="work-sans"

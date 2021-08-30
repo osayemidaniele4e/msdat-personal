@@ -2,11 +2,11 @@
   <base-overlay :show="loading">
     <base-sub-card showControls v-if="values">
       <template #title>
-        <h6 class="work-sans">
+        <p class="work-sans mb-0 line-height">
           Distribution of <b>{{ values.indicator.short_name }}</b> Across the
           Geopolitical zones in the Country. Source:
           <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
-        </h6>
+        </p>
       </template>
       <BarChart
         v-if="visualization === 'line' || visualization === 'column'"

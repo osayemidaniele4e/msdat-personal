@@ -4,7 +4,7 @@ export default {
     indicator: null,
     dataSource: null,
     location: null,
-    year: 'null',
+    year: null,
   },
   setup: [
     {

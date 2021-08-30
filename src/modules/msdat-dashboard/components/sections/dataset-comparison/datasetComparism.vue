@@ -11,7 +11,7 @@
       <div class="py-0">
         <base-sub-card :backgroundColor="'#DFF3F3'">
           <template #title>
-            <p class="text-dark">
+            <p class="text-dark work-sans mb-0 line-height">
               Comparison of
               <span class="font-weight-bold">
                 {{ values.datasource.full_name }} </span

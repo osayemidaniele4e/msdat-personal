@@ -84,7 +84,7 @@
     <div class="container-fluid lessVisible" v-if="cpIsLoading">
       <div class="row observable" id="0" ref="0">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Indicator Overview
@@ -104,7 +104,7 @@
       </div>
       <div class="row observable" id="1" ref="1">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Zonal Analysis Section
@@ -123,7 +123,7 @@
       </div>
       <div class="row observable" id="2" ref="2">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Indicator Comparison
@@ -142,7 +142,7 @@
       </div>
       <div class="row observable" id="3" ref="3">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Dataset Comparison
@@ -158,7 +158,7 @@
       </div>
       <div class="row observable" id="4" ref="4">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Multi-Source Indicator Comparison

@@ -2,12 +2,12 @@
   <base-overlay :show="loading">
     <base-sub-card showControls v-if="values">
       <template #title>
-        <h6 class="work-sans">
+        <p class="work-sans mb-0 line-height">
           Distribution Of
           <b>{{ values.indicator.short_name }}</b> Across The Country. Source:<b>
             {{ values.datasource.datatsource }} {{ values.year }}</b
           >
-        </h6>
+        </p>
       </template>
       <BarChart :chartOptions="BarChartOptions" />
     </base-sub-card>
