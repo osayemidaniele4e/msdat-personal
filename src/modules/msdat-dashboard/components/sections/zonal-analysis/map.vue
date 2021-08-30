@@ -56,10 +56,11 @@ export default {
   watch: {
     controlPanelProps: {
       async handler(val) {
+        this.loader = true;
         const data = await this.dlQuery({
           indicator: val.indicator.id,
           datasource: val.datasource.id,
-          period: '2015',
+          period: val.year,
         });
         // plot for LGA Data
         if (val.location.id !== 1) {
@@ -118,12 +119,22 @@ export default {
               (item) => this.dlGetLocation(item.location).parent
                 === this.colors[index].id,
             );
+
+            // if(group.length > 0 && group.length < 8){
+            //   // i am assuming that the zonal level data is all that exist so switch zonal level
+            //     this.level = 2;
+            // }else{
+            //   this.level = 3;
+            // }
+            const { color } = this.colors.find(
+              (item) => item.id === this.colors[index].id,
+            );
             const formattedData = formatToHighChart(group);
             const sortedData = formattedData.sort(sortHighChartDataFormat);
             const series = this.dlGetLocation(this.colors[index].id);
 
             chartSeries.push({
-              color: this.colors[index].color,
+              color,
               name: series.name,
               data: sortedData,
             });
@@ -132,6 +143,7 @@ export default {
             series: chartSeries,
           };
         }
+        this.loader = false;
       },
       deep: true,
       immediate: true,
