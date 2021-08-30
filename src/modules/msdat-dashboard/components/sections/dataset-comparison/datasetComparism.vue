@@ -1,34 +1,26 @@
+/* eslint-disable no-await-in-loop */
 <template>
   <div class="">
-    <!-- <base-sub-card
-    showControls
-    :backgroundColor="'#348481'">
+    <base-sub-card showControls>
       <template #title>
-        <h5 class="font-weight-bold work-sans text-white">
-          Datasets Comparison - By States
-        </h5>
-      </template> -->
-      <div class="py-0">
-        <base-sub-card :backgroundColor="'#DFF3F3'">
-          <template #title>
-            <p class="text-dark work-sans mb-0 line-height">
-              Comparison of
-              <span class="font-weight-bold">
-                {{ values.datasource.full_name }} </span
-              >across <span class="font-weight-bold">different sources </span>by
-              <span class="font-weight-bold">states</span>
-            </p>
-          </template>
-          <BaseChart :chartOptions="chartConfig" />
-        </base-sub-card>
-      </div>
-    <!-- </base-sub-card> -->
+        <p class="text-dark work-sans mb-0 line-height">
+          Comparison of
+          <span class="font-weight-bold">
+            {{ values.datasource.full_name }} </span
+          >across <span class="font-weight-bold">different sources </span>by
+          <span class="font-weight-bold">states</span>
+        </p>
+      </template>
+      <BaseChart :chartOptions="chartConfig" />
+    </base-sub-card>
   </div>
 </template>
 
 <script>
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { mapActions } from 'vuex';
+import { isDataYearly } from '@/util/helper';
+import { uniq } from 'lodash';
 import BaseChart from '../../../../../components/Barchart/BaseBarChart.vue';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 
@@ -46,8 +38,41 @@ export default {
   methods: {
     ...mapActions('MSDAT_STORE', [
       'SET_CONTROL_OPTIONS', // -> this.foo()
-      'add',
     ]),
+
+    async setUpDataSourceNYearDropdown() {
+      const multiSelectGroup = [];
+      const dataSources = this.dlGetDashboardDataSource();
+      for (let index = 0; index < dataSources.length; index += 1) {
+        const dataSourceObject = dataSources[index];
+        // eslint-disable-next-line no-await-in-loop
+        const data = await this.dlQuery({
+          indicator: this.values.indicator.id,
+          datasource: dataSourceObject.id,
+        });
+        if (data) {
+          const onlyYearlyData = data.filter((item) => {
+            if (isDataYearly(item.period)) {
+              return item;
+            }
+            return false;
+          });
+          const dates = onlyYearlyData.map((item) => item.period);
+          const sortedDates = uniq(dates).sort((a, b) => b - a);
+
+          const mapToDropdown = sortedDates.map((item) => ({
+            id: `${dataSourceObject.id}-${item}`,
+            item: `${dataSourceObject.datasource} ${item}`,
+          }));
+
+          multiSelectGroup.push({
+            datasource: dataSourceObject.datasource,
+            options: mapToDropdown,
+          });
+        }
+      }
+      return multiSelectGroup;
+    },
   },
   props: {
     values: {
@@ -57,7 +82,8 @@ export default {
       },
     },
   },
-  mounted() {
+  async mounted() {
+    const dropDown = await this.setUpDataSourceNYearDropdown();
     this.SET_CONTROL_OPTIONS({
       panelIndex: 3,
       controlIndex: 0,
@@ -67,43 +93,52 @@ export default {
     this.SET_CONTROL_OPTIONS({
       panelIndex: 3,
       controlIndex: 1,
-      values: this.defaultDataSourceDropdown,
+      values: dropDown,
     });
   },
 
   watch: {
     values: {
-      async handler(data) {
-        const queryObject = data.datasource.map((element) => ({
-          indicator: data.indicator.id,
-          datasource: element.id,
-          period: '2015',
-          location: {
-            level: 3,
-          },
-        }));
-        console.log(queryObject);
+      async handler(controlValues) {
+        let dataSourcesNYear = [];
+        if (!Array.isArray(controlValues.datasource)) {
+          dataSourcesNYear = [controlValues.datasource];
+        } else {
+          dataSourcesNYear = controlValues.datasource;
+        }
+        const queryObject = dataSourcesNYear.map((element) => {
+          const spiltDataSourcesNYear = element.id.split('-');
+          const datasourceObject = this.dlGetDataSource(
+            Number.parseInt(spiltDataSourcesNYear[0], 10),
+          );
+          return {
+            indicator: controlValues.indicator.id,
+            datasource: datasourceObject.id,
+            period: spiltDataSourcesNYear[1],
+            location: {
+              level: 3,
+            },
+          };
+        });
         const promises = queryObject.map((item) => this.dlQuery(item));
         const result = await Promise.all(promises);
-
         const orderResult = queryObject.map((item, index) => {
           const response = result[index];
           const dataValues = response.map((element) => [
             this.dlGetLocation(element.location).name,
             parseFloat(element.value),
           ]);
-          const dataSource = this.dlGetDataSource(item.datasource).datasource;
+          // const dataSource = this.dlGetDataSource(item.datasource).datasource;
 
           return {
-            name: dataSource,
+            name: dataSourcesNYear[index].item,
             data: dataValues,
           };
         });
-        console.log(orderResult);
+
         this.chartConfig = {
           plotOptions: {
             column: {
-
               dataLabels: {
                 enabled: true,
               },
@@ -112,11 +147,8 @@ export default {
           chart: {
             type: 'column',
           },
-          colors: [
-            '#17606B', '#E85D58', '#58B74E',
-          ],
+          colors: ['#17606B', '#E85D58', '#58B74E'],
         };
-        console.log(this.chartConfig);
         this.chartConfig.series = orderResult;
       },
       deep: true,

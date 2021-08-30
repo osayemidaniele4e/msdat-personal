@@ -44,7 +44,6 @@ export default {
   watch: {
     options(newValue) {
       if (this.multiSelectProps['preselect-first']) {
-        debugger;
         if (has(this.multiSelectProps, 'group-values')) {
           // eslint-disable-next-line prefer-destructuring
           this.selected = newValue[0][this.multiSelectProps['group-values']][0];
