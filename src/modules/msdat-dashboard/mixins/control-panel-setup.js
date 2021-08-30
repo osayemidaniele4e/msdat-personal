@@ -79,6 +79,7 @@ export default {
     this.setUpControlPanelDropDown();
     await this.setYearDropdown();
     this.cpIsLoading = true;
+    console.log(this.defaultYear);
     // console.log(defaultYearDropdown);
   },
 };

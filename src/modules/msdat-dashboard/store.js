@@ -8,8 +8,8 @@ export default {
   namespaced: true,
   state: {
     default: {
-      indicator: 5,
-      datasource: 4,
+      indicator: 7,
+      datasource: 6,
       location: 1,
       year: 'null',
     },
