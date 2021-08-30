@@ -172,6 +172,7 @@
                       <MultiSourceCompare
                         v-if="MultiSourceCompareValue[n - 1]"
                         :values="MultiSourceCompareValue[n - 1]"
+                        :currentIndex="n - 1"
                       />
                     </LazyLoading>
                   </div>

@@ -23,17 +23,24 @@
 </template>
 
 <script>
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import Maps from '@/components/maps/BaseMap.vue';
+import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
   name: 'MultiSource',
+  mixins: [ControlPanelSetup],
   components: { BaseMap: Maps, BarChart },
   props: {
     values: {
       type: Object,
       required: true,
+    },
+    currentIndex: {
+      type: Number,
+      // require,
     },
   },
   data() {
@@ -70,6 +77,8 @@ export default {
     };
   },
   methods: {
+    ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
+
     formatDataToSeriesMapFormat(data) {
       return data.map((item) => [
         this.dlGetLocation(item.location).name,
@@ -198,7 +207,38 @@ export default {
       immediate: true,
     },
   },
-  mounted() {},
+  async mounted() {
+    const setYearDropdown = await this.setYearDropdown();
+    // debugger;
+    this.SET_CONTROL_OPTIONS({
+      multipleSetup: true,
+      panelIndex: 4,
+      controlIndex: this.currentIndex,
+      controlIndex2: 0,
+      values: this.defaultIndicatorDropdown,
+    });
+    // this.SET_CONTROL_OPTIONS({
+    //   multipleSetup: true,
+    //   panelIndex: 4,
+    //   controlIndex: this.currentIndex,
+    //   controlIndex2: 3,
+    //   values: this.defaultLocationDropdown,
+    // });
+    this.SET_CONTROL_OPTIONS({
+      multipleSetup: true,
+      panelIndex: 4,
+      controlIndex: this.currentIndex,
+      controlIndex2: 2,
+      values: this.defaultDataSourceDropdown,
+    });
+    this.SET_CONTROL_OPTIONS({
+      multipleSetup: true,
+      panelIndex: 4,
+      controlIndex: this.currentIndex,
+      controlIndex2: 4,
+      values: setYearDropdown,
+    });
+  },
 };
 </script>
 

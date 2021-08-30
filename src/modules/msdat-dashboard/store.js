@@ -11,7 +11,7 @@ export default {
       indicator: 7,
       datasource: 6,
       location: 1,
-      year: 'null',
+      year: null,
     },
     controlConfig: [
       indicatorOverviewConfig,
@@ -47,7 +47,14 @@ export default {
      * control panel let give each panel and id
      */
     setControlOptions: (state, payload) => {
-      state.controlConfig[payload.panelIndex].setup[payload.controlIndex].options = payload.values;
+      if (payload.multipleSetup) {
+        state.controlConfig[payload.panelIndex].setup[payload.controlIndex][
+          payload.controlIndex2
+        ].options = payload.values;
+      } else {
+        state.controlConfig[payload.panelIndex].setup[
+          payload.controlIndex].options = payload.values;
+      }
     },
   },
   actions: {

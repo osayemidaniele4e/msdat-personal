@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { mapActions } from 'vuex';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
@@ -30,7 +29,7 @@ import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
   name: 'ZonalSectionChart',
-  mixins: [dataPipelineMixin, ControlPanelSetup],
+  mixins: [dataPipelineMixin],
   data() {
     return {
       // later someone can add the name property

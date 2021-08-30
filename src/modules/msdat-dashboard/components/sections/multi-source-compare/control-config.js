@@ -28,16 +28,16 @@ const indicatorSetConfig = [
     },
     options: [],
   },
-  {
-    class: ['col-md-4'],
-    type: 'dropdown',
-    label: 'location',
-    key: 'location',
-    dropdownProps: {
-      label: 'name',
-    },
-    options: [],
-  },
+  // {
+  //   class: ['col-md-4'],
+  //   type: 'dropdown',
+  //   label: 'location',
+  //   key: 'location',
+  //   dropdownProps: {
+  //     label: 'name',
+  //   },
+  //   options: [],
+  // },
   {
     class: ['col-md-4'],
     type: 'dropdown',
