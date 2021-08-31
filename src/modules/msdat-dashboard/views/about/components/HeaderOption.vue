@@ -153,11 +153,15 @@ export default {
 
 #header-option {
   height: 90vh;
+  top: 3rem;
   position: absolute;
-  right: -11px;
+  // right: -11px;
+  right: 0.5rem;
   overflow: auto;
   transition: display 0.5s;
   z-index: 5;
+  transition: all 0.5s ease-in-out;
+  width: 15rem;
 
   ul {
     border: 1px solid #dbdbdb;
