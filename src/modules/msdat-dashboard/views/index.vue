@@ -96,6 +96,7 @@ export default {
     await this.$DL.init({
       dashboardIndicators: MSDAT.indicators,
       defaultIndicators: MSDAT.defaultIndicators,
+      dashboardDataSources: MSDAT.dataSources,
     });
     this.loading = true;
     const firstvisit = localStorage.getItem('visited');
