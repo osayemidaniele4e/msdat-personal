@@ -3,7 +3,7 @@ import {
   filter, omit, isMatch, matches, isObject,
 } from 'lodash';
 // import SampleData from './sample_data';
-import { MSDAT } from '@/config/dashboardGroups';
+// import { MSDAT } from '@/config/dashboardGroups';
 import DB from './services/database.worker';
 
 const { mapState } = createNamespacedHelpers('DL');
@@ -35,6 +35,7 @@ export default {
       dlLocation: (state) => state.location,
       dlValue_type: (state) => state.valuetypes,
       dlDashboardIndicator: (state) => state.availableDashboardIndicator,
+      dlDashboardDataSource: (state) => state.dashboardDataSource,
       dlFactors: (state) => state.factors,
     }),
   },
@@ -64,7 +65,7 @@ export default {
       return result;
     },
     dlGetDashboardDataSource() {
-      return this.dlDatasource.filter((e) => MSDAT.dataSources.includes(e.id));
+      return this.dlDatasource.filter((e) => this.dlDashboardDataSource.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
@@ -98,5 +99,4 @@ export default {
       return this.dlValue_type.find((item) => item.id === id);
     },
   },
-  mounted() {},
 };

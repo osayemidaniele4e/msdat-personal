@@ -12,6 +12,7 @@ const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
 const AVAILABLE_DASHBOARD_INDICATOR = 'availableDashboardIndicator';
+const DASHBOARD_DATESOURCE = 'dashboardDataSource';
 
 export default class DataLayer {
   constructor(store) {
@@ -19,6 +20,7 @@ export default class DataLayer {
     this.store = store;
     this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
     this.defaultIndicators = [7, 5, 8];
+    this.dataSourceList = [];
     this.LOCAL_STORAGE_KEY = 'dataTimestamp';
     this.Changes = [];
   }
@@ -35,12 +37,13 @@ export default class DataLayer {
   setup(object) {
     this.indicatorList = object.dashboardIndicators;
     this.defaultIndicators = object.defaultIndicators;
+    this.dataSourceList = object.dashboardDataSources;
   }
 
   /**
-  * This gets the default indicator from the Indexed DB database
-  * reason for this is to initialize the dashboard with minimum data required
-  */
+   * This gets the default indicator from the Indexed DB database
+   * reason for this is to initialize the dashboard with minimum data required
+   */
   populateIndicatorsForCustomDashboard() {
     if (this.defaultIndicators.length <= 0) {
       this.setAllIndicators();
@@ -251,9 +254,10 @@ export default class DataLayer {
   async setAvailableDashboardIndicator() {
     const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
 
-    const dashboardIndicators = indicatorsInDB.filter(
-      (item) => this.indicatorList.includes(item),
-    );
+    const dashboardIndicators = indicatorsInDB.filter((item) => this.indicatorList.includes(item));
+
+    const dashboardDataSource = this.dataSourceList;
     this.setDataInStore(dashboardIndicators, AVAILABLE_DASHBOARD_INDICATOR);
+    this.setDataInStore(dashboardDataSource, DASHBOARD_DATESOURCE);
   }
 }
