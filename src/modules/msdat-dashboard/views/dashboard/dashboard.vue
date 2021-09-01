@@ -2,82 +2,86 @@
   <div>
     <Header v-on:tour="runIntro"></Header>
     <div class="sticky">
-    <b-overlay :show="!cpIsLoading" >
-      <BasePanel :position="position" v-if="cpIsLoading" v-on:showSection="showSection($event)" >
-        <template v-slot:default>
-          <ControlBase
-            v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
-            :key="index"
-            :title="control.label"
-          >
-            <template v-if="!Array.isArray(control.setup[0])">
-              <ControlPanel
-                @data:options="log($event, index)"
-                :setup="control.setup"
-                :defaultIndicator="
-                  control.defaults.indicator != null
-                    ? control.defaults.indicator
-                    : defaultIndicator
-                "
-                :defaultDataSource="
-                  control.defaults.dataSource != null
-                    ? control.defaults.dataSource
-                    : defaultDataSource
-                "
-                :defaultLocation="
-                  control.defaults.location != null
-                    ? control.defaults.location
-                    : defaultLocation
-                "
-                :defaultYear="
-                  control.defaults.year != null
-                    ? control.defaults.year
-                    : defaultYear
-                "
-              />
-            </template>
-            <template v-else>
-              <div class="row">
-                <div
-                  class="col-md-4"
-                  v-for="(item, index2) in control.setup"
-                  :key="index2"
-                >
-                  <ControlPanel
-                    @data:options="log($event, index, index2)"
-                    :setup="item"
-                    :defaultIndicator="
-                      control.defaults.indicator != null
-                        ? control.defaults.indicator
-                        : defaultIndicator
-                    "
-                    :defaultDataSource="
-                      control.defaults.dataSource != null
-                        ? control.defaults.dataSource
-                        : defaultDataSource
-                    "
-                    :defaultLocation="
-                      control.defaults.location != null
-                        ? control.defaults.location
-                        : defaultLocation
-                    "
-                    :defaultYear="
-                      control.defaults.year != null
-                        ? control.defaults.year
-                        : defaultYear
-                    "
-                  />
+      <b-overlay :show="!cpIsLoading">
+        <BasePanel
+          :position="position"
+          v-if="cpIsLoading"
+          v-on:showSection="showSection($event)"
+        >
+          <template v-slot:default>
+            <ControlBase
+              v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+              :key="index"
+              :title="control.label"
+            >
+              <template v-if="!Array.isArray(control.setup[0])">
+                <ControlPanel
+                  @data:options="log($event, index)"
+                  :setup="control.setup"
+                  :defaultIndicator="
+                    control.defaults.indicator != null
+                      ? control.defaults.indicator
+                      : defaultIndicator
+                  "
+                  :defaultDataSource="
+                    control.defaults.dataSource != null
+                      ? control.defaults.dataSource
+                      : defaultDataSource
+                  "
+                  :defaultLocation="
+                    control.defaults.location != null
+                      ? control.defaults.location
+                      : defaultLocation
+                  "
+                  :defaultYear="
+                    control.defaults.year != null
+                      ? control.defaults.year
+                      : defaultYear
+                  "
+                />
+              </template>
+              <template v-else>
+                <div class="row">
+                  <div
+                    class="col-md-4"
+                    v-for="(item, index2) in control.setup"
+                    :key="index2"
+                  >
+                    <ControlPanel
+                      @data:options="log($event, index, index2)"
+                      :setup="item"
+                      :defaultIndicator="
+                        control.defaults.indicator != null
+                          ? control.defaults.indicator
+                          : defaultIndicator
+                      "
+                      :defaultDataSource="
+                        control.defaults.dataSource != null
+                          ? control.defaults.dataSource
+                          : defaultDataSource
+                      "
+                      :defaultLocation="
+                        control.defaults.location != null
+                          ? control.defaults.location
+                          : defaultLocation
+                      "
+                      :defaultYear="
+                        control.defaults.year != null
+                          ? control.defaults.year
+                          : defaultYear
+                      "
+                    />
+                  </div>
                 </div>
-              </div>
-            </template>
-          </ControlBase>
-        </template>
-      </BasePanel>
-    </b-overlay>
+              </template>
+            </ControlBase>
+          </template>
+        </BasePanel>
+      </b-overlay>
     </div>
     <!-- control Panels ends here  -->
 
-    <div class="container-fluid" id="observer-root" >
+    <div class="container-fluid" id="observer-root">
       <div class="row observable" id="0" ref="0">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
@@ -125,8 +129,16 @@
       </div>
       <div class="row observable" id="2" ref="2">
         <div class="col-md-12">
-          <IndicatorComparison :values="indicatorComparisonData">
-          </IndicatorComparison>
+          <base-sub-card :backgroundColor="'#348481'">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Indicator Comparison - By Period
+              </h5>
+            </template>
+            <template>
+              <ICS :values="indicatorComparisonData" />
+            </template>
+          </base-sub-card>
         </div>
       </div>
       <div class="row observable" id="3" ref="3">
@@ -176,7 +188,7 @@ import controlPanelSetup from '../../mixins/control-panel-setup';
 import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
 import TheTable from '../../components/sections/TheTable.vue';
 import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
-import IndicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
+import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import tour from '../../mixins/tour';
 import Header from '../about/layout/theHeader.vue';
@@ -213,7 +225,7 @@ export default {
     TheStateBarChart,
     TheTable,
     IDCC,
-    IndicatorComparison,
+    ICS,
     MultiSourceCompare,
     Header,
     Footer,
@@ -260,12 +272,12 @@ export default {
       }
     },
   },
-  mounted() { },
+  mounted() {},
 };
 </script>
 
 <style lang="scss" scoped>
-.sticky{
+.sticky {
   position: sticky;
   position: -webkit-sticky;
   top: 0px;

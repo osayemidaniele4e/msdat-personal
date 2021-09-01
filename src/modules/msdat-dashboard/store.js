@@ -49,10 +49,18 @@ export default {
     setControlOptions: (state, payload) => {
       state.controlConfig[payload.panelIndex].setup[payload.controlIndex].options = payload.values;
     },
+
+    toggleVisibility: (state, payload) => {
+      // eslint-disable-next-line max-len
+      state.controlConfig[payload.panelIndex].setup[payload.controlIndex].visibility = payload.visibility;
+    },
   },
   actions: {
     SET_CONTROL_OPTIONS({ commit }, payload) {
       commit('setControlOptions', payload);
+    },
+    TOGGLE_VISIBILITY({ commit }, payload) {
+      commit('toggleVisibility', payload);
     },
     add() {
       return 'a test';
