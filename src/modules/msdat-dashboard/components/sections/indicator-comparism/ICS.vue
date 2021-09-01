@@ -10,7 +10,21 @@
         v-if="values"
       >
         <template #title>
-          <p>the Title</p>
+          <p
+            class="text-dark work-sans mb-0 line-height"
+            v-if="!values.indicator.length"
+          >
+            Comparison Of <b>{{ values.indicator.short_name }}</b> according to
+            the <b> {{ values.datasource.datasource }} </b> across
+            {{ values.compareBy.name }}
+          </p>
+          <p class="text-dark work-sans mb-0 line-height" v-else>
+            Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
+            <b>{{ values.indicator[1].short_name }}</b>
+            according to the
+            <b> {{ values.datasource.datasource }} </b> across
+            {{ values.compareBy.name }}s
+          </p>
         </template>
         <BarChart :chartOptions="chartOptions" />
       </base-sub-card>
