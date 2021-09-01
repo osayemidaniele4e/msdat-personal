@@ -11,10 +11,16 @@ export default [
     meta: {
       requiresAuth: true,
     },
-    children: [{
-      path: '',
-      component: () => import('./views/dashboard/dashboard.vue'),
-    }],
+    children: [
+      {
+        path: '',
+        component: () => import('./views/dashboard/dashboard.vue'),
+      },
+    ],
+  },
+  {
+    path: '/instance',
+    component: () => import('./views/dashboard/instance.vue'),
   },
   ...aboutRoute,
   {

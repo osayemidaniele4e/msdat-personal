@@ -8,6 +8,10 @@ import { router as HEALTH_THINK_ROUTE } from '../modules/health-think';
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: '/nhfs',
+    component: () => import('@/modules/nhfs/index.vue'),
+  },
   ...MSDAT_ROUTE,
   ...CUSTOM_DASHBOARD_ROUTE,
   ...STATE_PROFILE_ROUTE,
