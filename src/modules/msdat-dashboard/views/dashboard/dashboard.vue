@@ -123,18 +123,15 @@
       </div>
       <div class="row observable" id="2" ref="2">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card :backgroundColor="'#348481'">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
-                Indicator Comparison
+                Indicator Comparison - By Period
               </h5>
             </template>
             <template>
               <LazyLoading>
-                <IndicatorComparison
-                  v-if="indicatorComparisonData"
-                  :values="indicatorComparisonData"
-                />
+                <ICS :values="indicatorComparisonData" />
               </LazyLoading>
             </template>
           </base-sub-card>
@@ -198,11 +195,8 @@ import {
 import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
-// import TheStateBarChart from '../../components/sections/TheStateBarChart.vue';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
-// import TheTable from '../../components/sections/TheTable.vue';
-// import IDCC from '../../components/sections/TheIndicatorDatasoureComparisonChart.vue';
-import IndicatorComparison from '../../components/sections/indicator-comparism/TheIndicatorComparisonSection.vue';
+import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import tour from '../onboarding/tour';
 import Header from '../about/layout/theHeader.vue';
@@ -236,7 +230,7 @@ export default {
     ControlPanel,
     DataSetComparism,
     BaseIndicatorOverview,
-    IndicatorComparison,
+    ICS,
     MultiSourceCompare,
     Header,
     Footer,
