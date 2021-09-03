@@ -49,7 +49,7 @@ export default {
      * @returns {dataObjectType}
      */
     async dlQuery(queryObject) {
-      console.log('queryObject', queryObject);
+      // console.log('queryObject', queryObject);
       if (isObject(queryObject.location)) {
         const { location } = queryObject;
         const newQueryObject = omit(queryObject, ['location']);
@@ -96,12 +96,12 @@ export default {
       return this.dlDatasource.find((item) => item.id === id);
     },
     dlGetValueTypes(id) {
-      console.log(this.dlValue_type);
+      // console.log(this.dlValue_type);
       return this.dlValue_type.find((item) => item.id === id);
     },
   },
-  async mounted() {
-    const data = await this.dlQuery({ datasource: 6, indicator: 7, period: '2020' });
-    console.log(data);
+  mounted() {
+    // const data = await this.dlQuery({ datasource: 6, indicator: 7, period: '2020' });
+    // console.log(data);
   },
 };

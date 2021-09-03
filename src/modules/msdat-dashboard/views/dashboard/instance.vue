@@ -253,6 +253,18 @@ export default {
     LazyLoading,
   },
   props: {
+    initialIndicator: {
+      type: Number,
+      required: true,
+    },
+    initialDataSource: {
+      type: Number,
+      required: true,
+    },
+    initialLocation: {
+      type: Number,
+      required: true,
+    },
     indicators: {
       type: Array,
       required: false,
@@ -316,18 +328,24 @@ export default {
   },
   async mounted() {
     this.loading = false;
+    // debugger;
     await this.$DL.init({
       dashboardIndicators: this.indicators,
       defaultIndicators: this.defaultIndicators,
       dashboardDataSources: this.dataSources,
     });
+
     this.loading = true;
 
+    this.$store.state.MSDAT_STORE.default.indicator = this.initialIndicator;
+    this.$store.state.MSDAT_STORE.default.datasource = this.initialDataSource;
+    this.$store.state.MSDAT_STORE.default.location = this.initialLocation;
+
+    // The initializing the control panel
     this.setDefaults();
     this.setUpControlPanelDropDown();
     await this.setYearDropdown();
     this.cpIsLoading = true;
-
     this.startScroll();
   },
 };
