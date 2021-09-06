@@ -34,6 +34,14 @@ export default {
       this.$router.push('/*');
     }
   },
+  watch: {
+    $route(to, from) {
+      // react to route changes...
+      if (to !== from) {
+        window.location.reload();
+      }
+    },
+  },
 };
 </script>
 
