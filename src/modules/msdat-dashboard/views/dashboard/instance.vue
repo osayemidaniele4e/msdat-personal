@@ -268,20 +268,20 @@ export default {
     indicators: {
       type: Array,
       required: false,
-      default: () => [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18, 19, 20, 21,
-        22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
-      ],
+      // default: () => [
+      //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18, 19, 20, 21,
+      //   22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+      // ],
     },
     dataSources: {
       type: Array,
       required: false,
-      default: () => [1, 2, 3, 5, 6, 7, 8, 9],
+      // default: () => [1, 2, 3, 5, 6, 7, 8, 9],
     },
     defaultIndicators: {
       type: Array,
       required: false,
-      default: () => [7, 5, 8],
+      // default: () => [7, 5, 8],
     },
   },
   methods: {

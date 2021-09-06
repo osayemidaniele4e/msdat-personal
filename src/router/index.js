@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { router as MSDAT_ROUTE } from '../modules/msdat-dashboard';
+// import { router as MSDAT_ROUTE } from '../modules/msdat-dashboard';
 import { router as CUSTOM_DASHBOARD_ROUTE } from '../modules/custom-dashboard';
 import { router as STATE_PROFILE_ROUTE } from '../modules/state-profile';
 import { router as HEALTH_THINK_ROUTE } from '../modules/health-think';
@@ -9,11 +9,7 @@ import DYNAMICS_DASHBOARD_ROUTE from '../modules/dynamic_dashboard/router';
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/nhfs',
-    component: () => import('@/modules/nhfs/index.vue'),
-  },
-  ...MSDAT_ROUTE,
+  // ...MSDAT_ROUTE,
   ...CUSTOM_DASHBOARD_ROUTE,
   ...STATE_PROFILE_ROUTE,
   ...HEALTH_THINK_ROUTE,
