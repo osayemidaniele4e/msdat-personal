@@ -22,6 +22,12 @@ export default {
     ],
   },
   mutations: {
+    SET_INITIAL: (state, payload) => {
+      state.default.indicator = payload.indicator;
+      state.default.datasource = payload.datasource;
+      state.default.location = payload.location;
+    },
+
     ADD_DATA: (state, data) => {
       state.localData.push(data);
     },
@@ -52,8 +58,8 @@ export default {
           payload.controlIndex2
         ].options = payload.values;
       } else {
-        state.controlConfig[payload.panelIndex].setup[
-          payload.controlIndex].options = payload.values;
+        state.controlConfig[
+          payload.panelIndex].setup[payload.controlIndex].options = payload.values;
       }
     },
 

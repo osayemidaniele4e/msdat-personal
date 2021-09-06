@@ -9,7 +9,6 @@
       :noBackdrop="false"
       :showBackground="false"
       class="over"
-      v-on:hidden="tutorial"
     >
       <div class="center">
         <img :src="img" alt="first_img" width="250px" />

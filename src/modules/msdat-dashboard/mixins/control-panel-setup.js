@@ -25,6 +25,7 @@ export default {
       return sortBy(uniqueYears);
     },
     setUpControlPanelDropDown() {
+      // debugger;
       this.defaultIndicatorDropdown = groupIndicator(
         this.dlGetAvailableIndicators(),
         'program_area',
@@ -77,9 +78,9 @@ export default {
   async mounted() {
     this.setDefaults();
     this.setUpControlPanelDropDown();
-    await this.setYearDropdown();
-    this.cpIsLoading = true;
-    console.log(this.defaultYear);
+    // await this.setYearDropdown();
+    // this.cpIsLoading = true;
+    // console.log(this.defaultYear);
     // console.log(defaultYearDropdown);
   },
 };

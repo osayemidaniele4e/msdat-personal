@@ -73,38 +73,39 @@ export default class DataLayer {
     console.log('DB count is', count);
 
     console.time('fetching');
+
+    console.log('fetching other endpoint');
+    /**
+      * The apiServices returns all the and array of response for the
+      * axios call of all other apiEndpoints.getOtherEndpoint
+      * it uses and {Promise.all()}
+      *
+      * @see {@link apiServices.getOtherEndpoint()}
+      */
+    const data = await apiServices.getOtherEndpoint();
+
+    /**
+      * we would also need to created a component then display the activities  of the service layer
+      * per time
+      */
+    console.log('storing other endpoint to index db');
+
+    await this.DB.storeDataInDBTable(data[6].data, DSI);
+    await this.DB.storeDataInDBTable(data[0].data, LOCATION);
+    await this.DB.storeDataInDBTable(data[1].data, INDICATORS);
+    await this.DB.storeDataInDBTable(data[3].data, VALUE_TYPES);
+    await this.DB.storeDataInDBTable(data[5].data, FACTORS);
+    await this.DB.storeDataInDBTable(data[7].data, DATA_SOURCE);
+
+    console.log('done');
+
+    console.log('init other Tables');
+
+    await this.initOtherTablesFromDB();
+
+    console.log(' done');
     if (count <= 0) {
       this.storeTimestampInLocal();
-      console.log('fetching other endpoint');
-      /**
-       * The apiServices returns all the and array of response for the
-       * axios call of all other apiEndpoints.getOtherEndpoint
-       * it uses and {Promise.all()}
-       *
-       * @see {@link apiServices.getOtherEndpoint()}
-       */
-      const data = await apiServices.getOtherEndpoint();
-
-      /**
-       * we would also need to created a component then display the activities  of the service layer
-       * per time
-       */
-      console.log('storing other endpoint to index db');
-
-      await this.DB.storeDataInDBTable(data[6].data, DSI);
-      await this.DB.storeDataInDBTable(data[0].data, LOCATION);
-      await this.DB.storeDataInDBTable(data[1].data, INDICATORS);
-      await this.DB.storeDataInDBTable(data[3].data, VALUE_TYPES);
-      await this.DB.storeDataInDBTable(data[5].data, FACTORS);
-      await this.DB.storeDataInDBTable(data[7].data, DATA_SOURCE);
-
-      console.log('done');
-
-      console.log('init other Tables');
-
-      await this.initOtherTablesFromDB();
-
-      console.log(' done');
 
       const dataValue = await getIndicatorsFromApi(this.defaultIndicators);
       //
