@@ -328,7 +328,7 @@ export default {
   },
   async mounted() {
     this.loading = false;
-    // debugger;
+    // initializing data for dashboard
     await this.$DL.init({
       dashboardIndicators: this.indicators,
       defaultIndicators: this.defaultIndicators,
@@ -337,16 +337,20 @@ export default {
 
     this.loading = true;
 
-    this.$store.state.MSDAT_STORE.default.indicator = this.initialIndicator;
-    this.$store.state.MSDAT_STORE.default.datasource = this.initialDataSource;
-    this.$store.state.MSDAT_STORE.default.location = this.initialLocation;
+    this.$store.commit('MSDAT_STORE/SET_INITIAL', {
+      indicator: this.initialIndicator,
+      datasource: this.initialDataSource,
+      location: this.initialLocation,
+    });
 
     // The initializing the control panel
     this.setDefaults();
     this.setUpControlPanelDropDown();
     await this.setYearDropdown();
     this.cpIsLoading = true;
-    this.startScroll();
+    this.$nextTick(() => {
+      this.startScroll();
+    });
   },
 };
 </script>
