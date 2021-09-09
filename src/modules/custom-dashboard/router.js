@@ -4,11 +4,6 @@ export default [
     name: 'custom-dashboard',
     component: () => import('./views/landing.vue'),
   },
-  // {
-  //   path: '/custom/details',
-  //   name: 'dashboard-details',
-  //   component: () => import('./views/dashboardDetails.vue'),
-  // },
   {
     path: '/my-dashboard',
     name: 'my-dashboard',

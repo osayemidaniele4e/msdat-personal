@@ -9,56 +9,22 @@
       <b>View datasheet</b>- see all available data in database
     </p>
     <b-card>
-      <b-row>
-        <b-col sm="12" lg="3">
-          <SideSelection />
-        </b-col>
-        <b-col sm="12" lg="9">
-          <TheCustomTable :values="TablePropValue" />
-          <b-row align-h="end" class="text-right">
-            <b-col cols="auto">indicators: <b>20 selected</b></b-col>
-            <b-col cols="auto">Data Sources: <b>9 Selected</b></b-col>
-            <b-col cols="auto">Period: <b>10 Years</b></b-col>
-            <b-col cols="auto"
-              >Levels: <b>National, Zonal, Subnational</b></b-col
-            >
-          </b-row>
-          <b-row align-h="end" class="mt-5 text-right">
-            <b-col class="align-baseline" cols="auto"
-              ><p class="baseline">Save for Later</p>
-            </b-col>
-            <b-col cols="auto"><b-button>approve Data</b-button></b-col>
-          </b-row>
-        </b-col>
-      </b-row>
+      <div class="row">
+        <div class="col-3">
+          <b-form-group label="Program Area" label-for="programArea">
+          </b-form-group>
+        </div>
+      </div>
     </b-card>
   </b-container>
 </template>
 
 <script>
-import fetchData from './fetchData';
-import TheCustomTable from './TheCustomTable.vue';
-import SideSelection from './sideSelection.vue';
-
 export default {
   name: 'data-preferences',
-  mixins: [fetchData],
-  components: { TheCustomTable, SideSelection },
-  computed: {
-    // selectAll:{
-    //   get:function(){
-    //     return this.programAreaNIndicators ? th
-    //   }
-    // }
-  },
+  components: {},
   mounted() {
     this.$store.commit('updateStep', 2);
-    this.TablePropValue = {
-      indicatorsSelected: this.indicatorsSelected,
-      dataSourceSelected: this.dataSourceSelected,
-      periodSelected: this.periodSelected,
-      levelSelected: this.levelSelected,
-    };
   },
   data() {
     return {
@@ -67,26 +33,6 @@ export default {
         period: [],
         sources: [],
       },
-      TablePropValue: {},
-      indicatorsSelected: [],
-      dataSourceSelected: [],
-      periodOptions: [
-        '2020',
-        '2019',
-        '2018',
-        '2017',
-        '2016',
-        '2015',
-        '2014',
-        '2013',
-        '2012',
-        '2011',
-        '2010',
-        '2009',
-      ],
-      periodSelected: [],
-      levelSelected: [],
-      levelOptions: ['National', 'Zonal', 'LGA', 'State'],
       allSelected: true,
       indeterminate: false,
       programAreas: [
@@ -132,6 +78,7 @@ export default {
         },
       ],
       value: [],
+
       fields: [
         // A column that needs custom formatting
         { key: 'indicator', label: 'Indicators' },
@@ -188,25 +135,11 @@ export default {
       ],
     };
   },
-  watch: {
-    indicatorsSelected(val) {
-      this.TablePropValue.indicatorsSelected = val;
-    },
-    dataSourceSelected(val) {
-      this.TablePropValue.dataSourceSelected = val;
-    },
-    periodSelected(val) {
-      this.TablePropValue.periodSelected = val;
-    },
-    levelSelected(val) {
-      this.TablePropValue.levelSelected = val;
-    },
-  },
   methods: {
     isAllSelected(available, selected) {
       let value = true;
       available.every((element) => {
-        if (!this.indicatorsSelected[selected].includes(element)) {
+        if (!this.selected[selected].includes(element)) {
           value = false;
           return false;
         }
@@ -225,18 +158,13 @@ export default {
         this.selected[arr].push(item);
       }
     },
-    toggleAllProgramAreaIndicator(e, indicators) {
-      console.log(e, indicators);
-      this.indicatorsSelected = indicators ? this.flavours.slice() : [];
-    },
     toggleAll(available, selected) {
-      console.log(available, selected);
       if (this.isAllSelected(available, selected)) {
-        this.indicatorsSelected[selected] = [];
+        this.selected[selected] = [];
       } else {
         available.forEach((element) => {
-          if (!this.indicatorsSelected[selected].includes(element)) {
-            this.indicatorsSelected[selected].push(element);
+          if (!this.selected[selected].includes(element)) {
+            this.selected[selected].push(element);
           }
         });
       }
@@ -276,7 +204,6 @@ div.scroll {
   overflow-x: hidden;
   overflow-y: auto;
   margin-bottom: 27.750006938px;
-  max-height: 300px;
 }
 .selection-header {
   color: #202020;

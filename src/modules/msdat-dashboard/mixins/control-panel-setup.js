@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
 import { uniq, sortBy } from 'lodash';
-import { isDataYearly } from '../../../util/helper';
-import { groupIndicator } from './util';
+import { groupIndicator, isDataYearly } from '@/util/helper';
 
 export default {
   data() {
