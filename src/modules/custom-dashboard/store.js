@@ -30,4 +30,18 @@ export default {
     },
   },
   actions: {},
+  getters: {
+    indicatorsSelectedLength(state) {
+      return state.indicatorsSelected.length;
+    },
+    dataSourceSelectedLength(state) {
+      return state.dataSourceSelected.length;
+    },
+    periodSelectedLength(state) {
+      return state.periodSelected.length;
+    },
+    levelSelectedLength(state) {
+      return state.levelSelected.length;
+    },
+  },
 };

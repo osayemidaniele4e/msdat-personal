@@ -14,16 +14,44 @@
           <SideSelection />
         </b-col>
         <b-col sm="12" lg="9">
-          <TheCustomTable :values="TablePropValue" />
-          <b-row align-h="end" class="text-right">
-            <b-col cols="auto">indicators: <b>20 selected</b></b-col>
-            <b-col cols="auto">Data Sources: <b>9 Selected</b></b-col>
-            <b-col cols="auto">Period: <b>10 Years</b></b-col>
+          <TheCustomTable />
+          <b-row align-h="end" class="text-right work-sans">
             <b-col cols="auto"
-              >Levels: <b>National, Zonal, Subnational</b></b-col
+              >Indicators:
+              <b
+                >{{
+                  $store.getters[
+                    'CUSTOM_DASHBOARD_STORE/indicatorsSelectedLength'
+                  ]
+                }}
+                selected</b
+              ></b-col
+            >
+            <b-col cols="auto"
+              >Data Sources:
+              <b
+                >{{
+                  $store.getters[
+                    'CUSTOM_DASHBOARD_STORE/dataSourceSelectedLength'
+                  ]
+                }}
+                Selected</b
+              ></b-col
+            >
+            <b-col cols="auto"
+              >Period:
+              <b
+                >{{
+                  $store.getters['CUSTOM_DASHBOARD_STORE/periodSelectedLength']
+                }}
+                Years</b
+              ></b-col
+            >
+            <b-col cols="auto"
+              >Levels: <b>National, Zonal, SubNational</b></b-col
             >
           </b-row>
-          <b-row align-h="end" class="mt-5 text-right">
+          <b-row align-h="end" class="mt-5 text-right work-sans">
             <b-col class="align-baseline" cols="auto"
               ><p class="baseline">Save for Later</p>
             </b-col>
@@ -53,12 +81,6 @@ export default {
   },
   mounted() {
     this.$store.commit('updateStep', 2);
-    this.TablePropValue = {
-      indicatorsSelected: this.indicatorsSelected,
-      dataSourceSelected: this.dataSourceSelected,
-      periodSelected: this.periodSelected,
-      levelSelected: this.levelSelected,
-    };
   },
   data() {
     return {
@@ -67,7 +89,6 @@ export default {
         period: [],
         sources: [],
       },
-      TablePropValue: {},
       indicatorsSelected: [],
       dataSourceSelected: [],
       periodOptions: [
@@ -187,20 +208,6 @@ export default {
         },
       ],
     };
-  },
-  watch: {
-    indicatorsSelected(val) {
-      this.TablePropValue.indicatorsSelected = val;
-    },
-    dataSourceSelected(val) {
-      this.TablePropValue.dataSourceSelected = val;
-    },
-    periodSelected(val) {
-      this.TablePropValue.periodSelected = val;
-    },
-    levelSelected(val) {
-      this.TablePropValue.levelSelected = val;
-    },
   },
   methods: {
     isAllSelected(available, selected) {
