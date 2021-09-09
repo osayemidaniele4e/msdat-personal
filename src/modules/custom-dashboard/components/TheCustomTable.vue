@@ -1,7 +1,7 @@
 <template>
   <!-- <div> -->
   <div class="table-responsive work-sans">
-    <table class="table">
+    <table class="table table-bordered">
       <thead>
         <tr>
           <th scope="col" style="width: 35%">INDICATOR</th>

@@ -19,7 +19,14 @@ export default [
         name: 'my-dashboard-details',
         component: () => import('./views/dashboardDetails.vue'),
       },
+      {
+        path: 'preview',
+        component: () => import('./views/TablePreview.vue'),
+      },
+      {
+        path: 'config',
+        component: () => import('./views/configShow.vue'),
+      },
     ],
   },
-
 ];

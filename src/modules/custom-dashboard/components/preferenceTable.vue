@@ -55,7 +55,11 @@
             <b-col class="align-baseline" cols="auto"
               ><p class="baseline">Save for Later</p>
             </b-col>
-            <b-col cols="auto"><b-button>approve Data</b-button></b-col>
+            <b-col cols="auto">
+              <router-link class="btn" to="/my-dashboard/preview"
+                >approve Data</router-link
+              >
+            </b-col>
           </b-row>
         </b-col>
       </b-row>
