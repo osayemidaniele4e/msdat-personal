@@ -8,7 +8,9 @@
     </b-row>
     <b-row align-h="between">
       <b-col md="6">
-        <p class="mb-5">This section provides demographic information about {{state}} State.</p>
+        <p class="mb-5">This section provides 
+          demographic information about {{state}}
+           <span v-if="selectedState !== 'Fct'">State</span>.</p>
         <div v-for=" d in stateDemographics" :key= d.name>
           <hr v-show="stateDemographics.indexOf(d) > 0">
         <b-row >
@@ -17,14 +19,16 @@
           </b-col>
           <b-col class="text-right">
                   <p class="value"> <b>{{d.value}}</b></p>
-                  <p class="source">Source: {{d.source}}</p>
+                  <p class="source">Source: {{d.source}} {{d.year}}</p>
           </b-col>
           <b-col cols="auto" class="text-right">
-  <b-icon :icon= 'getChangeIcon(d.change)' :variant="d.change >= 0 ? 'success':'danger' "></b-icon>
+  <b-icon :icon= 'getChangeIcon()' :variant="pointer"></b-icon>
           </b-col>
           <b-col cols="auto">
             <p style="font-size: 11.50002625px">
-           <b>{{d.change}}</b> since 2015 ({{d.previousValue}})
+           <b >{{d.change}}%</b> 
+           <b>{{pointer=='success'?'increase':'decrease'}}</b> 
+           since {{d.previousYear}} ({{d.previousValue}})
             </p>
           </b-col>
         </b-row>
@@ -35,7 +39,7 @@
           <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <BaseMap :level="3" :lgaState="state" :mapObject="this.mapOptions"/>
+        <BaseMap :level="3" :lgaState="selectedState" :mapObject="this.mapOptions"/>
         <b-row>
           <b-col cols="auto">
             <p>Land Area</p>
@@ -53,6 +57,8 @@
 
 <script>
 import BaseMap from '@/components/maps/BaseMap.vue';
+import { mapState } from 'vuex';
+import dataMixins from '../../DataLayer/mixin';
 
 export default {
   name: 'demographics',
@@ -64,16 +70,100 @@ export default {
     stateDemographics: Array,
     lgas: Array,
   },
+  mixins: [dataMixins],
   methods: {
-    getChangeIcon(change) {
-      if (change >= 0) {
+    getChangeIcon() {
+      if (this.pointer === 'success') {
         return 'caret-up-fill';
       }
       return 'caret-down-fill';
     },
+    /**
+     * This function get the values from the
+     * database and populates the data object
+     * accordingly
+     */
+    extractDemographicValues() {
+      // Get the selected state ID
+      const allLocations = this.$store.state.DL.location;
+      let selectedState = '';
+      const val = this.state;
+      allLocations.map(el => {
+        if (el.name == val) {
+          selectedState = el;
+        }
+      });
+      // Get the selected state ID
+
+      // Loop through the demographics object to
+      // get the required data
+      for (const i in this.stateDemographics) {
+        const data = this.dlQuery({
+          datasource: this.stateDemographics[i].sourceId,
+          indicator: this.stateDemographics[i].indicatorId,
+          location: selectedState.id,
+        });
+        data.then(el => {
+          // Only performs further computations where data
+          // is available
+          if (el.length !== 0) {
+            // Sort returned results by latest year
+            el.sort((a, b) => b.period - a.period);
+            this.stateDemographics[i].value = el[0].value;
+            this.stateDemographics[i].year = el[0].period;
+            this.stateDemographics[i].previousValue = el[1].value || null;
+            this.stateDemographics[i].previousYear = el[1].period || null;
+            this.stateDemographics[i].change = this.calcDiff(this.stateDemographics[i]);
+          } else {
+            this.stateDemographics[i].value = 'N/a';
+            this.stateDemographics[i].year = 'N/a';
+            this.stateDemographics[i].previousValue = ' ';
+            this.stateDemographics[i].change = ' ';
+          }
+        });
+      }
+    },
+    /**
+     * This function calculates the percentage
+     *  difference between the latest available
+     * year and the closest year
+     */
+    calcDiff(val) {
+      let ans;
+      if (val.previousValue > val.value) {
+        this.pointer = 'danger';
+        ans = ((Number(val.previousValue) - Number(val.value)) / 2) * 100;
+      } else {
+        this.pointer = 'success';
+        ans = ((Number(val.value) - Number(val.previousValue)) / 2) * 100;
+      }
+      return parseInt(ans);
+    },
+    // setDemographicData(data){
+
+    // }
+  },
+  computed: {
+    ...mapState([]),
+    selectedState() {
+      if (this.state == 'FCT') {
+        return 'Fct';
+      }
+      return this.state;
+    },
+  },
+  watch: {
+    // Watching for changes to state
+    // So data can be recomputed as
+    // required without page load
+    state(newState) {
+      console.log({ newState });
+      this.extractDemographicValues();
+    },
   },
   data() {
     return {
+      pointer: 'success', // SUCCESS or DANGER
       mapOptions: {
         title: {
           text: '',
@@ -103,7 +193,7 @@ export default {
           },
         },
         series: [{
-          name: this.state,
+          name: this.selectedState,
           data: [
             // ['Edu', 23]
           ],
@@ -136,9 +226,9 @@ export default {
       },
     };
   },
-  // mounted(){
-  //   console.log(this.lgas)
-  // }
+  mounted() {
+    this.extractDemographicValues();
+  },
 };
 </script>
 <style lang="scss" scoped>

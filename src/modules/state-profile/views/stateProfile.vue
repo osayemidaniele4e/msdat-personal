@@ -47,7 +47,7 @@
 
 <script>
 import { mapState } from 'vuex';
-// import { StateProfileDashboard } from '@/config/dashboardGroups';
+import { StateProfileDashboard } from '@/config/dashboardGroups';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
 import share from '../components/share.vue';
@@ -85,7 +85,7 @@ export default {
     },
     lgaNames() {
       const chosenState = this.allLocations.filter((el) => el.name.includes(this.state) && el.level == 3)[0];
-      const lgaObjects = this.allLocations.filter((val) => val.parent == chosenState.id && val.level == 4);
+      const lgaObjects = this.allLocations.filter((val) => val.parent == chosenState?.id && val.level == 4);
       return lgaObjects;
     },
   },
@@ -93,47 +93,101 @@ export default {
     navigateToState(state) {
       // state.preventDefault()
       this.$router.push({ name: 'state-profile', params: { state } });
-      this.$router.go();
+      // this.$router.go();
     },
+    async getHealthFacilityData() {
+      const facilityDataIndicators = [34, 58, 61, 39, 41, 49, 50];
+      const allData = [];
+      let data;
+      // facilityDataIndicators.map(async el => {
+      //    data = await this.dlQuery({
+      //     datasource: 4,
+      //     //indicator: el,
+      //    // period: 2016,
+      //   });
+      //   console.log(data)
+      // })
+      data = await this.dlQuery({
+        datasource: 19,
+        // indicator: 34,
+        // period: 2018
+      });
+
+      console.log({ data });
+    },
+  },
+  watch: {
+
   },
   data() {
     return {
 
       demographics: [
         {
-          name: 'Population',
-          source: 'MNCH 2018',
-          value: '6,113,503',
-          previousValue: '6,004,642',
+          name: 'Population estimate',
+          indicatorId: 63,
+          source: 'DSB',
+          sourceId: 19, // available
+          year: 2018,
+          value: 6113503,
+          previousValue: 6004642,
+          previousYear: 2015,
           change: '+2',
         },
         {
-          name: 'Crude Birth Rate',
-          source: 'MNCH 2018',
+          name: 'Population growth rate',
+          indicatorId: 64,
+          source: 'NPE',
+          sourceId: 2, // NOT KNOWN YET
+          year: 2018,
           value: '60%',
           previousValue: '62%',
+          previousYear: 2015,
           change: '-2',
         },
         {
-          name: 'Crude Death Rate',
-          source: 'MNCH 2018',
+          name: 'Total Fertility Rate',
+          indicatorId: 1, // availablex
+          source: 'NDHS',
+          sourceId: 2,
+          year: 2018,
+          value: '5.80',
+          previousValue: '5.6',
+          previousYear: 2015,
+          change: '-2',
+        },
+        {
+          name: 'Dependency ratio',
+          indicatorId: 67,
+          source: 'NLSS',
+          sourceId: 20,
+          year: 2018,
           value: '60%',
+          previousValue: '58%',
+          previousYear: 2015,
+          change: '+2',
+        },
+        {
+          name: 'Birth registration (Under Age 1)',
+          indicatorId: 68, // AVAILABLE
+          source: 'DSB',
+          sourceId: 19,
+          year: 2018,
+          value: '60%',
+          previousYear: 2015,
           previousValue: '55%',
           change: '+5',
         },
         {
-          name: 'Total Fertility Rate (TFR) (total births per woman)',
-          source: 'MNCH 2018',
-          value: '5.80',
-          previousValue: '5.6',
-          change: '-2',
-        },
-        {
-          name: 'Under-5 Population (UFP)',
-          source: 'MNCH 2018',
+          name: 'Population Who Have Never Attended School',
+          indicatorId: 70,
+          source: 'NLSS',
+          sourceId: 20,
+          year: 2018,
+          previousYear: 2015,
           value: '60%',
-          previousValue: '58%',
-          change: '+2',
+          previousValue: '55%',
+          change: '+5',
         },
       ],
       programAreas: [
@@ -180,6 +234,7 @@ export default {
               indicator: 7,
               dataSource: 2,
               year: 2018,
+              value: 0,
             },
             {
               indicator: 8,
@@ -472,8 +527,13 @@ export default {
       ],
     };
   },
-  mounted() {
-
+  async mounted() {
+    // Check one more time if updating the series object works,
+    // if not send the data from here directly
+    await this.$DL.init({
+      dashboardIndicators: StateProfileDashboard.indicators,
+      defaultIndicators: StateProfileDashboard.defaultIndicators,
+    });
   },
 };
 </script>
