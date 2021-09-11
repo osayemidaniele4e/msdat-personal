@@ -8,7 +8,7 @@
     </b-row>
     <b-row align-h="between">
       <b-col md="6">
-        <p class="mb-5">This section provides 
+        <p class="mb-5">This section provides
           demographic information about {{state}}
            <span v-if="selectedState !== 'Fct'">State</span>.</p>
         <div v-for=" d in stateDemographics" :key= d.name>
@@ -26,8 +26,8 @@
           </b-col>
           <b-col cols="auto">
             <p style="font-size: 11.50002625px">
-           <b >{{d.change}}%</b> 
-           <b>{{pointer=='success'?'increase':'decrease'}}</b> 
+           <b class="pr-1">{{d.change }}%</b>
+           <b>{{ pointer=='success'?'increase':'decrease'}}</b>
            since {{d.previousYear}} ({{d.previousValue}})
             </p>
           </b-col>
@@ -88,7 +88,7 @@ export default {
       const allLocations = this.$store.state.DL.location;
       let selectedState = '';
       const val = this.state;
-      allLocations.map(el => {
+      allLocations.map((el) => {
         if (el.name == val) {
           selectedState = el;
         }
@@ -103,7 +103,7 @@ export default {
           indicator: this.stateDemographics[i].indicatorId,
           location: selectedState.id,
         });
-        data.then(el => {
+        data.then((el) => {
           // Only performs further computations where data
           // is available
           if (el.length !== 0) {
@@ -130,12 +130,11 @@ export default {
      */
     calcDiff(val) {
       let ans;
+      ans = ((Number(val.value) - Number(val.previousValue)) / Number(val.previousValue)) * 100;
       if (val.previousValue > val.value) {
         this.pointer = 'danger';
-        ans = ((Number(val.previousValue) - Number(val.value)) / 2) * 100;
       } else {
         this.pointer = 'success';
-        ans = ((Number(val.value) - Number(val.previousValue)) / 2) * 100;
       }
       return parseInt(ans);
     },
