@@ -7,7 +7,8 @@ const getUpdatedData = async (theDate) => axiosInstance.get(`${apiEndpoints.getU
 const getSingleIndicator = async (indicator) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicator}`);
 const getRequiredEndpoint = async (apiEndpoint) => axiosInstance.get(`/${apiEndpoint}/`);
 const getLatestDate = async () => axiosInstance.get('https://msdatapi.fmohconnect.gov.ng/api/data/latest/');
-
+const getIndicatorsWithAvailable = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}/years_available/`);
+const getIndicatorsWithPeriod = async (indicatorID, period) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicatorID}&period=${period}`);
 const otherEndpoints = [
   apiEndpoints.getLocation,
   apiEndpoints.getIndicator,
@@ -31,4 +32,6 @@ export default {
   getUpdatedData,
   getOtherEndpoint,
   getLatestDate,
+  getIndicatorsWithAvailable,
+  getIndicatorsWithPeriod,
 };

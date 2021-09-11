@@ -68,12 +68,8 @@ export default class DataLayer {
   async init(object) {
     this.DB = await new Database();
     this.setup(object);
-
-    const count = await this.DB.data.count();
-    console.log('DB count is', count);
-
     console.time('fetching');
-
+    /** Featching other enpoints */
     console.log('fetching other endpoint');
     /**
       * The apiServices returns all the and array of response for the
@@ -98,18 +94,21 @@ export default class DataLayer {
     await this.DB.storeDataInDBTable(data[7].data, DATA_SOURCE);
 
     console.log('done');
-
     console.log('init other Tables');
-
     await this.initOtherTablesFromDB();
-
     console.log(' done');
+    /** End Featching other enpoints */
+
+    const count = await this.DB.data.count();
+    console.log('DB count is', count);
+
     if (count <= 0) {
       this.storeTimestampInLocal();
 
       const dataValue = await getIndicatorsFromApi(this.defaultIndicators);
       //
       if (dataValue.length > 0) {
+        debugger;
         for (let index = 0; index < dataValue.length; index += 1) {
           const element = dataValue[index].data;
           console.log('store data in db', index);
