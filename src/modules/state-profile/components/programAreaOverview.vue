@@ -39,9 +39,9 @@
               <p>National</p>
               <p class="grey-value">{{this.singleNational}}</p>
             </b-col>
-            <b-col cols="auto">
+            <b-col cols="auto" v-if="state != 'national'">
               <p>{{ this.state }}</p>
-              <p class="red-value">{{this.singleState}}</p>
+              <p class="red-value">{{this.singleStateValue}}</p>
               <p class="source">Source: NDHS 2018</p>
             </b-col>
           </b-row>
@@ -100,7 +100,7 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">54.3%</p>
+              <p class="value text-right">{{HRGuidelinesValue}}%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -114,7 +114,7 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">78.1%</p>
+              <p class="value text-right">{{financing}}%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -129,7 +129,7 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">23.4%</p>
+              <p class="value text-right">{{facilityMng}}%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -148,7 +148,7 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">93.6%</p>
+              <p class="value text-right">{{facilityReadiness[0]}}%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -162,7 +162,7 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">87.2%</p>
+              <p class="value text-right">{{facilityReadiness[1]}}%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -176,7 +176,7 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">65.8%</p>
+              <p class="value text-right">{{drugsAndCommodities[0]}}%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -190,7 +190,7 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">89.7%</p>
+              <p class="value text-right">{{drugsAndCommodities[1]}}%</p>
               <p class="source text-right">Source: NHFS 2018</p>
             </b-col>
           </b-row>
@@ -235,7 +235,6 @@ export default {
       const allLocations = this.$store.state.DL.location;
       let states = '';
       const val = this.state;
-      console.log(val);
       allLocations.map((el) => {
         if (el.name == val) {
           states = el;
@@ -252,8 +251,14 @@ export default {
       isDefinitionVisible: false,
       nationalObjects: [],
       stateObjects: [],
+      HRGuidelinesValue: 0,
+      financing: 0,
+      facilityMng: 0,
+      facilityReadiness:[0,0],
+      drugsAndCommodities: [0, 0],
       singleNational: 100,
-      singleState: 10,
+      singleStateValue: 10,
+      temp: {},
       barChartOptions: {
         annotations: [
           {
@@ -326,7 +331,6 @@ export default {
           {
             name: this.state,
             className: 'test',
-            color: this.programArea.colors[1],
             data: [
 
             ],
@@ -347,23 +351,69 @@ export default {
     getDataSource(src) {
       return this.dlGetDataSource(src).datasource;
     },
-    presentData() {
+    presentData(all) {
       const data = [];
       // format
       //  ['Under-5 mortality rate (NHDS 2018)', 17],
-      this.nationalObjects.map((val) => {
+       // {
+      //   y: 9,
+      //   name: 'Prevalence of HIV (NAIIS 2019)',
+      //   color: this.programArea.colors[1],
+      // }
+      if(all){
+         console.log(this.barChartOptions)
+         this.programArea.specificIndicators.map(value => {
+        this.nationalObjects.map(element => {
+            if(value.indicator == element.indicator && value.dataSource == element.datasource){
+              element.color = value.color
+            }
+        })
+      })
+          this.nationalObjects.map((val) => {
+        data.push({
+          y: Number(val.value),
+          name: `${this.getIndicatorShortName(val.indicator)} (${this.getDataSource(val.datasource)} ${val.period})`,
+          color: val.color,
+        });
+      });
+      } else {
+          this.nationalObjects.map((val) => {
         data.push([`${this.getIndicatorShortName(val.indicator)} (${this.getDataSource(val.datasource)} ${val.period}), `, Number(val.value)]);
       });
+      }
+        if(this.programArea.name == 'mortality'){
       this.singleNational = data[0][1];
+        }
       this.barChartOptions.series[0].data = data;
-      //  console.log({data})
+      this.populateCategories()
     },
     populateCategories() {
       const indicatorShortNames = [];
-      this.programArea.specificIndicators.map((id) => {
+      this.nationalObjects.map((id) => {
         indicatorShortNames.push(this.getIndicatorShortName(id.indicator));
       });
       this.barChartOptions.xAxis.categories = indicatorShortNames;
+    },
+     async getHealthFacilityData(){
+      // let facilityDataIndicators = [34, 58, 61, 39, 41, 49, 50]
+      // let allData = []
+      let data
+      // facilityDataIndicators.map(async el => {
+      //    data = await this.dlQuery({
+      //     datasource: 4,
+      //     //indicator: el,
+      //    // period: 2016,
+      //   });
+      //   console.log(data)
+      // })
+       data = await this.dlQuery({
+          datasource: 17,
+         // indicator: 34,
+          // period: 2018
+        });
+      
+
+       console.log({data})
     },
     presentStateData() {
       const data = [];
@@ -373,17 +423,29 @@ export default {
       //   name: 'Prevalence of HIV (NAIIS 2019)',
       //   color: this.programArea.colors[1],
       // }
+      this.programArea.specificIndicators.map(value => {
+        this.stateObjects.map(element => {
+            if(value.indicator == element.indicator && value.dataSource == element.datasource){
+              element.color = value.color
+            }
+        })
+      })
       this.stateObjects.map((val) => {
         data.push({
           y: Number(val.value),
           name: `${this.getIndicatorShortName(val.indicator)} (${this.getDataSource(val.datasource)} ${val.period})`,
-          color: this.programArea.colors[1],
+          color: val.color,
         });
       });
-      this.singleState = data[0].y;
+      console.log(this.state)
+      if(this.programArea.name == 'mortality'){
+        this.singleStateValue = data[0].y;
+      }
       this.barChartOptions.series[1].data = data;
+       this.barChartOptions.series[1].name = this.state
     },
     extractNationalDataObjects() {
+      this.temp = this.barChartOptions.series.pop()
       this.programArea.specificIndicators.map(async (val) => {
         const runner = await this.dlQuery({
           datasource: val.dataSource,
@@ -391,31 +453,71 @@ export default {
           location: 1,
           period: JSON.stringify(val.year),
         });
-        const filtered = runner.filter((el) => el.value_type !== 3 && el.value_type !== 4);
-        this.nationalObjects.push(filtered[0]);
+       // console.log({runner})
+        if(runner.length != 0){
+          const filtered = runner.filter((el) => el.value_type !== 3 && el.value_type !== 4);
+           this.nationalObjects.push(filtered[0]);
+           // console.log(this.nationalObjects)
+           
+        }
         this.presentData();
       });
     },
+    justNationalData (){
+         this.programArea.specificIndicators.map(async (val) => {
+        const runner = await this.dlQuery({
+          datasource: val.dataSource,
+          indicator: val.indicator,
+          location: 1,
+          period: JSON.stringify(val.year),
+        });
+       // console.log({runner})
+        if(runner.length != 0){
+          const filtered = runner.filter((el) => el.value_type !== 3 && el.value_type !== 4);
+           this.nationalObjects.push(filtered[0]); 
+        }
+        this.presentData(true);
+      });
+    },
     extractStateObjects() {
-      this.programArea.specificIndicators.map(async (val) => {
+      this.programArea.specificIndicators.map(async (val, index, array) => {
         const runner = await this.dlQuery({
           datasource: val.dataSource,
           indicator: val.indicator,
           period: JSON.stringify(val.year),
           location: this.stateObj.id,
         });
-
-        const filtered = runner.filter((el) => el.value_type !== 3 && el.value_type !== 4);
-
-        this.stateObjects.push(filtered[0]);
+          if(runner.length != 0){
+            const filtered = runner.filter((el) => el.value_type !== 3 && el.value_type !== 4);
+            this.stateObjects.push(filtered[0]);
+          }
         this.presentStateData();
       });
     },
   },
+  watch: {
+    state(newVal, oldVal){
+      if(oldVal == 'National'){
+        console.log(this.temp)
+         this.barChartOptions.series.push(this.temp)
+      }
+          this.barChartOptions.series[0].data = []
+           this.nationalObjects = []
+          this.barChartOptions.series[1].data = []
+          this.stateObjects = []
+        this.extractNationalDataObjects();
+        this.extractStateObjects();
+        //  this.getHealthFacilityData();
+    }
+  },
   mounted() {
-    this.populateCategories();
-    this.extractNationalDataObjects();
-    this.extractStateObjects();
+    if(this.state == 'National'){
+      this.justNationalData()
+    } else {
+      this.extractNationalDataObjects();
+      this.extractStateObjects();
+    }
+  // this.getHealthFacilityData()
   },
 };
 </script>

@@ -37,7 +37,12 @@
       </b-col>
     </b-row>
     <hr style="border-top: 1px dashed #CCCCCC;" class="mb-4" />
-    <demographics :state="state" :lgas='lgaNames' :stateDemographics="demographics"></demographics>
+    <demographics 
+      :state="state"
+     :lgas='lgaNames'
+      :stateDemographics="demographics"
+      ></demographics>
+    <!-- <PAoverview :state="state" :programArea="programAreas[0]"></PAoverview> -->
     <div class="mt-5" v-for="programArea in programAreas" :key="programArea.name">
       <PAoverview :state="state" :programArea="programArea"></PAoverview>
     </div>
@@ -224,42 +229,49 @@ export default {
               indicator: 4,
               dataSource: 2,
               year: 2018,
+              color: '#054a80'
             },
             {
               indicator: 5,
               dataSource: 2,
               year: 2018,
+              color: '#2c8cca'
             },
             {
               indicator: 7,
               dataSource: 2,
               year: 2018,
-              value: 0,
+              color: '#3f7299'
             },
             {
               indicator: 8,
               dataSource: 2,
               year: 2018,
+              color: '#43893b'
             },
             {
               indicator: 13,
               dataSource: 1,
               year: 2016,
+              color: '#2c9f35'
             },
             {
               indicator: 18,
               dataSource: 2,
               year: 2018,
+              color: '#2c9f35'
             },
             {
               indicator: 10,
               dataSource: 5,
               year: 2018,
+               color: '#8fb438'
             },
             {
               indicator: 17,
               dataSource: 2,
               year: 2018,
+               color: '#8fb438'
             },
           ],
         },
@@ -286,21 +298,25 @@ export default {
               indicator: 14,
               dataSource: 2,
               year: 2018,
+              color: '#8fb438'
             },
             {
               indicator: 15,
               dataSource: 2,
               year: 2018,
+               color: '#8fb438'
             },
             {
               indicator: 16,
               dataSource: 2,
               year: 2018,
+               color: '#8fb438'
             },
             {
               indicator: 17,
               dataSource: 2,
               year: 2018,
+               color: '#8fb438'
             },
           ],
         },
@@ -328,16 +344,19 @@ export default {
               indicator: 18,
               dataSource: 2,
               year: 2018,
+              color: '#EE9632'
             },
             {
               indicator: 20,
               dataSource: 2,
               year: 2018,
+               color: '#EE9632'
             },
             {
               indicator: 21,
               dataSource: 2,
               year: 2018,
+               color: '#EE9632'
             },
           ],
         },
@@ -365,21 +384,25 @@ export default {
               indicator: 22,
               dataSource: 2,
               year: 2018,
+              color: '#43893B'
             },
             {
               indicator: 23,
               dataSource: 2,
               year: 2018,
+               color: '#43893B'
             },
             {
               indicator: 24,
               dataSource: 2,
               year: 2018,
+               color: '#43893B'
             },
             {
               indicator: 13,
               dataSource: 1,
               year: 2016,
+               color: '#43893B'
             },
           ],
         },
@@ -408,16 +431,19 @@ export default {
               indicator: 26,
               dataSource: 16,
               year: 2019,
+              color: '#EA1B4B'
             },
             {
               indicator: 27,
               dataSource: 1,
               year: 2016,
+              color: '#EA1B4B'
             },
             {
               indicator: 28,
               dataSource: 5,
               year: 2018,
+              color:'#EA1B4B'
             },
           ],
         },
@@ -444,21 +470,25 @@ export default {
               indicator: 29,
               dataSource: 6,
               year: 2019,
+              color: '#313131'
             },
             {
               indicator: 30,
               dataSource: 1,
               year: 2016,
+                 color: '#313131'
             },
             {
               indicator: 31,
               dataSource: 2,
               year: 2018,
+                 color: '#313131'
             },
             {
               indicator: 32,
               dataSource: 2,
               year: 2018,
+                 color: '#313131'
             },
           ],
         },

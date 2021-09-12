@@ -9,8 +9,8 @@
     <b-row align-h="between">
       <b-col md="6">
         <p class="mb-5">This section provides
-          demographic information about {{state}}
-           <span v-if="selectedState !== 'Fct'">State</span>.</p>
+          demographic information about {{this.selectedState}}
+           <span v-show="state !== 'Fct' && state !== 'National'">State</span>.</p>
         <div v-for=" d in stateDemographics" :key= d.name>
           <hr v-show="stateDemographics.indexOf(d) > 0">
         <b-row >
@@ -39,7 +39,8 @@
           <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <BaseMap :level="3" :lgaState="selectedState" :mapObject="this.mapOptions"/>
+        <BaseMap v-if="state != 'National'" :level="3" :lgaState="selectedState" :mapObject="this.mapOptions"/>
+        <BaseMap  v-else :level="1" :mapObject="mapOptionsNational"/>
         <b-row>
           <b-col cols="auto">
             <p>Land Area</p>
@@ -86,13 +87,18 @@ export default {
     extractDemographicValues() {
       // Get the selected state ID
       const allLocations = this.$store.state.DL.location;
-      let selectedState = '';
+      let selectedState;
       const val = this.state;
-      allLocations.map((el) => {
+      if(this.state == 'National'){
+        selectedState = allLocations[0]
+      } else {
+        allLocations.map((el) => {
         if (el.name == val) {
           selectedState = el;
         }
+
       });
+     }
       // Get the selected state ID
 
       // Loop through the demographics object to
@@ -147,8 +153,11 @@ export default {
     selectedState() {
       if (this.state == 'FCT') {
         return 'Fct';
+      } else if (this.state == 'National'){
+        return 'Nigeria'
+      } else {
+          return this.state;
       }
-      return this.state;
     },
   },
   watch: {
@@ -163,6 +172,71 @@ export default {
   data() {
     return {
       pointer: 'success', // SUCCESS or DANGER
+      mapOptionsNational: {
+        title: {
+          text: '',
+        },
+        subtitle: {
+          text: '',
+        },
+        plotOptions: {
+          map: {
+            nullColor: '#ffc482',
+            nullInteraction: true,
+            color: '#ffc482',
+            joinBy: ['name', 'hc-key'],
+            dataLabels: {
+              style:{
+                fontFamily: "Muli",
+                color: '#1c4d33'
+              },
+              enabled: true,
+              formatter() {
+                if (this.point.value) {
+                  return this.point.name;
+                }
+                return this.point.name;
+              },
+            },
+            colorAxis: {
+              min: 0,
+            },
+          },
+        },
+        series: [{
+          name: 'Nigeria',
+           states: {
+                hover: {
+                    color: '#3F6040',
+                  
+                }
+            },
+          point: {
+            events: {
+              click: (event) => {
+                let state = event.point.name;
+                state = state.replace(/\s+/g, '');
+                this.$emit('changeState', state)
+              },
+            },
+          },
+          borderColor: 'white',
+          borderWidth: 3,
+        }],
+        colors: ['#007d53', '#fff'],
+        legend: {
+          enabled: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        credits: {
+          enabled: false,
+        },
+        mapNavigation: {
+          enabled: false,
+        },
+      },
       mapOptions: {
         title: {
           text: '',
