@@ -42,8 +42,8 @@ export default [
   },
   {
     name: 'Health_Facility',
-    indicators: [51, 52, 53, 54, 55],
-    defaultIndicators: [7, 5, 8], // preferable and indicator ID and related indicators,
+    indicators: [51, 52, 53, 54, 55, 49],
+    defaultIndicators: [51, 50, 49], // preferable and indicator ID and related indicators,
     dataSources: [17],
     initialIndicator: 51,
     initialDataSource: 17,
