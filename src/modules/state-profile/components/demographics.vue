@@ -89,16 +89,15 @@ export default {
       const allLocations = this.$store.state.DL.location;
       let selectedState;
       const val = this.state;
-      if(this.state == 'National'){
-        selectedState = allLocations[0]
+      if (this.state == 'National') {
+        selectedState = allLocations[0];
       } else {
         allLocations.map((el) => {
-        if (el.name == val) {
-          selectedState = el;
-        }
-
-      });
-     }
+          if (el.name == val) {
+            selectedState = el;
+          }
+        });
+      }
       // Get the selected state ID
 
       // Loop through the demographics object to
@@ -153,11 +152,10 @@ export default {
     selectedState() {
       if (this.state == 'FCT') {
         return 'Fct';
-      } else if (this.state == 'National'){
-        return 'Nigeria'
-      } else {
-          return this.state;
+      } if (this.state == 'National') {
+        return 'Nigeria';
       }
+      return this.state;
     },
   },
   watch: {
@@ -186,9 +184,9 @@ export default {
             color: '#ffc482',
             joinBy: ['name', 'hc-key'],
             dataLabels: {
-              style:{
-                fontFamily: "Muli",
-                color: '#1c4d33'
+              style: {
+                fontFamily: 'Muli',
+                color: '#1c4d33',
               },
               enabled: true,
               formatter() {
@@ -205,18 +203,18 @@ export default {
         },
         series: [{
           name: 'Nigeria',
-           states: {
-                hover: {
-                    color: '#3F6040',
-                  
-                }
+          states: {
+            hover: {
+              color: '#3F6040',
+
             },
+          },
           point: {
             events: {
               click: (event) => {
                 let state = event.point.name;
                 state = state.replace(/\s+/g, '');
-                this.$emit('changeState', state)
+                this.$emit('changeState', state);
               },
             },
           },

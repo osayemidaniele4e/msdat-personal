@@ -256,8 +256,8 @@ export default {
       facilityMng: 0,
       facilityReadiness:[0,0],
       drugsAndCommodities: [0, 0],
-      singleNational: 100,
-      singleStateValue: 10,
+      singleNational: 0,
+      singleStateValue: 0,
       temp: {},
       barChartOptions: {
         annotations: [
@@ -413,7 +413,7 @@ export default {
         });
       
 
-       console.log({data})
+      // console.log({data})
     },
     presentStateData() {
       const data = [];
@@ -437,7 +437,6 @@ export default {
           color: val.color,
         });
       });
-      console.log(this.state)
       if(this.programArea.name == 'mortality'){
         this.singleStateValue = data[0].y;
       }
@@ -445,7 +444,6 @@ export default {
        this.barChartOptions.series[1].name = this.state
     },
     extractNationalDataObjects() {
-      this.temp = this.barChartOptions.series.pop()
       this.programArea.specificIndicators.map(async (val) => {
         const runner = await this.dlQuery({
           datasource: val.dataSource,
@@ -464,6 +462,7 @@ export default {
       });
     },
     justNationalData (){
+       this.temp = this.barChartOptions.series.pop()
          this.programArea.specificIndicators.map(async (val) => {
         const runner = await this.dlQuery({
           datasource: val.dataSource,
@@ -498,7 +497,6 @@ export default {
   watch: {
     state(newVal, oldVal){
       if(oldVal == 'National'){
-        console.log(this.temp)
          this.barChartOptions.series.push(this.temp)
       }
           this.barChartOptions.series[0].data = []
