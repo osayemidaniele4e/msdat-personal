@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
-import { difference } from 'lodash';
-import { formatDate, getIndicatorsFromApi } from './helper';
+// import { difference } from 'lodash';
+import { formatDate } from './helper';
 import apiServices from './ApiServices';
 import Database from './database.worker';
 
@@ -68,26 +68,22 @@ export default class DataLayer {
   async init(object) {
     this.DB = await new Database();
     this.setup(object);
-
-    const count = await this.DB.data.count();
-    console.log('DB count is', count);
-
     console.time('fetching');
-
+    /** Featching other enpoints */
     console.log('fetching other endpoint');
     /**
-      * The apiServices returns all the and array of response for the
-      * axios call of all other apiEndpoints.getOtherEndpoint
-      * it uses and {Promise.all()}
-      *
-      * @see {@link apiServices.getOtherEndpoint()}
-      */
+     * The apiServices returns all the and array of response for the
+     * axios call of all other apiEndpoints.getOtherEndpoint
+     * it uses and {Promise.all()}
+     *
+     * @see {@link apiServices.getOtherEndpoint()}
+     */
     const data = await apiServices.getOtherEndpoint();
 
     /**
-      * we would also need to created a component then display the activities  of the service layer
-      * per time
-      */
+     * we would also need to created a component then display the activities  of the service layer
+     * per time
+     */
     console.log('storing other endpoint to index db');
 
     await this.DB.storeDataInDBTable(data[6].data, DSI);
@@ -98,35 +94,24 @@ export default class DataLayer {
     await this.DB.storeDataInDBTable(data[7].data, DATA_SOURCE);
 
     console.log('done');
-
     console.log('init other Tables');
-
     await this.initOtherTablesFromDB();
-
     console.log(' done');
+    /** End Featching other enpoints */
+
+    const count = await this.DB.data.count();
+    console.log('DB count is', count);
+
     if (count <= 0) {
       this.storeTimestampInLocal();
-
-      const dataValue = await getIndicatorsFromApi(this.defaultIndicators);
-      //
-      if (dataValue.length > 0) {
-        for (let index = 0; index < dataValue.length; index += 1) {
-          const element = dataValue[index].data;
-          console.log('store data in db', index);
-          await this.DB.storeDataInDB(element);
-          console.log('Done');
-        }
-      }
-      await this.setAvailableDashboardIndicator();
-    } else {
-      await this.initOtherTablesFromDB();
-      await this.DB.initData(this.defaultIndicators);
-      await this.setAvailableDashboardIndicator();
     }
+
+    // await this.initOtherTablesFromDB();
+    await this.DB.initDataWithYears(this.defaultIndicators, 8);
+    await this.setAvailableDashboardIndicator();
 
     setTimeout(async () => {
       //
-      const indicatorsExceptDefault = difference(this.indicatorList, this.defaultIndicators);
       /**
        * getting the indicators one after the order seems to help the performance
        * as against getting it all at once
@@ -138,7 +123,7 @@ export default class DataLayer {
        */
       console.log('in set timeout');
       //
-      await this.DB.initData(indicatorsExceptDefault);
+      await this.DB.initDataWithYears(this.indicatorList);
       await this.setAvailableDashboardIndicator();
       await this.updateData();
     }, 500);
