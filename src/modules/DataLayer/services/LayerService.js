@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 // import { difference } from 'lodash';
-import { take } from 'lodash';
+import { take, difference } from 'lodash';
 import { formatDate } from './helper';
 import apiServices from './ApiServices';
 import Database from './database.worker';
@@ -103,13 +103,21 @@ export default class DataLayer {
     const count = await this.DB.data.count();
     console.log('DB count is', count);
 
-    if (count <= 0) {
+    const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
+    // Check if the current related indicator is already in the database
+    // then no need to check if the Years exist in the database
+    // on th else statement
+    if (difference(this.defaultIndicators, indicatorIDArray).length === 0) {
       this.storeTimestampInLocal();
+      await this.initDataWithYears(this.defaultIndicators, 8);
+      await this.setAvailableDashboardIndicator();
+    } else {
+      this.storeTimestampInLocal();
+      await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators, 8);
+      await this.setAvailableDashboardIndicator();
     }
 
     // await this.initOtherTablesFromDB();
-    await this.initDataWithYears(this.defaultIndicators, 8);
-    await this.setAvailableDashboardIndicator();
 
     setTimeout(async () => {
       //
@@ -280,6 +288,26 @@ export default class DataLayer {
         }
         this.updatedStoreAvailableIndicator(indicatorID);
       }
+    }
+  }
+
+  async initDataWithYearsWithYearlyChecks(indicator, limit = 0) {
+    for (let index = 0; index < indicator.length; index += 1) {
+      const indicatorID = indicator[index];
+      const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
+      const dataValue = dataResult.data.years;
+      // take only the at least 8 years
+      const yearsToTake = limit;
+      const theYears = take(dataValue, yearsToTake);
+      const arrayOfPromises = theYears.map(
+        (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
+      );
+      const results = await Promise.all(arrayOfPromises);
+      for (let index2 = 0; index2 < results.length; index2 += 1) {
+        const requestResult = results[index2].data;
+        await this.DB.storeDataInDB(requestResult);
+      }
+      this.updatedStoreAvailableIndicator(indicatorID);
     }
   }
 }
