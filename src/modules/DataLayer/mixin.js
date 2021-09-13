@@ -38,12 +38,12 @@ export default {
       dlDashboardDataSource: (state) => state.dashboardDataSource,
       dlFactors: (state) => state.factors,
     }),
-  },
-  methods: {
+
     dlGetAvailableIndicators() {
       return this.dlIndicator.filter((e) => this.dlDashboardIndicator.includes(e.id));
     },
-
+  },
+  methods: {
     /**
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
      * @returns {dataObjectType}

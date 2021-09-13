@@ -427,6 +427,16 @@ export default {
       },
       immediate: false,
     },
+
+    // The is the updated the control panel dropdown as indicator are gotten from the API
+    // in the background (async)
+    indicatorDropdownUpdated(newVal) {
+      this.SET_CONTROL_OPTIONS({
+        panelIndex: 2,
+        controlIndex: 3,
+        values: newVal,
+      });
+    },
   },
   async mounted() {
     const setYearDropdown = await this.setYearDropdown();

@@ -17,6 +17,18 @@ export default {
       cpIsLoading: false,
     };
   },
+  computed: {
+    indicatorDropdownUpdated: {
+      get() {
+        return groupIndicator(this.dlGetAvailableIndicators, 'program_area');
+        // console.trace(b, 'Hello World');
+        // return b;
+      },
+      set(val) {
+        return val;
+      },
+    },
+  },
   methods: {
     cpGetAvailableYears(dataValues) {
       const years = dataValues.map((item) => item.period);
@@ -25,10 +37,8 @@ export default {
     },
     setUpControlPanelDropDown() {
       // debugger;
-      this.defaultIndicatorDropdown = groupIndicator(
-        this.dlGetAvailableIndicators(),
-        'program_area',
-      );
+      this.defaultIndicatorDropdown = groupIndicator(this.dlGetAvailableIndicators, 'program_area');
+      console.log(this.defaultIndicatorDropdown);
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
       this.defaultLocationDropdown = this.dlGetLocation({
         level: 3,
