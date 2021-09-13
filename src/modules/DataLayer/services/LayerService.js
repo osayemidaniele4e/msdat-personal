@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop */
 // import { difference } from 'lodash';
+import { take } from 'lodash';
 import { formatDate } from './helper';
 import apiServices from './ApiServices';
 import Database from './database.worker';
@@ -107,7 +108,7 @@ export default class DataLayer {
     }
 
     // await this.initOtherTablesFromDB();
-    await this.DB.initDataWithYears(this.defaultIndicators, 8);
+    await this.initDataWithYears(this.defaultIndicators, 8);
     await this.setAvailableDashboardIndicator();
 
     setTimeout(async () => {
@@ -123,7 +124,7 @@ export default class DataLayer {
        */
       console.log('in set timeout');
       //
-      await this.DB.initDataWithYears(this.indicatorList);
+      await this.initDataWithYears(this.indicatorList);
       await this.setAvailableDashboardIndicator();
       await this.updateData();
     }, 500);
@@ -229,7 +230,7 @@ export default class DataLayer {
     }
 
     this.store.commit('DL/ADD_DATA', {
-      tableName: 'indicatorsInStore',
+      tableName: AVAILABLE_DASHBOARD_INDICATOR,
       data: indicators,
     });
   }
@@ -245,5 +246,40 @@ export default class DataLayer {
     const dashboardDataSource = this.dataSourceList;
     this.setDataInStore(dashboardIndicators, AVAILABLE_DASHBOARD_INDICATOR);
     this.setDataInStore(dashboardDataSource, DASHBOARD_DATESOURCE);
+  }
+
+  async checkAllYearsExistInDB(indicatorID) {
+    const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
+    const dataValue = dataResult.data.years;
+    const yearsNotAvailable = [];
+    for (let index = 0; index < dataValue.length; index += 1) {
+      const element = dataValue[index];
+      const bb = await this.DB.checkIfIndicatorWithYearExist(indicatorID, element);
+      if (bb === undefined) {
+        yearsNotAvailable.push(element);
+      }
+    }
+    return yearsNotAvailable;
+  }
+
+  async initDataWithYears(indicator, limit = 0) {
+    for (let index = 0; index < indicator.length; index += 1) {
+      const indicatorID = indicator[index];
+      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+      // take only the at least 8 years
+      if (yearsNotAvailableInDB.length > 0) {
+        const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        const theYears = take(yearsNotAvailableInDB, yearsToTake);
+        const arrayOfPromises = theYears.map(
+          (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
+        );
+        const results = await Promise.all(arrayOfPromises);
+        for (let index2 = 0; index2 < results.length; index2 += 1) {
+          const requestResult = results[index2].data;
+          await this.DB.storeDataInDB(requestResult);
+        }
+        this.updatedStoreAvailableIndicator(indicatorID);
+      }
+    }
   }
 }

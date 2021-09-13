@@ -153,6 +153,10 @@ export default class DataBase {
     }
   }
 
+  async checkIfIndicatorWithYearExist(indicatorID, Period) {
+    return this.data.where({ indicator: indicatorID, period: Period }).first();
+  }
+
   async initData(indicator) {
     const indicatorInDB = await this.checkIndicatorsInIdb();
     for (let index = 0; index < indicator.length; index += 1) {

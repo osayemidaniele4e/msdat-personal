@@ -70,6 +70,17 @@ export default {
   methods: {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
   },
+  watch: {
+    // The is the updated the control panel dropdown as indicator are gotten from the API
+    // in the background (async)
+    indicatorDropdownUpdated(newVal) {
+      this.SET_CONTROL_OPTIONS({
+        panelIndex: 1,
+        controlIndex: 0,
+        values: newVal,
+      });
+    },
+  },
   async mounted() {
     const setYearDropdown = await this.setYearDropdown();
     this.SET_CONTROL_OPTIONS({
