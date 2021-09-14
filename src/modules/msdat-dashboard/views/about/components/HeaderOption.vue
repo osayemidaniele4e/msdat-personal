@@ -73,10 +73,10 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/">
+        <a href="javascript:Userback.open();">
           <img src="@/assets/img/icons/ic_feedback.svg" alt="" />
           <span>Feedback</span>
-        </router-link>
+        </a>
       </li>
       <!-- <li  @click="$emit('showContact')"> -->
       <li @click="togglemodal">
