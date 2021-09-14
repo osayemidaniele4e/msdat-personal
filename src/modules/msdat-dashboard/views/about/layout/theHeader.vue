@@ -27,19 +27,28 @@
               <router-link exact-active-class="active" to="/" class="nav-link"
                 >Main Dashboard</router-link
               >
+
+              <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
               <router-link to="#" class="nav-link">COVID-19: Service Uptake</router-link>
               <router-link to="#" class="nav-link">Custom Dashboard</router-link>
-              <button
-                class="btn btn-outline-light"
-                @click="showExpandedDropdown = !showExpandedDropdown"
+              <div
+                @mouseover="showExpandedDropdown = true"
+                @mouseleave="showExpandedDropdown = false"
               >
-                Select&nbsp;Dashboard&nbsp;<b-icon
-                  icon="triangle-fill"
-                  font-scale="0.5"
-                  class="btn-icon"
-                  :class="[showExpandedDropdown ? 'down' : 'up']"
-                ></b-icon>
-              </button>
+                <button class="btn btn-outline-light">
+                  Select&nbsp;Dashboard&nbsp;<b-icon
+                    icon="triangle-fill"
+                    font-scale="0.5"
+                    class="btn-icon"
+                    :class="[showExpandedDropdown ? 'down' : 'up']"
+                  ></b-icon>
+                </button>
+                <DropCard
+                  v-show="showExpandedDropdown"
+                  @click="showExpandedDropdown = false"
+                  :class="{ dropcard: showExpandedDropdown }"
+                />
+              </div>
               <!-- <b-nav-item>
                 <b-dropdown text="Other Dashboards" class="border-0">
                   <div class="drop-container" v-for="(item, index) in headerDropdown" :key="index">
@@ -79,7 +88,7 @@
         </b-col>
       </b-row>
     </b-container>
-    <DropCard v-show="showExpandedDropdown" />
+    <!-- <DropCard v-show="showExpandedDropdown" /> -->
   </header>
 </template>
 
@@ -151,6 +160,9 @@ header#the-header {
   .down {
     transform: rotate(180deg);
     transition: all 0.5s ease-in-out;
+  }
+  .drop-card {
+    transition: all 1s ease-in-out;
   }
   div.header-navs {
     a.nav-link {
