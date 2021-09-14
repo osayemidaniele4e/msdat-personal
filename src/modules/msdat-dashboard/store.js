@@ -58,8 +58,8 @@ export default {
           payload.controlIndex2
         ].options = payload.values;
       } else {
-        state.controlConfig[
-          payload.panelIndex].setup[payload.controlIndex].options = payload.values;
+        state.controlConfig[payload.panelIndex]
+          .setup[payload.controlIndex].options = payload.values;
       }
     },
 
