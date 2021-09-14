@@ -31,13 +31,13 @@
               <router-link to="#" class="nav-link">Custom Dashboard</router-link>
               <button
                 class="btn btn-outline-light"
-                @mouseover="showExpandedDropdown = true"
-                @mouseleave="showExpandedDropdown = false"
+                @click="showExpandedDropdown = !showExpandedDropdown"
               >
                 Select&nbsp;Dashboard&nbsp;<b-icon
                   icon="triangle-fill"
                   font-scale="0.5"
                   class="btn-icon"
+                  :class="[showExpandedDropdown ? 'down' : 'up']"
                 ></b-icon>
               </button>
               <!-- <b-nav-item>
@@ -79,7 +79,7 @@
         </b-col>
       </b-row>
     </b-container>
-    <DropCard :show="showExpandedDropdown" />
+    <DropCard v-show="showExpandedDropdown" />
   </header>
 </template>
 
@@ -141,9 +141,16 @@ $msdat-green: #007d53;
 
 header#the-header {
   .btn-icon {
-    transform: rotate(180deg);
     margin-bottom: 0.35rem;
     margin-left: 0.5rem;
+  }
+  .up {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(0deg);
+  }
+  .down {
+    transform: rotate(180deg);
+    transition: all 0.5s ease-in-out;
   }
   div.header-navs {
     a.nav-link {

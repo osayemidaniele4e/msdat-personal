@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid card shadow" id="dropdown-expanded" v-show="show">
+  <div class="container-fluid card shadow" id="dropdown-expanded">
     <div class="row p-3">
       <div class="col-md-3 mb-3">
         <b-list-group>
@@ -50,13 +50,13 @@
 
 <script>
 export default {
-  props: {
-    show: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-  },
+  // props: {
+  //   show: {
+  //     type: Boolean,
+  //     required: true,
+  //     default: false,
+  //   },
+  // },
   data() {
     return {};
   },
@@ -72,6 +72,7 @@ div {
     z-index: 5;
     left: 8.2vw;
     top: 6.5vh;
+    transition: opacity .3s ease;
   }
   .list-group-item {
     font-family: 'Work Sans';
