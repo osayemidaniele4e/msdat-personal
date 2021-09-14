@@ -12,7 +12,7 @@ export const StateProfileDashboard = {
     21, 22, 23, 24, 25, 26, 27, 28, 30, 31,
     32, 34, 39, 41, 49, 50, 58, 61, 63, 64, 67, 68, 70],
   defaultIndicators: [7, 5, 8],
-  dataSources: [],
+  dataSources: [19, 2, 20, 1, 5, 16, 6],
 };
 
 export const customDashboard = {
