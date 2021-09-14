@@ -68,11 +68,17 @@
           </div>
         </b-col>
       </b-row>
+      <!--  please someone show separate the
+      header for the about page from this it going to cause issues  -->
       <b-row v-show="aboutPage">
         <b-col cols="1">
-          <a href="">
-            <b-icon class="back-icn" icon="chevron-left" />
-          </a>
+          <!-- <a href=""> -->
+          <b-icon
+            @click="$router.go(-1)"
+            class="back-icn"
+            icon="chevron-left"
+          />
+          <!-- </a> -->
         </b-col>
         <b-col class="">
           <h4>About the MSDAT Dashboard</h4>

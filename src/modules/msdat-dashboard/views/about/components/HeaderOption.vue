@@ -16,7 +16,7 @@
     </base-modal>
     <ul class="list-unstyled">
       <li>
-        <router-link to="/">
+        <router-link to="/about">
           <img src="@/assets/img/icons/ic_info.svg" alt="" />
           <span>About Dashboard</span>
         </router-link>
