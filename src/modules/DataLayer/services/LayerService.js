@@ -70,7 +70,7 @@ export default class DataLayer {
     this.DB = await new Database();
     this.setup(object);
     console.time('fetching');
-    /** Featching other enpoints */
+    /** Fetching other endpoints */
     console.log('fetching other endpoint');
     /**
      * The apiServices returns all the and array of response for the
