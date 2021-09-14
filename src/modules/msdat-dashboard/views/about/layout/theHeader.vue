@@ -1,5 +1,5 @@
 <template>
-  <header id="the-header">
+  <header id="the-header" class="position-relative">
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1">
@@ -29,13 +29,24 @@
               >
               <router-link to="#" class="nav-link">COVID-19: Service Uptake</router-link>
               <router-link to="#" class="nav-link">Custom Dashboard</router-link>
-              <b-nav-item>
+              <button
+                class="btn btn-outline-light"
+                @mouseover="showExpandedDropdown = true"
+                @mouseleave="showExpandedDropdown = false"
+              >
+                Select&nbsp;Dashboard&nbsp;<b-icon
+                  icon="triangle-fill"
+                  font-scale="0.5"
+                  class="btn-icon"
+                ></b-icon>
+              </button>
+              <!-- <b-nav-item>
                 <b-dropdown text="Other Dashboards" class="border-0">
                   <div class="drop-container" v-for="(item, index) in headerDropdown" :key="index">
                     <router-link class="links" :to="item.link">{{ item.title }}</router-link>
                   </div>
                 </b-dropdown>
-              </b-nav-item>
+              </b-nav-item> -->
               <router-link to="#" class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill>&nbsp;Login/Register</router-link
               >
@@ -68,7 +79,7 @@
         </b-col>
       </b-row>
     </b-container>
-<DropCard />
+    <DropCard :show="showExpandedDropdown" />
   </header>
 </template>
 
@@ -83,6 +94,7 @@ export default {
   },
   data() {
     return {
+      showExpandedDropdown: false,
       toggleOption: false,
       contactbtn: false,
       aboutPage: false,
@@ -128,6 +140,11 @@ export default {
 $msdat-green: #007d53;
 
 header#the-header {
+  .btn-icon {
+    transform: rotate(180deg);
+    margin-bottom: 0.35rem;
+    margin-left: 0.5rem;
+  }
   div.header-navs {
     a.nav-link {
       text-decoration: none;
