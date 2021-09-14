@@ -47,10 +47,11 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/">
+        <!-- Don't forget to add the # so it does reload the page -->
+        <a href="#" @click="toggleFullScreen()">
           <img src="@/assets/img/icons/ic_zoom.svg" alt="" />
           <span>View Fullscreen</span>
-        </router-link>
+        </a>
       </li>
       <div class="divider"></div>
       <li>
@@ -119,6 +120,14 @@ export default {
 
     submitContactForm() {
       this.submit = !this.submit;
+    },
+
+    toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
     },
   },
 };
