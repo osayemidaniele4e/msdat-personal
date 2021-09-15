@@ -1,5 +1,5 @@
 <template>
-  <header id="the-header">
+  <header id="the-header" class="position-relative">
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1">
@@ -11,11 +11,7 @@
           lg="11"
           class="d-flex justify-content-between align-items-center border-left"
         >
-          <h2>
-            MSDAT PLATFORM <br /><small
-              >ANALYSIS OF KEY HEALTH INDICATORS</small
-            >
-          </h2>
+          <h2>MSDAT PLATFORM <br /><small>ANALYSIS OF KEY HEALTH INDICATORS</small></h2>
 
           <!-- <b-col cols md="6" lg="6"> -->
           <div
@@ -31,28 +27,37 @@
               <router-link exact-active-class="active" to="/" class="nav-link"
                 >Main Dashboard</router-link
               >
-              <router-link to="#" class="nav-link"
-                >COVID-19: Service Uptake</router-link
+
+              <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
+              <router-link to="#" class="nav-link">COVID-19: Service Uptake</router-link>
+              <router-link to="#" class="nav-link">Custom Dashboard</router-link>
+              <div
+                @mouseover="showExpandedDropdown = true"
+                @mouseleave="showExpandedDropdown = false"
               >
-              <router-link to="#" class="nav-link"
-                >Custom Dashboard</router-link
-              >
-              <b-nav-item>
+                <button class="btn btn-outline-light">
+                  Select&nbsp;Dashboard&nbsp;<b-icon
+                    icon="triangle-fill"
+                    font-scale="0.5"
+                    class="btn-icon"
+                    :class="[showExpandedDropdown ? 'down' : 'up']"
+                  ></b-icon>
+                </button>
+                <DropCard
+                  v-show="showExpandedDropdown"
+                  @click="showExpandedDropdown = false"
+                  :class="{ dropcard: showExpandedDropdown }"
+                />
+              </div>
+              <!-- <b-nav-item>
                 <b-dropdown text="Other Dashboards" class="border-0">
-                  <div
-                    class="drop-container"
-                    v-for="(item, index) in headerDropdown"
-                    :key="index"
-                  >
-                    <router-link class="links" :to="item.link">{{
-                      item.title
-                    }}</router-link>
+                  <div class="drop-container" v-for="(item, index) in headerDropdown" :key="index">
+                    <router-link class="links" :to="item.link">{{ item.title }}</router-link>
                   </div>
                 </b-dropdown>
-              </b-nav-item>
+              </b-nav-item> -->
               <router-link to="#" class="nav-link"
-                ><b-icon-person-fill></b-icon-person-fill
-                >&nbsp;Login/Register</router-link
+                ><b-icon-person-fill></b-icon-person-fill>&nbsp;Login/Register</router-link
               >
             </b-nav>
             <b-icon
@@ -83,24 +88,28 @@
         <b-col class="">
           <h4>About the MSDAT Dashboard</h4>
           <p>
-            This dashboard is developed and managed by the Department of Health
-            Planning Research and Statistics (DHPRS)
+            This dashboard is developed and managed by the Department of Health Planning Research
+            and Statistics (DHPRS)
           </p>
         </b-col>
       </b-row>
     </b-container>
+    <!-- <DropCard v-show="showExpandedDropdown" /> -->
   </header>
 </template>
 
 <script>
 import HeaderOption from '../components/HeaderOption.vue';
+import DropCard from '../components/DropCard.vue';
 
 export default {
   components: {
     HeaderOption,
+    DropCard,
   },
   data() {
     return {
+      showExpandedDropdown: false,
       toggleOption: false,
       contactbtn: false,
       aboutPage: false,
@@ -146,6 +155,21 @@ export default {
 $msdat-green: #007d53;
 
 header#the-header {
+  .btn-icon {
+    margin-bottom: 0.35rem;
+    margin-left: 0.5rem;
+  }
+  .up {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(0deg);
+  }
+  .down {
+    transform: rotate(180deg);
+    transition: all 0.5s ease-in-out;
+  }
+  .drop-card {
+    transition: all 1s ease-in-out;
+  }
   div.header-navs {
     a.nav-link {
       text-decoration: none;
