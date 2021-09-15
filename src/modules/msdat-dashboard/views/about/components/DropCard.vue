@@ -4,9 +4,17 @@
       <div class="col-md-3 mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Input</h5>
-          <router-link to="#"><b-list-group-item>Health Facility</b-list-group-item></router-link>
-          <router-link to="#"><b-list-group-item>Health Finance</b-list-group-item></router-link>
-          <router-link to="#"><b-list-group-item>Health Workforce</b-list-group-item></router-link>
+          <router-link to="#"
+            ><b-list-group-item>Health Facility</b-list-group-item></router-link
+          >
+          <router-link to="#"
+            ><b-list-group-item>Health Finance</b-list-group-item></router-link
+          >
+          <router-link to="#"
+            ><b-list-group-item
+              >Health Workforce</b-list-group-item
+            ></router-link
+          >
         </b-list-group>
       </div>
       <div class="col-md-3 mb-3">
@@ -14,26 +22,38 @@
           <h5 class="text-underline">Health Outputs</h5>
           <div class="mb-2">
             <b-list-group-item><b>Health Service Access</b></b-list-group-item>
-            <router-link to="#"
-              ><b-list-group-item>Health Facility Survey</b-list-group-item></router-link
-            >
+            <router-link to="/dashboard/Health_Facility" target="_blank">
+              <b-list-group-item>Health Facility Survey</b-list-group-item>
+            </router-link>
           </div>
           <div class="mb-2">
             <b-list-group-item><b>Health Service Uptake</b></b-list-group-item>
-            <router-link to="#"
-              ><b-list-group-item>HU-Covid Dashboard</b-list-group-item></router-link
+            <a
+              href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
+              target="_blank"
             >
-            <router-link to="#"
-              ><b-list-group-item>Monthly NHMIS Insights</b-list-group-item></router-link
+              <b-list-group-item>HU-Covid Dashboard</b-list-group-item>
+            </a>
+            <a
+              href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/"
+              target="_blank"
+            >
+              <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
             >
           </div>
           <div class="mb-2">
-            <b-list-group-item><b>Surveillance Dashboards</b></b-list-group-item>
-            <router-link to="#"
-              ><b-list-group-item>Health Surveillance</b-list-group-item></router-link
+            <b-list-group-item
+              ><b>Surveillance Dashboards</b></b-list-group-item
             >
             <router-link to="#"
-              ><b-list-group-item>RTA Surveillance</b-list-group-item></router-link
+              ><b-list-group-item
+                >Health Surveillance</b-list-group-item
+              ></router-link
+            >
+            <router-link to="#"
+              ><b-list-group-item
+                >RTA Surveillance</b-list-group-item
+              ></router-link
             >
           </div>
         </b-list-group>
@@ -41,7 +61,7 @@
       <div class="col-md-3 mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outcomes</h5>
-          <router-link to="#"
+          <router-link to="/dashboard/Health_Outcomes" target="_blank"
             ><b-list-group-item
               >Health Outcomes and Service Coverage</b-list-group-item
             ></router-link
@@ -52,15 +72,23 @@
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
           <router-link to="#"
-            ><b-list-group-item>Create New Dahboard</b-list-group-item></router-link
-          >
-          <router-link to="#"><b-list-group-item>Demographics</b-list-group-item></router-link>
-          <router-link to="#"><b-list-group-item>Health Profiles</b-list-group-item></router-link>
-          <router-link to="#"
-            ><b-list-group-item>Governors' Dashboard</b-list-group-item></router-link
+            ><b-list-group-item
+              >Create New Dashboard</b-list-group-item
+            ></router-link
           >
           <router-link to="#"
-            ><b-list-group-item>Advanced Analytics</b-list-group-item></router-link
+            ><b-list-group-item>Demographics</b-list-group-item></router-link
+          >
+          <router-link to="#"
+            ><b-list-group-item>Health Profiles</b-list-group-item></router-link
+          >
+          <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
+            ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
+          >
+          <router-link to="#"
+            ><b-list-group-item
+              >Advanced Analytics</b-list-group-item
+            ></router-link
           >
         </b-list-group>
       </div>
