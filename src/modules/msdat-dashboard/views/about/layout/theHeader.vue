@@ -11,7 +11,11 @@
           lg="11"
           class="d-flex justify-content-between align-items-center border-left"
         >
-          <h2>MSDAT PLATFORM <br /><small>ANALYSIS OF KEY HEALTH INDICATORS</small></h2>
+          <h2>
+            MSDAT PLATFORM <br /><small
+              >ANALYSIS OF KEY HEALTH INDICATORS</small
+            >
+          </h2>
 
           <!-- <b-col cols md="6" lg="6"> -->
           <div
@@ -24,18 +28,17 @@
             "
           >
             <b-nav class="h-100 align-items-center">
-              <router-link exact-active-class="active" to="/" class="nav-link"
-                >Main Dashboard</router-link
-              >
-
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
-              <router-link to="#" class="nav-link">COVID-19: Service Uptake</router-link>
-              <router-link to="#" class="nav-link">Custom Dashboard</router-link>
+              <router-link to="/about" class="nav-link">About</router-link>
+              <router-link to="/" class="nav-link">Help & FAQ</router-link>
+              <router-link to="/custom" class="nav-link"
+                >Create New Dashboard</router-link
+              >
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button class="btn btn-outline-light">
+                <button class="btn btn-outline-light rounded-0">
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
@@ -57,7 +60,8 @@
                 </b-dropdown>
               </b-nav-item> -->
               <router-link to="#" class="nav-link"
-                ><b-icon-person-fill></b-icon-person-fill>&nbsp;Login/Register</router-link
+                ><b-icon-person-fill></b-icon-person-fill
+                >&nbsp;Login/Register</router-link
               >
             </b-nav>
             <b-icon
@@ -88,8 +92,8 @@
         <b-col class="">
           <h4>About the MSDAT Dashboard</h4>
           <p>
-            This dashboard is developed and managed by the Department of Health Planning Research
-            and Statistics (DHPRS)
+            This dashboard is developed and managed by the Department of Health
+            Planning Research and Statistics (DHPRS)
           </p>
         </b-col>
       </b-row>

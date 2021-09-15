@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid card shadow dropdown-expanded">
+  <div class="container-fluid card shadow dropdown-expanded work-sans">
     <div class="row p-3">
       <div class="col-md-3 mb-3">
         <b-list-group>

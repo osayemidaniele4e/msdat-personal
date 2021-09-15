@@ -1,5 +1,5 @@
 <template>
-  <div id="header-option">
+  <div id="header-option" class="work-sans">
     <base-modal
       :showModal="modal"
       :size="'md'"
