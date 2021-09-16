@@ -1,6 +1,16 @@
 <template>
   <base-overlay :show="loading">
-    <base-sub-card showControls v-if="values">
+    <base-sub-card
+      showControls
+      v-if="values"
+      @dropdownTypeSelected="
+        downLoadType($event, {
+          indicator: values.indicator.short_name,
+          datasource: values.datasource.datatsource,
+          year: values.year,
+        })
+      "
+    >
       <template #title>
         <p class="work-sans mb-0 line-height">
           Distribution Of
@@ -9,7 +19,7 @@
           >
         </p>
       </template>
-      <BarChart :chartOptions="BarChartOptions" />
+      <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
     </base-sub-card>
   </base-overlay>
 </template>
@@ -17,9 +27,10 @@
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import chartDownload from '../../../mixins/chart_download';
 
 export default {
-  mixins: [formatter],
+  mixins: [chartDownload, formatter],
   components: {
     BarChart,
   },

@@ -1,7 +1,16 @@
 /* eslint-disable no-await-in-loop */
 <template>
   <div class="">
-    <base-sub-card showControls>
+    <base-sub-card
+      showControls
+      @dropdownTypeSelected="
+        downLoadType($event, {
+          indicator: values.indicator.short_name,
+          datasource: '',
+          year: '',
+        })
+      "
+    >
       <template #title>
         <p class="text-dark work-sans mb-0 line-height">
           Comparison of
@@ -11,7 +20,10 @@
           <span class="font-weight-bold">states</span>
         </p>
       </template>
-      <BaseChart :chartOptions="chartConfig" />
+      <BaseChart
+        ref="BaseChart"
+        :chartOptions="chartConfig"
+      />
     </base-sub-card>
   </div>
 </template>
@@ -23,9 +35,10 @@ import { isDataYearly } from '@/util/helper';
 import { uniq } from 'lodash';
 import BaseChart from '../../../../../components/Barchart/BaseBarChart.vue';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
+import chartDownload from '../../../mixins/chart_download';
 
 export default {
-  mixins: [dataPipelineMixin, ControlPanelSetup],
+  mixins: [chartDownload, dataPipelineMixin, ControlPanelSetup],
   components: {
     BaseChart,
   },

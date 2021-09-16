@@ -1,6 +1,10 @@
 <template>
   <base-overlay :show="loading">
-    <base-sub-card showControls v-if="values">
+    <base-sub-card
+      showControls
+      v-if="values"
+      @dropdownTypeSelected="mapDownload($event)"
+    >
       <template #title>
         <p class="work-sans mb-0 line-height">
           Distribution of <b>{{ values.indicator.short_name }}</b> Across the
@@ -11,8 +15,10 @@
       <BarChart
         v-if="visualization === 'line' || visualization === 'column'"
         :chartOptions="chartObject"
+        ref="BaseChart"
       />
       <BaseMap
+        ref="BaseMap"
         v-else
         :mapObject="mapObject"
         :level="level"
@@ -28,10 +34,11 @@ import Maps from '@/components/maps/BaseMap.vue';
 import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
+import chartDownload from '../../../mixins/chart_download';
 
 export default {
   name: 'MultiSource',
-  mixins: [ControlPanelSetup],
+  mixins: [chartDownload, ControlPanelSetup],
   components: { BaseMap: Maps, BarChart },
   props: {
     values: {
@@ -78,6 +85,22 @@ export default {
   },
   methods: {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
+
+    mapDownload(e) {
+      if (this.visualization === 'line' || this.visualization === 'column') {
+        this.downLoadType(e, {
+          indicator: this.values.indicator.short_name,
+          datasource: this.values.datasource.datasource,
+          year: this.values.year,
+        });
+      } else {
+        this.downLoadTypeMap(e, {
+          indicator: this.values.indicator.short_name,
+          datasource: this.values.datasource.datasource,
+          year: this.values.year,
+        });
+      }
+    },
 
     formatDataToSeriesMapFormat(data) {
       return data.map((item) => [

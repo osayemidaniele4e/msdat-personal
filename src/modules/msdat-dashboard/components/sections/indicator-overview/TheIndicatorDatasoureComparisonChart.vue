@@ -10,6 +10,13 @@
       @selected-datasource="onSelectedSource($event)"
       @toggle-confidence-range="onConfidenceRangeClicked($event)"
       :dataSourceOptionsSelected="selectedDS"
+      @dropdownTypeSelected="
+        downLoadType($event, {
+          indicator: values.indicator.short_name,
+          datasource: '',
+          year: '',
+        })
+      "
       v-if="values"
     >
       <template #title>
@@ -18,7 +25,7 @@
           Different Data Source
         </p>
       </template>
-      <BarChart :chartOptions="ChartOptions" />
+      <BarChart ref="BaseChart" :chartOptions="ChartOptions" />
     </base-sub-card>
   </base-overlay>
 </template>
@@ -28,9 +35,10 @@ import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy, uniq } from 'lodash';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import chartDownload from '../../../mixins/chart_download';
 
 export default {
-  mixins: [formatter],
+  mixins: [chartDownload, formatter],
   components: {
     BarChart,
   },

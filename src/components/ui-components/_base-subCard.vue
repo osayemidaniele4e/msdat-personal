@@ -32,11 +32,18 @@
       </div>
     </div>
     <div class="card-body work-sans p-0" style="position: relative">
-      <SubCardDropdown v-show="showMenu" />
+      <div @mouseleave="showMenu = false">
+        <SubCardDropdown
+          @dropDownTypeSelected="$emit('dropdownTypeSelected', $event)"
+          v-show="showMenu"
+        />
+      </div>
+
       <div class="row no-gutters">
         <div class="col" :class="[sideControl ? 'col-10' : '']">
           <div v-if="buttonToggle" class="d-flex justify-content-end">
-            <SubCardToggleButton v-show="showToggle"
+            <SubCardToggleButton
+              v-show="showToggle"
               @button-clicked="$emit('toggled-button', $event)"
             />
           </div>

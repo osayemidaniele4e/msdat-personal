@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="col-md-4">
-      <StateBarChart :values="controlPanelProps" />
+      <StateBarChart  :values="controlPanelProps" />
     </div>
   </div>
 </template>

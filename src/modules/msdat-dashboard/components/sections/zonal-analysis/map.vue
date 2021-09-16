@@ -1,7 +1,16 @@
 <template>
   <div class="container">
     <base-overlay :show="loader">
-      <base-sub-card showControls>
+      <base-sub-card
+        showControls
+        @dropdownTypeSelected="
+          downLoadTypeMap($event, {
+            indicator: controlPanelProps.indicator.short_name,
+            datasource: controlPanelProps.datasource.datasource,
+            year: controlPanelProps.year,
+          })
+        "
+      >
         <template #title>
           <p class="text-dark work-sans mb-0 line-height">
             Distribution of
@@ -16,7 +25,12 @@
           </p>
         </template>
         <div>
-          <BaseMap :mapObject="chart" :level="level" :lgaState="stateName" />
+          <BaseMap
+            ref="BaseMap"
+            :mapObject="chart"
+            :level="level"
+            :lgaState="stateName"
+          />
         </div>
       </base-sub-card>
     </base-overlay>
@@ -26,11 +40,12 @@
 <script>
 import BaseMap from '@/components/maps/BaseMap.vue';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
+import chartDownload from '../../../mixins/chart_download';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
-  mixins: [ControlPanelSetup, dataPipelineMixin],
+  mixins: [chartDownload, ControlPanelSetup, dataPipelineMixin],
   props: {
     controlPanelProps: {
       type: Object,

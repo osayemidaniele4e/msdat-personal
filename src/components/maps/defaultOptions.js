@@ -6,6 +6,9 @@ export default {
       // fontWeight: 'normal'
     },
   },
+  exporting: {
+    enabled: false,
+  },
   title: {
     enabled: false,
     text: '',

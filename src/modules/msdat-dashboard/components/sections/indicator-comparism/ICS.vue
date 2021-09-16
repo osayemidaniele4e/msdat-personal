@@ -8,6 +8,13 @@
         :ConfidenceOptions="false"
         :showToggle="false"
         v-if="values"
+        @dropdownTypeSelected="
+          downLoadType($event, {
+            indicator: values.indicator.short_name,
+            datasource: values.datasource.datasource,
+            year: '',
+          })
+        "
       >
         <template #title>
           <p
@@ -26,7 +33,7 @@
             {{ values.compareBy.name }}s
           </p>
         </template>
-        <BarChart :chartOptions="chartOptions" />
+        <BarChart ref="BaseChart" :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
   </div>
@@ -38,10 +45,11 @@ import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import moment from 'moment';
 import defaultOptions from '@/components/Barchart/defaultOption';
+import chartDownload from '../../../mixins/chart_download';
 
 export default {
   name: 'ICS',
-  mixins: [ControlPanelSetup],
+  mixins: [chartDownload, ControlPanelSetup],
   components: {
     BarChart,
   },

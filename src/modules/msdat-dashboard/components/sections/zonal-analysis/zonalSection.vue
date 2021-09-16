@@ -1,7 +1,16 @@
 <template>
   <div class="">
     <base-overlay :show="loader">
-      <base-sub-card showControls>
+      <base-sub-card
+        showControls
+        @dropdownTypeSelected="
+          downLoadType($event, {
+            indicator: controlPanelProps.indicator.short_name,
+            datasource: '',
+            year: '',
+          })
+        "
+      >
         <template #title>
           <p class="text-dark work-sans mb-0 line-height">
             Distribution of
@@ -15,7 +24,7 @@
             {{ controlPanelProps.year }}
           </p>
         </template>
-        <BarChart ref="chartRef" :chartOptions="chart" />
+        <BarChart ref="BaseChart" :chartOptions="chart" />
       </base-sub-card>
     </base-overlay>
   </div>
@@ -24,12 +33,13 @@
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { mapActions } from 'vuex';
+import chartDownload from '../../../mixins/chart_download';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
   name: 'ZonalSectionChart',
-  mixins: [dataPipelineMixin],
+  mixins: [chartDownload, dataPipelineMixin],
   data() {
     return {
       // later someone can add the name property

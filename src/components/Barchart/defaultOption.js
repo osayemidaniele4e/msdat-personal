@@ -4,6 +4,9 @@ export default {
     zoomType: 'xy',
     height: 800,
   },
+  exporting: {
+    enabled: false,
+  },
   title: {
     enabled: false,
     text: '',

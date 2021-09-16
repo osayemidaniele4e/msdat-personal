@@ -8,6 +8,8 @@
 <script>
 import Highcharts from 'highcharts';
 import loadMap from 'highcharts/modules/map';
+import exportData from 'highcharts/modules/export-data';
+import exporting from 'highcharts/modules/exporting';
 import { genComponent } from 'vue-highcharts';
 
 // default map
@@ -69,6 +71,8 @@ import {
 
 // load map
 loadMap(Highcharts);
+exporting(Highcharts);
+exportData(Highcharts);
 
 export default {
   name: 'BaseMap',
