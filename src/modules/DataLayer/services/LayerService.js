@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 // import { difference } from 'lodash';
 import { take, difference } from 'lodash';
+import Vue from 'vue';
 import { formatDate } from './helper';
 import apiServices from './ApiServices';
 import Database from './database.worker';
@@ -132,9 +133,14 @@ export default class DataLayer {
        */
       console.log('in set timeout');
       //
+      const alert = this.sweetAlert();
       await this.initDataWithYears(this.indicatorList);
+      alert.close();
+
       await this.setAvailableDashboardIndicator();
+      const alert1 = this.sweetAlert();
       await this.updateData();
+      alert1.close();
     }, 500);
 
     /*
@@ -309,5 +315,21 @@ export default class DataLayer {
       }
       this.updatedStoreAvailableIndicator(indicatorID);
     }
+  }
+
+  //  static sweetAlert(title, text, type) {
+  // eslint-disable-next-line class-methods-use-this
+  sweetAlert() {
+    return Vue.swal({
+      toast: true,
+      position: 'bottom-end',
+      icon: 'info',
+      title: 'Data Synchronization in progress',
+      text: 'Updating dashboard with more data',
+      showConfirmButton: false,
+      timerProgressBar: false,
+      allowOutsideClick: false,
+      showLoading: true,
+    });
   }
 }
