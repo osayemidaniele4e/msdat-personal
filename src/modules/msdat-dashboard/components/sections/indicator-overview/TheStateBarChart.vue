@@ -54,11 +54,40 @@ export default {
       async handler(newValues) {
         this.loading = true;
         const data = await this.getData(newValues);
-        this.BarChartOptions = this.genHighChartOption(data, {
+        const nationalTarget = this.dlGetIndicator(
+          newValues.indicator.id,
+        ).national_target;
+        const chartOptions = this.genHighChartOption(data, {
           target: {
-            value: this.dlGetIndicator(newValues.indicator.id).national_target,
+            value: nationalTarget,
           },
         });
+        // add nation and state selected to fit according to mockup 😢 😟 😡
+
+        const parentValue = await this.dlQuery({
+          indicator: newValues.indicator.id,
+          datasource: newValues.datasource.id,
+          period: newValues.year,
+          value_type: 5,
+          location: newValues.location.id,
+        });
+        // because i know i am expecting only on value in the array of results
+        if (parentValue.length > 0) {
+          const parent = parentValue[0];
+          const seriesObject = {
+            showInLegend: false,
+            color:
+              parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
+            name:
+              parseFloat(parent.value) > nationalTarget
+                ? 'On Target'
+                : 'Below Target',
+            data: [[newValues.location.name, parseFloat(parent.value)]],
+          };
+          chartOptions.series.unshift(seriesObject);
+        }
+
+        this.BarChartOptions = chartOptions;
         this.loading = false;
       },
       deep: true,
@@ -70,16 +99,25 @@ export default {
       const {
         datasource, indicator, location, year,
       } = optionsObject;
+
       let locationValue = location;
+
       if (location.id === 1) {
         locationValue = { level: 3 };
+      } else {
+        locationValue = { parent: location.id };
       }
+      // debugger;
+      console.time('getData');
       const data = await this.dlQuery({
         datasource: datasource.id,
         indicator: indicator.id,
         period: year,
         location: locationValue,
+        value_type: 5,
       });
+      console.trace(data);
+      console.timeEnd('getData');
       return data;
     },
   },

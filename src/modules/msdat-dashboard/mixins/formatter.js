@@ -11,7 +11,7 @@ export default {
       series: '',
       color: {
         green: '#00AC40',
-        red: 'red',
+        red: '#E85D58',
       },
     };
   },
