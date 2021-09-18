@@ -174,7 +174,14 @@ export default class DataBase {
    * @param {*} query the objet  to be queried
    * @returns {array} result of the Query
    */
-  static async queryDB(query = {}) {
+  static async queryDB(query = {}, locationIDArray = []) {
+    if (locationIDArray.length > 0) {
+      return dexie
+        .table(DATA)
+        .where(query)
+        .filter((value) => locationIDArray.includes(value.location))
+        .toArray();
+    }
     return dexie
       .table(DATA)
       .where(query)

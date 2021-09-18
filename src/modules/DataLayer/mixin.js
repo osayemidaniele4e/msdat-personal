@@ -1,6 +1,6 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, omit, isMatch, matches, isObject,
+  filter, omit, matches, isObject,
 } from 'lodash';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
@@ -49,22 +49,19 @@ export default {
      * @returns {dataObjectType}
      */
     async dlQuery(queryObject) {
-      // console.log('queryObject', queryObject);
+      // debugger;
       if (isObject(queryObject.location)) {
         const { location } = queryObject;
         const newQueryObject = omit(queryObject, ['location']);
-        const resultValue = await DB.queryDB(newQueryObject);
-        return filter(resultValue, (item) => {
-          const locationValue = this.dlGetLocation(item.location);
-          if (isMatch(locationValue, location)) {
-            return item;
-          }
-          return null;
-        });
+        const locationValues = this.dlGetLocation(location);
+        const locationID = locationValues.map((item) => item.id);
+        const resultValue = await DB.queryDB(newQueryObject, locationID);
+        return resultValue;
       }
       const result = await DB.queryDB(queryObject);
       return result;
     },
+
     dlGetDashboardDataSource() {
       return this.dlDatasource.filter((e) => this.dlDashboardDataSource.includes(e.id));
     },
@@ -103,5 +100,6 @@ export default {
   mounted() {
     // const data = await this.dlQuery({ datasource: 6, indicator: 7, period: '2020' });
     // console.log(data);
+    // console.trace(this.dlGetLocation({ level: 3 }));
   },
 };
