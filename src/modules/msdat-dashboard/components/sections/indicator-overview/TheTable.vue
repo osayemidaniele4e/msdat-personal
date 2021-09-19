@@ -12,6 +12,8 @@
         class="work-sans"
         v-if="TableData.length"
         :dataArray="TableData"
+        :setSelectedSource="setTableSelected"
+        @selected:source="updateControlPanel($event)"
       />
     </base-sub-card>
   </base-overlay>
@@ -30,6 +32,7 @@ export default {
     return {
       TableData: '',
       loading: true,
+      setTableSelected: {},
     };
   },
   props: {
@@ -79,6 +82,11 @@ export default {
         this.loading = false;
       },
     },
+    'values.datasource': {
+      handler(newValue) {
+        this.setTableSelected = newValue;
+      },
+    },
   },
   methods: {
     /**
@@ -103,6 +111,14 @@ export default {
         });
       }
       return null;
+    },
+
+    updateControlPanel(datasourceObject) {
+      this.$store.commit('MSDAT_STORE/SET_DEFAULT', {
+        controlIndex: 0,
+        key: 'dataSource',
+        value: datasourceObject,
+      });
     },
   },
 };

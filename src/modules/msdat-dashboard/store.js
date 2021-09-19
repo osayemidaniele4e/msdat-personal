@@ -58,14 +58,19 @@ export default {
           payload.controlIndex2
         ].options = payload.values;
       } else {
-        state.controlConfig[
-          payload.panelIndex].setup[payload.controlIndex].options = payload.values;
+        state.controlConfig[payload.panelIndex].setup[
+          payload.controlIndex].options = payload.values;
       }
     },
 
     toggleVisibility: (state, payload) => {
       // eslint-disable-next-line max-len
       state.controlConfig[payload.panelIndex].setup[payload.controlIndex].visibility = payload.visibility;
+    },
+
+    // set default on individual control panel
+    SET_DEFAULT: (state, payload) => {
+      state.controlConfig[payload.controlIndex].defaults[payload.key] = payload.value;
     },
   },
   actions: {

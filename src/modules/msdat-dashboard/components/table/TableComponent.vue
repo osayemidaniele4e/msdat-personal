@@ -202,6 +202,10 @@ export default {
         'NMIS',
       ],
     },
+
+    setSelectedSource: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -294,7 +298,7 @@ export default {
     },
 
     log(e) {
-      console.log(e);
+      // console.log(e);
       if (this.selectedSource === e) {
         this.selectedSource = '';
         return;
@@ -313,6 +317,10 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+
+    setSelectedSource(newValue) {
+      this.selectedSource = newValue;
     },
   },
 };

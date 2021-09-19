@@ -133,6 +133,12 @@ export default {
       required: false,
     },
   },
+  watch: {
+    defaultDataSource(newValue) {
+      console.log(newValue);
+      this.payload.datasource = newValue;
+    },
+  },
 
   mounted() {
     this.payload.indicator = this.defaultIndicator;
