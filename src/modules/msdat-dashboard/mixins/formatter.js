@@ -26,7 +26,7 @@ export default {
           const datasource = this.dlGetDataSource(e.datasource);
           const factor = this.dlGetFactor(indicatorObject.factor);
           data.values.push({
-            dataSources: datasource.datasource,
+            dataSources: datasource,
             value: e.value,
             factor: formatFactor(factor.display_factor),
             year: e.period,
