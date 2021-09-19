@@ -222,7 +222,7 @@ export default {
        */
       source: [],
 
-      classificationOrder: ['Routine', 'Estimate', 'Survey'],
+      classificationOrder: ['Routine', 'Survey', 'Estimate'],
     };
   },
   methods: {
@@ -251,7 +251,9 @@ export default {
      * this filter thorough the array of data parse and et all available  Parsed
      */
     getAvailableDataSources() {
-      const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
+      const arraySource = this.dataArray.map(
+        (e) => e.values.map((et) => et.dataSources),
+      );
       const allAvailableSources = uniq(flatten(arraySource));
       debugger;
       /**
