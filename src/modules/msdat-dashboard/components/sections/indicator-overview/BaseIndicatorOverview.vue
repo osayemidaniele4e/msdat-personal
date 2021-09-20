@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="col-md-4">
-      <StateBarChart  :values="controlPanelProps" />
+      <StateBarChart :values="controlPanelProps" />
     </div>
   </div>
 </template>
@@ -46,12 +46,9 @@ export default {
     // The is the updated the control panel dropdown as indicator are gotten from the API
     // in the background (async)
     indicatorDropdownUpdated(newVal) {
-      console.trace('indicatorDropdownUpdated', newVal);
       this.SET_CONTROL_OPTIONS({
-        multipleSetup: true,
-        panelIndex: 4,
-        controlIndex: this.currentIndex,
-        controlIndex2: 0,
+        panelIndex: 0,
+        controlIndex: 0,
         values: newVal,
       });
     },

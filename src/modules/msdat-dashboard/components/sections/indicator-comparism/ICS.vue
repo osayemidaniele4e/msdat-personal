@@ -320,7 +320,7 @@ export default {
       }));
 
       const results = await Promise.all(dataPromises);
-      debugger;
+      // debugger;
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];
