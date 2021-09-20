@@ -48,17 +48,20 @@
       </li> -->
       <li>
         <!-- Don't forget to add the # so it does reload the page -->
-        <a href="#" @click="toggleFullScreen()">
+        <a href="#" @click.prevent="toggleFullScreen()">
           <img src="@/assets/img/icons/ic_zoom.svg" alt="" />
           <span>View Fullscreen</span>
         </a>
       </li>
       <div class="divider"></div>
       <li>
-        <router-link to="/">
+        <a
+          href="https://mapping.fmohconnect.gov.ng/dataset/submit-dataset"
+          target="_blank"
+        >
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
           <span>Submit New Data Source</span>
-        </router-link>
+        </a>
       </li>
       <!-- <li>
         <router-link to="/">
