@@ -79,12 +79,11 @@
           <span>Feedback</span>
         </a>
       </li>
-      <!-- <li  @click="$emit('showContact')"> -->
       <li @click="togglemodal">
-        <router-link to="#">
+        <a href="#">
           <img src="@/assets/img/icons/ic_contact.svg" alt="" />
-          <span>Contact</span>
-        </router-link>
+          <span>Contact Us</span>
+        </a>
       </li>
       <li>
         <router-link to="/">
