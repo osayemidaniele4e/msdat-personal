@@ -40,12 +40,12 @@
           <span>Print</span>
         </a>
       </li>
-      <li>
+      <!-- <li>
         <router-link to="/">
           <img src="@/assets/img/icons/ic_download.svg" alt="" />
           <span>Download Data</span>
         </router-link>
-      </li>
+      </li> -->
       <li>
         <!-- Don't forget to add the # so it does reload the page -->
         <a href="#" @click="toggleFullScreen()">
@@ -60,12 +60,12 @@
           <span>Submit New Data Source</span>
         </router-link>
       </li>
-      <li>
+      <!-- <li>
         <router-link to="/">
           <img src="@/assets/img/icons/ic_recommendation.svg" alt="" />
           <span>Suggest Indicator/Data Source</span>
         </router-link>
-      </li>
+      </li> -->
       <div class="divider"></div>
       <li>
         <router-link to="/">
