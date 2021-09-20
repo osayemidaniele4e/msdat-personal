@@ -35,10 +35,10 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/">
+        <a href="#" @click.prevent="PrintPage()">
           <img src="@/assets/img/icons/ic_print.svg" alt="" />
           <span>Print</span>
-        </router-link>
+        </a>
       </li>
       <li>
         <router-link to="/">
@@ -127,6 +127,9 @@ export default {
       } else if (document.exitFullscreen) {
         document.exitFullscreen();
       }
+    },
+    PrintPage() {
+      window.print();
     },
   },
 };
