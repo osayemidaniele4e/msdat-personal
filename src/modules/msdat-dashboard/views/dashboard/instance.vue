@@ -346,7 +346,12 @@ export default {
     // The initializing the control panel
     this.setDefaults();
     this.setUpControlPanelDropDown();
-    await this.setYearDropdown();
+
+    this.defaultYearDropdown = this.setYearDropdown();
+    if (this.defaultYearDropdown.length > 0) {
+      const firstItem = 0;
+      this.defaultYear = this.defaultYearDropdown[firstItem];
+    }
     this.cpIsLoading = true;
     this.$nextTick(() => {
       this.startScroll();
