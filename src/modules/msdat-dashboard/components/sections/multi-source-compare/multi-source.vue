@@ -2,7 +2,7 @@
   <base-overlay :show="loading">
     <base-sub-card
       showControls
-      v-if="values"
+      v-if="Object.keys(values).length"
       @dropdownTypeSelected="mapDownload($event)"
     >
       <template #title>

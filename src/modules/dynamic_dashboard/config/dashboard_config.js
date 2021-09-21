@@ -89,7 +89,6 @@ export default [
     initialDataSource: 14,
     initialLocation: 1,
   },
-
   {
     name: 'Health_Workforce',
     indicators: [
@@ -193,7 +192,6 @@ export default [
     initialDataSource: 24,
     initialLocation: 1,
   },
-
   {
     name: 'Demographic',
     indicators: [
@@ -230,10 +228,10 @@ export default [
       93,
       94,
     ],
-    defaultIndicators: [63, 64, 65], // an indicator ID and related indicators,
+    defaultIndicators: [68, 63, 81], // an indicator ID and related indicators,
     dataSources: [7, 18, 21, 23, 22, 20, 2, 19],
-    initialIndicator: 103,
-    initialDataSource: 24,
+    initialIndicator: 63,
+    initialDataSource: 19,
     initialLocation: 1,
   },
 ];

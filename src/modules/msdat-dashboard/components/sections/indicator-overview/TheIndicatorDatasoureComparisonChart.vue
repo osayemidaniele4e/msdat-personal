@@ -17,7 +17,7 @@
           year: '',
         })
       "
-      v-if="values"
+      v-if="Object.keys(values).length"
     >
       <template #title>
         <p class="work-sans mb-0 line-height">
@@ -259,6 +259,10 @@ export default {
       }
       this.loading = false;
     },
+  },
+  mounted() {
+    debugger;
+    console.trace(this.values);
   },
 };
 </script>

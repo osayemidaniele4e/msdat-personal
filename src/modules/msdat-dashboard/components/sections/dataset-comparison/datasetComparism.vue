@@ -3,6 +3,7 @@
   <div class="">
     <base-sub-card
       showControls
+        v-if="Object.keys(values).length"
       @dropdownTypeSelected="
         downLoadType($event, {
           indicator: values.indicator.short_name,
