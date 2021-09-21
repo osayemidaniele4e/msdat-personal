@@ -35,37 +35,40 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/">
+        <a href="#" @click.prevent="PrintPage()">
           <img src="@/assets/img/icons/ic_print.svg" alt="" />
           <span>Print</span>
-        </router-link>
+        </a>
       </li>
-      <li>
+      <!-- <li>
         <router-link to="/">
           <img src="@/assets/img/icons/ic_download.svg" alt="" />
           <span>Download Data</span>
         </router-link>
-      </li>
+      </li> -->
       <li>
         <!-- Don't forget to add the # so it does reload the page -->
-        <a href="#" @click="toggleFullScreen()">
+        <a href="#" @click.prevent="toggleFullScreen()">
           <img src="@/assets/img/icons/ic_zoom.svg" alt="" />
           <span>View Fullscreen</span>
         </a>
       </li>
       <div class="divider"></div>
       <li>
-        <router-link to="/">
+        <a
+          href="https://mapping.fmohconnect.gov.ng/dataset/submit-dataset"
+          target="_blank"
+        >
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
           <span>Submit New Data Source</span>
-        </router-link>
+        </a>
       </li>
-      <li>
+      <!-- <li>
         <router-link to="/">
           <img src="@/assets/img/icons/ic_recommendation.svg" alt="" />
           <span>Suggest Indicator/Data Source</span>
         </router-link>
-      </li>
+      </li> -->
       <div class="divider"></div>
       <li>
         <router-link to="/">
@@ -127,6 +130,9 @@ export default {
       } else if (document.exitFullscreen) {
         document.exitFullscreen();
       }
+    },
+    PrintPage() {
+      window.print();
     },
   },
 };
