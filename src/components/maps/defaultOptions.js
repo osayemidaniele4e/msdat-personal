@@ -52,7 +52,7 @@ export default {
     map: {
       borderColor: 'white',
       borderWidth: 3,
-      allAreas: true,
+      allAreas: false,
       nullInteraction: true,
       joinBy: ['name', 'hc-key'],
       dataLabels: {
