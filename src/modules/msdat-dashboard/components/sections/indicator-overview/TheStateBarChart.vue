@@ -114,7 +114,7 @@ export default {
         indicator: indicator.id,
         period: year,
         location: locationValue,
-        value_type: 5,
+        // value_type: 5,
       });
       console.trace(data);
       console.timeEnd('getData');

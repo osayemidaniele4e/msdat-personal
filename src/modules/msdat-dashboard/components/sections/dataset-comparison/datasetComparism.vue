@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
 <template>
-  <div class="">
+  <base-overlay :show="loading">
     <base-sub-card
       showControls
-        v-if="Object.keys(values).length"
+      v-if="Object.keys(values).length"
       @dropdownTypeSelected="
         downLoadType($event, {
           indicator: values.indicator.short_name,
@@ -21,12 +21,9 @@
           <span class="font-weight-bold">states</span>
         </p>
       </template>
-      <BaseChart
-        ref="BaseChart"
-        :chartOptions="chartConfig"
-      />
+      <BaseChart ref="BaseChart" :chartOptions="chartConfig" />
     </base-sub-card>
-  </div>
+  </base-overlay>
 </template>
 
 <script>
@@ -47,6 +44,7 @@ export default {
     return {
       chartConfig: {},
       // DataSetConfig: cloneDeep(DataSetConfig),
+      loading: true,
     };
   },
   methods: {
@@ -64,7 +62,7 @@ export default {
           indicator: this.values.indicator.id,
           datasource: dataSourceObject.id,
         });
-        if (data) {
+        if (data.length > 0) {
           const onlyYearlyData = data.filter((item) => {
             if (isDataYearly(item.period)) {
               return item;
@@ -97,6 +95,7 @@ export default {
     },
   },
   async mounted() {
+    this.loading = true;
     const dropDown = await this.setUpDataSourceNYearDropdown();
     this.SET_CONTROL_OPTIONS({
       panelIndex: 3,
@@ -109,11 +108,13 @@ export default {
       controlIndex: 1,
       values: dropDown,
     });
+    this.loading = false;
   },
 
   watch: {
     values: {
       async handler(controlValues) {
+        this.loading = true;
         let dataSourcesNYear = [];
         if (!Array.isArray(controlValues.datasource)) {
           dataSourcesNYear = [controlValues.datasource];
@@ -164,6 +165,7 @@ export default {
           colors: ['#17606B', '#E85D58', '#58B74E'],
         };
         this.chartConfig.series = orderResult;
+        this.loading = false;
       },
       deep: true,
     },
@@ -176,6 +178,18 @@ export default {
         controlIndex: 3,
         values: newVal,
       });
+    },
+
+    'values.indicator': {
+      async handler() {
+        this.loading = true;
+        const dropDown = await this.setUpDataSourceNYearDropdown();
+        this.SET_CONTROL_OPTIONS({
+          panelIndex: 3,
+          controlIndex: 1,
+          values: dropDown,
+        });
+      },
     },
   },
 };

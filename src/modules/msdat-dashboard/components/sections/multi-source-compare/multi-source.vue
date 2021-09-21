@@ -29,25 +29,21 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
+// import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import Maps from '@/components/maps/BaseMap.vue';
-import { mapActions } from 'vuex';
+// import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 import chartDownload from '../../../mixins/chart_download';
 
 export default {
   name: 'MultiSource',
-  mixins: [chartDownload, ControlPanelSetup],
+  mixins: [chartDownload],
   components: { BaseMap: Maps, BarChart },
   props: {
     values: {
       type: Object,
       required: true,
-    },
-    currentIndex: {
-      type: Number,
-      // require,
     },
   },
   data() {
@@ -84,8 +80,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
-
     mapDownload(e) {
       if (this.visualization === 'line' || this.visualization === 'column') {
         this.downLoadType(e, {
@@ -227,54 +221,8 @@ export default {
         this.loading = false;
       },
       deep: true,
-      immediate: true,
+      immediate: false,
     },
-
-    watch: {
-      // The is the updated the control panel dropdown as indicator are gotten from the API
-      // in the background (async)
-      indicatorDropdownUpdated(newVal) {
-        this.SET_CONTROL_OPTIONS({
-          multipleSetup: true,
-          panelIndex: 4,
-          controlIndex: this.currentIndex,
-          controlIndex2: 0,
-          values: newVal,
-        });
-      },
-    },
-  },
-  async mounted() {
-    const setYearDropdown = await this.setYearDropdown();
-    // debugger;
-    this.SET_CONTROL_OPTIONS({
-      multipleSetup: true,
-      panelIndex: 4,
-      controlIndex: this.currentIndex,
-      controlIndex2: 0,
-      values: this.defaultIndicatorDropdown,
-    });
-    // this.SET_CONTROL_OPTIONS({
-    //   multipleSetup: true,
-    //   panelIndex: 4,
-    //   controlIndex: this.currentIndex,
-    //   controlIndex2: 3,
-    //   values: this.defaultLocationDropdown,
-    // });
-    this.SET_CONTROL_OPTIONS({
-      multipleSetup: true,
-      panelIndex: 4,
-      controlIndex: this.currentIndex,
-      controlIndex2: 2,
-      values: this.defaultDataSourceDropdown,
-    });
-    this.SET_CONTROL_OPTIONS({
-      multipleSetup: true,
-      panelIndex: 4,
-      controlIndex: this.currentIndex,
-      controlIndex2: 4,
-      values: setYearDropdown,
-    });
   },
 };
 </script>

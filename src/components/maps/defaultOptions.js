@@ -3,7 +3,7 @@ export default {
     style: {
       // fontSize: '10px',
       fontFamily: '"Work Sans", sans-serif',
-      // fontWeight: 'normal'
+      fontWeight: 'normal',
     },
   },
   exporting: {

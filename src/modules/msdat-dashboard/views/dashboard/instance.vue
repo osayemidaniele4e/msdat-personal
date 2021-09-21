@@ -146,7 +146,7 @@
             </template>
             <template>
               <LazyLoading>
-                <ICS :values="indicatorComparisonData" />
+                <BaseICS :controlPanelProps="indicatorComparisonData" />
               </LazyLoading>
             </template>
           </base-sub-card>
@@ -181,9 +181,9 @@
                 <template v-for="n in 3">
                   <div :key="n" class="col-md-4">
                     <LazyLoading>
-                      <MultiSourceCompare
+                      <BaseMultiSourceSection
                         v-if="MultiSourceCompareValue[n - 1]"
-                        :values="MultiSourceCompareValue[n - 1]"
+                        :controlPanelProps="MultiSourceCompareValue[n - 1]"
                         :currentIndex="n - 1"
                       />
                     </LazyLoading>
@@ -211,7 +211,7 @@ import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
-import ICS from '../../components/sections/indicator-comparism/ICS.vue';
+import BaseICS from '../../components/sections/indicator-comparism/BaseICS.vue';
 import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import tour from '../onboarding/tour';
 import Header from '../about/layout/theHeader.vue';
@@ -219,7 +219,7 @@ import Footer from '../about/layout/theFooter.vue';
 import scroll from '../../modules/onScroll/onscroll';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 import Loading from '../../mixins/loading';
-import MultiSourceCompare from '../../components/sections/multi-source-compare/multi-source.vue';
+import BaseMultiSourceSection from '../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
 
 export default {
   mixins: [Loading, formatter, controlPanelSetup, tour, scroll],
@@ -245,8 +245,8 @@ export default {
     ControlPanel,
     DataSetComparism,
     BaseIndicatorOverview,
-    ICS,
-    MultiSourceCompare,
+    BaseICS,
+    BaseMultiSourceSection,
     Header,
     Footer,
     ZonalAnalysisSection,

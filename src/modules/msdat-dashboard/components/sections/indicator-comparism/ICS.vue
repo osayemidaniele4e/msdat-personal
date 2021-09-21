@@ -208,20 +208,9 @@ export default {
       },
       deep: true,
     },
-
-    // The is the updated the control panel dropdown as indicator are gotten from the API
-    // in the background (async)
-    indicatorDropdownUpdated(newVal) {
-      this.SET_CONTROL_OPTIONS({
-        panelIndex: 2,
-        controlIndex: 3,
-        values: newVal,
-      });
-    },
   },
   methods: {
     ...mapActions('MSDAT_STORE', [
-      'SET_CONTROL_OPTIONS', // -> this.foo()
       'TOGGLE_VISIBILITY', // -> this.toggleVisibility()
     ]),
     displayFactorSign(factor) {
@@ -364,35 +353,6 @@ export default {
         console.log(this.chartOptions);
       }
     },
-  },
-  mounted() {
-    console.trace('ICS mounted');
-    // console.log(this.defaultIndicatorDropdown);
-    // indicator dropdown
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 2,
-      controlIndex: 4,
-      values: this.defaultIndicatorDropdown,
-    });
-
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 2,
-      controlIndex: 3,
-      values: this.defaultLocationDropdown,
-    });
-
-    // datasource dropdown
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 2,
-      controlIndex: 1,
-      values: this.defaultDataSourceDropdown,
-    });
-    // period dropdown;
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 2,
-      controlIndex: 2,
-      values: ['2010', '2015'],
-    });
   },
 };
 </script>
