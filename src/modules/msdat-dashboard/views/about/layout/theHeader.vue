@@ -30,7 +30,7 @@
             <b-nav class="h-100 align-items-center">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
               <router-link to="/about" class="nav-link">About</router-link>
-              <router-link to="/" class="nav-link">Help & FAQ</router-link>
+              <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
               <router-link to="/custom" class="nav-link"
                 >Create New Dashboard</router-link
               >
