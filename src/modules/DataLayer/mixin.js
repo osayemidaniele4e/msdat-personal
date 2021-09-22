@@ -30,6 +30,7 @@ export default {
   },
   computed: {
     ...mapState({
+      dlDataSourceSpecificIndicator: (state) => state.datasource_specific_indicator,
       dlDatasource: (state) => state.datasources,
       dlIndicator: (state) => state.indicators,
       dlLocation: (state) => state.location,
@@ -95,6 +96,12 @@ export default {
     dlGetValueTypes(id) {
       // console.log(this.dlValue_type);
       return this.dlValue_type.find((item) => item.id === id);
+    },
+    dlGetDataSourceSpecificIndicator(values) {
+      if (typeof values === 'object') {
+        return filter(this.dlDataSourceSpecificIndicator, matches(values));
+      }
+      return this.dlDataSourceSpecificIndicator.find((item) => item.id === values);
     },
   },
   mounted() {
