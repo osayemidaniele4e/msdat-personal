@@ -27,7 +27,7 @@ export default {
     indicatorDropdownUpdated(newVal) {
       this.SET_CONTROL_OPTIONS({
         panelIndex: 2,
-        controlIndex: 3,
+        controlIndex: 4,
         values: newVal,
       });
     },

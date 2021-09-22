@@ -174,8 +174,8 @@ export default {
     // in the background (async)
     indicatorDropdownUpdated(newVal) {
       this.SET_CONTROL_OPTIONS({
-        panelIndex: 2,
-        controlIndex: 3,
+        panelIndex: 3,
+        controlIndex: 0,
         values: newVal,
       });
     },
