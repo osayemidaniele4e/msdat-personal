@@ -68,7 +68,7 @@ export default {
           indicator: newValues.indicator.id,
           datasource: newValues.datasource.id,
           period: newValues.year,
-          value_type: 5,
+          // value_type: 5,
           location: newValues.location.id,
         });
         // because i know i am expecting only on value in the array of results
