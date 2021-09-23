@@ -216,7 +216,7 @@ export default {
       /**
        * This send the selected Source to the Child component to Highlight
        */
-      selectedSource: '',
+      selectedSource: {},
       /**
        * This store the all the data sources available in the data parsed
        */
@@ -251,9 +251,7 @@ export default {
      * this filter thorough the array of data parse and et all available  Parsed
      */
     getAvailableDataSources() {
-      const arraySource = this.dataArray.map(
-        (e) => e.values.map((et) => et.dataSources),
-      );
+      const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
       debugger;
       /**
