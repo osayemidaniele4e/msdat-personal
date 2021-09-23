@@ -137,19 +137,59 @@ export default {
         });
         const promises = queryObject.map((item) => this.dlQuery(item));
         const result = await Promise.all(promises);
-        const orderResult = queryObject.map((item, index) => {
+        const orderResult = [];
+        for (let index = 0; index < queryObject.length; index += 1) {
           const response = result[index];
           const dataValues = response.map((element) => [
             this.dlGetLocation(element.location).name,
             parseFloat(element.value),
           ]);
-          // const dataSource = this.dlGetDataSource(item.datasource).datasource;
 
-          return {
+          // This adds national to the top;
+          // eslint-disable-next-line no-await-in-loop
+          const query = await this.dlQuery({
+            indicator: controlValues.indicator.id,
+            // eslint-disable-next-line radix
+            datasource: parseInt(dataSourcesNYear[index].id.split('-')[0]),
+            period: dataSourcesNYear[index].id.split('-')[1],
+            location: 1,
+          });
+
+          const nationValueSeries = [
+            this.dlGetLocation(query[0].location).name,
+            parseFloat(query[0].value),
+          ];
+
+          // add it ot the top of the series
+          dataValues.unshift(nationValueSeries);
+
+          orderResult.push({
             name: dataSourcesNYear[index].item,
             data: dataValues,
-          };
-        });
+          });
+        }
+
+        // const orderResult = queryObject.map((item, index) => {
+        //   const response = result[index];
+        //   const dataValues = response.map((element) => [
+        //     this.dlGetLocation(element.location).name,
+        //     parseFloat(element.value),
+        //   ]);
+        //   // const dataSource = this.dlGetDataSource(item.datasource).datasource;
+
+        //   console.trace({
+        //     indicator: controlValues.indicator.id,
+        //     // eslint-disable-next-line radix
+        //     datasource: parseInt(controlValues.datasource.id.split('-')[0]),
+        //     period: controlValues.datasource.id.split('-')[1],
+        //     location: 1,
+        //   });
+
+        //   return {
+        //     name: dataSourcesNYear[index].item,
+        //     data: dataValues,
+        //   };
+        // });
 
         this.chartConfig = {
           plotOptions: {
