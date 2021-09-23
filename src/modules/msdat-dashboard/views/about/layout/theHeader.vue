@@ -12,9 +12,9 @@
           class="d-flex justify-content-between align-items-center border-left"
         >
           <h2>
-            MSDAT PLATFORM <br /><small
-              >ANALYSIS OF KEY HEALTH INDICATORS</small
-            >
+            <small>MSDAT PLATFORM</small>
+            <br />
+            {{ $route.meta.title }}
           </h2>
 
           <!-- <b-col cols md="6" lg="6"> -->
@@ -221,7 +221,7 @@ header#the-header {
 
             h2 {
               font: normal normal 600 18px/20px Work Sans;
-              text-transform: uppercase;
+              // text-transform: uppercase;
 
               // 3-dots icon
               & ~ div {

@@ -1,6 +1,7 @@
 export default [
   {
     name: 'Health_Outcomes',
+    title: 'Health Outcomes and Service Coverage',
     indicators: [
       1,
       2,
@@ -42,6 +43,7 @@ export default [
   },
   {
     name: 'Health_Facility',
+    title: 'Health Facility',
     indicators: [
       34,
       35,
@@ -82,6 +84,7 @@ export default [
   },
   {
     name: 'Health_Financing',
+    title: 'Health Financing',
     indicators: [95, 96, 97, 98, 99, 100, 101, 102],
     defaultIndicators: [95, 96, 97], // an indicator ID and related indicators,
     dataSources: [14],
@@ -91,6 +94,7 @@ export default [
   },
   {
     name: 'Health_Workforce',
+    title: 'Health Workforce',
     indicators: [
       103,
       104,
@@ -194,6 +198,7 @@ export default [
   },
   {
     name: 'Demographic',
+    title: 'Demographic',
     indicators: [
       63,
       64,
