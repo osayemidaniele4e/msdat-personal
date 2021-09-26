@@ -60,6 +60,9 @@ export default {
         xAxis: {
           ...defaultOptions.xAxis,
         },
+        tooltip: {
+          shared: true,
+        },
         yAxis: {
           min: 0,
           plotLines: [
@@ -325,6 +328,9 @@ export default {
           );
           // const displayFactorSign2 = this.displayFactor(indicatorDisplayFactor2);
           this.ChartOptions = {
+            tooltip: {
+              shared: true,
+            },
             yAxis: [
               {
                 lineWidth: 0,

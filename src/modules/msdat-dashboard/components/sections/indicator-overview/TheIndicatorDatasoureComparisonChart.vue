@@ -100,6 +100,9 @@ export default {
      */
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
+        tooltip: {
+          shared: true,
+        },
         xAxis: {
           ...defaultOptions.xAxis,
           categories: sortedYear,
