@@ -108,12 +108,13 @@ export default {
         for (let i = 0; i < newSeries.length; i += 1) {
           if (newSeries[0].data.length <= 0) {
             this.showNoSubNationalData = false;
-            break;
+            return;
           }
           if (i > 0) {
             this.showNoSubNationalData = true;
             if (newSeries[i].data.length > 0) {
               this.showNoSubNationalData = false;
+              return;
             }
           }
         }
