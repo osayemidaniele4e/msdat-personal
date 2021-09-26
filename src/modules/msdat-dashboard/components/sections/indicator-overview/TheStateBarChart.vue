@@ -1,43 +1,52 @@
 <template>
-  <base-overlay :show="loading">
-    <base-sub-card
-      showControls
-      v-if="Object.keys(values).length"
-      @dropdownTypeSelected="
-        downLoadType($event, {
-          indicator: values.indicator.short_name,
-          datasource: values.datasource.datatsource,
-          year: values.year,
-        })
-      "
-    >
-      <template #title>
-        <p class="work-sans mb-0 line-height">
-          Distribution Of
-          <b>{{ values.indicator.short_name }}</b> Across The Country. Source:<b>
-            {{ values.datasource.datatsource }} {{ values.year }}</b
-          >
-        </p>
-      </template>
-      <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
-    </base-sub-card>
-  </base-overlay>
+  <div class="position-relative">
+    <base-overlay :show="loading">
+      <base-sub-card
+        showControls
+        v-if="Object.keys(values).length"
+        @dropdownTypeSelected="
+          downLoadType($event, {
+            indicator: values.indicator.short_name,
+            datasource: values.datasource.datatsource,
+            year: values.year,
+          })
+        "
+      >
+        <template #title>
+          <p class="work-sans mb-0 line-height">
+            Distribution Of
+            <b>{{ values.indicator.short_name }}</b> Across The Country.
+            Source:<b> {{ values.datasource.datatsource }} {{ values.year }}</b>
+          </p>
+        </template>
+        <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+      </base-sub-card>
+    </base-overlay>
+    <NoSubNationalData
+      v-if="showNoSubNationalData"
+      class="position-absolute"
+      style="top: 20%; width: 90%"
+    />
+  </div>
 </template>
 
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
+import NoSubNationalData from '../../NoData.vue';
 
 export default {
   mixins: [chartDownload, formatter],
   components: {
     BarChart,
+    NoSubNationalData,
   },
   data() {
     return {
       BarChartOptions: {},
       loading: false,
+      showNoSubNationalData: false,
     };
   },
   props: {
@@ -92,6 +101,23 @@ export default {
       },
       deep: true,
       immediate: false,
+    },
+    'BarChartOptions.series': {
+      handler(newSeries) {
+        console.log('charrtt', newSeries);
+        for (let i = 0; i < newSeries.length; i += 1) {
+          if (newSeries[0].data.length <= 0) {
+            this.showNoSubNationalData = false;
+            break;
+          }
+          if (i > 0) {
+            this.showNoSubNationalData = true;
+            if (newSeries[i].data.length > 0) {
+              this.showNoSubNationalData = false;
+            }
+          }
+        }
+      },
     },
   },
   methods: {
