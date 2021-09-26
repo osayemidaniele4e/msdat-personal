@@ -1,14 +1,17 @@
 <template>
   <tr>
     <template>
-      <td class="align-middle">
+      <!-- DO NOT REMOVE class that begin we table- they
+      help control the tour guid feature on the platform -->
+      <!-- A test case could be added to ensure that this alway there -->
+      <td class="align-middle table-info-icon">
         <div class="d-flex justify-content-center">
           <b-icon-exclamation-circle-fill
             @click="$emit('indicator-info:clicked', rowData.indicator)"
           />
         </div>
       </td>
-      <td class="align-middle p-2" scope="col">
+      <td class="align-middle p-2 table-indicators" scope="col">
         <!-- Use this slot to set the related indicator multiselect and it options -->
         <div class="d-flex flex-column">
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
