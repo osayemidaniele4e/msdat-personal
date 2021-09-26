@@ -203,8 +203,11 @@
       <!-- lazy loading ends here -->
 
       <Footer class="visible"> </Footer>
+      <Onboarding
+        v-if="firstTime"
+        v-on:closeOnboard="onCloseOnBoarding"
+      ></Onboarding>
     </div>
-    <Onboarding></Onboarding>
   </div>
 </template>
 
@@ -227,10 +230,10 @@ import scroll from '../../modules/onScroll/onscroll';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 import Loading from '../../mixins/loading';
 import BaseMultiSourceSection from '../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
-import Onboarding from '../onboarding/onboarding.vue';
+import Onboarding from '../onboarding/onboarding';
 
 export default {
-  mixins: [Loading, formatter, controlPanelSetup, tour, scroll],
+  mixins: [Loading, formatter, controlPanelSetup, Onboarding, tour, scroll],
   data() {
     return {
       position: 3,
@@ -259,7 +262,6 @@ export default {
     Footer,
     ZonalAnalysisSection,
     LazyLoading,
-    Onboarding,
   },
   props: {
     initialIndicator: {
