@@ -38,7 +38,7 @@ export default {
     tickWidth: 1,
   },
   yAxis: {
-    min: 0,
+    // min: 0,
     title: {
       text: 'Values',
       style: {
@@ -83,9 +83,10 @@ export default {
       // borderWidth: 0,
     },
     series: {
+      grouping: false,
       pointWidth: 10,
       connectNulls: true,
-      // pointPlacement: 'between',
+      pointPlacement: 'on',
       // borderWidth: 0,
     },
     bar: {
