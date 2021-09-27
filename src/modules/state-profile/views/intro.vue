@@ -72,7 +72,8 @@
         <!-- <stateProfileSvg :name="'map'"> </stateProfileSvg> -->
         <p class="mt-2 text-center map-text">Select a state on the map to view state profile</p>
         <div class="row justify-content-center">
-          <button class="btn bottom-btn px-4 mt-3" @click='viewNationalProfile'>View National Profile</button>
+          <button class="btn bottom-btn px-4 mt-3" @click='viewNationalProfile'>
+            View National Profile</button>
         </div>
       </b-col>
     </b-row>
@@ -82,7 +83,6 @@
 <script>
 // import stateProfileSvg from "../state-profile/svg/stateprofileSvg.vue";
 import BaseMap from '@/components/maps/BaseMap.vue';
-import { StateProfileDashboard } from '@/config/dashboardGroups';
 
 export default {
   name: 'intro',
@@ -116,9 +116,9 @@ export default {
             color: '#ffc482',
             joinBy: ['name', 'hc-key'],
             dataLabels: {
-              style:{
-                fontFamily: "Muli",
-                color: '#1c4d33'
+              style: {
+                fontFamily: 'Muli',
+                color: '#1c4d33',
               },
               enabled: true,
               formatter() {
@@ -135,12 +135,12 @@ export default {
         },
         series: [{
           name: 'Nigeria',
-           states: {
-                hover: {
-                    color: '#3F6040',
-                  
-                }
+          states: {
+            hover: {
+              color: '#3F6040',
+
             },
+          },
           point: {
             events: {
               click: (event) => {
@@ -169,18 +169,15 @@ export default {
       },
     };
   },
-  async mounted() {
-    await this.$DL.init({
-      dashboardIndicators: StateProfileDashboard.indicators,
-      defaultIndicators: StateProfileDashboard.defaultIndicators,
-    });
+  mounted() {
+
   },
-  methods:{
-    viewNationalProfile(){
-       let state = 'National';
+  methods: {
+    viewNationalProfile() {
+      const state = 'National';
       this.$router.push({ name: 'state-profile', params: { state } });
-    }
-  }
+    },
+  },
 };
 </script>
 

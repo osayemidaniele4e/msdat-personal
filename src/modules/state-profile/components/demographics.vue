@@ -1,3 +1,6 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable eqeqeq */
+/* eslint-disable eqeqeq */
 <template>
     <b-container fluid>
     <b-row class="mb-3">
@@ -12,13 +15,14 @@
           demographic information about {{this.selectedState}}
            <span v-show="state !== 'Fct' && state !== 'National'">State</span>.</p>
         <div v-for=" d in stateDemographics" :key= d.name>
-          <hr v-show="stateDemographics.indexOf(d) > 0">
-        <b-row >
+          <hr v-show="stateDemographics.indexOf(d) > 0 && d.value !== 0">
+        <b-row v-show="d.value !== 0" >
           <b-col>
             <p> <b>{{d.name}}</b> </p>
           </b-col>
           <b-col class="text-right">
-                  <p class="value"> <b>{{d.value}}</b></p>
+                  <p v-if="d.indicatorId == 64" class="value"><b>{{d.value | commaValue}}%</b></p>
+                  <p v-else class="value"> <b>{{d.value  | commaValue}}</b></p>
                   <p class="source">Source: {{d.source}} {{d.year}}</p>
           </b-col>
           <b-col cols="auto" class="text-right">
@@ -27,8 +31,13 @@
           <b-col cols="auto">
             <p style="font-size: 11.50002625px">
            <b class="pr-1">{{d.change }}%</b>
-           <b>{{ pointer=='success'?'increase':'decrease'}}</b>
-           since {{d.previousYear}} ({{d.previousValue}})
+
+           <b>
+             {{ pointer=='success'?'increase':'decrease'}}
+             </b>
+           since {{d.previousYear}}
+            ({{d.previousValue | commaValue}}
+            <span v-if="d.indicatorId == 64">%</span>)
             </p>
           </b-col>
         </b-row>
@@ -39,16 +48,19 @@
           <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <BaseMap v-if="state != 'National'" :level="3" :lgaState="selectedState" :mapObject="this.mapOptions"/>
-        <BaseMap  v-else :level="1" :mapObject="mapOptionsNational"/>
+        <BaseMap v-if="state != 'National'"
+        :level="3" :lgaState="selectedState"
+         :mapObject="this.mapOptions"/>
+        <BaseMap  v-else :level="1"
+         :mapObject="mapOptionsNational"/>
         <b-row>
           <b-col cols="auto">
             <p>Land Area</p>
-            <p><b>3,080 km2</b></p>
+            <p><b>{{this.area | commaValue}} km<sup>2</sup></b></p>
           </b-col>
           <b-col cols="auto">
             <p>Co-ordinates</p>
-            <p><b>10°31’23’N ’7°26’25’’E</b></p>
+            <p><b>{{this.coordinates}}</b></p>
           </b-col>
         </b-row>
       </b-col>
@@ -60,6 +72,8 @@
 import BaseMap from '@/components/maps/BaseMap.vue';
 import { mapState } from 'vuex';
 import dataMixins from '../../DataLayer/mixin';
+import * as requests from '../requests';
+import landAreaData from './landData';
 
 export default {
   name: 'demographics',
@@ -69,9 +83,14 @@ export default {
   props: {
     state: String,
     stateDemographics: Array,
-    lgas: Array,
   },
   mixins: [dataMixins],
+  filters: {
+    // Comma seperator for large numbers
+    commaValue(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+  },
   methods: {
     getChangeIcon() {
       if (this.pointer === 'success') {
@@ -80,53 +99,45 @@ export default {
       return 'caret-down-fill';
     },
     /**
-     * This function get the values from the
-     * database and populates the data object
+     * This function uses the already fetched
+     * data and populates the data object
      * accordingly
      */
     extractDemographicValues() {
-      // Get the selected state ID
-      const allLocations = this.$store.state.DL.location;
-      let selectedState;
-      const val = this.state;
-      if (this.state == 'National') {
-        selectedState = allLocations[0];
-      } else {
-        allLocations.map((el) => {
-          if (el.name == val) {
-            selectedState = el;
-          }
-        });
-      }
-      // Get the selected state ID
-
       // Loop through the demographics object to
-      // get the required data
-      for (const i in this.stateDemographics) {
-        const data = this.dlQuery({
-          datasource: this.stateDemographics[i].sourceId,
-          indicator: this.stateDemographics[i].indicatorId,
-          location: selectedState.id,
-        });
-        data.then((el) => {
-          // Only performs further computations where data
-          // is available
-          if (el.length !== 0) {
-            // Sort returned results by latest year
-            el.sort((a, b) => b.period - a.period);
-            this.stateDemographics[i].value = el[0].value;
-            this.stateDemographics[i].year = el[0].period;
-            this.stateDemographics[i].previousValue = el[1].value || null;
-            this.stateDemographics[i].previousYear = el[1].period || null;
-            this.stateDemographics[i].change = this.calcDiff(this.stateDemographics[i]);
-          } else {
-            this.stateDemographics[i].value = 'N/a';
-            this.stateDemographics[i].year = 'N/a';
-            this.stateDemographics[i].previousValue = ' ';
-            this.stateDemographics[i].change = ' ';
-          }
-        });
-      }
+      // assign the required data
+      this.stateDemographics.map((val, i) => {
+        // Only performs further computations where data
+        // is available
+        if (this.data[i].data.length !== 0) {
+          // Sort returned results by latest year
+          // if(this.data[i].)
+          this.data[i].data.sort((a, b) => b.period - a.period);
+          val.value = this.data[i].data[0].value;
+          val.year = this.data[i].data[0].period;
+          val.previousValue = this.data[i].data[1].value || null;
+          val.previousYear = this.data[i].data[1].period || null;
+          val.change = this.calcDiff(val);
+        } else {
+          val.value = 0;
+          val.year = 'N/a';
+          val.previousValue = ' ';
+          val.change = ' ';
+        }
+        return 0;
+      });
+    },
+    /**
+     * This function sets the land area and
+     * coordinate values for each state. These values
+     * are stored in the js file being imported from
+     * '../../state-profile/components/landData'
+     * @param this.state
+     */
+    setLandAreaData() {
+      const { area, position } = landAreaData[this.state];
+      this.coordinates = position;
+      this.area = area;
     },
     /**
      * This function calculates the percentage
@@ -134,18 +145,50 @@ export default {
      * year and the closest year
      */
     calcDiff(val) {
-      let ans;
-      ans = ((Number(val.value) - Number(val.previousValue)) / Number(val.previousValue)) * 100;
+      const ans = ((Number(val.value) - Number(val.previousValue))
+       / Number(val.previousValue)) * 100;
       if (val.previousValue > val.value) {
         this.pointer = 'danger';
       } else {
         this.pointer = 'success';
       }
-      return parseInt(ans);
+      return parseInt(ans, 10);
     },
-    // setDemographicData(data){
+    /**
+     * This function fetches the data from
+     * the API as the selected state @param this.state
+     * changes
+     * and stores it in a local varialble @var this.data
+     *
+     * The external API calls are made
+     * using the 'request' object
+     */
+    async prepareDemographicData() {
+      let selectedState;
+      let temp;
 
-    // }
+      // eslint-disable-next-line eqeqeq
+      if (this.state == 'National') {
+        // eslint-disable-next-line prefer-destructuring
+        selectedState = this.locations[0];
+      } else {
+        this.locations.forEach((el) => {
+          // eslint-disable-next-line eqeqeq
+          if (el.name == this.state) {
+            selectedState = el;
+          }
+        });
+      }
+      try {
+        temp = await requests.fetchDemographics(this.stateDemographics, selectedState.id);
+        this.data = temp;
+        this.extractDemographicValues();
+      } catch (err) {
+        console.log(err);
+      }
+
+      return temp;
+    },
   },
   computed: {
     ...mapState([]),
@@ -162,14 +205,18 @@ export default {
     // Watching for changes to state
     // So data can be recomputed as
     // required without page load
-    state(newState) {
-      console.log({ newState });
-      this.extractDemographicValues();
+    state() {
+      this.prepareDemographicData();
+      this.setLandAreaData();
     },
   },
   data() {
     return {
       pointer: 'success', // SUCCESS or DANGER
+      data: [],
+      locations: [],
+      coordinates: '',
+      area: 0,
       mapOptionsNational: {
         title: {
           text: '',
@@ -297,8 +344,11 @@ export default {
       },
     };
   },
-  mounted() {
-    this.extractDemographicValues();
+  async mounted() {
+    const locate = await requests.allLocations();
+    this.locations = locate.data;
+    this.prepareDemographicData();
+    this.setLandAreaData();
   },
 };
 </script>

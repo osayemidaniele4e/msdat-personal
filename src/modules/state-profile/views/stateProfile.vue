@@ -1,5 +1,20 @@
 <template>
-  <b-container class="overflow-hidden">
+  <b-container>
+    <loadingModal
+      v-if="overviewLoading"
+      :noBackdrop="false"
+      :showBackground="false"
+      class="over"
+    >
+     <div class="text-center">
+        <img
+          src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg"
+           alt="first_img" width="250px" />
+        <div class="">
+          <h3 class="mr-4 mt-3">Fetching Data...</h3>
+        </div>
+      </div>
+    </loadingModal>
     <b-row class="mt-4">
       <b-col cols="auto">
         <div>
@@ -25,10 +40,10 @@
               </b-row>
             </template>
             <b-dropdown-item
-              @click="navigateToState(s)"
+              @click="navigateToState(s.name)"
               v-for="s in this.states"
-              :key="s"
-              >{{ s }}</b-dropdown-item
+              :key="s.id"
+              >{{ s.name }}</b-dropdown-item
             >
           </b-dropdown>
         </div>
@@ -45,17 +60,18 @@
     <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
     <demographics
       :state="state"
-      :lgas="lgaNames"
       @changeState="stateClicked"
       :stateDemographics="demographics"
     ></demographics>
-    <!-- <PAoverview :state="state" :programArea="programAreas[0]"></PAoverview>  -->
     <div
       class="mt-5"
       v-for="programArea in programAreas"
       :key="programArea.name"
     >
-      <PAoverview :state="state" :programArea="programArea"></PAoverview>
+      <PAoverview :state="state"
+       @overviewLoading="setLoadingState"
+        :locations="allLocations"
+        :programArea="programArea"></PAoverview>
     </div>
     <p class="text-center final-text">
       This state profile dashboard has been curated majorly from the MSDAT
@@ -71,12 +87,13 @@
 
 <script>
 import { mapState } from 'vuex';
-import { StateProfileDashboard } from '@/config/dashboardGroups';
+import * as requests from '../requests';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
 import share from '../components/share.vue';
 import print from '../components/print.vue';
 import dataMixins from '../../DataLayer/mixin';
+import loading from '../../msdat-dashboard/views/onboarding/modal.vue';
 
 export default {
   name: 'state-profile',
@@ -87,24 +104,20 @@ export default {
     demographics,
     share,
     print,
+    loadingModal: loading,
   },
   created() {},
   computed: {
     ...mapState([]),
-    allLocations() {
-      return this.$store.state.DL.location;
-    },
     states() {
       // Dynamically populating the list
       // of states in the dropdown
       const states = [];
       this.allLocations.forEach((el) => {
         if (el.level === 3) {
-          states.push(el.name);
+          states.push(el);
         }
       });
-      // console.log(states)
-
       return states;
     },
     lgaNames() {
@@ -126,30 +139,34 @@ export default {
     stateClicked(state) {
       this.navigateToState(state);
     },
-    async getHealthFacilityData() {
-      // const facilityDataIndicators = [34, 58, 61, 39, 41, 49, 50];
-      // const allData = [];
-      // let data;
-      // facilityDataIndicators.map(async el => {
-      //    data = await this.dlQuery({
-      //     datasource: 4,
-      //     //indicator: el,
-      //    // period: 2016,
-      //   });
-      //   console.log(data)
-      // })
-      const data = await this.dlQuery({
-        datasource: 19,
-        // indicator: 34,
-        // period: 2018
-      });
-
-      console.log({ data });
+    /**
+     * The reason we're checking if
+     * @param this.incomingData is 7 is because
+     * we have 7 program areas, so the loading
+     * is done when all seven send events to
+     * indicate that their done fetching
+     */
+    setLoadingState() {
+      // eslint-disable-next-line no-plusplus
+      this.incomingData++;
+      if (this.incomingData === 7) {
+        this.overviewLoading = false;
+      }
     },
   },
-  watch: {},
+  watch: {
+    state() {
+      this.incomingData = 0;
+      this.overviewLoading = true;
+    },
+  },
   data() {
     return {
+      loading: true,
+      allLocations: [],
+      demographicData: [],
+      incomingData: 0,
+      overviewLoading: false,
       demographics: [
         {
           name: 'Population estimate',
@@ -157,8 +174,8 @@ export default {
           source: 'DSB',
           sourceId: 19, // available
           year: 2018,
-          value: 6113503,
-          previousValue: 6004642,
+          value: 0,
+          previousValue: 0,
           previousYear: 2015,
           change: '+2',
         },
@@ -166,21 +183,21 @@ export default {
           name: 'Population growth rate',
           indicatorId: 64,
           source: 'NPE',
-          sourceId: 2, // NOT KNOWN YET
+          sourceId: 2,
           year: 2018,
-          value: '60%',
-          previousValue: '62%',
+          value: 0,
+          previousValue: 0,
           previousYear: 2015,
           change: '-2',
         },
         {
           name: 'Total Fertility Rate',
-          indicatorId: 1, // availablex
+          indicatorId: 1,
           source: 'NDHS',
           sourceId: 2,
           year: 2018,
-          value: '5.80',
-          previousValue: '5.6',
+          value: 0,
+          previousValue: 0,
           previousYear: 2015,
           change: '-2',
         },
@@ -190,8 +207,8 @@ export default {
           source: 'NLSS',
           sourceId: 20,
           year: 2018,
-          value: '60%',
-          previousValue: '58%',
+          value: 0,
+          previousValue: 0,
           previousYear: 2015,
           change: '+2',
         },
@@ -201,9 +218,9 @@ export default {
           source: 'DSB',
           sourceId: 19,
           year: 2018,
-          value: '60%',
+          value: 0,
           previousYear: 2015,
-          previousValue: '55%',
+          previousValue: 0,
           change: '+5',
         },
         {
@@ -213,8 +230,8 @@ export default {
           sourceId: 20,
           year: 2018,
           previousYear: 2015,
-          value: '60%',
-          previousValue: '55%',
+          value: 0,
+          previousValue: 0,
           change: '+5',
         },
       ],
@@ -572,44 +589,39 @@ export default {
           colors: ['rgba(5, 146, 189, 1)'],
           specificIndicators: [
             {
-              indicator: 4,
-              dataSource: 2,
-              year: 2018,
+              indicator: 34,
+              dataSource: 17,
+              year: 2016,
             },
+            // {
+            //   indicator: 58,
+            //   dataSource: 2,
+            //   year: 2018,
+            // },
             {
-              indicator: 5,
-              dataSource: 2,
-              year: 2018,
-            },
-            {
-              indicator: 7,
-              dataSource: 2,
-              year: 2018,
-            },
-            {
-              indicator: 8,
-              dataSource: 2,
-              year: 2018,
-            },
-            {
-              indicator: 13,
-              dataSource: 1,
+              indicator: 61,
+              dataSource: 17,
               year: 2016,
             },
             {
-              indicator: 18,
-              dataSource: 2,
-              year: 2018,
+              indicator: 39,
+              dataSource: 17,
+              year: 2016,
             },
             {
-              indicator: 10,
-              dataSource: 5,
-              year: 2018,
+              indicator: 41,
+              dataSource: 17,
+              year: 2016,
             },
             {
-              indicator: 17,
-              dataSource: 2,
-              year: 2018,
+              indicator: 49,
+              dataSource: 17,
+              year: 2016,
+            },
+            {
+              indicator: 50,
+              dataSource: 17,
+              year: 2016,
             },
           ],
         },
@@ -617,13 +629,9 @@ export default {
     };
   },
   async mounted() {
-    // Check one more time if updating the series object works,
-    // if not send the data from here directly
-    await this.$DL.init({
-      dashboardIndicators: StateProfileDashboard.indicators,
-      defaultIndicators: StateProfileDashboard.defaultIndicators,
-      dashboardDataSources: StateProfileDashboard.dataSources,
-    });
+    this.overviewLoading = true;
+    const locate = await requests.allLocations();
+    this.allLocations = locate.data;
   },
 };
 </script>
