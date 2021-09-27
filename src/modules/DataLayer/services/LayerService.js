@@ -71,38 +71,42 @@ export default class DataLayer {
     this.DB = await new Database();
     this.setup(object);
     console.time('fetching');
-    /** Fetching other endpoints */
-    console.log('fetching other endpoint');
-    /**
-     * The apiServices returns all the and array of response for the
-     * axios call of all other apiEndpoints.getOtherEndpoint
-     * it uses and {Promise.all()}
-     *
-     * @see {@link apiServices.getOtherEndpoint()}
-     */
-    const data = await apiServices.getOtherEndpoint();
 
-    /**
-     * we would also need to created a component then display the activities  of the service layer
-     * per time
-     */
-    console.log('storing other endpoint to index db');
+    // check if data is already initialized i store
+    if (this.store.state.DL.indicators.length <= 0) {
+      /** Fetching other endpoints */
+      console.log('fetching other endpoint');
+      /**
+       * The apiServices returns all the and array of response for the
+       * axios call of all other apiEndpoints.getOtherEndpoint
+       * it uses and {Promise.all()}
+       *
+       * @see {@link apiServices.getOtherEndpoint()}
+       */
+      const data = await apiServices.getOtherEndpoint();
 
-    await this.DB.storeDataInDBTable(data[6].data, DSI);
-    await this.DB.storeDataInDBTable(data[0].data, LOCATION);
-    await this.DB.storeDataInDBTable(data[1].data, INDICATORS);
-    await this.DB.storeDataInDBTable(data[3].data, VALUE_TYPES);
-    await this.DB.storeDataInDBTable(data[5].data, FACTORS);
-    await this.DB.storeDataInDBTable(data[7].data, DATA_SOURCE);
+      /**
+       * we would also need to created a component then display the activities  of the service layer
+       * per time
+       */
 
-    console.log('done');
-    console.log('init other Tables');
-    await this.initOtherTablesFromDB();
-    console.log(' done');
-    /** End Featching other enpoints */
+      /**
+       * now initializing other tables in the store from the database directly as against the
+       * previous implementation
+       */
+      this.setDataInStore(data[6].data, DSI);
+      this.setDataInStore(data[0].data, LOCATION);
+      this.setDataInStore(data[1].data, INDICATORS);
+      this.setDataInStore(data[3].data, VALUE_TYPES);
+      this.setDataInStore(data[5].data, FACTORS);
+      this.setDataInStore(data[7].data, DATA_SOURCE);
 
-    const count = await this.DB.data.count();
-    console.log('DB count is', count);
+      console.log('done');
+      /** End Featching other enpoints */
+
+      const count = await this.DB.data.count();
+      console.log('DB count is', count);
+    }
 
     const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
     // Check if the current related indicator is already in the database
@@ -148,21 +152,6 @@ export default class DataLayer {
      * */
     console.timeEnd('fetching');
     return Promise.resolve(true);
-  }
-
-  async initOtherTablesFromDB() {
-    let dataItem = await this.DB.DSI.toArray();
-    this.setDataInStore(dataItem, DSI);
-    dataItem = await this.DB.location.toArray();
-    this.setDataInStore(dataItem, LOCATION);
-    dataItem = await this.DB.indicators.toArray();
-    this.setDataInStore(dataItem, INDICATORS);
-    dataItem = await this.DB.datasources.toArray();
-    this.setDataInStore(dataItem, DATA_SOURCE);
-    dataItem = await this.DB.valuetypes.toArray();
-    this.setDataInStore(dataItem, VALUE_TYPES);
-    dataItem = await this.DB.factors.toArray();
-    this.setDataInStore(dataItem, FACTORS);
   }
 
   /**
