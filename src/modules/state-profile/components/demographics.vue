@@ -14,8 +14,8 @@
         <p class="mb-5">This section provides
           demographic information about {{this.selectedState}}
            <span v-show="state !== 'Fct' && state !== 'National'">State</span>.</p>
-        <div v-for=" d in stateDemographics" :key= d.name>
-          <hr v-show="stateDemographics.indexOf(d) > 0 && d.value !== 0">
+        <div v-for=" d in dataContainer" :key= d.name>
+          <hr v-show="dataContainer.indexOf(d) > 0 && d.value !== 0">
         <b-row v-show="d.value !== 0" >
           <b-col>
             <p> <b>{{d.name}}</b> </p>
@@ -106,34 +106,30 @@ export default {
     extractDemographicValues() {
       // Loop through the demographics object to
       // assign the required data
-      this.stateDemographics.map((val, i) => {
+      this.dataContainer = this.stateDemographics.map((val, i) => {
+        const container = {};
+        container.name = val.name;
+        container.indicatorId = val.indicatorId;
+        container.source = val.source;
+        container.sourceId = val.sourceId;
+
         // Only performs further computations where data
         // is available
         if (this.data[i].data.length !== 0) {
           // Sort returned results by latest year
-          // if(this.data[i].)
           this.data[i].data.sort((a, b) => b.period - a.period);
-          // eslint-disable-next-line no-param-reassign
-          val.value = this.data[i].data[0].value;
-          // eslint-disable-next-line no-param-reassign
-          val.year = this.data[i].data[0].period;
-          // eslint-disable-next-line no-param-reassign
-          val.previousValue = this.data[i].data[1].value || null;
-          // eslint-disable-next-line no-param-reassign
-          val.previousYear = this.data[i].data[1].period || null;
-          // eslint-disable-next-line no-param-reassign
-          val.change = this.calcDiff(val);
+          container.value = this.data[i].data[0].value;
+          container.year = this.data[i].data[0].period;
+          container.previousValue = this.data[i].data[1].value || null;
+          container.previousYear = this.data[i].data[1].period || null;
+          container.change = this.calcDiff(val);
         } else {
-          // eslint-disable-next-line no-param-reassign
-          val.value = 0;
-          // eslint-disable-next-line no-param-reassign
-          val.year = 'N/a';
-          // eslint-disable-next-line no-param-reassign
-          val.previousValue = ' ';
-          // eslint-disable-next-line no-param-reassign
-          val.change = ' ';
+          container.value = 0;
+          container.year = 'N/a';
+          container.previousValue = ' ';
+          container.change = ' ';
         }
-        return 0;
+        return container;
       });
     },
     /**
@@ -226,6 +222,7 @@ export default {
       locations: [],
       coordinates: '',
       area: 0,
+      dataContainer: [],
       mapOptionsNational: {
         title: {
           text: '',
