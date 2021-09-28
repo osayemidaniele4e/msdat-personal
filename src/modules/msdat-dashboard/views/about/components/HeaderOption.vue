@@ -71,7 +71,7 @@
       </li> -->
       <div class="divider"></div>
       <li>
-        <router-link to="/">
+        <router-link to="/update_log">
           <img src="@/assets/img/icons/ic_update.svg" alt="" />
           <span>See Updates</span>
         </router-link>
