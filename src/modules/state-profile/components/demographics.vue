@@ -113,15 +113,24 @@ export default {
           // Sort returned results by latest year
           // if(this.data[i].)
           this.data[i].data.sort((a, b) => b.period - a.period);
+          // eslint-disable-next-line no-param-reassign
           val.value = this.data[i].data[0].value;
+          // eslint-disable-next-line no-param-reassign
           val.year = this.data[i].data[0].period;
+          // eslint-disable-next-line no-param-reassign
           val.previousValue = this.data[i].data[1].value || null;
+          // eslint-disable-next-line no-param-reassign
           val.previousYear = this.data[i].data[1].period || null;
+          // eslint-disable-next-line no-param-reassign
           val.change = this.calcDiff(val);
         } else {
+          // eslint-disable-next-line no-param-reassign
           val.value = 0;
+          // eslint-disable-next-line no-param-reassign
           val.year = 'N/a';
+          // eslint-disable-next-line no-param-reassign
           val.previousValue = ' ';
+          // eslint-disable-next-line no-param-reassign
           val.change = ' ';
         }
         return 0;
@@ -193,9 +202,9 @@ export default {
   computed: {
     ...mapState([]),
     selectedState() {
-      if (this.state == 'FCT') {
+      if (this.state === 'FCT') {
         return 'Fct';
-      } if (this.state == 'National') {
+      } if (this.state === 'National') {
         return 'Nigeria';
       }
       return this.state;

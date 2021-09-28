@@ -385,7 +385,6 @@ export default {
     presentNationalData(noStates) {
       const data = [];
       if (noStates) {
-        // eslint-disable-next-line array-callback-return
         this.programArea.specificIndicators.map((value) => {
           // eslint-disable-next-line array-callback-return
           this.nationalObjects.map((element) => {
@@ -394,6 +393,7 @@ export default {
               element.color = value.color;
             }
           });
+          return true;
         });
         // eslint-disable-next-line array-callback-return
         this.nationalObjects.map((val) => {
