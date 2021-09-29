@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 <template>
-  <base-overlay :show="loading">
+  <!-- <base-overlay :show="loading"> -->
     <base-sub-card
       buttonToggle
       showControls
