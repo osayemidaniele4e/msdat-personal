@@ -1,20 +1,31 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import { store as MSDAT_STORE } from '../modules/msdat-dashboard';
-import { store as CUSTOM_DASHBOARD_STORE } from '../modules/custom-dashboard';
+import { createStore } from 'vuex';
 
-Vue.use(Vuex);
+import indicatorsModule from './modules/indicators/index';
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-    MSDAT_STORE,
-    CUSTOM_DASHBOARD_STORE,
-  },
-  strict: process.env.NODE_ENV !== 'production',
-});
+const store = createStore({
+    modules: {
+        indicators: indicatorsModule
+    },
+    stata() {
+        return {
+            user: ""
+        }
+    },
+    mutations: {
+        registerUser(state, payload) {
+            state.user = payload.email
+        }
+    },
+    actions: {
+        registerUser(context, payload) {
+            context.commit('registerUser', payload)
+        }
+    },
+    getters: {
+        user(state) {
+            return state.user
+        }
+    }
+})
+
+export default store;
