@@ -1,5 +1,5 @@
 <template>
-  <base-overlay :show="loading">
+  <!-- <base-overlay :show="loading"> -->
     <base-sub-card showControls v-if="values">
       <template #title>
         <h6 class="work-sans">
@@ -11,7 +11,7 @@
       </template>
       <BarChart :chartOptions="BarChartOptions" />
     </base-sub-card>
-  </base-overlay>
+  <!-- </base-overlay> -->
 </template>
 
 <script>
