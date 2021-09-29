@@ -1,8 +1,9 @@
 /* eslint-disable no-await-in-loop */
 <template>
-  <div class="">
+  <base-overlay :show="loading">
     <base-sub-card
       showControls
+      v-if="Object.keys(values).length"
       @dropdownTypeSelected="
         downLoadType($event, {
           indicator: values.indicator.short_name,
@@ -20,12 +21,9 @@
           <span class="font-weight-bold">states</span>
         </p>
       </template>
-      <BaseChart
-        ref="BaseChart"
-        :chartOptions="chartConfig"
-      />
+      <BaseChart ref="BaseChart" :chartOptions="chartConfig" />
     </base-sub-card>
-  </div>
+  </base-overlay>
 </template>
 
 <script>
@@ -46,6 +44,7 @@ export default {
     return {
       chartConfig: {},
       // DataSetConfig: cloneDeep(DataSetConfig),
+      loading: true,
     };
   },
   methods: {
@@ -63,7 +62,7 @@ export default {
           indicator: this.values.indicator.id,
           datasource: dataSourceObject.id,
         });
-        if (data) {
+        if (data.length > 0) {
           const onlyYearlyData = data.filter((item) => {
             if (isDataYearly(item.period)) {
               return item;
@@ -96,6 +95,7 @@ export default {
     },
   },
   async mounted() {
+    this.loading = true;
     const dropDown = await this.setUpDataSourceNYearDropdown();
     this.SET_CONTROL_OPTIONS({
       panelIndex: 3,
@@ -108,11 +108,13 @@ export default {
       controlIndex: 1,
       values: dropDown,
     });
+    this.loading = false;
   },
 
   watch: {
     values: {
       async handler(controlValues) {
+        this.loading = true;
         let dataSourcesNYear = [];
         if (!Array.isArray(controlValues.datasource)) {
           dataSourcesNYear = [controlValues.datasource];
@@ -135,19 +137,59 @@ export default {
         });
         const promises = queryObject.map((item) => this.dlQuery(item));
         const result = await Promise.all(promises);
-        const orderResult = queryObject.map((item, index) => {
+        const orderResult = [];
+        for (let index = 0; index < queryObject.length; index += 1) {
           const response = result[index];
           const dataValues = response.map((element) => [
             this.dlGetLocation(element.location).name,
             parseFloat(element.value),
           ]);
-          // const dataSource = this.dlGetDataSource(item.datasource).datasource;
 
-          return {
+          // This adds national to the top;
+          // eslint-disable-next-line no-await-in-loop
+          const query = await this.dlQuery({
+            indicator: controlValues.indicator.id,
+            // eslint-disable-next-line radix
+            datasource: parseInt(dataSourcesNYear[index].id.split('-')[0]),
+            period: dataSourcesNYear[index].id.split('-')[1],
+            location: 1,
+          });
+
+          const nationValueSeries = [
+            this.dlGetLocation(query[0].location).name,
+            parseFloat(query[0].value),
+          ];
+
+          // add it ot the top of the series
+          dataValues.unshift(nationValueSeries);
+
+          orderResult.push({
             name: dataSourcesNYear[index].item,
             data: dataValues,
-          };
-        });
+          });
+        }
+
+        // const orderResult = queryObject.map((item, index) => {
+        //   const response = result[index];
+        //   const dataValues = response.map((element) => [
+        //     this.dlGetLocation(element.location).name,
+        //     parseFloat(element.value),
+        //   ]);
+        //   // const dataSource = this.dlGetDataSource(item.datasource).datasource;
+
+        //   console.trace({
+        //     indicator: controlValues.indicator.id,
+        //     // eslint-disable-next-line radix
+        //     datasource: parseInt(controlValues.datasource.id.split('-')[0]),
+        //     period: controlValues.datasource.id.split('-')[1],
+        //     location: 1,
+        //   });
+
+        //   return {
+        //     name: dataSourcesNYear[index].item,
+        //     data: dataValues,
+        //   };
+        // });
 
         this.chartConfig = {
           plotOptions: {
@@ -163,6 +205,7 @@ export default {
           colors: ['#17606B', '#E85D58', '#58B74E'],
         };
         this.chartConfig.series = orderResult;
+        this.loading = false;
       },
       deep: true,
     },
@@ -171,10 +214,22 @@ export default {
     // in the background (async)
     indicatorDropdownUpdated(newVal) {
       this.SET_CONTROL_OPTIONS({
-        panelIndex: 2,
-        controlIndex: 3,
+        panelIndex: 3,
+        controlIndex: 0,
         values: newVal,
       });
+    },
+
+    'values.indicator': {
+      async handler() {
+        this.loading = true;
+        const dropDown = await this.setUpDataSourceNYearDropdown();
+        this.SET_CONTROL_OPTIONS({
+          panelIndex: 3,
+          controlIndex: 1,
+          values: dropDown,
+        });
+      },
     },
   },
 };

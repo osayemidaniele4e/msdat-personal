@@ -29,9 +29,13 @@ export default {
   },
   mounted() {
     const { name } = this.$route.params;
+    // this.$route.meta.title = 'Hello World From Route';
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
     if (this.configObject === undefined) {
       this.$router.push('/*');
+    }
+    if (this.configObject.title) {
+      this.$route.meta.title = this.configObject.title;
     }
   },
   watch: {

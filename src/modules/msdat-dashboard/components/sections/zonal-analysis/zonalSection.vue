@@ -3,6 +3,7 @@
     <base-overlay :show="loader">
       <base-sub-card
         showControls
+        v-if="Object.keys(controlPanelProps).length"
         @dropdownTypeSelected="
           downLoadType($event, {
             indicator: controlPanelProps.indicator.short_name,

@@ -2,6 +2,7 @@
   <div class="container">
     <base-overlay :show="loader">
       <base-sub-card
+        v-if="Object.keys(controlPanelProps).length"
         showControls
         @dropdownTypeSelected="
           downLoadTypeMap($event, {

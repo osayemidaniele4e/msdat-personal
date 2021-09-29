@@ -29,10 +29,10 @@
       </li>
       <div class="divider"></div>
       <li>
-        <router-link to="/">
+        <a @click.prevent="socialModal = !socialModal" href="#">
           <img src="@/assets/img/icons/ic_share.svg" alt="" />
           <span>Share</span>
-        </router-link>
+        </a>
       </li>
       <li>
         <a href="#" @click.prevent="PrintPage()">
@@ -71,7 +71,7 @@
       </li> -->
       <div class="divider"></div>
       <li>
-        <router-link to="/">
+        <router-link to="/update_log">
           <img src="@/assets/img/icons/ic_update.svg" alt="" />
           <span>See Updates</span>
         </router-link>
@@ -101,18 +101,26 @@
         </router-link>
       </li>
     </ul>
+    <base-modal :showModal="socialModal" :size="'md'">
+      <template #title
+        ><h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
+      </template>
+      <Socials />
+    </base-modal>
   </div>
 </template>
 
 <script>
+import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import contact from '../../../../../components/contact/contact.vue';
 
 export default {
-  components: { contact },
+  components: { contact, Socials },
   data() {
     return {
       modal: false,
       submit: false,
+      socialModal: false,
     };
   },
   methods: {

@@ -64,6 +64,7 @@ export default {
         datasource: dataSourceID,
         location: locationID,
       });
+      debugger;
       console.log(data);
       const onlyYearData = data.filter((item) => {
         if (isDataYearly(item.period)) {
@@ -75,11 +76,11 @@ export default {
       const unqiueYears = uniq(years);
       const sortedYears = unqiueYears.sort((a, b) => b - a);
       // debugger;
-      this.defaultYearDropdown = sortedYears;
-      if (sortedYears.length > 0) {
-        const firstItem = 0;
-        this.defaultYear = sortedYears[firstItem];
-      }
+      // this.defaultYearDropdown = sortedYears;
+      // if (sortedYears.length > 0) {
+      //   const firstItem = 0;
+      //   this.defaultYear = sortedYears[firstItem];
+      // }
       return sortedYears;
       // console.log(sortedYears);
     },

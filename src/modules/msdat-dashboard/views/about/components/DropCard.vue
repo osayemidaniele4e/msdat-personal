@@ -7,10 +7,10 @@
           <router-link to="#"
             ><b-list-group-item>Health Facility</b-list-group-item></router-link
           >
-          <router-link to="#"
+          <router-link to="/dashboard/Health_Financing" _target="_blank"
             ><b-list-group-item>Health Finance</b-list-group-item></router-link
           >
-          <router-link to="#"
+          <router-link to="/dashboard/Health_Workforce" _target="_blank"
             ><b-list-group-item
               >Health Workforce</b-list-group-item
             ></router-link
@@ -76,7 +76,7 @@
               >Create New Dashboard</b-list-group-item
             ></router-link
           >
-          <router-link to="#"
+          <router-link to="/dashboard/Demographic" _target="_blank"
             ><b-list-group-item>Demographics</b-list-group-item></router-link
           >
           <router-link to="#"

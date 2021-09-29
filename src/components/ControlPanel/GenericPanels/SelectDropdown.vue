@@ -42,18 +42,27 @@ export default {
     },
   },
   watch: {
-    options(newValue) {
-      if (this.multiSelectProps['preselect-first']) {
-        if (has(this.multiSelectProps, 'group-values')) {
-          // eslint-disable-next-line prefer-destructuring
-          this.selected = newValue[0][this.multiSelectProps['group-values']][0];
-        } else {
-          // eslint-disable-next-line prefer-destructuring
-          this.selected = newValue[0];
+    options: {
+      handler(newValue) {
+        if (this.multiSelectProps['preselect-first']) {
+          if (has(this.multiSelectProps, 'group-values')) {
+            // eslint-disable-next-line prefer-destructuring
+            this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+          } else if (newValue.length > 0) {
+            debugger;
+            // eslint-disable-next-line prefer-destructuring
+            this.selected = this.options[0];
+          } else {
+            const date = new Date();
+            const year = date.getFullYear() - 1;
+            this.selected = year.toString();
+          }
         }
-      }
+      },
     },
+    immediate: false,
   },
+  mounted() {},
 };
 </script>
 

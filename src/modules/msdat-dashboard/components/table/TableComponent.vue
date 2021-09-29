@@ -189,17 +189,32 @@ export default {
     orderSourceBy: {
       type: [Array],
       required: false,
+      // SOMEONE NEEDS TO COME AND REFACTOR THIS IMPLEMENTATION ASAP
       default: () => [
         'NHMIS',
         'MICS',
+        'NHWCP',
+        'AAS',
+        'GHS',
+        'NLSS',
+        'DSB',
+        'NHFS',
+        'PCCS',
+        'UNAIDS',
+        'NHSPSS',
+        'NHA',
+        'KDGHS',
+        'NAIIS',
         'NDHS',
         'NARHS',
         'NNHS',
+        'NMIS',
         'World Bank',
         'WHO-GHO',
         'IHME',
-        'IHME SDG',
-        'NMIS',
+        'ILOSTAT',
+        'WUENIC',
+        'UNDP',
       ],
     },
 
@@ -216,7 +231,7 @@ export default {
       /**
        * This send the selected Source to the Child component to Highlight
        */
-      selectedSource: '',
+      selectedSource: {},
       /**
        * This store the all the data sources available in the data parsed
        */
@@ -251,9 +266,7 @@ export default {
      * this filter thorough the array of data parse and et all available  Parsed
      */
     getAvailableDataSources() {
-      const arraySource = this.dataArray.map(
-        (e) => e.values.map((et) => et.dataSources),
-      );
+      const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
       debugger;
       /**

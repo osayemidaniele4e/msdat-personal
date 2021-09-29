@@ -3,7 +3,7 @@ export default {
     style: {
       // fontSize: '10px',
       fontFamily: '"Work Sans", sans-serif',
-      // fontWeight: 'normal'
+      fontWeight: 'normal',
     },
   },
   exporting: {
@@ -53,6 +53,7 @@ export default {
       borderColor: 'white',
       borderWidth: 3,
       allAreas: false,
+      nullInteraction: true,
       joinBy: ['name', 'hc-key'],
       dataLabels: {
         enabled: true,
