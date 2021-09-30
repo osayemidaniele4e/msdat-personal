@@ -1,5 +1,20 @@
 <template>
-  <b-container class="overflow-hidden">
+  <b-container>
+    <loadingModal
+      v-if="overviewLoading"
+      :noBackdrop="false"
+      :showBackground="false"
+      class="over"
+    >
+     <div class="text-center">
+        <img
+          src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg"
+           alt="first_img" width="250px" />
+        <div class="">
+          <h3 class="mr-4 mt-3">Fetching Data...</h3>
+        </div>
+      </div>
+    </loadingModal>
     <b-row class="mt-4">
       <b-col cols="auto">
         <div>
@@ -17,13 +32,19 @@
                   </h1>
                 </b-col>
                 <b-col>
-                  <b-icon style="font-size: 10px; color: #232323;" icon="chevron-down"></b-icon>
+                  <b-icon
+                    style="font-size: 10px; color: #232323"
+                    icon="chevron-down"
+                  ></b-icon>
                 </b-col>
               </b-row>
             </template>
-            <b-dropdown-item @click="navigateToState(s)" v-for="s in this.states" :key="s">{{
-              s
-            }}</b-dropdown-item>
+            <b-dropdown-item
+              @click="navigateToState(s.name)"
+              v-for="s in this.states"
+              :key="s.id"
+              >{{ s.name }}</b-dropdown-item
+            >
           </b-dropdown>
         </div>
         <h3 style="font-size: 15px">State Health Profile</h3>
@@ -36,74 +57,182 @@
         </b-row>
       </b-col>
     </b-row>
-    <hr style="border-top: 1px dashed #CCCCCC;" class="mb-4" />
-    <demographics :state="state" :stateDemographics="demographics"></demographics>
-    <div class="mt-5" v-for="programArea in programAreas" :key="programArea.name">
-      <PAoverview :state="state" :programArea="programArea"></PAoverview>
+    <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
+    <demographics
+      :state="state"
+      @changeState="stateClicked"
+      :stateDemographics="demographics"
+    ></demographics>
+    <div
+      class="mt-5"
+      v-for="programArea in programAreas"
+      :key="programArea.name"
+    >
+      <PAoverview :state="state"
+       @overviewLoading="setLoadingState"
+        :locations="allLocations"
+        :programArea="programArea"></PAoverview>
     </div>
+    <p class="text-center final-text">
+      This state profile dashboard has been curated majorly from the MSDAT
+      Dashboard available at
+      <span
+        ><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank"
+          >msdat.fmohconnect.gov.ng</a
+        ></span
+      >
+    </p>
   </b-container>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import * as requests from '../requests';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
 import share from '../components/share.vue';
 import print from '../components/print.vue';
+import dataMixins from '../../DataLayer/mixin';
+import loading from '../../msdat-dashboard/views/onboarding/modal.vue';
 
 export default {
   name: 'state-profile',
   props: ['state'],
+  mixins: [dataMixins],
   components: {
     PAoverview: programAreaOverview,
     demographics,
     share,
     print,
+    loadingModal: loading,
   },
   created() {},
+  computed: {
+    ...mapState([]),
+    states() {
+      // Dynamically populating the list
+      // of states in the dropdown
+      const states = [];
+      this.allLocations.forEach((el) => {
+        if (el.level === 3) {
+          states.push(el);
+        }
+      });
+      return states;
+    },
+    lgaNames() {
+      const chosenState = this.allLocations.filter(
+        (el) => el.name.includes(this.state) && el.level === 3,
+      )[0];
+      const lgaObjects = this.allLocations.filter(
+        (val) => val.parent === chosenState?.id && val.level === 4,
+      );
+      return lgaObjects;
+    },
+  },
   methods: {
     navigateToState(state) {
+      // state.preventDefault()
       this.$router.push({ name: 'state-profile', params: { state } });
-      this.$router.go();
+      // this.$router.go();
+    },
+    stateClicked(state) {
+      this.navigateToState(state);
+    },
+    /**
+     * The reason we're checking if
+     * @param this.incomingData is 7 is because
+     * we have 7 program areas, so the loading
+     * is done when all seven send events to
+     * indicate that their done fetching
+     */
+    setLoadingState() {
+      // eslint-disable-next-line no-plusplus
+      this.incomingData++;
+      if (this.incomingData === 7) {
+        this.overviewLoading = false;
+      }
+    },
+  },
+  watch: {
+    state() {
+      this.incomingData = 0;
+      this.overviewLoading = true;
     },
   },
   data() {
     return {
-      states: ['Kano', 'kanduna', 'Enugu', 'Yola', 'Niger', 'Lagos'],
+      loading: true,
+      allLocations: [],
+      demographicData: [],
+      incomingData: 0,
+      overviewLoading: false,
       demographics: [
         {
-          name: 'Population',
-          source: 'MNCH 2018',
-          value: '6,113,503',
-          previousValue: '6,004,642',
+          name: 'Population estimate',
+          indicatorId: 63,
+          source: 'DSB',
+          sourceId: 19, // available
+          year: 2018,
+          value: 0,
+          previousValue: 0,
+          previousYear: 2015,
           change: '+2',
         },
         {
-          name: 'Crude Birth Rate',
-          source: 'MNCH 2018',
-          value: '60%',
-          previousValue: '62%',
+          name: 'Population growth rate',
+          indicatorId: 64,
+          source: 'NPE',
+          sourceId: 2,
+          year: 2018,
+          value: 0,
+          previousValue: 0,
+          previousYear: 2015,
           change: '-2',
         },
         {
-          name: 'Crude Death Rate',
-          source: 'MNCH 2018',
-          value: '60%',
-          previousValue: '55%',
+          name: 'Total Fertility Rate',
+          indicatorId: 1,
+          source: 'NDHS',
+          sourceId: 2,
+          year: 2018,
+          value: 0,
+          previousValue: 0,
+          previousYear: 2015,
+          change: '-2',
+        },
+        {
+          name: 'Dependency ratio',
+          indicatorId: 67,
+          source: 'NLSS',
+          sourceId: 20,
+          year: 2018,
+          value: 0,
+          previousValue: 0,
+          previousYear: 2015,
+          change: '+2',
+        },
+        {
+          name: 'Birth registration (Under Age 1)',
+          indicatorId: 68, // AVAILABLE
+          source: 'DSB',
+          sourceId: 19,
+          year: 2018,
+          value: 0,
+          previousYear: 2015,
+          previousValue: 0,
           change: '+5',
         },
         {
-          name: 'Total Fertility Rate (TFR) (total births per woman)',
-          source: 'MNCH 2018',
-          value: '5.80',
-          previousValue: '5.6',
-          change: '-2',
-        },
-        {
-          name: 'Under-5 Population (UFP)',
-          source: 'MNCH 2018',
-          value: '60%',
-          previousValue: '58%',
-          change: '+2',
+          name: 'Population Who Have Never Attended School',
+          indicatorId: 70,
+          source: 'NLSS',
+          sourceId: 20,
+          year: 2018,
+          previousYear: 2015,
+          value: 0,
+          previousValue: 0,
+          change: '+5',
         },
       ],
       programAreas: [
@@ -124,7 +253,8 @@ export default {
             '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
-          chartTitle: 'Coverage for key interventions across the continuum of care',
+          chartTitle:
+            'Coverage for key interventions across the continuum of care',
           colors: [
             '#EBF4F1',
             '#054A80',
@@ -134,6 +264,56 @@ export default {
             '#2C9F35',
             'rgba(238, 150, 50, 1)',
             'rgba(238, 150, 50, 0.12)',
+          ],
+          specificIndicators: [
+            {
+              indicator: 4,
+              dataSource: 2,
+              year: 2018,
+              color: '#054a80',
+            },
+            {
+              indicator: 5,
+              dataSource: 2,
+              year: 2018,
+              color: '#2c8cca',
+            },
+            {
+              indicator: 7,
+              dataSource: 2,
+              year: 2018,
+              color: '#3f7299',
+            },
+            {
+              indicator: 8,
+              dataSource: 2,
+              year: 2018,
+              color: '#43893b',
+            },
+            {
+              indicator: 13,
+              dataSource: 1,
+              year: 2016,
+              color: '#2c9f35',
+            },
+            {
+              indicator: 18,
+              dataSource: 2,
+              year: 2018,
+              color: '#2c9f35',
+            },
+            {
+              indicator: 10,
+              dataSource: 5,
+              year: 2018,
+              color: '#8fb438',
+            },
+            {
+              indicator: 17,
+              dataSource: 2,
+              year: 2018,
+              color: '#8fb438',
+            },
           ],
         },
         {
@@ -153,7 +333,40 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions in Nutrition',
-          colors: ['#F4F7EA', '#8FB438', '#8FB438', '#8FB438', '#8FB438', '#8FB438'],
+          colors: [
+            '#F4F7EA',
+            '#8FB438',
+            '#8FB438',
+            '#8FB438',
+            '#8FB438',
+            '#8FB438',
+          ],
+          specificIndicators: [
+            {
+              indicator: 14,
+              dataSource: 2,
+              year: 2018,
+              color: '#8fb438',
+            },
+            {
+              indicator: 15,
+              dataSource: 2,
+              year: 2018,
+              color: '#8fb438',
+            },
+            {
+              indicator: 16,
+              dataSource: 2,
+              year: 2018,
+              color: '#8fb438',
+            },
+            {
+              indicator: 17,
+              dataSource: 2,
+              year: 2018,
+              color: '#8fb438',
+            },
+          ],
         },
         {
           name: 'Immunization',
@@ -173,7 +386,34 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions in Immunization',
-          colors: ['#FBF0E4', '#EE9632', '#EE9632', '#EE9632', '#EE9632', '#EE9632'],
+          colors: [
+            '#FBF0E4',
+            '#EE9632',
+            '#EE9632',
+            '#EE9632',
+            '#EE9632',
+            '#EE9632',
+          ],
+          specificIndicators: [
+            {
+              indicator: 18,
+              dataSource: 2,
+              year: 2018,
+              color: '#EE9632',
+            },
+            {
+              indicator: 20,
+              dataSource: 2,
+              year: 2018,
+              color: '#EE9632',
+            },
+            {
+              indicator: 21,
+              dataSource: 2,
+              year: 2018,
+              color: '#EE9632',
+            },
+          ],
         },
         {
           name: 'Malaria',
@@ -193,7 +433,40 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions in Malaria',
-          colors: ['#ECF3EB', '#43893B', '#43893B', '#43893B', '#43893B', '#43893B'],
+          colors: [
+            '#ECF3EB',
+            '#43893B',
+            '#43893B',
+            '#43893B',
+            '#43893B',
+            '#43893B',
+          ],
+          specificIndicators: [
+            {
+              indicator: 22,
+              dataSource: 2,
+              year: 2018,
+              color: '#43893B',
+            },
+            {
+              indicator: 23,
+              dataSource: 2,
+              year: 2018,
+              color: '#43893B',
+            },
+            {
+              indicator: 24,
+              dataSource: 2,
+              year: 2018,
+              color: '#43893B',
+            },
+            {
+              indicator: 13,
+              dataSource: 1,
+              year: 2016,
+              color: '#43893B',
+            },
+          ],
         },
 
         {
@@ -214,7 +487,34 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Coverage for key interventions in HIV',
-          colors: ['#FBE5EA', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B'],
+          colors: [
+            '#FBE5EA',
+            '#EA1B4B',
+            '#EA1B4B',
+            '#EA1B4B',
+            '#EA1B4B',
+            '#EA1B4B',
+          ],
+          specificIndicators: [
+            {
+              indicator: 26,
+              dataSource: 16,
+              year: 2019,
+              color: '#EA1B4B',
+            },
+            {
+              indicator: 27,
+              dataSource: 1,
+              year: 2016,
+              color: '#EA1B4B',
+            },
+            {
+              indicator: 28,
+              dataSource: 5,
+              year: 2018,
+              color: '#EA1B4B',
+            },
+          ],
         },
         {
           name: 'mortality',
@@ -233,7 +533,40 @@ export default {
             '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
           ],
           chartTitle: 'Other Mortality Indicators',
-          colors: ['#EAEAEA', '#313131', '#313131', '#313131', '#313131', '#313131'],
+          colors: [
+            '#EAEAEA',
+            '#313131',
+            '#313131',
+            '#313131',
+            '#313131',
+            '#313131',
+          ],
+          specificIndicators: [
+            {
+              indicator: 29,
+              dataSource: 6,
+              year: 2019,
+              color: '#313131',
+            },
+            {
+              indicator: 30,
+              dataSource: 1,
+              year: 2016,
+              color: '#313131',
+            },
+            {
+              indicator: 31,
+              dataSource: 2,
+              year: 2018,
+              color: '#313131',
+            },
+            {
+              indicator: 32,
+              dataSource: 2,
+              year: 2018,
+              color: '#313131',
+            },
+          ],
         },
         {
           name: 'Health Facility Survey',
@@ -254,9 +587,51 @@ export default {
           ],
           chartTitle: '',
           colors: ['rgba(5, 146, 189, 1)'],
+          specificIndicators: [
+            {
+              indicator: 34,
+              dataSource: 17,
+              year: 2016,
+            },
+            // {
+            //   indicator: 58,
+            //   dataSource: 2,
+            //   year: 2018,
+            // },
+            {
+              indicator: 61,
+              dataSource: 17,
+              year: 2016,
+            },
+            {
+              indicator: 39,
+              dataSource: 17,
+              year: 2016,
+            },
+            {
+              indicator: 41,
+              dataSource: 17,
+              year: 2016,
+            },
+            {
+              indicator: 49,
+              dataSource: 17,
+              year: 2016,
+            },
+            {
+              indicator: 50,
+              dataSource: 17,
+              year: 2016,
+            },
+          ],
         },
       ],
     };
+  },
+  async mounted() {
+    this.overviewLoading = true;
+    const locate = await requests.allLocations();
+    this.allLocations = locate.data;
   },
 };
 </script>
@@ -264,6 +639,17 @@ export default {
 <style lang="scss">
 .state-select {
   color: #3a3a3a;
+}
+p.final-text {
+  margin-bottom: 9vh;
+  margin-top: 11vh !important;
+  span a {
+    color: #007d53;
+    font-weight: bolder;
+  }
+}
+p.final-text span a:hover {
+  text-decoration: none;
 }
 .btn:focus {
   box-shadow: none;

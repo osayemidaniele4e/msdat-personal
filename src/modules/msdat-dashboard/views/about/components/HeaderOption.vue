@@ -89,7 +89,7 @@
         </a>
       </li>
       <li>
-        <router-link to="/">
+        <router-link to="/faq">
           <img src="@/assets/img/icons/ic_help.svg" alt="" />
           <span>Help and FAQs</span>
         </router-link>
