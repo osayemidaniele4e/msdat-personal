@@ -232,8 +232,23 @@ export default {
         },
         series: [],
         yAxis: [],
+        plotOptions: {
+          series: {
+            grouping: true,
+            pointWidth: 10,
+            connectNulls: false,
+            pointPlacement: 'between',
+            // borderWidth: 0,
+          },
+        },
       };
-      const dataPromises = values.indicator.map((item) => this.dlQuery({
+      let indicators = '';
+      if (!Array.isArray(values.indicator)) {
+        indicators = [values.indicator];
+      } else {
+        indicators = values.indicator;
+      }
+      const dataPromises = indicators.map((item) => this.dlQuery({
         indicator: item.id,
         datasource: values.datasource.id,
         period: values.year,
@@ -247,7 +262,7 @@ export default {
 
       for (let i = 0; i < results.length; i += 1) {
         // formate result to HighChart Format
-        const indicator = values.indicator[i];
+        const indicator = indicators[i];
         const data = results[i];
         const toHighChartFormat = data.map((item) => [
           this.dlGetLocation(item.location).name,
