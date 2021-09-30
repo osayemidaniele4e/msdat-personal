@@ -141,7 +141,11 @@ export default {
   methods: {
     plotMapLevel(level) {
       // check space is in string and add underscore
-      const lgaState = this.lgaState.replace(/\s/g, '_');
+      let lgaState = '';
+      if (this.lgaState) {
+        lgaState = this.lgaState.replace(/\s/g, '_');
+      }
+
       switch (level) {
         case 1:
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
