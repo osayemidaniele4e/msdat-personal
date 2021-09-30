@@ -57,9 +57,10 @@
         <div class="col-lg-6 col-md-6 col-12 bg-white" id="image">
             <img
               src="../../../assets/state-profile/img/stateprofile.jpg"
-              class="img-fluid"
+              class="img- d-none"
               alt="State Profile Image"
             />
+            <div class="h-100 w-100 bg-light shadow-sm shimmerBG"></div>
         </div>
       </div>
     </div>
@@ -125,6 +126,38 @@ div.content {
   width: 100%;
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+
+  .shimmerBG {
+    animation-duration: 2.2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: shimmer;
+    animation-timing-function: linear;
+    background: #ddd;
+    background: linear-gradient(to right, #f6f6f6 8%, #f0f0f0 18%, #f6f6f6 33%);
+    background-size: 1200px 100%;
+  }
+
+  @-webkit-keyframes shimmer {
+    0% {
+      background-position: -1200px 0;
+    }
+
+    100% {
+      background-position: 1200px 0;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1200px 0;
+    }
+
+    100% {
+      background-position: 1200px 0;
+    }
+  }
 }
 </style>
