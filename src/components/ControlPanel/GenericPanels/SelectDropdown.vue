@@ -49,7 +49,7 @@ export default {
             // eslint-disable-next-line prefer-destructuring
             this.selected = newValue[0][this.multiSelectProps['group-values']][0];
           } else if (newValue.length > 0) {
-            debugger;
+            // debugger;
             // eslint-disable-next-line prefer-destructuring
             this.selected = this.options[0];
           } else {

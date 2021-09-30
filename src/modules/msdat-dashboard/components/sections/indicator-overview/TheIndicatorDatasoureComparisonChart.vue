@@ -73,6 +73,31 @@ export default {
     },
   },
   watch: {
+    /**
+     * some trick i found out arranging the watchers in the order
+     * you want them to be called
+     * like whats happening here
+     * */
+    'values.datasource': {
+      async handler(selectedDataSource) {
+        debugger;
+        this.loading = true;
+        let dataSourceSelected = [];
+        if (!Array.isArray(selectedDataSource)) {
+          dataSourceSelected = [selectedDataSource];
+        } else {
+          dataSourceSelected = selectedDataSource;
+        }
+        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          dataSourceSelected,
+        );
+        this.setUpHighChartConfig(seriesArray, years);
+        this.loading = false;
+      },
+      deep: false,
+      immediate: false,
+    },
     'values.indicator': {
       async handler() {
         this.loading = true;
@@ -116,6 +141,15 @@ export default {
           ...defaultOptions.title,
         },
         series: ChartSeriesObject,
+        plotOptions: {
+          series: {
+            grouping: true,
+            pointWidth: 10,
+            connectNulls: false,
+            pointPlacement: 'between',
+            // borderWidth: 0,
+          },
+        },
       };
     },
     updateChart(e) {
@@ -132,12 +166,14 @@ export default {
      * */
     async toHighChartSeriesSetup(
       dataSources,
-      valueTypeArray = [2],
+      valueTypeArray = [], // we need to refactor the values types implementation
+      // as soon as the database is updated
       parameterObject = {
         indicator: this.values.indicator.id,
         location: this.values.location.id,
       },
     ) {
+      debugger;
       const chartSeriesArray = [];
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
@@ -264,8 +300,8 @@ export default {
     },
   },
   mounted() {
-    debugger;
-    console.trace(this.values);
+    // debugger;
+    // console.trace(this.values);
   },
 };
 </script>
