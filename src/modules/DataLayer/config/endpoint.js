@@ -1,0 +1,14 @@
+export default {
+  getDataSource: 'datasources',
+  getLocation: 'location',
+  getIndicator: 'indicators',
+  getLHL: 'location_hierarchy_level',
+  getValueType: 'valuetypes',
+  getLinks: 'links',
+  getFactors: 'factors',
+  getDSI: 'datasource_specific_indicator',
+  // getData: 'http://209.182.232.228:7000/api/crud/data',
+  getData: 'data',
+  getLastUpdated: 'data/latest/',
+  getUpdatedDataDate: 'data/after_datetime/',
+};
