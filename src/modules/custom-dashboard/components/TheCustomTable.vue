@@ -4,10 +4,10 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th scope="col" style="width: 35%">INDICATOR</th>
-          <th scope="col" style="width: 25%">DATA SOURCES</th>
-          <th scope="col" style="width: 20%">LEVEL</th>
-          <th scope="col" style="width: 20%">YEARS</th>
+          <th scope="col" style="width: 35%; border-right:none;">INDICATOR</th>
+          <th scope="col" style="width: 25%; border-left:none;border-right:none;">DATA SOURCES</th>
+          <th scope="col" style="width: 20%; border-left:none;border-right:none;">LEVEL</th>
+          <th scope="col" style="width: 20%; border-left:none;">YEARS</th>
         </tr>
       </thead>
       <tbody>
@@ -28,22 +28,22 @@
       </tr> -->
         <template v-for="(i, index) in groupIndicators">
           <tr :key="index" style="background-color: #cee4e9">
-            <th id="par" class="span" colspan="5" scope="colgroup">
+            <th id="par" class="" colspan="5" scope="colgroup">
               {{ i.program_area }}
             </th>
           </tr>
           <template v-for="(j, index2) in i.indicators">
             <tr :key="`${index2}${j.id}`">
-              <td class="span" scope="colgroup">
+              <td class="span" scope="colgroup" style='border-right:none;'>
                 {{ j.short_name }}
               </td>
-              <td class="span" scope="colgroup">
+              <td class="span" scope="colgroup" style='border-left:none;border-right:none;'>
                 {{ datasources.join(' ') }}
               </td>
-              <td class="span" scope="colgroup">
+              <td class="span" scope="colgroup" style='border-left:none;border-right:none;'>
                 {{ level.join(' ') }}
               </td>
-              <td class="span" scope="colgroup">
+              <td class="span" scope="colgroup" style='border-left:none;'>
                 {{ period.join(' ') }}
               </td>
             </tr>
