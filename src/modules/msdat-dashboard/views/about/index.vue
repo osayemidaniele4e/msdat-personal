@@ -1,6 +1,7 @@
 <template>
   <div id="about-wrap">
     <the-header />
+<news-letter />
     <main>
       <!-- about MSDAT dashboard -->
       <section>
@@ -93,6 +94,7 @@ import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
 import IndicatorPageFunc from './components/AboutPageIndicator.vue';
 import AvailableDataPageFunc from './components/AboutPageAvailableData.vue';
+import NewsLetter from '../../modules/newsletter/index.vue';
 
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
@@ -103,6 +105,7 @@ export default {
     DataSourceFunc,
     IndicatorPageFunc,
     AvailableDataPageFunc,
+    NewsLetter,
   },
   data() {
     return {
@@ -231,6 +234,13 @@ export default {
 $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
+
+div.modal {
+  div.modal-content {
+    width: 75%;
+    justify-content: center;
+  }
+}
 
 #about-wrap {
   scroll-behavior: smooth;

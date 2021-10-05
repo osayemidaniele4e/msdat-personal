@@ -4,29 +4,24 @@
     <div class="container-fluid px-5 content">
       <div class="row">
         <div class="col-lg-6 col-md-6 col-12">
-          <b-button class="btn btn-outline-primary disabled"
-            >COMING SOON</b-button
-          >
+          <b-button class="btn btn-outline-primary disabled">COMING SOON</b-button>
           <p class="mt-3 mb-4 tittle">Custom Dashboard</p>
 
           <div class="mb-5 mr-3">
             <p class="text-left mb-3 msg">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore,
-              vel. Voluptas, nulla sint error repudiandae, itaque totam velit
-              quo voluptatem officia corporis modi facere nisi illo rem
-              similique magni maxime provident hic aut laboriosam debitis ipsum
-              ex cupiditate doloribus! Labore architecto fugit perspiciatis quae
-              mollitia sequi esse numquam eligendi doloribus dolor minima modi
-              consectetur blanditiis accusantium rem, rerum illo nisi fuga
-              commodi voluptatem totam velit eos sint illum. Unde amet magni quo
-              illum ad, praesentium laudantium quasi repudiandae, impedit nisi
-              assumenda similique isunt!
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore, vel. Voluptas,
+              nulla sint error repudiandae, itaque totam velit quo voluptatem officia corporis modi
+              facere nisi illo rem similique magni maxime provident hic aut laboriosam debitis ipsum
+              ex cupiditate doloribus! Labore architecto fugit perspiciatis quae mollitia sequi esse
+              numquam eligendi doloribus dolor minima modi consectetur blanditiis accusantium rem,
+              rerum illo nisi fuga commodi voluptatem totam velit eos sint illum. Unde amet magni
+              quo illum ad, praesentium laudantium quasi repudiandae, impedit nisi assumenda
+              similique isunt!
             </p>
 
             <p class="text-left msg2">
-              This resource is currently not available. If you would like to be
-              informed about its development, please leave your contact
-              information below.
+              This resource is currently not available. If you would like to be informed about its
+              development, please leave your contact information below.
             </p>
           </div>
 
@@ -38,11 +33,17 @@
                   name="email"
                   class="form-control ml-0 rounded-0"
                   placeholder="Your e-mail address"
+                  v-model="email"
                   required
                 />
               </b-col>
               <b-col cols="12" sm="5" class="">
-                <b-button type="submit" class="btn btn-primary rounded-0 ml-0">
+                <b-button
+                  type="submit"
+                  class="btn btn-primary rounded-0 ml-0 pl-4"
+                  :disabled="loading"
+                  :class="{ submitting: loading }"
+                >
                   Keep me Updated!
                 </b-button>
               </b-col>
@@ -51,11 +52,7 @@
 
           <p class="link-text mt-4 mb-4 ml-1">
             <router-link to="/" style="color: #007d53"
-              ><i
-                style="padding-top: 2px"
-                class="fas fa-angle-left"
-                aria-hidden="true"
-              ></i>
+              ><i style="padding-top: 2px" class="fas fa-angle-left" aria-hidden="true"></i>
               <b-icon icon="chevron-left"></b-icon> Back to MSDAT</router-link
             >
           </p>
@@ -75,14 +72,46 @@
 </template>
 
 <script>
+import axios from 'axios';
+import moment from 'moment';
 import theHeader from '../../msdat-dashboard/views/about/layout/theHeader.vue';
 import theFooter from '../../msdat-dashboard/views/about/layout/theFooter.vue';
 
 export default {
-  name: 'Coming Soon',
+  name: 'ComingSoon',
   components: {
     theHeader,
     theFooter,
+  },
+  data() {
+    return {
+      email: '',
+      dashboard: 'Custom Dashboard',
+      loading: false,
+    };
+  },
+  methods: {
+    async newInterest() {
+      /**
+       * TODO: key for authentication
+       */
+      this.loading = true;
+      const url = 'http://135.181.212.168:9234/api/subdashboard/interest/';
+      const now = moment().format('LLLL');
+      const intrestForm = {
+        email: this.email,
+        dashboard: this.dashboard,
+        created: now,
+      };
+      try {
+        const resp = await axios.post(url, intrestForm);
+        console.log(resp);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 };
 </script>
@@ -165,5 +194,30 @@ div.content {
       background-position: 1200px 0;
     }
   }
+}
+
+button {
+    position: relative;
+
+    &.submitting::after {
+        content: "";
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        top: calc(50% - 0.5rem);
+        left: 0.5rem;
+        border-radius: 2em;
+        border-color: transparent transparent #eeeeee #eeeeee;
+        border-style: solid;
+        border-width: 0.15em;
+        animation: spinner-rotation 0.75s infinite;
+        animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+}
+
+@keyframes spinner-rotation {
+    to {
+        transform: rotate(360deg);
+    }
 }
 </style>
