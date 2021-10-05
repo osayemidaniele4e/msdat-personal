@@ -71,7 +71,7 @@
       <div class="col-md-3 mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link to="#"
+          <router-link to="/coming-soon"
             ><b-list-group-item
               >Create New Dashboard</b-list-group-item
             ></router-link

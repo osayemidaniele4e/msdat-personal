@@ -29,4 +29,9 @@ export default [
       },
     ],
   },
+  {
+    path: '/coming-soon',
+    name: 'ComingSoon',
+    component: () => import('./views/comingSoon.vue'),
+  },
 ];
