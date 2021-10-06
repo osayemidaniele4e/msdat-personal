@@ -50,15 +50,21 @@
     <b class="selection-header">Period Selection</b><br />
     <p>Select available years under each source</p>
     <div class="scroll">
-      <b-form-group v-slot="{ ariaDescribedby }">
-        <b-form-checkbox-group
-          id="checkbox-group-1"
-          v-model="periodSelected"
-          :options="periodOptions"
-          :aria-describedby="ariaDescribedby"
-          name="flavour-1"
-        ></b-form-checkbox-group>
-      </b-form-group>
+      <div v-for="(c, index) in dataSourceSelected" :key="index">
+        <div class="program-areas my-2">
+          {{ c.datasource }}
+          <span style="float: right">▼</span>
+        </div>
+        <b-form-group v-slot="{ ariaDescribedby }">
+          <b-form-checkbox-group
+            id="checkbox-group-1"
+            v-model="periodSelected"
+            :options="periodOptions"
+            :aria-describedby="ariaDescribedby"
+            name="flavour-1"
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </div>
     </div>
 
     <b class="selection-header">Level Selection</b><br />
@@ -122,10 +128,7 @@ export default {
         return this.$store.state.CUSTOM_DASHBOARD_STORE.indicatorsSelected;
       },
       set(values) {
-        this.$store.commit(
-          'CUSTOM_DASHBOARD_STORE/setIndicatorSelected',
-          values,
-        );
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setIndicatorSelected', values);
       },
     },
     dataSourceSelected: {
@@ -133,8 +136,7 @@ export default {
         return this.$store.state.CUSTOM_DASHBOARD_STORE.dataSourceSelected;
       },
       set(values) {
-        this.$store.commit('CUSTOM_DASHBOARD_STORE/setDataSourceSelected',
-          values);
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setDataSourceSelected', values);
       },
     },
     periodSelected: {
@@ -186,7 +188,7 @@ div.scroll {
   overflow-y: auto;
   margin-bottom: 27.750006938px;
   max-height: 300px;
-  border: 2px solid #F3F3F3;
+  border: 2px solid #f3f3f3;
 }
 .selection-header {
   color: #202020;
