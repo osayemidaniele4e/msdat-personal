@@ -21,15 +21,26 @@
       <b-col>
         <b-row class="text-left text-lg-center">
           <b-col cols="auto">
-            <input type="file" id="file-input" accept="image/*" hidden @change="onImageSelected">
-            <label class="file-input-label" for="file-input">
-             <customDashboardSvg :name="upload"></customDashboardSvg>
-             </label>
-              </b-col>
+            <div>
+              <input
+                type="file"
+                id="file-input"
+                accept="image/*"
+                hidden
+                @change="previewThumbnail"
+              />
+              <label class="file-input-label" for="file-input">
+                <customDashboardSvg :name="upload"></customDashboardSvg>
+              </label>
+            </div>
+            <div class="image-preview" v-if="this.selectedImage.length > 0">
+              <img :src="selectedImage" class="image-preview__img" />
+            </div>
+          </b-col>
           <b-col cols="12" lg="4">
             <p class="text-left my-4 my-md-0">
-              Logo size should be 200px by 200px Not bigger than 5 MB Logo should be representative
-              of your dashboard content
+              Logo size should be 200px by 200px Not bigger than 5 MB Logo
+              should be representative of your dashboard content
             </p>
           </b-col>
         </b-row>
@@ -37,16 +48,18 @@
     </b-row>
     <p><b>Select dashboard data</b></p>
     <p>
-      Go through our database and select the data that is relevant to your dashboard.<br />
-      Select your indicators, your preferred data source, the years and the coverage area (National
-      or subnational).
+      Go through our database and select the data that is relevant to your
+      dashboard.<br />
+      Select your indicators, your preferred data source, the years and the
+      coverage area (National or subnational).
     </p>
     <b-row id="bottom-row">
-      <b-col cols="auto mb-5" >
-        <b-button id="individual">SELECT INDIVIDUAL DATA</b-button>
+      <b-col cols="auto mb-5">
+        <b-button id="individual" @click="submitForm"
+          >SELECT INDIVIDUAL DATA</b-button
+        >
         <p class="help-text">
-          I know the exact data I want,
-          I will choose just the ones I need
+          I know the exact data I want, I will choose just the ones I need
         </p>
       </b-col>
       <!-- <b-col cols="auto" xl="3" md="6" sm="12">
@@ -58,8 +71,7 @@
       <b-col cols="auto" class="mt-5 mt-lg-5 mt-xl-0">
         <b-button id="available">SELECT all available DATA</b-button>
         <p class="help-text">
-          Skip the data table,
-          I want all the available data
+          Skip the data table, I want all the available data
         </p>
       </b-col>
       <!-- <b-col cols="auto" lg="3" md="6" sm="12" class="mt-0 mt-md-5 mt-xs-5 mt-xl-0">
@@ -82,19 +94,32 @@ export default {
   },
   data() {
     return {
-      selectedImage: null,
+      selectedImage: '',
     };
   },
   mounted() {
     this.$store.commit('updateStep', 1);
   },
   methods: {
-    onImageSelected(event) {
-      [this.selectedImage] = event.target.files;
+    // onImageSelected(event) {
+    //   [this.selectedImage] = event.target.files;
+    // },
+    previewThumbnail: function getPreview(event) {
+      const input = event.target;
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.selectedImage = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
     },
     onUpload() {
       const fd = new FormData();
       fd.append('Image', this.selectedImage, this.selectedImage.name);
+    },
+    submitForm() {
+      this.$router.push('preference-table');
     },
   },
 };
@@ -103,12 +128,12 @@ export default {
 <style lang="scss" scoped>
 p {
   color: #202020;
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
 }
 .welcome {
   font-weight: normal;
   font-size: 30px;
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
 }
 .form-control {
   background-color: #eaeaea;
@@ -155,5 +180,22 @@ p {
 }
 #bottom-row {
   margin-top: 56.250000014px;
+}
+.image-preview {
+  height: 300px;
+  left: -4px;
+  margin: 0 auto;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+.image-preview__img {
+  border: 2px solid gray;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
 }
 </style>

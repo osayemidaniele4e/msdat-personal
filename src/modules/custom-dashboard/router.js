@@ -17,12 +17,17 @@ export default [
       {
         path: 'preference-table',
         name: 'preference-table',
-        component: () => import('./components/preferenceTable.vue'),
+        component: () => import('./views/preferenceTable.vue'),
       },
       {
         path: 'details',
         name: 'my-dashboard-details',
         component: () => import('./views/dashboardDetails.vue'),
+      },
+      {
+        path: 'data-table',
+        name: 'data-table',
+        component: () => import('./views/DataTable.vue'),
       },
     ],
   },
