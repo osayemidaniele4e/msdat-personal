@@ -13,7 +13,10 @@
         <b-col sm="12" lg="3">
           <SideSelection />
         </b-col>
-        <b-col sm="12" lg="9">
+        <b-col>
+          <div class="vl" lg="1"></div>
+        </b-col>
+        <b-col sm="12" lg="8">
           <TheCustomTable />
           <b-row align-h="end" class="text-right work-sans">
             <b-col cols="auto"
@@ -322,7 +325,13 @@ thead {
     display: none;
   }
 }
-
+.vl {
+  border-left: 1px solid #E3E3E3;
+  height: 100%;
+  width: 10px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
 .btn {
   background-color: #3f8994;
   color: #ffffff;
