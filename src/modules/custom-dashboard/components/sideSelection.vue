@@ -59,7 +59,7 @@
           <b-form-checkbox-group
             id="checkbox-group-1"
             v-model="periodSelected"
-            :options="periodOptions"
+            :options="distinctYears"
             :aria-describedby="ariaDescribedby"
             name="flavour-1"
           ></b-form-checkbox-group>
@@ -156,6 +156,7 @@ export default {
       },
     },
   },
+
 };
 </script>
 
