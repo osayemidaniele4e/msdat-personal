@@ -38,26 +38,26 @@ export default {
   },
   computed: {
     selectedIndicator() {
-      return this.$store.getters['selectedIndicator'];
+      return this.$store.getters.selectedIndicator;
     },
     selectedDataSource() {
-      return this.$store.getters['selectedDataSource'];
+      return this.$store.getters.selectedDataSource;
     },
     selectedYears() {
-      return this.$store.getters['selectedYears'];
+      return this.$store.getters.selectedYears;
     },
     selectedLevels() {
-      return this.$store.getters['selectedLevels'];
+      return this.$store.getters.selectedLevels;
     },
   },
   mounted() {
     this.$store.commit('updateStep', 3);
   },
   methods: {
-      approveData(){
-          this.$router.push('sections');
-      }
-  }
+    approveData() {
+      this.$router.push('sections');
+    },
+  },
 };
 </script>
 

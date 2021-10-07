@@ -116,7 +116,7 @@
   </div>
 </template>
 
-// <script>
+<script>
 //  import { flatten, uniq, countBy } from 'lodash';
 import TableDataCell from '../../msdat-dashboard/components/table/TableDataCell.vue';
 import TableDataSourceCell from '../../msdat-dashboard/components/table/TableDataSourceCell.vue';

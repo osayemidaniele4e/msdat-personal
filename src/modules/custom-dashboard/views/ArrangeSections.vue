@@ -56,10 +56,10 @@ export default {
     this.$store.commit('updateStep', 4);
   },
   methods: {
-      approveData(){
-          this.$router.push('/my-custom-dashboard');
-      }
-  }
+    approveData() {
+      this.$router.push('/my-custom-dashboard');
+    },
+  },
 };
 </script>
 

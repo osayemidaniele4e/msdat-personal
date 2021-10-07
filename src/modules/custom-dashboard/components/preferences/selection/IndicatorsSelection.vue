@@ -19,7 +19,7 @@
             name=""
             :id="item.id"
             :value="item.short_name"
-            @click="selectIndicator($event, items.parent, item.id)"            
+            @click="selectIndicator($event, items.parent, item.id)"
             v-model="indicatorSelected"
           />
           <span >{{ item.short_name }}</span>
@@ -42,11 +42,11 @@ export default {
     return {
       selectedIndicator: [],
       // short: 'yes',
-      indicatorSelected: []
+      indicatorSelected: [],
     };
   },
   computed: {
-    
+
     // programAreas(){
     //   return this.programArea;
     // },
