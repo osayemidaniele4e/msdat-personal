@@ -4,7 +4,17 @@
       <b-col sm="12" md="3" class="mb-4 mb-md-0">
         <div>
           <a v-show="this.step >= 2" @click="$router.back()" class="back">
-            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/></svg>
+            <svg
+              width="24"
+              height="24"
+              xmlns="http://www.w3.org/2000/svg"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+            >
+              <path
+                d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"
+              />
+            </svg>
             Go Back
           </a>
         </div>
@@ -12,42 +22,62 @@
       <b-col sm="12" md="8">
         <b-row>
           <b-col class="px-0" cols="auto">
-            <b-avatar :class="this.step >= 1 ? 'active-step' : ''" text="1"></b-avatar>
+            <b-avatar
+              :class="this.step >= 1 ? 'active-step' : ''"
+              text="1"
+            ></b-avatar>
           </b-col>
           <b-col class="px-0">
             <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
-            <b-avatar :class="this.step >= 2 ? 'active-step' : ''" text="2"></b-avatar>
+            <b-avatar
+              :class="this.step >= 2 ? 'active-step' : ''"
+              text="2"
+            ></b-avatar>
           </b-col>
           <b-col class="px-0">
             <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
-            <b-avatar :class="this.step >= 3 ? 'active-step' : ''" text="3"></b-avatar>
+            <b-avatar
+              :class="this.step >= 3 ? 'active-step' : ''"
+              text="3"
+            ></b-avatar>
           </b-col>
           <b-col class="px-0">
             <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
-            <b-avatar :class="this.step >= 4 ? 'active-step' : ''" text="4"></b-avatar>
+            <b-avatar
+              :class="this.step >= 4 ? 'active-step' : ''"
+              text="4"
+            ></b-avatar>
           </b-col>
         </b-row>
         <b-row class="mt-2 d-none d-lg-flex stepper-text">
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-left: -60%;">Input dashboard details</p>
+            <p class="text-center" style="margin-left: -60%">
+              Input dashboard details
+            </p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-left: -20%">Select your preferences</p>
+            <p class="text-center" style="margin-left: -20%">
+              Select your preferences
+            </p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-right: -50%">Dashboard data table</p>
+            <p class="text-center" style="margin-right: -50%">
+              Dashboard data table
+            </p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-right:-80%;">Arrange dashboard sections</p>
+            <p class="text-center" style="margin-right: -80%">
+              Arrange dashboard sections
+            </p>
           </b-col>
         </b-row>
       </b-col>
@@ -56,11 +86,9 @@
 </template>
 
 <script>
-
 export default {
   name: 'cd-stepper',
-  components: {
-  },
+  components: {},
   data() {
     return {};
   },
@@ -73,7 +101,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .b-avatar {
   color: #000000;
   background-color: #ffffff;
@@ -84,14 +112,14 @@ export default {
 }
 .stepper-text {
   color: #000000;
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: normal;
   font-size: 11.250002813px;
 }
 .back {
   font-size: 15.00000375px;
   color: #000000;
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: normal;
 }
 .stepper-body {

@@ -1,10 +1,5 @@
 <template>
-  <b-jumbotron
-    fluid
-    container-fluid
-    text-variant="black"
-    border-variant="null"
-  >
+  <b-jumbotron fluid container-fluid text-variant="black" border-variant="null">
     <b-row class="text-left">
       <b-col>
         <p>Platform</p>
@@ -70,9 +65,9 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 // @import "../scss/custom.scss";
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans&display=swap');
 ul {
   list-style-type: none;
   margin: 0;
@@ -87,7 +82,7 @@ ul {
 .jumbotron {
   background-color: #00262f;
   color: #ffffff;
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
   padding-left: 105.000000026px;
   padding-right: 105.000000026px;
   .btn {
