@@ -133,7 +133,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container-fluid {
   margin-top: 54.750000014px;
 }

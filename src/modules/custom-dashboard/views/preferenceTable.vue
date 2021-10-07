@@ -37,7 +37,10 @@
               </div>
             </div>
           </div> -->
-          <indicators-selection @save-indicator="saveIndicator" @IndicatorSelect="SelectiveIndicator" />
+          <indicators-selection
+            @save-indicator="saveIndicator"
+            @IndicatorSelect="SelectiveIndicator"
+          />
           <!-- <indicators-selection :heading="'Years Selection'"/> -->
           <!-- <indicators-selection
             :heading="'Data Source Selection'"
@@ -159,7 +162,9 @@
             <b-col class="align-baseline" cols="auto"
               ><p class="baseline">Save for Later</p>
             </b-col>
-            <b-col cols="auto"><b-button @click="approveData">approve Data</b-button></b-col>
+            <b-col cols="auto"
+              ><b-button @click="approveData">approve Data</b-button></b-col
+            >
           </b-row>
         </b-col>
       </b-row>
@@ -364,7 +369,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .program-areas {
   background-color: #f3f3f3;
   border-color: #f3f3f3;
