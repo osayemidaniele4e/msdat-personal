@@ -5,7 +5,7 @@
       <div
         v-for="(level, index) in levels"
         :key="index"
-        style="display: inline-block; justify-content: space-around"
+        style="display: inline-block; justify-content: space-around "
       >
         <input
           type="checkbox"

@@ -3,8 +3,8 @@
     <b class="selection-header">Indicators Selection</b><br />
     <div class="scroll" style="margin-left: 5px">
       <div v-for="items in heading" :key="items">
-        <div class="program-areas my-2">
-          <input type="checkbox" name="" id="" />
+        <div class="program-areas my-2" style="background: #F3F3F3">
+          <input type="checkbox" name="" id=""  />
           {{ items.parent }}
           <span style="float: right">▼</span>
         </div>

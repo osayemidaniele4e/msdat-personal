@@ -3,7 +3,7 @@ import axios from 'axios';
 export default {
 
   async loadIndicators({ commit }) {
-    await axios.get('https://135.181.212.168:9234/api/crud/indicators/')
+    await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
       .then((res) => {
         const { data } = res;
         commit('setIndicators', data);
@@ -27,7 +27,7 @@ export default {
       }).catch((err) => (err));
   },
   async loadDataSource({ commit }) {
-    await axios.get('https://135.181.212.168:9234/api/crud/datasources/')
+    await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
       .then((res) => {
         const { data } = res;
 
@@ -52,7 +52,7 @@ export default {
       }).catch((err) => (err));
   },
   async loadCoverageLevels({ commit }, payload) {
-    await axios.get(`https://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload}`)
+    await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload}`)
       .then((res) => {
         const { data } = res;
 
@@ -62,7 +62,7 @@ export default {
   },
 
   async loadYears({ commit }, payload) {
-    await axios.get(`https://135.181.212.168:9234/api/crud/indicators/${payload}/years_available/`)
+    await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload}/years_available/`)
       .then((res) => {
         const { data } = res;
 

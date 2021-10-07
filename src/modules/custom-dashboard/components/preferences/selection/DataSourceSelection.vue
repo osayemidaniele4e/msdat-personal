@@ -3,7 +3,7 @@
     <b class="selection-header">Data Source Selection</b><br />
     <div class="scroll" style="margin-left: 5px">
       <div v-for="items in heading" :key="items">
-        <div class="program-areas ">
+        <div class="program-areas " style="background: #F3F3F3">
           {{ items.parent }}
           <span style="float: right">▼</span>
         </div>

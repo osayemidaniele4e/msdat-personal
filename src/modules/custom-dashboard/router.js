@@ -37,10 +37,10 @@ export default [
 
     ],
   },
-  {
-    path: '/my-custom-dashboard',
-    name: 'my-custom-dashboard',
-    component: () => import('./views/CustomDashboard.vue'),
-  },
+  // {
+  //   path: '/my-custom-dashboard',
+  //   name: 'my-custom-dashboard',
+  //   component: () => import('./views/CustomDashboard.vue'),
+  // },
 
 ];

@@ -121,9 +121,6 @@ export default {
     this.$store.commit('updateStep', 1);
   },
   methods: {
-    // onImageSelected(event) {
-    //   [this.selectedImage] = event.target.files;
-    // },
     previewThumbnail: function getPreview(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
