@@ -9,7 +9,7 @@
         style="
           display: inline-block;
           justify-content: space-around;
-          
+
         "
       >
         <input
