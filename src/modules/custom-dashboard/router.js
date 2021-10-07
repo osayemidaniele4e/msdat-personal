@@ -29,7 +29,18 @@ export default [
         name: 'data-table',
         component: () => import('./views/DataTable.vue'),
       },
+      {
+        path: 'sections',
+        name: 'sections',
+        component: () => import('./views/ArrangeSections.vue'),
+      },
+      
     ],
+  },
+  {
+    path: '/my-custom-dashboard',
+    name: 'my-custom-dashboard',
+    component: () => import('./views/CustomDashboard.vue'),
   },
 
 ];

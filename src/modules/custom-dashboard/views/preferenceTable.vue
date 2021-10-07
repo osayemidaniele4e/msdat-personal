@@ -335,6 +335,11 @@ export default {
     },
     approveData() {
       this.$router.push('data-table');
+      // console.log(this.selectedIndicator.value);
+      this.$store.dispatch('selectedIndicator', this.selectedIndicator);
+      this.$store.dispatch('selectedDataSource', this.selectedDataSource);
+      this.$store.dispatch('selectedYears', this.selectedYears);
+      this.$store.dispatch('selectedLevels', this.selectedLevel);
     },
     // toggle(item, arr) {
     //   if (this.selected[arr].includes(item)) {
@@ -387,6 +392,7 @@ input {
 .baseline {
   margin-top: auto !important;
 }
+
 div.scroll {
   // max-height: 110px;
   overflow-x: hidden;

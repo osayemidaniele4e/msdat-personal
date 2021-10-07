@@ -21,8 +21,16 @@ export default {
   },
 
   selectedIndicator(state) {
-    console.log('STate Indicator', state.selectedIndicator);
     return state.selectedIndicator;
+  },
+  selectedDataSource(state) {
+    return state.selectedDataSource;
+  },
+  selectedYears(state) {
+    return state.selectedYears;
+  },
+  selectedLevels(state) {
+    return state.selectedLevels;
   },
 
   // ******* Indicators Levels ************** //

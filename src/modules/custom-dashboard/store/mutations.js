@@ -17,6 +17,15 @@ export default {
   selectedIndicator(state, payload) {
     state.selectedIndicator = payload;
   },
+  selectedDataSource(state, payload) {
+    state.selectedDataSource = payload;
+  },
+  selectedYears(state, payload) {
+    state.selectedYears = payload;
+  },
+  selectedLevels(state, payload) {
+    state.selectedLevels = payload;
+  },
 
   // ******** Data Source Selection ***************** //
 

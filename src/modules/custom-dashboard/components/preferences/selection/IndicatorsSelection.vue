@@ -19,8 +19,8 @@
             name=""
             :id="item.id"
             :value="item.short_name"
-            @click="selectIndicator($event, items.parent, item.id)"
-
+            @click="selectIndicator($event, items.parent, item.id)"            
+            v-model="indicatorSelected"
           />
           <span >{{ item.short_name }}</span>
         </div>
@@ -41,9 +41,12 @@ export default {
   data() {
     return {
       selectedIndicator: [],
+      // short: 'yes',
+      indicatorSelected: []
     };
   },
   computed: {
+    
     // programAreas(){
     //   return this.programArea;
     // },
@@ -53,6 +56,7 @@ export default {
   },
   created() {
     this.loadIndicators();
+    // this.indicatorSelected();
   },
   methods: {
     loadIndicators() {
@@ -62,6 +66,7 @@ export default {
       this.$store.dispatch('loadCoverageLevels', childId);
       this.$store.dispatch('loadYears', childId);
       let parentObject = this.getParentEntity(parentValue);
+      // console.log(abc);
       // console.log(childId);
       if (e.target.checked) {
         const child = {
@@ -87,6 +92,7 @@ export default {
           );
         }
       }
+      // console.log("asdfe",this.selectedIndicator);
       this.$emit('save-indicator', this.selectedIndicator);
       this.$emit('IndicatorSelect', this.showList);
       // this.$store.dispatch({
@@ -95,6 +101,11 @@ export default {
       // this.selectedIndicator;
       // console.log("Selected ",this.selectedIndicator);
     },
+    // indicatorSelected() {
+    //   let indicator = this.$store.getters['selectedIndicator'];
+    //   // this.indicatorSelected = indicator.map(e => e.short_name)
+    //   console.log("State Indicator",indicator);
+    // },
     getParentEntity(parentKey) {
       if (this.selectedIndicator.length > 0) {
         const filteredList = this.selectedIndicator.filter(

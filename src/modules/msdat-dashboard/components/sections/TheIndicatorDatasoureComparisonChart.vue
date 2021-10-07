@@ -20,7 +20,7 @@
       </template>
       <BarChart :chartOptions="ChartOptions" />
     </base-sub-card>
-  </base-overlay>
+  <!-- </base-overlay> -->
 </template>
 
 <script>
@@ -67,7 +67,7 @@ export default {
   watch: {
     'values.indicator': {
       async handler() {
-        this.loading = true;
+        this.loading = false;
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           dataSources,

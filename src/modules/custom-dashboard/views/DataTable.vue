@@ -10,7 +10,22 @@
         is owned by the Federal Body of Maternal and Child health, Nigeria.
       </p>
     </div>
-    <data-table />
+    <data-table
+      :indicator="selectedIndicator"
+      :dataSource="selectedDataSource"
+      :years="selectedYears"
+      :level="selectedLevels"
+    />
+    <b-row
+            align-h="end"
+            class="mt-5 text-right"
+          >
+            <!-- <b-col class="align-baseline" cols="auto"
+              ><p class="baseline">Save for Later</p>
+            </b-col> -->
+            <b-col cols="auto"><b-button  class="editBtn" disabled>Edit Data Table</b-button></b-col>
+            <b-col cols="auto"><b-button @click="approveData" class="nextBtn">Next Page</b-button></b-col>
+          </b-row>
   </b-container>
 </template>
 
@@ -21,8 +36,46 @@ export default {
   components: {
     DataTable,
   },
+  computed: {
+    selectedIndicator() {
+      return this.$store.getters['selectedIndicator'];
+    },
+    selectedDataSource() {
+      return this.$store.getters['selectedDataSource'];
+    },
+    selectedYears() {
+      return this.$store.getters['selectedYears'];
+    },
+    selectedLevels() {
+      return this.$store.getters['selectedLevels'];
+    },
+  },
   mounted() {
     this.$store.commit('updateStep', 3);
   },
+  methods: {
+      approveData(){
+          this.$router.push('sections');
+      }
+  }
 };
 </script>
+
+<style scoped>
+.nextBtn {
+  background-color: #3f8994;
+  color: #ffffff;
+  max-width: 253.500000063px;
+  text-transform: uppercase;
+  border-color: #3f8994;
+  font-size: 15.00000375px;
+}
+.editBtn {
+  background-color: #EAEAEA;
+  color: #000000;
+  max-width: 253.500000063px;
+  text-transform: uppercase;
+  border-color: #EAEAEA;
+  font-size: 15.00000375px;
+}
+</style>
