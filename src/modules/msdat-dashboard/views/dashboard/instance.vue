@@ -1,215 +1,231 @@
 <template>
   <div>
-    <Loading
-      v-if="!loading"
-      :noBackdrop="false"
-      :showBackground="false"
-      class="over"
-    >
-      <div class="text-center">
-        <img :src="loadingImg" alt="first_img" width="250px" />
-        <div class="mr-4">
-          <h3>Initializing{{ loadingTitle }}</h3>
-          <p>{{ loadingContent }}</p>
+    <TroubleShootingModal
+      style="z-index: 1500"
+      v-if="showTroubleShootingModal"
+    />
+    <template v-if="!showTroubleShootingModal">
+      <Loading
+        v-if="!loading"
+        :noBackdrop="false"
+        :showBackground="false"
+        class="over"
+      >
+        <div class="text-center">
+          <img :src="loadingImg" alt="first_img" width="250px" />
+          <div class="mr-4">
+            <h3>Initializing{{ loadingTitle }}</h3>
+            <p>{{ loadingContent }}</p>
+          </div>
         </div>
-      </div>
-    </Loading>
+      </Loading>
 
-    <div v-else>
-      <Header v-on:tour="runIntro"></Header>
-      <div class="sticky">
-        <b-overlay :show="!cpIsLoading">
-          <BasePanel
-            :position="position"
-            v-if="cpIsLoading"
-            v-on:showSection="showSection($event)"
-          >
-            <template v-slot:default>
-              <ControlBase
-                v-for="(control, index) in $store.state.MSDAT_STORE
-                  .controlConfig"
-                :key="index"
-                :title="control.label"
-              >
-                <template v-if="!Array.isArray(control.setup[0])">
-                  <ControlPanel
-                    @data:options="log($event, index)"
-                    :setup="control.setup"
-                    :defaultIndicator="
-                      control.defaults.indicator != null
-                        ? control.defaults.indicator
-                        : defaultIndicator
-                    "
-                    :defaultDataSource="
-                      control.defaults.dataSource != null
-                        ? control.defaults.dataSource
-                        : defaultDataSource
-                    "
-                    :defaultLocation="
-                      control.defaults.location != null
-                        ? control.defaults.location
-                        : defaultLocation
-                    "
-                    :defaultYear="
-                      control.defaults.year != null
-                        ? control.defaults.year
-                        : defaultYear
-                    "
-                  />
-                </template>
-                <template v-else>
-                  <div class="row">
-                    <div
-                      class="col-md-4"
-                      v-for="(item, index2) in control.setup"
-                      :key="index2"
-                    >
-                      <ControlPanel
-                        @data:options="log($event, index, index2)"
-                        :setup="item"
-                        :defaultIndicator="
-                          control.defaults.indicator != null
-                            ? control.defaults.indicator
-                            : defaultIndicator
-                        "
-                        :defaultDataSource="
-                          control.defaults.dataSource != null
-                            ? control.defaults.dataSource
-                            : defaultDataSource
-                        "
-                        :defaultLocation="
-                          control.defaults.location != null
-                            ? control.defaults.location
-                            : defaultLocation
-                        "
-                        :defaultYear="
-                          control.defaults.year != null
-                            ? control.defaults.year
-                            : defaultYear
-                        "
-                      />
-                    </div>
-                  </div>
-                </template>
-              </ControlBase>
-            </template>
-          </BasePanel>
-        </b-overlay>
-      </div>
-      <!-- control Panels ends here  -->
-
-      <div class="container-fluid lessVisible" v-if="cpIsLoading">
-        <div class="row observable" id="0" ref="0">
-          <div class="col-md-12">
-            <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
-              <template #title>
-                <h5 class="font-weight-bold work-sans text-white">
-                  Indicator Overview
-                </h5>
-              </template>
-              <!-- lazy loading for each section starts here -->
-              <!-- the first section doesn't need the component
-                 since it will be mounted first -->
-              <template>
-                <BaseIndicatorOverview
-                  v-if="BaseIndicatorOverviewProp"
-                  :controlPanelProps="BaseIndicatorOverviewProp"
-                />
-              </template>
-            </base-sub-card>
-          </div>
-        </div>
-        <div class="row observable" id="1" ref="1">
-          <div class="col-md-12">
-            <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
-              <template #title>
-                <h5 class="font-weight-bold work-sans text-white">
-                  Zonal Analysis Section
-                </h5>
-              </template>
-              <template>
-                <LazyLoading>
-                  <ZonalAnalysisSection
-                    v-if="zonalAnalysis"
-                    :controlPanelProps="zonalAnalysis"
-                  />
-                </LazyLoading>
-              </template>
-            </base-sub-card>
-          </div>
-        </div>
-        <div class="row observable" id="2" ref="2">
-          <div class="col-md-12">
-            <base-sub-card :backgroundColor="'#348481'">
-              <template #title>
-                <h5 class="font-weight-bold work-sans text-white">
-                  Indicator Comparison - By Period
-                </h5>
-              </template>
-              <template>
-                <LazyLoading>
-                  <BaseICS :controlPanelProps="indicatorComparisonData" />
-                </LazyLoading>
-              </template>
-            </base-sub-card>
-          </div>
-        </div>
-        <div class="row observable" id="3" ref="3">
-          <div class="col-md-12">
-            <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
-              <template #title>
-                <h5 class="font-weight-bold work-sans text-white">
-                  Dataset Comparison
-                </h5>
-              </template>
-              <template>
-                <LazyLoading>
-                  <DataSetComparism
-                    v-if="datasetProps"
-                    :values="datasetProps"
-                  />
-                </LazyLoading>
-              </template>
-            </base-sub-card>
-          </div>
-        </div>
-        <div class="row observable" id="4" ref="4">
-          <div class="col-md-12">
-            <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
-              <template #title>
-                <h5 class="font-weight-bold work-sans text-white">
-                  Multi-Source Indicator Comparison
-                </h5>
-              </template>
-              <template>
-                <div class="row">
-                  <template v-for="n in 3">
-                    <div :key="n" class="col-md-4">
-                      <LazyLoading>
-                        <BaseMultiSourceSection
-                          v-if="MultiSourceCompareValue[n - 1]"
-                          :controlPanelProps="MultiSourceCompareValue[n - 1]"
-                          :currentIndex="n - 1"
+      <div v-else>
+        <Header v-on:tour="runIntro"></Header>
+        <div class="sticky">
+          <b-overlay :show="!cpIsLoading">
+            <BasePanel
+              :position="position"
+              v-if="cpIsLoading"
+              v-on:showSection="showSection($event)"
+            >
+              <template v-slot:default>
+                <ControlBase
+                  v-for="(control, index) in $store.state.MSDAT_STORE
+                    .controlConfig"
+                  :key="index"
+                  :title="control.label"
+                >
+                  <template v-if="!Array.isArray(control.setup[0])">
+                    <ControlPanel
+                      @data:options="log($event, index)"
+                      :setup="control.setup"
+                      :defaultIndicator="
+                        control.defaults.indicator != null
+                          ? control.defaults.indicator
+                          : defaultIndicator
+                      "
+                      :defaultDataSource="
+                        control.defaults.dataSource != null
+                          ? control.defaults.dataSource
+                          : defaultDataSource
+                      "
+                      :defaultLocation="
+                        control.defaults.location != null
+                          ? control.defaults.location
+                          : defaultLocation
+                      "
+                      :defaultYear="
+                        control.defaults.year != null
+                          ? control.defaults.year
+                          : defaultYear
+                      "
+                    />
+                  </template>
+                  <template v-else>
+                    <div class="row">
+                      <div
+                        class="col-md-4"
+                        v-for="(item, index2) in control.setup"
+                        :key="index2"
+                      >
+                        <ControlPanel
+                          @data:options="log($event, index, index2)"
+                          :setup="item"
+                          :defaultIndicator="
+                            control.defaults.indicator != null
+                              ? control.defaults.indicator
+                              : defaultIndicator
+                          "
+                          :defaultDataSource="
+                            control.defaults.dataSource != null
+                              ? control.defaults.dataSource
+                              : defaultDataSource
+                          "
+                          :defaultLocation="
+                            control.defaults.location != null
+                              ? control.defaults.location
+                              : defaultLocation
+                          "
+                          :defaultYear="
+                            control.defaults.year != null
+                              ? control.defaults.year
+                              : defaultYear
+                          "
                         />
-                      </LazyLoading>
+                      </div>
                     </div>
                   </template>
-                </div>
+                </ControlBase>
               </template>
-            </base-sub-card>
+            </BasePanel>
+          </b-overlay>
+        </div>
+        <!-- control Panels ends here  -->
+
+        <div class="container-fluid lessVisible" v-if="cpIsLoading">
+          <div class="row observable" id="0" ref="0">
+            <div class="col-md-12">
+              <base-sub-card
+                :backgroundColor="'#348481'"
+                class="my-2 shadow-sm"
+              >
+                <template #title>
+                  <h5 class="font-weight-bold work-sans text-white">
+                    Indicator Overview
+                  </h5>
+                </template>
+                <!-- lazy loading for each section starts here -->
+                <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+                <template>
+                  <BaseIndicatorOverview
+                    v-if="BaseIndicatorOverviewProp"
+                    :controlPanelProps="BaseIndicatorOverviewProp"
+                  />
+                </template>
+              </base-sub-card>
+            </div>
+          </div>
+          <div class="row observable" id="1" ref="1">
+            <div class="col-md-12">
+              <base-sub-card
+                :backgroundColor="'#348481'"
+                class="my-2 shadow-sm"
+              >
+                <template #title>
+                  <h5 class="font-weight-bold work-sans text-white">
+                    Zonal Analysis Section
+                  </h5>
+                </template>
+                <template>
+                  <LazyLoading>
+                    <ZonalAnalysisSection
+                      v-if="zonalAnalysis"
+                      :controlPanelProps="zonalAnalysis"
+                    />
+                  </LazyLoading>
+                </template>
+              </base-sub-card>
+            </div>
+          </div>
+          <div class="row observable" id="2" ref="2">
+            <div class="col-md-12">
+              <base-sub-card :backgroundColor="'#348481'">
+                <template #title>
+                  <h5 class="font-weight-bold work-sans text-white">
+                    Indicator Comparison - By Period
+                  </h5>
+                </template>
+                <template>
+                  <LazyLoading>
+                    <BaseICS :controlPanelProps="indicatorComparisonData" />
+                  </LazyLoading>
+                </template>
+              </base-sub-card>
+            </div>
+          </div>
+          <div class="row observable" id="3" ref="3">
+            <div class="col-md-12">
+              <base-sub-card
+                :backgroundColor="'#348481'"
+                class="my-2 shadow-sm"
+              >
+                <template #title>
+                  <h5 class="font-weight-bold work-sans text-white">
+                    Dataset Comparison
+                  </h5>
+                </template>
+                <template>
+                  <LazyLoading>
+                    <DataSetComparism
+                      v-if="datasetProps"
+                      :values="datasetProps"
+                    />
+                  </LazyLoading>
+                </template>
+              </base-sub-card>
+            </div>
+          </div>
+          <div class="row observable" id="4" ref="4">
+            <div class="col-md-12">
+              <base-sub-card
+                :backgroundColor="'#348481'"
+                class="my-2 shadow-sm"
+              >
+                <template #title>
+                  <h5 class="font-weight-bold work-sans text-white">
+                    Multi-Source Indicator Comparison
+                  </h5>
+                </template>
+                <template>
+                  <div class="row">
+                    <template v-for="n in 3">
+                      <div :key="n" class="col-md-4">
+                        <LazyLoading>
+                          <BaseMultiSourceSection
+                            v-if="MultiSourceCompareValue[n - 1]"
+                            :controlPanelProps="MultiSourceCompareValue[n - 1]"
+                            :currentIndex="n - 1"
+                          />
+                        </LazyLoading>
+                      </div>
+                    </template>
+                  </div>
+                </template>
+              </base-sub-card>
+            </div>
           </div>
         </div>
+        <!-- lazy loading ends here -->
+
+        <Footer class="visible"> </Footer>
+        <Onboarding
+          v-if="firstTime"
+          v-on:closeOnboard="onCloseOnBoarding"
+        ></Onboarding>
       </div>
-      <!-- lazy loading ends here -->
-
-      <Footer class="visible"> </Footer>
-      <Onboarding
-        v-if="firstTime"
-        v-on:closeOnboard="onCloseOnBoarding"
-      ></Onboarding>
-
-      <TroubleShootingModal v-if="showTroubleShootingModal" />
-    </div>
+    </template>
   </div>
 </template>
 
