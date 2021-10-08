@@ -340,11 +340,20 @@ export default {
   async mounted() {
     this.loading = false;
     // initializing data for dashboard
-    await this.$DL.init({
-      dashboardIndicators: this.indicators,
-      defaultIndicators: this.defaultIndicators,
-      dashboardDataSources: this.dataSources,
-    });
+    try {
+      await this.$DL.init({
+        dashboardIndicators: this.indicators,
+        defaultIndicators: this.defaultIndicators,
+        dashboardDataSources: this.dataSources,
+      });
+    } catch (error) {
+      if (error.isAxiosError) {
+        console.trace(error.message);
+      } else {
+        // it is a dexie error
+        console.trace(error.message);
+      }
+    }
 
     this.loading = true;
 
