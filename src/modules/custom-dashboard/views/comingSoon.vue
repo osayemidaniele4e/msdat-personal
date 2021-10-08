@@ -92,11 +92,13 @@ export default {
   },
   methods: {
     async newInterest() {
-      /**
-       * TODO: key for authentication
-       */
       this.loading = true;
-      const url = 'http://135.181.212.168:9234/api/subdashboard/interest/';
+      const url = `${process.env.VUE_APP_API_BASE_URL1}subdashboard/interest/`;
+      const config = {
+        headers: {
+          Authorization: `Token ${process.env.VUE_APP_API_TOKEN}`,
+        },
+      };
       const now = moment().format('LLLL');
       const intrestForm = {
         email: this.email,
@@ -104,15 +106,28 @@ export default {
         created: now,
       };
       try {
-        const resp = await axios.post(url, intrestForm);
-        console.log(resp);
+        const resp = await axios.post(url, intrestForm, config);
+        if (resp.data) {
+          this.$swal({
+            toast: true,
+            position: 'bottom-right',
+            showConfirmButton: false,
+            timer: 5000,
+            icon: 'success',
+            title: 'Success',
+          });
+        }
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
       } finally {
+        this.email = '';
         this.loading = false;
       }
     },
   },
+  // mounted() {
+  //   console.log(process.env.VUE_APP_API_TOKEN);
+  // },
 };
 </script>
 
@@ -197,27 +212,27 @@ div.content {
 }
 
 button {
-    position: relative;
+  position: relative;
 
-    &.submitting::after {
-        content: "";
-        position: absolute;
-        width: 1rem;
-        height: 1rem;
-        top: calc(50% - 0.5rem);
-        left: 0.5rem;
-        border-radius: 2em;
-        border-color: transparent transparent #eeeeee #eeeeee;
-        border-style: solid;
-        border-width: 0.15em;
-        animation: spinner-rotation 0.75s infinite;
-        animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    }
+  &.submitting::after {
+    content: '';
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    top: calc(50% - 0.5rem);
+    left: 0.5rem;
+    border-radius: 2em;
+    border-color: transparent transparent #eeeeee #eeeeee;
+    border-style: solid;
+    border-width: 0.15em;
+    animation: spinner-rotation 0.75s infinite;
+    animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
 }
 
 @keyframes spinner-rotation {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
