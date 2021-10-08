@@ -3,7 +3,7 @@ import TroubleShootingModal from './modal.vue';
 export default {
   data() {
     return {
-      showTroubleShootingModal: true,
+      showTroubleShootingModal: false,
     };
   },
   components: {
