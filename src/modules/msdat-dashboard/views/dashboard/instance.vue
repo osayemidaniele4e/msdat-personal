@@ -207,6 +207,8 @@
         v-if="firstTime"
         v-on:closeOnboard="onCloseOnBoarding"
       ></Onboarding>
+
+      <TroubleShootingModal v-if="showTroubleShootingModal" />
     </div>
   </div>
 </template>
@@ -231,9 +233,18 @@ import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 import Loading from '../../mixins/loading';
 import BaseMultiSourceSection from '../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
 import Onboarding from '../onboarding/onboarding';
+import TroubleShooting from '../../modules/troubleshooting/mixins';
 
 export default {
-  mixins: [Loading, formatter, controlPanelSetup, Onboarding, tour, scroll],
+  mixins: [
+    Loading,
+    formatter,
+    controlPanelSetup,
+    Onboarding,
+    tour,
+    scroll,
+    TroubleShooting,
+  ],
   data() {
     return {
       position: 3,
@@ -279,20 +290,14 @@ export default {
     indicators: {
       type: Array,
       required: false,
-      // default: () => [
-      //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18, 19, 20, 21,
-      //   22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
-      // ],
     },
     dataSources: {
       type: Array,
       required: false,
-      // default: () => [1, 2, 3, 5, 6, 7, 8, 9],
     },
     defaultIndicators: {
       type: Array,
       required: false,
-      // default: () => [7, 5, 8],
     },
   },
   methods: {
@@ -346,36 +351,46 @@ export default {
         defaultIndicators: this.defaultIndicators,
         dashboardDataSources: this.dataSources,
       });
+
+      this.loading = true;
+
+      this.$store.commit('MSDAT_STORE/SET_INITIAL', {
+        indicator: this.initialIndicator,
+        datasource: this.initialDataSource,
+        location: this.initialLocation,
+      });
+
+      // The initializing the control panel
+      this.setDefaults();
+      this.setUpControlPanelDropDown();
+
+      this.defaultYearDropdown = this.setYearDropdown();
+      if (this.defaultYearDropdown.length > 0) {
+        const firstItem = 0;
+        this.defaultYear = this.defaultYearDropdown[firstItem];
+      }
+      this.cpIsLoading = true;
+      this.$nextTick(() => {
+        this.startScroll();
+      });
     } catch (error) {
       if (error.isAxiosError) {
         console.trace(error.message);
+        this.$swal({
+          toast: true,
+          position: 'bottom',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'error',
+          title: 'Error Occurred',
+          text: error.message,
+        });
       } else {
-        // it is a dexie error
+        // it is a dexies error
         console.trace(error.message);
+        this.showTroubleShootingModal = true;
       }
     }
-
-    this.loading = true;
-
-    this.$store.commit('MSDAT_STORE/SET_INITIAL', {
-      indicator: this.initialIndicator,
-      datasource: this.initialDataSource,
-      location: this.initialLocation,
-    });
-
-    // The initializing the control panel
-    this.setDefaults();
-    this.setUpControlPanelDropDown();
-
-    this.defaultYearDropdown = this.setYearDropdown();
-    if (this.defaultYearDropdown.length > 0) {
-      const firstItem = 0;
-      this.defaultYear = this.defaultYearDropdown[firstItem];
-    }
-    this.cpIsLoading = true;
-    this.$nextTick(() => {
-      this.startScroll();
-    });
   },
 };
 </script>
