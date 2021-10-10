@@ -15,6 +15,7 @@
         </div>
       </div>
     </loadingModal>
+  <div id="printMe">
     <b-row class="mt-4">
       <b-col cols="auto">
         <div>
@@ -52,8 +53,14 @@
       <b-col cols="12" class="my-auto">
         <b-row align-h="end" class="mx-auto">
           <p class="mr-3">Last Updated: 12.03.2020</p>
-          <share />
-          <print />
+          <b-button class="mr-4 share-button">
+            <img class="img-fluid" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
+            Share
+          </b-button>
+           <b-button class="print-button">
+      <img class="img-fluid" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
+      Print Profile
+    </b-button>
         </b-row>
       </b-col>
     </b-row>
@@ -82,6 +89,7 @@
         ></span
       >
     </p>
+    </div>
   </b-container>
 </template>
 
@@ -90,8 +98,6 @@ import { mapState } from 'vuex';
 import * as requests from '../requests';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
-import share from '../components/share.vue';
-import print from '../components/print.vue';
 import dataMixins from '../../DataLayer/mixin';
 import loading from '../../msdat-dashboard/views/onboarding/modal.vue';
 
@@ -102,8 +108,6 @@ export default {
   components: {
     PAoverview: programAreaOverview,
     demographics,
-    share,
-    print,
     loadingModal: loading,
   },
   created() {},
@@ -638,6 +642,18 @@ export default {
 
 <style lang="scss">
 .state-select {
+  color: #3a3a3a;
+}
+.print-button {
+  background-color: #f2f2f2;
+  border: 1px solid #cccccc;
+  height: 38.250103125px;
+  color: #3a3a3a;
+}
+.share-button {
+  background-color: #f2f2f2;
+  border: 1px solid #cccccc;
+  height: 38.250103125px;
   color: #3a3a3a;
 }
 p.final-text {

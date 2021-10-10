@@ -116,6 +116,7 @@ export default {
             color: '#ffc482',
             joinBy: ['name', 'hc-key'],
             dataLabels: {
+              allowOverlap: true,
               style: {
                 fontFamily: 'Muli',
                 color: '#1c4d33',

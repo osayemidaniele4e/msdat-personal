@@ -494,20 +494,24 @@ export default {
       this.programArea.specificIndicators.map((value) => {
         // eslint-disable-next-line array-callback-return
         this.nonDemographicData.map((element) => {
-          if (value.indicator === element.indicator
+          if (element) {
+            if (value.indicator === element.indicator
           && value.dataSource === element.datasource) {
             // eslint-disable-next-line no-param-reassign
-            element.color = value.color;
+              element.color = value.color;
+            }
           }
         });
       });
       // eslint-disable-next-line array-callback-return
       this.nonDemographicData.map((val) => {
-        data.push({
-          y: Number(val.value),
-          name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period})`,
-          color: val.color,
-        });
+        if (val) {
+          data.push({
+            y: Number(val.value),
+            name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period})`,
+            color: val.color,
+          });
+        }
       });
       if (this.programArea.name === 'mortality') {
         this.singleStateValue = data[0].y;
@@ -554,12 +558,12 @@ export default {
       });
       const { national, state } = await requests.getRegularData(this.programArea.specificIndicators,
         selectedState.id);
+      this.$emit('overviewLoading');
       national.map((el) => this.nationalObjects.push(el.data[0]));
       state.map((el) => this.nonDemographicData.push(el.data[0]));
       this.presentNationalData();
       this.presentStateData();
       this.getHealthFacilityData();
-      this.$emit('overviewLoading');
     },
   },
   watch: {
