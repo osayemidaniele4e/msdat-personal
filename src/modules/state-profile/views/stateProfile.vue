@@ -57,7 +57,7 @@
             <img class="img-fluid" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
             Share
           </b-button>
-           <b-button class="print-button">
+           <b-button class="print-button" @click="printing">
       <img class="img-fluid" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
       Print Profile
     </b-button>
@@ -135,6 +135,9 @@ export default {
     },
   },
   methods: {
+    async printing() {
+      window.print();
+    },
     navigateToState(state) {
       // state.preventDefault()
       this.$router.push({ name: 'state-profile', params: { state } });
