@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <!-- <genericModal
+    <genericModal
       v-if="overviewLoading"
       :noBackdrop="false"
       :showBackground="false"
@@ -14,7 +14,7 @@
           <h3 class="mr-4 mt-3">Fetching Data...</h3>
         </div>
       </div>
-    </genericModal> -->
+    </genericModal>
 
      <genericModal
       v-if="shareModalShowing"
@@ -65,7 +65,7 @@
         </div>
       </div>
     </genericModal>
-  <div id="printMe">
+  <div ref="printMe">
     <b-row class="mt-4">
       <b-col cols="auto">
         <div>
@@ -188,7 +188,19 @@ export default {
   },
   methods: {
     async printing() {
-      window.print();
+      const el = this.$refs.printMe;
+      const options = {
+        type: 'dataURL',
+      };
+      const output = await this.$html2canvas(el, options);
+      const temp = document.createElement('a');
+      temp.href = output;
+      temp.download = 'StateProfile.png';
+      temp.click();
+      // eslint-disable-next-line new-cap
+      // const pdf = new jsPDF();
+      // pdf.addImage(image, 'png');
+      // pdf.save('file.pdf');
     },
     copyTheLink() {
       navigator.clipboard.writeText('http://208.87.128.190:7070/state-profile/');
