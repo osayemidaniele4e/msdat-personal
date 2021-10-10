@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <loadingModal
+    <!-- <genericModal
       v-if="overviewLoading"
       :noBackdrop="false"
       :showBackground="false"
@@ -14,7 +14,57 @@
           <h3 class="mr-4 mt-3">Fetching Data...</h3>
         </div>
       </div>
-    </loadingModal>
+    </genericModal> -->
+
+     <genericModal
+      v-if="shareModalShowing"
+      :noBackdrop="false"
+       class="over"
+      :showBackground="true"
+    >
+     <div class="share-modal">
+        <div class="top">
+          <h3 class="mr-4">SHARE PLATFORM</h3>
+        </div>
+        <div class="body">
+          <button class="social">
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://208.87.128.190:7070/state-profile/" target="_blank">
+            <img class="img-fluid"
+             src="@/assets/state-profile/img/linkedin.png" alt="linkedin-icon" />
+             </a>
+          </button>
+          <button class="social">
+            <a href="mailto:info@example.com?&subject=&cc=&bcc=&body=http://208.87.128.190:7070/state-profile/%0A"
+                target="_blank">
+              <img class="img-fluid"
+               src="@/assets/state-profile/img/email.png" alt="email-icon" />
+               </a>
+          </button>
+          <button class="social">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://208.87.128.190:7070/state-profile/" target="_blank">
+            <img class="img-fluid"
+             src="@/assets/state-profile/img/facebook.png" alt="facebook-icon" />
+            </a>
+          </button>
+           <button class="social">
+             <a href="https://twitter.com/intent/tweet?url=http://208.87.128.190:7070/state-profile/&text=" target="_blank">
+            <img class="img-fluid"
+            src="@/assets/state-profile/img/twitter.png" alt="twitter-icon" />
+            </a>
+          </button>
+          <button class="social link btn btn-outline-secondary" @click="copyTheLink">
+            <span>
+               <img class="img-fluid"
+               src="@/assets/state-profile/img/link.png" alt="link-icon" />
+            </span>
+            {{copyText}}
+          </button>
+        </div>
+        <div class="footer">
+          <button @click="toggleShareModal">CLOSE</button>
+        </div>
+      </div>
+    </genericModal>
   <div id="printMe">
     <b-row class="mt-4">
       <b-col cols="auto">
@@ -53,7 +103,9 @@
       <b-col cols="12" class="my-auto">
         <b-row align-h="end" class="mx-auto">
           <p class="mr-3">Last Updated: 12.03.2020</p>
-          <b-button class="mr-4 share-button">
+          <b-button class="mr-4 share-button"
+            @click="toggleShareModal"
+          >
             <img class="img-fluid" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
             Share
           </b-button>
@@ -99,7 +151,7 @@ import * as requests from '../requests';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
 import dataMixins from '../../DataLayer/mixin';
-import loading from '../../msdat-dashboard/views/onboarding/modal.vue';
+import modalComponent from '../../msdat-dashboard/views/onboarding/modal.vue';
 
 export default {
   name: 'state-profile',
@@ -108,7 +160,7 @@ export default {
   components: {
     PAoverview: programAreaOverview,
     demographics,
-    loadingModal: loading,
+    genericModal: modalComponent,
   },
   created() {},
   computed: {
@@ -137,6 +189,18 @@ export default {
   methods: {
     async printing() {
       window.print();
+    },
+    copyTheLink() {
+      navigator.clipboard.writeText('http://208.87.128.190:7070/state-profile/');
+      this.copyText = 'Link Copied!';
+    },
+    toggleShareModal() {
+      if (this.shareModalShowing) {
+        this.shareModalShowing = false;
+        this.copyText = 'Copy Link';
+      } else {
+        this.shareModalShowing = true;
+      }
     },
     navigateToState(state) {
       // state.preventDefault()
@@ -170,6 +234,8 @@ export default {
   data() {
     return {
       loading: true,
+      copyText: 'Copy Link',
+      shareModalShowing: false,
       allLocations: [],
       demographicData: [],
       incomingData: 0,
@@ -644,6 +710,36 @@ export default {
 </script>
 
 <style lang="scss">
+.modal-body{
+  padding: 0;
+  button.social{
+    background-color: transparent;
+    margin: 5px 10px;
+    color: #3a3a3a
+  }
+  button.social.link{
+    // border: 1px solid #3a3a3a;
+    img{
+      width: 16px;
+    }
+  }
+}
+.share-modal{
+  .top, .footer{
+    background-color: #d6cfcf;
+    padding: 15px 25px;
+  }
+  button{
+    font-size: 17px;
+    padding: 5px;
+  }
+  .body{
+    padding: 25px 20px;
+    img{
+      width: 32px;
+    }
+  }
+}
 .state-select {
   color: #3a3a3a;
 }
