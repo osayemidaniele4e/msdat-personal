@@ -390,20 +390,8 @@ export default {
         this.startScroll();
       });
     } catch (error) {
-      if (error.isAxiosError) {
-        console.trace(error.message);
-        this.$swal({
-          toast: true,
-          position: 'bottom',
-          showConfirmButton: false,
-          timer: 5000,
-          icon: 'error',
-          title: 'Error Occurred',
-          text: error.message,
-        });
-      } else {
-        // it is a dexies error
-        console.trace(error.message);
+      // This means it a dexies error
+      if (!error.isAxiosError) {
         this.showTroubleShootingModal = true;
       }
     }

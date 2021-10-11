@@ -1,4 +1,4 @@
-import axiosInstance from '@/modules/DataLayer/config/api';
+import axiosInstance from '@/plugins/axios';
 import apiEndpoints from '@/modules/DataLayer/config/endpoint';
 
 // const StateProfileDashboard = {
