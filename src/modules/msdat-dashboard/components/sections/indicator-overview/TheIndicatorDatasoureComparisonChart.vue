@@ -128,6 +128,9 @@ export default {
         tooltip: {
           shared: true,
         },
+        yAxis: {
+          ...defaultOptions.yAxis,
+        },
         xAxis: {
           ...defaultOptions.xAxis,
           categories: sortedYear,
@@ -151,6 +154,10 @@ export default {
           },
         },
       };
+      const displayFactor = this.dlGetFactor(
+        this.values.indicator.factor,
+      ).display_factor;
+      this.ChartOptions.yAxis.title.text = displayFactor;
     },
     updateChart(e) {
       this.ChartOptions.chart.type = e;

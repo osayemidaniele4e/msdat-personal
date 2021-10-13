@@ -202,8 +202,21 @@ export default {
           chart: {
             type: 'column',
           },
+          yAxis: {
+            title: {
+              text: 'Values',
+              style: {
+                fontSize: '13px',
+                fontFamily: '"Work Sans", sans-serif',
+              },
+            },
+          },
           colors: ['#17606B', '#E85D58', '#58B74E'],
         };
+        const displayFactor = this.dlGetFactor(
+          this.values.indicator.factor,
+        ).display_factor;
+        this.chartConfig.yAxis.title.text = displayFactor;
         this.chartConfig.series = orderResult;
         this.loading = false;
       },
