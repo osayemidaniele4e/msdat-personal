@@ -73,7 +73,7 @@ export default {
 
     formatToHighChart(dataSeries) {
       const displayFactor = this.dlGetFactor(
-        this.values.indicator.factor,
+        this.controlPanelProps.indicator.factor,
       ).display_factor;
 
       this.chart = {
@@ -82,6 +82,7 @@ export default {
           zoomType: 'xy',
         },
         yAxis: {
+          gridLineWidth: 0,
           title: {
             text: 'Values',
             style: {
