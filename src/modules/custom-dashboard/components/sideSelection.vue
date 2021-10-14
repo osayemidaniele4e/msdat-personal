@@ -160,7 +160,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped >
 .program-areas {
   background-color: #f3f3f3;
   border-color: #f3f3f3;
@@ -237,19 +237,5 @@ thead {
 #link-to-about {
   color: #1496b1;
 }
-// .custom-control-label::after {
-//     position: absolute;
-//     top: 0.25rem;
-//     left: -1.5rem;
-//     display: block;
-//     width: 1rem;
-//     height: 1rem;
-//     content: "";
-//     background: no-repeat 50%/50% 50%;
-//     border: 1px solid black;
-//     border-radius: 2px;
-// }
-// .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
-//     background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e);
-// }
+
 </style>
