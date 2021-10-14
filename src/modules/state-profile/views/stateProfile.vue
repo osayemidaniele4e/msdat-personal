@@ -65,7 +65,7 @@
         </div>
       </div>
     </genericModal>
-  <div ref="printMe">
+  <div ref="printMe" id="printMe">
     <b-row class="mt-4">
       <b-col cols="auto">
         <div>
@@ -147,6 +147,7 @@
 
 <script>
 import { mapState } from 'vuex';
+// import { jsPDF } from 'jspdf';
 import * as requests from '../requests';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
@@ -199,8 +200,11 @@ export default {
       temp.click();
       // eslint-disable-next-line new-cap
       // const pdf = new jsPDF();
-      // pdf.addImage(image, 'png');
-      // pdf.save('file.pdf');
+      // pdf.html(document.getElementById('printMe'), {
+      //   callback(pdf) {
+      //     pdf.save();
+      //   },
+      // });
     },
     copyTheLink() {
       navigator.clipboard.writeText('http://208.87.128.190:7070/state-profile/');

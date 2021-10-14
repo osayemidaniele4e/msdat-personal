@@ -22,6 +22,7 @@
     "dexie": "^3.0.3",
     "highcharts": "^8.2.2",
     "intro.js": "^4.2.2",
+    "jspdf":  "2.4.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "register-service-worker": "^1.7.1",
