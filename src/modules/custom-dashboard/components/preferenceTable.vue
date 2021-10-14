@@ -13,10 +13,10 @@
         <b-col class="p-1" sm="12" lg="3">
           <SideSelection />
         </b-col>
-        <b-col>
+        <!-- <b-col class="col-sm-3half">
           <div class="vl" lg="1"></div>
-        </b-col>
-        <b-col sm="12" lg="8">
+        </b-col> -->
+        <b-col sm="12" lg="9">
           <TheCustomTable />
           <b-row align-h="end" class="text-right work-sans">
             <b-col cols="auto"

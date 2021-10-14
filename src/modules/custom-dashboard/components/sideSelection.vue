@@ -66,7 +66,7 @@
         </b-form-group>
       </div>
     </div>
-
+    <!-- LEVEL SELECTION -->
     <b class="selection-header">Level Selection</b><br />
     <div class="scroll">
       <b-form-group v-slot="{ ariaDescribedby }">
@@ -78,6 +78,12 @@
         ></b-form-checkbox-group>
       </b-form-group>
     </div>
+    <!-- NOTES -->
+    <b class="selection-header">Notes</b><br />
+      <div class="mb-4 mb-lg-0">
+        <label for="notes" class="form-label"></label>
+        <input type="text" class="form-control" id="notes" :aria-describedby="notes" />
+      </div>
   </div>
 </template>
 
@@ -156,11 +162,10 @@ export default {
       },
     },
   },
-
 };
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .program-areas {
   background-color: #f3f3f3;
   border-color: #f3f3f3;
@@ -237,5 +242,7 @@ thead {
 #link-to-about {
   color: #1496b1;
 }
-
+#notes {
+  height: 15vh;
+}
 </style>

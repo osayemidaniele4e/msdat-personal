@@ -1,6 +1,6 @@
 <template>
   <!-- <div> -->
-  <div class="table-responsive work-sans">
+  <div class="table-responsive vline work-sans">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -34,16 +34,16 @@
           </tr>
           <template v-for="(j, index2) in i.indicators">
             <tr :key="`${index2}${j.id}`">
-              <td class="span" scope="colgroup" style='border-right:none;'>
+              <td class="span" scope="colgroup" style="border-right:none;">
                 {{ j.short_name }}
               </td>
-              <td class="span" scope="colgroup" style='border-left:none;border-right:none;'>
+              <td class="span" scope="colgroup" style="border-left:none;border-right:none;">
                 {{ datasources.join(' ') }}
               </td>
-              <td class="span" scope="colgroup" style='border-left:none;border-right:none;'>
+              <td class="span" scope="colgroup" style="border-left:none;border-right:none;">
                 {{ level.join(' ') }}
               </td>
-              <td class="span" scope="colgroup" style='border-left:none;'>
+              <td class="span" scope="colgroup" style="border-left:none;">
                 {{ period.join(' ') }}
               </td>
             </tr>
@@ -160,5 +160,12 @@ export default {
   overflow-y: auto;
   margin-bottom: 27.750006938px;
   max-height: 300px;
+}
+@media only screen and (min-width: 993px) {
+  .vline {
+    border-left: 1px solid #e3e3e3;
+    padding-left: 25px;
+    height: 100%;
+  }
 }
 </style>
