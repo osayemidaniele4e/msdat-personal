@@ -190,6 +190,7 @@ div.scroll {
   margin-bottom: 27.750006938px;
   max-height: 300px;
   border: 2px solid #f3f3f3;
+  padding: 4px;
 }
 .selection-header {
   color: #202020;

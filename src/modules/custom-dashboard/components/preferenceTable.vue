@@ -1,16 +1,16 @@
 <template>
   <b-container class="text-justify px-5" fluid>
-    <p><b>Select your preferences</b></p>
-    <p>
+    <p class="pl-lg-5"><b>Select your preferences</b></p>
+    <p class="pl-lg-5">
       Select the Program Areas, Data Sources, Period and Coverage Levels you are
       interested in.
     </p>
-    <p id="link-to-about">
+    <p id="link-to-about" class="pl-lg-5">
       <b>View datasheet</b>- see all available data in database
     </p>
     <b-card>
       <b-row>
-        <b-col sm="12" lg="3">
+        <b-col class="p-1" sm="12" lg="3">
           <SideSelection />
         </b-col>
         <b-col>
