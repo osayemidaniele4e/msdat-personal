@@ -72,13 +72,28 @@ export default {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
 
     formatToHighChart(dataSeries) {
+      const displayFactor = this.dlGetFactor(
+        this.controlPanelProps.indicator.factor,
+      ).display_factor;
+
       this.chart = {
         chart: {
           type: 'column',
           zoomType: 'xy',
         },
+        yAxis: {
+          gridLineWidth: 0,
+          title: {
+            text: 'Values',
+            style: {
+              fontSize: '13px',
+              fontFamily: '"Work Sans", sans-serif',
+            },
+          },
+        },
         series: dataSeries,
       };
+      this.chart.yAxis.title.text = displayFactor;
     },
 
     getZonalDataInHighChartFormat(data) {

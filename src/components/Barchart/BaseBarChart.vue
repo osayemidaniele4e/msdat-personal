@@ -13,6 +13,7 @@ import exportData from 'highcharts/modules/export-data';
 import exporting from 'highcharts/modules/exporting';
 import noData from 'highcharts/modules/no-data-to-display';
 import { genComponent } from 'vue-highcharts';
+import { cloneDeep } from 'lodash';
 /**
  * The default options
  */
@@ -53,7 +54,8 @@ export default {
      */
     chartOptions: {
       handler(passedObj) {
-        this.options = Object.assign(this.options, passedObj);
+        // eslint-disable-next-line prefer-object-spread
+        this.options = cloneDeep(Object.assign({}, this.options, passedObj));
       },
       deep: true,
       immediate: true,
