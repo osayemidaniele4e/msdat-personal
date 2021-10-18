@@ -29,7 +29,7 @@
                 id="name"
                 aria-describedby="helpId"
                 placeholder="Your name"
-                v.model="name"
+                v-model="fullname"
                 required
                 autocomplete="name"
               />
@@ -43,14 +43,19 @@
                 id="email"
                 aria-describedby="helpId"
                 placeholder="Your email address"
-                v.model="email"
+                v-model="email"
                 required
                 autocomplete="email"
               />
             </div>
 
             <div class="text-center">
-              <button class="text-center btn btn-success btn-lg px-5 text-uppercase mb-2">
+              <button
+                class="text-center btn btn-success btn-lg px-5 text-uppercase mb-2"
+                type="submit"
+                :disabled="loading"
+                :class="{ submitting: loading }"
+              >
                 Subscribe
               </button>
               <br />
@@ -75,6 +80,7 @@ export default {
     return {
       fullname: '',
       email: '',
+      loading: false,
     };
   },
   methods: {
@@ -86,11 +92,9 @@ export default {
     },
 
     async newsLetter() {
-      /**
-       * TODO: key for authentication
-       */
+      // TODO: error with the subscribers endpoint.
       this.loading = true;
-      const url = `${process.env.VUE_APP_API_BASE_URL1}`;
+      const url = `${process.env.VUE_APP_API_BASE_URL1}crud/subscriber/`;
       const now = moment().format('LLLL');
       const subscription = {
         email: this.email,
@@ -108,6 +112,7 @@ export default {
             icon: 'success',
             title: 'Success',
           });
+          this.hideModal();
         }
       } catch (error) {
         this.$swal({
@@ -115,7 +120,7 @@ export default {
           position: 'top-right',
           showConfirmButton: false,
           timer: 5000,
-          icon: 'success',
+          icon: 'error',
           title: `${error.message}`,
         });
       } finally {
