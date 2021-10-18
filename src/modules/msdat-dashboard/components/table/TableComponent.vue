@@ -233,6 +233,7 @@ export default {
         (a, b) => this.orderSourceBy.indexOf(a) - this.orderSourceBy.indexOf(b),
       );
       this.source = sortedSource;
+      console.log('SOURCESESSE', JSON.stringify(this.source));
     },
     /**
      * This gets the maximum amount to dataSource classification
@@ -244,6 +245,7 @@ export default {
       const countClassification = this.dataArray.map(
         (e) => e.values.map((et) => et.classification),
       );
+      console.log('asdfads', JSON.stringify(this.dataArray));
       const counted = countClassification.map((e) => countBy(e));
       const classic = {};
       counted.forEach((e) => {

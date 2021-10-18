@@ -3,24 +3,38 @@
     <b class="selection-header">Data Source Selection</b><br />
     <div class="scroll" style="margin-left: 5px">
       <div v-for="items in heading" :key="items">
-        <div class="program-areas " style="background: #F3F3F3">
-          {{ items.parent }}
+        <div class="program-areas" style="background: #f3f3f3">
+          <span
+            style="
+              color: #202020;
+              font-size: 15px;
+              font: normal normal normal 16px/21px DM Sans;
+            "
+          >
+            {{ items.parent }}
+          </span>
           <span style="float: right">▼</span>
         </div>
         <div
           v-for="item in items.children"
           :key="item.id"
-          class="indicators "
-          style="display: inline-block; justify-content: space-around; margin-bottom: 12px;"
+          class="indicators col-4"
+          style="
+            display: inline-block;
+            justify-content: space-around;
+            font-size:13px;
+            padding: 0px;
+            margin: 0px;
+          "
         >
           <input
             type="checkbox"
             name=""
             :id="item.value"
             :value="item.datasource"
-            v-model="selecteddataSource"
+            v-model="selectedDataSource"
             @click="selectSource($event)"
-            style="margin-left:12px"
+            style="margin-left: 12px"
           />
           {{ item.datasource }}
         </div>

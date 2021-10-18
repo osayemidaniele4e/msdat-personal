@@ -11,6 +11,15 @@ export default {
     return state.program_area;
   },
 
+  notesArea(state) {
+    console.log(state.isNotExistYear);
+    return state.isNotExistYear;
+  },
+
+  // IndicatorsShortName(state){
+  //   return state.indicatorsShortName;
+  // },
+
   // ******* Data Source Selection ************** //
 
   dataSource(state) {

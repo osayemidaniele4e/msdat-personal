@@ -21,6 +21,8 @@ export default {
     levels: [],
     years: [],
     indicatorValue: '',
+    hierarchSelectedYear: [],
+    isNotExistYear: [],
   },
   mutations,
   actions,

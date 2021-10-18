@@ -9,7 +9,7 @@
         style="
           display: inline-block;
           justify-content: space-around;
-
+          font-size: 13px
         "
       >
         <input
@@ -37,11 +37,11 @@ export default {
   },
   data() {
     return {
-      selected: {
-        indicators: [],
-        period: [],
-        sources: [],
-      },
+      // selected: {
+      //   indicators: [],
+      //   period: [],
+      //   sources: [],
+      // },
       selectedYear: [],
     };
   },
@@ -60,6 +60,8 @@ export default {
           this.selectedYear.splice(indexOfItemToRemove, 1);
         }
       }
+      // console.log('SY',this.selectedYear);
+      this.$store.dispatch('_isNotExistYear', e.target.value);
       this.$emit('save-year', this.selectedYear);
     },
     //   isAllSelected(available, selected) {

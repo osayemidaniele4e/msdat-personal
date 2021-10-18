@@ -22,10 +22,29 @@ export default {
   },
   selectedYears(state, payload) {
     state.selectedYears = payload;
+    console.log(payload);
   },
   selectedLevels(state, payload) {
     state.selectedLevels = payload;
   },
+
+  isNotExistYear(state, payload) {
+    state.isNotExistYear.push(payload);
+  },
+
+  // selectionIndicator(state, payload) {
+  //   console.log('selectionIndicator',payload);
+  //    state.program_area.map(element => {
+  //     element.children.map(child => {
+
+  //       if(child.id == payload.id) {
+  //         console.log('payload',payload.id);
+  //         child.selected = payload.checked
+  //       }
+  //     })
+  //   });
+
+  // },
 
   // ******** Data Source Selection ***************** //
 
@@ -64,11 +83,23 @@ export default {
   // *************** INDICATOR YEARS *************** //
 
   getYears(state, payload) {
-    // state.years = payload.years
+    // debugger;
+    // state.years.push(payload.map(year => year.year))
 
+    // // payload.year.map((x) => state.years.push(x));
+
+    // const yearsArray = state.years;
+
+    // // console.log('years Array');
+    // // console.log(yearsArray);
+
+    // const distinctArray = [...new Set(yearsArray)];
+    // state.years = distinctArray;
     payload.years.map((x) => state.years.push(x));
 
     const yearsArray = state.years;
+    state.program_area.map((child) => child.years = (payload));
+    console.log('sdes', state.program_area);
 
     // console.log('years Array');
     // console.log(yearsArray);

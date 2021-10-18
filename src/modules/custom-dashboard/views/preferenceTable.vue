@@ -40,6 +40,7 @@
           <indicators-selection
             @save-indicator="saveIndicator"
             @IndicatorSelect="SelectiveIndicator"
+            @selected="selectedCount"
           />
           <!-- <indicators-selection :heading="'Years Selection'"/> -->
           <!-- <indicators-selection
@@ -67,7 +68,7 @@
             <years-selection @save-year="saveYear" /> <br />
             <level-selection @save-level="saveLevel" />
           </div>
-          <!-- <data-source /> -->
+          <notes />
         </b-col>
 
         <!-- ****** Selected Items Table ****** -->
@@ -134,10 +135,11 @@
           </div> -->
           <b-row align-h="end" class="text-right">
             <b-col cols="auto"
-              >indicators: <b>{{ selectedIndicator.length }}</b></b-col
+              >indicators: <b>{{ selectCount }} selected</b></b-col
             >
             <b-col cols="auto"
-              >Data Sources: <b>{{ selectedDataSource.length }}</b></b-col
+              >Data Sources:
+              <b>{{ selectedDataSource.length }} selected</b></b-col
             >
             <b-col cols="auto"
               >Period: <b>{{ selectedYears.length }} Years</b></b-col
@@ -178,6 +180,7 @@ import DataSource from '../components/preferences/selection/DataSourceSelection.
 import YearsSelection from '../components/preferences/selection/YearsSelection.vue';
 import LevelSelection from '../components/preferences/selection/LevelSelection.vue';
 import DataTable from '../components/preferences/dataTable/DataTable.vue';
+import Notes from '../components/preferences/notes/Notes.vue';
 
 export default {
   name: 'data-preferences',
@@ -187,6 +190,7 @@ export default {
     YearsSelection,
     LevelSelection,
     DataTable,
+    Notes,
   },
   mounted() {
     this.$store.commit('updateStep', 2);
@@ -198,12 +202,12 @@ export default {
         period: [],
         sources: [],
       },
+      selectCount: 0,
       selectedIndicator: [],
       selectedDataSource: [],
       selectedYears: [],
       selectedLevel: [],
       showList: false,
-      allSelected: true,
       indeterminate: false,
       programAreas: [
         {
@@ -325,9 +329,14 @@ export default {
     },
     saveIndicator(data) {
       this.selectedIndicator = data;
+      console.log('asdzxs', this.selectedIndicator.length);
+      console.log('SI', this.selectedIndicator);
     },
     SelectiveIndicator(data) {
       this.showList = data;
+    },
+    selectedCount(data) {
+      this.selectCount = data;
     },
     saveData(data) {
       this.selectedDataSource = data;

@@ -22,11 +22,11 @@
           <td>
             {{ child.value }}
           </td>
-          <td style="width: 400px">
+          <td style="width: 300px">
             <ul
               v-for="data in dataSource"
               :key="data"
-              style="list-style: none; display: inline-block"
+              style="list-style: none; display: inline-block; padding-left: 20px; font-size:16px"
             >
               <li>{{ data }}</li>
             </ul>
@@ -44,7 +44,7 @@
             <ul
               v-for="year in years"
               :key="year"
-              style="list-style: none; display: inline-block"
+              style="list-style: none; display: inline-block; padding-left: 20px"
             >
               <li>{{ year }}</li>
             </ul>

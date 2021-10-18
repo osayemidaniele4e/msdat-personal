@@ -214,6 +214,8 @@ export default {
         case 0:
           this.stateBarValue = optionsObject;
           this.TableValues = optionsObject;
+          console.log('jajasjsj');
+          console.log('jajasjsj', JSON.stringify(this.TableValues));
           this.indicatorComparison = optionsObject;
           // this.datasetProps = optionsObject;
           break;
