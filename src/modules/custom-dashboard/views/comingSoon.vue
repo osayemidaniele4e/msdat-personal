@@ -118,7 +118,14 @@ export default {
           });
         }
       } catch (error) {
-        console.log(error.message);
+        this.$swal({
+          toast: true,
+          position: 'top-right',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'success',
+          title: `${error.message}`,
+        });
       } finally {
         this.email = '';
         this.loading = false;

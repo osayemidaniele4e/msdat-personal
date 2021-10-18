@@ -90,7 +90,7 @@ export default {
        * TODO: key for authentication
        */
       this.loading = true;
-      const url = 'http://135.181.212.168:9234/api/....';
+      const url = `${process.env.VUE_APP_API_BASE_URL1}`;
       const now = moment().format('LLLL');
       const subscription = {
         email: this.email,
@@ -99,11 +99,29 @@ export default {
       };
       try {
         const resp = await axios.post(url, subscription);
-        console.log(resp);
+        if (resp.data) {
+          this.$swal({
+            toast: true,
+            position: 'top-right',
+            showConfirmButton: false,
+            timer: 5000,
+            icon: 'success',
+            title: 'Success',
+          });
+        }
       } catch (error) {
-        console.log(error);
+        this.$swal({
+          toast: true,
+          position: 'top-right',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'success',
+          title: `${error.message}`,
+        });
       } finally {
         this.loading = false;
+        this.fullname = '';
+        this.email = '';
       }
     },
   },
