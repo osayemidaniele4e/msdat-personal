@@ -82,7 +82,7 @@ export default {
   computed: {
     // selectAll:{
     //   get:function(){
-    //     return this.programAreaNIndicators ? th
+    //     return this.programAreaIndicators ? th
     //   }
     // }
   },

@@ -10,7 +10,7 @@ async function indicatorAvailableYears(value) {
 export default {
   data() {
     return {
-      programAreaNIndicators: [],
+      programAreaIndicators: [],
       groupedDataSource: [],
       distinctYears: [],
     };
@@ -21,7 +21,7 @@ export default {
     const grouped = groupIndicator(result[0].data, 'program_area');
     // refactor the groupIndicator function  to not only be for indicators
     const groupedDataSource = groupIndicator(result[1].data, 'classification');
-    this.programAreaNIndicators = grouped;
+    this.programAreaIndicators = grouped;
     this.groupedDataSource = groupedDataSource;
   },
 
@@ -30,7 +30,6 @@ export default {
       const years = await Promise.all(newValue.map(indicatorAvailableYears));
       const allYears = years.flat(1);
       this.distinctYears = [...new Set(allYears)];
-      console.log(this.distinctYears);
     },
   },
 };

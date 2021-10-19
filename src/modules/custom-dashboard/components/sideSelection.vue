@@ -2,13 +2,13 @@
   <div>
     <b class="selection-header">indicators selection</b><br />
     <div class="scroll">
-      <div v-for="(p, index) in programAreaNIndicators" :key="index">
+      <div v-for="(p, index) in programAreaIndicators" :key="index">
         <div class="program-areas my-2">
-          <div class="form-check">
+          <div>
             <!-- <input class="form-check-input" type="checkbox" /> -->
-            <label class="form-check-label" for="defaultCheck1">
-              {{ p.program_area }}
-            </label>
+            <b-form-checkbox v-model="fullProgramAreaSelected" :key="p.id" :value="p">
+              {{ p.program_area.toUpperCase() }}
+            </b-form-checkbox>
           </div>
         </div>
         <b-form-group v-slot="{ ariaDescribedby }">
@@ -18,6 +18,7 @@
             :key="option.id"
             :value="option"
             :aria-describedby="ariaDescribedby"
+            @change="indicactorToggle(p)"
           >
             {{ option.short_name }}
           </b-form-checkbox>
@@ -80,10 +81,10 @@
     </div>
     <!-- NOTES -->
     <b class="selection-header">Notes</b><br />
-      <div class="mb-4 mb-lg-0">
-        <label for="notes" class="form-label"></label>
-        <input type="text" class="form-control" id="notes" :aria-describedby="notes" />
-      </div>
+    <div class="mb-4 mb-lg-0">
+      <label for="notes" class="form-label"></label>
+      <input type="text" class="form-control" id="notes" :aria-describedby="notes" />
+    </div>
   </div>
 </template>
 
@@ -94,41 +95,19 @@ export default {
   mixins: [fetchData],
   data() {
     return {
-      periodOptions: [
-        '2020',
-        '2019',
-        '2018',
-        '2017',
-        '2016',
-        '2015',
-        '2014',
-        '2013',
-        '2012',
-        '2011',
-        '2010',
-        '2009',
-        '2008',
-        '2007',
-        '2006',
-        '2004',
-        '2003',
-        '2002',
-        '2001',
-        '2000',
-        '1999',
-        '1998',
-        '1997',
-        '1996',
-        '1995',
-        '1994',
-        '1993',
-        '1992',
-        '1991',
-      ],
       levelOptions: ['National', 'Zonal', 'LGA', 'State'],
+      allIndicatorsSelected: false,
     };
   },
   computed: {
+    fullProgramAreaSelected: {
+      get() {
+        return this.$store.state.CUSTOM_DASHBOARD_STORE.fullProgramAreaSelected;
+      },
+      set(values) {
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setFullProgramAreaSelected', values);
+      },
+    },
     indicatorsSelected: {
       get() {
         return this.$store.state.CUSTOM_DASHBOARD_STORE.indicatorsSelected;
@@ -161,6 +140,19 @@ export default {
         this.$store.commit('CUSTOM_DASHBOARD_STORE/setLevelSelected', value);
       },
     },
+  },
+
+  watch: {
+    fullProgramAreaSelected(newValue) {
+      const indicators = [];
+      newValue.forEach(function e(programArea) {
+        this.push(...programArea.indicators);
+      }, indicators);
+      this.$store.commit('CUSTOM_DASHBOARD_STORE/setIndicatorSelected', indicators);
+    },
+  },
+
+  methods: {
   },
 };
 </script>
