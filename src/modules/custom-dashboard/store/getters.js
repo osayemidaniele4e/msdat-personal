@@ -8,9 +8,9 @@ export default {
   },
   getprogramArea(state) {
     // console.log("Working", state.program_area);
+    debugger;
     return state.program_area;
   },
-
   notesArea(state) {
     console.log(state.isNotExistYear);
     return state.isNotExistYear;

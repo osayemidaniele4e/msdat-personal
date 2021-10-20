@@ -18,38 +18,49 @@
             {{ ind.parent }}
           </td>
         </tr>
-        <tr style="" v-for="child in ind.childs" :key="child.id">
-          <td>
-            {{ child.value }}
-          </td>
-          <td style="width: 300px">
-            <ul
-              v-for="data in dataSource"
-              :key="data"
-              style="list-style: none; display: inline-block; padding-left: 20px; font-size:16px"
-            >
-              <li>{{ data }}</li>
-            </ul>
-          </td>
-          <td style="width: 400px" >
-            <ul
-              v-for="ind_levels in level"
-              :key="ind_levels"
-              style="list-style: none; display: inline-block"
-            >
-              <li>{{ ind_levels }}</li>
-            </ul>
-          </td>
-          <td style="width: 200px">
-            <ul
-              v-for="year in years"
-              :key="year"
-              style="list-style: none; display: inline-block; padding-left: 20px"
-            >
-              <li>{{ year }}</li>
-            </ul>
-          </td>
-        </tr>
+        <template >
+          <tr style="" v-for="child in ind.childs" :key="child.id">
+            <td>
+              {{ child.value }}
+            </td>
+            <td style="width: 300px">
+              <ul
+                v-for="data in dataSource"
+                :key="data"
+                style="
+                  list-style: none;
+                  display: inline-block;
+                  padding-left: 20px;
+                  font-size: 16px;
+                "
+              >
+                <li>{{ data }}</li>
+              </ul>
+            </td>
+            <td style="width: 400px">
+              <ul
+                v-for="ind_levels in level"
+                :key="ind_levels"
+                style="list-style: none; display: inline-block"
+              >
+                <li>{{ ind_levels }}</li>
+              </ul>
+            </td>
+            <td style="width: 200px">
+              <ul
+                v-for="year in years"
+                :key="year"
+                style="
+                  list-style: none;
+                  display: inline-block;
+                  padding-left: 20px;
+                "
+              >
+                <li>{{ year }}</li>
+              </ul>
+            </td>
+          </tr>
+        </template>
         <tr style=""></tr>
       </tbody>
     </table>
@@ -57,20 +68,30 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+
 export default {
   props: ['indicator', 'dataSource', 'level', 'years'],
 
-  // data() {
-  //   return {
-  //     levelData: [],
-  //   };
-  // },
+  data() {
+    return {
+      indicatorData: [],
+    };
+  },
   // computed: {
   //   indicatorsLevels() {
-  //     // debugger;
-  //     return this.$store.getters["indicators/indicatorsLevels"];
+  //   return this.$store.getters.getprogramArea;
+  // },
+  // },
+
+  // watch: {
+  //   indicators() {
+  //   this.indicatorData this.$store.getters.getprogramArea;
   //   },
   // },
+
+  //
+
   // //   watch: {
   // //     abc() {
   // //       if (this.levelData) {

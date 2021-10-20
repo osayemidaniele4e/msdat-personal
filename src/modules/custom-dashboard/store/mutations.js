@@ -32,19 +32,20 @@ export default {
     state.isNotExistYear.push(payload);
   },
 
-  // selectionIndicator(state, payload) {
-  //   console.log('selectionIndicator',payload);
-  //    state.program_area.map(element => {
-  //     element.children.map(child => {
-
-  //       if(child.id == payload.id) {
-  //         console.log('payload',payload.id);
-  //         child.selected = payload.checked
-  //       }
-  //     })
-  //   });
-
-  // },
+  selectionIndicator(state, payload) {
+    debugger;
+    state.program_area.map((element) => {
+      element.children.map((child) => {
+        if (child.id == payload.id) {
+          console.log('payload', payload.id);
+          child.selected = payload.checked;
+        }
+      });
+    });
+    console.log('PA', state.program_area);
+    // Vue.set(state, 'program_area', program_area);
+    console.log('CPA', changedProgramArea);
+  },
 
   // ******** Data Source Selection ***************** //
 

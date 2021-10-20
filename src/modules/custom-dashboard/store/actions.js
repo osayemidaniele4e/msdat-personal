@@ -18,8 +18,8 @@ export default {
             children: data.filter(
               (x) => {
                 if (x.program_area === distItem) {
-                  x.selected = false;
-                  // x.selected = Math.random()>0.5;
+                  // x.selected = false;
+                  x.selected = Math.random() > 0.5;
                   return x;
                 }
                 // x.years = dispatch('loadYears', x.id);
@@ -93,7 +93,6 @@ export default {
   },
 
   _isNotExistYear({ commit, state }, payload) {
-    alert('running');
     let b = false;
     state.hierarchSelectedYear.forEach((element) => {
       for (let i = 0; i < element.years.length; i++) {
@@ -117,9 +116,10 @@ export default {
     });
   },
 
-  // forSelectedIndicator({commit}, payload){
-  //   commit('selectionIndicator',payload)
-  // },
+  forSelectedIndicator({ commit }, payload) {
+    debugger;
+    commit('selectionIndicator', payload);
+  },
 
   selectedIndicator({ commit }, payload) {
     commit('selectedIndicator', payload);

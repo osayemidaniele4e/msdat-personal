@@ -32,7 +32,15 @@
             :id="item.id"
             :value="item.short_name"
             :checked="isSelected(item)"
-            @click="selectIndicator($event, items.parent, item.id, item.short_name)"
+            @click="
+              selectIndicator(
+                $event,
+                items.parent,
+                item.id,
+                item.short_name,
+                item.selected
+              )
+            "
             :v-model="item.id"
           />
           <span style="padding-left: 10px">{{ item.short_name }}</span>
@@ -92,13 +100,19 @@ export default {
         this.selectedIndicator = this.selectedIndicator.filter(
           (ind) => ind.parent !== parentName,
         );
-        childsArray.forEach((child) => (child.selected = false));
+        childsArray.forEach((child) => {
+          child.selected = false;
+          selectedCount -= 1;
+        });
         this.showList = false;
       } else {
+        this.isAllSelected(childsArray.map((child) => child.short_name));
         let indicatorObject = this.getParentEntity(parentName);
+        let isObjectAlreadyExist = true;
         if (!indicatorObject) {
           indicatorObject = { childs: [], parent: parentName };
           this.showList = true;
+          isObjectAlreadyExist = false;
         }
         childsArray.forEach((element, key) => {
           const child = {
@@ -106,13 +120,17 @@ export default {
             id: element.id,
           };
           element.selected = true;
-          indicatorObject.childs.push(child);
-          this.$store.dispatch('loadYears', child.id);
+          if (!indicatorObject.childs.some((c) => c.id == child.id)) {
+            indicatorObject.childs.push(child);
+            this.$store.dispatch('loadYears', child);
+            this.selectedCount += 1;
+          }
         });
-        this.selectedIndicator.push(indicatorObject);
+        if (isObjectAlreadyExist === false) this.selectedIndicator.push(indicatorObject);
       }
       this.$emit('save-indicator', this.selectedIndicator);
       this.$emit('IndicatorSelect', this.showList);
+      this.$emit('selected', this.selectedCount);
     },
 
     isSelected(item) {
@@ -121,51 +139,49 @@ export default {
     loadIndicators() {
       this.$store.dispatch('loadIndicators');
     },
+    // selectIndicator(e, parentValue, childId, childName, selected) {
+    //   debugger;
+
+    //     this.indicatorSelected = e.target.checked;
+    //     // console.log('program Area',this.$store.getters.getprogramArea.filter(element => {
+    //     //   element.children.map(child => child.short_name) == childName
+    //     // }));
+
+    //   this.$store.dispatch("forSelectedIndicator", {checked:this.indicatorSelected, id: childId})
+    // },
+
     selectIndicator(e, parentValue, childId, childName) {
       this.$store.dispatch('loadCoverageLevels', childId);
       this.$store.dispatch('loadYears', { id: childId, childName });
       this._indicatorId_ = childId;
-      const indicatorObject = this.generateIndicatorObject(
+      const indicatorObject = this.addIndicatorsToSelectedIndicators(
         e.target.checked,
         e.target.value,
         childId,
         parentValue,
       );
-      this.addIndicatorToSelectedIndicators(indicatorObject);
-      this.selectedCount = 0;
-      this.selectedIndicator.map(
-        (e) => (this.selectedCount += e.childs.length),
-      );
-      // console.log('asddeeew', selectedCount);
-      // console.log("asdfe",this.selectedIndicator);
       this.$emit('save-indicator', this.selectedIndicator);
       this.$emit('selected', this.selectedCount);
-      // this.$emit('save-indicator', this.selectedIndicator);
       this.$emit('IndicatorSelect', this.showList);
-      // this.$store.dispatch({
-      //   data: this.selectedIndicator});
-      // ("selectedIndicator");
-      // this.selectedIndicator;
-      // console.log("Selected ",this.selectedIndicator);
     },
-    // indicatorSelected() {
-    //   let indicator = this.$store.getters['selectedIndicator'];
-    //   // this.indicatorSelected = indicator.map(e => e.short_name)
-    //   console.log("State Indicator",indicator);
-    // },
     getParentEntity(parentKey) {
       if (this.selectedIndicator.length > 0) {
-        const filteredList = this.selectedIndicator.filter(
+        const filteredItem = this.selectedIndicator.filter(
           (item) => item.parent === parentKey,
         );
-        if (filteredList && filteredList.length > 0) {
-          return filteredList[0];
+        if (filteredItem) {
+          return filteredItem[0];
         }
       }
       return null;
     },
 
-    generateIndicatorObject(isChecked, childValue, childId, parentValue) {
+    addIndicatorsToSelectedIndicators(
+      isChecked,
+      childValue,
+      childId,
+      parentValue,
+    ) {
       let parentObject = this.getParentEntity(parentValue);
       if (isChecked) {
         const child = {
@@ -175,40 +191,28 @@ export default {
         this.showList = true;
         if (parentObject) {
           parentObject.childs.push(child);
+          this.selectedCount = parentObject.childs.length;
         } else if (!parentObject) {
           parentObject = { childs: [child], parent: parentValue };
-          console.log(parentObject.childs);
+          this.selectedIndicator.push(parentObject);
+          this.selectedCount = parentObject.childs.length;
         }
-      } else {
+      } else if (parentObject) {
         parentObject.childs = parentObject.childs.filter(
           (child) => child.id != childId,
         );
+        if (parentObject.childs.length === 0) {
+          this.selectedIndicator = this.selectedIndicator.filter(
+            (ind) => ind.parent != parentObject.parent,
+          );
+        }
+        this.selectedCount = parentObject.childs.length;
       }
-      return parentObject;
     },
     removeObjectFromSelectedIndicators(indicatorObject) {
       this.selectedIndicator = this.selectedIndicator.filter(
         (ind) => ind.parent != indicatorObject.parent,
       );
-    },
-    addIndicatorToSelectedIndicators(indicatorObject) {
-      const existingObject = this.selectedIndicator.filter(
-        (x) => x.parent === indicatorObject.parent,
-      );
-      if (existingObject && existingObject.length > 0) {
-        if (indicatorObject.childs.length == 0) {
-          this.showList = false;
-          this.selectedCount = 0;
-          this.removeObjectFromSelectedIndicators(indicatorObject);
-        } else {
-          Array.prototype.push.apply(
-            existingObject.childs,
-            indicatorObject.childs,
-          );
-        }
-      } else {
-        this.selectedIndicator.push(indicatorObject);
-      }
     },
   },
 };

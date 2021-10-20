@@ -31,7 +31,7 @@
 import Card from '../../Card.vue';
 
 export default {
-  emits: ['save-year'],
+  emits: ['save-year', 'show-notes'],
   components: {
     Card,
   },
@@ -42,6 +42,7 @@ export default {
       //   period: [],
       //   sources: [],
       // },
+      showNotes: false,
       selectedYear: [],
     };
   },
@@ -54,15 +55,18 @@ export default {
     selectYear(e) {
       if (e.target.checked) {
         this.selectedYear.push(e.target.value);
+        this.showNotes = true;
       } else {
         const indexOfItemToRemove = this.selectedYear.indexOf(e.target.value);
         if (indexOfItemToRemove != -1) {
           this.selectedYear.splice(indexOfItemToRemove, 1);
         }
+        this.showNotes = true;
       }
       // console.log('SY',this.selectedYear);
       this.$store.dispatch('_isNotExistYear', e.target.value);
       this.$emit('save-year', this.selectedYear);
+      this.$emit('show-notes', this.showNotes);
     },
     //   isAllSelected(available, selected) {
     //     let value = true;

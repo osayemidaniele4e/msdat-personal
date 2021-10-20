@@ -65,10 +65,13 @@
           <data-source @save-dataSource="saveData" />
           <br />
           <div v-if="showList">
-            <years-selection @save-year="saveYear" /> <br />
+            <years-selection @save-year="saveYear" @show-notes="showNote" />
+            <br />
             <level-selection @save-level="saveLevel" />
           </div>
-          <notes />
+          <div v-if="showNotes">
+            <notes />
+          </div>
         </b-col>
 
         <!-- ****** Selected Items Table ****** -->
@@ -207,6 +210,7 @@ export default {
       selectedDataSource: [],
       selectedYears: [],
       selectedLevel: [],
+      showNotes: false,
       showList: false,
       indeterminate: false,
       programAreas: [
@@ -331,6 +335,9 @@ export default {
       this.selectedIndicator = data;
       console.log('asdzxs', this.selectedIndicator.length);
       console.log('SI', this.selectedIndicator);
+    },
+    showNote(data) {
+      this.showNotes = data;
     },
     SelectiveIndicator(data) {
       this.showList = data;
