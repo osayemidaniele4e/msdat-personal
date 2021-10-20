@@ -3,15 +3,17 @@
     <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
         <p class=" mt-3 mb-4 tittle">
-          State Health <br />
+          National Health <br />
           Profile Dashboard
         </p>
 
         <p class="text-left msg">
-          This dashboard provides a single transparent view of data from states across the country.
-          It presents health data across six (6) program areas: RMNCH, Malaria, Immunization,
-          HIV/AIDS, Tuberculosis and Mortality. It also presents Health Facility Survey data for
-          each state.
+          This dashboard provides a single transparent view of
+          health data across the country. It presents health data
+          across six (6) program areas: RMNCH, Nutrition,
+          Malaria, Immunization, HIV/AIDS and Mortality. It also provides
+          insight on health facility service availability and
+          readiness for each state.
         </p>
         <b-row align-h="start">
           <b-col cols="auto">
@@ -60,10 +62,10 @@
               <img
                 src="@/assets/state-profile/svg/hospital.svg"
                 class="img-fluid"
-                alt="health facility survey"
+                alt="health services"
               />
             </b-button>
-            <p class="text-center program-areas-text">Health Facility Survey</p>
+            <p class="text-center program-areas-text">Health Services</p>
           </b-col>
         </b-row>
       </b-col>

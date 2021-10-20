@@ -17,7 +17,7 @@
         </p>
         <p class="mb-4 note">
           <b
-            >NOTE: Sources for each of the indicators in the graph below were selected based on most
+            >NOTE: Sources for each of the indicators in the graph were selected based on most
             recent and most reliable estimates.
           </b>
         </p>

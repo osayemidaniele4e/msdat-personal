@@ -658,7 +658,7 @@ export default {
           ],
         },
         {
-          name: 'Health Facility Survey',
+          name: 'Health Services',
           icon: 'hospital',
           details:
             'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
