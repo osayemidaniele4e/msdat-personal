@@ -4,21 +4,18 @@
     <div class="scroll">
       <div v-for="(p, index) in programAreaIndicators" :key="index">
         <div class="program-areas my-2">
-          <div>
-            <!-- <input class="form-check-input" type="checkbox" /> -->
-            <b-form-checkbox v-model="fullProgramAreaSelected" :key="p.id" :value="p">
-              {{ p.program_area.toUpperCase() }}
-            </b-form-checkbox>
-          </div>
+          <b-form-checkbox v-model="fullProgramAreaSelected" :key="p.id" :value="p">
+            {{ p.program_area.toUpperCase() }}
+          </b-form-checkbox>
+          <span @click="toggleDropDown(p)" style="float: right; color: #D3D3D3;">▼</span>
         </div>
-        <b-form-group v-slot="{ ariaDescribedby }">
+        <b-form-group v-show="dropIsToggled(p)" v-slot="{ ariaDescribedby }">
           <b-form-checkbox
             v-for="option in p.indicators"
             v-model="indicatorsSelected"
             :key="option.id"
             :value="option"
             :aria-describedby="ariaDescribedby"
-            @change="indicactorToggle(p)"
           >
             {{ option.short_name }}
           </b-form-checkbox>
@@ -31,7 +28,6 @@
       <div v-for="(c, index) in groupedDataSource" :key="index">
         <div class="program-areas my-2">
           {{ c.classification }}
-          <span style="float: right">▼</span>
         </div>
         <b-form-group v-slot="{ ariaDescribedby }">
           <b-form-checkbox
@@ -96,7 +92,7 @@ export default {
   data() {
     return {
       levelOptions: ['National', 'Zonal', 'LGA', 'State'],
-      allIndicatorsSelected: false,
+      expandedProgramAreas: [],
     };
   },
   computed: {
@@ -153,6 +149,17 @@ export default {
   },
 
   methods: {
+    toggleDropDown(programArea) {
+      const index = this.expandedProgramAreas.indexOf(programArea);
+      if (index > -1) {
+        this.expandedProgramAreas.splice(index, 1);
+      } else {
+        this.expandedProgramAreas.push(programArea);
+      }
+    },
+    dropIsToggled(programArea) {
+      return this.expandedProgramAreas.includes(programArea);
+    },
   },
 };
 </script>
@@ -230,6 +237,9 @@ thead {
   text-transform: uppercase;
   border-color: #3f8994;
   font-size: 15.00000375px;
+}
+.custom-control-label {
+  display: block !important;
 }
 #link-to-about {
   color: #1496b1;
