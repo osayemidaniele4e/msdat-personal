@@ -2,68 +2,69 @@
   <div>
     <the-header />
     <div class="container-fluid px-5 content">
-      <div class="row">
-        <div class="col-lg-6 col-md-6 col-12">
-          <b-button class="btn btn-outline-primary disabled">COMING SOON</b-button>
-          <p class="mt-3 mb-4 tittle">Custom Dashboard</p>
+      <div class="centered_content">
+        <div class="row">
+          <div class="col-xl-6 col-12 coming_soon_content order-md-1 order-sm-2">
+            <b-button class="btn btn-outline-primary disabled">COMING SOON</b-button>
+            <p class="mt-3 mb-4 tittle">Custom Dashboard</p>
 
-          <div class="mb-5 mr-3">
-            <p class="text-left mb-3 msg">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore, vel. Voluptas,
-              nulla sint error repudiandae, itaque totam velit quo voluptatem officia corporis modi
-              facere nisi illo rem similique magni maxime provident hic aut laboriosam debitis ipsum
-              ex cupiditate doloribus! Labore architecto fugit perspiciatis quae mollitia sequi esse
-              numquam eligendi doloribus dolor minima modi consectetur blanditiis accusantium rem,
-              rerum illo nisi fuga commodi voluptatem totam velit eos sint illum. Unde amet magni
-              quo illum ad, praesentium laudantium quasi repudiandae, impedit nisi assumenda
-              similique isunt!
-            </p>
+            <div class="mb-5 mr-3">
+              <p class="text-left mb-3 msg">
+                The MSDAT's custom dashboard enables users and organizations to build tailored
+                dashboards using already existing or primarily collected data. This feature allows
+                for users to conduct analysis of indicators using intuitive visualizations for
+                program monitoring and reporting.
+              </p>
 
-            <p class="text-left msg2">
-              This resource is currently not available. If you would like to be informed about its
-              development, please leave your contact information below.
+              <p class="text-left msg2">
+                This resource is currently not available. If you would like to be informed about its
+                development, please leave your contact information below.
+              </p>
+            </div>
+
+            <form class="mb-4" v-on:submit.prevent="newInterest()">
+              <b-row class="mt-4" no-gutters>
+                <b-col cols="12" sm="7" class="">
+                  <b-form-input
+                    type="email"
+                    name="email"
+                    class="form-control ml-0 rounded-0"
+                    placeholder="Your e-mail address"
+                    v-model="email"
+                    required
+                  />
+                </b-col>
+                <b-col cols="12" sm="5" class="">
+                  <b-button
+                    type="submit"
+                    class="btn btn-primary rounded-0 ml-0 pl-4"
+                    :disabled="loading"
+                    :class="{ submitting: loading }"
+                  >
+                    Keep me Updated!
+                  </b-button>
+                </b-col>
+              </b-row>
+            </form>
+
+            <p class="link-text mt-4 mb-4 ml-1">
+              <router-link to="/" style="color: #007d53"
+                ><i style="padding-top: 2px" class="fas fa-angle-left" aria-hidden="true"></i>
+                <b-icon icon="chevron-left"></b-icon> Back to MSDAT</router-link
+              >
             </p>
           </div>
-
-          <form class="mb-4" v-on:submit.prevent="newInterest()">
-            <b-row class="mt-4" no-gutters>
-              <b-col cols="12" sm="7" class="">
-                <b-form-input
-                  type="email"
-                  name="email"
-                  class="form-control ml-0 rounded-0"
-                  placeholder="Your e-mail address"
-                  v-model="email"
-                  required
-                />
-              </b-col>
-              <b-col cols="12" sm="5" class="">
-                <b-button
-                  type="submit"
-                  class="btn btn-primary rounded-0 ml-0 pl-4"
-                  :disabled="loading"
-                  :class="{ submitting: loading }"
-                >
-                  Keep me Updated!
-                </b-button>
-              </b-col>
-            </b-row>
-          </form>
-
-          <p class="link-text mt-4 mb-4 ml-1">
-            <router-link to="/" style="color: #007d53"
-              ><i style="padding-top: 2px" class="fas fa-angle-left" aria-hidden="true"></i>
-              <b-icon icon="chevron-left"></b-icon> Back to MSDAT</router-link
-            >
-          </p>
-        </div>
-        <div class="col-lg-6 col-md-6 col-12 bg-white" id="image">
-          <!-- <img
-            src="../../../assets/state-profile/img/stateprofile.jpg"
-            class="img- d-none"
-            alt="State Profile Image"
-          /> -->
-          <!-- <div class="h-100 w-100 bg-light shadow-sm shimmerBG"></div> -->
+          <div class="col-xl-6 col-12 bg-white order-md-2 order-sm-1" id="image">
+            <div class="coming_soon_img">
+              <img
+                src="../../../assets/img/Custom_Dashboard_Image.svg"
+                class="img-fluid"
+                width="80%"
+                alt="State Profile Image"
+              />
+            </div>
+            <!-- <div class="h-100 w-100 bg-light shadow-sm shimmerBG"></div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -179,12 +180,23 @@ button.btn-primary {
   margin-top: 0;
 }
 div.content {
-  min-height: 82vh;
+  min-height: 90vh;
   width: 100%;
-  display: flex;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
+  div.centered_content {
+    display: flex;
+    align-items: center;
+    min-height: inherit;
+  }
+  div.coming_soon_content {
+    margin-top: 5rem;
+  }
+  div.coming_soon_img {
+    margin-top: 5rem;
+    max-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   .shimmerBG {
     animation-duration: 2.2s;
