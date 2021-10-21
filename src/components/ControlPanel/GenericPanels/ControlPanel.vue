@@ -12,24 +12,40 @@
         <selectWrapper
           v-if="values.type === 'dropdown'"
           v-model="payload[values.key]"
+          :value="payload[values.key]"
+          @input="updatePayload($event, values.key)"
           :options="values.options"
           :multiSelectProps="values.dropdownProps"
         />
         <!-- </div> -->
         <toggle
           v-if="values.type === 'toggle'"
-          @change="payload[values.key] = $event"
+          @change="updatePayload($event, values.key)"
         />
 
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->
           <div class="d-flex">
-            <BaseCheckbox @input="payload.target.national = $event" />
+            <BaseCheckbox
+              @input="
+                updatePayload(
+                  { sdg: payload.target.sdg, national: $event },
+                  'target'
+                )
+              "
+            />
             <p class="check-label ml-1">National</p>
           </div>
           <!-- SDG Target here -->
           <div class="d-flex ml-3">
-            <BaseCheckbox @input="payload.target.sdg = $event" />
+            <BaseCheckbox
+              @input="
+                updatePayload(
+                  { sdg: $event, national: payload.target.national },
+                  'target'
+                )
+              "
+            />
             <p class="check-label ml-1">SDG</p>
           </div>
         </div>
@@ -41,7 +57,7 @@
           <button
             type="button"
             @click="
-              (payload[values.key] = 'zonal_map'),
+              updatePayload('zonal_map', values.key),
                 (activeToggleButton = 'zonal_map')
             "
             class="btn btn-sm btn-outline-primary"
@@ -53,7 +69,7 @@
           <button
             type="button"
             @click="
-              (payload[values.key] = 'state_map'),
+              updatePayload('state_map', values.key),
                 (activeToggleButton = 'state_map')
             "
             class="btn btn-sm btn-outline-primary"
@@ -70,7 +86,7 @@
           <button
             type="button"
             @click="
-              (payload[values.key] = 'line'), (activeToggleButton = 'line')
+              updatePayload('line', values.key), (activeToggleButton = 'line')
             "
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'line' ? 'active' : '']"
@@ -80,7 +96,8 @@
           <button
             type="button"
             @click="
-              (payload[values.key] = 'column'), (activeToggleButton = 'column')
+              updatePayload('column', values.key),
+                (activeToggleButton = 'column')
             "
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'column' ? 'active' : '']"
@@ -94,13 +111,13 @@
 </template>
 
 <script>
-import ControlMixins from '@/components/ControlPanel/ControlMixins';
+// import ControlMixins from '@/components/ControlPanel/ControlMixins';
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
 
 export default {
-  mixins: [ControlMixins],
+  // mixins: [ControlMixins],
   data() {
     return {
       activeToggleButton: 'line',
@@ -114,6 +131,10 @@ export default {
   props: {
     setup: {
       type: Array,
+      required: true,
+    },
+    controlIndex: {
+      type: Number,
       required: true,
     },
     defaultIndicator: {
@@ -139,12 +160,28 @@ export default {
       this.payload.datasource = newValue;
     },
   },
+  methods: {
+    updatePayload(value, key) {
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.controlIndex,
+        key,
+        value,
+      });
+      this.$emit('data:options', this.payload);
+    },
+  },
+  computed: {
+    payload() {
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+        .payload;
+    },
+  },
 
   mounted() {
-    this.payload.indicator = this.defaultIndicator;
-    this.payload.datasource = this.defaultDataSource;
-    this.payload.location = this.defaultLocation;
-    this.payload.year = this.defaultYear;
+    this.updatePayload(this.defaultIndicator, 'indicator');
+    this.updatePayload(this.defaultDataSource, 'datasource');
+    this.updatePayload(this.defaultLocation, 'location');
+    this.updatePayload(this.defaultYear, 'year');
   },
 };
 </script>

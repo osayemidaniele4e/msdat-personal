@@ -28,16 +28,6 @@ const indicatorSetConfig = [
     },
     options: [],
   },
-  // {
-  //   class: ['col-md-4'],
-  //   type: 'dropdown',
-  //   label: 'location',
-  //   key: 'location',
-  //   dropdownProps: {
-  //     label: 'name',
-  //   },
-  //   options: [],
-  // },
   {
     class: ['col-md-4'],
     type: 'dropdown',
@@ -52,10 +42,17 @@ const indicatorSetConfig = [
 export default {
   label: 'Multi-source comparison',
   setup: [indicatorSetConfig, indicatorSetConfig, indicatorSetConfig],
-  defaults: {
-    indicator: null,
-    dataSource: null,
-    location: null,
-    year: null,
+  payload: {
+    indicator: 'indicator 2',
+    location: '',
+    datasource: 'NHMIS 1',
+    year: '',
+    compareBy: '',
+    visualization: 'state_map',
+    target: {
+      national: false,
+      sdg: false,
+    },
+    numdenum: false,
   },
 };

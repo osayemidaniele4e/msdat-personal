@@ -52,14 +52,13 @@ export default {
      * suggesting that as against to using index to locate the
      * control panel let give each panel and id
      */
-    setControlOptions: (state, payload) => {
-      if (payload.multipleSetup) {
-        state.controlConfig[payload.panelIndex].setup[payload.controlIndex][
-          payload.controlIndex2
-        ].options = payload.values;
+    setControlOptions: (state, {
+      panelIndex, controlIndex, controlIndex2, values, multipleSetup,
+    }) => {
+      if (multipleSetup) {
+        state.controlConfig[panelIndex].setup[controlIndex][controlIndex2].options = values;
       } else {
-        state.controlConfig[payload.panelIndex].setup[
-          payload.controlIndex].options = payload.values;
+        state.controlConfig[panelIndex].setup[controlIndex].options = values;
       }
     },
 
@@ -69,8 +68,11 @@ export default {
     },
 
     // set default on individual control panel
-    SET_DEFAULT: (state, payload) => {
-      state.controlConfig[payload.controlIndex].defaults[payload.key] = payload.value;
+    SET_DEFAULT: (state, { controlIndex, key, value }) => {
+      state.controlConfig[controlIndex].defaults[key] = value;
+    },
+    SET_PAYLOAD: (state, { controlIndex, key, value }) => {
+      state.controlConfig[controlIndex].payload[key] = value;
     },
   },
   actions: {
