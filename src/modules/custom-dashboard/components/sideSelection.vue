@@ -37,6 +37,7 @@
             :value="option"
             :aria-describedby="ariaDescribedby"
             inline
+            @change="availableYears(option)"
           >
             {{ option.datasource }}
           </b-form-checkbox>
@@ -56,7 +57,7 @@
           <b-form-checkbox-group
             id="checkbox-group-1"
             v-model="periodSelected"
-            :options="distinctYears"
+            :options="c.distinctYears"
             :aria-describedby="ariaDescribedby"
             name="flavour-1"
           ></b-form-checkbox-group>
