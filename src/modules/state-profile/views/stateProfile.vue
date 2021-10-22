@@ -102,7 +102,7 @@
       </b-col>
       <b-col cols="12" class="my-auto">
         <b-row align-h="end" class="mx-auto">
-          <p class="mr-3">Last Updated: 12.03.2020</p>
+          <p class="mr-3">Last Updated: {{this.regularDateFormat}}</p>
           <b-button class="mr-4 share-button"
             @click="toggleShareModal"
           >
@@ -250,6 +250,7 @@ export default {
   data() {
     return {
       loading: true,
+      regularDateFormat: '12.03.2020',
       copyText: 'Copy Link',
       shareModalShowing: false,
       allLocations: [],
@@ -720,6 +721,8 @@ export default {
   async mounted() {
     this.overviewLoading = true;
     const locate = await requests.allLocations();
+    const theDate = await requests.latestData();
+    this.regularDateFormat = new Date(theDate.data).toLocaleDateString().replaceAll('/', '.');
     this.allLocations = locate.data;
   },
 };

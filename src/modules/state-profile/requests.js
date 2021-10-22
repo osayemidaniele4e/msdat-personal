@@ -11,6 +11,8 @@ import apiEndpoints from '@/modules/DataLayer/config/endpoint';
 
 export const allLocations = () => axiosInstance.get(apiEndpoints.getLocation);
 
+export const latestData = () => axiosInstance.get('http://135.181.212.168:9234/api/data/latest/');
+
 export const fetchDemographics = async (params, locationId) => {
   const values = await Promise.all(params.map((el) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${el.indicatorId}&datasource=${el.sourceId}&location=${locationId}`)));
   return values;
