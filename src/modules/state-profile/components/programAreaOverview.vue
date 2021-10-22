@@ -31,7 +31,7 @@
           <b-icon icon="caret-up-fill"></b-icon>
         </b-button>
       </b-col>
-      <b-col sm="12" :md="this.programArea.name == 'Health Facility Survey' ? 'auto' : '8'">
+      <b-col sm="12" :md="this.programArea.name == 'Health Services' ? 'auto' : '8'">
         <div class="ml-3" v-show="this.programArea.name == 'mortality'">
           <b-row>
             <b-col>
@@ -51,7 +51,7 @@
           <hr />
         </div>
         <BaseBar
-          v-show="this.programArea.name != 'Health Facility Survey'"
+          v-show="this.programArea.name != 'Health Services'"
           :chartOptions="barChartOptions"
         />
         <b-row
@@ -90,10 +90,10 @@
           </b-col>
         </b-row>
       </b-col>
-      <b-col cols="auto" v-show="this.programArea.name == 'Health Facility Survey'">
+      <b-col cols="auto" v-show="this.programArea.name == 'Health Services'">
         <div class="vl"></div>
       </b-col>
-      <b-col class="text-left" v-show="this.programArea.name == 'Health Facility Survey'">
+      <b-col class="text-left" v-show="this.programArea.name == 'Health Services'">
         <div class="mb-4">
           <p class="blue-heading">HR Guideline and Workforce</p>
           <b-row>
@@ -104,7 +104,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{HRGuidelinesValue.value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{HRGuidelinesValue.year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -135,15 +135,15 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{facilityMng.value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{facilityMng.year}}</p>
             </b-col>
           </b-row>
         </div>
       </b-col>
-      <b-col cols="auto" v-show="this.programArea.name == 'Health Facility Survey'">
+      <b-col cols="auto" v-show="this.programArea.name == 'Health Services'">
         <div class="vl"></div>
       </b-col>
-      <b-col class="text-left" v-show="this.programArea.name == 'Health Facility Survey'">
+      <b-col class="text-left" v-show="this.programArea.name == 'Health Services'">
         <div class="mb-4">
           <p class="blue-heading">Facility readiness to deliver services</p>
           <b-row>
@@ -154,7 +154,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{facilityReadiness[0].value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{facilityReadiness[0].year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -168,7 +168,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{facilityReadiness[1].value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{facilityReadiness[1].year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -182,7 +182,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{drugsAndCommodities[0].value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{drugsAndCommodities[0].year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -196,7 +196,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{drugsAndCommodities[1].value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{drugsAndCommodities[1].year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -250,6 +250,7 @@ export default {
       HRGuidelinesValue: {
         id: 34,
         value: 0,
+        year: 2000,
       },
       // financing: {
       //   id:61,
@@ -258,23 +259,28 @@ export default {
       facilityMng: {
         id: 61,
         value: 0,
+        year: 2000,
       },
       facilityReadiness: [{
         id: 39,
         value: 0,
+        year: 2000,
       },
       {
         id: 41,
         value: 0,
+        year: 2000,
       },
       ],
       drugsAndCommodities: [{
         id: 49,
         value: 0,
+        year: 2000,
       },
       {
         id: 50,
         value: 0,
+        year: 2000,
       }],
       singleNational: 0,
       singleStateValue: 0,
@@ -292,7 +298,7 @@ export default {
             borderWidth: 0,
             dataLabels: {
               enabled: true,
-              format: '{y} %',
+              format: this.programArea.name === 'mortality' ? '{y}' : '{y}%',
               style: {
                 textOverflow: 'ellipsis',
                 fontWeight: 'normal',
@@ -323,7 +329,7 @@ export default {
         },
         yAxis: {
           title: {
-            text: 'Percentage(%)',
+            text: this.programArea.name !== 'mortality' ? 'Percentage(%)' : 'Per 100,000',
           },
         },
         xAxis: {
@@ -351,6 +357,7 @@ export default {
           {
             name: this.state,
             className: 'test',
+            color: this.programArea.colors[1],
             data: [
 
             ],
@@ -436,11 +443,17 @@ export default {
      */
     resetHealthFacilityData() {
       this.HRGuidelinesValue.value = 0;
+      this.HRGuidelinesValue.year = null;
       this.facilityMng.value = 0;
+      this.facilityMng.year = null;
       this.facilityReadiness[0].value = 0;
+      this.facilityReadiness[0].year = null;
       this.facilityReadiness[1].value = 0;
+      this.facilityReadiness[1].year = null;
       this.drugsAndCommodities[0].value = 0;
+      this.drugsAndCommodities[0].year = null;
       this.drugsAndCommodities[1].value = 0;
+      this.drugsAndCommodities[1].year = null;
     },
     /**
      * This sets the health facility data
@@ -463,21 +476,27 @@ export default {
       availableData.map((el) => {
         if (el.indicator === this.HRGuidelinesValue.id) {
           this.HRGuidelinesValue.value = el.value;
+          this.HRGuidelinesValue.year = el.period;
         }
         if (el.indicator === this.facilityMng.id) {
           this.facilityMng.value = el.value;
+          this.facilityMng.year = el.period;
         }
         if (el.indicator === this.facilityReadiness[0].id) {
           this.facilityReadiness[0].value = el.value;
+          this.facilityReadiness[0].year = el.period;
         }
         if (el.indicator === this.facilityReadiness[1].id) {
           this.facilityReadiness[1].value = el.value;
+          this.facilityReadiness[1].year = el.period;
         }
         if (el.indicator === this.drugsAndCommodities[0].id) {
           this.drugsAndCommodities[0].value = el.value;
+          this.drugsAndCommodities[0].year = el.period;
         }
         if (el.indicator === this.drugsAndCommodities[1].id) {
           this.drugsAndCommodities[1].value = el.value;
+          this.drugsAndCommodities[1].year = el.period;
         }
       });
     },

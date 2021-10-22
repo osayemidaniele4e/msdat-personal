@@ -347,6 +347,7 @@ export default {
             'Coverage for key interventions across the continuum of care',
           colors: [
             '#EBF4F1',
+            '#2c9f35',
             '#054A80',
             '#2C8CCA',
             '#3F7299',
@@ -625,10 +626,6 @@ export default {
           chartTitle: 'Other Mortality Indicators',
           colors: [
             '#EAEAEA',
-            '#313131',
-            '#313131',
-            '#313131',
-            '#313131',
             '#313131',
           ],
           specificIndicators: [
