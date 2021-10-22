@@ -17,54 +17,54 @@
         </p>
         <b-row align-h="start">
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/pregnant.svg" class="img-fluid" alt="rmnch" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">RMNCH</p>
           </b-col>
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/salad.svg" class="img-fluid" alt="nutrition" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Nutrition</p>
           </b-col>
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img
                 src="@/assets/state-profile/svg/injection.svg"
                 class="img-fluid"
                 alt="immunization"
               />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Immunization</p>
           </b-col>
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/mosquito.svg" class="img-fluid" alt="malaria" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Malaria</p>
           </b-col>
 
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/ribbon.svg" class="img-fluid" alt="hiv/aids" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">HIV/AIDS</p>
           </b-col>
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/patient.svg" class="img-fluid" alt="mortality" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Mortality</p>
           </b-col>
           <b-col cols="auto" class="">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img
                 src="@/assets/state-profile/svg/hospital.svg"
                 class="img-fluid"
                 alt="health services"
               />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Health Services</p>
           </b-col>
         </b-row>
