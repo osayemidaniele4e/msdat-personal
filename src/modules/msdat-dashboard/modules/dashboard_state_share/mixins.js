@@ -35,15 +35,39 @@ export default {
      * This function could be reused in other components
      * @param {} indicator
      */
-    getIndicatorRelatedIndicators(indicator) {
-      console.log(indicator);
-      const indicatorObject = this.dlGetIndicator(indicator);
-      console.log(indicatorObject);
-      return [indicatorObject.id, indicatorObject.first_related, indicatorObject.second_related];
+    getRouteIndicatorRelatedIndicators() {
+      return [
+        this.$route.query.indicator,
+        this.$route.query.first_related,
+        this.$route.query.second_related,
+      ];
     },
     checkIfRouteQueryHasKey() {
       const queryObject = this.$route.query;
       return Object.keys(queryObject).some((item) => this.queryKey.includes(item));
+    },
+
+    setRouteQueryToControlPanel() {
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.$route.query.section,
+        key: 'indicator',
+        value: this.dlGetIndicator(Number(this.$route.query.indicator)),
+      });
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.$route.query.section,
+        key: 'datasource',
+        value: this.dlGetDataSource(Number(this.$route.query.datasource)),
+      });
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.$route.query.section,
+        key: 'location',
+        value: this.dlGetLocation(Number(this.$route.query.location)),
+      });
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.$route.query.section,
+        key: 'year',
+        value: this.$route.query.year,
+      });
     },
   },
 };

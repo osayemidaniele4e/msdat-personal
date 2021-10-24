@@ -40,26 +40,11 @@
                     <ControlPanel
                       @data:options="log($event, index)"
                       :setup="control.setup"
-                      :defaultIndicator="
-                        control.defaults.indicator != null
-                          ? control.defaults.indicator
-                          : defaultIndicator
-                      "
-                      :defaultDataSource="
-                        control.defaults.dataSource != null
-                          ? control.defaults.dataSource
-                          : defaultDataSource
-                      "
-                      :defaultLocation="
-                        control.defaults.location != null
-                          ? control.defaults.location
-                          : defaultLocation
-                      "
-                      :defaultYear="
-                        control.defaults.year != null
-                          ? control.defaults.year
-                          : defaultYear
-                      "
+                      :controlIndex="index"
+                      :defaultIndicator="defaultIndicator"
+                      :defaultDataSource="defaultDataSource"
+                      :defaultLocation="defaultLocation"
+                      :defaultYear="defaultYear"
                     />
                   </template>
                   <template v-else>
@@ -72,26 +57,11 @@
                         <ControlPanel
                           @data:options="log($event, index, index2)"
                           :setup="item"
-                          :defaultIndicator="
-                            control.defaults.indicator != null
-                              ? control.defaults.indicator
-                              : defaultIndicator
-                          "
-                          :defaultDataSource="
-                            control.defaults.dataSource != null
-                              ? control.defaults.dataSource
-                              : defaultDataSource
-                          "
-                          :defaultLocation="
-                            control.defaults.location != null
-                              ? control.defaults.location
-                              : defaultLocation
-                          "
-                          :defaultYear="
-                            control.defaults.year != null
-                              ? control.defaults.year
-                              : defaultYear
-                          "
+                          :controlIndex="index"
+                          :defaultIndicator="defaultIndicator"
+                          :defaultDataSource="defaultDataSource"
+                          :defaultLocation="defaultLocation"
+                          :defaultYear="defaultYear"
                         />
                       </div>
                     </div>
@@ -246,6 +216,7 @@ import Header from '../about/layout/theHeader.vue';
 import Footer from '../about/layout/theFooter.vue';
 import scroll from '../../modules/onScroll/onscroll';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
+import SharingDashboardState from '../../modules/dashboard_state_share/mixins';
 import Loading from '../../mixins/loading';
 import BaseMultiSourceSection from '../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
 import Onboarding from '../onboarding/onboarding';
@@ -260,6 +231,7 @@ export default {
     tour,
     scroll,
     TroubleShooting,
+    SharingDashboardState,
   ],
   data() {
     return {
@@ -335,10 +307,6 @@ export default {
       // console.log(optionsObject, index);
       switch (index) {
         case 0:
-          // this.stateBarValue = optionsObject;
-          // this.TableValues = optionsObject;
-          // this.indicatorComparison = optionsObject;
-          // this.zonalProps = optionsObject;
           this.BaseIndicatorOverviewProp = optionsObject;
           break;
         case 1:
@@ -356,15 +324,35 @@ export default {
         default:
           break;
       }
+      /**
+       * This Update the route any time the  control panel changers
+       */
+      if (Object.keys(optionsObject).length > 0) {
+        const objects = this.extractIdsOfObject(optionsObject);
+        this.addHashToLocation({
+          section: index,
+          first_related: optionsObject.indicator.first_related,
+          second_related: optionsObject.indicator.second_related,
+          ...objects,
+        });
+      }
     },
   },
   async mounted() {
     this.loading = false;
     // initializing data for dashboard
+    console.trace(this.$route.query);
+    let urlRequestedIndicator = [];
+    if (this.$route.query.indicator) {
+      urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
+    }
     try {
       await this.$DL.init({
         dashboardIndicators: this.indicators,
-        defaultIndicators: this.defaultIndicators,
+        defaultIndicators:
+          urlRequestedIndicator.length > 0 // Check if the url has an indicator exists then inits it
+            ? urlRequestedIndicator
+            : this.defaultIndicators,
         dashboardDataSources: this.dataSources,
       });
 
@@ -385,6 +373,10 @@ export default {
         const firstItem = 0;
         this.defaultYear = this.defaultYearDropdown[firstItem];
       }
+      setTimeout(() => {
+        this.setRouteQueryToControlPanel();
+      }, 4000);
+
       this.cpIsLoading = true;
       this.$nextTick(() => {
         this.startScroll();
