@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <genericModal
-      v-if="overviewLoading"
+      v-if="false"
       :noBackdrop="false"
       :showBackground="false"
       class="over"
@@ -130,6 +130,7 @@
       <PAoverview :state="state"
        @overviewLoading="setLoadingState"
         :locations="allLocations"
+        :indicatorDefinitions="indicatorDefinitions"
         :programArea="programArea"></PAoverview>
     </div>
     <p class="text-center final-text">
@@ -254,6 +255,7 @@ export default {
       copyText: 'Copy Link',
       shareModalShowing: false,
       allLocations: [],
+      indicatorDefinitions: [],
       demographicData: [],
       incomingData: 0,
       overviewLoading: false,
@@ -333,16 +335,7 @@ export default {
             'This section includes a set of indicators along the continuum of care - from pre-pregnancy to childhood. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS) and Nigeria Demographic and Health Survey (NDHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
+
           chartTitle:
             'Coverage for key interventions across the continuum of care',
           colors: [
@@ -413,16 +406,6 @@ export default {
           detail:
             'This section includes a set of nutirion indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: 'Coverage for key interventions in Nutrition',
           colors: [
             '#F4F7EA',
@@ -466,16 +449,6 @@ export default {
             'This section includes a set of immunization indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: 'Coverage for key interventions in Immunization',
           colors: [
             '#FBF0E4',
@@ -513,16 +486,7 @@ export default {
             'This section includes a set of malaria indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
+
           chartTitle: 'Coverage for key interventions in Malaria',
           colors: [
             '#ECF3EB',
@@ -567,16 +531,6 @@ export default {
             'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: 'Coverage for key interventions in HIV',
           colors: [
             '#FBE5EA',
@@ -613,16 +567,6 @@ export default {
           details:
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS)',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: 'Other Mortality Indicators',
           colors: [
             '#EAEAEA',
@@ -662,16 +606,6 @@ export default {
             'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: '',
           colors: ['rgba(5, 146, 189, 1)'],
           specificIndicators: [
@@ -720,6 +654,8 @@ export default {
     const locate = await requests.allLocations();
     const theDate = await requests.latestData();
     this.regularDateFormat = new Date(theDate.data).toLocaleDateString().replaceAll('/', '.');
+    const dataSourceSpecifics = await requests.datasourceSpecific();
+    this.indicatorDefinitions = dataSourceSpecifics.data;
     this.allLocations = locate.data;
   },
 };

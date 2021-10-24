@@ -32,11 +32,13 @@
         </b-button>
       </b-col>
       <b-col sm="12" :md="this.programArea.name == 'Health Services' ? 'auto' : '8'">
-        <div class="ml-3" v-show="this.programArea.name == 'mortality'">
+        <div class="ml-3" v-if="this.programArea.name != 'Health Services'">
           <b-row>
-            <b-col>
-              <p>Maternal Mortality Ratio</p>
-              <p class="source">per 100,000</p>
+           <b-col>
+              <p>{{this.barChartOptions.xAxis.categories[0]}}</p>
+              <p class="source">
+                {{`${this.programArea.name == 'mortality' ? 'Per 100,000' : 'In Percentage'}`}}
+              </p>
             </b-col>
             <b-col cols="auto">
               <p>National</p>
@@ -44,7 +46,7 @@
             </b-col>
             <b-col cols="auto" v-if="state != 'national'">
               <p>{{ this.state }}</p>
-              <p class="red-value">{{this.singleStateValue}}</p>
+              <p class="grey-value">{{this.singleStateValue}}</p>
               <p class="source">Source: NDHS 2018</p>
             </b-col>
           </b-row>
@@ -209,8 +211,8 @@
         </b>
       </p>
       <ul>
-        <li v-for="definition in this.programArea.definitions" :key="definition">
-          {{ definition }}
+        <li v-for="(definition, index) in definitions" :key="index">
+          {{ `- ${definition.indicator_definition}` }}
         </li>
       </ul>
     </b-row>
@@ -235,6 +237,7 @@ export default {
     state: String,
     locations: Array,
     programArea: Object,
+    indicatorDefinitions: Array,
   },
   computed: {
     ...mapState([]),
@@ -247,6 +250,7 @@ export default {
       nationalObjects: [],
       allDataSources: [],
       allIndicators: [],
+      definitions: [],
       HRGuidelinesValue: {
         id: 34,
         value: 0,
@@ -416,10 +420,8 @@ export default {
           data.push([`${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period}), `, Number(val.value)]);
         });
       }
-      if (this.programArea.name === 'mortality') {
-        // eslint-disable-next-line prefer-destructuring
-        this.singleNational = data[0][1];
-      }
+      // eslint-disable-next-line prefer-destructuring
+      this.singleNational = data[0][1];
       this.barChartOptions.series[0].data = data;
       this.populateCategories();
     },
@@ -532,11 +534,21 @@ export default {
           });
         }
       });
-      if (this.programArea.name === 'mortality') {
-        this.singleStateValue = data[0].y;
-      }
+      this.singleStateValue = data[0].y;
       this.barChartOptions.series[1].data = data;
       this.barChartOptions.series[1].name = this.state;
+    },
+    addIndicatorDefinitions() {
+      this.definitions = [];
+      // eslint-disable-next-line array-callback-return
+      this.programArea.specificIndicators.map((el) => {
+        // eslint-disable-next-line array-callback-return
+        this.indicatorDefinitions.map((val) => {
+          if (val.indicator === el.indicator && val.datasource === el.dataSource) {
+            this.definitions.push(val);
+          }
+        });
+      });
     },
     /**
      * This is meant to prepare the chart for
@@ -598,6 +610,9 @@ export default {
       this.nonDemographicData = [];
       this.prepareStateAndNationalData();
       this.getHealthFacilityData();
+    },
+    indicatorDefinitions() {
+      this.addIndicatorDefinitions();
     },
   },
   async mounted() {
