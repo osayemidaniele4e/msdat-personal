@@ -10,22 +10,22 @@
         is owned by the Federal Body of Maternal and Child health, Nigeria.
       </p>
     </div>
-    <data-table
-      :indicator="selectedIndicator"
-      :dataSource="selectedDataSource"
-      :years="selectedYears"
-      :level="selectedLevels"
-    />
-    <b-row
-            align-h="end"
-            class="mt-5 text-right"
-          >
-            <!-- <b-col class="align-baseline" cols="auto"
+    <data-table />
+    <b-row align-h="end" class="mt-5 text-right">
+      <!-- <b-col class="align-baseline" cols="auto"
               ><p class="baseline">Save for Later</p>
             </b-col> -->
-            <b-col cols="auto"><b-button  class="editBtn" disabled>Edit Data Table</b-button></b-col>
-            <b-col cols="auto"><b-button @click="approveData" class="nextBtn">Next Page</b-button></b-col>
-          </b-row>
+      <b-col cols="auto"
+        ><b-button class="editBtn" @click="backToPrefrence"
+          >Edit Data Table</b-button
+        ></b-col
+      >
+      <b-col cols="auto"
+        ><b-button @click="approveData" class="nextBtn"
+          >Next Page</b-button
+        ></b-col
+      >
+    </b-row>
   </b-container>
 </template>
 
@@ -57,6 +57,9 @@ export default {
     approveData() {
       this.$router.push('sections');
     },
+    backToPrefrence() {
+      this.$router.push('preference-table');
+    },
   },
 };
 </script>
@@ -71,11 +74,11 @@ export default {
   font-size: 15.00000375px;
 }
 .editBtn {
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
   color: #000000;
   max-width: 253.500000063px;
   text-transform: uppercase;
-  border-color: #EAEAEA;
+  border-color: #eaeaea;
   font-size: 15.00000375px;
 }
 </style>

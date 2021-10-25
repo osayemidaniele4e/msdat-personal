@@ -2,116 +2,189 @@ export default {
   updateStep(state, payload) {
     state.step = payload;
   },
-  setIndicators(state, payload) {
-    state.indicators = payload;
-  },
-  setRmnchs(state, payload) {
-    state.rmnchs = payload;
-  },
 
   setPArea(state, payload) {
-    // console.log("mutations", payload);
-    state.program_area = payload;
-  },
-
-  selectedIndicator(state, payload) {
-    state.selectedIndicator = payload;
-  },
-  selectedDataSource(state, payload) {
-    state.selectedDataSource = payload;
-  },
-  selectedYears(state, payload) {
-    state.selectedYears = payload;
-    console.log(payload);
-  },
-  selectedLevels(state, payload) {
-    state.selectedLevels = payload;
+    state.masterData = payload;
   },
 
   isNotExistYear(state, payload) {
     state.isNotExistYear.push(payload);
   },
 
+  // TODO: To be reviewe later
+
   selectionIndicator(state, payload) {
-    debugger;
-    state.program_area.map((element) => {
+    state.masterData = state.masterData.map((element) => {
+      let counter = 0;
       element.children.map((child) => {
         if (child.id == payload.id) {
-          console.log('payload', payload.id);
+          // element.parent.selected = true;
+          element.parent.isChildSelected = true;
+
+          child.selected = payload.checked;
+        } if (payload.checked) {
+          // element.parent.selected = true;
+          counter = 1;
+        } else {
+          element.parent.selected = false;
+          if (child.selected) {
+            counter++;
+          }
+        }
+      });
+      if (counter == 0) {
+        element.parent.isChildSelected = false;
+      }
+
+      return element;
+    });
+  },
+
+  AllselectionIndicator(state, payload) {
+    // console.log(payload);
+    state.masterData = state.masterData.map((element) => {
+      element.children.map((child) => {
+        if (element.parent.value == payload.name) {
+          element.parent.selected = payload.checked;
+          element.parent.isChildSelected = payload.checked;
           child.selected = payload.checked;
         }
       });
+      return element;
     });
-    console.log('PA', state.program_area);
-    // Vue.set(state, 'program_area', program_area);
-    console.log('CPA', changedProgramArea);
   },
 
   // ******** Data Source Selection ***************** //
-
-  setDataSource(state, payload) {
-    state.dataSource = payload;
-  },
 
   setDArea(state, payload) {
     state.SurveyArray = payload;
   },
 
-  getByProgramAreaData(state, payload) {
-    state.indicatorValue = payload;
+  selectionDataSource(state, payload) {
+    state.masterData = state.masterData.map((element) => {
+      element.children.map((val) => {
+        let isParentExist = false;
+        if (payload.checked == true) {
+          val.sources.map((source) => {
+            if (source.parent == payload.parentDataSource) {
+              source.children.push(payload.childDataSource);
+              isParentExist = true;
+            }
+          });
+
+          if (!isParentExist) {
+            val.sources.push({
+              parent: payload.parentDataSource, children: [payload.childDataSource],
+            });
+          }
+        } else if (source.parent == payload.parentDataSource) {
+          source.children.pop(payload.childDataSource);
+          isParentExist = true;
+        }
+        return val;
+      });
+      return element;
+    });
   },
 
   // ******** Indicator Levels ***************** //
-  getLevels(state, payload) {
-    state.levels.push(payload.data_level);
-    const array = state.levels;
-    let newArr = [];
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].includes(',')) {
-        // console.log(array[i]);
-        const arr = array[i].split(',');
-        arr.map((x) => newArr.push(x));
-      } else {
-        newArr.push(array[i]);
-      }
-    }
-    const distinctArray = [...new Set(newArr)];
-    newArr = distinctArray;
 
-    state.levels = newArr;
+  getLevels(state, payload) {
+    state.masterData = state.masterData.map((child) => {
+      child.children.map((x) => {
+        if (payload.id == x.id) {
+          x.levels = payload.Datalevels;
+        }
+      });
+      return child;
+    });
+  },
+
+  levelsHandler(state, payload) {
+    state.masterData = state.masterData.map((element) => {
+      element.children.map((child) => {
+        child.levels.map((level) => {
+          if (level.value == payload.value) {
+            level.selected = payload.checked;
+          }
+          return level;
+        });
+        return child;
+      });
+      return element;
+    });
   },
 
   // *************** INDICATOR YEARS *************** //
 
   getYears(state, payload) {
-    // debugger;
-    // state.years.push(payload.map(year => year.year))
-
-    // // payload.year.map((x) => state.years.push(x));
-
-    // const yearsArray = state.years;
-
-    // // console.log('years Array');
-    // // console.log(yearsArray);
-
-    // const distinctArray = [...new Set(yearsArray)];
-    // state.years = distinctArray;
-    payload.years.map((x) => state.years.push(x));
-
-    const yearsArray = state.years;
-    state.program_area.map((child) => child.years = (payload));
-    console.log('sdes', state.program_area);
-
-    // console.log('years Array');
-    // console.log(yearsArray);
-
-    const distinctArray = [...new Set(yearsArray)];
-    state.years = distinctArray;
+    state.masterData = state.masterData.map((child) => {
+      child.children.map((x) => {
+        if (payload.id == x.id) {
+          x.years = payload.years;
+          // x.years.map(year => { year.selected = Math.random() > 0.9 })
+        }
+      });
+      return child;
+    });
   },
 
-  popLevels(state, payload) {
-    const newLevels = state.levels.filter((c) => c.id != payload);
-    state.levels = newLevels;
+  yearsHandler(state, payload) {
+    state.masterData = state.masterData.map((element) => {
+      element.children.map((child) => {
+        child.years.map((year) => {
+          if (year.value == payload.value) {
+            year.selected = payload.checked;
+          }
+          return year;
+        });
+        return child;
+      });
+      return element;
+    });
+    let distinctYearsArray = [];
+    state.masterData = state.masterData.map((element) => {
+      element.children.map((child) => {
+        if (child.selected === true) {
+          child.years.map((year) => {
+            if (year.selected === true) {
+              distinctYearsArray.push(year.value);
+            }
+          });
+        }
+        return child;
+      });
+      return element;
+    });
+    distinctYearsArray = [...new Set(distinctYearsArray)];
+    const msgs = [];
+
+    state.masterData.map((element) => {
+      element.children.map((child) => {
+        if (child.selected == true) {
+          let yearsDoesnotContain = '';
+
+          distinctYearsArray.map((distYear) => {
+            const foundData = child.years.find((year) => year.value == distYear);
+            if (foundData == undefined) {
+              if (yearsDoesnotContain.length > 0) {
+                yearsDoesnotContain += ',';
+              }
+              yearsDoesnotContain += distYear;
+            }
+          });
+          if (yearsDoesnotContain.length > 0) {
+            msgs.push(`${child.short_name} does not contain ${yearsDoesnotContain}`);
+          }
+          state.notes = msgs;
+        }
+      });
+      return element;
+    });
+  },
+
+  selectedYear(state, payload) {
+    state.selectedYears = payload;
   },
 
 };

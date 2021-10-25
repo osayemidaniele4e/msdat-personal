@@ -11,63 +11,16 @@
     <b-card>
       <b-row>
         <!-- **** Preferences Selection *****  -->
-        <b-col sm="12" lg="3">
-          <!-- <b class="selection-header">indicators selection</b><br />
-          <div class="scroll">
-            <div v-for="(p, index) in programAreas" :key="index">
-              <div class="program-areas my-2 ">
-                <input
-                  :checked="isAllSelected(p.indicators, 'indicators')"
-                  @click="toggleAll(p.indicators, 'indicators')"
-                  type="checkbox"
-                  aria-label="Checkbox for following text input"
-                />
-                {{ p.name }}
-                <span style="float: right">▼</span>
-              </div>
-              <div v-for="(i, index) in p.indicators" :key="index" class="indicators">
-                <input
-                  class=""
-                  id=""
-                  :checked="isSelected(i, 'indicators')"
-                  @click="toggle(i, 'indicators')"
-                  type="checkbox"
-                />
-                <span>{{ i }}</span>
-              </div>
-            </div>
-          </div> -->
-          <indicators-selection
-            @save-indicator="saveIndicator"
-            @IndicatorSelect="SelectiveIndicator"
-            @selected="selectedCount"
-          />
-          <!-- <indicators-selection :heading="'Years Selection'"/> -->
-          <!-- <indicators-selection
-            :heading="'Data Source Selection'"
-            :programArea="this.category"
-          /> -->
 
-          <!-- <b class="selection-header">Data Source Selection</b><br />
-          <div class="scroll">
-            <div v-for="(c, index) in category" :key="index">
-              <div class="program-areas my-2 ">
-                {{ c.name }}
-                <span style="float: right">▼</span>
-              </div>
-              <div v-for="(s, index) in c.sources" :key="index" class="indicators">
-                <input class="" id="" @change="toggle(s, 'sources')" type="checkbox" />
-                {{ s }}
-              </div>
-            </div>
-          </div> -->
+        <b-col sm="12" lg="3">
+          <indicators-selection @IndicatorSelect="SelectiveIndicator" />
           <br />
-          <data-source @save-dataSource="saveData" />
+          <data-source />
           <br />
-          <div v-if="showList">
-            <years-selection @save-year="saveYear" @show-notes="showNote" />
+          <div v-if="showList == true">
+            <years-selection @show-notes="showNote" />
             <br />
-            <level-selection @save-level="saveLevel" />
+            <level-selection />
           </div>
           <div v-if="showNotes">
             <notes />
@@ -77,75 +30,16 @@
         <!-- ****** Selected Items Table ****** -->
 
         <b-col sm="12" lg="9">
-          <data-table
-            :indicator="selectedIndicator"
-            :dataSource="selectedDataSource"
-            :years="selectedYears"
-            :level="selectedLevel"
-          />
-          <!-- <div v-for="(area, index) in programAreas" :key="index">
-            <b-table
-              outlined
-              :class="area == programAreas[0] ? 'first-table' : 'other-tables'"
-              responsive
-              :fields="fields"
-              :items="items"
-            >
-              <template #head()="data">
-                <p class="main-table-header text-center m-0">
-                  {{ data.label.toUpperCase() }}
-                </p>
-              </template>
-              <template #top-row="" :columns="1">
-                <b-td colspan="12"
-                  ><span class="">{{ area.name.toUpperCase() }}</span></b-td
-                >
-              </template>
-              <template #cell(datasource)="data">
-                <b-row align-h="start">
-                  <b-col
-                    cols="auto"
-                    class=""
-                    v-for="i in data.value"
-                    :key="data.value.indexOf(i)"
-                    ><span>{{ i }}</span></b-col
-                  >
-                </b-row>
-              </template>
-              <template #cell(level)="data">
-                <b-row align-h="start">
-                  <b-col
-                    cols="auto"
-                    class=""
-                    v-for="i in data.value"
-                    :key="data.value.indexOf(i)"
-                    ><span>{{ i }}</span></b-col
-                  >
-                </b-row>
-              </template>
-              <template #cell(year)="data">
-                <b-row align-h="start">
-                  <b-col
-                    cols="auto"
-                    class=""
-                    v-for="i in data.value"
-                    :key="data.value.indexOf(i)"
-                    ><span>{{ parseInt(i) }}</span></b-col
-                  >
-                </b-row>
-              </template>
-            </b-table>
-          </div> -->
+          <data-table />
           <b-row align-h="end" class="text-right">
             <b-col cols="auto"
-              >indicators: <b>{{ selectCount }} selected</b></b-col
+              >Indicators: <b>{{ indicatorsCount }} selected</b></b-col
             >
             <b-col cols="auto"
-              >Data Sources:
-              <b>{{ selectedDataSource.length }} selected</b></b-col
+              >Data Sources: <b>{{ dataSourceCount }} selected</b></b-col
             >
             <b-col cols="auto"
-              >Period: <b>{{ selectedYears.length }} Years</b></b-col
+              >Period: <b>{{ yearsCount }} Years</b></b-col
             >
             <b-col cols="auto"
               >Levels:
@@ -158,10 +52,7 @@
             align-h="end"
             class="mt-5 text-right"
             v-if="
-              selectedIndicator.length > 0 &&
-              selectedYears.length > 0 &&
-              selectedDataSource.length > 0 &&
-              selectedLevel.length > 0
+              indicatorsCount && dataSourceCount && yearsCount && selectedLevel
             "
           >
             <b-col class="align-baseline" cols="auto"
@@ -200,192 +91,104 @@ export default {
   },
   data() {
     return {
-      selected: {
-        indicators: [],
-        period: [],
-        sources: [],
-      },
-      selectCount: 0,
-      selectedIndicator: [],
-      selectedDataSource: [],
-      selectedYears: [],
-      selectedLevel: [],
       showNotes: false,
       showList: false,
-      indeterminate: false,
-      programAreas: [
-        {
-          name: 'RMNCH',
-
-          fields: [
-            'Total Fertility Rate',
-            'ANC Coverage Rate (at least 1 visit)',
-            'Skilled Birth Attendance',
-            'Prevalence of Child with diarrhoea',
-          ],
-        },
-        {
-          name: 'NUTRITION',
-
-          fields: [
-            'Percentage of children under 6 months exclusiv...',
-            'Prevalence of stunting in children under 5 years',
-            'Prevalence of wasting in children under 5 years',
-            'Underweight prevalence in children under 5 ye...',
-          ],
-        },
-      ],
-      category: [
-        {
-          name: 'ROUTINE',
-          fields: ['NHMIS Annual', 'NHMIS Quarterly', 'NHMIS Monthly'],
-        },
-        {
-          name: 'SURVEYS',
-          fields: [
-            'NDHS',
-            'NHA',
-            'KDGHS',
-            'NARHS',
-            'NAIIS',
-            'NMIS',
-            'NHSPSS',
-            'PCCS',
-            'MICS',
-          ],
-        },
-      ],
-      value: [],
-      // programAreas: [
-      //   "Reproductive, Maternal, Newborn & Child Health",
-      //   "NUTRITION",
-      //   "IMMUNIZATION",
-      //   "MALARIA"
-      // ],
-      fields: [
-        // A column that needs custom formatting
-        { key: 'indicator', label: 'Indicators' },
-        { key: 'datasource', label: 'Datasources' },
-        { key: 'level', label: 'Level' },
-        { key: 'year', label: 'years' },
-      ],
-      items: [
-        {
-          indicator: 'Maternal Health',
-          datasource: ['NHMIS', 'NNHS', 'NDHS', 'IHME'],
-          level: ['National', 'Zonal', 'Subnational', 'LGA'],
-          year: [
-            '2019',
-            '2018',
-            '2017',
-            '2016',
-            '2005',
-            '2001',
-            '1999',
-            '1998',
-          ],
-        },
-        {
-          indicator: 'Skilled attendance at delivery or birth',
-          datasource: ['NHMIS', 'NNHS', 'NDHS', 'IHME'],
-          level: ['National', 'Zonal', 'Subnational', 'LGA'],
-          year: [
-            '2019',
-            '2018',
-            '2017',
-            '2016',
-            '2005',
-            '2001',
-            '1999',
-            '1998',
-          ],
-        },
-        {
-          indicator: 'Total fertility rate',
-          datasource: ['NHMIS', 'NNHS', 'NDHS', 'IHME'],
-          level: ['National', 'Zonal', 'Subnational', 'LGA'],
-          year: [
-            '2019',
-            '2018',
-            '2017',
-            '2016',
-            '2005',
-            '2001',
-            '1999',
-            '1998',
-          ],
-        },
-      ],
     };
   },
-  methods: {
-    isAllSelected(available, selected) {
-      let value = true;
-      available.every((element) => {
-        if (!this.selected[selected].includes(element)) {
-          value = false;
-          return false;
+  computed: {
+    indicatorsCount() {
+      let count = 0;
+      this.$store.getters.getprogramArea.map((element) => {
+        if (element.parent.isChildSelected === true) {
+          element.children.map((child) => {
+            if (child.selected === true) {
+              count++;
+            }
+            return child;
+          });
         }
-        value = true;
-        return true;
+        return element;
       });
-      return value;
+      return count;
     },
-    saveIndicator(data) {
-      this.selectedIndicator = data;
-      console.log('asdzxs', this.selectedIndicator.length);
-      console.log('SI', this.selectedIndicator);
+    dataSourceCount() {
+      let count = 0;
+      this.$store.getters.getprogramArea.map((element) => {
+        if (element.parent.isChildSelected === true) {
+          element.children.map((child) => {
+            if (child.selected === true) {
+              child.sources.map((source) => {
+                count = source.children.length;
+                return source;
+              });
+            }
+            return child;
+          });
+        }
+        return element;
+      });
+      return count;
     },
+    yearsCount() {
+      let count = 0;
+      this.$store.getters.getprogramArea.map((element) => {
+        if (element.parent.isChildSelected === true) {
+          element.children.map((child) => {
+            if (child.selected === true) {
+              child.years.map((year) => {
+                if (year.selected === true) {
+                  count++;
+                }
+                return year;
+              });
+            }
+            return child;
+          });
+        }
+        return element;
+      });
+      return count;
+    },
+    selectedLevel() {
+      let selectedLevels = [];
+      this.$store.getters.getprogramArea.map((element) => {
+        if (element.parent.isChildSelected === true) {
+          element.children.map((child) => {
+            if (child.selected === true) {
+              child.levels.map((level) => {
+                if (level.selected === true) {
+                  selectedLevels.push(level.value);
+                } else {
+                  selectedLevels;
+                }
+                return level;
+              });
+            }
+            return child;
+          });
+        }
+        return element;
+      });
+      selectedLevels = [...new Set(selectedLevels)];
+      return selectedLevels;
+    },
+  },
+  methods: {
     showNote(data) {
       this.showNotes = data;
     },
     SelectiveIndicator(data) {
       this.showList = data;
     },
-    selectedCount(data) {
-      this.selectCount = data;
-    },
-    saveData(data) {
-      this.selectedDataSource = data;
-    },
-    saveYear(data) {
-      this.selectedYears = data;
-    },
-    saveLevel(data) {
-      this.selectedLevel = data;
-    },
+
     approveData() {
       this.$router.push('data-table');
       // console.log(this.selectedIndicator.value);
-      this.$store.dispatch('selectedIndicator', this.selectedIndicator);
-      this.$store.dispatch('selectedDataSource', this.selectedDataSource);
-      this.$store.dispatch('selectedYears', this.selectedYears);
-      this.$store.dispatch('selectedLevels', this.selectedLevel);
+      // this.$store.dispatch('selectedIndicator', this.selectedIndicator);
+      // this.$store.dispatch('selectedDataSource', this.selectedDataSource);
+      // this.$store.dispatch('selectedYears', this.selectedYears);
+      // this.$store.dispatch('selectedLevels', this.selectedLevel);
     },
-    // toggle(item, arr) {
-    //   if (this.selected[arr].includes(item)) {
-    //     const index = this.selected[arr].indexOf(item);
-    //     if (index > -1) {
-    //       this.selected[arr].splice(index, 1);
-    //     }
-    //   } else {
-    //     this.selected[arr].push(item);
-    //   }
-    // },
-    // toggleAll(available, selected) {
-    //   if (this.isAllSelected(available, selected)) {
-    //     this.selected[selected] = [];
-    //   } else {
-    //     available.forEach((element) => {
-    //       if (!this.selected[selected].includes(element)) {
-    //         this.selected[selected].push(element);
-    //       }
-    //     });
-    //   }
-    // },
-    // isSelected(item, collection) {
-    //   return this.selected[collection].includes(item);
-    // },
   },
 };
 </script>

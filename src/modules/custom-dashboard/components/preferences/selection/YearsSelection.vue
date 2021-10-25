@@ -4,20 +4,20 @@
     <small>Select available years under each source</small><br />
     <div class="scroll" style="margin-left: 5px">
       <div
-        v-for="(year, index) in years"
+        v-for="(year, index) in distinctYears"
         :key="index"
         style="
           display: inline-block;
           justify-content: space-around;
-          font-size: 13px
+          font-size: 13px;
         "
       >
         <input
           type="checkbox"
           name=""
-          :id="index"
+          :id="year"
           :value="year"
-          v-model="selectedYear"
+          :checked="isSelected(year)"
           @click="selectYear($event)"
           style="margin-left: 12px"
         />
@@ -31,28 +31,38 @@
 import Card from '../../Card.vue';
 
 export default {
-  emits: ['save-year', 'show-notes'],
+  emits: ['show-notes'],
   components: {
     Card,
   },
   data() {
     return {
-      // selected: {
-      //   indicators: [],
-      //   period: [],
-      //   sources: [],
-      // },
       showNotes: false,
       selectedYear: [],
+      yearChecked: false,
     };
   },
   computed: {
-    years() {
-      return this.$store.getters.indicatorsYear;
+    distinctYears() {
+      let yearsArray = [];
+
+      this.$store.getters.getprogramArea.map((element) => {
+        element.children.map((child) => {
+          if (child.years) {
+            yearsArray = yearsArray.concat(
+              child.years.map((year) => year.value),
+            );
+          }
+        });
+      });
+      let distinctyearsArray = [];
+      distinctyearsArray = [...new Set(yearsArray)];
+      return distinctyearsArray;
     },
   },
   methods: {
     selectYear(e) {
+      this.yearSelected = e.target.checked;
       if (e.target.checked) {
         this.selectedYear.push(e.target.value);
         this.showNotes = true;
@@ -63,47 +73,17 @@ export default {
         }
         this.showNotes = true;
       }
-      // console.log('SY',this.selectedYear);
-      this.$store.dispatch('_isNotExistYear', e.target.value);
-      this.$emit('save-year', this.selectedYear);
+
+      this.$store.dispatch('_isNotExistYear', {
+        checked: this.yearSelected,
+        value: e.target.value,
+      });
+      this.$store.dispatch('selectedYear', this.selectedYear);
       this.$emit('show-notes', this.showNotes);
     },
-    //   isAllSelected(available, selected) {
-    //     let value = true;
-    //     available.every((element) => {
-    //       if (!this.selected[selected].includes(element)) {
-    //         value = false;
-    //         return false;
-    //       }
-    //       value = true;
-    //       return true;
-    //     });
-    //     return value;
-    //   },
-    //   toggle(item, arr) {
-    //     if (this.selected[arr].includes(item)) {
-    //       const index = this.selected[arr].indexOf(item);
-    //       if (index > -1) {
-    //         this.selected[arr].splice(index, 1);
-    //       }
-    //     } else {
-    //       this.selected[arr].push(item);
-    //     }
-    //   },
-    //   toggleAll(available, selected) {
-    //     if (this.isAllSelected(available, selected)) {
-    //       this.selected[selected] = [];
-    //     } else {
-    //       available.forEach((element) => {
-    //         if (!this.selected[selected].includes(element)) {
-    //           this.selected[selected].push(element);
-    //         }
-    //       });
-    //     }
-    //   },
-    //   isSelected(item, collection) {
-    //     return this.selected[collection].includes(item);
-    //   },
+    isSelected(year) {
+      return year.selected;
+    },
   },
 };
 </script>

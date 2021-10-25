@@ -1,47 +1,46 @@
 import axios from 'axios';
 
 export default {
+  // ***** Indicators Data ******* //
 
-  async loadIndicators({ commit, dispatch }) {
-    await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
-      .then((res) => {
-        const { data } = res;
+  async loadIndicators({ commit, state }) {
+    if (state.masterData.length == 0) {
+      await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
+        .then((res) => {
+          const { data } = res;
+          const array = data.map((pArea) => pArea.program_area);
+          const distinctArray = [...new Set(array)];
+          const composedData = [];
 
-        commit('setIndicators', data);
+          distinctArray.forEach(((distItem) => {
+            composedData.push({
+              children: data.filter(
+                (x) => {
+                  if (x.program_area === distItem) {
+                    x.selected = false;
+                    x.sources = [];
+                    x.years = [];
+                    x.levels = [];
+                    return x;
+                  }
+                },
 
-        const array = data.map((pArea) => pArea.program_area);
-        const distinctArray = [...new Set(array)];
-        const composedData = [];
+              ),
+              parent: { selected: false, isChildSelected: false, value: distItem.toUpperCase() },
 
-        distinctArray.forEach(((distItem) => {
-          composedData.push({
-            children: data.filter(
-              (x) => {
-                if (x.program_area === distItem) {
-                  // x.selected = false;
-                  x.selected = Math.random() > 0.5;
-                  return x;
-                }
-                // x.years = dispatch('loadYears', x.id);
-              },
-
-            ),
-            parent: distItem.toUpperCase(),
-          });
-        }));
-        const IndicatorsShortName = data.map((e) => e.short_name);
-        console.log('asfdwrftg', IndicatorsShortName);
-        console.log('cDATA', composedData);
-        commit('setPArea', composedData);
-      }).catch((err) => (err));
+            });
+          }));
+          commit('setPArea', composedData);
+        }).catch((err) => (err));
+    }
   },
+
+  // ******** Data Sources ********** //
+
   async loadDataSource({ commit }) {
     await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
       .then((res) => {
         const { data } = res;
-
-        commit('setDataSource', data);
-
         const array = data.map((dArea) => dArea.classification);
 
         const distinctDataArray = [...new Set(array)];
@@ -55,75 +54,77 @@ export default {
             parent: distItem.toUpperCase(),
           });
         }));
-        console.table(SurveyArray);
         commit('setDArea', SurveyArray);
-        // commit('setRmnchs',data.filter(x=> x.program_area === 'RMNCH'))
       }).catch((err) => (err));
   },
+
+  // ******** Coverage Levels ********* //
+
   async loadCoverageLevels({ commit }, payload) {
-    await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload}`)
-      .then((res) => {
-        const { data } = res;
-
-        // console.log(data);
-        commit('getLevels', data);
-      });
+    let levelsObj = {};
+    if (payload.checked === true) {
+      await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
+        .then((res) => {
+          const { data } = res;
+          const dataLevels = data.data_level.split(',');
+          // console.log(dataLevels);
+          const levels = dataLevels.map((level) => ({ selected: false, value: level }));
+          levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
+        });
+    } else {
+      levelsObj = { id: payload.id, Datalevels: [], checked: payload.checked };
+    }
+    commit('getLevels', levelsObj);
   },
 
-  async loadYears({ commit, state }, payload) {
-    console.log('payload  id ', payload.id);
-    const childId = payload.id;
-    await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
-      .then((res) => {
-        const { data } = res;
-        const dataObj = { id: payload.id, childName: payload.childName, years: data.years };
-        // debugger
-        // let yearsObject = data.years.map(d=>(
-        //   {
-        //   id : payload,
-        //   year : d
-        // }
-        // ));
+  // ********* For Years ******** //
 
-        state.hierarchSelectedYear.push(dataObj);
-        console.log('HSY', state.hierarchSelectedYear);
-
-        commit('getYears', data);
-      });
+  async loadYears({ commit }, payload) {
+    let dataObj = {};
+    if (payload.checked === true) {
+      await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
+        .then((res) => {
+          const { data } = res;
+          const yearsData = data.years.map((year) => ({ selected: false, value: year }));
+          dataObj = {
+            id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
+          };
+        });
+    } else {
+      dataObj = {
+        id: payload.id, childName: payload.child, years: [], parentName: payload.parent, checked: payload.checked,
+      };
+    }
+    commit('getYears', dataObj);
   },
 
-  _isNotExistYear({ commit, state }, payload) {
-    let b = false;
-    state.hierarchSelectedYear.forEach((element) => {
-      for (let i = 0; i < element.years.length; i++) {
-        if (payload == element.years[i]) {
-          b = true;
+  levelclick({ commit }, payload) {
+    commit('levelsHandler', payload);
+  },
 
-          break;
-        } else {
-          b = false;
-        }
-      }
-      if (b) {
+  _isNotExistYear({ commit }, payload) {
+    commit('yearsHandler', payload);
+  },
 
-      } else {
-        state.isNotExistYear.push({ fieldName: element.childName, year: payload });
-        console.log('payload  year ', payload);
-        // console.log('year.years ', year);
-      }
-
-      b = false;
-    });
+  selectedYear({ commit }, payload) {
+    commit('selectedYear', payload);
   },
 
   forSelectedIndicator({ commit }, payload) {
-    debugger;
     commit('selectionIndicator', payload);
+  },
+  forAllSelectedIndicator({ commit }, payload) {
+    commit('AllselectionIndicator', payload);
+  },
+
+  forSelectedDataSource({ commit }, payload) {
+    commit('selectionDataSource', payload);
   },
 
   selectedIndicator({ commit }, payload) {
     commit('selectedIndicator', payload);
   },
+
   selectedDataSource({ commit }, payload) {
     commit('selectedDataSource', payload);
   },
@@ -133,25 +134,4 @@ export default {
   selectedLevels({ commit }, payload) {
     commit('selectedLevels', payload);
   },
-
-  //    async getByProgramAreaData({context, state}, payload){
-
-  //         //(payload);
-  //         //(state.indicators);
-
-  //         const selectedData = state.indicators.filter(x => x.program_area == payload);
-  //         (selectedData);
-  //         /*await axios.get('http://209.182.232.228:7000/api/crud/indicators/')
-  //         .then(res => {
-  //             const data = res.data
-
-  //             // context.commit('getByProgramAreaData', payload)
-  //          context.commit('setRmnchs',data.filter(x=> x.program_area === payload))
-
-  //         }).catch(err => {
-  //             (err);
-  //         });
-  //         */
-
-  //     }
 };

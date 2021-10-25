@@ -9,55 +9,61 @@
           <th class="col-3" style="text-align: center">Years</th>
         </tr>
       </thead>
-      <tbody v-for="ind in indicator" :key="ind">
-        <tr style="">
+      <tbody v-for="(ind, idx) in indicatorsLevels" :key="idx">
+        <tr style="" v-if="ind.parent.isChildSelected">
           <td
             colspan="4"
             style="background-color: #cee4e9; padding: 4px; font-size: 20px"
           >
-            {{ ind.parent }}
+            {{ ind.parent.value }}
           </td>
         </tr>
-        <template >
-          <tr style="" v-for="child in ind.childs" :key="child.id">
+        <template v-for="child in ind.children">
+          <tr style="" v-if="child.selected" :key="child.id">
             <td>
-              {{ child.value }}
+              {{ child.short_name }}
             </td>
             <td style="width: 300px">
-              <ul
-                v-for="data in dataSource"
-                :key="data"
-                style="
-                  list-style: none;
-                  display: inline-block;
-                  padding-left: 20px;
-                  font-size: 16px;
-                "
-              >
-                <li>{{ data }}</li>
-              </ul>
+              <template v-for="data in child.sources">
+                <ul
+                  v-for="dataSource in data.children"
+                  :key="dataSource"
+                  style="
+                    list-style: none;
+                    display: inline-block;
+                    padding-left: 20px;
+                    font-size: 16px;
+                  "
+                >
+                  <li>{{ dataSource }}</li>
+                </ul>
+              </template>
             </td>
             <td style="width: 400px">
-              <ul
-                v-for="ind_levels in level"
-                :key="ind_levels"
-                style="list-style: none; display: inline-block"
-              >
-                <li>{{ ind_levels }}</li>
-              </ul>
+              <template v-for="level in child.levels" >
+                <ul
+                :key="level.value"
+                  v-if="level.selected"
+                  style="list-style: none; display: inline-block"
+                >
+                  <li>{{ level.value }}</li>
+                </ul>
+              </template>
             </td>
             <td style="width: 200px">
-              <ul
-                v-for="year in years"
-                :key="year"
-                style="
-                  list-style: none;
-                  display: inline-block;
-                  padding-left: 20px;
-                "
-              >
-                <li>{{ year }}</li>
-              </ul>
+              <template v-for="year in child.years">
+                <ul
+                  :key="year.value"
+                  style="
+                    list-style: none;
+                    display: inline-block;
+                    padding-left: 20px;
+                  "
+                  v-if="year.selected"
+                >
+                  <li>{{ year.value }}</li>
+                </ul>
+              </template>
             </td>
           </tr>
         </template>
@@ -78,11 +84,11 @@ export default {
       indicatorData: [],
     };
   },
-  // computed: {
-  //   indicatorsLevels() {
-  //   return this.$store.getters.getprogramArea;
-  // },
-  // },
+  computed: {
+    indicatorsLevels() {
+      return this.$store.getters.getprogramArea;
+    },
+  },
 
   // watch: {
   //   indicators() {

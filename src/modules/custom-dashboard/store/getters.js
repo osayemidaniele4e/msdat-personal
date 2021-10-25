@@ -7,13 +7,11 @@ export default {
     return state.rmnchs;
   },
   getprogramArea(state) {
-    // console.log("Working", state.program_area);
-    debugger;
-    return state.program_area;
+    return state.masterData;
   },
   notesArea(state) {
-    console.log(state.isNotExistYear);
-    return state.isNotExistYear;
+    // console.log(state.isNotExistYear);
+    return state.notes;
   },
 
   // IndicatorsShortName(state){
@@ -48,8 +46,6 @@ export default {
     return state.levels;
   },
   indicatorsYear(state) {
-    // console.log("State Years Get");
-    // console.log(state.years);
     return state.years;
   },
 
