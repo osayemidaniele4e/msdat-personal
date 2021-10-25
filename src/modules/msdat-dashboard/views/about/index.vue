@@ -232,6 +232,13 @@ $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
 
+div.modal {
+  div.modal-content {
+    width: 75%;
+    justify-content: center;
+  }
+}
+
 #about-wrap {
   scroll-behavior: smooth;
   font-family: 'Work Sans', sans-serif;
