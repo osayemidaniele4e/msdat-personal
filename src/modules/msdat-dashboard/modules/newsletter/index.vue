@@ -1,6 +1,6 @@
 <template>
   <div id="newsLetter">
-    <b-button @click="showModal" ref="btnShow">Launch news_letter modal</b-button>
+    <!-- <b-button @click="showModal" ref="btnShow">Launch news_letter modal</b-button> -->
 
     <b-modal id="modal-newsLetter" class="newsLetter" centered title="">
       <div class="card border-0 rounded-0">

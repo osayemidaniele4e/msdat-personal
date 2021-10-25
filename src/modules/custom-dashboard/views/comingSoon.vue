@@ -180,7 +180,7 @@ button.btn-primary {
   margin-top: 0;
 }
 div.content {
-  min-height: 90vh;
+  min-height: 84.5vh;
   width: 100%;
   div.centered_content {
     display: flex;
