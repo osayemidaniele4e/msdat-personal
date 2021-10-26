@@ -101,7 +101,6 @@ export default {
   },
   methods: {
 
-    
     isAllSelected(item) {
       return item.selected;
     },
@@ -114,10 +113,10 @@ export default {
         const child = {
           value: element.short_name,
           id: element.id,
-          checked: e.target.checked
+          checked: e.target.checked,
         };
         this.$store.dispatch('loadYears', child);
-        this.$store.dispatch('loadCoverageLevels', child)
+        this.$store.dispatch('loadCoverageLevels', child);
       });
 
       this.$emit('IndicatorSelect', this.showList);
@@ -140,7 +139,7 @@ export default {
       this.$store.dispatch('forSelectedIndicator', {
         checked: this.indicatorSelected,
         id: childId,
-        showList: this.showList
+        showList: this.showList,
       });
 
       // this.$emit('IndicatorSelect', this.showList);

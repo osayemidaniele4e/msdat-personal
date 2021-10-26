@@ -50,7 +50,7 @@ export default {
         element.children.map((child) => {
           if (child.levels) {
             levelArray = levelArray.concat(
-              child.levels.map((level) => level.value)
+              child.levels.map((level) => level.value),
             );
           }
         });
