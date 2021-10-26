@@ -11,7 +11,6 @@
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
           v-if="values.type === 'dropdown'"
-          v-model="payload[values.key]"
           :value="payload[values.key]"
           @input="updatePayload($event, values.key)"
           :options="values.options"
