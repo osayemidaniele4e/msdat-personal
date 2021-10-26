@@ -5,7 +5,7 @@
     <div class="scroll" style="margin-left: 5px">
       <div
         v-for="(year, index) in distinctYears"
-        :key="index"
+        :key="index" 
         style="
           display: inline-block;
           justify-content: space-around;
@@ -17,8 +17,8 @@
           name=""
           :id="year"
           :value="year"
-          :checked="isSelected(year)"
-          @click="selectYear($event)"
+          :v-model="year.selected"
+          @change="selectYear($event)"
           style="margin-left: 12px"
         />
         {{ year }}
@@ -39,24 +39,36 @@ export default {
     return {
       showNotes: false,
       selectedYear: [],
-      yearChecked: false,
+      distinctyearsArrayData: []
     };
+  },
+  mounted() {
+    this.distinctYears;
   },
   computed: {
     distinctYears() {
       let yearsArray = [];
 
-      this.$store.getters.getprogramArea.map((element) => {
+      const newMap =  this.$store.getters.getprogramArea.map((element) => {
         element.children.map((child) => {
           if (child.years) {
             yearsArray = yearsArray.concat(
-              child.years.map((year) => year.value),
+              child.years.map((year) => {
+               return year.value
+              })
             );
           }
         });
       });
+
+      console.log("changed", this.$store.getters.getprogramArea);
       let distinctyearsArray = [];
       distinctyearsArray = [...new Set(yearsArray)];
+      distinctyearsArray = distinctyearsArray.sort((a, b) => b - a);
+      
+      console.log("distinctyearsArray", distinctyearsArray);
+      this.distinctyearsArrayData = distinctyearsArray.map(t => { return {year:t, selected:false}});
+      console.log("distinctyearsArrayData", this.distinctyearsArrayData);
       return distinctyearsArray;
     },
   },
@@ -77,12 +89,13 @@ export default {
       this.$store.dispatch('_isNotExistYear', {
         checked: this.yearSelected,
         value: e.target.value,
+        showNotes: this.showNotes
       });
       this.$store.dispatch('selectedYear', this.selectedYear);
-      this.$emit('show-notes', this.showNotes);
+      // this.$emit('show-notes', this.showNotes);
     },
     isSelected(year) {
-      return year.selected;
+      return false;
     },
   },
 };

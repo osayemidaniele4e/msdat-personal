@@ -107,6 +107,7 @@ export default {
             return child;
           });
         }
+        this.showList = element.showList;
         return element;
       });
       return count;
@@ -145,6 +146,7 @@ export default {
             return child;
           });
         }
+        this.showNotes = element.showNotes;
         return element;
       });
       return count;
@@ -174,20 +176,8 @@ export default {
     },
   },
   methods: {
-    showNote(data) {
-      this.showNotes = data;
-    },
-    SelectiveIndicator(data) {
-      this.showList = data;
-    },
-
     approveData() {
       this.$router.push('data-table');
-      // console.log(this.selectedIndicator.value);
-      // this.$store.dispatch('selectedIndicator', this.selectedIndicator);
-      // this.$store.dispatch('selectedDataSource', this.selectedDataSource);
-      // this.$store.dispatch('selectedYears', this.selectedYears);
-      // this.$store.dispatch('selectedLevels', this.selectedLevel);
     },
   },
 };

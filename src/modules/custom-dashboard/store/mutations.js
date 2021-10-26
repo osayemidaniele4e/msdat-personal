@@ -1,3 +1,19 @@
+const forRefreshingAll = (fieldArray)=>{
+  console.log(fieldArray);
+  fieldArray.years.map(year => {
+    if(year.selected == true){
+      year.selected = false
+    }
+    return year
+  })
+  fieldArray.levels.map(level => {
+    if(level.selected == true){
+      level.selected = false
+    }
+    return level
+  })
+  return fieldArray
+};
 export default {
   updateStep(state, payload) {
     state.step = payload;
@@ -16,11 +32,14 @@ export default {
   selectionIndicator(state, payload) {
     state.masterData = state.masterData.map((element) => {
       let counter = 0;
+     // forRefreshingAll(payload);
       element.children.map((child) => {
         if (child.id == payload.id) {
+
+          
           // element.parent.selected = true;
           element.parent.isChildSelected = true;
-
+          
           child.selected = payload.checked;
         } if (payload.checked) {
           // element.parent.selected = true;
@@ -30,15 +49,20 @@ export default {
           if (child.selected) {
             counter++;
           }
+          
         }
+         forRefreshingAll(child)
+         return child
       });
       if (counter == 0) {
         element.parent.isChildSelected = false;
       }
-
+      element.showList = payload.showList;
       return element;
     });
   },
+
+  
 
   AllselectionIndicator(state, payload) {
     // console.log(payload);
@@ -140,6 +164,7 @@ export default {
         });
         return child;
       });
+      element.showNotes = payload.showNotes
       return element;
     });
     let distinctYearsArray = [];

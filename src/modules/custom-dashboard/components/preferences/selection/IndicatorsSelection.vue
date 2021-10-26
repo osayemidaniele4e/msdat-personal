@@ -72,7 +72,7 @@ import Card from '../../Card.vue';
 
 export default {
   // props: ['heading','programArea'],
-  emits: ['IndicatorSelect'],
+  // emits: ['IndicatorSelect'],
   components: {
     Card,
   },
@@ -100,6 +100,8 @@ export default {
     this.loadIndicators();
   },
   methods: {
+
+    
     isAllSelected(item) {
       return item.selected;
     },
@@ -112,8 +114,10 @@ export default {
         const child = {
           value: element.short_name,
           id: element.id,
+          checked: e.target.checked
         };
         this.$store.dispatch('loadYears', child);
+        this.$store.dispatch('loadCoverageLevels', child)
       });
 
       this.$emit('IndicatorSelect', this.showList);
@@ -132,13 +136,14 @@ export default {
 
     selectIndicator(e, parentValue, childId, childName, selected) {
       this.indicatorSelected = e.target.checked;
-      this.showList = true;
+      this.showList = e.target.checked;
       this.$store.dispatch('forSelectedIndicator', {
         checked: this.indicatorSelected,
         id: childId,
+        showList: this.showList
       });
 
-      this.$emit('IndicatorSelect', this.showList);
+      // this.$emit('IndicatorSelect', this.showList);
       this.$store.dispatch('loadCoverageLevels', {
         id: childId,
         child: childName,
