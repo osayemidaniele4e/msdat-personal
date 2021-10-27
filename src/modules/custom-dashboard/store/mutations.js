@@ -12,7 +12,6 @@ const forRefreshingAll = (fieldArray) => {
     return level;
   });
   return fieldArray;
-  
 };
 export default {
   updateStep(state, payload) {
@@ -54,12 +53,12 @@ export default {
       });
       if (counter == 0) {
         element.parent.isChildSelected = false;
-        element.showList = false
+        element.showList = false;
       }
-      if(element.parent.isChildSelected == true){
+      if (element.parent.isChildSelected == true) {
         element.showList = true;
       }
-      
+
       return element;
     });
   },
@@ -72,9 +71,8 @@ export default {
           element.parent.selected = payload.checked;
           element.parent.isChildSelected = payload.checked;
           child.selected = payload.checked;
-          
         }
-        element.showList = payload.showList
+        element.showList = payload.showList;
       });
       return element;
     });

@@ -28,7 +28,7 @@ export default {
               ),
               parent: { selected: false, isChildSelected: false, value: distItem.toUpperCase() },
               showList: false,
-              showNotes: false
+              showNotes: false,
 
             });
           }));

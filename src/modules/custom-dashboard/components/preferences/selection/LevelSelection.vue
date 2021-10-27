@@ -44,21 +44,21 @@ export default {
   },
   computed: {
     distinctLevels() {
-      let levelArray = [];
+      const levelArray = [];
 
       this.$store.getters.getprogramArea.map((element) => {
         element.children.map((child) => {
           if (child.levels) {
             child.levels.map((level) => {
               if (level.value != undefined) {
-                levelArray[level.value] = {...level}
+                levelArray[level.value] = { ...level };
               }
             });
           }
         });
       });
-      let LArray = [];
-      for (var i in levelArray) {
+      const LArray = [];
+      for (const i in levelArray) {
         LArray.push(levelArray[i]);
       }
       LArray.sort((a, b) => b.value - a.value);
@@ -74,8 +74,8 @@ export default {
       });
     },
     isSelect(level) {
-      return level.selected
-    }
+      return level.selected;
+    },
   },
 };
 </script>

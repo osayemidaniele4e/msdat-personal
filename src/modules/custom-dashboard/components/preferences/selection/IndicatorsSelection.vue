@@ -108,8 +108,8 @@ export default {
       this.AllSelected = e.target.checked;
       if (this.AllSelected == true) {
         this.showList = true;
-      }else{
-        this.showList = false
+      } else {
+        this.showList = false;
       }
       childsArray.forEach((element, key) => {
         const child = {
@@ -125,7 +125,7 @@ export default {
       this.$store.dispatch('forAllSelectedIndicator', {
         checked: this.AllSelected,
         name: parentName,
-        showList: this.showList
+        showList: this.showList,
       });
     },
 
