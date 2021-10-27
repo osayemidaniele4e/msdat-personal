@@ -17,7 +17,7 @@
         </p>
         <p class="mb-4 note">
           <b
-            >NOTE: Sources for each of the indicators in the graph below were selected based on most
+            >NOTE: Sources for each of the indicators in the graph were selected based on most
             recent and most reliable estimates.
           </b>
         </p>
@@ -31,12 +31,14 @@
           <b-icon icon="caret-up-fill"></b-icon>
         </b-button>
       </b-col>
-      <b-col sm="12" :md="this.programArea.name == 'Health Facility Survey' ? 'auto' : '8'">
-        <div class="ml-3" v-show="this.programArea.name == 'mortality'">
+      <b-col sm="12" :md="this.programArea.name == 'Health Services' ? 'auto' : '8'">
+        <div class="ml-3" v-if="this.programArea.name != 'Health Services'">
           <b-row>
-            <b-col>
-              <p>Maternal Mortality Ratio</p>
-              <p class="source">per 100,000</p>
+           <b-col>
+              <p>{{this.barChartOptions.xAxis.categories[0]}}</p>
+              <p class="source">
+                {{`${this.programArea.name == 'mortality' ? 'Per 100,000' : 'In Percentage'}`}}
+              </p>
             </b-col>
             <b-col cols="auto">
               <p>National</p>
@@ -44,14 +46,14 @@
             </b-col>
             <b-col cols="auto" v-if="state != 'national'">
               <p>{{ this.state }}</p>
-              <p class="red-value">{{this.singleStateValue}}</p>
+              <p class="grey-value">{{this.singleStateValue}}</p>
               <p class="source">Source: NDHS 2018</p>
             </b-col>
           </b-row>
           <hr />
         </div>
         <BaseBar
-          v-show="this.programArea.name != 'Health Facility Survey'"
+          v-show="this.programArea.name != 'Health Services'"
           :chartOptions="barChartOptions"
         />
         <b-row
@@ -90,10 +92,10 @@
           </b-col>
         </b-row>
       </b-col>
-      <b-col cols="auto" v-show="this.programArea.name == 'Health Facility Survey'">
+      <b-col cols="auto" v-show="this.programArea.name == 'Health Services'">
         <div class="vl"></div>
       </b-col>
-      <b-col class="text-left" v-show="this.programArea.name == 'Health Facility Survey'">
+      <b-col class="text-left" v-show="this.programArea.name == 'Health Services'">
         <div class="mb-4">
           <p class="blue-heading">HR Guideline and Workforce</p>
           <b-row>
@@ -104,7 +106,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{HRGuidelinesValue.value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{HRGuidelinesValue.year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -135,15 +137,15 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{facilityMng.value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{facilityMng.year}}</p>
             </b-col>
           </b-row>
         </div>
       </b-col>
-      <b-col cols="auto" v-show="this.programArea.name == 'Health Facility Survey'">
+      <b-col cols="auto" v-show="this.programArea.name == 'Health Services'">
         <div class="vl"></div>
       </b-col>
-      <b-col class="text-left" v-show="this.programArea.name == 'Health Facility Survey'">
+      <b-col class="text-left" v-show="this.programArea.name == 'Health Services'">
         <div class="mb-4">
           <p class="blue-heading">Facility readiness to deliver services</p>
           <b-row>
@@ -154,7 +156,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{facilityReadiness[0].value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{facilityReadiness[0].year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -168,7 +170,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{facilityReadiness[1].value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{facilityReadiness[1].year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -182,7 +184,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{drugsAndCommodities[0].value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{drugsAndCommodities[0].year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -196,7 +198,7 @@
             </b-col>
             <b-col>
               <p class="value text-right">{{drugsAndCommodities[1].value}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
+              <p class="source text-right">Source: NHFS {{drugsAndCommodities[1].year}}</p>
             </b-col>
           </b-row>
         </div>
@@ -209,8 +211,8 @@
         </b>
       </p>
       <ul>
-        <li v-for="definition in this.programArea.definitions" :key="definition">
-          {{ definition }}
+        <li v-for="(definition, index) in definitions" :key="index">
+          {{ `- ${definition.indicator_definition}` }}
         </li>
       </ul>
     </b-row>
@@ -235,6 +237,7 @@ export default {
     state: String,
     locations: Array,
     programArea: Object,
+    indicatorDefinitions: Array,
   },
   computed: {
     ...mapState([]),
@@ -247,9 +250,11 @@ export default {
       nationalObjects: [],
       allDataSources: [],
       allIndicators: [],
+      definitions: [],
       HRGuidelinesValue: {
         id: 34,
         value: 0,
+        year: 2000,
       },
       // financing: {
       //   id:61,
@@ -258,23 +263,28 @@ export default {
       facilityMng: {
         id: 61,
         value: 0,
+        year: 2000,
       },
       facilityReadiness: [{
         id: 39,
         value: 0,
+        year: 2000,
       },
       {
         id: 41,
         value: 0,
+        year: 2000,
       },
       ],
       drugsAndCommodities: [{
         id: 49,
         value: 0,
+        year: 2000,
       },
       {
         id: 50,
         value: 0,
+        year: 2000,
       }],
       singleNational: 0,
       singleStateValue: 0,
@@ -292,7 +302,7 @@ export default {
             borderWidth: 0,
             dataLabels: {
               enabled: true,
-              format: '{y} %',
+              format: this.programArea.name === 'mortality' ? '{y}' : '{y}%',
               style: {
                 textOverflow: 'ellipsis',
                 fontWeight: 'normal',
@@ -323,7 +333,7 @@ export default {
         },
         yAxis: {
           title: {
-            text: 'Percentage(%)',
+            text: this.programArea.name !== 'mortality' ? 'Percentage(%)' : 'Per 100,000',
           },
         },
         xAxis: {
@@ -351,6 +361,7 @@ export default {
           {
             name: this.state,
             className: 'test',
+            color: this.programArea.colors[1],
             data: [
 
             ],
@@ -409,10 +420,8 @@ export default {
           data.push([`${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period}), `, Number(val.value)]);
         });
       }
-      if (this.programArea.name === 'mortality') {
-        // eslint-disable-next-line prefer-destructuring
-        this.singleNational = data[0][1];
-      }
+      // eslint-disable-next-line prefer-destructuring
+      this.singleNational = data[0][1];
       this.barChartOptions.series[0].data = data;
       this.populateCategories();
     },
@@ -436,11 +445,17 @@ export default {
      */
     resetHealthFacilityData() {
       this.HRGuidelinesValue.value = 0;
+      this.HRGuidelinesValue.year = null;
       this.facilityMng.value = 0;
+      this.facilityMng.year = null;
       this.facilityReadiness[0].value = 0;
+      this.facilityReadiness[0].year = null;
       this.facilityReadiness[1].value = 0;
+      this.facilityReadiness[1].year = null;
       this.drugsAndCommodities[0].value = 0;
+      this.drugsAndCommodities[0].year = null;
       this.drugsAndCommodities[1].value = 0;
+      this.drugsAndCommodities[1].year = null;
     },
     /**
      * This sets the health facility data
@@ -463,21 +478,27 @@ export default {
       availableData.map((el) => {
         if (el.indicator === this.HRGuidelinesValue.id) {
           this.HRGuidelinesValue.value = el.value;
+          this.HRGuidelinesValue.year = el.period;
         }
         if (el.indicator === this.facilityMng.id) {
           this.facilityMng.value = el.value;
+          this.facilityMng.year = el.period;
         }
         if (el.indicator === this.facilityReadiness[0].id) {
           this.facilityReadiness[0].value = el.value;
+          this.facilityReadiness[0].year = el.period;
         }
         if (el.indicator === this.facilityReadiness[1].id) {
           this.facilityReadiness[1].value = el.value;
+          this.facilityReadiness[1].year = el.period;
         }
         if (el.indicator === this.drugsAndCommodities[0].id) {
           this.drugsAndCommodities[0].value = el.value;
+          this.drugsAndCommodities[0].year = el.period;
         }
         if (el.indicator === this.drugsAndCommodities[1].id) {
           this.drugsAndCommodities[1].value = el.value;
+          this.drugsAndCommodities[1].year = el.period;
         }
       });
     },
@@ -494,26 +515,40 @@ export default {
       this.programArea.specificIndicators.map((value) => {
         // eslint-disable-next-line array-callback-return
         this.nonDemographicData.map((element) => {
-          if (value.indicator === element.indicator
+          if (element) {
+            if (value.indicator === element.indicator
           && value.dataSource === element.datasource) {
             // eslint-disable-next-line no-param-reassign
-            element.color = value.color;
+              element.color = value.color;
+            }
           }
         });
       });
       // eslint-disable-next-line array-callback-return
       this.nonDemographicData.map((val) => {
-        data.push({
-          y: Number(val.value),
-          name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period})`,
-          color: val.color,
-        });
+        if (val) {
+          data.push({
+            y: Number(val.value),
+            name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period})`,
+            color: val.color,
+          });
+        }
       });
-      if (this.programArea.name === 'mortality') {
-        this.singleStateValue = data[0].y;
-      }
+      this.singleStateValue = data[0].y;
       this.barChartOptions.series[1].data = data;
       this.barChartOptions.series[1].name = this.state;
+    },
+    addIndicatorDefinitions() {
+      this.definitions = [];
+      // eslint-disable-next-line array-callback-return
+      this.programArea.specificIndicators.map((el) => {
+        // eslint-disable-next-line array-callback-return
+        this.indicatorDefinitions.map((val) => {
+          if (val.indicator === el.indicator && val.datasource === el.dataSource) {
+            this.definitions.push(val);
+          }
+        });
+      });
     },
     /**
      * This is meant to prepare the chart for
@@ -554,12 +589,12 @@ export default {
       });
       const { national, state } = await requests.getRegularData(this.programArea.specificIndicators,
         selectedState.id);
+      this.$emit('overviewLoading');
       national.map((el) => this.nationalObjects.push(el.data[0]));
       state.map((el) => this.nonDemographicData.push(el.data[0]));
       this.presentNationalData();
       this.presentStateData();
       this.getHealthFacilityData();
-      this.$emit('overviewLoading');
     },
   },
   watch: {
@@ -575,6 +610,9 @@ export default {
       this.nonDemographicData = [];
       this.prepareStateAndNationalData();
       this.getHealthFacilityData();
+    },
+    indicatorDefinitions() {
+      this.addIndicatorDefinitions();
     },
   },
   async mounted() {

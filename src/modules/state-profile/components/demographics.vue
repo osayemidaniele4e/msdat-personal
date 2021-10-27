@@ -122,7 +122,7 @@ export default {
           container.year = this.data[i].data[0].period;
           container.previousValue = this.data[i].data[1].value || null;
           container.previousYear = this.data[i].data[1].period || null;
-          container.change = this.calcDiff(val);
+          container.change = this.calcDiff(container);
         } else {
           container.value = 0;
           container.year = 'N/a';
@@ -199,7 +199,7 @@ export default {
     ...mapState([]),
     selectedState() {
       if (this.state === 'FCT') {
-        return 'Fct';
+        return 'FCT';
       } if (this.state === 'National') {
         return 'Nigeria';
       }
