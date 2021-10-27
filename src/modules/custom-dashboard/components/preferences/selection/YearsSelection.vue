@@ -4,7 +4,7 @@
     <small>Select available years under each source</small><br />
     <div class="scroll" style="margin-left: 5px">
       <div
-        v-for="(year, index) in distinctYears"
+        v-for="(item, index) in distinctYears"
         :key="index"
         style="
           display: inline-block;
@@ -15,13 +15,13 @@
         <input
           type="checkbox"
           name=""
-          :id="year"
-          :value="year"
-          :v-model="year.selected"
+          :id="item"
+          :value="item.value"
+          :checked="isSelected(item)"
           @change="selectYear($event)"
           style="margin-left: 12px"
         />
-        {{ year }}
+        {{ item.value }}
       </div>
     </div>
   </Card>
@@ -31,7 +31,7 @@
 import Card from '../../Card.vue';
 
 export default {
-  emits: ['show-notes'],
+  // emits: ['show-notes'],
   components: {
     Card,
   },
@@ -42,9 +42,6 @@ export default {
       distinctyearsArrayData: [],
     };
   },
-  mounted() {
-    this.distinctYears;
-  },
   computed: {
     distinctYears() {
       let yearsArray = [];
@@ -52,22 +49,22 @@ export default {
       const newMap = this.$store.getters.getprogramArea.map((element) => {
         element.children.map((child) => {
           if (child.years) {
-            yearsArray = yearsArray.concat(
-              child.years.map((year) => year.value),
-            );
+            child.years.map((year) => {
+              if (year.value != undefined) {
+                //year.value;
+                // yearsArray['year' + year.value] = { ...year };
+                yearsArray[year.value] = {...year}
+              }
+            });
           }
         });
       });
-
-      console.log('changed', this.$store.getters.getprogramArea);
-      let distinctyearsArray = [];
-      distinctyearsArray = [...new Set(yearsArray)];
-      distinctyearsArray = distinctyearsArray.sort((a, b) => b - a);
-
-      console.log('distinctyearsArray', distinctyearsArray);
-      this.distinctyearsArrayData = distinctyearsArray.map((t) => ({ year: t, selected: false }));
-      console.log('distinctyearsArrayData', this.distinctyearsArrayData);
-      return distinctyearsArray;
+      let DArray = [];
+      for (var i in yearsArray) {
+        DArray.push(yearsArray[i]);
+      }
+      DArray.sort((a, b) => b.value - a.value);
+      return DArray;
     },
   },
   methods: {
@@ -92,8 +89,8 @@ export default {
       this.$store.dispatch('selectedYear', this.selectedYear);
       // this.$emit('show-notes', this.showNotes);
     },
-    isSelected(year) {
-      return false;
+    isSelected(item) {
+      return item.selected;
     },
   },
 };

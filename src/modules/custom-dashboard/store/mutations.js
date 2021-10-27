@@ -1,5 +1,4 @@
 const forRefreshingAll = (fieldArray) => {
-  console.log(fieldArray);
   fieldArray.years.map((year) => {
     if (year.selected == true) {
       year.selected = false;
@@ -13,6 +12,7 @@ const forRefreshingAll = (fieldArray) => {
     return level;
   });
   return fieldArray;
+  
 };
 export default {
   updateStep(state, payload) {
@@ -48,13 +48,18 @@ export default {
             counter++;
           }
         }
+        state.notes = [];
         forRefreshingAll(child);
         return child;
       });
       if (counter == 0) {
         element.parent.isChildSelected = false;
+        element.showList = false
       }
-      element.showList = payload.showList;
+      if(element.parent.isChildSelected == true){
+        element.showList = true;
+      }
+      
       return element;
     });
   },
@@ -67,7 +72,9 @@ export default {
           element.parent.selected = payload.checked;
           element.parent.isChildSelected = payload.checked;
           child.selected = payload.checked;
+          
         }
+        element.showList = payload.showList
       });
       return element;
     });

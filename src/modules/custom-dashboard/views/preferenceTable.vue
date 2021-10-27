@@ -13,12 +13,12 @@
         <!-- **** Preferences Selection *****  -->
 
         <b-col sm="12" lg="3">
-          <indicators-selection @IndicatorSelect="SelectiveIndicator" />
+          <indicators-selection />
           <br />
           <data-source />
           <br />
-          <div v-if="showList == true">
-            <years-selection @show-notes="showNote" />
+          <div v-if="showList">
+            <years-selection />
             <br />
             <level-selection />
           </div>
@@ -106,8 +106,8 @@ export default {
             }
             return child;
           });
+          this.showList = element.showList;
         }
-        this.showList = element.showList;
         return element;
       });
       return count;

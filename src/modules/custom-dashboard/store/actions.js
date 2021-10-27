@@ -27,6 +27,8 @@ export default {
 
               ),
               parent: { selected: false, isChildSelected: false, value: distItem.toUpperCase() },
+              showList: false,
+              showNotes: false
 
             });
           }));
@@ -81,7 +83,6 @@ export default {
 
   async loadYears({ commit }, payload) {
     let dataObj = {};
-    debugger;
     if (payload.checked === true) {
       await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
         .then((res) => {

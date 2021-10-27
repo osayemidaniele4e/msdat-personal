@@ -23,7 +23,7 @@
             <td>
               {{ child.short_name }}
             </td>
-            <td style="width: 300px">
+            <td style="width: 250px">
               <template v-for="data in child.sources">
                 <ul
                   v-for="dataSource in data.children"
@@ -31,7 +31,7 @@
                   style="
                     list-style: none;
                     display: inline-block;
-                    padding-left: 20px;
+                    padding-left: 30px;
                     font-size: 16px;
                   "
                 >
@@ -57,7 +57,7 @@
                   style="
                     list-style: none;
                     display: inline-block;
-                    padding-left: 20px;
+                    padding-left: 35px;
                   "
                   v-if="year.selected"
                 >

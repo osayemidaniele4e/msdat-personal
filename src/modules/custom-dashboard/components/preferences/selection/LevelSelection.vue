@@ -14,12 +14,12 @@
         <input
           type="checkbox"
           :id="index"
-          :value="level"
+          :value="level.value"
           :checked="isSelect(level)"
           @click="selectLevel($event)"
           style="margin-left: 12px"
         />
-        {{ level }}
+        {{ level.value }}
       </div>
     </div>
   </Card>
@@ -49,15 +49,20 @@ export default {
       this.$store.getters.getprogramArea.map((element) => {
         element.children.map((child) => {
           if (child.levels) {
-            levelArray = levelArray.concat(
-              child.levels.map((level) => level.value),
-            );
+            child.levels.map((level) => {
+              if (level.value != undefined) {
+                levelArray[level.value] = {...level}
+              }
+            });
           }
         });
       });
-      let distinctyearsArray = [];
-      distinctyearsArray = [...new Set(levelArray)];
-      return distinctyearsArray;
+      let LArray = [];
+      for (var i in levelArray) {
+        LArray.push(levelArray[i]);
+      }
+      LArray.sort((a, b) => b.value - a.value);
+      return LArray;
     },
   },
   methods: {
@@ -69,23 +74,8 @@ export default {
       });
     },
     isSelect(level) {
-      let selected = false;
-      this.$store.getters.getprogramArea.map((element) => {
-        element.children.map((child) => {
-          if (child.levels) {
-            child.levels.map((level) => {
-              if (level == child.level) {
-                if (level.selected == true) {
-                  selected = true;
-                }
-              }
-            });
-          }
-        });
-        return level;
-      });
-      return selected;
-    },
+      return level.selected
+    }
   },
 };
 </script>
