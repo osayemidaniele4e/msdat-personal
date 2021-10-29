@@ -1,7 +1,17 @@
 export default {
-  chart: {},
+  chart: {
+    style: {
+      // fontSize: '10px',
+      fontFamily: '"Work Sans", sans-serif',
+      fontWeight: 'normal',
+    },
+  },
+  exporting: {
+    enabled: false,
+  },
   title: {
-    text: '...',
+    enabled: false,
+    text: '',
     style: {
       fontSize: '13px',
       fontFamily: '"Work Sans", sans-serif',
@@ -9,17 +19,19 @@ export default {
     },
   },
   subtitle: {
-    text: '..',
+    text: '',
     style: {
       fontSize: '13px',
       fontFamily: '"Work Sans", sans-serif',
       fontWeight: 'normal',
     },
   },
-  credit: false,
-  colorAxis: {
-    min: 0,
+  credit: {
+    enabled: false,
   },
+  // colorAxis: {
+  //   min: 0,
+  // },
   legend: {
     align: 'right',
     verticalAlign: 'bottom',
@@ -38,6 +50,10 @@ export default {
   },
   plotOptions: {
     map: {
+      borderColor: 'white',
+      borderWidth: 3,
+      allAreas: false,
+      nullInteraction: true,
       joinBy: ['name', 'hc-key'],
       dataLabels: {
         enabled: true,

@@ -12,7 +12,7 @@ export default {
       ],
       dropdownProps: {
         label: 'name',
-        preselectFirst: true,
+        'preselect-first': true,
       },
     },
     {
@@ -24,6 +24,32 @@ export default {
       dropdownProps: {
         label: 'datasource',
       },
+    },
+    {
+      visibility: false,
+      class: ['col'],
+      type: 'dropdown',
+      label: 'Year',
+      key: 'year',
+      options: [
+        { id: 1, year: '2010' },
+        { id: 2, year: '2015' },
+      ],
+      dropdownProps: {
+        preselectFirst: true,
+      },
+    },
+    {
+      visibility: true,
+      class: ['col-md-2'],
+      type: 'dropdown',
+      label: 'location',
+      key: 'location',
+      dropdownProps: {
+        label: 'name',
+        // preselectFirst: true
+      },
+      options: [],
     },
     {
       type: 'dropdown',

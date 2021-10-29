@@ -2,19 +2,23 @@ import Vue from 'vue';
 import '@/components/ui-components/index';
 import './scss/main.scss';
 import DataLayer from '@/modules/DataLayer';
+import VueHtml2Canvas from 'vue-html2canvas';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';
 import './plugins/highchart';
 import './plugins/multiselect';
-
+import './plugins/vue-sweetalert/sweetalert';
 import router from './router';
 import store from './store';
 
-// dbd.init();
+import './assets/styles/fonts.css';
+// import Vue from 'vue';
+
 Vue.use(DataLayer, {
   store,
 });
+Vue.use(VueHtml2Canvas);
 
 Vue.config.productionTip = false;
 

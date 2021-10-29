@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 <template>
-  <!-- <base-overlay :show="loading"> -->
+  <base-overlay :show="loading">
     <base-sub-card
       buttonToggle
       showControls
@@ -20,7 +20,7 @@
       </template>
       <BarChart :chartOptions="ChartOptions" />
     </base-sub-card>
-  <!-- </base-overlay> -->
+  </base-overlay>
 </template>
 
 <script>
@@ -67,7 +67,7 @@ export default {
   watch: {
     'values.indicator': {
       async handler() {
-        this.loading = false;
+        this.loading = true;
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           dataSources,
@@ -127,6 +127,7 @@ export default {
         location: this.values.location.id,
       },
     ) {
+      debugger;
       const chartSeriesArray = [];
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
@@ -220,6 +221,7 @@ export default {
        * radio button so it only returns/ selectees a single Object
        * at a time
        */
+      debugger;
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
         valueType,

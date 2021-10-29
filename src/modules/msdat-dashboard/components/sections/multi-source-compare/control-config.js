@@ -14,6 +14,12 @@ const indicatorSetConfig = [
   },
   {
     class: ['col-md-12'],
+    type: 'visualization',
+    label: 'select visualizations',
+    key: 'visualization',
+  },
+  {
+    class: ['col-md-4'],
     type: 'dropdown',
     label: 'data Source',
     key: 'datasource',
@@ -22,22 +28,16 @@ const indicatorSetConfig = [
     },
     options: [],
   },
-  {
-    class: ['col-md-12'],
-    type: 'visualization',
-    label: 'select visualizations',
-    key: 'visualization',
-  },
-  {
-    class: ['col-md-4'],
-    type: 'dropdown',
-    label: 'location',
-    key: 'location',
-    dropdownProps: {
-      label: 'name',
-    },
-    options: [],
-  },
+  // {
+  //   class: ['col-md-4'],
+  //   type: 'dropdown',
+  //   label: 'location',
+  //   key: 'location',
+  //   dropdownProps: {
+  //     label: 'name',
+  //   },
+  //   options: [],
+  // },
   {
     class: ['col-md-4'],
     type: 'dropdown',
@@ -50,12 +50,12 @@ const indicatorSetConfig = [
   },
 ];
 export default {
-  label: 'Multi-source compare',
+  label: 'Multi-source comparison',
   setup: [indicatorSetConfig, indicatorSetConfig, indicatorSetConfig],
   defaults: {
     indicator: null,
     dataSource: null,
     location: null,
-    year: '2015',
+    year: null,
   },
 };

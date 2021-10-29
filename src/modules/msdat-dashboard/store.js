@@ -2,24 +2,32 @@ import datasetComparismControls from '@/modules/msdat-dashboard/components/secti
 import indicatorOverviewConfig from '@/modules/msdat-dashboard/components/sections/indicator-overview/control-panel-config';
 import indicatorComparismConfig from '@/modules/msdat-dashboard/components/sections/indicator-comparism/indicator-comparism-config';
 import multiIndicatorComparismConfig from '@/modules/msdat-dashboard/components/sections/multi-source-compare/control-config';
+import zonalAnalysisConfig from '@/modules/msdat-dashboard/components/sections/zonal-analysis/control-config';
 
 export default {
   namespaced: true,
   state: {
     default: {
-      indicator: 5,
-      datasource: 4,
+      indicator: 7,
+      datasource: 6,
       location: 1,
-      year: 'null',
+      year: null,
     },
     controlConfig: [
       indicatorOverviewConfig,
-      datasetComparismControls,
+      zonalAnalysisConfig,
       indicatorComparismConfig,
+      datasetComparismControls,
       multiIndicatorComparismConfig,
     ],
   },
   mutations: {
+    SET_INITIAL: (state, payload) => {
+      state.default.indicator = payload.indicator;
+      state.default.datasource = payload.datasource;
+      state.default.location = payload.location;
+    },
+
     ADD_DATA: (state, data) => {
       state.localData.push(data);
     },
@@ -45,12 +53,32 @@ export default {
      * control panel let give each panel and id
      */
     setControlOptions: (state, payload) => {
-      state.controlConfig[payload.panelIndex].setup[payload.controlIndex].options = payload.values;
+      if (payload.multipleSetup) {
+        state.controlConfig[payload.panelIndex].setup[payload.controlIndex][
+          payload.controlIndex2
+        ].options = payload.values;
+      } else {
+        state.controlConfig[payload.panelIndex].setup[
+          payload.controlIndex].options = payload.values;
+      }
+    },
+
+    toggleVisibility: (state, payload) => {
+      // eslint-disable-next-line max-len
+      state.controlConfig[payload.panelIndex].setup[payload.controlIndex].visibility = payload.visibility;
+    },
+
+    // set default on individual control panel
+    SET_DEFAULT: (state, payload) => {
+      state.controlConfig[payload.controlIndex].defaults[payload.key] = payload.value;
     },
   },
   actions: {
     SET_CONTROL_OPTIONS({ commit }, payload) {
       commit('setControlOptions', payload);
+    },
+    TOGGLE_VISIBILITY({ commit }, payload) {
+      commit('toggleVisibility', payload);
     },
     add() {
       return 'a test';

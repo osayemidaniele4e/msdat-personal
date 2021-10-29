@@ -3,14 +3,16 @@
 
   <!-- Toggleable tab links here -->
     <ul
-      class="d-flex list-unstyled justify-content-between border-b mx-5 cursor-pointer"
-    >
+      class="d-flex list-unstyled step-sections mb-0
+       justify-content-between border-b mx-5 cursor-pointer"
+   >
       <li
         class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans"
         :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
         v-for="(control, index) in controls"
         :key="index"
-        @click='selectControl(index)'
+        :id="`panel-${index}`"
+        @click='changeControl(index)'
       >
         {{ control.title }}
 
@@ -18,7 +20,7 @@
     </ul>
 
     <!-- Multiselect dropdown here -->
-    <div class="mx-5">
+    <div class="mx-5 pb-3 pt-1 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
@@ -46,6 +48,10 @@ export default {
     },
   },
   methods: {
+    changeControl(index) {
+      this.selectControl(index);
+      this.$emit('showSection', index);
+    },
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs

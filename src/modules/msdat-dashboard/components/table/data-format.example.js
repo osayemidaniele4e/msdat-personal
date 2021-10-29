@@ -1,44 +1,44 @@
 export default [
   {
-    indicators: 'Skilled Birth Attendance 1',
+    indicators: { id: 7, name: 'Skilled Birth Attendance 1' },
     values: [
       {
-        dataSources: 'NHMIS',
+        dataSources: { id: 7, datasources: 'NHMIS' },
         value: '20',
         factor: '%',
         year: 2020,
         classification: 'Routine',
       },
       {
-        dataSources: 'NDHS',
+        dataSources: { id: 7, datasource: 'NDHS' },
         value: '20',
         factor: '%',
         year: 2020,
         classification: 'Routine',
       },
       {
-        dataSources: 'MICS',
+        dataSources: { id: 7, datasource: 'MICS' },
         value: '20',
         factor: '%',
         year: 2020,
         classification: 'Survey',
       },
       {
-        dataSources: 'NARHS',
+        dataSources: { id: 7, datasource: 'NARHS' },
         value: '20',
         factor: '%',
         year: 2020,
         classification: 'Estimates',
       },
       {
-        dataSources: 'NHMIS',
+        dataSources: { id: 7, datasource: 'NHMIS' },
         value: '20',
         factor: '%',
         year: 2020,
         classification: 'Survey',
       },
       {
-        dataSources: 'IHME',
+        dataSources: { id: 7, datasource: 'IHME' },
         value: '30',
         factor: '%',
         year: 2020,

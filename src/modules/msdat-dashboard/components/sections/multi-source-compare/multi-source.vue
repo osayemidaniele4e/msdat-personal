@@ -1,18 +1,24 @@
 <template>
   <base-overlay :show="loading">
-    <base-sub-card showControls v-if="values">
+    <base-sub-card
+      showControls
+      v-if="Object.keys(values).length"
+      @dropdownTypeSelected="mapDownload($event)"
+    >
       <template #title>
-        <h6 class="work-sans">
+        <p class="work-sans mb-0 line-height">
           Distribution of <b>{{ values.indicator.short_name }}</b> Across the
           Geopolitical zones in the Country. Source:
           <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
-        </h6>
+        </p>
       </template>
       <BarChart
         v-if="visualization === 'line' || visualization === 'column'"
         :chartOptions="chartObject"
+        ref="BaseChart"
       />
       <BaseMap
+        ref="BaseMap"
         v-else
         :mapObject="mapObject"
         :level="level"
@@ -23,12 +29,16 @@
 </template>
 
 <script>
+// import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import Maps from '@/components/maps/BaseMap.vue';
+// import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
+import chartDownload from '../../../mixins/chart_download';
 
 export default {
   name: 'MultiSource',
+  mixins: [chartDownload],
   components: { BaseMap: Maps, BarChart },
   props: {
     values: {
@@ -47,16 +57,7 @@ export default {
         series: [
           {
             name: 'Nigeria',
-            data: [
-              ['Kano', 10],
-              ['Delta', 200],
-              ['Ondo', 123],
-              ['Osun', 45],
-              ['Enugu', 780],
-              ['Nassarawa', 780],
-              ['Federal Capital Territory', 780],
-              ['South East', 200],
-            ],
+            data: [],
           },
         ],
         title: {
@@ -70,6 +71,22 @@ export default {
     };
   },
   methods: {
+    mapDownload(e) {
+      if (this.visualization === 'line' || this.visualization === 'column') {
+        this.downLoadType(e, {
+          indicator: this.values.indicator.short_name,
+          datasource: this.values.datasource.datasource,
+          year: this.values.year,
+        });
+      } else {
+        this.downLoadTypeMap(e, {
+          indicator: this.values.indicator.short_name,
+          datasource: this.values.datasource.datasource,
+          year: this.values.year,
+        });
+      }
+    },
+
     formatDataToSeriesMapFormat(data) {
       return data.map((item) => [
         this.dlGetLocation(item.location).name,
@@ -101,19 +118,35 @@ export default {
             fontWeight: 'normal',
           },
         },
+        colors: ['#114663'],
+        colorAxis: {
+          min: 0,
+          minColor: '#E6E6E6',
+          maxColor: '#114663',
+        },
         series: [
           {
+            //  borderColor: 'white',
+            borderWidth: 0,
             name: 'Nigeria',
             data,
-            color: 'red',
           },
         ],
       };
     },
     formatToHighChartOptionForLine(data, chartType, controlPanelObject) {
-      return {
+      const chartOptions = {
         chart: {
           type: chartType,
+        },
+        yAxis: {
+          title: {
+            text: 'Values',
+            style: {
+              fontSize: '13px',
+              fontFamily: '"Work Sans", sans-serif',
+            },
+          },
         },
         title: {
           text: controlPanelObject.indicator.short_name,
@@ -129,6 +162,11 @@ export default {
           },
         ],
       };
+      const displayFactor = this.dlGetFactor(
+        this.values.indicator.factor,
+      ).display_factor;
+      chartOptions.yAxis.title.text = displayFactor;
+      return chartOptions;
     },
   },
   watch: {
@@ -188,10 +226,9 @@ export default {
         this.loading = false;
       },
       deep: true,
-      immediate: true,
+      immediate: false,
     },
   },
-  mounted() {},
 };
 </script>
 

@@ -1,9 +1,10 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, has, omit, isMatch, matches,
+  filter, omit, matches, isObject, has,
 } from 'lodash';
 // import SampleData from './sample_data';
-import { MSDAT } from '@/config/dashboardGroups';
+// import { MSDAT } from '@/config/dashboardGroups';
+
 import DB from './services/database.worker';
 
 const { mapState } = createNamespacedHelpers('DL');
@@ -26,45 +27,103 @@ const { mapState } = createNamespacedHelpers('DL');
 
 export default {
   data() {
-    return {};
+    return {
+      hardCordedValueType: [
+        {
+          id: 1,
+          value_type: 'Estimate',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 2,
+          value_type: 'Survey',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 3,
+          value_type: 'Lower bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 4,
+          value_type: 'Upper bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 5,
+          value_type: 'Routine',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 6,
+          value_type: 'Numerator',
+          created_at: '2021-07-02T08:45:20.707139Z',
+          updated_at: '2021-07-02T08:45:20.707348Z',
+        },
+        {
+          id: 7,
+          value_type: 'Denominator',
+          created_at: '2021-07-02T08:56:10.401735Z',
+          updated_at: '2021-07-02T08:56:10.401798Z',
+        },
+      ],
+    };
   },
   computed: {
     ...mapState({
+      dlDataSourceSpecificIndicator: (state) => state.datasource_specific_indicator,
       dlDatasource: (state) => state.datasources,
       dlIndicator: (state) => state.indicators,
       dlLocation: (state) => state.location,
       dlValue_type: (state) => state.valuetypes,
       dlDashboardIndicator: (state) => state.availableDashboardIndicator,
+      dlDashboardDataSource: (state) => state.dashboardDataSource,
       dlFactors: (state) => state.factors,
     }),
-  },
-  methods: {
+
     dlGetAvailableIndicators() {
       return this.dlIndicator.filter((e) => this.dlDashboardIndicator.includes(e.id));
     },
-
+  },
+  methods: {
     /**
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
      * @returns {dataObjectType}
      */
     async dlQuery(queryObject) {
-      if (has(queryObject, 'location.level')) {
-        const { location } = queryObject;
-        const newQueryObject = omit(queryObject, ['location']);
-        const resultValue = await DB.queryDB(newQueryObject);
-        return filter(resultValue, (item) => {
-          const locationValue = this.dlGetLocation(item.location);
-          if (isMatch(locationValue, location)) {
-            return item;
-          }
-          return null;
-        });
+      // i could do this in individual component when making request with the
+      // function by after this it will after all at once
+      const query = queryObject;
+      if (!has(query, 'value_type')) {
+        debugger;
+        const datasource = this.dlGetDataSource(query.datasource);
+        // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+        const valuetype = this.hardCordedValueType.filter(
+          (item) => item.value_type === datasource.classification,
+        );
+        query.value_type = valuetype[0].id;
       }
-      const result = await DB.queryDB(queryObject);
+
+      if (isObject(query.location)) {
+        const { location } = query;
+        const newQueryObject = omit(query, ['location']);
+        const locationValues = this.dlGetLocation(location);
+        const locationID = locationValues.map((item) => item.id);
+        const resultValue = await DB.queryDB(newQueryObject, locationID);
+        return resultValue;
+      }
+
+      const result = await DB.queryDB(query);
       return result;
     },
+
     dlGetDashboardDataSource() {
-      return this.dlDatasource.filter((e) => MSDAT.dataSources.includes(e.id));
+      return this.dlDatasource.filter((e) => this.dlDashboardDataSource.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
@@ -84,17 +143,33 @@ export default {
       }
       return this.dlLocation.find((item) => item.id === values);
     },
+    dlGetByName(values) {
+      return this.dlLocation.find((item) => item.name === values);
+    },
     dlGetFactor(id) {
       return this.dlFactors.find((item) => item.id === id);
     },
     dlGetDataSource(id) {
       return this.dlDatasource.find((item) => item.id === id);
     },
-    dlGetValueTypes(id) {
-      console.log(this.dlValue_type);
-      return this.dlValue_type.find((item) => item.id === id);
+    dlGetValueTypes(values) {
+      // console.log(this.dlValue_type);
+      if (typeof values === 'object') {
+        // return filter(this.dlValue_type, matches(values));
+        return filter(this.hardCordedValueType, matches(values));
+      }
+      return this.hardCordedValueType.find((item) => item.id === values);
+    },
+    dlGetDataSourceSpecificIndicator(values) {
+      if (typeof values === 'object') {
+        return filter(this.dlDataSourceSpecificIndicator, matches(values));
+      }
+      return this.dlDataSourceSpecificIndicator.find((item) => item.id === values);
     },
   },
   mounted() {
+    // const data = await this.dlQuery({ datasource: 6, indicator: 7, period: '2020' });
+    // console.log(data);
+    // console.trace(this.dlGetLocation({ level: 3 }));
   },
 };

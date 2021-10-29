@@ -32,16 +32,23 @@
       </div>
     </div>
     <div class="card-body work-sans p-0" style="position: relative">
-      <SubCardDropdown v-show="showMenu" />
+      <div @mouseleave="showMenu = false">
+        <SubCardDropdown
+          @dropDownTypeSelected="$emit('dropdownTypeSelected', $event)"
+          v-show="showMenu"
+        />
+      </div>
+
       <div class="row no-gutters">
         <div class="col" :class="[sideControl ? 'col-10' : '']">
           <div v-if="buttonToggle" class="d-flex justify-content-end">
             <SubCardToggleButton
+              v-show="showToggle"
               @button-clicked="$emit('toggled-button', $event)"
             />
           </div>
           <slot>
-            <p class="card-text">The SubCard fallback.</p>
+            <!-- <p class="card-text">The SubCard fallback.</p> -->
           </slot>
         </div>
         <SubCardSideControl
@@ -86,6 +93,10 @@ export default {
     showControls: {
       type: Boolean,
       default: () => false,
+    },
+    showToggle: {
+      type: Boolean,
+      default: () => true,
     },
     color: {
       type: String,
