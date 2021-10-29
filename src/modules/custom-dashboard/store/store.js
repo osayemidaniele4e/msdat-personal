@@ -9,6 +9,7 @@ import getters from './getters';
 export default {
   state: {
     step: 0,
+    dashboardDetails: {},
     rmnchs: [],
     masterData: [],
     SurveyArray: [],
