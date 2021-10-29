@@ -108,7 +108,6 @@ export default {
       dName: {
         val: '',
         isValid: true,
-
       },
       description: {
         val: '',
@@ -162,6 +161,10 @@ export default {
         description: this.description,
       };
 
+      this.$store.dispatch('dashboardConfiguration', {
+        name: this.dName.val,
+        description: this.description.val
+      });
       this.$emit('save-data', formData);
       this.$router.push('preference-table');
     },

@@ -1,6 +1,13 @@
 import axios from 'axios';
 
 export default {
+
+  // ********** Configuration Details ********** //
+
+  dashboardConfiguration({ commit }, payload) {
+    commit('dashboardDetails', payload);
+  },
+
   // ***** Indicators Data ******* //
 
   async loadIndicators({ commit, state }) {
