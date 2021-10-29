@@ -1,7 +1,7 @@
 export default {
 
-  dashboardDetails(state){
-    return state.dashboardDetails
+  dashboardDetails(state) {
+    return state.dashboardDetails;
   },
 
   indicators(state) {

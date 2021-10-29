@@ -18,8 +18,8 @@ export default {
     state.step = payload;
   },
 
-  dashboardDetails(state, payload){
-    state.dashboardDetails = payload
+  dashboardDetails(state, payload) {
+    state.dashboardDetails = payload;
   },
 
   setPArea(state, payload) {

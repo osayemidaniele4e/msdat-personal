@@ -37,9 +37,9 @@ export default {
     DataTable,
   },
   computed: {
-    details(){
-      return this.$store.getters.dashboardDetails
-    }
+    details() {
+      return this.$store.getters.dashboardDetails;
+    },
     // selectedIndicator() {
     //   return this.$store.getters.selectedIndicator;
     // },
