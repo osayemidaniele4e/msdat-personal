@@ -30,6 +30,8 @@ export default {
     const groupedDataSource = groupIndicator(result[1].data, 'classification');
     this.programAreaIndicators = grouped;
     this.groupedDataSource = groupedDataSource;
+
+    this.generateNotes();
   },
 
   methods: {
@@ -42,6 +44,9 @@ export default {
         this.$forceUpdate();
       });
     },
+    // getIncompleteIndicators() {
+    //   const selectedIndicators = this.indicatorsSelected;
+    // },
   },
 
   watch: {

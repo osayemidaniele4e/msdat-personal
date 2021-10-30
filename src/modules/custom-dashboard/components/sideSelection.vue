@@ -79,8 +79,21 @@
     <!-- NOTES -->
     <b class="selection-header">Notes</b><br />
     <div class="mb-4 mb-lg-0">
-      <label for="notes" class="form-label"></label>
-      <input type="text" class="form-control" id="notes" :aria-describedby="notes" />
+      <div id="notes">
+        <div v-for="(note, index) in notes" :key="index">
+          {{note}}
+        </div>
+      </div>
+
+      <!-- <label for="notes" class="form-label"></label>
+      <input
+        type="text"
+        v-model="notes"
+        class="form-control"
+        id="notes"
+        :aria-describedby="notes"
+        readonly
+      /> -->
     </div>
   </div>
 </template>
@@ -137,6 +150,14 @@ export default {
         this.$store.commit('CUSTOM_DASHBOARD_STORE/setLevelSelected', value);
       },
     },
+    notes: {
+      get() {
+        return this.$store.state.CUSTOM_DASHBOARD_STORE.notes;
+      },
+      set(value) {
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setNotes', value);
+      },
+    },
   },
 
   watch: {
@@ -160,6 +181,21 @@ export default {
     },
     dropIsToggled(programArea) {
       return this.expandedProgramAreas.includes(programArea);
+    },
+    generateNotes() {
+      const indicators = ['indicator a', 'indicator b'];
+      const unavailableYears = [
+        ['2013', '2020'],
+        ['2042', '2012'],
+      ];
+      const noteObj = [];
+      indicators.forEach((indicator, index) => {
+        const indicatorUnavailableYears = unavailableYears[index];
+        const noteText = `- ${indicator} has no ${indicatorUnavailableYears}`;
+        noteObj.push(noteText);
+        // noteObj[indicator] = indicatorUnavailableYears;
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setNotes', noteObj);
+      });
     },
   },
 };
