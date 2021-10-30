@@ -50,7 +50,7 @@
         </div>
         <div
           v-if="values.type === 'visualization'"
-          class="btn-group d-flex"
+          class="btn-group d-flex work-sans"
           role="group"
         >
           <button
