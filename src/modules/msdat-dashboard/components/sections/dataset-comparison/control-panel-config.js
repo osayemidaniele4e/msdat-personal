@@ -40,7 +40,7 @@ export default {
   payload: {
     indicator: 'indicator 2',
     location: '',
-    datasource: 'NHMIS 1',
+    datasource: [],
     year: '',
     compareBy: '',
     visualization: 'state_map',

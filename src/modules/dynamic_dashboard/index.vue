@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
+import instance from '@/modules/msdat-dashboard/views/dashboard/instance2.vue';
 import config from './config/dashboard_config';
 
 export default {

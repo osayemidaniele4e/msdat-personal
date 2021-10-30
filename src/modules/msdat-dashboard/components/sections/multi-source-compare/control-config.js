@@ -39,20 +39,22 @@ const indicatorSetConfig = [
     },
   },
 ];
-export default {
-  label: 'Multi-source comparison',
-  setup: [indicatorSetConfig, indicatorSetConfig, indicatorSetConfig],
-  payload: {
-    indicator: 'indicator 2',
-    location: '',
-    datasource: 'NHMIS 1',
-    year: '',
-    compareBy: '',
-    visualization: 'state_map',
-    target: {
-      national: false,
-      sdg: false,
-    },
-    numdenum: false,
+const payload = {
+  indicator: 'indicator 2',
+  location: '',
+  datasource: 'NHMIS 1',
+  year: '',
+  compareBy: '',
+  visualization: 'state_map',
+  target: {
+    national: false,
+    sdg: false,
   },
+  numdenum: false,
+};
+export default {
+  label: 'Multi-Source comparison',
+  grouped: true,
+  setup: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
+  payload: [{ ...payload }, { ...payload }, { ...payload }],
 };

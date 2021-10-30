@@ -1,11 +1,5 @@
 export default {
   label: 'Zonal analysis',
-  defaults: {
-    indicator: null,
-    dataSource: null,
-    location: null,
-    year: null,
-  },
   setup: [
     {
       type: 'dropdown',

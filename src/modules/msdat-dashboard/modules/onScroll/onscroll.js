@@ -6,6 +6,7 @@ export default {
   },
   methods: {
     showSection(index) {
+      debugger;
       const observedElements = document.querySelectorAll('.observable');
       // stop observer
       observedElements.forEach((el) => this.observer.unobserve(el));
@@ -35,7 +36,8 @@ export default {
       document.querySelectorAll('.observable').forEach((el) => this.observer.observe(el));
     },
     changeScroll(refName) {
-      const element = this.$refs[refName];
+      const element = this.$refs[refName][0]; // get the first element of the array
+      debugger;
       const top = element.offsetTop;
       window.scrollTo({
         top: top - 150,

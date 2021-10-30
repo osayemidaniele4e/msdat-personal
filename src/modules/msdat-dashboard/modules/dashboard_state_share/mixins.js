@@ -37,9 +37,9 @@ export default {
      */
     getRouteIndicatorRelatedIndicators() {
       return [
-        this.$route.query.indicator,
-        this.$route.query.first_related,
-        this.$route.query.second_related,
+        Number(this.$route.query.indicator),
+        Number(this.$route.query.first_related),
+        Number(this.$route.query.second_related),
       ];
     },
     checkIfRouteQueryHasKey() {

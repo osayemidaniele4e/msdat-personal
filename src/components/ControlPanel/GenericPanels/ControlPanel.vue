@@ -132,6 +132,10 @@ export default {
       type: Array,
       required: true,
     },
+    groupIndex: {
+      type: Number,
+      default: () => null,
+    },
     controlIndex: {
       type: Number,
       required: true,
@@ -161,16 +165,35 @@ export default {
   },
   methods: {
     updatePayload(value, key) {
-      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-        controlIndex: this.controlIndex,
-        key,
-        value,
-      });
+      if (this.groupIndex != null) {
+        // this is o take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        debugger;
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: this.controlIndex,
+          groupIndex: this.groupIndex,
+          key,
+          value,
+        });
+      } else {
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: this.controlIndex,
+          key,
+          value,
+        });
+      }
+
       this.$emit('data:options', this.payload);
     },
   },
   computed: {
     payload() {
+      if (this.groupIndex != null) {
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+          .payload[this.groupIndex];
+      }
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
         .payload;
     },

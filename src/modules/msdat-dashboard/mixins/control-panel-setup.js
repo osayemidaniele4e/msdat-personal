@@ -17,16 +17,15 @@ export default {
       cpIsLoading: false,
     };
   },
-  computed: {
-    indicatorDropdownUpdated: {
-      get() {
-        return groupIndicator(this.dlGetAvailableIndicators, 'program_area');
-        // console.trace(b, 'Hello World');
-        // return b;
-      },
-      set(val) {
-        return val;
-      },
+  watch: {
+    // The is the updated the control panels dropdown as indicator are gotten from the API
+    // in the background (async)
+    dlGetAvailableIndicators(newValue) {
+      console.log('update the control panels indicator dropdown');
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'indicator',
+        payload: groupIndicator(newValue, 'program_area'),
+      });
     },
   },
   methods: {
@@ -38,14 +37,32 @@ export default {
     setUpControlPanelDropDown() {
       // debugger;
       this.defaultIndicatorDropdown = groupIndicator(this.dlGetAvailableIndicators, 'program_area');
-      console.log(this.defaultIndicatorDropdown);
+
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'indicator',
+        payload: this.defaultDataSourceDropdown,
+      });
+
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
+
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'datasource',
+        payload: this.defaultDataSourceDropdown,
+      });
+
       this.defaultLocationDropdown = this.dlGetLocation({
         level: 3,
       });
       const location = this.dlGetLocation(1); // get nigerian Location object
       // add nigeria to the top of the array
       this.defaultLocationDropdown.unshift(location);
+
+      this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
+
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'location',
+        payload: this.defaultLocationDropdown,
+      });
     },
     setDefaults() {
       this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
@@ -75,22 +92,7 @@ export default {
       const years = onlyYearData.map((item) => item.period);
       const unqiueYears = uniq(years);
       const sortedYears = unqiueYears.sort((a, b) => b - a);
-      // debugger;
-      // this.defaultYearDropdown = sortedYears;
-      // if (sortedYears.length > 0) {
-      //   const firstItem = 0;
-      //   this.defaultYear = sortedYears[firstItem];
-      // }
       return sortedYears;
-      // console.log(sortedYears);
     },
-  },
-  async mounted() {
-    this.setDefaults();
-    this.setUpControlPanelDropDown();
-    // await this.setYearDropdown();
-    // this.cpIsLoading = true;
-    // console.log(this.defaultYear);
-    // console.log(defaultYearDropdown);
   },
 };

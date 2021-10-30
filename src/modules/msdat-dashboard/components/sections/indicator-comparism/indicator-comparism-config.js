@@ -74,7 +74,7 @@ export default {
     },
   ],
   payload: {
-    indicator: 'indicator 2',
+    indicator: [],
     location: '',
     datasource: 'NHMIS 1',
     year: '',
