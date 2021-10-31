@@ -37,7 +37,7 @@
             :value="option"
             :aria-describedby="ariaDescribedby"
             inline
-            @change="availableYears(option)"
+            @change="setDatasourceAvailableYears(option)"
           >
             {{ option.datasource }}
           </b-form-checkbox>
@@ -81,7 +81,7 @@
     <div class="mb-4 mb-lg-0">
       <div id="notes">
         <div v-for="(note, index) in notes" :key="index">
-          {{note}}
+          {{ note }}
         </div>
       </div>
 
@@ -168,6 +168,9 @@ export default {
       }, indicators);
       this.$store.commit('CUSTOM_DASHBOARD_STORE/setIndicatorSelected', indicators);
     },
+    indicatorsSelected() {
+      this.setIndicatorAvailableYears();
+    },
   },
 
   methods: {
@@ -182,20 +185,15 @@ export default {
     dropIsToggled(programArea) {
       return this.expandedProgramAreas.includes(programArea);
     },
-    generateNotes() {
-      const indicators = ['indicator a', 'indicator b'];
-      const unavailableYears = [
-        ['2013', '2020'],
-        ['2042', '2012'],
-      ];
-      const noteObj = [];
+    generateNotes(indicators, unavailableYears) {
+      const notesArray = [];
       indicators.forEach((indicator, index) => {
         const indicatorUnavailableYears = unavailableYears[index];
-        const noteText = `- ${indicator} has no ${indicatorUnavailableYears}`;
-        noteObj.push(noteText);
-        // noteObj[indicator] = indicatorUnavailableYears;
-        this.$store.commit('CUSTOM_DASHBOARD_STORE/setNotes', noteObj);
+        const noteText = `- ${indicator} has no ${indicatorUnavailableYears} data`;
+        notesArray.push(noteText);
+        console.log(notesArray);
       });
+      this.$store.commit('CUSTOM_DASHBOARD_STORE/setNotes', notesArray);
     },
   },
 };
