@@ -1,3 +1,6 @@
+import { ControlPanelConfig, Defaults } from '../types/index';
+import { Mutation } from 'vuex'; 'vuex'
+
 export default {
   namespaced: true,
   state: {
@@ -6,11 +9,11 @@ export default {
       datasource: 6,
       location: 1,
       year: null,
-    },
-    controlConfig: [],
+    } as Defaults,
+    controlConfig: [] as ControlPanelConfig[],
   },
   mutations: {
-    SET_INITIAL: (state, payload) => {
+    SET_INITIAL:(state, payload) => {
       state.default.indicator = payload.indicator;
       state.default.datasource = payload.datasource;
       state.default.location = payload.location;

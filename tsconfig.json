@@ -5,6 +5,7 @@
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "allowJs": true,
     "skipLibCheck": true,
@@ -34,7 +35,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/modules/msdat-dashboard/store.js"  ],
   "exclude": [
     "node_modules"
   ]
