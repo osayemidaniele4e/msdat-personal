@@ -81,7 +81,7 @@
                   v-if="item.selected"
                   class="col-4"
                   :key="item.id"
-                  
+
                   style="
                     list-style: none;
                     display: inline-block;
@@ -156,9 +156,9 @@ export default {
     indicatorsLevels() {
       return this.$store.getters.getprogramArea;
     },
-    dataSources(){
+    dataSources() {
       return this.$store.getters.getDataSource;
-    }
+    },
   },
 
   // watch: {

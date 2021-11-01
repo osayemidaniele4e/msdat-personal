@@ -57,7 +57,7 @@ export default {
           if (child.levels) {
             child.levels.map((level) => {
               if (level.value != undefined) {
-                levelArray['level' + level.value] = { ...level };
+                levelArray[`level${level.value}`] = { ...level };
               }
             });
           }

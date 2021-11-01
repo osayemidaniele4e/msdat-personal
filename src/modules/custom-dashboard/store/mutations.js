@@ -91,19 +91,17 @@ export default {
   selectionDataSource(state, payload) {
     console.log('In Mutations', payload);
     state.SurveyArray = state.SurveyArray.map((element) => {
-      let counter = 0
+      let counter = 0;
       element.children.map((child) => {
         if (child.id == payload.id) {
           child.selected = payload.checked;
         } if (payload.checked) {
           // element.parent.selected = true;
           counter = 1;
-        } else{
-          if (child.selected) {
-            counter++;
-          }
+        } else if (child.selected) {
+          counter++;
         }
-        return child
+        return child;
       });
       return element;
     });

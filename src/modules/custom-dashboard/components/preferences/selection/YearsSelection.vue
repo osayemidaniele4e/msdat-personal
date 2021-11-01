@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     distinctYears() {
-      let yearsArray = [];
+      const yearsArray = [];
 
       const newMap = this.$store.getters.getprogramArea.map((element) => {
         element.children.map((child) => {
@@ -55,14 +55,14 @@ export default {
             child.years.map((year) => {
               if (year.value != undefined) {
                 year.value;
-                yearsArray['year' + year.value] = { ...year };
+                yearsArray[`year${year.value}`] = { ...year };
               }
             });
           }
         });
       });
-      let DArray = [];
-      for (var i in yearsArray) {
+      const DArray = [];
+      for (const i in yearsArray) {
         DArray.push(yearsArray[i]);
       }
       DArray.sort((a, b) => b.value - a.value);
