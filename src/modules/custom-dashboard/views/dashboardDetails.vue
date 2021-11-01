@@ -46,17 +46,18 @@
                 <img :src="selectedImage" class="image-preview__img" />
               </div>
             </b-col>
-            <b-col cols="12" lg="4">
-              <p class="text-left my-4 my-md-0">
-                Logo size should be 200px by 200px Not bigger than 5 MB Logo
-                should be representative of your dashboard content
+            <b-col cols="12" lg="5">
+              <p class="text-left my-4 my-md-5">
+                Logo size should be 200px by 200px. <br />
+                Not bigger than 5 MB. <br />
+                Logo should be representative of your dashboard content
               </p>
             </b-col>
           </b-row>
         </b-col>
       </b-row>
       <p><b>Select dashboard data</b></p>
-      <p>
+      <p style="margin-top: -10px!important">
         Go through our database and select the data that is relevant to your
         dashboard.<br />
         Select your indicators, your preferred data source, the years and the
@@ -67,28 +68,40 @@
           <b-button id="individual" type="submit"
             >SELECT INDIVIDUAL DATA</b-button
           >
+          <!-- <p class="help-text">
+            <span>
+              I know the exact data I want, <br> </span>
+              <span>
+              I will choose just the ones I need
+            </span>
+          </p> -->
+        </b-col>
+        <b-col cols="auto" xl="4" md="4" sm="12">
           <p class="help-text">
-            I know the exact data I want, I will choose just the ones I need
+            I know the exact data I want,<br />
+            I will choose just the ones I need
           </p>
         </b-col>
-        <!-- <b-col cols="auto" xl="3" md="6" sm="12">
-        <p class="help-text">
-          I know the exact data I want,<br />
-          I will choose just the ones I need
-        </p>
-      </b-col> -->
-        <b-col cols="auto" class="mt-5 mt-lg-5 mt-xl-0">
+        <!-- <b-col cols="auto" class="mt-5 mt-lg-5 mt-xl-0">
           <b-button id="available" disabled>SELECT all available DATA</b-button>
           <p class="help-text">
             Skip the data table, I want all the available data
           </p>
+        </b-col> -->
+        <b-col cols="auto mb-5" style="margin-left: -93px !important">
+          <b-button id="available" disabled>SELECT all available DATA</b-button>
         </b-col>
-        <!-- <b-col cols="auto" lg="3" md="6" sm="12" class="mt-0 mt-md-5 mt-xs-5 mt-xl-0">
-        <p class="help-text">
-          Skip the data table,<br />
-          I want all the available data
-        </p>
-      </b-col> -->
+        <b-col>
+          <p class="help-text">
+            Skip the data table,<br />
+            I want all the available data
+          </p>
+        </b-col>
+        <!-- <p class="help-text">
+            Skip the data table,<br />
+            I want all the available data
+          </p>
+        </b-col> -->
       </b-row>
     </form>
   </b-container>
@@ -218,7 +231,7 @@ p {
 .help-text {
   color: #696767;
   display: inline;
-  margin-right: 20px;
+  margin-right: 5px;
 }
 .invalid p {
   color: red;

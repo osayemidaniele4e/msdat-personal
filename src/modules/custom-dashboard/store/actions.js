@@ -46,7 +46,9 @@ export default {
 
   // ******** Data Sources ********** //
 
-  async loadDataSource({ commit }) {
+    // Load DataSources From API for the First time.
+  async loadDataSource({ commit, state }) {
+    if(state.SurveyArray.length == 0){
     await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
       .then((res) => {
         const { data } = res;
@@ -58,13 +60,31 @@ export default {
         distinctDataArray.forEach(((distItem) => {
           SurveyArray.push({
             children: data.filter(
-              (x) => x.classification === distItem,
+              (x) => {
+                if(x.classification === distItem){
+                  x.selected = false
+                  return x;
+                }
+
+              }
             ),
             parent: distItem.toUpperCase(),
+
           });
+
+          SurveyArray.sort(function (a, b) {
+            var keyA = a.parent;
+            if (keyA == "ROUTINE") return -1;
+            return 0;
+          });
+          // function SortArray(x, y){
+          //   return x.parent.localeCompare(y.parent);
+          // }
+          // SurveyArray = SurveyArray.sort(SortArray) 
         }));
         commit('setDArea', SurveyArray);
       }).catch((err) => (err));
+    }
   },
 
   // ******** Coverage Levels ********* //

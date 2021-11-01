@@ -1,11 +1,13 @@
 <template>
   <b-container class="text-justify px-5" fluid>
-    <p><b>Select your preferences</b></p>
-    <p>
+    <p style="font-size: 14px; font-family: DM sans">
+      <b>Select your preferences</b>
+    </p>
+    <p style="font-size: 14px; font-family: DM sans; margin-top: -17px">
       Select the Program Areas, Data Sources, Period and Coverage Levels you are
       interested in.
     </p>
-    <p id="link-to-about">
+    <p id="link-to-about" style="font-size: 13px; font-family: DM sans">
       <b>View datasheet</b>- see all available data in database
     </p>
     <b-card>
@@ -22,6 +24,7 @@
             <br />
             <level-selection />
           </div>
+          <br />
           <div v-if="showNotes">
             <notes />
           </div>
@@ -32,16 +35,16 @@
         <b-col sm="12" lg="9">
           <data-table />
           <b-row align-h="end" class="text-right">
-            <b-col cols="auto"
-              >Indicators: <b>{{ indicatorsCount }} selected</b></b-col
+            <b-col cols="auto" style="font-size: 13px; font-family: DM sans"
+              >Indicators: <b>{{ indicatorsCount }} Selected</b></b-col
             >
-            <b-col cols="auto"
-              >Data Sources: <b>{{ dataSourceCount }} selected</b></b-col
+            <b-col cols="auto" style="font-size: 13px; font-family: DM sans"
+              >Data Sources: <b>{{ dataSourceCount }} Selected</b></b-col
             >
-            <b-col cols="auto"
+            <b-col cols="auto" style="font-size: 13px; font-family: DM sans"
               >Period: <b>{{ yearsCount }} Years</b></b-col
             >
-            <b-col cols="auto"
+            <b-col cols="auto" style="font-size: 13px; font-family: DM sans"
               >Levels:
               <b v-for="level in selectedLevel" :key="level"
                 >{{ level }},</b
@@ -56,10 +59,14 @@
             "
           >
             <b-col class="align-baseline" cols="auto"
-              ><p class="baseline">Save for Later</p>
+              ><p class="baseline" style="font-size: 12.000004px">
+                Save for Later
+              </p>
             </b-col>
             <b-col cols="auto"
-              ><b-button @click="approveData">approve Data</b-button></b-col
+              ><b-button @click="approveData" style="font-size: 12.000004px"
+                >approve Data</b-button
+              ></b-col
             >
           </b-row>
         </b-col>
@@ -114,40 +121,60 @@ export default {
     },
     dataSourceCount() {
       let count = 0;
-      this.$store.getters.getprogramArea.map((element) => {
-        if (element.parent.isChildSelected === true) {
+      this.$store.getters.getDataSource.map((element) => {
           element.children.map((child) => {
             if (child.selected === true) {
-              child.sources.map((source) => {
-                count = source.children.length;
-                return source;
-              });
+              count++;
             }
             return child;
           });
-        }
         return element;
       });
       return count;
+      // let count = 0;
+      // this.$store.getters.getDataSource.map((element) => {
+      //   if (element.parent.isChildSelected === true) {
+      //     element.children.map((child) => {
+      //       if (child.selected === true) {
+      //         child.sources.map((source) => {
+      //           count = source.children.length;
+      //           return source;
+      //         });
+      //       }
+      //       return child;
+      //     });
+      //   }
+      //   return element;
+      // });
+      // return count;
     },
     yearsCount() {
       let count = 0;
-      this.$store.getters.getprogramArea.map((element) => {
-        if (element.parent.isChildSelected === true) {
-          element.children.map((child) => {
-            if (child.selected === true) {
-              child.years.map((year) => {
-                if (year.selected === true) {
-                  count++;
-                }
-                return year;
-              });
-            }
-            return child;
-          });
-        }
+      let yearsArray = [];
+
+      const newMap = this.$store.getters.getprogramArea.map((element) => {
+        element.children.map((child) => {
+          if (child.years) {
+            child.years.map((year) => {
+              if (year.value != undefined) {
+                //year.value;
+                yearsArray['year' + year.value] = { ...year };
+                // yearsArray[year.value] = {...year}
+              }
+            });
+          }
+        });
         this.showNotes = element.showNotes;
-        return element;
+      });
+      let DArray = [];
+      for (var i in yearsArray) {
+        DArray.push(yearsArray[i]);
+      }
+      DArray.sort((a, b) => b.value - a.value);
+      DArray.map((dyear) => {
+        if (dyear.selected === true) {
+          count++;
+        }
       });
       return count;
     },

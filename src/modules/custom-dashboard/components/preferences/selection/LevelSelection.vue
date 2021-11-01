@@ -1,7 +1,9 @@
 <template>
-  <Card style="height: 89px">
-    <b class="selection-header">Level Selection</b><br />
-    <div class="scroll" style="margin-left: 5px">
+  <div style="height: 89px">
+    <b class="selection-header" style="font-size: 13px; font-family: DM sans"
+      >Level Selection</b
+    ><br />
+    <Card class="scroll" style="height: 89px">
       <div
         v-for="(level, index) in distinctLevels"
         :key="index"
@@ -9,6 +11,7 @@
           display: inline-block;
           justify-content: space-around;
           font-size: 13px;
+          margin-left: -6px;
         "
       >
         <input
@@ -18,11 +21,14 @@
           :checked="isSelect(level)"
           @click="selectLevel($event)"
           style="margin-left: 12px"
+          class="checkbox"
         />
-        {{ level.value }}
+        <span style="font-size: 12px; font-family: DM sans; margin-left: -4px">
+          {{ level.value }}
+        </span>
       </div>
-    </div>
-  </Card>
+    </Card>
+  </div>
 </template>
 
 <script>
@@ -51,7 +57,7 @@ export default {
           if (child.levels) {
             child.levels.map((level) => {
               if (level.value != undefined) {
-                levelArray[level.value] = { ...level };
+                levelArray['level' + level.value] = { ...level };
               }
             });
           }

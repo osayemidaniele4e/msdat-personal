@@ -1,15 +1,22 @@
 <template>
-  <Card>
-    <b class="selection-header">Data Source Selection</b><br />
-    <div class="scroll" style="margin-left: 5px">
+  <div>
+    <b class="selection-header" style="font-size: 13px; font-family: DM sans"
+      >Data Source Selection</b
+    ><br />
+    <Card class="scroll" style="">
       <div v-for="(items, idx) in heading" :key="idx">
-        <div class="program-areas" style="background: #f3f3f3">
+        <div
+          class="program-areas"
+          style="background: #f3f3f3; background: #f3f3f3; font-size: 13px"
+        >
           <span
             style="
-              font: var(--unnamed-font-style-normal) normal bold 15px/20px
-                var(--unnamed-font-family-dm-sans);
-              letter-spacing: var(--unnamed-character-spacing-0);
-              color: var(--unnamed-color-202020);
+              font-weight: normal;
+              font-family: DM sans;
+              letter-spacing: 0px;
+              color: #202020;
+              padding-left: 13px;
+              font-size: 13px;
             "
           >
             {{ items.parent }}
@@ -24,34 +31,35 @@
             display: inline-block;
             justify-content: space-around;
             font-size: 13px;
-            padding: 0px;
             margin: 0px;
           "
         >
           <input
             type="checkbox"
             name=""
-            :id="item.value"
+            :id="item.id"
             :value="item.datasource"
-            v-model="selectedDataSources"
-            @click="selectSource($event, items.parent, item.datasource)"
-            style="margin-left: 12px"
+            :checked="isSelected(item)"
+            @click="
+              selectSource(
+                $event,
+                items.parent.value,
+                item.id,
+                item.datasource,
+                item.selected
+              )
+            "
+            class="checkbox"
           />
           <span
-            style="
-              font: var(--unnamed-font-style-normal) normal
-                var(--unnamed-font-weight-normal) 15px/20px
-                var(--unnamed-font-family-dm-sans);
-              letter-spacing: var(--unnamed-character-spacing-0);
-              color: var(--unnamed-color-202020);
-            "
+            style="font-size: 11px; font-family: DM sans; margin-left: -5px"
           >
             {{ item.datasource }}
           </span>
         </div>
       </div>
-    </div>
-  </Card>
+    </Card>
+  </div>
 </template>
 
 <script>
@@ -62,10 +70,7 @@ export default {
     Card,
   },
   data() {
-    return {
-      selectedDataSource: false,
-      selectedDataSources: [],
-    };
+    return {};
   },
   computed: {
     heading() {
@@ -80,14 +85,28 @@ export default {
       this.$store.dispatch('loadDataSource');
     },
 
-    selectSource(e, parent, dataSource) {
-      this.selectedDataSource = e.target.checked;
+    selectSource(e, parentValue, childId, childName, selected) {
+      this.DataSourceSelected = e.target.checked;
+      this.showList = e.target.checked;
       this.$store.dispatch('forSelectedDataSource', {
-        checked: this.selectedDataSource,
-        parentDataSource: parent,
-        childDataSource: dataSource,
+        checked: this.DataSourceSelected,
+        id: childId,
+        name: childName,
       });
     },
+
+    isSelected(item) {
+      return item.selected;
+    },
+
+    // selectSource(e, parent, dataSource) {
+    //   this.selectedDataSource = e.target.checked;
+    //   this.$store.dispatch('forSelectedDataSource', {
+    //     checked: this.selectedDataSource,
+    //     parentDataSource: parent,
+    //     childDataSource: dataSource,
+    //   });
+    // },
   },
 };
 </script>

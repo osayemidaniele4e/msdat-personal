@@ -89,31 +89,51 @@ export default {
   },
 
   selectionDataSource(state, payload) {
-    state.masterData = state.masterData.map((element) => {
-      element.children.map((val) => {
-        let isParentExist = false;
-        if (payload.checked == true) {
-          val.sources.map((source) => {
-            if (source.parent == payload.parentDataSource) {
-              source.children.push(payload.childDataSource);
-              isParentExist = true;
-            }
-          });
-
-          if (!isParentExist) {
-            val.sources.push({
-              parent: payload.parentDataSource, children: [payload.childDataSource],
-            });
+    console.log('In Mutations', payload);
+    state.SurveyArray = state.SurveyArray.map((element) => {
+      let counter = 0
+      element.children.map((child) => {
+        if (child.id == payload.id) {
+          child.selected = payload.checked;
+        } if (payload.checked) {
+          // element.parent.selected = true;
+          counter = 1;
+        } else{
+          if (child.selected) {
+            counter++;
           }
-        } else if (source.parent == payload.parentDataSource) {
-          source.children.pop(payload.childDataSource);
-          isParentExist = true;
         }
-        return val;
+        return child
       });
       return element;
     });
   },
+  // selectionDataSource(state, payload) {
+  //   state.SurveyArray = state.SurveyArray.map((element) => {
+  //     element.children.map((val) => {
+  //       let isParentExist = false;
+  //       if (payload.checked == true) {
+  //         val.sources.map((source) => {
+  //           if (source.parent == payload.parentDataSource) {
+  //             source.children.push(payload.childDataSource);
+  //             isParentExist = true;
+  //           }
+  //         });
+
+  //         if (!isParentExist) {
+  //           val.sources.push({
+  //             parent: payload.parentDataSource, children: [payload.childDataSource],
+  //           });
+  //         }
+  //       } else if (source.parent == payload.parentDataSource) {
+  //         source.children.pop(payload.childDataSource);
+  //         isParentExist = true;
+  //       }
+  //       return val;
+  //     });
+  //     return element;
+  //   });
+  // },
 
   // ******** Indicator Levels ***************** //
 
@@ -197,7 +217,7 @@ export default {
             const foundData = child.years.find((year) => year.value == distYear);
             if (foundData == undefined) {
               if (yearsDoesnotContain.length > 0) {
-                yearsDoesnotContain += ',';
+                yearsDoesnotContain += ', ';
               }
               yearsDoesnotContain += distYear;
             }

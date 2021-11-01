@@ -1,11 +1,13 @@
 <template>
   <b-container class="text-justify px-5" fluid>
     <template>
-    <h2 style="background-color: #f5f5f5; width: 755px">
+    <h2 style="background-color: #f5f5f5; width: 546px; font-family: DM sans; font-size:23px; font-weight: bold ">
+      <span class="col-6">
       {{details.name}}
+      </span>
     </h2>
-    <div style="background-color: #f5f5f5; width: 976px">
-      <p>
+    <div style="background-color: #f5f5f5; width: 807px; font-family: DM sans; font-size: 14px;">
+      <p class="col-12">
         {{details.description}}
       </p>
     </div>
@@ -74,7 +76,7 @@ export default {
   max-width: 253.500000063px;
   text-transform: uppercase;
   border-color: #3f8994;
-  font-size: 15.00000375px;
+  font-size: 12.000004px;
 }
 .editBtn {
   background-color: #eaeaea;
@@ -82,6 +84,6 @@ export default {
   max-width: 253.500000063px;
   text-transform: uppercase;
   border-color: #eaeaea;
-  font-size: 15.00000375px;
+  font-size: 12.000004px;
 }
 </style>

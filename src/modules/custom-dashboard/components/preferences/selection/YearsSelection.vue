@@ -1,8 +1,8 @@
 <template>
-  <Card>
-    <b class="selection-header">Period Selection</b><br />
-    <small>Select available years under each source</small><br />
-    <div class="scroll" style="margin-left: 5px">
+  <div>
+    <b class="selection-header" style="font-size: 13px; font-family: DM sans;">Period Selection</b><br />
+    <small style="font-size: 13px;font-family: DM sans;">Select available years under each source</small>
+    <Card class="scroll" style="">
       <div
         v-for="(item, index) in distinctYears"
         :key="index"
@@ -20,11 +20,14 @@
           :checked="isSelected(item)"
           @change="selectYear($event)"
           style="margin-left: 12px"
+          class="checkbox"
         />
+        <span style="font-size:12px; font-family: DM sans;">
         {{ item.value }}
+        </span>
       </div>
-    </div>
-  </Card>
+    </Card>
+  </div>
 </template>
 
 <script>
@@ -44,23 +47,22 @@ export default {
   },
   computed: {
     distinctYears() {
-      const yearsArray = [];
+      let yearsArray = [];
 
       const newMap = this.$store.getters.getprogramArea.map((element) => {
         element.children.map((child) => {
           if (child.years) {
             child.years.map((year) => {
               if (year.value != undefined) {
-                // year.value;
-                // yearsArray['year' + year.value] = { ...year };
-                yearsArray[year.value] = { ...year };
+                year.value;
+                yearsArray['year' + year.value] = { ...year };
               }
             });
           }
         });
       });
-      const DArray = [];
-      for (const i in yearsArray) {
+      let DArray = [];
+      for (var i in yearsArray) {
         DArray.push(yearsArray[i]);
       }
       DArray.sort((a, b) => b.value - a.value);

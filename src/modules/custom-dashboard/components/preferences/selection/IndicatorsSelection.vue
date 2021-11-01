@@ -1,9 +1,14 @@
 <template>
-  <Card>
-    <b class="selection-header">Indicators Selection</b><br />
-    <div class="scroll" style="margin-left: 5px">
-      <div v-for="(items, idx) in heading" :key="idx">
-        <div class="program-areas my-2" style="background: #f3f3f3">
+  <div>
+    <b class="selection-header" style="font-size: 13px; font-family: DM sans"
+      >Indicators Selection</b
+    >
+    <Card class="scroll" style="">
+      <div v-for="(items, idx) in heading" :key="idx" style="margin-top: -8px">
+        <div
+          class="program-areas my-2"
+          style="background: #f3f3f3; font-size: 13px"
+        >
           <input
             type="checkbox"
             @click="
@@ -14,14 +19,16 @@
                 items.parent.selected
               )
             "
+            class="checkbox"
             :checked="isAllSelected(items.parent)"
           />
           <span
             style="
-              font: var(--unnamed-font-style-normal) normal
-                var(--unnamed-font-weight-normal) 16px/21px
-                var(--unnamed-font-family-dm-sans);
-              letter-spacing: var(--unnamed-character-spacing-0);
+              font-weight: normal;
+              font-size: 13px;
+              font-family: DM sans;
+              color: #202020;
+              margin-left: -4px;
             "
           >
             {{ items.parent.value }}
@@ -32,7 +39,7 @@
           v-for="(item, index) in items.children"
           :key="index"
           class="indicators"
-          style="margin-bottom: 12px; font-size: 13px"
+          style="margin-bottom: 3px; font-size: 13px"
         >
           <input
             type="checkbox"
@@ -49,22 +56,22 @@
                 item.selected
               )
             "
+            class="checkbox"
           />
           <span
             style="
-              padding-left: 10px;
-              font: var(--unnamed-font-style-normal) normal
-                var(--unnamed-font-weight-normal) 15px/20px
-                var(--unnamed-font-family-dm-sans);
-              letter-spacing: var(--unnamed-character-spacing-0);
-              color: var(--unnamed-color-202020);
+              padding-left: 5 px;
+              font-size: 12px ;
+              margin-left: -4px;
+              font-family: DM sans;
             "
-            >{{ item.short_name }}</span
           >
+            {{ item.short_name }}
+          </span>
         </div>
       </div>
-    </div>
-  </Card>
+    </Card>
+  </div>
 </template>
 
 <script>
@@ -100,7 +107,6 @@ export default {
     this.loadIndicators();
   },
   methods: {
-
     isAllSelected(item) {
       return item.selected;
     },
@@ -162,3 +168,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.checkbox {
+  height: 10px;
+  margin: 4px;
+}
+</style>
