@@ -63,7 +63,7 @@ export default {
         max: 2,
         'group-values': 'indicators',
         'group-label': 'program_area',
-        label: 'short_name',
+        label: 'full_name',
       },
     },
     {

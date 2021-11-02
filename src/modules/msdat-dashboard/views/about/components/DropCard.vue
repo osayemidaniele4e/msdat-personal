@@ -4,7 +4,7 @@
       <div class="col-md-3 mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Input</h5>
-          <router-link to="#"
+          <router-link to="/dashboard/Health_Facility_Input" target="_blank"
             ><b-list-group-item>Health Facility</b-list-group-item></router-link
           >
           <router-link to="/dashboard/Health_Financing" _target="_blank"
@@ -22,7 +22,7 @@
           <h5 class="text-underline">Health Outputs</h5>
           <div class="mb-2">
             <b-list-group-item><b>Health Service Access</b></b-list-group-item>
-            <router-link to="/dashboard/Health_Facility" target="_blank">
+            <router-link to="/dashboard/Health_Facility_Input" target="_blank">
               <b-list-group-item>Health Facility Survey</b-list-group-item>
             </router-link>
           </div>

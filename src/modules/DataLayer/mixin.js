@@ -99,8 +99,9 @@ export default {
       // i could do this in individual component when making request with the
       // function by after this it will after all at once
       const query = queryObject;
-      if (!has(query, 'value_type')) {
-        debugger;
+      if (query.datasource === 25) {
+        query.value_type = 1;
+      } else if (!has(query, 'value_type')) {
         const datasource = this.dlGetDataSource(query.datasource);
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
         const valuetype = this.hardCordedValueType.filter(
