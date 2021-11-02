@@ -155,7 +155,7 @@ export default {
       handler(newValue) {
         this.$emit('data:options', newValue);
       },
-      immediate: false,
+      immediate: true,
       deep: true,
     },
   },
