@@ -87,9 +87,9 @@ export default [
     title: 'Health Financing',
     indicators: [95, 96, 97, 98, 99, 100, 101, 102, 219, 220, 221, 222, 223, 224, 225],
     defaultIndicators: [95, 96, 224, 265], // an indicator ID and related indicators,
-    dataSources: [14, 9, 7],
+    dataSources: [14, 9, 7, 25],
     initialIndicator: 265,
-    initialDataSource: 14,
+    initialDataSource: 25,
     initialLocation: 1,
   },
   {
