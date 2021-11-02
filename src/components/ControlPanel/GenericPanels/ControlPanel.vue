@@ -103,7 +103,7 @@ export default {
   mixins: [ControlMixins],
   data() {
     return {
-      activeToggleButton: 'line',
+      activeToggleButton: 'state_map',
     };
   },
   components: {
