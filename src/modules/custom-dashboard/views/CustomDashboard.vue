@@ -36,8 +36,8 @@ export default {
 
   computed: {
     configObject() {
-      let ids = [];
-      let sourcesID = [];
+      const ids = [];
+      const sourcesID = [];
       // For setting the Indicators
       this.$store.getters.getprogramArea.map((element) => {
         if (element.parent.isChildSelected == true) {

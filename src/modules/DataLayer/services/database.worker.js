@@ -14,7 +14,6 @@ const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
 
-
 export default class DataBase {
   constructor() {
     this.db = dexie;
@@ -57,7 +56,6 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
-
     return this.db
       .transaction(
         'rw',

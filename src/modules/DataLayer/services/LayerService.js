@@ -96,7 +96,7 @@ export default class DataLayer {
          * now initializing other tables in the store from the database directly as against the
          * previous implementation
          */
-        console.log("finite ",data[0].data, LOCATION);
+        console.log('finite ', data[0].data, LOCATION);
         this.setDataInStore(data[6].data, DSI);
         this.setDataInStore(data[0].data, LOCATION);
         this.setDataInStore(data[1].data, INDICATORS);

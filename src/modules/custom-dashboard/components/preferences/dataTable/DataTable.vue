@@ -122,7 +122,7 @@
                     list-style: none;
                     display: inline-block;
                     font-size: 12px;
-                    
+
                     font-family: Work Sans;
                     margin-bottom: 0rem!important;
                   "

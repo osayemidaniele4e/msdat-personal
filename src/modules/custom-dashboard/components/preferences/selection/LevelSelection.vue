@@ -64,7 +64,7 @@ export default {
           }
         });
       });
-      console.log("level", levelArray);
+      console.log('level', levelArray);
       const LArray = [];
       for (const i in levelArray) {
         LArray.push(levelArray[i]);

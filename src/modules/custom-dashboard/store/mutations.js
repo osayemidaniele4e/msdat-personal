@@ -212,15 +212,15 @@ export default {
           let yearsDoesnotContain = '';
 
           // distinctYearsArray.map((distYear) => {
-            
+
           // });
           const foundData = child.years.find((year) => year.value == payload.value);
-            if (foundData == undefined) {
-              if (yearsDoesnotContain.length > 0) {
-                yearsDoesnotContain += ', ';
-              }
-              yearsDoesnotContain += payload.value;
+          if (foundData == undefined) {
+            if (yearsDoesnotContain.length > 0) {
+              yearsDoesnotContain += ', ';
             }
+            yearsDoesnotContain += payload.value;
+          }
           if (yearsDoesnotContain.length > 0) {
             msgs.push(`${child.short_name} has no ${yearsDoesnotContain}`);
           }
