@@ -1,13 +1,21 @@
 /* eslint-disable no-shadow */
-import { MutationTree } from 'vuex';
-import { State } from '../types/index';
 
-type setOptionsQuery = {
+import { MutationTree } from 'vuex';
+import { State, ControlPanelConfig } from '../types/index';
+
+type setOptionsPayload = {
   panelIndex: number,
-  groupIndex: number | null,
+  groupIndex: number,
   key: string,
   values: [] | string | number,
 }
+type setPayload = {
+  controlIndex: number,
+  groupIndex: number,
+  key: string,
+  value: [] | string | number,
+}
+
 export const state: State = {
   default: {
     indicator: 7,
@@ -36,19 +44,15 @@ export const mutations: MutationTree<State> = {
     state.controlConfig[payload.panelIndex].setup[payload.controlIndex].options = payload.values;
   },
 
-  SETUP_CONTROL_OPTIONS1: (state, {
-    panelIndex, groupIndex = null, key, values,
-  }) => {
-    if (groupIndex != null) {
-      const keyIndex = state.controlConfig[panelIndex].setup[groupIndex].findIndex(
-        (item) => item.key === key,
-      );
-      state.controlConfig[panelIndex].setup[groupIndex][keyIndex].options = values;
+  SETUP_CONTROL_OPTIONS1: (state, obj: setOptionsPayload) => {
+    const checkTheObject = state.controlConfig[obj.panelIndex].setup[0];
+    if (Array.isArray(checkTheObject)) {
+      const setUpArrayOfObject = state.controlConfig[obj.panelIndex].setup[obj.groupIndex];
+      const keyIndex = setUpArrayOfObject.findIndex((option) => option.key === obj.key);
+      state.controlConfig[obj.panelIndex].setup[obj.groupIndex][keyIndex].options = obj.values;
     } else {
-      const keyIndex = state.controlConfig[panelIndex].setup.findIndex(
-        (item) => item.key === key,
-      );
-      state.controlConfig[panelIndex].setup[keyIndex].options = values;
+      const keyIndex = state.controlConfig[obj.panelIndex].setup.findIndex((item) => item.key === obj.key);
+      state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj.values;
     }
   },
 
@@ -84,15 +88,12 @@ export const mutations: MutationTree<State> = {
   //   SET_DEFAULT: (state, { controlIndex, key, value }) => {
   //     state.controlConfig[controlIndex].defaults[key] = value;
   //   },
-  SET_PAYLOAD: (state, {
-    controlIndex, key, value, groupIndex = null,
-  }) => {
-    debugger;
-    if (groupIndex === null) {
-      state.controlConfig[controlIndex].payload[key] = value;
+  SET_PAYLOAD: (state, obj: setPayload) => {
+    if (Array.isArray(state.controlConfig[obj.controlIndex].payload[0])) {
+      state.controlConfig[obj.controlIndex].payload[obj.key] = obj.value;
     } else {
       // taking into consideration sections like multi-source comparison
-      state.controlConfig[controlIndex].payload[groupIndex][key] = value;
+      state.controlConfig[obj.controlIndex].payload[obj.groupIndex][obj.key] = obj.value;
     }
   },
 
@@ -101,7 +102,7 @@ export const mutations: MutationTree<State> = {
        * in other world create a control panel
        * @param {*} payload This should follow the the control panel object formatter
        */
-  ADD_CONTROL_PANEL: (state, payload) => {
+  ADD_CONTROL_PANEL: (state, payload: ControlPanelConfig) => {
     state.controlConfig.push(payload);
   },
 
@@ -115,7 +116,6 @@ export const mutations: MutationTree<State> = {
   SET_ALL_CONTROL_OPTIONS: (state, { key, payload }) => {
     state.controlConfig.forEach((controlPanel) => {
       if (!Array.isArray(controlPanel.setup[0])) {
-        debugger;
         controlPanel.setup.forEach((control) => {
           if (control.key === key) {
             // eslint-disable-next-line no-param-reassign

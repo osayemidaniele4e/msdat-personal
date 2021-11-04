@@ -1,3 +1,22 @@
+
+export interface State {
+    default: Defaults,
+    controlConfig: ControlPanelConfig[],
+}
+
+export interface SetupObject {
+    /**
+     * An  example of the setup object.
+     * */
+    visibility?: boolean,
+    type: 'dropdown' | 'checkbox' | 'toggle',
+    class?: string[],
+    dropdownProps?: object // an object of the multiselect dropdown,
+    label: string,
+    key: 'indicator' | 'location' | 'datasource' | 'year' | 'visualization' | 'target' | 'numdenum',
+    options: []
+}
+
 export interface ControlPanelConfig {
     /**
      * The name of the control panel.
@@ -5,21 +24,9 @@ export interface ControlPanelConfig {
      * */
 
     label: string;
-    setup: Array<SetupObject> | Array<SetupObject>[];
+    setup: Array<SetupObject> | SetupObject[][] | any;
     payload: PayloadObject[] | PayloadObject[][];
 
-}
-
-export interface SetupObject {
-    /**
-     * An  example of the setup object.
-     * */
-    type: 'dropdown' | 'checkbox' | 'toggle',
-    class?: string[],
-    dropdownProps?: object // an object of the multiselect dropdown,
-    label: string,
-    key: 'indicator' | 'location' | 'datasource' | 'year' | 'visualization' | 'target' | 'numdenum',
-    options: any[],
 }
 
 export interface PayloadObject {
@@ -41,9 +48,4 @@ export interface Defaults {
     datasource: number,
     location: number,
     year: string | null,
-}
-
-export interface State {
-    default: Defaults,
-    controlConfig: ControlPanelConfig[],
 }
