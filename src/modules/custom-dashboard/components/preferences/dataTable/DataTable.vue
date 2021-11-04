@@ -8,7 +8,7 @@
             style="
               text-align: center;
               font-size: 13px;
-              font-family: DM sans;
+              font-family: Work Sans;
               font-weight: normal;
             "
           >
@@ -19,7 +19,7 @@
             style="
               text-align: center;
               font-size: 13px;
-              font-family: DM sans;
+              font-family: Work Sans;
               font-weight: normal;
             "
           >
@@ -30,7 +30,7 @@
             style="
               text-align: center;
               font-size: 13px;
-              font-family: DM sans;
+              font-family: Work Sans;
               font-weight: normal;
             "
           >
@@ -41,7 +41,7 @@
             style="
               text-align: center;
               font-size: 13px;
-              font-family: DM sans;
+              font-family: Work Sans;
               font-weight: normal;
             "
           >
@@ -60,7 +60,7 @@
               padding-left: 23px;
               color: #000000;
               line-spacing: 21px;
-              font-family: DM-sans;
+              font-family: Work Sans;
               font-weight: bold;
             "
           >
@@ -70,7 +70,7 @@
         <template v-for="child in ind.children">
           <tr style="" v-if="child.selected" :key="child.id">
             <td
-              style="font-size: 12px; font-family: DM-Sans; padding-left: 19 px"
+              style="font-size: 12px; font-family: Work Sans; padding-left: 19 px"
             >
               {{ child.short_name }}
             </td>
@@ -86,7 +86,7 @@
                     list-style: none;
                     display: inline-block;
                     font-size: 12px;
-                    font-family: DM-Sans;
+                    font-family: Work Sans;
                     margin-bottom: 0rem!important;
                   "
                 >
@@ -105,7 +105,7 @@
                     list-style: none;
                     display: inline-block;
                     font-size: 12px;
-                    font-family: DM-Sans;
+                    font-family: Work Sans;
                     margin-bottom: 0rem!important;
                   "
                 >
@@ -122,12 +122,13 @@
                     list-style: none;
                     display: inline-block;
                     font-size: 12px;
-                    font-family: DM-Sans;
+                    
+                    font-family: Work Sans;
                     margin-bottom: 0rem!important;
                   "
                   v-if="year.selected"
                 >
-                  <li style="">
+                  <li style="width: 50px;">
                     {{ year.value }}
                   </li>
                 </ul>

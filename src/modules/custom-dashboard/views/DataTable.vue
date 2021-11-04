@@ -1,12 +1,12 @@
 <template>
   <b-container class="text-justify px-5" fluid>
     <template>
-    <h2 style="background-color: #f5f5f5; width: 546px; font-family: DM sans; font-size:23px; font-weight: bold ">
+    <h2 style="background-color: #f5f5f5; width: 546px; font-family: Work Sans; font-size:23px; font-weight: bold ">
       <span class="col-6">
       {{details.name}}
       </span>
     </h2>
-    <div style="background-color: #f5f5f5; width: 807px; font-family: DM sans; font-size: 14px;">
+    <div style="background-color: #f5f5f5; width: 807px; font-family: Work Sans; font-size: 14px;">
       <p class="col-12">
         {{details.description}}
       </p>
@@ -18,12 +18,12 @@
               ><p class="baseline">Save for Later</p>
             </b-col> -->
       <b-col cols="auto"
-        ><b-button class="editBtn" @click="backToPrefrence"
+        ><b-button style="font-family: Work Sans" class="editBtn" @click="backToPrefrence"
           >Edit Data Table</b-button
         ></b-col
       >
       <b-col cols="auto"
-        ><b-button @click="approveData" class="nextBtn"
+        ><b-button style="font-family: Work Sans" @click="approveData" class="nextBtn"
           >Next Page</b-button
         ></b-col
       >

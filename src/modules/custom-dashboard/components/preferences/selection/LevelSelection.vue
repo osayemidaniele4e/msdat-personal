@@ -1,6 +1,6 @@
 <template>
   <div style="height: 89px">
-    <b class="selection-header" style="font-size: 13px; font-family: DM sans"
+    <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
       >Level Selection</b
     ><br />
     <Card class="scroll" style="height: 89px">
@@ -23,7 +23,7 @@
           style="margin-left: 12px"
           class="checkbox"
         />
-        <span style="font-size: 12px; font-family: DM sans; margin-left: -4px">
+        <span style="font-size: 12px; font-family: Work Sans; margin-left: -4px">
           {{ level.value }}
         </span>
       </div>
@@ -57,12 +57,14 @@ export default {
           if (child.levels) {
             child.levels.map((level) => {
               if (level.value != undefined) {
-                levelArray[`level${level.value}`] = { ...level };
+                const levelValue = level.value.trim();
+                levelArray[`level${levelValue}`] = { ...level };
               }
             });
           }
         });
       });
+      console.log("level", levelArray);
       const LArray = [];
       for (const i in levelArray) {
         LArray.push(levelArray[i]);

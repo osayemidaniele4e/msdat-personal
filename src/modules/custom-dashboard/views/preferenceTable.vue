@@ -1,13 +1,13 @@
 <template>
   <b-container class="text-justify px-5" fluid>
-    <p style="font-size: 14px; font-family: DM sans">
+    <p style="font-size: 14px; font-family: Work Sans">
       <b>Select your preferences</b>
     </p>
-    <p style="font-size: 14px; font-family: DM sans; margin-top: -17px">
+    <p style="font-size: 14px; font-family: Work Sans; margin-top: -17px">
       Select the Program Areas, Data Sources, Period and Coverage Levels you are
       interested in.
     </p>
-    <p id="link-to-about" style="font-size: 13px; font-family: DM sans">
+    <p id="link-to-about" style="font-size: 13px; font-family: Work Sans">
       <b>View datasheet</b>- see all available data in database
     </p>
     <b-card>
@@ -35,16 +35,16 @@
         <b-col sm="12" lg="9">
           <data-table />
           <b-row align-h="end" class="text-right">
-            <b-col cols="auto" style="font-size: 13px; font-family: DM sans"
+            <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
               >Indicators: <b>{{ indicatorsCount }} Selected</b></b-col
             >
-            <b-col cols="auto" style="font-size: 13px; font-family: DM sans"
+            <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
               >Data Sources: <b>{{ dataSourceCount }} Selected</b></b-col
             >
-            <b-col cols="auto" style="font-size: 13px; font-family: DM sans"
+            <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
               >Period: <b>{{ yearsCount }} Years</b></b-col
             >
-            <b-col cols="auto" style="font-size: 13px; font-family: DM sans"
+            <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
               >Levels:
               <b v-for="level in selectedLevel" :key="level"
                 >{{ level }},</b
@@ -59,12 +59,12 @@
             "
           >
             <b-col class="align-baseline" cols="auto"
-              ><p class="baseline" style="font-size: 12.000004px">
+              ><p class="baseline" style="font-size: 12.000004px; font-family: Work Sans">
                 Save for Later
               </p>
             </b-col>
             <b-col cols="auto"
-              ><b-button @click="approveData" style="font-size: 12.000004px"
+              ><b-button @click="approveData" style="font-size: 12.000004px; font-family: Work Sans"
                 >approve Data</b-button
               ></b-col
             >
@@ -216,14 +216,14 @@ export default {
   border-color: #f3f3f3;
   max-height: 27.00000675px;
   color: #202020;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-weight: normal;
   font-size: 12.000003px;
 }
 .indicators {
   max-height: 27.00000675px;
   color: #202020;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-weight: normal;
   font-size: 12.000003px;
 }
@@ -245,7 +245,7 @@ div.scroll {
   font-size: 13.5px;
 }
 .table-responsive {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-weight: normal;
 }
 .b-table-top-row {

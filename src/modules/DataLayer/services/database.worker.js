@@ -14,6 +14,7 @@ const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
 
+
 export default class DataBase {
   constructor() {
     this.db = dexie;
@@ -56,6 +57,7 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
+
     return this.db
       .transaction(
         'rw',
@@ -73,7 +75,9 @@ export default class DataBase {
           await this.factors.bulkPut(data[5].data);
           await this.datasources.bulkPut(data[7].data);
         },
+
       )
+
       .catch((error) => {
         throw new Error(error);
       });

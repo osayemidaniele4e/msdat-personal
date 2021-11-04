@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b class="selection-header" style="font-size: 13px; font-family: DM sans;">Period Selection</b><br />
-    <small style="font-size: 13px;font-family: DM sans;">Select available years under each source</small>
+    <b class="selection-header" style="font-size: 13px; font-family: Work Sans;">Period Selection</b><br />
+    <small style="font-size: 13px;font-family: Work Sans;">Select available years under each source</small>
     <Card class="scroll" style="">
       <div
         v-for="(item, index) in distinctYears"
@@ -22,7 +22,7 @@
           style="margin-left: 12px"
           class="checkbox"
         />
-        <span style="font-size:12px; font-family: DM sans;">
+        <span style="font-size:12px; font-family: Work Sans;">
         {{ item.value }}
         </span>
       </div>

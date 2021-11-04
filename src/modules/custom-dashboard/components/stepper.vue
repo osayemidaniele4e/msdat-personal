@@ -112,14 +112,14 @@ export default {
 }
 .stepper-text {
   color: #000000;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-weight: normal;
   font-size: 11.250002813px;
 }
 .back {
   font-size: 15.00000375px;
   color: #000000;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-weight: normal;
 }
 .stepper-body {

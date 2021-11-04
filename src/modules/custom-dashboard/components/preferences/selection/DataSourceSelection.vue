@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b class="selection-header" style="font-size: 13px; font-family: DM sans"
+    <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
       >Data Source Selection</b
     ><br />
     <Card class="scroll" style="">
@@ -12,7 +12,7 @@
           <span
             style="
               font-weight: normal;
-              font-family: DM sans;
+              font-family: Work Sans;
               letter-spacing: 0px;
               color: #202020;
               padding-left: 13px;
@@ -52,7 +52,7 @@
             class="checkbox"
           />
           <span
-            style="font-size: 11px; font-family: DM sans; margin-left: -5px"
+            style="font-size: 11px; font-family: Work Sans; margin-left: -5px"
           >
             {{ item.datasource }}
           </span>

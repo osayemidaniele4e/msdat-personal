@@ -15,19 +15,21 @@
 <script>
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import config from './config/dashboard_config';
-
 export default {
   name: 'DynamicDashboard',
   components: {
     MSDAT: instance,
   },
   data() {
+    console.log('config', config);
     return {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
     };
   },
   mounted() {
+    // this.dashboardConfig.indicators = [2,3,4]
+    
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
     this.configObject = this.dashboardConfig.find((item) => item.name === name);

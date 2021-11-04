@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b class="selection-header" style="font-size: 13px; font-family: DM sans;">NOTES</b><br />
+    <b class="selection-header" style="font-size: 13px; font-family: Work Sans;">NOTES</b><br />
     <!-- <tempelate v-if="note.selected"> -->
     <div class="scroll" style="border: 0.5px solid #e3e3e3;">
       <div
@@ -10,7 +10,7 @@
           display: inline-block;
           justify-content: space-around;
           font-size: 13px;
-          font-family: DM sans;
+          font-family: Work Sans;
         "
       >
         -  {{ note }}

@@ -1,13 +1,13 @@
 <template>
   <b-container>
-    <h2 style="color: #202020">
+    <h2 style="color: #202020; font-family: Work Sans">
       Select your sections and arrange your widgets
     </h2>
     <br />
     <div v-for="value in values" :key="value">
       <input type="checkbox" name="dashboard" id="dashboard" />
       <label for="dashboard" class="fields">{{ value.fieldName }}</label>
-      <p style="width: 476px">
+      <p style="width: 476px; font-family: Work Sans">
         This section shows an overview of your dashboard. This is a brief
         description...
       </p>

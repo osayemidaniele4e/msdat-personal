@@ -251,6 +251,8 @@ import BaseMultiSourceSection from '../../components/sections/multi-source-compa
 import Onboarding from '../onboarding/onboarding';
 import TroubleShooting from '../../modules/troubleshooting/mixins';
 
+// config.indicators = [2,3,4]
+
 export default {
   mixins: [
     Loading,
@@ -362,6 +364,7 @@ export default {
     this.loading = false;
     // initializing data for dashboard
     try {
+      debugger
       await this.$DL.init({
         dashboardIndicators: this.indicators,
         defaultIndicators: this.defaultIndicators,

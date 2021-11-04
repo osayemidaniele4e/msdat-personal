@@ -35,7 +35,7 @@ export default [
       31,
       32,
     ],
-    defaultIndicators: [7, 6, 5],
+    defaultIndicators: [7, 2, 5],
     dataSources: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 15, 16],
     initialIndicator: 7,
     initialDataSource: 6,

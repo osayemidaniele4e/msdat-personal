@@ -188,12 +188,12 @@ export default {
 <style lang="scss" scoped>
 p {
   color: #202020;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif;
 }
 .welcome {
   font-weight: normal;
   font-size: 30px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif;
 }
 .form-control {
   background-color: #eaeaea;

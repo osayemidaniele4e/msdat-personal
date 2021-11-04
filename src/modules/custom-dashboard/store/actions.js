@@ -46,43 +46,44 @@ export default {
 
   // ******** Data Sources ********** //
 
-  // Load DataSources From API for the First time.
+    // Load DataSources From API for the First time.
   async loadDataSource({ commit, state }) {
-    if (state.SurveyArray.length == 0) {
-      await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
-        .then((res) => {
-          const { data } = res;
-          const array = data.map((dArea) => dArea.classification);
+    if(state.SurveyArray.length == 0){
+    await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
+      .then((res) => {
+        const { data } = res;
+        const array = data.map((dArea) => dArea.classification);
 
-          const distinctDataArray = [...new Set(array)];
-          const SurveyArray = [];
+        const distinctDataArray = [...new Set(array)];
+        const SurveyArray = [];
 
-          distinctDataArray.forEach(((distItem) => {
-            SurveyArray.push({
-              children: data.filter(
-                (x) => {
-                  if (x.classification === distItem) {
-                    x.selected = false;
-                    return x;
-                  }
-                },
-              ),
-              parent: distItem.toUpperCase(),
+        distinctDataArray.forEach(((distItem) => {
+          SurveyArray.push({
+            children: data.filter(
+              (x) => {
+                if(x.classification === distItem){
+                  x.selected = false
+                  return x;
+                }
 
-            });
+              }
+            ),
+            parent: distItem.toUpperCase(),
 
-            SurveyArray.sort((a, b) => {
-              const keyA = a.parent;
-              if (keyA == 'ROUTINE') return -1;
-              return 0;
-            });
+          });
+
+          SurveyArray.sort(function (a, b) {
+            var keyA = a.parent;
+            if (keyA == "ROUTINE") return -1;
+            return 0;
+          });
           // function SortArray(x, y){
           //   return x.parent.localeCompare(y.parent);
           // }
-          // SurveyArray = SurveyArray.sort(SortArray)
-          }));
-          commit('setDArea', SurveyArray);
-        }).catch((err) => (err));
+          // SurveyArray = SurveyArray.sort(SortArray) 
+        }));
+        commit('setDArea', SurveyArray);
+      }).catch((err) => (err));
     }
   },
 

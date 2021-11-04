@@ -211,17 +211,18 @@ export default {
         if (child.selected == true) {
           let yearsDoesnotContain = '';
 
-          distinctYearsArray.map((distYear) => {
-            const foundData = child.years.find((year) => year.value == distYear);
+          // distinctYearsArray.map((distYear) => {
+            
+          // });
+          const foundData = child.years.find((year) => year.value == payload.value);
             if (foundData == undefined) {
               if (yearsDoesnotContain.length > 0) {
                 yearsDoesnotContain += ', ';
               }
-              yearsDoesnotContain += distYear;
+              yearsDoesnotContain += payload.value;
             }
-          });
           if (yearsDoesnotContain.length > 0) {
-            msgs.push(`${child.short_name} does not contain ${yearsDoesnotContain}`);
+            msgs.push(`${child.short_name} has no ${yearsDoesnotContain}`);
           }
           state.notes = msgs;
         }

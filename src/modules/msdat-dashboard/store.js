@@ -53,7 +53,9 @@ export default {
      * control panel let give each panel and id
      */
     setControlOptions: (state, payload) => {
+   
       if (payload.multipleSetup) {
+        
         state.controlConfig[payload.panelIndex].setup[payload.controlIndex][
           payload.controlIndex2
         ].options = payload.values;

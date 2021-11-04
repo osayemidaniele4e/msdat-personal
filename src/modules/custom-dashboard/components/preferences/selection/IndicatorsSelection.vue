@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b class="selection-header" style="font-size: 13px; font-family: DM sans"
+    <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
       >Indicators Selection</b
     >
     <Card class="scroll" style="">
@@ -26,7 +26,7 @@
             style="
               font-weight: normal;
               font-size: 13px;
-              font-family: DM sans;
+              font-family: Work Sans;
               color: #202020;
               margin-left: -4px;
             "
@@ -63,7 +63,7 @@
               padding-left: 5 px;
               font-size: 12px ;
               margin-left: -4px;
-              font-family: DM sans;
+              font-family: Work Sans;
             "
           >
             {{ item.short_name }}
