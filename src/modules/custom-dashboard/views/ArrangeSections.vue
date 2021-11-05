@@ -59,9 +59,9 @@ export default {
     approveData() {
       this.$router.push('/my-custom-dashboard');
     },
-    isSelected(value){
+    isSelected(value) {
       return this.$store.state.MSDAT_STORE.fieldsToShow;
-    }
+    },
   },
 };
 </script>

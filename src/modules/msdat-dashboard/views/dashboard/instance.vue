@@ -113,8 +113,8 @@
                 <template #title>
 
                   <h5 class="font-weight-bold work-sans text-white">
-                    Indicator Overview 
-                  </h5> 
+                    Indicator Overview
+                  </h5>
                 </template>
                 <!-- lazy loading for each section starts here -->
                 <!-- the first section doesn't need the component
@@ -294,9 +294,9 @@ export default {
     LazyLoading,
   },
   computed: {
-    fieldVisiblity(){
+    fieldVisiblity() {
       return this.$store.state.MSDAT_STORE.fieldsToShow;
-    }
+    },
   },
   props: {
     initialIndicator: {

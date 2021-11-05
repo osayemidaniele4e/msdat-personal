@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { mapActions } from 'vuex';
-import { isDataYearly } from '@/util/helper';
 import { uniq } from 'lodash';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
+import { isDataYearly } from '@/util/helper';
 import BaseChart from '../../../../../components/Barchart/BaseBarChart.vue';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 import chartDownload from '../../../mixins/chart_download';
