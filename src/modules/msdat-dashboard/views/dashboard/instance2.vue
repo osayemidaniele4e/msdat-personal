@@ -143,22 +143,8 @@ import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 
 export default {
-  mixins: [],
   data() {
-    return {
-      position: 3,
-      BarChartOptions: {},
-      controlPanel: {},
-      lect: '',
-      BaseIndicatorOverviewProp: {},
-      datasetProps: {},
-      indicatorComparisonData: '',
-      MultiSourceCompareValue: [],
-      availableYears: [],
-      zonalAnalysis: {},
-      mapValues: {},
-      selectedMapName: null,
-    };
+    return {};
   },
   components: {
     BaseDashboard,
@@ -213,9 +199,7 @@ export default {
     this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
     this.ADD_CONTROL_PANEL(ICSConfig);
     this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-    setTimeout(() => {
-      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-    }, 10000);
+    this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
   },
 };
 </script>

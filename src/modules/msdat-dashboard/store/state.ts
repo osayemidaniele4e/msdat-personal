@@ -89,11 +89,13 @@ export const mutations: MutationTree<State> = {
   //     state.controlConfig[controlIndex].defaults[key] = value;
   //   },
   SET_PAYLOAD: (state, obj: setPayload) => {
-    if (Array.isArray(state.controlConfig[obj.controlIndex].payload[0])) {
-      state.controlConfig[obj.controlIndex].payload[obj.key] = obj.value;
-    } else {
-      // taking into consideration sections like multi-source comparison
-      state.controlConfig[obj.controlIndex].payload[obj.groupIndex][obj.key] = obj.value;
+    if (state.controlConfig[obj.controlIndex].payload) {
+      if (!Array.isArray(state.controlConfig[obj.controlIndex].payload)) {
+        state.controlConfig[obj.controlIndex].payload[obj.key] = obj.value;
+      } else {
+        // taking into consideration sections like multi-source comparison
+        state.controlConfig[obj.controlIndex].payload[obj.groupIndex][obj.key] = obj.value;
+      }
     }
   },
 
