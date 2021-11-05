@@ -115,7 +115,6 @@ export default {
         const locationValues = this.dlGetLocation(location);
         const locationID = locationValues.map((item) => item.id);
         const resultValue = await DB.queryDB(newQueryObject, locationID);
-        console.log('result', locationValues);
         return resultValue;
       }
 

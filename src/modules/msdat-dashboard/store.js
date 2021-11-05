@@ -7,6 +7,7 @@ import zonalAnalysisConfig from '@/modules/msdat-dashboard/components/sections/z
 export default {
   namespaced: true,
   state: {
+    fieldsToShow: true,
     default: {
       indicator: 7,
       datasource: 6,
@@ -27,6 +28,10 @@ export default {
       state.default.datasource = payload.datasource;
       state.default.location = payload.location;
     },
+
+    // fieldsVisibility(state,payload){
+    //   state.fieldsToShow = Math.random() > 0.9
+    // },
 
     ADD_DATA: (state, data) => {
       state.localData.push(data);

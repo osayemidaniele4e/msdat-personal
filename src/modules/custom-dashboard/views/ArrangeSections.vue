@@ -5,7 +5,7 @@
     </h2>
     <br />
     <div v-for="value in values" :key="value">
-      <input type="checkbox" name="dashboard" id="dashboard" />
+      <input type="checkbox" name="dashboard" id="dashboard" :checked="isSelected(value)"/>
       <label for="dashboard" class="fields">{{ value.fieldName }}</label>
       <p style="width: 476px; font-family: Work Sans">
         This section shows an overview of your dashboard. This is a brief
@@ -59,6 +59,9 @@ export default {
     approveData() {
       this.$router.push('/my-custom-dashboard');
     },
+    isSelected(value){
+      return this.$store.state.MSDAT_STORE.fieldsToShow;
+    }
   },
 };
 </script>

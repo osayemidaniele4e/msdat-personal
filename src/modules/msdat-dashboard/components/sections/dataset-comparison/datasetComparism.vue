@@ -144,6 +144,7 @@ export default {
             this.dlGetLocation(element.location).name,
             parseFloat(element.value),
           ]);
+          console.log('dataValues', dataValues);
 
           // This adds national to the top;
           // eslint-disable-next-line no-await-in-loop

@@ -104,16 +104,17 @@
         <!-- control Panels ends here  -->
 
         <div class="container-fluid lessVisible" v-if="cpIsLoading">
-          <div class="row observable" id="0" ref="0">
+          <div class="row observable" id="0" ref="0" v-if="fieldVisiblity == true">
             <div class="col-md-12">
               <base-sub-card
                 :backgroundColor="'#348481'"
                 class="my-2 shadow-sm"
               >
                 <template #title>
+
                   <h5 class="font-weight-bold work-sans text-white">
-                    Indicator Overview
-                  </h5>
+                    Indicator Overview 
+                  </h5> 
                 </template>
                 <!-- lazy loading for each section starts here -->
                 <!-- the first section doesn't need the component
@@ -127,7 +128,7 @@
               </base-sub-card>
             </div>
           </div>
-          <div class="row observable" id="1" ref="1">
+          <div class="row observable" id="1" ref="1"  v-if="fieldVisiblity == true" >
             <div class="col-md-12">
               <base-sub-card
                 :backgroundColor="'#348481'"
@@ -149,7 +150,7 @@
               </base-sub-card>
             </div>
           </div>
-          <div class="row observable" id="2" ref="2">
+          <div class="row observable" id="2" ref="2"  v-if="fieldVisiblity == true">
             <div class="col-md-12">
               <base-sub-card :backgroundColor="'#348481'">
                 <template #title>
@@ -165,7 +166,7 @@
               </base-sub-card>
             </div>
           </div>
-          <div class="row observable" id="3" ref="3">
+          <div class="row observable" id="3" ref="3"  v-if="fieldVisiblity == true">
             <div class="col-md-12">
               <base-sub-card
                 :backgroundColor="'#348481'"
@@ -187,7 +188,7 @@
               </base-sub-card>
             </div>
           </div>
-          <div class="row observable" id="4" ref="4">
+          <div class="row observable" id="4" ref="4"  v-if="fieldVisiblity == true" >
             <div class="col-md-12">
               <base-sub-card
                 :backgroundColor="'#348481'"
@@ -291,6 +292,11 @@ export default {
     Footer,
     ZonalAnalysisSection,
     LazyLoading,
+  },
+  computed: {
+    fieldVisiblity(){
+      return this.$store.state.MSDAT_STORE.fieldsToShow;
+    }
   },
   props: {
     initialIndicator: {
