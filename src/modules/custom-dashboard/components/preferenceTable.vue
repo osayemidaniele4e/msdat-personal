@@ -1,18 +1,21 @@
 <template>
   <b-container class="text-justify px-5" fluid>
-    <p><b>Select your preferences</b></p>
-    <p>
+    <p class="pl-lg-5"><b>Select your preferences</b></p>
+    <p class="pl-lg-5">
       Select the Program Areas, Data Sources, Period and Coverage Levels you are
       interested in.
     </p>
-    <p id="link-to-about">
+    <p id="link-to-about" class="pl-lg-5">
       <b>View datasheet</b>- see all available data in database
     </p>
     <b-card>
       <b-row>
-        <b-col sm="12" lg="3">
+        <b-col class="p-1" sm="12" lg="3">
           <SideSelection />
         </b-col>
+        <!-- <b-col class="col-sm-3half">
+          <div class="vl" lg="1"></div>
+        </b-col> -->
         <b-col sm="12" lg="9">
           <TheCustomTable />
           <b-row align-h="end" class="text-right work-sans">
@@ -79,7 +82,7 @@ export default {
   computed: {
     // selectAll:{
     //   get:function(){
-    //     return this.programAreaNIndicators ? th
+    //     return this.programAreaIndicators ? th
     //   }
     // }
   },
@@ -322,7 +325,13 @@ thead {
     display: none;
   }
 }
-
+.vl {
+  border-left: 1px solid #E3E3E3;
+  height: 100%;
+  width: 10px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
 .btn {
   background-color: #3f8994;
   color: #ffffff;

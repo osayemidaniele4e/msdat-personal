@@ -23,7 +23,6 @@ export const groupIndicator = (indicators, by) => {
     [by]: item[0],
     indicators: item[1],
   }));
-  console.log(multiSelectFormat);
 
   return multiSelectFormat;
 };
