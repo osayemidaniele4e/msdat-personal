@@ -106,6 +106,7 @@
           </tr>
 
           <!-- This loops  the the other indicator of the array of indicators -->
+          <!-- TODO: fix -->
           <template v-for="(indicatorData, index) in dataArray">
             <TableDataRow
               :key="indicatorData.indicator.id"
