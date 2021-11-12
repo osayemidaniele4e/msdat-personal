@@ -40,7 +40,7 @@ export default {
         id: 4,
         name: 'Multi-source Indicator Comparison',
       },
-    ]
+    ],
   },
 
   mutations,

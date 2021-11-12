@@ -42,15 +42,16 @@
         ><b-button class="SFL" disabled style="font-family: Work Sans">Save for Later</b-button></b-col
       >
     </b-row>
-        
+
   </b-container>
- 
+
 </template>
 <script>
-import DragableList from '../components/Custom-dashboard-sections/Dragable-List.vue'
+import DragableList from '../components/Custom-dashboard-sections/Dragable-List.vue';
+
 export default {
   components: {
-    DragableList
+    DragableList,
   },
   data() {
     return {

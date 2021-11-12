@@ -32,13 +32,13 @@ export default {
         initialDataSource: 0,
         initialLocation: 1,
       },
-      
+
     };
   },
 
   computed: {
-    fieldsArray(){
-      return this.$store.getters.arrangedSections
+    fieldsArray() {
+      return this.$store.getters.arrangedSections;
     },
     configObject() {
       const ids = [];

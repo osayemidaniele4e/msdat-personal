@@ -39,7 +39,7 @@ export default {
     changeScroll(refName) {
       console.log('abc', refName);
       const element = this.$refs[refName];
-      console.log('ref', this.$refs );
+      console.log('ref', this.$refs);
       console.log('el', element);
       const top = element.offsetTop || element[0].offsetTop;
       window.scrollTo({

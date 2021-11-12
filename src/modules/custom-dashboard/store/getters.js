@@ -55,7 +55,7 @@ export default {
   },
 
   // Arrangment of Sections
-  arrangedSections(state){
-    return state.ArrangedSections
-  }
+  arrangedSections(state) {
+    return state.ArrangedSections;
+  },
 };

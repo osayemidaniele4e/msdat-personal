@@ -164,7 +164,7 @@ export default {
   },
 
   // For Arrangment of Sections
-  arrangedSection({commit},payload){
-    commit('arrangedSections', payload)
-  }
+  arrangedSection({ commit }, payload) {
+    commit('arrangedSections', payload);
+  },
 };

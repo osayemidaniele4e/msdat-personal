@@ -24,7 +24,7 @@ export default {
   data() {
     console.log('config', config);
     return {
-      
+
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
     };

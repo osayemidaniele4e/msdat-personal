@@ -6,12 +6,12 @@ function move(items, oldIndex, newIndex) {
     ...items.slice(0, oldIndex),
     ...items.slice(oldIndex + 1, items.length),
   ];
-  let SortedArrayList = [
+  const SortedArrayList = [
     ...itemRemovedArray.slice(0, newIndex),
     items[oldIndex],
     ...itemRemovedArray.slice(newIndex, itemRemovedArray.length),
   ];
-  
+
   return SortedArrayList;
 }
 
@@ -30,17 +30,15 @@ export default {
   render() {
     return this.$scopedSlots.default({
       items: this.value,
-      
+
     });
-    
   },
   Watch: {
-    arrangedList(){
-      log('sad',this.SortedArrayList)
-    }
+    arrangedList() {
+      log('sad', this.SortedArrayList);
+    },
   },
   mounted() {
-    
     new Sortable(this.$el, {
       draggable: `.${this.itemClass}`,
       handle: `.${this.handleClass}`,
@@ -48,9 +46,9 @@ export default {
         constrainDimensions: true,
       },
     }).on('sortable:stop', ({ oldIndex, newIndex }) => {
-      let moveData = move(this.value, oldIndex, newIndex)
+      const moveData = move(this.value, oldIndex, newIndex);
       this.$emit('input', moveData);
-      this.$store.dispatch('arrangedSection',moveData);
+      this.$store.dispatch('arrangedSection', moveData);
     });
   },
 };

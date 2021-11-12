@@ -121,6 +121,7 @@ c-346 1 -550 -2 -566 -8z"
 import SortableList from './sortableComponents/SortableList.vue';
 import SortableItem from './sortableComponents/SortableItem.vue';
 import SortableHandle from './sortableComponents/SortableHandle.vue';
+
 export default {
   components: {
     SortableList,
@@ -128,10 +129,10 @@ export default {
     SortableHandle,
   },
   computed: {
-    items(){
+    items() {
       return this.$store.getters.arrangedSections;
-    }
-  }
+    },
+  },
 };
 </script>
 

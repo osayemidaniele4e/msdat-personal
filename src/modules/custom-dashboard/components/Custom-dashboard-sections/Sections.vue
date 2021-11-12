@@ -139,6 +139,7 @@ import DataSetComparism from '../../../msdat-dashboard/components/sections/datas
 import BaseMultiSourceSection from '../../../msdat-dashboard/components/sections/multi-source-compare/BaseMultiSourceSection.vue';
 import Footer from '../../../msdat-dashboard/views/about/layout/theFooter.vue';
 import Onboarding from '../../../msdat-dashboard/views/onboarding/onboarding';
+
 export default {
   components: {
     BaseIndicatorOverview,

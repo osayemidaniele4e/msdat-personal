@@ -394,7 +394,7 @@ export default {
         const firstItem = 0;
         this.defaultYear = this.defaultYearDropdown[firstItem];
       }
-        // console.log('year', this.setYearDropdown())
+      // console.log('year', this.setYearDropdown())
       this.cpIsLoading = true;
       this.$nextTick(() => {
         this.startScroll();

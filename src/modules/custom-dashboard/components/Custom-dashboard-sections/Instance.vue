@@ -135,20 +135,20 @@ import {
   ControlPanel,
 } from '@/components/ControlPanel';
 import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
-import formatter from '../../../msdat-dashboard/mixins/formatter'; //'../../mixins/formatter';
-import controlPanelSetup from '../../../msdat-dashboard/mixins/control-panel-setup'; //'../../mixins/control-panel-setup';
-import BaseIndicatorOverview from '../../../msdat-dashboard/components/sections/indicator-overview/BaseIndicatorOverview.vue'; //'../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
-import BaseICS from '../../../msdat-dashboard/components/sections/indicator-comparism/BaseICS.vue'; //'../../components/sections/indicator-comparism/BaseICS.vue';
-import DataSetComparism from '../../../msdat-dashboard/components/sections/dataset-comparison/datasetComparism.vue'; //'../../components/sections/dataset-comparison/datasetComparism.vue';
-import tour from '../../../msdat-dashboard/views/onboarding/tour'; //'../onboarding/tour';
-import Header from '../../../msdat-dashboard/views/about/layout/theHeader.vue'; //'../about/layout/theHeader.vue';
+import formatter from '../../../msdat-dashboard/mixins/formatter'; // '../../mixins/formatter';
+import controlPanelSetup from '../../../msdat-dashboard/mixins/control-panel-setup'; // '../../mixins/control-panel-setup';
+import BaseIndicatorOverview from '../../../msdat-dashboard/components/sections/indicator-overview/BaseIndicatorOverview.vue'; // '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
+import BaseICS from '../../../msdat-dashboard/components/sections/indicator-comparism/BaseICS.vue'; // '../../components/sections/indicator-comparism/BaseICS.vue';
+import DataSetComparism from '../../../msdat-dashboard/components/sections/dataset-comparison/datasetComparism.vue'; // '../../components/sections/dataset-comparison/datasetComparism.vue';
+import tour from '../../../msdat-dashboard/views/onboarding/tour'; // '../onboarding/tour';
+import Header from '../../../msdat-dashboard/views/about/layout/theHeader.vue'; // '../about/layout/theHeader.vue';
 import Footer from '../../../msdat-dashboard/views/about/layout/theFooter.vue'; // '../about/layout/theFooter.vue';
-import scroll from '../../../msdat-dashboard/modules/onScroll/onscroll'; //'../../modules/onScroll/onscroll';
-import LazyLoading from '../../../msdat-dashboard/modules/onScroll/lazyLoading.vue'; //'../../modules/onScroll/lazyLoading.vue';
-import Loading from '../../../msdat-dashboard/mixins/loading'; //'../../mixins/loading';
-import BaseMultiSourceSection from '../../../msdat-dashboard/components/sections/multi-source-compare/BaseMultiSourceSection.vue'; //'../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
-import Onboarding from '../../../msdat-dashboard/views/onboarding/onboarding'; //'../onboarding/onboarding';
-import TroubleShooting from '../../../msdat-dashboard/modules/troubleshooting/mixins'; //'../../modules/troubleshooting/mixins';
+import scroll from '../../../msdat-dashboard/modules/onScroll/onscroll'; // '../../modules/onScroll/onscroll';
+import LazyLoading from '../../../msdat-dashboard/modules/onScroll/lazyLoading.vue'; // '../../modules/onScroll/lazyLoading.vue';
+import Loading from '../../../msdat-dashboard/mixins/loading'; // '../../mixins/loading';
+import BaseMultiSourceSection from '../../../msdat-dashboard/components/sections/multi-source-compare/BaseMultiSourceSection.vue'; // '../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
+import Onboarding from '../../../msdat-dashboard/views/onboarding/onboarding'; // '../onboarding/onboarding';
+import TroubleShooting from '../../../msdat-dashboard/modules/troubleshooting/mixins'; // '../../modules/troubleshooting/mixins';
 import Sections from './Sections.vue';
 // config.indicators = [2,3,4]
 
@@ -281,7 +281,7 @@ export default {
         defaultIndicators: this.defaultIndicators,
         dashboardDataSources: this.dataSources,
       });
-      
+
       this.loading = true;
 
       this.$store.commit('MSDAT_STORE/SET_INITIAL', {
