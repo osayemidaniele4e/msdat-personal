@@ -56,6 +56,7 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
+    
     return this.db
       .transaction(
         'rw',
@@ -73,9 +74,9 @@ export default class DataBase {
           await this.factors.bulkPut(data[5].data);
           await this.datasources.bulkPut(data[7].data);
         },
-
+        
       )
-
+      
       .catch((error) => {
         throw new Error(error);
       });

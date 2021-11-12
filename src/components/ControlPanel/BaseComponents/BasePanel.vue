@@ -49,6 +49,7 @@ export default {
   },
   methods: {
     changeControl(index) {
+      debugger;
       this.selectControl(index);
       this.$emit('showSection', index);
     },

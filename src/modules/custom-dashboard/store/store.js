@@ -19,6 +19,28 @@ export default {
     masterData: [],
     SurveyArray: [],
     notes: [],
+    ArrangedSections: [
+      {
+        id: 0,
+        name: 'Indicator Overview',
+      },
+      {
+        id: 1,
+        name: 'Zonal Analysis',
+      },
+      {
+        id: 2,
+        name: 'Indicator Comparsion - By Period',
+      },
+      {
+        id: 3,
+        name: 'Dataset Comparison',
+      },
+      {
+        id: 4,
+        name: 'Multi-source Indicator Comparison',
+      },
+    ]
   },
 
   mutations,

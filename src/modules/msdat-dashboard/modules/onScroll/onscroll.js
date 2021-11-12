@@ -6,10 +6,12 @@ export default {
   },
   methods: {
     showSection(index) {
+      debugger;
       const observedElements = document.querySelectorAll('.observable');
       // stop observer
       observedElements.forEach((el) => this.observer.unobserve(el));
       // scroll to section
+      // console.log('jjsx', index);
       this.changeScroll(index);
       // resume observer
       setTimeout(() => {
@@ -35,8 +37,11 @@ export default {
       document.querySelectorAll('.observable').forEach((el) => this.observer.observe(el));
     },
     changeScroll(refName) {
+      console.log('abc', refName);
       const element = this.$refs[refName];
-      const top = element.offsetTop;
+      console.log('ref', this.$refs );
+      console.log('el', element);
+      const top = element.offsetTop || element[0].offsetTop;
       window.scrollTo({
         top: top - 150,
         left: 0,

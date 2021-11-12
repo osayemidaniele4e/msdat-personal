@@ -1,5 +1,5 @@
 export default {
-  label: 'Zonal analysis',
+  label: 'Zonal Analysis',
   defaults: {
     indicator: null,
     dataSource: null,

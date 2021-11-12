@@ -103,121 +103,19 @@
         </div>
         <!-- control Panels ends here  -->
 
-        <div class="container-fluid lessVisible" v-if="cpIsLoading">
-          <div class="row observable" id="0" ref="0" >
-            <div class="col-md-12">
-              <base-sub-card
-                :backgroundColor="'#348481'"
-                class="my-2 shadow-sm"
-              >
-                <template #title>
-
-                  <h5 class="font-weight-bold work-sans text-white">
-                    Indicator Overview
-                  </h5>
-                </template>
-                <!-- lazy loading for each section starts here -->
-                <!-- the first section doesn't need the component
-                 since it will be mounted first -->
-                <template>
-                  <BaseIndicatorOverview
-                    v-if="BaseIndicatorOverviewProp"
-                    :controlPanelProps="BaseIndicatorOverviewProp"
-                  />
-                </template>
-              </base-sub-card>
-            </div>
+        <template v-for="field in this.fieldsArray">
+          <div :id="field.id" :ref="field.id" class="row observable" :key="field.id">
+            <Sections
+              :field="field"
+              :cpIsLoading="cpIsLoading"
+              :BaseIndicatorOverviewProp="BaseIndicatorOverviewProp"
+              :zonalAnalysis="zonalAnalysis"
+              :indicatorComparisonData="indicatorComparisonData"
+              :datasetProps="datasetProps"
+              :MultiSourceCompareValue="MultiSourceCompareValue"
+            />
           </div>
-          <div class="row observable" id="1" ref="1" >
-            <div class="col-md-12">
-              <base-sub-card
-                :backgroundColor="'#348481'"
-                class="my-2 shadow-sm"
-              >
-                <template #title>
-                  <h5 class="font-weight-bold work-sans text-white">
-                    Zonal Analysis Section
-                  </h5>
-                </template>
-                <template>
-                  <LazyLoading>
-                    <ZonalAnalysisSection
-                      v-if="zonalAnalysis"
-                      :controlPanelProps="zonalAnalysis"
-                    />
-                  </LazyLoading>
-                </template>
-              </base-sub-card>
-            </div>
-          </div>
-          <div class="row observable" id="2" ref="2">
-            <div class="col-md-12">
-              <base-sub-card :backgroundColor="'#348481'">
-                <template #title>
-                  <h5 class="font-weight-bold work-sans text-white">
-                    Indicator Comparison - By Period
-                  </h5>
-                </template>
-                <template>
-                  <LazyLoading>
-                    <BaseICS :controlPanelProps="indicatorComparisonData" />
-                  </LazyLoading>
-                </template>
-              </base-sub-card>
-            </div>
-          </div>
-          <div class="row observable" id="3" ref="3" >
-            <div class="col-md-12">
-              <base-sub-card
-                :backgroundColor="'#348481'"
-                class="my-2 shadow-sm"
-              >
-                <template #title>
-                  <h5 class="font-weight-bold work-sans text-white">
-                    Dataset Comparison
-                  </h5>
-                </template>
-                <template>
-                  <LazyLoading>
-                    <DataSetComparism
-                      v-if="datasetProps"
-                      :values="datasetProps"
-                    />
-                  </LazyLoading>
-                </template>
-              </base-sub-card>
-            </div>
-          </div>
-          <div class="row observable" id="4" ref="4" >
-            <div class="col-md-12">
-              <base-sub-card
-                :backgroundColor="'#348481'"
-                class="my-2 shadow-sm"
-              >
-                <template #title>
-                  <h5 class="font-weight-bold work-sans text-white">
-                    Multi-Source Indicator Comparison
-                  </h5>
-                </template>
-                <template>
-                  <div class="row">
-                    <template v-for="n in 3">
-                      <div :key="n" class="col-md-4">
-                        <LazyLoading>
-                          <BaseMultiSourceSection
-                            v-if="MultiSourceCompareValue[n - 1]"
-                            :controlPanelProps="MultiSourceCompareValue[n - 1]"
-                            :currentIndex="n - 1"
-                          />
-                        </LazyLoading>
-                      </div>
-                    </template>
-                  </div>
-                </template>
-              </base-sub-card>
-            </div>
-          </div>
-        </div>
+        </template>
         <!-- lazy loading ends here -->
 
         <Footer class="visible"> </Footer>
@@ -237,21 +135,21 @@ import {
   ControlPanel,
 } from '@/components/ControlPanel';
 import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
-import formatter from '../../mixins/formatter';
-import controlPanelSetup from '../../mixins/control-panel-setup';
-import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
-import BaseICS from '../../components/sections/indicator-comparism/BaseICS.vue';
-import DataSetComparism from '../../components/sections/dataset-comparison/datasetComparism.vue';
-import tour from '../onboarding/tour';
-import Header from '../about/layout/theHeader.vue';
-import Footer from '../about/layout/theFooter.vue';
-import scroll from '../../modules/onScroll/onscroll';
-import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
-import Loading from '../../mixins/loading';
-import BaseMultiSourceSection from '../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
-import Onboarding from '../onboarding/onboarding';
-import TroubleShooting from '../../modules/troubleshooting/mixins';
-
+import formatter from '../../../msdat-dashboard/mixins/formatter'; //'../../mixins/formatter';
+import controlPanelSetup from '../../../msdat-dashboard/mixins/control-panel-setup'; //'../../mixins/control-panel-setup';
+import BaseIndicatorOverview from '../../../msdat-dashboard/components/sections/indicator-overview/BaseIndicatorOverview.vue'; //'../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
+import BaseICS from '../../../msdat-dashboard/components/sections/indicator-comparism/BaseICS.vue'; //'../../components/sections/indicator-comparism/BaseICS.vue';
+import DataSetComparism from '../../../msdat-dashboard/components/sections/dataset-comparison/datasetComparism.vue'; //'../../components/sections/dataset-comparison/datasetComparism.vue';
+import tour from '../../../msdat-dashboard/views/onboarding/tour'; //'../onboarding/tour';
+import Header from '../../../msdat-dashboard/views/about/layout/theHeader.vue'; //'../about/layout/theHeader.vue';
+import Footer from '../../../msdat-dashboard/views/about/layout/theFooter.vue'; // '../about/layout/theFooter.vue';
+import scroll from '../../../msdat-dashboard/modules/onScroll/onscroll'; //'../../modules/onScroll/onscroll';
+import LazyLoading from '../../../msdat-dashboard/modules/onScroll/lazyLoading.vue'; //'../../modules/onScroll/lazyLoading.vue';
+import Loading from '../../../msdat-dashboard/mixins/loading'; //'../../mixins/loading';
+import BaseMultiSourceSection from '../../../msdat-dashboard/components/sections/multi-source-compare/BaseMultiSourceSection.vue'; //'../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
+import Onboarding from '../../../msdat-dashboard/views/onboarding/onboarding'; //'../onboarding/onboarding';
+import TroubleShooting from '../../../msdat-dashboard/modules/troubleshooting/mixins'; //'../../modules/troubleshooting/mixins';
+import Sections from './Sections.vue';
 // config.indicators = [2,3,4]
 
 export default {
@@ -278,6 +176,7 @@ export default {
       zonalAnalysis: {},
       mapValues: {},
       selectedMapName: null,
+      fieldsArray: [],
     };
   },
   components: {
@@ -292,6 +191,7 @@ export default {
     Footer,
     ZonalAnalysisSection,
     LazyLoading,
+    Sections,
   },
   computed: {
     fieldVisiblity() {
@@ -322,6 +222,10 @@ export default {
     defaultIndicators: {
       type: Array,
       required: false,
+    },
+    fields: {
+      type: Array,
+      required: true,
     },
   },
   methods: {
@@ -368,6 +272,7 @@ export default {
   },
   async mounted() {
     this.loading = false;
+    this.fieldsArray = this.fields;
     // initializing data for dashboard
     try {
       debugger;
@@ -376,7 +281,7 @@ export default {
         defaultIndicators: this.defaultIndicators,
         dashboardDataSources: this.dataSources,
       });
-
+      
       this.loading = true;
 
       this.$store.commit('MSDAT_STORE/SET_INITIAL', {
@@ -394,7 +299,7 @@ export default {
         const firstItem = 0;
         this.defaultYear = this.defaultYearDropdown[firstItem];
       }
-        // console.log('year', this.setYearDropdown())
+      // console.log('year', this.setYearDropdown())
       this.cpIsLoading = true;
       this.$nextTick(() => {
         this.startScroll();

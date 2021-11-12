@@ -8,12 +8,13 @@
       :initialIndicator="configObject.initialIndicator"
       :initialDataSource="configObject.initialDataSource"
       :initialLocation="configObject.initialLocation"
+      :fields="fieldsArray"
     />
   </div>
 </template>
 
 <script>
-import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
+import instance from '../components/Custom-dashboard-sections/Instance.vue';
 
 export default {
   components: {
@@ -31,10 +32,14 @@ export default {
         initialDataSource: 0,
         initialLocation: 1,
       },
+      
     };
   },
 
   computed: {
+    fieldsArray(){
+      return this.$store.getters.arrangedSections
+    },
     configObject() {
       const ids = [];
       const sourcesID = [];

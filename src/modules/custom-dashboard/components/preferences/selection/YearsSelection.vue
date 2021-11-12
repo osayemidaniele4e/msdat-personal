@@ -11,6 +11,7 @@
           justify-content: space-around;
           font-size: 13px;
         "
+        class=""
       >
         <input
           type="checkbox"
@@ -20,7 +21,7 @@
           :checked="isSelected(item)"
           @change="selectYear($event)"
           style="margin-left: 12px"
-          class="checkbox"
+          class="checkbox "
         />
         <span style="font-size:12px; font-family: Work Sans;">
         {{ item.value }}

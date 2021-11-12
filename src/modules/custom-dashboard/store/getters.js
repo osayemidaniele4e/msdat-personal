@@ -54,4 +54,8 @@ export default {
     return state.years;
   },
 
+  // Arrangment of Sections
+  arrangedSections(state){
+    return state.ArrangedSections
+  }
 };

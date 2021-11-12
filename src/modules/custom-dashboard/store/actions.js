@@ -162,4 +162,9 @@ export default {
   selectedLevels({ commit }, payload) {
     commit('selectedLevels', payload);
   },
+
+  // For Arrangment of Sections
+  arrangedSection({commit},payload){
+    commit('arrangedSections', payload)
+  }
 };

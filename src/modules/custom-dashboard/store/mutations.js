@@ -235,4 +235,11 @@ export default {
     state.selectedYears = payload;
   },
 
+  // For Arranging the Sections
+  arrangedSections(state,payload){
+    console.log('State O',state.ArrangedSections);
+    console.log('State P',payload);
+    state.ArrangedSections = payload
+  }
+
 };

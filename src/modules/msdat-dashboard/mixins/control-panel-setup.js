@@ -65,7 +65,7 @@ export default {
         location: locationID,
       });
       // debugger;
-      // console.log(data);
+      // console.log('data',data);
       const onlyYearData = data.filter((item) => {
         if (isDataYearly(item.period)) {
           return item.period;
@@ -88,7 +88,7 @@ export default {
   async mounted() {
     this.setDefaults();
     this.setUpControlPanelDropDown();
-    // await this.setYearDropdown();
+    //  await this.setYearDropdown();
     // this.cpIsLoading = true;
     // console.log(this.defaultYear);
     // console.log(defaultYearDropdown);
