@@ -6,14 +6,14 @@
         <div class="row">
           <div class="col-xl-6 col-12 coming_soon_content order-md-1 order-sm-2">
             <b-button class="btn btn-outline-primary disabled">COMING SOON</b-button>
-            <p class="mt-3 mb-4 tittle">Custom Dashboard</p>
+            <p class="mt-3 mb-4 tittle">Advanced Analytics</p>
 
             <div class="mb-5 mr-3">
               <p class="text-left mb-3 msg">
-                The MSDAT's custom dashboard enables users and organizations to build tailored
-                dashboards using already existing or primarily collected data. This feature allows
-                for users to conduct analysis of indicators using intuitive visualizations for
-                program monitoring and reporting.
+                The MSDAT Advanced analytics provides users with the ability to conduct advanced
+                comparisons and analyses of health indicators across the health systems framework.
+                With this resource, users can make valid statistical inferences based on the
+                available data.
               </p>
 
               <p class="text-left msg2">
@@ -57,13 +57,18 @@
           <div class="col-xl-6 col-12 bg-white order-md-2 order-sm-1" id="image">
             <div class="coming_soon_img">
               <img
-                src="../../../assets/img/Custom_Dashboard_Image.svg"
+                src="./asset/advanced_analytics.png"
+                class="img-fluid mb-2"
+                width="80%"
+                alt="State Profile Image"
+              />
+              <img
+                src="./asset/advanced_analytics1.png"
                 class="img-fluid"
                 width="80%"
                 alt="State Profile Image"
               />
             </div>
-            <!-- <div class="h-100 w-100 bg-light shadow-sm shimmerBG"></div> -->
           </div>
         </div>
       </div>
@@ -75,11 +80,11 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
-import theHeader from '../../msdat-dashboard/views/about/layout/theHeader.vue';
-import theFooter from '../../msdat-dashboard/views/about/layout/theFooter.vue';
+import theHeader from '../msdat-dashboard/views/about/layout/theHeader.vue';
+import theFooter from '../msdat-dashboard/views/about/layout/theFooter.vue';
 
 export default {
-  name: 'ComingSoon',
+  name: 'Advanced-Analytics',
   components: {
     theHeader,
     theFooter,
@@ -87,7 +92,7 @@ export default {
   data() {
     return {
       email: '',
-      dashboard: 'Custom Dashboard',
+      dashboard: 'Advanced Analytics',
       loading: false,
     };
   },
@@ -133,9 +138,6 @@ export default {
       }
     },
   },
-  // mounted() {
-  //   console.log(process.env.VUE_APP_API_TOKEN);
-  // },
 };
 </script>
 
@@ -188,45 +190,13 @@ div.content {
     min-height: inherit;
   }
   div.coming_soon_content {
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
   div.coming_soon_img {
-    margin-top: 5rem;
-    max-height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .shimmerBG {
-    animation-duration: 2.2s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: shimmer;
-    animation-timing-function: linear;
-    background: #ddd;
-    background: linear-gradient(to right, #f6f6f6 8%, #f0f0f0 18%, #f6f6f6 33%);
-    background-size: 1200px 100%;
-  }
-
-  @-webkit-keyframes shimmer {
-    0% {
-      background-position: -1200px 0;
-    }
-
-    100% {
-      background-position: 1200px 0;
-    }
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: -1200px 0;
-    }
-
-    100% {
-      background-position: 1200px 0;
-    }
+    flex-direction: column;
   }
 }
 
