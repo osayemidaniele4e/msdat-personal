@@ -25,10 +25,10 @@
                   <p v-else class="value"> <b>{{d.value  | commaValue}}</b></p>
                   <p class="source">Source: {{d.source}} {{d.year}}</p>
           </b-col>
-          <b-col cols="auto" class="text-right">
+          <b-col cols="auto" class="text-right" v-if="d.compare">
   <b-icon :icon= 'getChangeIcon()' :variant="pointer"></b-icon>
           </b-col>
-          <b-col cols="auto">
+          <b-col  v-if="d.compare" cols="auto">
             <p style="font-size: 11.50002625px">
            <b class="pr-1">{{d.change }}%</b>
 
@@ -88,7 +88,16 @@ export default {
   filters: {
     // Comma seperator for large numbers
     commaValue(num) {
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      if (num) {
+        const numParts = num.toString().split('.');
+        numParts[0] = numParts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        if (numParts[1]) {
+          const stringified = String(numParts[1]).slice(0, 3);
+          numParts[1] = Number(stringified);
+        }
+        return numParts.join('.');
+      }
+      return '';
     },
   },
   methods: {
@@ -116,13 +125,23 @@ export default {
         // Only performs further computations where data
         // is available
         if (this.data[i].data.length !== 0) {
-          // Sort returned results by latest year
-          this.data[i].data.sort((a, b) => b.period - a.period);
-          container.value = this.data[i].data[0].value;
-          container.year = this.data[i].data[0].period;
-          container.previousValue = this.data[i].data[1].value || null;
-          container.previousYear = this.data[i].data[1].period || null;
-          container.change = this.calcDiff(container);
+          if (this.data[i].data.length === 1) {
+            // In this scenario there is no
+            // previous data to compare it to
+            container.value = this.data[i].data[0].value;
+            container.year = this.data[i].data[0].period;
+            container.compare = false;
+          } else {
+            const fullYears = this.data[i].data.filter((value) => value.period.length === 4);
+            container.compare = true;
+            // Sort returned results by latest year
+            fullYears.sort((a, b) => b.period - a.period);
+            container.value = fullYears[0].value;
+            container.year = fullYears[0].period;
+            container.previousValue = fullYears[1]?.value || null;
+            container.previousYear = fullYears[1]?.period || null;
+            container.change = this.calcDiff(container);
+          }
         } else {
           container.value = 0;
           container.year = 'N/a';

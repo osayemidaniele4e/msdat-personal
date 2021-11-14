@@ -90,6 +90,10 @@
                 </b-col>
               </b-row>
             </template>
+             <b-dropdown-item
+              @click="navigateToState('National')"
+              >National</b-dropdown-item
+            >
             <b-dropdown-item
               @click="navigateToState(s.name)"
               v-for="s in this.states"
@@ -264,8 +268,19 @@ export default {
           name: 'Population estimate',
           indicatorId: 63,
           source: 'DSB',
-          sourceId: 19, // available
+          sourceId: 19,
           year: 2018,
+          value: 0,
+          previousValue: 0,
+          previousYear: 2015,
+          change: '+2',
+        },
+        {
+          name: 'Maternal mortality ratio',
+          indicatorId: 29,
+          source: 'NDHS',
+          sourceId: 6,
+          year: 2019,
           value: 0,
           previousValue: 0,
           previousYear: 2015,
