@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <genericModal
-      v-if="false"
+      v-if="overviewLoading"
       :noBackdrop="false"
       :showBackground="false"
       class="over"
@@ -667,11 +667,11 @@ export default {
   async mounted() {
     this.overviewLoading = true;
     const locate = await requests.allLocations();
+    this.allLocations = locate.data;
     const theDate = await requests.latestData();
     this.regularDateFormat = new Date(theDate.data).toLocaleDateString().replaceAll('/', '.');
     const dataSourceSpecifics = await requests.datasourceSpecific();
     this.indicatorDefinitions = dataSourceSpecifics.data;
-    this.allLocations = locate.data;
   },
 };
 </script>
