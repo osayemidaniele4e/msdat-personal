@@ -1,6 +1,7 @@
 import Vue from 'vue';
-import '@/components/ui-components/index';
+import '@/components/ui-components';
 import './scss/main.scss';
+import VueHtml2Canvas from 'vue-html2canvas';
 import DataLayer from '@/modules/DataLayer';
 import App from './App.vue';
 import './registerServiceWorker';
@@ -17,6 +18,7 @@ import './assets/styles/fonts.css';
 Vue.use(DataLayer, {
   store,
 });
+Vue.use(VueHtml2Canvas);
 
 Vue.config.productionTip = false;
 

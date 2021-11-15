@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy, uniq } from 'lodash';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
@@ -185,6 +185,7 @@ export default {
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
+      debugger;
       /**
        * ideas here
        * is to try all map out all the the search parameters required for the
@@ -204,7 +205,9 @@ export default {
             // The Object.assign help copy if Object before pushing it into the array
             // else it tends to push the same values again and again
             searchDataSource.value_type = valueType.id;
-            queryArray.push({ ...searchDataSource });
+            // eslint-disable-next-line prefer-object-spread
+            const queryCopy = Object.assign({}, searchDataSource);
+            queryArray.push(queryCopy);
           });
         } else {
           // The Object.assign help copy if Object before pushing it into the array
@@ -216,6 +219,7 @@ export default {
       const mappedRequest = queryArray.map((item) => this.dlQuery(item));
       const mappedResponse = await Promise.all(mappedRequest);
 
+      debugger;
       // mapping out all the years
       const allYears = [];
       mappedResponse.forEach((item) => {
@@ -268,12 +272,20 @@ export default {
     },
     async onSelectedSource(datasourceArray) {
       this.loading = true;
-      const valueType = [2, 4, 3];
+      // const valueType = [2, 4, 3];
+
+      // trying to get the value type
+      const datasource = this.dlGetDataSource(datasourceArray.id);
+      const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+      const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
+      // confidence range
+
       /**
        * Bear in mind the the confidence Range options is a
        * radio button so it only returns/ selectees a single Object
        * at a time
        */
+
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
         valueType,
@@ -289,7 +301,13 @@ export default {
       if (e === 'ON') {
         const [firstObject] = this.dataSourcesOptions;
         this.selectedDS = firstObject;
-        const valueType = [2, 4, 3];
+
+        // trying to get the value type
+        const datasource = this.dlGetDataSource(firstObject.id);
+        const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+        const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
+        // confidence range
+
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           [this.selectedDS],
           valueType,

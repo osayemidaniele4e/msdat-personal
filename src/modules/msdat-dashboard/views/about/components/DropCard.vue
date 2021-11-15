@@ -1,10 +1,21 @@
 <template>
   <div class="container-fluid card shadow dropdown-expanded work-sans">
     <div class="row p-3">
-      <div class="col-md-3 mb-3">
+      <div class="col mb-3">
+        <b-list-group>
+          <h5 class="text-underline">Population</h5>
+          <router-link to="/dashboard/Demographic"
+            ><b-list-group-item>Demographics</b-list-group-item></router-link
+          >
+          <router-link to="/coming-soon/gis_mapping" _target="_blank"
+            ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
+          >
+        </b-list-group>
+      </div>
+         <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Input</h5>
-          <router-link to="#"
+          <router-link to="/dashboard/Health_Facility_Input" target="_blank"
             ><b-list-group-item>Health Facility</b-list-group-item></router-link
           >
           <router-link to="/dashboard/Health_Financing" _target="_blank"
@@ -17,12 +28,12 @@
           >
         </b-list-group>
       </div>
-      <div class="col-md-3 mb-3">
+      <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outputs</h5>
           <div class="mb-2">
             <b-list-group-item><b>Health Service Access</b></b-list-group-item>
-            <router-link to="/dashboard/Health_Facility" target="_blank">
+            <router-link to="/dashboard/Health_Facility_Input" target="_blank">
               <b-list-group-item>Health Facility Survey</b-list-group-item>
             </router-link>
           </div>
@@ -58,7 +69,7 @@
           </div>
         </b-list-group>
       </div>
-      <div class="col-md-3 mb-3">
+      <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outcomes</h5>
           <router-link to="/dashboard/Health_Outcomes" target="_blank"
@@ -68,16 +79,13 @@
           >
         </b-list-group>
       </div>
-      <div class="col-md-3 mb-3">
+      <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link to="/coming-soon"
+          <router-link to="/coming-soon/custom_dashboard"
             ><b-list-group-item
               >Create New Dashboard</b-list-group-item
             ></router-link
-          >
-          <router-link to="/dashboard/Demographic" _target="_blank"
-            ><b-list-group-item>Demographics</b-list-group-item></router-link
           >
           <router-link to="#"
             ><b-list-group-item>Health Profiles</b-list-group-item></router-link
@@ -85,7 +93,7 @@
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
             ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
           >
-          <router-link to="#"
+          <router-link to="/coming-soon/advanced_analytics"
             ><b-list-group-item
               >Advanced Analytics</b-list-group-item
             ></router-link

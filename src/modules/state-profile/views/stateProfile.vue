@@ -1,7 +1,7 @@
 <template>
   <b-container>
-    <loadingModal
-      v-if="overviewLoading"
+    <genericModal
+      v-if="false"
       :noBackdrop="false"
       :showBackground="false"
       class="over"
@@ -14,7 +14,58 @@
           <h3 class="mr-4 mt-3">Fetching Data...</h3>
         </div>
       </div>
-    </loadingModal>
+    </genericModal>
+
+     <genericModal
+      v-if="shareModalShowing"
+      :noBackdrop="false"
+       class="over"
+      :showBackground="true"
+    >
+     <div class="share-modal">
+        <div class="top">
+          <h3 class="mr-4">SHARE PLATFORM</h3>
+        </div>
+        <div class="body">
+          <button class="social">
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://208.87.128.190:7070/state-profile/" target="_blank">
+            <img class="img-fluid"
+             src="@/assets/state-profile/img/linkedin.png" alt="linkedin-icon" />
+             </a>
+          </button>
+          <button class="social">
+            <a href="mailto:info@example.com?&subject=&cc=&bcc=&body=http://208.87.128.190:7070/state-profile/%0A"
+                target="_blank">
+              <img class="img-fluid"
+               src="@/assets/state-profile/img/email.png" alt="email-icon" />
+               </a>
+          </button>
+          <button class="social">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://208.87.128.190:7070/state-profile/" target="_blank">
+            <img class="img-fluid"
+             src="@/assets/state-profile/img/facebook.png" alt="facebook-icon" />
+            </a>
+          </button>
+           <button class="social">
+             <a href="https://twitter.com/intent/tweet?url=http://208.87.128.190:7070/state-profile/&text=" target="_blank">
+            <img class="img-fluid"
+            src="@/assets/state-profile/img/twitter.png" alt="twitter-icon" />
+            </a>
+          </button>
+          <button class="social link btn btn-outline-secondary" @click="copyTheLink">
+            <span>
+               <img class="img-fluid"
+               src="@/assets/state-profile/img/link.png" alt="link-icon" />
+            </span>
+            {{copyText}}
+          </button>
+        </div>
+        <div class="footer">
+          <button @click="toggleShareModal">CLOSE</button>
+        </div>
+      </div>
+    </genericModal>
+  <div ref="printMe" id="printMe">
     <b-row class="mt-4">
       <b-col cols="auto">
         <div>
@@ -51,9 +102,17 @@
       </b-col>
       <b-col cols="12" class="my-auto">
         <b-row align-h="end" class="mx-auto">
-          <p class="mr-3">Last Updated: 12.03.2020</p>
-          <share />
-          <print />
+          <p class="mr-3">Last Updated: {{this.regularDateFormat}}</p>
+          <b-button class="mr-4 share-button"
+            @click="toggleShareModal"
+          >
+            <img class="img-fluid" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
+            Share
+          </b-button>
+           <b-button class="print-button" @click="printing">
+      <img class="img-fluid" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
+      Print Profile
+    </b-button>
         </b-row>
       </b-col>
     </b-row>
@@ -71,6 +130,7 @@
       <PAoverview :state="state"
        @overviewLoading="setLoadingState"
         :locations="allLocations"
+        :indicatorDefinitions="indicatorDefinitions"
         :programArea="programArea"></PAoverview>
     </div>
     <p class="text-center final-text">
@@ -82,18 +142,18 @@
         ></span
       >
     </p>
+    </div>
   </b-container>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+// import { jsPDF } from 'jspdf';
 import * as requests from '../requests';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
-import share from '../components/share.vue';
-import print from '../components/print.vue';
 import dataMixins from '../../DataLayer/mixin';
-import loading from '../../msdat-dashboard/views/onboarding/modal.vue';
+import modalComponent from '../../msdat-dashboard/views/onboarding/modal.vue';
 
 export default {
   name: 'state-profile',
@@ -102,9 +162,7 @@ export default {
   components: {
     PAoverview: programAreaOverview,
     demographics,
-    share,
-    print,
-    loadingModal: loading,
+    genericModal: modalComponent,
   },
   created() {},
   computed: {
@@ -131,6 +189,36 @@ export default {
     },
   },
   methods: {
+    async printing() {
+      const el = this.$refs.printMe;
+      const options = {
+        type: 'dataURL',
+      };
+      const output = await this.$html2canvas(el, options);
+      const temp = document.createElement('a');
+      temp.href = output;
+      temp.download = 'StateProfile.png';
+      temp.click();
+      // eslint-disable-next-line new-cap
+      // const pdf = new jsPDF();
+      // pdf.html(document.getElementById('printMe'), {
+      //   callback(pdf) {
+      //     pdf.save();
+      //   },
+      // });
+    },
+    copyTheLink() {
+      navigator.clipboard.writeText('http://208.87.128.190:7070/state-profile/');
+      this.copyText = 'Link Copied!';
+    },
+    toggleShareModal() {
+      if (this.shareModalShowing) {
+        this.shareModalShowing = false;
+        this.copyText = 'Copy Link';
+      } else {
+        this.shareModalShowing = true;
+      }
+    },
     navigateToState(state) {
       // state.preventDefault()
       this.$router.push({ name: 'state-profile', params: { state } });
@@ -163,7 +251,11 @@ export default {
   data() {
     return {
       loading: true,
+      regularDateFormat: '12.03.2020',
+      copyText: 'Copy Link',
+      shareModalShowing: false,
       allLocations: [],
+      indicatorDefinitions: [],
       demographicData: [],
       incomingData: 0,
       overviewLoading: false,
@@ -243,20 +335,12 @@ export default {
             'This section includes a set of indicators along the continuum of care - from pre-pregnancy to childhood. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS) and Nigeria Demographic and Health Survey (NDHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
+
           chartTitle:
             'Coverage for key interventions across the continuum of care',
           colors: [
             '#EBF4F1',
+            '#2c9f35',
             '#054A80',
             '#2C8CCA',
             '#3F7299',
@@ -322,16 +406,6 @@ export default {
           detail:
             'This section includes a set of nutirion indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: 'Coverage for key interventions in Nutrition',
           colors: [
             '#F4F7EA',
@@ -375,16 +449,6 @@ export default {
             'This section includes a set of immunization indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: 'Coverage for key interventions in Immunization',
           colors: [
             '#FBF0E4',
@@ -422,16 +486,7 @@ export default {
             'This section includes a set of malaria indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
+
           chartTitle: 'Coverage for key interventions in Malaria',
           colors: [
             '#ECF3EB',
@@ -476,16 +531,6 @@ export default {
             'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: 'Coverage for key interventions in HIV',
           colors: [
             '#FBE5EA',
@@ -522,23 +567,9 @@ export default {
           details:
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS)',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: 'Other Mortality Indicators',
           colors: [
             '#EAEAEA',
-            '#313131',
-            '#313131',
-            '#313131',
-            '#313131',
             '#313131',
           ],
           specificIndicators: [
@@ -569,22 +600,12 @@ export default {
           ],
         },
         {
-          name: 'Health Facility Survey',
+          name: 'Health Services',
           icon: 'hospital',
           details:
             'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
-          definitions: [
-            '- Modern contraceptive prevalence: Percentage of women who are married or in union using contraception (modern or traditional) out of all women of reproductive age (WRA)',
-            '- Antenatal care 4+ visits: Percentage of women who attended at least four antenatal care visits',
-            '- Skilled attendance at delivery or birth: Percentage of live births in the five years preceding survey assisted by a skilled health personnel',
-            '- Postnatal care coverage (mother):Percentage of women giving birth in the two years preceding survey who received a postnatal checkup within the first two days after birth',
-            '- Children <6 months who were exclusively breastfed: Percentage of infants 0-5 months of age who received only breast milk on the previous day and did not receive any other foods or liquids during the previous day',
-            '- DPT3/ Penta 3 coverage rate: Percentage of children 12-23 months who received the third dose of Pentavalent (DPT3) vaccination',
-            '- Children with diarrhoea who received treatment: Percentage of children under age five years who had diarrhea in the previous two weeks who received ORS and Zinc',
-            '- Vitamin A supplementation coverage: Percentage of children age 6-59 months who received at least one high-dose vitamin A supplement in the six months preceding survey For specific definitions, including numerator and denominator by source, see the Multisource Health Data Analytics Dashboard for details (https://msdat.fmohconnect.gov.ng).',
-          ],
           chartTitle: '',
           colors: ['rgba(5, 146, 189, 1)'],
           specificIndicators: [
@@ -631,13 +652,59 @@ export default {
   async mounted() {
     this.overviewLoading = true;
     const locate = await requests.allLocations();
+    const theDate = await requests.latestData();
+    this.regularDateFormat = new Date(theDate.data).toLocaleDateString().replaceAll('/', '.');
+    const dataSourceSpecifics = await requests.datasourceSpecific();
+    this.indicatorDefinitions = dataSourceSpecifics.data;
     this.allLocations = locate.data;
   },
 };
 </script>
 
 <style lang="scss">
+.modal-body{
+  padding: 0;
+  button.social{
+    background-color: transparent;
+    margin: 5px 10px;
+    color: #3a3a3a
+  }
+  button.social.link{
+    // border: 1px solid #3a3a3a;
+    img{
+      width: 16px;
+    }
+  }
+}
+.share-modal{
+  .top, .footer{
+    background-color: #d6cfcf;
+    padding: 15px 25px;
+  }
+  button{
+    font-size: 17px;
+    padding: 5px;
+  }
+  .body{
+    padding: 25px 20px;
+    img{
+      width: 32px;
+    }
+  }
+}
 .state-select {
+  color: #3a3a3a;
+}
+.print-button {
+  background-color: #f2f2f2;
+  border: 1px solid #cccccc;
+  height: 38.250103125px;
+  color: #3a3a3a;
+}
+.share-button {
+  background-color: #f2f2f2;
+  border: 1px solid #cccccc;
+  height: 38.250103125px;
   color: #3a3a3a;
 }
 p.final-text {

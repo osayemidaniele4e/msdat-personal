@@ -32,6 +32,7 @@ export default [
   {
     path: '/coming-soon',
     name: 'ComingSoon',
-    component: () => import('./views/comingSoon.vue'),
+    // component: () => import('./views/comingSoon.vue'),
+    component: () => import('../coming-soon/custom_dashboard.vue'),
   },
 ];

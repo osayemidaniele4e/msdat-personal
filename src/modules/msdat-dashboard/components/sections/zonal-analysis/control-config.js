@@ -14,7 +14,7 @@ export default {
         // multiple: true,
         'group-values': 'indicators',
         'group-label': 'program_area',
-        label: 'short_name',
+        label: 'full_name',
       },
       label: 'indicator',
       key: 'indicator',

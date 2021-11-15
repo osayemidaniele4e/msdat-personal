@@ -6,7 +6,7 @@
         <div class="row">
           <div class="col-xl-6 col-12 coming_soon_content order-md-1 order-sm-2">
             <b-button class="btn btn-outline-primary disabled">COMING SOON</b-button>
-            <p class="mt-3 mb-4 tittle">GIS Dashboards</p>
+            <p class="mt-3 mb-4 tittle">GIS Mapping</p>
 
             <div class="mb-5 mr-3">
               <p class="text-left mb-3 msg">
@@ -56,10 +56,16 @@
           <div class="col-xl-6 col-12 bg-white order-md-2 order-sm-1" id="image">
             <div class="coming_soon_img">
               <img
-                src="../../assets/img/Custom_Dashboard_Image.svg"
-                class="img-fluid"
+                src="./asset/gis.png"
+                class="img-fluid shadow-sm mb-3"
                 width="80%"
-                alt="State Profile Image"
+                alt="Gis Mapping Image1"
+              />
+              <img
+                src="./asset/gis2.png"
+                class="img-fluid shadowm-sm mb-1"
+                width="80%"
+                alt="Gis Mapping Image2"
               />
             </div>
           </div>
@@ -77,7 +83,7 @@ import theHeader from '../msdat-dashboard/views/about/layout/theHeader.vue';
 import theFooter from '../msdat-dashboard/views/about/layout/theFooter.vue';
 
 export default {
-  name: 'Gis_ComingSoon',
+  name: 'Gis-Mapping',
   components: {
     theHeader,
     theFooter,
@@ -183,45 +189,13 @@ div.content {
     min-height: inherit;
   }
   div.coming_soon_content {
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
   div.coming_soon_img {
-    margin-top: 5rem;
-    max-height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .shimmerBG {
-    animation-duration: 2.2s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: shimmer;
-    animation-timing-function: linear;
-    background: #ddd;
-    background: linear-gradient(to right, #f6f6f6 8%, #f0f0f0 18%, #f6f6f6 33%);
-    background-size: 1200px 100%;
-  }
-
-  @-webkit-keyframes shimmer {
-    0% {
-      background-position: -1200px 0;
-    }
-
-    100% {
-      background-position: 1200px 0;
-    }
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: -1200px 0;
-    }
-
-    100% {
-      background-position: 1200px 0;
-    }
+    flex-direction: column;
   }
 }
 

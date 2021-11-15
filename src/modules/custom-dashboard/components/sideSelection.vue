@@ -2,16 +2,14 @@
   <div>
     <b class="selection-header">indicators selection</b><br />
     <div class="scroll">
-      <div v-for="(p, index) in programAreaNIndicators" :key="index">
+      <div v-for="(p, index) in programAreaIndicators" :key="index">
         <div class="program-areas my-2">
-          <div class="form-check">
-            <!-- <input class="form-check-input" type="checkbox" /> -->
-            <label class="form-check-label" for="defaultCheck1">
-              {{ p.program_area }}
-            </label>
-          </div>
+          <b-form-checkbox v-model="fullProgramAreaSelected" :key="p.id" :value="p">
+            {{ p.program_area.toUpperCase() }}
+          </b-form-checkbox>
+          <span @click="toggleDropDown(p)" style="float: right; color: #D3D3D3;">▼</span>
         </div>
-        <b-form-group v-slot="{ ariaDescribedby }">
+        <b-form-group v-show="dropIsToggled(p)" v-slot="{ ariaDescribedby }">
           <b-form-checkbox
             v-for="option in p.indicators"
             v-model="indicatorsSelected"
@@ -30,7 +28,6 @@
       <div v-for="(c, index) in groupedDataSource" :key="index">
         <div class="program-areas my-2">
           {{ c.classification }}
-          <span style="float: right">▼</span>
         </div>
         <b-form-group v-slot="{ ariaDescribedby }">
           <b-form-checkbox
@@ -40,6 +37,7 @@
             :value="option"
             :aria-describedby="ariaDescribedby"
             inline
+            @change="setDatasourceAvailableYears(option)"
           >
             {{ option.datasource }}
           </b-form-checkbox>
@@ -48,18 +46,25 @@
     </div>
 
     <b class="selection-header">Period Selection</b><br />
+    <p>Select available years under each source</p>
     <div class="scroll">
-      <b-form-group v-slot="{ ariaDescribedby }">
-        <b-form-checkbox-group
-          id="checkbox-group-1"
-          v-model="periodSelected"
-          :options="periodOptions"
-          :aria-describedby="ariaDescribedby"
-          name="flavour-1"
-        ></b-form-checkbox-group>
-      </b-form-group>
+      <div v-for="(c, index) in dataSourceSelected" :key="index">
+        <div class="program-areas my-2">
+          {{ c.datasource }}
+          <span style="float: right">▼</span>
+        </div>
+        <b-form-group v-slot="{ ariaDescribedby }">
+          <b-form-checkbox-group
+            id="checkbox-group-1"
+            v-model="periodSelected"
+            :options="c.distinctYears"
+            :aria-describedby="ariaDescribedby"
+            name="flavour-1"
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </div>
     </div>
-
+    <!-- LEVEL SELECTION -->
     <b class="selection-header">Level Selection</b><br />
     <div class="scroll">
       <b-form-group v-slot="{ ariaDescribedby }">
@@ -71,6 +76,25 @@
         ></b-form-checkbox-group>
       </b-form-group>
     </div>
+    <!-- NOTES -->
+    <b class="selection-header">Notes</b><br />
+    <div class="mb-4 mb-lg-0">
+      <div id="notes">
+        <div v-for="(note, index) in notes" :key="index">
+          {{ note }}
+        </div>
+      </div>
+
+      <!-- <label for="notes" class="form-label"></label>
+      <input
+        type="text"
+        v-model="notes"
+        class="form-control"
+        id="notes"
+        :aria-describedby="notes"
+        readonly
+      /> -->
+    </div>
   </div>
 </template>
 
@@ -81,50 +105,25 @@ export default {
   mixins: [fetchData],
   data() {
     return {
-      periodOptions: [
-        '2020',
-        '2019',
-        '2018',
-        '2017',
-        '2016',
-        '2015',
-        '2014',
-        '2013',
-        '2012',
-        '2011',
-        '2010',
-        '2009',
-        '2008',
-        '2007',
-        '2006',
-        '2004',
-        '2003',
-        '2002',
-        '2001',
-        '2000',
-        '1999',
-        '1998',
-        '1997',
-        '1996',
-        '1995',
-        '1994',
-        '1993',
-        '1992',
-        '1991',
-      ],
       levelOptions: ['National', 'Zonal', 'LGA', 'State'],
+      expandedProgramAreas: [],
     };
   },
   computed: {
+    fullProgramAreaSelected: {
+      get() {
+        return this.$store.state.CUSTOM_DASHBOARD_STORE.fullProgramAreaSelected;
+      },
+      set(values) {
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setFullProgramAreaSelected', values);
+      },
+    },
     indicatorsSelected: {
       get() {
         return this.$store.state.CUSTOM_DASHBOARD_STORE.indicatorsSelected;
       },
       set(values) {
-        this.$store.commit(
-          'CUSTOM_DASHBOARD_STORE/setIndicatorSelected',
-          values,
-        );
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setIndicatorSelected', values);
       },
     },
     dataSourceSelected: {
@@ -132,8 +131,7 @@ export default {
         return this.$store.state.CUSTOM_DASHBOARD_STORE.dataSourceSelected;
       },
       set(values) {
-        this.$store.commit('CUSTOM_DASHBOARD_STORE/setDataSourceSelected',
-          values);
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setDataSourceSelected', values);
       },
     },
     periodSelected: {
@@ -151,6 +149,51 @@ export default {
       set(value) {
         this.$store.commit('CUSTOM_DASHBOARD_STORE/setLevelSelected', value);
       },
+    },
+    notes: {
+      get() {
+        return this.$store.state.CUSTOM_DASHBOARD_STORE.notes;
+      },
+      set(value) {
+        this.$store.commit('CUSTOM_DASHBOARD_STORE/setNotes', value);
+      },
+    },
+  },
+
+  watch: {
+    fullProgramAreaSelected(newValue) {
+      const indicators = [];
+      newValue.forEach(function e(programArea) {
+        this.push(...programArea.indicators);
+      }, indicators);
+      this.$store.commit('CUSTOM_DASHBOARD_STORE/setIndicatorSelected', indicators);
+    },
+    indicatorsSelected() {
+      this.setIndicatorAvailableYears();
+    },
+  },
+
+  methods: {
+    toggleDropDown(programArea) {
+      const index = this.expandedProgramAreas.indexOf(programArea);
+      if (index > -1) {
+        this.expandedProgramAreas.splice(index, 1);
+      } else {
+        this.expandedProgramAreas.push(programArea);
+      }
+    },
+    dropIsToggled(programArea) {
+      return this.expandedProgramAreas.includes(programArea);
+    },
+    generateNotes(indicators, unavailableYears) {
+      const notesArray = [];
+      indicators.forEach((indicator, index) => {
+        const indicatorUnavailableYears = unavailableYears[index];
+        const noteText = `- ${indicator} has no ${indicatorUnavailableYears} data`;
+        notesArray.push(noteText);
+        console.log(notesArray);
+      });
+      this.$store.commit('CUSTOM_DASHBOARD_STORE/setNotes', notesArray);
     },
   },
 };
@@ -185,6 +228,8 @@ div.scroll {
   overflow-y: auto;
   margin-bottom: 27.750006938px;
   max-height: 300px;
+  border: 2px solid #f3f3f3;
+  padding: 4px;
 }
 .selection-header {
   color: #202020;
@@ -228,7 +273,13 @@ thead {
   border-color: #3f8994;
   font-size: 15.00000375px;
 }
+.custom-control-label {
+  display: block !important;
+}
 #link-to-about {
   color: #1496b1;
+}
+#notes {
+  height: 15vh;
 }
 </style>

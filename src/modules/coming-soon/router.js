@@ -1,12 +1,24 @@
 export default [
   {
-    path: '/gis-mapping/coming-soon',
-    name: 'Gis_ComingSoon',
-    component: () => import('./GisMapping.vue'),
-  },
-  {
-    path: '/advanced-analytics/coming-soon',
-    name: 'AdvancedAnalytics_ComingSoon',
-    component: () => import('./AdvancedAnalytics.vue'),
+    path: '/coming-soon',
+    name: 'Index',
+    component: () => import('./index.vue'),
+    children: [
+      {
+        path: 'custom_dashboard',
+        name: 'Custom-Dashboard',
+        component: () => import('./custom_dashboard.vue'),
+      },
+      {
+        path: 'advanced_analytics',
+        name: 'Advanced-Analytics',
+        component: () => import('./advanced_analytics.vue'),
+      },
+      {
+        path: 'gis_mapping',
+        name: 'Gis-Mapping',
+        component: () => import('./gis_mapping.vue'),
+      },
+    ],
   },
 ];

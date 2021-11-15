@@ -6,14 +6,14 @@
         <div class="field-detail">
           <p>Give your dashboard a name</p>
           <b-form-input
-            v-model="text"
+            v-model="dashboardName"
             placeholder="Hint: It should be easy to understand"
           ></b-form-input>
         </div>
         <div class="field-detail">
           <p>Description of your dashboard</p>
           <b-form-input
-            v-model="text"
+            v-model="dashboardDescription"
             placeholder="Hint: Use easy to understand terms"
           ></b-form-input>
         </div>
@@ -74,6 +74,7 @@
 
 <script>
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
+// import axios from '@/plugins/axios';
 
 export default {
   name: 'dasboard-details',
@@ -83,6 +84,8 @@ export default {
   data() {
     return {
       selectedImage: null,
+      dashboardName: '',
+      dashboardDescription: '',
     };
   },
   mounted() {
@@ -95,6 +98,9 @@ export default {
     onUpload() {
       const fd = new FormData();
       fd.append('Image', this.selectedImage, this.selectedImage.name);
+    },
+    submitDashboardDetails() {
+      // post dashboard details to api endpoint here
     },
   },
 };

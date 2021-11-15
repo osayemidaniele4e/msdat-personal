@@ -192,6 +192,7 @@ export default {
       // SOMEONE NEEDS TO COME AND REFACTOR THIS IMPLEMENTATION ASAP
       default: () => [
         'NHMIS',
+        'NGF',
         'MICS',
         'NHWCP',
         'AAS',

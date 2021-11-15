@@ -94,16 +94,29 @@
 </template>
 
 <script>
-import ControlMixins from '@/components/ControlPanel/ControlMixins';
+// import ControlMixins from '@/components/ControlPanel/ControlMixins';
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
 
 export default {
-  mixins: [ControlMixins],
+  // mixins: [ControlMixins],
   data() {
     return {
-      activeToggleButton: 'line',
+      activeToggleButton: 'state_map',
+      payload: {
+        indicator: 'indicator 2',
+        location: '',
+        datasource: 'NHMIS 1',
+        year: '',
+        compareBy: '',
+        visualization: 'state_map',
+        target: {
+          national: false,
+          sdg: false,
+        },
+        numdenum: false,
+      },
     };
   },
   components: {
@@ -137,6 +150,13 @@ export default {
     defaultDataSource(newValue) {
       console.log(newValue);
       this.payload.datasource = newValue;
+    },
+    payload: {
+      handler(newValue) {
+        this.$emit('data:options', newValue);
+      },
+      immediate: true,
+      deep: true,
     },
   },
 

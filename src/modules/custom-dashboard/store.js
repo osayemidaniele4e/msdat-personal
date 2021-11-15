@@ -11,6 +11,8 @@ export default {
     dataSourceSelected: [],
     periodSelected: [],
     levelSelected: [],
+    fullProgramAreaSelected: [],
+    notes: {},
   },
   mutations: {
     updateStep(state, payload) {
@@ -27,6 +29,12 @@ export default {
     },
     setLevelSelected(state, payload) {
       state.levelSelected = payload;
+    },
+    setFullProgramAreaSelected(state, payload) {
+      state.fullProgramAreaSelected = payload;
+    },
+    setNotes(state, payload) {
+      state.notes = payload;
     },
   },
   actions: {},
