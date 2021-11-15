@@ -56,7 +56,7 @@
             <b-list-group-item
               ><b>Surveillance Dashboards</b></b-list-group-item
             >
-            <router-link to="#"
+            <router-link to="/coming-soon/health_surveillance"
               ><b-list-group-item
                 >Health Surveillance</b-list-group-item
               ></router-link
