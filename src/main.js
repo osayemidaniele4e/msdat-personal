@@ -11,6 +11,7 @@ import './plugins/multiselect';
 import './plugins/vue-sweetalert/sweetalert';
 import router from './router';
 import store from './store';
+import './plugins/veevalidate';
 
 import './assets/styles/fonts.css';
 // import Vue from 'vue';
