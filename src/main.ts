@@ -13,6 +13,7 @@ import './plugins/vue-sweetalert/sweetalert';
 import 'vue-tableau';
 import router from './router';
 import store from './store';
+import './plugins/veevalidate';
 
 import './assets/styles/fonts.css';
 
