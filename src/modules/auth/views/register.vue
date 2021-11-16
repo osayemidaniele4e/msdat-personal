@@ -4,7 +4,8 @@
       <span class="header">Register your account</span>
     </b-row>
     <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
-      <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
+      <!-- <b-form slot-scope="{ validate }" @submit.prevent="validate().then(handleSubmit)"> -->
+        <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <b-row>
           <b-col style="margin-bottom: 28.5px;">
             <ValidationProvider
@@ -132,14 +133,16 @@
         </b-row>
         <b-row class="justify-content-center" style="margin-bottom: 17.25px;">
           <ValidationProvider
-            name="Confirm password"
-            rules="required|confirmed:password"
+            name="terms and conditions"
+            :rules="{ is: 'true' }"
             v-slot="validationContext"
           >
             <b-form-group>
               <b-form-checkbox
                 v-model="form.terms"
                 :state="getValidationState(validationContext)"
+                value=true
+                unchecked-value=false
               />
               <b-form-invalid-feedback>
                 {{ validationContext.errors[0] }}
@@ -187,7 +190,8 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log('hwhwhwhwhwhhww whwhwhwhwhw', this.form);
+      // console.log('hwhwhwhwhwhhww whwhwhwhwhw', this.form);
+      alert('Form submitted!');
     },
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
