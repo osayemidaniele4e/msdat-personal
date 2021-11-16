@@ -4,6 +4,7 @@
       >Data Source Selection</b
     ><br />
     <Card class="scroll" style="">
+      <TheLoader v-if="loading == true" />
       <div v-for="(items, idx) in heading" :key="idx">
         <div
           class="program-areas"
@@ -37,7 +38,7 @@
           <input
             type="checkbox"
             name=""
-            :id="item.id"
+            :id="item.datasource"
             :value="item.datasource"
             :checked="isSelected(item)"
             @click="
@@ -51,11 +52,18 @@
             "
             class="checkbox"
           />
-          <span
-            style="font-size: 11px; font-family: Work Sans; margin-left: -5px"
+          <label
+            :for="item.datasource"
+            style="
+              cursor: pointer;
+              font-size: 11px;
+              padding-left: 6px;
+              font-family: Work Sans;
+              margin-left: -5px;
+            "
           >
             {{ item.datasource }}
-          </span>
+          </label>
         </div>
       </div>
     </Card>
@@ -64,15 +72,20 @@
 
 <script>
 import Card from '../../Card.vue';
+import TheLoader from '../../Loading/TheLoader';
 
 export default {
   components: {
     Card,
+    TheLoader,
   },
   data() {
     return {};
   },
   computed: {
+    loading() {
+      return this.$store.getters.Datasourceloading;
+    },
     heading() {
       return this.$store.getters.getDataSource;
     },

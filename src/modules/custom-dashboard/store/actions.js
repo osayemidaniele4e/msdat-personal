@@ -12,6 +12,7 @@ export default {
 
   async loadIndicators({ commit, state }) {
     if (state.masterData.length == 0) {
+      state.loader.indicator = true;
       await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
         .then((res) => {
           const { data } = res;
@@ -39,9 +40,15 @@ export default {
 
             });
           }));
+          state.loader.indicator = false
           commit('setPArea', composedData);
-        }).catch((err) => (err));
+        }).catch((err) => {
+          (err);
+          state.loader.indicator = false
+        });
+        // commit('loading', Loading)
     }
+    // state.loader.indicators = false
   },
 
   // ******** Data Sources ********** //
@@ -49,6 +56,8 @@ export default {
   // Load DataSources From API for the First time.
   async loadDataSource({ commit, state }) {
     if (state.SurveyArray.length == 0) {
+      state.loader.datasource = true
+      // state.indicatorloading = true;
       await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
         .then((res) => {
           const { data } = res;
@@ -81,16 +90,21 @@ export default {
           // }
           // SurveyArray = SurveyArray.sort(SortArray)
           }));
+          state.loader.datasource = false;
           commit('setDArea', SurveyArray);
-        }).catch((err) => (err));
+        }).catch((err) => {
+          (err)
+          state.loader.datasource = false;
+        });
     }
   },
 
   // ******** Coverage Levels ********* //
 
-  async loadCoverageLevels({ commit }, payload) {
+  async loadCoverageLevels({ commit, state }, payload) {
     let levelsObj = {};
     if (payload.checked === true) {
+      state.loader.levels = true;
       await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
         .then((res) => {
           const { data } = res;
@@ -98,18 +112,22 @@ export default {
           // console.log(dataLevels);
           const levels = dataLevels.map((level) => ({ selected: false, value: level }));
           levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
+          // state.loader.levels = false;
         });
     } else {
+      state.loader.levels = false;
       levelsObj = { id: payload.id, Datalevels: [], checked: payload.checked };
     }
+    state.loader.levels = false;
     commit('getLevels', levelsObj);
   },
 
   // ********* For Years ******** //
 
-  async loadYears({ commit }, payload) {
+  async loadYears({ commit, state }, payload) {
     let dataObj = {};
     if (payload.checked === true) {
+      state.loader.years = true;
       await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
         .then((res) => {
           const { data } = res;
@@ -117,12 +135,14 @@ export default {
           dataObj = {
             id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
           };
+          state.loader.years = false;
         });
     } else {
       dataObj = {
         id: payload.id, childName: payload.child, years: [], parentName: payload.parent, checked: payload.checked,
       };
     }
+    state.loader.years = false;
     commit('getYears', dataObj);
   },
 

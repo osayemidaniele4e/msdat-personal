@@ -58,4 +58,18 @@ export default {
   arrangedSections(state) {
     return state.ArrangedSections;
   },
+
+  // Loader Component
+  Indicatorloading(state){
+    return state.loader.indicator
+  },
+  Datasourceloading(state){
+    return state.loader.datasource;
+  },
+  Levelsloading(state){
+    return state.loader.levels;
+  },
+  Yearsloading(state){
+    return state.loader.years;
+  }
 };

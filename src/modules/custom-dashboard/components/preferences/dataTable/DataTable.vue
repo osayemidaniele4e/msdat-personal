@@ -6,10 +6,11 @@
           <th
             class="col-3"
             style="
-              text-align: center;
+              text-align: left;
               font-size: 13px;
               font-family: Work Sans;
               font-weight: normal;
+              padding-left: 15px;
             "
           >
             INDICATORS
@@ -17,10 +18,11 @@
           <th
             class="col-3"
             style="
-              text-align: center;
+              text-align: left;
               font-size: 13px;
               font-family: Work Sans;
               font-weight: normal;
+              padding-left: 30px;
             "
           >
             DATA SOURCES
@@ -28,10 +30,11 @@
           <th
             class="col-3"
             style="
-              text-align: center;
+              text-align: left;
               font-size: 13px;
               font-family: Work Sans;
               font-weight: normal;
+              padding-left: 30px;
             "
           >
             LEVELS
@@ -39,10 +42,11 @@
           <th
             class="col-3"
             style="
-              text-align: center;
+              text-align: left;
               font-size: 13px;
               font-family: Work Sans;
               font-weight: normal;
+              padding-left: 30px;
             "
           >
             YEARS
@@ -70,28 +74,31 @@
         <template v-for="child in ind.children">
           <tr style="" v-if="child.selected" :key="child.id">
             <td
-              style="font-size: 12px; font-family: Work Sans; padding-left: 19 px"
+              style="
+                font-size: 12px;
+                font-family: Work Sans;
+                padding-left: 19 px;
+              "
             >
               {{ child.short_name }}
             </td>
             <td style="width: 350px">
               <template v-for="items in dataSources" class="">
-                <template v-for="item in items.children" >
-                <ul
-                  v-if="item.selected"
-                  class="col-4"
-                  :key="item.id"
-
-                  style="
-                    list-style: none;
-                    display: inline-block;
-                    font-size: 12px;
-                    font-family: Work Sans;
-                    margin-bottom: 0rem!important;
-                  "
-                >
-                  <li style="width: 60px">{{ item.datasource }}</li>
-                </ul>
+                <template v-for="item in items.children">
+                  <ul
+                    v-if="item.selected"
+                    class="col-4"
+                    :key="item.id"
+                    style="
+                      list-style: none;
+                      display: inline-block;
+                      font-size: 12px;
+                      font-family: Work Sans;
+                      margin-bottom: 0rem !important;
+                    "
+                  >
+                    <li style="width: 60px">{{ item.datasource }}</li>
+                  </ul>
                 </template>
               </template>
             </td>
@@ -106,7 +113,7 @@
                     display: inline-block;
                     font-size: 12px;
                     font-family: Work Sans;
-                    margin-bottom: 0rem!important;
+                    margin-bottom: 0rem !important;
                   "
                 >
                   <li style="width: 200px">{{ level.value }}</li>
@@ -124,11 +131,11 @@
                     font-size: 12px;
 
                     font-family: Work Sans;
-                    margin-bottom: 0rem!important;
+                    margin-bottom: 0rem !important;
                   "
                   v-if="year.selected"
                 >
-                  <li style="width: 50px;">
+                  <li style="width: 50px">
                     {{ year.value }}
                   </li>
                 </ul>

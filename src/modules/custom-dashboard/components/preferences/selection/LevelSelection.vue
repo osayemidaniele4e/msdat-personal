@@ -4,6 +4,7 @@
       >Level Selection</b
     ><br />
     <Card class="scroll" style="height: 89px">
+      <TheLoader v-if="loading == true" />
       <div
         v-for="(level, index) in distinctLevels"
         :key="index"
@@ -16,16 +17,25 @@
       >
         <input
           type="checkbox"
-          :id="index"
+          :id="level.value"
           :value="level.value"
           :checked="isSelect(level)"
           @click="selectLevel($event)"
           style="margin-left: 12px"
           class="checkbox"
         />
-        <span style="font-size: 12px; font-family: Work Sans; margin-left: -4px">
+        <label
+          :for="level.value"
+          style="
+            cursor: pointer;
+            padding-left: 6px;
+            font-size: 12px;
+            font-family: Work Sans;
+            margin-left: -4px;
+          "
+        >
           {{ level.value }}
-        </span>
+        </label>
       </div>
     </Card>
   </div>
@@ -33,10 +43,12 @@
 
 <script>
 import Card from '../../Card.vue';
+import TheLoader from '../../Loading/TheLoader';
 
 export default {
   components: {
     Card,
+    TheLoader,
   },
   data() {
     return {
@@ -49,6 +61,9 @@ export default {
     };
   },
   computed: {
+    loading() {
+      return this.$store.getters.Levelsloading;
+    },
     distinctLevels() {
       const levelArray = [];
 

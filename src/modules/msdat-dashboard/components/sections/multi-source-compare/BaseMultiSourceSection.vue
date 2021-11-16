@@ -40,7 +40,7 @@ export default {
 
     'controlPanelProps.indicator': {
       async handler(newVal) {
-        debugger;
+        
         const available = await this.setYearDropdown(
           newVal.id,
           this.controlPanelProps.datasource.id,
@@ -92,7 +92,7 @@ export default {
   async mounted() {
     console.log('currentIndex', this.currentIndex);
     const setYearDropdown = await this.setYearDropdown();
-    // debugger;
+    // 
     this.SET_CONTROL_OPTIONS({
       multipleSetup: true,
       panelIndex: 4,

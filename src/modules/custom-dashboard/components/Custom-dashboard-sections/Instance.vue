@@ -275,7 +275,6 @@ export default {
     this.fieldsArray = this.fields;
     // initializing data for dashboard
     try {
-      debugger;
       await this.$DL.init({
         dashboardIndicators: this.indicators,
         defaultIndicators: this.defaultIndicators,
@@ -301,9 +300,9 @@ export default {
       }
       // console.log('year', this.setYearDropdown())
       this.cpIsLoading = true;
-      this.$nextTick(() => {
-        this.startScroll();
-      });
+      // this.$nextTick(() => {
+      //   this.startScroll();
+      // });
     } catch (error) {
       // This means it a dexies error
       if (!error.isAxiosError) {

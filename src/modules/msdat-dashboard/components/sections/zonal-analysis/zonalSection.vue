@@ -147,7 +147,7 @@ export default {
   watch: {
     controlPanelProps: {
       async handler(val) {
-        // debugger;
+        // 
         this.chart = {};
         this.loader = true;
         const data = await this.dlQuery({

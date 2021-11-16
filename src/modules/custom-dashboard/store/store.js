@@ -13,6 +13,14 @@ import getters from './getters';
 export default {
 
   state: {
+    loader: {
+      indicator: false,
+      datasource: false,
+      levels: false,
+      years: false
+
+    },
+    // loading: false,
     step: 0,
     dashboardDetails: {},
     rmnchs: [],

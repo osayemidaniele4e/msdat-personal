@@ -29,7 +29,7 @@
     </b-col>
     <br />
     </b-row>
-    <b-row align-h="start" class="mt-5 text-right">
+    <b-row align-h="end" class="mt-5 text-right">
       <!-- <b-col class="align-baseline" cols="auto"
               ><p class="baseline">Save for Later</p>
             </b-col> -->

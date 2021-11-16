@@ -159,7 +159,7 @@ export default {
 
         if (val) {
           for (let k = 0; k < options.yAxis.length; k += 1) {
-            debugger;
+            
             const nationalTarget = this.dlGetIndicator(
               this.values.indicator[k].id,
             ).national_target;
@@ -323,7 +323,7 @@ export default {
       }));
 
       const results = await Promise.all(dataPromises);
-      // debugger;
+      // 
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];

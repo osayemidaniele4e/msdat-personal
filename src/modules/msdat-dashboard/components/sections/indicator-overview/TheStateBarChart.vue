@@ -139,7 +139,7 @@ export default {
       } else {
         locationValue = { parent: location.id };
       }
-      // debugger;
+      // 
       const data = await this.dlQuery({
         datasource: datasource.id,
         indicator: indicator.id,

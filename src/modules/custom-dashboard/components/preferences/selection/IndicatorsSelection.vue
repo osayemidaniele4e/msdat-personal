@@ -4,84 +4,98 @@
       >Indicators Selection</b
     >
     <Card class="scroll" style="">
-      <div v-for="(items, idx) in heading" :key="idx" style="margin-top: -8px">
+      <TheLoader v-if=" loading == true" />
         <div
-          class="program-areas my-2"
-          style="background: #f3f3f3; font-size: 13px"
+          v-for="(items, idx) in heading"
+          :key="idx"
+          style="margin-top: -8px"
         >
-          <input
-            type="checkbox"
-            @click="
-              toggleAll(
-                $event,
-                items.children,
-                items.parent.value,
-                items.parent.selected
-              )
-            "
-            class="checkbox"
-            :checked="isAllSelected(items.parent)"
-          />
-          <span
-            style="
-              font-weight: normal;
-              font-size: 13px;
-              font-family: Work Sans;
-              color: #202020;
-              margin-left: -4px;
-            "
+          <div
+            class="program-areas my-2"
+            style="background: #f3f3f3; font-size: 13px"
           >
-            {{ items.parent.value }}
-          </span>
-          <span style="float: right">▼</span>
-        </div>
-        <div
-          v-for="(item, index) in items.children"
-          :key="index"
-          class="indicators"
-          style="margin-bottom: 3px; font-size: 13px"
-        >
-          <input
-            type="checkbox"
-            name=""
-            :id="item.id"
-            :value="item.short_name"
-            :checked="isSelected(item)"
-            @click="
-              selectIndicator(
-                $event,
-                items.parent.value,
-                item.id,
-                item.short_name,
-                item.selected
-              )
-            "
-            class="checkbox"
-          />
-          <span
-            style="
-              padding-left: 5 px;
-              font-size: 12px ;
-              margin-left: -4px;
-              font-family: Work Sans;
-            "
+            <input
+              type="checkbox"
+              :id="items.parent.value"
+              @click="
+                toggleAll(
+                  $event,
+                  items.children,
+                  items.parent.value,
+                  items.parent.selected
+                )
+              "
+              class="checkbox"
+              :checked="isAllSelected(items.parent)"
+            />
+            <label
+            :for="items.parent.value"
+              style="
+              cursor: pointer;
+                font-weight: normal;
+                font-size: 13px;
+                font-family: Work Sans;
+                color: #202020;
+                margin-left: -4px;
+              "
+            >
+              {{ items.parent.value }}
+            </label>
+            <span style="float: right">▼</span>
+          </div>
+          <div
+            v-for="(item, index) in items.children"
+            :key="index"
+            class="indicators"
+            style="margin-bottom: 3px; font-size: 13px"
           >
-            {{ item.short_name }}
-          </span>
+            <input
+              type="checkbox"
+              name="child"
+              :id="item.short_name"
+              :value="item.short_name"
+              :checked="isSelected(item)"
+              @click="
+                selectIndicator(
+                  $event,
+                  items.parent.value,
+                  item.id,
+                  item.short_name,
+                  item.selected
+                )
+              "
+              class="checkbox"
+            />
+            <label
+              :for="item.short_name"
+              style="
+                cursor: pointer;
+                padding-left: 5px;
+                font-size: 12px;
+                margin-left: -4px;
+                font-family: Work Sans;
+              "
+            >
+              {{ item.short_name }}
+            </label>
+          </div>
         </div>
-      </div>
+      <!-- </TheLoader> -->
     </Card>
   </div>
 </template>
 
 <script>
 import Card from '../../Card.vue';
+// import LazyLoading from '../../../../msdat-dashboard/modules/onScroll/lazyLoading.vue';
+import TheLoader from '../../Loading/TheLoader'
 
 export default {
   // props: ['heading','programArea'],
   // emits: ['IndicatorSelect'],
   components: {
     Card,
+    TheLoader,
   },
   data() {
     return {
@@ -99,6 +113,9 @@ export default {
     // programAreas(){
     //   return this.programArea;
     // },
+    loading(){
+      return this.$store.getters.Indicatorloading;
+    },
     heading() {
       return this.$store.getters.getprogramArea;
     },

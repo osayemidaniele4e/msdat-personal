@@ -3,6 +3,7 @@
     <b class="selection-header" style="font-size: 13px; font-family: Work Sans;">Period Selection</b><br />
     <small style="font-size: 13px;font-family: Work Sans;">Select available years under each source</small>
     <Card class="scroll" style="">
+      <TheLoader v-if="loading == true"/>
       <div
         v-for="(item, index) in distinctYears"
         :key="index"
@@ -16,16 +17,16 @@
         <input
           type="checkbox"
           name=""
-          :id="item"
+          :id="item.value"
           :value="item.value"
           :checked="isSelected(item)"
           @change="selectYear($event)"
           style="margin-left: 12px"
           class="checkbox "
         />
-        <span style="font-size:12px; font-family: Work Sans;">
+        <label :for="item.value" style="cursor: pointer;font-size:12px; font-family: Work Sans;">
         {{ item.value }}
-        </span>
+        </label>
       </div>
     </Card>
   </div>
@@ -33,11 +34,13 @@
 
 <script>
 import Card from '../../Card.vue';
+import TheLoader from '../../Loading/TheLoader'
 
 export default {
   // emits: ['show-notes'],
   components: {
     Card,
+    TheLoader
   },
   data() {
     return {
@@ -47,6 +50,9 @@ export default {
     };
   },
   computed: {
+    loading(){
+      return this.$store.getters.Yearsloading;
+    },
     distinctYears() {
       const yearsArray = [];
 

@@ -18,11 +18,19 @@ export default {
     state.step = payload;
   },
 
+  // loading(state,payload){
+  //   console.log('abc',payload);
+  // },
+
   dashboardDetails(state, payload) {
+    // log
     state.dashboardDetails = payload;
   },
 
   setPArea(state, payload) {
+    // console.log('loading',payload);
+    // state.loading = false;
+    // console.log('INd', payload);
     state.masterData = payload;
   },
 

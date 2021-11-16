@@ -127,7 +127,7 @@ export default {
         location: this.values.location.id,
       },
     ) {
-      debugger;
+      
       const chartSeriesArray = [];
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
@@ -221,7 +221,7 @@ export default {
        * radio button so it only returns/ selectees a single Object
        * at a time
        */
-      debugger;
+      
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
         valueType,
