@@ -34,13 +34,13 @@
 
 <script>
 import Card from '../../Card.vue';
-import TheLoader from '../../Loading/TheLoader'
+import TheLoader from '../../Loading/TheLoader';
 
 export default {
   // emits: ['show-notes'],
   components: {
     Card,
-    TheLoader
+    TheLoader,
   },
   data() {
     return {
@@ -50,7 +50,7 @@ export default {
     };
   },
   computed: {
-    loading(){
+    loading() {
       return this.$store.getters.Yearsloading;
     },
     distinctYears() {

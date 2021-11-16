@@ -60,16 +60,16 @@ export default {
   },
 
   // Loader Component
-  Indicatorloading(state){
-    return state.loader.indicator
+  Indicatorloading(state) {
+    return state.loader.indicator;
   },
-  Datasourceloading(state){
+  Datasourceloading(state) {
     return state.loader.datasource;
   },
-  Levelsloading(state){
+  Levelsloading(state) {
     return state.loader.levels;
   },
-  Yearsloading(state){
+  Yearsloading(state) {
     return state.loader.years;
-  }
+  },
 };

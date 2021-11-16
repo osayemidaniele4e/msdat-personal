@@ -36,7 +36,7 @@ export default {
       return sortBy(uniqueYears);
     },
     setUpControlPanelDropDown() {
-      // 
+      //
       this.defaultIndicatorDropdown = groupIndicator(this.dlGetAvailableIndicators, 'program_area');
       console.log(this.defaultIndicatorDropdown);
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
@@ -64,7 +64,7 @@ export default {
         datasource: dataSourceID,
         location: locationID,
       });
-      // 
+      //
       // console.log('data',data);
       const onlyYearData = data.filter((item) => {
         if (isDataYearly(item.period)) {
@@ -75,7 +75,7 @@ export default {
       const years = onlyYearData.map((item) => item.period);
       const unqiueYears = uniq(years);
       const sortedYears = unqiueYears.sort((a, b) => b - a);
-      // 
+      //
       // this.defaultYearDropdown = sortedYears;
       // if (sortedYears.length > 0) {
       //   const firstItem = 0;

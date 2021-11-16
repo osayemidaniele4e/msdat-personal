@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { mapActions } from 'vuex';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import ICS from './ICS.vue';
 
 export default {
@@ -95,7 +95,7 @@ export default {
   },
   async mounted() {
     const setYearDropdown = await this.setYearDropdown();
-    // 
+    //
     this.SET_CONTROL_OPTIONS({
       panelIndex: 2,
       controlIndex: 4,

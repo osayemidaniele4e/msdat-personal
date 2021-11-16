@@ -40,9 +40,9 @@
 
 <script>
 import { mapActions } from 'vuex';
+import moment from 'moment';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
-import moment from 'moment';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import chartDownload from '../../../mixins/chart_download';
 
@@ -159,7 +159,6 @@ export default {
 
         if (val) {
           for (let k = 0; k < options.yAxis.length; k += 1) {
-            
             const nationalTarget = this.dlGetIndicator(
               this.values.indicator[k].id,
             ).national_target;
@@ -323,7 +322,7 @@ export default {
       }));
 
       const results = await Promise.all(dataPromises);
-      // 
+      //
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];

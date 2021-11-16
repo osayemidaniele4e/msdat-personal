@@ -40,13 +40,13 @@ export default {
 
             });
           }));
-          state.loader.indicator = false
+          state.loader.indicator = false;
           commit('setPArea', composedData);
         }).catch((err) => {
           (err);
-          state.loader.indicator = false
+          state.loader.indicator = false;
         });
-        // commit('loading', Loading)
+      // commit('loading', Loading)
     }
     // state.loader.indicators = false
   },
@@ -56,7 +56,7 @@ export default {
   // Load DataSources From API for the First time.
   async loadDataSource({ commit, state }) {
     if (state.SurveyArray.length == 0) {
-      state.loader.datasource = true
+      state.loader.datasource = true;
       // state.indicatorloading = true;
       await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
         .then((res) => {
@@ -93,7 +93,7 @@ export default {
           state.loader.datasource = false;
           commit('setDArea', SurveyArray);
         }).catch((err) => {
-          (err)
+          (err);
           state.loader.datasource = false;
         });
     }

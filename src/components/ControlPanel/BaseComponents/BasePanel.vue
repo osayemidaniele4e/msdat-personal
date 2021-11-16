@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     changeControl(index) {
-      
       this.selectControl(index);
       this.$emit('showSection', index);
     },

@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy, uniq } from 'lodash';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
@@ -80,7 +80,6 @@ export default {
      * */
     'values.datasource': {
       async handler(selectedDataSource) {
-        
         this.loading = true;
         let dataSourceSelected = [];
         if (!Array.isArray(selectedDataSource)) {
@@ -180,12 +179,11 @@ export default {
         location: this.values.location.id,
       },
     ) {
-      
       const chartSeriesArray = [];
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
-      
+
       /**
        * ideas here
        * is to try all map out all the the search parameters required for the
@@ -219,7 +217,6 @@ export default {
       const mappedRequest = queryArray.map((item) => this.dlQuery(item));
       const mappedResponse = await Promise.all(mappedRequest);
 
-      
       // mapping out all the years
       const allYears = [];
       mappedResponse.forEach((item) => {
@@ -325,7 +322,7 @@ export default {
     },
   },
   mounted() {
-    // 
+    //
     // console.trace(this.values);
   },
 };

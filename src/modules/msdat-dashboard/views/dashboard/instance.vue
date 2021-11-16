@@ -370,7 +370,6 @@ export default {
     this.loading = false;
     // initializing data for dashboard
     try {
-      
       await this.$DL.init({
         dashboardIndicators: this.indicators,
         defaultIndicators: this.defaultIndicators,

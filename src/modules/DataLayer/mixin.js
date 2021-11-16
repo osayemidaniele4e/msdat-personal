@@ -100,7 +100,6 @@ export default {
       // function by after this it will after all at once
       const query = queryObject;
       if (!has(query, 'value_type')) {
-        
         const datasource = this.dlGetDataSource(query.datasource);
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
         const valuetype = this.hardCordedValueType.filter(

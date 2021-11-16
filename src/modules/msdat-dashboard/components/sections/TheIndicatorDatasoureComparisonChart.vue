@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy, uniq } from 'lodash';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '../../mixins/formatter';
 
@@ -127,7 +127,6 @@ export default {
         location: this.values.location.id,
       },
     ) {
-      
       const chartSeriesArray = [];
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
@@ -221,7 +220,7 @@ export default {
        * radio button so it only returns/ selectees a single Object
        * at a time
        */
-      
+
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
         valueType,

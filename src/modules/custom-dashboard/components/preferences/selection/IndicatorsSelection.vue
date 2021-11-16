@@ -88,7 +88,7 @@
 <script>
 import Card from '../../Card.vue';
 // import LazyLoading from '../../../../msdat-dashboard/modules/onScroll/lazyLoading.vue';
-import TheLoader from '../../Loading/TheLoader'
+import TheLoader from '../../Loading/TheLoader';
 
 export default {
   // props: ['heading','programArea'],
@@ -113,7 +113,7 @@ export default {
     // programAreas(){
     //   return this.programArea;
     // },
-    loading(){
+    loading() {
       return this.$store.getters.Indicatorloading;
     },
     heading() {

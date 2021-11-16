@@ -6,7 +6,6 @@ export default {
   },
   methods: {
     showSection(index) {
-      
       const observedElements = document.querySelectorAll('.observable');
       // stop observer
       observedElements.forEach((el) => this.observer.unobserve(el));

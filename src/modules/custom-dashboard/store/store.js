@@ -17,7 +17,7 @@ export default {
       indicator: false,
       datasource: false,
       levels: false,
-      years: false
+      years: false,
 
     },
     // loading: false,

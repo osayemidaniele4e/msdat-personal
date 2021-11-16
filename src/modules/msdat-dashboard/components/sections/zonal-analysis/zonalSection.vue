@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { mapActions } from 'vuex';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import chartDownload from '../../../mixins/chart_download';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 import { sortHighChartDataFormat } from '../../../mixins/util';
@@ -147,7 +147,7 @@ export default {
   watch: {
     controlPanelProps: {
       async handler(val) {
-        // 
+        //
         this.chart = {};
         this.loader = true;
         const data = await this.dlQuery({
