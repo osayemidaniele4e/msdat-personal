@@ -26,4 +26,9 @@ export default [
       },
     ],
   },
+  {
+    path: '/testing',
+    name: 'Testing',
+    component: () => import('./playground.vue'),
+  },
 ];
