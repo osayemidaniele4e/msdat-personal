@@ -3,7 +3,10 @@
     <div class="col-md-8">
       <div class="row">
         <div class="col-md-12">
-          <TableComponent :values="controlPanelProps" />
+          <TableComponent
+            :showTableRelatedIndicator="showTableRelatedIndicator"
+            :values="controlPanelProps"
+          />
         </div>
         <div class="col-md-12">
           <IDCC :values="controlPanelProps" />
@@ -30,16 +33,18 @@ export default {
       type: Object,
       required: true,
     },
+    showTableRelatedIndicator: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     IDCC,
     StateBarChart,
     TableComponent,
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
-<style>
-</style>
+<style></style>

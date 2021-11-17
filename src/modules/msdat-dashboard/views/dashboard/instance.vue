@@ -8,20 +8,26 @@
       :initialDataSource="initialDataSource"
       :initialLocation="initialLocation"
     >
+      <template v-slot:section-before-0>
+        <slot name="top-section"></slot>
+
+        <!-- </div> -->
+      </template>
       <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Indicator Overview
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Indicator Overview</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
                  since it will be mounted first -->
             <template>
               <ControlPanelConfiguration :controlIndex="controlIndex">
-                <BaseIndicatorOverview :controlPanelProps="payload" />
+                <BaseIndicatorOverview
+                  :showTableRelatedIndicator="showTableRelatedIndicator"
+                  :controlPanelProps="payload"
+                />
               </ControlPanelConfiguration>
             </template>
           </base-sub-card>
@@ -32,9 +38,7 @@
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Zonal Analysis
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -73,17 +77,12 @@
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Dataset Comparison
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Dataset Comparison</h5>
             </template>
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <DataSetComparison
-                    :values="payload"
-                    :controlIndex="controlIndex"
-                  />
+                  <DataSetComparison :values="payload" :controlIndex="controlIndex" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
@@ -104,14 +103,8 @@
                 <template v-for="n in 3">
                   <div :key="n" class="col-md-4">
                     <LazyLoading>
-                      <ControlPanelConfiguration
-                        :groupIndex="n - 1"
-                        :controlIndex="controlIndex"
-                      >
-                        <MultiSourceComponent
-                          :key="n"
-                          :values="payload[n - 1]"
-                        />
+                      <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="n" :values="payload[n - 1]" />
                       </ControlPanelConfiguration>
                     </LazyLoading>
                   </div>
@@ -181,12 +174,13 @@ export default {
       type: Array,
       required: false,
     },
+    showTableRelatedIndicator: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', [
-      'ADD_CONTROL_PANEL',
-      'CLEAR_CONTROL_PANEL',
-    ]),
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
   },
   created() {
     this.CLEAR_CONTROL_PANEL();
@@ -204,5 +198,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
