@@ -13,7 +13,22 @@
           ? configObject.showTableRelatedIndicator
           : true
       "
-    />
+    >
+      <template v-slot:top-section v-if="configObject.name === 'Demographic'">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Demographic</h5>
+            </template>
+            <template>
+              <main class="container main_field">
+                <Tableau :url="url" :width="width" ref="tableau"></Tableau>
+              </main>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+    </MSDAT>
   </div>
 </template>
 
@@ -30,6 +45,9 @@ export default {
     return {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
+      url: 'https://public.tableau.com/views/UpdatedDemographic1/Population',
+      width: '100vw',
+      height: '45vh',
     };
   },
   mounted() {
@@ -54,4 +72,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+main.main_field {
+  min-height: 45vh;
+  // display: flex;
+  // justify-content: center;
+  width: 100%;
+}
+</style>

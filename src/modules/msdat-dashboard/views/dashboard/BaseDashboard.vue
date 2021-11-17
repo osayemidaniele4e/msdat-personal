@@ -64,11 +64,13 @@
         <div class="container-fluid lessVisible">
           <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
             <div class="row observable" :id="index" :ref="index" :key="index">
+              <slot :name="`section-before-${index}`"></slot>
               <slot
                 :name="`section-${index}`"
                 :payload="controlPanel.payload"
                 :controlIndex="index"
               ></slot>
+              <slot :name="`section-after-${index}`"></slot>
             </div>
           </template>
         </div>

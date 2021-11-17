@@ -29,6 +29,7 @@
     "sweetalert2": "^11.1.5",
     "vee-validate": "^3.4.10",
     "vue": "^2.6.11",
+    "vue-friendly-iframe": "^0.20.0",
     "vue-highcharts": "0.1",
     "vue-html2canvas": "^0.0.4",
     "vue-multiselect": "^2.1.6",

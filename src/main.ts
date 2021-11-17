@@ -2,6 +2,7 @@ import Vue from 'vue';
 import '@/components/ui-components';
 import './scss/main.scss';
 import VueHtml2Canvas from 'vue-html2canvas';
+import VueFriendlyIframe from 'vue-friendly-iframe';
 import DataLayer from '@/modules/DataLayer';
 import App from './App.vue';
 import './registerServiceWorker';
@@ -14,6 +15,9 @@ import router from './router';
 import store from './store';
 
 import './assets/styles/fonts.css';
+
+Vue.use(VueFriendlyIframe);
+
 // import Vue from 'vue';
 
 Vue.use(DataLayer, {
