@@ -1,11 +1,5 @@
 export default {
   label: 'Zonal analysis',
-  defaults: {
-    indicator: null,
-    dataSource: null,
-    location: null,
-    year: null,
-  },
   setup: [
     {
       type: 'dropdown',
@@ -57,4 +51,17 @@ export default {
       key: 'target',
     },
   ],
+  payload: {
+    indicator: 'indicator 2',
+    location: '',
+    datasource: 'NHMIS 1',
+    year: '',
+    compareBy: '',
+    visualization: 'state_map',
+    target: {
+      national: false,
+      sdg: false,
+    },
+    numdenum: false,
+  },
 };

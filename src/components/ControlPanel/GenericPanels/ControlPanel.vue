@@ -11,39 +11,34 @@
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
           v-if="values.type === 'dropdown'"
-          v-model="payload[values.key]"
+          :value="payload[values.key]"
+          @input="updatePayload($event, values.key)"
           :options="values.options"
           :multiSelectProps="values.dropdownProps"
         />
         <!-- </div> -->
-        <toggle
-          v-if="values.type === 'toggle'"
-          @change="payload[values.key] = $event"
-        />
+        <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
 
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->
           <div class="d-flex">
-            <BaseCheckbox @input="payload.target.national = $event" />
+            <BaseCheckbox
+              @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')"
+            />
             <p class="check-label ml-1">National</p>
           </div>
           <!-- SDG Target here -->
           <div class="d-flex ml-3">
-            <BaseCheckbox @input="payload.target.sdg = $event" />
+            <BaseCheckbox
+              @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')"
+            />
             <p class="check-label ml-1">SDG</p>
           </div>
         </div>
-        <div
-          v-if="values.type === 'visualization'"
-          class="btn-group d-flex"
-          role="group"
-        >
+        <div v-if="values.type === 'visualization'" class="btn-group d-flex work-sans" role="group">
           <button
             type="button"
-            @click="
-              (payload[values.key] = 'zonal_map'),
-                (activeToggleButton = 'zonal_map')
-            "
+            @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
           >
@@ -52,26 +47,16 @@
           </button>
           <button
             type="button"
-            @click="
-              (payload[values.key] = 'state_map'),
-                (activeToggleButton = 'state_map')
-            "
+            @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'state_map' ? 'active' : '']"
           >
             State Map
-            <img
-              class="text-danger"
-              :src="require('../svg/state_map.svg')"
-              alt=""
-              srcset=""
-            />
+            <img class="text-danger" :src="require('../svg/state_map.svg')" alt="" srcset="" />
           </button>
           <button
             type="button"
-            @click="
-              (payload[values.key] = 'line'), (activeToggleButton = 'line')
-            "
+            @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'line' ? 'active' : '']"
           >
@@ -79,9 +64,7 @@
           </button>
           <button
             type="button"
-            @click="
-              (payload[values.key] = 'column'), (activeToggleButton = 'column')
-            "
+            @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'column' ? 'active' : '']"
           >
@@ -104,19 +87,19 @@ export default {
   data() {
     return {
       activeToggleButton: 'state_map',
-      payload: {
-        indicator: 'indicator 2',
-        location: '',
-        datasource: 'NHMIS 1',
-        year: '',
-        compareBy: '',
-        visualization: 'state_map',
-        target: {
-          national: false,
-          sdg: false,
-        },
-        numdenum: false,
-      },
+      // payload: {
+      //   indicator: 'indicator 2',
+      //   location: '',
+      //   datasource: 'NHMIS 1',
+      //   year: '',
+      //   compareBy: '',
+      //   visualization: 'state_map',
+      //   target: {
+      //     national: false,
+      //     sdg: false,
+      //   },
+      //   numdenum: false,
+      // },
     };
   },
   components: {
@@ -127,6 +110,14 @@ export default {
   props: {
     setup: {
       type: Array,
+      required: true,
+    },
+    groupIndex: {
+      type: Number,
+      default: () => null,
+    },
+    controlIndex: {
+      type: Number,
       required: true,
     },
     defaultIndicator: {
@@ -159,15 +150,49 @@ export default {
       deep: true,
     },
   },
+  methods: {
+    updatePayload(value, key) {
+      if (this.groupIndex != null) {
+        // this is o take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        debugger;
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: this.controlIndex,
+          groupIndex: this.groupIndex,
+          key,
+          value,
+        });
+      } else {
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: this.controlIndex,
+          key,
+          value,
+        });
+      }
+
+      this.$emit('data:options', this.payload);
+    },
+  },
+  computed: {
+    payload() {
+      if (this.groupIndex != null) {
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
+          this.groupIndex
+        ];
+      }
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
+    },
+  },
 
   mounted() {
-    this.payload.indicator = this.defaultIndicator;
-    this.payload.datasource = this.defaultDataSource;
-    this.payload.location = this.defaultLocation;
-    this.payload.year = this.defaultYear;
+    this.updatePayload(this.defaultIndicator, 'indicator');
+    this.updatePayload(this.defaultDataSource, 'datasource');
+    this.updatePayload(this.defaultLocation, 'location');
+    this.updatePayload(this.defaultYear, 'year');
   },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

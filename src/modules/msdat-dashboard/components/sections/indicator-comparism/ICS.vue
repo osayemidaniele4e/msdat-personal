@@ -20,7 +20,8 @@
           <p
             class="text-dark work-sans mb-0 line-height"
             v-if="!Array.isArray(values.indicator.length)"
-          >Comparison Of <b>{{ values.indicator.short_name }}</b> according to
+          >
+            Comparison Of <b>{{ values.indicator.short_name }}</b> according to
             the <b> {{ values.datasource.datasource }} </b> across
             {{ values.compareBy.name }}
           </p>
@@ -39,16 +40,15 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
+import { mapMutations } from 'vuex';
 import moment from 'moment';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import chartDownload from '../../../mixins/chart_download';
 
 export default {
   name: 'ICS',
-  mixins: [chartDownload, ControlPanelSetup],
+  mixins: [chartDownload],
   components: {
     BarChart,
   },
@@ -64,6 +64,10 @@ export default {
   props: {
     values: {
       type: [Object, String, Array],
+      required: true,
+    },
+    controlIndex: {
+      type: Number,
       required: true,
     },
   },
@@ -83,7 +87,6 @@ export default {
     'values.indicator': {
       async handler() {
         // this.chartOptions = {};
-        console.log(this.values);
         this.loading = true;
         await this.renderChart(this.values);
         this.loading = false;
@@ -120,29 +123,29 @@ export default {
       async handler(data) {
         if (data.name === 'Period') {
           this.TOGGLE_VISIBILITY({
-            panelIndex: 2,
-            controlIndex: 2,
-            visibility: false,
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: false,
           });
 
           this.TOGGLE_VISIBILITY({
-            panelIndex: 2,
-            controlIndex: 3,
-            visibility: true,
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: true,
           });
           this.loading = true;
           await this.renderChart(this.values);
           this.loading = false;
         } else if (data.name === 'State') {
           this.TOGGLE_VISIBILITY({
-            panelIndex: 2,
-            controlIndex: 2,
-            visibility: true,
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: true,
           });
           this.TOGGLE_VISIBILITY({
-            panelIndex: 2,
-            controlIndex: 3,
-            visibility: false,
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: false,
           });
 
           this.loading = true;
@@ -203,13 +206,12 @@ export default {
         }
 
         this.chartOptions = { ...options };
-        console.log(this.chartOptions);
       },
       deep: true,
     },
   },
   methods: {
-    ...mapActions('MSDAT_STORE', [
+    ...mapMutations('MSDAT_STORE', [
       'TOGGLE_VISIBILITY', // -> this.toggleVisibility()
     ]),
     displayFactorSign(factor) {
@@ -257,7 +259,6 @@ export default {
       }));
 
       const results = await Promise.all(dataPromises);
-      console.log(results);
 
       for (let i = 0; i < results.length; i += 1) {
         // formate result to HighChart Format
@@ -267,7 +268,6 @@ export default {
           this.dlGetLocation(item.location).name,
           parseFloat(item.value),
         ]);
-        // console.log(toHighChartFormat);
         const displayFactor = this.dlGetFactor(indicator.factor);
         const yAxis = {
           ...defaultOptions.yAxis,
@@ -364,7 +364,6 @@ export default {
       if (panelValues.compareBy.name === 'State') {
         const highChartOptions = await this.plotForState(panelValues);
         this.chartOptions = { ...highChartOptions };
-        console.log(this.chartOptions);
       }
     },
   },
