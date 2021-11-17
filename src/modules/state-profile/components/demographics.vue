@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import BaseMap from '@/components/maps/BaseMap.vue';
 import { mapState } from 'vuex';
+import BaseMap from '@/components/maps/BaseMap.vue';
 import dataMixins from '../../DataLayer/mixin';
 import * as requests from '../requests';
 import landAreaData from './landData';

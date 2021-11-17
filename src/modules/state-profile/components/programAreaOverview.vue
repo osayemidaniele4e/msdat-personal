@@ -220,8 +220,8 @@
 </template>
 
 <script>
-import BaseBar from '@/components/Barchart/BaseBarChart.vue';
 import { mapState } from 'vuex';
+import BaseBar from '@/components/Barchart/BaseBarChart.vue';
 import ProgramAreaIcon from './programAreaIcon.vue';
 import dataMixins from '../../DataLayer/mixin';
 import * as requests from '../requests';

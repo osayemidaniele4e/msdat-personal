@@ -7,7 +7,7 @@
           <router-link to="/dashboard/Demographic"
             ><b-list-group-item>Demographics</b-list-group-item></router-link
           >
-          <router-link to="#" _target="_blank"
+          <router-link to="/coming-soon/gis_mapping" _target="_blank"
             ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
           >
         </b-list-group>
@@ -82,7 +82,7 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link to="/coming-soon"
+          <router-link to="/coming-soon/custom_dashboard"
             ><b-list-group-item
               >Create New Dashboard</b-list-group-item
             ></router-link
@@ -93,7 +93,7 @@
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
             ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
           >
-          <router-link to="#"
+          <router-link to="/coming-soon/advanced_analytics"
             ><b-list-group-item
               >Advanced Analytics</b-list-group-item
             ></router-link

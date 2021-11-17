@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy, uniq } from 'lodash';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '../../mixins/formatter';
 
