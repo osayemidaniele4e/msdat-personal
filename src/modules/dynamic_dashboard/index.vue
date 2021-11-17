@@ -21,9 +21,12 @@
               <h5 class="font-weight-bold work-sans text-white">Demographic</h5>
             </template>
             <template>
-              <main class="container main_field">
-                <Tableau :url="url" :width="width" ref="tableau"></Tableau>
-              </main>
+              <!-- <main class="container main_field"> -->
+              <!-- <Tableau :url="url" :width="width" ref="tableau"></Tableau> -->
+              <!-- <div id="mrTableau" ref="tableau"></div> -->
+              <b-embed type="iframe" aspect="16by9" :src="embedUrl" allowfullscreen></b-embed>
+
+              <!-- </main> -->
             </template>
           </base-sub-card>
         </div>
@@ -46,11 +49,13 @@ export default {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
       url: 'https://public.tableau.com/views/UpdatedDemographic1/Population',
+      embedUrl:
+        'https://public.tableau.com/views/UpdatedDemographic1/Population?:showVizHome=no&:embed=true',
       width: '100vw',
-      height: '45vh',
     };
   },
-  mounted() {
+
+  created() {
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
