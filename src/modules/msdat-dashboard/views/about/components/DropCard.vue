@@ -33,9 +33,9 @@
           <h5 class="text-underline">Health Outputs</h5>
           <div class="mb-2">
             <b-list-group-item><b>Health Service Access</b></b-list-group-item>
-            <router-link to="/dashboard/Health_Facility_Input" target="_blank">
+            <!-- <router-link to="/dashboard/Health_Facility_Input" target="_blank">
               <b-list-group-item>Health Facility Survey</b-list-group-item>
-            </router-link>
+            </router-link> -->
           </div>
           <div class="mb-2">
             <b-list-group-item><b>Health Service Uptake</b></b-list-group-item>
