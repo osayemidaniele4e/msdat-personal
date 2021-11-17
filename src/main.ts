@@ -9,6 +9,7 @@ import './plugins/bootstrap-vue';
 import './plugins/highchart';
 import './plugins/multiselect';
 import './plugins/vue-sweetalert/sweetalert';
+import 'vue-tableau';
 import router from './router';
 import store from './store';
 
