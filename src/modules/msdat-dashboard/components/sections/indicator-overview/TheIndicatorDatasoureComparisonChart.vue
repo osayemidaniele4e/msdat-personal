@@ -180,7 +180,7 @@ export default {
         location: this.values.location.id,
       },
     ) {
-      debugger;
+      // debugger;
       const chartSeriesArray = [];
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));

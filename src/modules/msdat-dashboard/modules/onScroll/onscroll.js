@@ -35,7 +35,7 @@ export default {
       document.querySelectorAll('.observable').forEach((el) => this.observer.observe(el));
     },
     changeScroll(refName) {
-      const element = this.$refs[refName];
+      const element = this.$refs[refName][0]; // get the first element of the array
       const top = element.offsetTop;
       window.scrollTo({
         top: top - 150,
