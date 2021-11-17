@@ -22,7 +22,14 @@
             </template>
             <template>
               <main class="container main_field">
-                <Tableau :url="url" :width="width" ref="tableau"></Tableau>
+                <Tableau
+                  :url="url"
+                  :height="1000"
+                  :width="1000"
+                  ref="tableau"
+                >
+                </Tableau>
+                <div ref="vizContainer2" style="height: 55vh"></div>
               </main>
             </template>
           </base-sub-card>
@@ -46,9 +53,9 @@ export default {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
       url: 'https://public.tableau.com/views/UpdatedDemographic1/Population',
-      width: '100vw',
-      height: '45vh',
     };
+  },
+  methods: {
   },
   mounted() {
     const { name } = this.$route.params;
@@ -60,7 +67,20 @@ export default {
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
     }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        this.initViz();
+      }, 10000);
+    });
   },
+  // updated() {
+  //   window.addEventListener('load', () => {
+  //     setTimeout(() => {
+  //       this.initViz();
+  //     }, 6000);
+  //   });
+  // },
   watch: {
     $route(to, from) {
       // react to route changes...
@@ -74,9 +94,7 @@ export default {
 
 <style lang="scss" scoped>
 main.main_field {
-  min-height: 45vh;
-  // display: flex;
-  // justify-content: center;
+  min-height: 55vh;
   width: 100%;
 }
 </style>

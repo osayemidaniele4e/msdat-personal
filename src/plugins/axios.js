@@ -8,7 +8,7 @@ const AxiosInstance = axios.create({
 AxiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.trace(error);
+    // console.trace(error);
     Vue.swal({
       toast: true,
       position: 'bottom',

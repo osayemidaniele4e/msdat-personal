@@ -180,7 +180,7 @@ export default {
   async mounted() {
     this.loading = false;
     // initializing data for dashboard
-    console.trace(this.$route.query);
+    // console.trace(this.$route.query);
     let urlRequestedIndicator = [];
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
