@@ -237,7 +237,6 @@ export default {
     getAvailableDataSources() {
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
-      debugger;
       /**
        * order AvailableSources according to the OrderSourceBy Array;
        */

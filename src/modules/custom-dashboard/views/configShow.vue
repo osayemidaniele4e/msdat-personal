@@ -32,7 +32,6 @@ export default {
     const datasource = this.$store.state.CUSTOM_DASHBOARD_STORE.dataSourceSelected;
     const periods = this.$store.state.CUSTOM_DASHBOARD_STORE.periodSelected;
     const levels = this.$store.state.CUSTOM_DASHBOARD_STORE.levelSelected;
-    debugger;
     this.customizedConfig.data.indicators = indicators.map((item) => item.id);
     this.customizedConfig.data.datasources = datasource.map((item) => item.id);
     this.customizedConfig.data.periods = periods;
