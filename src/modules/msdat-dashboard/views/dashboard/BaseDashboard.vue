@@ -1,16 +1,8 @@
 <template>
   <div>
-    <TroubleShootingModal
-      style="z-index: 1500"
-      v-if="showTroubleShootingModal"
-    />
+    <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
     <template v-if="!showTroubleShootingModal">
-      <Loading
-        v-if="!loading"
-        :noBackdrop="false"
-        :showBackground="false"
-        class="over"
-      >
+      <Loading v-if="!loading" :noBackdrop="false" :showBackground="false" class="over">
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="250px" />
           <div class="mr-4">
@@ -31,8 +23,7 @@
             >
               <template v-slot:default>
                 <ControlBase
-                  v-for="(control, index) in $store.state.MSDAT_STORE
-                    .controlConfig"
+                  v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                   :key="index"
                   :title="control.label"
                 >
@@ -49,11 +40,7 @@
                   </template>
                   <template v-else>
                     <div class="row">
-                      <div
-                        class="col-md-4"
-                        v-for="(item, index2) in control.setup"
-                        :key="index2"
-                      >
+                      <div class="col-md-4" v-for="(item, index2) in control.setup" :key="index2">
                         <ControlPanel
                           @data:options="log($event, index, index2)"
                           :setup="item"
@@ -75,10 +62,7 @@
         <!-- control Panels ends here  -->
 
         <div class="container-fluid lessVisible">
-          <template
-            v-for="(controlPanel, index) in $store.state.MSDAT_STORE
-              .controlConfig"
-          >
+          <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
             <div class="row observable" :id="index" :ref="index" :key="index">
               <slot
                 :name="`section-${index}`"
@@ -91,21 +75,14 @@
         <!-- lazy loading ends here -->
 
         <Footer class="visible"> </Footer>
-        <Onboarding
-          v-if="firstTime"
-          v-on:closeOnboard="onCloseOnBoarding"
-        ></Onboarding>
+        <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
       </div>
     </template>
   </div>
 </template>
 
 <script>
-import {
-  BasePanel,
-  ControlBase,
-  ControlPanel,
-} from '@/components/ControlPanel';
+import { BasePanel, ControlBase, ControlPanel } from '@/components/ControlPanel';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -131,18 +108,7 @@ export default {
   ],
   data() {
     return {
-      position: 3,
-      BarChartOptions: {},
-      controlPanel: {},
-      lect: '',
-      BaseIndicatorOverviewProp: {},
-      datasetProps: {},
-      indicatorComparisonData: '',
-      MultiSourceCompareValue: [],
-      availableYears: [],
-      zonalAnalysis: {},
-      mapValues: {},
-      selectedMapName: null,
+      // position: 3,
     };
   },
   components: {
@@ -194,26 +160,7 @@ export default {
       this.selectedMapName = val;
     },
     async log(optionsObject, index, index2) {
-      // console.log(optionsObject, index);
-      switch (index) {
-        case 0:
-          this.BaseIndicatorOverviewProp = optionsObject;
-          break;
-        case 1:
-          this.zonalAnalysis = optionsObject;
-          break;
-        case 2:
-          this.indicatorComparisonData = optionsObject;
-          break;
-        case 3:
-          this.datasetProps = optionsObject;
-          break;
-        case 4:
-          this.MultiSourceCompareValue[index2] = optionsObject;
-          break;
-        default:
-          break;
-      }
+      console.log(optionsObject, index, index2);
       /**
        * This Update the route any time the  control panel changers
        */
