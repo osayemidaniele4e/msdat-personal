@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import instance from '@/modules/msdat-dashboard/views/dashboard/instance2.vue';
+import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import config from './config/dashboard_config';
 
 export default {
@@ -49,5 +49,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
