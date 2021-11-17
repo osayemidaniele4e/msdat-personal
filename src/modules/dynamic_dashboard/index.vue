@@ -8,6 +8,11 @@
       :initialIndicator="configObject.initialIndicator"
       :initialDataSource="configObject.initialDataSource"
       :initialLocation="configObject.initialLocation"
+      :showTableRelatedIndicator="
+        configObject.showTableRelatedIndicator != undefined
+          ? configObject.showTableRelatedIndicator
+          : true
+      "
     />
   </div>
 </template>

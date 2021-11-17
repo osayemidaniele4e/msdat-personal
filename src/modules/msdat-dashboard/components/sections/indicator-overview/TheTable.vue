@@ -4,13 +4,13 @@
     <base-sub-card showControls v-if="Object.keys(values).length">
       <template #title>
         <p class="work-sans mb-0 line-height">
-          <b>{{ values.indicator.short_name }}</b> And Related Indicators With
-          Years Of Latest Value Across The <b>Country</b>
+          <b>{{ values.indicator.short_name }}</b> And Related Indicators With Years Of Latest Value
+          Across The <b>Country</b>
         </p>
       </template>
       <TableComponent
         class="work-sans"
-        v-if="TableData.length"
+        v-if="TableData.length > 0"
         :dataArray="TableData"
         :setSelectedSource="setTableSelected"
         @selected:source="updateControlPanel($event)"
@@ -70,23 +70,24 @@ export default {
       type: [Object, String, Array],
       required: true,
     },
+
+    showTableRelatedIndicator: {
+      type: Boolean,
+      default: true,
+    },
   },
   watch: {
     'values.indicator': {
       async handler(newValues) {
         this.loading = true;
         const formattedData = [];
-        const indicators = [
-          newValues.id,
-          newValues.first_related,
-          newValues.second_related,
-        ];
+        let indicators = [newValues.id, newValues.first_related, newValues.second_related];
 
-        for (
-          let indicatorIndex = 0;
-          indicatorIndex < indicators.length;
-          indicatorIndex += 1
-        ) {
+        if (!this.showTableRelatedIndicator) {
+          indicators = [newValues.id];
+        }
+
+        for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
           const indicatorID = indicators[indicatorIndex];
           if (indicatorID) {
             const data = [];
@@ -103,9 +104,7 @@ export default {
               });
               data.push(ab);
             }
-            formattedData.push(
-              this.tableComponentDataFormatter(indicatorObject, data),
-            );
+            formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
           this.TableData = formattedData;
           this.loading = false;

@@ -108,7 +108,7 @@ export default {
   ],
   data() {
     return {
-      // position: 3,
+      position: 3,
     };
   },
   components: {
