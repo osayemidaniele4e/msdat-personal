@@ -1,4 +1,3 @@
-
 export interface State {
     default: Defaults,
     controlConfig: ControlPanelConfig[],

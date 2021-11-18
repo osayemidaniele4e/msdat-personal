@@ -162,7 +162,7 @@ export default {
 
         if (val) {
           for (let k = 0; k < options.yAxis.length; k += 1) {
-            debugger;
+            // debugger;
             const nationalTarget = this.dlGetIndicator(
               this.values.indicator[k].id,
             ).national_target;

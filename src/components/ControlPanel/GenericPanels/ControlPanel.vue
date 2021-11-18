@@ -155,7 +155,7 @@ export default {
       if (this.groupIndex != null) {
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section
-        debugger;
+        // debugger;
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: this.controlIndex,
           groupIndex: this.groupIndex,
