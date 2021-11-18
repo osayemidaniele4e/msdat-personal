@@ -44,10 +44,10 @@
               <p>National</p>
               <p class="grey-value">{{this.singleNational}}</p>
             </b-col>
-            <b-col cols="auto" v-if="state != 'national'">
-              <p>{{ this.state }}</p>
-              <p class="grey-value">{{this.singleStateValue}}</p>
-              <p class="source">Source: NDHS 2018</p>
+            <b-col cols="auto">
+              <p v-if="state != 'National'">{{ this.state }}</p>
+              <p class="grey-value" v-if="state != 'National'">{{this.singleStateValue}}</p>
+              <p class="source">Source:{{this.singleSrcnYear}}</p>
             </b-col>
           </b-row>
           <hr />
@@ -251,6 +251,7 @@ export default {
       allDataSources: [],
       allIndicators: [],
       definitions: [],
+      singleSrcnYear: '',
       HRGuidelinesValue: {
         id: 34,
         value: 0,
@@ -420,8 +421,9 @@ export default {
           data.push([`${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period}), `, Number(val.value)]);
         });
       }
+      this.singleSrcnYear = data[0][0] ? `(${data[0][0].split('(')[1]}` : `(${data[0].name.split('(')[1]}`;
       // eslint-disable-next-line prefer-destructuring
-      this.singleNational = data[0][1];
+      this.singleNational = Array.isArray(data[0]) ? data[0][1] : data[0].y;
       this.barChartOptions.series[0].data = data;
       this.populateCategories();
     },
@@ -598,7 +600,7 @@ export default {
     },
   },
   watch: {
-    state(newVal, oldVal) {
+    async state(newVal, oldVal) {
       this.resetHealthFacilityData();
       // eslint-disable-next-line eqeqeq
       if (oldVal == 'National') {
@@ -608,7 +610,15 @@ export default {
       this.nationalObjects = [];
       this.barChartOptions.series[1].data = [];
       this.nonDemographicData = [];
-      this.prepareStateAndNationalData();
+      if (oldVal !== 'National' && newVal === 'National') {
+        const { national } = await requests.getRegularData(this.programArea.specificIndicators,
+          this.locations[0].id);
+        national.map((el) => this.nationalObjects.push(el.data[0]));
+        this.$emit('overviewLoading');
+        this.justNationalData();
+      } else {
+        this.prepareStateAndNationalData();
+      }
       this.getHealthFacilityData();
     },
     indicatorDefinitions() {

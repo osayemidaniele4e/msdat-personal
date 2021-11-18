@@ -1,7 +1,12 @@
 <template>
   <b-container>
-    <genericModal v-if="false" :noBackdrop="false" :showBackground="false" class="over">
-      <div class="text-center">
+    <genericModal
+      v-if="overviewLoading"
+      :noBackdrop="false"
+      :showBackground="false"
+      class="over"
+    >
+     <div class="text-center">
         <img
           src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg"
           alt="first_img"
@@ -75,15 +80,40 @@
         </div>
       </div>
     </genericModal>
-    <div ref="printMe" id="printMe">
-      <b-row class="mt-4">
-        <b-col cols="auto">
-          <div>
-            <b-dropdown
-              variant="text"
-              dropright
-              toggle-class="text-decoration-none p-0 m-0 display-block state-select"
-              no-caret
+  <div ref="printMe" id="printMe">
+    <b-row class="mt-4">
+      <b-col cols="auto">
+        <div>
+          <b-dropdown
+            variant="text"
+            dropright
+            toggle-class="text-decoration-none p-0 m-0 display-block state-select"
+            no-caret
+          >
+            <template #button-content>
+              <b-row align-v="center">
+                <b-col>
+                  <h1>
+                    {{ state }}
+                  </h1>
+                </b-col>
+                <b-col>
+                  <b-icon
+                    style="font-size: 10px; color: #232323"
+                    icon="chevron-down"
+                  ></b-icon>
+                </b-col>
+              </b-row>
+            </template>
+             <b-dropdown-item
+              @click="navigateToState('National')"
+              >National</b-dropdown-item
+            >
+            <b-dropdown-item
+              @click="navigateToState(s.name)"
+              v-for="s in this.states"
+              :key="s.id"
+              >{{ s.name }}</b-dropdown-item
             >
               <template #button-content>
                 <b-row align-v="center">
@@ -270,8 +300,19 @@ export default {
           name: 'Population estimate',
           indicatorId: 63,
           source: 'DSB',
-          sourceId: 19, // available
+          sourceId: 19,
           year: 2018,
+          value: 0,
+          previousValue: 0,
+          previousYear: 2015,
+          change: '+2',
+        },
+        {
+          name: 'Maternal mortality ratio',
+          indicatorId: 29,
+          source: 'NDHS',
+          sourceId: 6,
+          year: 2019,
           value: 0,
           previousValue: 0,
           previousYear: 2015,
@@ -626,11 +667,11 @@ export default {
   async mounted() {
     this.overviewLoading = true;
     const locate = await requests.allLocations();
+    this.allLocations = locate.data;
     const theDate = await requests.latestData();
     this.regularDateFormat = new Date(theDate.data).toLocaleDateString().replaceAll('/', '.');
     const dataSourceSpecifics = await requests.datasourceSpecific();
     this.indicatorDefinitions = dataSourceSpecifics.data;
-    this.allLocations = locate.data;
   },
 };
 </script>
