@@ -21,7 +21,9 @@
               <h5 class="font-weight-bold work-sans text-white">Demographic</h5>
             </template>
             <template>
-              <iframe :src="embedUrl" :width="width" :height="height"></iframe>
+              <div style="text-align: center">
+                <iframe :src="embedUrl" :width="width" :height="height"></iframe>
+              </div>
               <!-- <b-embed type="iframe" aspect="16by9" :src="url" allowfullscreen></b-embed> -->
             </template>
           </base-sub-card>
@@ -74,9 +76,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 main.main_field {
   min-height: 45vh;
   width: 100%;
+}
+iframe {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px !important;
+  }
 }
 </style>
