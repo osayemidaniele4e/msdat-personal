@@ -22,7 +22,7 @@
             </template>
             <template>
               <main class="container main_field">
-                <Tableau
+                <Tableau v-if="start === true"
                   :url="url"
                   :height="1000"
                   :width="1000"
@@ -53,6 +53,7 @@ export default {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
       url: 'https://public.tableau.com/views/UpdatedDemographic1/Population',
+      start: false,
     };
   },
   methods: {
@@ -70,8 +71,8 @@ export default {
 
     window.addEventListener('load', () => {
       setTimeout(() => {
-        this.initViz();
-      }, 10000);
+        this.start = true;
+      }, 20000);
     });
   },
   // updated() {
