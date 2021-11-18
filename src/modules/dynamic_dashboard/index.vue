@@ -21,16 +21,8 @@
               <h5 class="font-weight-bold work-sans text-white">Demographic</h5>
             </template>
             <template>
-              <main class="container main_field">
-                <Tableau v-if="start === true"
-                  :url="url"
-                  :height="1000"
-                  :width="1000"
-                  ref="tableau"
-                >
-                </Tableau>
-                <div ref="vizContainer2" style="height: 55vh"></div>
-              </main>
+              <iframe :src="embedUrl" :width="width" :height="height"></iframe>
+              <!-- <b-embed type="iframe" aspect="16by9" :src="url" allowfullscreen></b-embed> -->
             </template>
           </base-sub-card>
         </div>
@@ -53,12 +45,14 @@ export default {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
       url: 'https://public.tableau.com/views/UpdatedDemographic1/Population',
-      start: false,
+      embedUrl:
+        'https://public.tableau.com/views/UpdatedDemographic1/Population?:showVizHome=no&:embed=true',
+      width: '100%',
+      height: '450',
     };
   },
-  methods: {
-  },
-  mounted() {
+
+  created() {
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
@@ -68,20 +62,7 @@ export default {
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
     }
-
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        this.start = true;
-      }, 20000);
-    });
   },
-  // updated() {
-  //   window.addEventListener('load', () => {
-  //     setTimeout(() => {
-  //       this.initViz();
-  //     }, 6000);
-  //   });
-  // },
   watch: {
     $route(to, from) {
       // react to route changes...
@@ -95,7 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 main.main_field {
-  min-height: 55vh;
+  min-height: 45vh;
   width: 100%;
 }
 </style>

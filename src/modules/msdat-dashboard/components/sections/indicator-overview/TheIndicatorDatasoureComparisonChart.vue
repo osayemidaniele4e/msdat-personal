@@ -80,6 +80,7 @@ export default {
      * */
     'values.datasource': {
       async handler(selectedDataSource) {
+        // debugger;
         this.loading = true;
         let dataSourceSelected = [];
         if (!Array.isArray(selectedDataSource)) {
@@ -184,6 +185,7 @@ export default {
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
+      // debugger;
       /**
        * ideas here
        * is to try all map out all the the search parameters required for the
@@ -217,6 +219,7 @@ export default {
       const mappedRequest = queryArray.map((item) => this.dlQuery(item));
       const mappedResponse = await Promise.all(mappedRequest);
 
+      // debugger;
       // mapping out all the years
       const allYears = [];
       mappedResponse.forEach((item) => {

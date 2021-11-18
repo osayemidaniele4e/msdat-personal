@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { mapActions } from 'vuex';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import MultiSource from './multi-source.vue';
 
 export default {
@@ -40,7 +40,7 @@ export default {
 
     'controlPanelProps.indicator': {
       async handler(newVal) {
-        debugger;
+        // debugger;
         const available = await this.setYearDropdown(
           newVal.id,
           this.controlPanelProps.datasource.id,
