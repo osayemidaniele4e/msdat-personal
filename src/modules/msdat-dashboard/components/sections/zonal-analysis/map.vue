@@ -40,13 +40,11 @@
 
 <script>
 import BaseMap from '@/components/maps/BaseMap.vue';
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import chartDownload from '../../../mixins/chart_download';
-import dataPipelineMixin from '../../../mixins/dataPipeline';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
-  mixins: [chartDownload, ControlPanelSetup, dataPipelineMixin],
+  mixins: [chartDownload],
   props: {
     controlPanelProps: {
       type: Object,

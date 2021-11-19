@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
-import { mapActions } from 'vuex';
 import ZonalMap from './map.vue';
 import ZonalColumnChart from './zonalSection.vue';
 
@@ -65,88 +63,6 @@ export default {
   components: {
     ZonalMap,
     ZonalColumnChart,
-  },
-  mixins: [ControlPanelSetup],
-  methods: {
-    ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
-  },
-  watch: {
-    // The is the updated the control panel dropdown as indicator are gotten from the API
-    // in the background (async)
-    indicatorDropdownUpdated(newVal) {
-      this.SET_CONTROL_OPTIONS({
-        panelIndex: 1,
-        controlIndex: 0,
-        values: newVal,
-      });
-    },
-
-    // get latest available years when indicator , datasource or location are changed
-    'controlPanelProps.indicator': {
-      async handler(newVal) {
-        const available = await this.setYearDropdown(
-          newVal.id,
-          this.controlPanelProps.datasource.id,
-          this.controlPanelProps.location.id,
-        );
-        this.SET_CONTROL_OPTIONS({
-          panelIndex: 1,
-          controlIndex: 3,
-          values: available,
-        });
-      },
-    },
-    'controlPanelProps.datasource': {
-      async handler(newVal) {
-        const available = await this.setYearDropdown(
-          this.controlPanelProps.indicator.id,
-          newVal.id,
-          this.controlPanelProps.location.id,
-        );
-        this.SET_CONTROL_OPTIONS({
-          panelIndex: 1,
-          controlIndex: 3,
-          values: available,
-        });
-      },
-    },
-    'controlPanelProps.location': {
-      async handler(newVal) {
-        const available = await this.setYearDropdown(
-          this.controlPanelProps.indicator.id,
-          this.controlPanelProps.datasource.id,
-          newVal.id,
-        );
-        this.SET_CONTROL_OPTIONS({
-          panelIndex: 1,
-          controlIndex: 3,
-          values: available,
-        });
-      },
-    },
-  },
-  async mounted() {
-    const setYearDropdown = await this.setYearDropdown();
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 1,
-      controlIndex: 0,
-      values: this.defaultIndicatorDropdown,
-    });
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 1,
-      controlIndex: 1,
-      values: this.defaultLocationDropdown,
-    });
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 1,
-      controlIndex: 2,
-      values: this.defaultDataSourceDropdown,
-    });
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 1,
-      controlIndex: 3,
-      values: setYearDropdown,
-    });
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <genericModal
-      v-if="false"
+      v-if="overviewLoading"
       :noBackdrop="false"
       :showBackground="false"
       class="over"
@@ -9,55 +9,70 @@
      <div class="text-center">
         <img
           src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg"
-           alt="first_img" width="250px" />
+          alt="first_img"
+          width="250px"
+        />
         <div class="">
           <h3 class="mr-4 mt-3">Fetching Data...</h3>
         </div>
       </div>
     </genericModal>
 
-     <genericModal
-      v-if="shareModalShowing"
-      :noBackdrop="false"
-       class="over"
-      :showBackground="true"
-    >
-     <div class="share-modal">
+    <genericModal v-if="shareModalShowing" :noBackdrop="false" class="over" :showBackground="true">
+      <div class="share-modal">
         <div class="top">
           <h3 class="mr-4">SHARE PLATFORM</h3>
         </div>
         <div class="body">
           <button class="social">
-            <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://208.87.128.190:7070/state-profile/" target="_blank">
-            <img class="img-fluid"
-             src="@/assets/state-profile/img/linkedin.png" alt="linkedin-icon" />
-             </a>
-          </button>
-          <button class="social">
-            <a href="mailto:info@example.com?&subject=&cc=&bcc=&body=http://208.87.128.190:7070/state-profile/%0A"
-                target="_blank">
-              <img class="img-fluid"
-               src="@/assets/state-profile/img/email.png" alt="email-icon" />
-               </a>
-          </button>
-          <button class="social">
-            <a href="https://www.facebook.com/sharer/sharer.php?u=http://208.87.128.190:7070/state-profile/" target="_blank">
-            <img class="img-fluid"
-             src="@/assets/state-profile/img/facebook.png" alt="facebook-icon" />
+            <a
+              href="https://www.linkedin.com/shareArticle?mini=true&url=http://208.87.128.190:7070/state-profile/"
+              target="_blank"
+            >
+              <img
+                class="img-fluid"
+                src="@/assets/state-profile/img/linkedin.png"
+                alt="linkedin-icon"
+              />
             </a>
           </button>
-           <button class="social">
-             <a href="https://twitter.com/intent/tweet?url=http://208.87.128.190:7070/state-profile/&text=" target="_blank">
-            <img class="img-fluid"
-            src="@/assets/state-profile/img/twitter.png" alt="twitter-icon" />
+          <button class="social">
+            <a
+              href="mailto:info@example.com?&subject=&cc=&bcc=&body=http://208.87.128.190:7070/state-profile/%0A"
+              target="_blank"
+            >
+              <img class="img-fluid" src="@/assets/state-profile/img/email.png" alt="email-icon" />
+            </a>
+          </button>
+          <button class="social">
+            <a
+              href="https://www.facebook.com/sharer/sharer.php?u=http://208.87.128.190:7070/state-profile/"
+              target="_blank"
+            >
+              <img
+                class="img-fluid"
+                src="@/assets/state-profile/img/facebook.png"
+                alt="facebook-icon"
+              />
+            </a>
+          </button>
+          <button class="social">
+            <a
+              href="https://twitter.com/intent/tweet?url=http://208.87.128.190:7070/state-profile/&text="
+              target="_blank"
+            >
+              <img
+                class="img-fluid"
+                src="@/assets/state-profile/img/twitter.png"
+                alt="twitter-icon"
+              />
             </a>
           </button>
           <button class="social link btn btn-outline-secondary" @click="copyTheLink">
             <span>
-               <img class="img-fluid"
-               src="@/assets/state-profile/img/link.png" alt="link-icon" />
+              <img class="img-fluid" src="@/assets/state-profile/img/link.png" alt="link-icon" />
             </span>
-            {{copyText}}
+            {{ copyText }}
           </button>
         </div>
         <div class="footer">
@@ -90,58 +105,79 @@
                 </b-col>
               </b-row>
             </template>
+             <b-dropdown-item
+              @click="navigateToState('National')"
+              >National</b-dropdown-item
+            >
             <b-dropdown-item
               @click="navigateToState(s.name)"
               v-for="s in this.states"
               :key="s.id"
               >{{ s.name }}</b-dropdown-item
             >
-          </b-dropdown>
-        </div>
-        <h3 style="font-size: 15px">State Health Profile</h3>
-      </b-col>
-      <b-col cols="12" class="my-auto">
-        <b-row align-h="end" class="mx-auto">
-          <p class="mr-3">Last Updated: {{this.regularDateFormat}}</p>
-          <b-button class="mr-4 share-button"
-            @click="toggleShareModal"
-          >
-            <img class="img-fluid" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
-            Share
-          </b-button>
-           <b-button class="print-button" @click="printing">
-      <img class="img-fluid" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
-      Print Profile
-    </b-button>
-        </b-row>
-      </b-col>
-    </b-row>
-    <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
-    <demographics
-      :state="state"
-      @changeState="stateClicked"
-      :stateDemographics="demographics"
-    ></demographics>
-    <div
-      class="mt-5"
-      v-for="programArea in programAreas"
-      :key="programArea.name"
-    >
-      <PAoverview :state="state"
-       @overviewLoading="setLoadingState"
-        :locations="allLocations"
-        :indicatorDefinitions="indicatorDefinitions"
-        :programArea="programArea"></PAoverview>
-    </div>
-    <p class="text-center final-text">
-      This state profile dashboard has been curated majorly from the MSDAT
-      Dashboard available at
-      <span
-        ><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank"
-          >msdat.fmohconnect.gov.ng</a
-        ></span
-      >
-    </p>
+              <template #button-content>
+                <b-row align-v="center">
+                  <b-col>
+                    <h1>
+                      {{ state }}
+                    </h1>
+                  </b-col>
+                  <b-col>
+                    <b-icon style="font-size: 10px; color: #232323" icon="chevron-down"></b-icon>
+                  </b-col>
+                </b-row>
+              </template>
+              <b-dropdown-item
+                @click="navigateToState(s.name)"
+                v-for="s in this.states"
+                :key="s.id"
+                >{{ s.name }}</b-dropdown-item
+              >
+            </b-dropdown>
+          </div>
+          <h3 style="font-size: 15px">State Health Profile</h3>
+        </b-col>
+        <b-col cols="12" class="my-auto">
+          <b-row align-h="end" class="mx-auto">
+            <p class="mr-3">Last Updated: {{ this.regularDateFormat }}</p>
+            <b-button class="mr-4 share-button" @click="toggleShareModal">
+              <img class="img-fluid" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
+              Share
+            </b-button>
+            <b-button class="print-button" @click="printing">
+              <img
+                class="img-fluid"
+                src="@/assets/state-profile/svg/printing.svg"
+                alt="print-icon"
+              />
+              Print Profile
+            </b-button>
+          </b-row>
+        </b-col>
+      </b-row>
+      <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
+      <demographics
+        :state="state"
+        @changeState="stateClicked"
+        :stateDemographics="demographics"
+      ></demographics>
+      <div class="mt-5" v-for="programArea in programAreas" :key="programArea.name">
+        <PAoverview
+          :state="state"
+          @overviewLoading="setLoadingState"
+          :locations="allLocations"
+          :indicatorDefinitions="indicatorDefinitions"
+          :programArea="programArea"
+        ></PAoverview>
+      </div>
+      <p class="text-center final-text">
+        This state profile dashboard has been curated majorly from the MSDAT Dashboard available at
+        <span
+          ><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank"
+            >msdat.fmohconnect.gov.ng</a
+          ></span
+        >
+      </p>
     </div>
   </b-container>
 </template>
@@ -264,8 +300,19 @@ export default {
           name: 'Population estimate',
           indicatorId: 63,
           source: 'DSB',
-          sourceId: 19, // available
+          sourceId: 19,
           year: 2018,
+          value: 0,
+          previousValue: 0,
+          previousYear: 2015,
+          change: '+2',
+        },
+        {
+          name: 'Maternal mortality ratio',
+          indicatorId: 29,
+          source: 'NDHS',
+          sourceId: 6,
+          year: 2019,
           value: 0,
           previousValue: 0,
           previousYear: 2015,
@@ -336,8 +383,7 @@ export default {
           sources:
             'Multiple Indicator Cluster Survey (MICS) and Nigeria Demographic and Health Survey (NDHS).',
 
-          chartTitle:
-            'Coverage for key interventions across the continuum of care',
+          chartTitle: 'Coverage for key interventions across the continuum of care',
           colors: [
             '#EBF4F1',
             '#2c9f35',
@@ -407,14 +453,7 @@ export default {
             'This section includes a set of nutirion indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS).',
           chartTitle: 'Coverage for key interventions in Nutrition',
-          colors: [
-            '#F4F7EA',
-            '#8FB438',
-            '#8FB438',
-            '#8FB438',
-            '#8FB438',
-            '#8FB438',
-          ],
+          colors: ['#F4F7EA', '#8FB438', '#8FB438', '#8FB438', '#8FB438', '#8FB438'],
           specificIndicators: [
             {
               indicator: 14,
@@ -450,14 +489,7 @@ export default {
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
           chartTitle: 'Coverage for key interventions in Immunization',
-          colors: [
-            '#FBF0E4',
-            '#EE9632',
-            '#EE9632',
-            '#EE9632',
-            '#EE9632',
-            '#EE9632',
-          ],
+          colors: ['#FBF0E4', '#EE9632', '#EE9632', '#EE9632', '#EE9632', '#EE9632'],
           specificIndicators: [
             {
               indicator: 18,
@@ -488,14 +520,7 @@ export default {
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
 
           chartTitle: 'Coverage for key interventions in Malaria',
-          colors: [
-            '#ECF3EB',
-            '#43893B',
-            '#43893B',
-            '#43893B',
-            '#43893B',
-            '#43893B',
-          ],
+          colors: ['#ECF3EB', '#43893B', '#43893B', '#43893B', '#43893B', '#43893B'],
           specificIndicators: [
             {
               indicator: 22,
@@ -532,14 +557,7 @@ export default {
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
           chartTitle: 'Coverage for key interventions in HIV',
-          colors: [
-            '#FBE5EA',
-            '#EA1B4B',
-            '#EA1B4B',
-            '#EA1B4B',
-            '#EA1B4B',
-            '#EA1B4B',
-          ],
+          colors: ['#FBE5EA', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B'],
           specificIndicators: [
             {
               indicator: 26,
@@ -568,10 +586,7 @@ export default {
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS)',
           chartTitle: 'Other Mortality Indicators',
-          colors: [
-            '#EAEAEA',
-            '#313131',
-          ],
+          colors: ['#EAEAEA', '#313131'],
           specificIndicators: [
             {
               indicator: 29,
@@ -652,42 +667,43 @@ export default {
   async mounted() {
     this.overviewLoading = true;
     const locate = await requests.allLocations();
+    this.allLocations = locate.data;
     const theDate = await requests.latestData();
     this.regularDateFormat = new Date(theDate.data).toLocaleDateString().replaceAll('/', '.');
     const dataSourceSpecifics = await requests.datasourceSpecific();
     this.indicatorDefinitions = dataSourceSpecifics.data;
-    this.allLocations = locate.data;
   },
 };
 </script>
 
 <style lang="scss">
-.modal-body{
+.modal-body {
   padding: 0;
-  button.social{
+  button.social {
     background-color: transparent;
     margin: 5px 10px;
-    color: #3a3a3a
+    color: #3a3a3a;
   }
-  button.social.link{
+  button.social.link {
     // border: 1px solid #3a3a3a;
-    img{
+    img {
       width: 16px;
     }
   }
 }
-.share-modal{
-  .top, .footer{
+.share-modal {
+  .top,
+  .footer {
     background-color: #d6cfcf;
     padding: 15px 25px;
   }
-  button{
+  button {
     font-size: 17px;
     padding: 5px;
   }
-  .body{
+  .body {
     padding: 25px 20px;
-    img{
+    img {
       width: 32px;
     }
   }
@@ -737,5 +753,11 @@ h1 {
   border: none;
   height: 84px;
   width: 84px;
+};
+
+ul.dropdown-menu.show{
+  min-height: 20rem;
+  max-height: 20rem;
+  overflow-y: auto;
 }
 </style>

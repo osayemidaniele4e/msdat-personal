@@ -19,6 +19,16 @@ export default [
         name: 'Gis-Mapping',
         component: () => import('./gis_mapping.vue'),
       },
+      {
+        path: 'health_surveillance',
+        name: 'Health-Surveillance',
+        component: () => import('./health_surveillance.vue'),
+      },
     ],
+  },
+  {
+    path: '/testing',
+    name: 'Testing',
+    component: () => import('./playground.vue'),
   },
 ];

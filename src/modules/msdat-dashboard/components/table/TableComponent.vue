@@ -4,26 +4,15 @@
       <table class="table table-bordered align-middle text-nowrap">
         <tbody>
           <tr>
-            <td
-              rowspan="2"
-              scope="col"
-              class="text-center align-middle border-0"
-            ></td>
+            <td rowspan="2" scope="col" class="text-center align-middle border-0"></td>
             <th
               rowspan="2"
               scope="col"
-              class="
-                align-middle
-                text-center text-uppercase
-                h6
-                font-weight-bold
-              "
+              class="align-middle text-center text-uppercase h6 font-weight-bold"
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
-                <span id="reset" @click="$emit('reset')"
-                  ><b-icon-arrow-clockwise
-                /></span>
+                <span id="reset" @click="$emit('reset')"><b-icon-arrow-clockwise /></span>
               </div>
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
@@ -31,12 +20,7 @@
               v-for="(value, index) in classify"
               :key="index"
               :colspan="value[1]"
-              class="
-                classification-row
-                text-uppercase text-center
-                align-middle
-                p-0
-              "
+              class="classification-row text-uppercase text-center align-middle p-0"
             >
               {{ value[0] }}
             </td>
@@ -68,12 +52,7 @@
               <slot name="indicator-0" :indicator="props"></slot>
             </template>
             <template #default>
-              <td
-                class="text-center p-2"
-                v-for="(dt, index) in source"
-                :key="index"
-                scope="col"
-              >
+              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <!-- percentage values and year -->
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
@@ -96,12 +75,10 @@
             </tr>
           </transition>
 
-          <tr class="">
+          <tr class="" v-if="dataArray.length > 1">
             <td class="border-0"></td>
             <td colspan="30" class="border-0">
-              <h6 class="text-uppercase font-weight-bold">
-                Related Indicators
-              </h6>
+              <h6 class="text-uppercase font-weight-bold">Related Indicators</h6>
             </td>
           </tr>
 
@@ -119,12 +96,7 @@
               </template>
 
               <template #default>
-                <td
-                  class="text-center p-2"
-                  v-for="(dt, index) in source"
-                  :key="index"
-                  scope="col"
-                >
+                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -140,11 +112,7 @@
       </table>
     </div>
     <div v-if="loading" class="d-flex justify-content-center text-center">
-      <div
-        class="spinner-border"
-        style="width: 4rem; height: 4rem"
-        role="status"
-      ></div>
+      <div class="spinner-border" style="width: 4rem; height: 4rem" role="status"></div>
     </div>
   </div>
 </template>
@@ -270,13 +238,13 @@ export default {
     getAvailableDataSources() {
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
-      debugger;
+      // debugger;
       /**
        * order AvailableSources according to the OrderSourceBy Array;
        */
       const sortedSource = allAvailableSources.sort(
         (a, b) => this.orderSourceBy.indexOf(a.datasource)
-          - this.orderSourceBy.indexOf(b.datasource),
+         - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
     },
@@ -308,8 +276,7 @@ export default {
       // Order classification following the Order
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
       const resultSorted = result.sort(
-        (a, b) => this.classificationOrder.indexOf(a[0])
-          - this.classificationOrder.indexOf(b[0]),
+        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
       this.classify = resultSorted;
     },
