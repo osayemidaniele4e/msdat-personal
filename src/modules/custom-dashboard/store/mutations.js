@@ -48,7 +48,6 @@ export default {
         if (child.id == payload.id) {
           // element.parent.selected = true;
           element.parent.isChildSelected = true;
-
           child.selected = payload.checked;
         } if (payload.checked) {
           // element.parent.selected = true;

@@ -139,7 +139,7 @@ export default {
         const reader = new FileReader();
         reader.onload = (e) => {
           this.selectedImage = e.target.result;
-          console.log('image',this.selectedImage);
+          console.log('image', this.selectedImage);
         };
         reader.readAsDataURL(input.files[0]);
       }
@@ -180,7 +180,7 @@ export default {
       this.$store.dispatch('dashboardConfiguration', {
         name: this.dName.val,
         description: this.description.val,
-        image: this.selectedImage
+        image: this.selectedImage,
       });
       this.$emit('save-data', formData);
       this.$router.push('preference-table');

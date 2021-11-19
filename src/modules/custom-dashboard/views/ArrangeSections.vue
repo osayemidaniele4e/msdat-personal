@@ -49,7 +49,7 @@
       <br />
     </b-row>
     <!-- <b-row align-h="end" class="mt-5 text-right">
-      
+
       <b-col cols="auto"
         ><b-button @click="approveData" class="nextBtn" style="font-family: Work Sans"
           >COMPLETE</b-button
@@ -105,12 +105,12 @@ export default {
   },
   computed: {
     dashboardDetails() {
-      return this.$store.getters.dashboardDetails
-    }
+      return this.$store.getters.dashboardDetails;
+    },
   },
   methods: {
     approveData() {
-      this.$router.push({ name: 'my-custom-dashboard', params: {title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase() }});
+      this.$router.push({ name: 'my-custom-dashboard', params: { title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase() } });
       // this.$router.push('/my-custom-dashboard');
     },
     selectedComponent(e, fieldName) {
@@ -123,8 +123,7 @@ export default {
         this.$store.state.MSDAT_STORE.zonalAnalysis = e.target.checked;
       }
       if (fieldName == 'Indicator Comparsion - By Period') {
-        this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod =
-          e.target.checked;
+        this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod = e.target.checked;
       }
 
       if (fieldName == 'Multisource Comparison') {
