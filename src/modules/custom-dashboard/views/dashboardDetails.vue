@@ -39,11 +39,11 @@
                   @change="previewThumbnail"
                 />
                 <label class="file-input-label" for="file-input">
-                  <customDashboardSvg :name="upload"></customDashboardSvg>
+                  <customDashboardSvg ></customDashboardSvg>
                 </label>
               </div>
-              <div class="image-preview" v-if="this.selectedImage.length > 0">
-                <img :src="selectedImage" class="image-preview__img" />
+              <div class="image-preview" v-if="this.selectedImage.length > 0" style="background: white">
+                <img :src="selectedImage"  class="image-preview__img" />
               </div>
             </b-col>
             <b-col cols="12" lg="5">
@@ -139,6 +139,7 @@ export default {
         const reader = new FileReader();
         reader.onload = (e) => {
           this.selectedImage = e.target.result;
+          console.log('image',this.selectedImage);
         };
         reader.readAsDataURL(input.files[0]);
       }
@@ -149,6 +150,7 @@ export default {
     onUpload() {
       const fd = new FormData();
       fd.append('Image', this.selectedImage, this.selectedImage.name);
+      console.log(this.selectedImage);
     },
     validateForm() {
       this.formIsValid = true;
@@ -172,11 +174,13 @@ export default {
       const formData = {
         dashboardName: this.dName,
         description: this.description,
+        image: this.selectedImage,
       };
 
       this.$store.dispatch('dashboardConfiguration', {
         name: this.dName.val,
         description: this.description.val,
+        image: this.selectedImage
       });
       this.$emit('save-data', formData);
       this.$router.push('preference-table');

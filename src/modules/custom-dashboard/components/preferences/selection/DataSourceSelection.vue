@@ -4,7 +4,10 @@
       >Data Source Selection</b
     ><br />
     <Card class="scroll" style="">
-      <TheLoader v-if="loading == true" />
+      <TheLoader
+        v-if="loading == true"
+        style="margin: 60px 0px 0px 119px"
+      />
       <div v-for="(items, idx) in heading" :key="idx">
         <div
           class="program-areas"

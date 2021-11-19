@@ -21,7 +21,11 @@
       </Loading>
 
       <div v-else>
-        <Header v-on:tour="runIntro"></Header>
+        <Header
+          v-on:tour="runIntro"
+          :dashboardName="details.name"
+          :dashboardImage="details.image"
+        ></Header>
         <div class="sticky">
           <b-overlay :show="!cpIsLoading">
             <BasePanel
@@ -104,7 +108,12 @@
         <!-- control Panels ends here  -->
 
         <template v-for="field in this.fieldsArray">
-          <div :id="field.id" :ref="field.id" class="row observable" :key="field.id">
+          <div
+            :id="field.id"
+            :ref="field.id"
+            class="row observable"
+            :key="field.id"
+          >
             <Sections
               :field="field"
               :cpIsLoading="cpIsLoading"
@@ -196,6 +205,9 @@ export default {
   computed: {
     fieldVisiblity() {
       return this.$store.state.MSDAT_STORE.indicatorComparision;
+    },
+    details() {
+      return this.$store.getters.dashboardDetails;
     },
   },
   props: {

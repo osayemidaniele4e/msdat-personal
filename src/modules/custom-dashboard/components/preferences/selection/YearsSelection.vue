@@ -3,7 +3,7 @@
     <b class="selection-header" style="font-size: 13px; font-family: Work Sans;">Period Selection</b><br />
     <small style="font-size: 13px;font-family: Work Sans;">Select available years under each source</small>
     <Card class="scroll" style="">
-      <TheLoader v-if="loading == true"/>
+      <TheLoader v-if="loading == true" style="margin: 60px 0px 0px 119px"/>
       <div
         v-for="(item, index) in distinctYears"
         :key="index"

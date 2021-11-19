@@ -4,82 +4,81 @@
       >Indicators Selection</b
     >
     <Card class="scroll" style="">
-      <TheLoader v-if=" loading == true" />
+      <TheLoader
+        v-if="loading == true"
+        style="margin: 60px 0px 0px 119px"
+      />
+      <div v-for="(items, idx) in heading" :key="idx" style="margin-top: -8px">
         <div
-          v-for="(items, idx) in heading"
-          :key="idx"
-          style="margin-top: -8px"
+          class="program-areas my-2"
+          style="background: #f3f3f3; font-size: 13px"
         >
-          <div
-            class="program-areas my-2"
-            style="background: #f3f3f3; font-size: 13px"
-          >
-            <input
-              type="checkbox"
-              :id="items.parent.value"
-              @click="
-                toggleAll(
-                  $event,
-                  items.children,
-                  items.parent.value,
-                  items.parent.selected
-                )
-              "
-              class="checkbox"
-              :checked="isAllSelected(items.parent)"
-            />
-            <label
+          <input
+            type="checkbox"
+            :id="items.parent.value"
+            @click="
+              toggleAll(
+                $event,
+                items.children,
+                items.parent.value,
+                items.parent.selected
+              )
+            "
+            class="checkbox"
+            :checked="isAllSelected(items.parent)"
+          />
+          <label
             :for="items.parent.value"
-              style="
+            style="
               cursor: pointer;
-                font-weight: normal;
-                font-size: 13px;
-                font-family: Work Sans;
-                color: #202020;
-                margin-left: -4px;
-              "
-            >
-              {{ items.parent.value }}
-            </label>
-            <span style="float: right">▼</span>
-          </div>
-          <div
-            v-for="(item, index) in items.children"
-            :key="index"
-            class="indicators"
-            style="margin-bottom: 3px; font-size: 13px"
+              font-weight: normal;
+              font-size: 13px;
+              font-family: Work Sans;
+              color: #202020;
+              margin-left: -4px;
+            "
           >
-            <input
-              type="checkbox"
-              name="child"
-              :id="item.short_name"
-              :value="item.short_name"
-              :checked="isSelected(item)"
-              @click="
-                selectIndicator(
-                  $event,
-                  items.parent.value,
-                  item.id,
-                  item.short_name,
-                  item.selected
-                )
-              "
-              class="checkbox"
-            />
-            <label
-              :for="item.short_name"
-              style="
-                cursor: pointer;
-                padding-left: 5px;
-                font-size: 12px;
-                margin-left: -4px;
-                font-family: Work Sans;
-              "
-            >
-              {{ item.short_name }}
-            </label>
-          </div>
+            {{ items.parent.value }}
+          </label>
+          <span style="float: right">▼</span>
         </div>
+        <div
+          v-for="(item, index) in items.children"
+          :key="index"
+          class="indicators"
+          style="margin-bottom: 3px; font-size: 13px"
+        >
+          <input
+            type="checkbox"
+            name="child"
+            :id="item.short_name"
+            :value="item.short_name"
+            :checked="isSelected(item)"
+            @click="
+              selectIndicator(
+                $event,
+                items.parent.value,
+                item.id,
+                item.short_name,
+                item.selected
+              )
+            "
+            class="checkbox"
+          />
+          <label
+            :for="item.short_name"
+            style="
+              cursor: pointer;
+              padding-left: 5px;
+              font-size: 12px;
+              margin-left: -4px;
+              font-family: Work Sans;
+            "
+          >
+            {{ item.short_name }}
+          </label>
+        </div>
+      </div>
       <!-- </TheLoader> -->
     </Card>
   </div>

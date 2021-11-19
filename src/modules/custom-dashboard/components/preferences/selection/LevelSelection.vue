@@ -4,7 +4,7 @@
       >Level Selection</b
     ><br />
     <Card class="scroll" style="height: 89px">
-      <TheLoader v-if="loading == true" />
+      <TheLoader v-if="loading == true" style="margin: 14px 0px 0px 127px" />
       <div
         v-for="(level, index) in distinctLevels"
         :key="index"

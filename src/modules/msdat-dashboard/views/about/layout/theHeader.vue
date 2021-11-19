@@ -3,7 +3,16 @@
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1">
-          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
+          <div v-if="dashboardName == 'MSDAT PLATFORM'">
+            <img
+              src="@/assets/img/Logo.svg"
+              alt="FMOH Logo"
+              class="img-fluid"
+            />
+          </div>
+          <div v-if="dashboardName != 'MSDAT PLATFORM'">
+            <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
+          </div>
         </b-col>
         <b-col
           cols
@@ -11,11 +20,21 @@
           lg="11"
           class="d-flex justify-content-between align-items-center border-left"
         >
-          <h2>
-            <small>MSDAT PLATFORM</small>
-            <br />
-            {{ $route.meta.title }}
-          </h2>
+          <div v-if="dashboardName == 'MSDAT PLATFORM'">
+            <h2>
+              <small>MSDAT PLATFORM</small>
+              <br />
+              {{ $route.meta.title }}
+            </h2>
+          </div>
+
+          <div v-if="dashboardName != 'MSDAT PLATFORM'">
+            <h2>
+              <small>MSDAT PLATFORM</small>
+              <br />
+              {{ dashboardName }}
+            </h2>
+          </div>
 
           <!-- <b-col cols md="6" lg="6"> -->
           <div
@@ -150,6 +169,15 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+  },
+  props: {
+    dashboardName: {
+      type: String,
+      default: 'MSDAT PLATFORM',
+    },
+    dashboardImage: {
+      type: File,
     },
   },
 };

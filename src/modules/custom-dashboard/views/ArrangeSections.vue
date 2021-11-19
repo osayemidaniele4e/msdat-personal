@@ -1,38 +1,55 @@
 <template>
   <b-container>
     <b-row >
-    <h2 style="color: #202020; font-family: Work Sans; font-size: 25px;">
-      Select your sections and arrange your widgets
-    </h2>
-    <br />
-    <b-col cols="8">
-    <div v-for="value in values" :key="value">
-      <input
-        type="checkbox"
-        name="dashboard"
-        id="dashboard"
-        :checked="isSelected(value)"
-        @click="selectedComponent($event, value.fieldName)"
-      />
-      <!-- //:checked="isSelected(value)"/> -->
-      <label for="dashboard" class="fields">{{ value.fieldName }}</label>
-      <p style="width: 600px; font-family: Work Sans; font-size: 14px">
-        This section shows an overview of your dashboard. This is a brief description...
-      </p>
-      <img :src="value.fieldImage" class="layout" />
-    </div>
-    </b-col>
-    <b-col cols="4" >
-    <div style="position: fixed">
-      <dragable-list  />
-    </div>
-    </b-col>
-    <br />
-    </b-row>
-    <b-row align-h="end" class="mt-5 text-right">
-      <!-- <b-col class="align-baseline" cols="auto"
+      <h2 style="color: #202020; font-family: Work Sans; font-size: 25px;margin-top: -24px" >
+        Select your sections and arrange your widgets
+      </h2>
+      <br />
+      <b-col cols="8">
+        <div v-for="value in values" :key="value">
+          <input
+            type="checkbox"
+            name="dashboard"
+            id="dashboard"
+            :checked="isSelected(value)"
+            @click="selectedComponent($event, value.fieldName)"
+          />
+          <!-- //:checked="isSelected(value)"/> -->
+          <label for="dashboard" class="fields">{{ value.fieldName }}</label>
+          <p style="width: 600px; font-family: Work Sans; font-size: 14px">
+            This section shows an overview of your dashboard. This is a brief
+            description...
+          </p>
+          <img :src="value.fieldImage" class="layout" />
+        </div>
+      </b-col>
+      <b-col cols="4">
+        <div style="position: fixed; margin-top: -45px">
+          <dragable-list />
+          <b-row align-h="center" class="mt-3 text-right">
+            <!-- <b-col class="align-baseline" cols="auto"
               ><p class="baseline">Save for Later</p>
             </b-col> -->
+            <b-col cols="auto"
+              ><b-button
+                @click="approveData"
+                class="nextBtn"
+                style="font-family: Work Sans"
+                >COMPLETE</b-button
+              ></b-col
+            >
+            <b-col cols="auto"
+              ><b-button class="SFL" disabled style="font-family: Work Sans"
+                >Save for Later</b-button
+              ></b-col
+            >
+          </b-row>
+        </div>
+      </b-col>
+      <br />
+    </b-row>
+    <!-- <b-row align-h="end" class="mt-5 text-right">
+      
       <b-col cols="auto"
         ><b-button @click="approveData" class="nextBtn" style="font-family: Work Sans"
           >COMPLETE</b-button
@@ -41,10 +58,8 @@
       <b-col cols="auto"
         ><b-button class="SFL" disabled style="font-family: Work Sans">Save for Later</b-button></b-col
       >
-    </b-row>
-
+    </b-row> -->
   </b-container>
-
 </template>
 <script>
 import DragableList from '../components/Custom-dashboard-sections/Dragable-List.vue';
@@ -75,8 +90,7 @@ export default {
         {
           fieldName: 'Dataset Comparison',
           selected: this.$store.state.MSDAT_STORE.datasetComperision,
-          fieldImage:
-            '/img/dashboardPreviewImages/DataSetComparison.PNG',
+          fieldImage: '/img/dashboardPreviewImages/DataSetComparison.PNG',
         },
         {
           fieldName: 'Multi-source Indicator Comparison',
@@ -89,9 +103,15 @@ export default {
   mounted() {
     this.$store.commit('updateStep', 4);
   },
+  computed: {
+    dashboardDetails() {
+      return this.$store.getters.dashboardDetails
+    }
+  },
   methods: {
     approveData() {
-      this.$router.push('/my-custom-dashboard');
+      this.$router.push({ name: 'my-custom-dashboard', params: {title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase() }});
+      // this.$router.push('/my-custom-dashboard');
     },
     selectedComponent(e, fieldName) {
       console.log(e.target.value);
@@ -103,7 +123,8 @@ export default {
         this.$store.state.MSDAT_STORE.zonalAnalysis = e.target.checked;
       }
       if (fieldName == 'Indicator Comparsion - By Period') {
-        this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod = e.target.checked;
+        this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod =
+          e.target.checked;
       }
 
       if (fieldName == 'Multisource Comparison') {
