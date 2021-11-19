@@ -34,7 +34,7 @@ export default {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
     async getAvailableYears() {
       const available = await this.setYearDropdown(
-        this.payload.datasource.id,
+        this.payload.indicator.id,
         this.payload.datasource.id,
         this.payload.location.id,
       );

@@ -22,7 +22,7 @@
             </template>
             <template>
               <div style="text-align: center">
-                <iframe :src="embedUrl" :width="width" :height="height"></iframe>
+                <iframe :src="url" :width="width" :height="height"></iframe>
               </div>
               <!-- <b-embed type="iframe" aspect="16by9" :src="url" allowfullscreen></b-embed> -->
             </template>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import config from './config/dashboard_config';
 
@@ -46,15 +47,17 @@ export default {
     return {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
-      url: 'https://public.tableau.com/views/UpdatedDemographic1/Population',
-      embedUrl:
+      url:
         'https://public.tableau.com/views/UpdatedDemographic1/Population?:showVizHome=no&:embed=true',
       width: '100%',
-      height: '450',
+      height: '400',
     };
   },
-
+  methods: {
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+  },
   created() {
+    this.CLEAR_CONTROL_PANEL();
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
@@ -63,6 +66,14 @@ export default {
     }
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
+    }
+    if (this.configObject.name === 'Demographic') {
+      const configObj = {
+        label: 'Demographic',
+        setup: [],
+        payload: null,
+      };
+      this.ADD_CONTROL_PANEL(configObj);
     }
   },
   watch: {

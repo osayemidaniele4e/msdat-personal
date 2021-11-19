@@ -66,6 +66,12 @@
             <div class="row observable" :id="index" :ref="index" :key="index">
               <slot :name="`section-before-${index}`"></slot>
               <slot
+                v-if="controlPanel.payload === undefined"
+                :name="`section-${index}`"
+                :controlIndex="index"
+              ></slot>
+              <slot
+                v-else
                 :name="`section-${index}`"
                 :payload="controlPanel.payload"
                 :controlIndex="index"
@@ -212,9 +218,9 @@ export default {
         const firstItem = 0;
         this.defaultYear = this.defaultYearDropdown[firstItem];
       }
-      setTimeout(() => {
-        this.setRouteQueryToControlPanel();
-      }, 4000);
+      // setTimeout(() => {
+      //   this.setRouteQueryToControlPanel();
+      // }, 4000);
 
       this.cpIsLoading = true;
       this.$nextTick(() => {

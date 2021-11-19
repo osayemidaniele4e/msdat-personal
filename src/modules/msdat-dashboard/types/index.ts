@@ -24,7 +24,7 @@ export interface ControlPanelConfig {
 
     label: string;
     setup: Array<SetupObject> | SetupObject[][] | any;
-    payload: PayloadObject[] | PayloadObject[][];
+    payload: PayloadObject[] | PayloadObject[][] | null;
 
 }
 
