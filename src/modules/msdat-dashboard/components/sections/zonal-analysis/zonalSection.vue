@@ -33,14 +33,12 @@
 
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
-import { mapActions } from 'vuex';
 import chartDownload from '../../../mixins/chart_download';
-import dataPipelineMixin from '../../../mixins/dataPipeline';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
   name: 'ZonalSectionChart',
-  mixins: [chartDownload, dataPipelineMixin],
+  mixins: [chartDownload],
   data() {
     return {
       // later someone can add the name property
@@ -69,16 +67,29 @@ export default {
   },
 
   methods: {
-    ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
-
     formatToHighChart(dataSeries) {
+      const displayFactor = this.dlGetFactor(
+        this.controlPanelProps.indicator.factor,
+      ).display_factor;
+
       this.chart = {
         chart: {
           type: 'column',
           zoomType: 'xy',
         },
+        yAxis: {
+          gridLineWidth: 0,
+          title: {
+            text: 'Values',
+            style: {
+              fontSize: '13px',
+              fontFamily: '"Work Sans", sans-serif',
+            },
+          },
+        },
         series: dataSeries,
       };
+      this.chart.yAxis.title.text = displayFactor;
     },
 
     getZonalDataInHighChartFormat(data) {

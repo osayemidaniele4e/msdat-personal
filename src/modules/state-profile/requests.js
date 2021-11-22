@@ -1,4 +1,4 @@
-import axiosInstance from '@/modules/DataLayer/config/api';
+import axiosInstance from '@/plugins/axios';
 import apiEndpoints from '@/modules/DataLayer/config/endpoint';
 
 // const StateProfileDashboard = {
@@ -10,6 +10,10 @@ import apiEndpoints from '@/modules/DataLayer/config/endpoint';
 //   };
 
 export const allLocations = () => axiosInstance.get(apiEndpoints.getLocation);
+
+export const latestData = () => axiosInstance.get('http://135.181.212.168:9234/api/data/latest/');
+
+export const datasourceSpecific = () => axiosInstance.get(apiEndpoints.getDSI);
 
 export const fetchDemographics = async (params, locationId) => {
   const values = await Promise.all(params.map((el) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${el.indicatorId}&datasource=${el.sourceId}&location=${locationId}`)));

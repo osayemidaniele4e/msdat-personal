@@ -63,7 +63,7 @@ export default {
         max: 2,
         'group-values': 'indicators',
         'group-label': 'program_area',
-        label: 'short_name',
+        label: 'full_name',
       },
     },
     {
@@ -73,10 +73,17 @@ export default {
       key: 'target',
     },
   ],
-  defaults: {
-    indicator: null,
-    dataSource: null,
-    location: null,
-    year: null,
+  payload: {
+    indicator: [],
+    location: '',
+    datasource: 'NHMIS 1',
+    year: '',
+    compareBy: '',
+    visualization: 'state_map',
+    target: {
+      national: false,
+      sdg: false,
+    },
+    numdenum: false,
   },
 };

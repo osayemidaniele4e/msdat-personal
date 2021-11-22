@@ -3,67 +3,69 @@
     <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
         <p class=" mt-3 mb-4 tittle">
-          State Health <br />
+          National and State Health <br />
           Profile Dashboard
         </p>
 
         <p class="text-left msg">
-          This dashboard provides a single transparent view of data from states across the country.
-          It presents health data across six (6) program areas: RMNCH, Malaria, Immunization,
-          HIV/AIDS, Tuberculosis and Mortality. It also presents Health Facility Survey data for
-          each state.
+          This dashboard provides a single transparent view of
+          health data across the country. It presents health data
+          across six (6) program areas: RMNCH, Nutrition,
+          Malaria, Immunization, HIV/AIDS and Mortality. It also provides
+          insight on health facility service availability and
+          readiness for each state.
         </p>
         <b-row align-h="start">
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/pregnant.svg" class="img-fluid" alt="rmnch" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">RMNCH</p>
           </b-col>
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/salad.svg" class="img-fluid" alt="nutrition" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Nutrition</p>
           </b-col>
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img
                 src="@/assets/state-profile/svg/injection.svg"
                 class="img-fluid"
                 alt="immunization"
               />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Immunization</p>
           </b-col>
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/mosquito.svg" class="img-fluid" alt="malaria" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Malaria</p>
           </b-col>
 
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/ribbon.svg" class="img-fluid" alt="hiv/aids" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">HIV/AIDS</p>
           </b-col>
           <b-col cols="auto">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img src="@/assets/state-profile/svg/patient.svg" class="img-fluid" alt="mortality" />
-            </b-button>
+            </div>
             <p class="text-center program-areas-text">Mortality</p>
           </b-col>
           <b-col cols="auto" class="">
-            <b-button class="program-areas shadow">
+            <div class="program-areas text-center pt-3 shadow">
               <img
                 src="@/assets/state-profile/svg/hospital.svg"
                 class="img-fluid"
-                alt="health facility survey"
+                alt="health services"
               />
-            </b-button>
-            <p class="text-center program-areas-text">Health Facility Survey</p>
+            </div>
+            <p class="text-center program-areas-text">Health Services</p>
           </b-col>
         </b-row>
       </b-col>
@@ -116,6 +118,7 @@ export default {
             color: '#ffc482',
             joinBy: ['name', 'hc-key'],
             dataLabels: {
+              allowOverlap: true,
               style: {
                 fontFamily: 'Muli',
                 color: '#1c4d33',

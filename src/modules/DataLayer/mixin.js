@@ -1,9 +1,10 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, omit, matches, isObject,
+  filter, omit, matches, isObject, has,
 } from 'lodash';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
+
 import DB from './services/database.worker';
 
 const { mapState } = createNamespacedHelpers('DL');
@@ -26,7 +27,52 @@ const { mapState } = createNamespacedHelpers('DL');
 
 export default {
   data() {
-    return {};
+    return {
+      hardCordedValueType: [
+        {
+          id: 1,
+          value_type: 'Estimate',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 2,
+          value_type: 'Survey',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 3,
+          value_type: 'Lower bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 4,
+          value_type: 'Upper bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 5,
+          value_type: 'Routine',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 6,
+          value_type: 'Numerator',
+          created_at: '2021-07-02T08:45:20.707139Z',
+          updated_at: '2021-07-02T08:45:20.707348Z',
+        },
+        {
+          id: 7,
+          value_type: 'Denominator',
+          created_at: '2021-07-02T08:56:10.401735Z',
+          updated_at: '2021-07-02T08:56:10.401798Z',
+        },
+      ],
+    };
   },
   computed: {
     ...mapState({
@@ -50,16 +96,30 @@ export default {
      * @returns {dataObjectType}
      */
     async dlQuery(queryObject) {
-      // debugger;
-      if (isObject(queryObject.location)) {
-        const { location } = queryObject;
-        const newQueryObject = omit(queryObject, ['location']);
+      // i could do this in individual component when making request with the
+      // function by after this it will after all at once
+      const query = queryObject;
+      if (query.datasource === 25) {
+        query.value_type = 1;
+      } else if (!has(query, 'value_type')) {
+        const datasource = this.dlGetDataSource(query.datasource);
+        // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+        const valuetype = this.hardCordedValueType.filter(
+          (item) => item.value_type === datasource.classification,
+        );
+        query.value_type = valuetype[0].id;
+      }
+
+      if (isObject(query.location)) {
+        const { location } = query;
+        const newQueryObject = omit(query, ['location']);
         const locationValues = this.dlGetLocation(location);
         const locationID = locationValues.map((item) => item.id);
         const resultValue = await DB.queryDB(newQueryObject, locationID);
         return resultValue;
       }
-      const result = await DB.queryDB(queryObject);
+
+      const result = await DB.queryDB(query);
       return result;
     },
 
@@ -93,9 +153,13 @@ export default {
     dlGetDataSource(id) {
       return this.dlDatasource.find((item) => item.id === id);
     },
-    dlGetValueTypes(id) {
+    dlGetValueTypes(values) {
       // console.log(this.dlValue_type);
-      return this.dlValue_type.find((item) => item.id === id);
+      if (typeof values === 'object') {
+        // return filter(this.dlValue_type, matches(values));
+        return filter(this.hardCordedValueType, matches(values));
+      }
+      return this.hardCordedValueType.find((item) => item.id === values);
     },
     dlGetDataSourceSpecificIndicator(values) {
       if (typeof values === 'object') {

@@ -56,23 +56,27 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
-    return this.db.transaction(
-      'rw',
-      this.DSI,
-      this.location,
-      this.indicators,
-      this.valuetypes,
-      this.factors,
-      this.datasources,
-      async () => {
-        await this.DSI.bulkPut(data[6].data);
-        await this.location.bulkPut(data[0].data);
-        await this.indicators.bulkPut(data[1].data);
-        await this.valuetypes.bulkPut(data[3].data);
-        await this.factors.bulkPut(data[5].data);
-        await this.datasources.bulkPut(data[7].data);
-      },
-    );
+    return this.db
+      .transaction(
+        'rw',
+        this.DSI,
+        this.location,
+        this.indicators,
+        this.valuetypes,
+        this.factors,
+        this.datasources,
+        async () => {
+          await this.DSI.bulkPut(data[6].data);
+          await this.location.bulkPut(data[0].data);
+          await this.indicators.bulkPut(data[1].data);
+          await this.valuetypes.bulkPut(data[3].data);
+          await this.factors.bulkPut(data[5].data);
+          await this.datasources.bulkPut(data[7].data);
+        },
+      )
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 
   async storeDataInDBTable(data, tableName) {

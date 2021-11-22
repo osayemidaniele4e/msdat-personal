@@ -57,16 +57,7 @@ export default {
         series: [
           {
             name: 'Nigeria',
-            data: [
-              ['Kano', 10],
-              ['Delta', 200],
-              ['Ondo', 123],
-              ['Osun', 45],
-              ['Enugu', 780],
-              ['Nassarawa', 780],
-              ['Federal Capital Territory', 780],
-              ['South East', 200],
-            ],
+            data: [],
           },
         ],
         title: {
@@ -144,9 +135,18 @@ export default {
       };
     },
     formatToHighChartOptionForLine(data, chartType, controlPanelObject) {
-      return {
+      const chartOptions = {
         chart: {
           type: chartType,
+        },
+        yAxis: {
+          title: {
+            text: 'Values',
+            style: {
+              fontSize: '13px',
+              fontFamily: '"Work Sans", sans-serif',
+            },
+          },
         },
         title: {
           text: controlPanelObject.indicator.short_name,
@@ -162,6 +162,11 @@ export default {
           },
         ],
       };
+      const displayFactor = this.dlGetFactor(
+        this.values.indicator.factor,
+      ).display_factor;
+      chartOptions.yAxis.title.text = displayFactor;
+      return chartOptions;
     },
   },
   watch: {
@@ -221,7 +226,7 @@ export default {
         this.loading = false;
       },
       deep: true,
-      immediate: false,
+      immediate: true,
     },
   },
 };

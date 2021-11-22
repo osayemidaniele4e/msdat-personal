@@ -95,10 +95,10 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/">
+        <a href="#" @click.prevent="showModal" ref="btnShow">
           <img src="@/assets/img/icons/ic_email.svg" alt="" />
           <span>Subscribe to our newsletter</span>
-        </router-link>
+        </a>
       </li>
     </ul>
     <base-modal :showModal="socialModal" :size="'md'">
@@ -107,15 +107,17 @@
       </template>
       <Socials />
     </base-modal>
+    <NewsLetter />
   </div>
 </template>
 
 <script>
+import NewsLetter from '@/modules/msdat-dashboard/modules/newsletter/index.vue';
 import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import contact from '../../../../../components/contact/contact.vue';
 
 export default {
-  components: { contact, Socials },
+  components: { contact, Socials, NewsLetter },
   data() {
     return {
       modal: false,
@@ -141,6 +143,10 @@ export default {
     },
     PrintPage() {
       window.print();
+    },
+    // NewsLetter Modal
+    showModal() {
+      this.$root.$emit('bv::show::modal', 'modal-newsLetter', '#btnShow');
     },
   },
 };

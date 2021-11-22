@@ -66,11 +66,17 @@ export default {
         const nationalTarget = this.dlGetIndicator(
           newValues.indicator.id,
         ).national_target;
+        const displayFactor = this.dlGetFactor(
+          newValues.indicator.factor,
+        ).display_factor;
+
         const chartOptions = this.genHighChartOption(data, {
           target: {
             value: nationalTarget,
           },
         });
+        chartOptions.yAxis.title.text = `${displayFactor}`;
+
         // add nation and state selected to fit according to mockup 😢 😟 😡
 
         const parentValue = await this.dlQuery({
@@ -104,7 +110,6 @@ export default {
     },
     'BarChartOptions.series': {
       handler(newSeries) {
-        console.log('charrtt', newSeries);
         for (let i = 0; i < newSeries.length; i += 1) {
           if (newSeries[0].data.length <= 0) {
             this.showNoSubNationalData = false;
@@ -135,7 +140,6 @@ export default {
         locationValue = { parent: location.id };
       }
       // debugger;
-      console.time('getData');
       const data = await this.dlQuery({
         datasource: datasource.id,
         indicator: indicator.id,
@@ -143,8 +147,6 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
-      console.trace(data);
-      console.timeEnd('getData');
       return data;
     },
   },

@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy, uniq } from 'lodash';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '../../mixins/formatter';
 
@@ -127,6 +127,7 @@ export default {
         location: this.values.location.id,
       },
     ) {
+      // debugger;
       const chartSeriesArray = [];
       const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
@@ -215,11 +216,12 @@ export default {
     async onSelectedSource(datasourceArray) {
       this.loading = true;
       const valueType = [2, 4, 3];
-      /**
+      /** https://gitlab.com/e4e-webdev/governors-dashboard/-/pipelines/411489029
        * Bear in mind the the confidence Range options is a
        * radio button so it only returns/ selectees a single Object
        * at a time
        */
+      // debugger;
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
         valueType,

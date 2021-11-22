@@ -2,7 +2,8 @@
   <div class="lineHeight">
         <!-- <h1 slot="title">Contact Us</h1> -->
         <p slot="body_msg" class="bold my-0" > Send a message to the MSDAT Team</p>
-         <p v-show="nofields" class="alert alert-warning mt-3 mb-0 alerts">Please fill all fields correctly</p>
+         <p v-show="nofields"
+         class="alert alert-warning mt-3 mb-0 alerts">Please fill all fields correctly</p>
           <p v-show="successmessage"
              class="alert alert-success fonttxt mt-2 alerts mb-0"
              role="alert">
@@ -139,8 +140,8 @@ export default {
   },
   watch: {
     submitForm() {
-      console.log('submitting form'); 
-       this.conformSend();       
+      console.log('submitting form');
+      this.conformSend();
     },
   },
   methods: {
@@ -158,7 +159,7 @@ export default {
       this.contactFormFields.email = '';
       this.contactFormFields.feedback = '';
       this.firstName = '';
-      this.lastName = '';      
+      this.lastName = '';
       // this.contactFormFields.organization = '';
       // this.contactFormFields.category = this.selected;
     },

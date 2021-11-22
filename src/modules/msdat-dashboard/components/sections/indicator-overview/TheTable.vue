@@ -4,13 +4,13 @@
     <base-sub-card showControls v-if="Object.keys(values).length">
       <template #title>
         <p class="work-sans mb-0 line-height">
-          <b>{{ values.indicator.short_name }}</b> And Related Indicators With
-          Years Of Latest Value Across The <b>Country</b>
+          <b>{{ values.indicator.short_name }}</b> And Related Indicators With Years Of Latest Value
+          Across The <b>Country</b>
         </p>
       </template>
       <TableComponent
         class="work-sans"
-        v-if="TableData.length"
+        v-if="TableData.length > 0"
         :dataArray="TableData"
         :setSelectedSource="setTableSelected"
         @selected:source="updateControlPanel($event)"
@@ -70,44 +70,45 @@ export default {
       type: [Object, String, Array],
       required: true,
     },
+
+    showTableRelatedIndicator: {
+      type: Boolean,
+      default: true,
+    },
   },
   watch: {
     'values.indicator': {
       async handler(newValues) {
         this.loading = true;
         const formattedData = [];
-        const indicators = [
-          newValues.id,
-          newValues.first_related,
-          newValues.second_related,
-        ];
+        let indicators = [newValues.id, newValues.first_related, newValues.second_related];
 
-        for (
-          let indicatorIndex = 0;
-          indicatorIndex < indicators.length;
-          indicatorIndex += 1
-        ) {
-          const indicatorID = indicators[indicatorIndex];
-          const data = [];
-          const dataSources = this.dlGetDashboardDataSource();
-          console.trace(dataSources);
-          const indicatorObject = this.dlGetIndicator(indicatorID);
-          for (let index = 0; index < dataSources.length; index += 1) {
-            const element = dataSources[index];
-            // eslint-disable-next-line no-await-in-loop
-            const ab = await this.dlGetLatestSourceAndIndicatorData({
-              indicator: indicatorID,
-              datasource: element.id,
-              location: 1,
-            });
-            data.push(ab);
-          }
-          formattedData.push(
-            this.tableComponentDataFormatter(indicatorObject, data),
-          );
+        if (!this.showTableRelatedIndicator) {
+          indicators = [newValues.id];
         }
-        this.TableData = formattedData;
-        this.loading = false;
+
+        for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
+          const indicatorID = indicators[indicatorIndex];
+          if (indicatorID) {
+            const data = [];
+            const dataSources = this.dlGetDashboardDataSource();
+            console.trace(dataSources);
+            const indicatorObject = this.dlGetIndicator(indicatorID);
+            for (let index = 0; index < dataSources.length; index += 1) {
+              const element = dataSources[index];
+              // eslint-disable-next-line no-await-in-loop
+              const ab = await this.dlGetLatestSourceAndIndicatorData({
+                indicator: indicatorID,
+                datasource: element.id,
+                location: 1,
+              });
+              data.push(ab);
+            }
+            formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
+          }
+          this.TableData = formattedData;
+          this.loading = false;
+        }
       },
     },
     'values.datasource': {

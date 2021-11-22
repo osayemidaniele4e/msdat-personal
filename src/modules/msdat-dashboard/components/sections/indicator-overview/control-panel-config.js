@@ -8,7 +8,7 @@ export default {
         // multiple: true,
         'group-values': 'indicators',
         'group-label': 'program_area',
-        label: 'short_name',
+        label: 'full_name',
       },
       label: 'indicator',
       key: 'indicator',
@@ -57,10 +57,17 @@ export default {
       key: 'numdenum',
     },
   ],
-  defaults: {
-    indicator: null,
-    dataSource: null,
-    location: null,
-    year: null,
+  payload: {
+    indicator: 'indicator 2',
+    location: '',
+    datasource: 'NHMIS 1',
+    year: '',
+    compareBy: '',
+    visualization: 'state_map',
+    target: {
+      national: false,
+      sdg: false,
+    },
+    numdenum: false,
   },
 };

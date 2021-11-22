@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
-import { mapActions } from 'vuex';
-import { isDataYearly } from '@/util/helper';
+import { mapMutations } from 'vuex';
 import { uniq } from 'lodash';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
+import { isDataYearly } from '@/util/helper';
 import BaseChart from '../../../../../components/Barchart/BaseBarChart.vue';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 import chartDownload from '../../../mixins/chart_download';
@@ -48,8 +48,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions('MSDAT_STORE', [
-      'SET_CONTROL_OPTIONS', // -> this.foo()
+    ...mapMutations('MSDAT_STORE', [
+      'SETUP_CONTROL_OPTIONS1', // -> this.foo()
     ]),
 
     async setUpDataSourceNYearDropdown() {
@@ -93,19 +93,23 @@ export default {
         return {};
       },
     },
+    controlIndex: {
+      type: Number,
+      required: true,
+    },
+  },
+  computed: {
+    payload() {
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+        .payload;
+    },
   },
   async mounted() {
     this.loading = true;
     const dropDown = await this.setUpDataSourceNYearDropdown();
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 3,
-      controlIndex: 0,
-      values: this.defaultIndicatorDropdown,
-    });
-
-    this.SET_CONTROL_OPTIONS({
-      panelIndex: 3,
-      controlIndex: 1,
+    this.SETUP_CONTROL_OPTIONS1({
+      panelIndex: this.controlIndex,
+      key: 'datasource',
       values: dropDown,
     });
     this.loading = false;
@@ -202,33 +206,36 @@ export default {
           chart: {
             type: 'column',
           },
+          yAxis: {
+            title: {
+              text: 'Values',
+              style: {
+                fontSize: '13px',
+                fontFamily: '"Work Sans", sans-serif',
+              },
+            },
+          },
           colors: ['#17606B', '#E85D58', '#58B74E'],
         };
+        const displayFactor = this.dlGetFactor(
+          this.values.indicator.factor,
+        ).display_factor;
+        this.chartConfig.yAxis.title.text = displayFactor;
         this.chartConfig.series = orderResult;
         this.loading = false;
       },
       deep: true,
     },
-
-    // The is the updated the control panel dropdown as indicator are gotten from the API
-    // in the background (async)
-    indicatorDropdownUpdated(newVal) {
-      this.SET_CONTROL_OPTIONS({
-        panelIndex: 3,
-        controlIndex: 0,
-        values: newVal,
-      });
-    },
-
-    'values.indicator': {
+    'payload.indicator': {
       async handler() {
         this.loading = true;
         const dropDown = await this.setUpDataSourceNYearDropdown();
-        this.SET_CONTROL_OPTIONS({
-          panelIndex: 3,
-          controlIndex: 1,
+        this.SETUP_CONTROL_OPTIONS1({
+          panelIndex: this.controlIndex,
+          key: 'datasource',
           values: dropDown,
         });
+        this.loading = false;
       },
     },
   },
