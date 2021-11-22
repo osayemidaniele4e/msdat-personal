@@ -16,6 +16,7 @@
             :key="option.id"
             :value="option"
             :aria-describedby="ariaDescribedby"
+            class="indicators"
           >
             {{ option.short_name }}
           </b-form-checkbox>
@@ -38,6 +39,7 @@
             :aria-describedby="ariaDescribedby"
             inline
             @change="setDatasourceAvailableYears(option)"
+            class="datasources"
           >
             {{ option.datasource }}
           </b-form-checkbox>
@@ -60,6 +62,7 @@
             :options="c.distinctYears"
             :aria-describedby="ariaDescribedby"
             name="flavour-1"
+            class="periods"
           ></b-form-checkbox-group>
         </b-form-group>
       </div>
@@ -73,6 +76,7 @@
           :options="levelOptions"
           :aria-describedby="ariaDescribedby"
           name="flavour-1"
+          class="levels"
         ></b-form-checkbox-group>
       </b-form-group>
     </div>
@@ -80,7 +84,7 @@
     <b class="selection-header">Notes</b><br />
     <div class="mb-4 mb-lg-0">
       <div id="notes">
-        <div v-for="(note, index) in notes" :key="index">
+        <div v-for="(note, index) in notes" :key="index" class="notes">
           {{ note }}
         </div>
       </div>
@@ -207,14 +211,42 @@ export default {
   color: #202020;
   font-family: 'DM Sans', sans-serif;
   font-weight: normal;
-  font-size: 12.000003px;
+  font-size: 11.4px;
 }
 .indicators {
   max-height: 27.00000675px;
+  line-height: 27px;
   color: #202020;
   font-family: 'DM Sans', sans-serif;
   font-weight: normal;
-  font-size: 12.000003px;
+  font-size: 11.4px;
+  width: 100%;
+}
+.datasources {
+  color: #202020;
+  line-height: 27px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: normal;
+  font-size: 11.4px;
+}
+.periods {
+  color: #202020;
+  line-height: 27px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: normal;
+  font-size: 11.4px;
+}
+.levels {
+  color: #202020;
+  line-height: 27px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: normal;
+  font-size: 11.4px;
+}
+.notes {
+  font-size: 13.5px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: normal;
 }
 input {
   margin: 0px 7.342501836px 0px 0px;
@@ -280,6 +312,7 @@ thead {
   color: #1496b1;
 }
 #notes {
-  height: 15vh;
+  height: 20vh;
+  overflow: scroll;
 }
 </style>
