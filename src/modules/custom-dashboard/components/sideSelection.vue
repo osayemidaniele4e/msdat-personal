@@ -312,6 +312,7 @@ thead {
   color: #1496b1;
 }
 #notes {
-  height: 15vh;
+  height: 20vh;
+  overflow: scroll;
 }
 </style>
