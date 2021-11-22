@@ -45,7 +45,7 @@ deploy_develop:
       - chmod 600 ~/.ssh/id_rsa
       - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh -p 3322 e4esysadmin@209.182.233.90 "cd /opt/custom-dashboard-feature && git checkout . && git checkout develop && git pull && yarn install && yarn run build && sudo systemctl restart nginx "
+    - ssh -p 3322 e4esysadmin@209.182.233.90 "cd / && /opt/custom-dashboard-feature && git checkout . && git checkout develop && git pull && yarn install && yarn run build && sudo systemctl restart nginx "
   only:
     - develop
   when: manual
