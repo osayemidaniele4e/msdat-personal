@@ -41,27 +41,31 @@ export default {
   // TODO: To be reviewe later
 
   selectionIndicator(state, payload) {
+    let found =false;
     state.masterData = state.masterData.map((element) => {
       let counter = 0;
       // forRefreshingAll(payload);
+      if(found == false){
       element.children.map((child) => {
         if (child.id == payload.id) {
           // element.parent.selected = true;
+          found = true
           element.parent.isChildSelected = true;
           child.selected = payload.checked;
-        } if (payload.checked) {
-          // element.parent.selected = true;
-          counter = 1;
-        } else {
-          element.parent.selected = false;
-          if (child.selected) {
-            counter++;
+          if (payload.checked) {
+            // element.parent.selected = true;
+            counter = 1;
+          } else {
+            element.parent.selected = false;
+            if (child.selected) {
+              counter++;
+            }
           }
+          state.notes = [];
+          forRefreshingAll(child);
+          return child;
         }
-        state.notes = [];
-        forRefreshingAll(child);
-        return child;
-      });
+      })};
       if (counter == 0) {
         element.parent.isChildSelected = false;
         element.showList = false;
