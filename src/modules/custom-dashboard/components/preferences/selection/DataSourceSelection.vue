@@ -4,10 +4,7 @@
       >Data Source Selection</b
     ><br />
     <Card class="scroll" style="">
-      <TheLoader
-        v-if="loading == true"
-        style="margin: 60px 0px 0px 119px"
-      />
+      <TheLoader v-if="loading == true" style="margin: 60px 0px 0px 119px" />
       <div v-for="(items, idx) in heading" :key="idx">
         <div
           class="program-areas"
@@ -55,14 +52,15 @@
             "
             class="checkbox"
           />
+          <!-- For DataSources display -->
           <label
             :for="item.datasource"
             style="
               cursor: pointer;
-              font-size: 11px;
-              padding-left: 6px;
+              font-size: 10px;
+              padding-left: 5px;
               font-family: Work Sans;
-              margin-left: -5px;
+              margin-left: -8px;
             "
           >
             {{ item.datasource }}

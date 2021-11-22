@@ -97,7 +97,9 @@
                       margin-bottom: 0rem !important;
                     "
                   >
-                    <li style="width: 60px">{{ item.datasource }}</li>
+                    <li style="width: 71px">
+                      {{ item.datasource }}
+                    </li>
                   </ul>
                 </template>
               </template>
