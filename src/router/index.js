@@ -9,6 +9,7 @@ import { router as HEALTH_THINK_ROUTE } from '../modules/health-think';
 import DYNAMICS_DASHBOARD_ROUTE from '../modules/dynamic_dashboard/router';
 import COMING_SOON from '../modules/coming-soon/router';
 import NotFound from '../modules/msdat-dashboard/views/NotFound.vue';
+import AUTH_ROUTE from '../modules/auth/router';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,7 @@ const routes = [
   ...HEALTH_THINK_ROUTE,
   ...DYNAMICS_DASHBOARD_ROUTE,
   ...COMING_SOON,
+  ...AUTH_ROUTE,
   {
     path: '*',
     name: 'NotFound',
