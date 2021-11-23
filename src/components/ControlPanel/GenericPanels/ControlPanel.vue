@@ -139,7 +139,6 @@ export default {
   },
   watch: {
     defaultDataSource(newValue) {
-      console.log(newValue);
       this.payload.datasource = newValue;
     },
     payload: {

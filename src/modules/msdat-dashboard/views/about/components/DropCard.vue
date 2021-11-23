@@ -4,7 +4,7 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Population</h5>
-          <router-link to="/dashboard/Demographic"
+          <router-link to="/dashboard/Demographics"
             ><b-list-group-item>Demographics</b-list-group-item></router-link
           >
           <router-link to="/coming-soon/gis_mapping" _target="_blank"

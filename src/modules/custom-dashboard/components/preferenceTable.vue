@@ -240,11 +240,9 @@ export default {
       }
     },
     toggleAllProgramAreaIndicator(e, indicators) {
-      console.log(e, indicators);
       this.indicatorsSelected = indicators ? this.flavours.slice() : [];
     },
     toggleAll(available, selected) {
-      console.log(available, selected);
       if (this.isAllSelected(available, selected)) {
         this.indicatorsSelected[selected] = [];
       } else {
