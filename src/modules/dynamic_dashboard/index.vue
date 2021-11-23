@@ -14,11 +14,11 @@
           : true
       "
     >
-      <template v-slot:top-section v-if="configObject.name === 'Demographic'">
+      <template v-slot:top-section v-if="configObject.name === 'Demographics'">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Demographic</h5>
+              <h5 class="font-weight-bold work-sans text-white">Demographics</h5>
             </template>
             <template>
               <div style="text-align: center">
@@ -67,9 +67,9 @@ export default {
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
     }
-    if (this.configObject.name === 'Demographic') {
+    if (this.configObject.name === 'Demographics') {
       const configObj = {
-        label: 'Demographic',
+        label: 'Demographics',
         setup: [],
         payload: null,
       };
