@@ -18,7 +18,7 @@
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Demographic</h5>
+              <h5 class="font-weight-bold work-sans text-white">Demographics</h5>
             </template>
             <template>
               <div style="text-align: center">
@@ -47,7 +47,6 @@ export default {
     return {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
-      // url:'https://public.tableau.com/views/UpdatedDemographic1/Population?:showVizHome=no&:embed=true',
       url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
