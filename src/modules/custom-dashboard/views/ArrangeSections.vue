@@ -138,8 +138,7 @@ export default {
         this.$store.state.MSDAT_STORE.zonalAnalysis = e.target.checked;
       }
       if (fieldName == 'Indicator Comparsion - By Period') {
-        this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod =
-          e.target.checked;
+        this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod = e.target.checked;
       }
 
       if (fieldName == 'Multisource Comparison') {

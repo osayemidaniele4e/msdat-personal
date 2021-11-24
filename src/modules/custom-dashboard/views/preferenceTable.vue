@@ -10,7 +10,7 @@
     <p id="link-to-about" style="font-size: 13px; font-family: Work Sans">
       <b>View datasheet</b>- see all available data in database
     </p>
-    
+
     <b-card>
       <b-row>
         <!-- **** Preferences Selection *****  -->
@@ -32,7 +32,7 @@
         </b-col>
 
         <!-- ****** Selected Items Table ****** -->
-        
+
         <b-col sm="12" lg="9">
           <data-table />
           <b-row align-h="end" class="text-right">
