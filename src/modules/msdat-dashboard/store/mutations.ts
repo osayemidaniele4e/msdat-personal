@@ -79,6 +79,7 @@ const mutations: MutationTree<State> = {
   SET_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[obj.controlIndex].payload !== null) {
       if (!Array.isArray(state.controlConfig[obj.controlIndex].payload)) {
+        console.log('object =>', state.controlConfig[obj.controlIndex].payload);
         state.controlConfig[obj.controlIndex].payload[obj.key] = obj.value;
       } else {
         // taking into consideration sections like multi-source comparison
