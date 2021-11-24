@@ -20,7 +20,7 @@
     </ul>
 
     <!-- Multiselect dropdown here -->
-    <div class="mx-5 pb-3 pt-1 step-controls styles">
+    <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>

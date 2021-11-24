@@ -38,7 +38,6 @@ export default {
         this.payload.datasource.id,
         this.payload.location.id,
       );
-      console.log('availbale Years =>', available);
       return available;
     },
   },
