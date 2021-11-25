@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="temp">
     <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
     <template v-if="!showTroubleShootingModal">
       <Loading v-if="!loading" :noBackdrop="false" :showBackground="false" class="over">
@@ -190,6 +190,7 @@ export default {
     let urlRequestedIndicator = [];
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
+      console.log('hello World =>', urlRequestedIndicator);
     }
     try {
       await this.$DL.init({
@@ -236,8 +237,21 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.sticky {
+<style lang="scss">
+div.temp{
+  a{
+    font-size: 13px !important;
+  }
+  h5, h2, h3, h4, h1 {
+    font-size: 1rem !important;
+  }
+  li {
+    font-size: 0.9rem !important;
+  }
+  table span{
+    font-size: 1rem !important;
+  }
+  .sticky {
   position: sticky;
   position: -webkit-sticky;
   top: 0px;
@@ -250,5 +264,6 @@ export default {
 }
 .lessVisible {
   z-index: -1;
+}
 }
 </style>

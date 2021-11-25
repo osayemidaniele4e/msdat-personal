@@ -25,7 +25,6 @@ export default {
   },
   mounted() {
     this.indicators = groupIndicator(this.dlIndicator, 'program_area');
-    console.log(this.indicators);
   },
 };
 </script>

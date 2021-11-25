@@ -7,6 +7,8 @@
     :allow-empty="allowEmpty"
     placeholder="Pick a value"
     v-bind="multiSelectProps"
+    selectLabel=""
+    deselectLabel=""
   >
   </multiselect>
 </template>

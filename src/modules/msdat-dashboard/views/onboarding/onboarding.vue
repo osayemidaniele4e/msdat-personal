@@ -49,7 +49,6 @@ export default {
     },
     close() {
       this.background = true;
-      console.log('closed');
       this.$emit('closeOnboard');
     },
   },

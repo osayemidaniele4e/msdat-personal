@@ -161,12 +161,14 @@ export default {
           key,
           value,
         });
+        console.log(key, value, 'hello1');
       } else {
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: this.controlIndex,
           key,
           value,
         });
+        console.log(key, value, 'hello2>', this.payload);
       }
 
       this.$emit('data:options', this.payload);
