@@ -10,7 +10,7 @@
         <p class="text-left msg">
           This dashboard provides a single transparent view of
           health data across the country. It presents health data
-          across six (6) program areas: RMNCH, Nutrition,
+          across seven (7) program areas: RMNCH, Nutrition,
           Malaria, Immunization, HIV/AIDS and Mortality. It also provides
           insight on health facility service availability and
           readiness for each state.
