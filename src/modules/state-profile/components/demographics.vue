@@ -21,10 +21,14 @@
             <p> <b>{{d.name}}</b> </p>
           </b-col>
           <b-col class="text-right">
-                  <p v-if="d.indicatorId == 64" class="value"><b>{{d.value | commaValue}}%</b></p>
-                  <p v-else class="value"> <b>{{d.value  | commaValue}}</b></p>
-                  <p class="source">Source: {{d.source}} {{d.year}}</p>
+            <p v-if="d.indicatorId === 64" class="value"><b>{{d.value | commaValue}}%</b></p>
+            <p v-else-if="d.sourceId === 19" class="value">
+               <b>{{Math.round(d.value) | commaValue}}</b></p>
+            <p v-else class="value"> <b>{{d.value  | commaValue}}</b></p>
+            <p class="source">Source: {{d.source}} {{d.year}}</p>
           </b-col>
+        </b-row>
+        <b-row class="compare">
           <b-col cols="auto" class="text-right" v-if="d.compare">
   <b-icon :icon= 'getChangeIcon()' :variant="pointer"></b-icon>
           </b-col>
@@ -40,7 +44,7 @@
             <span v-if="d.indicatorId == 64">%</span>)
             </p>
           </b-col>
-        </b-row>
+          </b-row>
         </div>
 
       </b-col>
@@ -385,6 +389,10 @@ hr {
   border: 1px dashed rgba(197, 197, 197, 1);
   opacity: 1;
   height: 100%;
+}
+.compare {
+  justify-content: flex-end;
+  padding-top: 7px;
 }
 .source {
   color: #7C7C7C
