@@ -10,6 +10,7 @@
     <p id="link-to-about" style="font-size: 13px; font-family: Work Sans">
       <b>View datasheet</b>- see all available data in database
     </p>
+
     <b-card>
       <b-row>
         <!-- **** Preferences Selection *****  -->
@@ -70,6 +71,7 @@
             >
           </b-row>
         </b-col>
+        </div>
       </b-row>
     </b-card>
   </b-container>

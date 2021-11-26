@@ -6,11 +6,13 @@
       opacity: 1;
       top: 314px;
       left: 1258px;
-      width: 373px;
+      width: 95%;
       height: 354px;
       margin-bottom: 15px;
       font-family: Work Sans;
     "
+    class="
+    ml-auto mr-auto"
   >
     <h4 class="" style="padding: 29px 2px 14px 19px; font-size: 18px">
       Arrange the position of your widgets
@@ -31,7 +33,7 @@
               background: #ffffff;
               top: 480px;
               left: 1318px;
-              width: 330px;
+              width: 90%;
               height: 33px;
               padding: 6px 3px 6px 7px;
               margin-bottom: 19px;

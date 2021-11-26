@@ -1,12 +1,21 @@
 <template>
   <b-container>
-    <b-row >
-      <h2 style="color: #202020; font-family: Work Sans; font-size: 25px;margin-top: -24px" >
+    <b-row>
+      <h2
+        style="
+          color: #202020;
+          font-family: Work Sans;
+          font-size: 25px;
+          margin-top: -24px;
+        "
+        class="ml-3"
+      >
         Select your sections and arrange your widgets
       </h2>
       <br />
-      <b-col cols="8">
-        <div v-for="value in values" :key="value">
+      <b-col md="8" sm="12">
+        <div  v-for="value in values" :key="value">
+          <div class="">
           <input
             type="checkbox"
             name="dashboard"
@@ -15,16 +24,17 @@
             @click="selectedComponent($event, value.fieldName)"
           />
           <!-- //:checked="isSelected(value)"/> -->
-          <label for="dashboard" class="fields">{{ value.fieldName }}</label>
-          <p style="width: 600px; font-family: Work Sans; font-size: 14px">
+          <label for="dashboard" class="fields ">{{ value.fieldName }}</label>
+          </div>
+          <p style="width: 100%; font-family: Work Sans; font-size: 14px">
             This section shows an overview of your dashboard. This is a brief
             description...
           </p>
           <img :src="value.fieldImage" class="layout" />
         </div>
       </b-col>
-      <b-col cols="4">
-        <div style="position: fixed; margin-top: -45px">
+      <b-col md="4" sm="12">
+        <div class="dragable-list">
           <dragable-list />
           <b-row align-h="center" class="mt-3 text-right">
             <!-- <b-col class="align-baseline" cols="auto"
@@ -110,7 +120,12 @@ export default {
   },
   methods: {
     approveData() {
-      this.$router.push({ name: 'my-custom-dashboard', params: { title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase() } });
+      this.$router.push({
+        name: 'my-custom-dashboard',
+        params: {
+          title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
+        },
+      });
       // this.$router.push('/my-custom-dashboard');
     },
     selectedComponent(e, fieldName) {
@@ -141,16 +156,35 @@ export default {
 </script>
 
 <style scoped>
+@media (min-width: 740px) {
+  .dragable-list {
+    display: inline-block;
+    position: fixed;
+    /* margin-top: -45px; */
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .dragable-list {
+    /* display: block; */
+    /* margin-top: -45px;  */
+    position: relative;
+  }
+  .fields {
+    width: 80% !important;
+  }
+}
+
 .layout {
   top: 522px;
   left: 140px;
-  width: 671px;
+  width: 100%;
   height: 269px;
   margin-bottom: 24px;
 }
 .fields {
   background: #f5f5f5;
-  width: 309px;
+  width: 40%;
   height: 25px;
   padding-left: 5px;
   margin-left: 10px;
