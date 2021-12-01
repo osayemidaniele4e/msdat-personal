@@ -23,11 +23,11 @@ export default {
   computed: {
     payload() {
       if (this.groupIndex != null) {
-        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-          .payload[this.groupIndex];
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
+          this.groupIndex
+        ];
       }
-      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-        .payload;
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
   methods: {
@@ -40,12 +40,20 @@ export default {
       );
       return available;
     },
+    // async getAvailableDataSources() {
+    //   const availableDataSource = await this.setDataSourcesDropdown(
+    //     this.payload.indicator.id,
+    //   );
+    //   return availableDataSource;
+    // },
   },
   watch: {
     // get latest available years when indicator , datasource or location are changed
     'payload.indicator': {
       async handler() {
         const availableYears = await this.getAvailableYears();
+        // const availableDS = await this.getAvailableDataSources();
+        // console.log('hello =>', availableDS);
         this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
@@ -80,5 +88,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

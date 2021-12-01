@@ -45,7 +45,6 @@ export default {
     },
     diffBaseOnTarget(data, targetValue) {
       const aboveTargetData = takeWhile(data, (item) => item[1] >= targetValue);
-      console.log(data);
       const belowTargetData = difference(data, aboveTargetData);
 
       return {

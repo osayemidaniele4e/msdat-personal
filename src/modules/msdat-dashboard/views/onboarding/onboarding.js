@@ -15,6 +15,7 @@ export default {
       this.firstTime = false;
       // This function is called form another mixins add in the root instance component "tour.js:
       this.runIntro();
+      // this.endIntro();
     },
   },
   mounted() {

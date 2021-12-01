@@ -182,6 +182,9 @@ export default {
       //   });
       // }
     },
+    // closeOnboard() {
+    //   this.firstTime = false;
+    // },
   },
   async mounted() {
     this.loading = false;
@@ -238,32 +241,36 @@ export default {
 </script>
 
 <style lang="scss">
-div.temp{
-  a{
+div.temp {
+  a {
     font-size: 13px !important;
   }
-  h5, h2, h3, h4, h1 {
+  h5,
+  h2,
+  h3,
+  h4,
+  h1 {
     font-size: 1rem !important;
   }
   li {
     font-size: 0.9rem !important;
   }
-  table span{
+  table span {
     font-size: 1rem !important;
   }
   .sticky {
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0px;
-  z-index: 2;
-  background-color: white;
-  box-shadow: 0px 3px 8px 0px #888888;
-}
-.visible {
-  z-index: 10;
-}
-.lessVisible {
-  z-index: -1;
-}
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0px;
+    z-index: 2;
+    background-color: white;
+    box-shadow: 0px 3px 8px 0px #888888;
+  }
+  .visible {
+    z-index: 10;
+  }
+  .lessVisible {
+    z-index: -1;
+  }
 }
 </style>

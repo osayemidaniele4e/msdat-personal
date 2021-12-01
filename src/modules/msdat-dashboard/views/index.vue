@@ -58,7 +58,7 @@ export default {
         setInterval(() => {
           // console.log(i);
           this.loadingData = i;
-        }, i * 1000);
+        }, i * 4000);
       }
     },
   },

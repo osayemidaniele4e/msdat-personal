@@ -6,12 +6,18 @@ import './tour.css';
 export default {
   methods: {
     runIntro() {
-      introJs().addHints().setOptions({
-        tooltipClass: 'customTooltip customTooltips',
-        highlightClass: 'customHighlight customHighlights',
-        disableInteraction: true,
-        steps: tour.steps,
-      }).start();
+      introJs()
+        .addHints()
+        .setOptions({
+          tooltipClass: 'customTooltip customTooltips',
+          highlightClass: 'customHighlight customHighlights',
+          disableInteraction: true,
+          steps: tour.steps,
+        })
+        .start();
+    },
+    endIntro() {
+      introJs().exit();
     },
   },
 };

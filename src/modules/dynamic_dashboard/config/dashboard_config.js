@@ -95,4 +95,17 @@ export default [
     initialDataSource: 19,
     initialLocation: 1,
   },
+  {
+    name: 'Health_Service_Access',
+    title: 'Health Service Access',
+    indicators: [
+      1, 30, 31, 32, 63, 64, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
+      84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94,
+    ],
+    defaultIndicators: [63, 64, 65], // an indicator ID and related indicators,
+    dataSources: [7, 18, 21, 23, 19, 22, 20, 27, 28, 2],
+    initialIndicator: 63,
+    initialDataSource: 19,
+    initialLocation: 1,
+  },
 ];

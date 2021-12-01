@@ -92,7 +92,6 @@ export default {
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
-            console.trace(dataSources);
             const indicatorObject = this.dlGetIndicator(indicatorID);
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
