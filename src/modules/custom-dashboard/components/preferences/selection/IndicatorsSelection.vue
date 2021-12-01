@@ -128,7 +128,7 @@ export default {
     },
     toggleAll(e, childsArray, parentName, selected) {
       this.AllSelected = e.target.checked;
-      if (this.AllSelected == true) {
+      if (this.AllSelected == true ) {
         this.showList = true;
       } else {
         this.showList = false;
@@ -141,9 +141,11 @@ export default {
         };
         this.$store.dispatch('loadYears', child);
         this.$store.dispatch('loadCoverageLevels', child);
+        // if($store.state.CUSTOM_DASHBOARD_STORE.allSelected == true){
+        //   this.$store.dispatch('loadYears', child);
+        // this.$store.dispatch('loadCoverageLevels', child);
+        // }
       });
-
-      // this.$emit('IndicatorSelect', this.showList);
       this.$store.dispatch('forAllSelectedIndicator', {
         checked: this.AllSelected,
         name: parentName,

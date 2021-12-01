@@ -90,7 +90,7 @@
                     class="col-6 col-md-4"
                     style="
                       display: inline-block;
-                      font-size: 12px;
+                      font-size: 11px;
                       font-family: Work Sans;
                     "
                     v-if="item.selected"

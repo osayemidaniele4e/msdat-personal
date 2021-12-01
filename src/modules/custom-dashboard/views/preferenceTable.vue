@@ -102,7 +102,16 @@ export default {
     return {
       showNotes: false,
       showList: false,
+      destroyPage: false,
     };
+  },
+  beforeDestroy(){
+    if(this.destroyPage === false){
+      location.reload(true);
+    } else {
+      console.log('nothing');
+    }
+
   },
   computed: {
     indicatorsCount() {
@@ -207,6 +216,7 @@ export default {
   methods: {
     approveData() {
       this.$router.push('data-table');
+      this.destroyPage = true;
     },
   },
 };

@@ -39,11 +39,15 @@
                   @change="previewThumbnail"
                 />
                 <label class="file-input-label" for="file-input">
-                  <customDashboardSvg ></customDashboardSvg>
+                  <customDashboardSvg></customDashboardSvg>
                 </label>
               </div>
-              <div class="image-preview" v-if="this.selectedImage.length > 0" style="background: white">
-                <img :src="selectedImage"  class="image-preview__img" />
+              <div
+                class="image-preview"
+                v-if="this.selectedImage.val.length > 0"
+                style="background: white"
+              >
+                <img :src="selectedImage.val" class="image-preview__img" />
               </div>
             </b-col>
             <b-col cols="12" lg="5">
@@ -54,10 +58,13 @@
               </p>
             </b-col>
           </b-row>
+          <div :class="{ invalid: !selectedImage.isValid }">
+            <p v-if="!selectedImage.isValid">Image field must not be empty.</p>
+          </div>
         </b-col>
       </b-row>
       <p><b>Select dashboard data</b></p>
-      <p style="margin-top: -10px!important">
+      <p style="margin-top: -10px !important">
         Go through our database and select the data that is relevant to your
         dashboard.<br />
         Select your indicators, your preferred data source, the years and the
@@ -89,7 +96,9 @@
           </p>
         </b-col> -->
         <b-col cols="auto mb-5" style="margin-left: -93px !important">
-          <b-button id="available" disabled>SELECT all available DATA</b-button>
+          <b-button id="available" @click="selectAllData($event)"
+            >SELECT all available DATA</b-button
+          >
         </b-col>
         <b-col>
           <p class="help-text">
@@ -117,7 +126,10 @@ export default {
   },
   data() {
     return {
-      selectedImage: '',
+      selectedImage: {
+        val: '',
+        isValid: true,
+      },
       dName: {
         val: '',
         isValid: true,
@@ -131,6 +143,12 @@ export default {
   },
   mounted() {
     this.$store.commit('updateStep', 1);
+    localStorage.removeItem('vuex');
+    // store.replaceState({})
+    // this.$forceUpdate();
+    // this.$router.go();
+    // window.location.reload(true);
+    // location.reload(1);
   },
   methods: {
     previewThumbnail: function getPreview(event) {
@@ -138,8 +156,9 @@ export default {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.selectedImage = e.target.result;
-          console.log('image', this.selectedImage);
+          this.selectedImage.val = e.target.result;
+          this.selectedImage.isValid = true;
+          // console.log('image', this.selectedImage.val);
         };
         reader.readAsDataURL(input.files[0]);
       }
@@ -149,8 +168,8 @@ export default {
     },
     onUpload() {
       const fd = new FormData();
-      fd.append('Image', this.selectedImage, this.selectedImage.name);
-      console.log(this.selectedImage);
+      fd.append('Image', this.selectedImage.val, this.selectedImage.name);
+      // console.log(this.selectedImage.val);
     },
     validateForm() {
       this.formIsValid = true;
@@ -160,6 +179,10 @@ export default {
       }
       if (this.description.val === '') {
         this.description.isValid = false;
+        this.formIsValid = false;
+      }
+      if (this.selectedImage.val === '') {
+        this.selectedImage.isValid = false;
         this.formIsValid = false;
       }
     },
@@ -174,16 +197,38 @@ export default {
       const formData = {
         dashboardName: this.dName,
         description: this.description,
-        image: this.selectedImage,
+        image: this.selectedImage.val,
       };
 
       this.$store.dispatch('dashboardConfiguration', {
         name: this.dName.val,
         description: this.description.val,
-        image: this.selectedImage,
+        image: this.selectedImage.val,
       });
+      this.$store.dispatch('allSelection', {
+        allselected: false,
+      });
+      this.$store.state.CUSTOM_DASHBOARD_STORE.masterData = [];
+      this.$store.state.CUSTOM_DASHBOARD_STORE.SurveyArray = [];
+
       this.$emit('save-data', formData);
       this.$router.push('preference-table');
+    },
+    selectAllData(e) {
+      this.validateForm();
+      if (!this.formIsValid) {
+        return;
+      } else {
+        this.$store.dispatch('dashboardConfiguration', {
+          name: this.dName.val,
+          description: this.description.val,
+          image: this.selectedImage.val,
+        });
+        this.$store.dispatch('allSelection', {
+          allselected: true,
+        });
+        this.$router.push('preference-table');
+      }
     },
   },
 };

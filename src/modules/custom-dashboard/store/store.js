@@ -18,8 +18,8 @@ export default {
       datasource: false,
       levels: false,
       years: false,
-
     },
+    allSelected: false,
     // loading: false,
     step: 0,
     dashboardDetails: {},

@@ -30,7 +30,7 @@ export default {
   setPArea(state, payload) {
     // console.log('loading',payload);
     // state.loading = false;
-    // console.log('INd', payload);
+    // console.log('INd', payload);`
     state.masterData = payload;
   },
 
@@ -253,5 +253,12 @@ export default {
     console.log('State P', payload);
     state.ArrangedSections = payload;
   },
+
+  // ******** Select All Data ********* //
+
+  selectAll(state, payload){
+    console.log('asdw', payload);
+    state.allSelected = payload;
+  }
 
 };
