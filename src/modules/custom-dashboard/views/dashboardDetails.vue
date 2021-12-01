@@ -217,7 +217,7 @@ export default {
     selectAllData(e) {
       this.validateForm();
       if (!this.formIsValid) {
-        return;
+
       } else {
         this.$store.dispatch('dashboardConfiguration', {
           name: this.dName.val,

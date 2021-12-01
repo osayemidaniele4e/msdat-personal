@@ -256,9 +256,9 @@ export default {
 
   // ******** Select All Data ********* //
 
-  selectAll(state, payload){
+  selectAll(state, payload) {
     console.log('asdw', payload);
     state.allSelected = payload;
-  }
+  },
 
 };

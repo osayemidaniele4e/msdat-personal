@@ -33,7 +33,7 @@ export default {
                       return x;
                     }
                     if (state.allSelected == true) {
-                      x.selected = true
+                      x.selected = true;
                     }
                   },
                 ),
@@ -41,7 +41,7 @@ export default {
                 showList: false,
                 showNotes: false,
 
-              })
+              });
             } else {
               composedData.push({
                 children: data.filter(
@@ -53,28 +53,27 @@ export default {
                       x.levels = [];
                       return x;
                     }
-
                   },
                 ),
                 parent: { selected: true, isChildSelected: true, value: distItem.toUpperCase() },
                 showList: true,
                 showNotes: true,
-              })
+              });
             }
           }));
           console.log('CD', composedData);
           state.loader.indicator = false;
           commit('setPArea', composedData);
           if (state.allSelected == true) {
-            composedData.map(x => {
-              x.children.forEach(child => {
+            composedData.map((x) => {
+              x.children.forEach((child) => {
                 const childs = {
-                  id: child.id
-                }
-                dispatch('loadCoverageLevels', childs)
-                dispatch('loadYears', childs)
-              })
-            })
+                  id: child.id,
+                };
+                dispatch('loadCoverageLevels', childs);
+                dispatch('loadYears', childs);
+              });
+            });
           }
 
           // dispatch('loadCoverageLevels', childs)
@@ -115,7 +114,7 @@ export default {
                 ),
                 parent: distItem.toUpperCase(),
 
-              })
+              });
             } else {
               SurveyArray.push({
                 children: data.filter(
@@ -127,8 +126,8 @@ export default {
                   },
                 ),
                 parent: distItem.toUpperCase(),
-              })
-            };
+              });
+            }
 
             SurveyArray.sort((a, b) => {
               const keyA = a.parent;
@@ -162,10 +161,10 @@ export default {
           const dataLevels = data.data_level.split(',');
           // console.log(dataLevels);
           if (state.allSelected == false) {
-            const levels = dataLevels.map((level) => ({ selected: false, value: level }))
+            const levels = dataLevels.map((level) => ({ selected: false, value: level }));
             levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
           } else {
-            const levels = dataLevels.map((level) => ({ selected: true, value: level }))
+            const levels = dataLevels.map((level) => ({ selected: true, value: level }));
             levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
           }
           // state.loader.levels = false;
@@ -190,16 +189,16 @@ export default {
         .then((res) => {
           const { data } = res;
           if (state.allSelected == false) {
-          const yearsData = data.years.map((year) => ({ selected: false, value: year }));
-          dataObj = {
-            id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
-          };
-        } else {
-          const yearsData = data.years.map((year) => ({ selected: true, value: year }));
-          dataObj = {
-            id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
-          };
-        }
+            const yearsData = data.years.map((year) => ({ selected: false, value: year }));
+            dataObj = {
+              id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
+            };
+          } else {
+            const yearsData = data.years.map((year) => ({ selected: true, value: year }));
+            dataObj = {
+              id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
+            };
+          }
           state.loader.years = false;
         });
     } else {
@@ -256,6 +255,6 @@ export default {
   // *********For All Selection OF DATA****************//
   allSelection({ commit }, payload) {
     console.log('actions', payload);
-    commit('selectAll', payload.allselected)
-  }
+    commit('selectAll', payload.allselected);
+  },
 };

@@ -105,13 +105,12 @@ export default {
       destroyPage: false,
     };
   },
-  beforeDestroy(){
-    if(this.destroyPage === false){
+  beforeDestroy() {
+    if (this.destroyPage === false) {
       location.reload(true);
     } else {
       console.log('nothing');
     }
-
   },
   computed: {
     indicatorsCount() {

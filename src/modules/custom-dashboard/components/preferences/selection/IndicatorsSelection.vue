@@ -128,7 +128,7 @@ export default {
     },
     toggleAll(e, childsArray, parentName, selected) {
       this.AllSelected = e.target.checked;
-      if (this.AllSelected == true ) {
+      if (this.AllSelected == true) {
         this.showList = true;
       } else {
         this.showList = false;
