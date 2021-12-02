@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card mh-40">
     <div
       class="
         card-header
@@ -127,6 +127,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+div.card.mh-40{
+  min-height: 40vh;
+}
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

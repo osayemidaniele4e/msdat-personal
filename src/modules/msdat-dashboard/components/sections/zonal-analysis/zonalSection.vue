@@ -151,7 +151,6 @@ export default {
           datasource: val.datasource.id,
           period: val.year,
         });
-        console.log(data);
         if (data.length > 0) {
           if (val.location.id !== 1) {
             const filteredLGADataForState = data.filter(

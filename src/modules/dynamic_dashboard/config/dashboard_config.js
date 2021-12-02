@@ -99,13 +99,14 @@ export default [
     name: 'Health_Service_Access',
     title: 'Health Service Access',
     indicators: [
-      1, 30, 31, 32, 63, 64, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-      84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94,
+      39, 40, 41, 42, 43, 44, 62, 293, 294, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313,
+      320, 326, 362, 363, 364,
     ],
-    defaultIndicators: [63, 64, 65], // an indicator ID and related indicators,
-    dataSources: [7, 18, 21, 23, 19, 22, 20, 27, 28, 2],
-    initialIndicator: 63,
-    initialDataSource: 19,
+    defaultIndicators: [39, 48, 37], // an indicator ID and related indicators,
+    // Fix
+    dataSources: [3, 7, 17, 24],
+    initialIndicator: 39,
+    initialDataSource: 3,
     initialLocation: 1,
   },
 ];
