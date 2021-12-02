@@ -15,6 +15,7 @@
           @input="updatePayload($event, values.key)"
           :options="values.options"
           :multiSelectProps="values.dropdownProps"
+          :label="values.label"
         />
         <!-- </div> -->
         <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
