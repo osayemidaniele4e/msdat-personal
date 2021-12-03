@@ -63,15 +63,14 @@
 
         <div class="container-fluid lessVisible">
           <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
+            <slot :name="`section-before-${index}`"></slot>
             <div class="row observable" :id="index" :ref="index" :key="index">
-              <slot :name="`section-before-${index}`"></slot>
-              <slot
+              <!-- <slot
                 v-if="controlPanel.payload === undefined"
                 :name="`section-${index}`"
                 :controlIndex="index"
-              ></slot>
+              ></slot> -->
               <slot
-                v-else
                 :name="`section-${index}`"
                 :payload="controlPanel.payload"
                 :controlIndex="index"

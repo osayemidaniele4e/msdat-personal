@@ -8,11 +8,10 @@
       :initialDataSource="initialDataSource"
       :initialLocation="initialLocation"
     >
-
-       <template v-slot:section-0>
+      <template v-slot:section-before-0>
         <slot name="top-section"></slot>
       </template>
-      <template v-slot:section-1="{ payload, controlIndex }">
+      <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -33,7 +32,7 @@
         </div>
       </template>
 
-      <template v-slot:section-2="{ payload, controlIndex }">
+      <template v-slot:section-1="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -53,7 +52,7 @@
         </div>
       </template>
 
-      <template v-slot:section-3="{ payload, controlIndex }">
+      <template v-slot:section-2="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
@@ -72,7 +71,7 @@
         </div>
       </template>
 
-      <template v-slot:section-4="{ payload, controlIndex }">
+      <template v-slot:section-3="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -88,7 +87,7 @@
           </base-sub-card>
         </div>
       </template>
-      <template v-slot:section-5="{ payload, controlIndex }">
+      <template v-slot:section-4="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -182,7 +181,7 @@ export default {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
   },
   created() {
-    // this.CLEAR_CONTROL_PANEL();
+    this.CLEAR_CONTROL_PANEL();
     /**
      * passing indicator Overview first means it going to at  index 0
      * in the control Panel config Array
