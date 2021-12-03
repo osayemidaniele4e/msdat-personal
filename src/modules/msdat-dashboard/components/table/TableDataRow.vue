@@ -15,7 +15,7 @@
         <!-- Use this slot to set the related indicator multiselect and it options -->
         <div class="d-flex flex-column">
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
-            {{ rowData.indicator.short_name }}
+            {{ rowData.indicator.full_name }}
           </slot>
           <span style="font-size: 10px; margin: 0 5px">{{ factor }}</span>
         </div>

@@ -125,18 +125,25 @@ export default {
      */
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const filteredIndicator = await this.dlQuery(queryObject);
-      // console.log(queryObject);
-      // console.log(filteredIndicator);
-      if (filteredIndicator.length > 0) {
-        return filteredIndicator.reduce((max, currentValues) => {
-          // if (!(currentValues.period.length > 4)) {
-          if (currentValues.period > max.period) {
-            return currentValues;
-          }
-          return max;
-          // }
-          // return null;
-        });
+      if (this.$route.meta.title !== 'Demographics') {
+        if (filteredIndicator.length > 0) {
+          return filteredIndicator.reduce((max, currentValues) => {
+            if (currentValues.period > max.period) {
+              return currentValues;
+            }
+            return max;
+          });
+        }
+      } else if (this.$route.meta.title === 'Demographics') {
+        if (filteredIndicator.length > 0) {
+          const presentYear = new Date().getFullYear();
+          return filteredIndicator.reduce((max, currentValues) => {
+            if (currentValues.period > max.period && currentValues.period <= presentYear) {
+              return currentValues;
+            }
+            return max;
+          });
+        }
       }
       return null;
     },
