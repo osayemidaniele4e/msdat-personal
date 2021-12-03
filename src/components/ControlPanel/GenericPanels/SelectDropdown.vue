@@ -11,7 +11,7 @@
     v-bind="multiSelectProps"
     selectLabel=""
     deselectLabel=""
-    ><span class="text-capitalize" slot="noOptions">{{ label }}s</span></multiselect
+    ><span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}s</span></multiselect
   >
 </template>
 
@@ -44,9 +44,9 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    label: {
+    NoDataLabel: {
       type: String,
-      default: 'List is empty',
+      default: () => 'List is empty',
     },
   },
   watch: {
