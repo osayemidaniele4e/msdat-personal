@@ -126,7 +126,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

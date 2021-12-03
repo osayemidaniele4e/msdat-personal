@@ -98,19 +98,17 @@ export default {
       indicatorID = this.defaultIndicator.id,
     ) {
       const data = await this.dlGetDashboardDataSource(indicatorID);
-      console.log('control-panel', data[4]);
 
-      // const onlyYearData = data.filter((item) => {
-      //   if (isDataYearly(item.period)) {
-      //     return item.period;
-      //   }
-      //   return false;
-      // });
-      // return data;
-      // const years = onlyYearData.map((item) => item.period);
-      // const unqiueYears = uniq(years);
-      // const sortedYears = unqiueYears.sort((a, b) => b - a);
-      // return sortedYears;
+      const onlyYearData = data.filter((item) => {
+        if (isDataYearly(item.period)) {
+          return item.period;
+        }
+        return false;
+      });
+      const years = onlyYearData.map((item) => item.period);
+      const unqiueYears = uniq(years);
+      const sortedYears = unqiueYears.sort((a, b) => b - a);
+      return sortedYears;
     },
   },
 };

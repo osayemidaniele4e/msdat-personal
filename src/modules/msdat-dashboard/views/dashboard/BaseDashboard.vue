@@ -82,7 +82,9 @@
         <!-- lazy loading ends here -->
 
         <Footer class="visible"> </Footer>
-        <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
+        <div v-if="configObject.name !== 'Demographics'">
+          <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
+        </div>
       </div>
     </template>
   </div>
@@ -100,6 +102,7 @@ import SharingDashboardState from '../../modules/dashboard_state_share/mixins';
 import Loading from '../../mixins/loading';
 import Onboarding from '../onboarding/onboarding';
 import TroubleShooting from '../../modules/troubleshooting/mixins';
+import config from '../../../dynamic_dashboard/config/dashboard_config';
 
 export default {
   name: 'BaseDashboard',
@@ -116,6 +119,7 @@ export default {
   data() {
     return {
       position: 3,
+      dashboardConfig: config,
     };
   },
   components: {
@@ -150,6 +154,10 @@ export default {
       type: Array,
       required: false,
     },
+  },
+  created() {
+    const { name } = this.$route.params;
+    this.configObject = this.dashboardConfig.find((item) => item.name === name);
   },
   methods: {
     /**

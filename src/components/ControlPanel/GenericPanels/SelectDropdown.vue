@@ -1,4 +1,6 @@
 <template>
+  <!-- Label to show when there is no available data as requested
+  for by chiamaka on the 2-12-2021 during msdat meeting -->
   <multiselect
     v-model="selected"
     :options="options"
@@ -9,8 +11,8 @@
     v-bind="multiSelectProps"
     selectLabel=""
     deselectLabel=""
+    ><span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}s</span></multiselect
   >
-  </multiselect>
 </template>
 
 <script>
@@ -42,6 +44,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    NoDataLabel: {
+      type: String,
+      default: () => 'List is empty',
+    },
   },
   watch: {
     options: {
@@ -68,5 +74,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
