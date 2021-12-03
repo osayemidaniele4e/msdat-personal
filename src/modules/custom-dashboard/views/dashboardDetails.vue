@@ -205,6 +205,7 @@ export default {
         description: this.description.val,
         image: this.selectedImage.val,
       });
+      //
       this.$store.dispatch('allSelection', {
         allselected: false,
       });
