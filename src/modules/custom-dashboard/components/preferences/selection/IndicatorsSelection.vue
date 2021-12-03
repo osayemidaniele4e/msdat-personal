@@ -141,9 +141,11 @@ export default {
         };
         this.$store.dispatch('loadYears', child);
         this.$store.dispatch('loadCoverageLevels', child);
+        // if($store.state.CUSTOM_DASHBOARD_STORE.allSelected == true){
+        //   this.$store.dispatch('loadYears', child);
+        // this.$store.dispatch('loadCoverageLevels', child);
+        // }
       });
-
-      // this.$emit('IndicatorSelect', this.showList);
       this.$store.dispatch('forAllSelectedIndicator', {
         checked: this.AllSelected,
         name: parentName,
