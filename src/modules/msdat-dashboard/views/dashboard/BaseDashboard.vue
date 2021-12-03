@@ -82,9 +82,9 @@
         <!-- lazy loading ends here -->
 
         <Footer class="visible"> </Footer>
-        <div v-if="configObject.name !== 'Demographics'">
+        <!-- <div v-if="configObject.name !== 'Demographics'"> -->
           <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
-        </div>
+        <!-- </div> -->
       </div>
     </template>
   </div>
