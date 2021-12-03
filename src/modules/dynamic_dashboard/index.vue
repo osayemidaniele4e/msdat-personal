@@ -56,7 +56,7 @@ export default {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
   },
   created() {
-    this.CLEAR_CONTROL_PANEL();
+    // this.CLEAR_CONTROL_PANEL();
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
@@ -66,14 +66,14 @@ export default {
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
     }
-    if (this.configObject.name === 'Demographics') {
-      const configObj = {
-        label: 'Demographics',
-        setup: [],
-        payload: null,
-      };
-      this.ADD_CONTROL_PANEL(configObj);
-    }
+    // if (this.configObject.name === 'Demographics') {
+    //   const configObj = {
+    //     label: 'Demographics',
+    //     setup: [],
+    //     payload: null,
+    //   };
+    //   this.ADD_CONTROL_PANEL(configObj);
+    // }
   },
   watch: {
     $route(to, from) {
