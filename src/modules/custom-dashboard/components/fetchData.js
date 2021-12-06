@@ -2,7 +2,6 @@ import axios from '@/plugins/axios';
 import { groupIndicator } from '@/util/helper';
 
 async function indicatorAvailableYears(value) {
-  console.log('the value is : ', value);
   // return an array of available years for indicator
   const indicatorId = value.id;
   const yearsAvailable = await axios.get(`/indicators/${indicatorId}/years_available/`);
@@ -79,6 +78,7 @@ export default {
       });
       this.generateNotes(indicatorNames, missingIndicatorYears);
     },
+
   },
 
   watch: {

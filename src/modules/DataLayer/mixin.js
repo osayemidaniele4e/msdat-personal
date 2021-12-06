@@ -2,6 +2,7 @@ import { createNamespacedHelpers } from 'vuex';
 import {
   filter, omit, matches, isObject, has,
 } from 'lodash';
+import axios from '@/plugins/axios';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
 
@@ -166,6 +167,13 @@ export default {
         return filter(this.dlDataSourceSpecificIndicator, matches(values));
       }
       return this.dlDataSourceSpecificIndicator.find((item) => item.id === values);
+    },
+    // New Feature
+    // function to get data_sources based on indicator
+    async getDataSourceByIndicator(value) {
+      const indicatorId = value;
+      const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
+      return dataSourceAvailable.data.datasources;
     },
   },
   mounted() {

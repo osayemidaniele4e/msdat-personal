@@ -195,7 +195,6 @@ export default {
         const indicatorUnavailableYears = unavailableYears[index];
         const noteText = `- ${indicator} has no ${indicatorUnavailableYears} data`;
         notesArray.push(noteText);
-        console.log(notesArray);
       });
       this.$store.commit('CUSTOM_DASHBOARD_STORE/setNotes', notesArray);
     },

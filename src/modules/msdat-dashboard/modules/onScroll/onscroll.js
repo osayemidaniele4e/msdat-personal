@@ -45,7 +45,6 @@ export default {
     },
   },
   async mounted() {
-    console.log('on scroll mixins');
     await this.$nextTick();
     setTimeout(() => {
       this.startScroll();

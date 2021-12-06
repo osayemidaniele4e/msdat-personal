@@ -200,7 +200,6 @@ export default {
     let urlRequestedIndicator = [];
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
-      console.log('hello World =>', urlRequestedIndicator);
     }
     try {
       await this.$DL.init({

@@ -94,21 +94,10 @@ export default {
       const sortedYears = unqiueYears.sort((a, b) => b - a);
       return sortedYears;
     },
-    async setDataSourcesDropdown(
-      indicatorID = this.defaultIndicator.id,
-    ) {
-      const data = await this.dlGetDashboardDataSource(indicatorID);
-
-      const onlyYearData = data.filter((item) => {
-        if (isDataYearly(item.period)) {
-          return item.period;
-        }
-        return false;
-      });
-      const years = onlyYearData.map((item) => item.period);
-      const unqiueYears = uniq(years);
-      const sortedYears = unqiueYears.sort((a, b) => b - a);
-      return sortedYears;
+    // Get available DataSources
+    async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
+      const data = await this.getDataSourceByIndicator(indicatorID);
+      return data;
     },
   },
 };

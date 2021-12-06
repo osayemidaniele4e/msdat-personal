@@ -40,25 +40,28 @@ export default {
       );
       return available;
     },
-    // async getAvailableDataSources() {
-    //   const availableDataSource = await this.setDataSourcesDropdown(
-    //     this.payload.indicator.id,
-    //   );
-    //   return availableDataSource;
-    // },
+    async getAvailableDataSources() {
+      const availableDataSource = await this.setDataSourcesDropdown(this.payload.indicator.id);
+      return availableDataSource;
+    },
   },
   watch: {
     // get latest available years when indicator , datasource or location are changed
     'payload.indicator': {
       async handler() {
         const availableYears = await this.getAvailableYears();
-        // const availableDS = await this.getAvailableDataSources();
-        // console.log('hello =>', availableDS);
+        const availableDS = await this.getAvailableDataSources();
         this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
           key: 'year',
           values: availableYears,
+        });
+        this.SETUP_CONTROL_OPTIONS1({
+          groupIndex: this.groupIndex,
+          panelIndex: this.controlIndex,
+          key: 'datasource',
+          values: availableDS,
         });
       },
     },
