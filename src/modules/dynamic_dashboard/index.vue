@@ -16,15 +16,22 @@
     >
       <template v-slot:top-section v-if="configObject.name === 'Demographics'">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Demographics</h5>
             </template>
             <template>
               <div style="text-align: center">
-                <iframe :src="url" :width="width" :height="height"></iframe>
+                <!-- <iframe :src="url" :width="width" :height="height"></iframe> -->
               </div>
-              <!-- <b-embed type="iframe" aspect="16by9" :src="url" allowfullscreen></b-embed> -->
+              <b-embed
+                type="iframe"
+                aspect="21by9"
+                :src="url"
+                :width="width"
+                :height="height"
+              ></b-embed>
+              <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
             </template>
           </base-sub-card>
         </div>
@@ -47,7 +54,8 @@ export default {
     return {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
-      url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      // url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url: 'https://public.tableau.com/views/UpdatedDemographic1/DemographicDashboard?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
     };
@@ -98,5 +106,9 @@ iframe {
     align-items: center;
     font-size: 14px !important;
   }
+}
+.iframe_container {
+  max-height: 450px;
+  overflow-y: auto;
 }
 </style>

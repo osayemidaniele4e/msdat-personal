@@ -1,6 +1,6 @@
 {
   "name": "msdat",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -36,7 +36,6 @@
     "vue-owl-carousel": "^2.0.3",
     "vue-router": "^3.2.0",
     "vue-sweetalert2": "^5.0.2",
-    "vue-tableau": "^0.1.7",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
