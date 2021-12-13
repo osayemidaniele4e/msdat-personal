@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable max-len */
+/* eslint-disable max-len */
+/* eslint-disable max-len */
 
 <template>
   <div>
@@ -156,7 +158,11 @@
           fill="#595a5a"
         />
       </g>
-      <g id="Group_22" data-name="Group 22" transform="translate(27.889 31.629)">
+      <g
+        id="Group_22"
+        data-name="Group 22"
+        transform="translate(27.889 31.629)"
+      >
         <path
           id="Path_78"
           data-name="Path 78"
@@ -242,7 +248,11 @@
           fill="#595a5a"
         />
       </g>
-      <g id="Group_23" data-name="Group 23" transform="translate(19.917 61.243)">
+      <g
+        id="Group_23"
+        data-name="Group 23"
+        transform="translate(19.917 61.243)"
+      >
         <path
           id="Path_90"
           data-name="Path 90"
@@ -286,7 +296,11 @@
           fill="#595a5a"
         />
       </g>
-      <g id="Group_24" data-name="Group 24" transform="translate(60.468 61.742)">
+      <g
+        id="Group_24"
+        data-name="Group 24"
+        transform="translate(60.468 61.742)"
+      >
         <path
           id="Path_96"
           data-name="Path 96"
@@ -351,7 +365,11 @@
           </g>
         </g>
       </g>
-      <g id="Group_29" data-name="Group 29" transform="translate(24.882 91.138)">
+      <g
+        id="Group_29"
+        data-name="Group 29"
+        transform="translate(24.882 91.138)"
+      >
         <path
           id="Path_103"
           data-name="Path 103"
@@ -437,7 +455,11 @@
           fill="#595a5a"
         />
       </g>
-      <g id="Group_30" data-name="Group 30" transform="translate(21.78 121.032)">
+      <g
+        id="Group_30"
+        data-name="Group 30"
+        transform="translate(21.78 121.032)"
+      >
         <path
           id="Path_115"
           data-name="Path 115"
@@ -544,7 +566,11 @@
           </g>
         </g>
       </g>
-      <g id="Group_35" data-name="Group 35" transform="translate(27.888 150.868)">
+      <g
+        id="Group_35"
+        data-name="Group 35"
+        transform="translate(27.888 150.868)"
+      >
         <path
           id="Path_128"
           data-name="Path 128"
@@ -630,7 +656,11 @@
           fill="#595a5a"
         />
       </g>
-      <g id="Group_36" data-name="Group 36" transform="translate(114.031 23.227)">
+      <g
+        id="Group_36"
+        data-name="Group 36"
+        transform="translate(114.031 23.227)"
+      >
         <rect
           id="Rectangle_62"
           data-name="Rectangle 62"
@@ -639,7 +669,11 @@
           fill="#fff"
         />
       </g>
-      <g id="Group_37" data-name="Group 37" transform="translate(228.741 23.227)">
+      <g
+        id="Group_37"
+        data-name="Group 37"
+        transform="translate(228.741 23.227)"
+      >
         <rect
           id="Rectangle_63"
           data-name="Rectangle 63"
@@ -727,7 +761,11 @@
           fill="#595a5a"
         />
       </g>
-      <g id="Group_41" data-name="Group 41" transform="translate(165.617 29.336)">
+      <g
+        id="Group_41"
+        data-name="Group 41"
+        transform="translate(165.617 29.336)"
+      >
         <path
           id="Path_151"
           data-name="Path 151"
@@ -736,7 +774,11 @@
           fill="#7f8080"
         />
       </g>
-      <g id="Group_42" data-name="Group 42" transform="translate(165.617 59.88)">
+      <g
+        id="Group_42"
+        data-name="Group 42"
+        transform="translate(165.617 59.88)"
+      >
         <path
           id="Path_152"
           data-name="Path 152"
@@ -745,7 +787,11 @@
           fill="#7f8080"
         />
       </g>
-      <g id="Group_43" data-name="Group 43" transform="translate(165.617 89.745)">
+      <g
+        id="Group_43"
+        data-name="Group 43"
+        transform="translate(165.617 89.745)"
+      >
         <path
           id="Path_153"
           data-name="Path 153"
@@ -754,7 +800,11 @@
           fill="#7f8080"
         />
       </g>
-      <g id="Group_44" data-name="Group 44" transform="translate(165.617 119.61)">
+      <g
+        id="Group_44"
+        data-name="Group 44"
+        transform="translate(165.617 119.61)"
+      >
         <path
           id="Path_154"
           data-name="Path 154"
@@ -763,7 +813,11 @@
           fill="#7f8080"
         />
       </g>
-      <g id="Group_45" data-name="Group 45" transform="translate(165.617 149.476)">
+      <g
+        id="Group_45"
+        data-name="Group 45"
+        transform="translate(165.617 149.476)"
+      >
         <path
           id="Path_155"
           data-name="Path 155"
@@ -772,7 +826,11 @@
           fill="#d85414"
         />
       </g>
-      <g id="Group_46" data-name="Group 46" transform="translate(283.041 29.336)">
+      <g
+        id="Group_46"
+        data-name="Group 46"
+        transform="translate(283.041 29.336)"
+      >
         <path
           id="Path_156"
           data-name="Path 156"
@@ -781,7 +839,11 @@
           fill="#7f8080"
         />
       </g>
-      <g id="Group_47" data-name="Group 47" transform="translate(283.041 59.88)">
+      <g
+        id="Group_47"
+        data-name="Group 47"
+        transform="translate(283.041 59.88)"
+      >
         <path
           id="Path_157"
           data-name="Path 157"
@@ -790,7 +852,11 @@
           fill="#7f8080"
         />
       </g>
-      <g id="Group_48" data-name="Group 48" transform="translate(283.041 89.745)">
+      <g
+        id="Group_48"
+        data-name="Group 48"
+        transform="translate(283.041 89.745)"
+      >
         <path
           id="Path_158"
           data-name="Path 158"
@@ -799,7 +865,11 @@
           fill="#eb641c"
         />
       </g>
-      <g id="Group_49" data-name="Group 49" transform="translate(283.041 119.61)">
+      <g
+        id="Group_49"
+        data-name="Group 49"
+        transform="translate(283.041 119.61)"
+      >
         <path
           id="Path_159"
           data-name="Path 159"
@@ -808,7 +878,11 @@
           fill="#7f8080"
         />
       </g>
-      <g id="Group_50" data-name="Group 50" transform="translate(283.041 149.476)">
+      <g
+        id="Group_50"
+        data-name="Group 50"
+        transform="translate(283.041 149.476)"
+      >
         <path
           id="Path_160"
           data-name="Path 160"
@@ -827,7 +901,11 @@
       height="169"
       viewBox="0 0 270 169"
     >
-      <g id="Group_62" data-name="Group 62" transform="translate(-0.311 -0.308)">
+      <g
+        id="Group_62"
+        data-name="Group 62"
+        transform="translate(-0.311 -0.308)"
+      >
         <g
           id="Rectangle_70"
           data-name="Rectangle 70"
@@ -927,7 +1005,7 @@
         </g>
       </g>
     </svg>
-
+    <!-- eslint-disable-next-line max-len -->
     <!-- 77 -->
     <svg
       v-if="name == '77'"
@@ -972,7 +1050,11 @@
               fill="#f1f0f0"
             />
           </g>
-          <g id="Group_64" data-name="Group 64" transform="translate(8.353 14.828)">
+          <g
+            id="Group_64"
+            data-name="Group 64"
+            transform="translate(8.353 14.828)"
+          >
             <path
               id="Path_176"
               data-name="Path 176"
@@ -1045,7 +1127,11 @@
             />
           </g>
         </g>
-        <g id="Group_68" data-name="Group 68" transform="translate(124.97 3.045)">
+        <g
+          id="Group_68"
+          data-name="Group 68"
+          transform="translate(124.97 3.045)"
+        >
           <g id="Group_66" data-name="Group 66">
             <path
               id="Path_186"
@@ -1062,7 +1148,11 @@
               fill="#f1f0f0"
             />
           </g>
-          <g id="Group_67" data-name="Group 67" transform="translate(12.317 11.783)">
+          <g
+            id="Group_67"
+            data-name="Group 67"
+            transform="translate(12.317 11.783)"
+          >
             <path
               id="Path_188"
               data-name="Path 188"
@@ -1154,7 +1244,11 @@
               fill="#f1f0f0"
             />
           </g>
-          <g id="Group_71" data-name="Group 71" transform="translate(27.528 7.644)">
+          <g
+            id="Group_71"
+            data-name="Group 71"
+            transform="translate(27.528 7.644)"
+          >
             <path
               id="Path_200"
               data-name="Path 200"
@@ -1195,7 +1289,11 @@
               fill="#f1f0f0"
             />
           </g>
-          <g id="Group_74" data-name="Group 74" transform="translate(17.331 12.397)">
+          <g
+            id="Group_74"
+            data-name="Group 74"
+            transform="translate(17.331 12.397)"
+          >
             <path
               id="Path_205"
               data-name="Path 205"
@@ -1203,6 +1301,7 @@
               transform="translate(-92.441 -109.884)"
               fill="#f39819"
             />
+
             <path
               id="Path_206"
               data-name="Path 206"
@@ -1270,10 +1369,24 @@
         stroke-width="2"
       />
     </svg>
-    <svg v-if="name == upload" xmlns="http://www.w3.org/2000/svg" width="273" height="301" viewBox="0 0 273 301">
-      <g id="Group_2586" data-name="Group 2586" transform="translate(-1012 -363)">
+    <svg
+      v-if="name == upload"
+      xmlns="http://www.w3.org/2000/svg"
+      width="273"
+      height="301"
+      viewBox="0 0 273 301"
+    >
+      <g
+        id="Group_2586"
+        data-name="Group 2586"
+        transform="translate(-1012 -363)"
+      >
         <g id="Group_2431" data-name="Group 2431" transform="translate(0 12)">
-          <g id="Group_2429" data-name="Group 2429" transform="translate(20 -12)">
+          <g
+            id="Group_2429"
+            data-name="Group 2429"
+            transform="translate(20 -12)"
+          >
             <circle
               id="Ellipse_179"
               data-name="Ellipse 179"

@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 import axios from 'axios';
 
 export default {
@@ -11,7 +15,7 @@ export default {
   // ***** Indicators Data ******* //
 
   async loadIndicators({ commit, state, dispatch }) {
-    if (state.masterData.length == 0) {
+    if (state.masterData.length === 0) {
       state.loader.indicator = true;
       await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
         .then((res) => {
@@ -21,7 +25,7 @@ export default {
           const composedData = [];
 
           distinctArray.forEach(((distItem) => {
-            if (state.allSelected == false) {
+            if (state.allSelected === false) {
               composedData.push({
                 children: data.filter(
                   (x) => {
@@ -32,7 +36,7 @@ export default {
                       x.levels = [];
                       return x;
                     }
-                    if (state.allSelected == true) {
+                    if (state.allSelected === true) {
                       x.selected = true;
                     }
                   },
@@ -64,7 +68,7 @@ export default {
           console.log('CD', composedData);
           state.loader.indicator = false;
           commit('setPArea', composedData);
-          if (state.allSelected == true) {
+          if (state.allSelected === true) {
             composedData.map((x) => {
               x.children.forEach((child) => {
                 const childs = {
@@ -90,7 +94,7 @@ export default {
 
   // Load DataSources From API for the First time.
   async loadDataSource({ commit, state }) {
-    if (state.SurveyArray.length == 0) {
+    if (state.SurveyArray.length === 0) {
       state.loader.datasource = true;
       // state.indicatorloading = true;
       await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
@@ -102,7 +106,7 @@ export default {
           const SurveyArray = [];
 
           distinctDataArray.forEach(((distItem) => {
-            if (state.allSelected == false) {
+            if (state.allSelected === false) {
               SurveyArray.push({
                 children: data.filter(
                   (x) => {
@@ -118,8 +122,10 @@ export default {
             } else {
               SurveyArray.push({
                 children: data.filter(
+                  // eslint-disable-next-line array-callback-return
                   (x) => {
                     if (x.classification === distItem) {
+                      // eslint-disable-next-line no-param-reassign
                       x.selected = true;
                       return x;
                     }
@@ -129,9 +135,10 @@ export default {
               });
             }
 
+            // eslint-disable-next-line no-unused-vars
             SurveyArray.sort((a, b) => {
               const keyA = a.parent;
-              if (keyA == 'ROUTINE') return -1;
+              if (keyA === 'ROUTINE') return -1;
               return 0;
             });
             // function SortArray(x, y){
@@ -142,6 +149,7 @@ export default {
           state.loader.datasource = false;
           commit('setDArea', SurveyArray);
         }).catch((err) => {
+          // eslint-disable-next-line no-unused-expressions
           (err);
           state.loader.datasource = false;
         });
@@ -160,7 +168,7 @@ export default {
           const { data } = res;
           const dataLevels = data.data_level.split(',');
           // console.log(dataLevels);
-          if (state.allSelected == false) {
+          if (state.allSelected === false) {
             const levels = dataLevels.map((level) => ({ selected: false, value: level }));
             levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
           } else {
@@ -188,7 +196,7 @@ export default {
       await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
         .then((res) => {
           const { data } = res;
-          if (state.allSelected == false) {
+          if (state.allSelected === false) {
             const yearsData = data.years.map((year) => ({ selected: false, value: year }));
             dataObj = {
               id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
@@ -214,6 +222,7 @@ export default {
     commit('levelsHandler', payload);
   },
 
+  // eslint-disable-next-line no-underscore-dangle
   _isNotExistYear({ commit }, payload) {
     commit('yearsHandler', payload);
   },

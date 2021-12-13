@@ -35,7 +35,7 @@ export default {
   },
   Watch: {
     arrangedList() {
-      log('sad', this.SortedArrayList);
+      // log('sad', this.SortedArrayList);
     },
   },
   mounted() {

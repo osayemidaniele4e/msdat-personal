@@ -25,6 +25,7 @@ import Card from '../../Card.vue';
 
 export default {
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     Card,
   },
   computed: {

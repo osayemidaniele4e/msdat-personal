@@ -205,6 +205,7 @@ export default {
         description: this.description.val,
         image: this.selectedImage.val,
       });
+      //
       this.$store.dispatch('allSelection', {
         allselected: false,
       });
@@ -214,11 +215,9 @@ export default {
       this.$emit('save-data', formData);
       this.$router.push('preference-table');
     },
-    selectAllData(e) {
+    selectAllData() {
       this.validateForm();
-      if (!this.formIsValid) {
-
-      } else {
+      if (this.formIsValid) {
         this.$store.dispatch('dashboardConfiguration', {
           name: this.dName.val,
           description: this.description.val,

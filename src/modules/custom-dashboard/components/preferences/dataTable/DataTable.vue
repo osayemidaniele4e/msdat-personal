@@ -173,7 +173,6 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
   props: ['indicator', 'dataSource', 'level', 'years'],

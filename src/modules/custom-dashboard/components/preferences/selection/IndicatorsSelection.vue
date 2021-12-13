@@ -87,6 +87,7 @@
 <script>
 import Card from '../../Card.vue';
 // import LazyLoading from '../../../../msdat-dashboard/modules/onScroll/lazyLoading.vue';
+// eslint-disable-next-line import/extensions
 import TheLoader from '../../Loading/TheLoader';
 
 export default {
@@ -102,6 +103,7 @@ export default {
       // short: 'yes',
       indicators: [],
       item: '',
+      // eslint-disable-next-line vue/no-reserved-keys
       _indicatorId_: null,
       selectedCount: 0,
       indicatorSelected: false,
@@ -126,14 +128,14 @@ export default {
     isAllSelected(item) {
       return item.selected;
     },
-    toggleAll(e, childsArray, parentName, selected) {
+    toggleAll(e, childsArray, parentName) {
       this.AllSelected = e.target.checked;
-      if (this.AllSelected == true) {
+      if (this.AllSelected === true) {
         this.showList = true;
       } else {
         this.showList = false;
       }
-      childsArray.forEach((element, key) => {
+      childsArray.forEach((element) => {
         const child = {
           value: element.short_name,
           id: element.id,
@@ -160,7 +162,7 @@ export default {
       this.$store.dispatch('loadIndicators');
     },
 
-    selectIndicator(e, parentValue, childId, childName, selected) {
+    selectIndicator(e, parentValue, childId, childName) {
       this.indicatorSelected = e.target.checked;
       this.showList = e.target.checked;
       this.$store.dispatch('forSelectedIndicator', {
