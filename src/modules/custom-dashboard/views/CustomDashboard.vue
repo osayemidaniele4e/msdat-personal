@@ -21,8 +21,26 @@ export default {
     customDashboard: instance,
   },
   data() {
-    return {
-      configObjects: {
+    return {};
+  },
+
+  watch: {
+    // configObject(newVal) {
+    //   console.log('watch', newVal);
+    //   // deep: true,
+    //   // eslint-disable-next-line object-shorthand
+    //   // handler: function (newVal) {
+    //   //   console.log('sswwd', Val);
+    //   // },
+    // },
+  },
+
+  computed: {
+    fieldsArray() {
+      return this.$store.getters.arrangedSections;
+    },
+    configObject() {
+      const configObjects = {
         name: 'Health_Outcomes',
         title: 'Health Outcomes and Service Coverage',
         indicators: [],
@@ -31,45 +49,40 @@ export default {
         initialIndicator: 0,
         initialDataSource: 0,
         initialLocation: 1,
-      },
-
-    };
-  },
-
-  computed: {
-    fieldsArray() {
-      return this.$store.getters.arrangedSections;
-    },
-    configObject() {
+      };
       const ids = [];
       const sourcesID = [];
       // For setting the Indicators
       this.$store.getters.getprogramArea.map((element) => {
-        if (element.parent.isChildSelected == true) {
+        if (element.parent.isChildSelected === true) {
           element.children.map((child) => {
-            if (child.selected == true) {
+            if (child.selected === true) {
               ids.push(child.id);
             }
+            return child;
           });
 
           console.log('ids', ids);
         }
+        return element;
       });
-      this.configObjects.indicators = ids;
-      this.configObjects.initialIndicator = this.configObjects.indicators[0];
+      configObjects.indicators = ids;
+      configObjects.initialIndicator = configObjects.indicators[0];
 
       // For Setting the Datasources
       this.$store.getters.getDataSource.map((element) => {
         element.children.map((child) => {
-          if (child.selected == true) {
+          if (child.selected === true) {
             sourcesID.push(child.id);
           }
+          return child;
         });
+        return element;
       });
-      this.configObjects.dataSources = sourcesID;
-      this.configObjects.initialDataSource = this.configObjects.dataSources[0];
-      console.log('configObjects', this.configObjects);
-      return this.configObjects;
+      configObjects.dataSources = sourcesID;
+      configObjects.initialDataSource = configObjects.dataSources[0];
+      console.log('configObjects', configObjects);
+      return configObjects;
     },
   },
 };

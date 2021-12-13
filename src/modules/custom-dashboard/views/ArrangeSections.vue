@@ -14,17 +14,17 @@
       </h2>
       <br />
       <b-col md="8" sm="12">
-        <div  v-for="value in values" :key="value">
+        <div v-for="value in values" :key="value">
           <div class="">
-          <input
-            type="checkbox"
-            name="dashboard"
-            id="dashboard"
-            :checked="isSelected(value)"
-            @click="selectedComponent($event, value.fieldName)"
-          />
-          <!-- //:checked="isSelected(value)"/> -->
-          <label for="dashboard" class="fields ">{{ value.fieldName }}</label>
+            <input
+              type="checkbox"
+              name="dashboard"
+              id="dashboard"
+              :checked="isSelected(value)"
+              @click="selectedComponent($event, value.fieldName)"
+            />
+            <!-- //:checked="isSelected(value)"/> -->
+            <label for="dashboard" class="fields">{{ value.fieldName }}</label>
           </div>
           <p style="width: 100%; font-family: Work Sans; font-size: 14px">
             This section shows an overview of your dashboard. This is a brief
@@ -58,17 +58,6 @@
       </b-col>
       <br />
     </b-row>
-    <!-- <b-row align-h="end" class="mt-5 text-right">
-
-      <b-col cols="auto"
-        ><b-button @click="approveData" class="nextBtn" style="font-family: Work Sans"
-          >COMPLETE</b-button
-        ></b-col
-      >
-      <b-col cols="auto"
-        ><b-button class="SFL" disabled style="font-family: Work Sans">Save for Later</b-button></b-col
-      >
-    </b-row> -->
   </b-container>
 </template>
 <script>
@@ -131,20 +120,20 @@ export default {
     selectedComponent(e, fieldName) {
       console.log(e.target.value);
       console.log(fieldName);
-      if (fieldName == 'Dashboard Overview') {
+      if (fieldName === 'Dashboard Overview') {
         this.$store.state.MSDAT_STORE.indicatorComparision = e.target.checked;
       }
-      if (fieldName == 'Zonal Analysis') {
+      if (fieldName === 'Zonal Analysis') {
         this.$store.state.MSDAT_STORE.zonalAnalysis = e.target.checked;
       }
-      if (fieldName == 'Indicator Comparsion - By Period') {
+      if (fieldName === 'Indicator Comparsion - By Period') {
         this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod = e.target.checked;
       }
 
-      if (fieldName == 'Multisource Comparison') {
+      if (fieldName === 'Multisource Comparison') {
         this.$store.state.MSDAT_STORE.multisourceComparison = e.target.checked;
       }
-      if (fieldName == 'Dataset Comparison') {
+      if (fieldName === 'Dataset Comparison') {
         this.$store.state.MSDAT_STORE.datasetComperision = e.target.checked;
       }
     },

@@ -60,18 +60,22 @@
             "
           >
             <b-col class="align-baseline" cols="auto"
-              ><p class="baseline" style="font-size: 12.000004px; font-family: Work Sans">
+              ><p
+                class="baseline"
+                style="font-size: 12.000004px; font-family: Work Sans"
+              >
                 Save for Later
               </p>
             </b-col>
             <b-col cols="auto"
-              ><b-button @click="approveData" style="font-size: 12.000004px; font-family: Work Sans"
+              ><b-button
+                @click="approveData"
+                style="font-size: 12.000004px; font-family: Work Sans"
                 >approve Data</b-button
               ></b-col
             >
           </b-row>
         </b-col>
-        </div>
       </b-row>
     </b-card>
   </b-container>
@@ -107,6 +111,7 @@ export default {
   },
   beforeDestroy() {
     if (this.destroyPage === false) {
+      // eslint-disable-next-line no-restricted-globals
       location.reload(true);
     } else {
       console.log('nothing');
@@ -162,29 +167,39 @@ export default {
       let count = 0;
       const yearsArray = [];
 
+      // eslint-disable-next-line no-unused-vars
       const newMap = this.$store.getters.getprogramArea.map((element) => {
         element.children.map((child) => {
           if (child.years) {
             child.years.map((year) => {
-              if (year.value != undefined) {
+              if (year.value !== undefined) {
                 // year.value;
                 yearsArray[`year${year.value}`] = { ...year };
                 // yearsArray[year.value] = {...year}
               }
+              return year;
             });
           }
+          return child;
         });
         this.showNotes = element.showNotes;
+        return element;
       });
       const DArray = [];
-      for (const i in yearsArray) {
-        DArray.push(yearsArray[i]);
-      }
+      // eslint-disable-next-line no-restricted-syntax
+      // eslint-disable-next-line guard-for-in
+      Object.keys(yearsArray).forEach((key) => {
+        DArray.push(yearsArray[key]);
+      });
+      // for (const i in yearsArray) {
+      //   DArray.push(yearsArray[i]);
+      // }
       DArray.sort((a, b) => b.value - a.value);
       DArray.map((dyear) => {
         if (dyear.selected === true) {
           count++;
         }
+        return dyear;
       });
       return count;
     },
@@ -198,7 +213,8 @@ export default {
                 if (level.selected === true) {
                   selectedLevels.push(level.value);
                 } else {
-                  selectedLevels;
+                  // eslint-disable-next-line no-unused-expressions
+                  return selectedLevels;
                 }
                 return level;
               });

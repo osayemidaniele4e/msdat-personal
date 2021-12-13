@@ -1,8 +1,8 @@
+import Dexie from 'dexie';
+import indexedDB from 'fake-indexeddb';
 import DataBase from '@/modules/DataLayer/services/LayerService';
 // import mockDataInIbdexedDB from '@/modules/DataLayer/sample_data';
 import { MSDAT } from '@/config/dashboardGroups';
-import Dexie from 'dexie';
-import indexedDB from 'fake-indexeddb';
 
 const DB = new Dexie('MyDatabase', { indexedDB });
 

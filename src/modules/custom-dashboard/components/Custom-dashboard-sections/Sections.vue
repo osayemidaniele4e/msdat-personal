@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-unused-components */
 <template>
   <div class="container-fluid lessVisible" :key="field.id" v-if="cpIsLoading">
     <div
@@ -137,8 +138,6 @@ import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/
 import BaseICS from '../../../msdat-dashboard/components/sections/indicator-comparism/BaseICS.vue';
 import DataSetComparism from '../../../msdat-dashboard/components/sections/dataset-comparison/datasetComparism.vue';
 import BaseMultiSourceSection from '../../../msdat-dashboard/components/sections/multi-source-compare/BaseMultiSourceSection.vue';
-import Footer from '../../../msdat-dashboard/views/about/layout/theFooter.vue';
-import Onboarding from '../../../msdat-dashboard/views/onboarding/onboarding';
 
 export default {
   components: {
@@ -148,8 +147,6 @@ export default {
     BaseICS,
     DataSetComparism,
     BaseMultiSourceSection,
-    Footer,
-    Onboarding,
   },
   props: {
     field: {
