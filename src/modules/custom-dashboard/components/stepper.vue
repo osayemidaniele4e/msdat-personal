@@ -1,8 +1,8 @@
 <template>
   <div class="px-5 stepper-body">
-    <b-row class="mt-5 mb-2">
+    <b-row class="mt-4 mb-1">
       <b-col sm="12" md="3" class="mb-4 mb-md-0">
-        <div>
+        <div style="margin-top: 12px">
           <a v-show="this.step >= 2" @click="$router.back()" class="back">
             <svg
               width="24"

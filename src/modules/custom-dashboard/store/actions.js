@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 import axios from 'axios';
 
 export default {
@@ -10,8 +14,8 @@ export default {
 
   // ***** Indicators Data ******* //
 
-  async loadIndicators({ commit, state }) {
-    if (state.masterData.length == 0) {
+  async loadIndicators({ commit, state, dispatch }) {
+    if (state.masterData.length === 0) {
       state.loader.indicator = true;
       await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
         .then((res) => {
@@ -21,27 +25,62 @@ export default {
           const composedData = [];
 
           distinctArray.forEach(((distItem) => {
-            composedData.push({
-              children: data.filter(
-                (x) => {
-                  if (x.program_area === distItem) {
-                    x.selected = false;
-                    x.sources = [];
-                    x.years = [];
-                    x.levels = [];
-                    return x;
-                  }
-                },
+            if (state.allSelected === false) {
+              composedData.push({
+                children: data.filter(
+                  (x) => {
+                    if (x.program_area === distItem) {
+                      x.selected = false;
+                      x.sources = [];
+                      x.years = [];
+                      x.levels = [];
+                      return x;
+                    }
+                    if (state.allSelected === true) {
+                      x.selected = true;
+                    }
+                  },
+                ),
+                parent: { selected: false, isChildSelected: false, value: distItem.toUpperCase() },
+                showList: false,
+                showNotes: false,
 
-              ),
-              parent: { selected: false, isChildSelected: false, value: distItem.toUpperCase() },
-              showList: false,
-              showNotes: false,
-
-            });
+              });
+            } else {
+              composedData.push({
+                children: data.filter(
+                  (x) => {
+                    if (x.program_area === distItem) {
+                      x.selected = true;
+                      x.sources = [];
+                      x.years = [];
+                      x.levels = [];
+                      return x;
+                    }
+                  },
+                ),
+                parent: { selected: true, isChildSelected: true, value: distItem.toUpperCase() },
+                showList: true,
+                showNotes: true,
+              });
+            }
           }));
+          console.log('CD', composedData);
           state.loader.indicator = false;
           commit('setPArea', composedData);
+          if (state.allSelected === true) {
+            composedData.map((x) => {
+              x.children.forEach((child) => {
+                const childs = {
+                  id: child.id,
+                };
+                dispatch('loadCoverageLevels', childs);
+                dispatch('loadYears', childs);
+              });
+            });
+          }
+
+          // dispatch('loadCoverageLevels', childs)
         }).catch((err) => {
           (err);
           state.loader.indicator = false;
@@ -55,7 +94,7 @@ export default {
 
   // Load DataSources From API for the First time.
   async loadDataSource({ commit, state }) {
-    if (state.SurveyArray.length == 0) {
+    if (state.SurveyArray.length === 0) {
       state.loader.datasource = true;
       // state.indicatorloading = true;
       await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
@@ -67,32 +106,50 @@ export default {
           const SurveyArray = [];
 
           distinctDataArray.forEach(((distItem) => {
-            SurveyArray.push({
-              children: data.filter(
-                (x) => {
-                  if (x.classification === distItem) {
-                    x.selected = false;
-                    return x;
-                  }
-                },
-              ),
-              parent: distItem.toUpperCase(),
+            if (state.allSelected === false) {
+              SurveyArray.push({
+                children: data.filter(
+                  (x) => {
+                    if (x.classification === distItem) {
+                      x.selected = false;
+                      return x;
+                    }
+                  },
+                ),
+                parent: distItem.toUpperCase(),
 
-            });
+              });
+            } else {
+              SurveyArray.push({
+                children: data.filter(
+                  // eslint-disable-next-line array-callback-return
+                  (x) => {
+                    if (x.classification === distItem) {
+                      // eslint-disable-next-line no-param-reassign
+                      x.selected = true;
+                      return x;
+                    }
+                  },
+                ),
+                parent: distItem.toUpperCase(),
+              });
+            }
 
+            // eslint-disable-next-line no-unused-vars
             SurveyArray.sort((a, b) => {
               const keyA = a.parent;
-              if (keyA == 'ROUTINE') return -1;
+              if (keyA === 'ROUTINE') return -1;
               return 0;
             });
-          // function SortArray(x, y){
-          //   return x.parent.localeCompare(y.parent);
-          // }
-          // SurveyArray = SurveyArray.sort(SortArray)
+            // function SortArray(x, y){
+            //   return x.parent.localeCompare(y.parent);
+            // }
+            // SurveyArray = SurveyArray.sort(SortArray)
           }));
           state.loader.datasource = false;
           commit('setDArea', SurveyArray);
         }).catch((err) => {
+          // eslint-disable-next-line no-unused-expressions
           (err);
           state.loader.datasource = false;
         });
@@ -102,17 +159,25 @@ export default {
   // ******** Coverage Levels ********* //
 
   async loadCoverageLevels({ commit, state }, payload) {
+    console.log('levels Payload', payload.id);
     let levelsObj = {};
-    if (payload.checked === true) {
+    if (payload.checked === true || state.allSelected === true) {
       state.loader.levels = true;
       await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
         .then((res) => {
           const { data } = res;
           const dataLevels = data.data_level.split(',');
           // console.log(dataLevels);
-          const levels = dataLevels.map((level) => ({ selected: false, value: level }));
-          levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
+          if (state.allSelected === false) {
+            const levels = dataLevels.map((level) => ({ selected: false, value: level }));
+            levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
+          } else {
+            const levels = dataLevels.map((level) => ({ selected: true, value: level }));
+            levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
+          }
           // state.loader.levels = false;
+        }).catch((err) => {
+          console.log(err);
         });
     } else {
       state.loader.levels = false;
@@ -126,15 +191,22 @@ export default {
 
   async loadYears({ commit, state }, payload) {
     let dataObj = {};
-    if (payload.checked === true) {
+    if (payload.checked === true || state.allSelected === true) {
       state.loader.years = true;
       await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
         .then((res) => {
           const { data } = res;
-          const yearsData = data.years.map((year) => ({ selected: false, value: year }));
-          dataObj = {
-            id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
-          };
+          if (state.allSelected === false) {
+            const yearsData = data.years.map((year) => ({ selected: false, value: year }));
+            dataObj = {
+              id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
+            };
+          } else {
+            const yearsData = data.years.map((year) => ({ selected: true, value: year }));
+            dataObj = {
+              id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
+            };
+          }
           state.loader.years = false;
         });
     } else {
@@ -150,6 +222,7 @@ export default {
     commit('levelsHandler', payload);
   },
 
+  // eslint-disable-next-line no-underscore-dangle
   _isNotExistYear({ commit }, payload) {
     commit('yearsHandler', payload);
   },
@@ -186,5 +259,11 @@ export default {
   // For Arrangment of Sections
   arrangedSection({ commit }, payload) {
     commit('arrangedSections', payload);
+  },
+
+  // *********For All Selection OF DATA****************//
+  allSelection({ commit }, payload) {
+    console.log('actions', payload);
+    commit('selectAll', payload.allselected);
   },
 };

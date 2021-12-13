@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { mapActions } from 'vuex';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import ZonalMap from './map.vue';
 import ZonalColumnChart from './zonalSection.vue';
 

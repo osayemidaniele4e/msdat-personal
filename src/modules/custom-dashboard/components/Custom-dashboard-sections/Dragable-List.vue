@@ -6,13 +6,15 @@
       opacity: 1;
       top: 314px;
       left: 1258px;
-      width: 472px;
-      height: 356px;
+      width: 95%;
+      height: 354px;
       margin-bottom: 15px;
       font-family: Work Sans;
     "
+    class="
+    ml-auto mr-auto"
   >
-    <h4 class="" style="padding: 29px 2px 14px 42px; font-size: 22px">
+    <h4 class="" style="padding: 29px 2px 14px 19px; font-size: 18px">
       Arrange the position of your widgets
     </h4>
     <sortable-list
@@ -20,14 +22,18 @@
       item-class="sortable-item"
       handle-class="sortable-handle"
     >
-      <ul class="list-reset" style="list-style: none" slot-scope="{ items }">
+      <ul
+        class="list-reset"
+        style="list-style: none; margin-left: -20px"
+        slot-scope="{ items }"
+      >
         <sortable-item v-for="todo in items" :key="todo.id">
           <li
             style="
               background: #ffffff;
               top: 480px;
               left: 1318px;
-              width: 401px;
+              width: 90%;
               height: 33px;
               padding: 6px 3px 6px 7px;
               margin-bottom: 19px;

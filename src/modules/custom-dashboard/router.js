@@ -38,8 +38,9 @@ export default [
     ],
   },
   {
-    path: '/my-custom-dashboard',
+    path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
+    props: true,
     component: () => import('./views/CustomDashboard.vue'),
   },
 

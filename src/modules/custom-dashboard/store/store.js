@@ -1,7 +1,6 @@
 // import Vue from 'vue';
 // import Vuex from 'vuex';
 
-import createPersistedState from 'vuex-persistedstate';
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
@@ -18,8 +17,8 @@ export default {
       datasource: false,
       levels: false,
       years: false,
-
     },
+    allSelected: false,
     // loading: false,
     step: 0,
     dashboardDetails: {},

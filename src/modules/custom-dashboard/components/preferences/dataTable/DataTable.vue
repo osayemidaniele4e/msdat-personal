@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table" style="border: 1px solid #e3e3e3">
+    <table class="table table-sm-responsive" style="border: 1px solid #e3e3e3">
       <thead>
         <tr style="">
           <th
@@ -78,33 +78,32 @@
                 font-size: 12px;
                 font-family: Work Sans;
                 padding-left: 19 px;
+                text-align: left;
               "
             >
               {{ child.short_name }}
             </td>
-            <td style="width: 350px">
+            <td class="section__datasource" style="">
               <template v-for="items in dataSources" class="">
                 <template v-for="item in items.children">
-                  <ul
-                    v-if="item.selected"
-                    class="col-4"
-                    :key="item.id"
+                  <span
+                    class="col-6 col-md-4"
                     style="
-                      list-style: none;
                       display: inline-block;
-                      font-size: 12px;
+                      font-size: 11px;
                       font-family: Work Sans;
-                      margin-bottom: 0rem !important;
                     "
+                    v-if="item.selected"
+                    :key="item.id"
                   >
-                    <li style="width: 60px">{{ item.datasource }}</li>
-                  </ul>
+                    {{ item.datasource }}</span
+                  >
                 </template>
               </template>
             </td>
             <td style="width: 400px">
               <template v-for="level in child.levels">
-                <ul
+                <!-- <ul
                   class="col-6"
                   :key="level.value"
                   v-if="level.selected"
@@ -117,12 +116,24 @@
                   "
                 >
                   <li style="width: 200px">{{ level.value }}</li>
-                </ul>
+                </ul> -->
+                <span
+                  class="col-8 col-md-6"
+                  style="
+                    display: inline-block;
+                    font-size: 12px;
+                    font-family: Work Sans;
+                  "
+                  v-if="level.selected"
+                  :key="level.value"
+                >
+                  {{ level.value }}</span
+                >
               </template>
             </td>
             <td style="width: 200px">
               <template v-for="year in child.years">
-                <ul
+                <!-- <ul
                   class="col-3"
                   :key="year.value"
                   style="
@@ -138,7 +149,19 @@
                   <li style="width: 50px">
                     {{ year.value }}
                   </li>
-                </ul>
+                </ul> -->
+                <span
+                  class="col-4 col-md-3"
+                  style="
+                    display: inline-block;
+                    font-size: 11px;
+                    font-family: Work Sans;
+                  "
+                  v-if="year.selected"
+                  :key="year.value"
+                >
+                  {{ year.value }}</span
+                >
               </template>
             </td>
           </tr>
@@ -150,7 +173,6 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
   props: ['indicator', 'dataSource', 'level', 'years'],
@@ -197,4 +219,15 @@ export default {
 </script>
 
 <style scoped>
+@media (min-width: 740px) {
+  .section__datasource {
+    width: 25%;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .dragable-list {
+    width: 35%;
+  }
+}
 </style>

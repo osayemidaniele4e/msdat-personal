@@ -4,82 +4,81 @@
       >Indicators Selection</b
     >
     <Card class="scroll" style="">
-      <TheLoader v-if=" loading == true" />
+      <TheLoader
+        v-if="loading == true"
+        style="margin: 60px 0px 0px 119px"
+      />
+      <div v-for="(items, idx) in heading" :key="idx" style="margin-top: -8px">
         <div
-          v-for="(items, idx) in heading"
-          :key="idx"
-          style="margin-top: -8px"
+          class="program-areas my-2"
+          style="background: #f3f3f3; font-size: 13px"
         >
-          <div
-            class="program-areas my-2"
-            style="background: #f3f3f3; font-size: 13px"
-          >
-            <input
-              type="checkbox"
-              :id="items.parent.value"
-              @click="
-                toggleAll(
-                  $event,
-                  items.children,
-                  items.parent.value,
-                  items.parent.selected
-                )
-              "
-              class="checkbox"
-              :checked="isAllSelected(items.parent)"
-            />
-            <label
+          <input
+            type="checkbox"
+            :id="items.parent.value"
+            @click="
+              toggleAll(
+                $event,
+                items.children,
+                items.parent.value,
+                items.parent.selected
+              )
+            "
+            class="checkbox"
+            :checked="isAllSelected(items.parent)"
+          />
+          <label
             :for="items.parent.value"
-              style="
+            style="
               cursor: pointer;
-                font-weight: normal;
-                font-size: 13px;
-                font-family: Work Sans;
-                color: #202020;
-                margin-left: -4px;
-              "
-            >
-              {{ items.parent.value }}
-            </label>
-            <span style="float: right">▼</span>
-          </div>
-          <div
-            v-for="(item, index) in items.children"
-            :key="index"
-            class="indicators"
-            style="margin-bottom: 3px; font-size: 13px"
+              font-weight: normal;
+              font-size: 13px;
+              font-family: Work Sans;
+              color: #202020;
+              margin-left: -4px;
+            "
           >
-            <input
-              type="checkbox"
-              name="child"
-              :id="item.short_name"
-              :value="item.short_name"
-              :checked="isSelected(item)"
-              @click="
-                selectIndicator(
-                  $event,
-                  items.parent.value,
-                  item.id,
-                  item.short_name,
-                  item.selected
-                )
-              "
-              class="checkbox"
-            />
-            <label
-              :for="item.short_name"
-              style="
-                cursor: pointer;
-                padding-left: 5px;
-                font-size: 12px;
-                margin-left: -4px;
-                font-family: Work Sans;
-              "
-            >
-              {{ item.short_name }}
-            </label>
-          </div>
+            {{ items.parent.value }}
+          </label>
+          <span style="float: right">▼</span>
         </div>
+        <div
+          v-for="(item, index) in items.children"
+          :key="index"
+          class="indicators"
+          style="margin-bottom: 3px; font-size: 13px"
+        >
+          <input
+            type="checkbox"
+            name="child"
+            :id="item.short_name"
+            :value="item.short_name"
+            :checked="isSelected(item)"
+            @click="
+              selectIndicator(
+                $event,
+                items.parent.value,
+                item.id,
+                item.short_name,
+                item.selected
+              )
+            "
+            class="checkbox"
+          />
+          <label
+            :for="item.short_name"
+            style="
+              cursor: pointer;
+              padding-left: 5px;
+              font-size: 12px;
+              margin-left: -4px;
+              font-family: Work Sans;
+            "
+          >
+            {{ item.short_name }}
+          </label>
+        </div>
+      </div>
       <!-- </TheLoader> -->
     </Card>
   </div>
@@ -88,6 +87,7 @@
 <script>
 import Card from '../../Card.vue';
 // import LazyLoading from '../../../../msdat-dashboard/modules/onScroll/lazyLoading.vue';
+// eslint-disable-next-line import/extensions
 import TheLoader from '../../Loading/TheLoader';
 
 export default {
@@ -103,6 +103,7 @@ export default {
       // short: 'yes',
       indicators: [],
       item: '',
+      // eslint-disable-next-line vue/no-reserved-keys
       _indicatorId_: null,
       selectedCount: 0,
       indicatorSelected: false,
@@ -127,14 +128,14 @@ export default {
     isAllSelected(item) {
       return item.selected;
     },
-    toggleAll(e, childsArray, parentName, selected) {
+    toggleAll(e, childsArray, parentName) {
       this.AllSelected = e.target.checked;
-      if (this.AllSelected == true) {
+      if (this.AllSelected === true) {
         this.showList = true;
       } else {
         this.showList = false;
       }
-      childsArray.forEach((element, key) => {
+      childsArray.forEach((element) => {
         const child = {
           value: element.short_name,
           id: element.id,
@@ -142,9 +143,11 @@ export default {
         };
         this.$store.dispatch('loadYears', child);
         this.$store.dispatch('loadCoverageLevels', child);
+        // if($store.state.CUSTOM_DASHBOARD_STORE.allSelected == true){
+        //   this.$store.dispatch('loadYears', child);
+        // this.$store.dispatch('loadCoverageLevels', child);
+        // }
       });
-
-      // this.$emit('IndicatorSelect', this.showList);
       this.$store.dispatch('forAllSelectedIndicator', {
         checked: this.AllSelected,
         name: parentName,
@@ -159,7 +162,7 @@ export default {
       this.$store.dispatch('loadIndicators');
     },
 
-    selectIndicator(e, parentValue, childId, childName, selected) {
+    selectIndicator(e, parentValue, childId, childName) {
       this.indicatorSelected = e.target.checked;
       this.showList = e.target.checked;
       this.$store.dispatch('forSelectedIndicator', {

@@ -4,7 +4,7 @@
       >Data Source Selection</b
     ><br />
     <Card class="scroll" style="">
-      <TheLoader v-if="loading == true" />
+      <TheLoader v-if="loading == true" style="margin: 60px 0px 0px 119px" />
       <div v-for="(items, idx) in heading" :key="idx">
         <div
           class="program-areas"
@@ -52,14 +52,15 @@
             "
             class="checkbox"
           />
+          <!-- For DataSources display -->
           <label
             :for="item.datasource"
             style="
               cursor: pointer;
-              font-size: 11px;
-              padding-left: 6px;
+              font-size: 10px;
+              padding-left: 5px;
               font-family: Work Sans;
-              margin-left: -5px;
+              margin-left: -8px;
             "
           >
             {{ item.datasource }}
@@ -72,6 +73,7 @@
 
 <script>
 import Card from '../../Card.vue';
+// eslint-disable-next-line import/extensions
 import TheLoader from '../../Loading/TheLoader';
 
 export default {
@@ -98,7 +100,7 @@ export default {
       this.$store.dispatch('loadDataSource');
     },
 
-    selectSource(e, parentValue, childId, childName, selected) {
+    selectSource(e, parentValue, childId, childName) {
       this.DataSourceSelected = e.target.checked;
       this.showList = e.target.checked;
       this.$store.dispatch('forSelectedDataSource', {

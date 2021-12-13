@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { mapActions } from 'vuex';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import IDCC from './TheIndicatorDatasoureComparisonChart.vue';
 import StateBarChart from './TheStateBarChart.vue';
 import TableComponent from './TheTable.vue';
