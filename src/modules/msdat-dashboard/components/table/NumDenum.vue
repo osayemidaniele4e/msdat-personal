@@ -17,14 +17,13 @@
 
 <script>
 export default {
-  props: {
-  },
+  props: {},
   computed: {
     selectedYear() {
-      return this.$store.state.MSDAT_STORE.controlConfig[1].payload.year;
+      return this.$store.state.MSDAT_STORE.controlConfig[0].payload.year;
     },
     selectedDataSource() {
-      return this.$store.state.MSDAT_STORE.controlConfig[1].payload.datasource.datasource;
+      return this.$store.state.MSDAT_STORE.controlConfig[0].payload.datasource.datasource;
     },
   },
 };
