@@ -4,8 +4,8 @@ import MSDAT_ABOUT_ROUTE from '../modules/msdat-dashboard/views/about/router';
 import MSDAT_FAQ_ROUTE from '../modules/msdat-dashboard/views/faq/router';
 import MSDAT_UPDATE_LOG from '../modules/msdat-dashboard/views/update_log/router';
 import { router as CUSTOM_DASHBOARD_ROUTE } from '../modules/custom-dashboard';
-import { router as STATE_PROFILE_ROUTE } from '../modules/state-profile';
-import { router as HEALTH_THINK_ROUTE } from '../modules/health-think';
+// import { router as STATE_PROFILE_ROUTE } from '../modules/state-profile';
+// import { router as HEALTH_THINK_ROUTE } from '../modules/health-think';
 import DYNAMICS_DASHBOARD_ROUTE from '../modules/dynamic_dashboard/router';
 import NotFound from '../modules/msdat-dashboard/views/NotFound.vue';
 
@@ -20,14 +20,14 @@ const routes = [
   {
     path: '*',
     name: 'NotFound',
-    component: NotFound
-  }
+    component: NotFound,
+  },
 ];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;

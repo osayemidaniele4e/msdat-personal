@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { mapActions } from 'vuex';
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy } from 'lodash';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '../../../mixins/formatter';
 import controlPanelOptions from './indicator-comparism-config';
