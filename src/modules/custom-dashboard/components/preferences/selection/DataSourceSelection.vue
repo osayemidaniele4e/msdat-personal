@@ -73,6 +73,7 @@
 
 <script>
 import Card from '../../Card.vue';
+// eslint-disable-next-line import/extensions
 import TheLoader from '../../Loading/TheLoader';
 
 export default {
@@ -99,7 +100,7 @@ export default {
       this.$store.dispatch('loadDataSource');
     },
 
-    selectSource(e, parentValue, childId, childName, selected) {
+    selectSource(e, parentValue, childId, childName) {
       this.DataSourceSelected = e.target.checked;
       this.showList = e.target.checked;
       this.$store.dispatch('forSelectedDataSource', {

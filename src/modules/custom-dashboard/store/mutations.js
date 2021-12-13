@@ -1,12 +1,13 @@
+/* eslint-disable no-param-reassign */
 const forRefreshingAll = (fieldArray) => {
   fieldArray.years.map((year) => {
-    if (year.selected == true) {
+    if (year.selected === true) {
       year.selected = false;
     }
     return year;
   });
   fieldArray.levels.map((level) => {
-    if (level.selected == true) {
+    if (level.selected === true) {
       level.selected = false;
     }
     return level;
@@ -45,9 +46,9 @@ export default {
     state.masterData = state.masterData.map((element) => {
       let counter = 0;
       // forRefreshingAll(payload);
-      if (found == false) {
+      if (found === false) {
         element.children.map((child) => {
-          if (child.id == payload.id) {
+          if (child.id === payload.id) {
           // element.parent.selected = true;
             found = true;
             element.parent.isChildSelected = true;
@@ -65,13 +66,14 @@ export default {
             forRefreshingAll(child);
             return child;
           }
+          return child;
         });
       }
-      if (counter == 0) {
+      if (counter === 0) {
         element.parent.isChildSelected = false;
         element.showList = false;
       }
-      if (element.parent.isChildSelected == true) {
+      if (element.parent.isChildSelected === true) {
         element.showList = true;
       }
 
@@ -83,12 +85,13 @@ export default {
     // console.log(payload);
     state.masterData = state.masterData.map((element) => {
       element.children.map((child) => {
-        if (element.parent.value == payload.name) {
+        if (element.parent.value === payload.name) {
           element.parent.selected = payload.checked;
           element.parent.isChildSelected = payload.checked;
           child.selected = payload.checked;
         }
         element.showList = payload.showList;
+        return child;
       });
       return element;
     });
@@ -103,9 +106,10 @@ export default {
   selectionDataSource(state, payload) {
     console.log('In Mutations', payload);
     state.SurveyArray = state.SurveyArray.map((element) => {
+      // eslint-disable-next-line no-unused-vars
       let counter = 0;
       element.children.map((child) => {
-        if (child.id == payload.id) {
+        if (child.id === payload.id) {
           child.selected = payload.checked;
         } if (payload.checked) {
           // element.parent.selected = true;
@@ -150,9 +154,10 @@ export default {
   getLevels(state, payload) {
     state.masterData = state.masterData.map((child) => {
       child.children.map((x) => {
-        if (payload.id == x.id) {
+        if (payload.id === x.id) {
           x.levels = payload.Datalevels;
         }
+        return x;
       });
       return child;
     });
@@ -162,7 +167,8 @@ export default {
     state.masterData = state.masterData.map((element) => {
       element.children.map((child) => {
         child.levels.map((level) => {
-          if (level.value == payload.value) {
+          if (level.value === payload.value) {
+            // eslint-disable-next-line no-param-reassign
             level.selected = payload.checked;
           }
           return level;
@@ -178,10 +184,12 @@ export default {
   getYears(state, payload) {
     state.masterData = state.masterData.map((child) => {
       child.children.map((x) => {
-        if (payload.id == x.id) {
+        if (payload.id === x.id) {
+          // eslint-disable-next-line no-param-reassign
           x.years = payload.years;
           // x.years.map(year => { year.selected = Math.random() > 0.9 })
         }
+        return x;
       });
       return child;
     });
@@ -191,7 +199,7 @@ export default {
     state.masterData = state.masterData.map((element) => {
       element.children.map((child) => {
         child.years.map((year) => {
-          if (year.value == payload.value) {
+          if (year.value === payload.value) {
             year.selected = payload.checked;
           }
           return year;
@@ -209,6 +217,7 @@ export default {
             if (year.selected === true) {
               distinctYearsArray.push(year.value);
             }
+            return year;
           });
         }
         return child;
@@ -220,14 +229,14 @@ export default {
 
     state.masterData.map((element) => {
       element.children.map((child) => {
-        if (child.selected == true) {
+        if (child.selected === true) {
           let yearsDoesnotContain = '';
 
           // distinctYearsArray.map((distYear) => {
 
           // });
-          const foundData = child.years.find((year) => year.value == payload.value);
-          if (foundData == undefined) {
+          const foundData = child.years.find((year) => year.value === payload.value);
+          if (foundData === undefined) {
             if (yearsDoesnotContain.length > 0) {
               yearsDoesnotContain += ', ';
             }
@@ -238,6 +247,7 @@ export default {
           }
           state.notes = msgs;
         }
+        return child;
       });
       return element;
     });

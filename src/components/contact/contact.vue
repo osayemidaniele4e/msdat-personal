@@ -139,8 +139,8 @@ export default {
   },
   watch: {
     submitForm() {
-      console.log('submitting form'); 
-       this.conformSend();       
+      console.log('submitting form');
+      this.conformSend();
     },
   },
   methods: {
@@ -158,7 +158,7 @@ export default {
       this.contactFormFields.email = '';
       this.contactFormFields.feedback = '';
       this.firstName = '';
-      this.lastName = '';      
+      this.lastName = '';
       // this.contactFormFields.organization = '';
       // this.contactFormFields.category = this.selected;
     },

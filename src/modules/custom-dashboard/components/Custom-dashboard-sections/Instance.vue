@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-unused-components */
 <template>
   <div>
     <TroubleShootingModal
@@ -153,7 +154,7 @@ import tour from '../../../msdat-dashboard/views/onboarding/tour'; // '../onboar
 import Header from '../../../msdat-dashboard/views/about/layout/theHeader.vue'; // '../about/layout/theHeader.vue';
 import Footer from '../../../msdat-dashboard/views/about/layout/theFooter.vue'; // '../about/layout/theFooter.vue';
 import scroll from '../../../msdat-dashboard/modules/onScroll/onscroll'; // '../../modules/onScroll/onscroll';
-import LazyLoading from '../../../msdat-dashboard/modules/onScroll/lazyLoading.vue'; // '../../modules/onScroll/lazyLoading.vue';
+// import LazyLoading from '../../../msdat-dashboard/modules/onScroll/lazyLoading.vue'; // '../../modules/onScroll/lazyLoading.vue';
 import Loading from '../../../msdat-dashboard/mixins/loading'; // '../../mixins/loading';
 import BaseMultiSourceSection from '../../../msdat-dashboard/components/sections/multi-source-compare/BaseMultiSourceSection.vue'; // '../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
 import Onboarding from '../../../msdat-dashboard/views/onboarding/onboarding'; // '../onboarding/onboarding';
@@ -192,14 +193,18 @@ export default {
     ControlBase,
     BasePanel,
     ControlPanel,
+    // eslint-disable-next-line vue/no-unused-components
     DataSetComparism,
+    // eslint-disable-next-line vue/no-unused-components
     BaseIndicatorOverview,
+    // eslint-disable-next-line vue/no-unused-components
     BaseICS,
+    // eslint-disable-next-line vue/no-unused-components
     BaseMultiSourceSection,
     Header,
     Footer,
+    // eslint-disable-next-line vue/no-unused-components
     ZonalAnalysisSection,
-    LazyLoading,
     Sections,
   },
   computed: {

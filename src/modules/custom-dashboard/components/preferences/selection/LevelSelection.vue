@@ -43,6 +43,7 @@
 
 <script>
 import Card from '../../Card.vue';
+// eslint-disable-next-line import/extensions
 import TheLoader from '../../Loading/TheLoader';
 
 export default {
@@ -71,19 +72,25 @@ export default {
         element.children.map((child) => {
           if (child.levels) {
             child.levels.map((level) => {
-              if (level.value != undefined) {
+              if (level.value !== undefined) {
                 const levelValue = level.value.trim();
                 levelArray[`level${levelValue}`] = { ...level };
               }
+              return level;
             });
           }
+          return child;
         });
+        return element;
       });
       console.log('level', levelArray);
       const LArray = [];
-      for (const i in levelArray) {
-        LArray.push(levelArray[i]);
-      }
+      Object.keys(levelArray).forEach((key) => {
+        LArray.push(levelArray[key]);
+      });
+      // for (const i in levelArray) {
+      //   LArray.push(levelArray[i]);
+      // }
       LArray.sort((a, b) => b.value - a.value);
       return LArray;
     },
