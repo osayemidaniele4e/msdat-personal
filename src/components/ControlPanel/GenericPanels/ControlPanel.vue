@@ -169,6 +169,7 @@ export default {
           value,
         });
       }
+
       this.$emit('data:options', this.payload);
     },
   },
@@ -190,7 +191,6 @@ export default {
     this.updatePayload(this.defaultDataSource, 'datasource');
     this.updatePayload(this.defaultLocation, 'location');
     this.updatePayload(this.defaultYear, 'year');
-    this.updatePayload(true, 'numdenum');
   },
 };
 </script>
