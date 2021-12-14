@@ -64,12 +64,12 @@
 
           <!-- The is the Row or the NHMIS detail of the related indicators -->
           <transition name="fade">
-            <tr class="border-0">
+            <tr class="border-0" v-if="selectedSource === 'NHMIS'">
               <td class="border-0"></td>
               <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
               <td colspan="30" class="num-denom">
                 <slot name="NHMIS-DETAILS">
-                  <NumDenum />
+                  <h5>NUM DENUM SLOTS</h5>
                 </slot>
               </td>
             </tr>
@@ -122,12 +122,10 @@ import { flatten, uniq, countBy } from 'lodash';
 import TableDataCell from './TableDataCell.vue';
 import TableDataSourceCell from './TableDataSourceCell.vue';
 import TableDataRow from './TableDataRow.vue';
-import NumDenum from './NumDenum.vue';
 
 export default {
   name: 'TableComponent',
   components: {
-    NumDenum,
     TableDataCell,
     TableDataSourceCell,
     TableDataRow,
@@ -245,9 +243,8 @@ export default {
        * order AvailableSources according to the OrderSourceBy Array;
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(
-          a.datasource,
-        ) - this.orderSourceBy.indexOf(b.datasource),
+        (a, b) => this.orderSourceBy.indexOf(a.datasource)
+         - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
     },
