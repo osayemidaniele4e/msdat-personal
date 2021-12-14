@@ -67,7 +67,7 @@
             <tr class="border-0">
               <td class="border-0"></td>
               <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
-              <td colspan="30" class="num-denom">
+              <td v-if="isNumDenum" colspan="30" class="num-denum">
                 <slot name="NHMIS-DETAILS">
                   <NumDenum />
                 </slot>
@@ -192,6 +192,11 @@ export default {
 
     setSelectedSource: {
       type: Object,
+    },
+  },
+  computed: {
+    isNumDenum() {
+      return this.$store.state.MSDAT_STORE.controlConfig[0].payload.numdenum;
     },
   },
   data() {
@@ -363,7 +368,7 @@ table.table {
     }
 
     // numerator - denominator section
-    td.num-denom {
+    td.num-denum {
       background-color: #2b5d5b;
     }
   }
