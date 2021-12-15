@@ -14,7 +14,7 @@
 
       <div v-else>
         <Header v-on:tour="runIntro"></Header>
-        <div class="sticky">
+        <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">
           <b-overlay :show="!cpIsLoading">
             <BasePanel
               :position="position"
@@ -87,6 +87,7 @@
         <!-- </div> -->
       </div>
     </template>
+  <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button>
   </div>
 </template>
 
@@ -120,6 +121,7 @@ export default {
     return {
       position: 3,
       dashboardConfig: config,
+      show: false,
     };
   },
   components: {

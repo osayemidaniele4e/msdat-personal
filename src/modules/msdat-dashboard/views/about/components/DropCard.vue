@@ -130,8 +130,15 @@ div {
     left: -0.5vw;
     top: 5.1vh;
     color: black;
+    max-height: 30rem;
+    overflow-y: auto;
     a {
       color: inherit;
+    }
+  }
+  div.list-group{
+    h5.text-underline{
+      font-size: 1rem !important;
     }
   }
   .list-group-item {
