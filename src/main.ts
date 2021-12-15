@@ -20,6 +20,9 @@ Vue.use(VueFriendlyIframe);
 
 // import Vue from 'vue';
 
+import './assets/styles/fonts.css';
+// import Vue from 'vue';
+
 Vue.use(DataLayer, {
   store,
 });

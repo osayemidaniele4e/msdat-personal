@@ -12,7 +12,7 @@ export default [
       {
         path: 'preference-table',
         name: 'preference-table',
-        component: () => import('./components/preferenceTable.vue'),
+        component: () => import('./views/preferenceTable.vue'),
       },
       {
         path: 'details',
@@ -20,19 +20,23 @@ export default [
         component: () => import('./views/dashboardDetails.vue'),
       },
       {
-        path: 'preview',
-        component: () => import('./views/TablePreview.vue'),
+        path: 'data-table',
+        name: 'data-table',
+        component: () => import('./views/DataTable.vue'),
       },
       {
-        path: 'config',
-        component: () => import('./views/configShow.vue'),
+        path: 'sections',
+        name: 'sections',
+        component: () => import('./views/ArrangeSections.vue'),
       },
+
     ],
   },
   {
-    path: '/coming-soon',
-    name: 'ComingSoon',
-    // component: () => import('./views/comingSoon.vue'),
-    component: () => import('../coming-soon/custom_dashboard.vue'),
+    path: '/my-custom-dashboard/:title',
+    name: 'my-custom-dashboard',
+    props: true,
+    component: () => import('./views/CustomDashboard.vue'),
   },
+
 ];

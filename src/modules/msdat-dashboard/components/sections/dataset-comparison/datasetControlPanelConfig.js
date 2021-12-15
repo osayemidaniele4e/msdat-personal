@@ -14,7 +14,7 @@ export default {
       dropdownProps: {
         'group-values': 'indicators',
         'group-label': 'program_area',
-        label: 'full_name',
+        label: 'short_name',
       },
       label: 'indicator',
       key: 'indicator',
@@ -37,17 +37,10 @@ export default {
       options: [],
     },
   ],
-  payload: {
-    indicator: 'indicator 2',
-    location: '',
-    datasource: [],
-    year: '',
-    compareBy: '',
-    visualization: 'state_map',
-    target: {
-      national: false,
-      sdg: false,
-    },
-    numdenum: false,
+  defaults: {
+    indicator: null,
+    dataSource: null,
+    location: null,
+    year: null,
   },
 };

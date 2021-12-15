@@ -226,7 +226,7 @@ export default {
         this.loading = false;
       },
       deep: true,
-      immediate: true,
+      immediate: false,
     },
   },
 };
