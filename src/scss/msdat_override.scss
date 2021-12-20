@@ -11,6 +11,9 @@ span.multiselect__single {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+span.multiselect__tag {
+  max-width: 45%;
+}
 body label.h6,
 p,
 h6,
@@ -26,53 +29,53 @@ button.btn {
   font-size: 0.8rem !important;
 }
 
-div.temp {
-  button.toggle_btn {
-    display: none;
-    position: fixed;
-    bottom: 10vh;
-    right: 0.5rem;
-    z-index: 9999;
-  }
-}
+// div.temp {
+//   button.toggle_btn {
+//     display: none;
+//     position: fixed;
+//     bottom: 10vh;
+//     right: 0.5rem;
+//     z-index: 9999;
+//   }
+// }
 
-@media only screen and (max-width: 767px) {
-  div.temp {
-    .sticky.hide {
-      position: absolute;
-      top: 0;
-      left: -100%;
-    }
-    div.sticky {
-      position: fixed;
-      position: -webkit-fixed;
-      top: 10vh;
-      z-index: 11;
-      background-color: white;
-      box-shadow: 0px 3px 8px 0px #888888;
-      height: 83vh;
-      width: 90%;
-      overflow: auto;
-      transition: all 1s ease;
-    }
-    button.toggle_btn {
-      display: block;
-    }
-    ul.step-sections {
-      overflow-x: auto;
-      &::-webkit-scrollbar {
-        display: none;
-      }
+// @media only screen and (max-width: 767px) {
+//   div.temp {
+//     .sticky.hide {
+//       position: absolute;
+//       top: 0;
+//       left: -100%;
+//     }
+//     div.sticky {
+//       position: fixed;
+//       position: -webkit-fixed;
+//       top: 10vh;
+//       z-index: 11;
+//       background-color: white;
+//       box-shadow: 0px 3px 8px 0px #888888;
+//       height: 83vh;
+//       width: 90%;
+//       overflow: auto;
+//       transition: all 1s ease;
+//     }
+//     button.toggle_btn {
+//       display: block;
+//     }
+//     ul.step-sections {
+//       overflow-x: auto;
+//       &::-webkit-scrollbar {
+//         display: none;
+//       }
 
-      /* Hide scrollbar for IE, Edge and Firefox */
-      & {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-      }
-    }
-    li {
-      margin-right: 1rem;
-      white-space: pre;
-    }
-  }
-}
+//       /* Hide scrollbar for IE, Edge and Firefox */
+//       & {
+//         -ms-overflow-style: none; /* IE and Edge */
+//         scrollbar-width: none; /* Firefox */
+//       }
+//     }
+//     li {
+//       margin-right: 1rem;
+//       white-space: pre;
+//     }
+//   }
+// }

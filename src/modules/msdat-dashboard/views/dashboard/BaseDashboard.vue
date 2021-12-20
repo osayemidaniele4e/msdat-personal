@@ -87,7 +87,7 @@
         <!-- </div> -->
       </div>
     </template>
-  <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button>
+  <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
   </div>
 </template>
 
