@@ -1,7 +1,7 @@
 /**
  * export to use
- * * dataset comparism control panel configuration
- * ! currrent configuration has a bug with multi-selection
+ * * dataset comparison control panel configuration
+ * ! current configuration has a bug with multi-selection
  * TODO: fix multi select bug - status Done
  */
 

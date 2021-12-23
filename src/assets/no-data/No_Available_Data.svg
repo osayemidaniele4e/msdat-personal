@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="362.338" height="501.232" viewBox="0 0 362.338 501.232">
+  <defs>
+    <filter id="Rectangle_2654" x="80.291" y="155.56" width="201.83" height="35.17" filterUnits="userSpaceOnUse">
+      <feOffset dy="5" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_2264" data-name="Group 2264" transform="translate(-1397 -611)">
+    <g id="Rectangle_2661" data-name="Rectangle 2661" transform="translate(1397 611)" fill="#fff" stroke="#a9a9a9" stroke-width="1">
+      <rect width="362.338" height="501.232" stroke="none"/>
+      <rect x="0.5" y="0.5" width="361.338" height="500.232" fill="none"/>
+    </g>
+    <text id="NO_AVAILABLE_DATA" data-name="NO AVAILABLE DATA" transform="translate(1578 844.131)" fill="#515151" font-size="24" font-family="WorkSans-Bold, Work Sans" font-weight="700"><tspan x="-119.484" y="0">NO AVAILABLE DATA</tspan></text>
+    <text id="There_is_no_data_available_for_the_indicator_data_source_and_period_you_have_selected._Try_selecting_another_data_source_or_period." data-name="There is no data available 
+for the indicator, data source
+and period you have selected. 
+Try selecting another data 
+source or period." transform="translate(1578 920.485)" fill="#515151" font-size="20" font-family="WorkSans-Regular, Work Sans"><tspan x="-128.97" y="0">There is no data available </tspan><tspan x="-142.76" y="24">for the indicator, data source</tspan><tspan x="-151.04" y="48">and period you have selected. </tspan><tspan x="-131.55" y="72">Try selecting another data </tspan><tspan x="-83.55" y="96">source or period.</tspan></text>
+    <g id="Group_2098" data-name="Group 2098" transform="translate(-5711.708 -6608.046)">
+      <g transform="matrix(1, 0, 0, 1, 7108.71, 7219.05)" filter="url(#Rectangle_2654)">
+        <rect id="Rectangle_2654-2" data-name="Rectangle 2654" width="171.83" height="5.17" transform="translate(95.29 165.56)" fill="#cfcfcf"/>
+      </g>
+      <rect id="Rectangle_2655" data-name="Rectangle 2655" width="20.506" height="51.793" transform="translate(7228.785 7332.813)" fill="#cfcfcf"/>
+      <rect id="Rectangle_2656" data-name="Rectangle 2656" width="20.506" height="92.796" transform="translate(7254.08 7291.81)" fill="#cfcfcf"/>
+      <rect id="Rectangle_2657" data-name="Rectangle 2657" width="20.506" height="36.687" transform="translate(7279.552 7347.919)" fill="#cfcfcf"/>
+      <rect id="Rectangle_2659" data-name="Rectangle 2659" width="20.506" height="47.477" transform="translate(7329.961 7337.128)" fill="#cfcfcf"/>
+      <rect id="Rectangle_2658" data-name="Rectangle 2658" width="20.506" height="62.584" transform="translate(7305.025 7322.022)" fill="#cfcfcf"/>
+      <g id="Group_2091" data-name="Group 2091" transform="translate(7279.802 7279)">
+        <g id="Path_4226" data-name="Path 4226" transform="translate(0 0)" fill="none">
+          <path d="M18.1,0A18.1,18.1,0,1,1,0,18.1,18.1,18.1,0,0,1,18.1,0Z" stroke="none"/>
+          <path d="M 18.09561920166016 3 C 14.06343841552734 3 10.2725887298584 4.570219039916992 7.421409606933594 7.421409606933594 C 4.570219039916992 10.2725887298584 3 14.06343841552734 3 18.09561920166016 C 3 22.12779998779297 4.570219039916992 25.91864967346191 7.421409606933594 28.76982879638672 C 10.2725887298584 31.62101936340332 14.06343841552734 33.19123840332031 18.09561920166016 33.19123840332031 C 22.12779998779297 33.19123840332031 25.91864967346191 31.62101936340332 28.76982879638672 28.76982879638672 C 31.62101936340332 25.91864967346191 33.19123840332031 22.12779998779297 33.19123840332031 18.09561920166016 C 33.19123840332031 14.06343841552734 31.62101936340332 10.2725887298584 28.76982879638672 7.421409606933594 C 25.91864967346191 4.570219039916992 22.12779998779297 3 18.09561920166016 3 M 18.09561920166016 0 C 28.08955001831055 0 36.19123840332031 8.101688385009766 36.19123840332031 18.09561920166016 C 36.19123840332031 28.08955001831055 28.08955001831055 36.19123840332031 18.09561920166016 36.19123840332031 C 8.101688385009766 36.19123840332031 0 28.08955001831055 0 18.09561920166016 C 0 8.101688385009766 8.101688385009766 0 18.09561920166016 0 Z" stroke="none" fill="#cfcfcf"/>
+        </g>
+        <g id="Group_2090" data-name="Group 2090" transform="translate(14.49 8.688)" opacity="0.8">
+          <path id="Path_4223" data-name="Path 4223" d="M80.67,42.391a6.347,6.347,0,0,0-3.459.967l.58,1.524a4.29,4.29,0,0,1,2.442-.75c1.523.025,2.3.845,2.3,2.078,0,1.087-.606,2.029-1.692,3.312a5.541,5.541,0,0,0-1.5,4.181l.049.628h1.885l-.026-.628a4.773,4.773,0,0,1,1.377-3.553c1.159-1.378,2.08-2.561,2.08-4.206C84.706,44.106,83.448,42.391,80.67,42.391Z" transform="translate(-77.211 -42.391)" fill="#cfcfcf" stroke="#cfcfcf" stroke-width="1.5"/>
+          <path id="Path_4224" data-name="Path 4224" d="M79.932,53.068a1.512,1.512,0,0,0-.023,3.021,1.512,1.512,0,0,0,.023-3.021Z" transform="translate(-76.839 -36.682)" fill="#cfcfcf" stroke="#cfcfcf" stroke-width="1.5"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

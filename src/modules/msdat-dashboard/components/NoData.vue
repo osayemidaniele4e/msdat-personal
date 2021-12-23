@@ -8,13 +8,14 @@
       justify-content-center
       text-center
     "
-    style="height: 250px"
+
   >
-    <h5>NO SUB-NATIONAL LEVEL DATA</h5>
+    <!-- <h5>NO SUB-NATIONAL LEVEL DATA</h5>
     <p>
       There is no sub-national data available for the indicator, data source and
       period you have selected. Try selecting another data source or period
-    </p>
+    </p> -->
+    <img src="@/assets/no-data/No_Sub-national_Data.svg" alt="no data" class="img-fluid" />
   </div>
 </template>
 

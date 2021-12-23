@@ -27,7 +27,8 @@ export default {
           const factor = this.dlGetFactor(indicatorObject.factor);
           data.values.push({
             dataSources: datasource,
-            value: new Intl.NumberFormat().format(Number(e.value).toFixed(2)),
+            // change 2 decimal place to 1 decimal place
+            value: new Intl.NumberFormat().format(Number(e.value).toFixed(1)),
             factor: formatFactor(factor.display_factor),
             year: e.period,
             classification: datasource.classification,
