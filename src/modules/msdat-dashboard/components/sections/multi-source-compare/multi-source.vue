@@ -198,6 +198,7 @@ export default {
               level: this.mapDataLevel,
             },
           });
+          // condition to check if data is available
           if (data.length === 0) {
             this.showNoAvailableData = true;
           } else {
