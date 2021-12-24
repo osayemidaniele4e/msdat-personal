@@ -7,9 +7,8 @@
     >
       <template #title>
         <p class="work-sans mb-0 line-height">
-          Distribution of <b>{{ values.indicator.short_name }}</b> Across the
-          Geopolitical zones in the Country. Source:
-          <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
+          Distribution of <b>{{ values.indicator.short_name }}</b> Across the Geopolitical zones in
+          the Country. Source: <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
         </p>
       </template>
       <BarChart
@@ -17,14 +16,13 @@
         :chartOptions="chartObject"
         ref="BaseChart"
       />
-      <BaseMap
-        ref="BaseMap"
-        v-else
-        :mapObject="mapObject"
-        :level="level"
-        :lgaState="stateName"
-      />
+      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName" />
     </base-sub-card>
+    <NoAvailableData
+      v-if="showNoAvailableData"
+      class="position-absolute"
+      style="top: 16%; width: 50%; left: 25%"
+    />
   </base-overlay>
 </template>
 
@@ -35,11 +33,12 @@ import Maps from '@/components/maps/BaseMap.vue';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 import chartDownload from '../../../mixins/chart_download';
+import NoAvailableData from '../../NoData2.vue';
 
 export default {
   name: 'MultiSource',
   mixins: [chartDownload],
-  components: { BaseMap: Maps, BarChart },
+  components: { BaseMap: Maps, BarChart, NoAvailableData },
   props: {
     values: {
       type: Object,
@@ -68,6 +67,7 @@ export default {
         },
       },
       loading: true,
+      showNoAvailableData: false,
     };
   },
   methods: {
@@ -94,10 +94,7 @@ export default {
       ]);
     },
     formatDataToSeriesLineFormat(data) {
-      const dataValues = data.map((item) => [
-        item.period,
-        Number.parseFloat(item.value),
-      ]);
+      const dataValues = data.map((item) => [item.period, Number.parseFloat(item.value)]);
       return dataValues.sort(sortHighChartDataFormat);
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
@@ -162,9 +159,7 @@ export default {
           },
         ],
       };
-      const displayFactor = this.dlGetFactor(
-        this.values.indicator.factor,
-      ).display_factor;
+      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       chartOptions.yAxis.title.text = displayFactor;
       return chartOptions;
     },
@@ -203,12 +198,13 @@ export default {
               level: this.mapDataLevel,
             },
           });
-          console.log(data);
+          if (data.length === 0) {
+            this.showNoAvailableData = true;
+          } else {
+            this.showNoAvailableData = false;
+          }
           const formattedData = this.formatDataToSeriesMapFormat(data);
-          this.mapObject = this.formatToHighChartOptionForMap(
-            formattedData,
-            value,
-          );
+          this.mapObject = this.formatToHighChartOptionForMap(formattedData, value);
         } else {
           const data = await this.dlQuery({
             indicator: value.indicator.id,
@@ -232,5 +228,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
