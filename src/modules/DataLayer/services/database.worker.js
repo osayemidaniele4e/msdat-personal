@@ -1,7 +1,9 @@
 /* eslint-disable no-await-in-loop */
 
+import { take } from 'lodash';
 import dexie from '../config/dexie';
 import { getIndicatorsFromApi } from './helper';
+import apiServices from './ApiServices';
 
 const DATA = 'data';
 const INDICATORS = 'indicators';
@@ -54,23 +56,27 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
-    return this.db.transaction(
-      'rw',
-      this.DSI,
-      this.location,
-      this.indicators,
-      this.valuetypes,
-      this.factors,
-      this.datasources,
-      async () => {
-        await this.DSI.bulkPut(data[6].data);
-        await this.location.bulkPut(data[0].data);
-        await this.indicators.bulkPut(data[1].data);
-        await this.valuetypes.bulkPut(data[3].data);
-        await this.factors.bulkPut(data[5].data);
-        await this.datasources.bulkPut(data[7].data);
-      },
-    );
+    return this.db
+      .transaction(
+        'rw',
+        this.DSI,
+        this.location,
+        this.indicators,
+        this.valuetypes,
+        this.factors,
+        this.datasources,
+        async () => {
+          await this.DSI.bulkPut(data[6].data);
+          await this.location.bulkPut(data[0].data);
+          await this.indicators.bulkPut(data[1].data);
+          await this.valuetypes.bulkPut(data[3].data);
+          await this.factors.bulkPut(data[5].data);
+          await this.datasources.bulkPut(data[7].data);
+        },
+      )
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 
   async storeDataInDBTable(data, tableName) {
@@ -117,6 +123,44 @@ export default class DataBase {
       .toArray();
   }
 
+  async checkAllYearsExistInDB(indicatorID) {
+    const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
+    const dataValue = dataResult.data.years;
+    const yearsNotAvailable = [];
+    for (let index = 0; index < dataValue.length; index += 1) {
+      const element = dataValue[index];
+      const bb = await this.db.data.where({ indicator: indicatorID, period: element }).first();
+      if (bb === undefined) {
+        yearsNotAvailable.push(element);
+      }
+    }
+    return yearsNotAvailable;
+  }
+
+  async initDataWithYears(indicator, limit = 0) {
+    for (let index = 0; index < indicator.length; index += 1) {
+      const indicatorID = indicator[index];
+      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+      // take only the at least 8 years
+      if (yearsNotAvailableInDB.length > 0) {
+        const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        const theYears = take(yearsNotAvailableInDB, yearsToTake);
+        const arrayOfPromises = theYears.map(
+          (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
+        );
+        const results = await Promise.all(arrayOfPromises);
+        for (let index2 = 0; index2 < results.length; index2 += 1) {
+          const requestResult = results[index2].data;
+          await this.storeDataInDB(requestResult);
+        }
+      }
+    }
+  }
+
+  async checkIfIndicatorWithYearExist(indicatorID, Period) {
+    return this.data.where({ indicator: indicatorID, period: Period }).first();
+  }
+
   async initData(indicator) {
     const indicatorInDB = await this.checkIndicatorsInIdb();
     for (let index = 0; index < indicator.length; index += 1) {
@@ -130,11 +174,21 @@ export default class DataBase {
   }
 
   /**
- *
- * @param {*} query the objet  to be queried
- * @returns {array} result of the Query
- */
-  static async queryDB(query = {}) {
-    return dexie.table(DATA).where(query).toArray();
+   *
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryDB(query = {}, locationIDArray = []) {
+    if (locationIDArray.length > 0) {
+      return dexie
+        .table(DATA)
+        .where(query)
+        .filter((value) => locationIDArray.includes(value.location))
+        .toArray();
+    }
+    return dexie
+      .table(DATA)
+      .where(query)
+      .toArray();
   }
 }

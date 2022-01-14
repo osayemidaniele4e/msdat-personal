@@ -1,5 +1,5 @@
 <template>
-  <div id="header-option">
+  <div id="header-option" class="work-sans">
     <base-modal
       :showModal="modal"
       :size="'md'"
@@ -16,12 +16,12 @@
     </base-modal>
     <ul class="list-unstyled">
       <li>
-        <router-link to="/">
+        <router-link to="/about">
           <img src="@/assets/img/icons/ic_info.svg" alt="" />
           <span>About Dashboard</span>
         </router-link>
       </li>
-      <li>
+      <li @click="$emit('tour')">
         <router-link to="/">
           <img src="@/assets/img/icons/ic_play.svg" alt="" />
           <span>Play Tour Guide</span>
@@ -29,87 +29,100 @@
       </li>
       <div class="divider"></div>
       <li>
-        <router-link to="/">
+        <a @click.prevent="socialModal = !socialModal" href="#">
           <img src="@/assets/img/icons/ic_share.svg" alt="" />
           <span>Share</span>
-        </router-link>
+        </a>
       </li>
       <li>
-        <router-link to="/">
+        <a href="#" @click.prevent="PrintPage()">
           <img src="@/assets/img/icons/ic_print.svg" alt="" />
           <span>Print</span>
-        </router-link>
+        </a>
       </li>
-      <li>
+      <!-- <li>
         <router-link to="/">
           <img src="@/assets/img/icons/ic_download.svg" alt="" />
           <span>Download Data</span>
         </router-link>
-      </li>
+      </li> -->
       <li>
-        <router-link to="/">
+        <!-- Don't forget to add the # so it does reload the page -->
+        <a href="#" @click.prevent="toggleFullScreen()">
           <img src="@/assets/img/icons/ic_zoom.svg" alt="" />
           <span>View Fullscreen</span>
-        </router-link>
+        </a>
       </li>
       <div class="divider"></div>
       <li>
-        <router-link to="/">
+        <a
+          href="https://mapping.fmohconnect.gov.ng/dataset/submit-dataset"
+          target="_blank"
+        >
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
           <span>Submit New Data Source</span>
-        </router-link>
+        </a>
       </li>
-      <li>
+      <!-- <li>
         <router-link to="/">
           <img src="@/assets/img/icons/ic_recommendation.svg" alt="" />
           <span>Suggest Indicator/Data Source</span>
         </router-link>
-      </li>
+      </li> -->
       <div class="divider"></div>
       <li>
-        <router-link to="/">
+        <router-link to="/update_log">
           <img src="@/assets/img/icons/ic_update.svg" alt="" />
           <span>See Updates</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/">
+        <a href="javascript:Userback.open();">
           <img src="@/assets/img/icons/ic_feedback.svg" alt="" />
           <span>Feedback</span>
-        </router-link>
+        </a>
       </li>
-      <!-- <li  @click="$emit('showContact')"> -->
       <li @click="togglemodal">
-        <router-link to="#">
+        <a href="#">
           <img src="@/assets/img/icons/ic_contact.svg" alt="" />
-          <span>Contact</span>
-        </router-link>
+          <span>Contact Us</span>
+        </a>
       </li>
       <li>
-        <router-link to="/">
+        <router-link to="/faq">
           <img src="@/assets/img/icons/ic_help.svg" alt="" />
           <span>Help and FAQs</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/">
+        <a href="#" @click.prevent="showModal" ref="btnShow">
           <img src="@/assets/img/icons/ic_email.svg" alt="" />
           <span>Subscribe to our newsletter</span>
-        </router-link>
+        </a>
       </li>
     </ul>
+    <base-modal :showModal="socialModal" :size="'md'">
+      <template #title
+        ><h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
+      </template>
+      <Socials />
+    </base-modal>
+    <NewsLetter />
   </div>
 </template>
 
 <script>
+import NewsLetter from '@/modules/msdat-dashboard/modules/newsletter/index.vue';
+import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import contact from '../../../../../components/contact/contact.vue';
 
 export default {
-  components: { contact },
+  components: { contact, Socials, NewsLetter },
   data() {
     return {
       modal: false,
       submit: false,
+      socialModal: false,
     };
   },
   methods: {
@@ -119,6 +132,21 @@ export default {
 
     submitContactForm() {
       this.submit = !this.submit;
+    },
+
+    toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    },
+    PrintPage() {
+      window.print();
+    },
+    // NewsLetter Modal
+    showModal() {
+      this.$root.$emit('bv::show::modal', 'modal-newsLetter', '#btnShow');
     },
   },
 };
@@ -153,11 +181,15 @@ export default {
 
 #header-option {
   height: 90vh;
+  top: 3rem;
   position: absolute;
-  right: -11px;
+  // right: -11px;
+  right: 0.5rem;
   overflow: auto;
   transition: display 0.5s;
   z-index: 5;
+  transition: all 0.5s ease-in-out;
+  width: 15rem;
 
   ul {
     border: 1px solid #dbdbdb;

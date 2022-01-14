@@ -1,0 +1,20 @@
+div#modal-newsLetter{
+ #modal-center___BV_modal_content_,
+    #modal-content,
+    .modal-content {
+        width: 60% !important;
+        margin: auto !important;
+    }
+
+    header.modal-header {
+        display: none;
+    }
+
+    footer.modal-footer {
+        display: none;
+    }
+
+    div.modal-body {
+        padding: 0;
+    }
+}

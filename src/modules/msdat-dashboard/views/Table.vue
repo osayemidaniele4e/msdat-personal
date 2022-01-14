@@ -72,7 +72,7 @@ export default {
   methods: {
     /** updates data for selected indicator */
     indicatorChanged(indicator) {
-      console.log(indicator);
+      // console.log(indicator);
     },
   },
 };

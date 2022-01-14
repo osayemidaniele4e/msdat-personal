@@ -1,21 +1,21 @@
 export default {
-  label: 'indicator Overview Control',
+  label: 'Indicator Overview',
   setup: [
     {
       type: 'dropdown',
-      class: ['col-md-4'],
+      class: ['col-md-4 step-indicator'],
       dropdownProps: {
         // multiple: true,
         'group-values': 'indicators',
         'group-label': 'program_area',
-        label: 'short_name',
+        label: 'full_name',
       },
-      label: 'indicator 1',
+      label: 'indicator',
       key: 'indicator',
       options: [],
     },
     {
-      class: ['col'],
+      class: ['col step-datasource'],
       type: 'dropdown',
       label: 'data Source',
       key: 'datasource',
@@ -25,7 +25,7 @@ export default {
       options: [],
     },
     {
-      class: ['col'],
+      class: ['col step-location'],
       type: 'dropdown',
       label: 'location',
       key: 'location',
@@ -57,10 +57,17 @@ export default {
       key: 'numdenum',
     },
   ],
-  defaults: {
-    indicator: null,
-    dataSource: null,
-    location: null,
-    year: '2015',
+  payload: {
+    indicator: 'indicator 2',
+    location: '',
+    datasource: 'NHMIS 1',
+    year: '',
+    compareBy: '',
+    visualization: 'state_map',
+    target: {
+      national: false,
+      sdg: false,
+    },
+    numdenum: false,
   },
 };

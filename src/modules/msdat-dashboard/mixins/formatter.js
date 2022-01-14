@@ -11,7 +11,7 @@ export default {
       series: '',
       color: {
         green: '#00AC40',
-        red: 'red',
+        red: '#E85D58',
       },
     };
   },
@@ -26,8 +26,9 @@ export default {
           const datasource = this.dlGetDataSource(e.datasource);
           const factor = this.dlGetFactor(indicatorObject.factor);
           data.values.push({
-            dataSources: datasource.datasource,
-            value: e.value,
+            dataSources: datasource,
+            // change 2 decimal place to 1 decimal place
+            value: new Intl.NumberFormat().format(Number(e.value).toFixed(1)),
             factor: formatFactor(factor.display_factor),
             year: e.period,
             classification: datasource.classification,
@@ -45,7 +46,6 @@ export default {
     },
     diffBaseOnTarget(data, targetValue) {
       const aboveTargetData = takeWhile(data, (item) => item[1] >= targetValue);
-      console.log(data);
       const belowTargetData = difference(data, aboveTargetData);
 
       return {

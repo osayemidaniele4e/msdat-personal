@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
 import { uniq, sortBy } from 'lodash';
-import { groupIndicator } from './util';
+import { groupIndicator, isDataYearly } from '@/util/helper';
 
 export default {
   data() {
@@ -9,7 +9,7 @@ export default {
       defaultIndicator: '',
       defaultDataSource: '',
       defaultLocation: '',
-      defaultYear: '2015',
+      defaultYear: '2016',
       defaultIndicatorDropdown: [],
       defaultDataSourceDropdown: [],
       defaultLocationDropdown: [],
@@ -17,21 +17,52 @@ export default {
       cpIsLoading: false,
     };
   },
+  watch: {
+    // The is the updated the control panels dropdown as indicator are gotten from the API
+    // in the background (async)
+    dlGetAvailableIndicators(newValue) {
+      console.log('update the control panels indicator dropdown');
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'indicator',
+        payload: groupIndicator(newValue, 'program_area'),
+      });
+    },
+  },
   methods: {
     cpGetAvailableYears(dataValues) {
       const years = dataValues.map((item) => item.period);
       const uniqueYears = uniq(years);
       return sortBy(uniqueYears);
     },
-    async setUpControlPanelDropDown() {
-      this.defaultIndicatorDropdown = groupIndicator(
-        this.dlGetAvailableIndicators(),
-        'program_area',
-      );
-      this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
-      this.defaultLocationDropdown = this.dlGetLocation({ level: 3 });
+    setUpControlPanelDropDown() {
+      // debugger;
+      this.defaultIndicatorDropdown = groupIndicator(this.dlGetAvailableIndicators, 'program_area');
 
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'indicator',
+        payload: this.defaultDataSourceDropdown,
+      });
+
+      this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
+
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'datasource',
+        payload: this.defaultDataSourceDropdown,
+      });
+
+      this.defaultLocationDropdown = this.dlGetLocation({
+        level: 3,
+      });
+      const location = this.dlGetLocation(1); // get nigerian Location object
       // add nigeria to the top of the array
+      this.defaultLocationDropdown.unshift(location);
+
+      this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
+
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'location',
+        payload: this.defaultLocationDropdown,
+      });
     },
     setDefaults() {
       this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
@@ -40,10 +71,33 @@ export default {
       );
       this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
     },
-  },
-  async created() {
-    this.setDefaults();
-    await this.setUpControlPanelDropDown();
-    this.cpIsLoading = true;
+    async setYearDropdown(
+      indicatorID = this.defaultIndicator.id,
+      dataSourceID = this.defaultDataSource.id,
+      locationID = this.defaultLocation.id,
+    ) {
+      const data = await this.dlQuery({
+        indicator: indicatorID,
+        datasource: dataSourceID,
+        location: locationID,
+      });
+      // debugger;
+      // console.log(data);
+      const onlyYearData = data.filter((item) => {
+        if (isDataYearly(item.period)) {
+          return item.period;
+        }
+        return false;
+      });
+      const years = onlyYearData.map((item) => item.period);
+      const unqiueYears = uniq(years);
+      const sortedYears = unqiueYears.sort((a, b) => b - a);
+      return sortedYears;
+    },
+    // Get available DataSources
+    async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
+      const data = await this.getDataSourceByIndicator(indicatorID);
+      return data;
+    },
   },
 };

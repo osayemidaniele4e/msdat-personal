@@ -32,16 +32,23 @@
       </div>
     </div>
     <div class="card-body work-sans p-0" style="position: relative">
-      <SubCardDropdown v-show="showMenu" />
+      <div @mouseleave="showMenu = false">
+        <SubCardDropdown
+          @dropDownTypeSelected="$emit('dropdownTypeSelected', $event)"
+          v-show="showMenu"
+        />
+      </div>
+
       <div class="row no-gutters">
         <div class="col" :class="[sideControl ? 'col-10' : '']">
           <div v-if="buttonToggle" class="d-flex justify-content-end">
             <SubCardToggleButton
+              v-show="showToggle"
               @button-clicked="$emit('toggled-button', $event)"
             />
           </div>
           <slot>
-            <p class="card-text">The SubCard fallback.</p>
+            <!-- <p class="card-text">The SubCard fallback.</p> -->
           </slot>
         </div>
         <SubCardSideControl
@@ -87,6 +94,10 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    showToggle: {
+      type: Boolean,
+      default: () => true,
+    },
     color: {
       type: String,
       default: 'red',
@@ -115,7 +126,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

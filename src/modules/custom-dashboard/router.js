@@ -4,11 +4,6 @@ export default [
     name: 'custom-dashboard',
     component: () => import('./views/landing.vue'),
   },
-  // {
-  //   path: '/custom/details',
-  //   name: 'dashboard-details',
-  //   component: () => import('./views/dashboardDetails.vue'),
-  // },
   {
     path: '/my-dashboard',
     name: 'my-dashboard',
@@ -24,7 +19,20 @@ export default [
         name: 'my-dashboard-details',
         component: () => import('./views/dashboardDetails.vue'),
       },
+      {
+        path: 'preview',
+        component: () => import('./views/TablePreview.vue'),
+      },
+      {
+        path: 'config',
+        component: () => import('./views/configShow.vue'),
+      },
     ],
   },
-
+  {
+    path: '/coming-soon',
+    name: 'ComingSoon',
+    // component: () => import('./views/comingSoon.vue'),
+    component: () => import('../coming-soon/custom_dashboard.vue'),
+  },
 ];
