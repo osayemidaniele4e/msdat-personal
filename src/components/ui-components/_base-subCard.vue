@@ -1,32 +1,24 @@
 <template>
   <div class="card">
     <div
-      class="
-        card-header
-        d-flex
-        justify-content-between
-        border-bottom-0
-        align-items-center
-      "
+      class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
       :style="{ backgroundColor }"
     >
       <div class="title w-100">
         <slot name="title"> slot title fallback </slot>
       </div>
-      <div
-        class="action-icon d-flex justify-content-around align-items-center"
-        v-if="showControls"
-      >
+      <div class="action-icon d-flex justify-content-around align-items-center" v-if="showControls">
         <b-icon
           icon="arrows-fullscreen"
           @click="showModal = !showModal"
-          class="mx-1 font-weight-bold"
+          class="pointer_click mx-1 font-weight-bold"
           font-scale="1.1"
         ></b-icon>
         <b-icon
+          v-if="showDownload === true"
           icon="three-dots-vertical"
           @click="showMenu = !showMenu"
-          class="mx-1 font-weight-bold"
+          class="pointer_click mx-1 font-weight-bold"
           font-scale="1.1"
         ></b-icon>
       </div>
@@ -93,6 +85,10 @@ export default {
     showControls: {
       type: Boolean,
       default: () => false,
+    },
+    showDownload: {
+      type: Boolean,
+      default: () => true,
     },
     showToggle: {
       type: Boolean,

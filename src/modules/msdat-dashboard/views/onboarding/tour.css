@@ -1,11 +1,8 @@
 
 .customTooltips .introjs-skipbutton{
      color: white;
-     background: #DF1D1DB0;
-     border-radius: 100px;
-     height: 15px;
-     width: 5px;
-     padding: 0px 11px 7px 5px;
+     background: #bb0f0fb0;
+     border-radius: 50%;
     }
 .customTooltips .introjs-nextbutton{
     color: white;
