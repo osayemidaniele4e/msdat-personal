@@ -14,11 +14,13 @@ export default [
     name: 'my-dashboard',
     component: () => import('./views/myDashboard.vue'),
     children: [
+      // 2
       {
         path: 'preference-table',
         name: 'preference-table',
         component: () => import('./views/preferenceTable.vue'),
       },
+      // 1
       {
         path: 'details',
         name: 'my-dashboard-details',

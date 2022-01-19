@@ -14,14 +14,18 @@
 </template>
 
 <script>
-import instance from '../components/Custom-dashboard-sections/Instance.vue';
+// import instance from '../components/Custom-dashboard-sections/Instance.vue';
+// Using the current msdat instance
+import instance from '../../msdat-dashboard/views/dashboard/instance.vue';
 
 export default {
   components: {
     customDashboard: instance,
   },
   data() {
-    return {};
+    return {
+
+    };
   },
 
   watch: {
@@ -34,7 +38,21 @@ export default {
     // },
     // },
   },
-
+  // mounted() {
+  //   const configObjects = {
+  //     name: 'Health_Outcomes',
+  //     title: 'Health Outcomes and Service Coverage',
+  //     indicators: [
+  //       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+  //       27, 28, 29, 30, 31, 32, 33,
+  //     ],
+  //     defaultIndicators: [7, 6, 5],
+  //     dataSources: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 15, 16],
+  //     initialIndicator: 7,
+  //     initialDataSource: 6,
+  //     initialLocation: 1,
+  //   };
+  // },
   computed: {
     fieldsArray() {
       return this.$store.getters.arrangedSections;
@@ -43,11 +61,14 @@ export default {
       const configObjects = {
         name: 'Health_Outcomes',
         title: 'Health Outcomes and Service Coverage',
-        indicators: [],
-        defaultIndicators: [],
-        dataSources: [],
-        initialIndicator: 0,
-        initialDataSource: 0,
+        indicators: [
+          1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+          27, 28, 29, 30, 31, 32, 33,
+        ],
+        defaultIndicators: [7, 6, 5],
+        dataSources: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 15, 16],
+        initialIndicator: 7,
+        initialDataSource: 6,
         initialLocation: 1,
       };
       const ids = [];
