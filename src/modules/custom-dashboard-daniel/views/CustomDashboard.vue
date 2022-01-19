@@ -27,11 +27,11 @@ export default {
   watch: {
     // configObject(newVal) {
     //   console.log('watch', newVal);
-    // deep: true,
-    // eslint-disable-next-line object-shorthand
-    // handler: function (newVal) {
-    //   console.log('sswwd', Val);
-    // },
+    //   // deep: true,
+    //   // eslint-disable-next-line object-shorthand
+    //   // handler: function (newVal) {
+    //   //   console.log('sswwd', Val);
+    //   // },
     // },
   },
 

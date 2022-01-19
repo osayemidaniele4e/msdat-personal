@@ -118,6 +118,7 @@
 
 <script>
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
+// import axios from '@/plugins/axios';
 
 export default {
   name: 'dasboard-details',
@@ -228,6 +229,9 @@ export default {
         });
         this.$router.push('preference-table');
       }
+    },
+    submitDashboardDetails() {
+      // post dashboard details to api endpoint here
     },
   },
 };
