@@ -1,31 +1,52 @@
 <template>
-  <footer id="the-footer">
-    <div>Built with <b-icon-heart-fill/> by eHealth4everyone</div>
+  <footer id="the-footer" class="work-sans">
+    <div>Built with <b-icon-heart-fill /> by eHealth4everyone</div>
     <div>
-      <span>46 Indicators, 16 Data sources</span>
-      <span>Last Updated 12 Mar, 2019</span>
+      <span
+        >{{ dlDashboardIndicator.length }} Indicators, {{ dlDashboardDataSource.length }} Data
+        sources</span
+      >
+      <span>Last Updated {{ latestDate }}</span>
     </div>
   </footer>
 </template>
 
+<script>
+import moment from 'moment';
+
+export default {
+  name: 'theFooter',
+  data() {
+    return {
+      latestDate: '',
+    };
+  },
+  mounted() {
+    const day = moment().format('DD');
+    const month = moment().format('MMM');
+    const year = moment().format('YYYY');
+    this.latestDate = `${day} ${month}, ${year}`;
+  },
+};
+</script>
+
 <style lang="scss" scoped>
-$msdat-green: #007D53;
+$msdat-green: #007d53;
 
 footer#the-footer {
   height: fit-content;
-  position: fixed;
-  width: 100%;
+  position: sticky;
   bottom: 0;
   background-color: $msdat-green;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1% 2%;
+  padding: 0.65%;
   font-size: 12.5px;
   color: #ffffff;
 
-  &>div {
+  & > div {
     line-height: 15px;
 
     svg {
@@ -56,7 +77,7 @@ footer#the-footer {
     align-items: flex-start;
     padding: 0.8% 2%;
 
-    &>div {
+    & > div {
       &:last-child {
         width: 100%;
         display: flex;
@@ -65,7 +86,7 @@ footer#the-footer {
         align-items: flex-start;
         margin-bottom: 1.5%;
 
-        span{
+        span {
           width: fit-content;
         }
       }

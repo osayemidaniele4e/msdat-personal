@@ -4,7 +4,7 @@
   <!-- Toggleable tab links here -->
     <ul
       class="d-flex list-unstyled step-sections mb-0
-       justify-content-between border-b mx-5 cursor-pointer"
+       justify-content-between border-b mx-lg-5 mx-3 cursor-pointer"
    >
       <li
         class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans"
@@ -21,7 +21,7 @@
 
     <!-- Multiselect dropdown here -->
     <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
-      <div class="mx-5 step-controls styles pt-1 pb-2">
+      <div class="mx-lg-5 mx-3 step-controls styles pt-1 pb-2">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>

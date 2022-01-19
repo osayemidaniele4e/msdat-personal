@@ -44,7 +44,9 @@
             :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
           >
             Zones Map
-            <img :src="require('../svg/zonal_map.svg')" alt="" srcset="" />
+            <img :src="require(`../svg/${
+                      activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map'
+                    }.svg`)" alt="" srcset="" />
           </button>
           <button
             type="button"
@@ -53,7 +55,9 @@
             :class="[activeToggleButton === 'state_map' ? 'active' : '']"
           >
             State Map
-            <img class="text-danger" :src="require('../svg/state_map.svg')" alt="" srcset="" />
+            <img class="text-danger" :src="require(`../svg/${
+                      activeToggleButton === 'state_map' ? 'state_map_white' : 'state_map'
+                    }.svg`)" alt="" srcset="" />
           </button>
           <button
             type="button"

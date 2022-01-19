@@ -10,7 +10,7 @@
         @click="$emit('source:click', source)"
         >{{ source.datasource }}
       </span>
-      <b-icon-exclamation-circle-fill
+      <b-icon-info-circle-fill
         :variant="selectedSource.id === source.id ? '' : 'primary'"
         @click="$emit('source-info:click', source)"
         class="data-source-info"

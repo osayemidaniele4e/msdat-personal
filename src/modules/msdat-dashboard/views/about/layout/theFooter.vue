@@ -3,13 +3,32 @@
     <div>Built with <b-icon-heart-fill /> by eHealth4everyone</div>
     <div>
       <span
-        >{{ dlDashboardIndicator.length }} Indicators,
-        {{ dlDashboardDataSource.length }} Data sources</span
+        >{{ dlDashboardIndicator.length }} Indicators, {{ dlDashboardDataSource.length }} Data
+        sources</span
       >
-      <span>Last Updated 12 Mar, 2019</span>
+      <span>Last Updated {{ latestDate }}</span>
     </div>
   </footer>
 </template>
+
+<script>
+import moment from 'moment';
+
+export default {
+  name: 'theFooter',
+  data() {
+    return {
+      latestDate: '',
+    };
+  },
+  mounted() {
+    const day = moment().format('DD');
+    const month = moment().format('MMM');
+    const year = moment().format('YYYY');
+    this.latestDate = `${day} ${month}, ${year}`;
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 $msdat-green: #007d53;

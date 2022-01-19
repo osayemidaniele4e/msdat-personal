@@ -15,10 +15,8 @@
         <template #title>
           <p class="text-dark work-sans mb-0 line-height">
             Distribution of
-            <span class="font-weight-bold">
-              {{ controlPanelProps.indicator.full_name }} </span
-            >Across the
-            <span class="font-weight-bold"> zones in the Country.</span> Source:
+            <span class="font-weight-bold"> {{ controlPanelProps.indicator.full_name }} </span
+            >Across the <span class="font-weight-bold"> zones in the Country.</span> Source:
             <span class="font-weight-bold">
               {{ controlPanelProps.datasource.datasource }}
               {{ controlPanelProps.year }}</span
@@ -26,11 +24,12 @@
           </p>
         </template>
         <div>
-          <BaseMap
-            ref="BaseMap"
-            :mapObject="chart"
-            :level="level"
-            :lgaState="stateName"
+          <BaseMap ref="BaseMap" :mapObject="chart" :level="level" :lgaState="stateName" />
+
+          <NoAvailableData
+            v-if="showNoAvailableData"
+            class="position-absolute"
+            style="top: 1%; width: 50%; left: 25%"
           />
         </div>
       </base-sub-card>
@@ -41,6 +40,7 @@
 <script>
 import BaseMap from '@/components/maps/BaseMap.vue';
 import chartDownload from '../../../mixins/chart_download';
+import NoAvailableData from '../../NoData2.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
@@ -56,6 +56,7 @@ export default {
   },
   components: {
     BaseMap,
+    NoAvailableData,
   },
   data() {
     return {
@@ -63,6 +64,7 @@ export default {
       loader: false,
       level: 1,
       stateName: 'Nigeria',
+      showNoAvailableData: false,
     };
   },
   methods: {},
@@ -95,11 +97,10 @@ export default {
             newItem[0] = newItem[0].split('LGA')[0].trim();
             return newItem;
           });
+          console.log('chart', sortedData, 'if');
 
           const stateObject = this.dlGetLocation(val.location.id);
-          const stateData = data.find(
-            (item) => item.location === val.location.id,
-          );
+          const stateData = data.find((item) => item.location === val.location.id);
 
           sortedData.unshift({
             name: stateObject.name,
@@ -107,8 +108,7 @@ export default {
             color: this.colors[0].color,
           });
           chartSeries.push({
-            color: this.colors.find((item) => item.id === stateObject.parent)
-              .color,
+            color: this.colors.find((item) => item.id === stateObject.parent).color,
             name: stateObject.name,
             data: sortedData,
           });
@@ -130,8 +130,7 @@ export default {
           // let color =  [2,3,4,5,6,7]; // already know the zonal levels/parent of all the value
           for (let index = 0; index < this.colors.length; index += 1) {
             const group = data.filter(
-              (item) => this.dlGetLocation(item.location).parent
-                === this.colors[index].id,
+              (item) => this.dlGetLocation(item.location).parent === this.colors[index].id,
             );
 
             // if(group.length > 0 && group.length < 8){
@@ -140,9 +139,7 @@ export default {
             // }else{
             //   this.level = 3;
             // }
-            const { color } = this.colors.find(
-              (item) => item.id === this.colors[index].id,
-            );
+            const { color } = this.colors.find((item) => item.id === this.colors[index].id);
             const formattedData = formatToHighChart(group);
             const sortedData = formattedData.sort(sortHighChartDataFormat);
             const series = this.dlGetLocation(this.colors[index].id);
@@ -152,6 +149,17 @@ export default {
               name: series.name,
               data: sortedData,
             });
+            /**
+             * Function no fully functional
+             * ! Need to fix the issue
+             */
+            for (let i = 0; i < chartSeries.length; i += 1) {
+              if (chartSeries[i].data.length === 0) {
+                this.showNoAvailableData = true;
+              } else {
+                this.showNoAvailableData = false;
+              }
+            }
           }
           this.chart = {
             series: chartSeries,

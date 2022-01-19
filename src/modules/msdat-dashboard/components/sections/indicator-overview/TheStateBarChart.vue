@@ -15,8 +15,9 @@
         <template #title>
           <p class="work-sans mb-0 line-height">
             Distribution Of
-            <b>{{ values.indicator.short_name }}</b> Across The Country.
-            Source:<b> {{ values.datasource.datatsource }} {{ values.year }}</b>
+            <b>{{ values.indicator.short_name }}</b> Across The Country. Source:<b>
+              {{ values.datasource.datatsource }} {{ values.year }}</b
+            >
           </p>
         </template>
         <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
@@ -25,7 +26,7 @@
     <NoSubNationalData
       v-if="showNoSubNationalData"
       class="position-absolute"
-      style="top: 20%; width: 90%"
+      style="top: 15%; width: 80%; left: 20%;"
     />
   </div>
 </template>
@@ -63,12 +64,8 @@ export default {
       async handler(newValues) {
         this.loading = true;
         const data = await this.getData(newValues);
-        const nationalTarget = this.dlGetIndicator(
-          newValues.indicator.id,
-        ).national_target;
-        const displayFactor = this.dlGetFactor(
-          newValues.indicator.factor,
-        ).display_factor;
+        const nationalTarget = this.dlGetIndicator(newValues.indicator.id).national_target;
+        const displayFactor = this.dlGetFactor(newValues.indicator.factor).display_factor;
 
         const chartOptions = this.genHighChartOption(data, {
           target: {
@@ -91,13 +88,9 @@ export default {
           const parent = parentValue[0];
           const seriesObject = {
             showInLegend: false,
-            color:
-              parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
-            name:
-              parseFloat(parent.value) > nationalTarget
-                ? 'On Target'
-                : 'Below Target',
-            data: [[newValues.location.name, parseFloat(parent.value)]],
+            color: parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
+            name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
+            data: [[newValues.location.name, Number(parseFloat(parent.value).toFixed(1))]],
           };
           chartOptions.series.unshift(seriesObject);
         }
@@ -147,6 +140,7 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
+      console.log('hello =>', ...data);
       return data;
     },
   },
