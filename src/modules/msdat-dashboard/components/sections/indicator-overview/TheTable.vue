@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 <template>
-  <base-overlay showControls :showDownload="false" :show="loading">
-    <base-sub-card v-if="Object.keys(values).length">
+  <base-overlay :show="loading">
+    <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
       <template #title>
         <p class="work-sans mb-0 line-height">
           <b>{{ values.indicator.short_name }}</b> And Related Indicators With Years Of Latest Value
