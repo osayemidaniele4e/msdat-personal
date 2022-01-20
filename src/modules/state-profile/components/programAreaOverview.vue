@@ -220,7 +220,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+// import { mapState } from 'vuex';
 import BaseBar from '@/components/Barchart/BaseBarChart.vue';
 import ProgramAreaIcon from './programAreaIcon.vue';
 import dataMixins from '../../DataLayer/mixin';
@@ -238,9 +238,6 @@ export default {
     locations: Array,
     programArea: Object,
     indicatorDefinitions: Array,
-  },
-  computed: {
-    ...mapState([]),
   },
   data() {
     return {
@@ -641,6 +638,7 @@ export default {
         national.map((el) => this.nationalObjects.push(el.data[0]));
         this.$emit('overviewLoading');
         this.justNationalData();
+        this.getHealthFacilityData();
       } else {
         this.prepareStateAndNationalData();
       }
