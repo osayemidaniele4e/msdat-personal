@@ -2,7 +2,13 @@
   <div class="temp">
     <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
     <template v-if="!showTroubleShootingModal">
-      <Loading v-if="!loading" :noBackdrop="false" :showBackground="false" class="over">
+      <Loading
+        v-if="!loading"
+        :hideButton="true"
+        :noBackdrop="false"
+        :showBackground="false"
+        class="over"
+      >
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="250px" />
           <div class="mr-4">
@@ -14,7 +20,7 @@
 
       <div v-else>
         <Header v-on:tour="runIntro" ref="theHeader"></Header>
-        <section  @click="$refs.theHeader.close()">
+        <section @click="$refs.theHeader.close()">
           <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">
             <b-overlay :show="!cpIsLoading">
               <BasePanel
