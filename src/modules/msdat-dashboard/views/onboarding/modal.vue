@@ -1,19 +1,20 @@
 <template>
-
   <!-- Button trigger modal -->
- <b-modal
-   v-model="modalShow"
-   v-on:hidden="hide"
-   centered
-   :no-close-on-backdrop="noBackdrop"
-   header-class="d-none"
-   footer-class="d-none"
-   :modal-class="background"
-   content-class="noShadow">
-
-       <slot> modal content </slot>
+  <b-modal
+    v-model="modalShow"
+    v-on:hidden="hide"
+    centered
+    :no-close-on-backdrop="noBackdrop"
+    header-class="d-none"
+    footer-class="d-none"
+    :modal-class="background"
+    content-class="noShadow"
+  >
+    <div class="w-100 d-flex justify-content-end pointer_click" style="font-size: 2.6rem">
+      <b-icon-x-circle-fill @click="hide" class="p-2" variant="danger"></b-icon-x-circle-fill>
+    </div>
+    <slot> modal content </slot>
   </b-modal>
-
 </template>
 
 <script>
@@ -26,7 +27,7 @@ export default {
   },
   methods: {
     hide() {
-      this.$emit('hidden');
+      this.$emit('clickHide');
     },
   },
   props: {
@@ -53,21 +54,21 @@ export default {
 </script>
 
 <style>
-.check{
-   display: none;
-    }
-.noBackground{
-    background-color: white;
-    }
-.background{
-     opacity: 1;
-    }
-.noShadow{
-    border-radius: 0;
-    border:0;
-     -webkit-box-shadow: 0 5px 15px rgba(0,0,0,0);
-    -moz-box-shadow: 0 5px 15px rgba(0,0,0,0);
-    -o-box-shadow: 0 5px 15px rgba(0,0,0,0);
-    box-shadow: 0 5px 15px rgba(0,0,0,0);
-    }
+.check {
+  display: none;
+}
+.noBackground {
+  background-color: white;
+}
+.background {
+  opacity: 1;
+}
+.noShadow {
+  border-radius: 0;
+  border: 0;
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+  -o-box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+}
 </style>

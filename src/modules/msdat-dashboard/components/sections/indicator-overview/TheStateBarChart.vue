@@ -140,7 +140,7 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
-      console.log('hello =>', ...data);
+      // console.log('hello =>', ...data);
       return data;
     },
   },
