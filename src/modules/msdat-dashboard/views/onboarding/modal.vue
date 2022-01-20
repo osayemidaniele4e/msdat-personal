@@ -10,7 +10,11 @@
     :modal-class="background"
     content-class="noShadow"
   >
-    <div class="w-100 d-flex justify-content-end pointer_click" style="font-size: 2.6rem">
+    <div
+      v-if="hideButton === false"
+      class="w-100 d-flex justify-content-end pointer_click"
+      style="font-size: 2.6rem"
+    >
       <b-icon-x-circle-fill @click="hide" class="p-2" variant="danger"></b-icon-x-circle-fill>
     </div>
     <slot> modal content </slot>
@@ -36,6 +40,10 @@ export default {
       default: () => false,
     },
     noBackdrop: {
+      type: Boolean,
+      default: () => false,
+    },
+    hideButton: {
       type: Boolean,
       default: () => false,
     },
