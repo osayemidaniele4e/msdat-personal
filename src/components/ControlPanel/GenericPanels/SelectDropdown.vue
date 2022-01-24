@@ -14,12 +14,16 @@
     deselectLabel=""
     >
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}s</span>
-
+    <!---
+      START
+      THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
+      THAT HAVE GROUPED OPTIONS
+    -->
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
        :data-parent="props.option.$groupLabel">
-       {{props.option.$groupLabel}}</span>
+       {{props.option.$groupLabel}} <span class="down-caret"></span> </span>
       </template>
     <div v-if="!props.option.$groupLabel"
      :data-child="props.option.program_area">
@@ -27,6 +31,11 @@
     </div>
 
     </template>
+    <!---
+    END
+    THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
+    THAT HAVE GROUPED OPTIONS
+    -->
     </multiselect
   >
 </template>
@@ -87,14 +96,23 @@ export default {
     immediate: false,
   },
   methods: {
+    /**
+     * This method is called when a program area title
+     * is clicked, handles the show and hide of its
+     * child nodes and also the dropdown caret rotation
+     */
     pickProgramArea(event) {
       const { parent } = event.target.children[0].children[0].dataset;
       const all = Array.from(event.target.parentNode.children);
       all.forEach((element) => {
         // eslint-disable-next-line prefer-destructuring
         const child = element.children[0].children[0].dataset.child;
+        const tempParent = element.children[0].children[0].dataset.parent;
         if (parent === child) {
           element.classList.toggle('noShow');
+        }
+        if (parent === tempParent) {
+          element.children[0].children[0].children[0].classList.toggle('open-caret');
         }
       });
     },
@@ -114,15 +132,21 @@ export default {
     //     }
     //   }
     // },
+    /**
+     *  This methods acts only on multiselects having
+     *  grouped options like the indicator multiselects.
+     *  It makes this distinction based on the prop value
+     *  @var multiselectProps, its "group-value" property.
+     *
+     */
     initialCSS() {
       if (this.multiSelectProps['group-values']) {
         const all = document.querySelectorAll('div.multiselect__content-wrapper > ul > li');
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i <= all.length; i++) {
-          if (Array.from(all[i].children[0].classList).indexOf('multiselect__option--disabled') === -1) {
+          if (all[i].children[0].children[0]?.dataset.child) {
             all[i].classList.add('noShow');
           } else {
-            console.log(all[i]);
             all[i].addEventListener('click', (e) => {
               this.pickProgramArea(e);
             });
@@ -140,9 +164,23 @@ export default {
   display: none;
 }
 
-.showContent{
-  display: block;
+.down-caret {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 5px 0 5px;
+  border-color: #58af5f transparent transparent transparent;
+  top: 13px;
+  right: 5% !important;
+  position: absolute;
+  transform: rotate(0deg);
+  transition: all .25s ease-in;
 }
+
+.open-caret {
+    transform: rotate(180deg);
+    transition: all .25s ease-out;
+  }
 
 li.multiselect__element{
   border-bottom: 1px solid #0000;
