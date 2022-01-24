@@ -107,6 +107,7 @@ import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
 
 export default {
+  name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,
@@ -136,6 +137,9 @@ export default {
     runIntro() {
       this.toggleOption = !this.toggleOption;
       this.$emit('tour');
+    },
+    close() {
+      this.toggleOption = false;
     },
   },
   watch: {

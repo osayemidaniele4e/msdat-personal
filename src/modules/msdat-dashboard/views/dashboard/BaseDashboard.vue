@@ -2,7 +2,13 @@
   <div class="temp">
     <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
     <template v-if="!showTroubleShootingModal">
-      <Loading v-if="!loading" :noBackdrop="false" :showBackground="false" class="over">
+      <Loading
+        v-if="!loading"
+        :hideButton="true"
+        :noBackdrop="false"
+        :showBackground="false"
+        class="over"
+      >
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="250px" />
           <div class="mr-4">
@@ -13,81 +19,83 @@
       </Loading>
 
       <div v-else>
-        <Header v-on:tour="runIntro"></Header>
-        <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">
-          <b-overlay :show="!cpIsLoading">
-            <BasePanel
-              :position="position"
-              v-if="cpIsLoading"
-              v-on:showSection="showSection($event)"
-            >
-              <template v-slot:default>
-                <ControlBase
-                  v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
-                  :key="index"
-                  :title="control.label"
-                >
-                  <template v-if="!Array.isArray(control.setup[0])">
-                    <ControlPanel
-                      @data:options="log($event, index)"
-                      :setup="control.setup"
-                      :controlIndex="index"
-                      :defaultIndicator="defaultIndicator"
-                      :defaultDataSource="defaultDataSource"
-                      :defaultLocation="defaultLocation"
-                      :defaultYear="defaultYear"
-                    />
-                  </template>
-                  <template v-else>
-                    <div class="row">
-                      <div class="col-md-4" v-for="(item, index2) in control.setup" :key="index2">
-                        <ControlPanel
-                          @data:options="log($event, index, index2)"
-                          :setup="item"
-                          :groupIndex="index2"
-                          :controlIndex="index"
-                          :defaultIndicator="defaultIndicator"
-                          :defaultDataSource="defaultDataSource"
-                          :defaultLocation="defaultLocation"
-                          :defaultYear="defaultYear"
-                        />
+        <Header v-on:tour="runIntro" ref="theHeader"></Header>
+        <section @click="$refs.theHeader.close()">
+          <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">
+            <b-overlay :show="!cpIsLoading">
+              <BasePanel
+                :position="position"
+                v-if="cpIsLoading"
+                v-on:showSection="showSection($event)"
+              >
+                <template v-slot:default>
+                  <ControlBase
+                    v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                    :key="index"
+                    :title="control.label"
+                  >
+                    <template v-if="!Array.isArray(control.setup[0])">
+                      <ControlPanel
+                        @data:options="log($event, index)"
+                        :setup="control.setup"
+                        :controlIndex="index"
+                        :defaultIndicator="defaultIndicator"
+                        :defaultDataSource="defaultDataSource"
+                        :defaultLocation="defaultLocation"
+                        :defaultYear="defaultYear"
+                      />
+                    </template>
+                    <template v-else>
+                      <div class="row">
+                        <div class="col-md-4" v-for="(item, index2) in control.setup" :key="index2">
+                          <ControlPanel
+                            @data:options="log($event, index, index2)"
+                            :setup="item"
+                            :groupIndex="index2"
+                            :controlIndex="index"
+                            :defaultIndicator="defaultIndicator"
+                            :defaultDataSource="defaultDataSource"
+                            :defaultLocation="defaultLocation"
+                            :defaultYear="defaultYear"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </template>
-                </ControlBase>
-              </template>
-            </BasePanel>
-          </b-overlay>
-        </div>
-        <!-- control Panels ends here  -->
+                    </template>
+                  </ControlBase>
+                </template>
+              </BasePanel>
+            </b-overlay>
+          </div>
+          <!-- control Panels ends here  -->
 
-        <div class="container-fluid lessVisible">
-          <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
-            <slot :name="`section-before-${index}`"></slot>
-            <div class="row observable" :id="index" :ref="index" :key="index">
-              <!-- <slot
+          <div class="container-fluid lessVisible">
+            <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
+              <slot :name="`section-before-${index}`"></slot>
+              <div class="row observable" :id="index" :ref="index" :key="index">
+                <!-- <slot
                 v-if="controlPanel.payload === undefined"
                 :name="`section-${index}`"
                 :controlIndex="index"
               ></slot> -->
-              <slot
-                :name="`section-${index}`"
-                :payload="controlPanel.payload"
-                :controlIndex="index"
-              ></slot>
-              <slot :name="`section-after-${index}`"></slot>
-            </div>
-          </template>
-        </div>
+                <slot
+                  :name="`section-${index}`"
+                  :payload="controlPanel.payload"
+                  :controlIndex="index"
+                ></slot>
+                <slot :name="`section-after-${index}`"></slot>
+              </div>
+            </template>
+          </div>
+        </section>
         <!-- lazy loading ends here -->
 
         <Footer class="visible"> </Footer>
         <!-- <div v-if="configObject.name !== 'Demographics'"> -->
-          <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
+        <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
         <!-- </div> -->
       </div>
     </template>
-  <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
+    <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 <template>
   <base-overlay :show="loading">
-    <base-sub-card showControls v-if="Object.keys(values).length">
+    <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
       <template #title>
         <p class="work-sans mb-0 line-height">
           <b>{{ values.indicator.short_name }}</b> And Related Indicators With Years Of Latest Value
@@ -40,11 +40,12 @@
 <script>
 import TableComponent from '@/modules/msdat-dashboard/components/table/TableComponent.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
 
 export default {
-  mixins: [formatter],
+  mixins: [chartDownload, formatter],
   components: {
     TableComponent,
     IndicatorMetaDataModal,

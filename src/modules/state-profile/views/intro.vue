@@ -2,10 +2,10 @@
   <b-container class="overflow-hidden">
     <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
-        <p class=" mt-3 mb-4 tittle">
+        <h4 class=" mt-3 mb-4 tittle">
           National and State Health <br />
           Profile Dashboard
-        </p>
+        </h4>
 
         <p class="text-left msg">
           This dashboard provides a single transparent view of
@@ -194,7 +194,7 @@ export default {
 
 .tittle {
   color: #232323 !important;
-  font-weight: bold;
+  font-weight: bolder;
   background-color: white !important;
   opacity: 1;
   font-size: 43px;
