@@ -19,7 +19,7 @@
             <BasePanel
               :position="position"
               v-if="cpIsLoading"
-              v-on:showSection="showSection($event)"
+              v-on:showSection="sectionFocus($event)"
             >
               <template v-slot:default>
                 <ControlBase
@@ -63,8 +63,9 @@
 
         <div class="container-fluid lessVisible">
           <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
-            <slot :name="`section-before-${index}`"></slot>
-            <div class="row observable" :id="index" :ref="index" :key="index">
+            <slot :name="`section-before-${index}`" v-if="index === selectedPanel"></slot>
+            <div class="row observable"
+            :id="index" v-if="index === selectedPanel" :ref="index" :key="index">
               <!-- <slot
                 v-if="controlPanel.payload === undefined"
                 :name="`section-${index}`"
@@ -75,7 +76,7 @@
                 :payload="controlPanel.payload"
                 :controlIndex="index"
               ></slot>
-              <slot :name="`section-after-${index}`"></slot>
+              <slot :name="`section-after-${index}`" v-if="index === selectedPanel"></slot>
             </div>
           </template>
         </div>
@@ -119,6 +120,7 @@ export default {
   data() {
     return {
       position: 3,
+      selectedPanel: 0,
       dashboardConfig: config,
     };
   },
@@ -161,6 +163,13 @@ export default {
   },
   methods: {
     /**
+     * This handles hiding the other sections
+     * based on the index of the selected section
+     */
+    sectionFocus(event) {
+      this.selectedPanel = event;
+    },
+    /**
      * @param optionsObject The return a control Options objects when ever any control
      * in a control panel changes
      * @param index The index of the control panel that changes
@@ -175,7 +184,7 @@ export default {
       this.selectedMapName = val;
     },
     async log(optionsObject, index, index2) {
-      console.log(optionsObject, index, index2);
+      console.log({ optionsObject, index, index2 });
       /**
        * This Update the route any time the  control panel changers
        */
