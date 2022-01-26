@@ -1,6 +1,9 @@
 <template>
   <div class="temp">
-    <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
+    <TroubleShootingModal
+      style="z-index: 1500"
+      v-if="showTroubleShootingModal"
+    />
     <template v-if="!showTroubleShootingModal">
       <Loading
         v-if="!loading"
@@ -26,11 +29,12 @@
               <BasePanel
                 :position="position"
                 v-if="cpIsLoading"
-                v-on:showSection="showSection($event)"
+                v-on:showSection="sectionFocus($event)"
               >
                 <template v-slot:default>
                   <ControlBase
-                    v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                    v-for="(control, index) in $store.state.MSDAT_STORE
+                      .controlConfig"
                     :key="index"
                     :title="control.label"
                   >
@@ -47,7 +51,11 @@
                     </template>
                     <template v-else>
                       <div class="row">
-                        <div class="col-md-4" v-for="(item, index2) in control.setup" :key="index2">
+                        <div
+                          class="col-md-4"
+                          v-for="(item, index2) in control.setup"
+                          :key="index2"
+                        >
                           <ControlPanel
                             @data:options="log($event, index, index2)"
                             :setup="item"
@@ -69,9 +77,21 @@
           <!-- control Panels ends here  -->
 
           <div class="container-fluid lessVisible">
-            <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
-              <slot :name="`section-before-${index}`"></slot>
-              <div class="row observable" :id="index" :ref="index" :key="index">
+            <template
+              v-for="(controlPanel, index) in $store.state.MSDAT_STORE
+                .controlConfig"
+            >
+              <slot
+                :name="`section-before-${index}`"
+                v-if="index === selectedPanel"
+              ></slot>
+              <div
+                class="row observable"
+                :id="index"
+                v-if="index === selectedPanel"
+                :ref="index"
+                :key="index"
+              >
                 <!-- <slot
                 v-if="controlPanel.payload === undefined"
                 :name="`section-${index}`"
@@ -82,7 +102,10 @@
                   :payload="controlPanel.payload"
                   :controlIndex="index"
                 ></slot>
-                <slot :name="`section-after-${index}`"></slot>
+                <slot
+                  :name="`section-after-${index}`"
+                  v-if="index === selectedPanel"
+                ></slot>
               </div>
             </template>
           </div>
@@ -91,7 +114,10 @@
 
         <Footer class="visible"> </Footer>
         <!-- <div v-if="configObject.name !== 'Demographics'"> -->
-        <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
+        <Onboarding
+          v-if="firstTime"
+          v-on:closeOnboard="onCloseOnBoarding"
+        ></Onboarding>
         <!-- </div> -->
       </div>
     </template>
@@ -100,7 +126,11 @@
 </template>
 
 <script>
-import { BasePanel, ControlBase, ControlPanel } from '@/components/ControlPanel';
+import {
+  BasePanel,
+  ControlBase,
+  ControlPanel,
+} from '@/components/ControlPanel';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -128,6 +158,7 @@ export default {
   data() {
     return {
       position: 3,
+      selectedPanel: 0,
       dashboardConfig: config,
       show: false,
     };
@@ -171,6 +202,13 @@ export default {
   },
   methods: {
     /**
+     * This handles hiding the other sections
+     * based on the index of the selected section
+     */
+    sectionFocus(event) {
+      this.selectedPanel = event;
+    },
+    /**
      * @param optionsObject The return a control Options objects when ever any control
      * in a control panel changes
      * @param index The index of the control panel that changes
@@ -185,7 +223,7 @@ export default {
       this.selectedMapName = val;
     },
     async log(optionsObject, index, index2) {
-      console.log(optionsObject, index, index2);
+      console.log({ optionsObject, index, index2 });
       /**
        * This Update the route any time the  control panel changers
        */
