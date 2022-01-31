@@ -17,6 +17,24 @@ export default {
   },
 
   methods: {
+    // eslint-disable-next-line consistent-return
+    singlePointDecimalValue(value) {
+      let num;
+      if (typeof value !== 'string') {
+        if (typeof value === 'number') {
+          num = value;
+        }
+      } else num = Number.parseFloat(value, 10);
+      // eslint-disable-next-line valid-typeof
+      if (typeof num !== undefined) {
+        num = num.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        const temp = num.split('.');
+        if (temp[1] === '0') {
+          return Number(temp[0]);
+        }
+        return Number(num);
+      }
+    },
     tableComponentDataFormatter(indicatorObject, dataObjectArray) {
       const data = {};
       data.indicator = indicatorObject;
