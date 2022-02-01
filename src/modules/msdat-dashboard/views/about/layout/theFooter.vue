@@ -35,7 +35,9 @@ $msdat-green: #007d53;
 
 footer#the-footer {
   height: fit-content;
-  position: sticky;
+  // position: sticky;
+  position: fixed;
+  width: 100%;
   bottom: 0;
   background-color: $msdat-green;
   display: flex;
