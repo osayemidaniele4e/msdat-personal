@@ -90,11 +90,11 @@ export default {
     formatDataToSeriesMapFormat(data) {
       return data.map((item) => [
         this.dlGetLocation(item.location).name,
-        Number.parseFloat(item.value),
+        parseFloat(item.value),
       ]);
     },
     formatDataToSeriesLineFormat(data) {
-      const dataValues = data.map((item) => [item.period, Number.parseFloat(item.value)]);
+      const dataValues = data.map((item) => [item.period, parseFloat(item.value)]);
       return dataValues.sort(sortHighChartDataFormat);
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
