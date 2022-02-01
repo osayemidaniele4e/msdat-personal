@@ -29,6 +29,21 @@ button.btn {
   font-size: 0.7rem !important;
 }
 
+.pointer_click {
+  cursor: pointer;
+}
+
+ul {
+  li {
+    span.dropdown-item {
+      cursor: pointer;
+      &:hover{
+        background-color: #007d53;
+        color: #ffffff;
+      }
+    }
+  }
+}
 // div.temp {
 //   button.toggle_btn {
 //     display: none;

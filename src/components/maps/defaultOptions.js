@@ -1,3 +1,4 @@
+let originalColor;
 export default {
   chart: {
     style: {
@@ -52,7 +53,7 @@ export default {
     map: {
       borderColor: 'white',
       borderWidth: 3,
-      allAreas: false,
+      allAreas: true,
       nullInteraction: true,
       joinBy: ['name', 'hc-key'],
       dataLabels: {
@@ -67,6 +68,23 @@ export default {
           fontSize: '10px',
           fontFamily: '"Work Sans", sans-serif',
           fontWeight: 'normal',
+        },
+      },
+    },
+    series: {
+      cursor: 'pointer',
+      events: {
+        mouseOver() {
+          originalColor = this.color;
+
+          this.update({
+            color: 'red',
+          });
+        },
+        mouseOut() {
+          this.update({
+            color: originalColor,
+          });
         },
       },
     },

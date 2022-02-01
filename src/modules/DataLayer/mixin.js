@@ -3,6 +3,7 @@ import {
   filter, omit, matches, isObject, has,
 } from 'lodash';
 import axios from '@/plugins/axios';
+import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
 
@@ -27,6 +28,7 @@ const { mapState } = createNamespacedHelpers('DL');
  */
 
 export default {
+  mixins: [formatter],
   data() {
     return {
       hardCordedValueType: [
@@ -121,7 +123,20 @@ export default {
       }
 
       const result = await DB.queryDB(query);
-      return result;
+      const dataResult = result.map((element) => {
+        const temp = {};
+        temp.id = element.id;
+        temp.period = element.period;
+        temp.value = this.singlePointDecimalValue(element.value);
+        temp.created_at = element.created_at;
+        temp.updated_at = element.updated_at;
+        temp.indicator = element.indicator;
+        temp.location = element.location;
+        temp.datasource = element.datasource;
+        temp.value_type = element.value_type;
+        return temp;
+      });
+      return dataResult;
     },
 
     dlGetDashboardDataSource() {

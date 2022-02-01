@@ -167,7 +167,6 @@ export default class DataLayer {
   async isDataUpToDate() {
     const serverDate = await apiServices.getLatestDate();
     const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-    console.log({ serverDate, localDate });
     // Check if its more recent than the date in localStorage
     const oldDateObject = new Date(localDate);
     const newDateObject = new Date(serverDate.data);

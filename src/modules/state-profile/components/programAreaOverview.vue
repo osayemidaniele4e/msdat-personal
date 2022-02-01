@@ -220,7 +220,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+// import { mapState } from 'vuex';
 import BaseBar from '@/components/Barchart/BaseBarChart.vue';
 import ProgramAreaIcon from './programAreaIcon.vue';
 import dataMixins from '../../DataLayer/mixin';
@@ -238,9 +238,6 @@ export default {
     locations: Array,
     programArea: Object,
     indicatorDefinitions: Array,
-  },
-  computed: {
-    ...mapState([]),
   },
   data() {
     return {
@@ -353,7 +350,6 @@ export default {
         series: [
           {
             name: 'National',
-            color: this.programArea.colors[0],
             data: [
             ],
             pointPadding: 0.1,
@@ -424,6 +420,8 @@ export default {
       this.singleSrcnYear = data[0][0] ? `(${data[0][0].split('(')[1]}` : `(${data[0].name.split('(')[1]}`;
       // eslint-disable-next-line prefer-destructuring
       this.singleNational = Array.isArray(data[0]) ? data[0][1] : data[0].y;
+      // eslint-disable-next-line max-len
+      this.barChartOptions.series[0].color = noStates ? this.programArea.colors[1] : this.programArea.colors[0];
       this.barChartOptions.series[0].data = data;
       this.populateCategories();
     },
@@ -641,6 +639,7 @@ export default {
         national.map((el) => this.nationalObjects.push(el.data[0]));
         this.$emit('overviewLoading');
         this.justNationalData();
+        this.getHealthFacilityData();
       } else {
         this.prepareStateAndNationalData();
       }
