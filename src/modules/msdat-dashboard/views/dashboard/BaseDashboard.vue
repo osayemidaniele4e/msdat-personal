@@ -224,6 +224,7 @@ export default {
     },
     async log(optionsObject, index, index2) {
       console.log({ optionsObject, index, index2 });
+      // console.log('MSDAT2.0');
       /**
        * This Update the route any time the  control panel changers
        */
