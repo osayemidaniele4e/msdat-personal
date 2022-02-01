@@ -87,6 +87,7 @@
           </base-sub-card>
         </div>
       </template>
+
       <template v-slot:section-4="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
