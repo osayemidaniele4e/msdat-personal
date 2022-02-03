@@ -7,7 +7,6 @@
     <template v-if="!showTroubleShootingModal">
       <Loading
         v-if="!loading"
-        :hideButton="true"
         :noBackdrop="false"
         :showBackground="false"
         class="over"

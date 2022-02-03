@@ -115,7 +115,7 @@ export default {
   .content {
     width: 100%;
     height: 100%;
-    z-index: 10;
+    // z-index: 10;
     background-color: #ffffffd0;
   }
 
