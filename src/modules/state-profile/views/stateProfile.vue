@@ -135,7 +135,8 @@
               >
             </b-dropdown>
           </div>
-          <h3 style="font-size: 15px">State Health Profile</h3>
+          <h3 style="font-size: 15px">
+            {{ `${state === "National"? '' : 'State'}` }} Health Profile</h3>
         </b-col>
         <b-col cols="12" class="my-auto">
           <b-row align-h="end" class="mx-auto">
