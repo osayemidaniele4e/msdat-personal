@@ -87,8 +87,13 @@ export const data = {
     }
   ],
   "git": {
-    "updatedTime": null,
-    "contributors": []
+    "contributors": [
+      {
+        "name": "davebenard",
+        "email": "benard.zibiri@e4email.net",
+        "commits": 1
+      }
+    ]
   },
   "filePathRelative": "guide/using-vue.md"
 }

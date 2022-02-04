@@ -1,4 +1,51 @@
 export const themeData = {
+  "repo": "",
+  "editLinks": false,
+  "docsDir": "",
+  "editLinkText": "",
+  "lastUpdated": false,
+  "nav": [
+    {
+      "text": "Guide",
+      "link": "/guide/"
+    },
+    {
+      "text": "MSDAT",
+      "link": "https://msdat.fmohconnect.gov.ng/central_analytics"
+    }
+  ],
+  "sidebar": {
+    "/guide/": [
+      {
+        "title": "Get Started",
+        "collapsable": false,
+        "children": [
+          ""
+        ]
+      },
+      {
+        "title": "Dashboard Overview",
+        "collapsable": false,
+        "children": [
+          "overview"
+        ]
+      },
+      {
+        "title": "Developer Guide",
+        "collapsable": false,
+        "children": [
+          "dev",
+          "api"
+        ]
+      }
+    ],
+    "/config/": [
+      {
+        "title": "Bolo",
+        "collapsable": false
+      }
+    ]
+  },
   "locales": {
     "/": {
       "selectLanguageName": "English"
@@ -7,14 +54,10 @@ export const themeData = {
   "navbar": [],
   "logo": null,
   "darkMode": true,
-  "repo": null,
   "selectLanguageText": "Languages",
   "selectLanguageAriaLabel": "Select language",
-  "sidebar": "auto",
   "sidebarDepth": 2,
   "editLink": true,
-  "editLinkText": "Edit this page",
-  "lastUpdated": true,
   "lastUpdatedText": "Last Updated",
   "contributors": true,
   "contributorsText": "Contributors",

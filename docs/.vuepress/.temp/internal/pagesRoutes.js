@@ -1,7 +1,7 @@
 import { Vuepress } from '@vuepress/client/lib/components/Vuepress'
 
 const routeItems = [
-  ["v-3706649a","/404.html",{"title":""},["/404"]],
+  ["v-8daa1a0e","/",{"title":""},["/index.html","/index.md"]],
   ["v-145c1846","/bolo/",{"title":"Introduction"},["/bolo/index.html","/bolo/README.md"]],
   ["v-00565c02","/bolo/using-vue.html",{"title":"Using Vue in Markdown"},["/bolo/using-vue","/bolo/using-vue.md"]],
   ["v-ba934fd8","/config/",{"title":"Config"},["/config/index.html","/config/README.md"]],
@@ -10,8 +10,7 @@ const routeItems = [
   ["v-44408ed0","/guide/dev.html",{"title":"Modular Structure"},["/guide/dev","/guide/dev.md"]],
   ["v-261504d8","/guide/overview.html",{"title":"Overview of Dashboard"},["/guide/overview","/guide/overview.md"]],
   ["v-79e93bb0","/guide/using-vue.html",{"title":"Overview of Dashboard"},["/guide/using-vue","/guide/using-vue.md"]],
-  ["v-8daa1a0e","/",{"title":""},["/index.html","/index.md"]],
-  ["v-8daa1a0e","/",{"title":"Hello VuePress"},["/index.html","/README.md"]],
+  ["v-3706649a","/404.html",{"title":""},["/404"]],
 ]
 
 export const pagesRoutes = routeItems.reduce(
