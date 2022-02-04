@@ -3,7 +3,16 @@
      color: white;
      background: #bb0f0fb0;
      border-radius: 50%;
+     height: 24px;
+     width: 24px;
+     padding: 2px;
+     cursor: pointer;
     }
+
+.customTooltips .introjs-skipbutton:hover{
+    background: #500202b0;
+    }
+
 .customTooltips .introjs-nextbutton{
     color: white;
     background: #007D53;    

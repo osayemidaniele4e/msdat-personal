@@ -1,0 +1,36 @@
+{
+  "hash": "64013696",
+  "browserHash": "588f6da1",
+  "optimized": {
+    "vue": {
+      "file": "/home/ehealt4everyone/Desktop/msdat/docs/.vuepress/.cache/vue.js",
+      "src": "/home/ehealt4everyone/Desktop/msdat/node_modules/@vue/runtime-dom/dist/runtime-dom.esm-bundler.js",
+      "needsInterop": false
+    },
+    "vue-router": {
+      "file": "/home/ehealt4everyone/Desktop/msdat/docs/.vuepress/.cache/vue-router.js",
+      "src": "/home/ehealt4everyone/Desktop/msdat/node_modules/@vuepress/bundler-vite/node_modules/vue-router/dist/vue-router.esm-bundler.js",
+      "needsInterop": false
+    },
+    "@vue/devtools-api": {
+      "file": "/home/ehealt4everyone/Desktop/msdat/docs/.vuepress/.cache/@vue_devtools-api.js",
+      "src": "/home/ehealt4everyone/Desktop/msdat/node_modules/@vue/devtools-api/lib/esm/index.js",
+      "needsInterop": false
+    },
+    "@vueuse/core": {
+      "file": "/home/ehealt4everyone/Desktop/msdat/docs/.vuepress/.cache/@vueuse_core.js",
+      "src": "/home/ehealt4everyone/Desktop/msdat/node_modules/@vuepress/theme-default/node_modules/@vueuse/core/index.mjs",
+      "needsInterop": false
+    },
+    "nprogress": {
+      "file": "/home/ehealt4everyone/Desktop/msdat/docs/.vuepress/.cache/nprogress.js",
+      "src": "/home/ehealt4everyone/Desktop/msdat/node_modules/nprogress/nprogress.js",
+      "needsInterop": true
+    },
+    "@vuepress/shared": {
+      "file": "/home/ehealt4everyone/Desktop/msdat/docs/.vuepress/.cache/@vuepress_shared.js",
+      "src": "/home/ehealt4everyone/Desktop/msdat/node_modules/@vuepress/shared/lib/esm/index.js",
+      "needsInterop": false
+    }
+  }
+}
