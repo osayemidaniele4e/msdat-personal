@@ -11,7 +11,7 @@
     "commit": "cz",
     "test:unit:update": "vue-cli-service test:unit -- -u",
     "test:unit:watch": "vue-cli-service test:unit --watch",
-    "docs:dev": "vuepress dev docs",
+    "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
   "dependencies": {
