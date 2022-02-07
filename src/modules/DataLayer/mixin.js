@@ -127,7 +127,8 @@ export default {
         const temp = {};
         temp.id = element.id;
         temp.period = element.period;
-        temp.value = this.singlePointDecimalValue(element.value);
+        // temp.value = this.singlePointDecimalValue(element.value);
+        temp.value = element.value;
         temp.created_at = element.created_at;
         temp.updated_at = element.updated_at;
         temp.indicator = element.indicator;
