@@ -26,7 +26,7 @@
           </p>
         </template>
         <div id="zonalMapComponent">
-          <button @click="returnToNational" v-show="level !== 1" class="">
+          <button @click="returnToNational" v-show="level !== 1">
             <img
               :src="require('../../../assets/chevron-left.svg')"
               alt="caret-left"
