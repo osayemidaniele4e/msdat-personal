@@ -23,7 +23,10 @@
             >
           </p>
         </template>
-        <div>
+        <div id="zonalMapComponent">
+          <button @click="returnToNational" v-show="level !== 1">
+            Back to National
+            </button>
           <BaseMap ref="BaseMap" :mapObject="chart" :level="level" :lgaState="stateName" />
 
           <NoAvailableData
@@ -42,6 +45,7 @@ import BaseMap from '@/components/maps/BaseMap.vue';
 import chartDownload from '../../../mixins/chart_download';
 import NoAvailableData from '../../NoData2.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
+import { eventBus } from '@/main';
 
 export default {
   mixins: [chartDownload],
@@ -67,7 +71,14 @@ export default {
       showNoAvailableData: false,
     };
   },
-  methods: {},
+  methods: {
+    returnToNational() {
+      const selectedPlace = this.dlGetLocation({ level: 1 });
+      if (selectedPlace.length !== 0) {
+        eventBus.$emit('handleClick', selectedPlace[0]);
+      }
+    },
+  },
 
   watch: {
     controlPanelProps: {
@@ -78,6 +89,7 @@ export default {
           datasource: val.datasource.id,
           period: val.year,
         });
+        const stateObject = this.dlGetLocation(val.location.id);
         // plot for LGA Data
         if (val.location.id !== 1) {
           const filteredLGADataForState = data.filter(
@@ -99,7 +111,6 @@ export default {
           });
           console.log('chart =>', sortedData, 'if');
 
-          const stateObject = this.dlGetLocation(val.location.id);
           const stateData = data.find((item) => item.location === val.location.id);
 
           sortedData.unshift({
@@ -161,6 +172,9 @@ export default {
               }
             }
           }
+          this.stateName = stateObject.name; // Please always change the state name before
+          // changing the level else you would get an error
+          this.level = 1;
           this.chart = {
             series: chartSeries,
           };

@@ -44,6 +44,23 @@ ul {
     }
   }
 }
+
+#zonalMapComponent {
+  display: relative;
+  button {
+    background-color: #348481;
+    color: aliceblue;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    transition: all 0.5s ease-in;
+    left: 60%;
+  }
+}
+
+#zonalMapComponent > button:hover{
+  background-color: #085856;
+}
 // div.temp {
 //   button.toggle_btn {
 //     display: none;
