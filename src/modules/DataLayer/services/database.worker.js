@@ -26,6 +26,7 @@ export default class DataBase {
     this.location_hierarchy_level = this.db.table(LINK);
     this.valuetypes = this.db.table(VALUE_TYPES);
     this.datasources = this.db.table(DATA_SOURCE);
+    this.updateddate = this.db.table('updateddate');
   }
 
   /**
@@ -90,6 +91,12 @@ export default class DataBase {
    * @param {array} data array of indicator data
    *
    */
+  // async storeLastUpdateYearInDB() {
+  //   return this.db.transaction('rw', this.data, async () => {
+  //     await this.updateddate.bulkPut('hello');
+  //   });
+  // }
+
   async storeDataInDB(data) {
     return this.db.transaction('rw', this.data, async () => {
       await this.data.bulkPut(data);
@@ -105,10 +112,7 @@ export default class DataBase {
    * the given ids
    */
   async getIndicatorDataThatExistInDB(arrayOfIndicatorIds) {
-    return this.db.transaction('r', this.data, () => this.db.data
-      .where('indicator')
-      .anyOf(arrayOfIndicatorIds)
-      .toArray());
+    return this.db.transaction('r', this.data, () => this.db.data.where('indicator').anyOf(arrayOfIndicatorIds).toArray());
   }
 
   /**
@@ -117,10 +121,7 @@ export default class DataBase {
    * @returns {array} of data objects for the indicator
    */
   getIndicatorFromDB(id) {
-    return this.data
-      .where('indicator')
-      .equals(id)
-      .toArray();
+    return this.data.where('indicator').equals(id).toArray();
   }
 
   async checkAllYearsExistInDB(indicatorID) {
@@ -145,9 +146,8 @@ export default class DataBase {
       if (yearsNotAvailableInDB.length > 0) {
         const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
         const theYears = take(yearsNotAvailableInDB, yearsToTake);
-        const arrayOfPromises = theYears.map(
-          (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
-        );
+        // eslint-disable-next-line max-len
+        const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
         for (let index2 = 0; index2 < results.length; index2 += 1) {
           const requestResult = results[index2].data;
@@ -186,9 +186,6 @@ export default class DataBase {
         .filter((value) => locationIDArray.includes(value.location))
         .toArray();
     }
-    return dexie
-      .table(DATA)
-      .where(query)
-      .toArray();
+    return dexie.table(DATA).where(query).toArray();
   }
 }
