@@ -24,7 +24,8 @@
           </p>
         </template>
         <div id="zonalMapComponent">
-          <button @click="returnToNational" v-show="level !== 1">
+          <button @click="returnToNational"
+          v-show="level !== 1">
             Back to National
             </button>
           <BaseMap ref="BaseMap" :mapObject="chart" :level="level" :lgaState="stateName" />
@@ -32,7 +33,8 @@
           <NoAvailableData
             v-if="showNoAvailableData"
             class="position-absolute"
-            style="top: 1%; width: 50%; left: 25%"
+            style="top: 9%;
+            width: 50%; left: 25%"
           />
         </div>
       </base-sub-card>
@@ -95,7 +97,11 @@ export default {
           const filteredLGADataForState = data.filter(
             (item) => this.dlGetLocation(item.location).parent === val.location.id,
           );
-
+          if (filteredLGADataForState.length === 0) {
+            this.showNoAvailableData = true;
+          } else {
+            this.showNoAvailableData = false;
+          }
           const formatToHighChart = (dataValues) => dataValues.map((item) => [
             this.dlGetLocation(item.location).name,
             parseFloat(item.value),
