@@ -61,11 +61,11 @@
                 >Health Surveillance</b-list-group-item
               ></router-link
             >
-            <router-link to="#"
+            <!-- <router-link to="#"
               ><b-list-group-item
                 >RTA Surveillance</b-list-group-item
               ></router-link
-            >
+            > -->
           </div>
         </b-list-group>
       </div>
@@ -87,7 +87,7 @@
               >Create New Dashboard</b-list-group-item
             ></router-link
           >
-          <router-link to="#"
+          <router-link to="/state-profile"
             ><b-list-group-item>Health Profiles</b-list-group-item></router-link
           >
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"

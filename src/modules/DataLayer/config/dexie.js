@@ -22,6 +22,7 @@ db.version(1).stores({
   users: '++id, user_id, name, email, profession, organization, username, password',
   sub_dashboard_interests: '++id, email, dashboard, created',
   transactions: '++id',
+  updateddate: 'id, date',
 });
 
 export default db;
