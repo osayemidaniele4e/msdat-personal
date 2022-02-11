@@ -106,7 +106,7 @@ export default [
     // Fix
     dataSources: [3, 7, 17, 24],
     initialIndicator: 39,
-    initialDataSource: 3,
+    initialDataSource: 17,
     initialLocation: 1,
   },
 ];
