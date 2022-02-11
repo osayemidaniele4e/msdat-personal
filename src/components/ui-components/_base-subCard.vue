@@ -119,6 +119,17 @@ export default {
       default: () => {},
     },
   },
+  watch: {
+  },
+  methods: {
+    close() {
+      if (this.showMenu !== false) {
+        this.showMenu = false;
+      }
+    },
+  },
+  mounted() {
+  },
 };
 </script>
 

@@ -2,6 +2,7 @@
 <template>
   <base-overlay :show="loading">
     <base-sub-card
+      ref="SubCard"
       buttonToggle
       showControls
       sideControl="true"
@@ -21,7 +22,8 @@
     >
       <template #title>
         <p class="work-sans mb-0 line-height">
-          Comparison Of <b>{{ values.indicator.short_name }}</b> Across Different Data Source
+          Comparison Of <b>{{ values.indicator.short_name }}</b> Across
+          Different Data Source
         </p>
       </template>
       <BarChart ref="BaseChart" :chartOptions="ChartOptions" />
@@ -71,8 +73,21 @@ export default {
       type: [Object, String, Array],
       required: true,
     },
+    closeOverlay: {
+      type: Boolean,
+    },
   },
   watch: {
+    // Watch closeOverlay
+    closeOverlay: {
+      handler(newValue) {
+        if (newValue) {
+          this.closeOverlay = true;
+          this.$refs.SubCard.close();
+        }
+      },
+      deep: true,
+    },
     /**
      * some trick i found out arranging the watchers in the order
      * you want them to be called
@@ -89,7 +104,9 @@ export default {
           dataSourceSelected = selectedDataSource;
         }
         // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          dataSourceSelected,
+        );
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
@@ -104,8 +121,12 @@ export default {
         //   dataSources,
         // );
         // change get datasource function to API matching indicator to dataSource
-        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        const dataSources = await this.getAvailableDataSources(
+          this.values.indicator.id,
+        );
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          dataSources,
+        );
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
@@ -155,7 +176,9 @@ export default {
           },
         },
       };
-      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+      const displayFactor = this.dlGetFactor(
+        this.values.indicator.factor,
+      ).display_factor;
       this.ChartOptions.yAxis.title.text = displayFactor;
     },
     updateChart(e) {
@@ -232,7 +255,10 @@ export default {
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
-        const data = item.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
+        const data = item.map((Object) => [
+          Object.period,
+          Number.parseFloat(Object.value),
+        ]);
         sortedData = data.sort(
           // eslint-disable-next-line radix
           (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
@@ -242,7 +268,11 @@ export default {
         if (mappedValueTypes.length > 0) {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
           console.log(datasource);
-          seriesObject = this.createSeriesObject(valueType, datasource.datasource, sortedData);
+          seriesObject = this.createSeriesObject(
+            valueType,
+            datasource.datasource,
+            sortedData,
+          );
         } else {
           seriesObject = { name: datasource.datasource, data: sortedData };
         }
@@ -268,7 +298,9 @@ export default {
 
       // trying to get the value type
       const datasource = this.dlGetDataSource(datasourceArray.id);
-      const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+      const valuetype = this.dlGetValueTypes({
+        value_type: datasource.classification,
+      });
       const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
       // confidence range
 
@@ -296,7 +328,9 @@ export default {
 
         // trying to get the value type
         const datasource = this.dlGetDataSource(firstObject.id);
-        const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+        const valuetype = this.dlGetValueTypes({
+          value_type: datasource.classification,
+        });
         const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
         // confidence range
 
@@ -308,7 +342,9 @@ export default {
       } else {
         this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          dataSources,
+        );
         this.setUpHighChartConfig(seriesArray, years);
       }
       this.loading = false;
@@ -316,7 +352,9 @@ export default {
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(this.values.indicator.id);
+      const availableDataSource = await this.setDataSourcesDropdown(
+        this.values.indicator.id,
+      );
       return availableDataSource;
     },
   },
