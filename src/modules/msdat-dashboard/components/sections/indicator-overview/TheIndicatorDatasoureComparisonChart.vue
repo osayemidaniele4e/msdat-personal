@@ -359,6 +359,7 @@ export default {
     },
   },
   mounted() {
+    console.log('hello =>', this.ChartOptions);
     // debugger;
     // console.trace(this.values);
   },
