@@ -26,7 +26,6 @@ export default class DataBase {
     this.location_hierarchy_level = this.db.table(LINK);
     this.valuetypes = this.db.table(VALUE_TYPES);
     this.datasources = this.db.table(DATA_SOURCE);
-    this.updateddate = this.db.table('updateddate');
   }
 
   /**
