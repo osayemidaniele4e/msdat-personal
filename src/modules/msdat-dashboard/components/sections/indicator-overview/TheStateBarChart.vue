@@ -2,6 +2,7 @@
   <div class="position-relative">
     <base-overlay :show="loading">
       <base-sub-card
+       ref="SubCard"
         showControls
         v-if="Object.keys(values).length"
         @dropdownTypeSelected="
@@ -58,8 +59,21 @@ export default {
       type: [Object, String, Array],
       required: true,
     },
+    closeOverlay: {
+      type: Boolean,
+    },
   },
   watch: {
+    // Watch closeOverlay
+    closeOverlay: {
+      handler(newValue) {
+        if (newValue) {
+          this.closeOverlay = true;
+          this.$refs.SubCard.close();
+        }
+      },
+      deep: true,
+    },
     values: {
       async handler(newValues) {
         this.loading = true;
