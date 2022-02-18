@@ -47,6 +47,12 @@ export default {
       require: false,
       default: 0,
     },
+
+    changeIndex: {
+      type: Number,
+      require: false,
+      default: 1,
+    },
   },
   methods: {
     changeControl(index) {
