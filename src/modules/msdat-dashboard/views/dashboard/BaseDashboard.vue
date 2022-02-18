@@ -22,11 +22,13 @@
       </Loading>
 
       <div v-else>
-        <Header v-on:tour="runIntro" ref="theHeader"></Header>
+        <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
         <section @click="$refs.theHeader.close()">
-          <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">
+          <div class="position-relative animated_toggle" :class="[show ? '' : 'hide']">
+<!-- <div class="sticky animated_toggle" :class="[show ? '' : 'hide']"> Moses changed from this-->
             <b-overlay :show="!cpIsLoading">
               <BasePanel
+                :changeIndex="changeIndex"
                 :position="position"
                 v-if="cpIsLoading"
                 v-on:showSection="sectionFocus($event)"
@@ -161,6 +163,7 @@ export default {
       selectedPanel: 0,
       dashboardConfig: config,
       show: false,
+      changeIndex: '',
     };
   },
   components: {
@@ -201,6 +204,12 @@ export default {
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
   },
   methods: {
+
+    // moses
+    getIndex(index) {
+      console.log('this is the index i am saying', index);
+      this.changeIndex = index;
+    },
     /**
      * This handles hiding the other sections
      * based on the index of the selected section

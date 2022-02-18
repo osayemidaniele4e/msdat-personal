@@ -1,10 +1,20 @@
 <template>
-  <header id="the-header" class="position-relative">
+  <header id="the-header" class="sticky">
+     <!-- <header id="the-header" class="position-relative"> Moses changed from this-->
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1">
           <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
         </b-col>
+           <b-dropdown split text="Split Dropdown" class="m-2">
+    <b-dropdown-item href="#"
+      v-for="(control, index) in $store.state.MSDAT_STORE
+      .controlConfig"
+      :key="index"
+       @click="emitIndex(index)"
+    >{{control.label}}
+    </b-dropdown-item>
+  </b-dropdown>
         <b-col
           cols
           md="11"
@@ -12,6 +22,7 @@
           class="d-flex justify-content-between align-items-center border-left"
         >
           <h2>
+
             <small>MSDAT PLATFORM</small>
             <br />
             {{ $route.meta.title }}
@@ -100,6 +111,19 @@
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
   </header>
+<!--
+  to deltete
+       // using provide inject and watcher to work on this feature.
+        // inject into base panel to affect the entire dashboard
+        // controls if from the global storage
+        // this.controls = this.$children;
+      >
+      // or much better, emiting the value to parent component to then inject in the child component
+      // the parent component is the base dashboard
+      // from there, you will inject into other components
+      // use a different source from $children
+      // or rather take the index to the component -->
+
 </template>
 
 <script>
@@ -131,8 +155,14 @@ export default {
         { title: 'Demographics', link: '/' },
         { title: 'Create Dashboard +', link: '/' },
       ],
+      controls: [],
     };
   },
+
+  created() {
+    this.controls = this.$children;
+  },
+
   methods: {
     runIntro() {
       this.toggleOption = !this.toggleOption;
@@ -140,6 +170,9 @@ export default {
     },
     close() {
       this.toggleOption = false;
+    },
+    emitIndex(index) {
+      this.$emit('index', index);
     },
   },
   watch: {
@@ -156,6 +189,7 @@ export default {
       immediate: true,
     },
   },
+
 };
 </script>
 
@@ -525,5 +559,17 @@ header#the-header {
       }
     }
   }
+}
+</style>
+
+test styling for mobile responsiveness
+
+<style scoped>
+.select-indicator-mob{
+  border: 1px solid white;
+  background-color: none;
+  color: white;
+  font-size: 13px;
+  padding: 10px;
 }
 </style>

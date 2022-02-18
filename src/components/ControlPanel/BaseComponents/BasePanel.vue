@@ -68,12 +68,18 @@ export default {
       this.selectedIndex = newValue;
       this.selectControl(this.selectedIndex);
     },
+
+    // if the index is changed
+    changeIndex(newValue) {
+      this.changeControl(newValue);
+    },
   },
   mounted() {
     this.selectControl(0);
   },
   created() {
     this.controls = this.$children;
+    console.log(this.controls);
   },
 
 };
