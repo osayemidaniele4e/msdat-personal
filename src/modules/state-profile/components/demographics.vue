@@ -4,9 +4,9 @@
 <template>
     <b-container fluid>
     <b-row class="mb-3">
-      <b-button class="program-icon shadow">
+      <div class="program-icon shadow">
         <img src="@/assets/state-profile/svg/location.svg" alt="location">
-      </b-button>
+      </div>
       <h2 class="ml-3 my-auto"> <b>DEMOGRAPHICS</b> </h2>
     </b-row>
     <b-row align-h="between">
@@ -25,7 +25,11 @@
             <p v-else-if="d.sourceId === 19" class="value">
                <b>{{Math.round(d.value) | commaValue}}</b></p>
             <p v-else class="value"> <b>{{d.value  | commaValue}}</b></p>
-            <p class="source">Source: {{d.source}} {{d.year}}</p>
+            <p class="source">Source: {{d.source}} {{d.year}} <span><b-icon-info-circle-fill
+        variant="primary"
+        @click="showSrcModal(d.sourceId)"
+        class="data-source-info"
+      /></span> </p>
           </b-col>
         </b-row>
         <b-row class="compare">
@@ -69,6 +73,18 @@
         </b-row>
       </b-col>
     </b-row>
+     <base-modal :showModal="show" v-on:hidden="show = false" size="lg">
+       <template #title>
+        <h5>{{ modalTitle }}</h5>
+      </template>
+      <div id="srcModal">
+    <DataSourceMetaDataModal
+        v-if="show"
+        :rawObject="singleSrc"
+        :dataSourceID="srcId"
+      />
+      </div>
+     </base-modal>
     </b-container>
 </template>
 
@@ -78,12 +94,11 @@ import BaseMap from '@/components/maps/BaseMap.vue';
 import dataMixins from '../../DataLayer/mixin';
 import * as requests from '../requests';
 import landAreaData from './landData';
+import DataSourceMetaDataModal from '@/modules/msdat-dashboard/components/sections/indicator-overview/info_modal/DataSourceMetaDataModal.vue';
 
 export default {
   name: 'demographics',
-  components: {
-    BaseMap,
-  },
+  components: { BaseMap, DataSourceMetaDataModal },
   props: {
     state: String,
     stateDemographics: Array,
@@ -167,6 +182,13 @@ export default {
       this.coordinates = position;
       this.area = area;
     },
+    showSrcModal(id) {
+      this.show = true;
+      // eslint-disable-next-line prefer-destructuring
+      this.singleSrc = this.allSources.filter((val) => val.id === id)[0];
+      this.srcId = this.singleSrc.id;
+      this.modalTitle = this.singleSrc.full_name;
+    },
     /**
      * This function calculates the percentage
      *  difference between the latest available
@@ -242,6 +264,11 @@ export default {
     return {
       pointer: 'success', // SUCCESS or DANGER
       data: [],
+      show: false,
+      srcId: 0,
+      singleSrc: {},
+      allSources: [],
+      modalTitle: '',
       locations: [],
       coordinates: '',
       area: 0,
@@ -374,6 +401,8 @@ export default {
     };
   },
   async mounted() {
+    const { theSources } = await requests.getIndicatorsAndSources();
+    this.allSources = theSources.data;
     const locate = await requests.allLocations();
     this.locations = locate.data;
     this.prepareDemographicData();
@@ -384,6 +413,12 @@ export default {
 <style lang="scss" scoped>
 hr {
   border-top: 1px solid #CCCCCC;
+}
+.bi-info-circle-fill{
+  cursor: pointer;
+}
+#srcModal {
+  padding: 35px 25px;
 }
 .vl {
   border: 1px dashed rgba(197, 197, 197, 1);
