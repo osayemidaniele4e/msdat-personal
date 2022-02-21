@@ -203,6 +203,8 @@ export default {
   },
   methods: {
     updatePayload(value, key) {
+      console.log(`this is value and key${value}${key}`);
+      console.log(`this is string of value${JSON.stringify(value)}`);
       if (this.groupIndex != null) {
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section

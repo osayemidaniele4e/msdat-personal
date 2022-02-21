@@ -9,6 +9,7 @@
         class="data-source h6 mr-3 mb-0 font-weight-bold"
         @click="$emit('source:click', source)"
         >{{ source.datasource }}
+        {{ JSON.stringify(source) }}
       </span>
       <b-icon-info-circle-fill
         :variant="selectedSource.id === source.id ? '' : 'primary'"

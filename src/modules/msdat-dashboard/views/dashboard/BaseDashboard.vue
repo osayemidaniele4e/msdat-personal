@@ -84,6 +84,7 @@
                 :name="`section-before-${index}`"
                 v-if="index === selectedPanel"
               ></slot>
+              <!-- ========= -->
               <div
                 class="row observable"
                 :id="index"
@@ -101,6 +102,7 @@
                   :payload="controlPanel.payload"
                   :controlIndex="index"
                 ></slot>
+                <!-- ======== -->
                 <slot
                   :name="`section-after-${index}`"
                   v-if="index === selectedPanel"
