@@ -11,7 +11,7 @@ The platform was developed by key stakeholders to aid and improve decision makin
 
 ## Problem Statement
 
-Due to the relatively limited accessibility, and poor visualization practise of health data to stakeholders ,policy makers and health practitioners to facilitate healthcare decisions. It is imperative to have a platform driven largely to provide valuable visual insights, analytics capabilities and interactive experience on data to both the executive health sphere and the clinical arsenal for decision making processes.
+Due to the relatively limited accessibility, and poor visualization practise of health data to stakeholders, policy makers and health practitioners to facilitate healthcare decisions. It is imperative to have a platform driven largely to provide valuable visual insights, analytics capabilities and interactive experience on data to both the executive health sphere and the clinical arsenal for decision making processes.
 
 Hence , the crucial need to design and develop an optimized health data dashboard that enables healthcare professionals to access data based on integrity, accuracy and consistency in order to efficiently facilitate quality health care delivery.
 

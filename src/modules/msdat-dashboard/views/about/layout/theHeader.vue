@@ -1,20 +1,43 @@
 <template>
   <header id="the-header" class="sticky">
      <!-- <header id="the-header" class="position-relative"> Moses changed from this-->
+
     <b-container fluid>
+
       <b-row class="d-flex justify-content-between align-items-center">
+
+                  <!-- testing for mobile -->
+        <div class="mobile-flex">
+          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid mob-img" />
+          <div class="mobile-flex-col">
+            <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
+          <div class="mobile-flex-col-text2">Health Outcomes and Service Coverage</div>
+          </div>
+               <b-dropdown text="Split Dropdown" class="m-2">
+                <b-dropdown-item href="#"
+                id="dropdownMenuButton"
+                  v-for="(control, index) in $store.state.MSDAT_STORE
+                  .controlConfig"
+                  :key="index"
+                  @click="emitIndex(index)"
+                >{{control.label}}
+                </b-dropdown-item>
+              </b-dropdown>
+
+              <!-- <select class="mob-select1">
+              <option
+               v-for="(control, index) in $store.state.MSDAT_STORE
+                  .controlConfig"
+                  :key="index"
+                  @click="emitIndex(index)"
+              >{{control.label}}</option>
+            </select> -->
+            <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon"></b-icon>
+        </div>
+
         <b-col cols md="1" lg="1">
           <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
         </b-col>
-           <b-dropdown split text="Split Dropdown" class="m-2">
-    <b-dropdown-item href="#"
-      v-for="(control, index) in $store.state.MSDAT_STORE
-      .controlConfig"
-      :key="index"
-       @click="emitIndex(index)"
-    >{{control.label}}
-    </b-dropdown-item>
-  </b-dropdown>
         <b-col
           cols
           md="11"
@@ -572,4 +595,56 @@ test styling for mobile responsiveness
   font-size: 13px;
   padding: 10px;
 }
+
+.mobile-flex{
+  display: flex;
+  flex-direction: row;
+}
+
+.mobile-flex-col{
+  display: flex;
+  flex-direction: column;
+    margin: 10px;
+}
+
+.mobile-flex-col-text1{
+  color: white;
+  font-weight: 200;
+  font-size: 12px;
+}
+
+.mobile-flex-col-text2{
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.mob-img{
+  width: 5px;
+}
+
+.mob-select1{
+  height: 40px;
+  width: 100px;
+  font-size: 13px;
+  padding: 5px;
+  margin: 10px;
+  background-color: #007d537f;
+  border: 1px solid white;
+  color: white;
+}
+
+.mob-grid-icon{
+  color: white;
+  margin: 20px;
+}
+
+</style>
+
+<style>
+    #dropdownMenuButton > button {
+    width: 100%;
+    background-color: none;
+    height: 50px;
+  }
 </style>
