@@ -7,7 +7,7 @@
        justify-content-between border-b mx-lg-5 mx-3 cursor-pointer"
    >
       <li
-        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans"
+        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans section-tab"
         :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
         v-for="(control, index) in controls"
         :key="index"
@@ -19,6 +19,7 @@
       </li>
     </ul>
 
+      <div>Indicator overview</div>
     <!-- Multiselect dropdown here -->
     <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
       <div class="mx-lg-5 mx-3 step-controls styles pt-1 pb-2">
@@ -107,5 +108,12 @@ $primary: #2b5d5b;
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+@media (max-width: 576px) {
+
+  .section-tab{
+    display: none;
+  }
 }
 </style>

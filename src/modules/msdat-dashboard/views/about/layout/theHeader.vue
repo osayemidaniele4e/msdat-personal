@@ -46,9 +46,8 @@
              v-b-toggle.sidebar-1
             ></b-icon>
 
-               <b-sidebar id="sidebar-1" title="Sidebar" shadow>
-        <DropCard
-
+               <b-sidebar id="sidebar-1" title="" right shadow>
+                     <Sidebar
                 />
     </b-sidebar>
         </div>
@@ -64,7 +63,7 @@
         >
           <h2>
 
-            <small>MSDAT PLATFORM</small>
+            <small class="main">MSDAT PLATFORM</small>
             <br />
             {{ $route.meta.title }}
           </h2>
@@ -77,9 +76,10 @@
               h-100
               align-items-center
               header-navs
+              main
             "
           >
-            <b-nav class="h-100 align-items-center">
+            <b-nav class="h-100 align-items-center main">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
@@ -136,12 +136,12 @@
           <!-- <a href=""> -->
           <b-icon
             @click="$router.go(-1)"
-            class="back-icn"
+            class="back-icn main"
             icon="chevron-left"
           />
           <!-- </a> -->
         </b-col>
-        <b-col class="">
+        <b-col class="main">
           <h4>About the MSDAT Dashboard</h4>
           <p>
             This dashboard is developed and managed by the Department of Health
@@ -170,12 +170,14 @@
 <script>
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
+import Sidebar from '../components/Sidebar.vue';
 
 export default {
   name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,
+    Sidebar,
   },
   data() {
     return {
@@ -375,6 +377,10 @@ header#the-header {
 
 /* EXTRA EXTRA SMALL */
 @media (max-width: 576px) {
+  .main{
+    display: none;
+  }
+
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -660,6 +666,8 @@ test styling for mobile responsiveness
 .mob-grid-icon{
   color: white;
   margin: 20px;
+  cursor: pointer;
+  outline: none;
 }
 
 </style>
