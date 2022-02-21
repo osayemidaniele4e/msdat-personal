@@ -2,7 +2,6 @@
   <div
     class="
       align-items-center
-      border
       d-flex
       flex-column
       justify-content-center

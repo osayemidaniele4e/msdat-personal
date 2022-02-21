@@ -6,7 +6,7 @@
         :colors="regionalColor"
       />
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" @click="handleMapClick">
       <ZonalMap
         :controlPanelProps="controlPanelProps"
         :colors="regionalColor"
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { eventBus } from '@/main';
 import ZonalMap from './map.vue';
 import ZonalColumnChart from './zonalSection.vue';
 
@@ -63,6 +64,15 @@ export default {
   components: {
     ZonalMap,
     ZonalColumnChart,
+  },
+  methods: {
+    handleMapClick(e) {
+      const point = e.point['hc-key'];
+      const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+      if (selectedPlace.length !== 0) {
+        eventBus.$emit('handleClick', selectedPlace[0]);
+      }
+    },
   },
 };
 </script>

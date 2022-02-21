@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" @click="closeSubCard = !closeSubCard">
     <div class="col-md-8">
       <div class="row">
         <div class="col-md-12">
@@ -9,12 +9,12 @@
           />
         </div>
         <div class="col-md-12">
-          <IDCC :values="controlPanelProps" />
+          <IDCC :values="controlPanelProps" :closeOverlay="closeSubCard" />
         </div>
       </div>
     </div>
     <div class="col-md-4">
-      <StateBarChart :values="controlPanelProps" />
+      <StateBarChart :values="controlPanelProps" :closeOverlay="closeSubCard" />
     </div>
   </div>
 </template>
@@ -26,7 +26,9 @@ import TableComponent from './TheTable.vue';
 
 export default {
   data() {
-    return {};
+    return {
+      closeSubCard: true,
+    };
   },
   props: {
     controlPanelProps: {
@@ -43,7 +45,6 @@ export default {
     StateBarChart,
     TableComponent,
   },
-  methods: {},
 };
 </script>
 

@@ -3,8 +3,8 @@
     <div>Built with <b-icon-heart-fill /> by eHealth4everyone</div>
     <div>
       <span
-        >{{ dlDashboardIndicator.length }} Indicators, {{ dlDashboardDataSource.length }} Data
-        sources</span
+        >{{ dlDashboardIndicator.length }} Indicators,
+        {{ dlDashboardDataSource.length }} Data sources</span
       >
       <span>Last Updated {{ latestDate }}</span>
     </div>
@@ -13,19 +13,24 @@
 
 <script>
 import moment from 'moment';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 
 export default {
   name: 'theFooter',
   data() {
     return {
-      latestDate: '',
+      latestDate: 'Loading...',
     };
   },
+  methods: {
+    async getLatestDate() {
+      const res = await apiServices.getLatestDate();
+      const date = moment(res.data.date, 'YYYY-MM-DD').format('MMMM Do YYYY');
+      this.latestDate = date;
+    },
+  },
   mounted() {
-    const day = moment().format('DD');
-    const month = moment().format('MMM');
-    const year = moment().format('YYYY');
-    this.latestDate = `${day} ${month}, ${year}`;
+    this.getLatestDate();
   },
 };
 </script>
@@ -35,7 +40,9 @@ $msdat-green: #007d53;
 
 footer#the-footer {
   height: fit-content;
-  position: sticky;
+  // position: sticky;
+  position: fixed;
+  width: 100%;
   bottom: 0;
   background-color: $msdat-green;
   display: flex;

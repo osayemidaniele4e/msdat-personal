@@ -73,7 +73,8 @@ export default class DataLayer {
       this.setup(object);
       console.time('fetching');
 
-      // check if data is already initialized i store
+      // check if data is already initialized iN DEXIE DB
+      // this.DB.getIndicatorDataThatExistInDB()
       if (this.store.state.DL.indicators.length <= 0) {
         /** Fetching other endpoints */
         console.log('fetching other endpoint');
@@ -104,7 +105,7 @@ export default class DataLayer {
         this.setDataInStore(data[7].data, DATA_SOURCE);
 
         console.log('done');
-        /** End Featching other enpoints */
+        /** End Fetching other endpoints */
 
         const count = await this.DB.data.count();
         console.log('DB count is', count);
@@ -220,6 +221,7 @@ export default class DataLayer {
    * @param {string} tableName
    */
   setDataInStore(data, tableName) {
+    // storeDataInDBTable
     this.store.commit('DL/SET_DATA', {
       tableName,
       data,
@@ -253,6 +255,12 @@ export default class DataLayer {
     const dashboardDataSource = this.dataSourceList;
     this.setDataInStore(dashboardIndicators, AVAILABLE_DASHBOARD_INDICATOR);
     this.setDataInStore(dashboardDataSource, DASHBOARD_DATESOURCE);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getLastDate() {
+    const dataResult = await apiServices.getLastUpdatedDate();
+    console.log('hello', dataResult);
   }
 
   async checkAllYearsExistInDB(indicatorID) {
