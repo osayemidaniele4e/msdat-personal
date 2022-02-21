@@ -13,7 +13,17 @@
             <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
           <div class="mobile-flex-col-text2">Health Outcomes and Service Coverage</div>
           </div>
-               <b-dropdown text="Split Dropdown" class="m-2">
+               <!-- <b-dropdown text="Split Dropdown" class="m-2">
+                <b-dropdown-item href="#"
+                id="dropdownMenuButton"
+                  v-for="(control, index) in $store.state.MSDAT_STORE
+                  .controlConfig"
+                  :key="index"
+                  @click="emitIndex(index)"
+                >{{control.label}}
+                </b-dropdown-item>
+              </b-dropdown> -->
+                   <b-dropdown text="Select" >
                 <b-dropdown-item href="#"
                 id="dropdownMenuButton"
                   v-for="(control, index) in $store.state.MSDAT_STORE
@@ -32,17 +42,25 @@
                   @click="emitIndex(index)"
               >{{control.label}}</option>
             </select> -->
-            <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon"></b-icon>
+            <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon"
+             v-b-toggle.sidebar-1
+            ></b-icon>
+
+               <b-sidebar id="sidebar-1" title="Sidebar" shadow>
+        <DropCard
+
+                />
+    </b-sidebar>
         </div>
 
-        <b-col cols md="1" lg="1">
+        <b-col cols md="1" lg="1" class="main">
           <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
         </b-col>
         <b-col
           cols
           md="11"
           lg="11"
-          class="d-flex justify-content-between align-items-center border-left"
+          class="d-flex justify-content-between align-items-center border-left main"
         >
           <h2>
 
@@ -113,7 +131,7 @@
       </b-row>
       <!--  please someone show separate the
       header for the about page from this it going to cause issues  -->
-      <b-row v-show="aboutPage">
+      <b-row v-show="aboutPage" class="main">
         <b-col cols="1">
           <!-- <a href=""> -->
           <b-icon
@@ -588,6 +606,11 @@ header#the-header {
 test styling for mobile responsiveness
 
 <style scoped>
+
+.main{
+  display: none;
+}
+
 .select-indicator-mob{
   border: 1px solid white;
   background-color: none;
