@@ -14,17 +14,83 @@ const forRefreshingAll = (fieldArray) => {
   });
   return fieldArray;
 };
+function getDefaultState() {
+  return {
+    loader: {
+      show: false,
+      indicator: false,
+      datasource: false,
+      levels: false,
+      years: false,
+    },
+    allSelected: false,
+    // loading: false,
+    step: 0,
+    customDashboard: false,
+    dashboardDetails: {},
+    rmnchs: [],
+    masterData: [],
+    SurveyArray: [],
+    notes: [],
+    ArrangedSections: [
+      {
+        id: 0,
+        name: 'Indicator Overview',
+        active: false,
+        isShow: true,
+      },
+      {
+        id: 1,
+        name: 'Zonal Analysis',
+        active: false,
+        isShow: true,
+      },
+      {
+        id: 2,
+        name: 'Indicator Comparsion - By Period',
+        active: false,
+        isShow: true,
+      },
+      {
+        id: 3,
+        name: 'Dataset Comparison',
+        active: false,
+        isShow: true,
+      },
+      {
+        id: 4,
+        name: 'Multi-source Indicator Comparison',
+        active: false,
+        isShow: true,
+      },
+    ],
+  };
+}
+
+const showLoaderTrue = (sta) => {
+  if (sta.levels === true || sta.indicator === true || sta.datasource === true || sta.years === true) {
+    sta.show = true;
+  } else {
+    sta.show = false;
+  }
+};
 export default {
   updateStep(state, payload) {
     state.step = payload;
   },
 
+  resetState(state) {
+    Object.assign(state, getDefaultState());
+  },
+  clearAllData(state, payload) {
+    state.masterData = payload;
+    state.SurveyArray = payload;
+  },
   // loading(state,payload){
   //   console.log('abc',payload);
   // },
 
   dashboardDetails(state, payload) {
-    // log
     state.dashboardDetails = payload;
   },
 
@@ -39,28 +105,24 @@ export default {
     state.isNotExistYear.push(payload);
   },
 
+  // USER AUTH
+
   // TODO: To be reviewe later
 
   selectionIndicator(state, payload) {
     let found = false;
     state.masterData = state.masterData.map((element) => {
-      let counter = 0;
       // forRefreshingAll(payload);
       if (found === false) {
         element.children.map((child) => {
           if (child.id === payload.id) {
-          // element.parent.selected = true;
+            // element.parent.selected = true;
             found = true;
-            element.parent.isChildSelected = true;
             child.selected = payload.checked;
             if (payload.checked) {
-            // element.parent.selected = true;
-              counter = 1;
+              // element.parent.selected = true;
             } else {
               element.parent.selected = false;
-              if (child.selected) {
-                counter++;
-              }
             }
             state.notes = [];
             forRefreshingAll(child);
@@ -68,11 +130,17 @@ export default {
           }
           return child;
         });
+        const isAnyChildChecked = element.children.some((c) => c.selected === true);
+        if (isAnyChildChecked && isAnyChildChecked === true) {
+          element.parent.isChildSelected = true;
+        } else {
+          element.parent.isChildSelected = false;
+        }
       }
-      if (counter === 0) {
-        element.parent.isChildSelected = false;
-        element.showList = false;
-      }
+      // if (counter === 0) {
+      //   element.parent.isChildSelected = false;
+      //   element.showList = false;
+      // }
       if (element.parent.isChildSelected === true) {
         element.showList = true;
       }
@@ -104,7 +172,7 @@ export default {
   },
 
   selectionDataSource(state, payload) {
-    console.log('In Mutations', payload);
+    // console.log('In Mutations', payload);
     state.SurveyArray = state.SurveyArray.map((element) => {
       // eslint-disable-next-line no-unused-vars
       let counter = 0;
@@ -259,16 +327,60 @@ export default {
 
   // For Arranging the Sections
   arrangedSections(state, payload) {
-    console.log('State O', state.ArrangedSections);
-    console.log('State P', payload);
+    // console.log('State O', state.ArrangedSections);
+    // console.log('State P', payload);
     state.ArrangedSections = payload;
+  },
+
+  dynamicSection(state, payload) {
+    // state.ArrangedSections.filter(element => element.name !== payload.checkedField)
+    state.ArrangedSections.map((element) => {
+      if (element.name === payload.checkedField) {
+        // eslint-disable-next-line no-param-reassign
+        element.isShow = payload.checked;
+      }
+      return element;
+    });
+  },
+
+  customDashboard(state, payload) {
+    state.customDashboard = payload;
   },
 
   // ******** Select All Data ********* //
 
   selectAll(state, payload) {
-    console.log('asdw', payload);
+    // console.log('asdw', payload);
     state.allSelected = payload;
   },
 
+  // ********* LOADING ********//
+  setIndiLoading(state, payload) {
+    state.loader.indicator = payload;
+    // state.loader.show = payload;
+    showLoaderTrue(state.loader);
+  },
+  setDSLoading(state, payload) {
+    state.loader.datasource = payload;
+    // state.loader.show = payload;
+    showLoaderTrue(state.loader);
+  },
+  setLevelsLoading(state, payload) {
+    state.loader.levels = payload;
+    // state.loader.show = payload;
+    showLoaderTrue(state.loader);
+  },
+  setYearsLoading(state, payload) {
+    state.loader.years = payload;
+    // state.loader.show = payload;
+    showLoaderTrue(state.loader);
+  },
+  // setshowLoader(state) {
+  //   const loader = state.loader;
+  //   if (loader.levels === true || loader.indicator === true || loader.datasource === true || loader.years === true) {
+  //     loader.show = true;
+  //   } else {
+  //     loader.show = false;
+  //   }
+  // }
 };

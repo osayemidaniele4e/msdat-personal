@@ -144,6 +144,7 @@ export default {
   mounted() {
     this.$store.commit('updateStep', 1);
     localStorage.removeItem('vuex');
+    this.$store.dispatch('resetState');
     // store.replaceState({})
     // this.$forceUpdate();
     // this.$router.go();
@@ -209,8 +210,10 @@ export default {
       this.$store.dispatch('allSelection', {
         allselected: false,
       });
-      this.$store.state.CUSTOM_DASHBOARD_STORE.masterData = [];
-      this.$store.state.CUSTOM_DASHBOARD_STORE.SurveyArray = [];
+      const dataArray = [];
+      this.$store.dispatch('clearAllData', dataArray);
+      // this.$store.state.CUSTOM_DASHBOARD_STORE.masterData = [];
+      // this.$store.state.CUSTOM_DASHBOARD_STORE.SurveyArray = [];
 
       this.$emit('save-data', formData);
       this.$router.push('preference-table');

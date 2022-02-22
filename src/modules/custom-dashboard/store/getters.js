@@ -1,5 +1,7 @@
 export default {
-
+  showloader(state) {
+    return state.loader.show;
+  },
   dashboardDetails(state) {
     return state.dashboardDetails;
   },
@@ -57,6 +59,10 @@ export default {
   // Arrangment of Sections
   arrangedSections(state) {
     return state.ArrangedSections;
+  },
+  customDashboard(state) {
+    // const data = state.customDashboard.filter(element => element.isShow)
+    return state.customDashboard;
   },
 
   // Loader Component

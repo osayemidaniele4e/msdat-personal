@@ -1442,7 +1442,7 @@
 <script>
 export default {
   name: 'customDashboardSvg',
-  props: ['name'],
+  props: ['name', 'upload'],
 };
 </script>
 

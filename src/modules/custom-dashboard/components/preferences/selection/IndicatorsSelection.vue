@@ -24,7 +24,7 @@
                 items.parent.selected
               )
             "
-            class="checkbox"
+            class="checkbox no-pointer-events"
             :checked="isAllSelected(items.parent)"
           />
           <label
@@ -63,7 +63,7 @@
                 item.selected
               )
             "
-            class="checkbox"
+            class="checkbox no-pointer-events"
           />
           <label
             :for="item.short_name"

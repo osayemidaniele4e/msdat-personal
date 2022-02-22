@@ -10,7 +10,16 @@
     <p id="link-to-about" style="font-size: 13px; font-family: Work Sans">
       <b>View datasheet</b>- see all available data in database
     </p>
-
+    <b-col
+      cols="auto"
+      style="position: fixed; top: 35%; right: 0; z-index: 9999"
+      ><b-button
+        v-if="indicatorsCount && dataSourceCount && yearsCount && selectedLevel.length > 0"
+        @click="approveData"
+        style="font-size: 12.000004px; font-family: Work Sans"
+        >approve Data</b-button
+      ></b-col
+    >
     <b-card>
       <b-row>
         <!-- **** Preferences Selection *****  -->
@@ -56,10 +65,10 @@
             align-h="end"
             class="mt-5 text-right"
             v-if="
-              indicatorsCount && dataSourceCount && yearsCount && selectedLevel
+              indicatorsCount && dataSourceCount && yearsCount && selectedLevel.length > 0
             "
           >
-            <b-col class="align-baseline" cols="auto"
+            <b-col class="align-baseline" cols="auto" style=""
               ><p
                 class="baseline"
                 style="font-size: 12.000004px; font-family: Work Sans"
@@ -67,13 +76,6 @@
                 Save for Later
               </p>
             </b-col>
-            <b-col cols="auto"
-              ><b-button
-                @click="approveData"
-                style="font-size: 12.000004px; font-family: Work Sans"
-                >approve Data</b-button
-              ></b-col
-            >
           </b-row>
         </b-col>
       </b-row>
@@ -112,12 +114,16 @@ export default {
   beforeDestroy() {
     if (this.destroyPage === false) {
       // eslint-disable-next-line no-restricted-globals
-      location.reload(true);
+      // location.reload(true);
+      this.$store.dispatch('resetState');
     } else {
       console.log('nothing');
     }
   },
   computed: {
+    showLoader() {
+      return this.$store.getters.showloader;
+    },
     indicatorsCount() {
       let count = 0;
       this.$store.getters.getprogramArea.map((element) => {

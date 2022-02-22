@@ -1,8 +1,15 @@
+const token = sessionStorage.getItem('username');
 export default [
   {
     path: '/custom',
     name: 'custom-dashboard',
     component: () => import('./views/landing.vue'),
+  },
+  {
+    path: '/login',
+    name: 'custom-dashboard-login',
+    component: () => import('./views/login.vue'),
+
   },
   // {
   //   path: '/custom/details',
@@ -12,15 +19,22 @@ export default [
   {
     path: '/my-dashboard',
     name: 'my-dashboard',
+    beforeEnter: (to, from, next) => {
+      if (!token) {
+        next('/login');
+      } else {
+        return next();
+      }
+      return null;
+    },
     component: () => import('./views/myDashboard.vue'),
     children: [
-      // 2
+
       {
         path: 'preference-table',
         name: 'preference-table',
         component: () => import('./views/preferenceTable.vue'),
       },
-      // 1
       {
         path: 'details',
         name: 'my-dashboard-details',
@@ -42,6 +56,14 @@ export default [
   {
     path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
+    beforeEnter: (to, from, next) => {
+      if (!token) {
+        next('/login');
+      } else {
+        next();
+      }
+      return null;
+    },
     props: true,
     component: () => import('./views/CustomDashboard.vue'),
   },

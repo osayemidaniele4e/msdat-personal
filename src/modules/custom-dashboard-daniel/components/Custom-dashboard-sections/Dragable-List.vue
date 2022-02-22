@@ -11,8 +11,7 @@
       margin-bottom: 15px;
       font-family: Work Sans;
     "
-    class="
-    ml-auto mr-auto"
+    class="ml-auto mr-auto"
   >
     <h4 class="" style="padding: 29px 2px 14px 19px; font-size: 18px">
       Arrange the position of your widgets
@@ -22,11 +21,7 @@
       item-class="sortable-item"
       handle-class="sortable-handle"
     >
-      <ul
-        class="list-reset"
-        style="list-style: none; margin-left: -20px"
-        slot-scope="{ items }"
-      >
+      <ul class="list-reset" style="list-style: none; margin-left: -20px">
         <sortable-item v-for="todo in items" :key="todo.id">
           <li
             style="
