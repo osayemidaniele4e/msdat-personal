@@ -112,11 +112,6 @@ export default {
       deep: true,
       immediate: true,
     },
-
-    ChartOptions(newValue) {
-      console.log(`this is the ChartOptions${
-        JSON.stringify(newValue)}`);
-    },
   },
   methods: {
     /**

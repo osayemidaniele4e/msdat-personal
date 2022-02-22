@@ -234,11 +234,7 @@ export default {
   },
   methods: {
     updatePayload(value, key) {
-      console.log('running payload', this.groupIndex);
-      // console.log(`this is value and key${value}${key}`);
-      // console.log(`this is string of value${JSON.stringify(value)}`);
       if (this.groupIndex != null) {
-        console.log('first');
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section
         // debugger;
@@ -249,7 +245,6 @@ export default {
           value,
         });
       } else {
-        console.log('jjdjdjdjfirst');
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: this.controlIndex,
           key,
