@@ -37,6 +37,16 @@ export default {
       this.$emit('value', source);
       this.$emit('key', 'datasource');
     },
+
+    updatePayload(value, key) {
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.controlIndex,
+        key,
+        value,
+      });
+
+      this.$emit('data:options', this.payload);
+    },
   },
 };
 </script>

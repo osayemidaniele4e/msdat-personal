@@ -8,6 +8,7 @@
             :values="controlPanelProps"
             @value="getValue"
             @key="getKey"
+            @reset="getReset"
           />
         </div>
         <div class="col-md-12">
@@ -55,6 +56,11 @@ export default {
 
     getKey(key) {
       this.$emit('key', key);
+    },
+
+    getReset() {
+      this.$emit('reset');
+      console.log('emitting resetting');
     },
   },
 };

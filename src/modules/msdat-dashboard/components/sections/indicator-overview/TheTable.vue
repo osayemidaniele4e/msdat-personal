@@ -24,6 +24,7 @@
           @selected:indicator-info="indicatorModalFunc($event)"
             @value="getValue"
                 @key="getKey"
+                @reset="getReset"
 
         />
       </base-sub-card>
@@ -208,6 +209,11 @@ export default {
 
     getKey(key) {
       this.$emit('key', key);
+    },
+
+    getReset() {
+      this.$emit('reset');
+      console.log('resetting');
     },
   },
 };

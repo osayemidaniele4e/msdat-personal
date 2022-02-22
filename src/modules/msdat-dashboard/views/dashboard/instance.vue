@@ -9,6 +9,7 @@
       :initialLocation="initialLocation"
       :updateValue="updateValue"
       :updateKey="updateKey"
+      :resetData="resetData"
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
@@ -29,6 +30,7 @@
                   :controlPanelProps="payload"
                    @value="getValue"
                    @key="getKey"
+                   @reset="getReset"
                 />
               </ControlPanelConfiguration>
             </template>
@@ -194,6 +196,11 @@ export default {
 
     getKey(key) {
       this.updateKey = key;
+    },
+
+    getReset() {
+      this.resetData = true;
+      console.log('resetting2');
     },
   },
   created() {

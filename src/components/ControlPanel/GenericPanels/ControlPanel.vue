@@ -7,6 +7,8 @@
         :key="index"
         v-show="values.visibility === undefined ? true : values.visibility"
       >
+
+      <div @click="setReset()">click me</div>
         <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
@@ -196,6 +198,11 @@ export default {
       type: String,
       required: false,
     },
+
+    resetData: {
+      type: Boolean,
+      required: false,
+    },
   },
   watch: {
     defaultDataSource(newValue) {
@@ -212,16 +219,26 @@ export default {
 
     updateValue(newValue) {
       console.log(`this is the update value${JSON.stringify(newValue)}`);
+      this.controlIndex = 0;
+      this.groupIndex = null;
       this.updatePayload(newValue, 'datasource');
+    },
+
+    resetData() {
+      console.log('reaching the final');
+      this.controlIndex = 0;
+      this.groupIndex = null;
+      this.updatePayload(this.defaultDataSource, 'datasource');
     },
 
   },
   methods: {
     updatePayload(value, key) {
-      console.log('running payload');
+      console.log('running payload', this.groupIndex);
       // console.log(`this is value and key${value}${key}`);
       // console.log(`this is string of value${JSON.stringify(value)}`);
       if (this.groupIndex != null) {
+        console.log('first');
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section
         // debugger;
@@ -232,6 +249,7 @@ export default {
           value,
         });
       } else {
+        console.log('jjdjdjdjfirst');
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: this.controlIndex,
           key,
@@ -240,6 +258,10 @@ export default {
       }
 
       this.$emit('data:options', this.payload);
+    },
+
+    setReset() {
+      this.updatePayload(this.defaultDataSource, 'datasource');
     },
   },
   computed: {

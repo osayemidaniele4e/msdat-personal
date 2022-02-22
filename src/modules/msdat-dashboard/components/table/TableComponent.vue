@@ -12,7 +12,7 @@
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
-                <span id="reset" @click="$emit('reset')"><b-icon-arrow-clockwise /></span>
+                <span id="reset" @click="$emit('reset')" ><b-icon-arrow-clockwise /></span>
               </div>
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
@@ -305,6 +305,10 @@ export default {
     getKey(key) {
       this.$emit('key', key);
     },
+
+    getReset() {
+      this.$emit('reset');
+    },
   },
   watch: {
     dataArray: {
@@ -327,7 +331,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 // @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
-
 // table scroll bar
 ::-webkit-scrollbar {
   height: 8px;
@@ -379,4 +382,19 @@ table.table {
     }
   }
 }
+
+</style>
+
+<style scoped>
+/* to remove */
+    #reset{
+      transform: rotate(360deg);
+      transition: all 1s ease-in-out;
+      /* background-color: black; */
+  }
+
+    #reset:hover{
+      font-weight: 700;
+       transform: rotate(180deg);
+  }
 </style>

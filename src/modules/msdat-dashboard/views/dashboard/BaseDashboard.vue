@@ -66,6 +66,7 @@
                             :defaultYear="defaultYear"
                             :updateValue="updateValue"
                             :updateKey="updateKey"
+                            :resetData="resetData"
                           />
                         </div>
                       </div>
@@ -209,6 +210,10 @@ export default {
       required: false,
     },
 
+    resetData: {
+      type: Boolean,
+      required: false,
+    },
   },
   created() {
     const { name } = this.$route.params;
