@@ -207,7 +207,6 @@ export default {
   watch: {
     defaultDataSource(newValue) {
       this.payload.datasource = newValue;
-      console.log('checking datasource watcher');
     },
     payload: {
       handler(newValue) {
@@ -218,7 +217,6 @@ export default {
     },
 
     updateValue(newValue) {
-      console.log(`this is the update value${JSON.stringify(newValue)}`);
       this.controlIndex = 0;
       this.groupIndex = null;
       this.updatePayload(newValue, 'datasource');
@@ -226,7 +224,6 @@ export default {
 
     resetData: {
       handler() {
-        console.log('reaching the final');
         this.controlIndex = 0;
         this.groupIndex = null;
         this.updatePayload(this.defaultDataSource, 'datasource');

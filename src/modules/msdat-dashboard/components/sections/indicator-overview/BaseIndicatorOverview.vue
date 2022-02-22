@@ -51,7 +51,6 @@ export default {
 
     getValue(value) {
       this.$emit('value', value);
-      console.log(`this is value 2${JSON.stringify(value)}`);
     },
 
     getKey(key) {
@@ -60,7 +59,6 @@ export default {
 
     getReset() {
       this.$emit('reset');
-      console.log('emitting resetting');
     },
   },
 };

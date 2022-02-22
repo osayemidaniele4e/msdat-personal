@@ -203,8 +203,6 @@ export default {
 
     getReset() {
       this.resetData++;
-      console.log(this.resetData);
-      console.log('resetting2 dude');
     },
   },
   created() {
