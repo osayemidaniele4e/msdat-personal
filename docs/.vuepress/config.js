@@ -63,7 +63,10 @@ module.exports = {
           collapsable: false,
           children: [
             'dev',
-            'api'
+            'api',
+            'index-db',
+            'datalayer',
+            'config'
           ]
         }
 

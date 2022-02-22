@@ -112,6 +112,7 @@
             Line <b-icon icon="graph-up"></b-icon>
           </button>
           <button
+          jkjkkjk
             type="button"
             @click="
               updatePayload('column', values.key),
