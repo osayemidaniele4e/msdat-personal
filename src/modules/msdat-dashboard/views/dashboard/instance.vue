@@ -7,6 +7,8 @@
       :initialIndicator="initialIndicator"
       :initialDataSource="initialDataSource"
       :initialLocation="initialLocation"
+      :updateValue="updateValue"
+      :updateKey="updateKey"
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
@@ -25,6 +27,8 @@
                 <BaseIndicatorOverview
                   :showTableRelatedIndicator="showTableRelatedIndicator"
                   :controlPanelProps="payload"
+                   @value="getValue"
+                   @key="getKey"
                 />
               </ControlPanelConfiguration>
             </template>
@@ -136,7 +140,10 @@ import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelC
 
 export default {
   data() {
-    return {};
+    return {
+      updateValue: {},
+      updateKey: '',
+    };
   },
   components: {
     BaseDashboard,
@@ -180,6 +187,14 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+
+    getValue(value) {
+      this.updateValue = value;
+    },
+
+    getKey(key) {
+      this.updateKey = key;
+    },
   },
   created() {
     this.CLEAR_CONTROL_PANEL();

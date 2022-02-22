@@ -29,13 +29,15 @@
           eg. Routine,Survey,Estimate -->
           <tr>
             <template v-for="(dt, index) in source">
-                fvgvvggv
               <TableDataSourceCell
                 :key="index"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
                 :selectedSource="selectedSource"
+
+                @value="getValue"
+                @key="getKey"
               />
             </template>
           </tr>
@@ -291,6 +293,17 @@ export default {
       this.selectedSource = e;
       this.$emit('selected:source', e);
       // this.rowShow = !this.rowShow;
+    },
+
+    // new emits
+
+    getValue(value) {
+      this.$emit('value', value);
+      console.log(`this is value 1${JSON.stringify(value)}`);
+    },
+
+    getKey(key) {
+      this.$emit('key', key);
     },
   },
   watch: {

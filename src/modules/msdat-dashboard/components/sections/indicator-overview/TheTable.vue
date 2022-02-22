@@ -22,6 +22,9 @@
           @selected:source="updateControlPanel($event)"
           @selected:source-info="dataSourceModalFunc($event)"
           @selected:indicator-info="indicatorModalFunc($event)"
+            @value="getValue"
+                @key="getKey"
+
         />
       </base-sub-card>
     </div>
@@ -196,6 +199,15 @@ export default {
       this.modalTitle = e.datasource;
       this.DisplayType = 'datasource';
       this.showModal = !this.showModal;
+    },
+
+    getValue(value) {
+      this.$emit('value', value);
+      console.log(`this is value 3${JSON.stringify(value)}`);
+    },
+
+    getKey(key) {
+      this.$emit('key', key);
     },
   },
 };

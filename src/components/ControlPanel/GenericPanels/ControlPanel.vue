@@ -188,10 +188,19 @@ export default {
       type: [Object, String],
       required: false,
     },
+    updateValue: {
+      type: Object,
+      required: false,
+    },
+    updateKey: {
+      type: String,
+      required: false,
+    },
   },
   watch: {
     defaultDataSource(newValue) {
       this.payload.datasource = newValue;
+      console.log('checking datasource watcher');
     },
     payload: {
       handler(newValue) {
@@ -200,11 +209,18 @@ export default {
       immediate: true,
       deep: true,
     },
+
+    updateValue(newValue) {
+      console.log(`this is the update value${JSON.stringify(newValue)}`);
+      this.updatePayload(newValue, 'datasource');
+    },
+
   },
   methods: {
     updatePayload(value, key) {
-      console.log(`this is value and key${value}${key}`);
-      console.log(`this is string of value${JSON.stringify(value)}`);
+      console.log('running payload');
+      // console.log(`this is value and key${value}${key}`);
+      // console.log(`this is string of value${JSON.stringify(value)}`);
       if (this.groupIndex != null) {
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section

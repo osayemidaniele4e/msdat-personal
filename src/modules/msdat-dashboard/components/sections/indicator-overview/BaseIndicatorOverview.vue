@@ -6,6 +6,8 @@
           <TableComponent
             :showTableRelatedIndicator="showTableRelatedIndicator"
             :values="controlPanelProps"
+            @value="getValue"
+            @key="getKey"
           />
         </div>
         <div class="col-md-12">
@@ -43,7 +45,18 @@ export default {
     StateBarChart,
     TableComponent,
   },
-  methods: {},
+  methods: {
+    // new emits
+
+    getValue(value) {
+      this.$emit('value', value);
+      console.log(`this is value 2${JSON.stringify(value)}`);
+    },
+
+    getKey(key) {
+      this.$emit('key', key);
+    },
+  },
 };
 </script>
 

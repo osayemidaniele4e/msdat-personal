@@ -7,9 +7,8 @@
     <div class="d-flex align-items-center justify-content-center">
       <span
         class="data-source h6 mr-3 mb-0 font-weight-bold"
-        @click="$emit('source:click', source)"
+        @click="$emit('source:click', source), emitValue(source)"
         >{{ source.datasource }}
-        {{ JSON.stringify(source) }}
       </span>
       <b-icon-info-circle-fill
         :variant="selectedSource.id === source.id ? '' : 'primary'"
@@ -30,6 +29,13 @@ export default {
     selectedSource: {
       type: Object,
       required: false,
+    },
+  },
+
+  methods: {
+    emitValue(source) {
+      this.$emit('value', source);
+      this.$emit('key', 'datasource');
     },
   },
 };

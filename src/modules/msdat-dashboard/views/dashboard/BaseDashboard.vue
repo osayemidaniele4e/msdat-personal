@@ -64,6 +64,8 @@
                             :defaultDataSource="defaultDataSource"
                             :defaultLocation="defaultLocation"
                             :defaultYear="defaultYear"
+                            :updateValue="updateValue"
+                            :updateKey="updateKey"
                           />
                         </div>
                       </div>
@@ -196,6 +198,17 @@ export default {
       type: Array,
       required: false,
     },
+
+    updateValue: {
+      type: Object,
+      required: false,
+    },
+
+    updateKey: {
+      type: String,
+      required: false,
+    },
+
   },
   created() {
     const { name } = this.$route.params;
