@@ -200,7 +200,7 @@ export default {
     },
 
     resetData: {
-      type: Boolean,
+      type: Number,
       required: false,
     },
   },
@@ -224,11 +224,14 @@ export default {
       this.updatePayload(newValue, 'datasource');
     },
 
-    resetData() {
-      console.log('reaching the final');
-      this.controlIndex = 0;
-      this.groupIndex = null;
-      this.updatePayload(this.defaultDataSource, 'datasource');
+    resetData: {
+      handler() {
+        console.log('reaching the final');
+        this.controlIndex = 0;
+        this.groupIndex = null;
+        this.updatePayload(this.defaultDataSource, 'datasource');
+      },
+      immediate: true,
     },
 
   },

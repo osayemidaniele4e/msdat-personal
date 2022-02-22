@@ -10,6 +10,7 @@
       :updateValue="updateValue"
       :updateKey="updateKey"
       :resetData="resetData"
+
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
@@ -145,6 +146,7 @@ export default {
     return {
       updateValue: {},
       updateKey: '',
+      resetData: 1,
     };
   },
   components: {
@@ -186,6 +188,7 @@ export default {
       type: Boolean,
       default: true,
     },
+
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
@@ -199,8 +202,9 @@ export default {
     },
 
     getReset() {
-      this.resetData = true;
-      console.log('resetting2');
+      this.resetData++;
+      console.log(this.resetData);
+      console.log('resetting2 dude');
     },
   },
   created() {

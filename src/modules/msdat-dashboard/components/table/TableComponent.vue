@@ -307,6 +307,7 @@ export default {
     },
 
     getReset() {
+      console.log('checking');
       this.$emit('reset');
     },
   },
