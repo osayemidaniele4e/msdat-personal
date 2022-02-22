@@ -9,7 +9,6 @@ export default [
     path: '/login',
     name: 'custom-dashboard-login',
     component: () => import('./views/login.vue'),
-
   },
   // {
   //   path: '/custom/details',
@@ -29,28 +28,30 @@ export default [
     },
     component: () => import('./views/myDashboard.vue'),
     children: [
-
-      {
-        path: 'preference-table',
-        name: 'preference-table',
-        component: () => import('./views/preferenceTable.vue'),
-      },
+      // Page 1
       {
         path: 'details',
         name: 'my-dashboard-details',
         component: () => import('./views/dashboardDetails.vue'),
       },
+      // Page 2
+      {
+        path: 'preference-table',
+        name: 'preference-table',
+        component: () => import('./views/preferenceTable.vue'),
+      },
+      // Page 3
       {
         path: 'data-table',
         name: 'data-table',
         component: () => import('./views/DataTable.vue'),
       },
+      // Page 3
       {
         path: 'sections',
         name: 'sections',
         component: () => import('./views/ArrangeSections.vue'),
       },
-
     ],
   },
   {
@@ -67,5 +68,4 @@ export default [
     props: true,
     component: () => import('./views/CustomDashboard.vue'),
   },
-
 ];
