@@ -7,8 +7,6 @@
         :key="index"
         v-show="values.visibility === undefined ? true : values.visibility"
       >
-
-      <div @click="setReset()">click me</div>
         <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
@@ -253,10 +251,6 @@ export default {
       }
 
       this.$emit('data:options', this.payload);
-    },
-
-    setReset() {
-      this.updatePayload(this.defaultDataSource, 'datasource');
     },
   },
   computed: {
