@@ -1,6 +1,43 @@
 <template>
-  <div>
-    <table class="table table-sm-responsive" style="border: 1px solid #e3e3e3">
+  <div class="">
+    <div
+      v-show="
+        this.$store.state.CUSTOM_DASHBOARD_STORE.allSelected === true &&
+        showLoader
+
+      "
+      class="text-center"
+      style="
+        position: absolute;
+        height: 100vh;
+        width: 100%
+        pointer-events: none;
+        z-index: 99;
+        overflow: none;
+      "
+    >
+      <div
+
+        style="
+          position: fixed;
+          z-index: 99;
+          top: 50%;
+          bottom: 50%;
+          left: 0;
+          right: 0;
+          text-align: center;
+          margin: 0 auto;
+        "
+      >
+        <the-loader />
+
+        <p style="font-family: Work Sans; font-weight: bold">
+          All available data is in progress...
+        </p>
+      </div>
+    </div>
+  <div class="">
+      <table class="table" style="border: 1px solid #e3e3e3">
       <thead>
         <tr style="">
           <th
@@ -81,13 +118,15 @@
                 text-align: left;
               "
             >
-              {{ child.short_name }}
+              <div class="col-md-9 p-0">
+                {{ child.short_name }}
+              </div>
             </td>
             <td class="section__datasource" style="">
               <template v-for="items in dataSources" class="">
                 <template v-for="item in items.children">
-                  <span
-                    class="col-6 col-md-4"
+                  <div
+                    class="col-6 pt-0 pb-0 pl-1 pr-0 col-md-4"
                     style="
                       display: inline-block;
                       font-size: 11px;
@@ -96,12 +135,12 @@
                     v-if="item.selected"
                     :key="item.id"
                   >
-                    {{ item.datasource }}</span
+                    {{ item.datasource }}</div
                   >
                 </template>
               </template>
             </td>
-            <td style="width: 400px">
+            <td >
               <template v-for="level in child.levels">
                 <!-- <ul
                   class="col-6"
@@ -115,10 +154,10 @@
                     margin-bottom: 0rem !important;
                   "
                 >
-                  <li style="width: 200px">{{ level.value }}</li>
+                  <li >{{ level.value }}</li>
                 </ul> -->
-                <span
-                  class="col-8 col-md-6"
+                <div
+                  class="col-8 col-md-6 p-0"
                   style="
                     display: inline-block;
                     font-size: 12px;
@@ -127,11 +166,11 @@
                   v-if="level.selected"
                   :key="level.value"
                 >
-                  {{ level.value }}</span
+                  {{ level.value }}</div
                 >
               </template>
             </td>
-            <td style="width: 200px">
+            <td >
               <template v-for="year in child.years">
                 <!-- <ul
                   class="col-3"
@@ -146,12 +185,12 @@
                   "
                   v-if="year.selected"
                 >
-                  <li style="width: 50px">
+                  <li >
                     {{ year.value }}
                   </li>
                 </ul> -->
-                <span
-                  class="col-4 col-md-3"
+                <div
+                  class="col-4 p-0 col-md-3"
                   style="
                     display: inline-block;
                     font-size: 11px;
@@ -160,7 +199,7 @@
                   v-if="year.selected"
                   :key="year.value"
                 >
-                  {{ year.value }}</span
+                  {{ year.value }}</div
                 >
               </template>
             </td>
@@ -170,24 +209,36 @@
       </tbody>
     </table>
   </div>
+  </div>
 </template>
 
 <script>
+// eslint-disable-next-line import/extensions
+import TheLoader from '../../Loading/TheLoader.vue';
 
 export default {
   props: ['indicator', 'dataSource', 'level', 'years'],
-
+  components: {
+    TheLoader,
+  },
   data() {
     return {
       indicatorData: [],
     };
   },
+
   computed: {
+    // loading() {
+    //   return this.$store.state.loader.show;
+    // },
     indicatorsLevels() {
       return this.$store.getters.getprogramArea;
     },
     dataSources() {
       return this.$store.getters.getDataSource;
+    },
+    showLoader() {
+      return this.$store.getters.showloader;
     },
   },
 

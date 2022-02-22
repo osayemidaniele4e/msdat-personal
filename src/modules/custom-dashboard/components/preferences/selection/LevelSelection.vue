@@ -83,7 +83,6 @@ export default {
         });
         return element;
       });
-      console.log('level', levelArray);
       const LArray = [];
       Object.keys(levelArray).forEach((key) => {
         LArray.push(levelArray[key]);

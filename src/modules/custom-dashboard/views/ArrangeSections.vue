@@ -14,7 +14,7 @@
       </h2>
       <br />
       <b-col md="8" sm="12">
-        <div v-for="value in values" :key="value">
+        <div v-for="(value,index) in values" :key="index">
           <div class="">
             <input
               type="checkbox"
@@ -109,6 +109,13 @@ export default {
   },
   methods: {
     approveData() {
+      if (!this.dashboardDetails.name) {
+        // eslint-disable-next-line no-alert
+        alert('Dashboard name not provided');
+        return;
+      }
+      const cDashboard = true;
+      this.$store.dispatch('customDashboard', cDashboard);
       this.$router.push({
         name: 'my-custom-dashboard',
         params: {
@@ -118,8 +125,13 @@ export default {
       // this.$router.push('/my-custom-dashboard');
     },
     selectedComponent(e, fieldName) {
-      console.log(e.target.value);
-      console.log(fieldName);
+      // console.log(e.target.value);
+      // console.log(fieldName);
+      const payload = {
+        checked: e.target.checked,
+        checkedField: fieldName,
+      };
+      this.$store.dispatch('dynamicSection', payload);
       if (fieldName === 'Dashboard Overview') {
         this.$store.state.MSDAT_STORE.indicatorComparision = e.target.checked;
       }

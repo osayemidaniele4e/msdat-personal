@@ -1,27 +1,80 @@
 <template>
   <div class="">
-
-  <!-- Toggleable tab links here -->
+    <!-- Toggleable tab links here -->
     <ul
-      class="d-flex list-unstyled step-sections mb-0
-       justify-content-between border-b mx-lg-5 mx-3 cursor-pointer"
-   >
-      <li
-        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans"
-        :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
-        v-for="(control, index) in controls"
-        :key="index"
-        :id="`panel-${index}`"
-        @click='changeControl(index)'
-      >
-        {{ control.title }}
+      class="
+        d-flex
+        list-unstyled
+        step-sections
+        mb-0
+        justify-content-between
+        border-b
+        mx-5
+        cursor-pointer
+      "
+    >
+      <template v-if="customDashboard === true">
+        <li
+          class="
+            mb-0
+            tab-link
+            h6
+            py-2
+            pt-4
+            text-black-50
+            bg-tab-color
+            work-sans
+          "
+          :class="[control.id === selectedIndex ? 'active font-weight-bold' : '']"
+          v-for="(control, index) in abc"
+          :key="index"
+          :id="`panel-${control.id}`"
+          @click="changeControl(control.id)"
+        >
+          <!-- <div
+      v-if="
+        $store.state.MSDAT_STORE.zonalAnalysis == false &&
+        field.name == 'Zonal Analysis'
+      "
+    > -->
+          {{ control.name }}
 
-      </li>
+          <!-- </div>       -->
+        </li>
+      </template>
+      <template v-if="!customDashBoard">
+        <li
+          class="
+            mb-0
+            tab-link
+            h6
+            py-2
+            pt-4
+            text-black-50
+            bg-tab-color
+            work-sans
+          "
+          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          v-for="(control, index) in controls"
+          :key="index"
+          :id="`panel-${index}`"
+          @click="changeControl(index)"
+        >
+          <!-- <div
+      v-if="
+        $store.state.MSDAT_STORE.zonalAnalysis == false &&
+        field.name == 'Zonal Analysis'
+      "
+    > -->
+          {{ control.title }}
+
+          <!-- </div>       -->
+        </li>
+      </template>
     </ul>
 
     <!-- Multiselect dropdown here -->
-    <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
-      <div class="mx-lg-5 mx-3 step-controls styles pt-1 pb-2">
+    <div class="mx-5 pb-3 pt-1 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
@@ -56,9 +109,21 @@ export default {
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
+      // console.log('Controls', this.controls);
       this.controls.forEach((control, index) => {
+        console.log('INDEX', index, controlIndex);
         // eslint-disable-next-line no-param-reassign
-        control.active = (index === controlIndex);
+        control.active = index === controlIndex;
+      });
+    },
+    selectControll(controlIndex) {
+      this.selectedIndex = controlIndex;
+      // loop over all the tabs
+      // console.log('Controls', this.abc);
+      this.abc.forEach((control, index) => {
+        console.log('INDEX', index, controlIndex);
+        // eslint-disable-next-line no-param-reassign
+        control.active = control.id === controlIndex;
       });
     },
   },
@@ -69,13 +134,25 @@ export default {
       this.selectControl(this.selectedIndex);
     },
   },
+  computed: {
+    abc() {
+      // console.log('ar', this.$store.getters.arrangedSections);
+      // const data2 = this.$store.getters.arrangedSections
+      // console.log('data1', data2);
+      return this.$store.getters.arrangedSections.filter(
+        (element) => element.isShow === true,
+      );
+    },
+    customDashboard() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
+    },
+  },
   mounted() {
     this.selectControl(0);
   },
   created() {
     this.controls = this.$children;
   },
-
 };
 </script>
 
@@ -85,8 +162,8 @@ $primary: #2b5d5b;
 .border-b {
   border-bottom: 2px solid #ebebeb;
 }
-.bg-tab-color{
-  color:#515151;
+.bg-tab-color {
+  color: #515151;
 }
 
 .tab-link.active {

@@ -3,7 +3,16 @@
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1">
-          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
+          <div v-if="dashboardName == 'MSDAT PLATFORM'">
+            <img
+              src="@/assets/img/Logo.svg"
+              alt="FMOH Logo"
+              class="img-fluid"
+            />
+          </div>
+          <div v-if="dashboardName != 'MSDAT PLATFORM'">
+            <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
+          </div>
         </b-col>
         <b-col
           cols
@@ -11,11 +20,21 @@
           lg="11"
           class="d-flex justify-content-between align-items-center border-left"
         >
-          <h2>
-            <small>MSDAT PLATFORM</small>
-            <br />
-            {{ $route.meta.title }}
-          </h2>
+          <div v-if="dashboardName == 'MSDAT PLATFORM'">
+            <h2>
+              <small>MSDAT PLATFORM</small>
+              <br />
+              {{ $route.meta.title }}
+            </h2>
+          </div>
+
+          <div v-if="dashboardName != 'MSDAT PLATFORM'">
+            <h2>
+              <small>MSDAT PLATFORM</small>
+              <br />
+              {{ dashboardName }}
+            </h2>
+          </div>
 
           <!-- <b-col cols md="6" lg="6"> -->
           <div
@@ -31,7 +50,7 @@
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/coming-soon/custom_dashboard" class="nav-link"
+              <router-link to="/coming-soon" class="nav-link"
                 >Create New Dashboard</router-link
               >
               <div
@@ -59,9 +78,14 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <router-link to="#" class="nav-link"
+
+              <router-link to="/login" v-if="!userName" class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill
                 >&nbsp;Login/Register</router-link
+              >
+              <router-link to="/login" v-else class="nav-link"
+                ><b-icon-person-fill></b-icon-person-fill
+                >&nbsp;Sign out</router-link
               >
             </b-nav>
             <b-icon
@@ -107,7 +131,6 @@ import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
 
 export default {
-  name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,
@@ -115,6 +138,7 @@ export default {
   data() {
     return {
       showExpandedDropdown: false,
+      userName: sessionStorage.getItem('username'),
       toggleOption: false,
       contactbtn: false,
       aboutPage: false,
@@ -138,9 +162,6 @@ export default {
       this.toggleOption = !this.toggleOption;
       this.$emit('tour');
     },
-    close() {
-      this.toggleOption = false;
-    },
   },
   watch: {
     $route: {
@@ -154,6 +175,15 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+  },
+  props: {
+    dashboardName: {
+      type: String,
+      default: 'MSDAT PLATFORM',
+    },
+    dashboardImage: {
+      type: File,
     },
   },
 };

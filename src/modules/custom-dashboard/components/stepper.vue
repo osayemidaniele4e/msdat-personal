@@ -1,5 +1,8 @@
 <template>
   <div class="px-5 stepper-body">
+    <router-link to="/login" class="d-flex flex-row-reverse">
+      Signout
+    </router-link>
     <b-row class="mt-4 mb-1">
       <b-col sm="12" md="3" class="mb-4 mb-md-0">
         <div style="margin-top: 12px">

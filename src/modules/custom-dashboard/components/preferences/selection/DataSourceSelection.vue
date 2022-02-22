@@ -50,7 +50,7 @@
                 item.selected
               )
             "
-            class="checkbox"
+            class="checkbox no-pointer-events"
           />
           <!-- For DataSources display -->
           <label

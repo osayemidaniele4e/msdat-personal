@@ -74,7 +74,7 @@ export default {
   height: 64px;
   display: inline-block;
   overflow: hidden;
-  background: #ffffff;
+  /* background: #ffffff; */
 }
 .ldio-7hsu63xud14 {
   width: 100%;

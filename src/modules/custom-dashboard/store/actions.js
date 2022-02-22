@@ -6,17 +6,46 @@ import axios from 'axios';
 
 export default {
 
+  resetState({ commit }) {
+    commit('resetState');
+  },
   // ********** Configuration Details ********** //
 
   dashboardConfiguration({ commit }, payload) {
     commit('dashboardDetails', payload);
   },
+  clearAllData({ commit }, payload) {
+    commit('clearAllData', payload);
+  },
+
+  // ******* USER AUTH ********* //
+  // async userLogin({ commit }, payload) {
+  //   console.log(payload);
+  //   await axios.post('http://135.181.212.168:9234/api/account/login/', payload, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: 'token 23351f769e41a7726eb18e8bb89d3de84be96845',
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log(res);
+  //       // sessionStorage.setItem('remember-token', res.remember_token);
+  //       // sessionStorage.setItem('username', res.data.username);
+
+  //       // this.$router.replace('/my-dashboard/details');
+  //     }).catch((err) => {
+  //       console.log(err.msg);
+  //     });
+  // },
 
   // ***** Indicators Data ******* //
 
   async loadIndicators({ commit, state, dispatch }) {
+    let loading = true;
     if (state.masterData.length === 0) {
-      state.loader.indicator = true;
+      loading = true;
+      commit('setIndiLoading', loading);
+      // state.loader.indicator = true;
       await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
         .then((res) => {
           const { data } = res;
@@ -65,8 +94,9 @@ export default {
               });
             }
           }));
-          console.log('CD', composedData);
-          state.loader.indicator = false;
+          // console.log('CD', composedData);
+          loading = false;
+          commit('setIndiLoading', loading);
           commit('setPArea', composedData);
           if (state.allSelected === true) {
             composedData.map((x) => {
@@ -82,8 +112,9 @@ export default {
 
           // dispatch('loadCoverageLevels', childs)
         }).catch((err) => {
-          (err);
-          state.loader.indicator = false;
+          console.log(err);
+          loading = true;
+          commit('setIndiLoading', loading);
         });
       // commit('loading', Loading)
     }
@@ -95,7 +126,8 @@ export default {
   // Load DataSources From API for the First time.
   async loadDataSource({ commit, state }) {
     if (state.SurveyArray.length === 0) {
-      state.loader.datasource = true;
+      let loading = true;
+      commit('setDSLoading', loading);
       // state.indicatorloading = true;
       await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
         .then((res) => {
@@ -146,12 +178,16 @@ export default {
             // }
             // SurveyArray = SurveyArray.sort(SortArray)
           }));
-          state.loader.datasource = false;
+          loading = false;
+          commit('setDSLoading', loading);
+          // state.loader.datasource = false;
           commit('setDArea', SurveyArray);
         }).catch((err) => {
           // eslint-disable-next-line no-unused-expressions
-          (err);
-          state.loader.datasource = false;
+          console.log(err);
+          loading = false;
+          commit('setDSLoading', loading);
+          // state.loader.datasource = false;
         });
     }
   },
@@ -159,10 +195,14 @@ export default {
   // ******** Coverage Levels ********* //
 
   async loadCoverageLevels({ commit, state }, payload) {
-    console.log('levels Payload', payload.id);
+    // console.log('levels Payload', payload.id);
     let levelsObj = {};
+    let loading = true;
     if (payload.checked === true || state.allSelected === true) {
-      state.loader.levels = true;
+      loading = true;
+      commit('setLevelsLoading', loading);
+      // state.loader.levels = true;
+      // commit('setshowLoader');
       await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
         .then((res) => {
           const { data } = res;
@@ -172,18 +212,29 @@ export default {
             const levels = dataLevels.map((level) => ({ selected: false, value: level }));
             levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
           } else {
+            // loading = true;
+            // commit('setLevelsLoading', loading);
             const levels = dataLevels.map((level) => ({ selected: true, value: level }));
             levelsObj = { id: payload.id, Datalevels: levels, checked: payload.checked };
           }
           // state.loader.levels = false;
+          loading = false;
+          commit('setLevelsLoading', loading);
         }).catch((err) => {
           console.log(err);
+          loading = false;
+          commit('setLevelsLoading', loading);
+          // state.loader.levels = false;
         });
     } else {
-      state.loader.levels = false;
+      loading = false;
+      commit('setLevelsLoading', loading);
+      // state.loader.levels = false;
       levelsObj = { id: payload.id, Datalevels: [], checked: payload.checked };
     }
-    state.loader.levels = false;
+    loading = false;
+    commit('setLevelsLoading', loading);
+    // state.loader.levels = false;
     commit('getLevels', levelsObj);
   },
 
@@ -191,8 +242,10 @@ export default {
 
   async loadYears({ commit, state }, payload) {
     let dataObj = {};
+    let loading = true;
     if (payload.checked === true || state.allSelected === true) {
-      state.loader.years = true;
+      loading = true;
+      commit('setYearsLoading', loading);
       await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
         .then((res) => {
           const { data } = res;
@@ -207,14 +260,17 @@ export default {
               id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
             };
           }
-          state.loader.years = false;
+          loading = false;
+          commit('setYearsLoading', loading);
         });
     } else {
       dataObj = {
         id: payload.id, childName: payload.child, years: [], parentName: payload.parent, checked: payload.checked,
       };
     }
-    state.loader.years = false;
+    loading = false;
+    commit('setYearsLoading', loading);
+    // state.loader.years = false;
     commit('getYears', dataObj);
   },
 
@@ -261,9 +317,18 @@ export default {
     commit('arrangedSections', payload);
   },
 
+  dynamicSection({ commit }, payload) {
+    commit('dynamicSection', payload);
+  },
+
+  customDashboard({ commit }, payload) {
+    // console.log('cDashb', payload);
+    commit('customDashboard', payload);
+  },
+
   // *********For All Selection OF DATA****************//
   allSelection({ commit }, payload) {
-    console.log('actions', payload);
+    // console.log('actions', payload);
     commit('selectAll', payload.allselected);
   },
 };
