@@ -189,6 +189,19 @@ export default {
       type: [Object, String],
       required: false,
     },
+    updateValue: {
+      type: Object,
+      required: false,
+    },
+    updateKey: {
+      type: String,
+      required: false,
+    },
+
+    resetData: {
+      type: Number,
+      required: false,
+    },
   },
   watch: {
     defaultDataSource(newValue) {
@@ -201,6 +214,22 @@ export default {
       immediate: true,
       deep: true,
     },
+
+    updateValue(newValue) {
+      this.controlIndex = 0;
+      this.groupIndex = null;
+      this.updatePayload(newValue, 'datasource');
+    },
+
+    resetData: {
+      handler() {
+        this.controlIndex = 0;
+        this.groupIndex = null;
+        this.updatePayload(this.defaultDataSource, 'datasource');
+      },
+      immediate: true,
+    },
+
   },
   methods: {
     updatePayload(value, key) {

@@ -6,6 +6,9 @@
           <TableComponent
             :showTableRelatedIndicator="showTableRelatedIndicator"
             :values="controlPanelProps"
+            @value="getValue"
+            @key="getKey"
+            @reset="getReset"
           />
         </div>
         <div class="col-md-12">
@@ -44,6 +47,21 @@ export default {
     IDCC,
     StateBarChart,
     TableComponent,
+  },
+  methods: {
+    // new emits
+
+    getValue(value) {
+      this.$emit('value', value);
+    },
+
+    getKey(key) {
+      this.$emit('key', key);
+    },
+
+    getReset() {
+      this.$emit('reset');
+    },
   },
 };
 </script>
