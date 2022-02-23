@@ -298,8 +298,7 @@ export default {
     // new emits
 
     getValue(value) {
-      this.$emit('value', value);
-      console.log(`this is value 1${JSON.stringify(value)}`);
+      this.$emit('clickedDatasource', value);
     },
 
     getKey(key) {
@@ -307,8 +306,7 @@ export default {
     },
 
     getReset() {
-      console.log('checking');
-      this.$emit('reset');
+      this.$emit('clickedReset');
     },
   },
   watch: {

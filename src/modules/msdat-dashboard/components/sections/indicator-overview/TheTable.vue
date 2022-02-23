@@ -22,9 +22,9 @@
           @selected:source="updateControlPanel($event)"
           @selected:source-info="dataSourceModalFunc($event)"
           @selected:indicator-info="indicatorModalFunc($event)"
-            @value="getValue"
+            @clickedDatasource="getValue"
                 @key="getKey"
-                @reset="getReset"
+                @clickedReset="getReset"
 
         />
       </base-sub-card>
@@ -53,10 +53,10 @@
 <script>
 import TableComponent from '@/modules/msdat-dashboard/components/table/TableComponent.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
-import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -204,7 +204,6 @@ export default {
 
     getValue(value) {
       this.$emit('value', value);
-      console.log(`this is value 3${JSON.stringify(value)}`);
     },
 
     getKey(key) {
@@ -213,7 +212,6 @@ export default {
 
     getReset() {
       this.$emit('reset');
-      console.log('resetting');
     },
   },
 };
