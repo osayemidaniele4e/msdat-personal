@@ -7,6 +7,7 @@
  * highchart package imports
  */
 import Highcharts from 'highcharts';
+import loadHighchartsMore from 'highcharts/highcharts-more';
 import loadMap from 'highcharts/modules/map';
 import loadDrilldown from 'highcharts/modules/drilldown';
 import exportData from 'highcharts/modules/export-data';
@@ -24,6 +25,7 @@ loadDrilldown(Highcharts);
 exporting(Highcharts);
 exportData(Highcharts);
 noData(Highcharts);
+loadHighchartsMore(Highcharts);
 
 export default {
   data() {

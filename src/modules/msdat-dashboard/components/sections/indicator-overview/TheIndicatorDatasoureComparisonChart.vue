@@ -148,7 +148,7 @@ export default {
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
         tooltip: {
-          ...defaultOptions.tooltip,
+          pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
           shared: true,
         },
         yAxis: {
@@ -156,6 +156,9 @@ export default {
         },
         xAxis: {
           ...defaultOptions.xAxis,
+          crosshair: {
+            enabled: true,
+          },
           categories: sortedYear,
         },
         chart: {
@@ -339,13 +342,70 @@ export default {
           [this.selectedDS],
           valueType,
         );
-        this.setUpHighChartConfig(seriesArray, years);
+
+        // const data = seriesArray[1].data.forEach((item) => item[1]);
+        // console.log(data, seriesArray, 'hello confy2');
+        // // extracting Upper bound bound values into a new array
+        // const newArray1 = seriesArray[1].data.map((item) => item[1]);
+        // console.log(newArray1);
+        // // merging the Lower and Upper bounf values into a new array
+        // const newArray2 = seriesArray[2].data.map((item) => {
+        //   const index = item[0] - 1990;
+        //   return [item[0], newArray1[index], item[1]];
+        // });
+        // console.log('newArray2', newArray2);
+        // // creating a new series array
+        // const seriesArray2 = [seriesArray[0], seriesArray[1]];
+        // seriesArray2[1].data = newArray2;
+        const name1 = seriesArray[0].name;
+        const datar = seriesArray[0].data.map((item) => item[1]);
+        const data1 = seriesArray[0].data.map((item, i) => [item[0], datar[i]]);
+        const data2 = seriesArray[1].data.map((item) => item[1]);
+        const data3 = seriesArray[2].data.map((item) => item[1]);
+        const data = seriesArray[1].data.map((item, index) => [
+          item[0],
+          data3[index],
+          data2[index],
+        ]);
+        const Sarr = [
+          {
+            name: name1,
+            data: data1,
+            zIndex: 1,
+            marker: {
+              fillColor: 'white',
+              lineWidth: 2,
+              // lineColor: Highcharts.getOptions().colors[0]
+            },
+          },
+          {
+            name: name1,
+            data,
+            type: 'arearange',
+            lineWidth: 0,
+            linkedTo: ':previous',
+            // color: Highcharts.getOptions().colors[0],
+            fillOpacity: 0.3,
+            zIndex: 0,
+            marker: {
+              enabled: false,
+            },
+            tooltip: {
+              crosshairs: true,
+              shared: true,
+              pointFormat: '{series.name}: <b>{point.y:.1f} - {point}</b><br/>',
+            },
+          },
+        ];
+        console.log(Sarr, 'Sarr');
+        this.setUpHighChartConfig(Sarr, years);
       } else {
         this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           dataSources,
         );
+        console.log(seriesArray, 'hello confy222');
         this.setUpHighChartConfig(seriesArray, years);
       }
       this.loading = false;
