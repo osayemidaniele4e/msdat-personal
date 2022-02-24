@@ -342,21 +342,7 @@ export default {
           [this.selectedDS],
           valueType,
         );
-
-        // const data = seriesArray[1].data.forEach((item) => item[1]);
-        // console.log(data, seriesArray, 'hello confy2');
-        // // extracting Upper bound bound values into a new array
-        // const newArray1 = seriesArray[1].data.map((item) => item[1]);
-        // console.log(newArray1);
-        // // merging the Lower and Upper bounf values into a new array
-        // const newArray2 = seriesArray[2].data.map((item) => {
-        //   const index = item[0] - 1990;
-        //   return [item[0], newArray1[index], item[1]];
-        // });
-        // console.log('newArray2', newArray2);
-        // // creating a new series array
-        // const seriesArray2 = [seriesArray[0], seriesArray[1]];
-        // seriesArray2[1].data = newArray2;
+        // CREATE THE HIGHCHART CONFIG
         const name1 = seriesArray[0].name;
         const datar = seriesArray[0].data.map((item) => item[1]);
         const data1 = seriesArray[0].data.map((item, i) => [item[0], datar[i]]);
