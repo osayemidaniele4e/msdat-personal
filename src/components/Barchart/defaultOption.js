@@ -7,6 +7,9 @@ export default {
   exporting: {
     enabled: false,
   },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
+  },
   title: {
     enabled: false,
     text: '',

@@ -148,6 +148,7 @@ export default {
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
         tooltip: {
+          ...defaultOptions.tooltip,
           shared: true,
         },
         yAxis: {
@@ -267,7 +268,6 @@ export default {
         let seriesObject = {};
         if (mappedValueTypes.length > 0) {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
-          console.log(datasource);
           seriesObject = this.createSeriesObject(
             valueType,
             datasource.datasource,
@@ -359,7 +359,6 @@ export default {
     },
   },
   mounted() {
-    console.log('hello =>', this.ChartOptions);
     // debugger;
     // console.trace(this.values);
   },
