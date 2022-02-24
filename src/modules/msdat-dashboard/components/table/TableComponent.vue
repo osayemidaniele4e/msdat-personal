@@ -299,7 +299,6 @@ export default {
 
     getValue(value) {
       this.$emit('value', value);
-      console.log(`this is value 1${JSON.stringify(value)}`);
     },
 
     getKey(key) {
