@@ -8,7 +8,8 @@
 
                   <!-- testing for mobile -->
         <div class="mobile-flex">
-          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid mob-img" />
+          <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
+          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img"  variant="primary"/>
           <div class="mobile-flex-col">
             <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
           <div class="mobile-flex-col-text2">Health Outcomes and Service Coverage</div>
@@ -23,7 +24,7 @@
                 >{{control.label}}
                 </b-dropdown-item>
               </b-dropdown> -->
-                   <b-dropdown text="Select" >
+                   <b-dropdown text="Select" class="select-dropdown" variant="primary" >
                 <b-dropdown-item href="#"
                 id="dropdownMenuButton"
                   v-for="(control, index) in $store.state.MSDAT_STORE
@@ -626,30 +627,34 @@ test styling for mobile responsiveness
 }
 
 .mobile-flex{
-  display: flex;
-  flex-direction: row;
+ display: grid;
+ grid-template-columns: 20% 50% 20% 10%;
 }
 
 .mobile-flex-col{
   display: flex;
   flex-direction: column;
-    margin: 10px;
+    margin: 5px;
+      justify-content: center;
+
 }
 
 .mobile-flex-col-text1{
   color: white;
   font-weight: 200;
-  font-size: 12px;
+  font-size: 8px;
 }
 
 .mobile-flex-col-text2{
   color: white;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 10px;
 }
 
 .mob-img{
-  width: 5px;
+  width: 7px;
+  height: 7px;
+  margin: 10px;
 }
 
 .mob-select1{
@@ -668,6 +673,23 @@ test styling for mobile responsiveness
   margin: 20px;
   cursor: pointer;
   outline: none;
+}
+
+.select-dropdown{
+  background-color: none;
+  height: 30px;
+  outline: none;
+  border: 1px solid green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 15px;
+}
+
+.dropdownMenuButton{
+  background-color: none;
+  border: 1px solid green;
 }
 
 </style>
