@@ -4,7 +4,7 @@ module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: 'MSDAT Documentation',
+  title: 'MSDAT 2.0 Documentation',
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
