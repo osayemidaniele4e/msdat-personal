@@ -298,7 +298,7 @@ export default {
     // new emits
 
     getValue(value) {
-      this.$emit('value', value);
+      this.$emit('clickedDatasource', value);
     },
 
     getKey(key) {
