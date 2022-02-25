@@ -148,6 +148,7 @@ export default {
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
         tooltip: {
+          // pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
           shared: true,
         },
         yAxis: {
@@ -155,6 +156,9 @@ export default {
         },
         xAxis: {
           ...defaultOptions.xAxis,
+          crosshair: {
+            enabled: true,
+          },
           categories: sortedYear,
         },
         chart: {
@@ -173,6 +177,12 @@ export default {
             connectNulls: false,
             pointPlacement: 'between',
             // borderWidth: 0,
+          },
+          line: {
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
+              shared: true,
+            },
           },
         },
       };
@@ -314,7 +324,8 @@ export default {
         [datasourceArray],
         valueType,
       );
-      this.setUpHighChartConfig(seriesArray, years);
+      const seriesArr = await this.Reformat(seriesArray);
+      this.setUpHighChartConfig(seriesArr, years);
       this.loading = false;
     },
     async onConfidenceRangeClicked(e) {
@@ -338,7 +349,8 @@ export default {
           [this.selectedDS],
           valueType,
         );
-        this.setUpHighChartConfig(seriesArray, years);
+        const seriesArr = await this.Reformat(seriesArray);
+        this.setUpHighChartConfig(seriesArr, years);
       } else {
         this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
@@ -357,11 +369,59 @@ export default {
       );
       return availableDataSource;
     },
+    // ================================ REFORMATTING DATA =====================================
+    async Reformat(seriesArray) {
+      const name1 = seriesArray[0].name;
+      const datar = seriesArray[0].data.map((item) => item[1]);
+      const data1 = seriesArray[0].data.map((item, i) => [item[0], datar[i]]);
+      const data2 = seriesArray[1].data.map((item) => item[1]);
+      const data3 = seriesArray[2].data.map((item) => item[1]);
+      const data = seriesArray[1].data.map((item, index) => [
+        `Confidence Range for ${name1}`,
+        parseFloat(data3[index].toFixed(1)),
+        parseFloat(data2[index].toFixed(1)),
+      ]);
+      const seriesArr = [
+        {
+          name: name1,
+          data: data1,
+          zIndex: 1,
+          marker: {
+            fillColor: '#4482c2',
+            lineWidth: 2,
+            // lineColor: Highcharts.getOptions().colors[0]
+          },
+        },
+        {
+          name: `Confidence Range for ${name1}`,
+          data,
+          type: 'arearange',
+          lineWidth: 2,
+          linkedTo: ':previous',
+          color: '#faa630',
+          fillOpacity: 0.1,
+          zIndex: 0,
+          marker: {
+            enabled: true,
+            radius: 2,
+            lineWidth: 1,
+            width: 1,
+          },
+          tooltip: {
+            crosshairs: true,
+            shared: true,
+            formatter() {
+              // eslint-disable-next-line no-unused-vars
+              const pointData = data.find((row) => row.name === this.point.x);
+            },
+          },
+        },
+      ];
+      return seriesArr;
+    },
   },
   mounted() {
     console.log('hello =>', this.ChartOptions);
-    // debugger;
-    // console.trace(this.values);
   },
 };
 </script>

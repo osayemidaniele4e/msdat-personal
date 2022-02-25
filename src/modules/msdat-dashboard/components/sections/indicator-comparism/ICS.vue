@@ -42,7 +42,7 @@
         alt="no data"
         class="img-fluid"
         height="auto"
-        width="25%"
+        width="240px"
       />
     </div>
   </div>

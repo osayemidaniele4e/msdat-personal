@@ -7,7 +7,7 @@
     <div class="d-flex align-items-center justify-content-center">
       <span
         class="data-source h6 mr-3 mb-0 font-weight-bold"
-        @click="$emit('source:click', source)"
+        @click="$emit('source:click', source), emitValue(source)"
         >{{ source.datasource }}
       </span>
       <b-icon-info-circle-fill
@@ -29,6 +29,23 @@ export default {
     selectedSource: {
       type: Object,
       required: false,
+    },
+  },
+
+  methods: {
+    emitValue(source) {
+      this.$emit('value', source);
+      this.$emit('key', 'datasource');
+    },
+
+    updatePayload(value, key) {
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.controlIndex,
+        key,
+        value,
+      });
+
+      this.$emit('data:options', this.payload);
     },
   },
 };
