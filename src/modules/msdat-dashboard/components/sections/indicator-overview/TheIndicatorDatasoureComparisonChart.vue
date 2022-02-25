@@ -148,7 +148,7 @@ export default {
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
         tooltip: {
-          pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
+          // pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
           shared: true,
         },
         yAxis: {
@@ -318,7 +318,8 @@ export default {
         [datasourceArray],
         valueType,
       );
-      this.setUpHighChartConfig(seriesArray, years);
+      const seriesArr = await this.Reformat(seriesArray);
+      this.setUpHighChartConfig(seriesArr, years);
       this.loading = false;
     },
     async onConfidenceRangeClicked(e) {
@@ -342,56 +343,14 @@ export default {
           [this.selectedDS],
           valueType,
         );
-        // CREATE THE HIGHCHART CONFIG
-        const name1 = seriesArray[0].name;
-        const datar = seriesArray[0].data.map((item) => item[1]);
-        const data1 = seriesArray[0].data.map((item, i) => [item[0], datar[i]]);
-        const data2 = seriesArray[1].data.map((item) => item[1]);
-        const data3 = seriesArray[2].data.map((item) => item[1]);
-        const data = seriesArray[1].data.map((item, index) => [
-          item[0],
-          data3[index],
-          data2[index],
-        ]);
-        const Sarr = [
-          {
-            name: name1,
-            data: data1,
-            zIndex: 1,
-            marker: {
-              fillColor: 'white',
-              lineWidth: 2,
-              // lineColor: Highcharts.getOptions().colors[0]
-            },
-          },
-          {
-            name: name1,
-            data,
-            type: 'arearange',
-            lineWidth: 0,
-            linkedTo: ':previous',
-            // color: Highcharts.getOptions().colors[0],
-            fillOpacity: 0.3,
-            zIndex: 0,
-            marker: {
-              enabled: false,
-            },
-            tooltip: {
-              crosshairs: true,
-              shared: true,
-              pointFormat: '{series.name}: <b>{point.y:.1f} - {point}</b><br/>',
-            },
-          },
-        ];
-        console.log(Sarr, 'Sarr');
-        this.setUpHighChartConfig(Sarr, years);
+        const seriesArr = await this.Reformat(seriesArray);
+        this.setUpHighChartConfig(seriesArr, years);
       } else {
         this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           dataSources,
         );
-        console.log(seriesArray, 'hello confy222');
         this.setUpHighChartConfig(seriesArray, years);
       }
       this.loading = false;
@@ -403,6 +362,56 @@ export default {
         this.values.indicator.id,
       );
       return availableDataSource;
+    },
+    // ================================ REFORMATTING DATA =====================================
+    async Reformat(seriesArray) {
+      const name1 = seriesArray[0].name;
+      const datar = seriesArray[0].data.map((item) => item[1]);
+      const data1 = seriesArray[0].data.map((item, i) => [item[0], datar[i]]);
+      const data2 = seriesArray[1].data.map((item) => item[1]);
+      const data3 = seriesArray[2].data.map((item) => item[1]);
+      const data = seriesArray[1].data.map((item, index) => [
+        `Confidence Range for ${item[0]}`,
+        data3[index],
+        data2[index],
+      ]);
+      const seriesArr = [
+        {
+          name: name1,
+          data: data1,
+          zIndex: 1,
+          marker: {
+            fillColor: '#4482c2',
+            lineWidth: 2,
+            // lineColor: Highcharts.getOptions().colors[0]
+          },
+        },
+        {
+          name: name1,
+          data,
+          type: 'arearange',
+          lineWidth: 2,
+          linkedTo: ':previous',
+          color: '#faa630',
+          fillOpacity: 0.1,
+          zIndex: 0,
+          marker: {
+            enabled: true,
+            radius: 2,
+            lineWidth: 1,
+            width: 1,
+          },
+          tooltip: {
+            crosshairs: true,
+            shared: true,
+            formatter() {
+              // eslint-disable-next-line no-unused-vars
+              const pointData = data.find((row) => row.name === this.point.x.toFixed(1));
+            },
+          },
+        },
+      ];
+      return seriesArr;
     },
   },
   mounted() {
