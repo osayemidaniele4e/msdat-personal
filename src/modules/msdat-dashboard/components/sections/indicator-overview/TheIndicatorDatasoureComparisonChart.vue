@@ -178,6 +178,12 @@ export default {
             pointPlacement: 'between',
             // borderWidth: 0,
           },
+          line: {
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
+              shared: true,
+            },
+          },
         },
       };
       const displayFactor = this.dlGetFactor(
@@ -371,9 +377,9 @@ export default {
       const data2 = seriesArray[1].data.map((item) => item[1]);
       const data3 = seriesArray[2].data.map((item) => item[1]);
       const data = seriesArray[1].data.map((item, index) => [
-        `Confidence Range for ${item[0]}`,
-        data3[index],
-        data2[index],
+        `Confidence Range for ${name1}`,
+        parseFloat(data3[index].toFixed(1)),
+        parseFloat(data2[index].toFixed(1)),
       ]);
       const seriesArr = [
         {
@@ -387,7 +393,7 @@ export default {
           },
         },
         {
-          name: name1,
+          name: `Confidence Range for ${name1}`,
           data,
           type: 'arearange',
           lineWidth: 2,
@@ -406,7 +412,7 @@ export default {
             shared: true,
             formatter() {
               // eslint-disable-next-line no-unused-vars
-              const pointData = data.find((row) => row.name === this.point.x.toFixed(1));
+              const pointData = data.find((row) => row.name === this.point.x);
             },
           },
         },
@@ -416,8 +422,6 @@ export default {
   },
   mounted() {
     console.log('hello =>', this.ChartOptions);
-    // debugger;
-    // console.trace(this.values);
   },
 };
 </script>
