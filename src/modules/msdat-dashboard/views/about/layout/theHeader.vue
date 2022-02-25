@@ -9,7 +9,7 @@
                   <!-- testing for mobile -->
         <div class="mobile-flex">
           <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
-          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img"  variant="primary"/>
+          <img src="@/assets/img/Logo-mob.svg" alt="FMOH Logo" class="mob-img"  variant="primary"/>
           <div class="mobile-flex-col">
             <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
           <div class="mobile-flex-col-text2">Health Outcomes and Service Coverage</div>
@@ -24,7 +24,11 @@
                 >{{control.label}}
                 </b-dropdown-item>
               </b-dropdown> -->
-                   <b-dropdown text="Select" class="select-dropdown" variant="primary" >
+
+              <div class="select-dropdown">
+                  <b-dropdown text="Select" toggle-class='select-dropdown'
+                  variant='none'
+                   text-variant='white'>
                 <b-dropdown-item href="#"
                 id="dropdownMenuButton"
                   v-for="(control, index) in $store.state.MSDAT_STORE
@@ -34,6 +38,7 @@
                 >{{control.label}}
                 </b-dropdown-item>
               </b-dropdown>
+              </div>
 
               <!-- <select class="mob-select1">
               <option
@@ -679,12 +684,15 @@ test styling for mobile responsiveness
   background-color: none;
   height: 30px;
   outline: none;
-  border: 1px solid green;
+  border: 1px solid white;
+  color: white !important;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
   margin-top: 15px;
+  border-radius: 2px;
+
 }
 
 .dropdownMenuButton{

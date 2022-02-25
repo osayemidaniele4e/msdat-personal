@@ -304,7 +304,27 @@ export default {
           [this.selectedDS],
           valueType,
         );
-        this.setUpHighChartConfig(seriesArray, years);
+        const data = seriesArray[1].data.forEach((item) => item[1]);
+        console.log(data, seriesArray, 'hello confy2');
+
+        // extracting Lower bound values into a new array
+        const newArray1 = seriesArray[1].data.map((item) => item[1]);
+        console.log('lower bound', seriesArray[1]);
+        console.log(newArray1);
+
+        // merging the Lower and Upper bounf values into a new array
+        const newArray2 = seriesArray[2].data.map((item) => {
+          const index = item[0] - 1990;
+          return [item[0], newArray1[index], item[1]];
+        });
+        console.log('newArray2', newArray2);
+
+        const seriesArray2 = [seriesArray[0], seriesArray[1]];
+
+        seriesArray2[1].data = newArray2;
+        console.log('seriesArray2', seriesArray2);
+
+        this.setUpHighChartConfig(seriesArray2, years);
       } else {
         this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
