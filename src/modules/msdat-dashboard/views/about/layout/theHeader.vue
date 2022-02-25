@@ -28,7 +28,8 @@
               <div class="select-dropdown">
                   <b-dropdown text="Select" toggle-class='select-dropdown'
                   variant='none'
-                   text-variant='white'>
+                   text-variant='none'>
+
                 <b-dropdown-item href="#"
                 id="dropdownMenuButton"
                   v-for="(control, index) in $store.state.MSDAT_STORE
@@ -40,6 +41,14 @@
               </b-dropdown>
               </div>
 
+  <b-dropdown id="dropdown-1" text="Dropdown Button" class="m-md-2">
+    <b-dropdown-item>First Action</b-dropdown-item>
+    <b-dropdown-item>Second Action</b-dropdown-item>
+    <b-dropdown-item>Third Action</b-dropdown-item>
+    <b-dropdown-divider></b-dropdown-divider>
+    <b-dropdown-item active>Active action</b-dropdown-item>
+    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
+  </b-dropdown>
               <!-- <select class="mob-select1">
               <option
                v-for="(control, index) in $store.state.MSDAT_STORE
