@@ -98,17 +98,37 @@
             </template>
             <template>
               <!-- <div class="row"> -->
-              <div class="row">
-                <template v-for="n in 3">
-                  <div :key="n" class="col-md-4">
+
+                <template>
+                  <div :key="1" class="col-md-4">
                     <LazyLoading>
-                      <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="n" :values="payload[n - 1]" />
+                      <ControlPanelConfiguration :groupIndex="1 - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="n" :values="payload[1 - 1]" />
                       </ControlPanelConfiguration>
                     </LazyLoading>
                   </div>
                 </template>
-              </div>
+
+                <template>
+                  <div :key="1" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration :groupIndex="1 - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="n" :values="payload[1 - 1]" />
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </template>
+
+<!--
+                          <template>
+                  <div :key="n" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration :groupIndex="3 - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="n" :values="payload[3 - 1]" />
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </template> -->
               <!-- </div> -->
             </template>
           </base-sub-card>

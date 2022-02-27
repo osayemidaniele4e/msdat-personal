@@ -6,7 +6,17 @@
 
       <b-row class="d-flex justify-content-between align-items-center">
 
-                  <!-- testing for mobile -->
+        <b-col cols md="1" lg="1" class="main">
+          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
+        </b-col>
+        <b-col
+          cols
+          md="11"
+          lg="11"
+          class="d-flex justify-content-between align-items-center border-left main"
+        >
+
+                     <!-- testing for mobile -->
         <div class="mobile-flex">
           <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
           <img src="@/assets/img/Logo-mob.svg" alt="FMOH Logo" class="mob-img"  variant="primary"/>
@@ -49,26 +59,13 @@
                   @click="emitIndex(index)"
               >{{control.label}}</option>
             </select> -->
-            <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon"
-             v-b-toggle.sidebar-1
-            ></b-icon>
 
                <b-sidebar id="sidebar-1" title="" right shadow>
                      <Sidebar
                 />
     </b-sidebar>
         </div>
-
-        <b-col cols md="1" lg="1" class="main">
-          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
-        </b-col>
-        <b-col
-          cols
-          md="11"
-          lg="11"
-          class="d-flex justify-content-between align-items-center border-left main"
-        >
-          <h2>
+          <h2 class="main">
 
             <small class="main">MSDAT PLATFORM</small>
             <br />
@@ -127,7 +124,11 @@
               @click="toggleOption = !toggleOption"
               icon="three-dots-vertical"
               font-scale="1.5"
+              class="main"
             />
+               <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon"
+             v-b-toggle.sidebar-1
+            ></b-icon>
             <header-option
               v-if="toggleOption"
               v-on:showContact="contactbtn = true"
@@ -245,6 +246,14 @@ export default {
 
 <style lang="scss" scoped>
 $msdat-green: #007d53;
+
+.main{
+    display: inherit;
+}
+
+.mobile-flex{
+  display: none;
+}
 
 header#the-header {
   .btn-icon {
@@ -388,6 +397,12 @@ header#the-header {
     display: none;
   }
 
+.mobile-flex{
+ display: flex;
+ justify-content: space-between;
+ flex-direction: row;
+}
+
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -451,6 +466,15 @@ header#the-header {
 
 /* SMALL */
 @media (min-width: 576px) and (max-width: 768px) {
+  .main{
+  display: none;
+}
+
+.mobile-flex{
+ display: flex;
+ justify-content: space-between;
+ flex-direction: row;
+}
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -516,6 +540,17 @@ header#the-header {
 
 /* MEDIUM */
 @media (min-width: 768px) and (max-width: 992px) {
+   .main{
+    display: none;
+  }
+
+.mobile-flex{
+   display: flex;
+ justify-content: space-between;
+ flex-direction: row;
+//  display: grid;
+//  grid-template-columns: 20% 50% 20% 10%;
+}
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -578,6 +613,15 @@ header#the-header {
 
 /* LARGE */
 @media (min-width: 992px) and (max-width: 1200px) {
+   .main{
+    display: none;
+  }
+
+.mobile-flex{
+ display: flex;
+ justify-content: space-between;
+ flex-direction: row;
+}
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -616,13 +660,8 @@ header#the-header {
 }
 </style>
 
-test styling for mobile responsiveness
-
 <style scoped>
-
-.main{
-  display: none;
-}
+/* test styling for mobile responsiveness */
 
 .select-indicator-mob{
   border: 1px solid white;
@@ -632,16 +671,15 @@ test styling for mobile responsiveness
   padding: 10px;
 }
 
-.mobile-flex{
- display: grid;
- grid-template-columns: 20% 50% 20% 10%;
-}
-
 .mobile-flex-col{
   display: flex;
   flex-direction: column;
     margin: 5px;
       justify-content: center;
+      margin-left: 5px;
+      width: 175px;
+      position: relative;
+      left: -20px;
 
 }
 
@@ -658,9 +696,10 @@ test styling for mobile responsiveness
 }
 
 .mob-img{
-  width: 7px;
-  height: 7px;
-  margin: 10px;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  left: -30px;
 }
 
 .mob-select1{
@@ -672,13 +711,15 @@ test styling for mobile responsiveness
   background-color: #007d537f;
   border: 1px solid white;
   color: white;
+
 }
 
 .mob-grid-icon{
   color: white;
-  margin: 20px;
   cursor: pointer;
   outline: none;
+  position: relative;
+  left: -10px;
 }
 
 .select-dropdown{
@@ -693,6 +734,9 @@ test styling for mobile responsiveness
   margin: 0 auto;
   margin-top: 15px;
   border-radius: 2px;
+    margin-left: 0px;
+    position: relative;
+    left: -30px;
 
 }
 
