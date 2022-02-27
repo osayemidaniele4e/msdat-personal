@@ -66,8 +66,7 @@
     </b-sidebar>
         </div>
           <h2 class="main">
-
-            <small class="main">MSDAT PLATFORM</small>
+            <small>MSDAT PLATFORM</small>
             <br />
             {{ $route.meta.title }}
           </h2>
@@ -255,6 +254,10 @@ $msdat-green: #007d53;
   display: none;
 }
 
+.mob-grid-icon{
+  display: none;
+}
+
 header#the-header {
   .btn-icon {
     margin-bottom: 0.35rem;
@@ -403,6 +406,10 @@ header#the-header {
  flex-direction: row;
 }
 
+.mob-grid-icon{
+  display: inherit;
+}
+
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -475,6 +482,11 @@ header#the-header {
  justify-content: space-between;
  flex-direction: row;
 }
+
+.mob-grid-icon{
+  display: inherit;
+}
+
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -540,17 +552,21 @@ header#the-header {
 
 /* MEDIUM */
 @media (min-width: 768px) and (max-width: 992px) {
-   .main{
-    display: none;
-  }
+//    .main{
+//     display: none;
+//   }
 
-.mobile-flex{
-   display: flex;
- justify-content: space-between;
- flex-direction: row;
-//  display: grid;
-//  grid-template-columns: 20% 50% 20% 10%;
-}
+// .mobile-flex{
+//    display: flex;
+//  justify-content: space-between;
+//  flex-direction: row;
+// //  display: grid;
+// //  grid-template-columns: 20% 50% 20% 10%;
+// }
+
+// .mob-grid-icon{
+//   display: inherit;
+// }
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -613,15 +629,19 @@ header#the-header {
 
 /* LARGE */
 @media (min-width: 992px) and (max-width: 1200px) {
-   .main{
-    display: none;
-  }
+//    .main{
+//     display: none;
+//   }
 
-.mobile-flex{
- display: flex;
- justify-content: space-between;
- flex-direction: row;
-}
+// .mobile-flex{
+//  display: flex;
+//  justify-content: space-between;
+//  flex-direction: row;
+// }
+
+// .mob-grid-icon{
+//   display: inherit;
+// }
   #about-wrap {
     header#the-header {
       & > .container-fluid {
