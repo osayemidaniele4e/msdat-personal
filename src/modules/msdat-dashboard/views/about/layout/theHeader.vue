@@ -246,6 +246,14 @@ export default {
 <style lang="scss" scoped>
 $msdat-green: #007d53;
 
+button{
+  color: white;
+}
+
+.btn{
+  color: white;
+}
+
 .main{
     display: inherit;
 }
@@ -410,6 +418,10 @@ header#the-header {
   display: inherit;
 }
 
+.btn{
+  color: white;
+}
+
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -485,6 +497,10 @@ header#the-header {
 
 .mob-grid-icon{
   display: inherit;
+}
+
+.btn{
+  color: white;
 }
 
   #about-wrap {

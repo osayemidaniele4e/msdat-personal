@@ -1,7 +1,6 @@
 <template>
 <div>
     <MultiSource :values="controlPanelProps" />
-   <MultiSource :values="controlPanelProps" />
 </div>
 
 </template>

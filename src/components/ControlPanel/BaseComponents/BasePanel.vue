@@ -19,7 +19,7 @@
       </li>
     </ul>
 
-      <div>Indicator overview</div>
+      <div>{{selectedIndex}}</div>
     <!-- Multiselect dropdown here -->
     <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
       <div class="mx-lg-5 mx-3 step-controls styles pt-1 pb-2">

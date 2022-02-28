@@ -134,6 +134,54 @@
           </base-sub-card>
         </div>
       </template>
+
+            <template v-slot:section-5="{ payload, controlIndex }">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Multi-Source Indicator Comparison
+              </h5>
+            </template>
+            <template>
+              <!-- <div class="row"> -->
+
+                <template>
+                  <div :key="1" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration :groupIndex="1 - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="1" :values="payload[1 - 1]" />
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </template>
+
+                <template>
+                  <div :key="1" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration :groupIndex="2 - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="2" :values="payload[2 - 1]" />
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </template>
+
+<!--
+                          <template>
+                  <div :key="n" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration :groupIndex="3 - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="n" :values="payload[3 - 1]" />
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </template> -->
+              <!-- </div> -->
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
     </BaseDashboard>
   </div>
 </template>

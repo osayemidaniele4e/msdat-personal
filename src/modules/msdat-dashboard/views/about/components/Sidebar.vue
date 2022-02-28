@@ -32,13 +32,14 @@
         <b-list-group>
           <h5 class="text-underline main-item">Health Outputs</h5>
           <div class="mb-2">
-            <b class="main-item" >Health Service Access</b>
-            <router-link to="/dashboard/Health_Service_Access" target="_blank"  class="sub-item">
+            <div class="sub-item-bold" >Health Service Access</div>
+            <router-link to="/dashboard/Health_Service_Access" target="_blank"
+             class="sub-item">
             Health Service Access
             </router-link>
           </div>
           <div class="mb-2">
-            <b class="main-item">Health Service Uptake</b>
+            <div class="sub-item-bold">Health Service Uptake</div>
             <a
               href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
@@ -55,7 +56,7 @@
             >
           </div>
           <div class="mb-2">
-              <b class="main-item">Surveillance Dashboards</b>
+              <b class="sub-item-bold">Surveillance Dashboards</b>
             <router-link to="/coming-soon/health_surveillance"
              class="sub-item"
               >
@@ -171,11 +172,39 @@ h5.text-underline {
 .main-item{
    display: flex;
    justify-content: right;
+    padding: 0.2rem 0;
+  margin: 0.7rem 1.3rem;
+letter-spacing: var(--unnamed-character-spacing-0);
+text-align: left;
+font: normal normal bold 20px/24px Work Sans;
+letter-spacing: 0px;
+color: #404040;
+opacity: 1;
 }
 
 .sub-item{
   display: flex;
   justify-content: right;
+    margin-right: 1.3rem;
+letter-spacing: var(--unnamed-character-spacing-0);
+text-align: left;
+font: normal normal normal 16px/19px Work Sans;
+letter-spacing: 0px;
+color: #404040;
+opacity: 1;
+
+  }
+
+  .sub-item-bold{
+      display: flex;
+  justify-content: right;
+  margin-right: 1.3rem;
+letter-spacing: var(--unnamed-character-spacing-0);
+font: normal normal 600 16px/19px Work Sans;
+letter-spacing: 0px;
+color: #404040;
+opacity: 1;
+font-size: 14px;
 
   }
 </style>
