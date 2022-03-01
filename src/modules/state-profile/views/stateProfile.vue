@@ -541,12 +541,6 @@ export default {
               year: 2018,
               color: '#43893B',
             },
-            {
-              indicator: 13,
-              dataSource: 1,
-              year: 2016,
-              color: '#43893B',
-            },
           ],
         },
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" @click="closeSubCard = !closeSubCard">
     <div class="col-md-8">
       <div class="row">
         <div class="col-md-12">
@@ -12,15 +12,13 @@
           />
         </div>
         <div class="col-md-12">
-          <IDCC
-           :values="controlPanelProps"
-           :resetIndex="resetIndex"
-           />
+          <IDCC :values="controlPanelProps" :closeOverlay="closeSubCard"
+           :resetIndex="resetIndex" />
         </div>
       </div>
     </div>
     <div class="col-md-4">
-      <StateBarChart :values="controlPanelProps" />
+      <StateBarChart :values="controlPanelProps" :closeOverlay="closeSubCard" />
     </div>
   </div>
 </template>
@@ -34,6 +32,7 @@ export default {
   data() {
     return {
       resetIndex: 1,
+      closeSubCard: true,
     };
   },
   props: {

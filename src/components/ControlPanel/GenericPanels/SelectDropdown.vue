@@ -25,10 +25,18 @@
        :data-parent="props.option.$groupLabel">
        {{props.option.$groupLabel}} <span class="down-caret"></span> </span>
       </template>
-    <div v-if="!props.option.$groupLabel"
-     :data-child="props.option.program_area">
-     {{props.option.full_name}}
-    </div>
+      <template v-if="props.option.item">
+        <div v-if="!props.option.$groupLabel"
+        :data-child="props.option.datasource">
+        {{props.option.item}}
+        </div>
+      </template>
+      <template v-else-if="props.option.full_name">
+        <div v-if="!props.option.$groupLabel"
+        :data-child="props.option.program_area">
+        {{props.option.full_name}}
+        </div>
+      </template>
 
     </template>
     <!---
@@ -47,6 +55,7 @@ export default {
   data() {
     return {
       allowEmpty: false,
+      open: false,
     };
   },
   computed: {
@@ -75,6 +84,29 @@ export default {
     },
   },
   watch: {
+    open(newVal, oldVal) {
+      if (!oldVal && newVal) {
+        if (this.multiSelectProps['group-values']) {
+          const all = document.querySelectorAll('div.multiselect__content-wrapper > ul > li');
+          // this.open = true;
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i <= all.length; i++) {
+            if (all[i].children[0].children[0]?.dataset.parent) {
+              all[i].removeEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.pickProgramArea(e);
+              });
+              all[i].addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.pickProgramArea(e);
+              });
+            }
+          }
+        }
+      }
+    },
     options: {
       handler(newValue) {
         if (this.multiSelectProps['preselect-first']) {
@@ -102,19 +134,23 @@ export default {
      * child nodes and also the dropdown caret rotation
      */
     pickProgramArea(event) {
-      const { parent } = event.target.children[0].children[0].dataset;
-      const all = Array.from(event.target.parentNode.children);
-      all.forEach((element) => {
-        // eslint-disable-next-line prefer-destructuring
-        const child = element.children[0].children[0].dataset.child;
-        const tempParent = element.children[0].children[0].dataset.parent;
-        if (parent === child) {
-          element.classList.toggle('noShow');
-        }
-        if (parent === tempParent) {
-          element.children[0].children[0].children[0].classList.toggle('open-caret');
-        }
-      });
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.type === 'click') {
+        const { parent } = event.target.children[0].children[0].dataset;
+        const all = Array.from(event.target.parentNode.children);
+        all.forEach((element) => {
+          // eslint-disable-next-line prefer-destructuring
+          const child = element.children[0].children[0].dataset.child;
+          const tempParent = element.children[0].children[0].dataset.parent;
+          if (parent === child) {
+            element.classList.toggle('noShow');
+          }
+          if (parent === tempParent) {
+            element.children[0].children[0].children[0].classList.toggle('open-caret');
+          }
+        });
+      }
     },
     // hideOptions() {
     //   if (this.multiSelectProps['group-values']) {
@@ -142,20 +178,19 @@ export default {
     initialCSS() {
       if (this.multiSelectProps['group-values']) {
         const all = document.querySelectorAll('div.multiselect__content-wrapper > ul > li');
+        this.open = true;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i <= all.length; i++) {
           if (all[i].children[0].children[0]?.dataset.child) {
             all[i].classList.add('noShow');
-          } else {
-            all[i].addEventListener('click', (e) => {
-              this.pickProgramArea(e);
-            });
           }
         }
       }
     },
   },
-
+  // mounted() {
+  //   console.log(this.multiSelectProps)
+  // }
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ics_wrapper">
     <base-overlay :show="loading">
       <base-sub-card
         buttonToggle
@@ -36,6 +36,15 @@
         <BarChart ref="BaseChart" :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
+    <div v-if="checkData() === false" class="no_data">
+      <img
+        :src="require('@/assets/no-data/No_Available_Data.svg')"
+        alt="no data"
+        class="img-fluid"
+        height="auto"
+        width="240px"
+      />
+    </div>
   </div>
 </template>
 
@@ -211,6 +220,13 @@ export default {
     },
   },
   methods: {
+    checkData() {
+      const datar = this.chartOptions.series.map((el, i) => el.data[i]);
+      if (datar[0]?.length >= 1) {
+        return true;
+      }
+      return false;
+    },
     ...mapMutations('MSDAT_STORE', [
       'TOGGLE_VISIBILITY', // -> this.toggleVisibility()
     ]),
@@ -371,4 +387,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+div.ics_wrapper {
+  position: relative;
+  div.no_data {
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+}
 </style>
