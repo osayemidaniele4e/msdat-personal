@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 <template>
-  <base-overlay :show="loading">
+  <base-overlay :show="loading || notShow">
     <base-sub-card
       buttonToggle
       showControls
@@ -24,7 +24,8 @@
           Comparison Of <b>{{ values.indicator.short_name }}</b> Across Different Data Source
         </p>
       </template>
-      <BarChart ref="BaseChart" :chartOptions="ChartOptions" />
+      <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
+
     </base-sub-card>
   </base-overlay>
 </template>
@@ -61,6 +62,7 @@ export default {
         },
       ],
       selectedDS: {},
+      notShow: false,
     };
   },
   props: {
@@ -71,6 +73,11 @@ export default {
       type: [Object, String, Array],
       required: true,
     },
+
+    resetIndex: {
+      type: Number,
+      required: true,
+    },
   },
   watch: {
     /**
@@ -78,6 +85,23 @@ export default {
      * you want them to be called
      * like whats happening here
      * */
+
+    // when the refresh button is clicked
+    resetIndex: {
+      async handler() {
+        this.notShow = true;
+        this.loading = true;
+        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        this.setUpHighChartConfig(seriesArray, years);
+        console.log('it is reseting the index');
+        this.loading = false;
+        this.notShow = false;
+      },
+      deep: false,
+      immediate: false,
+    },
+
     'values.datasource': {
       async handler(selectedDataSource) {
         // debugger;
@@ -304,7 +328,26 @@ export default {
           [this.selectedDS],
           valueType,
         );
-        this.setUpHighChartConfig(seriesArray, years);
+        const data = seriesArray[1].data.forEach((item) => item[1]);
+        console.log(data, seriesArray, 'hello confy2');
+
+        // extracting Upper bound bound values into a new array
+        const newArray1 = seriesArray[1].data.map((item) => item[1]);
+        console.log(newArray1);
+
+        // merging the Lower and Upper bounf values into a new array
+        const newArray2 = seriesArray[2].data.map((item) => {
+          const index = item[0] - 1990;
+          return [item[0], newArray1[index], item[1]];
+        });
+        console.log('newArray2', newArray2);
+
+        // creating a new series array
+        const seriesArray2 = [seriesArray[0], seriesArray[1]];
+
+        seriesArray2[1].data = newArray2;
+
+        this.setUpHighChartConfig(seriesArray2, years);
       } else {
         this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard

@@ -3,11 +3,12 @@
     class="text-center align-middle"
     scope="col"
     :class="[selectedSource.id === source.id ? 'table-active text-white' : '']"
+    @click=" emitValue(source)"
   >
-    <div class="d-flex align-items-center justify-content-center">
+    <div class="d-flex align-items-center justify-content-center" >
       <span
         class="data-source h6 mr-3 mb-0 font-weight-bold"
-        @click="$emit('source:click', source), emitValue(source)"
+        @click="$emit('source:click', source)"
         >{{ source.datasource }}
       </span>
       <b-icon-info-circle-fill
