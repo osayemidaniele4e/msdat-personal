@@ -19,7 +19,7 @@
       </li>
     </ul>
 
-      <div>{{selectedIndex}}</div>
+      <div>{{title }}</div>
     <!-- Multiselect dropdown here -->
     <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
       <div class="mx-lg-5 mx-3 step-controls styles pt-1 pb-2">
@@ -35,6 +35,7 @@ export default {
     return {
       controls: [],
       selectedIndex: 0,
+      title: '',
     };
   },
 
@@ -79,6 +80,24 @@ export default {
     // if the index is changed
     changeIndex(newValue) {
       this.changeControl(newValue);
+    },
+
+    selectedIndex(newValue) {
+      if (newValue === 0) {
+        this.title = 'Indicator Overview';
+      }
+      if (newValue === 1) {
+        this.title = 'Zonal Analysis';
+      }
+      if (newValue === 2) {
+        this.title = 'Indicator Comparison';
+      }
+      if (newValue === 3) {
+        this.title = 'Dataset Comparison';
+      }
+      if (newValue === 4) {
+        this.title = 'Multi-Source Overview';
+      }
     },
   },
   mounted() {
