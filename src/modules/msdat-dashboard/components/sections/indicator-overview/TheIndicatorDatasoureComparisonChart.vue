@@ -108,7 +108,6 @@ export default {
         const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
         this.setUpHighChartConfig(seriesArray, years);
-        console.log('it is reseting the index');
         this.loading = false;
         this.notShow = false;
       },
