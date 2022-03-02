@@ -7,6 +7,10 @@
       :initialIndicator="initialIndicator"
       :initialDataSource="initialDataSource"
       :initialLocation="initialLocation"
+      :updateValue="updateValue"
+      :updateKey="updateKey"
+      :resetData="resetData"
+
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
@@ -25,6 +29,9 @@
                 <BaseIndicatorOverview
                   :showTableRelatedIndicator="showTableRelatedIndicator"
                   :controlPanelProps="payload"
+                   @value="getValue"
+                   @key="getKey"
+                   @reset="getReset"
                 />
               </ControlPanelConfiguration>
             </template>
@@ -98,94 +105,22 @@
             </template>
             <template>
               <!-- <div class="row"> -->
-
-                <template>
-                  <div :key="1" class="col-md-4">
-                    <LazyLoading>
-                      <ControlPanelConfiguration :groupIndex="1 - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="n" :values="payload[1 - 1]" />
-                      </ControlPanelConfiguration>
-                    </LazyLoading>
-                  </div>
-                </template>
-
-                <template>
-                  <div :key="1" class="col-md-4">
-                    <LazyLoading>
-                      <ControlPanelConfiguration :groupIndex="1 - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="n" :values="payload[1 - 1]" />
-                      </ControlPanelConfiguration>
-                    </LazyLoading>
-                  </div>
-                </template>
-
-<!--
-                          <template>
+              <div class="row">
+                <template v-for="n in 3">
                   <div :key="n" class="col-md-4">
                     <LazyLoading>
-                      <ControlPanelConfiguration :groupIndex="3 - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="n" :values="payload[3 - 1]" />
+                      <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="n" :values="payload[n - 1]" />
                       </ControlPanelConfiguration>
                     </LazyLoading>
                   </div>
-                </template> -->
+                </template>
+              </div>
               <!-- </div> -->
             </template>
           </base-sub-card>
         </div>
       </template>
-
-            <template v-slot:section-5="{ payload, controlIndex }">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Multi-Source Indicator Comparison
-              </h5>
-            </template>
-            <template>
-              <!-- <div class="row"> -->
-
-                <template>
-                  <div :key="1" class="col-md-4">
-                    <LazyLoading>
-                      <ControlPanelConfiguration :groupIndex="1 - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="1" :values="payload[1 - 1]" />
-                      </ControlPanelConfiguration>
-                    </LazyLoading>
-                  </div>
-                </template>
-
-                <template>
-                  <div :key="1" class="col-md-4">
-                    <LazyLoading>
-                      <ControlPanelConfiguration :groupIndex="2 - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="2" :values="payload[2 - 1]" />
-                      </ControlPanelConfiguration>
-                    </LazyLoading>
-                  </div>
-                </template>
-
-<!--
-                          <template>
-                  <div :key="n" class="col-md-4">
-                    <LazyLoading>
-                      <ControlPanelConfiguration :groupIndex="3 - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="n" :values="payload[3 - 1]" />
-                      </ControlPanelConfiguration>
-                    </LazyLoading>
-                  </div>
-                </template> -->
-              <!-- </div> -->
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-
-            <template v-slot:section-6="{ }">
-       <div> checking for this section to be used </div>
-      </template>
-
     </BaseDashboard>
   </div>
 </template>
@@ -208,7 +143,11 @@ import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelC
 
 export default {
   data() {
-    return {};
+    return {
+      updateValue: {},
+      updateKey: '',
+      resetData: 1,
+    };
   },
   components: {
     BaseDashboard,
@@ -249,9 +188,22 @@ export default {
       type: Boolean,
       default: true,
     },
+
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+
+    getValue(value) {
+      this.updateValue = value;
+    },
+
+    getKey(key) {
+      this.updateKey = key;
+    },
+
+    getReset() {
+      this.resetData += 1;
+    },
   },
   created() {
     this.CLEAR_CONTROL_PANEL();
