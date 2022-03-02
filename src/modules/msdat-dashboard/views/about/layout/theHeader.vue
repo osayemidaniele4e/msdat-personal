@@ -35,13 +35,16 @@
                 </b-dropdown-item>
               </b-dropdown> -->
 
-              <div class="select-dropdown">
+              <div>
                   <b-dropdown text="Select" toggle-class='select-dropdown'
                   variant='none'
-                   text-variant='none'>
+                   text-variant='none'
+                   right
+                   >
 
                 <b-dropdown-item href="#"
                 id="dropdownMenuButton"
+                class="select-dropdown-item"
                   v-for="(control, index) in $store.state.MSDAT_STORE
                   .controlConfig"
                   :key="index"
@@ -568,6 +571,18 @@ header#the-header {
 
 /* MEDIUM */
 @media (min-width: 768px) and (max-width: 992px) {
+
+.mobile-flex-col-text1{
+  color: white;
+  font-weight: 200;
+  font-size: 15px;
+}
+
+.mobile-flex-col-text2{
+  color: white;
+  font-weight: 500;
+  font-size: 19px;
+}
 //    .main{
 //     display: none;
 //   }
@@ -674,6 +689,11 @@ header#the-header {
       }
     }
   }
+
+    .select-dropdown{
+margin-left: 100px;
+
+}
 }
 </style>
 <style lang="scss">
@@ -722,13 +742,13 @@ header#the-header {
 .mobile-flex-col-text1{
   color: white;
   font-weight: 200;
-  font-size: 8px;
+  font-size: 2vw;
 }
 
 .mobile-flex-col-text2{
   color: white;
   font-weight: 500;
-  font-size: 10px;
+  font-size: 2vw;
 }
 
 .mob-img{
@@ -758,24 +778,6 @@ header#the-header {
   left: -10px;
 }
 
-.select-dropdown{
-  background-color: none;
-  height: 30px;
-  outline: none;
-  border: 1px solid white;
-  color: white !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  margin-top: 15px;
-  border-radius: 2px;
-    margin-left: 0px;
-    position: relative;
-    left: -30px;
-
-}
-
 .dropdownMenuButton{
   background-color: none;
   border: 1px solid green;
@@ -789,4 +791,22 @@ header#the-header {
     background-color: none;
     height: 50px;
   }
+
+  .select-dropdown{
+  background-color: none;
+  height: 30px;
+  outline: none;
+  border: 1px solid white;
+  color: white !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 12px;
+  border-radius: 2px;
+    margin-left: 0px;
+    position: relative;
+    left: -30px;
+}
+
 </style>

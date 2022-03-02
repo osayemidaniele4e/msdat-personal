@@ -1,5 +1,6 @@
 <template>
-  <div class="">
+<div>
+    <div class="">
 
   <!-- Toggleable tab links here -->
     <ul
@@ -15,17 +16,18 @@
         @click='changeControl(index)'
       >
         {{ control.title }}
-
       </li>
     </ul>
 
-      <div>{{title }}</div>
+      <div class="control-title">{{title}}</div>
     <!-- Multiselect dropdown here -->
     <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
       <div class="mx-lg-5 mx-3 step-controls styles pt-1 pb-2">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
+</div>
+
 </template>
 
 <script>
@@ -35,7 +37,7 @@ export default {
     return {
       controls: [],
       selectedIndex: 0,
-      title: '',
+      title: 'Indicator Overview',
     };
   },
 
@@ -129,10 +131,31 @@ $primary: #2b5d5b;
   cursor: pointer;
 }
 
+.control-title{
+  display: none;
+}
+
 @media (max-width: 576px) {
 
   .section-tab{
     display: none;
   }
+
+  .control-title{
+  display: inherit;
+font: var(--unnamed-font-style-normal)
+normal var(--unnamed-font-weight-bold)
+ 16px/19px var(--unnamed-font-family-work-sans);
+letter-spacing: var(--unnamed-character-spacing-0);
+text-align: left;
+font: normal normal bold 16px/19px Work Sans;
+letter-spacing: 0px;
+color: #2B5D5B;
+opacity: 1;
+text-decoration: underline;
+margin: 5px;
+padding: 5px;
+}
+
 }
 </style>

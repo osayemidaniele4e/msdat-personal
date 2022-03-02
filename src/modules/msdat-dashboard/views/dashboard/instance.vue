@@ -182,6 +182,10 @@
         </div>
       </template>
 
+            <template v-slot:section-6="{ }">
+       <div> checking for this section to be used </div>
+      </template>
+
     </BaseDashboard>
   </div>
 </template>

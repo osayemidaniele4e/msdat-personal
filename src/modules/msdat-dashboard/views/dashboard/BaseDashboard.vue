@@ -100,14 +100,178 @@
                 :controlIndex="index"
               ></slot> -->
                 <slot
-                  :name="`section-${index}`"
+                  :name="`section-1`"
                   :payload="controlPanel.payload"
-                  :controlIndex="index"
+                  :controlIndex="1"
                 ></slot>
                 <slot
-                  :name="`section-after-${index}`"
+                  :name="`section-after-1`"
                   v-if="index === selectedPanel"
                 ></slot>
+
+                       <BasePanel
+                :changeIndex="changeIndex"
+                :position="position"
+                v-if="cpIsLoading"
+                v-on:showSection="sectionFocus($event)"
+              >
+                <template v-slot:default>
+                  <ControlBase
+                    v-for="(control, index) in $store.state.MSDAT_STORE
+                      .controlConfig"
+                    :key="index"
+                    :title="control.label"
+                  >
+                    <template v-if="!Array.isArray(control.setup[0])">
+                      <ControlPanel
+                        @data:options="log($event, index)"
+                        :setup="control.setup"
+                        :controlIndex="index"
+                        :defaultIndicator="defaultIndicator"
+                        :defaultDataSource="defaultDataSource"
+                        :defaultLocation="defaultLocation"
+                        :defaultYear="defaultYear"
+                      />
+                    </template>
+                    <template v-else>
+                      <div class="row">
+                        <div
+                          class="col-md-4"
+                          v-for="(item, index2) in control.setup"
+                          :key="index2"
+                        >
+                          <ControlPanel
+                            @data:options="log($event, index, index2)"
+                            :setup="item"
+                            :groupIndex="index2"
+                            :controlIndex="index"
+                            :defaultIndicator="defaultIndicator"
+                            :defaultDataSource="defaultDataSource"
+                            :defaultLocation="defaultLocation"
+                            :defaultYear="defaultYear"
+                          />
+                        </div>
+                      </div>
+                    </template>
+                  </ControlBase>
+                </template>
+              </BasePanel>
+
+    <slot
+                  :name="`section-2`"
+                  :payload="controlPanel.payload"
+                  :controlIndex="1"
+                ></slot>
+                <slot
+                  :name="`section-after-2`"
+                  v-if="index === selectedPanel"
+                ></slot>
+
+                   <BasePanel
+                :changeIndex="changeIndex"
+                :position="position"
+                v-if="cpIsLoading"
+                v-on:showSection="sectionFocus($event)"
+              >
+                <template v-slot:default>
+                  <ControlBase
+                    v-for="(control, index) in $store.state.MSDAT_STORE
+                      .controlConfig"
+                    :key="index"
+                    :title="control.label"
+                  >
+                    <template v-if="!Array.isArray(control.setup[0])">
+                      <ControlPanel
+                        @data:options="log($event, index)"
+                        :setup="control.setup"
+                        :controlIndex="index"
+                        :defaultIndicator="defaultIndicator"
+                        :defaultDataSource="defaultDataSource"
+                        :defaultLocation="defaultLocation"
+                        :defaultYear="defaultYear"
+                      />
+                    </template>
+                    <template v-else>
+                      <div class="row">
+                        <div
+                          class="col-md-4"
+                          v-for="(item, index2) in control.setup"
+                          :key="index2"
+                        >
+                          <ControlPanel
+                            @data:options="log($event, index, index2)"
+                            :setup="item"
+                            :groupIndex="index2"
+                            :controlIndex="index"
+                            :defaultIndicator="defaultIndicator"
+                            :defaultDataSource="defaultDataSource"
+                            :defaultLocation="defaultLocation"
+                            :defaultYear="defaultYear"
+                          />
+                        </div>
+                      </div>
+                    </template>
+                  </ControlBase>
+                </template>
+              </BasePanel>
+
+               <slot
+                  :name="`section-3`"
+                  :payload="controlPanel.payload"
+                  :controlIndex="1"
+                ></slot>
+                <slot
+                  :name="`section-after-3`"
+                  v-if="index === selectedPanel"
+                ></slot>
+
+                   <BasePanel
+                :changeIndex="changeIndex"
+                :position="position"
+                v-if="cpIsLoading"
+                v-on:showSection="sectionFocus($event)"
+              >
+                <template v-slot:default>
+                  <ControlBase
+                    v-for="(control, index) in $store.state.MSDAT_STORE
+                      .controlConfig"
+                    :key="index"
+                    :title="control.label"
+                  >
+                    <template v-if="!Array.isArray(control.setup[0])">
+                      <ControlPanel
+                        @data:options="log($event, index)"
+                        :setup="control.setup"
+                        :controlIndex="index"
+                        :defaultIndicator="defaultIndicator"
+                        :defaultDataSource="defaultDataSource"
+                        :defaultLocation="defaultLocation"
+                        :defaultYear="defaultYear"
+                      />
+                    </template>
+                    <template v-else>
+                      <div class="row">
+                        <div
+                          class="col-md-4"
+                          v-for="(item, index2) in control.setup"
+                          :key="index2"
+                        >
+                          <ControlPanel
+                            @data:options="log($event, index, index2)"
+                            :setup="item"
+                            :groupIndex="index2"
+                            :controlIndex="index"
+                            :defaultIndicator="defaultIndicator"
+                            :defaultDataSource="defaultDataSource"
+                            :defaultLocation="defaultLocation"
+                            :defaultYear="defaultYear"
+                          />
+                        </div>
+                      </div>
+                    </template>
+                  </ControlBase>
+                </template>
+              </BasePanel>
               </div>
             </template>
           </div>
