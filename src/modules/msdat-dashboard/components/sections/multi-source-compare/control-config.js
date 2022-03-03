@@ -57,4 +57,8 @@ export default {
   grouped: true,
   setup: [[...indicatorSetConfig]],
   payload: [{ ...payload }],
+
+  // from moses
+  // setup: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
+  // payload: [{ ...payload }, { ...payload }, { ...payload }],
 };

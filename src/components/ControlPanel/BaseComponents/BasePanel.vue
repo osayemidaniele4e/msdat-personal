@@ -3,7 +3,6 @@
     <div class="">
 
   <!-- Toggleable tab links here -->
-\
 
       <div class="control-title">{{title}}</div>
     <!-- Multiselect dropdown here -->
