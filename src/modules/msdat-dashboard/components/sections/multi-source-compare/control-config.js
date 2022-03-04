@@ -55,10 +55,11 @@ const payload = {
 export default {
   label: 'Multi-Source comparison',
   grouped: true,
-  setup: [[...indicatorSetConfig]],
-  payload: [{ ...payload }],
+  setup: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
+  payload: [{ ...payload }, { ...payload }, { ...payload }],
 
   // from moses
-  // setup: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
-  // payload: [{ ...payload }, { ...payload }, { ...payload }],
+  // setup: [[...indicatorSetConfig]],
+  // payload: [{ ...payload }],
+
 };

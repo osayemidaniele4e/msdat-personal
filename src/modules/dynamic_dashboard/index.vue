@@ -14,7 +14,9 @@
           : true
       "
     >
-      <template v-slot:top-section v-if="configObject.name === 'Demographics'">
+  <template v-slot:top-section>
+
+        <div v-if="configObject.name === 'Demographics'">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
             <template #title>
@@ -35,7 +37,32 @@
             </template>
           </base-sub-card>
         </div>
-      </template>
+      </div>
+
+            <div  v-if="configObject.name === 'Health_Workforce'">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Health Workforce</h5>
+            </template>
+            <template>
+              <div style="text-align: center">
+                <!-- <iframe :src="url" :width="width" :height="height"></iframe> -->
+              </div>
+              <b-embed
+                type="iframe"
+                aspect="21by9"
+                :src="url2"
+                :width="width"
+                :height="height"
+              ></b-embed>
+              <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
+            </template>
+          </base-sub-card>
+        </div>
+      </div>
+
+  </template>
     </MSDAT>
   </div>
 </template>
@@ -56,6 +83,7 @@ export default {
       configObject: {}, // This should be an Object initially
       // url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url: 'https://public.tableau.com/views/UpdatedDemographic1/DemographicDashboard?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url2: 'https://public.tableau.com/app/profile/mbazu.ifeanyichukwu.daniel/viz/HealthWorkforceworkingdocument/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
     };
