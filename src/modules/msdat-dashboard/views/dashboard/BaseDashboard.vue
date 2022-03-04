@@ -28,8 +28,12 @@
       <div v-else>
         <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
         <section @click="$refs.theHeader.close()">
-          <div class="position-relative" :class="[show ? '' : 'hide']">
+
+              <div class="position-relative" :class="[isMobile ?
+              'position-relative' : 'sticky animated_toggle']" >
+          <!-- <div class="position-relative" :class="[show ? '' : 'hide']"> -->
 <!-- <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">  -->
+
   <!-- Moses changed from this -->
             <b-overlay :show="!cpIsLoading">
               <BasePanel
@@ -171,6 +175,7 @@ export default {
       dashboardConfig: config,
       show: false,
       changeIndex: '',
+      isMobile: '',
     };
   },
   components: {
@@ -206,12 +211,13 @@ export default {
       required: false,
     },
   },
+
   created() {
     const { name } = this.$route.params;
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    this.isMobile = window.matchMedia('only screen and (max-width: 760px)').matches;
   },
   methods: {
-
     // moses
     getIndex(index) {
       console.log('this is the index i am saying', index);
@@ -258,6 +264,13 @@ export default {
     //   this.firstTime = false;
     // },
   },
+
+  //   watch: {
+  //   isMobile(newValue) {
+
+  //   },
+  // },
+
   async mounted() {
     this.loading = false;
     // initializing data for dashboard

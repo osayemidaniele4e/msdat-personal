@@ -71,6 +71,7 @@
           <h2 class="main">
             <small>MSDAT PLATFORM</small>
             <br />
+
             {{ $route.meta.title }}
           </h2>
 

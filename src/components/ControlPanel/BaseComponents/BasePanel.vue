@@ -4,6 +4,23 @@
 
   <!-- Toggleable tab links here -->
 
+      <ul
+      class="d-flex list-unstyled step-sections mb-0
+       justify-content-between border-b mx-lg-5 mx-3 cursor-pointer main"
+   >
+      <li
+        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans main"
+        :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+        v-for="(control, index) in controls"
+        :key="index"
+        :id="`panel-${index}`"
+        @click='changeControl(index)'
+      >
+        {{ control.title }}
+
+      </li>
+    </ul>
+
       <div class="control-title">{{title}}</div>
     <!-- Multiselect dropdown here -->
     <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
@@ -101,6 +118,10 @@ export default {
 <style lang="scss" scoped>
 $primary: #2b5d5b;
 
+.main{
+  display: inherit;
+}
+
 .border-b {
   border-bottom: 2px solid #ebebeb;
 }
@@ -121,6 +142,10 @@ $primary: #2b5d5b;
 }
 
 @media (max-width: 576px) {
+
+  .main{
+    display: none;
+  }
 
   .section-tab{
     display: none;
