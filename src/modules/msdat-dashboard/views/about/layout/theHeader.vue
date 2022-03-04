@@ -71,8 +71,8 @@
           <h2 class="main">
             <small>MSDAT PLATFORM</small>
             <br />
+             {{ $route.meta.title }}
 
-            {{ $route.meta.title }}
           </h2>
 
           <!-- <b-col cols md="6" lg="6"> -->
@@ -260,6 +260,10 @@ button{
 
 .main{
     display: inherit;
+}
+
+.main-sub-text{
+  margin-left: -4px;
 }
 
 .mobile-flex{
