@@ -21,6 +21,14 @@
             >
           </p>
         </template>
+         <button @click="returnToNational" v-show="level !== 1">
+            <img
+              :src="require('../../../assets/chevron-left.svg')"
+              alt="caret-left"
+              width="15"
+              height="15"
+            />&nbsp;Back to National
+          </button>
         <div @click="handleChartClick">
            <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
         </div>
@@ -53,6 +61,7 @@ export default {
       BarChartOptions: {},
       loading: false,
       showNoSubNationalData: false,
+      level: 1,
     };
   },
   props: {
@@ -168,6 +177,15 @@ export default {
       if (selectedPlace.length !== 0) {
         eventBus.$emit('handleClick', selectedPlace[0]);
       }
+      this.level = 3;
+    },
+
+    returnToNational() {
+      const selectedPlace = this.dlGetLocation({ level: 1 });
+      if (selectedPlace.length !== 0) {
+        eventBus.$emit('handleClick', selectedPlace[0]);
+      }
+      this.level = 1;
     },
   },
 };
