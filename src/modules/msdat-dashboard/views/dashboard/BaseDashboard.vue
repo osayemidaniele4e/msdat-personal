@@ -29,7 +29,7 @@
         <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
         <section @click="$refs.theHeader.close()">
 
-              <div class="position-relative" :class="[isMobile ?
+              <div :class="[isMobile ?
               'position-relative' : 'sticky animated_toggle']" >
           <!-- <div class="position-relative" :class="[show ? '' : 'hide']"> -->
 <!-- <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">  -->
