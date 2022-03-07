@@ -24,16 +24,6 @@
             <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
           <div class="mobile-flex-col-text2">Health Outcomes and Service Coverage</div>
           </div>
-               <!-- <b-dropdown text="Split Dropdown" class="m-2">
-                <b-dropdown-item href="#"
-                id="dropdownMenuButton"
-                  v-for="(control, index) in $store.state.MSDAT_STORE
-                  .controlConfig"
-                  :key="index"
-                  @click="emitIndex(index)"
-                >{{control.label}}
-                </b-dropdown-item>
-              </b-dropdown> -->
 
               <div>
                   <b-dropdown text="Select" toggle-class='select-dropdown'
@@ -41,7 +31,6 @@
                    text-variant='none'
                    right
                    >
-
                 <b-dropdown-item href="#"
                 id="dropdownMenuButton"
                 class="select-dropdown-item"
@@ -54,25 +43,20 @@
               </b-dropdown>
               </div>
 
-              <!-- <select class="mob-select1">
-              <option
-               v-for="(control, index) in $store.state.MSDAT_STORE
-                  .controlConfig"
-                  :key="index"
-                  @click="emitIndex(index)"
-              >{{control.label}}</option>
-            </select> -->
-
                <b-sidebar id="sidebar-1" title="" right shadow>
-                     <Sidebar
-                />
+
     </b-sidebar>
         </div>
-          <h2 class="main">
+          <!-- <h2 class="main">
             <small>MSDAT PLATFORM</small>
             <br />
              {{ $route.meta.title }}
 
+          </h2> -->
+          <h2 class="main-text">
+             <small>MSDAT PLATFORM</small>
+             <div></div>
+            <div> {{ $route.meta.title }}</div>
           </h2>
 
           <!-- <b-col cols md="6" lg="6"> -->
@@ -181,14 +165,12 @@
 <script>
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
-import Sidebar from '../components/Sidebar.vue';
 
 export default {
   name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,
-    Sidebar,
   },
   data() {
     return {
@@ -416,6 +398,10 @@ header#the-header {
     display: none;
   }
 
+  .main-text{
+    display: none;
+  }
+
 .mobile-flex{
  display: flex;
  justify-content: space-between;
@@ -497,6 +483,10 @@ header#the-header {
   display: none;
 }
 
+  .main-text{
+    display: none;
+  }
+
 .mobile-flex{
  display: flex;
  justify-content: space-between;
@@ -576,6 +566,10 @@ header#the-header {
 
 /* MEDIUM */
 @media (min-width: 768px) and (max-width: 992px) {
+
+    .main-text{
+    display: none;
+  }
 
 .mobile-flex-col-text1{
   color: white;
@@ -665,6 +659,9 @@ header#the-header {
 
 /* LARGE */
 @media (min-width: 992px) and (max-width: 1200px) {
+    .main-text{
+    display: none;
+  }
 //    .main{
 //     display: none;
 //   }
@@ -722,7 +719,7 @@ header#the-header {
 </style>
 
 <style scoped>
-/* test styling for mobile responsiveness */
+/*  styling for mobile responsiveness */
 
 .select-indicator-mob{
   border: 1px solid white;
@@ -738,7 +735,7 @@ header#the-header {
     margin: 5px;
       justify-content: center;
       margin-left: 5px;
-      width: 175px;
+      width: 48vw;
       position: relative;
       left: -20px;
 
@@ -791,11 +788,7 @@ header#the-header {
 </style>
 
 <style>
-    #dropdownMenuButton > button {
-    width: 100%;
-    background-color: none;
-    height: 50px;
-  }
+/* styling to overide bootstrap component (select dropdown) */
 
   .select-dropdown{
   background-color: none;
@@ -809,9 +802,8 @@ header#the-header {
   margin: 0 auto;
   margin-top: 12px;
   border-radius: 2px;
-    margin-left: 0px;
     position: relative;
-    left: -30px;
+    left: -25px;
 }
 
 </style>

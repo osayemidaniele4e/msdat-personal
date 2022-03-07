@@ -175,7 +175,8 @@ export default {
       dashboardConfig: config,
       show: false,
       changeIndex: '',
-      isMobile: '',
+      isMobile: false,
+      winSize: window.width,
     };
   },
   components: {
@@ -215,7 +216,11 @@ export default {
   created() {
     const { name } = this.$route.params;
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
-    this.isMobile = window.matchMedia('only screen and (max-width: 760px)').matches;
+    window.addEventListener('resize', this.onResize);
+  },
+
+  destroyed() {
+    window.removeEventListener('resize', this.onResize);
   },
   methods: {
     // moses
@@ -263,12 +268,21 @@ export default {
     // closeOnboard() {
     //   this.firstTime = false;
     // },
+
+    onResize() {
+      console.log('width', window.innerWidth);
+      if (window.innerWidth < 769) {
+        this.isMobile = true;
+      } else {
+        this.isMobile = false;
+      }
+    },
   },
 
-  //   watch: {
-  //   isMobile(newValue) {
-
-  //   },
+  // watch: {
+  // isMobile() {
+  //     console.log('isMobile', this.isMobile)
+  // },
   // },
 
   async mounted() {
