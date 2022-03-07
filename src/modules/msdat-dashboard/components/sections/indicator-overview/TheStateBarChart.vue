@@ -21,7 +21,10 @@
             >
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+        <div @click="handleChartClick">
+           <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+        </div>
+
       </base-sub-card>
     </base-overlay>
     <NoSubNationalData
@@ -37,6 +40,7 @@ import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
+import { eventBus } from '@/main';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -156,6 +160,14 @@ export default {
       });
       // console.log('hello =>', ...data);
       return data;
+    },
+
+    handleChartClick(e) {
+      const point = e.point.name;
+      const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+      if (selectedPlace.length !== 0) {
+        eventBus.$emit('handleClick', selectedPlace[0]);
+      }
     },
   },
 };

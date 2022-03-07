@@ -69,6 +69,7 @@ export default {
     handleMapClick(e) {
       const point = e.point['hc-key'];
       const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+      console.log('selected', selectedPlace);
       if (selectedPlace.length !== 0) {
         eventBus.$emit('handleClick', selectedPlace[0]);
       }
