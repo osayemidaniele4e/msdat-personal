@@ -21,7 +21,18 @@
             >
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+         <button @click="returnToNational" v-show="level !== 1">
+            <img
+              :src="require('../../../assets/chevron-left.svg')"
+              alt="caret-left"
+              width="15"
+              height="15"
+            />&nbsp;Back to National
+          </button>
+        <div @click="handleChartClick">
+           <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+        </div>
+
       </base-sub-card>
     </base-overlay>
     <NoSubNationalData
@@ -35,6 +46,7 @@
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import { eventBus } from '@/main';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
 
@@ -49,6 +61,7 @@ export default {
       BarChartOptions: {},
       loading: false,
       showNoSubNationalData: false,
+      level: 1,
     };
   },
   props: {
@@ -156,6 +169,23 @@ export default {
       });
       // console.log('hello =>', ...data);
       return data;
+    },
+
+    handleChartClick(e) {
+      const point = e.point.name;
+      const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+      if (selectedPlace.length !== 0) {
+        eventBus.$emit('handleClick', selectedPlace[0]);
+      }
+      this.level = 3;
+    },
+
+    returnToNational() {
+      const selectedPlace = this.dlGetLocation({ level: 1 });
+      if (selectedPlace.length !== 0) {
+        eventBus.$emit('handleClick', selectedPlace[0]);
+      }
+      this.level = 1;
     },
   },
 };
