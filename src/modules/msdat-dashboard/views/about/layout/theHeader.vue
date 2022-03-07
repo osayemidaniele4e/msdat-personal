@@ -44,7 +44,7 @@
               </div>
 
                <b-sidebar id="sidebar-1" title="" right shadow>
-
+                  <SideBar />
     </b-sidebar>
         </div>
           <!-- <h2 class="main">
@@ -165,12 +165,14 @@
 <script>
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
+import SideBar from '../components/SideBar.vue';
 
 export default {
   name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,
+    SideBar,
   },
   data() {
     return {

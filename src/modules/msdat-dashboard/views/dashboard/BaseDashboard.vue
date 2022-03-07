@@ -30,7 +30,7 @@
         <section @click="$refs.theHeader.close()">
 
               <div :class="[isMobile ?
-              'position-relative' : 'sticky animated_toggle']" >
+              'position-relative' : 'sticky animated_toggle', show ? '' : 'hide' ]">
           <!-- <div class="position-relative" :class="[show ? '' : 'hide']"> -->
 <!-- <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">  -->
 
