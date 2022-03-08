@@ -62,6 +62,7 @@ export default {
       loading: false,
       showNoSubNationalData: false,
       level: 1,
+      updateData: 0,
     };
   },
   props: {
@@ -88,42 +89,8 @@ export default {
       deep: true,
     },
     values: {
-      async handler(newValues) {
-        this.loading = true;
-        const data = await this.getData(newValues);
-        const nationalTarget = this.dlGetIndicator(newValues.indicator.id).national_target;
-        const displayFactor = this.dlGetFactor(newValues.indicator.factor).display_factor;
-
-        const chartOptions = this.genHighChartOption(data, {
-          target: {
-            value: nationalTarget,
-          },
-        });
-        chartOptions.yAxis.title.text = `${displayFactor}`;
-
-        // add nation and state selected to fit according to mockup 😢 😟 😡
-
-        const parentValue = await this.dlQuery({
-          indicator: newValues.indicator.id,
-          datasource: newValues.datasource.id,
-          period: newValues.year,
-          // value_type: 5,
-          location: newValues.location.id,
-        });
-        // because i know i am expecting only on value in the array of results
-        if (parentValue.length > 0) {
-          const parent = parentValue[0];
-          const seriesObject = {
-            showInLegend: false,
-            color: parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
-            name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
-            data: [[newValues.location.name, Number(parseFloat(parent.value).toFixed(1))]],
-          };
-          chartOptions.series.unshift(seriesObject);
-        }
-
-        this.BarChartOptions = chartOptions;
-        this.loading = false;
+      async handler() {
+        this.updateValue();
       },
       deep: true,
       immediate: false,
@@ -145,8 +112,56 @@ export default {
         }
       },
     },
+
+    updateData: {
+      async handler() {
+        this.updateValue();
+      },
+      deep: true,
+      immediate: false,
+
+    },
   },
   methods: {
+
+    async updateValue() {
+      this.loading = true;
+      const data = await this.getData(this.values);
+      const nationalTarget = this.dlGetIndicator(this.values.indicator.id).national_target;
+      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+
+      const chartOptions = this.genHighChartOption(data, {
+        target: {
+          value: nationalTarget,
+        },
+      });
+      chartOptions.yAxis.title.text = `${displayFactor}`;
+
+      // add nation and state selected to fit according to mockup 😢 😟 😡
+
+      const parentValue = await this.dlQuery({
+        indicator: this.values.indicator.id,
+        datasource: this.values.datasource.id,
+        period: this.values.year,
+        // value_type: 5,
+        location: this.values.location.id,
+      });
+        // because i know i am expecting only on value in the array of results
+      if (parentValue.length > 0) {
+        const parent = parentValue[0];
+        const seriesObject = {
+          showInLegend: false,
+          color: parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
+          name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
+          data: [[this.values.location.name, Number(parseFloat(parent.value).toFixed(1))]],
+        };
+        chartOptions.series.unshift(seriesObject);
+      }
+
+      this.BarChartOptions = chartOptions;
+      this.loading = false;
+    },
+
     async getData(optionsObject) {
       const {
         datasource, indicator, location, year,
@@ -187,6 +202,10 @@ export default {
       }
       this.level = 1;
     },
+  },
+
+  mounted() {
+    this.updateData = +1;
   },
 };
 </script>
