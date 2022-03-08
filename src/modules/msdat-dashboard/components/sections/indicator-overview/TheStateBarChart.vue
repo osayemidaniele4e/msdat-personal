@@ -46,9 +46,9 @@
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import { eventBus } from '@/main';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
-import { eventBus } from '@/main';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -123,7 +123,6 @@ export default {
     },
   },
   methods: {
-
     async updateValue() {
       this.loading = true;
       const data = await this.getData(this.values);
