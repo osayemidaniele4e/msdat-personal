@@ -61,13 +61,16 @@
                       />
                     </template>
                     <template v-else>
-                      <div class="row">
+                      <div>
+                          <div class="row" v-if="!isMobile">
                         <div
                           class="col-md-4"
                           v-for="(item, index2) in control.setup"
                           :key="index2"
                         >
-                          <ControlPanel
+
+                        <div>
+                                 <ControlPanel
                             @data:options="log($event, index, index2)"
                             :setup="item"
                             :groupIndex="index2"
@@ -77,8 +80,49 @@
                             :defaultLocation="defaultLocation"
                             :defaultYear="defaultYear"
                           />
-                        </div>
+
+                           </div>
+
+                                          </div>
+
+                                                <!-- if in mobile -->
+                                  <!-- <ControlPanel
+                            @data:options="log($event, index, 1)"
+                            :setup="control.setup[0]"
+                            :groupIndex= 1
+                            :controlIndex="index"
+                            :defaultIndicator="defaultIndicator"
+                            :defaultDataSource="defaultDataSource"
+                            :defaultLocation="defaultLocation"
+                            :defaultYear="defaultYear"
+                          /> -->
                       </div>
+
+                        <!-- for the mobile responsiveness section -->
+                         <div class="row" v-if="isMobile">
+                        <div
+                          class="col-md-4"
+                        >
+
+                        <div>
+                                   <ControlPanel
+                            @data:options="log($event, index, 1)"
+                            :setup="control.setup[0]"
+                            :groupIndex= 1
+                            :controlIndex="index"
+                            :defaultIndicator="defaultIndicator"
+                            :defaultDataSource="defaultDataSource"
+                            :defaultLocation="defaultLocation"
+                            :defaultYear="defaultYear"
+                          />
+
+                           </div>
+
+                                          </div>
+
+                      </div>
+                      </div>
+
                     </template>
                   </ControlBase>
                 </template>
@@ -217,6 +261,13 @@ export default {
     const { name } = this.$route.params;
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
     window.addEventListener('resize', this.onResize);
+
+    // checking if in Mobile view
+    if (window.innerWidth < 769) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false;
+    }
   },
 
   destroyed() {
@@ -320,9 +371,6 @@ export default {
         const firstItem = 0;
         this.defaultYear = this.defaultYearDropdown[firstItem];
       }
-      // setTimeout(() => {
-      //   this.setRouteQueryToControlPanel();
-      // }, 4000);
 
       this.cpIsLoading = true;
       this.$nextTick(() => {

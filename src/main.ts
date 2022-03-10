@@ -13,6 +13,7 @@ import './plugins/vue-sweetalert/sweetalert';
 import router from './router';
 import store from './store';
 import './plugins/veevalidate';
+import PortalVue from 'portal-vue'
 
 import './assets/styles/fonts.css';
 
@@ -27,6 +28,8 @@ Vue.use(DataLayer, {
   store,
 });
 Vue.use(VueHtml2Canvas);
+
+Vue.use(PortalVue)
 
 Vue.config.productionTip = false;
 

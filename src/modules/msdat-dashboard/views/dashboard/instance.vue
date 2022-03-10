@@ -99,14 +99,46 @@
             <template>
               <!-- <div class="row"> -->
               <div class="row">
-                <template v-for="n in 3">
-                  <div :key="n" class="col-md-4">
-                    <LazyLoading>
+                <template>
+
+                   <div :key="n" v-for="n in 3" class="col-md-4" >
+                    <LazyLoading v-if="!isMobile">
                       <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
                         <MultiSourceComponent :key="n" :values="payload[n - 1]" />
                       </ControlPanelConfiguration>
                     </LazyLoading>
                   </div>
+
+                         <portal to="map-multi-1">
+                                 <div :key="1" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration :groupIndex="1 - 1" :controlIndex="1">
+                        <MultiSourceComponent :key="1" :values="payload[1 - 1]" />
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </portal>
+                  <portal to="map-multi-2">
+
+                                <div :key="2" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration :groupIndex="2 - 1" :controlIndex="2">
+                        <MultiSourceComponent :key="2" :values="payload[2 - 1]" />
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </portal>
+
+                         <portal to="map-multi-3">
+                             <div :key="3" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration :groupIndex="3 - 1" :controlIndex="3">
+                        <MultiSourceComponent :key="3" :values="payload[3 - 1]" />
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </portal>
+
                 </template>
               </div>
               <!-- </div> -->
@@ -136,7 +168,9 @@ import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelC
 
 export default {
   data() {
-    return {};
+    return {
+      isMobile: true,
+    };
   },
   components: {
     BaseDashboard,
@@ -180,8 +214,29 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+
+    onResize() {
+      console.log('width', window.innerWidth);
+      if (window.innerWidth < 769) {
+        this.isMobile = true;
+        BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup3;
+      } else {
+        this.isMobile = false;
+        BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup2;
+      }
+    },
   },
   created() {
+    console.log('BaseMultiSourceConfig', BaseMultiSourceConfig);
+    window.addEventListener('resize', this.onResize);
+
+    // checking if in Mobile view
+    if (window.innerWidth < 769) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false;
+    }
+
     this.CLEAR_CONTROL_PANEL();
     /**
      * passing indicator Overview first means it going to at  index 0
@@ -194,6 +249,10 @@ export default {
     this.ADD_CONTROL_PANEL(ICSConfig);
     this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
     this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+  },
+
+  destroyed() {
+    window.removeEventListener('resize', this.onResize);
   },
 };
 </script>

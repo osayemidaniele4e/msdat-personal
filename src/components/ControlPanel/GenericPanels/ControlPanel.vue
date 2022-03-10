@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <template v-for="(values, index) in setup">
-      <div
+          <div
         class=""
         :class="values.class"
         :key="index"
@@ -125,6 +125,392 @@
         </div>
       </div>
     </template>
+
+      <template  v-for="(values, index) in setup" >
+          <div
+          v-if="isMobile"
+        class=""
+        :class="values.class"
+        :key="index"
+        v-show="values.visibility === undefined ? true : values.visibility"
+      >
+        <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
+        <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
+        <selectWrapper
+          v-if="values.type === 'dropdown'"
+          :value="payload[values.key]"
+          @input="updatePayload1($event, values.key)"
+          :options="values.options"
+          :multiSelectProps="values.dropdownProps"
+          :NoDataLabel="values.label"
+        />
+        <!-- </div> -->
+        <toggle
+          v-if="values.type === 'toggle'"
+          @change="updatePayload1($event, values.key)"
+        />
+
+        <div class="d-flex" v-if="values.type === 'checkbox'">
+          <!-- National Target here -->
+          <div class="d-flex">
+            <BaseCheckbox
+              @input="
+                updatePayload1(
+                  { sdg: payload.target.sdg, national: $event },
+                  'target'
+                )
+              "
+            />
+            <p class="check-label ml-1">National</p>
+          </div>
+          <!-- SDG Target here -->
+          <div class="d-flex ml-3">
+            <BaseCheckbox
+              @input="
+                updatePayload1(
+                  { sdg: $event, national: payload.target.national },
+                  'target'
+                )
+              "
+            />
+            <p class="check-label ml-1">SDG</p>
+          </div>
+        </div>
+      <div
+          v-if="values.type === 'visualization'"
+          class="btn-group d-flex work-sans"
+          role="group"
+        >
+          <button
+            type="button"
+            @click="
+              updatePayload1('zonal_map', values.key),
+                (activeToggleButton = 'zonal_map')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
+          >
+            Zones Map
+            <img
+              :src="
+                require(`../svg/${
+                  activeToggleButton === 'zonal_map'
+                    ? 'state_map_white'
+                    : 'zonal_map'
+                }.svg`)
+              "
+              alt=""
+              srcset=""
+            />
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload1('state_map', values.key),
+                (activeToggleButton = 'state_map')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'state_map' ? 'active' : '']"
+          >
+            State Map
+            <img
+              class="text-danger"
+              :src="
+                require(`../svg/${
+                  activeToggleButton === 'state_map'
+                    ? 'state_map_white'
+                    : 'state_map'
+                }.svg`)
+              "
+              alt=""
+              srcset=""
+            />
+
+            <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload1('line', values.key), (activeToggleButton = 'line')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'line' ? 'active' : '']"
+          >
+            Line <b-icon icon="graph-up"></b-icon>
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload1('column', values.key),
+                (activeToggleButton = 'column')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'column' ? 'active' : '']"
+          >
+            Column <b-icon icon="bar-chart-fill"></b-icon>
+          </button>
+        </div>
+      </div>
+    </template>
+               <portal-target name="map-multi-1" v-if="isMobile">
+                </portal-target>
+
+      <template  v-for="(values, index) in setup" >
+          <div
+          v-if="isMobile"
+        class=""
+        :class="values.class"
+        :key="index"
+        v-show="values.visibility === undefined ? true : values.visibility"
+      >
+        <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
+        <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
+        <selectWrapper
+          v-if="values.type === 'dropdown'"
+          :value="payload[values.key]"
+          @input="updatePayload2($event, values.key)"
+          :options="values.options"
+          :multiSelectProps="values.dropdownProps"
+          :NoDataLabel="values.label"
+        />
+        <!-- </div> -->
+        <toggle
+          v-if="values.type === 'toggle'"
+          @change="updatePayload2($event, values.key)"
+        />
+
+        <div class="d-flex" v-if="values.type === 'checkbox'">
+          <!-- National Target here -->
+          <div class="d-flex">
+            <BaseCheckbox
+              @input="
+                updatePayload2(
+                  { sdg: payload.target.sdg, national: $event },
+                  'target'
+                )
+              "
+            />
+            <p class="check-label ml-1">National</p>
+          </div>
+          <!-- SDG Target here -->
+          <div class="d-flex ml-3">
+            <BaseCheckbox
+              @input="
+                updatePayload2(
+                  { sdg: $event, national: payload.target.national },
+                  'target'
+                )
+              "
+            />
+            <p class="check-label ml-1">SDG</p>
+          </div>
+        </div>
+      <div
+          v-if="values.type === 'visualization'"
+          class="btn-group d-flex work-sans"
+          role="group"
+        >
+          <button
+            type="button"
+            @click="
+              updatePayload2('zonal_map', values.key),
+                (activeToggleButton = 'zonal_map')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
+          >
+            Zones Map
+            <img
+              :src="
+                require(`../svg/${
+                  activeToggleButton === 'zonal_map'
+                    ? 'state_map_white'
+                    : 'zonal_map'
+                }.svg`)
+              "
+              alt=""
+              srcset=""
+            />
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload2('state_map', values.key),
+                (activeToggleButton = 'state_map')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'state_map' ? 'active' : '']"
+          >
+            State Map
+            <img
+              class="text-danger"
+              :src="
+                require(`../svg/${
+                  activeToggleButton === 'state_map'
+                    ? 'state_map_white'
+                    : 'state_map'
+                }.svg`)
+              "
+              alt=""
+              srcset=""
+            />
+
+            <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload2('line', values.key), (activeToggleButton = 'line')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'line' ? 'active' : '']"
+          >
+            Line <b-icon icon="graph-up"></b-icon>
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload2('column', values.key),
+                (activeToggleButton = 'column')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'column' ? 'active' : '']"
+          >
+            Column <b-icon icon="bar-chart-fill"></b-icon>
+          </button>
+        </div>
+      </div>
+    </template>
+            <portal-target name="map-multi-2" v-if="isMobile">
+                </portal-target>
+      <template v-for="(values, index) in setup">
+          <div
+          v-if="isMobile"
+        class=""
+        :class="values.class"
+        :key="index"
+        v-show="values.visibility === undefined ? true : values.visibility"
+      >
+        <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
+        <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
+        <selectWrapper
+          v-if="values.type === 'dropdown'"
+          :value="payload[values.key]"
+          @input="updatePayload3($event, values.key)"
+          :options="values.options"
+          :multiSelectProps="values.dropdownProps"
+          :NoDataLabel="values.label"
+        />
+        <!-- </div> -->
+        <toggle
+          v-if="values.type === 'toggle'"
+          @change="updatePayload3($event, values.key)"
+        />
+
+        <div class="d-flex" v-if="values.type === 'checkbox'">
+          <!-- National Target here -->
+          <div class="d-flex">
+            <BaseCheckbox
+              @input="
+                updatePayload3(
+                  { sdg: payload.target.sdg, national: $event },
+                  'target'
+                )
+              "
+            />
+            <p class="check-label ml-1">National</p>
+          </div>
+          <!-- SDG Target here -->
+          <div class="d-flex ml-3">
+            <BaseCheckbox
+              @input="
+                updatePayload3(
+                  { sdg: $event, national: payload.target.national },
+                  'target'
+                )
+              "
+            />
+            <p class="check-label ml-1">SDG</p>
+          </div>
+        </div>
+        <div
+          v-if="values.type === 'visualization'"
+          class="btn-group d-flex work-sans"
+          role="group"
+        >
+          <button
+            type="button"
+            @click="
+              updatePayload3('zonal_map', values.key),
+                (activeToggleButton = 'zonal_map')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
+          >
+            Zones Map
+            <img
+              :src="
+                require(`../svg/${
+                  activeToggleButton === 'zonal_map'
+                    ? 'state_map_white'
+                    : 'zonal_map'
+                }.svg`)
+              "
+              alt=""
+              srcset=""
+            />
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload3('state_map', values.key),
+                (activeToggleButton = 'state_map')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'state_map' ? 'active' : '']"
+          >
+            State Map
+            <img
+              class="text-danger"
+              :src="
+                require(`../svg/${
+                  activeToggleButton === 'state_map'
+                    ? 'state_map_white'
+                    : 'state_map'
+                }.svg`)
+              "
+              alt=""
+              srcset=""
+            />
+
+            <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload3('line', values.key), (activeToggleButton = 'line')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'line' ? 'active' : '']"
+          >
+            Line <b-icon icon="graph-up"></b-icon>
+          </button>
+          <button
+            type="button"
+            @click="
+              updatePayload3('column', values.key),
+                (activeToggleButton = 'column')
+            "
+            class="btn btn-sm btn-outline-primary"
+            :class="[activeToggleButton === 'column' ? 'active' : '']"
+          >
+            Column <b-icon icon="bar-chart-fill"></b-icon>
+          </button>
+        </div>
+      </div>
+    </template>
+       <portal-target name="map-multi-3" v-if="isMobile">
+                </portal-target>
   </div>
 </template>
 
@@ -139,6 +525,7 @@ export default {
   data() {
     return {
       activeToggleButton: 'state_map',
+      isMobile: false,
       // payload: {
       //   indicator: 'indicator 2',
       //   location: '',
@@ -189,6 +576,22 @@ export default {
       required: false,
     },
   },
+
+  created() {
+    window.addEventListener('resize', this.onResize);
+
+    // checking if in Mobile view
+    if (window.innerWidth < 769) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false;
+    }
+  },
+
+  destroyed() {
+    window.removeEventListener('resize', this.onResize);
+  },
+
   watch: {
     defaultDataSource(newValue) {
       this.payload.datasource = newValue;
@@ -223,12 +626,95 @@ export default {
 
       this.$emit('data:options', this.payload);
     },
+
+    updatePayload1(value, key) {
+      console.log('just checking');
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.controlIndex,
+        groupIndex: 0,
+        key,
+        value,
+      });
+
+      this.$emit('data:options', this.payload1);
+    },
+
+    updatePayload2(value, key) {
+      console.log('just checking');
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.controlIndex,
+        groupIndex: 1,
+        key,
+        value,
+      });
+
+      this.$emit('data:options', this.payload2);
+
+      console.log('values2', value);
+    },
+
+    updatePayload3(value, key) {
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: this.controlIndex,
+        groupIndex: 2,
+        key,
+        value,
+      });
+
+      this.$emit('data:options', this.payload2);
+    },
+
+    onResize() {
+      console.log('width', window.innerWidth);
+      if (window.innerWidth < 769) {
+        this.isMobile = true;
+      } else {
+        this.isMobile = false;
+      }
+    },
   },
   computed: {
     payload() {
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
+        console.log('grou[Index', this.groupIndex);
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+          .payload[this.groupIndex];
+      }
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+        .payload;
+    },
+
+    payload1() {
+      if (this.groupIndex != null) {
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        console.log('grou[Index', this.groupIndex);
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+          .payload[this.groupIndex];
+      }
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+        .payload;
+    },
+
+    payload2() {
+      if (this.groupIndex != null) {
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        console.log('grou[Index', this.groupIndex);
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+          .payload[this.groupIndex];
+      }
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+        .payload;
+    },
+
+    payload3() {
+      if (this.groupIndex != null) {
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        console.log('grou[Index', this.groupIndex);
         return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
           .payload[this.groupIndex];
       }
