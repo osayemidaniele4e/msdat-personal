@@ -12,7 +12,8 @@
           />
         </div>
         <div class="col-md-12">
-          <IDCC :values="controlPanelProps" :closeOverlay="closeSubCard" />
+          <IDCC :values="controlPanelProps" :closeOverlay="closeSubCard"
+           :resetIndex="resetIndex" />
         </div>
       </div>
     </div>
@@ -30,6 +31,7 @@ import TableComponent from './TheTable.vue';
 export default {
   data() {
     return {
+      resetIndex: 1,
       closeSubCard: true,
     };
   },
@@ -61,6 +63,8 @@ export default {
 
     getReset() {
       this.$emit('reset');
+      // updating the resetIndex that is passed into IDCC
+      this.resetIndex++;
     },
   },
 };

@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 <template>
-  <base-overlay :show="loading">
+  <base-overlay :show="loading || notShow">
     <base-sub-card
       ref="SubCard"
       buttonToggle
@@ -26,7 +26,8 @@
           Different Data Source
         </p>
       </template>
-      <BarChart ref="BaseChart" :chartOptions="ChartOptions" />
+      <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
+
     </base-sub-card>
   </base-overlay>
 </template>
@@ -63,6 +64,7 @@ export default {
         },
       ],
       selectedDS: {},
+      notShow: false,
     };
   },
   props: {
@@ -71,6 +73,10 @@ export default {
      */
     values: {
       type: [Object, String, Array],
+      required: true,
+    },
+    resetIndex: {
+      type: Number,
       required: true,
     },
     closeOverlay: {
@@ -93,6 +99,22 @@ export default {
      * you want them to be called
      * like whats happening here
      * */
+
+    // when the refresh button is clicked
+    resetIndex: {
+      async handler() {
+        this.notShow = true;
+        this.loading = true;
+        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        this.setUpHighChartConfig(seriesArray, years);
+        this.loading = false;
+        this.notShow = false;
+      },
+      deep: false,
+      immediate: false,
+    },
+
     'values.datasource': {
       async handler(selectedDataSource) {
         // debugger;
