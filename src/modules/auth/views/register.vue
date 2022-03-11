@@ -190,7 +190,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      alert('Form submitted!');
       this.$router.push({ name: 'my-dashboard-details' });
     },
     getValidationState({ dirty, validated, valid = null }) {
