@@ -1,219 +1,210 @@
 /* eslint-disable vue/no-unused-components */
 <template>
   <div>
-    <TroubleShootingModal
-      style="z-index: 1500"
-      v-if="showTroubleShootingModal"
-    />
-    <template v-if="!showTroubleShootingModal">
-      <Loading
-        v-if="!loading"
-        :noBackdrop="false"
-        :showBackground="false"
-        class="over"
-      >
-        <div class="text-center">
-          <img :src="loadingImg" alt="first_img" width="250px" />
-          <div class="mr-4">
-            <h3>Initializing{{ loadingTitle }}</h3>
-            <p>{{ loadingContent }}</p>
-          </div>
+    <Sections
+      :indicators="indicators"
+      :dataSources="dataSources"
+      :defaultIndicators="defaultIndicators"
+      :initialIndicator="initialIndicator"
+      :initialDataSource="initialDataSource"
+      :initialLocation="initialLocation"
+      :updateValue="updateValue"
+      :updateKey="updateKey"
+      :resetData="resetData"
+    >
+      <template v-slot:section-before-0>
+        <slot name="top-section"></slot>
+      </template>
+      <template v-slot:section-0="{ payload, controlIndex }">
+        <div
+          class="col-md-12"
+          v-if="
+            $store.state.MSDAT_STORE.indicatorComparision == true &&
+            fields.map((element) => {
+              element.name == 'Indicator Overview';
+            })
+          "
+        >
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Indicator Overview
+              </h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+            <template>
+              <ControlPanelConfiguration :controlIndex="controlIndex">
+                <BaseIndicatorOverview
+                  :showTableRelatedIndicator="showTableRelatedIndicator"
+                  :controlPanelProps="payload"
+                  @value="getValue"
+                  @key="getKey"
+                  @reset="getReset"
+                />
+              </ControlPanelConfiguration>
+            </template>
+          </base-sub-card>
         </div>
-      </Loading>
+      </template>
 
-      <div v-else>
-        <Header
-          v-on:tour="runIntro"
-          :dashboardName="details.name"
-          :dashboardImage="details.image"
-        ></Header>
-        <div class="sticky">
-          <b-overlay :show="!cpIsLoading">
-            <BasePanel
-              :position="position"
-              v-if="cpIsLoading"
-              v-on:showSection="showSection($event)"
-            >
-              <template v-slot:default>
-                <ControlBase
-                  v-for="(control, index) in $store.state.MSDAT_STORE
-                    .controlConfig"
-                  :key="index"
-                  :title="control.label"
-                >
-                  <template v-if="!Array.isArray(control.setup[0])">
-                    <ControlPanel
-                      @data:options="log($event, index)"
-                      :setup="control.setup"
-                      :defaultIndicator="
-                        control.defaults.indicator != null
-                          ? control.defaults.indicator
-                          : defaultIndicator
-                      "
-                      :defaultDataSource="
-                        control.defaults.dataSource != null
-                          ? control.defaults.dataSource
-                          : defaultDataSource
-                      "
-                      :defaultLocation="
-                        control.defaults.location != null
-                          ? control.defaults.location
-                          : defaultLocation
-                      "
-                      :defaultYear="
-                        control.defaults.year != null
-                          ? control.defaults.year
-                          : defaultYear
-                      "
-                    />
-                  </template>
-                  <template v-else>
-                    <div class="row">
-                      <div
-                        class="col-md-4"
-                        v-for="(item, index2) in control.setup"
-                        :key="index2"
+      <template v-slot:section-1="{ payload, controlIndex }">
+        <div
+          class="col-md-12"
+          v-if="
+            $store.state.MSDAT_STORE.zonalAnalysis == true &&
+            fields.map((element) => {
+              element.name == 'Zonal Analysis';
+            })
+          "
+        >
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Zonal Analysis
+              </h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <BaseZonalAnalysisSection :controlPanelProps="payload" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
+      <template v-slot:section-2="{ payload, controlIndex }">
+        <div
+          class="col-md-12"
+          v-if="
+            $store.state.MSDAT_STORE.indicatorComparsionByPeriod == true &&
+            fields.map((element) => {
+              element.name == 'Indicator Comparsion - By Period';
+            })
+          "
+        >
+          <base-sub-card :backgroundColor="'#348481'">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Indicator Comparison - By Period/State
+              </h5>
+            </template>
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <ICS :values="payload" :controlIndex="controlIndex" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
+      <template v-slot:section-3="{ payload, controlIndex }">
+        <div class="col-md-12"  v-if="
+            $store.state.MSDAT_STORE.datasetComperision == true &&
+            fields.map(element => {
+              element.name == 'Dataset Comparison'})
+          ">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Dataset Comparison
+              </h5>
+            </template>
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <DataSetComparison
+                    :values="payload"
+                    :controlIndex="controlIndex"
+                  />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
+      <template v-slot:section-4="{ payload, controlIndex }">
+        <div class="col-md-12" v-if="
+            $store.state.MSDAT_STORE.multisourceComparison == true &&
+            fields.map(element => {
+              element.name == 'Multi-source Indicator Comparison'})
+          ">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Multi-Source Indicator Comparison
+              </h5>
+            </template>
+            <template>
+              <!-- <div class="row"> -->
+              <div class="row">
+                <template v-for="n in 3">
+                  <div :key="n" class="col-md-4">
+                    <LazyLoading>
+                      <ControlPanelConfiguration
+                        :groupIndex="n - 1"
+                        :controlIndex="controlIndex"
                       >
-                        <ControlPanel
-                          @data:options="log($event, index, index2)"
-                          :setup="item"
-                          :defaultIndicator="
-                            control.defaults.indicator != null
-                              ? control.defaults.indicator
-                              : defaultIndicator
-                          "
-                          :defaultDataSource="
-                            control.defaults.dataSource != null
-                              ? control.defaults.dataSource
-                              : defaultDataSource
-                          "
-                          :defaultLocation="
-                            control.defaults.location != null
-                              ? control.defaults.location
-                              : defaultLocation
-                          "
-                          :defaultYear="
-                            control.defaults.year != null
-                              ? control.defaults.year
-                              : defaultYear
-                          "
+                        <MultiSourceComponent
+                          :key="n"
+                          :values="payload[n - 1]"
                         />
-                      </div>
-                    </div>
-                  </template>
-                </ControlBase>
-              </template>
-            </BasePanel>
-          </b-overlay>
+                      </ControlPanelConfiguration>
+                    </LazyLoading>
+                  </div>
+                </template>
+              </div>
+              <!-- </div> -->
+            </template>
+          </base-sub-card>
         </div>
-        <!-- control Panels ends here  -->
-
-        <template v-for="field in this.fieldsArray">
-          <div
-            :id="field.id"
-            :ref="field.id"
-            class="row observable"
-            :key="field.id"
-          >
-            <Sections
-              :field="field"
-              :cpIsLoading="cpIsLoading"
-              :BaseIndicatorOverviewProp="BaseIndicatorOverviewProp"
-              :zonalAnalysis="zonalAnalysis"
-              :indicatorComparisonData="indicatorComparisonData"
-              :datasetProps="datasetProps"
-              :MultiSourceCompareValue="MultiSourceCompareValue"
-            />
-          </div>
-        </template>
-        <!-- lazy loading ends here -->
-
-        <Footer class="visible"> </Footer>
-        <Onboarding
-          v-if="firstTime"
-          v-on:closeOnboard="onCloseOnBoarding"
-        ></Onboarding>
-      </div>
-    </template>
+      </template>
+    </Sections>
   </div>
 </template>
 
 <script>
-import {
-  BasePanel,
-  ControlBase,
-  ControlPanel,
-} from '@/components/ControlPanel';
-import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
-import formatter from '../../../msdat-dashboard/mixins/formatter'; // '../../mixins/formatter';
-import controlPanelSetup from '../../../msdat-dashboard/mixins/control-panel-setup'; // '../../mixins/control-panel-setup';
-import BaseIndicatorOverview from '../../../msdat-dashboard/components/sections/indicator-overview/BaseIndicatorOverview.vue'; // '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
-import BaseICS from '../../../msdat-dashboard/components/sections/indicator-comparism/BaseICS.vue'; // '../../components/sections/indicator-comparism/BaseICS.vue';
-import DataSetComparism from '../../../msdat-dashboard/components/sections/dataset-comparison/datasetComparism.vue'; // '../../components/sections/dataset-comparison/datasetComparism.vue';
-import tour from '../../../msdat-dashboard/views/onboarding/tour'; // '../onboarding/tour';
-import Header from '../../../msdat-dashboard/views/about/layout/theHeader.vue'; // '../about/layout/theHeader.vue';
-import Footer from '../../../msdat-dashboard/views/about/layout/theFooter.vue'; // '../about/layout/theFooter.vue';
-import scroll from '../../../msdat-dashboard/modules/onScroll/onscroll'; // '../../modules/onScroll/onscroll';
-// import LazyLoading from '../../../msdat-dashboard/modules/onScroll/lazyLoading.vue'; // '../../modules/onScroll/lazyLoading.vue';
-import Loading from '../../../msdat-dashboard/mixins/loading'; // '../../mixins/loading';
-import BaseMultiSourceSection from '../../../msdat-dashboard/components/sections/multi-source-compare/BaseMultiSourceSection.vue'; // '../../components/sections/multi-source-compare/BaseMultiSourceSection.vue';
-import Onboarding from '../../../msdat-dashboard/views/onboarding/onboarding'; // '../onboarding/onboarding';
-import TroubleShooting from '../../../msdat-dashboard/modules/troubleshooting/mixins'; // '../../modules/troubleshooting/mixins';
+import { mapMutations } from 'vuex';
+import BaseZonalAnalysisSection from '../../../msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
+import BaseIndicatorOverview from '../../../msdat-dashboard/components/sections/indicator-overview/BaseIndicatorOverview.vue';
+import IndicatorOverviewConfig from '../../../msdat-dashboard/components/sections/indicator-overview/control-panel-config';
+import ZonalAnalysisConfig from '../../../msdat-dashboard/components/sections/zonal-analysis/control-config';
+import ICSConfig from '../../../msdat-dashboard/components/sections/indicator-comparism/indicator-comparism-config';
+import ICS from '../../../msdat-dashboard/components/sections/indicator-comparism/ICS.vue';
+import DataSetComparisonConfig from '../../../msdat-dashboard/components/sections/dataset-comparison/control-panel-config';
+import DataSetComparison from '../../../msdat-dashboard/components/sections/dataset-comparison/datasetComparism.vue';
+import LazyLoading from '../../../msdat-dashboard/modules/onScroll/lazyLoading.vue';
+import BaseMultiSourceConfig from '../../../msdat-dashboard/components/sections/multi-source-compare/control-config';
+import MultiSourceComponent from '../../../msdat-dashboard/components/sections/multi-source-compare/multi-source.vue';
 import Sections from './Sections.vue';
-// config.indicators = [2,3,4]
+import ControlPanelConfiguration from '../../../msdat-dashboard/modules/control_setup/ControlPanelConfiguration.vue';
 
 export default {
-  mixins: [
-    Loading,
-    formatter,
-    controlPanelSetup,
-    Onboarding,
-    tour,
-    scroll,
-    TroubleShooting,
-  ],
   data() {
     return {
-      position: 3,
-      BarChartOptions: {},
-      controlPanel: {},
-      lect: '',
-      BaseIndicatorOverviewProp: {},
-      datasetProps: {},
-      indicatorComparisonData: '',
-      MultiSourceCompareValue: [],
-      availableYears: [],
-      zonalAnalysis: {},
-      mapValues: {},
-      selectedMapName: null,
-      fieldsArray: [],
+      updateValue: {},
+      updateKey: '',
+      resetData: 1,
     };
   },
   components: {
-    ControlBase,
-    BasePanel,
-    ControlPanel,
-    // eslint-disable-next-line vue/no-unused-components
-    DataSetComparism,
-    // eslint-disable-next-line vue/no-unused-components
-    BaseIndicatorOverview,
-    // eslint-disable-next-line vue/no-unused-components
-    BaseICS,
-    // eslint-disable-next-line vue/no-unused-components
-    BaseMultiSourceSection,
-    Header,
-    Footer,
-    // eslint-disable-next-line vue/no-unused-components
-    ZonalAnalysisSection,
     Sections,
-  },
-  computed: {
-    fieldVisiblity() {
-      return this.$store.state.MSDAT_STORE.indicatorComparision;
-    },
-    details() {
-      return this.$store.getters.dashboardDetails;
-    },
+    BaseIndicatorOverview,
+    ControlPanelConfiguration,
+    BaseZonalAnalysisSection,
+    LazyLoading,
+    ICS,
+    DataSetComparison,
+    MultiSourceComponent,
   },
   props: {
     initialIndicator: {
@@ -240,92 +231,46 @@ export default {
       type: Array,
       required: false,
     },
+    showTableRelatedIndicator: {
+      type: Boolean,
+      default: true,
+    },
     fields: {
       type: Array,
-      required: true,
+      required: false,
     },
   },
   methods: {
-    /**
-     * @param optionsObject The return a control Options objects when ever any control
-     * in a control panel changes
-     * @param index The index of the control panel that changes
-     * you can use this to check which control panel changed
-     *
-     */
+    ...mapMutations('MSDAT_STORE', [
+      'ADD_CONTROL_PANEL',
+      'CLEAR_CONTROL_PANEL',
+    ]),
 
-    /**
-     * *
-     */
-    setState(val) {
-      this.selectedMapName = val;
+    getValue(value) {
+      this.updateValue = value;
     },
-    async log(optionsObject, index, index2) {
-      // console.log(optionsObject, index);
-      switch (index) {
-        case 0:
-          // this.stateBarValue = optionsObject;
-          // this.TableValues = optionsObject;
-          // this.indicatorComparison = optionsObject;
-          // this.zonalProps = optionsObject;
-          this.BaseIndicatorOverviewProp = optionsObject;
-          break;
-        case 1:
-          this.zonalAnalysis = optionsObject;
-          break;
-        case 2:
-          this.indicatorComparisonData = optionsObject;
-          break;
-        case 3:
-          this.datasetProps = optionsObject;
-          break;
-        case 4:
-          this.MultiSourceCompareValue[index2] = optionsObject;
-          break;
-        default:
-          break;
-      }
+
+    getKey(key) {
+      this.updateKey = key;
+    },
+
+    getReset() {
+      this.resetData++;
     },
   },
-  async mounted() {
-    this.loading = false;
-    this.fieldsArray = this.fields;
-    // initializing data for dashboard
-    try {
-      await this.$DL.init({
-        dashboardIndicators: this.indicators,
-        defaultIndicators: this.defaultIndicators,
-        dashboardDataSources: this.dataSources,
-      });
+  created() {
+    this.CLEAR_CONTROL_PANEL();
+    /**
+     * passing indicator Overview first means it going to at  index 0
+     * in the control Panel config Array
+     * and so on and fort for the other sections
+     */
 
-      this.loading = true;
-
-      this.$store.commit('MSDAT_STORE/SET_INITIAL', {
-        indicator: this.initialIndicator,
-        datasource: this.initialDataSource,
-        location: this.initialLocation,
-      });
-
-      // The initializing the control panel
-      this.setDefaults();
-      this.setUpControlPanelDropDown();
-
-      this.defaultYearDropdown = this.setYearDropdown();
-      if (this.defaultYearDropdown.length > 0) {
-        const firstItem = 0;
-        this.defaultYear = this.defaultYearDropdown[firstItem];
-      }
-      // console.log('year', this.setYearDropdown())
-      this.cpIsLoading = true;
-      // this.$nextTick(() => {
-      //   this.startScroll();
-      // });
-    } catch (error) {
-      // This means it a dexies error
-      if (!error.isAxiosError) {
-        this.showTroubleShootingModal = true;
-      }
-    }
+    this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
+    this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+    this.ADD_CONTROL_PANEL(ICSConfig);
+    this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+    this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
   },
 };
 </script>

@@ -42,7 +42,7 @@
           <!-- </div>       -->
         </li>
       </template>
-      <template v-if="!customDashBoard">
+      <template v-if="customDashboard === false">
         <li
           class="
             mb-0
