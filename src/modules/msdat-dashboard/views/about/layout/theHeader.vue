@@ -162,6 +162,9 @@ export default {
       this.toggleOption = !this.toggleOption;
       this.$emit('tour');
     },
+    close() {
+      this.toggleOption = false;
+    },
   },
   watch: {
     $route: {

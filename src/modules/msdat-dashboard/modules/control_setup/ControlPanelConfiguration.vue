@@ -6,6 +6,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
+import { eventBus } from '@/main';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
@@ -29,6 +30,11 @@ export default {
       }
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
+  },
+  mounted() {
+    eventBus.$on('handleClick', (data) => {
+      this.payload.location = data;
+    });
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),

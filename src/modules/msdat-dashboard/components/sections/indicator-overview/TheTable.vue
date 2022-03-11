@@ -1,23 +1,34 @@
 /* eslint-disable no-await-in-loop */
 <template>
-  <base-overlay :show="loading">
-    <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
-      <template #title>
-        <p class="work-sans mb-0 line-height">
-          <b>{{ values.indicator.short_name }}</b> And Related Indicators With Years Of Latest Value
-          Across The <b>Country</b>
-        </p>
-      </template>
-      <TableComponent
-        class="work-sans"
-        v-if="TableData.length > 0"
-        :dataArray="TableData"
-        :setSelectedSource="setTableSelected"
-        @selected:source="updateControlPanel($event)"
-        @selected:source-info="dataSourceModalFunc($event)"
-        @selected:indicator-info="indicatorModalFunc($event)"
-      />
-    </base-sub-card>
+  <!-- <base-overlay :show="loading"> -->
+  <div>
+    <div v-if="!loading">
+      <base-sub-card
+        showControls
+        :showDownload="false"
+        v-if="Object.keys(values).length"
+      >
+        <template #title>
+          <p class="work-sans mb-0 line-height">
+            <b>{{ values.indicator.short_name }}</b> And Related Indicators With
+            Years Of Latest Value Across The <b>Country</b>
+          </p>
+        </template>
+        <TableComponent
+          class="work-sans"
+          v-if="TableData.length > 0"
+          :dataArray="TableData"
+          :setSelectedSource="setTableSelected"
+          @selected:source="updateControlPanel($event)"
+          @selected:source-info="dataSourceModalFunc($event)"
+          @selected:indicator-info="indicatorModalFunc($event)"
+          @clickedDatasource="getValue"
+          @key="getKey"
+          @clickedReset="getReset"
+        />
+      </base-sub-card>
+    </div>
+    <TableLoader v-if="loading" />
     <base-modal :showModal="showModal" size="lg">
       <!-- <template v-if="DisplayType === 'indicator'"> -->
       <template #title>
@@ -34,12 +45,14 @@
       />
       <!-- </template> -->
     </base-modal>
-  </base-overlay>
+  </div>
+  <!-- </base-overlay> -->
 </template>
 
 <script>
 import TableComponent from '@/modules/msdat-dashboard/components/table/TableComponent.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
@@ -50,6 +63,7 @@ export default {
     TableComponent,
     IndicatorMetaDataModal,
     DataSourceMetaDataModal,
+    TableLoader,
   },
   data() {
     return {
@@ -61,6 +75,7 @@ export default {
       dataSourceID: '',
       modalTitle: '',
       DisplayType: '',
+      updateData: 0,
     };
   },
   props: {
@@ -82,13 +97,21 @@ export default {
       async handler(newValues) {
         this.loading = true;
         const formattedData = [];
-        let indicators = [newValues.id, newValues.first_related, newValues.second_related];
+        let indicators = [
+          newValues.id,
+          newValues.first_related,
+          newValues.second_related,
+        ];
 
         if (!this.showTableRelatedIndicator) {
           indicators = [newValues.id];
         }
 
-        for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
+        for (
+          let indicatorIndex = 0;
+          indicatorIndex < indicators.length;
+          indicatorIndex += 1
+        ) {
           const indicatorID = indicators[indicatorIndex];
           if (indicatorID) {
             const data = [];
@@ -104,7 +127,9 @@ export default {
               });
               data.push(ab);
             }
-            formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
+            formattedData.push(
+              this.tableComponentDataFormatter(indicatorObject, data),
+            );
           }
           this.TableData = formattedData;
           this.loading = false;
@@ -115,6 +140,51 @@ export default {
       handler(newValue) {
         this.setTableSelected = newValue;
       },
+    },
+    updateData: {
+      async handler() {
+        this.loading = true;
+        const formattedData = [];
+        let indicators = [
+          this.values.indicator.id,
+          this.values.indicator.first_related,
+          this.values.indicator.second_related,
+        ];
+
+        if (!this.showTableRelatedIndicator) {
+          indicators = [this.values.indicator.id];
+        }
+
+        for (
+          let indicatorIndex = 0;
+          indicatorIndex < indicators.length;
+          indicatorIndex += 1
+        ) {
+          const indicatorID = indicators[indicatorIndex];
+          if (indicatorID) {
+            const data = [];
+            const dataSources = this.dlGetDashboardDataSource();
+            const indicatorObject = this.dlGetIndicator(indicatorID);
+            for (let index = 0; index < dataSources.length; index += 1) {
+              const element = dataSources[index];
+              // eslint-disable-next-line no-await-in-loop
+              const ab = await this.dlGetLatestSourceAndIndicatorData({
+                indicator: indicatorID,
+                datasource: element.id,
+                location: 1,
+              });
+              data.push(ab);
+            }
+            formattedData.push(
+              this.tableComponentDataFormatter(indicatorObject, data),
+            );
+          }
+          this.TableData = formattedData;
+          this.loading = false;
+        }
+      },
+      deep: true,
+      immediate: false,
     },
   },
   methods: {
@@ -139,7 +209,10 @@ export default {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
           return filteredIndicator.reduce((max, currentValues) => {
-            if (currentValues.period > max.period && currentValues.period <= presentYear) {
+            if (
+              currentValues.period > max.period
+              && currentValues.period <= presentYear
+            ) {
               return currentValues;
             }
             return max;
@@ -173,6 +246,21 @@ export default {
       this.DisplayType = 'datasource';
       this.showModal = !this.showModal;
     },
+
+    getValue(value) {
+      this.$emit('value', value);
+    },
+
+    getKey(key) {
+      this.$emit('key', key);
+    },
+
+    getReset() {
+      this.$emit('reset');
+    },
+  },
+  mounted() {
+    this.updateData += 1;
   },
 };
 </script>

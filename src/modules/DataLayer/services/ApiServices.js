@@ -2,6 +2,7 @@ import axiosInstance from '@/plugins/axios';
 import apiEndpoints from '../config/endpoint';
 
 const getMainData = async () => axiosInstance.get(apiEndpoints.getData);
+// Last updated DB date
 const getLastUpdatedDate = async () => axiosInstance.get(apiEndpoints.getLastUpdated);
 const getUpdatedData = async (theDate) => axiosInstance.get(`${apiEndpoints.getUpdatedDataDate}?datetime=${theDate}`);
 const getSingleIndicator = async (indicator) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicator}`);

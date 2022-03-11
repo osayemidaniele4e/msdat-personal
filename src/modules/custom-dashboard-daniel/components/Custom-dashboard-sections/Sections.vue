@@ -132,9 +132,9 @@
 </template>
 
 <script>
+import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseIndicatorOverview from '../../../msdat-dashboard/components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import LazyLoading from '../../../msdat-dashboard/modules/onScroll/lazyLoading.vue';
-import ZonalAnalysisSection from '@/modules/msdat-dashboard/components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseICS from '../../../msdat-dashboard/components/sections/indicator-comparism/BaseICS.vue';
 import DataSetComparism from '../../../msdat-dashboard/components/sections/dataset-comparison/datasetComparism.vue';
 import BaseMultiSourceSection from '../../../msdat-dashboard/components/sections/multi-source-compare/BaseMultiSourceSection.vue';

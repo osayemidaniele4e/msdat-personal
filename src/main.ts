@@ -16,11 +16,12 @@ import './plugins/veevalidate';
 
 import './assets/styles/fonts.css';
 
-Vue.use(VueFriendlyIframe);
-
 // import Vue from 'vue';
 
-import './assets/styles/fonts.css';
+// eslint-disable-next-line import/prefer-default-export
+export const eventBus = new Vue();
+
+Vue.use(VueFriendlyIframe);
 // import Vue from 'vue';
 
 Vue.use(DataLayer, {

@@ -3,10 +3,12 @@ import {
   filter, omit, matches, isObject, has,
 } from 'lodash';
 import axios from '@/plugins/axios';
+import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
 
 import DB from './services/database.worker';
+import apiServices from './services/ApiServices';
 
 const { mapState } = createNamespacedHelpers('DL');
 
@@ -27,6 +29,7 @@ const { mapState } = createNamespacedHelpers('DL');
  */
 
 export default {
+  mixins: [formatter],
   data() {
     return {
       hardCordedValueType: [
@@ -121,7 +124,21 @@ export default {
       }
 
       const result = await DB.queryDB(query);
-      return result;
+      const dataResult = result.map((element) => {
+        const temp = {};
+        temp.id = element.id;
+        temp.period = element.period;
+        // temp.value = this.singlePointDecimalValue(element.value);
+        temp.value = element.value;
+        temp.created_at = element.created_at;
+        temp.updated_at = element.updated_at;
+        temp.indicator = element.indicator;
+        temp.location = element.location;
+        temp.datasource = element.datasource;
+        temp.value_type = element.value_type;
+        return temp;
+      });
+      return dataResult;
     },
 
     dlGetDashboardDataSource() {
@@ -171,9 +188,15 @@ export default {
     // New Feature
     // function to get data_sources based on indicator
     async getDataSourceByIndicator(value) {
-      const indicatorId = value;
+      const indicatorId = value || 1;
+      console.log(indicatorId);
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
       return dataSourceAvailable.data.datasources;
+    },
+    // Function to store the latest database date
+    async getLatestDate() {
+      const resp = await apiServices.getLatestDate();
+      return resp.data.date;
     },
   },
   mounted() {

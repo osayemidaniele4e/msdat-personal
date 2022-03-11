@@ -11,6 +11,7 @@ import loadMap from 'highcharts/modules/map';
 import exportData from 'highcharts/modules/export-data';
 import exporting from 'highcharts/modules/exporting';
 import noData from 'highcharts/modules/no-data-to-display';
+import loadDrilldown from 'highcharts/modules/drilldown';
 import { genComponent } from 'vue-highcharts';
 
 // default map
@@ -75,6 +76,7 @@ loadMap(Highcharts);
 exporting(Highcharts);
 exportData(Highcharts);
 noData(Highcharts);
+loadDrilldown(Highcharts);
 
 export default {
   name: 'BaseMap',

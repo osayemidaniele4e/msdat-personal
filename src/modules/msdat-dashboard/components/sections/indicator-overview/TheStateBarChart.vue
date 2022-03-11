@@ -2,6 +2,7 @@
   <div class="position-relative">
     <base-overlay :show="loading">
       <base-sub-card
+       ref="SubCard"
         showControls
         v-if="Object.keys(values).length"
         @dropdownTypeSelected="
@@ -20,7 +21,18 @@
             >
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+         <button @click="returnToNational" v-show="level !== 1">
+            <img
+              :src="require('../../../assets/chevron-left.svg')"
+              alt="caret-left"
+              width="15"
+              height="15"
+            />&nbsp;Back to National
+          </button>
+        <div @click="handleChartClick">
+           <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+        </div>
+
       </base-sub-card>
     </base-overlay>
     <NoSubNationalData
@@ -34,6 +46,7 @@
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import { eventBus } from '@/main';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
 
@@ -48,6 +61,8 @@ export default {
       BarChartOptions: {},
       loading: false,
       showNoSubNationalData: false,
+      level: 1,
+      updateData: 0,
     };
   },
   props: {
@@ -58,45 +73,24 @@ export default {
       type: [Object, String, Array],
       required: true,
     },
+    closeOverlay: {
+      type: Boolean,
+    },
   },
   watch: {
-    values: {
-      async handler(newValues) {
-        this.loading = true;
-        const data = await this.getData(newValues);
-        const nationalTarget = this.dlGetIndicator(newValues.indicator.id).national_target;
-        const displayFactor = this.dlGetFactor(newValues.indicator.factor).display_factor;
-
-        const chartOptions = this.genHighChartOption(data, {
-          target: {
-            value: nationalTarget,
-          },
-        });
-        chartOptions.yAxis.title.text = `${displayFactor}`;
-
-        // add nation and state selected to fit according to mockup 😢 😟 😡
-
-        const parentValue = await this.dlQuery({
-          indicator: newValues.indicator.id,
-          datasource: newValues.datasource.id,
-          period: newValues.year,
-          // value_type: 5,
-          location: newValues.location.id,
-        });
-        // because i know i am expecting only on value in the array of results
-        if (parentValue.length > 0) {
-          const parent = parentValue[0];
-          const seriesObject = {
-            showInLegend: false,
-            color: parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
-            name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
-            data: [[newValues.location.name, Number(parseFloat(parent.value).toFixed(1))]],
-          };
-          chartOptions.series.unshift(seriesObject);
+    // Watch closeOverlay
+    closeOverlay: {
+      handler(newValue) {
+        if (newValue) {
+          this.closeOverlay = true;
+          this.$refs.SubCard.close();
         }
-
-        this.BarChartOptions = chartOptions;
-        this.loading = false;
+      },
+      deep: true,
+    },
+    values: {
+      async handler() {
+        this.updateValue();
       },
       deep: true,
       immediate: false,
@@ -118,8 +112,55 @@ export default {
         }
       },
     },
+
+    updateData: {
+      async handler() {
+        this.updateValue();
+      },
+      deep: true,
+      immediate: false,
+
+    },
   },
   methods: {
+    async updateValue() {
+      this.loading = true;
+      const data = await this.getData(this.values);
+      const nationalTarget = this.dlGetIndicator(this.values.indicator.id).national_target;
+      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+
+      const chartOptions = this.genHighChartOption(data, {
+        target: {
+          value: nationalTarget,
+        },
+      });
+      chartOptions.yAxis.title.text = `${displayFactor}`;
+
+      // add nation and state selected to fit according to mockup 😢 😟 😡
+
+      const parentValue = await this.dlQuery({
+        indicator: this.values.indicator.id,
+        datasource: this.values.datasource.id,
+        period: this.values.year,
+        // value_type: 5,
+        location: this.values.location.id,
+      });
+        // because i know i am expecting only on value in the array of results
+      if (parentValue.length > 0) {
+        const parent = parentValue[0];
+        const seriesObject = {
+          showInLegend: false,
+          color: parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
+          name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
+          data: [[this.values.location.name, Number(parseFloat(parent.value).toFixed(1))]],
+        };
+        chartOptions.series.unshift(seriesObject);
+      }
+
+      this.BarChartOptions = chartOptions;
+      this.loading = false;
+    },
+
     async getData(optionsObject) {
       const {
         datasource, indicator, location, year,
@@ -143,6 +184,27 @@ export default {
       // console.log('hello =>', ...data);
       return data;
     },
+
+    handleChartClick(e) {
+      const point = e.point.name;
+      const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+      if (selectedPlace.length !== 0) {
+        eventBus.$emit('handleClick', selectedPlace[0]);
+      }
+      this.level = 3;
+    },
+
+    returnToNational() {
+      const selectedPlace = this.dlGetLocation({ level: 1 });
+      if (selectedPlace.length !== 0) {
+        eventBus.$emit('handleClick', selectedPlace[0]);
+      }
+      this.level = 1;
+    },
+  },
+
+  mounted() {
+    this.updateData = +1;
   },
 };
 </script>

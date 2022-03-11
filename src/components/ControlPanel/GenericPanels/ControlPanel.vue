@@ -18,58 +18,106 @@
           :NoDataLabel="values.label"
         />
         <!-- </div> -->
-        <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
+        <toggle
+          v-if="values.type === 'toggle'"
+          @change="updatePayload($event, values.key)"
+        />
 
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->
           <div class="d-flex">
             <BaseCheckbox
-              @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')"
+              @input="
+                updatePayload(
+                  { sdg: payload.target.sdg, national: $event },
+                  'target'
+                )
+              "
             />
             <p class="check-label ml-1">National</p>
           </div>
           <!-- SDG Target here -->
           <div class="d-flex ml-3">
             <BaseCheckbox
-              @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')"
+              @input="
+                updatePayload(
+                  { sdg: $event, national: payload.target.national },
+                  'target'
+                )
+              "
             />
             <p class="check-label ml-1">SDG</p>
           </div>
         </div>
-        <div v-if="values.type === 'visualization'" class="btn-group d-flex work-sans" role="group">
+        <div
+          v-if="values.type === 'visualization'"
+          class="btn-group d-flex work-sans"
+          role="group"
+        >
           <button
             type="button"
-            @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
+            @click="
+              updatePayload('zonal_map', values.key),
+                (activeToggleButton = 'zonal_map')
+            "
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
           >
             Zones Map
-            <img :src="require(`../svg/${
-                      activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map'
-                    }.svg`)" alt="" srcset="" />
+            <img
+              :src="
+                require(`../svg/${
+                  activeToggleButton === 'zonal_map'
+                    ? 'state_map_white'
+                    : 'zonal_map'
+                }.svg`)
+              "
+              alt=""
+              srcset=""
+            />
           </button>
           <button
             type="button"
-            @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
+            @click="
+              updatePayload('state_map', values.key),
+                (activeToggleButton = 'state_map')
+            "
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'state_map' ? 'active' : '']"
           >
             State Map
-            <img class="text-danger" :src="require(`../svg/${
-                      activeToggleButton === 'state_map' ? 'state_map_white' : 'state_map'
-                    }.svg`)" alt="" srcset="" />
+            <img
+              class="text-danger"
+              :src="
+                require(`../svg/${
+                  activeToggleButton === 'state_map'
+                    ? 'state_map_white'
+                    : 'state_map'
+                }.svg`)
+              "
+              alt=""
+              srcset=""
+            />
+
+            <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
           </button>
           <button
             type="button"
-            @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
+            @click="
+              updatePayload('line', values.key), (activeToggleButton = 'line')
+            "
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'line' ? 'active' : '']"
           >
             Line <b-icon icon="graph-up"></b-icon>
           </button>
           <button
+          jkjkkjk
             type="button"
-            @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
+            @click="
+              updatePayload('column', values.key),
+                (activeToggleButton = 'column')
+            "
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'column' ? 'active' : '']"
           >
@@ -92,6 +140,11 @@ export default {
   data() {
     return {
       activeToggleButton: 'state_map',
+
+      // using component data with 'Sub' addition to prevent prop mutations
+      // (controlIndex & groupIndex)
+      controlIndexSub: this.controlIndex,
+      groupIndexSub: this.groupIndex,
       // payload: {
       //   indicator: 'indicator 2',
       //   location: '',
@@ -141,6 +194,19 @@ export default {
       type: [Object, String],
       required: false,
     },
+    updateValue: {
+      type: Object,
+      required: false,
+    },
+    updateKey: {
+      type: String,
+      required: false,
+    },
+
+    resetData: {
+      type: Number,
+      required: false,
+    },
   },
   watch: {
     defaultDataSource(newValue) {
@@ -153,27 +219,44 @@ export default {
       immediate: true,
       deep: true,
     },
+
+    updateValue(newValue) {
+      this.controlIndexSub = 0;
+      this.groupIndexSub = null;
+      this.updatePayload(newValue, 'datasource');
+    },
+
+    resetData: {
+      handler() {
+        this.controlIndexSub = 0;
+        this.groupIndexSub = null;
+        this.updatePayload(this.defaultDataSource, 'datasource');
+      },
+      immediate: true,
+    },
+
   },
   methods: {
     updatePayload(value, key) {
-      if (this.groupIndex != null) {
+      if (this.groupIndexSub != null) {
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section
         // debugger;
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: this.controlIndex,
-          groupIndex: this.groupIndex,
+          controlIndex: this.controlIndexSub,
+          groupIndex: this.groupIndexSub,
           key,
           value,
         });
       } else {
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: this.controlIndex,
+          controlIndex: this.controlIndexSub,
           key,
           value,
         });
       }
-
+      this.controlIndexSub = this.controlIndex;
+      this.groupIndexSub = this.groupIndex;
       this.$emit('data:options', this.payload);
     },
   },
@@ -182,11 +265,11 @@ export default {
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
-        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
-          this.groupIndex
-        ];
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+          .payload[this.groupIndex];
       }
-      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
+        .payload;
     },
   },
 
