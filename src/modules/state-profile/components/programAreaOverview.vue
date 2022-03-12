@@ -350,7 +350,6 @@ export default {
         series: [
           {
             name: 'National',
-            color: this.programArea.colors[0],
             data: [
             ],
             pointPadding: 0.1,
@@ -421,6 +420,8 @@ export default {
       this.singleSrcnYear = data[0][0] ? `(${data[0][0].split('(')[1]}` : `(${data[0].name.split('(')[1]}`;
       // eslint-disable-next-line prefer-destructuring
       this.singleNational = Array.isArray(data[0]) ? data[0][1] : data[0].y;
+      // eslint-disable-next-line max-len
+      this.barChartOptions.series[0].color = noStates ? this.programArea.colors[1] : this.programArea.colors[0];
       this.barChartOptions.series[0].data = data;
       this.populateCategories();
     },

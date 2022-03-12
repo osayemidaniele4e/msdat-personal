@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Modal :noBackdrop="true" :showBackground="background" @clickHide="close">
+    <Modal
+      :noBackdrop="true"
+      :showBackground="background"
+      @clickHide="close"
+      showCloseButton
+    >
       <div class="onboarding__bg">
         <div v-show="onboarding1st" class="onboarding__body">
           <div class="onboarding__img-container my-5 pt-4">

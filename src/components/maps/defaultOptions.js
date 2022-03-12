@@ -1,4 +1,3 @@
-let originalColor;
 export default {
   chart: {
     style: {
@@ -71,23 +70,23 @@ export default {
         },
       },
     },
-    series: {
-      cursor: 'pointer',
-      events: {
-        mouseOver() {
-          originalColor = this.color;
+    // series: {
+    //   cursor: 'pointer',
+    //   events: {
+    //     mouseOver() {
+    //       originalColor = this.color;
 
-          this.update({
-            color: 'red',
-          });
-        },
-        mouseOut() {
-          this.update({
-            color: originalColor,
-          });
-        },
-      },
-    },
+    //       this.update({
+    //         color: 'red',
+    //       });
+    //     },
+    //     mouseOut() {
+    //       this.update({
+    //         color: originalColor,
+    //       });
+    //     },
+    //   },
+    // },
   },
   series: [],
 };
