@@ -99,6 +99,7 @@ export default {
       this.formIsValid = true;
       if (this.userName === '' || this.password.length === '') {
         this.formIsValid = false;
+        this.isLoading = false;
       } else {
         const formData = {
           username: this.userName,
@@ -114,7 +115,11 @@ export default {
           .then((res) => {
             this.isLoading = false;
             sessionStorage.setItem('username', res.data.username);
-            this.$router.push({ path: '/my-dashboard/details' }).catch(() => {});
+            this.$router
+              .push({ path: '/my-dashboard/details' })
+              .catch((err) => {
+                console.log(err);
+              });
           })
           .catch((err) => {
             this.isLoading = false;

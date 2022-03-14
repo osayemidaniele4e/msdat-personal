@@ -1,4 +1,3 @@
-const token = sessionStorage.getItem('username');
 export default [
   {
     path: '/custom',
@@ -19,6 +18,8 @@ export default [
     path: '/my-dashboard',
     name: 'my-dashboard',
     beforeEnter: (to, from, next) => {
+      const token = sessionStorage.getItem('username');
+      // console.log('In before Enter', token);
       if (!token) {
         next('/login');
       } else {
@@ -58,6 +59,7 @@ export default [
     path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
     beforeEnter: (to, from, next) => {
+      const token = sessionStorage.getItem('username');
       if (!token) {
         next('/login');
       } else {
