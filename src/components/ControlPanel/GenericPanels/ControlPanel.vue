@@ -2,6 +2,7 @@
   <div class="row">
     <template v-for="(values, index) in setup">
           <div
+          v-if="!isMobile || controlIndex !== 4"
         class=""
         :class="values.class"
         :key="index"
@@ -126,14 +127,16 @@
       </div>
     </template>
 
+    <!-- new implementation for the multi-source mobile component  -->
       <template  v-for="(values, index) in setup" >
           <div
-          v-if="isMobile"
+          v-if="isMobile & controlIndex == 4"
         class=""
         :class="values.class"
         :key="index"
         v-show="values.visibility === undefined ? true : values.visibility"
       >
+      {{index}}
         <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
@@ -252,12 +255,12 @@
         </div>
       </div>
     </template>
-               <portal-target name="map-multi-1" v-if="isMobile">
-                </portal-target>
+      <portal-target name="map-multi-1" v-if="isMobile">
+      </portal-target>
 
       <template  v-for="(values, index) in setup" >
           <div
-          v-if="isMobile"
+          v-if="isMobile & controlIndex == 4"
         class=""
         :class="values.class"
         :key="index"
@@ -267,7 +270,7 @@
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
           v-if="values.type === 'dropdown'"
-          :value="payload[values.key]"
+          :value="payload2[values.key]"
           @input="updatePayload2($event, values.key)"
           :options="values.options"
           :multiSelectProps="values.dropdownProps"
@@ -381,11 +384,11 @@
         </div>
       </div>
     </template>
-            <portal-target name="map-multi-2" v-if="isMobile">
-                </portal-target>
+      <portal-target name="map-multi-2" v-if="isMobile">
+          </portal-target>
       <template v-for="(values, index) in setup">
           <div
-          v-if="isMobile"
+          v-if="isMobile & controlIndex == 4"
         class=""
         :class="values.class"
         :key="index"
@@ -395,7 +398,7 @@
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
           v-if="values.type === 'dropdown'"
-          :value="payload[values.key]"
+          :value="payload3[values.key]"
           @input="updatePayload3($event, values.key)"
           :options="values.options"
           :multiSelectProps="values.dropdownProps"
@@ -510,7 +513,7 @@
       </div>
     </template>
        <portal-target name="map-multi-3" v-if="isMobile">
-                </portal-target>
+    </portal-target>
   </div>
 </template>
 
@@ -526,6 +529,12 @@ export default {
     return {
       activeToggleButton: 'state_map',
       isMobile: false,
+      payload1: {},
+      payload2: {},
+      payload3: {},
+      change1: 0,
+      change2: 0,
+      change3: 0,
       // payload: {
       //   indicator: 'indicator 2',
       //   location: '',
@@ -603,6 +612,14 @@ export default {
       immediate: true,
       deep: true,
     },
+
+    payload1: {
+      handler(newValue) {
+        this.$emit('data:options', newValue);
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   methods: {
     updatePayload(value, key) {
@@ -629,6 +646,7 @@ export default {
 
     updatePayload1(value, key) {
       console.log('just checking');
+      console.log('contrl-store', this.$store.state.MSDAT_STORE);
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
         controlIndex: this.controlIndex,
         groupIndex: 0,
@@ -636,7 +654,13 @@ export default {
         value,
       });
 
-      this.$emit('data:options', this.payload1);
+      this.$emit('data:options', this.payload);
+      // this.payload1 = this.payload;
+      // this.change1++;
+
+      // if (this.change1 > 1) {
+      //   this.payload1 = this.payload;
+      // }
     },
 
     updatePayload2(value, key) {
@@ -648,12 +672,17 @@ export default {
         value,
       });
 
-      this.$emit('data:options', this.payload2);
+      this.$emit('data:options', this.payload);
+      //  this.payload2 = this.payload;
+      //      this.change2++
 
-      console.log('values2', value);
+      // if(this.change2 > 1){
+      //    this.payload2 = this.payload;
+      // }
     },
 
     updatePayload3(value, key) {
+      console.log('checking3');
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
         controlIndex: this.controlIndex,
         groupIndex: 2,
@@ -661,7 +690,13 @@ export default {
         value,
       });
 
-      this.$emit('data:options', this.payload2);
+      this.$emit('data:options', this.payload);
+      //  this.payload3 = this.payload;
+      //         this.change3++
+
+      // if(this.change3 > 1){
+      //    this.payload3 = this.payload;
+      // }
     },
 
     onResize() {
@@ -675,42 +710,7 @@ export default {
   },
   computed: {
     payload() {
-      if (this.groupIndex != null) {
-        // this is to take into consideration control panel that
-        // are grouped example is Multi-source comparison section
-        console.log('grou[Index', this.groupIndex);
-        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-          .payload[this.groupIndex];
-      }
-      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-        .payload;
-    },
-
-    payload1() {
-      if (this.groupIndex != null) {
-        // this is to take into consideration control panel that
-        // are grouped example is Multi-source comparison section
-        console.log('grou[Index', this.groupIndex);
-        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-          .payload[this.groupIndex];
-      }
-      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-        .payload;
-    },
-
-    payload2() {
-      if (this.groupIndex != null) {
-        // this is to take into consideration control panel that
-        // are grouped example is Multi-source comparison section
-        console.log('grou[Index', this.groupIndex);
-        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-          .payload[this.groupIndex];
-      }
-      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-        .payload;
-    },
-
-    payload3() {
+      console.log('checking the payload');
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
