@@ -623,6 +623,7 @@ export default {
   },
   methods: {
     updatePayload(value, key) {
+      console.log(`this is value${JSON.stringify(value)}`);
       if (this.groupIndex != null) {
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section
@@ -645,6 +646,7 @@ export default {
     },
 
     updatePayload1(value, key) {
+      console.log(`this is value1${JSON.stringify(value)}`);
       console.log('just checking');
       console.log('contrl-store', this.$store.state.MSDAT_STORE);
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
@@ -664,6 +666,7 @@ export default {
     },
 
     updatePayload2(value, key) {
+      console.log(`this is value2${JSON.stringify(value)}`);
       console.log('just checking');
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
         controlIndex: this.controlIndex,
