@@ -55,8 +55,6 @@
                           v-for="(item, index2) in control.setup"
                           :key="index2"
                         >
-                        <div>{{'reset'+resetData}} </div>
-
                           <ControlPanel
                             @data:options="log($event, index, index2)"
                             :setup="item"
