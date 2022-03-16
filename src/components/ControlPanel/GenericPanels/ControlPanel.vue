@@ -112,6 +112,7 @@
             Line <b-icon icon="graph-up"></b-icon>
           </button>
           <button
+          jkjkkjk
             type="button"
             @click="
               updatePayload('column', values.key),
@@ -139,6 +140,11 @@ export default {
   data() {
     return {
       activeToggleButton: 'state_map',
+
+      // using component data with 'Sub' addition to prevent prop mutations
+      // (controlIndex & groupIndex)
+      controlIndexSub: this.controlIndex,
+      groupIndexSub: this.groupIndex,
       // payload: {
       //   indicator: 'indicator 2',
       //   location: '',
@@ -188,6 +194,19 @@ export default {
       type: [Object, String],
       required: false,
     },
+    updateValue: {
+      type: Object,
+      required: false,
+    },
+    updateKey: {
+      type: String,
+      required: false,
+    },
+
+    resetData: {
+      type: Number,
+      required: false,
+    },
   },
   watch: {
     defaultDataSource(newValue) {
@@ -200,27 +219,44 @@ export default {
       immediate: true,
       deep: true,
     },
+
+    updateValue(newValue) {
+      this.controlIndexSub = 0;
+      this.groupIndexSub = null;
+      this.updatePayload(newValue, 'datasource');
+    },
+
+    resetData: {
+      handler() {
+        this.controlIndexSub = 0;
+        this.groupIndexSub = null;
+        this.updatePayload(this.defaultDataSource, 'datasource');
+      },
+      immediate: true,
+    },
+
   },
   methods: {
     updatePayload(value, key) {
-      if (this.groupIndex != null) {
+      if (this.groupIndexSub != null) {
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section
         // debugger;
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: this.controlIndex,
-          groupIndex: this.groupIndex,
+          controlIndex: this.controlIndexSub,
+          groupIndex: this.groupIndexSub,
           key,
           value,
         });
       } else {
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: this.controlIndex,
+          controlIndex: this.controlIndexSub,
           key,
           value,
         });
       }
-
+      this.controlIndexSub = this.controlIndex;
+      this.groupIndexSub = this.groupIndex;
       this.$emit('data:options', this.payload);
     },
   },

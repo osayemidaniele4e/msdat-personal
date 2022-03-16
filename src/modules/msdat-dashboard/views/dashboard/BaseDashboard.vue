@@ -64,6 +64,9 @@
                             :defaultDataSource="defaultDataSource"
                             :defaultLocation="defaultLocation"
                             :defaultYear="defaultYear"
+                            :updateValue="updateValue"
+                            :updateKey="updateKey"
+                            :resetData="resetData"
                           />
                         </div>
                       </div>
@@ -84,6 +87,7 @@
                 :name="`section-before-${index}`"
                 v-if="index === selectedPanel"
               ></slot>
+              <!-- ========= -->
               <div
                 class="row observable"
                 :id="index"
@@ -101,6 +105,7 @@
                   :payload="controlPanel.payload"
                   :controlIndex="index"
                 ></slot>
+                <!-- ======== -->
                 <slot
                   :name="`section-after-${index}`"
                   v-if="index === selectedPanel"
@@ -194,6 +199,21 @@ export default {
       type: Array,
       required: false,
     },
+
+    updateValue: {
+      type: Object,
+      required: false,
+    },
+
+    updateKey: {
+      type: String,
+      required: false,
+    },
+
+    resetData: {
+      type: Number,
+      required: false,
+    },
   },
   created() {
     const { name } = this.$route.params;
@@ -241,6 +261,7 @@ export default {
     //   this.firstTime = false;
     // },
   },
+
   async mounted() {
     this.loading = false;
     // initializing data for dashboard

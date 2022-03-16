@@ -94,10 +94,10 @@ export default {
       type: Boolean,
       default: () => true,
     },
-    color: {
-      type: String,
-      default: 'red',
-    },
+    // color: {
+    //   type: String,
+    //   default: 'red',
+    // },
     backgroundColor: {
       type: String,
       default: '#DFF3F3',
