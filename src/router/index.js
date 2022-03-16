@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import createPersistedState from 'vuex-persistedstate';
 import MSDAT_ABOUT_ROUTE from '../modules/msdat-dashboard/views/about/router';
 import MSDAT_FAQ_ROUTE from '../modules/msdat-dashboard/views/faq/router';
 import MSDAT_UPDATE_LOG from '../modules/msdat-dashboard/views/update_log/router';
@@ -32,6 +33,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
+  plugins: [createPersistedState()],
   base: process.env.BASE_URL,
   routes,
 });
