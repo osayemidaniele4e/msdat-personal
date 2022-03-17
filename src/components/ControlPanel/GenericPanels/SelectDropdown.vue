@@ -102,11 +102,14 @@ export default {
      * child nodes and also the dropdown caret rotation
      */
     pickProgramArea(event) {
+      // console.log('checking target dropdown', event.target.children[0].children[0].dataset)
       const { parent } = event.target.children[0].children[0].dataset;
       const all = Array.from(event.target.parentNode.children);
       all.forEach((element) => {
+        //  console.log('checking child', element.children[0].children[0].dataset.child)
         // eslint-disable-next-line prefer-destructuring
         const child = element.children[0].children[0].dataset.child;
+        // console.log('checking child', element.children[0].children[0].dataset.child)
         const tempParent = element.children[0].children[0].dataset.parent;
         if (parent === child) {
           element.classList.toggle('noShow');

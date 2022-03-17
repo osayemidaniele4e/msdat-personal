@@ -137,6 +137,7 @@
         v-show="values.visibility === undefined ? true : values.visibility"
       >
       {{index}}
+      {{payload[values.key]}}
         <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
@@ -270,7 +271,7 @@
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
           v-if="values.type === 'dropdown'"
-          :value="payload2[values.key]"
+          :value="payload[values.key]"
           @input="updatePayload2($event, values.key)"
           :options="values.options"
           :multiSelectProps="values.dropdownProps"
@@ -281,7 +282,6 @@
           v-if="values.type === 'toggle'"
           @change="updatePayload2($event, values.key)"
         />
-
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->
           <div class="d-flex">
@@ -398,7 +398,7 @@
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
           v-if="values.type === 'dropdown'"
-          :value="payload3[values.key]"
+          :value="payload[values.key]"
           @input="updatePayload3($event, values.key)"
           :options="values.options"
           :multiSelectProps="values.dropdownProps"
@@ -623,7 +623,6 @@ export default {
   },
   methods: {
     updatePayload(value, key) {
-      console.log(`this is value${JSON.stringify(value)}`);
       if (this.groupIndex != null) {
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section
@@ -646,9 +645,8 @@ export default {
     },
 
     updatePayload1(value, key) {
-      console.log(`this is value1${JSON.stringify(value)}`);
-      console.log('just checking');
-      console.log('contrl-store', this.$store.state.MSDAT_STORE);
+      console.log('checking1');
+
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
         controlIndex: this.controlIndex,
         groupIndex: 0,
@@ -666,8 +664,7 @@ export default {
     },
 
     updatePayload2(value, key) {
-      console.log(`this is value2${JSON.stringify(value)}`);
-      console.log('just checking');
+      console.log('checking2');
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
         controlIndex: this.controlIndex,
         groupIndex: 1,
@@ -676,12 +673,6 @@ export default {
       });
 
       this.$emit('data:options', this.payload);
-      //  this.payload2 = this.payload;
-      //      this.change2++
-
-      // if(this.change2 > 1){
-      //    this.payload2 = this.payload;
-      // }
     },
 
     updatePayload3(value, key) {
