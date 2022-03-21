@@ -2,7 +2,6 @@
   <!-- Label to show when there is no available data as requested
   for by chiamaka on the 2-12-2021 during msdat meeting -->
   <multiselect
-    @open="initialCSS"
     v-model="selected"
     :options="options"
     searchable
@@ -19,7 +18,7 @@
       THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
       THAT HAVE GROUPED OPTIONS
     -->
-    <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
+    <!-- <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
        :data-parent="props.option.$groupLabel">
@@ -38,7 +37,7 @@
         </div>
       </template>
 
-    </template>
+    </template> -->
     <!---
     END
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
