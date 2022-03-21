@@ -1,6 +1,7 @@
 <template>
   <!-- Label to show when there is no available data as requested
   for by chiamaka on the 2-12-2021 during msdat meeting -->
+    <!-- @open="initialCSS" -->
   <multiselect
     v-model="selected"
     :options="options"
@@ -11,7 +12,39 @@
     v-bind="multiSelectProps"
     selectLabel=""
     deselectLabel=""
-    ><span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}s</span></multiselect
+    >
+    <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}s</span>
+    <!---
+      START
+      THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
+      THAT HAVE GROUPED OPTIONS
+    -->
+    <!-- <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
+       <template v-if="props.option.$groupLabel">
+      <span class="topicHead"
+       :data-parent="props.option.$groupLabel">
+       {{props.option.$groupLabel}} <span class="down-caret"></span> </span>
+      </template>
+      <template v-if="props.option.item">
+        <div v-if="!props.option.$groupLabel"
+        :data-child="props.option.datasource">
+        {{props.option.item}}
+        </div>
+      </template>
+      <template v-else-if="props.option.full_name">
+        <div v-if="!props.option.$groupLabel"
+        :data-child="props.option.program_area">
+        {{props.option.full_name}}
+        </div>
+      </template>
+
+    </template> -->
+    <!---
+    END
+    THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
+    THAT HAVE GROUPED OPTIONS
+    -->
+    </multiselect
   >
 </template>
 
