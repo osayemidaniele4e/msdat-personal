@@ -65,6 +65,8 @@ export default {
       ],
       selectedDS: {},
       notShow: false,
+      seriesArray: {},
+      years: {},
     };
   },
   props: {
@@ -119,14 +121,14 @@ export default {
     'values.datasource': {
       async handler(selectedDataSource) {
         // debugger;
-        this.loading = true;
+        // this.loading = true;
         let dataSourceSelected = [];
         if (!Array.isArray(selectedDataSource)) {
           dataSourceSelected = [selectedDataSource];
         } else {
           dataSourceSelected = selectedDataSource;
         }
-        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
+        // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           dataSourceSelected,
         );
@@ -139,18 +141,18 @@ export default {
     'values.indicator': {
       async handler() {
         this.loading = true;
-        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        // const { seriesArray, years } = await this.toHighChartSeriesSetup(
-        //   dataSources,
-        // );
+        console.log(`checking indicator${this.values.indicator.id}`);
         // change get datasource function to API matching indicator to dataSource
-        const dataSources = await this.getAvailableDataSources(
-          this.values.indicator.id,
-        );
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(
-          dataSources,
-        );
-        this.setUpHighChartConfig(seriesArray, years);
+        if (this.values.indicator.id !== undefined) {
+          const dataSources = await this.getAvailableDataSources(
+            this.values.indicator.id,
+          );
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(
+            dataSources,
+          );
+          this.setUpHighChartConfig(seriesArray, years);
+        }
+
         this.loading = false;
       },
       deep: true,
@@ -376,11 +378,11 @@ export default {
         this.setUpHighChartConfig(seriesArr, years);
       } else {
         this.selectedDS = {};
-        const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(
-          dataSources,
-        );
-        this.setUpHighChartConfig(seriesArray, years);
+        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
+        // const { seriesArray, years } = await this.toHighChartSeriesSetup(
+        //   dataSources,
+        // );
+        this.setUpHighChartConfig(this.seriesArray, this.years);
       }
       this.loading = false;
     },
@@ -443,10 +445,23 @@ export default {
       return seriesArr;
     },
   },
-  mounted() {
-    console.log('hello =>', this.ChartOptions);
-  },
+  // async mounted() {
+  //   console.log('hello =>', this.ChartOptions);
+
+  //   const dataSources = await this.getAvailableDataSources();
+  //   const { seriesArray, years } = await this.toHighChartSeriesSetup(
+  //     dataSources,
+  //   );
+
+  //   this.seriesArray = seriesArray;
+  //   console.log('seriesArray', seriesArray);
+  //   console.log('years', years);
+  //   this.years = years;
+
+  //   this.setUpHighChartConfig(this.seriesArray, this.years);
+  // },
 };
+
 </script>
 
 <style lang="scss" scoped></style>
