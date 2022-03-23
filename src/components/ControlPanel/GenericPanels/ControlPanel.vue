@@ -1,8 +1,7 @@
 <template>
   <div class="row">
     <template v-for="(values, index) in setup">
-          <div
-          v-if="!isMobile || controlIndex !== 4"
+      <div
         class=""
         :class="values.class"
         :key="index"
@@ -113,6 +112,7 @@
             Line <b-icon icon="graph-up"></b-icon>
           </button>
           <button
+          jkjkkjk
             type="button"
             @click="
               updatePayload('column', values.key),
@@ -126,394 +126,6 @@
         </div>
       </div>
     </template>
-
-    <!-- new implementation for the multi-source mobile component  -->
-      <template  v-for="(values, index) in setup" >
-          <div
-          v-if="isMobile & controlIndex == 4"
-        class=""
-        :class="values.class"
-        :key="index"
-        v-show="values.visibility === undefined ? true : values.visibility"
-      >
-      {{index}}
-      {{payload[values.key]}}
-        <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-        <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
-        <selectWrapper
-          v-if="values.type === 'dropdown'"
-          :value="payload[values.key]"
-          @input="updatePayload1($event, values.key)"
-          :options="values.options"
-          :multiSelectProps="values.dropdownProps"
-          :NoDataLabel="values.label"
-        />
-        <!-- </div> -->
-        <toggle
-          v-if="values.type === 'toggle'"
-          @change="updatePayload1($event, values.key)"
-        />
-
-        <div class="d-flex" v-if="values.type === 'checkbox'">
-          <!-- National Target here -->
-          <div class="d-flex">
-            <BaseCheckbox
-              @input="
-                updatePayload1(
-                  { sdg: payload.target.sdg, national: $event },
-                  'target'
-                )
-              "
-            />
-            <p class="check-label ml-1">National</p>
-          </div>
-          <!-- SDG Target here -->
-          <div class="d-flex ml-3">
-            <BaseCheckbox
-              @input="
-                updatePayload1(
-                  { sdg: $event, national: payload.target.national },
-                  'target'
-                )
-              "
-            />
-            <p class="check-label ml-1">SDG</p>
-          </div>
-        </div>
-      <div
-          v-if="values.type === 'visualization'"
-          class="btn-group d-flex work-sans"
-          role="group"
-        >
-          <button
-            type="button"
-            @click="
-              updatePayload1('zonal_map', values.key),
-                (activeToggleButton = 'zonal_map')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
-          >
-            Zones Map
-            <img
-              :src="
-                require(`../svg/${
-                  activeToggleButton === 'zonal_map'
-                    ? 'state_map_white'
-                    : 'zonal_map'
-                }.svg`)
-              "
-              alt=""
-              srcset=""
-            />
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload1('state_map', values.key),
-                (activeToggleButton = 'state_map')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'state_map' ? 'active' : '']"
-          >
-            State Map
-            <img
-              class="text-danger"
-              :src="
-                require(`../svg/${
-                  activeToggleButton === 'state_map'
-                    ? 'state_map_white'
-                    : 'state_map'
-                }.svg`)
-              "
-              alt=""
-              srcset=""
-            />
-
-            <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload1('line', values.key), (activeToggleButton = 'line')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'line' ? 'active' : '']"
-          >
-            Line <b-icon icon="graph-up"></b-icon>
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload1('column', values.key),
-                (activeToggleButton = 'column')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'column' ? 'active' : '']"
-          >
-            Column <b-icon icon="bar-chart-fill"></b-icon>
-          </button>
-        </div>
-      </div>
-    </template>
-      <portal-target name="map-multi-1" v-if="isMobile">
-      </portal-target>
-
-      <template  v-for="(values, index) in setup" >
-          <div
-          v-if="isMobile & controlIndex == 4"
-        class=""
-        :class="values.class"
-        :key="index"
-        v-show="values.visibility === undefined ? true : values.visibility"
-      >
-        <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-        <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
-        <selectWrapper
-          v-if="values.type === 'dropdown'"
-          :value="payload[values.key]"
-          @input="updatePayload2($event, values.key)"
-          :options="values.options"
-          :multiSelectProps="values.dropdownProps"
-          :NoDataLabel="values.label"
-        />
-        <!-- </div> -->
-        <toggle
-          v-if="values.type === 'toggle'"
-          @change="updatePayload2($event, values.key)"
-        />
-        <div class="d-flex" v-if="values.type === 'checkbox'">
-          <!-- National Target here -->
-          <div class="d-flex">
-            <BaseCheckbox
-              @input="
-                updatePayload2(
-                  { sdg: payload.target.sdg, national: $event },
-                  'target'
-                )
-              "
-            />
-            <p class="check-label ml-1">National</p>
-          </div>
-          <!-- SDG Target here -->
-          <div class="d-flex ml-3">
-            <BaseCheckbox
-              @input="
-                updatePayload2(
-                  { sdg: $event, national: payload.target.national },
-                  'target'
-                )
-              "
-            />
-            <p class="check-label ml-1">SDG</p>
-          </div>
-        </div>
-      <div
-          v-if="values.type === 'visualization'"
-          class="btn-group d-flex work-sans"
-          role="group"
-        >
-          <button
-            type="button"
-            @click="
-              updatePayload2('zonal_map', values.key),
-                (activeToggleButton = 'zonal_map')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
-          >
-            Zones Map
-            <img
-              :src="
-                require(`../svg/${
-                  activeToggleButton === 'zonal_map'
-                    ? 'state_map_white'
-                    : 'zonal_map'
-                }.svg`)
-              "
-              alt=""
-              srcset=""
-            />
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload2('state_map', values.key),
-                (activeToggleButton = 'state_map')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'state_map' ? 'active' : '']"
-          >
-            State Map
-            <img
-              class="text-danger"
-              :src="
-                require(`../svg/${
-                  activeToggleButton === 'state_map'
-                    ? 'state_map_white'
-                    : 'state_map'
-                }.svg`)
-              "
-              alt=""
-              srcset=""
-            />
-
-            <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload2('line', values.key), (activeToggleButton = 'line')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'line' ? 'active' : '']"
-          >
-            Line <b-icon icon="graph-up"></b-icon>
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload2('column', values.key),
-                (activeToggleButton = 'column')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'column' ? 'active' : '']"
-          >
-            Column <b-icon icon="bar-chart-fill"></b-icon>
-          </button>
-        </div>
-      </div>
-    </template>
-      <portal-target name="map-multi-2" v-if="isMobile">
-          </portal-target>
-      <template v-for="(values, index) in setup">
-          <div
-          v-if="isMobile & controlIndex == 4"
-        class=""
-        :class="values.class"
-        :key="index"
-        v-show="values.visibility === undefined ? true : values.visibility"
-      >
-        <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-        <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
-        <selectWrapper
-          v-if="values.type === 'dropdown'"
-          :value="payload[values.key]"
-          @input="updatePayload3($event, values.key)"
-          :options="values.options"
-          :multiSelectProps="values.dropdownProps"
-          :NoDataLabel="values.label"
-        />
-        <!-- </div> -->
-        <toggle
-          v-if="values.type === 'toggle'"
-          @change="updatePayload3($event, values.key)"
-        />
-
-        <div class="d-flex" v-if="values.type === 'checkbox'">
-          <!-- National Target here -->
-          <div class="d-flex">
-            <BaseCheckbox
-              @input="
-                updatePayload3(
-                  { sdg: payload.target.sdg, national: $event },
-                  'target'
-                )
-              "
-            />
-            <p class="check-label ml-1">National</p>
-          </div>
-          <!-- SDG Target here -->
-          <div class="d-flex ml-3">
-            <BaseCheckbox
-              @input="
-                updatePayload3(
-                  { sdg: $event, national: payload.target.national },
-                  'target'
-                )
-              "
-            />
-            <p class="check-label ml-1">SDG</p>
-          </div>
-        </div>
-        <div
-          v-if="values.type === 'visualization'"
-          class="btn-group d-flex work-sans"
-          role="group"
-        >
-          <button
-            type="button"
-            @click="
-              updatePayload3('zonal_map', values.key),
-                (activeToggleButton = 'zonal_map')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
-          >
-            Zones Map
-            <img
-              :src="
-                require(`../svg/${
-                  activeToggleButton === 'zonal_map'
-                    ? 'state_map_white'
-                    : 'zonal_map'
-                }.svg`)
-              "
-              alt=""
-              srcset=""
-            />
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload3('state_map', values.key),
-                (activeToggleButton = 'state_map')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'state_map' ? 'active' : '']"
-          >
-            State Map
-            <img
-              class="text-danger"
-              :src="
-                require(`../svg/${
-                  activeToggleButton === 'state_map'
-                    ? 'state_map_white'
-                    : 'state_map'
-                }.svg`)
-              "
-              alt=""
-              srcset=""
-            />
-
-            <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload3('line', values.key), (activeToggleButton = 'line')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'line' ? 'active' : '']"
-          >
-            Line <b-icon icon="graph-up"></b-icon>
-          </button>
-          <button
-            type="button"
-            @click="
-              updatePayload3('column', values.key),
-                (activeToggleButton = 'column')
-            "
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'column' ? 'active' : '']"
-          >
-            Column <b-icon icon="bar-chart-fill"></b-icon>
-          </button>
-        </div>
-      </div>
-    </template>
-       <portal-target name="map-multi-3" v-if="isMobile">
-    </portal-target>
   </div>
 </template>
 
@@ -528,13 +140,11 @@ export default {
   data() {
     return {
       activeToggleButton: 'state_map',
-      isMobile: false,
-      payload1: {},
-      payload2: {},
-      payload3: {},
-      change1: 0,
-      change2: 0,
-      change3: 0,
+
+      // using component data with 'Sub' addition to prevent prop mutations
+      // (controlIndex & groupIndex)
+      controlIndexSub: this.controlIndex,
+      groupIndexSub: this.groupIndex,
       // payload: {
       //   indicator: 'indicator 2',
       //   location: '',
@@ -584,23 +194,20 @@ export default {
       type: [Object, String],
       required: false,
     },
+    updateValue: {
+      type: Object,
+      required: false,
+    },
+    updateKey: {
+      type: String,
+      required: false,
+    },
+
+    resetData: {
+      type: Number,
+      required: false,
+    },
   },
-
-  created() {
-    window.addEventListener('resize', this.onResize);
-
-    // checking if in Mobile view
-    if (window.innerWidth < 769) {
-      this.isMobile = true;
-    } else {
-      this.isMobile = false;
-    }
-  },
-
-  destroyed() {
-    window.removeEventListener('resize', this.onResize);
-  },
-
   watch: {
     defaultDataSource(newValue) {
       this.payload.datasource = newValue;
@@ -613,102 +220,51 @@ export default {
       deep: true,
     },
 
-    payload1: {
-      handler(newValue) {
-        this.$emit('data:options', newValue);
+    updateValue(newValue) {
+      this.controlIndexSub = 0;
+      this.groupIndexSub = null;
+      this.updatePayload(newValue, 'datasource');
+    },
+
+    resetData: {
+      handler() {
+        this.controlIndexSub = 0;
+        this.groupIndexSub = null;
+        this.updatePayload(this.defaultDataSource, 'datasource');
       },
       immediate: true,
-      deep: true,
     },
+
   },
   methods: {
     updatePayload(value, key) {
-      if (this.groupIndex != null) {
+      if (this.groupIndexSub != null) {
         // this is o take into consideration control panel that
         // are grouped example is Multi-source comparison section
         // debugger;
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: this.controlIndex,
-          groupIndex: this.groupIndex,
+          controlIndex: this.controlIndexSub,
+          groupIndex: this.groupIndexSub,
           key,
           value,
         });
       } else {
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: this.controlIndex,
+          controlIndex: this.controlIndexSub,
           key,
           value,
         });
       }
-
+      this.controlIndexSub = this.controlIndex;
+      this.groupIndexSub = this.groupIndex;
       this.$emit('data:options', this.payload);
-    },
-
-    updatePayload1(value, key) {
-      console.log('checking1');
-
-      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-        controlIndex: this.controlIndex,
-        groupIndex: 0,
-        key,
-        value,
-      });
-
-      this.$emit('data:options', this.payload);
-      // this.payload1 = this.payload;
-      // this.change1++;
-
-      // if (this.change1 > 1) {
-      //   this.payload1 = this.payload;
-      // }
-    },
-
-    updatePayload2(value, key) {
-      console.log('checking2');
-      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-        controlIndex: this.controlIndex,
-        groupIndex: 1,
-        key,
-        value,
-      });
-
-      this.$emit('data:options', this.payload);
-    },
-
-    updatePayload3(value, key) {
-      console.log('checking3');
-      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-        controlIndex: this.controlIndex,
-        groupIndex: 2,
-        key,
-        value,
-      });
-
-      this.$emit('data:options', this.payload);
-      //  this.payload3 = this.payload;
-      //         this.change3++
-
-      // if(this.change3 > 1){
-      //    this.payload3 = this.payload;
-      // }
-    },
-
-    onResize() {
-      console.log('width', window.innerWidth);
-      if (window.innerWidth < 769) {
-        this.isMobile = true;
-      } else {
-        this.isMobile = false;
-      }
     },
   },
   computed: {
     payload() {
-      console.log('checking the payload');
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
-        console.log('grou[Index', this.groupIndex);
         return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
           .payload[this.groupIndex];
       }

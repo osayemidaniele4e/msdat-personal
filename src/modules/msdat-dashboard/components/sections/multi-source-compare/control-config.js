@@ -56,10 +56,7 @@ const payload = {
 export default {
   label: 'Multi-Source comparison',
   grouped: true,
-  setup: [[...indicatorSetConfig], [], []],
-  // for the mobile version
-  setup2: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
-  setup3: [[...indicatorSetConfig], [indicatorSetConfig], [indicatorSetConfig]],
+  setup: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
   payload: [{ ...payload }, { ...payload }, { ...payload }],
 
   // const arr = [
