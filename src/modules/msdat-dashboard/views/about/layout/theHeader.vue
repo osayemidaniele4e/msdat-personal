@@ -22,7 +22,7 @@
           <img src="@/assets/img/Logo-mob.svg" alt="FMOH Logo" class="mob-img"  variant="primary"/>
           <div class="mobile-flex-col">
             <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
-          <div class="mobile-flex-col-text2">Health Outcomes and Service Coverage</div>
+          <div class="mobile-flex-col-text2"> {{ $route.meta.title }}</div>
           </div>
 
               <div>
