@@ -12,6 +12,7 @@ import { eventBus } from '@/main';
 export default {
   mixins: [controlSetup],
   props: {
+  
     controlIndex: {
       type: Number,
       required: true,

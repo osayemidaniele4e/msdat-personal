@@ -1,193 +1,144 @@
 <template>
-
-<div>
-
+  <div>
     <!-- initial plan for the multi-source mbile is to duplicate the div below -->
     <div class="temp">
-    <TroubleShootingModal
-      style="z-index: 1500"
-      v-if="showTroubleShootingModal"
-    />
-    <template v-if="!showTroubleShootingModal">
-      <Loading
-        v-if="!loading"
-        :hideButton="true"
-        :noBackdrop="false"
-        :showBackground="false"
-        class="over"
-      >
-        <div class="text-center">
-          <img :src="loadingImg" alt="first_img" width="250px" />
-          <div class="mr-4">
-            <h3>Initializing{{ loadingTitle }}</h3>
-            <p>{{ loadingContent }}</p>
+      <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
+      <template v-if="!showTroubleShootingModal">
+        <Loading
+          v-if="!loading"
+          :hideButton="true"
+          :noBackdrop="false"
+          :showBackground="false"
+          class="over"
+        >
+          <div class="text-center">
+            <img :src="loadingImg" alt="first_img" width="250px" />
+            <div class="mr-4">
+              <h3>Initializing{{ loadingTitle }}</h3>
+              <p>{{ loadingContent }}</p>
+            </div>
           </div>
-        </div>
-      </Loading>
+        </Loading>
 
-      <div v-else>
-        <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
-        <section @click="$refs.theHeader.close()">
-
-              <div :class="[isMobile ?
-              'position-relative' : 'sticky animated_toggle', show ? '' : 'hide' ]">
-          <!-- <div class="position-relative" :class="[show ? '' : 'hide']"> -->
-<!-- <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">  -->
-
-  <!-- Moses changed from this -->
-            <b-overlay :show="!cpIsLoading">
-              <BasePanel
-                :changeIndex="changeIndex"
-                :position="position"
-                v-if="cpIsLoading"
-                v-on:showSection="sectionFocus($event)"
-              >
-                <template v-slot:default>
-                  <ControlBase
-                    v-for="(control, index) in $store.state.MSDAT_STORE
-                      .controlConfig"
-                    :key="index"
-                    :title="control.label"
-                  >
-                    <template v-if="!Array.isArray(control.setup[0])">
-                      <ControlPanel
-                        @data:options="log($event, index)"
-                        :setup="control.setup"
-                        :controlIndex="index"
-                        :defaultIndicator="defaultIndicator"
-                        :defaultDataSource="defaultDataSource"
-                        :defaultLocation="defaultLocation"
-                        :defaultYear="defaultYear"
-                      />
-                    </template>
-                    <template v-else>
-                      <div>
-                          <div class="row" v-if="!isMobile">
-                        <div
-                          class="col-md-4"
-                          v-for="(item, index2) in control.setup"
-                          :key="index2"
-                        >
-
-                        <div>
-                                 <ControlPanel
-                            @data:options="log($event, index, index2)"
-                            :setup="item"
-                            :groupIndex="index2"
-                            :controlIndex="index"
-                            :defaultIndicator="defaultIndicator"
-                            :defaultDataSource="defaultDataSource"
-                            :defaultLocation="defaultLocation"
-                            :defaultYear="defaultYear"
-                          />
-
-                           </div>
-
-                                          </div>
-
-                                                <!-- if in mobile -->
-                                  <!-- <ControlPanel
-                            @data:options="log($event, index, 1)"
-                            :setup="control.setup[0]"
-                            :groupIndex= 1
-                            :controlIndex="index"
-                            :defaultIndicator="defaultIndicator"
-                            :defaultDataSource="defaultDataSource"
-                            :defaultLocation="defaultLocation"
-                            :defaultYear="defaultYear"
-                          /> -->
-                      </div>
-
-                        <!-- for the mobile responsiveness section -->
-                         <div class="row" v-if="isMobile">
-                        <div
-                          class="col-md-4"
-                        >
-
-                        <div>
-                                   <ControlPanel
-                            @data:options="log($event, index, 1)"
-                            :setup="control.setup[0]"
-                            :groupIndex= 1
-                            :controlIndex="index"
-                            :defaultIndicator="defaultIndicator"
-                            :defaultDataSource="defaultDataSource"
-                            :defaultLocation="defaultLocation"
-                            :defaultYear="defaultYear"
-                          />
-
-                           </div>
-
-                                          </div>
-
-                      </div>
-                      </div>
-
-                    </template>
-                  </ControlBase>
-                </template>
-              </BasePanel>
-            </b-overlay>
-          </div>
-          <!-- control Panels ends here  -->
-
-          <div class="container-fluid lessVisible">
-            <template
-              v-for="(controlPanel, index) in $store.state.MSDAT_STORE
-                .controlConfig"
+        <div v-else>
+          <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
+          <section @click="$refs.theHeader.close()">
+            <div
+              :class="[
+                isMobile ? 'position-relative' : 'sticky animated_toggle',
+                show ? '' : 'hide',
+              ]"
             >
-              <slot
-                :name="`section-before-${index}`"
-                v-if="index === selectedPanel"
-              ></slot>
-              <div
-                class="row observable"
-                :id="index"
-                v-if="index === selectedPanel"
-                :ref="index"
-                :key="index"
-              >
-                <!-- <slot
+              <!-- <div class="position-relative" :class="[show ? '' : 'hide']"> -->
+              <!-- <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">  -->
+
+              <!-- Moses changed from this -->
+              <b-overlay :show="!cpIsLoading">
+                <BasePanel
+                  :changeIndex="changeIndex"
+                  :position="position"
+                  v-if="cpIsLoading"
+                  v-on:showSection="sectionFocus($event)"
+                >
+                  <template v-slot:default>
+                    <ControlBase
+                      v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                      :key="index"
+                      :title="control.label"
+                    >
+                      <template v-if="!Array.isArray(control.setup[0])">
+                        <ControlPanel
+                          @data:options="log($event, index)"
+                          :setup="control.setup"
+                          :controlIndex="index"
+                          :defaultIndicator="defaultIndicator"
+                          :defaultDataSource="defaultDataSource"
+                          :defaultLocation="defaultLocation"
+                          :defaultYear="defaultYear"
+                        />
+                      </template>
+                      <template v-else>
+                        <div>
+                          <!-- direction buttons -->
+                          <div class="swipe-btn-flex">
+                            <button @click="swipeLeft" class="swipe-btn">
+                              <b-icon icon="chevron-left" />
+                            </button>
+                            <button @click="swipeRight" class="swipe-btn">
+                              <b-icon icon="chevron-right" />
+                            </button>
+                          </div>
+                          <div class="dummy-row">
+                            <div
+                              class="col-md-4"
+                              v-for="(item, index2) in control.setup"
+                              :key="index2"
+                            >
+                              <h3>Comparison {{ index2 + 1 }}</h3>
+                              <ControlPanel
+                                @data:options="log($event, index, index2)"
+                                :setup="item"
+                                :groupIndex="index2"
+                                :controlIndex="index"
+                                :defaultIndicator="defaultIndicator"
+                                :defaultDataSource="defaultDataSource"
+                                :defaultLocation="defaultLocation"
+                                :defaultYear="defaultYear"
+                                :updateValue="updateValue"
+                                :updateKey="updateKey"
+                                :resetData="resetData"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                    </ControlBase>
+                  </template>
+                </BasePanel>
+              </b-overlay>
+            </div>
+            <!-- control Panels ends here  -->
+
+            <div class="container-fluid lessVisible">
+              <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
+                <slot :name="`section-before-${index}`" v-if="index === selectedPanel"></slot>
+                <div
+                  class="row observable"
+                  :id="index"
+                  v-if="index === selectedPanel"
+                  :ref="index"
+                  :key="index"
+                >
+                  <!-- <slot
                 v-if="controlPanel.payload === undefined"
                 :name="`section-${index}`"
                 :controlIndex="index"
               ></slot> -->
-                <slot
-                  :name="`section-${index}`"
-                  :payload="controlPanel.payload"
-                  :controlIndex="index"
-                ></slot>
-                <slot
-                  :name="`section-after-${index}`"
-                  v-if="index === selectedPanel"
-                ></slot>
-              </div>
-            </template>
-          </div>
-        </section>
-        <!-- lazy loading ends here -->
+                  <slot
+                    :name="`section-${index}`"
+                    :payload="controlPanel.payload"
+                    :controlIndex="index"
+                  ></slot>
+                  <slot :name="`section-after-${index}`" v-if="index === selectedPanel"></slot>
+                </div>
+              </template>
+            </div>
+          </section>
+          <!-- lazy loading ends here -->
 
-        <Footer class="visible"> </Footer>
-        <!-- <div v-if="configObject.name !== 'Demographics'"> -->
-        <Onboarding
-          v-if="firstTime"
-          v-on:closeOnboard="onCloseOnBoarding"
-        ></Onboarding>
-        <!-- </div> -->
-      </div>
-    </template>
-    <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
+          <Footer class="visible"> </Footer>
+          <!-- <div v-if="configObject.name !== 'Demographics'"> -->
+          <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
+          <!-- </div> -->
+        </div>
+      </template>
+      <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
+    </div>
   </div>
-</div>
-
 </template>
 
 <script>
-import {
-  BasePanel,
-  ControlBase,
-  ControlPanel,
-} from '@/components/ControlPanel';
+import { BasePanel, ControlBase, ControlPanel } from '@/components/ControlPanel';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -268,12 +219,70 @@ export default {
     } else {
       this.isMobile = false;
     }
+
+    window.addEventListener('scroll', this.handleScroll);
   },
 
   destroyed() {
     window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
+    scrollTo(element, scrollPixels, duration) {
+      console.log('element', element);
+      const scrollPos = element.scrollLeft;
+      // Condition to check if scrolling is required
+      if (
+        !(
+          (scrollPos === 0 || scrollPixels > 0) &&
+          (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+        )
+      ) {
+        // Get the start timestamp
+        const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+
+        function scroll(timestamp) {
+          //Calculate the timeelapsed
+          const timeElapsed = timestamp - startTime;
+          //Calculate progress
+          const progress = Math.min(timeElapsed / duration, 1);
+          //Set the scrolleft
+          element.scrollLeft = scrollPos + scrollPixels * progress;
+          //Check if elapsed time is less then duration then call the requestAnimation, otherwise exit
+          if (timeElapsed < duration) {
+            //Request for animation
+            window.requestAnimationFrame(scroll);
+          } else {
+            return;
+          }
+        }
+        //Call requestAnimationFrame on scroll function first time
+        window.requestAnimationFrame(scroll);
+      }
+    },
+
+    swipeLeft() {
+      // const content = this.$refs.dummy-row;
+      const content = document.querySelector('.dummy-row');
+      console.log('content', content);
+      this.scrollTo(content, -300, 800);
+      const cord = {
+        x: -300,
+        y: 800,
+      };
+      this.$emit('swipe', cord);
+    },
+
+    swipeRight() {
+      const content = document.querySelector('.dummy-row');
+      console.log('content', content);
+      this.scrollTo(content, 300, 800);
+      const cord = {
+        x: 300,
+        y: 800,
+      };
+      this.$emit('swipe', cord);
+    },
     // moses
     getIndex(index) {
       console.log('this is the index i am saying', index);
@@ -330,11 +339,6 @@ export default {
     },
   },
 
-  // watch: {
-  // isMobile() {
-  //     console.log('isMobile', this.isMobile)
-  // },
-  // },
 
   async mounted() {
     this.loading = false;
@@ -418,5 +422,23 @@ div.temp {
   .lessVisible {
     z-index: -1;
   }
+}
+</style>
+
+<style scoped>
+/* testing */
+.dummy-row {
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
+}
+
+.swipe-btn-flex {
+  display: flex;
+  flex-direction: row;
+  position: sticky;
+  justify-content: space-between;
+  /* z-index: 10; */
+  margin: 10px;
 }
 </style>
