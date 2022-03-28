@@ -664,19 +664,6 @@ header#the-header {
     .main-text{
     display: none;
   }
-//    .main{
-//     display: none;
-//   }
-
-// .mobile-flex{
-//  display: flex;
-//  justify-content: space-between;
-//  flex-direction: row;
-// }
-
-// .mob-grid-icon{
-//   display: inherit;
-// }
   #about-wrap {
     header#the-header {
       & > .container-fluid {

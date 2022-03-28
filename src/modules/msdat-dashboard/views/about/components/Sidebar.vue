@@ -208,3 +208,64 @@ font-size: 14px;
 
   }
 </style>
+
+
+<script>
+export default {
+  // props: {
+  //   show: {
+  //     type: Boolean,
+  //     required: true,
+  //     default: false
+  //   }
+  // },
+
+  data() {
+    return {};
+  },
+  methods: {},
+};
+</script>
+
+<style lang="scss">
+div {
+  &.dropdown-expanded {
+    position: absolute;
+    width: 80vw;
+    z-index: 5;
+    left: -0.5vw;
+    top: 5.1vh;
+    color: black;
+    max-height: 30rem;
+    overflow-y: auto;
+    a {
+      color: inherit;
+    }
+  }
+  div.list-group{
+    h5.text-underline{
+      font-size: 1rem !important;
+    }
+  }
+  .list-group-item {
+    font-family: 'Work Sans';
+    padding: 0.25rem 1.25rem;
+    border: 0;
+    font-size: 0.95rem;
+  }
+  .sub-nav {
+    margin-top: 1rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    font-family: 'Work Sans';
+  }
+}
+h5.text-underline {
+  border-bottom: 1px solid lightgrey;
+  padding: 0.2rem 0;
+  margin: 0.7rem 1.3rem;
+  font-size: 1.2rem;
+  font-family: 'Work Sans';
+  font-weight: 700;
+}
+</style>

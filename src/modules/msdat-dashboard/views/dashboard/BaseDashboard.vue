@@ -29,9 +29,6 @@
                 show ? '' : 'hide',
               ]"
             >
-              <!-- <div class="position-relative" :class="[show ? '' : 'hide']"> -->
-              <!-- <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">  -->
-
               <!-- Moses changed from this -->
               <b-overlay :show="!cpIsLoading">
                 <BasePanel
@@ -68,13 +65,13 @@
                               <b-icon icon="chevron-right" />
                             </button>
                           </div>
-                          <div class="dummy-row">
+                          <div class="row dummy-row">
                             <div
                               class="col-md-4"
                               v-for="(item, index2) in control.setup"
                               :key="index2"
                             >
-                              <h3>Comparison {{ index2 + 1 }}</h3>
+                              <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
                               <ControlPanel
                                 @data:options="log($event, index, index2)"
                                 :setup="item"
@@ -109,11 +106,6 @@
                   :ref="index"
                   :key="index"
                 >
-                  <!-- <slot
-                v-if="controlPanel.payload === undefined"
-                :name="`section-${index}`"
-                :controlIndex="index"
-              ></slot> -->
                   <slot
                     :name="`section-${index}`"
                     :payload="controlPanel.payload"
@@ -172,6 +164,7 @@ export default {
       changeIndex: '',
       isMobile: false,
       winSize: window.width,
+      scrollCont: 0,
     };
   },
   components: {
@@ -206,6 +199,9 @@ export default {
       type: Array,
       required: false,
     },
+    scrollLeft2: {
+      type: Number,
+    },
   },
 
   created() {
@@ -220,16 +216,24 @@ export default {
       this.isMobile = false;
     }
 
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('wheel', this.handleScroll);
   },
 
   destroyed() {
     window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('wheel', this.handleScroll);
   },
+
   methods: {
+    handleScroll() {
+      console.log('something is scrolling');
+      console.log('scrollleft', document.querySelector('.dummy-row').scrollLeft);
+      this.scrollCont = document.querySelector('.dummy-row').scrollLeft;
+      this.$emit('scrollN', this.scrollCont);
+      // console.log('scrollleft2', document.querySelector('.dummy-row2').scrollLeft)
+    },
     scrollTo(element, scrollPixels, duration) {
-      console.log('element', element);
+      console.log('element', element.scrollLeft);
       const scrollPos = element.scrollLeft;
       // Condition to check if scrolling is required
       if (
@@ -242,21 +246,21 @@ export default {
         const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
 
         function scroll(timestamp) {
-          //Calculate the timeelapsed
+          // Calculate the timeelapsed
           const timeElapsed = timestamp - startTime;
-          //Calculate progress
+          // Calculate progress
           const progress = Math.min(timeElapsed / duration, 1);
-          //Set the scrolleft
+          // Set the scrolleft
           element.scrollLeft = scrollPos + scrollPixels * progress;
-          //Check if elapsed time is less then duration then call the requestAnimation, otherwise exit
+          console.log('new scroll left', element.scrollLeft);
+          // Check if elapsed time is less then duration then call the requestAnimation, otherwise exit
           if (timeElapsed < duration) {
-            //Request for animation
+            // Request for animation
             window.requestAnimationFrame(scroll);
           } else {
-            return;
           }
         }
-        //Call requestAnimationFrame on scroll function first time
+        // Call requestAnimationFrame on scroll function first time
         window.requestAnimationFrame(scroll);
       }
     },
@@ -267,7 +271,7 @@ export default {
       console.log('content', content);
       this.scrollTo(content, -300, 800);
       const cord = {
-        x: -300,
+        x: -370,
         y: 800,
       };
       this.$emit('swipe', cord);
@@ -278,7 +282,7 @@ export default {
       console.log('content', content);
       this.scrollTo(content, 300, 800);
       const cord = {
-        x: 300,
+        x: 370,
         y: 800,
       };
       this.$emit('swipe', cord);
@@ -338,7 +342,6 @@ export default {
       }
     },
   },
-
 
   async mounted() {
     this.loading = false;
@@ -423,22 +426,43 @@ div.temp {
     z-index: -1;
   }
 }
-</style>
 
-<style scoped>
-/* testing */
+  .swipe-btn-flex {
+    display: none;
+
+  }
+
+/* testing for mobile */
 .dummy-row {
   display: flex;
   flex-direction: row;
   overflow: scroll;
+  flex-wrap: nowrap;
 }
 
-.swipe-btn-flex {
+
+.control-header {
+  display: none;
+}
+
+@media (max-width: 1200px) { 
+
+  .swipe-btn-flex {
   display: flex;
   flex-direction: row;
   position: sticky;
   justify-content: space-between;
   /* z-index: 10; */
   margin: 10px;
+}
+
+.control-header {
+  display: inherit;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: bold;
+  margin: 5px;
+}
+
 }
 </style>
