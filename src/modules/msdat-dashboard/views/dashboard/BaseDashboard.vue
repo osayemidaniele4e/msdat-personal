@@ -40,6 +40,7 @@
                     <template v-if="!Array.isArray(control.setup[0])">
                       <ControlPanel
                         @data:options="log($event, index)"
+                        :label="modifyLabel(control.label)"
                         :setup="control.setup"
                         :controlIndex="index"
                         :defaultIndicator="defaultIndicator"
@@ -58,6 +59,7 @@
                           <ControlPanel
                             @data:options="log($event, index, index2)"
                             :setup="item"
+                            :label="modifyLabel(control.label, index2)"
                             :groupIndex="index2"
                             :controlIndex="index"
                             :defaultIndicator="defaultIndicator"
@@ -220,6 +222,19 @@ export default {
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
   },
   methods: {
+    /**
+     * Since the purpose of providing labels to
+     * the multiselects is so they can have unique,
+     * dynamic IDs, this function converts it to a
+     * HTML
+     * ID fit format, i.e without spaces
+     */
+    modifyLabel(fullName, index) {
+      if (index) {
+        return fullName.replace(' ', '-') + index;
+      }
+      return fullName.replace(' ', '-');
+    },
     /**
      * This handles hiding the other sections
      * based on the index of the selected section
