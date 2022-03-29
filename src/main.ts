@@ -4,7 +4,6 @@ import './scss/main.scss';
 import VueHtml2Canvas from 'vue-html2canvas';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import DataLayer from '@/modules/DataLayer';
-import PortalVue from 'portal-vue';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';
@@ -28,8 +27,6 @@ Vue.use(DataLayer, {
   store,
 });
 Vue.use(VueHtml2Canvas);
-
-Vue.use(PortalVue);
 
 Vue.config.productionTip = false;
 
