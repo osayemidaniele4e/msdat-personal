@@ -52,9 +52,20 @@ const payload = {
   },
   numdenum: false,
 };
+
 export default {
   label: 'Multi-Source comparison',
   grouped: true,
   setup: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
   payload: [{ ...payload }, { ...payload }, { ...payload }],
+
+  // const arr = [
+  //   ...(trueCondition ? ["dog"] : []),
+  //   ...(falseCondition ? ["cat"] : [])
+  // ];
+
+  // from moses
+  // setup: [[...indicatorSetConfig]],
+  // payload: [{ ...payload }],
+
 };

@@ -165,6 +165,7 @@ export default {
     BaseCheckbox,
     toggle,
   },
+
   props: {
     setup: {
       type: Array,

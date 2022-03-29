@@ -12,6 +12,7 @@ import controlSetup from '../../mixins/control-panel-setup';
 export default {
   mixins: [controlSetup],
   props: {
+
     controlIndex: {
       type: Number,
       required: true,

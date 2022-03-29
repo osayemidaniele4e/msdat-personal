@@ -1,13 +1,15 @@
 <template>
-  <div class="">
+<div>
+    <div class="">
 
   <!-- Toggleable tab links here -->
-    <ul
+
+      <ul
       class="d-flex list-unstyled step-sections mb-0
-       justify-content-between border-b mx-lg-5 mx-3 cursor-pointer"
+       justify-content-between border-b mx-lg-5 mx-3 cursor-pointer main"
    >
       <li
-        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans"
+        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans main"
         :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
         v-for="(control, index) in controls"
         :key="index"
@@ -19,12 +21,15 @@
       </li>
     </ul>
 
+      <div class="control-title">{{title}}</div>
     <!-- Multiselect dropdown here -->
     <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
       <div class="mx-lg-5 mx-3 step-controls styles pt-1 pb-2">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
+</div>
+
 </template>
 
 <script>
@@ -34,6 +39,7 @@ export default {
     return {
       controls: [],
       selectedIndex: 0,
+      title: 'Indicator Overview',
     };
   },
 
@@ -46,6 +52,12 @@ export default {
       type: Number,
       require: false,
       default: 0,
+    },
+
+    changeIndex: {
+      type: Number,
+      require: false,
+      default: 1,
     },
   },
   methods: {
@@ -68,12 +80,36 @@ export default {
       this.selectedIndex = newValue;
       this.selectControl(this.selectedIndex);
     },
+
+    // if the index is changed
+    changeIndex(newValue) {
+      this.changeControl(newValue);
+    },
+
+    selectedIndex(newValue) {
+      if (newValue === 0) {
+        this.title = 'Indicator Overview';
+      }
+      if (newValue === 1) {
+        this.title = 'Zonal Analysis';
+      }
+      if (newValue === 2) {
+        this.title = 'Indicator Comparison';
+      }
+      if (newValue === 3) {
+        this.title = 'Dataset Comparison';
+      }
+      if (newValue === 4) {
+        this.title = 'Multi-Source Overview';
+      }
+    },
   },
   mounted() {
     this.selectControl(0);
   },
   created() {
     this.controls = this.$children;
+    console.log(this.controls);
   },
 
 };
@@ -81,6 +117,10 @@ export default {
 
 <style lang="scss" scoped>
 $primary: #2b5d5b;
+
+.main{
+  display: inherit;
+}
 
 .border-b {
   border-bottom: 2px solid #ebebeb;
@@ -95,5 +135,37 @@ $primary: #2b5d5b;
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.control-title{
+  display: none;
+}
+
+@media (max-width: 576px) {
+
+  .main{
+    display: none;
+  }
+
+  .section-tab{
+    display: none;
+  }
+
+  .control-title{
+  display: inherit;
+font: var(--unnamed-font-style-normal)
+normal var(--unnamed-font-weight-bold)
+ 16px/19px var(--unnamed-font-family-work-sans);
+letter-spacing: var(--unnamed-character-spacing-0);
+text-align: left;
+font: normal normal bold 16px/19px Work Sans;
+letter-spacing: 0px;
+color: #2B5D5B;
+opacity: 1;
+text-decoration: underline;
+margin: 5px;
+padding: 5px;
+}
+
 }
 </style>

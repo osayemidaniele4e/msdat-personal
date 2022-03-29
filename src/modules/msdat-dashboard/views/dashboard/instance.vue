@@ -10,6 +10,8 @@
       :updateValue="updateValue"
       :updateKey="updateKey"
       :resetData="resetData"
+        @swipe="changeSwipe"
+      @scrollN="changeScroll"
 
     >
       <template v-slot:section-before-0>
@@ -105,9 +107,10 @@
             </template>
             <template>
               <!-- <div class="row"> -->
-              <div class="row">
-                <template v-for="n in 3">
-                  <div :key="n" class="col-md-4">
+              <div class="dummy-row2 row">
+                <template v-for="n in 3" class="flex-item">
+                  <div :key="n" class="col-lg-4 col-12">
+                    <div class="comparison-header">Comparison ({{ n }})</div>
                     <LazyLoading>
                       <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
                         <MultiSourceComponent :key="n" :values="payload[n - 1]" />
@@ -144,6 +147,7 @@ import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelC
 export default {
   data() {
     return {
+      isMobile: true,
       updateValue: {},
       updateKey: '',
       resetData: 1,
@@ -193,6 +197,75 @@ export default {
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
+    handleScroll() {
+      console.log('scrollleft2', document.querySelector('.dummy-row2').scrollLeft);
+    },
+
+    scroll(timestamp) {
+      // Calculate the timeelapsed
+      const timeElapsed = timestamp - this.scrollStartTime;
+      // Calculate progress
+      const progress = Math.min(timeElapsed / this.scrollDuration, 1);
+      // Set the scrolleft
+      this.scrollElement.scrollLeft = this.scrollPos + this.scrollPixels * progress;
+      // Check if elapsed time is less then duration then
+      // call the requestAnimation, otherwise exit
+      if (timeElapsed < this.scrollDuration) {
+        // Request for animation
+        window.requestAnimationFrame(this.scroll);
+      }
+    },
+
+    changeSwipe(cord) {
+      console.log('cord', cord);
+      const content = document.querySelector('.dummy-row2');
+      this.scrollTo(content, cord.x, cord.y);
+    },
+
+    changeScroll(n) {
+      if (n >= 0 && n < 194) {
+        document.querySelector('.dummy-row2').scrollLeft = 0;
+        console.log('true&true');
+      }
+
+      if (n >= 194 && n < 420) {
+        document.querySelector('.dummy-row2').scrollLeft = 383;
+      }
+
+      if (n >= 420) {
+        document.querySelector('.dummy-row2').scrollLeft = 757;
+      }
+    },
+
+    scrollTo(element, scrollPixels, duration) {
+      this.scrollPixels = scrollPixels;
+      this.scrollElement = element;
+      this.scrollDuration = duration;
+      const scrollPos = element.scrollLeft;
+      this.scrollPos = scrollPos;
+      // Condition to check if scrolling is required
+      if (
+        !(
+          (scrollPos === 0 || scrollPixels > 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+        )
+      ) {
+        // Get the start timestamp
+        const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+        this.scrollStartTime = startTime;
+        // Call requestAnimationFrame on scroll function first time
+        window.requestAnimationFrame(this.scroll);
+      }
+    },
+    onResize() {
+      if (window.innerWidth < 769) {
+        this.isMobile = true;
+        BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup3;
+      } else {
+        this.isMobile = false;
+        BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup2;
+      }
+    },
     getValue(value) {
       this.updateValue = value;
     },
@@ -206,6 +279,16 @@ export default {
     },
   },
   created() {
+    window.addEventListener('wheel', this.handleScroll);
+    window.addEventListener('resize', this.onResize);
+
+    // checking if in Mobile view
+    if (window.innerWidth < 769) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false;
+    }
+
     this.CLEAR_CONTROL_PANEL();
     /**
      * passing indicator Overview first means it going to at  index 0
@@ -219,7 +302,37 @@ export default {
     this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
     this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
   },
+
+  destroyed() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('wheel', this.handleScroll);
+  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+/* test css */
+.dummy-row2 {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-evenly; */
+  overflow-x: hidden;
+  flex-shrink: 0;
+  flex-basis: 0;
+  flex-wrap: nowrap;
+}
+
+.comparison-header {
+ display: none;
+}
+
+@media (max-width: 1200px) {
+.comparison-header {
+  display: inherit;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: bold;
+  margin: 5px;
+}
+}
+</style>
