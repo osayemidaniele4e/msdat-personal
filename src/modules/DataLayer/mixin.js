@@ -2,8 +2,8 @@ import { createNamespacedHelpers } from 'vuex';
 import {
   filter, omit, matches, isObject, has,
 } from 'lodash';
-import formatter from '../msdat-dashboard/mixins/formatter';
 import axios from '@/plugins/axios';
+import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
 
@@ -188,7 +188,8 @@ export default {
     // New Feature
     // function to get data_sources based on indicator
     async getDataSourceByIndicator(value) {
-      const indicatorId = value;
+      const indicatorId = value || 1;
+      console.log(indicatorId);
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
       return dataSourceAvailable.data.datasources;
     },

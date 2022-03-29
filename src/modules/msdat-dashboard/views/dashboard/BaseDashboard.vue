@@ -95,12 +95,36 @@
             </div>
             <!-- control Panels ends here  -->
 
-            <div class="container-fluid lessVisible">
-              <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
-                <slot :name="`section-before-${index}`" v-if="index === selectedPanel"></slot>
-                <div
-                  class="row observable"
-                  :id="index"
+          <div class="container-fluid lessVisible">
+            <template
+              v-for="(controlPanel, index) in $store.state.MSDAT_STORE
+                .controlConfig"
+            >
+              <slot
+                :name="`section-before-${index}`"
+                v-if="index === selectedPanel"
+              ></slot>
+              <!-- ========= -->
+              <div
+                class="row observable"
+                :id="index"
+                v-if="index === selectedPanel"
+                :ref="index"
+                :key="index"
+              >
+                <!-- <slot
+                v-if="controlPanel.payload === undefined"
+                :name="`section-${index}`"
+                :controlIndex="index"
+              ></slot> -->
+                <slot
+                  :name="`section-${index}`"
+                  :payload="controlPanel.payload"
+                  :controlIndex="index"
+                ></slot>
+                <!-- ======== -->
+                <slot
+                  :name="`section-after-${index}`"
                   v-if="index === selectedPanel"
                   :ref="index"
                   :key="index"
@@ -202,6 +226,21 @@ export default {
       type: Array,
       required: false,
     },
+    updateValue: {
+      type: Object,
+      required: false,
+    },
+
+    updateKey: {
+      type: String,
+      required: false,
+    },
+
+    resetData: {
+      type: Number,
+      required: false,
+    },
+
     scrollLeft2: {
       type: Number,
     },

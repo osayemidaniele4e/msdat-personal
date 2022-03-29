@@ -541,12 +541,6 @@ export default {
               year: 2018,
               color: '#43893B',
             },
-            {
-              indicator: 13,
-              dataSource: 1,
-              year: 2016,
-              color: '#43893B',
-            },
           ],
         },
 
@@ -751,6 +745,8 @@ h1 {
 .program-icon {
   border-radius: 50%;
   background-color: #ffffff;
+  text-align: center;
+  padding-top: 1%;
   border: none;
   height: 84px;
   width: 84px;

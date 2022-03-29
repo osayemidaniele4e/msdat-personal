@@ -1,8 +1,8 @@
 <template>
   <!-- Label to show when there is no available data as requested
   for by chiamaka on the 2-12-2021 during msdat meeting -->
+    <!-- @open="initialCSS" -->
   <multiselect
-    @open="initialCSS"
     v-model="selected"
     :options="options"
     searchable
@@ -19,18 +19,26 @@
       THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
       THAT HAVE GROUPED OPTIONS
     -->
-    <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
+    <!-- <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
        :data-parent="props.option.$groupLabel">
        {{props.option.$groupLabel}} <span class="down-caret"></span> </span>
       </template>
-    <div v-if="!props.option.$groupLabel"
-     :data-child="props.option.program_area">
-     {{props.option.full_name}}
-    </div>
+      <template v-if="props.option.item">
+        <div v-if="!props.option.$groupLabel"
+        :data-child="props.option.datasource">
+        {{props.option.item}}
+        </div>
+      </template>
+      <template v-else-if="props.option.full_name">
+        <div v-if="!props.option.$groupLabel"
+        :data-child="props.option.program_area">
+        {{props.option.full_name}}
+        </div>
+      </template>
 
-    </template>
+    </template> -->
     <!---
     END
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
@@ -95,99 +103,8 @@ export default {
     },
     immediate: false,
   },
-  methods: {
-    /**
-     * This method is called when a program area title
-     * is clicked, handles the show and hide of its
-     * child nodes and also the dropdown caret rotation
-     */
-    pickProgramArea(event) {
-      // console.log('checking target dropdown', event.target.children[0].children[0].dataset)
-      const { parent } = event.target.children[0].children[0].dataset;
-      const all = Array.from(event.target.parentNode.children);
-      all.forEach((element) => {
-        //  console.log('checking child', element.children[0].children[0].dataset.child)
-        // eslint-disable-next-line prefer-destructuring
-        const child = element.children[0].children[0].dataset.child;
-        // console.log('checking child', element.children[0].children[0].dataset.child)
-        const tempParent = element.children[0].children[0].dataset.parent;
-        if (parent === child) {
-          element.classList.toggle('noShow');
-        }
-        if (parent === tempParent) {
-          element.children[0].children[0].children[0].classList.toggle('open-caret');
-        }
-      });
-    },
-    // hideOptions() {
-    //   if (this.multiSelectProps['group-values']) {
-    //     const all = document.querySelectorAll('div.multiselect__content-wrapper > ul > li');
-    //     // eslint-disable-next-line no-plusplus
-    //     for (let i = 0; i <= all.length; i++) {
-    // eslint-disable-next-line max-len
-    //       if (Array.from(all[i].children[0].classList).indexOf('multiselect__option--disabled') === -1) {
-    //         all[i].classList.add('noShow');
-    //       } else {
-    //         all[i].removeEventListener('click', (e) => {
-    //           this.pickProgramArea(e);
-    //         });
-    //       }
-    //     }
-    //   }
-    // },
-    /**
-     *  This methods acts only on multiselects having
-     *  grouped options like the indicator multiselects.
-     *  It makes this distinction based on the prop value
-     *  @var multiselectProps, its "group-value" property.
-     *
-     */
-    initialCSS() {
-      if (this.multiSelectProps['group-values']) {
-        const all = document.querySelectorAll('div.multiselect__content-wrapper > ul > li');
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i <= all.length; i++) {
-          if (all[i].children[0].children[0]?.dataset.child) {
-            all[i].classList.add('noShow');
-          } else {
-            all[i].addEventListener('click', (e) => {
-              this.pickProgramArea(e);
-            });
-          }
-        }
-      }
-    },
-  },
-
+  mounted() {},
 };
 </script>
 
-<style lang="scss">
-.noShow{
-  display: none;
-}
-
-.down-caret {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 5px 0 5px;
-  border-color: #58af5f transparent transparent transparent;
-  top: 13px;
-  right: 5% !important;
-  position: absolute;
-  transform: rotate(0deg);
-  transition: all .25s ease-in;
-}
-
-.open-caret {
-    transform: rotate(180deg);
-    transition: all .25s ease-out;
-  }
-
-li.multiselect__element{
-  border-bottom: 1px solid #0000;
-  transition: all 3.5 ease-in
-}
-
-</style>
+<style lang="scss" scoped></style>

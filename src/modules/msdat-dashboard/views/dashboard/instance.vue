@@ -7,8 +7,12 @@
       :initialIndicator="initialIndicator"
       :initialDataSource="initialDataSource"
       :initialLocation="initialLocation"
-      @swipe="changeSwipe"
+      :updateValue="updateValue"
+      :updateKey="updateKey"
+      :resetData="resetData"
+        @swipe="changeSwipe"
       @scrollN="changeScroll"
+
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
@@ -27,6 +31,9 @@
                 <BaseIndicatorOverview
                   :showTableRelatedIndicator="showTableRelatedIndicator"
                   :controlPanelProps="payload"
+                   @value="getValue"
+                   @key="getKey"
+                   @reset="getReset"
                 />
               </ControlPanelConfiguration>
             </template>
@@ -141,6 +148,9 @@ export default {
   data() {
     return {
       isMobile: true,
+      updateValue: {},
+      updateKey: '',
+      resetData: 1,
     };
   },
   components: {
@@ -182,6 +192,7 @@ export default {
       type: Boolean,
       default: true,
     },
+
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
@@ -254,6 +265,17 @@ export default {
         this.isMobile = false;
         BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup2;
       }
+    },
+    getValue(value) {
+      this.updateValue = value;
+    },
+
+    getKey(key) {
+      this.updateKey = key;
+    },
+
+    getReset() {
+      this.resetData++;
     },
   },
   created() {

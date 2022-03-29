@@ -1,7 +1,8 @@
 /* eslint-disable radix */
 <template>
-  <base-overlay :show="loading">
+  <base-overlay :show="loading || notShow">
     <base-sub-card
+      ref="SubCard"
       buttonToggle
       showControls
       sideControl="true"
@@ -21,10 +22,12 @@
     >
       <template #title>
         <p class="work-sans mb-0 line-height">
-          Comparison Of <b>{{ values.indicator.short_name }}</b> Across Different Data Source
+          Comparison Of <b>{{ values.indicator.short_name }}</b> Across
+          Different Data Source
         </p>
       </template>
-      <BarChart ref="BaseChart" :chartOptions="ChartOptions" />
+      <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
+
     </base-sub-card>
   </base-overlay>
 </template>
@@ -61,6 +64,9 @@ export default {
         },
       ],
       selectedDS: {},
+      notShow: false,
+      seriesArray: {},
+      years: {},
     };
   },
   props: {
@@ -71,25 +77,60 @@ export default {
       type: [Object, String, Array],
       required: true,
     },
+    resetIndex: {
+      type: Number,
+      required: true,
+    },
+    closeOverlay: {
+      type: Boolean,
+    },
   },
   watch: {
+    // Watch closeOverlay
+    closeOverlay: {
+      handler(newValue) {
+        if (newValue) {
+          this.closeOverlay = true;
+          this.$refs.SubCard.close();
+        }
+      },
+      deep: true,
+    },
     /**
      * some trick i found out arranging the watchers in the order
      * you want them to be called
      * like whats happening here
      * */
+
+    // when the refresh button is clicked
+    resetIndex: {
+      async handler() {
+        this.notShow = true;
+        this.loading = true;
+        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        this.setUpHighChartConfig(seriesArray, years);
+        this.loading = false;
+        this.notShow = false;
+      },
+      deep: false,
+      immediate: false,
+    },
+
     'values.datasource': {
       async handler(selectedDataSource) {
         // debugger;
-        this.loading = true;
+        // this.loading = true;
         let dataSourceSelected = [];
         if (!Array.isArray(selectedDataSource)) {
           dataSourceSelected = [selectedDataSource];
         } else {
           dataSourceSelected = selectedDataSource;
         }
-        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
+        // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          dataSourceSelected,
+        );
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
@@ -99,14 +140,18 @@ export default {
     'values.indicator': {
       async handler() {
         this.loading = true;
-        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        // const { seriesArray, years } = await this.toHighChartSeriesSetup(
-        //   dataSources,
-        // );
+        console.log(`checking indicator${this.values.indicator.id}`);
         // change get datasource function to API matching indicator to dataSource
-        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-        this.setUpHighChartConfig(seriesArray, years);
+        if (this.values.indicator.id !== undefined) {
+          const dataSources = await this.getAvailableDataSources(
+            this.values.indicator.id,
+          );
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(
+            dataSources,
+          );
+          this.setUpHighChartConfig(seriesArray, years);
+        }
+
         this.loading = false;
       },
       deep: true,
@@ -127,6 +172,7 @@ export default {
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
         tooltip: {
+          // pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
           shared: true,
         },
         yAxis: {
@@ -134,6 +180,9 @@ export default {
         },
         xAxis: {
           ...defaultOptions.xAxis,
+          crosshair: {
+            enabled: true,
+          },
           categories: sortedYear,
         },
         chart: {
@@ -153,9 +202,17 @@ export default {
             pointPlacement: 'between',
             // borderWidth: 0,
           },
+          line: {
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
+              shared: true,
+            },
+          },
         },
       };
-      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+      const displayFactor = this.dlGetFactor(
+        this.values.indicator.factor,
+      ).display_factor;
       this.ChartOptions.yAxis.title.text = displayFactor;
     },
     updateChart(e) {
@@ -232,7 +289,10 @@ export default {
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
-        const data = item.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
+        const data = item.map((Object) => [
+          Object.period,
+          Number.parseFloat(Object.value),
+        ]);
         sortedData = data.sort(
           // eslint-disable-next-line radix
           (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
@@ -242,7 +302,11 @@ export default {
         if (mappedValueTypes.length > 0) {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
           console.log(datasource);
-          seriesObject = this.createSeriesObject(valueType, datasource.datasource, sortedData);
+          seriesObject = this.createSeriesObject(
+            valueType,
+            datasource.datasource,
+            sortedData,
+          );
         } else {
           seriesObject = { name: datasource.datasource, data: sortedData };
         }
@@ -268,7 +332,9 @@ export default {
 
       // trying to get the value type
       const datasource = this.dlGetDataSource(datasourceArray.id);
-      const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+      const valuetype = this.dlGetValueTypes({
+        value_type: datasource.classification,
+      });
       const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
       // confidence range
 
@@ -282,7 +348,8 @@ export default {
         [datasourceArray],
         valueType,
       );
-      this.setUpHighChartConfig(seriesArray, years);
+      const seriesArr = await this.Reformat(seriesArray);
+      this.setUpHighChartConfig(seriesArr, years);
       this.loading = false;
     },
     async onConfidenceRangeClicked(e) {
@@ -296,7 +363,9 @@ export default {
 
         // trying to get the value type
         const datasource = this.dlGetDataSource(firstObject.id);
-        const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+        const valuetype = this.dlGetValueTypes({
+          value_type: datasource.classification,
+        });
         const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
         // confidence range
 
@@ -304,47 +373,94 @@ export default {
           [this.selectedDS],
           valueType,
         );
-        const data = seriesArray[1].data.forEach((item) => item[1]);
-        console.log(data, seriesArray, 'hello confy2');
-
-        // extracting Lower bound values into a new array
-        const newArray1 = seriesArray[1].data.map((item) => item[1]);
-        console.log('lower bound', seriesArray[1]);
-        console.log(newArray1);
-
-        // merging the Lower and Upper bounf values into a new array
-        const newArray2 = seriesArray[2].data.map((item) => {
-          const index = item[0] - 1990;
-          return [item[0], newArray1[index], item[1]];
-        });
-        console.log('newArray2', newArray2);
-
-        const seriesArray2 = [seriesArray[0], seriesArray[1]];
-
-        seriesArray2[1].data = newArray2;
-        console.log('seriesArray2', seriesArray2);
-
-        this.setUpHighChartConfig(seriesArray2, years);
+        const seriesArr = await this.Reformat(seriesArray);
+        this.setUpHighChartConfig(seriesArr, years);
       } else {
         this.selectedDS = {};
-        const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-        this.setUpHighChartConfig(seriesArray, years);
+        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
+        // const { seriesArray, years } = await this.toHighChartSeriesSetup(
+        //   dataSources,
+        // );
+        this.setUpHighChartConfig(this.seriesArray, this.years);
       }
       this.loading = false;
     },
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(this.values.indicator.id);
+      const availableDataSource = await this.setDataSourcesDropdown(
+        this.values.indicator.id,
+      );
       return availableDataSource;
     },
+    // ================================ REFORMATTING DATA =====================================
+    async Reformat(seriesArray) {
+      const name1 = seriesArray[0].name;
+      const datar = seriesArray[0].data.map((item) => item[1]);
+      const data1 = seriesArray[0].data.map((item, i) => [item[0], datar[i]]);
+      const data2 = seriesArray[1].data.map((item) => item[1]);
+      const data3 = seriesArray[2].data.map((item) => item[1]);
+      const data = seriesArray[1].data.map((item, index) => [
+        `Confidence Range for ${name1}`,
+        parseFloat(data3[index].toFixed(1)),
+        parseFloat(data2[index].toFixed(1)),
+      ]);
+      const seriesArr = [
+        {
+          name: name1,
+          data: data1,
+          zIndex: 1,
+          marker: {
+            fillColor: '#4482c2',
+            lineWidth: 2,
+            // lineColor: Highcharts.getOptions().colors[0]
+          },
+        },
+        {
+          name: `Confidence Range for ${name1}`,
+          data,
+          type: 'arearange',
+          lineWidth: 2,
+          linkedTo: ':previous',
+          color: '#faa630',
+          fillOpacity: 0.1,
+          zIndex: 0,
+          marker: {
+            enabled: true,
+            radius: 2,
+            lineWidth: 1,
+            width: 1,
+          },
+          tooltip: {
+            crosshairs: true,
+            shared: true,
+            formatter() {
+              // eslint-disable-next-line no-unused-vars
+              const pointData = data.find((row) => row.name === this.point.x);
+            },
+          },
+        },
+      ];
+      return seriesArr;
+    },
   },
-  mounted() {
-    // debugger;
-    // console.trace(this.values);
-  },
+  // async mounted() {
+  //   console.log('hello =>', this.ChartOptions);
+
+  //   const dataSources = await this.getAvailableDataSources();
+  //   const { seriesArray, years } = await this.toHighChartSeriesSetup(
+  //     dataSources,
+  //   );
+
+  //   this.seriesArray = seriesArray;
+  //   console.log('seriesArray', seriesArray);
+  //   console.log('years', years);
+  //   this.years = years;
+
+  //   this.setUpHighChartConfig(this.seriesArray, this.years);
+  // },
 };
+
 </script>
 
 <style lang="scss" scoped></style>
