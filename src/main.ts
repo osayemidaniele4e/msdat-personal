@@ -4,6 +4,7 @@ import './scss/main.scss';
 import VueHtml2Canvas from 'vue-html2canvas';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import DataLayer from '@/modules/DataLayer';
+import PortalVue from 'portal-vue';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';
@@ -13,7 +14,6 @@ import './plugins/vue-sweetalert/sweetalert';
 import router from './router';
 import store from './store';
 import './plugins/veevalidate';
-import PortalVue from 'portal-vue'
 
 import './assets/styles/fonts.css';
 
@@ -29,7 +29,7 @@ Vue.use(DataLayer, {
 });
 Vue.use(VueHtml2Canvas);
 
-Vue.use(PortalVue)
+Vue.use(PortalVue);
 
 Vue.config.productionTip = false;
 

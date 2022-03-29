@@ -230,12 +230,12 @@ export default {
           const progress = Math.min(timeElapsed / duration, 1);
           // Set the scrolleft
           element.scrollLeft = scrollPos + scrollPixels * progress;
-          // Check if elapsed time is less then duration 
+          // Check if elapsed time is less then duration
           // then call the requestAnimation, otherwise exit
           if (timeElapsed < duration) {
             // Request for animation
             window.requestAnimationFrame(scroll);
-          } 
+          }
         }
         // Call requestAnimationFrame on scroll function first time
         window.requestAnimationFrame(scroll);

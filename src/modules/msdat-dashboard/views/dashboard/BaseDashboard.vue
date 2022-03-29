@@ -252,8 +252,8 @@ export default {
           // Set the scrolleft
           element.scrollLeft = scrollPos + scrollPixels * progress;
           console.log('new scroll left', element.scrollLeft);
-          // Check if elapsed time is less then duration then 
-          //call the requestAnimation, otherwise exit
+          // Check if elapsed time is less then duration then
+          // call the requestAnimation, otherwise exit
           if (timeElapsed < duration) {
             // Request for animation
             window.requestAnimationFrame(scroll);

@@ -16,9 +16,9 @@
 </template>
 
 <script>
+import { eventBus } from '@/main';
 import ZonalMap from './map.vue';
 import ZonalColumnChart from './zonalSection.vue';
-import { eventBus } from '@/main';
 
 export default {
   data() {
