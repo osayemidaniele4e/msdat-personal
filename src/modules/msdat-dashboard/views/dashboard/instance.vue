@@ -190,6 +190,21 @@ export default {
       console.log('scrollleft2', document.querySelector('.dummy-row2').scrollLeft);
     },
 
+    scroll(timestamp) {
+      // Calculate the timeelapsed
+      const timeElapsed = timestamp - this.scrollStartTime;
+      // Calculate progress
+      const progress = Math.min(timeElapsed / this.scrollDuration, 1);
+      // Set the scrolleft
+      this.scrollElement.scrollLeft = this.scrollPos + this.scrollPixels * progress;
+      // Check if elapsed time is less then duration then
+      // call the requestAnimation, otherwise exit
+      if (timeElapsed < this.scrollDuration) {
+        // Request for animation
+        window.requestAnimationFrame(this.scroll);
+      }
+    },
+
     changeSwipe(cord) {
       console.log('cord', cord);
       const content = document.querySelector('.dummy-row2');
@@ -212,7 +227,11 @@ export default {
     },
 
     scrollTo(element, scrollPixels, duration) {
+      this.scrollPixels = scrollPixels;
+      this.scrollElement = element;
+      this.scrollDuration = duration;
       const scrollPos = element.scrollLeft;
+      this.scrollPos = scrollPos;
       // Condition to check if scrolling is required
       if (
         !(
@@ -222,26 +241,11 @@ export default {
       ) {
         // Get the start timestamp
         const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
-
-        function scroll(timestamp) {
-          // Calculate the timeelapsed
-          const timeElapsed = timestamp - startTime;
-          // Calculate progress
-          const progress = Math.min(timeElapsed / duration, 1);
-          // Set the scrolleft
-          element.scrollLeft = scrollPos + scrollPixels * progress;
-          // Check if elapsed time is less then duration
-          // then call the requestAnimation, otherwise exit
-          if (timeElapsed < duration) {
-            // Request for animation
-            window.requestAnimationFrame(scroll);
-          }
-        }
+        this.scrollStartTime = startTime;
         // Call requestAnimationFrame on scroll function first time
-        window.requestAnimationFrame(scroll);
+        window.requestAnimationFrame(this.scroll);
       }
     },
-
     onResize() {
       console.log('width', window.innerWidth);
       if (window.innerWidth < 769) {
@@ -255,7 +259,6 @@ export default {
   },
   created() {
     window.addEventListener('wheel', this.handleScroll);
-    console.log('BaseMultiSourceConfig', BaseMultiSourceConfig);
     window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view

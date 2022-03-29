@@ -165,6 +165,11 @@ export default {
       isMobile: false,
       winSize: window.width,
       scrollCont: 0,
+      scrollDuration: 0,
+      scrollStartTime: 0,
+      scrollElement: 0,
+      scrollPixels: 0,
+      scrollPos: '',
     };
   },
   components: {
@@ -225,15 +230,31 @@ export default {
   },
 
   methods: {
+    scroll(timestamp) {
+      // Calculate the timeelapsed
+      const timeElapsed = timestamp - this.scrollStartTime;
+      // Calculate progress
+      const progress = Math.min(timeElapsed / this.scrollDuration, 1);
+      // Set the scrolleft
+      this.scrollElement.scrollLeft = this.scrollPos + this.scrollPixels * progress;
+      // Check if elapsed time is less then duration then
+      // call the requestAnimation, otherwise exit
+      if (timeElapsed < this.scrollDuration) {
+        // Request for animation
+        window.requestAnimationFrame(this.scroll);
+      }
+    },
+
     handleScroll() {
-      console.log('something is scrolling');
-      console.log('scrollleft', document.querySelector('.dummy-row').scrollLeft);
       this.scrollCont = document.querySelector('.dummy-row').scrollLeft;
       this.$emit('scrollN', this.scrollCont);
     },
     scrollTo(element, scrollPixels, duration) {
-      console.log('element', element.scrollLeft);
+      this.scrollPixels = scrollPixels;
+      this.scrollElement = element;
+      this.scrollDuration = duration;
       const scrollPos = element.scrollLeft;
+      this.scrollPos = scrollPos;
       // Condition to check if scrolling is required
       if (
         !(
@@ -243,24 +264,9 @@ export default {
       ) {
         // Get the start timestamp
         const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
-
-        function scroll(timestamp) {
-          // Calculate the timeelapsed
-          const timeElapsed = timestamp - startTime;
-          // Calculate progress
-          const progress = Math.min(timeElapsed / duration, 1);
-          // Set the scrolleft
-          element.scrollLeft = scrollPos + scrollPixels * progress;
-          console.log('new scroll left', element.scrollLeft);
-          // Check if elapsed time is less then duration then
-          // call the requestAnimation, otherwise exit
-          if (timeElapsed < duration) {
-            // Request for animation
-            window.requestAnimationFrame(scroll);
-          }
-        }
+        this.scrollStartTime = startTime;
         // Call requestAnimationFrame on scroll function first time
-        window.requestAnimationFrame(scroll);
+        window.requestAnimationFrame(this.scroll);
       }
     },
 
@@ -426,10 +432,9 @@ div.temp {
   }
 }
 
-  .swipe-btn-flex {
-    display: none;
-
-  }
+.swipe-btn-flex {
+  display: none;
+}
 
 /* testing for mobile */
 .dummy-row {
@@ -444,23 +449,21 @@ div.temp {
 }
 
 @media (max-width: 1200px) {
-
   .swipe-btn-flex {
-  display: flex;
-  flex-direction: row;
-  position: sticky;
-  justify-content: space-between;
-  /* z-index: 10; */
-  margin: 10px;
-}
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    justify-content: space-between;
+    /* z-index: 10; */
+    margin: 10px;
+  }
 
-.control-header {
-  display: inherit;
-  margin: 0 auto;
-  text-align: center;
-  font-weight: bold;
-  margin: 5px;
-}
-
+  .control-header {
+    display: inherit;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    margin: 5px;
+  }
 }
 </style>
