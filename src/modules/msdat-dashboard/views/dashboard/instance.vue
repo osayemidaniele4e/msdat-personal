@@ -247,7 +247,6 @@ export default {
       }
     },
     onResize() {
-      console.log('width', window.innerWidth);
       if (window.innerWidth < 769) {
         this.isMobile = true;
         BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup3;
