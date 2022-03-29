@@ -303,9 +303,16 @@ export default {
 }
 
 .comparison-header {
+ display: none;
+}
+
+@media (max-width: 1200px) {
+.comparison-header {
+  display: inherit;
   margin: 0 auto;
   text-align: center;
   font-weight: bold;
   margin: 5px;
+}
 }
 </style>
