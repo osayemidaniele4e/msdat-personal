@@ -39,7 +39,7 @@ export default {
   // MEDIA QUERY FOR TABLET DEVICES
   @media only screen and (min-width: 601px) and (max-width: 768px) {
     .shimmerBG {
-      height: 47vh;
+      height: 38vh;
     }
   }
   @keyframes shimmer {
@@ -115,7 +115,7 @@ export default {
   .content {
     width: 100%;
     height: 100%;
-    z-index: 10;
+    // z-index: 10;
     background-color: #ffffffd0;
   }
 

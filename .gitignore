@@ -28,3 +28,12 @@ pnpm-debug.log*
 
 # CICD
 .gitlab-ci.yml
+
+#VuePress
+.vuepress/dist
+.vuepress/public
+.vuepress/temp
+.vuepress/themeConfig.json
+echo 'node_modules' >> .gitignore
+echo '.temp' >> .gitignore
+echo '.cache' >> .gitignore

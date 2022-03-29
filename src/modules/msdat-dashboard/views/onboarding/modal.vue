@@ -11,7 +11,7 @@
     content-class="noShadow"
   >
     <div
-      v-if="hideButton === false"
+      v-if="showCloseButton"
       class="w-100 d-flex justify-content-end pointer_click"
       style="font-size: 2.6rem"
     >
@@ -43,9 +43,9 @@ export default {
       type: Boolean,
       default: () => false,
     },
-    hideButton: {
+    showCloseButton: {
       type: Boolean,
-      default: () => false,
+      // default: () => false,
     },
   },
   watch: {

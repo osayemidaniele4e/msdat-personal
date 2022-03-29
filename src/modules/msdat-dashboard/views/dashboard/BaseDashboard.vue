@@ -1,22 +1,21 @@
 <template>
-  <div>
-    <!-- initial plan for the multi-source mbile is to duplicate the div below -->
-    <div class="temp">
-      <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
-      <template v-if="!showTroubleShootingModal">
-        <Loading
-          v-if="!loading"
-          :hideButton="true"
-          :noBackdrop="false"
-          :showBackground="false"
-          class="over"
-        >
-          <div class="text-center">
-            <img :src="loadingImg" alt="first_img" width="250px" />
-            <div class="mr-4">
-              <h3>Initializing{{ loadingTitle }}</h3>
-              <p>{{ loadingContent }}</p>
-            </div>
+  <div class="temp">
+    <TroubleShootingModal
+      style="z-index: 1500"
+      v-if="showTroubleShootingModal"
+    />
+    <template v-if="!showTroubleShootingModal">
+      <Loading
+        v-if="!loading"
+        :noBackdrop="false"
+        :showBackground="false"
+        class="over"
+      >
+        <div class="text-center">
+          <img :src="loadingImg" alt="first_img" width="250px" />
+          <div class="mr-4">
+            <h3>Initializing{{ loadingTitle }}</h3>
+            <p>{{ loadingContent }}</p>
           </div>
         </Loading>
 
@@ -126,7 +125,6 @@
       </template>
       <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
     </div>
-  </div>
 </template>
 
 <script>
