@@ -3,7 +3,7 @@
   for by chiamaka on the 2-12-2021 during msdat meeting -->
     <!--  -->
   <multiselect
-    :id="[multiSelectProps['group-values'] ? id : ''].join()"
+    :id="formattedID"
     v-model="selected"
     @open="initialCSS"
     :options="options"
@@ -30,7 +30,7 @@
       </template>
       <template v-if="props.option.item">
         <div v-if="!props.option.$groupLabel"
-        :data-child="props.option.datasource">
+        :data-child="modifyDataSourceChildLabel(props.option.item)">
         {{props.option.item}}
         </div>
       </template>
@@ -68,6 +68,15 @@ export default {
       set(val) {
         this.$emit('input', val);
       },
+    },
+    formattedID() {
+      if (this.multiSelectProps['group-values']) {
+        if (this.multiSelectProps['group-label'] === 'datasource') {
+          return 'groupedSources';
+        }
+        return this.id;
+      }
+      return null;
     },
   },
   props: {
@@ -111,6 +120,14 @@ export default {
     immediate: false,
   },
   methods: {
+    modifyDataSourceChildLabel(tag) {
+      const tempArray = tag.split(' ');
+      tempArray.pop();
+      for (let i = 0; i < tempArray.length; i++) {
+        tempArray[i] = tempArray[i][0].toUpperCase() + tempArray[i].substr(1);
+      }
+      return tempArray.join(' ');
+    },
     /**
      * This method is called when a program area title
      * is clicked, handles the show and hide of its
@@ -169,7 +186,7 @@ export default {
       }
     },
   },
-  mounted() {},
+
 };
 </script>
 
