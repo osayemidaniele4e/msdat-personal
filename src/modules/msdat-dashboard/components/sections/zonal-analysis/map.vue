@@ -55,10 +55,10 @@
 
 <script>
 import BaseMap from '@/components/maps/BaseMap.vue';
+import { eventBus } from '@/main';
 import chartDownload from '../../../mixins/chart_download';
 import NoAvailableData from '../../NoData2.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
-import { eventBus } from '@/main';
 
 export default {
   mixins: [chartDownload],
