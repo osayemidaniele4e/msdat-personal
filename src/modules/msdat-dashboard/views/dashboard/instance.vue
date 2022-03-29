@@ -247,7 +247,6 @@ export default {
       }
     },
     onResize() {
-      console.log('width', window.innerWidth);
       if (window.innerWidth < 769) {
         this.isMobile = true;
         BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup3;
@@ -259,7 +258,6 @@ export default {
   },
   created() {
     window.addEventListener('wheel', this.handleScroll);
-    console.log('BaseMultiSourceConfig', BaseMultiSourceConfig);
     window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view

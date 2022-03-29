@@ -165,14 +165,14 @@
 <script>
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
-import SideBar from '../components/SideBar.vue';
+import Sidebar from '../components/Sidebar.vue';
 
 export default {
   name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,
-    SideBar,
+    SideBar: Sidebar,
   },
   data() {
     return {
