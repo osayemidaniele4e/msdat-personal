@@ -6,8 +6,8 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import controlSetup from '../../mixins/control-panel-setup';
 import { eventBus } from '@/main';
+import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
   mixins: [controlSetup],
