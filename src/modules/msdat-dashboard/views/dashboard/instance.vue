@@ -197,12 +197,12 @@ export default {
     },
 
     changeScroll(n) {
-      if (0 <= n && n < 194) {
+      if (n >= 0 && n < 194) {
         document.querySelector('.dummy-row2').scrollLeft = 0;
         console.log('true&true');
       }
 
-      if (194 <= n && n < 420) {
+      if (n >= 194 && n < 420) {
         document.querySelector('.dummy-row2').scrollLeft = 383;
       }
 
@@ -216,8 +216,8 @@ export default {
       // Condition to check if scrolling is required
       if (
         !(
-          (scrollPos === 0 || scrollPixels > 0) &&
-          (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+          (scrollPos === 0 || scrollPixels > 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
@@ -230,12 +230,12 @@ export default {
           const progress = Math.min(timeElapsed / duration, 1);
           // Set the scrolleft
           element.scrollLeft = scrollPos + scrollPixels * progress;
-          // Check if elapsed time is less then duration then call the requestAnimation, otherwise exit
+          // Check if elapsed time is less then duration 
+          // then call the requestAnimation, otherwise exit
           if (timeElapsed < duration) {
             // Request for animation
             window.requestAnimationFrame(scroll);
-          } else {
-          }
+          } 
         }
         // Call requestAnimationFrame on scroll function first time
         window.requestAnimationFrame(scroll);

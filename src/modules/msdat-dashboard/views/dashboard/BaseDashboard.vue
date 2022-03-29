@@ -230,7 +230,6 @@ export default {
       console.log('scrollleft', document.querySelector('.dummy-row').scrollLeft);
       this.scrollCont = document.querySelector('.dummy-row').scrollLeft;
       this.$emit('scrollN', this.scrollCont);
-      // console.log('scrollleft2', document.querySelector('.dummy-row2').scrollLeft)
     },
     scrollTo(element, scrollPixels, duration) {
       console.log('element', element.scrollLeft);
@@ -238,8 +237,8 @@ export default {
       // Condition to check if scrolling is required
       if (
         !(
-          (scrollPos === 0 || scrollPixels > 0) &&
-          (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+          (scrollPos === 0 || scrollPixels > 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
@@ -253,11 +252,11 @@ export default {
           // Set the scrolleft
           element.scrollLeft = scrollPos + scrollPixels * progress;
           console.log('new scroll left', element.scrollLeft);
-          // Check if elapsed time is less then duration then call the requestAnimation, otherwise exit
+          // Check if elapsed time is less then duration then 
+          //call the requestAnimation, otherwise exit
           if (timeElapsed < duration) {
             // Request for animation
             window.requestAnimationFrame(scroll);
-          } else {
           }
         }
         // Call requestAnimationFrame on scroll function first time
@@ -440,12 +439,11 @@ div.temp {
   flex-wrap: nowrap;
 }
 
-
 .control-header {
   display: none;
 }
 
-@media (max-width: 1200px) { 
+@media (max-width: 1200px) {
 
   .swipe-btn-flex {
   display: flex;
