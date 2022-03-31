@@ -30,11 +30,11 @@ export default {
         },
         {
           id: 2,
-          color: '#737A33',
+          color: '#89d880',
         },
         {
           id: 3,
-          color: '#8B9A9B',
+          color: '#8ab9bb',
         },
         {
           id: 7,
@@ -42,15 +42,15 @@ export default {
         },
         {
           id: 4,
-          color: '#9E7796',
+          color: '#5c3819',
         },
         {
           id: 5,
-          color: '#54858D',
+          color: '#f872a0',
         },
         {
           id: 6,
-          color: '#CCCC17',
+          color: '#e1e164',
         },
       ],
     };
