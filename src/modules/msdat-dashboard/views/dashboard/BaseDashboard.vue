@@ -17,6 +17,7 @@
             <h3>Initializing{{ loadingTitle }}</h3>
             <p>{{ loadingContent }}</p>
           </div>
+        </div>
         </Loading>
 
         <div v-else>
@@ -127,14 +128,8 @@
                   :name="`section-after-${index}`"
                   v-if="index === selectedPanel"
                   :ref="index"
-                  :key="index"
                 >
-                  <slot
-                    :name="`section-${index}`"
-                    :payload="controlPanel.payload"
-                    :controlIndex="index"
-                  ></slot>
-                  <slot :name="`section-after-${index}`" v-if="index === selectedPanel"></slot>
+                </slot>
                 </div>
               </template>
             </div>
