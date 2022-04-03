@@ -10,6 +10,7 @@
             class="form-control"
             style="border-bottom-right-radius: 0px; border-top-right-radius: 0"
             placeholder="Enter email address"
+            v-model="email"
           />
         </div>
         <div class="col-md-2">
@@ -108,7 +109,7 @@ export default {
       shareURL: window.location.origin,
       copy_text: 'Copy',
       shareText: 'MSDAT Platform',
-      email: 'chinwokwuj@gmail.com',
+      email: '',
     };
   },
   methods: {
