@@ -102,8 +102,8 @@ export default {
         created: now,
       };
       try {
-        const resp = await axios.post(url, subscription);
-        if (resp.data) {
+        const response = await axios.post(url, subscription);
+        if (response.data) {
           this.$swal({
             toast: true,
             position: 'top-right',
@@ -111,8 +111,11 @@ export default {
             timer: 5000,
             icon: 'success',
             title: 'Success',
+            text: 'You have successfully subscribed to our newsletter.',
           });
           this.hideModal();
+          this.fullname = '';
+          this.email = '';
         }
       } catch (error) {
         this.$swal({
@@ -120,13 +123,12 @@ export default {
           position: 'top-right',
           showConfirmButton: false,
           timer: 5000,
-          icon: 'error',
-          title: `${error.message}`,
+          icon: 'info',
+          title: 'Attention',
+          text: 'Name/Email address provided already exist, please try again' || `${error.message}`,
         });
       } finally {
         this.loading = false;
-        this.fullname = '';
-        this.email = '';
       }
     },
   },
