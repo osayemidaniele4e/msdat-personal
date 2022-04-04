@@ -43,7 +43,7 @@
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Health Workforce</h5>
+              <h5 class="font-weight-bold work-sans text-white test">Health Workforce</h5>
             </template>
             <template>
               <div style="text-align: center">
@@ -64,9 +64,11 @@
 
          <div  v-if="configObject.name === 'Health_Financing'">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Health Financing</h5>
+          <base-sub-card :backgroundColor="'#17606b'" class="my-2 shadow-sm iframe_container test">
+            <template class="test" #title>
+              <div class="font-weight-bold work-sans text-white text-finance">
+                Health Finance in Nigeria</div>
+              <div class="sub-text-finance"> Source: NHA 2017 </div>
             </template>
             <template>
               <div style="text-align: center">
@@ -162,4 +164,17 @@ iframe {
   max-height: 450px;
   overflow-y: auto;
 }
+
+.text-finance{
+  font-size: 25px;
+  text-align: center;
+}
+
+.sub-text-finance{
+  color: white;
+  font-size: 15px;
+  text-align: left;
+  font-weight: 100;
+}
+
 </style>
