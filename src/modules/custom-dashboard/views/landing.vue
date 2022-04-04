@@ -15,25 +15,25 @@
       <b-row align-h="center">
         <b-col md="auto" sm="12" class="svg">
           <customDashboardSvg :name="61"></customDashboardSvg>
-          <p>Select Data</p>
+          <p style="font-size: 24px !important;">Select Data</p>
         </b-col>
         <b-col md="auto" sm="12" align-self="center" class="svg-arrow">
           <customDashboardSvg :name="78"></customDashboardSvg>
         </b-col>
         <b-col md="auto" sm="12" class="svg">
           <customDashboardSvg :name="62"></customDashboardSvg>
-          <p>Arrange Widgets</p>
+          <p style="font-size: 24px !important;">Arrange Widgets</p>
         </b-col>
         <b-col md="auto" sm="12" align-self="center" class="svg-arrow">
           <customDashboardSvg :name="79"></customDashboardSvg>
         </b-col>
         <b-col md="auto" sm="12" class="svg">
           <customDashboardSvg :name="77"></customDashboardSvg>
-          <p>Visualize Dashboard</p>
+          <p style="font-size: 24px !important;">Visualize Dashboard</p>
         </b-col>
       </b-row>
       <div class="text-center">
-        <b-button id="get-started" @click="$router.push('/login')">Get Started Here</b-button>
+        <b-button id="get-started" @click="$router.push('/login')"  class="px-5 py-3">Get Started Here</b-button>
       <p id="samples">View samples here</p>
       </div>
 
@@ -77,8 +77,8 @@
       <b-col md="7" sm="12" class="p-0 text-left">
         <b-row class="features">
           <b-col>
-            <h4>Available health data</h4>
-            <p class="d-flex">
+            <h4 style="font-size: 24px !important;">Available health data</h4>
+            <p class="d-flex" style="font-size: 14px !important;">
               Our platform helps you to set up your custom dashboard to suit
               your needs. The dashboard comes with cleaned data on the certain
               key health indicators in Nigeria. This data can be made available
@@ -92,8 +92,8 @@
         </b-row>
         <b-row class="features">
           <b-col>
-            <h4>Customizable Data</h4>
-            <p>
+            <h4 style="font-size: 24px !important;">Customizable Data</h4>
+            <p style="font-size: 14px !important;">
               GOODNEWS! This platform is not just limited to the available data,
               you can also upload the data you are tracking in your team. You
               will be able to input your data and choose any visualization of
