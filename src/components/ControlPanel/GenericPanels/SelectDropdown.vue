@@ -1,9 +1,11 @@
 <template>
   <!-- Label to show when there is no available data as requested
   for by chiamaka on the 2-12-2021 during msdat meeting -->
+    <!--  -->
   <multiselect
-    @open="initialCSS"
+    :id="formattedID"
     v-model="selected"
+    @open="initialCSS"
     :options="options"
     searchable
     close-on-select
@@ -11,6 +13,7 @@
     placeholder="Pick a value"
     v-bind="multiSelectProps"
     selectLabel=""
+    data-visted="notVisited"
     deselectLabel=""
     >
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}s</span>
@@ -27,7 +30,7 @@
       </template>
       <template v-if="props.option.item">
         <div v-if="!props.option.$groupLabel"
-        :data-child="props.option.datasource">
+        :data-child="modifyDataSourceChildLabel(props.option.item)">
         {{props.option.item}}
         </div>
       </template>
@@ -55,7 +58,6 @@ export default {
   data() {
     return {
       allowEmpty: false,
-      open: false,
     };
   },
   computed: {
@@ -67,11 +69,24 @@ export default {
         this.$emit('input', val);
       },
     },
+    formattedID() {
+      if (this.multiSelectProps['group-values']) {
+        if (this.multiSelectProps['group-label'] === 'datasource') {
+          return 'groupedSources';
+        }
+        return this.id;
+      }
+      return null;
+    },
   },
   props: {
     options: {
       type: Array,
       default: () => [],
+    },
+    id: {
+      type: String,
+      default: '',
     },
     value: {},
     multiSelectProps: {
@@ -84,29 +99,6 @@ export default {
     },
   },
   watch: {
-    open(newVal, oldVal) {
-      if (!oldVal && newVal) {
-        if (this.multiSelectProps['group-values']) {
-          const all = document.querySelectorAll('div.multiselect__content-wrapper > ul > li');
-          // this.open = true;
-          // eslint-disable-next-line no-plusplus
-          for (let i = 0; i <= all.length; i++) {
-            if (all[i].children[0].children[0]?.dataset.parent) {
-              all[i].removeEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.pickProgramArea(e);
-              });
-              all[i].addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.pickProgramArea(e);
-              });
-            }
-          }
-        }
-      }
-    },
     options: {
       handler(newValue) {
         if (this.multiSelectProps['preselect-first']) {
@@ -128,6 +120,14 @@ export default {
     immediate: false,
   },
   methods: {
+    modifyDataSourceChildLabel(tag) {
+      const tempArray = tag.split(' ');
+      tempArray.pop();
+      for (let i = 0; i < tempArray.length; i++) {
+        tempArray[i] = tempArray[i][0].toUpperCase() + tempArray[i].substr(1);
+      }
+      return tempArray.join(' ');
+    },
     /**
      * This method is called when a program area title
      * is clicked, handles the show and hide of its
@@ -144,7 +144,13 @@ export default {
           const child = element.children[0].children[0].dataset.child;
           const tempParent = element.children[0].children[0].dataset.parent;
           if (parent === child) {
-            element.classList.toggle('noShow');
+            if (element.style.display === 'none') {
+              // eslint-disable-next-line no-param-reassign
+              element.style.display = 'block';
+            } else {
+              // eslint-disable-next-line no-param-reassign
+              element.style.display = 'none';
+            }
           }
           if (parent === tempParent) {
             element.children[0].children[0].children[0].classList.toggle('open-caret');
@@ -152,22 +158,6 @@ export default {
         });
       }
     },
-    // hideOptions() {
-    //   if (this.multiSelectProps['group-values']) {
-    //     const all = document.querySelectorAll('div.multiselect__content-wrapper > ul > li');
-    //     // eslint-disable-next-line no-plusplus
-    //     for (let i = 0; i <= all.length; i++) {
-    // eslint-disable-next-line max-len
-    //       if (Array.from(all[i].children[0].classList).indexOf('multiselect__option--disabled') === -1) {
-    //         all[i].classList.add('noShow');
-    //       } else {
-    //         all[i].removeEventListener('click', (e) => {
-    //           this.pickProgramArea(e);
-    //         });
-    //       }
-    //     }
-    //   }
-    // },
     /**
      *  This methods acts only on multiselects having
      *  grouped options like the indicator multiselects.
@@ -175,29 +165,32 @@ export default {
      *  @var multiselectProps, its "group-value" property.
      *
      */
-    initialCSS() {
+    initialCSS(multiselectID) {
       if (this.multiSelectProps['group-values']) {
-        const all = document.querySelectorAll('div.multiselect__content-wrapper > ul > li');
-        this.open = true;
+        const specificPart = document.querySelector(`input#${multiselectID}`);
+        const iterable = specificPart.parentNode.nextElementSibling.children[0].children;
+        const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
         // eslint-disable-next-line no-plusplus
-        for (let i = 0; i <= all.length; i++) {
-          if (all[i].children[0].children[0]?.dataset.child) {
-            all[i].classList.add('noShow');
+        for (let i = 0; i <= iterable.length; i++) {
+          if (iterable[i].children[0].children[0]?.dataset.child) {
+            iterable[i].style.display = 'none';
+          } else if (tell === 'notVisited') {
+            iterable[i].addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              this.pickProgramArea(e);
+            });
+            specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
           }
         }
       }
     },
   },
-  // mounted() {
-  //   console.log(this.multiSelectProps)
-  // }
+
 };
 </script>
 
-<style lang="scss">
-.noShow{
-  display: none;
-}
+<style lang="scss" scoped>
 
 .down-caret {
   width: 0;

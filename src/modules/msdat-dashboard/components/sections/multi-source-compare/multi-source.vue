@@ -6,6 +6,7 @@
       @dropdownTypeSelected="mapDownload($event)"
     >
       <template #title>
+
         <p class="work-sans mb-0 line-height">
           Distribution of <b>{{ values.indicator.short_name }}</b> Across the Geopolitical zones in
           the Country. Source: <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>

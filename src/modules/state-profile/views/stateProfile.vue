@@ -745,6 +745,8 @@ h1 {
 .program-icon {
   border-radius: 50%;
   background-color: #ffffff;
+  text-align: center;
+  padding-top: 1%;
   border: none;
   height: 84px;
   width: 84px;

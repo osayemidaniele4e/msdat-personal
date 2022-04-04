@@ -11,6 +11,7 @@
         <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
         <selectWrapper
           v-if="values.type === 'dropdown'"
+          :id="label"
           :value="payload[values.key]"
           @input="updatePayload($event, values.key)"
           :options="values.options"
@@ -112,7 +113,6 @@
             Line <b-icon icon="graph-up"></b-icon>
           </button>
           <button
-          jkjkkjk
             type="button"
             @click="
               updatePayload('column', values.key),
@@ -165,6 +165,7 @@ export default {
     BaseCheckbox,
     toggle,
   },
+
   props: {
     setup: {
       type: Array,
@@ -172,6 +173,10 @@ export default {
     },
     groupIndex: {
       type: Number,
+      default: () => null,
+    },
+    label: {
+      type: String,
       default: () => null,
     },
     controlIndex: {

@@ -62,6 +62,28 @@
         </div>
       </div>
 
+         <div  v-if="configObject.name === 'Health_Financing'">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Health Financing</h5>
+            </template>
+            <template>
+              <div style="text-align: center">
+                <!-- <iframe :src="url" :width="width" :height="height"></iframe> -->
+              </div>
+              <b-embed
+                type="iframe"
+                aspect="21by9"
+                :src="url3"
+                :width="width"
+                :height="height"
+              ></b-embed>
+              <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
+            </template>
+          </base-sub-card>
+        </div>
+      </div>
   </template>
     </MSDAT>
   </div>
@@ -83,7 +105,8 @@ export default {
       configObject: {}, // This should be an Object initially
       // url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url: 'https://public.tableau.com/views/UpdatedDemographic1/DemographicDashboard?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url2: 'https://public.tableau.com/views/HealthWorkforceworkingdocument/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url2: 'https://public.tableau.com/views/HealthWorkforceworkingdocument_16472664254450/Dashboard1?:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url3: 'https://public.tableau.com/views/Financedashboard_16472462810160/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
     };

@@ -9,8 +9,9 @@
         mb-0
         justify-content-between
         border-b
-        mx-5
+        mx-lg-5 mx-3
         cursor-pointer
+        main
       "
     >
       <template v-if="customDashboard === true">
@@ -24,22 +25,15 @@
             text-black-50
             bg-tab-color
             work-sans
+            main
           "
-          :class="[control.id === selectedIndex ? 'active font-weight-bold' : '']"
-          v-for="(control, index) in abc"
+          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          v-for="(control, index) in controls"
           :key="index"
-          :id="`panel-${control.id}`"
-          @click="changeControl(control.id)"
+          :id="`panel-${index}`"
+          @click="changeControl(index)"
         >
-          <!-- <div
-      v-if="
-        $store.state.MSDAT_STORE.zonalAnalysis == false &&
-        field.name == 'Zonal Analysis'
-      "
-    > -->
-          {{ control.name }}
-
-          <!-- </div>       -->
+          {{ control.title }}
         </li>
       </template>
       <template v-if="customDashboard === false">
@@ -60,20 +54,13 @@
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
-          <!-- <div
-      v-if="
-        $store.state.MSDAT_STORE.zonalAnalysis == false &&
-        field.name == 'Zonal Analysis'
-      "
-    > -->
           {{ control.title }}
-
-          <!-- </div>       -->
         </li>
       </template>
     </ul>
 
-    <!-- Multiselect dropdown here -->
+    <div class="control-title">{{ title }}</div>
+    <!-- Multi-select dropdown here -->
     <div class="mx-5 pb-3 pt-1 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
@@ -87,6 +74,7 @@ export default {
     return {
       controls: [],
       selectedIndex: 0,
+      title: 'Indicator Overview',
     };
   },
 
@@ -99,6 +87,12 @@ export default {
       type: Number,
       require: false,
       default: 0,
+    },
+
+    changeIndex: {
+      type: Number,
+      require: false,
+      default: 1,
     },
   },
   methods: {
@@ -133,6 +127,29 @@ export default {
       this.selectedIndex = newValue;
       this.selectControl(this.selectedIndex);
     },
+
+    // if the index is changed
+    changeIndex(newValue) {
+      this.changeControl(newValue);
+    },
+
+    selectedIndex(newValue) {
+      if (newValue === 0) {
+        this.title = 'Indicator Overview';
+      }
+      if (newValue === 1) {
+        this.title = 'Zonal Analysis';
+      }
+      if (newValue === 2) {
+        this.title = 'Indicator Comparison';
+      }
+      if (newValue === 3) {
+        this.title = 'Dataset Comparison';
+      }
+      if (newValue === 4) {
+        this.title = 'Multi-Source Overview';
+      }
+    },
   },
   computed: {
     abc() {
@@ -152,12 +169,17 @@ export default {
   },
   created() {
     this.controls = this.$children;
+    console.log(this.controls);
   },
 };
 </script>
 
 <style lang="scss" scoped>
 $primary: #2b5d5b;
+
+.main {
+  display: inherit;
+}
 
 .border-b {
   border-bottom: 2px solid #ebebeb;
@@ -172,5 +194,35 @@ $primary: #2b5d5b;
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.control-title {
+  display: none;
+}
+
+@media (max-width: 576px) {
+  .main {
+    display: none;
+  }
+
+  .section-tab {
+    display: none;
+  }
+
+  .control-title {
+    display: inherit;
+    font: var(--unnamed-font-style-normal) normal
+      var(--unnamed-font-weight-bold) 16px/19px
+      var(--unnamed-font-family-work-sans);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal bold 16px/19px Work Sans;
+    letter-spacing: 0px;
+    color: #2b5d5b;
+    opacity: 1;
+    text-decoration: underline;
+    margin: 5px;
+    padding: 5px;
+  }
 }
 </style>
