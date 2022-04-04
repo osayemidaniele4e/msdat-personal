@@ -132,7 +132,7 @@ export default {
         checkedField: fieldName,
       };
       this.$store.dispatch('dynamicSection', payload);
-      if (fieldName === 'Dashboard Overview') {
+      if (fieldName === 'Indicator Overview') {
         this.$store.state.MSDAT_STORE.indicatorComparision = e.target.checked;
       }
       if (fieldName === 'Zonal Analysis') {
@@ -142,7 +142,7 @@ export default {
         this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod = e.target.checked;
       }
 
-      if (fieldName === 'Multisource Comparison') {
+      if (fieldName === 'Multi-source Indicator Comparison') {
         this.$store.state.MSDAT_STORE.multisourceComparison = e.target.checked;
       }
       if (fieldName === 'Dataset Comparison') {

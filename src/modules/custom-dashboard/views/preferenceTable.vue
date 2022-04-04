@@ -14,7 +14,6 @@
       cols="auto"
       style="position: fixed; top: 35%; right: 0; z-index: 9999"
       ><b-button
-        v-if="indicatorsCount && dataSourceCount && yearsCount && selectedLevel.length > 0"
         @click="approveData"
         style="font-size: 12.000004px; font-family: Work Sans"
         >approve Data</b-button
@@ -236,8 +235,17 @@ export default {
   },
   methods: {
     approveData() {
-      this.$router.push('data-table');
-      this.destroyPage = true;
+      if (
+        this.indicatorsCount
+        && this.dataSourceCount
+        && this.yearsCount
+        && this.selectedLevel.length > 0
+      ) {
+        this.$router.push('data-table');
+        this.destroyPage = true;
+      } else {
+        alert('You have to select atleast one item from every box');
+      }
     },
   },
 };
