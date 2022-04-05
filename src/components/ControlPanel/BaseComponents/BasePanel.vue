@@ -1,35 +1,70 @@
 <template>
-<div>
-    <div class="">
-
-  <!-- Toggleable tab links here -->
-
-      <ul
-      class="d-flex list-unstyled step-sections mb-0
-       justify-content-between border-b mx-lg-5 mx-3 cursor-pointer main"
-   >
-      <li
-        class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans main"
-        :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
-        v-for="(control, index) in controls"
-        :key="index"
-        :id="`panel-${index}`"
-        @click='changeControl(index)'
-      >
-        {{ control.title }}
-
-      </li>
+  <div class="">
+    <!-- Toggleable tab links here -->
+    <ul
+      class="
+        d-flex
+        list-unstyled
+        step-sections
+        mb-0
+        justify-content-between
+        border-b
+        mx-lg-5 mx-3
+        cursor-pointer
+        main
+      "
+    >
+      <template v-if="customDashboard === true">
+        <li
+          class="
+            mb-0
+            tab-link
+            h6
+            py-2
+            pt-4
+            text-black-50
+            bg-tab-color
+            work-sans
+            main
+          "
+          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          v-for="(control, index) in controls"
+          :key="index"
+          :id="`panel-${index}`"
+          @click="changeControl(index)"
+        >
+          {{ control.title }}
+        </li>
+      </template>
+      <template v-if="customDashboard === false">
+        <li
+          class="
+            mb-0
+            tab-link
+            h6
+            py-2
+            pt-4
+            text-black-50
+            bg-tab-color
+            work-sans
+          "
+          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          v-for="(control, index) in controls"
+          :key="index"
+          :id="`panel-${index}`"
+          @click="changeControl(index)"
+        >
+          {{ control.title }}
+        </li>
+      </template>
     </ul>
 
-      <div class="control-title">{{title}}</div>
-    <!-- Multiselect dropdown here -->
-    <!-- <div :class="['mx-5 step-controls styles', selectedIndex === 0 ? '' : 'pb-3 pt-1']"> -->
-      <div class="mx-lg-5 mx-3 step-controls styles pt-1 pb-2">
+    <div class="control-title">{{ title }}</div>
+    <!-- Multi-select dropdown here -->
+    <div class="mx-5 pb-3 pt-1 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
-</div>
-
 </template>
 
 <script>
@@ -68,9 +103,21 @@ export default {
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
+      // console.log('Controls', this.controls);
       this.controls.forEach((control, index) => {
+        console.log('INDEX', index, controlIndex);
         // eslint-disable-next-line no-param-reassign
-        control.active = (index === controlIndex);
+        control.active = index === controlIndex;
+      });
+    },
+    selectControll(controlIndex) {
+      this.selectedIndex = controlIndex;
+      // loop over all the tabs
+      // console.log('Controls', this.abc);
+      this.abc.forEach((control, index) => {
+        console.log('INDEX', index, controlIndex);
+        // eslint-disable-next-line no-param-reassign
+        control.active = control.id === controlIndex;
       });
     },
   },
@@ -104,6 +151,19 @@ export default {
       }
     },
   },
+  computed: {
+    abc() {
+      // console.log('ar', this.$store.getters.arrangedSections);
+      // const data2 = this.$store.getters.arrangedSections
+      // console.log('data1', data2);
+      return this.$store.getters.arrangedSections.filter(
+        (element) => element.isShow === true,
+      );
+    },
+    customDashboard() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
+    },
+  },
   mounted() {
     this.selectControl(0);
   },
@@ -111,22 +171,21 @@ export default {
     this.controls = this.$children;
     console.log(this.controls);
   },
-
 };
 </script>
 
 <style lang="scss" scoped>
 $primary: #2b5d5b;
 
-.main{
+.main {
   display: inherit;
 }
 
 .border-b {
   border-bottom: 2px solid #ebebeb;
 }
-.bg-tab-color{
-  color:#515151;
+.bg-tab-color {
+  color: #515151;
 }
 
 .tab-link.active {
@@ -137,35 +196,33 @@ $primary: #2b5d5b;
   cursor: pointer;
 }
 
-.control-title{
+.control-title {
   display: none;
 }
 
 @media (max-width: 576px) {
-
-  .main{
+  .main {
     display: none;
   }
 
-  .section-tab{
+  .section-tab {
     display: none;
   }
 
-  .control-title{
-  display: inherit;
-font: var(--unnamed-font-style-normal)
-normal var(--unnamed-font-weight-bold)
- 16px/19px var(--unnamed-font-family-work-sans);
-letter-spacing: var(--unnamed-character-spacing-0);
-text-align: left;
-font: normal normal bold 16px/19px Work Sans;
-letter-spacing: 0px;
-color: #2B5D5B;
-opacity: 1;
-text-decoration: underline;
-margin: 5px;
-padding: 5px;
-}
-
+  .control-title {
+    display: inherit;
+    font: var(--unnamed-font-style-normal) normal
+      var(--unnamed-font-weight-bold) 16px/19px
+      var(--unnamed-font-family-work-sans);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal bold 16px/19px Work Sans;
+    letter-spacing: 0px;
+    color: #2b5d5b;
+    opacity: 1;
+    text-decoration: underline;
+    margin: 5px;
+    padding: 5px;
+  }
 }
 </style>

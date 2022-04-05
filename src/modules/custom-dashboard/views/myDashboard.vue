@@ -1,6 +1,15 @@
 <template>
   <div>
-    <stepper/>
+    <div
+      v-if="
+        $route.name === 'preference-table' ||
+        $route.name === 'my-dashboard-details' ||
+        $route.name === 'data-table' ||
+        $route.name === 'sections'
+      "
+    >
+      <stepper />
+    </div>
     <router-view class="mt-5" />
   </div>
 </template>
@@ -13,9 +22,7 @@ export default {
     stepper,
   },
   data() {
-    return {
-
-    };
+    return {};
   },
 };
 </script>

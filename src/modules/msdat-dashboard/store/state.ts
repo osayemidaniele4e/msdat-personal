@@ -17,6 +17,11 @@ type setPayload = {
 }
 
 const state: State = {
+  indicatorComparision: false,
+  zonalAnalysis: false,
+  indicatorComparsionByPeriod: false,
+  multisourceComparison: false,
+  datasetComperision: false,
   default: {
     indicator: 7,
     datasource: 6,
