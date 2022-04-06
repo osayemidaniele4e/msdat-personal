@@ -8,7 +8,12 @@
             <th
               rowspan="2"
               scope="col"
-              class="align-middle text-center text-uppercase h6 font-weight-bold"
+              class="
+                align-middle
+                text-center text-uppercase
+                h6
+                font-weight-bold
+              "
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
@@ -20,7 +25,12 @@
               v-for="(value, index) in classify"
               :key="index"
               :colspan="value[1]"
-              class="classification-row text-uppercase text-center align-middle p-0"
+              class="
+                classification-row
+                text-uppercase text-center
+                align-middle
+                p-0
+              "
             >
               {{ value[0] }}
             </td>
@@ -279,7 +289,8 @@ export default {
       // Order classification following the Order
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
       const resultSorted = result.sort(
-        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
+        (a, b) => this.classificationOrder.indexOf(a[0])
+          - this.classificationOrder.indexOf(b[0]),
       );
       this.classify = resultSorted;
     },

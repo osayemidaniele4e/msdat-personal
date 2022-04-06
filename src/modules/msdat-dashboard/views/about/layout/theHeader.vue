@@ -1,63 +1,87 @@
 <template>
-  <header id="the-header" class="position-relative">
-     <!-- <header id="the-header" class="sticky"> -->
+  <header id="the-header" class="sticky">
+    <!-- <header id="the-header" class="position-relative"> Moses changed from this-->
 
     <b-container fluid>
-
       <b-row class="d-flex justify-content-between align-items-center">
-
         <b-col cols md="1" lg="1" class="main">
-          <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
+          <div v-if="dashboardName == 'MSDAT PLATFORM'">
+            <img
+              src="@/assets/img/Logo.svg"
+              alt="FMOH Logo"
+              class="img-fluid"
+            />
+          </div>
+          <div v-if="dashboardName != 'MSDAT PLATFORM'">
+            <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
+          </div>
         </b-col>
         <b-col
           cols
           md="11"
           lg="11"
-          class="d-flex justify-content-between align-items-center border-left main"
+          class="
+            d-flex
+            justify-content-between
+            align-items-center
+            border-left
+            main
+          "
         >
+          <!-- testing for mobile -->
+          <div class="mobile-flex">
+            <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
+            <img
+              src="@/assets/img/Logo-mob.svg"
+              alt="FMOH Logo"
+              class="mob-img"
+              variant="primary"
+            />
+            <div class="mobile-flex-col">
+              <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
+              <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
+            </div>
 
-                     <!-- testing for mobile -->
-        <div class="mobile-flex">
-          <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
-          <img src="@/assets/img/Logo-mob.svg" alt="FMOH Logo" class="mob-img"  variant="primary"/>
-          <div class="mobile-flex-col">
-            <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
-          <div class="mobile-flex-col-text2"> {{ $route.meta.title }}</div>
-          </div>
-
-              <div>
-                  <b-dropdown text="Select" toggle-class='select-dropdown'
-                  variant='none'
-                   text-variant='none'
-                   right
-                   >
-                <b-dropdown-item href="#"
-                id="dropdownMenuButton"
-                class="select-dropdown-item"
+            <div>
+              <b-dropdown
+                text="Select"
+                toggle-class="select-dropdown"
+                variant="none"
+                text-variant="none"
+                right
+              >
+                <b-dropdown-item
+                  href="#"
+                  id="dropdownMenuButton"
+                  class="select-dropdown-item"
                   v-for="(control, index) in $store.state.MSDAT_STORE
-                  .controlConfig"
+                    .controlConfig"
                   :key="index"
                   @click="emitIndex(index)"
-                >{{control.label}}
+                  >{{ control.label }}
                 </b-dropdown-item>
               </b-dropdown>
-              </div>
+            </div>
 
-               <b-sidebar id="sidebar-1" title="" right shadow>
-                  <SideBar />
-    </b-sidebar>
-        </div>
-          <!-- <h2 class="main">
-            <small>MSDAT PLATFORM</small>
-            <br />
-             {{ $route.meta.title }}
+            <b-sidebar id="sidebar-1" title="" right shadow>
+              <SideBar />
+            </b-sidebar>
+          </div>
+          <div v-if="dashboardName == 'MSDAT PLATFORM'">
+            <h2 class="main-text">
+              <small>MSDAT PLATFORM</small>
+              <br />
+              {{ $route.meta.title }}
+            </h2>
+          </div>
 
-          </h2> -->
-          <h2 class="main-text">
-             <small>MSDAT PLATFORM</small>
-             <div></div>
-            <div> {{ $route.meta.title }}</div>
-          </h2>
+          <div v-if="dashboardName != 'MSDAT PLATFORM'">
+            <h2 class="main-text">
+              <small>MSDAT PLATFORM</small>
+              <br />
+              {{ dashboardName }}
+            </h2>
+          </div>
 
           <!-- <b-col cols md="6" lg="6"> -->
           <div
@@ -74,7 +98,7 @@
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/coming-soon/custom_dashboard" class="nav-link"
+              <router-link to="/coming-soon" class="nav-link"
                 >Create New Dashboard</router-link
               >
               <div
@@ -102,9 +126,14 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <router-link to="#" class="nav-link"
+
+              <router-link to="/login" v-if="!userName" class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill
                 >&nbsp;Login/Register</router-link
+              >
+              <router-link to="/login" v-else class="nav-link"
+                ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
+                out</router-link
               >
             </b-nav>
             <b-icon
@@ -113,12 +142,14 @@
               font-scale="1.5"
               class="main"
             />
-               <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon"
-             v-b-toggle.sidebar-1
+            <b-icon
+              icon="grid3x3-gap-fill"
+              class="mob-grid-icon"
+              v-b-toggle.sidebar-1
             ></b-icon>
             <header-option
               v-if="toggleOption"
-              v-on:showContact="contactbtn = true"
+              v-on:showContact="contactBtn = true"
               v-on:tour="runIntro"
             />
           </div>
@@ -147,7 +178,7 @@
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
   </header>
-<!--
+  <!--
   to deltete
        // using provide inject and watcher to work on this feature.
         // inject into base panel to affect the entire dashboard
@@ -159,7 +190,6 @@
       // from there, you will inject into other components
       // use a different source from $children
       // or rather take the index to the component -->
-
 </template>
 
 <script>
@@ -168,7 +198,6 @@ import DropCard from '../components/DropCard.vue';
 import Sidebar from '../components/Sidebar.vue';
 
 export default {
-  name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,
@@ -177,8 +206,9 @@ export default {
   data() {
     return {
       showExpandedDropdown: false,
+      userName: sessionStorage.getItem('username'),
       toggleOption: false,
-      contactbtn: false,
+      contactBtn: false,
       aboutPage: false,
       headerDropdown: [
         { title: 'Health Outcomes', link: '/dashboard/Health_Outcomes' },
@@ -227,34 +257,42 @@ export default {
       immediate: true,
     },
   },
-
+  props: {
+    dashboardName: {
+      type: String,
+      default: 'MSDAT PLATFORM',
+    },
+    dashboardImage: {
+      type: File,
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 $msdat-green: #007d53;
 
-button{
+button {
   color: white;
 }
 
-.btn{
+.btn {
   color: white;
 }
 
-.main{
-    display: inherit;
+.main {
+  display: inherit;
 }
 
-.main-sub-text{
+.main-sub-text {
   margin-left: -4px;
 }
 
-.mobile-flex{
+.mobile-flex {
   display: none;
 }
 
-.mob-grid-icon{
+.mob-grid-icon {
   display: none;
 }
 
@@ -396,27 +434,27 @@ header#the-header {
 
 /* EXTRA EXTRA SMALL */
 @media (max-width: 576px) {
-  .main{
+  .main {
     display: none;
   }
 
-  .main-text{
+  .main-text {
     display: none;
   }
 
-.mobile-flex{
- display: flex;
- justify-content: space-between;
- flex-direction: row;
-}
+  .mobile-flex {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
 
-.mob-grid-icon{
-  display: inherit;
-}
+  .mob-grid-icon {
+    display: inherit;
+  }
 
-.btn{
-  color: white;
-}
+  .btn {
+    color: white;
+  }
 
   #about-wrap {
     header#the-header {
@@ -481,27 +519,27 @@ header#the-header {
 
 /* SMALL */
 @media (min-width: 576px) and (max-width: 768px) {
-  .main{
-  display: none;
-}
-
-  .main-text{
+  .main {
     display: none;
   }
 
-.mobile-flex{
- display: flex;
- justify-content: space-between;
- flex-direction: row;
-}
+  .main-text {
+    display: none;
+  }
 
-.mob-grid-icon{
-  display: inherit;
-}
+  .mobile-flex {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
 
-.btn{
-  color: white;
-}
+  .mob-grid-icon {
+    display: inherit;
+  }
+
+  .btn {
+    color: white;
+  }
 
   #about-wrap {
     header#the-header {
@@ -568,37 +606,36 @@ header#the-header {
 
 /* MEDIUM */
 @media (min-width: 768px) and (max-width: 992px) {
-
-    .main-text{
+  .main-text {
     display: none;
   }
 
-.mobile-flex-col-text1{
-  color: white;
-  font-weight: 200;
-  font-size: 15px;
-}
+  .mobile-flex-col-text1 {
+    color: white;
+    font-weight: 200;
+    font-size: 15px;
+  }
 
-.mobile-flex-col-text2{
-  color: white;
-  font-weight: 500;
-  font-size: 19px;
-}
-//    .main{
-//     display: none;
-//   }
+  .mobile-flex-col-text2 {
+    color: white;
+    font-weight: 500;
+    font-size: 19px;
+  }
+  //    .main{
+  //     display: none;
+  //   }
 
-// .mobile-flex{
-//    display: flex;
-//  justify-content: space-between;
-//  flex-direction: row;
-// //  display: grid;
-// //  grid-template-columns: 20% 50% 20% 10%;
-// }
+  // .mobile-flex{
+  //    display: flex;
+  //  justify-content: space-between;
+  //  flex-direction: row;
+  // //  display: grid;
+  // //  grid-template-columns: 20% 50% 20% 10%;
+  // }
 
-// .mob-grid-icon{
-//   display: inherit;
-// }
+  // .mob-grid-icon{
+  //   display: inherit;
+  // }
   #about-wrap {
     header#the-header {
       & > .container-fluid {
@@ -661,7 +698,7 @@ header#the-header {
 
 /* LARGE */
 @media (min-width: 992px) and (max-width: 1200px) {
-    .main-text{
+  .main-text {
     display: none;
   }
   #about-wrap {
@@ -681,10 +718,9 @@ header#the-header {
     }
   }
 
-    .select-dropdown{
-margin-left: 100px;
-
-}
+  .select-dropdown {
+    margin-left: 100px;
+  }
 }
 </style>
 <style lang="scss">
@@ -710,7 +746,7 @@ header#the-header {
 <style scoped>
 /*  styling for mobile responsiveness */
 
-.select-indicator-mob{
+.select-indicator-mob {
   border: 1px solid white;
   background-color: none;
   color: white;
@@ -718,38 +754,37 @@ header#the-header {
   padding: 10px;
 }
 
-.mobile-flex-col{
+.mobile-flex-col {
   display: flex;
   flex-direction: column;
-    margin: 5px;
-      justify-content: center;
-      margin-left: 5px;
-      width: 48vw;
-      position: relative;
-      left: -20px;
-
+  margin: 5px;
+  justify-content: center;
+  margin-left: 5px;
+  width: 48vw;
+  position: relative;
+  left: -20px;
 }
 
-.mobile-flex-col-text1{
+.mobile-flex-col-text1 {
   color: white;
   font-weight: 200;
   font-size: 2vw;
 }
 
-.mobile-flex-col-text2{
+.mobile-flex-col-text2 {
   color: white;
   font-weight: 500;
   font-size: 2vw;
 }
 
-.mob-img{
+.mob-img {
   width: 50px;
   height: 50px;
   position: relative;
   left: -30px;
 }
 
-.mob-select1{
+.mob-select1 {
   height: 40px;
   width: 100px;
   font-size: 13px;
@@ -758,10 +793,9 @@ header#the-header {
   background-color: #007d537f;
   border: 1px solid white;
   color: white;
-
 }
 
-.mob-grid-icon{
+.mob-grid-icon {
   color: white;
   cursor: pointer;
   outline: none;
@@ -769,17 +803,16 @@ header#the-header {
   left: -10px;
 }
 
-.dropdownMenuButton{
+.dropdownMenuButton {
   background-color: none;
   border: 1px solid green;
 }
-
 </style>
 
 <style>
 /* styling to overide bootstrap component (select dropdown) */
 
-  .select-dropdown{
+.select-dropdown {
   background-color: none;
   height: 30px;
   outline: none;
@@ -791,8 +824,7 @@ header#the-header {
   margin: 0 auto;
   margin-top: 12px;
   border-radius: 2px;
-    position: relative;
-    left: -25px;
+  position: relative;
+  left: -25px;
 }
-
 </style>
