@@ -25,7 +25,7 @@
           <section @click="$refs.theHeader.close()">
             <div
               :class="[
-                isMobile ? 'position-relative' : 'sticky animated_toggle',
+                isMobile ? 'position-relative animated_toggle' : 'sticky animated_toggle',
                 show ? '' : 'hide',
               ]"
             >
@@ -478,7 +478,7 @@ div.temp {
   display: none;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 800px) {
   .swipe-btn-flex {
     display: flex;
     flex-direction: row;

@@ -197,10 +197,6 @@ export default {
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
-    handleScroll() {
-      console.log('scrollleft2', document.querySelector('.dummy-row2').scrollLeft);
-    },
-
     scroll(timestamp) {
       // Calculate the timeelapsed
       const timeElapsed = timestamp - this.scrollStartTime;
@@ -279,7 +275,6 @@ export default {
     },
   },
   created() {
-    window.addEventListener('wheel', this.handleScroll);
     window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
@@ -305,7 +300,6 @@ export default {
 
   destroyed() {
     window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('wheel', this.handleScroll);
   },
 };
 </script>
