@@ -106,7 +106,7 @@ export default {
       dashboardConfig: config,
       configObject: {}, // This should be an Object initially
       // url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url: 'https://public.tableau.com/views/UpdatedDemographic1/DemographicDashboard?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url: 'https://public.tableau.com/views/UpdatedDemographicDashboardVersion2_16472527584120/Dashboard3?:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url2: 'https://public.tableau.com/views/HealthWorkforceworkingdocument_16472664254450/Dashboard1?:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url3: 'https://public.tableau.com/views/Financedashboard_16472462810160/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
