@@ -147,7 +147,11 @@
 </template>
 
 <script>
-import { BasePanel, ControlBase, ControlPanel } from '@/components/ControlPanel';
+import {
+  BasePanel,
+  ControlBase,
+  ControlPanel,
+} from '@/components/ControlPanel';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -291,11 +295,14 @@ export default {
       if (
         !(
           (scrollPos === 0 || scrollPixels > 0)
-          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth
+            || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
-        const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+        const startTime = 'now' in window.performance
+          ? performance.now()
+          : new Date().getTime();
         this.scrollStartTime = startTime;
         // Call requestAnimationFrame on scroll function first time
         window.requestAnimationFrame(this.scroll);
@@ -330,6 +337,19 @@ export default {
       this.changeIndex = index;
     },
     /**
+     * Since the purpose of providing labels to
+     * the multiselects is so they can have unique,
+     * dynamic IDs, this function converts it to a
+     * HTML
+     * ID fit format, i.e without spaces
+     */
+    modifyLabel(fullName, index) {
+      if (index) {
+        return fullName.replace(' ', '-') + index;
+      }
+      return fullName.replace(' ', '-');
+    },
+    /**
      * This handles hiding the other sections
      * based on the index of the selected section
      */
@@ -353,8 +373,8 @@ export default {
     // async log(optionsObject, index, index2) {
     // console.log('MSDAT2.0');
     /**
-       * This Update the route any time the  control panel changers
-       */
+     * This Update the route any time the  control panel changers
+     */
     // if (Object.keys(optionsObject).length > 0) {
     //   const objects = this.extractIdsOfObject(optionsObject);
     //   this.addHashToLocation({
