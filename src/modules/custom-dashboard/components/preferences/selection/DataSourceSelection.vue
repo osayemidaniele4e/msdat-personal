@@ -1,3 +1,5 @@
+<!-- Auther: Ghufran Ahmed -->
+
 <template>
   <div>
     <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
@@ -5,7 +7,7 @@
     ><br />
     <Card class="scroll" style="">
       <TheLoader v-if="loading == true" style="margin: 60px 0px 0px 119px" />
-      <div v-for="(items, idx) in heading" :key="idx">
+      <div v-for="(items, idx) in sources" :key="idx">
         <div
           class="program-areas"
           style="background: #f3f3f3; background: #f3f3f3; font-size: 13px"
@@ -88,7 +90,7 @@ export default {
     loading() {
       return this.$store.getters.Datasourceloading;
     },
-    heading() {
+    sources() {
       return this.$store.getters.getDataSource;
     },
   },
@@ -96,10 +98,12 @@ export default {
     this.loadDataSource();
   },
   methods: {
+    // Load the Datasourcess
     loadDataSource() {
       this.$store.dispatch('loadDataSource');
     },
 
+    // below function is excuted when datasource are selected
     selectSource(e, parentValue, childId, childName) {
       this.DataSourceSelected = e.target.checked;
       this.showList = e.target.checked;
@@ -113,15 +117,6 @@ export default {
     isSelected(item) {
       return item.selected;
     },
-
-    // selectSource(e, parent, dataSource) {
-    //   this.selectedDataSource = e.target.checked;
-    //   this.$store.dispatch('forSelectedDataSource', {
-    //     checked: this.selectedDataSource,
-    //     parentDataSource: parent,
-    //     childDataSource: dataSource,
-    //   });
-    // },
   },
 };
 </script>

@@ -18,28 +18,8 @@ export default {
     commit('clearAllData', payload);
   },
 
-  // ******* USER AUTH ********* //
-  // async userLogin({ commit }, payload) {
-  //   console.log(payload);
-  //   await axios.post('http://135.181.212.168:9234/api/account/login/', payload, {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: 'token 23351f769e41a7726eb18e8bb89d3de84be96845',
-  //     },
-  //   })
-  //     .then((res) => {
-  //       console.log(res);
-  //       // sessionStorage.setItem('remember-token', res.remember_token);
-  //       // sessionStorage.setItem('username', res.data.username);
-
-  //       // this.$router.replace('/my-dashboard/details');
-  //     }).catch((err) => {
-  //       console.log(err.msg);
-  //     });
-  // },
-
   // ***** Indicators Data ******* //
-
+ // Getting indicators
   async loadIndicators({ commit, state, dispatch }) {
     let loading = true;
     if (state.masterData.length === 0) {
@@ -116,9 +96,7 @@ export default {
           loading = true;
           commit('setIndiLoading', loading);
         });
-      // commit('loading', Loading)
     }
-    // state.loader.indicators = false
   },
 
   // ******** Data Sources ********** //
@@ -173,10 +151,6 @@ export default {
               if (keyA === 'ROUTINE') return -1;
               return 0;
             });
-            // function SortArray(x, y){
-            //   return x.parent.localeCompare(y.parent);
-            // }
-            // SurveyArray = SurveyArray.sort(SortArray)
           }));
           loading = false;
           commit('setDSLoading', loading);
@@ -187,13 +161,12 @@ export default {
           console.log(err);
           loading = false;
           commit('setDSLoading', loading);
-          // state.loader.datasource = false;
         });
     }
   },
 
   // ******** Coverage Levels ********* //
-
+  // Load Coverage levels based on indicators
   async loadCoverageLevels({ commit, state }, payload) {
     // console.log('levels Payload', payload.id);
     let levelsObj = {};
@@ -239,7 +212,7 @@ export default {
   },
 
   // ********* For Years ******** //
-
+  // Load Years based on indicators
   async loadYears({ commit, state }, payload) {
     let dataObj = {};
     let loading = true;
@@ -287,9 +260,12 @@ export default {
     commit('selectedYear', payload);
   },
 
+  // When Single Indicator is Selected
   forSelectedIndicator({ commit }, payload) {
     commit('selectionIndicator', payload);
   },
+
+  // For All indicators Selection
   forAllSelectedIndicator({ commit }, payload) {
     commit('AllselectionIndicator', payload);
   },

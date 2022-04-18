@@ -1,4 +1,4 @@
-<template>
+ <template>
     <div v-show="active">
         <slot></slot>
     </div>

@@ -13,6 +13,7 @@
         cursor-pointer
       "
     >
+      <!-- Ghufran Ahmed  -->
       <template v-if="customDashboard === true">
         <li
           class="
@@ -31,15 +32,7 @@
           :id="`panel-${control.id}`"
           @click="changeControl(control.id)"
         >
-          <!-- <div
-      v-if="
-        $store.state.MSDAT_STORE.zonalAnalysis == false &&
-        field.name == 'Zonal Analysis'
-      "
-    > -->
           {{ control.name }}
-
-          <!-- </div>       -->
         </li>
       </template>
       <template v-if="customDashboard === false">
@@ -60,15 +53,8 @@
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
-          <!-- <div
-      v-if="
-        $store.state.MSDAT_STORE.zonalAnalysis == false &&
-        field.name == 'Zonal Analysis'
-      "
-    > -->
           {{ control.title }}
 
-          <!-- </div>       -->
         </li>
       </template>
     </ul>

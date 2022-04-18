@@ -14,6 +14,8 @@ const forRefreshingAll = (fieldArray) => {
   });
   return fieldArray;
 };
+
+// The Default setting of state
 function getDefaultState() {
   return {
     loader: {
@@ -90,25 +92,21 @@ export default {
   //   console.log('abc',payload);
   // },
 
+  // Dashboard Details 
   dashboardDetails(state, payload) {
     state.dashboardDetails = payload;
   },
 
   setPArea(state, payload) {
-    // console.log('loading',payload);
-    // state.loading = false;
-    // console.log('INd', payload);`
     state.masterData = payload;
   },
 
+  // For Notices
   isNotExistYear(state, payload) {
     state.isNotExistYear.push(payload);
   },
 
-  // USER AUTH
-
-  // TODO: To be reviewe later
-
+  // For selection of Single Indicator
   selectionIndicator(state, payload) {
     let found = false;
     state.masterData = state.masterData.map((element) => {
@@ -148,7 +146,9 @@ export default {
       return element;
     });
   },
+ 
 
+  // Selecting All the Indicators
   AllselectionIndicator(state, payload) {
     // console.log(payload);
     state.masterData = state.masterData.map((element) => {
@@ -190,32 +190,6 @@ export default {
       return element;
     });
   },
-  // selectionDataSource(state, payload) {
-  //   state.SurveyArray = state.SurveyArray.map((element) => {
-  //     element.children.map((val) => {
-  //       let isParentExist = false;
-  //       if (payload.checked == true) {
-  //         val.sources.map((source) => {
-  //           if (source.parent == payload.parentDataSource) {
-  //             source.children.push(payload.childDataSource);
-  //             isParentExist = true;
-  //           }
-  //         });
-
-  //         if (!isParentExist) {
-  //           val.sources.push({
-  //             parent: payload.parentDataSource, children: [payload.childDataSource],
-  //           });
-  //         }
-  //       } else if (source.parent == payload.parentDataSource) {
-  //         source.children.pop(payload.childDataSource);
-  //         isParentExist = true;
-  //       }
-  //       return val;
-  //     });
-  //     return element;
-  //   });
-  // },
 
   // ******** Indicator Levels ***************** //
 
