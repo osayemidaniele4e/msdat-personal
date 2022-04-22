@@ -4,6 +4,7 @@ export interface State {
   indicatorComparsionByPeriod: boolean;
   multisourceComparison: boolean;
   datasetComperision: boolean;
+  dynamicDashboard: boolean;
   default: Defaults;
   controlConfig: ControlPanelConfig[];
 }

@@ -27,15 +27,15 @@
             work-sans
             main
           "
-          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          :class="[index === mainIndex ? 'active font-weight-bold' : '']"
           v-for="(control, index) in controls"
           :key="index"
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
 
-        <!-- {{index}} index
-        {{changeIndex}} select -->
+        {{index}} index
+        {{mainIndex}} select
           {{ control.title }}
         </li>
       </template>
@@ -52,14 +52,14 @@
             work-sans
             main
           "
-          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          :class="[index === mainIndex ? 'active font-weight-bold' : '']"
           v-for="(control, index) in controls"
           :key="index"
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
-            <!-- {{index}} index
-        {{selectedIndex}} select -->
+            {{index}} index
+        {{mainIndex}} select
           {{ control.title }}
         </li>
       </template>
@@ -81,7 +81,7 @@ export default {
       controls: [],
       selectedIndex: 0,
       title: 'Indicator Overview',
-      checkIndex: 0,
+      mainIndex: 0,
     };
   },
 
@@ -103,17 +103,15 @@ export default {
   },
   methods: {
     changeControl(index) {
-      this.selectedIndex = index;
-      this.checkIndex = index;
-      console.log('index', index);
-      console.log('select-index', this.selectedIndex);
-
-      console.log('select-index', this.controlIndex);
+      //       this.selectedIndex = index;
+      //       this.checkIndex = index;
       this.selectControl(index);
-      this.$emit('showSection', index);
+      // this.$emit('showSection', index);
     },
     selectControl(controlIndex) {
-      this.selectedIndex = controlIndex;
+      console.log('control-index', controlIndex);
+      this.mainIndex = controlIndex;
+      console.log('control-index', controlIndex);
       // loop over all the tabs
       // console.log('Controls', this.controls);
       this.controls.forEach((control, index) => {
@@ -123,7 +121,8 @@ export default {
       });
     },
     selectControll(controlIndex) {
-      this.selectedIndex = controlIndex;
+      console.log('control-index', controlIndex);
+      this.mainIndex = controlIndex;
       // loop over all the tabs
       // console.log('Controls', this.abc);
       this.abc.forEach((control, index) => {

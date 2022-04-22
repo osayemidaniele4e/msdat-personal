@@ -229,6 +229,7 @@ export default {
 
   created() {
     this.controls = this.$children;
+    // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
   },
 
   methods: {
