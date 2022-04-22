@@ -124,6 +124,24 @@
           </base-sub-card>
         </div>
       </template>
+
+      <template v-slot:section-5="{ payload, controlIndex }">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Dynamic Section</h5>
+            </template>
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
     </BaseDashboard>
   </div>
 </template>
@@ -141,6 +159,8 @@ import DataSetComparison from '../../components/sections/dataset-comparison/data
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
 import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
+import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
+import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 
@@ -162,6 +182,7 @@ export default {
     ICS,
     DataSetComparison,
     MultiSourceComponent,
+    DynamicSection,
   },
   props: {
     initialIndicator: {
@@ -296,6 +317,12 @@ export default {
     this.ADD_CONTROL_PANEL(ICSConfig);
     this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
     this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+
+    //  Adding 'Dynamic section' to the control panel
+    //  when not in the 'Health Outcomes dashboard'
+    if (this.$route.params.name !== 'Health_Outcomes') {
+      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    }
   },
 
   destroyed() {
