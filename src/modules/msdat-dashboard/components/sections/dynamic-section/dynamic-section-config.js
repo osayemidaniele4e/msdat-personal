@@ -1,5 +1,5 @@
 export default {
-  label: 'Dynamic Section',
+  label: 'Disaggregation Section',
   setup: [
 
   ],
