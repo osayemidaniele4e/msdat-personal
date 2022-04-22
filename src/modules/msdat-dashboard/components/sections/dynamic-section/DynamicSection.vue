@@ -1,5 +1,7 @@
 <template>
   <div>
+     <!-- creating seaperate tabs for tableeu embeds
+     for each sub dashboard asides 'Health Outcomes' -->
     <div v-if="title === 'Demographics'">
       <div class="heading">
         <div class="main-text">Demographics in Nigeria</div>
