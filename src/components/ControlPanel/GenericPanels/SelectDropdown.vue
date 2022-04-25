@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       allowEmpty: false,
+      dummyVariable: false,
     };
   },
   computed: {
