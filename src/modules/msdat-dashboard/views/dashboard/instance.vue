@@ -22,7 +22,7 @@
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Dynamic Section</h5>
+              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
             </template>
             <template>
               <LazyLoading>
@@ -312,9 +312,10 @@ export default {
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
-    if (this.$route.params.name !== 'Health_Outcomes') {
-      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
-    }
+    // if (this.$route.params.name !== 'Health_Outcomes') {
+    //   this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    // }
+    this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
     this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
     this.ADD_CONTROL_PANEL(ICSConfig);
