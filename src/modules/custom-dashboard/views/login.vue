@@ -1,3 +1,4 @@
+<!-- Auther: Ghufran Ahmed -->
 <template>
   <div class="">
     <header class="header sticky-top"></header>
@@ -94,6 +95,7 @@ export default {
     sessionStorage.removeItem('username');
   },
   methods: {
+    // Upon Login the below function is called
     async submitForm() {
       this.isLoading = true;
       this.formIsValid = true;

@@ -14,6 +14,7 @@
         main
       "
     >
+      <!-- Ghufran Ahmed  -->
       <template v-if="customDashboard === true">
         <li
           class="
@@ -37,6 +38,7 @@
         <!-- {{index}} index
         {{changeIndex}} select -->
           {{ control.title }}
+          <!-- {{ control.name }} -->
         </li>
       </template>
       <template v-if="customDashboard === false">

@@ -1,3 +1,5 @@
+  <!-- Auther: Ghufran Ahmed -->
+
 <template>
   <b-container>
     <b-row>
@@ -108,6 +110,7 @@ export default {
     },
   },
   methods: {
+    // Below function is excuted when approve data button is clicked
     approveData() {
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
@@ -122,11 +125,10 @@ export default {
           title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
         },
       });
-      // this.$router.push('/my-custom-dashboard');
     },
+
+    // PRESELECTION OF Dashboard widgets
     selectedComponent(e, fieldName) {
-      // console.log(e.target.value);
-      // console.log(fieldName);
       const payload = {
         checked: e.target.checked,
         checkedField: fieldName,

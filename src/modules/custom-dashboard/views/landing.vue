@@ -33,6 +33,7 @@
         </b-col>
       </b-row>
       <div class="text-center">
+        <!-- Ghufran Ahmed  -->
         <b-button id="get-started" @click="$router.push('/login')"  class="px-5 py-3">Get Started Here</b-button>
       <p id="samples">View samples here</p>
       </div>
