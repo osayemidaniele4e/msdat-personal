@@ -1,6 +1,6 @@
 <template>
-  <header id="the-header" class="sticky">
-    <!-- <header id="the-header" class="position-relative"> Moses changed from this-->
+  <header id="the-header" class="position-relative">
+    <!-- <header id="the-header" class="sticky"> -->
 
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
@@ -229,6 +229,7 @@ export default {
 
   created() {
     this.controls = this.$children;
+    // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
   },
 
   methods: {

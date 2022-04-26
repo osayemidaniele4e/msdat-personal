@@ -17,7 +17,25 @@
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
       </template>
-      <template v-slot:section-0="{ payload, controlIndex }">
+
+         <template v-slot:section-0="{ payload, controlIndex }">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
+            </template>
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
+      <template v-slot:section-1="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -41,7 +59,7 @@
         </div>
       </template>
 
-      <template v-slot:section-1="{ payload, controlIndex }">
+      <template v-slot:section-2="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -61,7 +79,7 @@
         </div>
       </template>
 
-      <template v-slot:section-2="{ payload, controlIndex }">
+      <template v-slot:section-3="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
@@ -80,7 +98,7 @@
         </div>
       </template>
 
-      <template v-slot:section-3="{ payload, controlIndex }">
+      <template v-slot:section-4="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -97,7 +115,7 @@
         </div>
       </template>
 
-      <template v-slot:section-4="{ payload, controlIndex }">
+      <template v-slot:section-5="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -124,6 +142,7 @@
           </base-sub-card>
         </div>
       </template>
+
     </BaseDashboard>
   </div>
 </template>
@@ -141,6 +160,8 @@ import DataSetComparison from '../../components/sections/dataset-comparison/data
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
 import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
+import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
+import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 
@@ -162,6 +183,7 @@ export default {
     ICS,
     DataSetComparison,
     MultiSourceComponent,
+    DynamicSection,
   },
   props: {
     initialIndicator: {
@@ -196,10 +218,6 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
-
-    handleScroll() {
-      console.log('scrollleft2', document.querySelector('.dummy-row2').scrollLeft);
-    },
 
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -279,7 +297,6 @@ export default {
     },
   },
   created() {
-    window.addEventListener('wheel', this.handleScroll);
     window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
@@ -295,17 +312,22 @@ export default {
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
-
+    // if (this.$route.params.name !== 'Health_Outcomes') {
+    //   this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    // }
+    this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
     this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
     this.ADD_CONTROL_PANEL(ICSConfig);
     this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
     this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+
+    //  Adding 'Dynamic section' to the control panel
+    //  when not in the 'Health Outcomes dashboard'
   },
 
   destroyed() {
     window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('wheel', this.handleScroll);
   },
 };
 </script>

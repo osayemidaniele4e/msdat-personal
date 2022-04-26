@@ -22,6 +22,7 @@ const state: State = {
   indicatorComparsionByPeriod: false,
   multisourceComparison: false,
   datasetComperision: false,
+  dynamicDashboard: false,
   default: {
     indicator: 7,
     datasource: 6,
