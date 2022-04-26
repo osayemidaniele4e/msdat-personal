@@ -68,6 +68,13 @@ module.exports = {
             'datalayer',
             'config'
           ]
+        },
+        {
+          title: '2022 Edits',
+          collapsable: false,
+          children: [
+            'mobile',
+          ]
         }
 
         
