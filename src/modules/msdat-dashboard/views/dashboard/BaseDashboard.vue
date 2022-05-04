@@ -20,56 +20,79 @@
         </div>
       </Loading>
 
-      <div v-else>
-        <Header v-on:tour="runIntro" ref="theHeader"></Header>
-        <section @click="$refs.theHeader.close()">
-          <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">
-            <b-overlay :show="!cpIsLoading">
-              <BasePanel
-                :position="position"
-                v-if="cpIsLoading"
-                v-on:showSection="sectionFocus($event)"
-              >
-                <template v-slot:default>
-                  <ControlBase
-                    v-for="(control, index) in $store.state.MSDAT_STORE
-                      .controlConfig"
-                    :key="index"
-                    :title="control.label"
-                  >
-                    <template v-if="!Array.isArray(control.setup[0])">
-                      <ControlPanel
-                        @data:options="log($event, index)"
-                        :label="modifyLabel(control.label)"
-                        :setup="control.setup"
-                        :controlIndex="index"
-                        :defaultIndicator="defaultIndicator"
-                        :defaultDataSource="defaultDataSource"
-                        :defaultLocation="defaultLocation"
-                        :defaultYear="defaultYear"
-                      />
-                    </template>
-                    <template v-else>
-                      <div class="row">
-                        <div
-                          class="col-md-4"
-                          v-for="(item, index2) in control.setup"
-                          :key="index2"
-                        >
-                          <ControlPanel
-                            @data:options="log($event, index, index2)"
-                            :setup="item"
-                            :label="modifyLabel(control.label, index2)"
-                            :groupIndex="index2"
-                            :controlIndex="index"
-                            :defaultIndicator="defaultIndicator"
-                            :defaultDataSource="defaultDataSource"
-                            :defaultLocation="defaultLocation"
-                            :defaultYear="defaultYear"
-                            :updateValue="updateValue"
-                            :updateKey="updateKey"
-                            :resetData="resetData"
-                          />
+        <div v-else>
+          <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
+          <section @click="$refs.theHeader.close()">
+            <div
+              :class="[
+                isMobile ? 'position-relative animated_toggle' : 'sticky animated_toggle',
+                show ? '' : 'hide',
+              ]"
+            >
+              <!-- Moses changed from this -->
+              <b-overlay :show="!cpIsLoading">
+                <BasePanel
+                  :changeIndex="changeIndex"
+                  :position="position"
+                  :selectedPanel="selectedPanel"
+                  v-if="cpIsLoading"
+                  v-on:showSection="sectionFocus($event)"
+                >
+                  <template v-slot:default>
+                    <ControlBase
+                    @selectedKey="changeKey($event)"
+                      v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                      :key="index"
+                      :title="control.label"
+                    >
+                    <!-- {{ control.label}} =>
+                    {{index}}
+                    {{selectedPanel}}
+                    {{sectionKey}} -->
+                      <template v-if="!Array.isArray(control.setup[0])">
+                        <ControlPanel
+                          @data:options="log($event, index)"
+                          :setup="control.setup"
+                          :controlIndex="index"
+                          :defaultIndicator="defaultIndicator"
+                          :defaultDataSource="defaultDataSource"
+                          :defaultLocation="defaultLocation"
+                          :defaultYear="defaultYear"
+                        />
+                      </template>
+                      <template v-else>
+                        <div>
+                          <!-- direction buttons -->
+                          <div class="swipe-btn-flex">
+                            <button @click="swipeLeft" class="swipe-btn">
+                              <b-icon icon="chevron-left" />
+                            </button>
+                            <button @click="swipeRight" class="swipe-btn">
+                              <b-icon icon="chevron-right" />
+                            </button>
+                          </div>
+                          <div class="row dummy-row">
+                            <div
+                              class="col-md-4"
+                              v-for="(item, index2) in control.setup"
+                              :key="index2"
+                            >
+                              <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
+                              <ControlPanel
+                                @data:options="log($event, index, index2)"
+                                :setup="item"
+                                :groupIndex="index2"
+                                :controlIndex="index"
+                                :defaultIndicator="defaultIndicator"
+                                :defaultDataSource="defaultDataSource"
+                                :defaultLocation="defaultLocation"
+                                :defaultYear="defaultYear"
+                                :updateValue="updateValue"
+                                :updateKey="updateKey"
+                                :resetData="resetData"
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </template>
@@ -167,6 +190,16 @@ export default {
       selectedPanel: 0,
       dashboardConfig: config,
       show: false,
+      changeIndex: '',
+      isMobile: false,
+      winSize: window.width,
+      scrollCont: 0,
+      scrollDuration: 0,
+      scrollStartTime: 0,
+      scrollElement: 0,
+      scrollPixels: 0,
+      scrollPos: '',
+      sectionKey: 0,
     };
   },
   components: {
@@ -222,6 +255,81 @@ export default {
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
   },
   methods: {
+
+    changeKey(n) {
+      this.sectionKey = n;
+      console.log('sectionKey', this.sectionKey);
+    },
+    scroll(timestamp) {
+      // Calculate the timeelapsed
+      const timeElapsed = timestamp - this.scrollStartTime;
+      // Calculate progress
+      const progress = Math.min(timeElapsed / this.scrollDuration, 1);
+      // Set the scrolleft
+      this.scrollElement.scrollLeft = this.scrollPos + this.scrollPixels * progress;
+      // Check if elapsed time is less then duration then
+      // call the requestAnimation, otherwise exit
+      if (timeElapsed < this.scrollDuration) {
+        // Request for animation
+        window.requestAnimationFrame(this.scroll);
+      }
+    },
+
+    handleScroll() {
+      this.scrollCont = document.querySelector('.dummy-row').scrollLeft;
+      this.$emit('scrollN', this.scrollCont);
+    },
+    scrollTo(element, scrollPixels, duration) {
+      this.scrollPixels = scrollPixels;
+      this.scrollElement = element;
+      this.scrollDuration = duration;
+      const scrollPos = element.scrollLeft;
+      this.scrollPos = scrollPos;
+      // Condition to check if scrolling is required
+      if (
+        !(
+          (scrollPos === 0 || scrollPixels > 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth
+            || scrollPixels < 0)
+        )
+      ) {
+        // Get the start timestamp
+        const startTime = 'now' in window.performance
+          ? performance.now()
+          : new Date().getTime();
+        this.scrollStartTime = startTime;
+        // Call requestAnimationFrame on scroll function first time
+        window.requestAnimationFrame(this.scroll);
+      }
+    },
+
+    swipeLeft() {
+      // const content = this.$refs.dummy-row;
+      const content = document.querySelector('.dummy-row');
+      console.log('content', content);
+      this.scrollTo(content, -300, 800);
+      const cord = {
+        x: -370,
+        y: 800,
+      };
+      this.$emit('swipe', cord);
+    },
+
+    swipeRight() {
+      const content = document.querySelector('.dummy-row');
+      console.log('content', content);
+      this.scrollTo(content, 300, 800);
+      const cord = {
+        x: 370,
+        y: 800,
+      };
+      this.$emit('swipe', cord);
+    },
+    // moses
+    getIndex(index) {
+      console.log('this is the index i am saying', index);
+      this.changeIndex = index;
+    },
     /**
      * Since the purpose of providing labels to
      * the multiselects is so they can have unique,
