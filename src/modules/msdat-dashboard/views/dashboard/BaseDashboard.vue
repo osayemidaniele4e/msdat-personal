@@ -18,7 +18,7 @@
             <p>{{ loadingContent }}</p>
           </div>
         </div>
-        </Loading>
+      </Loading>
 
         <div v-else>
           <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
@@ -94,13 +94,14 @@
                             </div>
                           </div>
                         </div>
-                      </template>
-                    </ControlBase>
-                  </template>
-                </BasePanel>
-              </b-overlay>
-            </div>
-            <!-- control Panels ends here  -->
+                      </div>
+                    </template>
+                  </ControlBase>
+                </template>
+              </BasePanel>
+            </b-overlay>
+          </div>
+          <!-- control Panels ends here  -->
 
           <div class="container-fluid lessVisible">
             <template
@@ -133,23 +134,24 @@
                 <slot
                   :name="`section-after-${index}`"
                   v-if="index === selectedPanel"
-                  :ref="index"
-                >
-                </slot>
-                </div>
-              </template>
-            </div>
-          </section>
-          <!-- lazy loading ends here -->
+                ></slot>
+              </div>
+            </template>
+          </div>
+        </section>
+        <!-- lazy loading ends here -->
 
-          <Footer class="visible"> </Footer>
-          <!-- <div v-if="configObject.name !== 'Demographics'"> -->
-          <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
-          <!-- </div> -->
-        </div>
-      </template>
-      <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
-    </div>
+        <Footer class="visible"> </Footer>
+        <!-- <div v-if="configObject.name !== 'Demographics'"> -->
+        <Onboarding
+          v-if="firstTime"
+          v-on:closeOnboard="onCloseOnBoarding"
+        ></Onboarding>
+        <!-- </div> -->
+      </div>
+    </template>
+    <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
+  </div>
 </template>
 
 <script>
@@ -232,6 +234,7 @@ export default {
       type: Array,
       required: false,
     },
+
     updateValue: {
       type: Object,
       required: false,
@@ -246,32 +249,11 @@ export default {
       type: Number,
       required: false,
     },
-
-    scrollLeft2: {
-      type: Number,
-    },
   },
-
   created() {
     const { name } = this.$route.params;
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
-    window.addEventListener('resize', this.onResize);
-
-    // checking if in Mobile view
-    if (window.innerWidth < 769) {
-      this.isMobile = true;
-    } else {
-      this.isMobile = false;
-    }
-
-    window.addEventListener('wheel', this.handleScroll);
   },
-
-  destroyed() {
-    window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('wheel', this.handleScroll);
-  },
-
   methods: {
 
     changeKey(n) {
@@ -382,32 +364,25 @@ export default {
     setState(val) {
       this.selectedMapName = val;
     },
-    // async log(optionsObject, index, index2) {
-    // console.log('MSDAT2.0');
-    /**
-     * This Update the route any time the  control panel changers
-     */
-    // if (Object.keys(optionsObject).length > 0) {
-    //   const objects = this.extractIdsOfObject(optionsObject);
-    //   this.addHashToLocation({
-    //     section: index,
-    //     first_related: optionsObject.indicator.first_related,
-    //     second_related: optionsObject.indicator.second_related,
-    //     ...objects,
-    //   });
-    // }
-    // },
+    async log(optionsObject, index, index2) {
+      console.log({ optionsObject, index, index2 });
+      // console.log('MSDAT2.0');
+      /**
+       * This Update the route any time the  control panel changers
+       */
+      // if (Object.keys(optionsObject).length > 0) {
+      //   const objects = this.extractIdsOfObject(optionsObject);
+      //   this.addHashToLocation({
+      //     section: index,
+      //     first_related: optionsObject.indicator.first_related,
+      //     second_related: optionsObject.indicator.second_related,
+      //     ...objects,
+      //   });
+      // }
+    },
     // closeOnboard() {
     //   this.firstTime = false;
     // },
-
-    onResize() {
-      if (window.innerWidth < 769) {
-        this.isMobile = true;
-      } else {
-        this.isMobile = false;
-      }
-    },
   },
 
   async mounted() {
@@ -445,6 +420,9 @@ export default {
         const firstItem = 0;
         this.defaultYear = this.defaultYearDropdown[firstItem];
       }
+      // setTimeout(() => {
+      //   this.setRouteQueryToControlPanel();
+      // }, 4000);
 
       this.cpIsLoading = true;
       this.$nextTick(() => {
@@ -491,41 +469,6 @@ div.temp {
   }
   .lessVisible {
     z-index: -1;
-  }
-}
-
-.swipe-btn-flex {
-  display: none;
-}
-
-/* testing for mobile */
-.dummy-row {
-  display: flex;
-  flex-direction: row;
-  overflow: scroll;
-  flex-wrap: nowrap;
-}
-
-.control-header {
-  display: none;
-}
-
-@media (max-width: 800px) {
-  .swipe-btn-flex {
-    display: flex;
-    flex-direction: row;
-    position: sticky;
-    justify-content: space-between;
-    /* z-index: 10; */
-    margin: 10px;
-  }
-
-  .control-header {
-    display: inherit;
-    margin: 0 auto;
-    text-align: center;
-    font-weight: bold;
-    margin: 5px;
   }
 }
 </style>
