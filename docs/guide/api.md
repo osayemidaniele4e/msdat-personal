@@ -1,6 +1,6 @@
 
 
-# API schema-
+# API schema
 <!-- The SPA coonects with the backend using designated endpoints for getting specific data for the application.
 
 ![An image](./assets/API-schema.png) -->

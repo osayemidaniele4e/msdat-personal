@@ -27,12 +27,15 @@
             work-sans
             main
           "
-          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          :class="[index === selectedPanel ? 'active font-weight-bold' : '']"
+          {{alert(index)}}
           v-for="(control, index) in controls"
           :key="index"
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
+        <!-- {{index}}
+        {{selectedIndex}} -->
 
         <!-- {{index}} index
         {{changeIndex}} select -->
@@ -58,8 +61,10 @@
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
-            <!-- {{index}} index
-        {{selectedIndex}} select -->
+               <!-- {{index}}
+        {{selectedIndex}}
+        {{checkIndex}} -->
+
           {{ control.title }}
         </li>
       </template>
@@ -100,15 +105,17 @@ export default {
       require: false,
       default: 1,
     },
+
+    selectedPanel: {
+      require: false,
+      default: 0,
+    },
   },
   methods: {
     changeControl(index) {
       this.selectedIndex = index;
       this.checkIndex = index;
       console.log('index', index);
-      console.log('select-index', this.selectedIndex);
-
-      console.log('select-index', this.controlIndex);
       this.selectControl(index);
       this.$emit('showSection', index);
     },
@@ -117,9 +124,10 @@ export default {
       // loop over all the tabs
       // console.log('Controls', this.controls);
       this.controls.forEach((control, index) => {
-        console.log('INDEX', index, controlIndex);
+        // console.log('INDEX =>', index, controlIndex);
         // eslint-disable-next-line no-param-reassign
         control.active = index === controlIndex;
+        // console.log(controlIndex, index)
       });
     },
     selectControll(controlIndex) {
@@ -148,22 +156,27 @@ export default {
     },
 
     selectedIndex(newValue) {
+      this.changeControl(newValue);
       if (newValue === 0) {
-        this.title = 'Indicator Overview';
+        this.title = 'Disaggregation Section';
       }
       if (newValue === 1) {
-        this.title = 'Zonal Analysis';
+        this.title = 'Indicator Overview';
       }
       if (newValue === 2) {
-        this.title = 'Indicator Comparison';
+        this.title = 'Zonal Analysis';
       }
       if (newValue === 3) {
-        this.title = 'Dataset Comparison';
+        this.title = 'Indicator Comparison';
       }
       if (newValue === 4) {
+        this.title = 'Dataset Comparison';
+      }
+      if (newValue === 5) {
         this.title = 'Multi-Source Overview';
       }
     },
+
   },
   computed: {
     abc() {

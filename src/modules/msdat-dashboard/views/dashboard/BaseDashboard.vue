@@ -34,15 +34,21 @@
                 <BasePanel
                   :changeIndex="changeIndex"
                   :position="position"
+                  :selectedPanel="selectedPanel"
                   v-if="cpIsLoading"
                   v-on:showSection="sectionFocus($event)"
                 >
                   <template v-slot:default>
                     <ControlBase
+                    @selectedKey="changeKey($event)"
                       v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                       :key="index"
                       :title="control.label"
                     >
+                    <!-- {{ control.label}} =>
+                    {{index}}
+                    {{selectedPanel}}
+                    {{sectionKey}} -->
                       <template v-if="!Array.isArray(control.setup[0])">
                         <ControlPanel
                           @data:options="log($event, index)"
@@ -191,6 +197,7 @@ export default {
       scrollElement: 0,
       scrollPixels: 0,
       scrollPos: '',
+      sectionKey: 0,
     };
   },
   components: {
@@ -266,6 +273,11 @@ export default {
   },
 
   methods: {
+
+    changeKey(n) {
+      this.sectionKey = n;
+      console.log('sectionKey', this.sectionKey);
+    },
     scroll(timestamp) {
       // Calculate the timeelapsed
       const timeElapsed = timestamp - this.scrollStartTime;
