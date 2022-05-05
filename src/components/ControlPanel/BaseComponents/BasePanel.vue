@@ -53,6 +53,7 @@
             text-black-50
             bg-tab-color
             work-sans
+            main
           "
           :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
           v-for="(control, index) in controls"
