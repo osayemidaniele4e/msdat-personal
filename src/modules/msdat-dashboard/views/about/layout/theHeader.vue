@@ -1,6 +1,6 @@
 <template>
-  <header id="the-header" class="sticky">
-    <!-- <header id="the-header" class="position-relative"> Moses changed from this-->
+  <header id="the-header" class="position-relative">
+    <!-- <header id="the-header" class="sticky"> Moses changed from this-->
 
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
