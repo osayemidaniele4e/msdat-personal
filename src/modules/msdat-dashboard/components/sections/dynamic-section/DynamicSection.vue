@@ -4,29 +4,26 @@
      for each sub dashboard asides 'Health Outcomes' -->
     <div v-if="title === 'Demographics'">
       <div class="heading">
-        <div class="main-text">Demographics in Nigeria</div>
+        <!-- <div class="main-text">Demographics in Nigeria</div> -->
         <!-- <div class="sub-text"> Source: NHA 2017 </div> -->
       </div>
-<!--
-      <b-embed type="iframe" aspect="21by9" :src="url" :width="width" :height="height"></b-embed> -->
+      <b-embed type="iframe" aspect="21by9" :src="url" :width="width" :height="height"></b-embed>
     </div>
 
     <div v-if="title === 'Health_Workforce'">
       <div class="heading">
-        <div class="main-text">Health Workforce in Nigeria</div>
+        <!-- <div class="main-text">Health Workforce in Nigeria</div> -->
         <!-- <div class="sub-text"> Source: NHA 2017 </div> -->
       </div>
-
-      <!-- <b-embed type="iframe" aspect="21by9" :src="url2" :width="width" :height="height"></b-embed> -->
+      <b-embed type="iframe" aspect="21by9" :src="url2" :width="width" :height="height"></b-embed>
     </div>
 
     <div v-if="title === 'Health_Financing'">
       <div class="heading">
-        <div class="main-text">Health Finance in Nigeria</div>
-        <div class="sub-text">Source: NHA 2017</div>
+        <!-- <div class="main-text">Health Finance in Nigeria</div>
+        <div class="sub-text">Source: NHA 2017</div> -->
       </div>
-<!--
-      <b-embed type="iframe" aspect="21by9" :src="url3" :width="width" :height="height"></b-embed> -->
+      <b-embed type="iframe" aspect="21by9" :src="url3" :width="width" :height="height"></b-embed>
     </div>
   </div>
 </template>

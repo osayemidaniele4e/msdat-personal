@@ -53,6 +53,7 @@
             text-black-50
             bg-tab-color
             work-sans
+            main
           "
           :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
           v-for="(control, index) in controls"
@@ -157,22 +158,22 @@ export default {
     selectedIndex(newValue) {
       this.changeControl(newValue);
       if (newValue === 0) {
-        this.title = 'Disaggregation Section';
-      }
-      if (newValue === 1) {
         this.title = 'Indicator Overview';
       }
-      if (newValue === 2) {
+      if (newValue === 1) {
         this.title = 'Zonal Analysis';
       }
-      if (newValue === 3) {
+      if (newValue === 2) {
         this.title = 'Indicator Comparison';
       }
-      if (newValue === 4) {
+      if (newValue === 3) {
         this.title = 'Dataset Comparison';
       }
-      if (newValue === 5) {
+      if (newValue === 4) {
         this.title = 'Multi-Source Overview';
+      }
+            if (newValue === 5) {
+        this.title = 'Disaggregation';
       }
     },
 
