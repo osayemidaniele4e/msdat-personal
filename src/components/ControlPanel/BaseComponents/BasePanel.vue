@@ -172,7 +172,7 @@ export default {
       if (newValue === 4) {
         this.title = 'Multi-Source Overview';
       }
-            if (newValue === 5) {
+      if (newValue === 5) {
         this.title = 'Disaggregation';
       }
     },

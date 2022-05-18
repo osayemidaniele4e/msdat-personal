@@ -9,9 +9,8 @@
       </div>
       <div class="header-text text-center">
         <h1>Advanced Analytics</h1>
-   
+
       </div>
-  
 
     </div>
 \

@@ -10,20 +10,19 @@
       :updateValue="updateValue"
       :updateKey="updateKey"
       :resetData="resetData"
-      @swipe="changeSwipe"
+        @swipe="changeSwipe"
       @scrollN="changeScroll"
+
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
       </template>
-      <!-- INDICATOR OVERVIEW -->
+
       <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Indicator Overview
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Indicator Overview</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -33,23 +32,21 @@
                 <BaseIndicatorOverview
                   :showTableRelatedIndicator="showTableRelatedIndicator"
                   :controlPanelProps="payload"
-                  @value="getValue"
-                  @key="getKey"
-                  @reset="getReset"
+                   @value="getValue"
+                   @key="getKey"
+                   @reset="getReset"
                 />
               </ControlPanelConfiguration>
             </template>
           </base-sub-card>
         </div>
       </template>
-      <!-- ZONAL ANALYSIS -->
+
       <template v-slot:section-1="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Zonal Analysis
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -64,7 +61,7 @@
           </base-sub-card>
         </div>
       </template>
-      <!-- INDICATOR COMPARISON -->
+
       <template v-slot:section-2="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
@@ -83,29 +80,24 @@
           </base-sub-card>
         </div>
       </template>
-      <!-- DATASET COMPARISON -->
+
       <template v-slot:section-3="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Dataset Comparison
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Dataset Comparison</h5>
             </template>
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <DataSetComparison
-                    :values="payload"
-                    :controlIndex="controlIndex"
-                  />
+                  <DataSetComparison :values="payload" :controlIndex="controlIndex" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
           </base-sub-card>
         </div>
       </template>
-      <!-- MULTI-SOURCE COMPARISON -->
+
       <template v-slot:section-4="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
@@ -121,14 +113,8 @@
                   <div :key="n" class="col-lg-4 col-12">
                     <div class="comparison-header">Comparison ({{ n }})</div>
                     <LazyLoading>
-                      <ControlPanelConfiguration
-                        :groupIndex="n - 1"
-                        :controlIndex="controlIndex"
-                      >
-                        <MultiSourceComponent
-                          :key="n"
-                          :values="payload[n - 1]"
-                        />
+                      <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="n" :values="payload[n - 1]" />
                       </ControlPanelConfiguration>
                     </LazyLoading>
                   </div>
@@ -139,28 +125,24 @@
           </base-sub-card>
         </div>
       </template>
-            <!-- DISAGGREGATION  -->
-      <template v-slot:section-5="{ payload, controlIndex }">
+
+             <template v-slot:section-5="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Disaggregation
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
             </template>
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <DynamicSection
-                    :values="payload"
-                    :controlIndex="controlIndex"
-                  />
+                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
           </base-sub-card>
         </div>
       </template>
+
     </BaseDashboard>
   </div>
 </template>
@@ -232,12 +214,10 @@ export default {
       type: Boolean,
       default: true,
     },
+
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', [
-      'ADD_CONTROL_PANEL',
-      'CLEAR_CONTROL_PANEL',
-    ]),
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -285,28 +265,25 @@ export default {
       if (
         !(
           (scrollPos === 0 || scrollPixels > 0)
-          && (element.clientWidth + scrollPos === element.scrollWidth
-            || scrollPixels < 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
-        const startTime = 'now' in window.performance
-          ? performance.now()
-          : new Date().getTime();
+        const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
         this.scrollStartTime = startTime;
         // Call requestAnimationFrame on scroll function first time
         window.requestAnimationFrame(this.scroll);
       }
     },
-    onResize() {
-      if (window.innerWidth < 769) {
-        this.isMobile = true;
-        BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup3;
-      } else {
-        this.isMobile = false;
-        BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup2;
-      }
-    },
+    // onResize() {
+    //   if (window.innerWidth < 769) {
+    //     this.isMobile = true;
+    //     BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup3;
+    //   } else {
+    //     this.isMobile = false;
+    //     BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup2;
+    //   }
+    // },
     getValue(value) {
       this.updateValue = value;
     },
@@ -320,14 +297,14 @@ export default {
     },
   },
   created() {
-    window.addEventListener('resize', this.onResize);
+    // window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
-    if (window.innerWidth < 769) {
-      this.isMobile = true;
-    } else {
-      this.isMobile = false;
-    }
+    // if (window.innerWidth < 769) {
+    //   this.isMobile = true;
+    // } else {
+    //   this.isMobile = false;
+    // }
 
     this.CLEAR_CONTROL_PANEL();
     /**
@@ -343,7 +320,7 @@ export default {
     this.ADD_CONTROL_PANEL(ICSConfig);
     this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
     this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-     this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    this.ADD_CONTROL_PANEL(DynamicSectionConfig);
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
@@ -368,16 +345,16 @@ export default {
 }
 
 .comparison-header {
-  display: none;
+ display: none;
 }
 
 @media (max-width: 1200px) {
-  .comparison-header {
-    display: inherit;
-    margin: 0 auto;
-    text-align: center;
-    font-weight: bold;
-    margin: 5px;
-  }
+.comparison-header {
+  display: inherit;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: bold;
+  margin: 5px;
+}
 }
 </style>
