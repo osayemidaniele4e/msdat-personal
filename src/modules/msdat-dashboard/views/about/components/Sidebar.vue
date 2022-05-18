@@ -142,6 +142,7 @@ div {
     }
   }
   div.list-group{
+
     h5.text-underline{
       font-size: 1rem !important;
     }
@@ -171,40 +172,40 @@ h5.text-underline {
 // to check this
 .main-item{
    display: flex;
-   justify-content: right;
+   justify-content: left;
     padding: 0.2rem 0;
-  margin: 0.7rem 1.3rem;
-letter-spacing: var(--unnamed-character-spacing-0);
-text-align: left;
-font: normal normal bold 20px/24px Work Sans;
-letter-spacing: 0px;
-color: #404040;
-opacity: 1;
+    margin: 0.7rem 1.3rem;
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal bold 20px/24px Work Sans;
+    letter-spacing: 0px;
+    color: #404040;
+    opacity: 1;
 }
 
 .sub-item{
   display: flex;
-  justify-content: right;
-    margin-right: 1.3rem;
-letter-spacing: var(--unnamed-character-spacing-0);
-text-align: left;
-font: normal normal normal 16px/19px Work Sans;
-letter-spacing: 0px;
-color: #404040;
-opacity: 1;
+  justify-content: left;
+  margin-left: 1.3rem;
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: left;
+  font: normal normal normal 16px/19px Work Sans;
+  letter-spacing: 0px;
+  color: #404040;
+  opacity: 1;
 
   }
 
   .sub-item-bold{
-      display: flex;
-  justify-content: right;
-  margin-right: 1.3rem;
-letter-spacing: var(--unnamed-character-spacing-0);
-font: normal normal 600 16px/19px Work Sans;
-letter-spacing: 0px;
-color: #404040;
-opacity: 1;
-font-size: 14px;
+  display: flex;
+  justify-content: left;
+  margin-left: 1.3rem;
+  letter-spacing: var(--unnamed-character-spacing-0);
+  font: normal normal 600 16px/19px Work Sans;
+  letter-spacing: 0px;
+  color: #404040;
+  opacity: 1;
+  font-size: 14px;
 
   }
 </style>
