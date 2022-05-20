@@ -348,7 +348,7 @@ export default {
  display: none;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 800px) {
 .comparison-header {
   display: inherit;
   margin: 0 auto;

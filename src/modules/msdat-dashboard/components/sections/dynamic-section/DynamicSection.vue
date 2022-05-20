@@ -1,5 +1,10 @@
 <template>
   <div>
+
+    <div v-if="showComing" class="show-coming">
+      <div class="coming-soon-text">This section is coming soon....</div>
+      <img src="../../../../../assets/svg/chart2.svg" alt="" class="svg1">
+    </div>
      <!-- creating seaperate tabs for tableeu embeds
      for each sub dashboard asides 'Health Outcomes' -->
     <div v-if="title === 'Demographics'">
@@ -46,6 +51,7 @@ export default {
       url3: 'https://public.tableau.com/views/Financedashboard_16472462810160/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
+      showComing: true,
     };
   },
   methods: {
@@ -53,6 +59,10 @@ export default {
   },
   created() {
     this.title = this.$route.params.name;
+
+    if (this.title === 'Demographics' || this.title === 'Health_Workforce' || this.title === 'Health_Financing') {
+      this.showComing = false;
+    }
   },
 };
 </script>
@@ -72,5 +82,22 @@ export default {
   font-size: 15px;
   text-align: left;
   font-weight: 100;
+}
+
+.show-coming{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.svg1{
+  width: 400px;
+}
+
+.coming-soon-text{
+  font-size: 15px;
+  font-weight: 500;
+  margin: 30px;
 }
 </style>

@@ -15,6 +15,43 @@ span.multiselect__tag {
   max-width: 45%;
 }
 
+span.multiselect__option--disabled{
+  background-color: blue;
+}
+
+span.multiselect__option{
+  background-color: blue;
+}
+
+
+span.multiselect__option--group{
+  background-color: blue;
+}
+
+
+ span.multiselect__option--highlight{
+  background-color: blue;
+ }
+   span.multiselect__option--selected{
+    background-color: blue;
+
+   }
+
+
+
+/* span.multiselect__option--disabled{
+  background-color: black;
+      color: white;
+}
+
+span.multiselect__option--selected{
+  background-color: #00AC40;
+} */
+/* 
+---------------------------------------------------------------- */
+
+
+
 body label.h6,
 p,
 h6,
