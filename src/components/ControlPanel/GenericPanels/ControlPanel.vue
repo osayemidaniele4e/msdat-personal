@@ -8,7 +8,7 @@
         v-show="values.visibility === undefined ? true : values.visibility"
       >
         <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-        <label class="h6 text-uppercase work-sans">{{ values.label }}</label>
+        <label class=" text-uppercase work-sans label-text">{{ values.label }}</label>
         <selectWrapper
           v-if="values.type === 'dropdown'"
           :id="label"
@@ -286,4 +286,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.label-text{
+  font-weight: bold;
+  font-size: 13px;
+}
+
+</style>

@@ -6,7 +6,7 @@
       <!-- A test case could be added to ensure that this alway there -->
       <td class="align-middle table-info-icon">
         <div class="d-flex justify-content-center">
-          <b-icon-exclamation-circle-fill
+          <b-icon-info-circle-fill
             @click="$emit('indicator-info:clicked', rowData.indicator)"
           />
         </div>
