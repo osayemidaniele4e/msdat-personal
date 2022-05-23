@@ -17,7 +17,7 @@
           <p class="work-sans mb-0 line-height">
             Distribution Of
             <b>{{ values.indicator.short_name }}</b> Across The Country. Source:<b>
-              {{ values.datasource.datatsource }} {{ values.year }}</b
+              {{ values.datasource.datasource }} {{ values.year }}</b
             >
           </p>
         </template>
@@ -205,6 +205,8 @@ export default {
 
   mounted() {
     this.updateData = +1;
+
+    // console.log('values', this.values)
   },
 };
 </script>
