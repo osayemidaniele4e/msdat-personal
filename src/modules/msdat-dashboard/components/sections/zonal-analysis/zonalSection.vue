@@ -29,12 +29,13 @@
 
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
+import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
   name: 'ZonalSectionChart',
-  mixins: [chartDownload],
+  mixins: [chartDownload, formatter],
   data() {
     return {
       // later someone can add the name property
@@ -63,6 +64,10 @@ export default {
   },
 
   methods: {
+    /**
+     * @method computeChartPlotLines is from the
+     * @mixin formatter
+     */
     formatToHighChart(dataSeries) {
       const displayFactor = this.dlGetFactor(
         this.controlPanelProps.indicator.factor,
@@ -75,6 +80,7 @@ export default {
         },
         yAxis: {
           gridLineWidth: 0,
+          plotLines: [...this.computeChartPlotLines(this.controlPanelProps)],
           title: {
             text: 'Values',
             style: {
@@ -169,7 +175,6 @@ export default {
             });
             this.formatToHighChart(chartSeries);
           } else {
-            console.log('data', data);
             // already know the zonal levels/parent of all the value
             // index starts at one to skip region data for the series
             const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);

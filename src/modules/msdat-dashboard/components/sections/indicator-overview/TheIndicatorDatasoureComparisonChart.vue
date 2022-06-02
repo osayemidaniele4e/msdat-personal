@@ -140,7 +140,6 @@ export default {
     'values.indicator': {
       async handler() {
         this.loading = true;
-        console.log(`checking indicator${this.values.indicator.id}`);
         // change get datasource function to API matching indicator to dataSource
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(
@@ -157,6 +156,24 @@ export default {
       deep: true,
       immediate: true,
     },
+    'values.target': {
+      async handler() {
+        this.loading = true;
+        if (this.values.indicator.id !== undefined) {
+          const dataSources = await this.getAvailableDataSources(
+            this.values.indicator.id,
+          );
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(
+            dataSources,
+          );
+          this.setUpHighChartConfig(seriesArray, years);
+        }
+
+        this.loading = false;
+      },
+      deep: true,
+      immediate: false,
+    },
   },
   methods: {
     /**
@@ -168,6 +185,8 @@ export default {
     /**
      * @param {HighChartObject}  ChartSeriesObject
      * @param {Array} sortedYear - an arrays of years
+     * @method computeChartPlotLines is from the
+     * @mixin formatter
      */
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
@@ -177,6 +196,14 @@ export default {
         },
         yAxis: {
           ...defaultOptions.yAxis,
+          title: {
+            ...defaultOptions.yAxis.title,
+          },
+          gridLineWidth: 0,
+          labels: {
+            ...defaultOptions.yAxis.labels,
+          },
+          plotLines: [...this.computeChartPlotLines(this.values)],
         },
         xAxis: {
           ...defaultOptions.xAxis,
@@ -301,7 +328,6 @@ export default {
         let seriesObject = {};
         if (mappedValueTypes.length > 0) {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
-          console.log(datasource);
           seriesObject = this.createSeriesObject(
             valueType,
             datasource.datasource,
