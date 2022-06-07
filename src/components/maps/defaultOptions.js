@@ -10,7 +10,7 @@ export default {
     enabled: false,
   },
   title: {
-    enabled: false,
+    enabled: true,
     text: '',
     style: {
       fontSize: '13px',
@@ -33,14 +33,12 @@ export default {
   //   min: 0,
   // },
   legend: {
+    enabled: true,
     align: 'right',
     verticalAlign: 'bottom',
-    floating: false,
     // layout: 'vertical',
     valueDecimals: 10,
     // backgroundColor: 'rgba(255,255,255,0.9)',
-    symbolRadius: 10,
-    symbolHeight: 14,
   },
   mapNavigation: {
     enabled: true,
@@ -49,11 +47,20 @@ export default {
     },
   },
   plotOptions: {
+    series: {
+      states: {
+        inactive: {
+          opacity: 0.5,
+        },
+        hover: {
+          enabled: true,
+        },
+      },
+    },
     map: {
       borderColor: 'white',
       borderWidth: 3,
       allAreas: false,
-      nullInteraction: true,
       joinBy: ['name', 'hc-key'],
       dataLabels: {
         enabled: true,
