@@ -180,6 +180,8 @@ export default {
               name: stateObject.name,
               data: sortedData,
             });
+
+            console.log('chartSeries', chartSeries);
             this.formatToHighChart(chartSeries);
           } else {
             // already know the zonal levels/parent of all the value
@@ -202,6 +204,8 @@ export default {
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
             this.formatToHighChart(chartSeries);
+
+            console.log('chartSeries', chartSeries);
           }
         }
         // Plot for LGAs
