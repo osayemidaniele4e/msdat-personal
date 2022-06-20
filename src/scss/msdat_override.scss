@@ -15,18 +15,37 @@ span.multiselect__tag {
   max-width: 45%;
 }
 span.multiselect__option--selected.multiselect__option--highlight {
-  background-color: #e0f3f3;
+  background-color: #007d53;
+  color: white  !important;
   
+}
+
+span.multiselect__option--selected{
+  background-color: #007d53;
+  color: white  !important;
+}
+
+// hover for select options
+span.multiselect__option--highlight{
+  background-color: #e0f3f3;
+}
+
+
+span.multiselect__option multiselect__option--highlight multiselect__option--selected{
+  background-color: #000
 }
 
 // span.multiselect__tags-wrap{
 //   background-color: purple;
 // }
 
+
 span.multiselect__option--disabled{
   background-color: #696969 !important;
   color: white  !important;
 }
+
+
 
 // span.topicHead{
 //   background-color: black;

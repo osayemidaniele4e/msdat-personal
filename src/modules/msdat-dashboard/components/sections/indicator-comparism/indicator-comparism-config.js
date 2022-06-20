@@ -80,10 +80,10 @@ export default {
     year: '',
     compareBy: '',
     visualization: 'state_map',
-    // target: {
-    //   national: false,
-    //   sdg: false,
-    // },
+    target: {
+      national: false,
+      sdg: false,
+    },
     numdenum: false,
   },
 };
