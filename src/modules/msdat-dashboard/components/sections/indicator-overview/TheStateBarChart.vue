@@ -126,16 +126,20 @@ export default {
     async updateValue() {
       this.loading = true;
       const data = await this.getData(this.values);
-      const nationalTarget = this.dlGetIndicator(this.values.indicator.id).national_target;
+      // eslint-disable-next-line camelcase
+      const { national_target, sdg_target } = this.dlGetIndicator(this.values.indicator.id);
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
-
       const chartOptions = this.genHighChartOption(data, {
-        target: {
-          value: nationalTarget,
+        nationalTarget: {
+          value: national_target,
+          show: this.values.target.national,
+        },
+        sdgTarget: {
+          value: sdg_target,
+          show: this.values.target.sdg,
         },
       });
       chartOptions.yAxis.title.text = `${displayFactor}`;
-
       // add nation and state selected to fit according to mockup 😢 😟 😡
 
       const parentValue = await this.dlQuery({
@@ -150,8 +154,10 @@ export default {
         const parent = parentValue[0];
         const seriesObject = {
           showInLegend: false,
-          color: parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
-          name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
+          // eslint-disable-next-line camelcase
+          color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
+          // eslint-disable-next-line camelcase
+          name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
           data: [[this.values.location.name, Number(parseFloat(parent.value).toFixed(1))]],
         };
         chartOptions.series.unshift(seriesObject);
@@ -181,7 +187,6 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
-      // console.log('hello =>', ...data);
       return data;
     },
 

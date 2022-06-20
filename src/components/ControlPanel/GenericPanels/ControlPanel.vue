@@ -28,6 +28,7 @@
           <!-- National Target here -->
           <div class="d-flex">
             <BaseCheckbox
+             :currentValue="payload.target.national"
               @input="
                 updatePayload(
                   { sdg: payload.target.sdg, national: $event },
@@ -40,6 +41,7 @@
           <!-- SDG Target here -->
           <div class="d-flex ml-3">
             <BaseCheckbox
+              :currentValue="payload.target.sdg"
               @input="
                 updatePayload(
                   { sdg: $event, national: payload.target.national },
@@ -243,7 +245,7 @@ export default {
   methods: {
     updatePayload(value, key) {
       if (this.groupIndexSub != null) {
-        // this is o take into consideration control panel that
+        // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
         // debugger;
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
