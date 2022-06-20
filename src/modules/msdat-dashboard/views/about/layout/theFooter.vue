@@ -3,8 +3,8 @@
     <div>Built with <b-icon-heart-fill /> by eHealth4everyone</div>
     <div>
       <span
-        >{{ dlDashboardIndicator.length }} Indicators,
-        {{ dlDashboardDataSource.length }} Data sources</span
+        >{{ dlDashboardIndicator.length }}/{{ indicatorCount}}&ensp;Indicators,
+        {{ dlDashboardDataSource.length }}/{{dataSourceCount}}&ensp;Data&nbsp;sources</span
       >
       <span>Last Updated {{ latestDate }}</span>
     </div>
@@ -14,12 +14,16 @@
 <script>
 import moment from 'moment';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
+import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 
 export default {
   name: 'theFooter',
   data() {
     return {
       latestDate: 'Loading...',
+      dashboard: {},
+      indicatorCount: 0,
+      dataSourceCount: 0,
     };
   },
   methods: {
@@ -28,9 +32,15 @@ export default {
       const date = moment(res.data.date, 'YYYY-MM-DD').format('MMMM Do YYYY');
       this.latestDate = date;
     },
+    async getConfigData() {
+      this.dashboard = config.find((item) => item.title === this.$route.meta.title);
+      this.indicatorCount = this.dashboard?.indicators.length;
+      this.dataSourceCount = this.dashboard?.dataSources.length;
+    },
   },
-  mounted() {
-    this.getLatestDate();
+  async mounted() {
+    await this.getLatestDate();
+    await this.getConfigData();
   },
 };
 </script>
