@@ -498,14 +498,6 @@ div.temp {
   display: none;
 }
 
-/* testing for mobile */
-.dummy-row {
-  display: flex;
-  flex-direction: row;
-  overflow: scroll;
-  flex-wrap: nowrap;
-}
-
 .control-header {
   display: none;
 }
@@ -527,5 +519,14 @@ div.temp {
     font-weight: bold;
     margin: 5px;
   }
+
+  /* testing for mobile */
+.dummy-row {
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
+  flex-wrap: nowrap;
+}
+
 }
 </style>
