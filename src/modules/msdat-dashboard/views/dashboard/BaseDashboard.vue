@@ -502,8 +502,9 @@ div.temp {
 .dummy-row {
   display: flex;
   flex-direction: row;
-  overflow: scroll;
+  overflow: auto;
   flex-wrap: nowrap;
+  min-height: 22.5vh
 }
 
 .control-header {

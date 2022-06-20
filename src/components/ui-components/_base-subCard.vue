@@ -12,14 +12,15 @@
           icon="arrows-fullscreen"
           @click="showModal = !showModal"
           class="pointer_click mx-1 font-weight-bold"
-          font-scale="1.1"
+          font-scale="1"
         ></b-icon>
+          <!-- icon="three-dots-vertical" -->
         <b-icon
           v-if="showDownload === true"
-          icon="three-dots-vertical"
+          icon="download"
           @click="showMenu = !showMenu"
           class="pointer_click mx-1 font-weight-bold"
-          font-scale="1.1"
+          font-scale="1"
         ></b-icon>
       </div>
     </div>
