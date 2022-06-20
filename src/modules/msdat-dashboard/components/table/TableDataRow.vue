@@ -8,6 +8,7 @@
         <div class="d-flex justify-content-center">
           <b-icon-info-circle-fill
             @click="$emit('indicator-info:clicked', rowData.indicator)"
+            class="info-circle"
           />
         </div>
       </td>
@@ -17,7 +18,7 @@
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
             {{ rowData.indicator.full_name }}
           </slot>
-          <span style="font-size: 10px; margin: 0 5px">({{ factor }})</span>
+          <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
         </div>
       </td>
       <!-- the default slot for the system -->
@@ -54,5 +55,9 @@ tr {
       cursor: pointer;
     }
   }
+}
+
+.info-circle{
+  font-size: 16px;
 }
 </style>

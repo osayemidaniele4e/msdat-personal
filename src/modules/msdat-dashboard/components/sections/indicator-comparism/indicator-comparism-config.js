@@ -66,12 +66,12 @@ export default {
         label: 'full_name',
       },
     },
-    {
-      class: ['col'],
-      type: 'checkbox',
-      label: 'Target',
-      key: 'target',
-    },
+    // {
+    //   class: ['col'],
+    //   type: 'checkbox',
+    //   label: 'Target',
+    //   key: 'target',
+    // },
   ],
   payload: {
     indicator: [],
@@ -80,10 +80,10 @@ export default {
     year: '',
     compareBy: '',
     visualization: 'state_map',
-    target: {
-      national: true,
-      sdg: true,
-    },
+    // target: {
+    //   national: false,
+    //   sdg: false,
+    // },
     numdenum: false,
   },
 };

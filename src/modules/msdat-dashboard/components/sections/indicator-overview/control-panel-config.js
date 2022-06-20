@@ -53,7 +53,7 @@ export default {
     {
       class: ['col'],
       type: 'toggle',
-      label: 'Num/Denum',
+      label: 'Num/Denom',
       key: 'numdenum',
     },
   ],

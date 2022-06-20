@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative">
+  <div class="position-relative" id="stateBarChartComponent" >
     <base-overlay :show="loading">
       <base-sub-card
        ref="SubCard"
