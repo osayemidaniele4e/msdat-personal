@@ -47,8 +47,8 @@ export default {
     compareBy: '',
     visualization: 'state_map',
     target: {
-      national: false,
-      sdg: false,
+      national: true,
+      sdg: true,
     },
     numdenum: false,
   },
