@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <base-overlay :show="loader">
+  <div>
+    <base-overlay :show="loader" class="main">
       <base-sub-card
         showControls
         v-if="Object.keys(controlPanelProps).length"
@@ -25,7 +25,7 @@
             {{ controlPanelProps.year }}
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="chart" />
+        <BarChart ref="BaseChart" :chartOptions="chart" class="barchart" />
       </base-sub-card>
     </base-overlay>
   </div>
@@ -218,3 +218,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.barchart{
+  height: 49.5vh;
+}
+
+</style>
