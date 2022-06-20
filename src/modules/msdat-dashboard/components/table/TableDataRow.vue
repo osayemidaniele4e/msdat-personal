@@ -8,6 +8,7 @@
         <div class="d-flex justify-content-center">
           <b-icon-info-circle-fill
             @click="$emit('indicator-info:clicked', rowData.indicator)"
+            class="info-circle"
           />
         </div>
       </td>
@@ -54,5 +55,9 @@ tr {
       cursor: pointer;
     }
   }
+}
+
+.info-circle{
+  font-size: 16px;
 }
 </style>
