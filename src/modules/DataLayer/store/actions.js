@@ -19,7 +19,6 @@ export default {
       const lastDateMoment = moment(lastDate);
       const now = moment();
       const diff = now.diff(lastDateMoment, 'days');
-      console.log('diff', diff, '2');
       if (diff > 7) {
         console.log('diff', diff);
         //     await DB.clear();
