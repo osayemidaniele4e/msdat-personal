@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortBy, uniq } from 'lodash';
+import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '../../mixins/formatter';
 
@@ -175,7 +175,6 @@ export default {
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
-        debugger;
         const data = item.map((Object) => [
           Object.period,
           Number.parseFloat(Object.value),
@@ -221,6 +220,7 @@ export default {
        * radio button so it only returns/ selectees a single Object
        * at a time
        */
+
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
         valueType,

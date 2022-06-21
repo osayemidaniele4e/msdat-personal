@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 <template>
   <div>
     <Highmaps :options="defaultOptions" />
@@ -7,6 +8,10 @@
 <script>
 import Highcharts from 'highcharts';
 import loadMap from 'highcharts/modules/map';
+import exportData from 'highcharts/modules/export-data';
+import exporting from 'highcharts/modules/exporting';
+import noData from 'highcharts/modules/no-data-to-display';
+import loadDrilldown from 'highcharts/modules/drilldown';
 import { genComponent } from 'vue-highcharts';
 
 // default map
@@ -19,9 +24,11 @@ import defaultOptions from './defaultOptions';
 import regionsMap from './mapData/regions';
 
 import {
-  AkwaIbom,
+  // eslint-disable-next-line camelcase
+  AkwaIbom as Akwa_Ibom,
   Bayelsa,
-  CrossRiver,
+  // eslint-disable-next-line camelcase
+  CrossRiver as Cross_River,
   Rivers,
   Delta,
   Edo,
@@ -61,11 +68,15 @@ import {
   Kwara,
   Kogi,
   Benue,
-  Fct,
+  Fct as FCT,
 } from './mapData/north-central';
 
 // load map
 loadMap(Highcharts);
+exporting(Highcharts);
+exportData(Highcharts);
+noData(Highcharts);
+loadDrilldown(Highcharts);
 
 export default {
   name: 'BaseMap',
@@ -102,7 +113,7 @@ export default {
         Kwara,
         Kogi,
         Benue,
-        Fct,
+        FCT,
         Abia,
         Ebonyi,
         Imo,
@@ -114,9 +125,9 @@ export default {
         Lagos,
         Ekiti,
         Oyo,
-        AkwaIbom,
+        Akwa_Ibom,
         Bayelsa,
-        CrossRiver,
+        Cross_River,
         Rivers,
         Delta,
         Edo,
@@ -131,6 +142,12 @@ export default {
   },
   methods: {
     plotMapLevel(level) {
+      // check space is in string and add underscore
+      let lgaState = '';
+      if (this.lgaState) {
+        lgaState = this.lgaState.replace(/\s/g, '_');
+      }
+
       switch (level) {
         case 1:
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
@@ -139,7 +156,9 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = regionsMap;
           break;
         case 3:
-          this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[this.lgaState].data;
+          // console.trace(lgaState);
+          this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[lgaState].data;
+          // console.log(this.lgaMapData[this.lgaState].data);
           break;
         default:
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
@@ -158,6 +177,9 @@ export default {
     },
     level(newVal) {
       this.plotMapLevel(newVal);
+    },
+    lgaState() {
+      this.plotMapLevel(this.level);
     },
   },
   created() {

@@ -12,7 +12,7 @@ export default {
       ],
       dropdownProps: {
         label: 'name',
-        preselectFirst: true,
+        'preselect-first': true,
       },
     },
     {
@@ -26,6 +26,32 @@ export default {
       },
     },
     {
+      visibility: false,
+      class: ['col'],
+      type: 'dropdown',
+      label: 'Year',
+      key: 'year',
+      options: [
+        { id: 1, year: '2010' },
+        { id: 2, year: '2015' },
+      ],
+      dropdownProps: {
+        preselectFirst: true,
+      },
+    },
+    {
+      visibility: true,
+      class: ['col-md-2'],
+      type: 'dropdown',
+      label: 'location',
+      key: 'location',
+      dropdownProps: {
+        label: 'name',
+        // preselectFirst: true
+      },
+      options: [],
+    },
+    {
       type: 'dropdown',
       class: ['col-md-6'],
       label: 'indicator',
@@ -37,7 +63,7 @@ export default {
         max: 2,
         'group-values': 'indicators',
         'group-label': 'program_area',
-        label: 'short_name',
+        label: 'full_name',
       },
     },
     {
@@ -47,10 +73,17 @@ export default {
       key: 'target',
     },
   ],
-  defaults: {
-    indicator: null,
-    dataSource: null,
-    location: null,
-    year: null,
+  payload: {
+    indicator: [],
+    location: '',
+    datasource: 'NHMIS 1',
+    year: '',
+    compareBy: '',
+    visualization: 'state_map',
+    target: {
+      national: true,
+      sdg: true,
+    },
+    numdenum: false,
   },
 };

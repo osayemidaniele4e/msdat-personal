@@ -8,7 +8,7 @@
           <b-row>
             <b-col cols lg="5">
               <div>
-                <img :src="macBookImg" alt="Macbook">
+                <img :src="macBookImg" alt="Macbook" />
               </div>
             </b-col>
             <b-col cols lg="7">
@@ -56,14 +56,7 @@
           Drop-down, we've circled it red on the image to your left. The list of
           indicators on the dashboard can be found below:
         </p>
-        <div class="row d-flex justify-content-between align-items-center">
-          <b-form-select
-            v-for="(indicator, index) in indicators"
-            :key="index"
-            :options="indicator.options"
-            v-model="selected"
-          ></b-form-select>
-        </div>
+        <IndicatorPageFunc />
       </section>
       <!-- available data -->
       <section>
@@ -74,180 +67,7 @@
           Drop-down, we've circled it red on the image to your left. The list of
           Indicators on the dashboard cab be found below:
         </p>
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>SN</th>
-                <th>Sources/Indicators</th>
-                <th>MICS</th>
-                <th>NDHS</th>
-                <th>NARHS</th>
-                <th>NNHS</th>
-                <th>World Bank</th>
-                <th>IHME</th>
-                <th>WHO-GHO</th>
-                <th>IHME</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Skilled attendance at delivery or birth</td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td></td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>ANC Coverage (4 Visits)</td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td></td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Contraceptive prevalence rate</td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td></td>
-                <td></td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>IPV Coverage rate</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>DPT 3/Penta 3 coverage rate</td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td></td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>Infant mortality rate</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>
-                  Percentage of children fully immunized against childhood
-                  diseases by age 1
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td></td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td></td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-                <td></td>
-                <td>
-                  <b-icon-check-circle-fill />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <b-button>see more</b-button>
-        </div>
+        <AvailableDataPageFunc />
       </section>
       <!-- data sources -->
       <section>
@@ -259,17 +79,7 @@
           Indicators on the dashboard cab be found below:
         </p>
         <div>
-          <div v-for="(dataSource, index) in dataSources" :key="index">
-            <h6 class="mb-2">{{ dataSource.name }}</h6>
-            <div class="row d-flex justify-content-between align-items-center">
-              <b-form-select
-                v-for="(source, index) in dataSource.sources"
-                :key="index"
-                :options="source"
-                v-model="selected"
-              ></b-form-select>
-            </div>
-          </div>
+          <DataSourceFunc />
         </div>
       </section>
     </main>
@@ -280,11 +90,20 @@
 <script>
 import theHeader from './layout/theHeader.vue';
 import theFooter from './layout/theFooter.vue';
+import DataSourceFunc from './components/AboutPageDataSource.vue';
+import IndicatorPageFunc from './components/AboutPageIndicator.vue';
+import AvailableDataPageFunc from './components/AboutPageAvailableData.vue';
 
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
 export default {
-  components: { theHeader, theFooter },
+  components: {
+    theHeader,
+    theFooter,
+    DataSourceFunc,
+    IndicatorPageFunc,
+    AvailableDataPageFunc,
+  },
   data() {
     return {
       selected: null,
@@ -405,17 +224,24 @@ export default {
 
 <style lang="scss" scoped>
 // google fonts
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
 
 // variables
 $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
 
+div.modal {
+  div.modal-content {
+    width: 75%;
+    justify-content: center;
+  }
+}
+
 #about-wrap {
   scroll-behavior: smooth;
-  font-family: "Work Sans", sans-serif;
+  font-family: 'Work Sans', sans-serif;
   * {
     margin: 0;
     padding: 0;

@@ -1,0 +1,81 @@
+export default {
+  showloader(state) {
+    return state.loader.show;
+  },
+  dashboardDetails(state) {
+    return state.dashboardDetails;
+  },
+
+  indicators(state) {
+    return state.indicators;
+  },
+
+  getRmnchs(state) {
+    return state.rmnchs;
+  },
+  getprogramArea(state) {
+    return state.masterData;
+  },
+  notesArea(state) {
+    // console.log(state.isNotExistYear);
+    return state.notes;
+  },
+
+  // IndicatorsShortName(state){
+  //   return state.indicatorsShortName;
+  // },
+
+  // ******* Data Source Selection ************** //
+
+  dataSource(state) {
+    return state.dataSource;
+  },
+  getDataSource(state) {
+    return state.SurveyArray;
+  },
+
+  selectedIndicator(state) {
+    return state.selectedIndicator;
+  },
+  selectedDataSource(state) {
+    return state.selectedDataSource;
+  },
+  selectedYears(state) {
+    return state.selectedYears;
+  },
+  selectedLevels(state) {
+    return state.selectedLevels;
+  },
+
+  // ******* Indicators Levels ************** //
+
+  indicatorsLevels(state) {
+    return state.levels;
+  },
+  indicatorsYear(state) {
+    return state.years;
+  },
+
+  // Arrangment of Sections
+  arrangedSections(state) {
+    return state.ArrangedSections;
+  },
+  customDashboard(state) {
+    // const data = state.customDashboard.filter(element => element.isShow)
+    return state.customDashboard;
+  },
+
+  // Loader Component
+  Indicatorloading(state) {
+    return state.loader.indicator;
+  },
+  Datasourceloading(state) {
+    return state.loader.datasource;
+  },
+  Levelsloading(state) {
+    return state.loader.levels;
+  },
+  Yearsloading(state) {
+    return state.loader.years;
+  },
+};

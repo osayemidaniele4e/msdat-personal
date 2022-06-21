@@ -1,7 +1,17 @@
 export default {
-  chart: {},
+  chart: {
+    style: {
+      // fontSize: '10px',
+      fontFamily: '"Work Sans", sans-serif',
+      fontWeight: 'normal',
+    },
+  },
+  exporting: {
+    enabled: false,
+  },
   title: {
-    text: '...',
+    enabled: true,
+    text: '',
     style: {
       fontSize: '13px',
       fontFamily: '"Work Sans", sans-serif',
@@ -9,26 +19,26 @@ export default {
     },
   },
   subtitle: {
-    text: '..',
+    text: '',
     style: {
       fontSize: '13px',
       fontFamily: '"Work Sans", sans-serif',
       fontWeight: 'normal',
     },
   },
-  credit: false,
-  colorAxis: {
-    min: 0,
+  credit: {
+    enabled: false,
   },
+  // colorAxis: {
+  //   min: 0,
+  // },
   legend: {
+    enabled: true,
     align: 'right',
     verticalAlign: 'bottom',
-    floating: false,
     // layout: 'vertical',
     valueDecimals: 10,
     // backgroundColor: 'rgba(255,255,255,0.9)',
-    symbolRadius: 10,
-    symbolHeight: 14,
   },
   mapNavigation: {
     enabled: true,
@@ -37,7 +47,20 @@ export default {
     },
   },
   plotOptions: {
+    series: {
+      states: {
+        inactive: {
+          opacity: 0.5,
+        },
+        hover: {
+          enabled: true,
+        },
+      },
+    },
     map: {
+      borderColor: 'white',
+      borderWidth: 3,
+      allAreas: false,
       joinBy: ['name', 'hc-key'],
       dataLabels: {
         enabled: true,
@@ -54,6 +77,23 @@ export default {
         },
       },
     },
+    // series: {
+    //   cursor: 'pointer',
+    //   events: {
+    //     mouseOver() {
+    //       originalColor = this.color;
+
+    //       this.update({
+    //         color: 'red',
+    //       });
+    //     },
+    //     mouseOut() {
+    //       this.update({
+    //         color: originalColor,
+    //       });
+    //     },
+    //   },
+    // },
   },
   series: [],
 };

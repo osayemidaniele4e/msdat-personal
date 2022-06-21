@@ -2,6 +2,7 @@
   <label>
     <input
       type="checkbox"
+      v-model="checkBoxValue"
       class="focus:outline-none rounded-0"
       @change="$emit('input', $event.target.checked)"
     />
@@ -11,6 +12,20 @@
 <script>
 export default {
   name: 'c-checkbox',
+  props: {
+    currentValue: {
+      required: false,
+      default: false,
+      type: Boolean,
+    },
+  },
+  computed: {
+    // This is needed so the checkbox can visibly
+    // reflect its current state
+    checkBoxValue() {
+      return this.currentValue;
+    },
+  },
 };
 </script>
 <style scoped>

@@ -6,20 +6,10 @@ const indicatorSetConfig = [
       // multiple: true,
       'group-values': 'indicators',
       'group-label': 'program_area',
-      label: 'short_name',
+      label: 'full_name',
     },
     label: 'indicator',
     key: 'indicator',
-    options: [],
-  },
-  {
-    class: ['col-md-12'],
-    type: 'dropdown',
-    label: 'data Source',
-    key: 'datasource',
-    dropdownProps: {
-      label: 'datasource',
-    },
     options: [],
   },
   {
@@ -31,13 +21,23 @@ const indicatorSetConfig = [
   {
     class: ['col-md-4'],
     type: 'dropdown',
-    label: 'location',
-    key: 'location',
+    label: 'data Source',
+    key: 'datasource',
     dropdownProps: {
-      label: 'name',
+      label: 'datasource',
     },
     options: [],
   },
+  // {
+  //   class: ['col-md-4'],
+  //   type: 'dropdown',
+  //   label: 'location',
+  //   key: 'location',
+  //   dropdownProps: {
+  //     label: 'name',
+  //   },
+  //   options: [],
+  // },
   {
     class: ['col-md-4'],
     type: 'dropdown',
@@ -49,13 +49,33 @@ const indicatorSetConfig = [
     },
   },
 ];
-export default {
-  label: 'Multi-source compare',
-  setup: [indicatorSetConfig, indicatorSetConfig, indicatorSetConfig],
-  defaults: {
-    indicator: null,
-    dataSource: null,
-    location: null,
-    year: '2015',
+const payload = {
+  indicator: 'indicator 2',
+  location: '',
+  datasource: 'NHMIS 1',
+  year: '',
+  compareBy: '',
+  visualization: 'state_map',
+  target: {
+    national: false,
+    sdg: false,
   },
+  numdenum: false,
+};
+
+export default {
+  label: 'Multi-Source comparison',
+  grouped: true,
+  setup: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
+  payload: [{ ...payload }, { ...payload }, { ...payload }],
+
+  // const arr = [
+  //   ...(trueCondition ? ["dog"] : []),
+  //   ...(falseCondition ? ["cat"] : [])
+  // ];
+
+  // from moses
+  // setup: [[...indicatorSetConfig]],
+  // payload: [{ ...payload }],
+
 };

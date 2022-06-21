@@ -1,5 +1,7 @@
 <template>
-  <b-overlay :show="show">
+  <b-overlay
+   z-index=1
+  :show="show">
     <slot></slot>
     <template #overlay>
       <div class="text-center">

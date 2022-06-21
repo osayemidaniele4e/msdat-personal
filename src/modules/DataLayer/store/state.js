@@ -9,4 +9,5 @@ export default () => ({
   datasource_specific_indicator: [],
   datasources: [],
   availableDashboardIndicator: [],
+  dashboardDataSource: [],
 });

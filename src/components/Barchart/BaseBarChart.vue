@@ -7,14 +7,25 @@
  * highchart package imports
  */
 import Highcharts from 'highcharts';
+import loadHighchartsMore from 'highcharts/highcharts-more';
 import loadMap from 'highcharts/modules/map';
+import loadDrilldown from 'highcharts/modules/drilldown';
+import exportData from 'highcharts/modules/export-data';
+import exporting from 'highcharts/modules/exporting';
+import noData from 'highcharts/modules/no-data-to-display';
 import { genComponent } from 'vue-highcharts';
+import { cloneDeep } from 'lodash';
 /**
  * The default options
  */
 import defaultOptions from './defaultOption';
 
 loadMap(Highcharts);
+loadDrilldown(Highcharts);
+exporting(Highcharts);
+exportData(Highcharts);
+noData(Highcharts);
+loadHighchartsMore(Highcharts);
 
 export default {
   data() {
@@ -45,7 +56,8 @@ export default {
      */
     chartOptions: {
       handler(passedObj) {
-        this.options = Object.assign(this.options, passedObj);
+        // eslint-disable-next-line prefer-object-spread
+        this.options = cloneDeep(Object.assign({}, this.options, passedObj));
       },
       deep: true,
       immediate: true,
