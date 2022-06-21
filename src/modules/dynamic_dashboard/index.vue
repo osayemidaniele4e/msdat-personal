@@ -14,8 +14,8 @@
           : true
       "
     >
-  <template v-slot:top-section>
-<!--
+      <template v-slot:top-section>
+        <!--
         <div v-if="configObject.name === 'Demographics'">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
@@ -25,7 +25,7 @@
             <template>
               <div style="text-align: center">
                 <iframe :src="url" :width="width" :height="height"></iframe> -->
-              <!-- </div>
+        <!-- </div>
               <b-embed
                 type="iframe"
                 aspect="21by9"
@@ -34,12 +34,13 @@
                 :height="height"
               ></b-embed>
                <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
-            <!-- </template>
+        <!-- </template>
           </base-sub-card>
         </div>
-      </div> --> -
+      </div> -->
+        -
 
-            <!-- <div  v-if="configObject.name === 'Health_Workforce'">
+        <!-- <div  v-if="configObject.name === 'Health_Workforce'">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
             <template #title>
@@ -48,7 +49,7 @@
             <template>
               <div style="text-align: center">
                  <iframe :src="url" :width="width" :height="height"></iframe> -->
-              <!-- </div>
+        <!-- </div>
               <b-embed
                 type="iframe"
                 aspect="21by9"
@@ -56,12 +57,12 @@
                 :width="width"
                 :height="height"
               ></b-embed> -->
-              <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
-            <!-- </template>
+        <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
+        <!-- </template>
           </base-sub-card>
         </div>
       </div> -->
-<!--
+        <!--
          <div  v-if="configObject.name === 'Health_Financing'">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#17606b'" class="my-2 shadow-sm iframe_container test">
@@ -73,7 +74,7 @@
             <template>
               <div style="text-align: center">
                  <iframe :src="url" :width="width" :height="height"></iframe> -->
-              <!-- </div>
+        <!-- </div>
               <b-embed
                 type="iframe"
                 aspect="21by9"
@@ -81,12 +82,12 @@
                 :width="width"
                 :height="height"
               ></b-embed> -->
-              <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
-            <!-- </template>
+        <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
+        <!-- </template>
           </base-sub-card>
         </div>
       </div> -->
-  </template>
+      </template>
     </MSDAT>
   </div>
 </template>
@@ -115,6 +116,9 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+  },
+  async mounted() {
+    await this.$store.dispatch('DL/CLEAR_DB');
   },
   created() {
     // this.CLEAR_CONTROL_PANEL();
@@ -165,16 +169,15 @@ iframe {
   overflow-y: auto;
 }
 
-.text-finance{
+.text-finance {
   font-size: 25px;
   text-align: center;
 }
 
-.sub-text-finance{
+.sub-text-finance {
   color: white;
   font-size: 15px;
   text-align: left;
   font-weight: 100;
 }
-
 </style>
