@@ -1,47 +1,43 @@
 <template>
-  <b-tabs pills class="work-sans">
+  <b-tabs pills class="work-sans tabs" id="indicatorMeta">
     <b-tab v-for="(dataSource, index) in dataSources" :key="index">
       <template #title>
         <span>{{ dataSource.datasource }}</span>
       </template>
-      <div class="my-3">
-        <p>
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >Indicator Name:</span
-          >
-          <span>{{ dlGetIndicator(indicatorSelectedID).full_name }}</span>
-        </p>
-        <p>
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >Indicator short Name:</span
-          >
-          <span>{{ dlGetIndicator(indicatorSelectedID).short_name }}</span>
-        </p>
-        <p>
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >Indicator definition:</span
-          >
-          <span>
+
+ <div>
+      <p>
+        <div class="text1">Indicator name</div>
+        <div class="text2">{{ dlGetIndicator(indicatorSelectedID).full_name }}</div>
+      <p>
+
+          <p>
+        <div class="text1">Indicator short name</div>
+        <div class="text2">{{ dlGetIndicator(indicatorSelectedID).short_name }}</div>
+      <p>
+
+          <p>
+        <div class="text1">Indicator definition</div>
+        <div class="text2">
             {{
-              dlGetDataSourceSpecificIndicator({
+           dlGetDataSourceSpecificIndicator({
+             indicator: indicatorSelectedID,
+           datasource: dataSource.id,
+       }).length > 0
+         ? dlGetDataSourceSpecificIndicator({
                 indicator: indicatorSelectedID,
-                datasource: dataSource.id,
-              }).length > 0
-                ? dlGetDataSourceSpecificIndicator({
-                    indicator: indicatorSelectedID,
-                    datasource: dataSource.id,
-                  })[0].indicator_definition
-                : ''
-            }}</span
-          >
-        </p>
-        <p class="d-flex flex-column align-items-start">
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >measurement:</span
-          >
-          <span>
-            <b>Numerator:</b>
-            {{
+               datasource: dataSource.id,
+           })[0].indicator_definition
+            : ''
+          }}</div>
+      <p>
+
+             <p>
+        <div class="text1">Measurement</div>
+        <div class="text2">
+          <div>
+                   <span class="text2-bold">Numerator:</span>
+             {{
               dlGetDataSourceSpecificIndicator({
                 indicator: indicatorSelectedID,
                 datasource: dataSource.id,
@@ -52,10 +48,10 @@
                   })[0].measurement_numerator
                 : ''
             }}
-          </span>
-          <span>
-            <b>Denominator:</b>
-            {{
+          </div>
+                <div>
+                   <span class="text2-bold">Denominator:</span>
+      {{
               dlGetDataSourceSpecificIndicator({
                 indicator: indicatorSelectedID,
                 datasource: dataSource.id,
@@ -66,22 +62,29 @@
                   })[0].measurement_denominator
                 : ''
             }}
-          </span>
-        </p>
-        <p>
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >multiplier factor:</span
-          >
-          <span>{{
+          </div>
+   </div>
+      <p>
+
+      <div class="grid1">
+        <div>
+          <div class="grid1-left-text1">Multiplier Factor</div>
+          <div class="grid1-left-text2">  {{
             dlGetFactor(dlGetIndicator(indicatorSelectedID).factor)
               .multiplier_factor
-          }}</span>
-        </p>
-        <p>
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >frequency:</span
-          >
-          <span>{{
+          }}</div>
+        </div>
+
+        <div>
+          <div class="grid1-right-text1">Type of Indicator</div>
+          <div class="grid1-right-text2">  {{ dlGetIndicator(indicatorSelectedID).indicator_type }}</div>
+        </div>
+      </div>
+
+          <p>
+        <div class="text1">Frequency</div>
+        <div class="text2">
+          {{
             dlGetDataSourceSpecificIndicator({
               indicator: indicatorSelectedID,
               datasource: dataSource.id,
@@ -91,27 +94,13 @@
                   datasource: dataSource.id,
                 })[0].frequency
               : ''
-          }}</span>
-        </p>
-        <p>
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >Type of Indicator:</span
-          >
-          <span>{{ dlGetIndicator(indicatorSelectedID).indicator_type }}</span>
-        </p>
-        <p>
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >reference:</span
-          >
-          <span>
-            <!-- <a class="modal-lnk mr-1" href="#">https://www.samplereport.com,</a> -->
-            <!-- <span>Page 10, Table 2, Column 5</span> -->
-          </span>
-        </p>
-        <p>
-          <span class="mr-1 font-weight-bold mr-1 text-capitalize"
-            >Level Of Data Available:</span
-          >
+          }}
+        </div>
+      <p>
+
+    <p>
+        <div class="text1">Level of Data Available</div>
+        <p class="text2">
           <span
             class="
               d-flex
@@ -216,13 +205,9 @@
             </div>
           </span>
         </p>
-        <p>
-          <!-- <a class="modal-lnk d-flex align-items-center" href="#">
-            <span class="mr-1">Open Meta-Data library</span>
-            <b-icon-box-arrow-up-right scale="0.9 " />
-          </a> -->
-        </p>
-      </div>
+
+    </div>
+
     </b-tab>
   </b-tabs>
 </template>
@@ -249,4 +234,67 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tab1{
+  color: black;
+}
+
+.text1 {
+  font-weight: 700;
+  border-bottom: 0.5px solid green;
+  color: black;
+  opacity: 1;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.text2 {
+  font-size: 13.5px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  &-bold{
+     font-weight: 700;
+  font-size: 13.5px;
+  }
+}
+
+.grid1 {
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+&-left-text1 {
+  font-weight: 700;
+  border-bottom: 0.5px solid green;
+  color: black;
+  opacity: 1;
+  margin-left: 10px;
+  font-size: 14px;
+  border-right: 0.5px solid green;
+}
+
+&-left-text2 {
+  border-right: 0.5px solid green;
+  font-size: 13px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+}
+
+&-right-text1 {
+  font-weight: 700;
+  border-bottom: 0.5px solid green;
+  color: black;
+  opacity: 1;
+  font-size: 14px;
+  padding-left: 10px;
+}
+
+&-right-text2 {
+  font-size: 13px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+}
+
 </style>
