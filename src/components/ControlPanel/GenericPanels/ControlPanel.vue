@@ -19,14 +19,15 @@
           :NoDataLabel="values.label"
         />
         <!-- </div> -->
+        <div class="disabled_alt">
         <toggle
           v-if="values.type === 'toggle'"
           @change="updatePayload($event, values.key)"
-        />
+        /></div>
 
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->
-          <div class="d-flex">
+          <div class="d-flex disabled_alt">
             <BaseCheckbox
              :currentValue="payload.target.national"
               @input="
@@ -39,7 +40,7 @@
             <p class="check-label ml-1">National</p>
           </div>
           <!-- SDG Target here -->
-          <div class="d-flex ml-3">
+          <div class="d-flex ml-3 disabled_alt">
             <BaseCheckbox
               :currentValue="payload.target.sdg"
               @input="

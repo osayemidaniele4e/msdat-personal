@@ -31,14 +31,14 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outputs</h5>
-          <div class="mb-2">
-            <b-list-group-item><b>Health Service Access</b></b-list-group-item>
+          <!-- <div class="mb-2"> -->
+            <!-- <b-list-group-item><b>Health Service Access</b></b-list-group-item> -->
             <router-link to="/dashboard/Health_Service_Access" target="_blank">
               <b-list-group-item>Health Service Access</b-list-group-item>
             </router-link>
-          </div>
-          <div class="mb-2">
-            <b-list-group-item><b>Health Service Uptake</b></b-list-group-item>
+          <!-- </div> -->
+          <!-- <div class="mb-2"> -->
+            <!-- <b-list-group-item><b>Health Service Uptake</b></b-list-group-item> -->
             <a
               href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
@@ -51,14 +51,14 @@
             >
               <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
             >
-          </div>
-          <div class="mb-2">
-            <b-list-group-item
+          <!-- </div> -->
+          <!-- <div class="mb-2"> -->
+            <!-- <b-list-group-item
               ><b>Surveillance Dashboards</b></b-list-group-item
-            >
+            > -->
             <router-link to="/coming-soon/health_surveillance"
               ><b-list-group-item
-                >Health Surveillance</b-list-group-item
+                >Disease Surveillance</b-list-group-item
               ></router-link
             >
             <!-- <router-link to="#"
@@ -66,7 +66,7 @@
                 >RTA Surveillance</b-list-group-item
               ></router-link
             > -->
-          </div>
+          <!-- </div> -->
         </b-list-group>
       </div>
       <div class="col mb-3">

@@ -46,7 +46,7 @@
       <template v-if="customDashboard === false">
         <li
           class="
-            mb-0
+            mb-1
             tab-link
             h6
             text-black-50
@@ -208,14 +208,14 @@ $primary: #2b5d5b;
 }
 
 .border-b {
-  border-bottom: 0.5px solid #2B5D5B;
+  border-bottom: 0.5px solid #759b99;
 }
 .bg-tab-color {
   color: #515151;
 }
 
 .tabs-sec{
-  max-width: 1200px;
+  // max-width: 1200px;
 }
 
 .tab-link.active {

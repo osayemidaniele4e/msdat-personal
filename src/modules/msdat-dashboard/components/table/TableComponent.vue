@@ -90,8 +90,8 @@
 
           <tr class="" v-if="dataArray.length > 1">
             <td class="border-0"></td>
-            <td colspan="30" class="border-0">
-              <h6 class="text-uppercase font-weight-bold">Related Indicators</h6>
+            <td colspan="30" class="border-0 heading_alt">
+              <h6 class="font-weight-bold mb-0">Related Indicators</h6>
             </td>
           </tr>
 
@@ -119,7 +119,7 @@
             </TableDataRow>
 
             <!-- This creates a space between the related indicators table rows -->
-            <div :key="index" class="py-2"></div>
+            <div :key="index" class=""></div>
           </template>
         </tbody>
       </table>
@@ -350,6 +350,9 @@ export default {
 }
 
 table.table {
+  td.heading_alt{
+    padding: 0.5rem
+  }
   // selected data source
   .table-active {
     background-color: #2b5d5b;

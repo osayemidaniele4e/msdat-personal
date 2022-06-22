@@ -32,7 +32,7 @@
         />
       </div>
 
-      <div class="row no-gutters">
+      <div class="row no-gutters" style="padding-bottom: 4rem">
         <div class="col" :class="[sideControl ? 'col-10' : '']">
           <div v-if="buttonToggle" class="d-flex justify-content-end pt-1 px-1">
             <SubCardToggleButton

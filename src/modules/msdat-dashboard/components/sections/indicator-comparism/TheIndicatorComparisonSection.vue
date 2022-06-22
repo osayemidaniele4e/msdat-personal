@@ -21,12 +21,12 @@
           <!-- the indicator property is eith an object when alone
         or an array when compared aganist another  -->
           <h6 class="work-sans" v-if="!values.indicator.length">
-            Comparison Of <b>{{ values.indicator.short_name }}</b> according to
+           Comparison Of <b>{{ values.indicator.short_name }}</b> according to
             the <b> {{ values.datasource.datasource }} </b> across
             {{ values.compareBy.name }}
           </h6>
           <h6 class="work-sans" v-else>
-            Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
+           Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
             <b> {{ dlGetIndicator(values.indicator[1].id).short_name }} </b>
             according to the
             <b> {{ values.datasource.datasource }} </b> across
