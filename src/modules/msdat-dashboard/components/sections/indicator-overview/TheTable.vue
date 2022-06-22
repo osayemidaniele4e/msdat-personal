@@ -32,7 +32,7 @@
     <base-modal :showModal="showModal" size="lg">
       <!-- <template v-if="DisplayType === 'indicator'"> -->
       <template #title>
-        <h5>{{ modalTitle }}</h5>
+        <div class="modal-title">{{ modalTitle }}</div>
       </template>
       <IndicatorMetaDataModal
         v-if="showModal && DisplayType === 'indicator'"
@@ -265,4 +265,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.modal-title{
+    font-weight: 700;
+color: black;
+opacity: 1;
+margin-left: 10px;
+font-size: 14px;
+}
+
+</style>
