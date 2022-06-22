@@ -12,6 +12,7 @@
         mx-lg-5 mx-3
         cursor-pointer
         main
+        tabs-sec
       "
     >
       <template v-if="customDashboard === true">
@@ -48,8 +49,6 @@
             mb-0
             tab-link
             h6
-            py-2
-            pt-4
             text-black-50
             bg-tab-color
             work-sans
@@ -209,14 +208,37 @@ $primary: #2b5d5b;
 }
 
 .border-b {
-  border-bottom: 2px solid #ebebeb;
+  border-bottom: 0.5px solid #2B5D5B;
 }
 .bg-tab-color {
   color: #515151;
 }
 
+.tabs-sec{
+  max-width: 1200px;
+}
+
 .tab-link.active {
-  border-bottom: 2.5px solid $primary;
+  // border-bottom: 2.5px solid $primary;
+  border: 1.0px solid #2B5D5B;
+  background-color: #2B5D5B;
+  color: white !important;
+  padding: 20px;
+}
+
+.tab-link {
+  // border-bottom: 2.5px solid $primary;
+  border: 1.0px solid #007d53;
+  background-color: white;
+  color: black !important;
+  padding: 20px;
+  height: 12px;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  font-weight: 200;
 }
 
 .cursor-pointer {

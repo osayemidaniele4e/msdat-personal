@@ -227,6 +227,24 @@ export default {
       immediate: false,
     },
   },
+
+  async mounted() {
+    console.log('checking');
+    const data = await this.dlQuery({
+      indicator: this.values.indicator.id,
+      datasource: this.values.datasource.id,
+      location: this.values.location.id,
+    });
+    this.chartObject = {};
+    const formattedData = this.formatDataToSeriesLineFormat(data);
+    this.chartObject = this.formatToHighChartOptionForLine(
+      formattedData,
+      this.visualization,
+      this.values,
+    );
+
+    this.loading = false;
+  },
 };
 </script>
 

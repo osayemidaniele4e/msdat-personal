@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <base-overlay :show="loader">
+  <div>
+    <base-overlay :show="loader" class="main">
       <base-sub-card
         showControls
         v-if="Object.keys(controlPanelProps).length"
@@ -21,7 +21,7 @@
             {{ controlPanelProps.year }}
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="chart" />
+        <BarChart ref="BaseChart" :chartOptions="chart" class="barchart" />
       </base-sub-card>
     </base-overlay>
   </div>
@@ -173,6 +173,8 @@ export default {
               name: stateObject.name,
               data: sortedData,
             });
+
+            console.log('chartSeries', chartSeries);
             this.formatToHighChart(chartSeries);
           } else {
             // already know the zonal levels/parent of all the value
@@ -204,8 +206,10 @@ export default {
             );
             newChart.unshift();
             // add zonal series to top of main the series
-            // chartSeries.unshift(zonalZee);
-            this.formatToHighChart(newChart);
+            chartSeries.unshift(zonalZee);
+            this.formatToHighChart(chartSeries);
+
+            console.log('chartSeries', chartSeries);
           }
         }
         // Plot for LGAs
@@ -218,3 +222,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.barchart{
+  height: 49.5vh;
+}
+
+</style>

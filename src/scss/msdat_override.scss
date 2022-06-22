@@ -15,17 +15,37 @@ span.multiselect__tag {
   max-width: 45%;
 }
 span.multiselect__option--selected.multiselect__option--highlight {
+  background-color: #007d53;
+  color: white  !important;
+  
+}
+
+span.multiselect__option--selected{
+  background-color: #007d53;
+  color: white  !important;
+}
+
+// hover for select options
+span.multiselect__option--highlight{
   background-color: #e0f3f3;
+}
+
+
+span.multiselect__option multiselect__option--highlight multiselect__option--selected{
+  background-color: #000
 }
 
 // span.multiselect__tags-wrap{
 //   background-color: purple;
 // }
 
+
 span.multiselect__option--disabled{
   background-color: #696969 !important;
   color: white  !important;
 }
+
+
 
 // span.topicHead{
 //   background-color: black;
@@ -87,6 +107,47 @@ ul {
   background-color: #085856;
   padding-left: 0.25rem;
 }
+
+#stateBarChartComponent{
+  button {
+    background-color: #348481;
+    color: aliceblue;
+    height: 2rem;
+    padding-left: 0.5rem ;
+    padding-right: 0.5rem ;
+    display: flex;
+    align-items: center;
+    transition: all 0.25s ease-in;
+    // left: 60%;
+    margin-top: 0.3rem;
+    margin-left: 0.2rem;
+  }
+}
+
+#stateBarChartComponent > button:hover{
+  background-color: #085856;
+  padding-left: 0.25rem;
+}
+
+
+#indicatorMeta{
+  .nav-item {
+  background-color: white;
+   color: #559895;
+   border: 1px solid #559895;
+   border-radius: 5px;
+   margin: 10px;
+  }
+
+  .nav-pills .active {
+    background-color: #007d53 !important;
+    color: white;
+    border: 1px solid #007d53;
+  }
+
+}
+
+
 // div.temp {
 //   button.toggle_btn {
 //     display: none;

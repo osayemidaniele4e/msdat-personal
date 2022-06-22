@@ -27,11 +27,13 @@ export default {
         'group-values': 'options',
         'group-label': 'datasource',
         multiple: true,
+        max: 3,
         'preselect-first': true,
         'track-by': 'id',
         label: 'item',
         'allow-empty': false,
       },
+
       label: 'Data source(s)',
       key: 'datasource',
       options: [],
