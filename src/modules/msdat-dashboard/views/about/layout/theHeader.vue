@@ -105,7 +105,7 @@
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button class="btn btn-outline-light rounded-0">
+                <button class="btn btn-outline-primary rounded-0">
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
