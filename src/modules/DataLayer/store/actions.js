@@ -14,17 +14,20 @@ export default {
   // clear all data in dexie database after 1week from value
   async CLEAR_DB() {
     // const lastDate = localStorage.getItem('dataTimestamp');
-    const lastDate = '2022-04-20T11:54:13.824Z';
+    const cleared = localStorage.getItem('defaultClear');
+    const lastDate = '2022-06-20T07:00:00.824Z';
     if (lastDate) {
       const lastDateMoment = moment(lastDate);
       const now = moment();
       const diff = now.diff(lastDateMoment, 'days');
-      if (diff > 7) {
-        console.log('diff', diff);
-        //     await DB.clear();
-        //     console.log('Database cleared');
-        //     localStorage.setItem('dataTimestamp', moment().format());
-        //     Promise.resolve(true);
+      console.log(diff);
+      if (diff > 2 && (cleared === false || cleared === null)) {
+        alert('DATA CLEARING SEQUENCE STARTED, please click okay to continue');
+        localStorage.setItem('dataTimestamp', moment().format());
+        localStorage.setItem('defaultClear', true);
+        await DB.delete();
+        window.location.reload();
+        Promise.resolve(true);
       }
     }
     Promise.resolve(false);

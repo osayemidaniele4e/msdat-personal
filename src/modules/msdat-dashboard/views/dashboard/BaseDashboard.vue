@@ -102,15 +102,15 @@
             </div>
             <!-- control Panels ends here  -->
 
-          <div class="container-fluid lessVisible">
+          <div class="container-fluid lessVisible mb-5">
             <template
               v-for="(controlPanel, index) in $store.state.MSDAT_STORE
                 .controlConfig"
             >
-              <slot
+              <!-- <slot
                 :name="`section-before-${index}`"
                 v-if="index === selectedPanel"
-              ></slot>
+              ></slot> -->
               <!-- ========= -->
               <div
                 class="row observable"

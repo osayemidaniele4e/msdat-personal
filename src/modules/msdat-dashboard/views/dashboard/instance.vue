@@ -43,7 +43,7 @@
       </template>
 
       <template v-slot:section-1="{ payload, controlIndex }">
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>

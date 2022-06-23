@@ -26,7 +26,7 @@ export default {
       fontWeight: 'normal',
     },
   },
-  credit: {
+  credits: {
     enabled: false,
   },
   // colorAxis: {

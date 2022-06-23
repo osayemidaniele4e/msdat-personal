@@ -59,19 +59,21 @@ export default {
       ChartOptions: {
         xAxis: {
           ...defaultOptions.xAxis,
+          gridLineWidth: 0,
         },
         tooltip: {
           shared: true,
         },
         yAxis: {
           min: 0,
-          plotLines: [
-            {
-              value: 49,
-              color: '#999',
-              width: 3,
-            },
-          ],
+          gridLineWidth: 0,
+          // plotLines: [
+          //   {
+          //     value: 49,
+          //     color: '#999',
+          //     width: 3,
+          //   },
+          // ],
         },
         chart: {
           ...defaultOptions.chart,
