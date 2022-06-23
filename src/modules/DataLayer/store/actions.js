@@ -12,6 +12,7 @@ export default {
     Promise.resolve(true);
   },
   // clear all data in dexie database after 1week from value
+  // !! RESTRUCTURE THE CODEBASE TO USE LAST UPDATED VALUE INSTEAD OF HARDCODED DATE
   async CLEAR_DB() {
     // const lastDate = localStorage.getItem('dataTimestamp');
     const cleared = localStorage.getItem('defaultClear');

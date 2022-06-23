@@ -7,7 +7,6 @@
         list-unstyled
         step-sections
         mb-0
-        justify-content-between
         border-b
         mx-lg-5 mx-3
         cursor-pointer
@@ -46,7 +45,7 @@
       <template v-if="customDashboard === false">
         <li
           class="
-            mb-1
+          mb-0
             tab-link
             h6
             text-black-50
@@ -220,10 +219,10 @@ $primary: #2b5d5b;
 
 .tab-link.active {
   // border-bottom: 2.5px solid $primary;
-  border: 1.0px solid #2B5D5B;
+  border: 1px solid #2B5D5B;
   background-color: #2B5D5B;
   color: white !important;
-  padding: 20px;
+  // padding: 20px;
 }
 
 .tab-link {
@@ -231,14 +230,18 @@ $primary: #2b5d5b;
   border: 1.0px solid #007d53;
   background-color: white;
   color: black !important;
-  padding: 20px;
-  height: 12px;
+  padding: 1rem;
+  height: 1rem;
   max-width: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px;
+  margin: 10px 5px;
   font-weight: 200;
+  font-size: 1rem;
+  &:first-child{
+    margin-left: 0;
+  }
 }
 
 .cursor-pointer {
