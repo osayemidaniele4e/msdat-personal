@@ -300,7 +300,7 @@ export default {
         {
           name: 'Population estimate',
           indicatorId: 63,
-          source: 'DSB',
+          source: 'NPC',
           sourceId: 19,
           year: 2018,
           value: 0,
@@ -322,7 +322,7 @@ export default {
         {
           name: 'Birth registration (Under Age 1)',
           indicatorId: 68,
-          source: 'DSB',
+          source: 'NPC',
           sourceId: 19,
           year: 2018,
           value: 0,
