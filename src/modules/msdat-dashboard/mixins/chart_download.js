@@ -18,7 +18,10 @@ export default {
       }
       switch (e.type) {
         case 'svg':
-          this.$refs.BaseChart.$children[0].chart.downloadSVG();
+          this.$refs.BaseChart.$children[0].chart.exportChart({
+            type: 'image/svg+xml',
+            filename,
+          });
           break;
         case 'png':
           this.$refs.BaseChart.$children[0].chart.exportChart({
@@ -65,7 +68,10 @@ export default {
       }
       switch (e.type) {
         case 'svg':
-          this.$refs.BaseMap.$children[0].chart.downloadSVG();
+          this.$refs.BaseMap.$children[0].chart.exportChart({
+            type: 'image/svg+xml',
+            filename,
+          });
           break;
         case 'png':
           this.$refs.BaseMap.$children[0].chart.exportChart({
@@ -86,10 +92,11 @@ export default {
           });
           break;
         case 'csv':
-          this.$refs.BaseMap.$children[0].chart.exportChart({
-            type: 'application/csv',
-            filename,
-          });
+          // !!problem
+          // this.$refs.BaseMap.$children[0].chart.exportChart({
+          //   type: 'application/csv',
+          //   filename,
+          // });
           break;
         case 'xls':
           this.$refs.BaseMap.$children[0].chart.downloadXLS();

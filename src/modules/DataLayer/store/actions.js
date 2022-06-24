@@ -11,21 +11,21 @@ export default {
     console.log('Database deleted');
     Promise.resolve(true);
   },
-  // clear all data in dexie database after 1week from value
-  // !! RESTRUCTURE THE CODEBASE TO USE LAST UPDATED VALUE INSTEAD OF HARDCODED DATE
+  /**
+   * Clear indexdb after 10 days from last data update
+   */
   async CLEAR_DB() {
-    // const lastDate = localStorage.getItem('dataTimestamp');
-    const cleared = localStorage.getItem('defaultClear');
-    const lastDate = '2022-06-20T07:00:00.824Z';
+    const lastDate = localStorage.getItem('dataTimestamp');
     if (lastDate) {
       const lastDateMoment = moment(lastDate);
       const now = moment();
       const diff = now.diff(lastDateMoment, 'days');
-      console.log(diff);
-      if (diff > 2 && (cleared === false || cleared === null)) {
-        alert('DATA CLEARING SEQUENCE STARTED, please click okay to continue');
+      // eslint-disable-next-line no-restricted-globals
+      // eslint-disable-next-line no-alert
+      // eslint-disable-next-line no-restricted-globals
+      if (diff === 10 && confirm('Data is older than 10 days. Clear data?')) {
         localStorage.setItem('dataTimestamp', moment().format());
-        localStorage.setItem('defaultClear', true);
+        localStorage.removeItem('defaultClear');
         await DB.delete();
         window.location.reload();
         Promise.resolve(true);
