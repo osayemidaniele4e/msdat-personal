@@ -21,8 +21,6 @@ export default {
       const now = moment();
       const diff = now.diff(lastDateMoment, 'days');
       // eslint-disable-next-line no-restricted-globals
-      // eslint-disable-next-line no-alert
-      // eslint-disable-next-line no-restricted-globals
       if (diff === 10 && confirm('Data is older than 10 days. Clear data?')) {
         localStorage.setItem('dataTimestamp', moment().format());
         localStorage.removeItem('defaultClear');

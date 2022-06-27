@@ -46,6 +46,7 @@ export default {
       //   ],
       switchValues: '',
       bootstrapFormattedOptions: [],
+      selecselectedOptionsted: [],
       selected: [],
       // selectedOptions: [],
     };

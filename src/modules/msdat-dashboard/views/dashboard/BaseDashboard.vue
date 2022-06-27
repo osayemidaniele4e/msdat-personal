@@ -273,6 +273,9 @@ export default {
   },
 
   methods: {
+    log(event, index, index2) {
+      console.log('log function =>', event, index, index2);
+    },
 
     changeKey(n) {
       this.sectionKey = n;
