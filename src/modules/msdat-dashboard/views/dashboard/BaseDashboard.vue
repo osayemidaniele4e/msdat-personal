@@ -40,6 +40,7 @@
                 >
                   <template v-slot:default>
                     <ControlBase
+
                     @selectedKey="changeKey($event)"
                       v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                       :key="index"
