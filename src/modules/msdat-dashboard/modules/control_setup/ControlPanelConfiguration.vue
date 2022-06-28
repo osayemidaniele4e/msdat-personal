@@ -56,14 +56,15 @@ export default {
     // get latest available years when indicator , datasource or location are changed
     'payload.indicator': {
       async handler() {
-        const availableYears = await this.getAvailableYears();
+        // const availableYears = await this.getAvailableYears();
         const availableDS = await this.getAvailableDataSources();
-        this.SETUP_CONTROL_OPTIONS1({
-          groupIndex: this.groupIndex,
-          panelIndex: this.controlIndex,
-          key: 'year',
-          values: availableYears,
-        });
+        // this.SETUP_CONTROL_OPTIONS1({
+        //   groupIndex: this.groupIndex,
+        //   panelIndex: this.controlIndex,
+        //   key: 'year',
+        //   values: availableYears,
+        // });
+        // Funny how this doesn't update
         this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
