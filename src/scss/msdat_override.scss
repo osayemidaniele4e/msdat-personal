@@ -43,6 +43,8 @@ span.multiselect__option multiselect__option--highlight multiselect__option--sel
 span.multiselect__option--disabled{
   background-color: #696969 !important;
   color: white  !important;
+  // override the default pointe-events: none;
+  // pointer-events: auto;
 }
 
 
