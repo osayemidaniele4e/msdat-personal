@@ -164,6 +164,7 @@ export default {
      *
      */
     initialCSS(multiselectID) {
+      console.log('agba =>', multiselectID);
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
         const iterable = specificPart.parentNode.nextElementSibling.children[0].children;
