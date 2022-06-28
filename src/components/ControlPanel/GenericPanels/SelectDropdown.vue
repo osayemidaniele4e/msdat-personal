@@ -1,7 +1,4 @@
 <template>
-  <!-- Label to show when there is no available data as requested
-  for by chiamaka on the 2-12-2021 during msdat meeting -->
-    <!--  -->
   <multiselect
     :id="formattedID"
     v-model="selected"
@@ -102,6 +99,7 @@ export default {
   watch: {
     options: {
       handler(newValue) {
+        console.log('agba wo 1 =>', newValue, this.options);
         if (this.multiSelectProps['preselect-first']) {
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring

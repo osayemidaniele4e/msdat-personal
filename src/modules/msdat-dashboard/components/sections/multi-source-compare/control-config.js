@@ -8,7 +8,7 @@ const indicatorSetConfig = [
       'group-label': 'program_area',
       label: 'full_name',
     },
-    label: 'indicator',
+    label: 'indicator(s)',
     key: 'indicator',
     options: [],
   },

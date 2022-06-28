@@ -54,7 +54,7 @@ export default {
     {
       type: 'dropdown',
       class: ['col-md-6'],
-      label: 'indicator',
+      label: 'indicator(s)',
       key: 'indicator',
       options: [],
       dropdownProps: {

@@ -189,7 +189,6 @@ export default {
     // function to get data_sources based on indicator
     async getDataSourceByIndicator(value) {
       const indicatorId = value || 1;
-      console.log(indicatorId);
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
       return dataSourceAvailable.data.datasources;
     },

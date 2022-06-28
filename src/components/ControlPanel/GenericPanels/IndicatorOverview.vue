@@ -1,7 +1,7 @@
 <template>
     <div class="row">
     <div class="col-md-4">
-      <label class="h6 text-uppercase work-sans">Indicator</label>
+      <label class="h6 text-uppercase work-sans">Indicator(s)</label>
 
       <div>
         <multiselect

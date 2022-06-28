@@ -89,18 +89,22 @@
       </div> -->
       </template>
     </MSDAT>
+    <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
   </div>
 </template>
 
 <script>
 import { mapMutations } from 'vuex';
+import moment from 'moment';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import config from './config/dashboard_config';
+import ClearDBModal from './ClearDBModal.vue';
 
 export default {
   name: 'DynamicDashboard',
   components: {
     MSDAT: instance,
+    ClearDBModal,
   },
   data() {
     return {
@@ -112,13 +116,28 @@ export default {
       url3: 'https://public.tableau.com/views/Financedashboard_16472462810160/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
+      showClearDataModal: false,
     };
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    async clearData() {
+      const lastDate = localStorage.getItem('dataTimestamp');
+      if (lastDate) {
+        const lastDateMoment = moment(lastDate);
+        const now = moment();
+        const diff = now.diff(lastDateMoment, 'days');
+        // eslint-disable-next-line no-restricted-globals
+        if (diff === 10) {
+          this.showClearDataModal = true;
+          // await this.$store.dispatch('DL/CLEAR_DB');
+        }
+      }
+      Promise.resolve(false);
+    },
   },
   async mounted() {
-    await this.$store.dispatch('DL/CLEAR_DB');
+    this.clearData();
   },
   created() {
     // this.CLEAR_CONTROL_PANEL();
