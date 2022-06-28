@@ -99,7 +99,6 @@ export default {
   watch: {
     options: {
       handler(newValue) {
-        console.log('agba wo 1 =>', newValue, this.options);
         if (this.multiSelectProps['preselect-first']) {
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring
