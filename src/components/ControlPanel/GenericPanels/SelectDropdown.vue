@@ -1,9 +1,9 @@
 <template>
   <!-- Label to show when there is no available data as requested -->
+    <!-- @open="initialCSS" -->
   <multiselect
     :id="formattedID"
     v-model="selected"
-    @open="initialCSS"
     :options="options"
     searchable
     close-on-select
