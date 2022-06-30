@@ -1,6 +1,6 @@
 <template>
   <!-- Label to show when there is no available data as requested -->
-     <!-- @open="initialCSS" -->
+    <!-- @open="initialCSS" -->
   <multiselect
     :id="formattedID"
     v-model="selected"
