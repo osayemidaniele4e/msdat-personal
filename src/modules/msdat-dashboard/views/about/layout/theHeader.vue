@@ -154,7 +154,7 @@
               @click="toggleOption = !toggleOption"
               icon="three-dots-vertical"
               font-scale="1.5"
-              class=""
+              class="mob"
             />
             <header-option
               v-if="toggleOption"
@@ -294,6 +294,10 @@ button {
 
 .main {
   display: inherit;
+}
+
+.mob{
+  display: none;
 }
 
 .main-sub-text {
@@ -450,6 +454,10 @@ header#the-header {
     display: none;
   }
 
+  .mob{
+    display: inherit;
+  }
+
   .main-text {
     display: none;
   }
@@ -535,6 +543,10 @@ header#the-header {
     display: none;
   }
 
+  .mob{
+    display: inherit;
+  }
+
   .main-text {
     display: none;
   }
@@ -618,6 +630,9 @@ header#the-header {
 
 /* MEDIUM */
 @media (min-width: 768px) and (max-width: 992px) {
+  .mob{
+    display: inherit;
+  }
   .main-text {
     display: none;
   }
