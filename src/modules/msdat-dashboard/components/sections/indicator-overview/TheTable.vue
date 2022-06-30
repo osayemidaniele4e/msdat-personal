@@ -10,8 +10,8 @@
       >
         <template #title>
           <p class="work-sans mb-0 line-height">
-            <b>{{ values.indicator.short_name }}</b> And Related Indicators With
-            Years Of Latest Value Across The <b>Country</b>
+            <b>{{ values.indicator.short_name }}</b>
+           and related indicators (with year of latest values) across available data sources.
           </p>
         </template>
         <TableComponent

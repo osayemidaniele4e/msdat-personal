@@ -10,12 +10,10 @@
         <div class="text1">Indicator name</div>
         <div class="text2">{{ dlGetIndicator(indicatorSelectedID).full_name }}</div>
       <p>
-
           <p>
         <div class="text1">Indicator short name</div>
         <div class="text2">{{ dlGetIndicator(indicatorSelectedID).short_name }}</div>
       <p>
-
           <p>
         <div class="text1">Indicator definition</div>
         <div class="text2">
@@ -31,7 +29,6 @@
             : ''
           }}</div>
       <p>
-
              <p>
         <div class="text1">Measurement</div>
         <div class="text2">
@@ -205,7 +202,6 @@
             </div>
           </span>
         </p>
-
     </div>
 
     </b-tab>

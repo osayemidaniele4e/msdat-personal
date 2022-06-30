@@ -40,6 +40,7 @@
                 >
                   <template v-slot:default>
                     <ControlBase
+
                     @selectedKey="changeKey($event)"
                       v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                       :key="index"
@@ -52,6 +53,7 @@
                       <template v-if="!Array.isArray(control.setup[0])">
                         <ControlPanel
                           @data:options="log($event, index)"
+                          :label="modifyLabel(control.label)"
                           :setup="control.setup"
                           :controlIndex="index"
                           :defaultIndicator="defaultIndicator"
@@ -80,6 +82,7 @@
                               <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
                               <ControlPanel
                                 @data:options="log($event, index, index2)"
+                                :label="modifyLabel(control.label, index2)"
                                 :setup="item"
                                 :groupIndex="index2"
                                 :controlIndex="index"

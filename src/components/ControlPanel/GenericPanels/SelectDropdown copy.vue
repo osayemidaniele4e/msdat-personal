@@ -1,5 +1,7 @@
 <template>
-  <!-- Label to show when there is no available data as requested -->
+  <!-- Label to show when there is no available data as requested
+  for by chiamaka on the 2-12-2021 during msdat meeting -->
+    <!--  -->
   <multiselect
     :id="formattedID"
     v-model="selected"
@@ -14,7 +16,7 @@
     data-visted="notVisited"
     deselectLabel=""
     >
-    <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
+    <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}s</span>
     <!---
       START
       THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
@@ -38,6 +40,7 @@
         {{props.option.full_name}}
         </div>
       </template>
+
     </template>
     <!---
     END
@@ -47,6 +50,7 @@
     </multiselect
   >
 </template>
+
 <script>
 import { has } from 'lodash';
 
@@ -67,7 +71,6 @@ export default {
       },
     },
     formattedID() {
-      console.log('hey');
       if (this.multiSelectProps['group-values']) {
         if (this.multiSelectProps['group-label'] === 'datasource') {
           return 'groupedSources';
@@ -99,7 +102,6 @@ export default {
   watch: {
     options: {
       handler(newValue) {
-        console.log('hhi', newValue);
         if (this.multiSelectProps['preselect-first']) {
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring
@@ -185,9 +187,12 @@ export default {
       }
     },
   },
+
 };
 </script>
+
 <style lang="scss" scoped>
+
 .down-caret {
   width: 0;
   height: 0;
@@ -200,12 +205,15 @@ export default {
   transform: rotate(0deg);
   transition: all .25s ease-in;
 }
+
 .open-caret {
     transform: rotate(180deg);
     transition: all .25s ease-out;
   }
+
 li.multiselect__element{
   border-bottom: 1px solid #0000;
   transition: all 3.5 ease-in
 }
+
 </style>
