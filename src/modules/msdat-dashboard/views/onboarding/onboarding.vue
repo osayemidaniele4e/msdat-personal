@@ -35,6 +35,7 @@ import Carousel from './carousel.vue';
 import Modal from './modal.vue';
 
 const aboutImg = require('./assets/About-Dashboard-image.svg');
+// const launchImg = require('./assets/launch-new.png');
 
 export default {
   components: {
@@ -44,6 +45,7 @@ export default {
   data() {
     return {
       aboutImg,
+      // launchImg,
       onboarding1st: true,
       background: true,
     };

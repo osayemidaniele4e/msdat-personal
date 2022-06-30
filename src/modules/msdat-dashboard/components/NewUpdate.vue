@@ -1,12 +1,17 @@
 <template>
   <div class="new_update">
-    <div class="icon_space">hello</div>
-    <div class="p-4">
+    <div class="icon_space">
+      <img src="../assets/update1.svg" alt="update" class="img-fluid" />
+    </div>
+    <div class="p-4 position-relative">
+      <span class="icon_cancel" @click="onClose">X</span>
       <h4>New Update!</h4>
       <p>Introducing the MSDAT 2.0 Platform with up to 9 sub-dashboards</p>
-      <p>What's new? <a href="http://" target="_blank" rel="noopener noreferrer">Click here</a></p>
+      <!-- <p>What's new? <a href="http://" target="_blank" rel="noopener noreferrer">Click here</a></p> -->
       <div class="w-100 text-right">
-        <button>GO BACK TO MSDAT 1.5</button>
+        <a href="https://msdat.fmohconnect.gov.ng/" target="_blank" rel="noopener noreferrer">
+          <button class="btn btn-sm py-2">GO BACK TO MSDAT 1.5</button>
+        </a>
       </div>
     </div>
   </div>
@@ -15,19 +20,28 @@
 <script>
 export default {
   name: 'BaseUpdate',
+  props: {
+    showPopUp: {
+      type: Boolean,
+      default: false,
+    },
+  },
   // data() {
   //   return {};
   // },
-  // methods: {},
+  methods: {
+    onClose() {
+      this.$emit('closePopUp');
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 div.new_update {
-  top: 6px;
-  left: 178px;
+  transition: all 0.5s ease-in-out;
   max-width: 634px;
-  height: 229px;
+  height: 190px;
   /* UI Properties */
   background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 0px 5px 10px #00000029;
@@ -36,7 +50,7 @@ div.new_update {
   z-index: 5000;
   position: absolute;
   top: 1rem;
-  right: 1rem;
+  right: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -48,12 +62,26 @@ div.new_update {
   p {
     color: #111110;
     font-size: 22px;
+    a {
+      color: #111110;
+      text-decoration: underline;
+    }
   }
   button {
     font-size: 13px;
     background-color: #ffffff;
-    box-shadow: 0px 7px 15px #00000033;
+    // box-shadow: 0px 7px 15px #00000033;
     border: 1px solid #007d53;
+    color: #111110;
+    &:hover {
+      background-color: #007d53;
+      color: white;
+    }
+  }
+  span.icon_cancel {
+    display: flex;
+    justify-content: end;
+    cursor: pointer;
   }
 }
 div.icon_space {
@@ -62,5 +90,7 @@ div.icon_space {
   border-radius: 5px 0px 0px 5px;
   height: 100%;
   width: 30%;
+  display: flex;
+  align-items: center;
 }
 </style>
