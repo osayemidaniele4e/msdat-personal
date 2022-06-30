@@ -66,6 +66,7 @@
             <b-sidebar id="sidebar-1" title="" right shadow>
               <SideBar />
             </b-sidebar>
+
           </div>
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
@@ -96,11 +97,13 @@
           >
             <b-nav class="h-100 align-items-center main">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
+                 <a href="https://dhprs.ehealth4.us/" class="nav-link">Home</a>
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
               <router-link to="/coming-soon" class="nav-link"
                 >Create New Dashboard</router-link
               >
+          <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link">Go back to MSDAT 1.5</a>
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
@@ -126,7 +129,7 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-
+<!--
               <router-link to="/login" v-if="!userName" class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill
                 >&nbsp;Login/Register</router-link
@@ -134,7 +137,7 @@
               <router-link to="/login" v-else class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
                 out</router-link
-              >
+              > -->
             </b-nav>
             <b-icon
               @click="toggleOption = !toggleOption"
@@ -147,6 +150,12 @@
               class="mob-grid-icon"
               v-b-toggle.sidebar-1
             ></b-icon>
+                  <b-icon
+              @click="toggleOption = !toggleOption"
+              icon="three-dots-vertical"
+              font-scale="1.5"
+              class=""
+            />
             <header-option
               v-if="toggleOption"
               v-on:showContact="contactBtn = true"
@@ -154,6 +163,7 @@
             />
           </div>
         </b-col>
+
       </b-row>
       <!--  please someone show separate the
       header for the about page from this it going to cause issues  -->
@@ -174,6 +184,7 @@
             Planning Research and Statistics (DHPRS)
           </p>
         </b-col>
+
       </b-row>
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->

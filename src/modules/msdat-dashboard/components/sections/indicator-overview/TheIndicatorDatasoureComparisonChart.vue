@@ -1,34 +1,46 @@
 /* eslint-disable radix */
 <template>
-  <base-overlay :show="loading || notShow">
-    <base-sub-card
-      ref="SubCard"
-      buttonToggle
-      showControls
-      sideControl="true"
-      :dataSourceOptions="dataSourcesOptions"
-      @toggled-button="updateChart($event)"
-      @selected-datasource="onSelectedSource($event)"
-      @toggle-confidence-range="onConfidenceRangeClicked($event)"
-      :dataSourceOptionsSelected="selectedDS"
-      @dropdownTypeSelected="
-        downLoadType($event, {
-          indicator: values.indicator.short_name,
-          datasource: '',
-          year: '',
-        })
-      "
-      v-if="Object.keys(values).length"
-    >
-      <template #title>
-        <p class="work-sans mb-0 line-height">
-          Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators (Time-series
-          comparison of {{ values.indicator.short_name }}) across different data sources.
-        </p>
-      </template>
-      <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
-    </base-sub-card>
-  </base-overlay>
+  <div class="iddc_wrapper">
+    <base-overlay :show="loading || notShow">
+      <base-sub-card
+        ref="SubCard"
+        buttonToggle
+        showControls
+        sideControl="true"
+        :dataSourceOptions="dataSourcesOptions"
+        @toggled-button="updateChart($event)"
+        @selected-datasource="onSelectedSource($event)"
+        @toggle-confidence-range="onConfidenceRangeClicked($event)"
+        :dataSourceOptionsSelected="selectedDS"
+        @dropdownTypeSelected="
+          downLoadType($event, {
+            indicator: values.indicator.short_name,
+            datasource: '',
+            year: '',
+          })
+        "
+        v-if="Object.keys(values).length"
+      >
+        <template #title>
+          <p class="work-sans mb-0 line-height">
+            Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
+            (Time-series comparison of {{ values.indicator.short_name }}) across different data
+            sources.
+          </p>
+        </template>
+        <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
+      </base-sub-card>
+    </base-overlay>
+    <!-- <div class="no_data">
+      <img
+        :src="require('@/assets/no-data/No_Available_Data.svg')"
+        alt="no data"
+        class="img-fluid"
+        height="auto"
+        width="250px"
+      />
+    </div> -->
+  </div>
 </template>
 
 <script>
@@ -57,16 +69,16 @@ export default {
           id: 5,
           datasource: 'NNHS',
         },
-        {
-          id: 9,
-          datasource: 'WHO-GHO',
-        },
+        // {
+        //   id: 9,
+        //   datasource: 'WHO-GHO',
+        // },
       ],
       selectedDS: {},
       notShow: false,
       seriesArray: {},
       years: {},
-      selectDataSource: {},
+      selectDataSource: null,
     };
   },
   props: {
@@ -117,6 +129,14 @@ export default {
       immediate: false,
     },
 
+    selectedDS: {
+      async handler() {
+        console.log('cali');
+      },
+      deep: false,
+      immediate: false,
+    },
+
     'values.datasource': {
       async handler(selectedDataSource) {
         // debugger;
@@ -132,6 +152,7 @@ export default {
         // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
         this.setUpHighChartConfig(seriesArray, years);
+        console.log('seriesArray', seriesArray);
         this.loading = false;
       },
       deep: false,
@@ -159,6 +180,7 @@ export default {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
+          console.log('seriesArray', seriesArray);
         }
 
         this.loading = false;
@@ -180,6 +202,7 @@ export default {
      * @method computeChartPlotLines is from the
      * @mixin formatter
      */
+
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
         tooltip: {
@@ -372,6 +395,8 @@ export default {
         const [firstObject] = this.dataSourcesOptions;
         this.selectedDS = firstObject;
 
+        console.log('calis');
+
         // trying to get the value type
         const datasource = this.dlGetDataSource(firstObject.id);
         const valuetype = this.dlGetValueTypes({
@@ -384,7 +409,9 @@ export default {
           [this.selectedDS],
           valueType,
         );
+        console.log('seriesArray', seriesArray);
         const seriesArr = await this.Reformat(seriesArray);
+
         this.setUpHighChartConfig(seriesArr, years);
       } else {
         console.log('checking confidence 2');
@@ -396,10 +423,14 @@ export default {
         // resetting back to initial state
         this.notShow = true;
         this.loading = true;
-        // const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(this.selectDataSource);
-        // const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-        this.setUpHighChartConfig(seriesArray, years);
+        if (!this.selectDataSource) {
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          this.setUpHighChartConfig(seriesArray, years);
+        } else {
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(this.selectDataSource);
+          this.setUpHighChartConfig(seriesArray, years);
+        }
         this.loading = false;
         this.notShow = false;
         // this.setUpHighChartConfig(this.seriesArray, this.years);
@@ -481,4 +512,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div.iddc_wrapper {
+  position: relative;
+  div.no_data {
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
