@@ -70,7 +70,7 @@
         </router-link>
       </li> -->
       <div class="divider"></div>
-      <li>
+      <li class="d-none">
         <router-link to="/update_log">
           <img src="@/assets/img/icons/ic_update.svg" alt="" />
           <span>See Updates</span>

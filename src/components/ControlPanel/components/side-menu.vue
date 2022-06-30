@@ -121,7 +121,7 @@
         <button
           @click="$router.push('')"
           type="button"
-          class="dotted-btn menu-item d-flex align-items-center mb-3"
+          class="dotted-btn menu-item d-flex align-items-center mb-3 d-none"
         >
           <img src="@/assets/img/Hamburger Icons/ic_update.svg" alt="share" />
           <span class="ml-25">See Updates</span>
