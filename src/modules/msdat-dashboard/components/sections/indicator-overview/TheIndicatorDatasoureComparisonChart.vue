@@ -22,11 +22,11 @@
     >
       <template #title>
         <p class="work-sans mb-0 line-height">
-         Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators (Time-series comparison of {{ values.indicator.short_name }}) across different data sources.
+          Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators (Time-series
+          comparison of {{ values.indicator.short_name }}) across different data sources.
         </p>
       </template>
       <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
-
     </base-sub-card>
   </base-overlay>
 </template>
@@ -127,9 +127,7 @@ export default {
           dataSourceSelected = selectedDataSource;
         }
         // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(
-          dataSourceSelected,
-        );
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
@@ -141,12 +139,8 @@ export default {
         this.loading = true;
         // change get datasource function to API matching indicator to dataSource
         if (this.values.indicator.id !== undefined) {
-          const dataSources = await this.getAvailableDataSources(
-            this.values.indicator.id,
-          );
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(
-            dataSources,
-          );
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -159,12 +153,8 @@ export default {
       async handler() {
         this.loading = true;
         if (this.values.indicator.id !== undefined) {
-          const dataSources = await this.getAvailableDataSources(
-            this.values.indicator.id,
-          );
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(
-            dataSources,
-          );
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -236,12 +226,11 @@ export default {
           },
         },
       };
-      const displayFactor = this.dlGetFactor(
-        this.values.indicator.factor,
-      ).display_factor;
+      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       this.ChartOptions.yAxis.title.text = displayFactor;
     },
     updateChart(e) {
+      console.log('checking');
       this.ChartOptions.chart.type = e;
     },
 
@@ -315,10 +304,7 @@ export default {
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
-        const data = item.map((Object) => [
-          Object.period,
-          Number.parseFloat(Object.value),
-        ]);
+        const data = item.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
         sortedData = data.sort(
           // eslint-disable-next-line radix
           (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
@@ -327,11 +313,7 @@ export default {
         let seriesObject = {};
         if (mappedValueTypes.length > 0) {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
-          seriesObject = this.createSeriesObject(
-            valueType,
-            datasource.datasource,
-            sortedData,
-          );
+          seriesObject = this.createSeriesObject(valueType, datasource.datasource, sortedData);
         } else {
           seriesObject = { name: datasource.datasource, data: sortedData };
         }
@@ -383,6 +365,7 @@ export default {
        */
       this.loading = true;
       if (e === 'ON') {
+        console.log('checking confidence 3');
         const [firstObject] = this.dataSourcesOptions;
         this.selectedDS = firstObject;
 
@@ -401,21 +384,28 @@ export default {
         const seriesArr = await this.Reformat(seriesArray);
         this.setUpHighChartConfig(seriesArr, years);
       } else {
+        console.log('checking confidence 2');
         this.selectedDS = {};
         // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
         // const { seriesArray, years } = await this.toHighChartSeriesSetup(
         //   dataSources,
         // );
-        this.setUpHighChartConfig(this.seriesArray, this.years);
+        // resetting back to initial state
+        this.notShow = true;
+        this.loading = true;
+        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        this.setUpHighChartConfig(seriesArray, years);
+        this.loading = false;
+        this.notShow = false;
+        // this.setUpHighChartConfig(this.seriesArray, this.years);
       }
       this.loading = false;
     },
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(
-        this.values.indicator.id,
-      );
+      const availableDataSource = await this.setDataSourcesDropdown(this.values.indicator.id);
       return availableDataSource;
     },
     // ================================ REFORMATTING DATA =====================================
@@ -485,7 +475,6 @@ export default {
   //   this.setUpHighChartConfig(this.seriesArray, this.years);
   // },
 };
-
 </script>
 
 <style lang="scss" scoped></style>
