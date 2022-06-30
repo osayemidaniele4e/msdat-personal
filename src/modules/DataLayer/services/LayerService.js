@@ -1,6 +1,8 @@
 /* eslint-disable no-await-in-loop */
-import { difference } from 'lodash';
-import { formatDate, getIndicatorsFromApi } from './helper';
+// import { difference } from 'lodash';
+import { take, difference } from 'lodash';
+import Vue from 'vue';
+import { formatDate } from './helper';
 import apiServices from './ApiServices';
 import Database from './database.worker';
 
@@ -12,6 +14,7 @@ const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
 const AVAILABLE_DASHBOARD_INDICATOR = 'availableDashboardIndicator';
+const DASHBOARD_DATESOURCE = 'dashboardDataSource';
 
 export default class DataLayer {
   constructor(store) {
@@ -19,6 +22,7 @@ export default class DataLayer {
     this.store = store;
     this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
     this.defaultIndicators = [7, 5, 8];
+    this.dataSourceList = [];
     this.LOCAL_STORAGE_KEY = 'dataTimestamp';
     this.Changes = [];
   }
@@ -35,12 +39,13 @@ export default class DataLayer {
   setup(object) {
     this.indicatorList = object.dashboardIndicators;
     this.defaultIndicators = object.defaultIndicators;
+    this.dataSourceList = object.dashboardDataSources;
   }
 
   /**
-  * This gets the default indicator from the Indexed DB database
-  * reason for this is to initialize the dashboard with minimum data required
-  */
+   * This gets the default indicator from the Indexed DB database
+   * reason for this is to initialize the dashboard with minimum data required
+   */
   populateIndicatorsForCustomDashboard() {
     if (this.defaultIndicators.length <= 0) {
       this.setAllIndicators();
@@ -63,102 +68,96 @@ export default class DataLayer {
    * data layer initialization
    */
   async init(object) {
-    this.DB = await new Database();
-    this.setup(object);
+    try {
+      this.DB = await new Database();
+      this.setup(object);
+      console.time('fetching');
 
-    const count = await this.DB.data.count();
-    console.log('DB count is', count);
+      // check if data is already initialized iN DEXIE DB
+      // this.DB.getIndicatorDataThatExistInDB()
+      if (this.store.state.DL.indicators.length <= 0) {
+        /** Fetching other endpoints */
+        console.log('fetching other endpoint');
+        /**
+         * The apiServices returns all the and array of response for the
+         * axios call of all other apiEndpoints.getOtherEndpoint
+         * it uses and {Promise.all()}
+         *
+         * @see {@link apiServices.getOtherEndpoint()}
+         */
+        const data = await apiServices.getOtherEndpoint();
 
-    console.time('fetching');
-    if (count <= 0) {
-      this.storeTimestampInLocal();
-      console.log('fetching other endpoint');
-      /**
-       * The apiServices returns all the and array of response for the
-       * axios call of all other apiEndpoints.getOtherEndpoint
-       * it uses and {Promise.all()}
-       *
-       * @see {@link apiServices.getOtherEndpoint()}
-       */
-      const data = await apiServices.getOtherEndpoint();
+        /**
+         * we would also need to created a component
+         * then display the activities  of the service layer
+         * per time
+         */
 
-      /**
-       * we would also need to created a component then display the activities  of the service layer
-       * per time
-       */
-      console.log('storing other endpoint to index db');
+        /**
+         * now initializing other tables in the store from the database directly as against the
+         * previous implementation
+         */
+        this.setDataInStore(data[6].data, DSI);
+        this.setDataInStore(data[0].data, LOCATION);
+        this.setDataInStore(data[1].data, INDICATORS);
+        this.setDataInStore(data[3].data, VALUE_TYPES);
+        this.setDataInStore(data[5].data, FACTORS);
+        this.setDataInStore(data[7].data, DATA_SOURCE);
 
-      await this.DB.storeDataInDBTable(data[6].data, DSI);
-      await this.DB.storeDataInDBTable(data[0].data, LOCATION);
-      await this.DB.storeDataInDBTable(data[1].data, INDICATORS);
-      await this.DB.storeDataInDBTable(data[3].data, VALUE_TYPES);
-      await this.DB.storeDataInDBTable(data[5].data, FACTORS);
-      await this.DB.storeDataInDBTable(data[7].data, DATA_SOURCE);
+        console.log('done');
+        /** End Fetching other endpoints */
 
-      console.log('done');
-
-      console.log('init other Tables');
-
-      await this.initOtherTablesFromDB();
-
-      console.log(' done');
-
-      const dataValue = await getIndicatorsFromApi(this.defaultIndicators);
-      //
-      if (dataValue.length > 0) {
-        for (let index = 0; index < dataValue.length; index += 1) {
-          const element = dataValue[index].data;
-          console.log('store data in db', index);
-          await this.DB.storeDataInDB(element);
-          console.log('Done');
-        }
+        const count = await this.DB.data.count();
+        console.log('DB count is', count);
       }
-      await this.setAvailableDashboardIndicator();
-    } else {
-      await this.initOtherTablesFromDB();
-      await this.DB.initData(this.defaultIndicators);
-      await this.setAvailableDashboardIndicator();
+
+      const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
+      // Check if the current related indicator is already in the database
+      // then no need to check if the Years exist in the database
+      // on th else statement
+      if (difference(this.defaultIndicators, indicatorIDArray).length === 0) {
+        this.storeTimestampInLocal();
+        await this.initDataWithYears(this.defaultIndicators, 8);
+        await this.setAvailableDashboardIndicator();
+      } else {
+        this.storeTimestampInLocal();
+        await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators, 8);
+        await this.setAvailableDashboardIndicator();
+      }
+
+      // await this.initOtherTablesFromDB();
+
+      setTimeout(async () => {
+        //
+        /**
+         * getting the indicators one after the order seems to help the performance
+         * as against getting it all at once
+         */
+
+        /**
+         * also always ensure to use for Loop with async operations
+         * forEach loop doesn't  take asynchronous operations into consideration
+         */
+        console.log('in set timeout');
+        //
+        const alert = this.sweetAlert();
+        await this.initDataWithYears(this.indicatorList);
+        alert.close();
+
+        await this.setAvailableDashboardIndicator();
+        const alert1 = this.sweetAlert();
+        await this.updateData();
+        alert1.close();
+      }, 500);
+
+      /*
+       *This compares then the indicator Array with the indicator Array of the dashboard
+       * */
+      console.timeEnd('fetching');
+      return Promise.resolve(true);
+    } catch (error) {
+      return Promise.reject(error);
     }
-
-    setTimeout(async () => {
-      //
-      const indicatorsExceptDefault = difference(this.indicatorList, this.defaultIndicators);
-      /**
-       * getting the indicators one after the order seems to help the performance
-       * as against getting it all at once
-       */
-
-      /**
-       * also always ensure to use for Loop with async operations
-       * forEach loop doesn't  take asynchronous operations into consideration
-       */
-      console.log('in set timeout');
-      //
-      await this.DB.initData(indicatorsExceptDefault);
-      await this.setAvailableDashboardIndicator();
-      await this.updateData();
-    }, 500);
-
-    /*
-     *This compares then the indicator Array with the indicator Array of the dashboard
-     * */
-    console.timeEnd('fetching');
-    return Promise.resolve(true);
-  }
-
-  async initOtherTablesFromDB() {
-    let dataItem = await this.DB.DSI.toArray();
-    this.setDataInStore(dataItem, DSI);
-    dataItem = await this.DB.location.toArray();
-    this.setDataInStore(dataItem, LOCATION);
-    dataItem = await this.DB.indicators.toArray();
-    this.setDataInStore(dataItem, INDICATORS);
-    dataItem = await this.DB.datasources.toArray();
-    this.setDataInStore(dataItem, DATA_SOURCE);
-    dataItem = await this.DB.valuetypes.toArray();
-    this.setDataInStore(dataItem, VALUE_TYPES);
-    dataItem = await this.DB.factors.toArray();
-    this.setDataInStore(dataItem, FACTORS);
   }
 
   /**
@@ -169,7 +168,6 @@ export default class DataLayer {
   async isDataUpToDate() {
     const serverDate = await apiServices.getLatestDate();
     const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-    console.log({ serverDate, localDate });
     // Check if its more recent than the date in localStorage
     const oldDateObject = new Date(localDate);
     const newDateObject = new Date(serverDate.data);
@@ -223,6 +221,7 @@ export default class DataLayer {
    * @param {string} tableName
    */
   setDataInStore(data, tableName) {
+    // storeDataInDBTable
     this.store.commit('DL/SET_DATA', {
       tableName,
       data,
@@ -240,7 +239,7 @@ export default class DataLayer {
     }
 
     this.store.commit('DL/ADD_DATA', {
-      tableName: 'indicatorsInStore',
+      tableName: AVAILABLE_DASHBOARD_INDICATOR,
       data: indicators,
     });
   }
@@ -251,9 +250,87 @@ export default class DataLayer {
   async setAvailableDashboardIndicator() {
     const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
 
-    const dashboardIndicators = indicatorsInDB.filter(
-      (item) => this.indicatorList.includes(item),
-    );
+    const dashboardIndicators = indicatorsInDB.filter((item) => this.indicatorList.includes(item));
+
+    const dashboardDataSource = this.dataSourceList;
     this.setDataInStore(dashboardIndicators, AVAILABLE_DASHBOARD_INDICATOR);
+    this.setDataInStore(dashboardDataSource, DASHBOARD_DATESOURCE);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getLastDate() {
+    const dataResult = await apiServices.getLastUpdatedDate();
+    console.log('hello', dataResult);
+  }
+
+  async checkAllYearsExistInDB(indicatorID) {
+    const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
+    const dataValue = dataResult.data.years;
+    const yearsNotAvailable = [];
+    for (let index = 0; index < dataValue.length; index += 1) {
+      const element = dataValue[index];
+      const bb = await this.DB.checkIfIndicatorWithYearExist(indicatorID, element);
+      if (bb === undefined) {
+        yearsNotAvailable.push(element);
+      }
+    }
+    return yearsNotAvailable;
+  }
+
+  async initDataWithYears(indicator, limit = 0) {
+    for (let index = 0; index < indicator.length; index += 1) {
+      const indicatorID = indicator[index];
+      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+      // take only the at least 8 years
+      if (yearsNotAvailableInDB.length > 0) {
+        const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        const theYears = take(yearsNotAvailableInDB, yearsToTake);
+        const arrayOfPromises = theYears.map(
+          (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
+        );
+        const results = await Promise.all(arrayOfPromises);
+        for (let index2 = 0; index2 < results.length; index2 += 1) {
+          const requestResult = results[index2].data;
+          await this.DB.storeDataInDB(requestResult);
+        }
+        this.updatedStoreAvailableIndicator(indicatorID);
+      }
+    }
+  }
+
+  async initDataWithYearsWithYearlyChecks(indicator, limit = 0) {
+    for (let index = 0; index < indicator.length; index += 1) {
+      const indicatorID = indicator[index];
+      const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
+      const dataValue = dataResult.data.years;
+      // take only the at least 8 years
+      const yearsToTake = limit;
+      const theYears = take(dataValue, yearsToTake);
+      const arrayOfPromises = theYears.map(
+        (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
+      );
+      const results = await Promise.all(arrayOfPromises);
+      for (let index2 = 0; index2 < results.length; index2 += 1) {
+        const requestResult = results[index2].data;
+        await this.DB.storeDataInDB(requestResult);
+      }
+      this.updatedStoreAvailableIndicator(indicatorID);
+    }
+  }
+
+  //  static sweetAlert(title, text, type) {
+  // eslint-disable-next-line class-methods-use-this
+  sweetAlert() {
+    return Vue.swal({
+      toast: true,
+      position: 'bottom-end',
+      icon: 'info',
+      title: 'Data Synchronization in progress',
+      text: 'Updating dashboard with more data',
+      showConfirmButton: false,
+      timerProgressBar: false,
+      allowOutsideClick: false,
+      showLoading: true,
+    });
   }
 }

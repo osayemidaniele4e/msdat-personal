@@ -1,0 +1,24 @@
+body.swal2-toast-shown .swal2-container.swal2-bottom-end,
+body.swal2-toast-shown .swal2-container.swal2-bottom-right {
+  /* top: auto; */
+  /* right: 0; */
+  bottom: 55px;
+  /* left: auto; */
+}
+
+.swal2-popup.swal2-toast {
+  padding: 0.4em !important;
+}
+
+.swal2-popup.swal2-toast .swal2-html-container {
+  margin: 0.4em !important;
+}
+
+#swal2-title {
+  margin: 0.5em !important;
+  font-size: 14px !important;
+}
+
+#swal2-html-container {
+  font-size: 13px !important;
+}

@@ -1,0 +1,216 @@
+// OVERRIDE Styling to add ... after 40characters on the dropdown component
+span.multiselect__single {
+  font-size: 0.7rem !important;
+  color: #000000 !important;
+  font-family: 'Work Sans', sans-serif !important;
+  font-weight: 500;
+  height: 1.5rem;
+  max-width: 40ch;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+span.multiselect__tag {
+  max-width: 45%;
+}
+span.multiselect__option--selected.multiselect__option--highlight {
+  background-color: #007d53;
+  color: white  !important;
+  
+}
+
+span.multiselect__option--selected{
+  background-color: #007d53;
+  color: white  !important;
+}
+
+// hover for select options
+span.multiselect__option--highlight{
+  background-color: #e0f3f3;
+}
+
+
+span.multiselect__option multiselect__option--highlight multiselect__option--selected{
+  background-color: #000
+}
+
+// span.multiselect__tags-wrap{
+//   background-color: purple;
+// }
+
+
+span.multiselect__option--disabled{
+  background-color: #696969 !important;
+  color: white  !important;
+  // override the default pointe-events: none;
+  // pointer-events: auto;
+}
+
+
+
+// span.topicHead{
+//   background-color: black;
+// }
+
+
+span.multiselect__option--group{
+  background-color: black;
+}
+body label.h6,
+p,
+h6,
+h5,
+td,
+div.temp table span,
+div.temp table div span,
+div.temp div h5,
+span.h6,
+div.temp table span.data-source,
+label span,
+button.btn {
+  font-size: 0.7rem !important;
+}
+
+.pointer_click {
+  cursor: pointer;
+}
+
+ul {
+  li {
+    span.dropdown-item {
+      cursor: pointer;
+      &:hover{
+        background-color: #007d53;
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+#zonalMapComponent {
+  display: relative;
+  button {
+    background-color: #348481;
+    color: aliceblue;
+    height: 2rem;
+    padding-left: 0.5rem ;
+    padding-right: 0.5rem ;
+    display: flex;
+    align-items: center;
+    transition: all 0.25s ease-in;
+    // left: 60%;
+    margin-top: 0.3rem;
+    margin-left: 0.2rem;
+  }
+}
+
+#zonalMapComponent > button:hover{
+  background-color: #085856;
+  padding-left: 0.25rem;
+}
+
+#stateBarChartComponent{
+  button {
+    background-color: #348481;
+    color: aliceblue;
+    height: 2rem;
+    padding-left: 0.5rem ;
+    padding-right: 0.5rem ;
+    display: flex;
+    align-items: center;
+    transition: all 0.25s ease-in;
+    // left: 60%;
+    margin-top: 0.3rem;
+    margin-left: 0.2rem;
+  }
+}
+
+#stateBarChartComponent > button:hover{
+  background-color: #085856;
+  padding-left: 0.25rem;
+}
+
+
+#indicatorMeta{
+  .nav-item {
+  background-color: white;
+   color: #559895;
+   border: 1px solid #559895;
+   border-radius: 5px;
+   margin: 5px;
+   height: 30px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  
+  }
+
+  .nav-pills .active {
+    background-color: #007d53 !important;
+    color: white;
+    border: 1px solid #007d53;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+}
+
+
+// div.temp {
+//   button.toggle_btn {
+//     display: none;
+//     position: fixed;
+//     bottom: 10vh;
+//     right: 0.5rem;
+//     z-index: 9999;
+//   }
+// }
+
+// @media only screen and (max-width: 767px) {
+//   div.temp {
+//     .sticky.hide {
+//       position: absolute;
+//       top: 0;
+//       left: -100%;
+//     }
+//     div.sticky {
+//       position: fixed;
+//       position: -webkit-fixed;
+//       top: 10vh;
+//       z-index: 11;
+//       background-color: white;
+//       box-shadow: 0px 3px 8px 0px #888888;
+//       height: 83vh;
+//       width: 90%;
+//       overflow: auto;
+//       transition: all 1s ease;
+//     }
+//     button.toggle_btn {
+//       display: block;
+//     }
+//     ul.step-sections {
+//       overflow-x: auto;
+//       &::-webkit-scrollbar {
+//         display: none;
+//       }
+
+//       /* Hide scrollbar for IE, Edge and Firefox */
+//       & {
+//         -ms-overflow-style: none; /* IE and Edge */
+//         scrollbar-width: none; /* Firefox */
+//       }
+//     }
+//     li {
+//       margin-right: 1rem;
+//       white-space: pre;
+//     }
+//   }
+// }
+.disabled_alt{
+  // diable everything here
+  opacity: 0.25;
+  pointer-events: none;
+}

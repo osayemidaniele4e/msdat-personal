@@ -1,47 +1,47 @@
 <template>
   <div class="card">
     <div
-      class="
-        card-header
-        d-flex
-        justify-content-between
-        border-bottom-0
-        align-items-center
-      "
+      class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
       :style="{ backgroundColor }"
     >
       <div class="title w-100">
         <slot name="title"> slot title fallback </slot>
       </div>
-      <div
-        class="action-icon d-flex justify-content-around align-items-center"
-        v-if="showControls"
-      >
+      <div class="action-icon d-flex justify-content-around align-items-center" v-if="showControls">
         <b-icon
           icon="arrows-fullscreen"
           @click="showModal = !showModal"
-          class="mx-1 font-weight-bold"
-          font-scale="1.1"
+          class="pointer_click mx-1 font-weight-bold"
+          font-scale="1"
         ></b-icon>
+          <!-- icon="three-dots-vertical" -->
         <b-icon
-          icon="three-dots-vertical"
+          v-if="showDownload === true"
+          icon="download"
           @click="showMenu = !showMenu"
-          class="mx-1 font-weight-bold"
-          font-scale="1.1"
+          class="pointer_click mx-1 font-weight-bold"
+          font-scale="1"
         ></b-icon>
       </div>
     </div>
     <div class="card-body work-sans p-0" style="position: relative">
-      <SubCardDropdown v-show="showMenu" />
+      <div @mouseleave="showMenu = false">
+        <SubCardDropdown
+          @dropDownTypeSelected="$emit('dropdownTypeSelected', $event)"
+          v-show="showMenu"
+        />
+      </div>
+
       <div class="row no-gutters">
         <div class="col" :class="[sideControl ? 'col-10' : '']">
-          <div v-if="buttonToggle" class="d-flex justify-content-end">
+          <div v-if="buttonToggle" class="d-flex justify-content-end pt-1 px-1">
             <SubCardToggleButton
+              v-show="showToggle"
               @button-clicked="$emit('toggled-button', $event)"
             />
           </div>
           <slot>
-            <p class="card-text">The SubCard fallback.</p>
+            <!-- <p class="card-text">The SubCard fallback.</p> -->
           </slot>
         </div>
         <SubCardSideControl
@@ -87,10 +87,18 @@ export default {
       type: Boolean,
       default: () => false,
     },
-    color: {
-      type: String,
-      default: 'red',
+    showDownload: {
+      type: Boolean,
+      default: () => true,
     },
+    showToggle: {
+      type: Boolean,
+      default: () => true,
+    },
+    // color: {
+    //   type: String,
+    //   default: 'red',
+    // },
     backgroundColor: {
       type: String,
       default: '#DFF3F3',
@@ -112,10 +120,20 @@ export default {
       default: () => {},
     },
   },
+  watch: {
+  },
+  methods: {
+    close() {
+      if (this.showMenu !== false) {
+        this.showMenu = false;
+      }
+    },
+  },
+  mounted() {
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

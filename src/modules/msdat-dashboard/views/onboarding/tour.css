@@ -1,0 +1,58 @@
+.customTooltips .introjs-skipbutton {
+    color: transparent;
+    background: url('./assets/cancel.svg') no-repeat;
+    transition: all 0.4s ease-in-out;
+    /* background: #bb0f0fb0; */
+    /* border-radius: 50%;
+     height: 24px;
+     width: 24px;
+     padding: 2px;
+     cursor: pointer; */
+}
+
+.customTooltips .introjs-skipbutton:hover {
+    transform: scale(0.9);
+}
+
+.customTooltips .introjs-nextbutton {
+    color: white;
+    background: #007D53;
+    text-shadow: none;
+    border: none;
+    box-shadow: none;
+}
+
+.customTooltips .introjs-nextbutton:hover {
+    color: white;
+    background: #007D53;
+    text-shadow: none;
+    border: none;
+    box-shadow: none;
+}
+
+.customTooltips .introjs-nextbutton:focus {
+    color: white;
+    background: #007D53;
+    text-shadow: none;
+    border: none;
+    box-shadow: none;
+}
+
+.customTooltips .introjs-prevbutton {
+    float: none;
+    border: none;
+    background: white;
+}
+
+.customTooltips .introjs-button {
+    color: none;
+}
+
+.customTooltips .introjs-helperLayer {
+    box-shadow: rgb(226 22 22 / 80%) 0px 0px 1px 2px, rgb(111 78 78 / 50%) 0px 0px 0px 5000px;
+}
+
+.customHighlight {
+    box-shadow: #f36d6dcc 0px 0px 1px 2px, rgb(33 33 33 / 50%) 0px 0px 0px 5000px !important;
+
+}

@@ -4,19 +4,20 @@
       <table class="table table-bordered align-middle text-nowrap">
         <tbody>
           <tr>
-            <td
-              rowspan="2"
-              scope="col"
-              class="text-center align-middle border-0"
-            ></td>
+            <td rowspan="2" scope="col" class="text-center align-middle border-0"></td>
             <th
               rowspan="2"
               scope="col"
-              class="align-middle text-center text-uppercase h6 font-weight-bold"
+              class="
+                align-middle
+                text-center text-uppercase
+                h6
+                font-weight-bold
+              "
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
-                <span id="reset" @click="$emit('reset')"><b-icon-arrow-clockwise /></span>
+                <span id="reset" @click="$emit('clickedReset')" ><b-icon-arrow-clockwise /></span>
               </div>
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
@@ -24,7 +25,12 @@
               v-for="(value, index) in classify"
               :key="index"
               :colspan="value[1]"
-              class="classification-row text-uppercase text-center align-middle p-0"
+              class="
+                classification-row
+                text-uppercase text-center
+                align-middle
+                p-0
+              "
             >
               {{ value[0] }}
             </td>
@@ -37,8 +43,11 @@
                 :key="index"
                 :source="dt"
                 @source:click="log($event)"
-                @source-info:click="$emit('selected:source-info',$event)"
+                @source-info:click="$emit('selected:source-info', $event)"
                 :selectedSource="selectedSource"
+
+                @value="getValue"
+                @key="getKey"
               />
             </template>
           </tr>
@@ -47,19 +56,16 @@
           <!-- please note that the first indicator is assumed to be
           the main indicator and others, the related indicators -->
 
-          <TableDataRow class="bg-primary text-white"
-          :rowData="dataArray[0]"
-          @indicator-info:clicked="$emit('selected:indicator-info',$event)">
-            <template  v-slot:indicator="props">
+          <TableDataRow
+            class="bg-primary text-white"
+            :rowData="dataArray[0]"
+            @indicator-info:clicked="$emit('selected:indicator-info', $event)"
+          >
+            <template v-slot:indicator="props">
               <slot name="indicator-0" :indicator="props"></slot>
             </template>
             <template #default>
-              <td
-                class="text-center p-2"
-                v-for="(dt, index) in source"
-                :key="index"
-                scope="col"
-              >
+              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <!-- percentage values and year -->
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
@@ -71,7 +77,7 @@
 
           <!-- The is the Row or the NHMIS detail of the related indicators -->
           <transition name="fade">
-            <tr class="border-0" v-show="selectedSource === 'NHMIS'">
+            <tr class="border-0" v-if="selectedSource === 'NHMIS'">
               <td class="border-0"></td>
               <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
               <td colspan="30" class="num-denom">
@@ -82,54 +88,44 @@
             </tr>
           </transition>
 
-          <tr class="">
+          <tr class="" v-if="dataArray.length > 1">
             <td class="border-0"></td>
-            <td colspan="30"  class="border-0">
-              <h6 class="text-uppercase font-weight-bold">Related Indicators</h6>
+            <td colspan="30" class="border-0 heading_alt">
+              <h6 class="font-weight-bold mb-0">Related Indicators</h6>
             </td>
           </tr>
 
           <!-- This loops  the the other indicator of the array of indicators -->
+          <!-- TODO: fix -->
           <template v-for="(indicatorData, index) in dataArray">
-              <TableDataRow
-                :key="indicatorData.indicator.id"
-                v-if="index > 0"
-                :rowData="indicatorData"
-                @indicator-info:clicked="$emit('selected:indicator-info',$event)"
-              >
-                <template   v-slot:indicator="props">
-                  <slot  :name="`indicator-${index}`" :indicator="props"></slot>
-                </template>
+            <TableDataRow
+              :key="indicatorData.indicator.id"
+              v-if="index > 0"
+              :rowData="indicatorData"
+              @indicator-info:clicked="$emit('selected:indicator-info', $event)"
+            >
+              <template v-slot:indicator="props">
+                <slot :name="`indicator-${index}`" :indicator="props"></slot>
+              </template>
 
-                <template #default>
-                  <td
-                    class="text-center p-2"
-                    v-for="(dt, index) in source"
-                    :key="index"
-                    scope="col">
-                    <TableDataCell
-                      :cellData="getValueForColumn(indicatorData.values, dt)"
-                      :dataColors="'#515151; #888888;'"
-                    />
-                  </td>
-                </template>
-              </TableDataRow>
+              <template #default>
+                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                  <TableDataCell
+                    :cellData="getValueForColumn(indicatorData.values, dt)"
+                    :dataColors="'#515151; #888888;'"
+                  />
+                </td>
+              </template>
+            </TableDataRow>
 
-              <!-- This creates a space between the related indicators table rows -->
-              <div
-                :key="index"
-                class="py-2"
-              ></div>
+            <!-- This creates a space between the related indicators table rows -->
+            <div :key="index" class=""></div>
           </template>
         </tbody>
       </table>
     </div>
     <div v-if="loading" class="d-flex justify-content-center text-center">
-      <div
-        class="spinner-border"
-        style="width: 4rem; height: 4rem"
-        role="status"
-      ></div>
+      <div class="spinner-border" style="width: 4rem; height: 4rem" role="status"></div>
     </div>
   </div>
 </template>
@@ -157,25 +153,56 @@ export default {
       required: true,
     },
     /**
-    * To toggle the Loading state of the table
-    */
+     * To toggle the Loading state of the table
+     */
     loading: {
       type: Boolean,
       required: false,
       default: false,
     },
     /**
-    * To controls the order of the indicators
-    * @description please note that the order comes according to there
-    * classification(Routine,Survey then Estimate)
-    * meaning in the order all routine data sources comes first in the array then survey
-    * following that pattern
-    *
-    */
+     * To controls the order of the indicators
+     * @description please note that the order comes according to there
+     * classification(Routine,Survey then Estimate)
+     * meaning in the order all routine data sources comes first in the array then survey
+     * following that pattern
+     *
+     */
     orderSourceBy: {
       type: [Array],
       required: false,
-      default: () => (['NHMIS', 'MICS', 'NDHS', 'NARHS', 'NNHS', 'World Bank', 'WHO-GHO', 'IHME', 'IHME SDG', 'NMIS']),
+      // SOMEONE NEEDS TO COME AND REFACTOR THIS IMPLEMENTATION ASAP
+      default: () => [
+        'NHMIS',
+        'NGF',
+        'MICS',
+        'NHWCP',
+        'AAS',
+        'GHS',
+        'NLSS',
+        'DSB',
+        'NHFS',
+        'PCCS',
+        'UNAIDS',
+        'NHSPSS',
+        'NHA',
+        'KDGHS',
+        'NAIIS',
+        'NDHS',
+        'NARHS',
+        'NNHS',
+        'NMIS',
+        'World Bank',
+        'WHO-GHO',
+        'IHME',
+        'ILOSTAT',
+        'WUENIC',
+        'UNDP',
+      ],
+    },
+
+    setSelectedSource: {
+      type: Object,
     },
   },
   data() {
@@ -187,13 +214,13 @@ export default {
       /**
        * This send the selected Source to the Child component to Highlight
        */
-      selectedSource: '',
+      selectedSource: {},
       /**
        * This store the all the data sources available in the data parsed
        */
       source: [],
 
-      classificationOrder: ['Routine', 'Estimate', 'Survey'],
+      classificationOrder: ['Routine', 'Survey', 'Estimate'],
     };
   },
   methods: {
@@ -222,15 +249,15 @@ export default {
      * this filter thorough the array of data parse and et all available  Parsed
      */
     getAvailableDataSources() {
-      const arraySource = this.dataArray.map(
-        (e) => e.values.map((et) => et.dataSources),
-      );
+      const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
+      // debugger;
       /**
        * order AvailableSources according to the OrderSourceBy Array;
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(a) - this.orderSourceBy.indexOf(b),
+        (a, b) => this.orderSourceBy.indexOf(a.datasource)
+         - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
     },
@@ -262,13 +289,14 @@ export default {
       // Order classification following the Order
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
       const resultSorted = result.sort(
-        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
+        (a, b) => this.classificationOrder.indexOf(a[0])
+          - this.classificationOrder.indexOf(b[0]),
       );
       this.classify = resultSorted;
     },
 
     log(e) {
-      console.log(e);
+      // console.log(e);
       if (this.selectedSource === e) {
         this.selectedSource = '';
         return;
@@ -276,6 +304,15 @@ export default {
       this.selectedSource = e;
       this.$emit('selected:source', e);
       // this.rowShow = !this.rowShow;
+    },
+
+    // new emits
+
+    getValue(value) {
+      this.$emit('clickedDatasource', value);
+    },
+    getKey(key) {
+      this.$emit('key', key);
     },
   },
   watch: {
@@ -288,63 +325,84 @@ export default {
       deep: true,
       immediate: true,
     },
+
+    setSelectedSource(newValue) {
+      this.selectedSource = newValue;
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  // @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
+// table scroll bar
+::-webkit-scrollbar {
+  height: 8px;
+  border: 1px solid #b7b7b7;
+}
+::-webkit-scrollbar-track {
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #bebebe;
+  border-radius: 4px;
+}
 
-  // table scroll bar
-  ::-webkit-scrollbar {
-    height: 8px;
-    border: 1px solid #b7b7b7;
+table.table {
+  td.heading_alt{
+    padding: 0.5rem
   }
-  ::-webkit-scrollbar-track {
-    height: 8px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #bebebe;
-    border-radius: 4px;
+  // selected data source
+  .table-active {
+    background-color: #2b5d5b;
   }
 
-  table.table {
-    // selected data source
-    .table-active {
-      background-color: #2b5d5b;
-    }
+  .classification-row {
+    font-size: 10px;
+  }
 
-    .classification-row {
-      font-size: 10px;
-    }
+  // numerator & denominator transition
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
 
-    // numerator & denominator transition
-    .fade-enter-active,
-    .fade-leave-active {
-      transition: opacity 0.5s ease;
-    }
-    .fade-enter-from,
-    .fade-leave-to {
-      opacity: 0;
-    }
-
-    &>tbody {
-      &>tr:first-child {
-        // Indicator text, Refresh button and Classifications
-        th>div {
-          svg {
-            font-size: 20px;
-            color: #2b5d5b;
-            cursor: pointer;
-          }
+  & > tbody {
+    & > tr:first-child {
+      // Indicator text, Refresh button and Classifications
+      th > div {
+        svg {
+          font-size: 20px;
+          color: #2b5d5b;
+          cursor: pointer;
         }
       }
-
-      // numerator - denominator section
-      td.num-denom {
-        background-color: #2b5d5b;
-      }
     }
+
+    // numerator - denominator section
+    td.num-denom {
+      background-color: #2b5d5b;
+    }
+  }
+}
+
+</style>
+
+<style scoped>
+/* to remove */
+    #reset{
+      transform: rotate(360deg);
+      transition: all 1s ease-in-out;
+      /* background-color: black; */
+  }
+
+    #reset:hover{
+      font-weight: 700;
+       transform: rotate(180deg);
   }
 </style>

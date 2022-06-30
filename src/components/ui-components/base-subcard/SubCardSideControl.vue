@@ -17,7 +17,7 @@
       <template v-if="options.length > 0">
         <div class="my-3">
           <b-form-group v-slot="{ ariaDescribedby }">
-            <b-form-radio-group
+            <b-form-checkbox-group
               v-model="selected"
               :options="bootstrapFormattedOptions"
               :aria-describedby="ariaDescribedby"
@@ -26,7 +26,7 @@
               @change="$emit('datasources-selected', $event)"
               class="text-uppercase"
               button-variant="danger"
-            ></b-form-radio-group>
+            ></b-form-checkbox-group>
           </b-form-group>
         </div>
       </template>
@@ -46,6 +46,7 @@ export default {
       //   ],
       switchValues: '',
       bootstrapFormattedOptions: [],
+      selecselectedOptionsted: [],
       selected: [],
       // selectedOptions: [],
     };

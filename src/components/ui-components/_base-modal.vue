@@ -3,7 +3,7 @@
     <b-modal
       footer-class="justify-content-between"
       header-class="header-color"
-      header-bg-variant="secondary"
+      :header-bg-variant="header"
       ref="main-modal"
       centered
       :size="size"
@@ -47,6 +47,10 @@ export default {
     size: {
       type: String,
       default: () => ('xl'),
+    },
+    header: {
+      type: String,
+      default: () => ('secondary'),
     },
   },
   watch: {

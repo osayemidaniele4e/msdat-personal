@@ -1,7 +1,9 @@
 /* eslint-disable no-await-in-loop */
 
+import { take } from 'lodash';
 import dexie from '../config/dexie';
 import { getIndicatorsFromApi } from './helper';
+import apiServices from './ApiServices';
 
 const DATA = 'data';
 const INDICATORS = 'indicators';
@@ -54,23 +56,27 @@ export default class DataBase {
    */
 
   async storeDataForOtherEndPointToDB(data) {
-    return this.db.transaction(
-      'rw',
-      this.DSI,
-      this.location,
-      this.indicators,
-      this.valuetypes,
-      this.factors,
-      this.datasources,
-      async () => {
-        await this.DSI.bulkPut(data[6].data);
-        await this.location.bulkPut(data[0].data);
-        await this.indicators.bulkPut(data[1].data);
-        await this.valuetypes.bulkPut(data[3].data);
-        await this.factors.bulkPut(data[5].data);
-        await this.datasources.bulkPut(data[7].data);
-      },
-    );
+    return this.db
+      .transaction(
+        'rw',
+        this.DSI,
+        this.location,
+        this.indicators,
+        this.valuetypes,
+        this.factors,
+        this.datasources,
+        async () => {
+          await this.DSI.bulkPut(data[6].data);
+          await this.location.bulkPut(data[0].data);
+          await this.indicators.bulkPut(data[1].data);
+          await this.valuetypes.bulkPut(data[3].data);
+          await this.factors.bulkPut(data[5].data);
+          await this.datasources.bulkPut(data[7].data);
+        },
+      )
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 
   async storeDataInDBTable(data, tableName) {
@@ -84,6 +90,12 @@ export default class DataBase {
    * @param {array} data array of indicator data
    *
    */
+  // async storeLastUpdateYearInDB() {
+  //   return this.db.transaction('rw', this.data, async () => {
+  //     await this.updateddate.bulkPut('hello');
+  //   });
+  // }
+
   async storeDataInDB(data) {
     return this.db.transaction('rw', this.data, async () => {
       await this.data.bulkPut(data);
@@ -99,10 +111,7 @@ export default class DataBase {
    * the given ids
    */
   async getIndicatorDataThatExistInDB(arrayOfIndicatorIds) {
-    return this.db.transaction('r', this.data, () => this.db.data
-      .where('indicator')
-      .anyOf(arrayOfIndicatorIds)
-      .toArray());
+    return this.db.transaction('r', this.data, () => this.db.data.where('indicator').anyOf(arrayOfIndicatorIds).toArray());
   }
 
   /**
@@ -111,10 +120,44 @@ export default class DataBase {
    * @returns {array} of data objects for the indicator
    */
   getIndicatorFromDB(id) {
-    return this.data
-      .where('indicator')
-      .equals(id)
-      .toArray();
+    return this.data.where('indicator').equals(id).toArray();
+  }
+
+  async checkAllYearsExistInDB(indicatorID) {
+    const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
+    const dataValue = dataResult.data.years;
+    const yearsNotAvailable = [];
+    for (let index = 0; index < dataValue.length; index += 1) {
+      const element = dataValue[index];
+      const bb = await this.db.data.where({ indicator: indicatorID, period: element }).first();
+      if (bb === undefined) {
+        yearsNotAvailable.push(element);
+      }
+    }
+    return yearsNotAvailable;
+  }
+
+  async initDataWithYears(indicator, limit = 0) {
+    for (let index = 0; index < indicator.length; index += 1) {
+      const indicatorID = indicator[index];
+      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+      // take only the at least 8 years
+      if (yearsNotAvailableInDB.length > 0) {
+        const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        const theYears = take(yearsNotAvailableInDB, yearsToTake);
+        // eslint-disable-next-line max-len
+        const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
+        const results = await Promise.all(arrayOfPromises);
+        for (let index2 = 0; index2 < results.length; index2 += 1) {
+          const requestResult = results[index2].data;
+          await this.storeDataInDB(requestResult);
+        }
+      }
+    }
+  }
+
+  async checkIfIndicatorWithYearExist(indicatorID, Period) {
+    return this.data.where({ indicator: indicatorID, period: Period }).first();
   }
 
   async initData(indicator) {
@@ -130,11 +173,18 @@ export default class DataBase {
   }
 
   /**
- *
- * @param {*} query the objet  to be queried
- * @returns {array} result of the Query
- */
-  static async queryDB(query = {}) {
+   *
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryDB(query = {}, locationIDArray = []) {
+    if (locationIDArray.length > 0) {
+      return dexie
+        .table(DATA)
+        .where(query)
+        .filter((value) => locationIDArray.includes(value.location))
+        .toArray();
+    }
     return dexie.table(DATA).where(query).toArray();
   }
 }
