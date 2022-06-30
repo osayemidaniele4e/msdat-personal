@@ -67,7 +67,6 @@ export default {
       },
     },
     formattedID() {
-      console.log('hey');
       if (this.multiSelectProps['group-values']) {
         if (this.multiSelectProps['group-label'] === 'datasource') {
           return 'groupedSources';
@@ -99,7 +98,6 @@ export default {
   watch: {
     options: {
       handler(newValue) {
-        console.log('hhi', newValue);
         if (this.multiSelectProps['preselect-first']) {
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring
