@@ -66,6 +66,7 @@ export default {
       notShow: false,
       seriesArray: {},
       years: {},
+      selectDataSource: {},
     };
   },
   props: {
@@ -126,6 +127,8 @@ export default {
         } else {
           dataSourceSelected = selectedDataSource;
         }
+
+        this.selectDataSource = dataSourceSelected;
         // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
         this.setUpHighChartConfig(seriesArray, years);
@@ -393,8 +396,9 @@ export default {
         // resetting back to initial state
         this.notShow = true;
         this.loading = true;
-        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        // const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(this.selectDataSource);
+        // const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
         this.notShow = false;
