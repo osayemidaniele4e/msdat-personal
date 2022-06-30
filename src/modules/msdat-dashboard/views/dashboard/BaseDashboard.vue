@@ -20,7 +20,8 @@
         </div>
         </Loading>
 
-        <div v-else>
+        <div v-else class="position-relative">
+          <BaseUpdate />
           <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
           <section @click="$refs.theHeader.close()">
             <div
@@ -161,6 +162,7 @@ import {
   ControlBase,
   ControlPanel,
 } from '@/components/ControlPanel';
+import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -185,6 +187,14 @@ export default {
     TroubleShooting,
     SharingDashboardState,
   ],
+  components: {
+    ControlBase,
+    BasePanel,
+    ControlPanel,
+    Header,
+    Footer,
+    BaseUpdate,
+  },
   data() {
     return {
       position: 3,
@@ -202,13 +212,6 @@ export default {
       scrollPos: '',
       sectionKey: 0,
     };
-  },
-  components: {
-    ControlBase,
-    BasePanel,
-    ControlPanel,
-    Header,
-    Footer,
   },
   props: {
     initialIndicator: {
@@ -276,6 +279,13 @@ export default {
   },
 
   methods: {
+
+    /**
+     * Function to handle show welcome modal
+     */
+    showWelcomeModal() {
+      this.$store.dispatch('MSDAT_STORE/showWelcomeModal', true);
+    },
     log(event, index, index2) {
       console.log('log function =>', event, index, index2);
     },
