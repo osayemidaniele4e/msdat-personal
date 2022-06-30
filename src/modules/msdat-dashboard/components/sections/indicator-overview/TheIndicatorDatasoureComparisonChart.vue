@@ -69,10 +69,10 @@ export default {
           id: 5,
           datasource: 'NNHS',
         },
-        {
-          id: 9,
-          datasource: 'WHO-GHO',
-        },
+        // {
+        //   id: 9,
+        //   datasource: 'WHO-GHO',
+        // },
       ],
       selectedDS: {},
       notShow: false,
