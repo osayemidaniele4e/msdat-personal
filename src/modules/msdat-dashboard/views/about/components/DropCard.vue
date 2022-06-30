@@ -101,10 +101,11 @@ export default {
 div {
   &.dropdown-expanded {
     position: absolute;
-    width: 10vw;
+    width: 80vw;
     z-index: 5;
-    left: -0.5vw;
-    top: 2.8rem;
+    // left: -0.5vw;
+    right: 2rem;
+    // top: 2.8rem;
     color: black;
     max-height: 30rem;
     overflow-y: auto;

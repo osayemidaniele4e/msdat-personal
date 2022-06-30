@@ -126,13 +126,14 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 div {
   &.dropdown-expanded {
     position: absolute;
     width: 80vw;
     z-index: 5;
     left: -0.5vw;
+    // right: 10px;
     // top: 3rem;
     color: black;
     max-height: 30rem;
@@ -227,7 +228,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 div {
   &.dropdown-expanded {
     position: absolute;
