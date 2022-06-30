@@ -11,7 +11,6 @@
       :updateKey="updateKey"
       :resetData="resetData"
         @swipe="changeSwipe"
-      @scrollN="changeScroll"
 
     >
       <template v-slot:section-before-0>
@@ -235,25 +234,23 @@ export default {
     },
 
     changeSwipe(cord) {
-      console.log('cord', cord);
       const content = document.querySelector('.dummy-row2');
       this.scrollTo(content, cord.x, cord.y);
     },
 
-    changeScroll(n) {
-      if (n >= 0 && n < 194) {
-        document.querySelector('.dummy-row2').scrollLeft = 0;
-        console.log('true&true');
-      }
+    // changeScroll(n) {
+    //   if (n >= 0 && n < 194) {
+    //     document.querySelector('.dummy-row2').scrollLeft = 0;
+    //   }
 
-      if (n >= 194 && n < 420) {
-        document.querySelector('.dummy-row2').scrollLeft = 383;
-      }
+    //   if (n >= 194 && n < 420) {
+    //     document.querySelector('.dummy-row2').scrollLeft = 383;
+    //   }
 
-      if (n >= 420) {
-        document.querySelector('.dummy-row2').scrollLeft = 757;
-      }
-    },
+    //   if (n >= 420) {
+    //     document.querySelector('.dummy-row2').scrollLeft = 757;
+    //   }
+    // },
 
     scrollTo(element, scrollPixels, duration) {
       this.scrollPixels = scrollPixels;
