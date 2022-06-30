@@ -97,10 +97,10 @@
           >
             <b-nav class="h-100 align-items-center main">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
-                 <a href="https://dhprs.ehealth4.us/" class="nav-link">Home</a>
+                 <a href="https://dhprs.ehealth4.us/landing.html" target="_blank" class="nav-link">Home</a>
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/coming-soon" class="nav-link"
+              <router-link to="/coming-soon/custom_dashboard" class="nav-link"
                 >Create New Dashboard</router-link
               >
           <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link">Go back to MSDAT 1.5</a>

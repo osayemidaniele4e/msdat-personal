@@ -31,10 +31,10 @@ export default {
       type: 'dropdown',
       label: 'Year',
       key: 'year',
-      options: [
-        { id: 1, year: '2010' },
-        { id: 2, year: '2015' },
-      ],
+      // options: [
+      //   { id: 1, year: '2010' },
+      //   { id: 2, year: '2015' },
+      // ],
       dropdownProps: {
         preselectFirst: true,
       },

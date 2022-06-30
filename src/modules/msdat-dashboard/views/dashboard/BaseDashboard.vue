@@ -21,7 +21,7 @@
         </Loading>
 
         <div v-else class="position-relative">
-          <BaseUpdate />
+          <BaseUpdate :showPopUp="popUp" v-if="popUp" @closePopUp="handleClosePopUp" />
           <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
           <section @click="$refs.theHeader.close()">
             <div
@@ -211,6 +211,7 @@ export default {
       scrollPixels: 0,
       scrollPos: '',
       sectionKey: 0,
+      popUp: true,
     };
   },
   props: {
@@ -283,8 +284,8 @@ export default {
     /**
      * Function to handle show welcome modal
      */
-    showWelcomeModal() {
-      this.$store.dispatch('MSDAT_STORE/showWelcomeModal', true);
+    handleClosePopUp() {
+      this.popUp = false;
     },
     log(event, index, index2) {
       console.log('log function =>', event, index, index2);
