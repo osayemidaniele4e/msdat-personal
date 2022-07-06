@@ -97,7 +97,7 @@
           >
             <b-nav class="h-100 align-items-center main">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
-                 <a href="https://dhprs.ehealth4.us/landing.html" target="_blank" class="nav-link">Home</a>
+                 <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link">Home</a>
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
               <router-link to="/coming-soon/custom_dashboard" class="nav-link"
