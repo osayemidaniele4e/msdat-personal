@@ -58,7 +58,7 @@ The Root Folder
 
 ## Health Services
 
-![An image](./assets/health-services.jpeg)
+![An image](./assets/health-services1.jpeg)
 
 > This is found in the *programAreaOverview.vue* file in the components folder and uses the API requests gotten from *requests*.
 
