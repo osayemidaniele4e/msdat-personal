@@ -5,7 +5,7 @@
 
 ## Files in this folder
 
-![An image](./assets/file-structure.png)
+![An image](./assets/file-structure1.png)
 
 The Root Folder
 : This holds the vuex store file for the module (*store.js*), the *requests.js* file, which holds the API calls needed, extracted to that file for easy maintainability, the router file (*router.js*) and the main *index.js* file which exports this logic. We also have the *components* and *views* folders.
@@ -14,7 +14,7 @@ The Root Folder
 
 ### Intro js
 
-![An image](./assets/Intro-page.png)
+![An image](./assets/Intro-page1.png)
 
 > This is the *intro.vue* file in the *views* folder. It uses the generic *basemap* component used across the codebase to display the map as seen above and allow the user to select whatever state by clicking on it.
 
@@ -27,7 +27,7 @@ The Root Folder
 
 ### Demographics
 
-![An image](./assets/demographics.png)
+![An image](./assets/demographics1.png)
 
 > This is found in the *demographics.vue* file in the components folder and also uses the generic *basemap* component as well as the *DataSourceMetaDataModal*.
 
