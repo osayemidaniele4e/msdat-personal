@@ -124,7 +124,7 @@
                     <!-- id's -->
                     <!-- static data (only for overview table) for NHMIS data -->
                     <div class="nhmis-rel-text1">{{ nhmisMonthData[index].value }}%</div>
-                    <div>
+                    <div class="nhmis-rel-text2">
                       {{ nhmisMonthData[index].period }}
                     </div>
 
@@ -619,6 +619,13 @@ table.table {
 
 .nhmis-rel-text1 {
   font-weight: 700;
+}
+
+.nhmis-rel-text2{
+   margin-top: 5px;
+  font-size: 0.7rem;
+  text-align: center;
+  color: rgb(136, 136, 136);;
 }
 
 .nhmis_month_head {
