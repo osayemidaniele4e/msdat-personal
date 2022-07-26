@@ -75,7 +75,8 @@ module.exports = {
           collapsable: false,
           children: [
             'mobile',
-            'disagg'
+            'disagg',
+            'nhmis-month'
           ]
         }
 
