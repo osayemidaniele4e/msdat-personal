@@ -490,7 +490,7 @@ export default {
         // api call to get specific data for nhmis
         axios
           .get(
-            `http://135.181.212.168:9234/api/crud/data/?datasource=33&indicator=${indicator}&location=1`,
+            `https://msdatapi.e4eweb.space/api/crud/data/?datasource=33&indicator=${indicator}&location=1`,
           )
           .then((response) => {
             nhmisObj = response.data.find((e) => e.period.split(' ')[0] === month);
