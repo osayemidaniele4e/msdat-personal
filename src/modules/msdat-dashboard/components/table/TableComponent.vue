@@ -71,15 +71,13 @@
                   <!-- static data (only for overview table) for NHMIS data -->
                   {{ nhmisMonthData[0].value }}%
                 </div>
-                 <div class="nhmis-month-text1" v-else>
+                <div class="nhmis-month-text1" v-else>
                   <!-- static data (only for overview table) for NHMIS data -->
                 </div>
                 <div class="nhmis-month-text2" v-if="nhmisMonthData[0]">
                   {{ nhmisMonthData[0].period }}
                 </div>
-                 <div class="nhmis-month-text2" v-else>
-
-                </div>
+                <div class="nhmis-month-text2" v-else></div>
 
                 <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                   <TableDataCell
@@ -124,13 +122,13 @@
                 </template>
 
                 <template #default>
-                    <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
+                  <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
                   <td class="text-center p-2" v-if="nhmisMonthData[index]">
                     <TableDataCell />
                     <!-- id's -->
                     <!-- static data (only for overview table) for NHMIS data -->
 
-                         <div class="nhmis-rel-text1">{{ nhmisMonthData[index].value }}%</div>
+                    <div class="nhmis-rel-text1">{{ nhmisMonthData[index].value }}%</div>
                     <div class="nhmis-rel-text2">
                       {{ nhmisMonthData[index].period }}
                     </div>
@@ -139,10 +137,9 @@
                   </td>
 
                   <td v-else>
-                            <TableDataCell />
-                         <div class="nhmis-rel-text1"></div>
-                    <div class="nhmis-rel-text2">
-                    </div>
+                    <TableDataCell />
+                    <div class="nhmis-rel-text1"></div>
+                    <div class="nhmis-rel-text2"></div>
                   </td>
                   <td
                     class="text-center p-2"
@@ -634,11 +631,11 @@ table.table {
   font-weight: 700;
 }
 
-.nhmis-rel-text2{
-   margin-top: 5px;
+.nhmis-rel-text2 {
+  margin-top: 5px;
   font-size: 0.7rem;
   text-align: center;
-  color: rgb(136, 136, 136);;
+  color: rgb(136, 136, 136);
 }
 
 .nhmis_month_head {
