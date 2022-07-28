@@ -66,14 +66,19 @@
               </template>
               <template #default>
                 <!-- input this with NHMIS data -->
-                <div class="nhmis-month-text1">
+                <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
+                <div class="nhmis-month-text1" v-if="nhmisMonthData[0]">
                   <!-- static data (only for overview table) for NHMIS data -->
-
                   {{ nhmisMonthData[0].value }}%
                 </div>
-
-                <div class="nhmis-month-text2">
+                 <div class="nhmis-month-text1" v-else>
+                  <!-- static data (only for overview table) for NHMIS data -->
+                </div>
+                <div class="nhmis-month-text2" v-if="nhmisMonthData[0]">
                   {{ nhmisMonthData[0].period }}
+                </div>
+                 <div class="nhmis-month-text2" v-else>
+
                 </div>
 
                 <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
@@ -119,17 +124,25 @@
                 </template>
 
                 <template #default>
-                  <td class="text-center p-2">
+                    <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
+                  <td class="text-center p-2" v-if="nhmisMonthData[index]">
                     <TableDataCell />
                     <!-- id's -->
                     <!-- static data (only for overview table) for NHMIS data -->
-                    <div class="nhmis-rel-text1">{{ nhmisMonthData[index].value }}%</div>
+
+                         <div class="nhmis-rel-text1">{{ nhmisMonthData[index].value }}%</div>
                     <div class="nhmis-rel-text2">
                       {{ nhmisMonthData[index].period }}
                     </div>
-
                     <!-- <p>
                      {{ indicatorData.indicator.id }} </p> -->
+                  </td>
+
+                  <td v-else>
+                            <TableDataCell />
+                         <div class="nhmis-rel-text1"></div>
+                    <div class="nhmis-rel-text2">
+                    </div>
                   </td>
                   <td
                     class="text-center p-2"
@@ -490,7 +503,7 @@ export default {
         // api call to get specific data for nhmis
         axios
           .get(
-            `http://135.181.212.168:9234/api/crud/data/?datasource=33&indicator=${indicator}&location=1`,
+            `https://msdatapi.e4eweb.space/api/crud/data/?datasource=33&indicator=${indicator}&location=1`,
           )
           .then((response) => {
             nhmisObj = response.data.find((e) => e.period.split(' ')[0] === month);
