@@ -30,6 +30,19 @@ export default class DataBase {
 
   /**
    *
+   * @returns {array} a unique array of all the LOCATION
+   * objects available in iDB.
+   */
+  async listLocations() {
+    return this.db.location.orderBy('id').uniqueKeys();
+  }
+
+  async fetchTableData(tableName) {
+    return this.db[tableName].orderBy('id').uniqueKeys();
+  }
+
+  /**
+   *
    * @returns {array} a unique array of all the indicator
    * indexes available in iDB.
    * This is considerably less cpu-intensive than toArray()

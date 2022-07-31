@@ -71,10 +71,18 @@ export default class DataLayer {
     try {
       this.DB = await new Database();
       this.setup(object);
+      // const count = await this.DB.data.count();
+      //   console.log('DB count is', count);
       console.time('fetching');
 
       // check if data is already initialized iN DEXIE DB
       // this.DB.getIndicatorDataThatExistInDB()
+      const indicatorArray = await this.DB.checkIndicatorsInIdb();
+      console.log(difference(this.defaultIndicators, indicatorArray));
+      this.handlePeripheralData();
+      if (difference(this.defaultIndicators, indicatorArray).length !== 0) {
+        console.log('we need internet');
+      }
       if (this.store.state.DL.indicators.length <= 0) {
         /** Fetching other endpoints */
         console.log('fetching other endpoint');
@@ -85,7 +93,7 @@ export default class DataLayer {
          *
          * @see {@link apiServices.getOtherEndpoint()}
          */
-        const data = await apiServices.getOtherEndpoint();
+        // const data = await apiServices.getOtherEndpoint();
 
         /**
          * we would also need to created a component
@@ -97,18 +105,15 @@ export default class DataLayer {
          * now initializing other tables in the store from the database directly as against the
          * previous implementation
          */
-        this.setDataInStore(data[6].data, DSI);
-        this.setDataInStore(data[0].data, LOCATION);
-        this.setDataInStore(data[1].data, INDICATORS);
-        this.setDataInStore(data[3].data, VALUE_TYPES);
-        this.setDataInStore(data[5].data, FACTORS);
-        this.setDataInStore(data[7].data, DATA_SOURCE);
+        // this.setDataInStore(data[6].data, DSI);
+        // this.setDataInStore(data[0].data, LOCATION);
+        // this.setDataInStore(data[1].data, INDICATORS);
+        // this.setDataInStore(data[3].data, VALUE_TYPES);
+        // this.setDataInStore(data[5].data, FACTORS);
+        // this.setDataInStore(data[7].data, DATA_SOURCE);
 
         console.log('done');
         /** End Fetching other endpoints */
-
-        const count = await this.DB.data.count();
-        console.log('DB count is', count);
       }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
@@ -157,6 +162,30 @@ export default class DataLayer {
       return Promise.resolve(true);
     } catch (error) {
       return Promise.reject(error);
+    }
+  }
+
+  async handlePeripheralData() {
+    const locationCheck = await this.DB.listLocations();
+    // Simple check to see if peripheral data exists on
+    // idb
+    // console.log({ locationCheck, otherKind });
+    if (locationCheck.length <= 0) {
+      // fetch from api and store in vuex and dexie
+      const data = await apiServices.getOtherEndpoint();
+      this.setDataInStore(data[6].data, DSI);
+      this.setDataInStore(data[0].data, LOCATION);
+      this.setDataInStore(data[1].data, INDICATORS);
+      this.setDataInStore(data[3].data, VALUE_TYPES);
+      this.setDataInStore(data[5].data, FACTORS);
+      this.setDataInStore(data[7].data, DATA_SOURCE);
+      // store the rest of the data
+      await this.DB.storeDataInDBTable(data[0].data, 'location');
+      // await this.DB.storeDataForOtherEndPointToDB(data);
+    } else {
+      // Populate vuex using dexie
+      // const otherKind = await this.DB.fetchTableData('location');
+
     }
   }
 

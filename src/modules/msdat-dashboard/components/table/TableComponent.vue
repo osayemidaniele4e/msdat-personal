@@ -86,17 +86,29 @@
             </TableDataRow>
 
             <!-- The is the Row or the NHMIS detail of the related indicators -->
-            <transition name="fade">
-              <tr class="border-0" v-if="selectedSource === 'NHMIS'">
-                <td class="border-0"></td>
-                <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
-                <td colspan="30" class="num-denom">
-                  <slot name="NHMIS-DETAILS">
-                    <h5>NUM DENUM SLOTS</h5>
-                  </slot>
-                </td>
-              </tr>
-            </transition>
+           <transition name="fade">
+            <tr class="border-0">
+              <td class="border-0"></td>
+              <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
+              <td class="num-denom pt-3 align-center text-light">
+                <slot name="NHMIS-DETAILS">
+                  <h5>NHMIS: 2019</h5>
+                </slot>
+              </td>
+              <td colspan="20" class="num-denom-content">
+                <slot name="NHMIS-DETAILS">
+                <div class="numDemValues text-center">
+                  <div>
+                     <p><span>Numerator: </span> This is the numerator</p>
+                  </div>
+                  <div>
+                    <p><span>Denominator: </span> This is the denominator</p>
+                  </div>
+                  </div>
+                </slot>
+              </td>
+            </tr>
+          </transition>
 
             <tr class="" v-if="dataArray.length > 1">
               <td class="border-0"></td>
@@ -398,9 +410,6 @@ export default {
      */
     getValueForColumn(valueArray, column) {
       const valueObj = valueArray.find((e) => e.dataSources === column);
-      // console.log('valueObj', column)
-      console.log('valueArray', valueArray);
-      console.log('dataArray', this.dataArray);
       if (valueObj) {
         return valueObj;
       }
@@ -496,7 +505,6 @@ export default {
             nhmisObj = response.data.find((e) => e.period.split(' ')[0] === month);
 
             this.nhmisMonthData.push(nhmisObj);
-            console.log('nhmismonth', this.nhmisMonthData);
           })
           .catch((error) => {
             console.log(error);
@@ -510,6 +518,7 @@ export default {
         this.getAvailableDataSources();
         this.getDataSourcesClassification();
         this.getNhmisMonthly();
+        // this.getNumeratorDenominator();
       },
       deep: true,
       immediate: true,
@@ -528,6 +537,7 @@ export default {
 
   async created() {
     this.getNhmisMonthly();
+    // this.getNumeratorDenominator();
   },
 };
 </script>
@@ -584,8 +594,34 @@ table.table {
     }
 
     // numerator - denominator section
-    td.num-denom {
+      td.num-denom {
       background-color: #2b5d5b;
+      padding-top: 10px;
+      h5{
+         font-size: 15px !important;
+          font-weight: 300;
+      }
+    }
+    td.num-denom-content{
+      padding-top: 10px;
+      background-color: #2b5d5b;
+      div.numDemValues{
+        background-color: #fff;
+        color: rgb(15, 14, 14);
+        height: 34px;
+        display: flex;
+        border-radius: 4px;
+        padding-top:7px;
+        justify-content: space-evenly;
+        p{
+          font-size: 13px !important;
+          font-weight: 300;
+          span {
+            font-weight: 600 !important;
+            font-size: 13px !important;
+          }
+        }
+      }
     }
   }
 }

@@ -53,7 +53,6 @@
                     {{sectionKey}} -->
                       <template v-if="!Array.isArray(control.setup[0])">
                         <ControlPanel
-                          @data:options="log($event, index)"
                           :label="modifyLabel(control.label)"
                           :setup="control.setup"
                           :controlIndex="index"
@@ -82,7 +81,6 @@
                             >
                               <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
                               <ControlPanel
-                                @data:options="log($event, index, index2)"
                                 :label="modifyLabel(control.label, index2)"
                                 :setup="item"
                                 :groupIndex="index2"
@@ -287,13 +285,12 @@ export default {
     handleClosePopUp() {
       this.popUp = false;
     },
-    log(event, index, index2) {
-      console.log('log function =>', event, index, index2);
-    },
+    // log(event, index, index2) {
+    //   console.log('log function =>', event, index, index2);
+    // },
 
     changeKey(n) {
       this.sectionKey = n;
-      console.log('sectionKey', this.sectionKey);
     },
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -341,7 +338,6 @@ export default {
     swipeLeft() {
       // const content = this.$refs.dummy-row;
       const content = document.querySelector('.dummy-row');
-      console.log('content', content);
       this.scrollTo(content, -300, 800);
       const cord = {
         x: -370,
@@ -352,7 +348,6 @@ export default {
 
     swipeRight() {
       const content = document.querySelector('.dummy-row');
-      console.log('content', content);
       this.scrollTo(content, 300, 800);
       const cord = {
         x: 370,
@@ -362,7 +357,6 @@ export default {
     },
     // moses
     getIndex(index) {
-      console.log('this is the index i am saying', index);
       this.changeIndex = index;
     },
     /**
