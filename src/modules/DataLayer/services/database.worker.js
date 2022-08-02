@@ -38,7 +38,7 @@ export default class DataBase {
   }
 
   async fetchTableData(tableName) {
-    return this.db[tableName].orderBy('id').uniqueKeys();
+    return this.db[tableName].orderBy('id').toArray();
   }
 
   /**

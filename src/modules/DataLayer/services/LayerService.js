@@ -73,60 +73,15 @@ export default class DataLayer {
       this.setup(object);
       // const count = await this.DB.data.count();
       //   console.log('DB count is', count);
-      console.time('fetching');
-
-      // check if data is already initialized iN DEXIE DB
-      // this.DB.getIndicatorDataThatExistInDB()
-      const indicatorArray = await this.DB.checkIndicatorsInIdb();
-      console.log(difference(this.defaultIndicators, indicatorArray));
+      // console.time('fetching');
       this.handlePeripheralData();
-      if (difference(this.defaultIndicators, indicatorArray).length !== 0) {
-        console.log('we need internet');
-      }
-      if (this.store.state.DL.indicators.length <= 0) {
-        /** Fetching other endpoints */
-        console.log('fetching other endpoint');
-        /**
-         * The apiServices returns all the and array of response for the
-         * axios call of all other apiEndpoints.getOtherEndpoint
-         * it uses and {Promise.all()}
-         *
-         * @see {@link apiServices.getOtherEndpoint()}
-         */
-        // const data = await apiServices.getOtherEndpoint();
-
-        /**
-         * we would also need to created a component
-         * then display the activities  of the service layer
-         * per time
-         */
-
-        /**
-         * now initializing other tables in the store from the database directly as against the
-         * previous implementation
-         */
-        // this.setDataInStore(data[6].data, DSI);
-        // this.setDataInStore(data[0].data, LOCATION);
-        // this.setDataInStore(data[1].data, INDICATORS);
-        // this.setDataInStore(data[3].data, VALUE_TYPES);
-        // this.setDataInStore(data[5].data, FACTORS);
-        // this.setDataInStore(data[7].data, DATA_SOURCE);
-
-        console.log('done');
-        /** End Fetching other endpoints */
-      }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
-      // Check if the current related indicator is already in the database
-      // then no need to check if the Years exist in the database
-      // on th else statement
-      if (difference(this.defaultIndicators, indicatorIDArray).length === 0) {
+      // console.log(difference(this.defaultIndicators, indicatorIDArray));
+      const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray);
+      if (indicatorsNotOnIdb.length !== 0) {
         this.storeTimestampInLocal();
-        await this.initDataWithYears(this.defaultIndicators, 8);
-        await this.setAvailableDashboardIndicator();
-      } else {
-        this.storeTimestampInLocal();
-        await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators, 8);
+        await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
         await this.setAvailableDashboardIndicator();
       }
 
@@ -143,7 +98,7 @@ export default class DataLayer {
          * also always ensure to use for Loop with async operations
          * forEach loop doesn't  take asynchronous operations into consideration
          */
-        console.log('in set timeout');
+        // console.log('in set timeout');
         //
         const alert = this.sweetAlert();
         await this.initDataWithYears(this.indicatorList);
@@ -158,7 +113,7 @@ export default class DataLayer {
       /*
        *This compares then the indicator Array with the indicator Array of the dashboard
        * */
-      console.timeEnd('fetching');
+      // console.timeEnd('fetching');
       return Promise.resolve(true);
     } catch (error) {
       return Promise.reject(error);
@@ -169,7 +124,6 @@ export default class DataLayer {
     const locationCheck = await this.DB.listLocations();
     // Simple check to see if peripheral data exists on
     // idb
-    // console.log({ locationCheck, otherKind });
     if (locationCheck.length <= 0) {
       // fetch from api and store in vuex and dexie
       const data = await apiServices.getOtherEndpoint();
@@ -181,11 +135,19 @@ export default class DataLayer {
       this.setDataInStore(data[7].data, DATA_SOURCE);
       // store the rest of the data
       await this.DB.storeDataInDBTable(data[0].data, 'location');
-      // await this.DB.storeDataForOtherEndPointToDB(data);
+      await this.DB.storeDataInDBTable(data[1].data, 'indicators');
+      await this.DB.storeDataInDBTable(data[3].data, 'valuetypes');
+      await this.DB.storeDataInDBTable(data[5].data, 'factors');
+      await this.DB.storeDataInDBTable(data[6].data, 'datasource_specific_indicator');
+      await this.DB.storeDataInDBTable(data[7].data, 'datasources');
     } else {
       // Populate vuex using dexie
-      // const otherKind = await this.DB.fetchTableData('location');
-
+      this.setDataInStore(await this.DB.fetchTableData('datasource_specific_indicator'), DSI);
+      this.setDataInStore(await this.DB.fetchTableData('location'), LOCATION);
+      this.setDataInStore(await this.DB.fetchTableData('indicators'), INDICATORS);
+      this.setDataInStore(await this.DB.fetchTableData('valuetypes'), VALUE_TYPES);
+      this.setDataInStore(await this.DB.fetchTableData('factors'), FACTORS);
+      this.setDataInStore(await this.DB.fetchTableData('datasources'), DATA_SOURCE);
     }
   }
 
@@ -320,6 +282,7 @@ export default class DataLayer {
         const results = await Promise.all(arrayOfPromises);
         for (let index2 = 0; index2 < results.length; index2 += 1) {
           const requestResult = results[index2].data;
+          // check if empty
           await this.DB.storeDataInDB(requestResult);
         }
         this.updatedStoreAvailableIndicator(indicatorID);
