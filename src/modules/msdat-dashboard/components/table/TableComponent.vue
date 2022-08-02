@@ -31,14 +31,14 @@
             <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
             <tr>
-              <div class="nhmis_month_head">
-                NHMIS (monthly)
+              <!-- <div class="nhmis_month_head">
+                NHMIS (monthly) -->
                 <!-- <b-icon-info-circle-fill
                 :variant="selectedSource.id === source.id ? '' : 'primary'"
                 @click="$emit('selected:source-info', source)"
                 class="data-source-info meta_icon"
               /> -->
-              </div>
+              <!-- </div> -->
               <template v-for="(dt, index) in source">
                 <TableDataSourceCell
                   :key="index"

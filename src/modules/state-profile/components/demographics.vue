@@ -61,6 +61,7 @@
          :mapObject="this.mapOptions"/>
         <BaseMap  v-else :level="1"
          :mapObject="mapOptionsNational"/>
+         <p v-if="state == 'National'" class="text-center map-text">Select a state on the map to view state profile</p><br/>
         <b-row>
           <b-col cols="auto">
             <p>Land Area</p>
@@ -389,7 +390,7 @@ export default {
           enabled: false,
         },
         tooltip: {
-          enabled: true,
+          enabled: false,
         },
         credits: {
           enabled: false,
