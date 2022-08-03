@@ -18,7 +18,7 @@
           <hr v-show="dataContainer.indexOf(d) > 0 && d.value !== 0">
         <b-row v-show="d.value !== 0" >
           <b-col>
-            <p> <b>{{d.name}}</b> </p>
+            <p class="capitalize"> <b>{{d.name}}</b> </p>
           </b-col>
           <b-col class="text-right">
             <p v-if="d.indicatorId === 64" class="value"><b>{{d.value | commaValue}}%</b></p>
@@ -61,6 +61,11 @@
          :mapObject="this.mapOptions"/>
         <BaseMap  v-else :level="1"
          :mapObject="mapOptionsNational"/>
+
+          <b-row>
+            Select a state on the map to view state profile.
+          </b-row>
+<br><br>
         <b-row>
           <b-col cols="auto">
             <p>Land Area</p>
@@ -436,5 +441,9 @@ hr {
   color: #232323;
   font-size: 22.50005625px;
   font-weight: 600;
+}
+
+.capitalize{
+  text-transform:capitalize;
 }
 </style>
