@@ -18,7 +18,7 @@
           <hr v-show="dataContainer.indexOf(d) > 0 && d.value !== 0">
         <b-row v-show="d.value !== 0" >
           <b-col>
-            <p> <b>{{d.name}}</b> </p>
+            <p class="capitalize"> <b>{{d.name}}</b> </p>
           </b-col>
           <b-col class="text-right">
             <p v-if="d.indicatorId === 64" class="value"><b>{{d.value | commaValue}}%</b></p>
@@ -437,5 +437,9 @@ hr {
   color: #232323;
   font-size: 22.50005625px;
   font-weight: 600;
+}
+
+.capitalize{
+  text-transform:capitalize;
 }
 </style>

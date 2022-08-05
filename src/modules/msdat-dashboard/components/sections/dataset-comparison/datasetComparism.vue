@@ -15,6 +15,7 @@
       <template #title>
         <p class="text-dark work-sans mb-0 line-height">
           Comparison of
+               <span class="font-weight-bold">{{ values.indicator.full_name }}</span>
           <span class="font-weight-bold">
             {{ values.datasource.full_name }} </span
           >across <span class="font-weight-bold">different sources </span>by
