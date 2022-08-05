@@ -18,6 +18,7 @@
           class="work-sans"
           v-if="TableData.length > 0"
           :dataArray="TableData"
+          :values="values"
           :setSelectedSource="setTableSelected"
           @selected:source="updateControlPanel($event)"
           @selected:source-info="dataSourceModalFunc($event)"
