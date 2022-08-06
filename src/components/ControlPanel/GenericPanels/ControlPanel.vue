@@ -19,11 +19,10 @@
           :NoDataLabel="values.label"
         />
         <!-- </div> -->
-        <div class="disabled_alt">
         <toggle
           v-if="values.type === 'toggle'"
           @change="updatePayload($event, values.key)"
-        /></div>
+        />
 
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->

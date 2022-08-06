@@ -282,7 +282,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$msdat-green: #007d53;
+@import '@/scss/abstracts/_variables.scss';
 
 button {
   color: white;
@@ -358,7 +358,7 @@ header#the-header {
 
       // first row
       &:first-child {
-        background-color: $msdat-green;
+        background-color: $primary;
 
         & > div {
           &:first-child {
@@ -411,7 +411,7 @@ header#the-header {
             transition: all 0.4s;
 
             &:hover {
-              background-color: $msdat-green;
+              background-color: $primary;
             }
           }
         }

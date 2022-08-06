@@ -2,31 +2,11 @@
   <div class="">
     <!-- Toggleable tab links here -->
     <ul
-      class="
-        d-flex
-        list-unstyled
-        step-sections
-        mb-0
-        border-b
-        mx-lg-5 mx-3
-        cursor-pointer
-        main
-        tabs-sec
-      "
+      class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-5 mx-3 cursor-pointer main tabs-sec"
     >
       <template v-if="customDashboard === true">
         <li
-          class="
-            mb-0
-            tab-link
-            h6
-            py-2
-            pt-4
-            text-black-50
-            bg-tab-color
-            work-sans
-            main
-          "
+          class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans main"
           :class="[index === selectedPanel ? 'active font-weight-bold' : '']"
           {{alert(index)}}
           v-for="(control, index) in controls"
@@ -34,32 +14,24 @@
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
-        <!-- {{index}}
+          <!-- {{index}}
         {{selectedIndex}} -->
 
-        <!-- {{index}} index
+          <!-- {{index}} index
         {{changeIndex}} select -->
           {{ control.title }}
         </li>
       </template>
       <template v-if="customDashboard === false">
         <li
-          class="
-          mb-0
-            tab-link
-            h6
-            text-black-50
-            bg-tab-color
-            work-sans
-            main
-          "
+          class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
           :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
           v-for="(control, index) in controls"
           :key="index"
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
-               <!-- {{index}}
+          <!-- {{index}}
         {{selectedIndex}}
         {{checkIndex}} -->
 
@@ -174,16 +146,13 @@ export default {
         this.title = 'Disaggregation';
       }
     },
-
   },
   computed: {
     abc() {
       // console.log('ar', this.$store.getters.arrangedSections);
       // const data2 = this.$store.getters.arrangedSections
       // console.log('data1', data2);
-      return this.$store.getters.arrangedSections.filter(
-        (element) => element.isShow === true,
-      );
+      return this.$store.getters.arrangedSections.filter((element) => element.isShow === true);
     },
     customDashboard() {
       return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
@@ -201,6 +170,7 @@ export default {
 
 <style lang="scss" scoped>
 $primary: #2b5d5b;
+@import '@/scss/abstracts/_variables.scss';
 
 .main {
   display: inherit;
@@ -213,21 +183,24 @@ $primary: #2b5d5b;
   color: #515151;
 }
 
-.tabs-sec{
+.tabs-sec {
   // max-width: 1200px;
 }
 
 .tab-link.active {
   // border-bottom: 2.5px solid $primary;
-  border: 1px solid #2B5D5B;
-  background-color: #2B5D5B;
+  // border: 1px solid #2B5D5B;
+  // background-color: #2B5D5B;
+  border: 1px solid $primary;
+  background-color: $primary;
   color: white !important;
   // padding: 20px;
 }
 
 .tab-link {
   // border-bottom: 2.5px solid $primary;
-  border: 1.0px solid #007d53;
+  // border: 1.0px solid #007d53;
+  border: 1px solid $primary;
   background-color: white;
   color: black !important;
   padding: 1rem;
@@ -239,7 +212,7 @@ $primary: #2b5d5b;
   margin: 10px 5px;
   font-weight: 200;
   font-size: 1rem;
-  &:first-child{
+  &:first-child {
     margin-left: 0;
   }
 }
@@ -263,8 +236,7 @@ $primary: #2b5d5b;
 
   .control-title {
     display: inherit;
-    font: var(--unnamed-font-style-normal) normal
-      var(--unnamed-font-weight-bold) 16px/19px
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 16px/19px
       var(--unnamed-font-family-work-sans);
     letter-spacing: var(--unnamed-character-spacing-0);
     text-align: left;
