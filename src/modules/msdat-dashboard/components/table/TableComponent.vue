@@ -91,7 +91,7 @@
 
             <!-- The is the Row or the NHMIS detail of the related indicators -->
              <transition name="fade">
-            <tr class="border-0" v-show="numDenum">
+            <tr class="border-0" v-show="numDenum && values.numdenum">
               <td class="border-0"></td>
               <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
               <td class="num-denom pt-3 align-center text-light">
@@ -245,7 +245,7 @@
 
             <!-- The is the Row or the NHMIS detail of the related indicators -->
             <transition name="fade">
-            <tr class="border-0" v-show="numDenum">
+            <tr class="border-0" v-show="numDenum && values.numdenum">
               <td class="border-0"></td>
               <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
               <td class="num-denom pt-3 align-center text-light">

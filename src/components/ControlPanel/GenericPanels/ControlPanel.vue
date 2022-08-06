@@ -26,7 +26,7 @@
 
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->
-          <div class="d-flex disabled_alt">
+          <div class="d-flex">
             <BaseCheckbox
              :currentValue="payload.target.national"
               @input="
@@ -39,7 +39,7 @@
             <p class="check-label ml-1">National</p>
           </div>
           <!-- SDG Target here -->
-          <div class="d-flex ml-3 disabled_alt">
+          <div class="d-flex ml-3">
             <BaseCheckbox
               :currentValue="payload.target.sdg"
               @input="
