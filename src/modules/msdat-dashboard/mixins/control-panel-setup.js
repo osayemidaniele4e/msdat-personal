@@ -90,9 +90,8 @@ export default {
         return false;
       });
       const years = onlyYearData.map((item) => item.period);
-      const unqiueYears = uniq(years);
-      const sortedYears = unqiueYears.sort((a, b) => b - a);
-      return sortedYears;
+      const uniqueYears = uniq(years);
+      return uniqueYears.sort((a, b) => b - a);
     },
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
