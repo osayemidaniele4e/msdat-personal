@@ -33,7 +33,7 @@
             <tr>
               <!-- <div class="nhmis_month_head">
                 NHMIS (monthly) -->
-                <!-- <b-icon-info-circle-fill
+              <!-- <b-icon-info-circle-fill
                 :variant="selectedSource.id === source.id ? '' : 'primary'"
                 @click="$emit('selected:source-info', source)"
                 class="data-source-info meta_icon"
@@ -90,29 +90,29 @@
             </TableDataRow>
 
             <!-- The is the Row or the NHMIS detail of the related indicators -->
-             <transition name="fade">
-            <tr class="border-0" v-show="numDenum && values.numdenum">
-              <td class="border-0"></td>
-              <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
-              <td class="num-denom pt-3 align-center text-light">
-                <slot name="NHMIS-DETAILS">
-                  <h5>{{values.datasource.datasource}}: {{values.year}}</h5>
-                </slot>
-              </td>
-              <td colspan="20" class="num-denom-content">
-                <slot name="NHMIS-DETAILS">
-                <div class="numDemValues text-center">
-                  <div>
-                     <p><span>Numerator: </span> {{numerator}}</p>
-                  </div>
-                  <div>
-                    <p><span>Denominator: </span> {{denominator}}</p>
-                  </div>
-                  </div>
-                </slot>
-              </td>
-            </tr>
-          </transition>
+            <transition name="fade">
+              <tr class="border-0" v-show="numDenum && values.numdenum">
+                <td class="border-0"></td>
+                <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
+                <td class="num-denom pt-3 align-center text-light">
+                  <slot name="NHMIS-DETAILS">
+                    <h5>{{ values.datasource.datasource }}: {{ values.year }}</h5>
+                  </slot>
+                </td>
+                <td colspan="20" class="num-denom-content">
+                  <slot name="NHMIS-DETAILS">
+                    <div class="numDemValues text-center">
+                      <div>
+                        <p><span>Numerator: </span> {{ numerator }}</p>
+                      </div>
+                      <div>
+                        <p><span>Denominator: </span> {{ denominator }}</p>
+                      </div>
+                    </div>
+                  </slot>
+                </td>
+              </tr>
+            </transition>
 
             <tr class="" v-if="dataArray.length > 1">
               <td class="border-0"></td>
@@ -245,28 +245,28 @@
 
             <!-- The is the Row or the NHMIS detail of the related indicators -->
             <transition name="fade">
-            <tr class="border-0" v-show="numDenum && values.numdenum">
-              <td class="border-0"></td>
-              <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
-              <td class="num-denom pt-3 align-center text-light">
-                <slot name="NHMIS-DETAILS">
-                  <h5>{{values.datasource.datasource}}: {{values.year}}</h5>
-                </slot>
-              </td>
-              <td colspan="20" class="num-denom-content">
-                <slot name="NHMIS-DETAILS">
-                <div class="numDemValues text-center">
-                  <div>
-                     <p><span>Numerator: </span> {{numerator}}</p>
-                  </div>
-                  <div>
-                    <p><span>Denominator: </span> {{denominator}}</p>
-                  </div>
-                  </div>
-                </slot>
-              </td>
-            </tr>
-          </transition>
+              <tr class="border-0" v-show="numDenum && values.numdenum">
+                <td class="border-0"></td>
+                <!-- Use this slot to set the NHMIS DETAIL example(Num Denum) -->
+                <td class="num-denom pt-3 align-center text-light">
+                  <slot name="NHMIS-DETAILS">
+                    <h5>{{ values.datasource.datasource }}: {{ values.year }}</h5>
+                  </slot>
+                </td>
+                <td colspan="20" class="num-denom-content">
+                  <slot name="NHMIS-DETAILS">
+                    <div class="numDemValues text-center">
+                      <div>
+                        <p><span>Numerator: </span> {{ numerator }}</p>
+                      </div>
+                      <div>
+                        <p><span>Denominator: </span> {{ denominator }}</p>
+                      </div>
+                    </div>
+                  </slot>
+                </td>
+              </tr>
+            </transition>
 
             <tr class="" v-if="dataArray.length > 1">
               <td class="border-0"></td>
@@ -318,8 +318,7 @@
 
 <script>
 import { flatten, uniq, countBy } from 'lodash';
-import axios from 'axios';
-import moment from 'moment';
+import axiosInstance from '@/plugins/axios';
 import TableDataCell from './TableDataCell.vue';
 import TableDataSourceCell from './TableDataSourceCell.vue';
 import TableDataRow from './TableDataRow.vue';
@@ -518,9 +517,12 @@ export default {
      * api directly using the control panel props
      */
     getNumDenumData() {
-      axios
+      const {
+        indicator, year, location, datasource,
+      } = this.values;
+      axiosInstance
         .get(
-          `https://msdatapi.e4eweb.space/api/crud/data/?datasource=${this.values.datasource.id}&indicator=${this.values.indicator.id}&period=${this.values.year}&location=${this.values.location.id}`,
+          `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
         )
         .then((response) => {
           const numerator = response.data.filter((item) => item.value_type === 6);
@@ -528,12 +530,16 @@ export default {
           if (numerator.length > 0 || denominator.length > 0) {
             this.numDenum = true;
             if (numerator.length > 0) {
-              this.numerator = `${this.values.indicator.short_name} - ${Number(numerator[0].value).toLocaleString()}`;
+              this.numerator = `${this.values.indicator.short_name} - ${Number(
+                numerator[0].value,
+              ).toLocaleString()}`;
             } else {
               this.numerator = 'N/a';
             }
             if (denominator.length > 0) {
-              this.denominator = `${this.values.indicator.short_name} - ${Number(denominator[0].value).toLocaleString()}`;
+              this.denominator = `${this.values.indicator.short_name} - ${Number(
+                denominator[0].value,
+              ).toLocaleString()}`;
             } else {
               this.denominator = 'N/a';
             }
@@ -559,14 +565,12 @@ export default {
       this.nhmisMonthData = [];
       this.indicators.forEach((indicator) => {
         let nhmisObj = {};
-        const month = moment().subtract(1, 'month').format('MMM');
-        // api call to get specific data for nhmis
-        axios
+        axiosInstance
           .get(
-            `https://msdatapi.e4eweb.space/api/crud/data/?datasource=33&indicator=${indicator}&location=1`,
+            `data/?datasource=33&indicator=${indicator}&location=1`,
           )
           .then((response) => {
-            nhmisObj = response.data.find((e) => e.period.split(' ')[0] === month);
+            nhmisObj = response.data[response.data.length - 1];
 
             this.nhmisMonthData.push(nhmisObj);
           })
@@ -622,6 +626,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import '@/scss/abstracts/_variables.scss';
 // @import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
 // table scroll bar
 ::-webkit-scrollbar {
@@ -642,7 +647,8 @@ table.table {
   }
   // selected data source
   .table-active {
-    background-color: #2b5d5b;
+    // background-color: #2b5d5b;
+    background-color: $primary;
   }
 
   .classification-row {
@@ -665,33 +671,36 @@ table.table {
       th > div {
         svg {
           font-size: 20px;
-          color: #2b5d5b;
+          // color: #2b5d5b;
+          color: $primary;
           cursor: pointer;
         }
       }
     }
 
     // numerator - denominator section
-      td.num-denom {
-      background-color: #2b5d5b;
+    td.num-denom {
+      // background-color: #2b5d5b;
+      background-color: $primary;
       padding-top: 10px;
-      h5{
-         font-size: 15px !important;
-          font-weight: 300;
+      h5 {
+        font-size: 15px !important;
+        font-weight: 300;
       }
     }
-    td.num-denom-content{
+    td.num-denom-content {
       padding-top: 10px;
-      background-color: #2b5d5b;
-      div.numDemValues{
+      // background-color: #2b5d5b;
+      background-color: $primary;
+      div.numDemValues {
         background-color: #fff;
         color: rgb(15, 14, 14);
         height: 34px;
         display: flex;
         border-radius: 4px;
-        padding-top:7px;
+        padding-top: 7px;
         justify-content: space-evenly;
-        p{
+        p {
           font-size: 13px !important;
           font-weight: 300;
           span {

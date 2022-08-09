@@ -42,7 +42,7 @@
 
     <div class="control-title">{{ title }}</div>
     <!-- Multi-select dropdown here -->
-    <div class="mx-5 pb-3 pt-1 step-controls styles">
+    <div class="mx-lg-5 px-2 mx-auto pb-3 pt-1 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
@@ -169,7 +169,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #2b5d5b;
+// $primary: #2b5d5b;
 @import '@/scss/abstracts/_variables.scss';
 
 .main {
@@ -242,7 +242,8 @@ $primary: #2b5d5b;
     text-align: left;
     font: normal normal bold 16px/19px Work Sans;
     letter-spacing: 0px;
-    color: #2b5d5b;
+    // color: #2b5d5b;
+    color: $primary;
     opacity: 1;
     text-decoration: underline;
     margin: 5px;
