@@ -21,13 +21,9 @@
             >
           </p>
         </template>
-         <button @click="returnToNational" v-show="level !== 1">
-            <img
-              :src="require('../../../assets/chevron-left.svg')"
-              alt="caret-left"
-              width="15"
-              height="15"
-            />&nbsp;Back to National
+              <button @click="returnToNational" v-show="level !== 1" class="bg-transparent text-dark font-weight-bold">
+               <b-icon icon="chevron-left" />
+              &nbsp;Back to National
           </button>
         <div @click="handleChartClick">
            <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
