@@ -98,5 +98,10 @@ export default {
       const data = await this.getDataSourceByIndicator(indicatorID);
       return data;
     },
+    //  Get available indicators for a given data source
+    async setIndicatorsDropdown(dataSourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorByDataSource(dataSourceID);
+      return data;
+    },
   },
 };

@@ -473,6 +473,7 @@ export default {
         this.showTroubleShootingModal = true;
       }
     }
+    // select scss variable from the scss file $primary
   },
 };
 </script>
