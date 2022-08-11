@@ -17,7 +17,7 @@
       <template v-if="options.length > 0">
         <div class="my-3">
           <b-form-group v-slot="{ ariaDescribedby }">
-            <b-form-checkbox-group
+            <b-form-radio-group
               v-model="selected"
               :options="bootstrapFormattedOptions"
               :aria-describedby="ariaDescribedby"
@@ -26,17 +26,7 @@
               @change="$emit('datasources-selected', $event)"
               class="text-uppercase"
               button-variant="danger"
-            ></b-form-checkbox-group>
-             <!-- <input type="radio"
-             v-model="selected"
-              :options="bootstrapFormattedOptions"
-              :aria-describedby="ariaDescribedby"
-              stacked
-              :disabled="switchValues === 'ON' ? false : true"
-              @change="$emit('datasources-selected', $event)"
-              class="text-uppercase"
-              button-variant="danger"
-             > -->
+            ></b-form-radio-group>
           </b-form-group>
         </div>
       </template>
