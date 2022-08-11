@@ -18,7 +18,7 @@
       >
         <template #title>
           <p
-            class="text-dark work-sans mb-0 line-height"
+            class="work-sans mb-0 line-height"
             v-if="!Array.isArray(values.indicator.length)"
           >
            Comparison Of <b>{{ values.indicator.short_name }}</b> according to

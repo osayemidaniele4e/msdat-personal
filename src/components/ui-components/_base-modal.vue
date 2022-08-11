@@ -8,6 +8,7 @@
       centered
       :size="size"
       v-on:hidden="hide"
+      class="px-3"
     >
       <template #modal-header="{ close }">
         <slot name="title"> modal slot title fallback </slot>
