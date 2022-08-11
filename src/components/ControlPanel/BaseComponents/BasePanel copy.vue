@@ -67,7 +67,7 @@
 
     <div class="control-title">{{ title }}</div>
     <!-- Multi-select dropdown here -->
-    <div class="mx-5 pb-3 pt-1 step-controls styles">
+    <div class="mx-lg-5 px-2 mx-auto pb-3 pt-1 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>

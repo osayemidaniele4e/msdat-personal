@@ -79,6 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/abstracts/_variables.scss';
 
 .classification-row{
   font-size: 10px;
@@ -137,7 +138,8 @@ select {
 
 // numerator - denominator section
 div.nhmis-details {
-  background-color: #2b5d5b;
+  background-color: $primary;
+  // background-color: #2b5d5b;
 
   // nhmis year column
   & > div:first-child {

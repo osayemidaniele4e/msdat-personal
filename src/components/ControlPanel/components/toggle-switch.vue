@@ -37,7 +37,7 @@ export default {
     },
     defaultState: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data() {

@@ -2,8 +2,9 @@
   <div class="card">
     <div
       class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
-      :style="{ backgroundColor }"
+      :class="{ 'msdat_primary': bgName }"
     >
+      <!-- :style="{ backgroundColor }" -->
       <div class="title w-100">
         <slot name="title"> slot title fallback </slot>
       </div>
@@ -99,6 +100,10 @@ export default {
     //   type: String,
     //   default: 'red',
     // },
+    bgName: {
+      type: Boolean,
+      default: true,
+    },
     backgroundColor: {
       type: String,
       default: '#DFF3F3',
