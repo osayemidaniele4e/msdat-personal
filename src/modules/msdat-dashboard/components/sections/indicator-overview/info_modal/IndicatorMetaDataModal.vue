@@ -14,7 +14,7 @@
     <b-tabs pills class="work-sans tabs" id="indicatorMeta" v-else>
       <b-tab v-for="(dataSource, index) in dataSources" :key="index">
         <template #title>
-          <span>{{ dataSource.datasource }}</span>
+          <span class="datasource">{{ dataSource.datasource }}</span>
         </template>
 
         <div>
@@ -270,6 +270,10 @@ div.loading_screen {
 }
 .tab1 {
   color: black;
+}
+
+.datasource{
+  font-size: 13px;
 }
 
 .text1 {
