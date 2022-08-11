@@ -577,7 +577,7 @@ export default {
         {
           name: 'mortality',
           icon: 'patient',
-          details:
+          detail:
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS)',
           chartTitle: 'Other Mortality Indicators',
@@ -612,7 +612,7 @@ export default {
         {
           name: 'Health Services',
           icon: 'hospital',
-          details:
+          detail:
             'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
