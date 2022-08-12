@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script>
+<script type="js">
 export default {
   name: 'BaseUpdate',
   props: {
@@ -80,7 +80,7 @@ div.new_update {
   }
   span.icon_cancel {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     cursor: pointer;
   }
 }

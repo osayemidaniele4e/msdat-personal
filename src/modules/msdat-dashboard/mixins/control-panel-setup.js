@@ -90,13 +90,17 @@ export default {
         return false;
       });
       const years = onlyYearData.map((item) => item.period);
-      const unqiueYears = uniq(years);
-      const sortedYears = unqiueYears.sort((a, b) => b - a);
-      return sortedYears;
+      const uniqueYears = uniq(years);
+      return uniqueYears.sort((a, b) => b - a);
     },
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
       const data = await this.getDataSourceByIndicator(indicatorID);
+      return data;
+    },
+    //  Get available indicators for a given data source
+    async setIndicatorsDropdown(dataSourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorByDataSource(dataSourceID);
       return data;
     },
   },

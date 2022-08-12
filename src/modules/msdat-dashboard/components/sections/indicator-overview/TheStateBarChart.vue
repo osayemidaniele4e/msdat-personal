@@ -1,8 +1,8 @@
 <template>
-  <div class="position-relative" id="stateBarChartComponent" >
+  <div class="position-relative" id="stateBarChartComponent">
     <base-overlay :show="loading">
       <base-sub-card
-       ref="SubCard"
+        ref="SubCard"
         showControls
         v-if="Object.keys(values).length"
         @dropdownTypeSelected="
@@ -21,24 +21,19 @@
             >
           </p>
         </template>
-         <button @click="returnToNational" v-show="level !== 1">
-            <img
-              :src="require('../../../assets/chevron-left.svg')"
-              alt="caret-left"
-              width="15"
-              height="15"
-            />&nbsp;Back to National
+              <button @click="returnToNational" v-show="level !== 1" class="bg-transparent text-dark font-weight-bold">
+               <b-icon icon="chevron-left" />
+              &nbsp;Back to National
           </button>
         <div @click="handleChartClick">
-           <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+          <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
         </div>
-
       </base-sub-card>
     </base-overlay>
     <NoSubNationalData
       v-if="showNoSubNationalData"
       class="position-absolute"
-      style="top: 15%; width: 80%; left: 20%;"
+      style="top: 15%; width: 80%; left: 20%"
     />
   </div>
 </template>
@@ -119,7 +114,6 @@ export default {
       },
       deep: true,
       immediate: false,
-
     },
   },
   methods: {
@@ -149,7 +143,7 @@ export default {
         // value_type: 5,
         location: this.values.location.id,
       });
-        // because i know i am expecting only on value in the array of results
+      // because i know i am expecting only on value in the array of results
       if (parentValue.length > 0) {
         const parent = parentValue[0];
         const seriesObject = {
@@ -187,6 +181,10 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
+      // loop through data and parseFloat the value toFixed(1)
+      for (let i = 0; i < data.length; i += 1) {
+        data[i].value = parseFloat(data[i].value).toFixed(1);
+      }
       return data;
     },
 

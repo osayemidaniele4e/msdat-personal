@@ -44,6 +44,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/abstracts/_variables.scss';
+
 tr {
   // icon column
   & > td:first-child {
@@ -51,7 +53,8 @@ tr {
     background-color: #ffffff;
 
     svg {
-      color: #2b5d5b;
+      // color: #2b5d5b;
+      color: $primary;
       cursor: pointer;
     }
   }
