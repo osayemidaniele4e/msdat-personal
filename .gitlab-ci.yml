@@ -7,7 +7,7 @@ variables:
 
 stages:
  # - ver
-  # - test
+  - test
   - deploy
 
 cache:
@@ -23,19 +23,19 @@ cache:
 #include:
  # - template: Code-Quality.gitlab-ci.yml
 
-# code_quality:
-#   stage: test
-#   # variables:
-#   #   REPORT_FORMAT: html
-#   # artifacts:
-#   #   paths: [gl-code-quality-report.html]
-#   script:
-#     - yarn run lint --fix
-#   rules:
-#     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-#       when: always
-#       allow_failure: true
-#     - when: always
+code_quality:
+  stage: test
+  # variables:
+  #   REPORT_FORMAT: html
+  # artifacts:
+  #   paths: [gl-code-quality-report.html]
+  script:
+    - yarn run lint --fix
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: always
+      allow_failure: true
+    - when: always
 
 
 deploy_develop:
@@ -61,7 +61,7 @@ deploy_master:
       - chmod 600 ~/.ssh/id_rsa
       - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh -p3322 e4esysadmin@172.93.48.4 "cd /srv/msdat/ && git checkout . && git checkout master && git pull &&  yarn install &&  yarn  build && sudo systemctl restart nginx "
+    - ssh -p3322 e4esysadmin@172.93.48.4 "cd /srv/msdat/ && git checkout . && git checkout master && git pull &&  nvm use 14 && yarn install &&  yarn  build && sudo systemctl restart nginx "
   only:
     - master
   when: manual
