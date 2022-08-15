@@ -74,7 +74,7 @@ section#faq_accordion {
     font-weight: 500;
     border-color: #ececec;
     box-shadow: none;
-    font-size: 18px;
+    font-size: 1rem !important;
     border: 0;
     border-bottom: 1.5px solid #00000015;
     text-transform: capitalize;
