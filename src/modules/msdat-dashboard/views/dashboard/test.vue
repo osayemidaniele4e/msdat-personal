@@ -21,7 +21,7 @@
         </Loading>
 
         <div v-else class="position-relative">
-          <BaseUpdate :showPopUp="popUp" v-if="popUp" @closePopUp="handleClosePopUp" />
+          <!-- <BaseUpdate :showPopUp="popUp" v-if="popUp" @closePopUp="handleClosePopUp" /> -->
           <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
           <section @click="$refs.theHeader.close()">
             <div
@@ -47,10 +47,6 @@
                       :key="index"
                       :title="control.label"
                     >
-                    <!-- {{ control.label}} =>
-                    {{index}}
-                    {{selectedPanel}}
-                    {{sectionKey}} -->
                       <template v-if="!Array.isArray(control.setup[0])">
                         <ControlPanel
                           @data:options="log($event, index)"
@@ -81,10 +77,15 @@
                               :key="index2"
                             >
                               <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
-                                 <label class="text-uppercase work-sans label-text">program areas</label>
+                              <label class="text-uppercase work-sans label-text">program areas</label>
                                    <SelectDropdown v-model="$data[indexModel(index2)]"
                               :options="options"
                               />
+                              <!-- <pre> -->
+                                <!-- {{index2}}
+                                {{$data}} -->
+                              <!-- {{item[0].options}} -->
+                              <!-- </pre> -->
                               <ControlPanel
                                 @data:options="log($event, index, index2)"
                                 :label="modifyLabel(control.label, index2)"
@@ -98,6 +99,7 @@
                                 :updateValue="updateValue"
                                 :updateKey="updateKey"
                                 :resetData="resetData"
+                                :indicatorList="$data[indexModel(index2)]"
                               />
                             </div>
                           </div>
@@ -167,7 +169,8 @@ import {
   ControlPanel,
   SelectDropdown,
 } from '@/components/ControlPanel';
-import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
+// import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
+import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -178,7 +181,6 @@ import SharingDashboardState from '../../modules/dashboard_state_share/mixins';
 import Loading from '../../mixins/loading';
 import Onboarding from '../onboarding/onboarding';
 import TroubleShooting from '../../modules/troubleshooting/mixins';
-import config from '../../../dynamic_dashboard/config/dashboard_config';
 
 export default {
   name: 'BaseDashboard',
@@ -196,10 +198,10 @@ export default {
     ControlBase,
     BasePanel,
     ControlPanel,
+    SelectDropdown,
     Header,
     Footer,
-    BaseUpdate,
-    SelectDropdown,
+    // BaseUpdate,
   },
   data() {
     return {
@@ -218,6 +220,11 @@ export default {
       scrollPos: '',
       sectionKey: 0,
       popUp: true,
+      program_areas: [
+        { name: 'Buy', value: 'buy' },
+        { name: 'Shortlets', value: 'shortlet' },
+        { name: 'Rent', value: 'rent' },
+      ],
       value: null,
       value0: null,
       value1: null,
@@ -298,7 +305,9 @@ export default {
     indexModel(index) {
       return `value${index}`;
     },
+    // handleProgramArea() {
 
+    // },
     /**
      * Function to handle show welcome modal
      */
@@ -445,6 +454,15 @@ export default {
     },
   },
 
+  watch: {
+
+    program_option(newVal) {
+      console.log(newVal);
+      // const { name } = this.$route.params;
+      this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
+    },
+  },
+
   async mounted() {
     this.loading = false;
     // initializing data for dashboard
@@ -491,7 +509,6 @@ export default {
         this.showTroubleShootingModal = true;
       }
     }
-    // select scss variable from the scss file $primary
   },
 };
 </script>
