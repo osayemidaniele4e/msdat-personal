@@ -17,8 +17,6 @@
         <slot name="top-section"></slot>
       </template>
 
-      
-      
       <template v-slot:section-1="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
@@ -103,10 +101,6 @@
         </div>
       </template>
 
-     
-
-
-
              <template v-slot:section-5="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
@@ -123,8 +117,6 @@
           </base-sub-card>
         </div>
       </template>
-
-       
 
     </BaseDashboard>
   </div>
@@ -296,7 +288,7 @@ export default {
     // if (this.$route.params.name !== 'Health_Outcomes') {
     //   this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     // }
-    
+
     this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
     this.ADD_CONTROL_PANEL(ICSConfig);
     this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
