@@ -163,6 +163,7 @@ import {
   BasePanel,
   ControlBase,
   ControlPanel,
+  SelectDropdown,
 } from '@/components/ControlPanel';
 import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
 import formatter from '../../mixins/formatter';
@@ -196,6 +197,7 @@ export default {
     Header,
     Footer,
     BaseUpdate,
+    SelectDropdown,
   },
   data() {
     return {
