@@ -81,6 +81,8 @@
                               :key="index2"
                             >
                               <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
+                                     <SelectDropdown
+                              />
                               <ControlPanel
                                 @data:options="log($event, index, index2)"
                                 :label="modifyLabel(control.label, index2)"
