@@ -10,8 +10,21 @@
         <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
         <label class=" text-uppercase work-sans label-text">{{ values.label }}</label>
       <!-- :options="values.options" -->
+
+              <!-- {{values}} -->
+
         <selectWrapper
-          v-if="values.type === 'dropdown'"
+          v-if="values.type === 'dropdown' && values.key === 'indicator'"
+          :id="label"
+          :value="payload[values.key]"
+          @input="updatePayload($event, values.key)"
+          :options="getIndicatorList(values.options)"
+          :multiSelectProps="values.dropdownProps"
+          :NoDataLabel="values.label"
+        />
+
+           <selectWrapper
+          v-else
           :id="label"
           :value="payload[values.key]"
           @input="updatePayload($event, values.key)"

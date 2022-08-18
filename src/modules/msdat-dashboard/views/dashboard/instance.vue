@@ -312,12 +312,20 @@ export default {
     // if (this.$route.params.name !== 'Health_Outcomes') {
     //   this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     // }
-    this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
-    this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
-    this.ADD_CONTROL_PANEL(ICSConfig);
-    this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-    this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-    this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    if (this.$route.params.name !== 'Advanced_Analytics') {
+      this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
+      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+      this.ADD_CONTROL_PANEL(ICSConfig);
+      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    } else {
+      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+      this.ADD_CONTROL_PANEL(ICSConfig);
+      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+      // this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    }
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'

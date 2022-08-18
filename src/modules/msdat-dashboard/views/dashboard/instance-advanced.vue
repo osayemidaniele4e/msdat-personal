@@ -17,6 +17,26 @@
         <slot name="top-section"></slot>
       </template>
 
+            <template v-slot:section-0="{ payload, controlIndex }">
+        <div class="col-md-12" style="margin-bottom: 4rem">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <BaseZonalAnalysisSection :controlPanelProps="payload" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
       <template v-slot:section-1="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
@@ -84,40 +104,6 @@
         </div>
       </template>
 
-      <template v-slot:section-4="{ payload, controlIndex }">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Dataset Comparison</h5>
-            </template>
-            <template>
-              <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <DataSetComparison :values="payload" :controlIndex="controlIndex" />
-                </ControlPanelConfiguration>
-              </LazyLoading>
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-
-             <template v-slot:section-5="{ payload, controlIndex }">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
-            </template>
-            <template>
-              <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
-                </ControlPanelConfiguration>
-              </LazyLoading>
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-
     </BaseDashboard>
   </div>
 </template>
@@ -125,17 +111,17 @@
 <script>
 import { mapMutations } from 'vuex';
 import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
-import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
+// import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
 import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
 import ICSConfig from '../../components/sections/indicator-comparism/indicator-comparism-config';
 import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
-import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
+// import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
 import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
-import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
+// import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
 import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
@@ -151,14 +137,14 @@ export default {
   },
   components: {
     BaseDashboard,
-    BaseIndicatorOverview,
+    // BaseIndicatorOverview,
     ControlPanelConfiguration,
     BaseZonalAnalysisSection,
     LazyLoading,
     ICS,
-    DataSetComparison,
+    // DataSetComparison,
     MultiSourceComponent,
-    DynamicSection,
+    // DynamicSection,
   },
   props: {
     initialIndicator: {
@@ -288,12 +274,20 @@ export default {
     // if (this.$route.params.name !== 'Health_Outcomes') {
     //   this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     // }
-
-    this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
-    this.ADD_CONTROL_PANEL(ICSConfig);
-    this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-    this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-    this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    if (this.$route.params.name !== 'Advanced_Analytics') {
+      this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
+      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+      this.ADD_CONTROL_PANEL(ICSConfig);
+      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    } else {
+      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+      this.ADD_CONTROL_PANEL(ICSConfig);
+      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+      // this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    }
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
