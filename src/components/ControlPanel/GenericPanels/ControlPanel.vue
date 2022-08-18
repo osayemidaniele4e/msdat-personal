@@ -264,10 +264,18 @@ export default {
   },
   methods: {
     // eslint-disable-next-line consistent-return
+
     getIndicatorList(data) {
-      if (this.indicatorList !== '' || this.indicatorList !== null) {
+      const { name } = this.$route.params;
+      if (name === 'Advanced_Analytics') {
         return data?.filter((item) => item.program_area === this.indicatorList);
       }
+
+      return data;
+
+      // if (this.indicatorList !== '' || this.indicatorList !== null) {
+      //   return data?.filter((item) => item.program_area === this.indicatorList);
+      // }
     },
     updatePayload(value, key) {
       if (this.groupIndexSub != null) {
