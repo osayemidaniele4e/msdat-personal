@@ -49,7 +49,7 @@
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <BaseZonalAnalysisSection :controlPanelProps="payload" />
+                  <DescriptiveAnalysisSection :controlPanelProps="payload" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
@@ -92,7 +92,7 @@
                     <div class="comparison-header">Comparison ({{ n }})</div>
                     <LazyLoading>
                       <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="n" :values="payload[n - 1]" />
+                        <AdvancedMultiSource :key="n" :values="payload[n - 1]" />
                       </ControlPanelConfiguration>
                     </LazyLoading>
                   </div>
@@ -111,6 +111,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
+import DescriptiveAnalysisSection from '../../components/sections/advanced/descriptive-section/descriptive.vue';
 // import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
 import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
@@ -119,8 +120,10 @@ import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
 // import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
+import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
+import AdvancedMultiSource from '../../components/sections/advanced/multisource-section/multi-source.vue';
 import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
-import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
+// import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
 // import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
 import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
@@ -143,7 +146,9 @@ export default {
     LazyLoading,
     ICS,
     // DataSetComparison,
-    MultiSourceComponent,
+    // MultiSourceComponent,
+    AdvancedMultiSource,
+    DescriptiveAnalysisSection,
     // DynamicSection,
   },
   props: {
@@ -285,7 +290,7 @@ export default {
       this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
       this.ADD_CONTROL_PANEL(ICSConfig);
       this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+      this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
       // this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     }
 
