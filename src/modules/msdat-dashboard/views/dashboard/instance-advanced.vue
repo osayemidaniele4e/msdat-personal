@@ -29,7 +29,7 @@
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <BaseZonalAnalysisSection :controlPanelProps="payload" />
+                  <CorrelationAnalysisSection :controlPanelProps="payload" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
@@ -68,7 +68,7 @@
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <ICS :values="payload" :controlIndex="controlIndex" />
+                  <PredictiveAnalysisSection :values="payload" :controlIndex="controlIndex" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
@@ -110,13 +110,18 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
-import DescriptiveAnalysisSection from '../../components/sections/advanced/descriptive-section/descriptive.vue';
+// import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
+import DescriptiveAnalysisSection from '../../components/sections/advanced/descriptive-section/DescriptiveSection.vue';
+import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
+import CorrelationAnalysisSection from '../../components/sections/advanced/correlation-section/CorrelationSection.vue';
+import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
+import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
+import PredictiveAnalysisSection from '../../components/sections/advanced/predictive-section/PredictiveSection.vue';
 // import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
 import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
 import ICSConfig from '../../components/sections/indicator-comparism/indicator-comparism-config';
-import ICS from '../../components/sections/indicator-comparism/ICS.vue';
+// import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
 // import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
@@ -142,11 +147,13 @@ export default {
     BaseDashboard,
     // BaseIndicatorOverview,
     ControlPanelConfiguration,
-    BaseZonalAnalysisSection,
+    // BaseZonalAnalysisSection,
     LazyLoading,
-    ICS,
+    // ICS,
+    PredictiveAnalysisSection,
     // DataSetComparison,
     // MultiSourceComponent,
+    CorrelationAnalysisSection,
     AdvancedMultiSource,
     DescriptiveAnalysisSection,
     // DynamicSection,
@@ -287,9 +294,9 @@ export default {
       this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
       this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     } else {
-      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
-      this.ADD_CONTROL_PANEL(ICSConfig);
-      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+      this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
+      this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
+      this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
       this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
       // this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     }
