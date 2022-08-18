@@ -21,7 +21,7 @@
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>
+              <h5 class="font-weight-bold work-sans text-white">Correlation Analysis</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -41,7 +41,7 @@
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>
+              <h5 class="font-weight-bold work-sans text-white">Descriptive Analysis</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -62,7 +62,7 @@
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
-                Indicator Comparison - By Period/State
+                Predictive Analysis
               </h5>
             </template>
             <template>
