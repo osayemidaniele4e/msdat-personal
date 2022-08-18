@@ -78,14 +78,14 @@
                             >
                               <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
                               <label class="text-uppercase work-sans label-text">program areas</label>
-                                   <SelectDropdown v-model="$data[indexModel(index2)]"
+                                   <SelectDropdown v-model="$data[indexModel(index2)]" :value = null
                               :options="options"
                               />
                               <!-- <pre> -->
                                 <!-- {{index2}}
                                 {{$data}} -->
-                              <!-- {{item[0].options}} -->
-                              <!-- </pre> -->
+                              <!-- {{item[0].options}}
+                              </pre> -->
                               <ControlPanel
                                 @data:options="log($event, index, index2)"
                                 :label="modifyLabel(control.label, index2)"
@@ -230,7 +230,7 @@ export default {
       value1: null,
       value2: null,
       options: [
-        'Health outcomes', 'Demographics', 'Health workforce', 'Health financing', 'Facility service delivery', 'RMNCH'],
+        'Demographics', 'Financing', 'Health Financing', 'Facility service delivery', 'RMNCH'],
       program_option: '',
     };
   },

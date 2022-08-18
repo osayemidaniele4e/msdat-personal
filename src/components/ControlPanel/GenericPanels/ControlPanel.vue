@@ -24,7 +24,7 @@
         />
 
            <selectWrapper
-          v-else
+          v-if="values.type === 'dropdown' && values.key !== 'indicator'"
           :id="label"
           :value="payload[values.key]"
           @input="updatePayload($event, values.key)"
@@ -32,15 +32,6 @@
           :multiSelectProps="values.dropdownProps"
           :NoDataLabel="values.label"
         />
-        <!-- <selectWrapper
-          v-if="values.type === 'dropdown'"
-          :id="label"
-          :value="payload[values.key]"
-          @input="updatePayload($event, values.key)"
-          :options="getIndictorList(values.options)"
-          :multiSelectProps="values.dropdownProps"
-          :NoDataLabel="values.label"
-        /> -->
         <!-- </div> -->
         <div class="disabled_alt">
         <toggle

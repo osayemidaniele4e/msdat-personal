@@ -106,7 +106,6 @@ export default class DataLayer {
 
         console.log('done');
         /** End Fetching other endpoints */
-
         const count = await this.DB.data.count();
         console.log('DB count is', count);
       }
