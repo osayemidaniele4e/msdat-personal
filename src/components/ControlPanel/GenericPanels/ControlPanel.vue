@@ -9,8 +9,22 @@
       >
         <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
         <label class=" text-uppercase work-sans label-text">{{ values.label }}</label>
+      <!-- :options="values.options" -->
+
+              <!-- {{values}} -->
+
         <selectWrapper
-          v-if="values.type === 'dropdown'"
+          v-if="values.type === 'dropdown' && values.key === 'indicator'"
+          :id="label"
+          :value="payload[values.key]"
+          @input="updatePayload($event, values.key)"
+          :options="getIndicatorList(values.options)"
+          :multiSelectProps="values.dropdownProps"
+          :NoDataLabel="values.label"
+        />
+
+           <selectWrapper
+          v-if="values.type === 'dropdown' && values.key !== 'indicator'"
           :id="label"
           :value="payload[values.key]"
           @input="updatePayload($event, values.key)"
@@ -19,14 +33,15 @@
           :NoDataLabel="values.label"
         />
         <!-- </div> -->
+        <div class="disabled_alt">
         <toggle
           v-if="values.type === 'toggle'"
           @change="updatePayload($event, values.key)"
-        />
+        /></div>
 
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->
-          <div class="d-flex">
+          <div class="d-flex disabled_alt">
             <BaseCheckbox
              :currentValue="payload.target.national"
               @input="
@@ -39,7 +54,7 @@
             <p class="check-label ml-1">National</p>
           </div>
           <!-- SDG Target here -->
-          <div class="d-flex ml-3">
+          <div class="d-flex ml-3 disabled_alt">
             <BaseCheckbox
               :currentValue="payload.target.sdg"
               @input="
@@ -172,6 +187,11 @@ export default {
       type: Array,
       required: true,
     },
+    indicatorList: {
+      type: String,
+      required: false,
+      default: () => null,
+    },
     groupIndex: {
       type: Number,
       default: () => null,
@@ -243,6 +263,20 @@ export default {
 
   },
   methods: {
+    // eslint-disable-next-line consistent-return
+
+    getIndicatorList(data) {
+      const { name } = this.$route.params;
+      if (name === 'Advanced_Analytics') {
+        return data?.filter((item) => item.program_area === this.indicatorList);
+      }
+
+      return data;
+
+      // if (this.indicatorList !== '' || this.indicatorList !== null) {
+      //   return data?.filter((item) => item.program_area === this.indicatorList);
+      // }
+    },
     updatePayload(value, key) {
       if (this.groupIndexSub != null) {
         // this is to take into consideration control panel that

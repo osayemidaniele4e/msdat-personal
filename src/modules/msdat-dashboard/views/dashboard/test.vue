@@ -77,17 +77,15 @@
                               :key="index2"
                             >
                               <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
-                              <div v-if="isAdvanced">
                               <label class="text-uppercase work-sans label-text">program areas</label>
-                                   <SelectDropdown v-model="$data[indexModel(index2)]" :value = null
+                                   <SelectDropdown v-model="$data[indexModel(index2)]"
                               :options="options"
                               />
-                              </div>
                               <!-- <pre> -->
                                 <!-- {{index2}}
                                 {{$data}} -->
-                              <!-- {{item[0].options}}
-                              </pre> -->
+                              <!-- {{item[0].options}} -->
+                              <!-- </pre> -->
                               <ControlPanel
                                 @data:options="log($event, index, index2)"
                                 :label="modifyLabel(control.label, index2)"
@@ -207,7 +205,6 @@ export default {
   },
   data() {
     return {
-      isAdvanced: false,
       position: 3,
       selectedPanel: 0,
       dashboardConfig: config,
@@ -233,7 +230,7 @@ export default {
       value1: null,
       value2: null,
       options: [
-        'Demographics', 'Financing', 'Health Financing', 'Facility service delivery', 'RMNCH'],
+        'Health outcomes', 'Demographics', 'Health workforce', 'Health financing', 'Facility service delivery', 'RMNCH'],
       program_option: '',
     };
   },
@@ -284,9 +281,6 @@ export default {
 
   created() {
     const { name } = this.$route.params;
-    if (name === 'Advanced_Analytics') {
-      this.isAdvanced = true;
-    }
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
     window.addEventListener('resize', this.onResize);
 
