@@ -97,6 +97,9 @@ export default class DataBase {
   // }
 
   async storeDataInDB(data) {
+    // get the count of the data in the db
+    const count = await this.data.count();
+    console.log('checks', data, 'store', count, data.map((item) => item.indicator));
     return this.db.transaction('rw', this.data, async () => {
       await this.data.bulkPut(data);
     });
@@ -150,6 +153,7 @@ export default class DataBase {
         const results = await Promise.all(arrayOfPromises);
         for (let index2 = 0; index2 < results.length; index2 += 1) {
           const requestResult = results[index2].data;
+          console.log('checks', requestResult, 'indicator');
           await this.storeDataInDB(requestResult);
         }
       }

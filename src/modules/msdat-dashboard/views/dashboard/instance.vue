@@ -10,8 +10,7 @@
       :updateValue="updateValue"
       :updateKey="updateKey"
       :resetData="resetData"
-        @swipe="changeSwipe"
-
+      @swipe="changeSwipe"
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
@@ -31,9 +30,9 @@
                 <BaseIndicatorOverview
                   :showTableRelatedIndicator="showTableRelatedIndicator"
                   :controlPanelProps="payload"
-                   @value="getValue"
-                   @key="getKey"
-                   @reset="getReset"
+                  @value="getValue"
+                  @key="getKey"
+                  @reset="getReset"
                 />
               </ControlPanelConfiguration>
             </template>
@@ -125,7 +124,7 @@
         </div>
       </template>
 
-             <template v-slot:section-5="{ payload, controlIndex }">
+      <template v-slot:section-5="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -141,7 +140,6 @@
           </base-sub-card>
         </div>
       </template>
-
     </BaseDashboard>
   </div>
 </template>
@@ -213,11 +211,11 @@ export default {
       type: Boolean,
       default: true,
     },
-
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
+    // Function to handle Multi-Source mobile view
     scroll(timestamp) {
       // Calculate the timeelapsed
       const timeElapsed = timestamp - this.scrollStartTime;
@@ -237,20 +235,6 @@ export default {
       const content = document.querySelector('.dummy-row2');
       this.scrollTo(content, cord.x, cord.y);
     },
-
-    // changeScroll(n) {
-    //   if (n >= 0 && n < 194) {
-    //     document.querySelector('.dummy-row2').scrollLeft = 0;
-    //   }
-
-    //   if (n >= 194 && n < 420) {
-    //     document.querySelector('.dummy-row2').scrollLeft = 383;
-    //   }
-
-    //   if (n >= 420) {
-    //     document.querySelector('.dummy-row2').scrollLeft = 757;
-    //   }
-    // },
 
     scrollTo(element, scrollPixels, duration) {
       this.scrollPixels = scrollPixels;
@@ -272,15 +256,7 @@ export default {
         window.requestAnimationFrame(this.scroll);
       }
     },
-    // onResize() {
-    //   if (window.innerWidth < 769) {
-    //     this.isMobile = true;
-    //     BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup3;
-    //   } else {
-    //     this.isMobile = false;
-    //     BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup2;
-    //   }
-    // },
+
     getValue(value) {
       this.updateValue = value;
     },
@@ -342,16 +318,16 @@ export default {
 }
 
 .comparison-header {
- display: none;
+  display: none;
 }
 
 @media (max-width: 800px) {
-.comparison-header {
-  display: inherit;
-  margin: 0 auto;
-  text-align: center;
-  font-weight: bold;
-  margin: 5px;
-}
+  .comparison-header {
+    display: inherit;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    margin: 5px;
+  }
 }
 </style>

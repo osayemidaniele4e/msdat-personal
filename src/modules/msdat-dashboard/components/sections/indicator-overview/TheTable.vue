@@ -106,7 +106,6 @@ export default {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
             const indicatorObject = this.dlGetIndicator(indicatorID);
-            console.log('datasources', indicatorObject);
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
               // eslint-disable-next-line no-await-in-loop

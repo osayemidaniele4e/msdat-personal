@@ -200,8 +200,8 @@ export default {
     },
     // Function to store the latest database date
     async getLatestDate() {
-      const resp = await apiServices.getLatestDate();
-      return resp.data.date;
+      const { data } = await apiServices.getLatestDate();
+      return data.date;
     },
   },
   mounted() {
