@@ -112,4 +112,21 @@ export default [
     initialDataSource: 17,
     initialLocation: 1,
   },
+
+  {
+    name: 'Advanced_Analytics',
+    title: 'Advanced Analytics',
+    indicators: [
+      1, 30, 31, 32, 63, 64, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
+      84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 396, 397, 398, 399, 400,
+      55, 56, 57, 58, 95, 96, 97, 98, 99, 100, 101, 102, 219, 220, 221, 222, 223, 224, 225, 264,
+      265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 329, 330, 331, 332, 333, 334,
+      335, 336, 337, 338, 380, 381, 382, 383, 384,
+    ],
+    defaultIndicators: [266, 265, 264], // an indicator ID and related indicators,
+    dataSources: [14, 7, 9, 25, 17],
+    initialIndicator: 98,
+    initialDataSource: 9,
+    initialLocation: 1,
+  },
 ];
