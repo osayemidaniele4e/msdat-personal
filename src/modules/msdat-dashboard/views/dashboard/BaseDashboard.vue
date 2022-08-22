@@ -233,7 +233,8 @@ export default {
       value1: null,
       value2: null,
       options: [
-        'Demographics', 'Financing', 'Health Financing', 'Facility service delivery', 'RMNCH'],
+        'Demographics', 'Financing', 'Health Financing', 'Facility service delivery', 'RMNCH', 'Mortality', 'Dental Therapy Practice', 'HIV',
+        'Nutrition', 'Service delivery', 'Optometry Practice', 'Medical Doctors', 'HR Guidelines and Workforce', 'Climate', 'Education'],
       program_option: '',
     };
   },
