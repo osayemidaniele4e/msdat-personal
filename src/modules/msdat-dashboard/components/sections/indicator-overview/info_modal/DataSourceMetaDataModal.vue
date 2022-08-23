@@ -43,7 +43,6 @@
       <span>{{ dataSourceDetails.classification }}</span>
     </p>
   </div> -->
-
     <div>
       <p>
         <div class="text1">Full Name</div>
@@ -65,9 +64,11 @@
           <div class="grid1-left-text2">{{ dataSourceDetails.year_available }}</div>
         </div>
 
+        <!-- Next Available data is not available -->
+
         <div>
-          <div class="grid1-right-text1">Next Available data</div>
-          <div class="grid1-right-text2">{{ dataSourceDetails.full_name }}</div>
+          <div class="grid1-right-text1">Classification</div>
+          <div class="grid1-right-text2">{{ dataSourceDetails.classification}}</div>
         </div>
       </div>
 

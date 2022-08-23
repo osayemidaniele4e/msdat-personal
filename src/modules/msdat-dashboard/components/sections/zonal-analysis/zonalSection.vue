@@ -13,7 +13,7 @@
         "
       >
         <template #title>
-          <p class="text-dark work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height">
             Distribution of
             <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>Across
             the <span class="font-weight-bold"> zones in the Country.</span> Source:
@@ -173,8 +173,6 @@ export default {
               name: stateObject.name,
               data: sortedData,
             });
-
-            console.log('chartSeries', chartSeries);
             this.formatToHighChart(chartSeries);
           } else {
             // already know the zonal levels/parent of all the value

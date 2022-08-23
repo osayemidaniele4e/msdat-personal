@@ -15,7 +15,7 @@ export default {
       options: [],
     },
     {
-      class: ['col step-datasource'],
+      class: ['col-lg col-md-2 col-4 step-datasource'],
       type: 'dropdown',
       label: 'data Source',
       key: 'datasource',
@@ -25,7 +25,7 @@ export default {
       options: [],
     },
     {
-      class: ['col step-location'],
+      class: ['col-lg col-md-2 col-4 step-location'],
       type: 'dropdown',
       label: 'location',
       key: 'location',
@@ -35,7 +35,7 @@ export default {
       options: [],
     },
     {
-      class: ['col'],
+      class: ['col-lg col-md-2 col-4'],
       type: 'dropdown',
       label: 'Year',
       key: 'year',
@@ -51,7 +51,7 @@ export default {
       key: 'target',
     },
     {
-      class: ['col'],
+      class: ['col mx-sm-3'],
       type: 'toggle',
       label: 'Num/Denom',
       key: 'numdenum',

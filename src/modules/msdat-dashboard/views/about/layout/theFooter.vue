@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$msdat-green: #007d53;
+@import '@/scss/abstracts/_variables.scss';
 
 footer#the-footer {
   height: fit-content;
@@ -54,7 +54,7 @@ footer#the-footer {
   position: fixed;
   width: 100%;
   bottom: 0;
-  background-color: $msdat-green;
+  background-color: $primary;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

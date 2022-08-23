@@ -1,3 +1,4 @@
+@import '@/scss/abstracts/_variables.scss';
 // OVERRIDE Styling to add ... after 40characters on the dropdown component
 span.multiselect__single {
   font-size: 0.7rem !important;
@@ -15,13 +16,13 @@ span.multiselect__tag {
   max-width: 45%;
 }
 span.multiselect__option--selected.multiselect__option--highlight {
-  background-color: #007d53;
+  background-color: $primary;
   color: white  !important;
   
 }
 
 span.multiselect__option--selected{
-  background-color: #007d53;
+  background-color: $primary;
   color: white  !important;
 }
 
@@ -81,7 +82,7 @@ ul {
     span.dropdown-item {
       cursor: pointer;
       &:hover{
-        background-color: #007d53;
+        background-color: $primary;
         color: #ffffff;
       }
     }
@@ -213,4 +214,9 @@ ul {
   // diable everything here
   opacity: 0.25;
   pointer-events: none;
+}
+
+.msdat_primary{
+  background-color: $primary;
+  color: white;
 }

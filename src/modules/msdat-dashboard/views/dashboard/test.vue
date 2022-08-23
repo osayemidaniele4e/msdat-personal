@@ -49,6 +49,7 @@
                     >
                       <template v-if="!Array.isArray(control.setup[0])">
                         <ControlPanel
+                          @data:options="log($event, index)"
                           :label="modifyLabel(control.label)"
                           :setup="control.setup"
                           :controlIndex="index"
@@ -76,18 +77,17 @@
                               :key="index2"
                             >
                               <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
-                              <div v-if="isAdvanced">
                               <label class="text-uppercase work-sans label-text">program areas</label>
-                                   <SelectDropdown v-model="$data[indexModel(index2)]" :value = null
+                                   <SelectDropdown v-model="$data[indexModel(index2)]"
                               :options="options"
                               />
-                              </div>
                               <!-- <pre> -->
                                 <!-- {{index2}}
                                 {{$data}} -->
-                              <!-- {{item[0].options}}
-                              </pre> -->
+                              <!-- {{item[0].options}} -->
+                              <!-- </pre> -->
                               <ControlPanel
+                                @data:options="log($event, index, index2)"
                                 :label="modifyLabel(control.label, index2)"
                                 :setup="item"
                                 :groupIndex="index2"
@@ -205,7 +205,6 @@ export default {
   },
   data() {
     return {
-      isAdvanced: false,
       position: 3,
       selectedPanel: 0,
       dashboardConfig: config,
@@ -231,8 +230,7 @@ export default {
       value1: null,
       value2: null,
       options: [
-        'Demographics', 'Financing', 'Health Financing', 'Facility service delivery', 'RMNCH', 'Mortality', 'Dental Therapy Practice', 'HIV',
-        'Nutrition', 'Service delivery', 'Optometry Practice', 'Medical Doctors', 'HR Guidelines and Workforce', 'Climate', 'Education'],
+        'Health outcomes', 'Demographics', 'Health workforce', 'Health financing', 'Facility service delivery', 'RMNCH'],
       program_option: '',
     };
   },
@@ -283,9 +281,6 @@ export default {
 
   created() {
     const { name } = this.$route.params;
-    if (name === 'Advanced_Analytics') {
-      this.isAdvanced = true;
-    }
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
     window.addEventListener('resize', this.onResize);
 
@@ -319,12 +314,13 @@ export default {
     handleClosePopUp() {
       this.popUp = false;
     },
-    // log(event, index, index2) {
-    //   console.log('log function =>', event, index, index2);
-    // },
+    log(event, index, index2) {
+      console.log('log function =>', event, index, index2);
+    },
 
     changeKey(n) {
       this.sectionKey = n;
+      console.log('sectionKey', this.sectionKey);
     },
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -372,6 +368,7 @@ export default {
     swipeLeft() {
       // const content = this.$refs.dummy-row;
       const content = document.querySelector('.dummy-row');
+      console.log('content', content);
       this.scrollTo(content, -300, 800);
       const cord = {
         x: -370,
@@ -382,6 +379,7 @@ export default {
 
     swipeRight() {
       const content = document.querySelector('.dummy-row');
+      console.log('content', content);
       this.scrollTo(content, 300, 800);
       const cord = {
         x: 370,
@@ -391,6 +389,7 @@ export default {
     },
     // moses
     getIndex(index) {
+      console.log('this is the index i am saying', index);
       this.changeIndex = index;
     },
     /**

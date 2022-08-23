@@ -3,21 +3,18 @@
   <!-- <base-overlay :show="loading"> -->
   <div>
     <div v-if="!loading">
-      <base-sub-card
-        showControls
-        :showDownload="false"
-        v-if="Object.keys(values).length"
-      >
+      <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
           <p class="work-sans mb-0 line-height">
             <b>{{ values.indicator.short_name }}</b>
-           and related indicators (with year of latest values) across available data sources.
+            and related indicators (with year of latest values) across available data sources.
           </p>
         </template>
         <TableComponent
           class="work-sans"
           v-if="TableData.length > 0"
           :dataArray="TableData"
+          :values="values"
           :setSelectedSource="setTableSelected"
           @selected:source="updateControlPanel($event)"
           @selected:source-info="dataSourceModalFunc($event)"
@@ -97,27 +94,18 @@ export default {
       async handler(newValues) {
         this.loading = true;
         const formattedData = [];
-        let indicators = [
-          newValues.id,
-          newValues.first_related,
-          newValues.second_related,
-        ];
+        let indicators = [newValues.id, newValues.first_related, newValues.second_related];
 
         if (!this.showTableRelatedIndicator) {
           indicators = [newValues.id];
         }
 
-        for (
-          let indicatorIndex = 0;
-          indicatorIndex < indicators.length;
-          indicatorIndex += 1
-        ) {
+        for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
           const indicatorID = indicators[indicatorIndex];
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
             const indicatorObject = this.dlGetIndicator(indicatorID);
-            console.log('datasources', indicatorObject);
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
               // eslint-disable-next-line no-await-in-loop
@@ -128,9 +116,7 @@ export default {
               });
               data.push(ab);
             }
-            formattedData.push(
-              this.tableComponentDataFormatter(indicatorObject, data),
-            );
+            formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
           this.TableData = formattedData;
           this.loading = false;
@@ -156,11 +142,7 @@ export default {
           indicators = [this.values.indicator.id];
         }
 
-        for (
-          let indicatorIndex = 0;
-          indicatorIndex < indicators.length;
-          indicatorIndex += 1
-        ) {
+        for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
           const indicatorID = indicators[indicatorIndex];
           if (indicatorID) {
             const data = [];
@@ -176,9 +158,7 @@ export default {
               });
               data.push(ab);
             }
-            formattedData.push(
-              this.tableComponentDataFormatter(indicatorObject, data),
-            );
+            formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
           this.TableData = formattedData;
           this.loading = false;
@@ -210,10 +190,7 @@ export default {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
           return filteredIndicator.reduce((max, currentValues) => {
-            if (
-              currentValues.period > max.period
-              && currentValues.period <= presentYear
-            ) {
+            if (currentValues.period > max.period && currentValues.period <= presentYear) {
               return currentValues;
             }
             return max;
@@ -267,13 +244,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.modal-title{
-    font-weight: 700;
-color: black;
-opacity: 1;
-margin-left: 10px;
-font-size: 14px;
+.modal-title {
+  font-weight: 700;
+  color: black;
+  opacity: 1;
+  margin-left: 10px;
+  font-size: 14px;
 }
-
 </style>

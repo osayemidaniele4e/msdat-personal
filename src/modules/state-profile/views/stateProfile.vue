@@ -298,7 +298,7 @@ export default {
       overviewLoading: false,
       demographics: [
         {
-          name: 'Population estimate',
+          name: 'Population Estimate',
           indicatorId: 63,
           source: 'NPC',
           sourceId: 19,
@@ -320,7 +320,7 @@ export default {
           change: '-2',
         },
         {
-          name: 'Birth registration (Under Age 1)',
+          name: 'Birth Registration (Under Age 1)',
           indicatorId: 68,
           source: 'NPC',
           sourceId: 19,
@@ -331,7 +331,7 @@ export default {
           change: '+5',
         },
         {
-          name: 'Dependency ratio',
+          name: 'Dependency Ratio',
           indicatorId: 67,
           source: 'NLSS',
           sourceId: 20,
@@ -353,7 +353,7 @@ export default {
           change: '+5',
         },
         {
-          name: 'Population growth rate',
+          name: 'Population Growth Rate',
           indicatorId: 64,
           source: 'NPE',
           sourceId: 2,
@@ -364,7 +364,7 @@ export default {
           change: '-2',
         },
         {
-          name: 'Maternal mortality ratio',
+          name: 'Maternal Mortality Ratio',
           indicatorId: 29,
           source: 'NHMIS',
           sourceId: 6,
@@ -577,7 +577,7 @@ export default {
         {
           name: 'mortality',
           icon: 'patient',
-          details:
+          detail:
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS)',
           chartTitle: 'Other Mortality Indicators',
@@ -612,7 +612,7 @@ export default {
         {
           name: 'Health Services',
           icon: 'hospital',
-          details:
+          detail:
             'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',

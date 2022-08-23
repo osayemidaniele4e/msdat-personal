@@ -13,7 +13,7 @@
         "
       >
         <template #title>
-          <p class="text-dark work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height">
             Distribution of
             <span class="font-weight-bold">
               {{ controlPanelProps.indicator.full_name }} </span
@@ -26,7 +26,7 @@
           </p>
         </template>
         <div id="zonalMapComponent">
-          <button @click="returnToNational" v-show="level !== 1" class="bg-transparent text-dark font-weight-bold">
+          <button @click="returnToNational" v-show="level !== 1" class="bg-transparent font-weight-bold">
             <b-icon icon="chevron-left" />
             &nbsp;Back to National
           </button>

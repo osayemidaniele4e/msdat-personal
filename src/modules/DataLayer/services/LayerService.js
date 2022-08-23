@@ -71,10 +71,44 @@ export default class DataLayer {
     try {
       this.DB = await new Database();
       this.setup(object);
-      // const count = await this.DB.data.count();
-      //   console.log('DB count is', count);
-      // console.time('fetching');
-      this.handlePeripheralData();
+      console.time('fetching');
+
+      // check if data is already initialized iN DEXIE DB
+      // this.DB.getIndicatorDataThatExistInDB()
+      if (this.store.state.DL.indicators.length <= 0) {
+        /** Fetching other endpoints */
+        console.log('fetching other endpoint');
+        /**
+         * The apiServices returns all the and array of response for the
+         * axios call of all other apiEndpoints.getOtherEndpoint
+         * it uses and {Promise.all()}
+         *
+         * @see {@link apiServices.getOtherEndpoint()}
+         */
+        const data = await apiServices.getOtherEndpoint();
+
+        /**
+         * we would also need to created a component
+         * then display the activities  of the service layer
+         * per time
+         */
+
+        /**
+         * now initializing other tables in the store from the database directly as against the
+         * previous implementation
+         */
+        this.setDataInStore(data[6].data, DSI);
+        this.setDataInStore(data[0].data, LOCATION);
+        this.setDataInStore(data[1].data, INDICATORS);
+        this.setDataInStore(data[3].data, VALUE_TYPES);
+        this.setDataInStore(data[5].data, FACTORS);
+        this.setDataInStore(data[7].data, DATA_SOURCE);
+
+        console.log('done');
+        /** End Fetching other endpoints */
+        const count = await this.DB.data.count();
+        console.log('DB count is', count);
+      }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
       // console.log(difference(this.defaultIndicators, indicatorIDArray));
