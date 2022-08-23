@@ -72,10 +72,10 @@ export default class DataLayer {
       this.DB = await new Database();
       this.setup(object);
       console.time('fetching');
-
+      const indicatorArray = await this.DB.listAllIndicators();
       // check if data is already initialized iN DEXIE DB
       // this.DB.getIndicatorDataThatExistInDB()
-      if (this.store.state.DL.indicators.length <= 0) {
+      if (indicatorArray.length === 0) {
         /** Fetching other endpoints */
         console.log('fetching other endpoint');
         /**
@@ -103,11 +103,24 @@ export default class DataLayer {
         this.setDataInStore(data[3].data, VALUE_TYPES);
         this.setDataInStore(data[5].data, FACTORS);
         this.setDataInStore(data[7].data, DATA_SOURCE);
+        await this.DB.storeDataInDBTable(data[0].data, 'location');
+        await this.DB.storeDataInDBTable(data[1].data, 'indicators');
+        await this.DB.storeDataInDBTable(data[3].data, 'valuetypes');
+        await this.DB.storeDataInDBTable(data[5].data, 'factors');
+        await this.DB.storeDataInDBTable(data[6].data, 'datasource_specific_indicator');
+        await this.DB.storeDataInDBTable(data[7].data, 'datasources');
 
-        console.log('done');
         /** End Fetching other endpoints */
         const count = await this.DB.data.count();
         console.log('DB count is', count);
+      } else {
+        // Populate vuex using dexie
+        this.setDataInStore(await this.DB.fetchTableData('datasource_specific_indicator'), DSI);
+        this.setDataInStore(await this.DB.fetchTableData('location'), LOCATION);
+        this.setDataInStore(await this.DB.fetchTableData('indicators'), INDICATORS);
+        this.setDataInStore(await this.DB.fetchTableData('valuetypes'), VALUE_TYPES);
+        this.setDataInStore(await this.DB.fetchTableData('factors'), FACTORS);
+        this.setDataInStore(await this.DB.fetchTableData('datasources'), DATA_SOURCE);
       }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
