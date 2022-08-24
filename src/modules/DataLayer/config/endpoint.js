@@ -1,4 +1,5 @@
 export default {
+  getDashboard: 'dashboards',
   getDataSource: 'datasources',
   getLocation: 'location',
   getIndicator: 'indicators',

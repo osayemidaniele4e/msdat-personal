@@ -172,6 +172,7 @@ import {
   SelectDropdown,
 } from '@/components/ControlPanel';
 // import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
@@ -283,12 +284,21 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     const { name } = this.$route.params;
     if (name === 'Advanced_Analytics') {
       this.isAdvanced = true;
     }
-    this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    try {
+      console.log('results');
+      const response = await apiServices.getDashboard();
+      const { results } = response.data;
+      const result = results.find((item) => item.name === name);
+      console.log('config', result);
+    } catch {
+      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    }
+    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
