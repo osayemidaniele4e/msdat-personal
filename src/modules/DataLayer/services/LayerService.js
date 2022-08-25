@@ -274,8 +274,8 @@ export default class DataLayer {
   }
 
   async initDataWithYears(indicator, limit = 0) {
-    for (let index = 0; index < indicator.length; index += 1) {
-      const indicatorID = indicator[index];
+    for (let i = 0; i < indicator.length; i++) {
+      const indicatorID = indicator[i];
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
@@ -285,8 +285,8 @@ export default class DataLayer {
           (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
         );
         const results = await Promise.all(arrayOfPromises);
-        for (let index2 = 0; index2 < results.length; index2 += 1) {
-          const requestResult = results[index2].data;
+        for (let j = 0; j < results.length; j++) {
+          const requestResult = results[j].data;
           await this.DB.storeDataInDB(requestResult);
         }
         this.updatedStoreAvailableIndicator(indicatorID);
@@ -298,21 +298,22 @@ export default class DataLayer {
   *
   */
   async initDataWithYearsWithYearlyChecks(indicator, limit = 0) {
-    for (let i = 0; i < indicator.length; i += 1) {
+    for (let i = 0; i < indicator.length; i++) {
       const indicatorID = indicator[i];
       const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
       const dataValue = dataResult.data.years;
-      console.log(dataResult);
       // take only the at least 8 years
       const yearsToTake = limit;
       const theYears = take(dataValue, yearsToTake);
+
+      // STEP 2: Get dataPoint by indicator and yearsAvailable
       const arrayOfPromises = theYears.map(
         (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
       );
       const results = await Promise.all(arrayOfPromises);
       console.log('arr', results);
-      for (let index2 = 0; index2 < results.length; index2 += 1) {
-        const requestResult = results[index2].data;
+      for (let j = 0; j < results.length; j++) {
+        const requestResult = results[j].data;
         await this.DB.storeDataInDB(requestResult);
       }
       this.updatedStoreAvailableIndicator(indicatorID);
