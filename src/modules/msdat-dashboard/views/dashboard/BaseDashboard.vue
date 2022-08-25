@@ -7,7 +7,7 @@
     <template v-if="!showTroubleShootingModal">
       <Loading
         v-if="!loading"
-        :noBackdrop="false"
+        :noBackdrop="true"
         :showBackground="false"
         class="over"
       >
@@ -290,11 +290,9 @@ export default {
       this.isAdvanced = true;
     }
     try {
-      console.log('results');
       const response = await apiServices.getDashboard();
       const { results } = response.data;
-      const result = results.find((item) => item.name === name);
-      console.log('config', result);
+      this.configObject = results.find((item) => item.name === name);
     } catch {
       this.configObject = this.dashboardConfig.find((item) => item.name === name);
     }
@@ -404,7 +402,7 @@ export default {
       };
       this.$emit('swipe', cord);
     },
-    // moses
+
     getIndex(index) {
       console.log('this is the index i am saying', index);
       this.changeIndex = index;
@@ -435,10 +433,6 @@ export default {
      * @param index The index of the control panel that changes
      * you can use this to check which control panel changed
      *
-     */
-
-    /**
-     * *
      */
     setState(val) {
       this.selectedMapName = val;
@@ -472,7 +466,6 @@ export default {
   },
 
   watch: {
-
     program_option(newVal) {
       console.log(newVal);
       // const { name } = this.$route.params;

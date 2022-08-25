@@ -20,8 +20,8 @@ export default class DataLayer {
   constructor(store) {
     this.DB = '';
     this.store = store;
-    this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
-    this.defaultIndicators = [7, 5, 8];
+    this.indicatorList = [];
+    this.defaultIndicators = [];
     this.dataSourceList = [];
     this.LOCAL_STORAGE_KEY = 'dataTimestamp';
     this.Changes = [];
@@ -86,7 +86,6 @@ export default class DataLayer {
          * @see {@link apiServices.getOtherEndpoint()}
          */
         const data = await apiServices.getOtherEndpoint();
-
         /**
          * we would also need to created a component
          * then display the activities  of the service layer
@@ -97,15 +96,13 @@ export default class DataLayer {
          * now initializing other tables in the store from the database directly as against the
          * previous implementation
          */
-        this.setDataInStore(data[6].data, DSI);
-        this.setDataInStore(data[0].data, LOCATION);
-        this.setDataInStore(data[1].data, INDICATORS);
-        this.setDataInStore(data[3].data, VALUE_TYPES);
-        this.setDataInStore(data[5].data, FACTORS);
-        this.setDataInStore(data[7].data, DATA_SOURCE);
+        this.setDataInStore(data[6].data.result, DSI);
+        this.setDataInStore(data[0].data.result, LOCATION);
+        this.setDataInStore(data[1].data.result, INDICATORS);
+        this.setDataInStore(data[3].data.result, VALUE_TYPES);
+        this.setDataInStore(data[5].data.result, FACTORS);
+        this.setDataInStore(data[7].data.result, DATA_SOURCE);
 
-        console.log('done');
-        /** End Fetching other endpoints */
         const count = await this.DB.data.count();
         console.log('DB count is', count);
       }
@@ -297,11 +294,15 @@ export default class DataLayer {
     }
   }
 
+  /**
+  *
+  */
   async initDataWithYearsWithYearlyChecks(indicator, limit = 0) {
-    for (let index = 0; index < indicator.length; index += 1) {
-      const indicatorID = indicator[index];
+    for (let i = 0; i < indicator.length; i += 1) {
+      const indicatorID = indicator[i];
       const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
       const dataValue = dataResult.data.years;
+      console.log(dataResult);
       // take only the at least 8 years
       const yearsToTake = limit;
       const theYears = take(dataValue, yearsToTake);
@@ -309,6 +310,7 @@ export default class DataLayer {
         (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
       );
       const results = await Promise.all(arrayOfPromises);
+      console.log('arr', results);
       for (let index2 = 0; index2 < results.length; index2 += 1) {
         const requestResult = results[index2].data;
         await this.DB.storeDataInDB(requestResult);

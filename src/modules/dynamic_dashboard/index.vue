@@ -90,14 +90,12 @@ export default {
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
     try {
-      console.log('results');
       const response = await apiServices.getDashboard();
       const { results } = response.data;
-      const result = results.find((item) => item.name === name);
-      if (result === undefined) {
+      this.configObject = results.find((item) => item.name === name);
+      if (this.configObject === undefined) {
         this.configObject = this.dashboardConfig.find((item) => item.name === name);
       }
-      console.log('config', result);
     } catch {
       this.configObject = this.dashboardConfig.find((item) => item.name === name);
     }
