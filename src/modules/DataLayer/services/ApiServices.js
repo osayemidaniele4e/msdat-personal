@@ -12,7 +12,7 @@ const getRequiredEndpoint = async (apiEndpoint) => axiosInstance.get(`/${apiEndp
 // const getLatestDate = async () => axiosInstance.get(apiEndpoints.getLastUpdated);
 const getLatestDate = async () => axiosInstance.get('data/?order=-updated_at&size=1');
 const getIndicatorsWithAvailable = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}/years_available`);
-const getIndicatorsWithPeriod = async (indicatorID, period) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicatorID}&period=${period}`);
+const getIndicatorsWithPeriod = async (indicatorID, period) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicatorID}&period=${period}&size=2000`);
 const otherEndpoints = [
   apiEndpoints.getLocation,
   apiEndpoints.getIndicator,

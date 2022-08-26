@@ -229,7 +229,6 @@ export default class DataLayer {
    */
 
   async updatedStoreAvailableIndicator(indicatorsIDs) {
-    console.log('helloWorld =>', indicatorsIDs);
     let indicators = indicatorsIDs;
     if (!Array.isArray(indicatorsIDs)) {
       indicators = [indicatorsIDs];
@@ -264,8 +263,8 @@ export default class DataLayer {
     const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
     const dataValue = dataResult.data.years;
     const yearsNotAvailable = [];
-    for (let index = 0; index < dataValue.length; index += 1) {
-      const element = dataValue[index];
+    for (let i = 0; i < dataValue.length; i++) {
+      const element = dataValue[i];
       const bb = await this.DB.checkIfIndicatorWithYearExist(indicatorID, element);
       if (bb === undefined) {
         yearsNotAvailable.push(element);
@@ -287,7 +286,7 @@ export default class DataLayer {
         );
         const results = await Promise.all(arrayOfPromises);
         for (let j = 0; j < results.length; j++) {
-          const requestResult = results[j].data;
+          const requestResult = results[j].data.results;
           await this.DB.storeDataInDB(requestResult);
         }
         this.updatedStoreAvailableIndicator(indicatorID);

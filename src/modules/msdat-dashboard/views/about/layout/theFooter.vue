@@ -29,7 +29,6 @@ export default {
   methods: {
     async getLatestDate() {
       const res = await apiServices.getLatestDate();
-      console.log(res.data.results[0].updated_at, 'hello');
       const date = moment(res.data.results[0].updated_at, 'YYYY-MM-DD').format('MMMM Do YYYY');
       this.latestDate = date;
     },

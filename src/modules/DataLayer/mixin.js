@@ -192,7 +192,7 @@ export default {
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
       return dataSourceAvailable.data.datasources;
     },
-    //  functiion to get indicators based on data_source
+    //  function to get indicators based on data_source
     async getIndicatorByDataSource(value) {
       const dataSourceId = value || 1;
       const indicatorAvailable = await axios.get(`/datasources/${dataSourceId}/indicators/`);
@@ -201,7 +201,6 @@ export default {
     // Function to store the latest database date
     // !! Seems Redundant
     async getLatestDate() {
-      alert('helloWorld');
       const { data } = await apiServices.getLatestDate();
       return data.date;
     },
