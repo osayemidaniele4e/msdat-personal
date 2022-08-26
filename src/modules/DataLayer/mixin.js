@@ -199,7 +199,9 @@ export default {
       return indicatorAvailable.data.indicators;
     },
     // Function to store the latest database date
+    // !! Seems Redundant
     async getLatestDate() {
+      alert('helloWorld');
       const { data } = await apiServices.getLatestDate();
       return data.date;
     },
