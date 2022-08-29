@@ -32,11 +32,11 @@ export default {
   getLastUpdatedDate,
   getSingleIndicator,
   getRequiredEndpoint,
+  getDashboard,
   getMainData,
   getUpdatedData,
   getOtherEndpoint,
   getLatestDate,
   getIndicatorsWithAvailable,
   getIndicatorsWithPeriod,
-  getDashboard,
 };

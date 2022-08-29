@@ -229,7 +229,6 @@ export default class DataLayer {
    */
 
   async updatedStoreAvailableIndicator(indicatorsIDs) {
-    console.log('helloWorld =>', indicatorsIDs);
     let indicators = indicatorsIDs;
     if (!Array.isArray(indicatorsIDs)) {
       indicators = [indicatorsIDs];

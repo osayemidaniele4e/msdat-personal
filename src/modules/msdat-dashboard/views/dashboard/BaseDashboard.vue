@@ -466,10 +466,16 @@ export default {
   },
 
   watch: {
-    program_option(newVal) {
-      console.log(newVal);
+    async program_option(newVal) {
       // const { name } = this.$route.params;
-      this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
+      try {
+        const response = await apiServices.getDashboard();
+        const { results } = response.data;
+        this.configObject = results.find((item) => item.name === newVal);
+      } catch {
+        this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
+      }
+      // this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
     },
   },
 
