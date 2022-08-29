@@ -506,8 +506,8 @@ export default {
       });
 
       // The initializing the control panel
-      this.setDefaults();
-      this.setUpControlPanelDropDown();
+      await this.setDefaults();
+      await this.setUpControlPanelDropDown();
 
       this.defaultYearDropdown = this.setYearDropdown();
       if (this.defaultYearDropdown.length > 0) {

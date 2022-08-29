@@ -256,7 +256,6 @@ export default {
       this.ChartOptions.yAxis.title.text = displayFactor;
     },
     updateChart(e) {
-      console.log('checking');
       this.ChartOptions.chart.type = e;
     },
 
