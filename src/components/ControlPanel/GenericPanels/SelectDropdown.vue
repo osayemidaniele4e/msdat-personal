@@ -112,7 +112,6 @@ export default {
             this.selected = year.toString();
           }
         }
-        console.log('new', newValue[0].indicator);
       },
     },
     immediate: false,
