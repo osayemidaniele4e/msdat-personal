@@ -7,7 +7,7 @@ const getDashboard = async () => axiosInstance.get(apiEndpoints.getDashboard);
 const getLastUpdatedDate = async () => axiosInstance.get(apiEndpoints.getLastUpdated);
 const getUpdatedData = async (theDate) => axiosInstance.get(`${apiEndpoints.getUpdatedDataDate}?datetime=${theDate}`);
 const getSingleIndicator = async (indicator) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicator}`);
-const getRequiredEndpoint = async (apiEndpoint) => axiosInstance.get(`/${apiEndpoint}/`);
+const getRequiredEndpoint = async (apiEndpoint) => axiosInstance.get(`/${apiEndpoint}`);
 // const getLatestDate = async () => axiosInstance.get('https://msdatapi.fmohconnect.gov.ng/api/data/latest/');
 // const getLatestDate = async () => axiosInstance.get(apiEndpoints.getLastUpdated);
 const getLatestDate = async () => axiosInstance.get('data/?order=-updated_at&size=1');

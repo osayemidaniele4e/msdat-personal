@@ -42,7 +42,6 @@ export default {
         key: 'indicator',
         payload: this.defaultDataSourceDropdown,
       });
-
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {

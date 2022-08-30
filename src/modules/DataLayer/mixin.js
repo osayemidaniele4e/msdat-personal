@@ -114,6 +114,8 @@ export default {
         query.value_type = valuetype[0].id;
       }
 
+      console.log('valuetype', this.dlGetDataSource);
+
       if (isObject(query.location)) {
         const { location } = query;
         const newQueryObject = omit(query, ['location']);
@@ -138,6 +140,7 @@ export default {
         temp.value_type = element.value_type;
         return temp;
       });
+      console.log('first', dataResult);
       return dataResult;
     },
 
