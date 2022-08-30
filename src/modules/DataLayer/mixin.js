@@ -114,7 +114,7 @@ export default {
         query.value_type = valuetype[0].id;
       }
 
-      console.log('valuetype', this.dlGetDataSource);
+      // console.log('valuetype', this.dlGetDataSource);
 
       if (isObject(query.location)) {
         const { location } = query;
@@ -122,6 +122,7 @@ export default {
         const locationValues = this.dlGetLocation(location);
         const locationID = locationValues.map((item) => item.id);
         const resultValue = await DB.queryDB(newQueryObject, locationID);
+        // console.log('yeye', newQueryObject);
         return resultValue;
       }
 
@@ -140,7 +141,7 @@ export default {
         temp.value_type = element.value_type;
         return temp;
       });
-      console.log('first', dataResult);
+      // console.log('first', dataResult);
       return dataResult;
     },
 
@@ -163,9 +164,11 @@ export default {
       if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }
+      // console.log(this.dlLocation.find((item) => item.id === values), 'lalala')
       return this.dlLocation.find((item) => item.id === values);
     },
     dlGetByName(values) {
+      console.log(this.dlLocation.find((item) => item.name === values), 'lalala');
       return this.dlLocation.find((item) => item.name === values);
     },
     dlGetFactor(id) {

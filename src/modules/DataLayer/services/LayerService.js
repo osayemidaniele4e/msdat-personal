@@ -105,6 +105,7 @@ export default class DataLayer {
 
         const count = await this.DB.data.count();
         console.log('DB count is', count);
+        console.log(data[0].data.results, LOCATION, 'location location');
       }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
