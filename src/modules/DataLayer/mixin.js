@@ -114,6 +114,8 @@ export default {
         query.value_type = valuetype[0].id;
       }
 
+      console.log('valuetype', this.dlGetDataSource);
+
       if (isObject(query.location)) {
         const { location } = query;
         const newQueryObject = omit(query, ['location']);
@@ -138,6 +140,7 @@ export default {
         temp.value_type = element.value_type;
         return temp;
       });
+      console.log('first', dataResult);
       return dataResult;
     },
 
@@ -192,13 +195,14 @@ export default {
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
       return dataSourceAvailable.data.datasources;
     },
-    //  functiion to get indicators based on data_source
+    //  function to get indicators based on data_source
     async getIndicatorByDataSource(value) {
       const dataSourceId = value || 1;
       const indicatorAvailable = await axios.get(`/datasources/${dataSourceId}/indicators/`);
       return indicatorAvailable.data.indicators;
     },
     // Function to store the latest database date
+    // !! Seems Redundant
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
       return data.date;
