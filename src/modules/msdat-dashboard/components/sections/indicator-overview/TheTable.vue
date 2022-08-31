@@ -130,7 +130,6 @@ export default {
     },
     updateData: {
       async handler() {
-        alert('yaga');
         // this.loading = true;
         // const formattedData = [];
         // let indicators = [
