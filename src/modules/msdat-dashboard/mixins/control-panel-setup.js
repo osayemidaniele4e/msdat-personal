@@ -53,8 +53,13 @@ export default {
         level: '3',
       });
 
+      console.log(this.defaultLocationDropdown = this.dlGetLocation({
+        level: '3',
+      }), 'blahblah');
+
       const location = this.dlGetLocation(1); // get nigerian Location object
       // add nigeria to the top of the array
+      console.log(location, 'blah');
       this.defaultLocationDropdown.unshift(location);
 
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();

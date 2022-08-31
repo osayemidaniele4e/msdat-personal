@@ -525,8 +525,9 @@ export default {
           `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
         )
         .then((response) => {
-          const numerator = response.data.filter((item) => item.value_type === 6);
-          const denominator = response.data.filter((item) => item.value_type === 10);
+          const numerator = response.data.results.filter((item) => item.value_type === 6);
+          const denominator = response.data.results.filter((item) => item.value_type === 10);
+          console.log('numerator =>', response.data);
           if (numerator.length > 0 || denominator.length > 0) {
             this.numDenum = true;
             if (numerator.length > 0) {
@@ -570,8 +571,8 @@ export default {
             `data/?datasource=33&indicator=${indicator}&location=1`,
           )
           .then((response) => {
-            nhmisObj = response.data[response.data.length - 1];
-
+            nhmisObj = response.data.results[response.data.length - 1];
+            console.log(response.data, 'chisom');
             this.nhmisMonthData.push(nhmisObj);
           })
           .catch((error) => {

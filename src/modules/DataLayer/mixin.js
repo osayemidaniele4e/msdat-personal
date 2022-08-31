@@ -114,8 +114,6 @@ export default {
         query.value_type = valuetype[0].id;
       }
 
-      // console.log('valuetype', this.dlGetDataSource);
-
       if (isObject(query.location)) {
         const { location } = query;
         const newQueryObject = omit(query, ['location']);
@@ -141,7 +139,7 @@ export default {
         temp.value_type = element.value_type;
         return temp;
       });
-      // console.log('first', dataResult);
+      console.log('first', dataResult);
       return dataResult;
     },
 
@@ -161,7 +159,7 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      if (typeof values === 'object') {
+      if (typeof (values) === 'object') {
         return filter(this.dlLocation, matches(values));
       }
       // console.log(this.dlLocation.find((item) => item.id === values), 'lalala')
