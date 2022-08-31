@@ -92,7 +92,6 @@ export default {
   watch: {
     'values.indicator': {
       async handler(newValues) {
-        alert('yolo');
         this.loading = true;
         const formattedData = [];
         let indicators = [newValues.id, newValues.first_related, newValues.second_related];
