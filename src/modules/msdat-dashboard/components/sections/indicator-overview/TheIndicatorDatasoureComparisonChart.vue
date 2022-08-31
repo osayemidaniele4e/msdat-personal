@@ -47,12 +47,13 @@
 import { sortBy, uniq } from 'lodash';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
+import mixin from '@/modules/DataLayer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
 
 export default {
-  mixins: [chartDownload, formatter, controlSetup],
+  mixins: [chartDownload, mixin, formatter, controlSetup],
   components: {
     BarChart,
   },
@@ -169,6 +170,8 @@ export default {
         }
 
         this.loading = false;
+        const values = await this.alternativeFunction(1);
+        console.log({ values });
       },
       deep: true,
       immediate: true,

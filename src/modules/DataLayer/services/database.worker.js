@@ -139,6 +139,17 @@ export default class DataBase {
     return this.data.where('indicator').equals(id).toArray();
   }
 
+  async getAvailableSoucesForIndicator(id) {
+    const allDataPoints = await this.db.data.where('indicator').equals(id).toArray();
+
+    const uniqueArray = [
+      ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
+    ];
+    const justIds = uniqueArray.map((item) => item.datasource);
+    console.log({ justIds });
+    return justIds;
+  }
+
   async checkAllYearsExistInDB(indicatorID) {
     const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
     const dataValue = dataResult.data.years;

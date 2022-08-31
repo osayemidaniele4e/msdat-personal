@@ -192,6 +192,15 @@ export default {
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
       return dataSourceAvailable.data.datasources;
     },
+    async alternativeFunction(value) {
+      // alert('right here');
+      const indicatorId = value || 1;
+      const dataeAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
+      console.log({ dataeAvailable });
+      const sourceObjects = dataeAvailable.map((source) => this.dlGetDataSource(source));
+      console.log({ sourceObjects });
+      return dataeAvailable;
+    },
     //  functiion to get indicators based on data_source
     async getIndicatorByDataSource(value) {
       const dataSourceId = value || 1;
