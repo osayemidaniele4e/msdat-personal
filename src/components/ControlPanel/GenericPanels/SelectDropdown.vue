@@ -56,7 +56,7 @@ import { has } from 'lodash';
 export default {
   data() {
     return {
-      allowEmpty: false,
+      allowEmpty: true,
       dummyVariable: false,
     };
   },
@@ -110,14 +110,12 @@ export default {
             // debugger;
             // eslint-disable-next-line prefer-destructuring
             this.selected = this.options[0];
-            console.log(this.selected, 'selected2');
           } else {
             const date = new Date();
             const year = date.getFullYear() - 1;
             this.selected = year.toString();
           }
         }
-        console.log(this.selected, 'selected1');
       },
     },
     deep: true,
@@ -151,6 +149,7 @@ export default {
             if (element.style.display === 'none') {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'block';
+              // eslint-disable-next-line no-unused-expressions
               element.children[0]?.children[0]?.classList.toggle('open-caret');
             } else {
               // eslint-disable-next-line no-param-reassign
@@ -158,7 +157,8 @@ export default {
             }
           }
           if (parent === tempParent) {
-            element.children[0].children[0].children[0].classList.toggle('open-caret');
+            // eslint-disable-next-line no-unused-expressions
+            element.children[0]?.children[0]?.children[0]?.classList.toggle('open-caret');
           }
         });
       }
@@ -173,19 +173,21 @@ export default {
     initialCSS(multiselectID) {
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
-        const iterable = specificPart.parentNode.nextElementSibling.children[0].children;
-        const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i <= iterable.length; i++) {
-          if (iterable[i].children[0]?.children[0]?.dataset.child) {
-            iterable[i].style.display = 'none';
-          } else if (tell === 'notVisited') {
-            iterable[i].addEventListener('click', (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              this.pickProgramArea(e);
-            });
-            specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
+        if (this.options.length !== 0) {
+          const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;
+          const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i <= iterable.length; i++) {
+            if (iterable[i].children[0]?.children[0]?.dataset.child) {
+              iterable[i].style.display = 'none';
+            } else if (tell === 'notVisited') {
+              iterable[i].addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.pickProgramArea(e);
+              });
+              specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
+            }
           }
           // else{
           //   iterable[i].style.display = 'block';
