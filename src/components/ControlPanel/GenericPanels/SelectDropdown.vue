@@ -120,7 +120,7 @@ export default {
         console.log(this.selected, 'selected1');
       },
     },
-    deep:true,
+    deep: true,
     immediate: false,
   },
   methods: {
@@ -170,7 +170,7 @@ export default {
      *  @var multiselectProps, its "group-value" property.
      *
      */
-   initialCSS(multiselectID) {
+    initialCSS(multiselectID) {
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
         const iterable = specificPart.parentNode.nextElementSibling.children[0].children;
