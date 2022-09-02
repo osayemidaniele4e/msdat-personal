@@ -24,6 +24,7 @@
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
+      style="cursor:pointer;"
        :data-parent="props.option.$groupLabel"
 
       >
@@ -31,12 +32,14 @@
       </template>
       <template v-if="props.option.item">
         <div v-if="!props.option.$groupLabel"
+        style="cursor:pointer;"
         :data-child="modifyDataSourceChildLabel(props.option.item)">
         {{props.option.item}}
         </div>
       </template>
       <template v-else-if="props.option.full_name">
         <div v-if="!props.option.$groupLabel"
+        style="cursor:pointer;"
         :data-child="props.option.program_area">
         {{props.option.full_name}}
         </div>
@@ -211,13 +214,16 @@ export default {
   position: absolute;
   transform: rotate(0deg);
   transition: all .25s ease-in;
+  cursor: pointer;
 }
 .open-caret {
     transform: rotate(360deg);
     transition: all .25s ease-out;
+    cursor: pointer;
   }
 li.multiselect__element{
   border-bottom: 1px solid #0000;
-  transition: all 3.5 ease-in
+  transition: all 3.5 ease-in;
+  cursor: pointer;
 }
 </style>
