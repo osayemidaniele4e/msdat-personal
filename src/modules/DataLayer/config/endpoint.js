@@ -1,5 +1,5 @@
 export default {
-  getDashboard: 'dashboards/?size=1000',
+  getDashboard: 'dashboards/?size=20',
   getDataSource: 'datasources/?size=1000',
   getLocation: 'location/?size=1000',
   getIndicator: 'indicators/?size=1000',

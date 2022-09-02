@@ -13,6 +13,7 @@
     selectLabel=""
     data-visted="notVisited"
     deselectLabel=""
+    @open="initialCSS"
     >
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
     <!---
@@ -23,17 +24,22 @@
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
-       :data-parent="props.option.$groupLabel">
+      style="cursor:pointer;"
+       :data-parent="props.option.$groupLabel"
+
+      >
        {{props.option.$groupLabel}} <span class="down-caret"></span> </span>
       </template>
       <template v-if="props.option.item">
         <div v-if="!props.option.$groupLabel"
+        style="cursor:pointer;"
         :data-child="modifyDataSourceChildLabel(props.option.item)">
         {{props.option.item}}
         </div>
       </template>
       <template v-else-if="props.option.full_name">
         <div v-if="!props.option.$groupLabel"
+        style="cursor:pointer;"
         :data-child="props.option.program_area">
         {{props.option.full_name}}
         </div>
@@ -53,7 +59,7 @@ import { has } from 'lodash';
 export default {
   data() {
     return {
-      allowEmpty: false,
+      allowEmpty: true,
       dummyVariable: false,
     };
   },
@@ -102,6 +108,7 @@ export default {
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring
             this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+            // console.log(this.selected, 'selected1');
           } else if (newValue.length > 0) {
             // debugger;
             // eslint-disable-next-line prefer-destructuring
@@ -114,6 +121,7 @@ export default {
         }
       },
     },
+    deep: true,
     immediate: false,
   },
   methods: {
@@ -134,23 +142,26 @@ export default {
       event.preventDefault();
       event.stopPropagation();
       if (event.type === 'click') {
-        const { parent } = event.target.children[0].children[0].dataset;
+        const { parent } = event.target.children[0]?.children[0]?.dataset;
         const all = Array.from(event.target.parentNode.children);
         all.forEach((element) => {
           // eslint-disable-next-line prefer-destructuring
-          const child = element.children[0].children[0].dataset.child;
-          const tempParent = element.children[0].children[0].dataset.parent;
+          const child = element.children[0]?.children[0]?.dataset.child;
+          const tempParent = element.children[0]?.children[0]?.dataset.parent;
           if (parent === child) {
             if (element.style.display === 'none') {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'block';
+              // eslint-disable-next-line no-unused-expressions
+              element.children[0]?.children[0]?.classList.toggle('open-caret');
             } else {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'none';
             }
           }
           if (parent === tempParent) {
-            element.children[0].children[0].children[0].classList.toggle('open-caret');
+            // eslint-disable-next-line no-unused-expressions
+            element.children[0]?.children[0]?.children[0]?.classList.toggle('open-caret');
           }
         });
       }
@@ -165,20 +176,26 @@ export default {
     initialCSS(multiselectID) {
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
-        const iterable = specificPart.parentNode.nextElementSibling.children[0].children;
-        const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i <= iterable.length; i++) {
-          if (iterable[i].children[0].children[0]?.dataset.child) {
-            iterable[i].style.display = 'none';
-          } else if (tell === 'notVisited') {
-            iterable[i].addEventListener('click', (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              this.pickProgramArea(e);
-            });
-            specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
+        if (this.options.length !== 0) {
+          const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;
+          const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i <= iterable.length; i++) {
+            if (iterable[i].children[0]?.children[0]?.dataset.child) {
+              iterable[i].style.display = 'none';
+            } else if (tell === 'notVisited') {
+              iterable[i].addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.pickProgramArea(e);
+              });
+              specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
+            }
           }
+          // else{
+          //   iterable[i].style.display = 'block';
+          // }
+          // console.log(iterable[i].children[0]?.children[0]?.dataset.child, 'child')
         }
       }
     },
@@ -197,13 +214,16 @@ export default {
   position: absolute;
   transform: rotate(0deg);
   transition: all .25s ease-in;
+  cursor: pointer;
 }
 .open-caret {
-    transform: rotate(180deg);
+    transform: rotate(360deg);
     transition: all .25s ease-out;
+    cursor: pointer;
   }
 li.multiselect__element{
   border-bottom: 1px solid #0000;
-  transition: all 3.5 ease-in
+  transition: all 3.5 ease-in;
+  cursor: pointer;
 }
 </style>
