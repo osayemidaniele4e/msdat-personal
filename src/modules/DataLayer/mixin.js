@@ -139,7 +139,6 @@ export default {
         temp.value_type = element.value_type;
         return temp;
       });
-      console.log('first', dataResult);
       return dataResult;
     },
 
