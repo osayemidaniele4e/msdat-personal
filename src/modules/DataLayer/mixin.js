@@ -193,15 +193,15 @@ export default {
       return dataSourceAvailable.data.datasources;
     },
     async alternativeFunction(value) {
-      // alert('right here');
       const indicatorId = value || 1;
-      const dataeAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
-      console.log({ dataeAvailable });
-      const sourceObjects = dataeAvailable.map((source) => this.dlGetDataSource(source));
-      console.log({ sourceObjects });
-      return dataeAvailable;
+      console.log('indicatorId =>', indicatorId);
+      const dataAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
+      console.log('Mixin =>', dataAvailable);
+      const sourceObjects = dataAvailable.map((source) => this.dlGetDataSource(source));
+      console.log('Mixin 2 =>', sourceObjects);
+      return dataAvailable;
     },
-    //  functiion to get indicators based on data_source
+    //  function to get indicators based on data_source
     async getIndicatorByDataSource(value) {
       const dataSourceId = value || 1;
       const indicatorAvailable = await axios.get(`/datasources/${dataSourceId}/indicators/`);
@@ -213,7 +213,7 @@ export default {
       return data.date;
     },
   },
-  mounted() {
+  async mounted() {
     // const data = await this.dlQuery({ datasource: 6, indicator: 7, period: '2020' });
     // console.log(data);
     // console.trace(this.dlGetLocation({ level: 3 }));

@@ -170,8 +170,10 @@ export default {
         }
 
         this.loading = false;
-        const values = await this.alternativeFunction(1);
-        console.log({ values });
+        console.log('start on the indicator table');
+        console.log(await this.alternativeFunction(2), 'hello2');
+        // const values = await this.alternativeFunction(1);
+        // console.log('IDCC =>', values);
       },
       deep: true,
       immediate: true,

@@ -51,6 +51,10 @@ export default {
       const availableDataSource = await this.setDataSourcesDropdown(this.payload.indicator.id);
       return availableDataSource;
     },
+    async getAvailableIndicators() {
+      const availableIndicator = await this.setIndicatorsDropdown(this.payload.indicator.id);
+      return availableIndicator;
+    },
   },
   watch: {
     // get latest available years when indicator , datasource or location are changed
@@ -81,6 +85,13 @@ export default {
           panelIndex: this.controlIndex,
           key: 'year',
           values: availableYears,
+        });
+        const availableIndicators = await this.getAvailableIndicators();
+        this.SETUP_CONTROL_OPTIONS1({
+          groupIndex: this.groupIndex,
+          panelIndex: this.controlIndex,
+          key: 'indicator',
+          values: availableIndicators,
         });
       },
     },

@@ -75,8 +75,9 @@ export default class DataLayer {
       const indicatorArray = await this.DB.listAllIndicators();
       // check if data is already initialized iN DEXIE DB
       // this.DB.getIndicatorDataThatExistInDB()
+      // ========= get datasource specific ✅ []
       const alternative = await this.DB.getAvailableSoucesForIndicator(1);
-      console.log({ alternative });
+      console.log('DataLayer =>', alternative);
       if (indicatorArray.length === 0) {
         /** Fetching other endpoints */
         console.log('fetching other endpoint');

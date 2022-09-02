@@ -139,6 +139,9 @@ export default class DataBase {
     return this.data.where('indicator').equals(id).toArray();
   }
 
+  /**
+ * Get DataSource By Indicator ✅
+ */
   async getAvailableSoucesForIndicator(id) {
     const allDataPoints = await this.db.data.where('indicator').equals(id).toArray();
 
@@ -146,7 +149,6 @@ export default class DataBase {
       ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
     ];
     const justIds = uniqueArray.map((item) => item.datasource);
-    console.log({ justIds });
     return justIds;
   }
 
