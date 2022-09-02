@@ -158,7 +158,7 @@ export default {
             }
           }
           if (parent === tempParent) {
-            element.children[0].children[0].children[0].classList.toggle('open-caret');
+            element.children[0]?.children[0]?.children[0]?.classList.toggle('open-caret');
           }
         });
       }
@@ -173,7 +173,7 @@ export default {
     initialCSS(multiselectID) {
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
-        const iterable = specificPart.parentNode.nextElementSibling.children[0].children;
+        const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;
         const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i <= iterable.length; i++) {
