@@ -13,6 +13,7 @@
     selectLabel=""
     data-visted="notVisited"
     deselectLabel=""
+    @open="initialCSS"
     >
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
     <!---
@@ -23,7 +24,9 @@
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
-       :data-parent="props.option.$groupLabel">
+       :data-parent="props.option.$groupLabel"
+
+      >
        {{props.option.$groupLabel}} <span class="down-caret"></span> </span>
       </template>
       <template v-if="props.option.item">
@@ -102,19 +105,22 @@ export default {
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring
             this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+            // console.log(this.selected, 'selected1');
           } else if (newValue.length > 0) {
             // debugger;
             // eslint-disable-next-line prefer-destructuring
             this.selected = this.options[0];
+            console.log(this.selected, 'selected2');
           } else {
             const date = new Date();
             const year = date.getFullYear() - 1;
             this.selected = year.toString();
           }
         }
-        console.log('new', newValue[0].indicator);
+        console.log(this.selected, 'selected1');
       },
     },
+    deep:true,
     immediate: false,
   },
   methods: {
@@ -135,16 +141,17 @@ export default {
       event.preventDefault();
       event.stopPropagation();
       if (event.type === 'click') {
-        const { parent } = event.target.children[0].children[0].dataset;
+        const { parent } = event.target.children[0]?.children[0]?.dataset;
         const all = Array.from(event.target.parentNode.children);
         all.forEach((element) => {
           // eslint-disable-next-line prefer-destructuring
-          const child = element.children[0].children[0].dataset.child;
-          const tempParent = element.children[0].children[0].dataset.parent;
+          const child = element.children[0]?.children[0]?.dataset.child;
+          const tempParent = element.children[0]?.children[0]?.dataset.parent;
           if (parent === child) {
             if (element.style.display === 'none') {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'block';
+              element.children[0]?.children[0]?.classList.toggle('open-caret');
             } else {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'none';
@@ -163,14 +170,14 @@ export default {
      *  @var multiselectProps, its "group-value" property.
      *
      */
-    initialCSS(multiselectID) {
+   initialCSS(multiselectID) {
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
         const iterable = specificPart.parentNode.nextElementSibling.children[0].children;
         const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i <= iterable.length; i++) {
-          if (iterable[i].children[0].children[0]?.dataset.child) {
+          if (iterable[i].children[0]?.children[0]?.dataset.child) {
             iterable[i].style.display = 'none';
           } else if (tell === 'notVisited') {
             iterable[i].addEventListener('click', (e) => {
@@ -180,6 +187,10 @@ export default {
             });
             specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
           }
+          // else{
+          //   iterable[i].style.display = 'block';
+          // }
+          // console.log(iterable[i].children[0]?.children[0]?.dataset.child, 'child')
         }
       }
     },
@@ -200,7 +211,7 @@ export default {
   transition: all .25s ease-in;
 }
 .open-caret {
-    transform: rotate(180deg);
+    transform: rotate(360deg);
     transition: all .25s ease-out;
   }
 li.multiselect__element{
