@@ -139,14 +139,15 @@ export default class DataBase {
     return this.data.where('indicator').equals(id).toArray();
   }
 
-  async getAvailableSoucesForIndicator(id) {
-    const allDataPoints = await this.db.data.where('indicator').equals(id).toArray();
-
+  static async getAvailableSoucesForIndicator(id) {
+    const allDataPoints = await dexie.table(DATA).where('indicator').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
     const uniqueArray = [
       ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
     ];
     const justIds = uniqueArray.map((item) => item.datasource);
-    console.log({ justIds });
     return justIds;
   }
 
