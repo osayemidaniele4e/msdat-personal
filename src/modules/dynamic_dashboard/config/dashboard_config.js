@@ -27,7 +27,7 @@ export default [
     title: 'Health Facility Input',
     indicators: [38, 43, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 56, 58, 59, 60],
     defaultIndicators: [51, 50, 49], // preferable and indicator ID and related indicators,
-    dataSources: [17, 1, 2],
+    dataSources: [17],
     initialIndicator: 51,
     initialDataSource: 17,
     initialLocation: 1,

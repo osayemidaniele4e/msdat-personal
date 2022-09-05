@@ -13,7 +13,7 @@
       "
     >
       <template #title>
-        <p class="text-dark work-sans mb-0 line-height">
+        <p class="work-sans mb-0 line-height">
           Comparison of
                <span class="font-weight-bold">{{ values.indicator.full_name }}</span>
           <span class="font-weight-bold">
