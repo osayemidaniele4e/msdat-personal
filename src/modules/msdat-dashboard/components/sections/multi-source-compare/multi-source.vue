@@ -6,7 +6,6 @@
       @dropdownTypeSelected="mapDownload($event)"
     >
       <template #title>
-
         <p class="work-sans mb-0 line-height">
           Distribution of <b>{{ values.indicator.short_name }}</b> Across the Geopolitical zones in
           the Country. Source: <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
@@ -32,7 +31,7 @@
 import Maps from '@/components/maps/BaseMap.vue';
 // import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
-import { sortHighChartDataFormat } from '../../../mixins/util';
+// import { sortHighChartDataFormat } from '../../../mixins/util';
 import chartDownload from '../../../mixins/chart_download';
 import NoAvailableData from '../../NoData2.vue';
 
@@ -95,8 +94,16 @@ export default {
       ]);
     },
     formatDataToSeriesLineFormat(data) {
-      const dataValues = data.map((item) => [item.period, Number.parseFloat(item.value)]);
-      return dataValues.sort(sortHighChartDataFormat);
+      // this function returns data for the highchart. It was remodified to sort the chart data by year
+      const result = [];
+      data.map((item) => {
+        result.push([item.period, Number.parseFloat(item.value)]);
+      });
+      return result.sort((a, b) => a[0] - b[0]);
+
+      // the comment bellow sorts the data by values instead of year.
+
+      // return result.sort(sortHighChartDataFormat);
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
       return {
