@@ -1,4 +1,0 @@
-diff a/src/modules/msdat-dashboard/views/about/layout/theFooter.vue b/src/modules/msdat-dashboard/views/about/layout/theFooter.vue	(rejected hunks)
-@@ -32 +32 @@ export default {
--      console.log(res.data.results[0].updated_at, 'hello')
-+      console.log(res.data.results[0].updated_at, 'hello');
