@@ -107,7 +107,10 @@ export default {
         if (this.multiSelectProps['preselect-first']) {
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring
-            this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+            console.log('hello1', this.multiSelectProps['group-values'], newValue[0]);
+            if (newValue.length > 0) {
+              this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+            }
             // console.log(this.selected, 'selected1');
           } else if (newValue.length > 0) {
             // debugger;

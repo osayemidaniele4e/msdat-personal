@@ -504,10 +504,10 @@ export default {
       await this.setDefaults();
       await this.setUpControlPanelDropDown();
 
-      this.defaultYearDropdown = this.setYearDropdown();
+      // pick one of the available years as the default years as opposed to the static 2016 year
+      this.defaultYearDropdown = await this.setYearDropdown();
       if (this.defaultYearDropdown.length > 0) {
-        const firstItem = 0;
-        this.defaultYear = this.defaultYearDropdown[firstItem];
+        this.defaultYear = this.defaultYearDropdown[0];
       }
 
       this.cpIsLoading = true;
