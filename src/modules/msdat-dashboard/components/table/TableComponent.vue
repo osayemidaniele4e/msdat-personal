@@ -33,7 +33,7 @@
             <tr>
               <div class="nhmis_month_head">
                 NHMIS (monthly)
-              <!-- <b-icon-info-circle-fill
+                <!-- <b-icon-info-circle-fill
                 :variant="selectedSource.id === source.id ? '' : 'primary'"
                 @click="$emit('selected:source-info', source)"
                 class="data-source-info meta_icon"
@@ -452,16 +452,18 @@ export default {
      * this filter thorough the array of data parse and et all available  Parsed
      */
     getAvailableDataSources() {
-      const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
-      const allAvailableSources = uniq(flatten(arraySource));
-      // debugger;
-      /**
-       * order AvailableSources according to the OrderSourceBy Array;
-       */
-      const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
-      );
-      this.source = sortedSource;
+      if (!this.loading) {
+        const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
+        const allAvailableSources = uniq(flatten(arraySource));
+        // debugger;
+        /**
+         * order AvailableSources according to the OrderSourceBy Array;
+         */
+        const sortedSource = allAvailableSources.sort(
+          (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
+        );
+        this.source = sortedSource;
+      }
     },
     /**
      * This gets the maximum amount to dataSource classification
@@ -566,9 +568,7 @@ export default {
       this.indicators.forEach((indicator) => {
         let nhmisObj = {};
         axiosInstance
-          .get(
-            `data/?datasource=33&indicator=${indicator}&location=1`,
-          )
+          .get(`data/?datasource=33&indicator=${indicator}&location=1`)
           .then((response) => {
             nhmisObj = response.data[response.data.length - 1];
 

@@ -185,10 +185,13 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
+
       // loop through data and parseFloat the value toFixed(1)
       for (let i = 0; i < data.length; i += 1) {
         data[i].value = parseFloat(data[i].value).toFixed(1);
       }
+      console.log(data, 'datata');
+
       return data;
     },
 
