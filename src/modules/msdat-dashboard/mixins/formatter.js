@@ -62,6 +62,7 @@ export default {
       });
       return dataValue.sort(sortHighChartDataFormat);
     },
+
     diffBaseOnTarget(data, targetValue) {
       const aboveTargetData = takeWhile(data, (item) => item[1] >= targetValue);
       const belowTargetData = difference(data, aboveTargetData);

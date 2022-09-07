@@ -42,7 +42,6 @@ export default {
         key: 'indicator',
         payload: this.defaultDataSourceDropdown,
       });
-
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
@@ -53,6 +52,7 @@ export default {
       this.defaultLocationDropdown = this.dlGetLocation({
         level: 3,
       });
+
       const location = this.dlGetLocation(1); // get nigerian Location object
       // add nigeria to the top of the array
       this.defaultLocationDropdown.unshift(location);

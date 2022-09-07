@@ -122,7 +122,6 @@ export default {
     changeIndex(newValue) {
       this.selectedIndex = newValue;
       this.changeControl(newValue);
-      // console.log('newIndex', newValue);
     },
 
     selectedIndex(newValue) {

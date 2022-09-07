@@ -7,7 +7,7 @@
     <template v-if="!showTroubleShootingModal">
       <Loading
         v-if="!loading"
-        :noBackdrop="false"
+        :noBackdrop="true"
         :showBackground="false"
         class="over"
       >
@@ -172,6 +172,7 @@ import {
   SelectDropdown,
 } from '@/components/ControlPanel';
 // import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
@@ -283,12 +284,19 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     const { name } = this.$route.params;
     if (name === 'Advanced_Analytics') {
       this.isAdvanced = true;
     }
-    this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    try {
+      const response = await apiServices.getDashboard();
+      const { results } = response.data;
+      this.configObject = results.find((item) => item.name === name);
+    } catch {
+      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    }
+    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
@@ -394,7 +402,7 @@ export default {
       };
       this.$emit('swipe', cord);
     },
-    // moses
+
     getIndex(index) {
       console.log('this is the index i am saying', index);
       this.changeIndex = index;
@@ -425,10 +433,6 @@ export default {
      * @param index The index of the control panel that changes
      * you can use this to check which control panel changed
      *
-     */
-
-    /**
-     * *
      */
     setState(val) {
       this.selectedMapName = val;
@@ -462,11 +466,16 @@ export default {
   },
 
   watch: {
-
-    program_option(newVal) {
-      console.log(newVal);
+    async program_option(newVal) {
       // const { name } = this.$route.params;
-      this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
+      try {
+        const response = await apiServices.getDashboard();
+        const { results } = response.data;
+        this.configObject = results.find((item) => item.name === newVal);
+      } catch {
+        this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
+      }
+      // this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
     },
   },
 
@@ -497,8 +506,8 @@ export default {
       });
 
       // The initializing the control panel
-      this.setDefaults();
-      this.setUpControlPanelDropDown();
+      await this.setDefaults();
+      await this.setUpControlPanelDropDown();
 
       this.defaultYearDropdown = this.setYearDropdown();
       if (this.defaultYearDropdown.length > 0) {
