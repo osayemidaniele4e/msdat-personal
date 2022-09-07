@@ -96,12 +96,12 @@ export default class DataLayer {
          * now initializing other tables in the store from the database directly as against the
          * previous implementation
          */
-        this.setDataInStore(data[6].data.results, DSI);
-        this.setDataInStore(data[0].data.results, LOCATION);
-        this.setDataInStore(data[1].data.results, INDICATORS);
-        this.setDataInStore(data[3].data.results, VALUE_TYPES);
-        this.setDataInStore(data[5].data.results, FACTORS);
-        this.setDataInStore(data[7].data.results, DATA_SOURCE);
+        this.setDataInStore(data[6].data, DSI);
+        this.setDataInStore(data[0].data, LOCATION);
+        this.setDataInStore(data[1].data, INDICATORS);
+        this.setDataInStore(data[3].data, VALUE_TYPES);
+        this.setDataInStore(data[5].data, FACTORS);
+        this.setDataInStore(data[7].data, DATA_SOURCE);
 
         const count = await this.DB.data.count();
         console.log('DB count is', count);
@@ -286,7 +286,7 @@ export default class DataLayer {
         );
         const results = await Promise.all(arrayOfPromises);
         for (let j = 0; j < results.length; j++) {
-          const requestResult = results[j].data.results;
+          const requestResult = results[j].data;
           await this.DB.storeDataInDB(requestResult);
         }
         this.updatedStoreAvailableIndicator(indicatorID);
@@ -312,7 +312,7 @@ export default class DataLayer {
       );
       const results = await Promise.all(arrayOfPromises);
       for (let j = 0; j < results.length; j++) {
-        const requestResult = results[j].data.results;
+        const requestResult = results[j].data;
         await this.DB.storeDataInDB(requestResult);
       }
       this.updatedStoreAvailableIndicator(indicatorID);

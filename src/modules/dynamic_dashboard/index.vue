@@ -37,7 +37,7 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
+// import apiServices from '@/modules/DataLayer/services/ApiServices';
 import moment from 'moment';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
@@ -90,12 +90,12 @@ export default {
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
     try {
-      const response = await apiServices.getDashboard();
-      const { results } = response.data;
-      this.configObject = results.find((item) => item.name === name);
-      if (this.configObject === undefined) {
-        this.configObject = this.dashboardConfig.find((item) => item.name === name);
-      }
+      // const response = await apiServices.getDashboard();
+      // const { results } = response.data;
+      // this.configObject = results.find((item) => item.name === name);
+      // if (this.configObject === undefined) {
+      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      // }
     } catch {
       this.configObject = this.dashboardConfig.find((item) => item.name === name);
     }
