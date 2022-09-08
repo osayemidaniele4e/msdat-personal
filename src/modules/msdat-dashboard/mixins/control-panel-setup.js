@@ -96,7 +96,6 @@ export default {
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
       const data = await this.getDataSourceByIndicator(indicatorID);
-      console.log('data', data);
       this.$store.commit('MSDAT_STORE/SET_INITIAL', {
         datasource: data[0]?.id,
       });
@@ -105,7 +104,6 @@ export default {
     //  Get available indicators for a given data source
     async setIndicatorsDropdown(dataSourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorByDataSource(dataSourceID);
-      console.log('first2', data);
       return data;
     },
   },

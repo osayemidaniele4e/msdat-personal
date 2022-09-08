@@ -152,7 +152,6 @@ export default {
         // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
         this.setUpHighChartConfig(seriesArray, years);
-        console.log('seriesArray', seriesArray);
         this.loading = false;
       },
       deep: false,
@@ -180,7 +179,6 @@ export default {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
-          console.log('seriesArray', seriesArray);
         }
 
         this.loading = false;
@@ -408,7 +406,6 @@ export default {
           [this.selectedDS],
           valueType,
         );
-        console.log('seriesArray', seriesArray);
         const seriesArr = await this.Reformat(seriesArray);
 
         this.setUpHighChartConfig(seriesArr, years);

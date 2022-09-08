@@ -92,19 +92,15 @@ export default {
     },
     'BarChartOptions.series': {
       handler(newSeries) {
-        console.log(newSeries, 'hello');
         for (let i = 0; i < newSeries.length; i += 1) {
-          console.log('stateBarChart1', newSeries[i].data.length, newSeries.length);
           if (newSeries[0].data.length <= 0) {
             this.showNoSubNationalData = true;
-            console.log('stateBarChart2', 'firstSeries');
             return;
           }
           if (i > 0) {
             this.showNoSubNationalData = false;
             if (newSeries[i].data.length > 0) {
               this.showNoSubNationalData = false;
-              console.log('stateBarChart more', newSeries[i].data.length);
               return;
             }
           }

@@ -499,7 +499,6 @@ export default {
         datasource: this.initialDataSource,
         location: this.initialLocation,
       });
-      console.log('first', this.initialIndicator);
       // The initializing the control panel
       await this.setDefaults();
       await this.setUpControlPanelDropDown();

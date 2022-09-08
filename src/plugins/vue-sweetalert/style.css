@@ -2,7 +2,7 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-end,
 body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   /* top: auto; */
   /* right: 0; */
-  bottom: 55px;
+  bottom: 35px;
   /* left: auto; */
 }
 

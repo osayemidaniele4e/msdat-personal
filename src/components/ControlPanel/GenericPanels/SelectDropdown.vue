@@ -21,7 +21,7 @@
       THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
       THAT HAVE GROUPED OPTIONS
     -->
-    <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
+    <!-- <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
       style="cursor:pointer;"
@@ -44,7 +44,7 @@
         {{props.option.full_name}}
         </div>
       </template>
-    </template>
+    </template> -->
     <!---
     END
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
@@ -105,24 +105,24 @@ export default {
     options: {
       handler(newValue) {
         if (this.multiSelectProps['preselect-first']) {
-          console.log('options5', this.multiSelectProps);
           this.selected = newValue[0];
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring
             // this.selected = newValue[0][this.multiSelectProps['group-values']][0];
-            // this.selected = newValue[0];
-            console.log('options1', newValue[0]);
+            this.selected = newValue[0];
           } else if (newValue.length > 0) {
-            // debugger;
             // eslint-disable-next-line prefer-destructuring
             this.selected = this.options[0];
-            console.log('options2', this.options, this.selected);
           } else {
             const date = new Date();
             const year = date.getFullYear() - 1;
             this.selected = year.toString();
-            console.log('options3', this.options, this.selected);
           }
+        }
+        // update the selected datasource
+        if (this.multiSelectProps.label === 'datasource') {
+          this.selected = {};
+          this.selected = newValue[0];
         }
       },
     },
