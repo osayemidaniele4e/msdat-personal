@@ -21,7 +21,7 @@
       THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
       THAT HAVE GROUPED OPTIONS
     -->
-    <!-- <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
+    <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
       style="cursor:pointer;"
@@ -44,7 +44,7 @@
         {{props.option.full_name}}
         </div>
       </template>
-    </template> -->
+    </template>
     <!---
     END
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
