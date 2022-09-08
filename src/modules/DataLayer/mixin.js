@@ -193,6 +193,7 @@ export default {
     async getDataSourceByIndicator(value) {
       const indicatorId = value || 1;
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
+      console.log('first', dataSourceAvailable);
       return dataSourceAvailable.data.datasources.filter((e) => e.id !== 33);
     },
     //  function to get indicators based on data_source

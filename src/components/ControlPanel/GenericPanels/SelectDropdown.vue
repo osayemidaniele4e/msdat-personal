@@ -105,21 +105,23 @@ export default {
     options: {
       handler(newValue) {
         if (this.multiSelectProps['preselect-first']) {
+          console.log('options5', this.multiSelectProps);
+          this.selected = newValue[0];
           if (has(this.multiSelectProps, 'group-values')) {
             // eslint-disable-next-line prefer-destructuring
-            console.log('hello1', this.multiSelectProps['group-values'], newValue[0]);
-            if (newValue.length > 0) {
-              this.selected = newValue[0][this.multiSelectProps['group-values']][0];
-            }
-            // console.log(this.selected, 'selected1');
+            // this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+            // this.selected = newValue[0];
+            console.log('options1', newValue[0]);
           } else if (newValue.length > 0) {
             // debugger;
             // eslint-disable-next-line prefer-destructuring
             this.selected = this.options[0];
+            console.log('options2', this.options, this.selected);
           } else {
             const date = new Date();
             const year = date.getFullYear() - 1;
             this.selected = year.toString();
+            console.log('options3', this.options, this.selected);
           }
         }
       },
