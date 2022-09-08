@@ -22,7 +22,6 @@
           :multiSelectProps="values.dropdownProps"
           :NoDataLabel="values.label"
         />
-
            <selectWrapper
           v-if="values.type === 'dropdown' && values.key !== 'indicator'"
           :id="label"
