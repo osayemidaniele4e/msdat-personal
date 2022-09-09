@@ -15,7 +15,7 @@ db.version(1).stores({
     '++id, datasource_indicator, measurement_numerator, measurement_denominator, frequency, methodology_estimation, indicator_definition, data_level, national,  zonal, state, senatorial, lga, datasource, indicator',
   links: '&id, period, link, created_at, updated_at, datasource, indicator',
   data:
-    '&id, value, period, indicator,  datasource, value_type, location, [value+period+indicator+datasource+value_type+location],[indicator+datasource],[indicator+datasource+location],[indicator+period],[datasource+indicator+period+value_type]',
+    '&id, value, period, indicator,  datasource, value_type, location, [value+period+indicator+datasource+value_type+location],[indicator+datasource],[indicator+datasource+location],[indicator+period]',
   location_hierarchy_level: 'id, name',
   stateNumDen: '++id',
   lgaNumDen: '++id',
