@@ -327,8 +327,10 @@ export default {
     handleClosePopUp() {
       this.popUp = false;
     },
+    // eslint-disable-next-line no-unused-vars
     log(event, index, index2) {
-      console.log('log function =>', event, index, index2);
+      // console.log('log function =>', event, index, index2);
+      console.log(' ');
     },
 
     changeKey(n) {

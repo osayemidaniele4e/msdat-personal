@@ -522,7 +522,7 @@ export default {
       } = this.values;
       axiosInstance
         .get(
-          `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
+          `data/?datasource=${datasource.id || 7}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
         )
         .then((response) => {
           const numerator = response.data.filter((item) => item.value_type === 6);
