@@ -37,7 +37,7 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
-// import moment from 'moment';
+import moment from 'moment';
 // import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
@@ -68,21 +68,45 @@ export default {
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
     async clearData() {
+      const lastDate = localStorage.getItem('dataTimestamp');
+      if (lastDate) {
+        const lastDateMoment = moment(lastDate);
+        const now = moment();
+        const diff = now.diff(lastDateMoment, 'days');
+        // eslint-disable-next-line no-restricted-globals
+        if (diff === 4) {
+          this.showClearDataModal = true;
+          // await this.$store.dispatch('DL/CLEAR_DB');
+        }
+      }
+      Promise.resolve(false);
+
       // const { data } = await apiServices.getLatestDate();
       // const cleared = localStorage.getItem('clearData');
+      // console.log('cleared', localStorage.getItem('clearData'));
+      // console.log('cleared', cleared);
       // if (data.date) {
       //   const lastDateMoment = moment(data.date);
       //   const now = moment();
       //   const diff = now.diff(lastDateMoment, 'days');
       //   // eslint-disable-next-line no-restricted-globals
-      //   if (diff === 4 && cleared === 'false') {
-      //     localStorage.setItem('clearData', 'true');
+      //   const clear = {
+      //     myBool: false,
+      //   };
+      //   if (diff === 4 && cleared === JSON.stringify(clear)) {
+      //     const chisom = {
+      //       myBool: true,
+      //     };
+      //     localStorage.setItem('clearData', JSON.stringify(chisom));
       //     this.showClearDataModal = true;
       //   } else {
-      //     localStorage.setItem('clearData', 'false');
+      //     const storeMe = {
+      //       myBool: false,
+      //     };
+      //     localStorage.setItem('clearData', JSON.stringify(storeMe));
       //   }
       // }
-      Promise.resolve(false);
+      // Promise.resolve(false);
     },
   },
   async mounted() {
