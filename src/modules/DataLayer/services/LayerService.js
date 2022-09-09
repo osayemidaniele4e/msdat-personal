@@ -76,8 +76,6 @@ export default class DataLayer {
       // check if data is already initialized iN DEXIE DB
       // this.DB.getIndicatorDataThatExistInDB()
       if (this.store.state.DL.indicators.length <= 0) {
-        /** Fetching other endpoints */
-        console.log('fetching other endpoint');
         /**
          * The apiServices returns all the and array of response for the
          * axios call of all other apiEndpoints.getOtherEndpoint
@@ -134,7 +132,6 @@ export default class DataLayer {
          * also always ensure to use for Loop with async operations
          * forEach loop doesn't  take asynchronous operations into consideration
          */
-        console.log('in set timeout');
         //
         const alert = this.sweetAlert();
         await this.initDataWithYears(this.indicatorList);

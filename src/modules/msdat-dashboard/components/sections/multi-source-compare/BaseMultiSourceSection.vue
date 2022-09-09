@@ -93,7 +93,6 @@ export default {
     },
   },
   async mounted() {
-    console.log('currentIndex', this.currentIndex);
     const setYearDropdown = await this.setYearDropdown();
     // debugger;
     this.SET_CONTROL_OPTIONS({

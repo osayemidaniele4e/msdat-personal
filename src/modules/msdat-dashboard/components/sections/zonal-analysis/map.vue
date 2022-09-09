@@ -122,7 +122,6 @@ export default {
             newItem[0] = newItem[0].split('LGA')[0].trim();
             return newItem;
           });
-          console.log('chart =>', sortedData, 'if');
 
           const stateData = data.find(
             (item) => item.location === val.location.id,

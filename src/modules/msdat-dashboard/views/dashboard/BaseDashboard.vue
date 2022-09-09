@@ -335,7 +335,6 @@ export default {
 
     changeKey(n) {
       this.sectionKey = n;
-      console.log('sectionKey', this.sectionKey);
     },
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -380,7 +379,6 @@ export default {
     swipeLeft() {
       // const content = this.$refs.dummy-row;
       const content = document.querySelector('.dummy-row');
-      console.log('content', content);
       this.scrollTo(content, -300, 800);
       const cord = {
         x: -370,
@@ -391,7 +389,6 @@ export default {
 
     swipeRight() {
       const content = document.querySelector('.dummy-row');
-      console.log('content', content);
       this.scrollTo(content, 300, 800);
       const cord = {
         x: 370,
@@ -401,7 +398,6 @@ export default {
     },
 
     getIndex(index) {
-      console.log('this is the index i am saying', index);
       this.changeIndex = index;
     },
     /**

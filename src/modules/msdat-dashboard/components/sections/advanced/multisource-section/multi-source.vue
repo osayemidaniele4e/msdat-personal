@@ -229,7 +229,6 @@ export default {
   },
 
   async mounted() {
-    console.log('checking');
     const data = await this.dlQuery({
       indicator: this.values.indicator.id,
       datasource: this.values.datasource.id,

@@ -109,9 +109,9 @@ export default {
         const datasource = this.dlGetDataSource(query.datasource);
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
         const valuetype = this.hardCordedValueType.filter(
-          (item) => item.value_type === datasource.classification,
+          (item) => item.value_type === datasource?.classification,
         );
-        query.value_type = valuetype[0].id;
+        query.value_type = valuetype[0]?.id;
       }
 
       if (isObject(query.location)) {
@@ -161,11 +161,9 @@ export default {
       if (typeof (values) === 'object') {
         return filter(this.dlLocation, matches(values));
       }
-      // console.log(this.dlLocation.find((item) => item.id === values), 'lalala')
       return this.dlLocation.find((item) => item.id === values);
     },
     dlGetByName(values) {
-      console.log(this.dlLocation.find((item) => item.name === values), 'lalala');
       return this.dlLocation.find((item) => item.name === values);
     },
     dlGetFactor(id) {

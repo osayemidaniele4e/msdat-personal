@@ -293,7 +293,7 @@ export default {
        */
       mappedDataSource.forEach((datasource) => {
         const searchDataSource = parameterObject;
-        searchDataSource.datasource = datasource.id;
+        searchDataSource.datasource = datasource?.id;
         if (mappedValueTypes.length > 0) {
           mappedValueTypes.forEach((valueType) => {
             // The Object.assign help copy if Object before pushing it into the array
@@ -338,7 +338,7 @@ export default {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
           seriesObject = this.createSeriesObject(valueType, datasource.datasource, sortedData);
         } else {
-          seriesObject = { name: datasource.datasource, data: sortedData };
+          seriesObject = { name: datasource?.datasource, data: sortedData };
         }
         chartSeriesArray.push(seriesObject);
       });
@@ -388,7 +388,6 @@ export default {
        */
       this.loading = true;
       if (e === 'ON') {
-        console.log('checking confidence 3');
         const [firstObject] = this.dataSourcesOptions;
         this.selectedDS = firstObject;
 
@@ -410,7 +409,6 @@ export default {
 
         this.setUpHighChartConfig(seriesArr, years);
       } else {
-        console.log('checking confidence 2');
         this.selectedDS = {};
         // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
         // const { seriesArray, years } = await this.toHighChartSeriesSetup(

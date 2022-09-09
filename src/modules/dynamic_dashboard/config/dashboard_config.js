@@ -60,7 +60,7 @@ export default [
     defaultIndicators: [266, 265, 264], // an indicator ID and related indicators,
     dataSources: [14, 7, 9, 25, 17],
     initialIndicator: 266,
-    initialDataSource: 9,
+    initialDataSource: 25,
     initialLocation: 1,
   },
   {

@@ -96,6 +96,7 @@ export default {
     formatDataToSeriesLineFormat(data) {
       // this function returns data for the highchart. It was remodified to sort the chart data by year
       const result = [];
+      // eslint-disable-next-line array-callback-return
       data.map((item) => {
         result.push([item.period, Number.parseFloat(item.value)]);
       });
@@ -236,7 +237,6 @@ export default {
   },
 
   async mounted() {
-    console.log('checking');
     const data = await this.dlQuery({
       indicator: this.values.indicator.id,
       datasource: this.values.datasource.id,
