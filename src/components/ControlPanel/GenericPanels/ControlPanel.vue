@@ -32,7 +32,6 @@
           :options="values.options"
           :multiSelectProps="values.dropdownProps"
           :NoDataLabel="values.label"
-          :isLoading="loading"
         />
         <!-- </div> -->
         <div class="disabled_alt">
@@ -164,7 +163,6 @@ export default {
       // (controlIndex & groupIndex)
       controlIndexSub: this.controlIndex,
       groupIndexSub: this.groupIndex,
-      loading: false,
       // payload: {
       //   indicator: 'indicator 2',
       //   location: '',
@@ -231,6 +229,7 @@ export default {
       type: String,
       required: false,
     },
+
     resetData: {
       type: Number,
       required: false,
@@ -279,8 +278,7 @@ export default {
       //   return data?.filter((item) => item.program_area === this.indicatorList);
       // }
     },
-    async updatePayload(value, key) {
-      this.loading = true;
+    updatePayload(value, key) {
       if (this.groupIndexSub != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
@@ -298,10 +296,9 @@ export default {
           value,
         });
       }
-      this.controlIndexSub = await this.controlIndex;
-      this.groupIndexSub = await this.groupIndex;
+      this.controlIndexSub = this.controlIndex;
+      this.groupIndexSub = this.groupIndex;
       this.$emit('data:options', this.payload);
-      this.loading = false;
     },
   },
   computed: {
@@ -317,13 +314,11 @@ export default {
     },
   },
 
-  async mounted() {
-    this.loading = true;
-    await this.updatePayload(this.defaultIndicator, 'indicator');
-    await this.updatePayload(this.defaultDataSource, 'datasource');
-    await this.updatePayload(this.defaultLocation, 'location');
-    await this.updatePayload(this.defaultYear, 'year');
-    this.loading = false;
+  mounted() {
+    this.updatePayload(this.defaultIndicator, 'indicator');
+    this.updatePayload(this.defaultDataSource, 'datasource');
+    this.updatePayload(this.defaultLocation, 'location');
+    this.updatePayload(this.defaultYear, 'year');
   },
 };
 </script>
