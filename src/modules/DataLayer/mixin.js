@@ -192,14 +192,14 @@ export default {
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
       return dataSourceAvailable.data.datasources;
     },
-    async alternativeFunction(value) {
+    async getDataSourcesFromDexie(value) {
       const indicatorId = value || 1;
-      console.log('indicatorId =>', indicatorId);
-      const dataAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
-      console.log('Mixin =>', dataAvailable);
-      const sourceObjects = dataAvailable.map((source) => this.dlGetDataSource(source));
-      console.log('Mixin 2 =>', sourceObjects);
-      return dataAvailable;
+      const dataeAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
+      if (dataeAvailable.length <= 0) {
+        return [];
+      }
+      const sourceObjects = dataeAvailable.map((source) => this.dlGetDataSource(source));
+      return sourceObjects;
     },
     //  function to get indicators based on data_source
     async getIndicatorByDataSource(value) {

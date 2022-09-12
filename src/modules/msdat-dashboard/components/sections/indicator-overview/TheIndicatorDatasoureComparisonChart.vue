@@ -170,10 +170,6 @@ export default {
         }
 
         this.loading = false;
-        console.log('start on the indicator table');
-        console.log(await this.alternativeFunction(2), 'hello2');
-        // const values = await this.alternativeFunction(1);
-        // console.log('IDCC =>', values);
       },
       deep: true,
       immediate: true,
@@ -445,7 +441,7 @@ export default {
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(this.values.indicator.id);
+      const availableDataSource = await this.getDataSourcesFromDexie(this.values.indicator.id);
       return availableDataSource;
     },
     // ================================ REFORMATTING DATA =====================================
