@@ -135,6 +135,19 @@ export default class DataLayer {
       // await this.initOtherTablesFromDB();
 
       setTimeout(async () => {
+        const lateIndicators = await this.DB.checkIndicatorsInIdb();
+        const indicatorsUnavailable = difference(this.indicatorList, lateIndicators);
+        if (indicatorsUnavailable.length > 0) {
+          const alert = this.sweetAlert();
+          await this.initDataWithYears(indicatorsUnavailable);
+          alert.close();
+          await this.setAvailableDashboardIndicator();
+          const alert1 = this.sweetAlert();
+          await this.updateData();
+          alert1.close();
+        } else {
+          await this.setAvailableDashboardIndicator();
+        }
         //
         /**
          * getting the indicators one after the order seems to help the performance
@@ -147,18 +160,12 @@ export default class DataLayer {
          */
         // console.log('in set timeout');
         //
-        const alert = this.sweetAlert();
-        await this.initDataWithYears(this.indicatorList);
-        alert.close();
-
-        await this.setAvailableDashboardIndicator();
-        const alert1 = this.sweetAlert();
-        await this.updateData();
-        alert1.close();
       }, 500);
 
       /*
-       *This compares then the indicator Array with the indicator Array of the dashboard
+       * This compares then the
+       * indicator Array with the indicator
+       * Array of the dashboard
        * */
       // console.timeEnd('fetching');
       return Promise.resolve(true);
