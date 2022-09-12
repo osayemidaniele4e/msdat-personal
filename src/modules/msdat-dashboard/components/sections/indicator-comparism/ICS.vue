@@ -33,7 +33,9 @@
             {{ values.compareBy.name }}s
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="chartOptions" />
+        <BarChart ref="BaseChart"
+        :title="title"
+        :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
     <div v-if="checkData() === false" class="no_data">
@@ -63,6 +65,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       color: ['#17606B', '#E85D58'],
       dataSeries: [],
       loading: false,
@@ -508,6 +511,14 @@ export default {
       }
     },
   },
+
+  async mounted() {
+    if (!Array.isArray(this.values.indicator.length)) {
+      this.title = ` Comparison Of ${this.values.indicator.short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}`;
+    } else {
+      this.title = ` Comparison Of ${this.values.indicator[0].short_name} and ${this.values.indicator[1].short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}s`;
+    }
+  },
 };
 </script>
 
@@ -517,6 +528,7 @@ div.ics_wrapper {
   div.no_data {
     position: absolute;
     top: 0;
+
     display: flex;
     justify-content: center;
     align-items: center;

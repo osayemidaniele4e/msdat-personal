@@ -32,6 +32,7 @@
           </button>
           <BaseMap
             ref="BaseMap"
+            :title="title"
             :mapObject="chart"
             :level="level"
             :lgaState="stateName"
@@ -73,6 +74,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       chart: {},
       loader: false,
       level: 1,
@@ -202,6 +204,10 @@ export default {
       deep: true,
       immediate: true,
     },
+  },
+
+  mounted() {
+    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} Across the zones in the Country. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
   },
 };
 </script>

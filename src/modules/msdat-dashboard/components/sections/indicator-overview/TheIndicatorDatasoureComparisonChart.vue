@@ -28,7 +28,10 @@
             sources.
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
+        <BarChart ref="BaseChart"
+        :chartOptions="ChartOptions"
+        :title="title"
+        v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
     <!-- <div class="no_data">
@@ -58,6 +61,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       ChartOptions: {},
       loading: false,
       dataSourcesOptions: [
@@ -487,6 +491,12 @@ export default {
       ];
       return seriesArr;
     },
+  },
+
+  async mounted() {
+    this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
+        (Time-series comparison of ${this.values.indicator.short_name} ) across different data
+            sources.`;
   },
   // async mounted() {
   //   console.log('hello =>', this.ChartOptions);
