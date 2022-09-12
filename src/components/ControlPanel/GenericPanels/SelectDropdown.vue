@@ -109,8 +109,8 @@ export default {
         if (this.multiSelectProps['preselect-first']) {
           // this.selected = newValue[0];
           if (has(this.multiSelectProps, 'group-values')) {
-            // this.selected = newValue[0][this.multiSelectProps['group-values']][0];
-            this.selected = await newValue[0];
+            this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+            // this.selected = await newValue[0];
           } else if (newValue.length > 0) {
             this.selected = await this.options[0];
           } else {
