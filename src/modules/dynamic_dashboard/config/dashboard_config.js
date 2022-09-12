@@ -57,7 +57,8 @@ export default [
       265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 329, 330, 331, 332, 333, 334,
       335, 336, 337, 338, 380, 381, 382, 383, 384,
     ],
-    defaultIndicators: [98, 220, 100], // an indicator ID and related indicators,
+    // defaultIndicators: [98, 220, 100], // an indicators,indicator ID and related
+    defaultIndicators: [266, 265, 264], // an indicator ID and related indicators,
     dataSources: [14, 7, 9, 25, 17],
     initialIndicator: 98,
     initialDataSource: 14,
