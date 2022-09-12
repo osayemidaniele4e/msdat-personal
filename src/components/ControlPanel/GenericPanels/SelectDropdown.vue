@@ -14,7 +14,6 @@
     data-visted="notVisited"
     deselectLabel=""
     @open="initialCSS"
-    :loading="isLoading || loading"
     >
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
     <!---
@@ -101,10 +100,6 @@ export default {
     NoDataLabel: {
       type: String,
       default: () => 'List is empty',
-    },
-    isLoading: {
-      type: Boolean,
-      default: () => false,
     },
   },
   watch: {
