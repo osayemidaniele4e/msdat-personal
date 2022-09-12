@@ -13,10 +13,13 @@
       </template>
       <BarChart
         v-if="visualization === 'line' || visualization === 'column'"
+        :title="title"
         :chartOptions="chartObject"
         ref="BaseChart"
       />
-      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName" />
+      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName"
+      :title="title"
+       />
     </base-sub-card>
     <NoAvailableData
       v-if="showNoAvailableData"
@@ -47,6 +50,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       level: 1,
       mapDataLevel: 3,
       visualization: 'line',
@@ -237,6 +241,8 @@ export default {
   },
 
   async mounted() {
+    this.title = ` Distribution of ${this.values.indicator.short_name} Across the Geopolitical zones in
+          the Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
     const data = await this.dlQuery({
       indicator: this.values.indicator.id,
       datasource: this.values.datasource.id,
