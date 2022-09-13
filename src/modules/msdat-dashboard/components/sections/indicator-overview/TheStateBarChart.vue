@@ -21,12 +21,19 @@
             >
           </p>
         </template>
-              <button @click="returnToNational" v-show="level !== 1" class="bg-transparent text-dark font-weight-bold">
-               <b-icon icon="chevron-left" />
-              &nbsp;Back to National
-          </button>
+        <button
+          @click="returnToNational"
+          v-show="level !== 1"
+          class="bg-transparent text-dark font-weight-bold"
+        >
+          <b-icon icon="chevron-left" />
+          &nbsp;Back to National
+        </button>
         <div @click="handleChartClick">
-          <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+          <BarChart ref="BaseChart"
+          :chartOptions="BarChartOptions"
+          :title="title"
+           />
         </div>
       </base-sub-card>
     </base-overlay>
@@ -53,6 +60,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       BarChartOptions: {},
       loading: false,
       showNoSubNationalData: false,
@@ -208,6 +216,8 @@ export default {
 
   mounted() {
     this.updateData = +1;
+
+    this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>

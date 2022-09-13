@@ -15,14 +15,13 @@
       <template #title>
         <p class="work-sans mb-0 line-height">
           Comparison of
-               <span class="font-weight-bold">{{ values.indicator.full_name }}</span>
-          <span class="font-weight-bold">
-            {{ values.datasource.full_name }} </span
-          >across <span class="font-weight-bold">different sources </span>by
+          <span class="font-weight-bold">{{ values.indicator.full_name }}</span>
+          <span class="font-weight-bold"> {{ values.datasource.full_name }} </span>across
+          <span class="font-weight-bold">different sources </span>by
           <span class="font-weight-bold">states</span>
         </p>
       </template>
-      <BaseChart ref="BaseChart" :chartOptions="chartConfig" />
+      <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
     </base-sub-card>
   </base-overlay>
 </template>
@@ -43,6 +42,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       chartConfig: {},
       // DataSetConfig: cloneDeep(DataSetConfig),
       loading: true,
@@ -101,11 +101,11 @@ export default {
   },
   computed: {
     payload() {
-      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-        .payload;
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
   async mounted() {
+    this.title = ` Comparison of ${this.values.indicator.full_name} ${this.values.datasource.full_name}} across different sources by states`;
     this.loading = true;
     const dropDown = await this.setUpDataSourceNYearDropdown();
     this.SETUP_CONTROL_OPTIONS1({
@@ -218,9 +218,7 @@ export default {
           },
           colors: ['#17606B', '#E85D58', '#58B74E'],
         };
-        const displayFactor = this.dlGetFactor(
-          this.values.indicator.factor,
-        ).display_factor;
+        const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
         this.chartConfig.yAxis.title.text = displayFactor;
         this.chartConfig.series = orderResult;
         this.loading = false;
@@ -243,5 +241,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

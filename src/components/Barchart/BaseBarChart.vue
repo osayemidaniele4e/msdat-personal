@@ -43,9 +43,15 @@ export default {
      * is what to use to passHighChart options to the component
      *
      */
+
     chartOptions: {
       type: Object,
       default: () => ({}),
+    },
+
+    title: {
+      type: String,
+      default: '',
     },
   },
 
@@ -58,6 +64,10 @@ export default {
       handler(passedObj) {
         // eslint-disable-next-line prefer-object-spread
         this.options = cloneDeep(Object.assign({}, this.options, passedObj));
+
+        console.log('chartOptions', this.chartOptions);
+
+        this.options.exporting.chartOptions.title.text = this.title;
       },
       deep: true,
       immediate: true,
@@ -65,6 +75,12 @@ export default {
   },
   components: {
     highcharts: genComponent('Highcharts', Highcharts),
+  },
+
+  mounted() {
+    // changing the title of the text when downloaded
+    this.options.exporting.chartOptions.title.text = this.title;
+    console.log('chartOptions', this.chartOptions);
   },
 };
 </script>
