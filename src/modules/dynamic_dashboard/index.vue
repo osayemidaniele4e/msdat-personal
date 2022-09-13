@@ -67,6 +67,11 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    /**
+     * @author davidbenard
+     * @function ClearDataFromDexie
+     * @description - clear the dexie DB if the difference between the localStorage and api date is greater than 10
+     */
     async clearData() {
       const { data } = await apiServices.getLatestDate();
       const clearedDate = localStorage.getItem('lastUpdateDate');
