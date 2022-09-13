@@ -227,7 +227,6 @@
                 />
               </template>
             </tr>
-
             <!-- The display the the first indicator of the array of indicator -->
             <!-- please note that the first indicator is assumed to be
           the main indicator and others, the related indicators -->
@@ -508,7 +507,9 @@ export default {
 
       // adding an extra column for NHMIS monthly
 
-      this.classify_nm[0][1] += 1;
+      if (this.$route.params.name === 'Health_Outcomes') {
+        this.classify_nm[0][1] += 1;
+      }
     },
 
     log(e) {
