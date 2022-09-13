@@ -13,6 +13,7 @@
 
               <!-- {{values}} -->
 
+<!-- ADVANCED ANALYTICS -->
         <selectWrapper
           v-if="values.type === 'dropdown' && values.key === 'indicator'"
           :id="label"
@@ -22,7 +23,7 @@
           :multiSelectProps="values.dropdownProps"
           :NoDataLabel="values.label"
         />
-
+        <!-- MSDAT SUB-DASHBOARDS -->
            <selectWrapper
           v-if="values.type === 'dropdown' && values.key !== 'indicator'"
           :id="label"

@@ -38,6 +38,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import moment from 'moment';
+// import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import config from './config/dashboard_config';
@@ -73,25 +74,62 @@ export default {
         const now = moment();
         const diff = now.diff(lastDateMoment, 'days');
         // eslint-disable-next-line no-restricted-globals
-        if (diff === 10) {
+        if (diff === 4) {
           this.showClearDataModal = true;
           // await this.$store.dispatch('DL/CLEAR_DB');
         }
       }
       Promise.resolve(false);
+
+      // const { data } = await apiServices.getLatestDate();
+      // const cleared = localStorage.getItem('clearData');
+      // console.log('cleared', localStorage.getItem('clearData'));
+      // console.log('cleared', cleared);
+      // if (data.date) {
+      //   const lastDateMoment = moment(data.date);
+      //   const now = moment();
+      //   const diff = now.diff(lastDateMoment, 'days');
+      //   // eslint-disable-next-line no-restricted-globals
+      //   const clear = {
+      //     myBool: false,
+      //   };
+      //   if (diff === 4 && cleared === JSON.stringify(clear)) {
+      //     const chisom = {
+      //       myBool: true,
+      //     };
+      //     localStorage.setItem('clearData', JSON.stringify(chisom));
+      //     this.showClearDataModal = true;
+      //   } else {
+      //     const storeMe = {
+      //       myBool: false,
+      //     };
+      //     localStorage.setItem('clearData', JSON.stringify(storeMe));
+      //   }
+      // }
+      // Promise.resolve(false);
     },
   },
   async mounted() {
     this.clearData();
   },
-  created() {
+  async created() {
     // this.CLEAR_CONTROL_PANEL();
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
-    this.configObject = this.dashboardConfig.find((item) => item.name === name);
-    if (this.configObject === undefined) {
-      this.$router.push('/*');
+    try {
+      // const response = await apiServices.getDashboard();
+      // const { results } = response.data;
+      // this.configObject = results.find((item) => item.name === name);
+      // if (this.configObject === undefined) {
+      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      // }
+    } catch {
+      this.configObject = this.dashboardConfig.find((item) => item.name === name);
     }
+    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    // if (this.configObject === undefined) {
+    //   this.$router.push('/*');
+    // }
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
     }

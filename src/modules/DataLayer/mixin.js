@@ -109,9 +109,9 @@ export default {
         const datasource = this.dlGetDataSource(query.datasource);
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
         const valuetype = this.hardCordedValueType.filter(
-          (item) => item.value_type === datasource.classification,
+          (item) => item.value_type === datasource?.classification,
         );
-        query.value_type = valuetype[0].id;
+        query.value_type = valuetype[0]?.id;
       }
 
       if (isObject(query.location)) {
@@ -120,6 +120,7 @@ export default {
         const locationValues = this.dlGetLocation(location);
         const locationID = locationValues.map((item) => item.id);
         const resultValue = await DB.queryDB(newQueryObject, locationID);
+        // console.log('yeye', newQueryObject);
         return resultValue;
       }
 
@@ -157,7 +158,7 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      if (typeof values === 'object') {
+      if (typeof (values) === 'object') {
         return filter(this.dlLocation, matches(values));
       }
       return this.dlLocation.find((item) => item.id === values);
@@ -190,16 +191,7 @@ export default {
     async getDataSourceByIndicator(value) {
       const indicatorId = value || 1;
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
-      return dataSourceAvailable.data.datasources;
-    },
-    async getDataSourcesFromDexie(value) {
-      const indicatorId = value || 1;
-      const dataeAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
-      if (dataeAvailable.length <= 0) {
-        return [];
-      }
-      const sourceObjects = dataeAvailable.map((source) => this.dlGetDataSource(source));
-      return sourceObjects;
+      return dataSourceAvailable.data.datasources.filter((e) => e.id !== 33);
     },
     //  function to get indicators based on data_source
     async getIndicatorByDataSource(value) {
@@ -208,6 +200,7 @@ export default {
       return indicatorAvailable.data.indicators;
     },
     // Function to store the latest database date
+    // !! Seems Redundant
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
       return data.date;

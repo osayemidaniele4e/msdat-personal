@@ -20,20 +20,27 @@
               <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
               <!-- change col span bac to  {{value[1]}} -->
               <td
-                v-for="(value, index) in classify"
+                v-for="(value, index) in classify_nm"
                 :key="index"
-                :colspan="2"
+                :colspan="value[1]"
                 class="classification-row text-uppercase text-center align-middle p-0"
               >
                 {{ value[0] }}
               </td>
             </tr>
+
+            <!-- {{classify}} -->
             <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
+
+            <!-- <pre>
+               {{source}}
+          </pre> -->
+
             <tr>
               <div class="nhmis_month_head">
                 NHMIS (monthly)
-              <!-- <b-icon-info-circle-fill
+                <!-- <b-icon-info-circle-fill
                 :variant="selectedSource.id === source.id ? '' : 'primary'"
                 @click="$emit('selected:source-info', source)"
                 class="data-source-info meta_icon"
@@ -206,6 +213,7 @@
             </tr>
             <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
+
             <tr>
               <template v-for="(dt, index) in source">
                 <TableDataSourceCell
@@ -406,6 +414,10 @@ export default {
        */
       classify: {},
       /**
+       * The classification object (considering NHMIS monhtly)
+       */
+      classify_nm: {},
+      /**
        * This send the selected Source to the Child component to Highlight
        */
       selectedSource: {},
@@ -492,6 +504,11 @@ export default {
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
       this.classify = resultSorted;
+      this.classify_nm = resultSorted;
+
+      // adding an extra column for NHMIS monthly
+
+      this.classify_nm[0][1] += 1;
     },
 
     log(e) {
@@ -566,9 +583,7 @@ export default {
       this.indicators.forEach((indicator) => {
         let nhmisObj = {};
         axiosInstance
-          .get(
-            `data/?datasource=33&indicator=${indicator}&location=1`,
-          )
+          .get(`data/?datasource=33&indicator=${indicator}&location=1`)
           .then((response) => {
             nhmisObj = response.data[response.data.length - 1];
 

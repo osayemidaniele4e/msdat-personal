@@ -7,7 +7,13 @@ export default {
     },
   },
   exporting: {
-    enabled: false,
+    enabled: true,
+    chartOptions: {
+      title: {
+        text: '',
+        x: -20,
+      },
+    },
   },
   title: {
     enabled: true,

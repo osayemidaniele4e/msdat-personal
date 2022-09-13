@@ -20,8 +20,8 @@ export default class DataLayer {
   constructor(store) {
     this.DB = '';
     this.store = store;
-    this.indicatorList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 5, 16, 17, 18];
-    this.defaultIndicators = [7, 5, 8];
+    this.indicatorList = [];
+    this.defaultIndicators = [];
     this.dataSourceList = [];
     this.LOCAL_STORAGE_KEY = 'dataTimestamp';
     this.Changes = [];
@@ -86,7 +86,6 @@ export default class DataLayer {
          * @see {@link apiServices.getOtherEndpoint()}
          */
         const data = await apiServices.getOtherEndpoint();
-
         /**
          * we would also need to created a component
          * then display the activities  of the service layer
@@ -110,7 +109,6 @@ export default class DataLayer {
         await this.DB.storeDataInDBTable(data[6].data, 'datasource_specific_indicator');
         await this.DB.storeDataInDBTable(data[7].data, 'datasources');
 
-        /** End Fetching other endpoints */
         const count = await this.DB.data.count();
         console.log('DB count is', count);
       } else {
@@ -158,7 +156,6 @@ export default class DataLayer {
          * also always ensure to use for Loop with async operations
          * forEach loop doesn't  take asynchronous operations into consideration
          */
-        // console.log('in set timeout');
         //
       }, 500);
 
@@ -302,18 +299,12 @@ export default class DataLayer {
     this.setDataInStore(dashboardDataSource, DASHBOARD_DATESOURCE);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async getLastDate() {
-    const dataResult = await apiServices.getLastUpdatedDate();
-    console.log('hello', dataResult);
-  }
-
   async checkAllYearsExistInDB(indicatorID) {
     const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
     const dataValue = dataResult.data.years;
     const yearsNotAvailable = [];
-    for (let index = 0; index < dataValue.length; index += 1) {
-      const element = dataValue[index];
+    for (let i = 0; i < dataValue.length; i++) {
+      const element = dataValue[i];
       const bb = await this.DB.checkIfIndicatorWithYearExist(indicatorID, element);
       if (bb === undefined) {
         yearsNotAvailable.push(element);
@@ -323,8 +314,8 @@ export default class DataLayer {
   }
 
   async initDataWithYears(indicator, limit = 0) {
-    for (let index = 0; index < indicator.length; index += 1) {
-      const indicatorID = indicator[index];
+    for (let i = 0; i < indicator.length; i++) {
+      const indicatorID = indicator[i];
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
@@ -334,8 +325,8 @@ export default class DataLayer {
           (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
         );
         const results = await Promise.all(arrayOfPromises);
-        for (let index2 = 0; index2 < results.length; index2 += 1) {
-          const requestResult = results[index2].data;
+        for (let j = 0; j < results.length; j++) {
+          const requestResult = results[j].data;
           // check if empty
           await this.DB.storeDataInDB(requestResult);
         }
@@ -344,20 +335,25 @@ export default class DataLayer {
     }
   }
 
+  /**
+  *
+  */
   async initDataWithYearsWithYearlyChecks(indicator, limit = 0) {
-    for (let index = 0; index < indicator.length; index += 1) {
-      const indicatorID = indicator[index];
+    for (let i = 0; i < indicator.length; i++) {
+      const indicatorID = indicator[i];
       const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
       const dataValue = dataResult.data.years;
       // take only the at least 8 years
       const yearsToTake = limit;
       const theYears = take(dataValue, yearsToTake);
+
+      // STEP 2: Get dataPoint by indicator and yearsAvailable
       const arrayOfPromises = theYears.map(
         (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
       );
       const results = await Promise.all(arrayOfPromises);
-      for (let index2 = 0; index2 < results.length; index2 += 1) {
-        const requestResult = results[index2].data;
+      for (let j = 0; j < results.length; j++) {
+        const requestResult = results[j].data;
         await this.DB.storeDataInDB(requestResult);
       }
       this.updatedStoreAvailableIndicator(indicatorID);
