@@ -147,8 +147,7 @@ export default class DataBase {
     const uniqueArray = [
       ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
     ];
-    const justIds = uniqueArray.map((item) => item.datasource);
-    return justIds;
+    return uniqueArray.map((item) => item.datasource);
   }
 
   async checkAllYearsExistInDB(indicatorID) {
