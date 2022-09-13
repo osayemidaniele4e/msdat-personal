@@ -197,7 +197,7 @@ export default {
     },
 
     handleChartClick(e) {
-      const point = e.point.name;
+      const point = e?.point?.name;
       const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
       if (selectedPlace.length !== 0) {
         eventBus.$emit('handleClick', selectedPlace[0]);
