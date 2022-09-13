@@ -97,8 +97,8 @@ export default {
       return this.getDataSourcesFromDexie(indicatorID);
     },
     //  Get available indicators for a given data source
-    async setIndicatorsDropdown(dataSourceID = this.defaultDataSource.id) {
-      return this.getIndicatorByDataSource(dataSourceID);
-    },
+    // async setIndicatorsDropdown(dataSourceID = this.defaultDataSource.id) {
+    //   return this.getIndicatorByDataSource(dataSourceID);
+    // },
   },
 };

@@ -194,11 +194,11 @@ export default {
       return dataSourceAvailable.data.datasources.filter((e) => e.id !== 33);
     },
     //  function to get indicators based on data_source
-    async getIndicatorByDataSource(value) {
-      const dataSourceId = value || 1;
-      const indicatorAvailable = await axios.get(`/datasources/${dataSourceId}/indicators/`);
-      return indicatorAvailable.data.indicators;
-    },
+    // async getIndicatorByDataSource(value) {
+    //   const dataSourceId = value || 1;
+    //   const indicatorAvailable = await axios.get(`/datasources/${dataSourceId}/indicators/`);
+    //   return indicatorAvailable.data.indicators;
+    // },
     // Function to store the latest database date
     // !! Seems Redundant
     async getLatestDate() {
