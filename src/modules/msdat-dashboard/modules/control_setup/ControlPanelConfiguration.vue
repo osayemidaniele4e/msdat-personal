@@ -48,12 +48,10 @@ export default {
       return available;
     },
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(this.payload.indicator.id);
-      return availableDataSource;
+      return this.setDataSourcesDropdown(this.payload.indicator.id);
     },
     async getAvailableIndicators() {
-      const availableIndicator = await this.setIndicatorsDropdown(this.payload.indicator.id);
-      return availableIndicator;
+      return this.setIndicatorsDropdown(this.payload.datasource.id);
     },
   },
   watch: {
