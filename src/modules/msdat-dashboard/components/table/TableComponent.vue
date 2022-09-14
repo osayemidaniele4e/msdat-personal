@@ -534,39 +534,41 @@ export default {
      * api directly using the control panel props
      */
     getNumDenumData() {
-      const {
-        indicator, year, location, datasource,
-      } = this.values;
-      axiosInstance
-        .get(
-          `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
-        )
-        .then((response) => {
-          const numerator = response.data.filter((item) => item.value_type === 6);
-          const denominator = response.data.filter((item) => item.value_type === 10);
-          if (numerator.length > 0 || denominator.length > 0) {
-            this.numDenum = true;
-            if (numerator.length > 0) {
-              this.numerator = `${this.values.indicator.short_name} - ${Number(
-                numerator[0].value,
-              ).toLocaleString()}`;
+      if (this.values?.datasource.id !== undefined) {
+        const {
+          indicator, year, location, datasource,
+        } = this.values;
+        axiosInstance
+          .get(
+            `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
+          )
+          .then((response) => {
+            const numerator = response.data.filter((item) => item.value_type === 6);
+            const denominator = response.data.filter((item) => item.value_type === 10);
+            if (numerator.length > 0 || denominator.length > 0) {
+              this.numDenum = true;
+              if (numerator.length > 0) {
+                this.numerator = `${this.values.indicator.short_name} - ${Number(
+                  numerator[0].value,
+                ).toLocaleString()}`;
+              } else {
+                this.numerator = 'N/a';
+              }
+              if (denominator.length > 0) {
+                this.denominator = `${this.values.indicator.short_name} - ${Number(
+                  denominator[0].value,
+                ).toLocaleString()}`;
+              } else {
+                this.denominator = 'N/a';
+              }
             } else {
-              this.numerator = 'N/a';
+              this.numDenum = false;
             }
-            if (denominator.length > 0) {
-              this.denominator = `${this.values.indicator.short_name} - ${Number(
-                denominator[0].value,
-              ).toLocaleString()}`;
-            } else {
-              this.denominator = 'N/a';
-            }
-          } else {
-            this.numDenum = false;
-          }
-        })
-        .catch((error) => {
-          console.log({ error });
-        });
+          })
+          .catch((error) => {
+            console.log({ error });
+          });
+      }
     },
 
     // getting NHMIS monthly for the 1st realted indicator
