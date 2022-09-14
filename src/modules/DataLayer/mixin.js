@@ -88,7 +88,6 @@ export default {
       dlDashboardIndicator: (state) => state.availableDashboardIndicator,
       dlDashboardDataSource: (state) => state.dashboardDataSource,
       dlAllPossibleSources: (state) => state.allSources,
-      dlAllPossibleIndicator: (state) => state.allIndicator,
       dlFactors: (state) => state.factors,
     }),
 
@@ -150,9 +149,6 @@ export default {
      */
     dlGetDashboardDataSource() {
       return this.dlDatasource.filter((e) => this.dlAllPossibleSources.includes(e.id));
-    },
-    dlGetDashboardIndicators() {
-      return this.dlIndicator.filter((e) => this.dlAllPossibleIndicator.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
@@ -218,25 +214,6 @@ export default {
       }
       const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
       return sourceObjects;
-    },
-    /**
-     *
-     * @param {value} Chosen dataSource ID |
-     * Uses @function {getAvailableIndicatorByDataSource}
-     * from database.worker class to fetch
-     * available datasources from dexie
-     * @returns array of indicator objects
-     */
-    async getIndicatorsFromDexie(value) {
-      const dataSourceId = value || 1;
-      const availableIndicators = await DB.getAvailableIndicatorByDataSource(dataSourceId);
-      if (availableIndicators.length <= 0) {
-        return [];
-      }
-      // dlGetDashboardIndicators
-      const samuel = this.dlGetDashboardIndicators();
-      console.log('filtered indicator', samuel);
-      return availableIndicators.map((source) => this.dlGetDataSource(source));
     },
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();

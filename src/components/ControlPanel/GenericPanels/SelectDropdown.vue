@@ -1,6 +1,6 @@
 <template>
   <!-- Label to show when there is no available data as requested -->
-    <!-- @open="initialCSS" -->
+  <!-- @open="initialCSS" -->
   <multiselect
     :id="formattedID"
     v-model="selected"
@@ -13,8 +13,8 @@
     selectLabel=""
     data-visted="notVisited"
     deselectLabel=""
-    @open="initialCSS"
-    >
+  >
+    <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
     <!---
       START
@@ -50,8 +50,7 @@
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
     THAT HAVE GROUPED OPTIONS
     -->
-    </multiselect
-  >
+  </multiselect>
 </template>
 <script>
 import { has } from 'lodash';
@@ -119,8 +118,25 @@ export default {
             this.selected = year.toString();
           }
         }
-        // update the selected datasource
+
+        /**
+         * @description check if the update is for datasource
+         * if it is, check if the list is an array,
+         * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
+         * if its not an array, make the object the default selected
+         */
         if (this.multiSelectProps.label === 'datasource') {
+          if (Array.isArray(newValue) && newValue?.length > 0) {
+            const defaultSelected = newValue.find((item) => item.id === this.selected?.id);
+            console.log(defaultSelected);
+            if (defaultSelected?.id !== undefined) {
+              this.selected = {};
+              this.selected = defaultSelected;
+              return;
+            }
+            this.selected = {};
+            this.selected = await newValue[0];
+          }
           this.selected = {};
           this.selected = await newValue[0];
         }
@@ -187,10 +203,11 @@ export default {
         const specificPart = document.querySelector(`input#${multiselectID}`);
         if (this.options.length !== 0) {
           const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
-          const tell = await specificPart.parentElement.parentElement.attributes['data-visted'].value;
+          const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
+            .value;
           // eslint-disable-next-line no-plusplus
           for (let i = 0; i <= iterable.length; i++) {
-            if (iterable[i].children[0]?.children[0]?.dataset.child) {
+            if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
               iterable[i].style.display = 'none';
             } else if (tell === 'notVisited') {
               iterable[i].addEventListener('click', (e) => {
@@ -223,15 +240,15 @@ export default {
   right: 5% !important;
   position: absolute;
   transform: rotate(0deg);
-  transition: all .25s ease-in;
+  transition: all 0.25s ease-in;
   cursor: pointer;
 }
 .open-caret {
-    transform: rotate(360deg);
-    transition: all .25s ease-out;
-    cursor: pointer;
-  }
-li.multiselect__element{
+  transform: rotate(360deg);
+  transition: all 0.25s ease-out;
+  cursor: pointer;
+}
+li.multiselect__element {
   border-bottom: 1px solid #0000;
   transition: all 3.5 ease-in;
   cursor: pointer;
