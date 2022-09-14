@@ -38,7 +38,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import moment from 'moment';
-// import apiServices from '@/modules/DataLayer/services/ApiServices';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import config from './config/dashboard_config';
@@ -67,46 +67,28 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    /**
+     * @author davidbenard
+     * @function ClearDataFromDexie
+     * @description - clear the dexie DB if the difference between the localStorage and api date is greater than 10
+     */
     async clearData() {
-      const lastDate = localStorage.getItem('dataTimestamp');
-      if (lastDate) {
-        const lastDateMoment = moment(lastDate);
-        const now = moment();
-        const diff = now.diff(lastDateMoment, 'days');
-        // eslint-disable-next-line no-restricted-globals
-        if (diff === 4) {
+      const { data } = await apiServices.getLatestDate();
+      const clearedDate = localStorage.getItem('lastUpdateDate');
+      if (clearedDate === null) {
+        console.log('first clear, BYFORCE, in order to set the date variable');
+        await this.$store.dispatch('DL/CLEAR_DB');
+        return;
+      }
+      if (data.date) {
+        const lastDateMoment = moment(data.date);
+        const diff = lastDateMoment.diff(clearedDate, 'days');
+        if (diff > 3) {
           this.showClearDataModal = true;
-          // await this.$store.dispatch('DL/CLEAR_DB');
+          console.log('subsequent clear by users choice, update localstorage variable');
         }
       }
       Promise.resolve(false);
-
-      // const { data } = await apiServices.getLatestDate();
-      // const cleared = localStorage.getItem('clearData');
-      // console.log('cleared', localStorage.getItem('clearData'));
-      // console.log('cleared', cleared);
-      // if (data.date) {
-      //   const lastDateMoment = moment(data.date);
-      //   const now = moment();
-      //   const diff = now.diff(lastDateMoment, 'days');
-      //   // eslint-disable-next-line no-restricted-globals
-      //   const clear = {
-      //     myBool: false,
-      //   };
-      //   if (diff === 4 && cleared === JSON.stringify(clear)) {
-      //     const chisom = {
-      //       myBool: true,
-      //     };
-      //     localStorage.setItem('clearData', JSON.stringify(chisom));
-      //     this.showClearDataModal = true;
-      //   } else {
-      //     const storeMe = {
-      //       myBool: false,
-      //     };
-      //     localStorage.setItem('clearData', JSON.stringify(storeMe));
-      //   }
-      // }
-      // Promise.resolve(false);
     },
   },
   async mounted() {

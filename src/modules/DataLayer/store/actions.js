@@ -1,4 +1,5 @@
 import DB from '../config/dexie';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 
 export default {
   /**
@@ -15,6 +16,8 @@ export default {
    */
   async CLEAR_DB() {
     localStorage.removeItem('defaultClear');
+    const { data } = await apiServices.getLatestDate();
+    localStorage.setItem('lastUpdateDate', data.date);
     await DB.delete();
     window.location.reload();
     Promise.resolve(true);

@@ -3,7 +3,7 @@ export default [
   {
     path: '/',
     // redirect: '/dashboard/Health_Outcomes',
-    redirect: '/dashboard/Health_Financing',
+    redirect: '/dashboard/Health_Facility_Output',
   },
   {
     path: '/dashboard/:name',

@@ -65,8 +65,6 @@ export default {
         // eslint-disable-next-line prefer-object-spread
         this.options = cloneDeep(Object.assign({}, this.options, passedObj));
 
-        console.log('chartOptions', this.chartOptions);
-
         this.options.exporting.chartOptions.title.text = this.title;
       },
       deep: true,

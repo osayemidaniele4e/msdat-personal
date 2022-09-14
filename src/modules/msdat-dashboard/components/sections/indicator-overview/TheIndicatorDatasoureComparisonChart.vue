@@ -50,12 +50,13 @@
 import { sortBy, uniq } from 'lodash';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
+import mixin from '@/modules/DataLayer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
 
 export default {
-  mixins: [chartDownload, formatter, controlSetup],
+  mixins: [chartDownload, mixin, formatter, controlSetup],
   components: {
     BarChart,
   },
@@ -438,7 +439,7 @@ export default {
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(this.values.indicator.id);
+      const availableDataSource = await this.getDataSourcesFromDexie(this.values.indicator.id);
       return availableDataSource;
     },
     // ================================ REFORMATTING DATA =====================================

@@ -21,7 +21,6 @@ export default {
     // The is the updated the control panels dropdown as indicator are gotten from the API
     // in the background (async)
     dlGetAvailableIndicators(newValue) {
-      console.log('update the control panels indicator dropdown');
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'indicator',
         payload: groupIndicator(newValue, 'program_area'),
@@ -95,16 +94,7 @@ export default {
     },
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
-      const data = await this.getDataSourceByIndicator(indicatorID);
-      this.$store.commit('MSDAT_STORE/SET_INITIAL', {
-        datasource: data[0]?.id,
-      });
-      return data;
+      return this.getDataSourcesFromDexie(indicatorID);
     },
-    //  Get available indicators for a given data source
-    // async setIndicatorsDropdown(dataSourceID = this.defaultDataSource.id) {
-    //   const data = await this.getIndicatorByDataSource(dataSourceID);
-    //   return data;
-    // },
   },
 };
