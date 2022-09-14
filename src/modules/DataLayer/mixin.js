@@ -234,6 +234,8 @@ export default {
         return [];
       }
       // dlGetDashboardIndicators
+      const samuel = this.dlGetDashboardIndicators();
+      console.log('filtered indicator', samuel);
       return availableIndicators.map((source) => this.dlGetDataSource(source));
     },
     async getLatestDate() {
