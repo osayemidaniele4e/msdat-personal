@@ -16,6 +16,7 @@ const LOCATION = 'location';
 const AVAILABLE_DASHBOARD_INDICATOR = 'availableDashboardIndicator';
 const DASHBOARD_DATESOURCE = 'dashboardDataSource';
 const ALL_DASHBOARD_SOURCES = 'allSources';
+const ALL_INDICATOR = 'allIndicator';
 
 export default class DataLayer {
   constructor(store) {
@@ -46,6 +47,7 @@ export default class DataLayer {
     // data fetching to be complete, leading to
     // empty tables on inital load
     this.setDataInStore(this.dataSourceList, ALL_DASHBOARD_SOURCES);
+    this.setDataInStore(this.indicatorList, ALL_INDICATOR);
   }
 
   /**

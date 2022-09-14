@@ -88,6 +88,7 @@ export default {
       dlDashboardIndicator: (state) => state.availableDashboardIndicator,
       dlDashboardDataSource: (state) => state.dashboardDataSource,
       dlAllPossibleSources: (state) => state.allSources,
+      dlAllPossibleIndicator: (state) => state.allIndicator,
       dlFactors: (state) => state.factors,
     }),
 
@@ -143,8 +144,15 @@ export default {
       return dataResult;
     },
 
+    /**
+     * @function dlGetDashboardDataSource
+     * @description filter the config
+     */
     dlGetDashboardDataSource() {
       return this.dlDatasource.filter((e) => this.dlAllPossibleSources.includes(e.id));
+    },
+    dlGetDashboardIndicators() {
+      return this.dlIndicator.filter((e) => this.dlAllPossibleIndicator.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
@@ -225,6 +233,7 @@ export default {
       if (availableIndicators.length <= 0) {
         return [];
       }
+      // dlGetDashboardIndicators
       return availableIndicators.map((source) => this.dlGetDataSource(source));
     },
     async getLatestDate() {
