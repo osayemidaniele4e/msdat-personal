@@ -193,6 +193,23 @@ export default {
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
       return dataSourceAvailable.data.datasources.filter((e) => e.id !== 33);
     },
+    /**
+     *
+     * @param {value} Chosen indicator ID |
+     * Uses @function {getAvailableSoucesForIndicator}
+     * from database.worker class to fetch
+     * available datasources from dexie
+     * @returns array of datasource objects
+     */
+    async getDataSourcesFromDexie(value) {
+      const indicatorId = value || 1;
+      const sourcesAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
+      if (sourcesAvailable.length <= 0) {
+        return [];
+      }
+      const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
+      return sourceObjects;
+    },
     //  function to get indicators based on data_source
     // async getIndicatorByDataSource(value) {
     //   const dataSourceId = value || 1;
