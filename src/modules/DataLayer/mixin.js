@@ -87,6 +87,7 @@ export default {
       dlValue_type: (state) => state.valuetypes,
       dlDashboardIndicator: (state) => state.availableDashboardIndicator,
       dlDashboardDataSource: (state) => state.dashboardDataSource,
+      dlAllPossibleSources: (state) => state.allSources,
       dlFactors: (state) => state.factors,
     }),
 
@@ -143,7 +144,7 @@ export default {
     },
 
     dlGetDashboardDataSource() {
-      return this.dlDatasource.filter((e) => this.dlDashboardDataSource.includes(e.id));
+      return this.dlDatasource.filter((e) => this.dlAllPossibleSources.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
