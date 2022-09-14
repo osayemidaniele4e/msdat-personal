@@ -159,7 +159,7 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      if (typeof (values) === 'object') {
+      if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }
       return this.dlLocation.find((item) => item.id === values);
@@ -211,22 +211,28 @@ export default {
       const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
       return sourceObjects;
     },
-    //  function to get indicators based on data_source
-    // async getIndicatorByDataSource(value) {
-    //   const dataSourceId = value || 1;
-    //   const indicatorAvailable = await axios.get(`/datasources/${dataSourceId}/indicators/`);
-    //   return indicatorAvailable.data.indicators;
-    // },
-    // Function to store the latest database date
-    // !! Seems Redundant
+    /**
+     *
+     * @param {value} Chosen dataSource ID |
+     * Uses @function {getAvailableIndicatorByDataSource}
+     * from database.worker class to fetch
+     * available datasources from dexie
+     * @returns array of indicator objects
+     */
+    async getIndicatorsFromDexie(value) {
+      const dataSourceId = value || 1;
+      const availableIndicators = await DB.getAvailableIndicatorByDataSource(dataSourceId);
+      if (availableIndicators.length <= 0) {
+        return [];
+      }
+      return availableIndicators.map((source) => this.dlGetDataSource(source));
+    },
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
       return data.date;
     },
   },
   async mounted() {
-    // const data = await this.dlQuery({ datasource: 6, indicator: 7, period: '2020' });
-    // console.log(data);
     // console.trace(this.dlGetLocation({ level: 3 }));
   },
 };

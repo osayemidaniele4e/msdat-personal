@@ -147,6 +147,17 @@ export default class DataBase {
     return uniqueArray.map((item) => item.datasource);
   }
 
+  static async getAvailableIndicatorByDataSource(id) {
+    const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [
+      ...new Map(allDataPoints.map((item) => [item.indicator, item])).values(),
+    ];
+    return uniqueArray.map((item) => item.indicator);
+  }
+
   async checkAllYearsExistInDB(indicatorID) {
     const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
     const dataValue = dataResult.data.years;
