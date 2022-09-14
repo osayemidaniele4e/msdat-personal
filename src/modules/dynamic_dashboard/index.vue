@@ -87,7 +87,6 @@ export default {
           this.showClearDataModal = true;
           console.log('subsequent clear by users choice, update localstorage variable');
         }
-        console.log('kelechi', diff, lastDateMoment, clearedDate);
       }
       Promise.resolve(false);
     },

@@ -535,10 +535,10 @@ export default {
      * api directly using the control panel props
      */
     getNumDenumData() {
-      if (this.values?.datasource.id !== undefined) {
-        const {
-          indicator, year, location, datasource,
-        } = this.values;
+      const {
+        indicator, year, location, datasource,
+      } = this.values;
+      if (datasource?.id !== undefined) {
         axiosInstance
           .get(
             `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
