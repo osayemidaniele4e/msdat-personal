@@ -59,7 +59,6 @@
                   @value="getValue"
                   @key="getKey"
                 />
-                <pre>{{dt}}</pre>
               </div>
             </tr>
 
