@@ -33,7 +33,9 @@
             {{ values.compareBy.name }}s
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="chartOptions" />
+        <BarChart ref="BaseChart"
+        :title="title"
+        :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
     <div v-if="checkData() === false" class="no_data">
@@ -63,6 +65,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       color: ['#17606B', '#E85D58'],
       dataSeries: [],
       loading: false,
@@ -185,9 +188,12 @@ export default {
   },
   methods: {
     checkData() {
-      const datar = this.chartOptions.series.map((el, i) => el.data[i]);
-      if (datar[0]?.length >= 1) {
-        return true;
+      const datar = this.chartOptions?.series?.map((el, i) => el.data[i]);
+      if (datar !== undefined) {
+        if (datar[0]?.length >= 1) {
+          return true;
+        }
+        return false;
       }
       return false;
     },
@@ -229,7 +235,7 @@ export default {
       } else {
         indicators = values.indicator;
       }
-      const dataPromises = indicators.map((item) => this.dlQuery({
+      const dataPromises = indicators?.map((item) => this.dlQuery({
         indicator: item.id,
         datasource: values.datasource.id,
         period: values.year,
@@ -244,7 +250,7 @@ export default {
         // formate result to HighChart Format
         const indicator = indicators[i];
         const data = results[i];
-        const toHighChartFormat = data.map((item) => [
+        const toHighChartFormat = data?.map((item) => [
           this.dlGetLocation(item.location).name,
           parseFloat(item.value),
         ]);
@@ -427,7 +433,7 @@ export default {
         indicators = values.indicator;
       }
 
-      const dataPromises = indicators.map((item) => this.dlQuery({
+      const dataPromises = indicators?.map((item) => this.dlQuery({
         indicator: item.id,
         datasource: values.datasource.id,
         location: values.location.id,
@@ -439,7 +445,7 @@ export default {
         const result = results[i];
         const indicator = indicators[i];
         const filterOnlyYearlyValues = result.filter((item) => moment(item.period, 'YYYY', true).isValid());
-        const formatToHighChartFormat = filterOnlyYearlyValues.map((item) => [
+        const formatToHighChartFormat = filterOnlyYearlyValues?.map((item) => [
           item.period,
           Number.parseFloat(item.value),
         ]);
@@ -508,6 +514,14 @@ export default {
       }
     },
   },
+
+  async mounted() {
+    if (!Array.isArray(this.values.indicator.length)) {
+      this.title = ` Comparison Of ${this.values.indicator.short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}`;
+    } else {
+      this.title = ` Comparison Of ${this.values.indicator[0].short_name} and ${this.values.indicator[1].short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}s`;
+    }
+  },
 };
 </script>
 
@@ -517,6 +531,7 @@ div.ics_wrapper {
   div.no_data {
     position: absolute;
     top: 0;
+
     display: flex;
     justify-content: center;
     align-items: center;

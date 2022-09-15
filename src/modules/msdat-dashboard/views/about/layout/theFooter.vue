@@ -3,7 +3,7 @@
     <div>Built with <b-icon-heart-fill /> by eHealth4everyone</div>
     <div>
       <span
-        >{{ dlDashboardIndicator.length }}/{{ indicatorCount}}&ensp;Indicators,
+        >{{ dlDashboardIndicator.length > indicatorCount ? indicatorCount : dlDashboardIndicator.length }}/{{ indicatorCount}}&ensp;Indicators,
         {{ dlDashboardDataSource.length }}/{{dataSourceCount}}&ensp;Data&nbsp;sources</span
       >
       <span>Last Updated {{ latestDate }}</span>
@@ -29,6 +29,7 @@ export default {
   methods: {
     async getLatestDate() {
       const res = await apiServices.getLatestDate();
+      // const date = moment(res.data.results[0].updated_at, 'YYYY-MM-DD').format('MMMM Do YYYY');
       const date = moment(res.data.date, 'YYYY-MM-DD').format('MMMM Do YYYY');
       this.latestDate = date;
     },

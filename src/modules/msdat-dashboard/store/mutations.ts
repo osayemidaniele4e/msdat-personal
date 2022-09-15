@@ -103,7 +103,9 @@ const mutations: MutationTree<State> = {
   CLEAR_CONTROL_PANEL: (state) => {
     state.controlConfig = [];
   },
-
+  /**
+   * This function is used to set control options
+   */
   SET_ALL_CONTROL_OPTIONS: (state, { key, payload }) => {
     state.controlConfig.forEach((controlPanel) => {
       if (controlPanel.setup.length > 0) {

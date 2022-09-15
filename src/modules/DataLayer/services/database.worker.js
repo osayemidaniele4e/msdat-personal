@@ -30,6 +30,19 @@ export default class DataBase {
 
   /**
    *
+   * @returns {array} a unique array of all the LOCATION
+   * objects available in iDB.
+   */
+  async listLocations() {
+    return this.db.location.orderBy('id').uniqueKeys();
+  }
+
+  async fetchTableData(tableName) {
+    return this.db[tableName].orderBy('id').toArray();
+  }
+
+  /**
+   *
    * @returns {array} a unique array of all the indicator
    * indexes available in iDB.
    * This is considerably less cpu-intensive than toArray()
@@ -121,6 +134,28 @@ export default class DataBase {
    */
   getIndicatorFromDB(id) {
     return this.data.where('indicator').equals(id).toArray();
+  }
+
+  static async getAvailableSoucesForIndicator(id) {
+    const allDataPoints = await dexie.table(DATA).where('indicator').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [
+      ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
+    ];
+    return uniqueArray.map((item) => item.datasource);
+  }
+
+  static async getAvailableIndicatorByDataSource(id) {
+    const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [
+      ...new Map(allDataPoints.map((item) => [item.indicator, item])).values(),
+    ];
+    return uniqueArray.map((item) => item.indicator);
   }
 
   async checkAllYearsExistInDB(indicatorID) {

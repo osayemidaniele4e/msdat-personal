@@ -97,6 +97,10 @@ export default {
     lgaState: {
       type: String,
     },
+    title: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -186,6 +190,11 @@ export default {
   },
   created() {
     this.plotMapLevel(this.level);
+  },
+
+  mounted() {
+    // changing the title of the text when downloaded
+    this.defaultOptions.exporting.chartOptions.title.text = this.title;
   },
 };
 </script>

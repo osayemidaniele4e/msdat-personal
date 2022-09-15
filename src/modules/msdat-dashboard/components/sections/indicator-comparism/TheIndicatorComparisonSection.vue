@@ -149,7 +149,6 @@ export default {
       // so the idea here is to always empty the chart and re-plot the chart for either
       // single object or an array depending on the size of the indicator parameter/parameters
       async handler(options) {
-        console.log('the options', options);
         this.loading = true;
         this.ChartOptions.series = [];
         const chartChange = options.compareBy.name;
@@ -237,7 +236,6 @@ export default {
               const mappedData = sortBy(seriesObject.data, [(o) => o[0]]);
               seriesObject.data = mappedData;
               this.ChartOptions.series.push(seriesObject);
-              console.log('new series', seriesObject);
             }
           } else if (this.values.indicator.length === 1) {
             // if the indicator array is alone
@@ -277,7 +275,7 @@ export default {
           }));
           const promises2 = queryObject2.map((item) => this.dlQuery(item));
           const nationalData = await Promise.all(promises2);
-          const orderNational = queryObject2.map((item, index) => {
+          await queryObject2.map((item, index) => {
             const response = nationalData[index];
             const dataValues = response.map((element) => [
               'National',
@@ -288,7 +286,6 @@ export default {
               data: dataValues,
             };
           });
-          console.log('national', orderNational);
 
           const queryObject = options.indicator.map((element) => ({
             indicator: element.id,
@@ -398,7 +395,6 @@ export default {
           };
           // this.ChartOptions.chart.type = 'column';
           // this.ChartOptions.series = orderResult;
-          console.log('chart series is', this.ChartOptions.series);
         }
         this.loading = false;
       },

@@ -106,7 +106,6 @@ export default {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
             const indicatorObject = this.dlGetIndicator(indicatorID);
-            console.log('datasources', indicatorObject);
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
               // eslint-disable-next-line no-await-in-loop
@@ -131,39 +130,39 @@ export default {
     },
     updateData: {
       async handler() {
-        this.loading = true;
-        const formattedData = [];
-        let indicators = [
-          this.values.indicator.id,
-          this.values.indicator.first_related,
-          this.values.indicator.second_related,
-        ];
+        // this.loading = true;
+        // const formattedData = [];
+        // let indicators = [
+        //   this.values.indicator.id,
+        //   this.values.indicator.first_related,
+        //   this.values.indicator.second_related,
+        // ];
 
-        if (!this.showTableRelatedIndicator) {
-          indicators = [this.values.indicator.id];
-        }
+        // if (!this.showTableRelatedIndicator) {
+        //   indicators = [this.values.indicator.id];
+        // }
 
-        for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
-          const indicatorID = indicators[indicatorIndex];
-          if (indicatorID) {
-            const data = [];
-            const dataSources = this.dlGetDashboardDataSource();
-            const indicatorObject = this.dlGetIndicator(indicatorID);
-            for (let index = 0; index < dataSources.length; index += 1) {
-              const element = dataSources[index];
-              // eslint-disable-next-line no-await-in-loop
-              const ab = await this.dlGetLatestSourceAndIndicatorData({
-                indicator: indicatorID,
-                datasource: element.id,
-                location: 1,
-              });
-              data.push(ab);
-            }
-            formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
-          }
-          this.TableData = formattedData;
-          this.loading = false;
-        }
+        // for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
+        //   const indicatorID = indicators[indicatorIndex];
+        //   if (indicatorID) {
+        //     const data = [];
+        //     const dataSources = this.dlGetDashboardDataSource();
+        //     const indicatorObject = this.dlGetIndicator(indicatorID);
+        //     for (let index = 0; index < dataSources.length; index += 1) {
+        //       const element = dataSources[index];
+        //       // eslint-disable-next-line no-await-in-loop
+        //       const ab = await this.dlGetLatestSourceAndIndicatorData({
+        //         indicator: indicatorID,
+        //         datasource: element.id,
+        //         location: 1,
+        //       });
+        //       data.push(ab);
+        //     }
+        //     formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
+        //   }
+        //   this.TableData = formattedData;
+        //   this.loading = false;
+        // }
       },
       deep: true,
       immediate: false,
