@@ -207,8 +207,6 @@ export default {
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
             this.formatToHighChart(chartSeries);
-
-            console.log('chartSeries', chartSeries);
           }
         }
         // Plot for LGAs
