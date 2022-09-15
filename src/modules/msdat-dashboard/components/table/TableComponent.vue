@@ -49,9 +49,9 @@
               </template>
             </tr>
             <tr v-else>
-              <template v-for="(dt, index) in source">
+              <div v-for="(dt, i) in source" :key="i">
                 <TableDataSourceCell
-                  :key="index"
+                  :key="i"
                   :source="dt"
                   @source:click="log($event)"
                   @source-info:click="$emit('selected:source-info', $event)"
@@ -59,7 +59,8 @@
                   @value="getValue"
                   @key="getKey"
                 />
-              </template>
+                <pre>{{dt}}</pre>
+              </div>
             </tr>
 
             <!-- The display the the first indicator of the array of indicator -->
@@ -263,30 +264,34 @@ export default {
       // SOMEONE NEEDS TO COME AND REFACTOR THIS IMPLEMENTATION ASAP
       default: () => [
         'NHMIS',
-        'NGF',
+        'SMoH-DHPRS',
         'MICS',
-        'NHWCP',
-        'AAS',
-        'GHS',
-        'NLSS',
-        'DSB',
-        'NHFS',
+        'NDHS',
+        'NARHS',
+        'NMIS',
+        'NNHS',
         'PCCS',
-        'UNAIDS',
         'NHSPSS',
         'NHA',
         'KDGHS',
         'NAIIS',
-        'NDHS',
-        'NARHS',
-        'NNHS',
-        'NMIS',
+        'NHFS',
+        'NLSS',
+        'GHS',
+        'AAS',
+        'NHWCP',
         'World Bank',
-        'WHO-GHO',
         'IHME',
-        'ILOSTAT',
+        'WHO-GHO',
         'WUENIC',
-        'UNDP',
+        'UNAIDS',
+        'UNWPP',
+        'NPC',
+        'ILOSTAT',
+        'UN IGME',
+        'USCB',
+        'GEOPODE',
+        'UNDP (HDR)',
       ],
     },
 
@@ -348,21 +353,6 @@ export default {
     },
 
     /**
-     * this filter thorough the array of data parse and et all available  Parsed
-     */
-    getAvailableDataSources() {
-      const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
-      const allAvailableSources = uniq(flatten(arraySource));
-      // debugger;
-      /**
-       * order AvailableSources according to the OrderSourceBy Array;
-       */
-      const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
-      );
-      this.source = sortedSource;
-    },
-    /**
      * This gets the maximum amount to dataSource classification
      * for each classification(Routine,Survey,Estimate) in the data
      * array provided
@@ -394,8 +384,25 @@ export default {
       this.classify_nm = resultSorted;
 
       // adding an extra column for NHMIS monthly
+      if (this.$route.params.name === 'Health_Outcomes') {
+        this.classify_nm[0][1] += 1;
+      }
+    },
 
-      this.classify_nm[0][1] += 1;
+    /**
+     * this filter thorough the array of data parse and et all available  Parsed
+     */
+    getAvailableDataSources() {
+      const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
+      const allAvailableSources = uniq(flatten(arraySource));
+      // debugger;
+      /**
+       * order AvailableSources according to the OrderSourceBy Array;
+       */
+      const sortedSource = allAvailableSources.sort(
+        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
+      );
+      this.source = sortedSource;
     },
 
     log(e) {
