@@ -196,10 +196,12 @@ export default {
             const newChart = [];
 
             chartSeries.forEach((item) => {
-              const zonalP = zonalZee.data.find((element) => element.color === item.color);
-              const newArr = [zonalP.name, zonalP.y];
-              item.data.unshift(newArr);
-              newChart.push(item);
+              const zonalP = zonalZee?.data.find((element) => element.color === item.color);
+              if (zonalP !== undefined) {
+                const newArr = [zonalP?.name, zonalP?.y];
+                item.data.unshift(newArr);
+                newChart.push(item);
+              }
             });
             newChart.unshift();
             // add zonal series to top of main the series
