@@ -83,7 +83,7 @@ export default {
       if (data.date) {
         const lastDateMoment = moment(data.date);
         const diff = lastDateMoment.diff(clearedDate, 'days');
-        if (diff > 999999993) {
+        if (diff > 2) {
           this.showClearDataModal = true;
           console.log('subsequent clear by users choice, update localstorage variable');
         }
