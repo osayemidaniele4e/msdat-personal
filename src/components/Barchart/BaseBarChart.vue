@@ -78,7 +78,6 @@ export default {
   mounted() {
     // changing the title of the text when downloaded
     this.options.exporting.chartOptions.title.text = this.title;
-    console.log('chartOptions', this.chartOptions);
   },
 };
 </script>

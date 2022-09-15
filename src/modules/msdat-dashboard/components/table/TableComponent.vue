@@ -18,7 +18,6 @@
                 </div>
               </th>
               <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
-              <!-- change col span bac to  {{value[1]}} -->
               <td
                 v-for="(value, index) in classify_nm"
                 :key="index"
@@ -29,22 +28,9 @@
               </td>
             </tr>
 
-            <!-- {{classify}} -->
-            <!-- This loop through the available dataSource from the dataOptions
-          eg. Routine,Survey,Estimate -->
-
-            <!-- <pre>
-               {{source}}
-          </pre> -->
-
             <tr>
               <div class="nhmis_month_head">
                 NHMIS (monthly)
-                <!-- <b-icon-info-circle-fill
-                :variant="selectedSource.id === source.id ? '' : 'primary'"
-                @click="$emit('selected:source-info', source)"
-                class="data-source-info meta_icon"
-              /> -->
               </div>
               <template v-for="(dt, index) in source">
                 <TableDataSourceCell

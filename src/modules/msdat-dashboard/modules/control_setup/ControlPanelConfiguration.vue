@@ -10,9 +10,9 @@ import { eventBus } from '@/main';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
+  name: 'ControlPanelConfiguration',
   mixins: [controlSetup],
   props: {
-
     controlIndex: {
       type: Number,
       required: true,

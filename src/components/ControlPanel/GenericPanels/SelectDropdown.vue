@@ -128,7 +128,6 @@ export default {
         if (this.multiSelectProps.label === 'datasource') {
           if (Array.isArray(newValue) && newValue?.length > 0) {
             const defaultSelected = newValue.find((item) => item.id === this.selected?.id);
-            console.log(defaultSelected);
             if (defaultSelected?.id !== undefined) {
               this.selected = {};
               this.selected = defaultSelected;

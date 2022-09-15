@@ -281,7 +281,7 @@ export default {
     ) {
       // debugger;
       const chartSeriesArray = [];
-      const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
+      const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item?.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
       // debugger;

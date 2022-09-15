@@ -188,9 +188,12 @@ export default {
   },
   methods: {
     checkData() {
-      const datar = this.chartOptions.series.map((el, i) => el.data[i]);
-      if (datar[0]?.length >= 1) {
-        return true;
+      const datar = this.chartOptions?.series?.map((el, i) => el.data[i]);
+      if (datar !== undefined) {
+        if (datar[0]?.length >= 1) {
+          return true;
+        }
+        return false;
       }
       return false;
     },
@@ -232,7 +235,7 @@ export default {
       } else {
         indicators = values.indicator;
       }
-      const dataPromises = indicators.map((item) => this.dlQuery({
+      const dataPromises = indicators?.map((item) => this.dlQuery({
         indicator: item.id,
         datasource: values.datasource.id,
         period: values.year,
@@ -247,7 +250,7 @@ export default {
         // formate result to HighChart Format
         const indicator = indicators[i];
         const data = results[i];
-        const toHighChartFormat = data.map((item) => [
+        const toHighChartFormat = data?.map((item) => [
           this.dlGetLocation(item.location).name,
           parseFloat(item.value),
         ]);
@@ -430,7 +433,7 @@ export default {
         indicators = values.indicator;
       }
 
-      const dataPromises = indicators.map((item) => this.dlQuery({
+      const dataPromises = indicators?.map((item) => this.dlQuery({
         indicator: item.id,
         datasource: values.datasource.id,
         location: values.location.id,
@@ -442,7 +445,7 @@ export default {
         const result = results[i];
         const indicator = indicators[i];
         const filterOnlyYearlyValues = result.filter((item) => moment(item.period, 'YYYY', true).isValid());
-        const formatToHighChartFormat = filterOnlyYearlyValues.map((item) => [
+        const formatToHighChartFormat = filterOnlyYearlyValues?.map((item) => [
           item.period,
           Number.parseFloat(item.value),
         ]);

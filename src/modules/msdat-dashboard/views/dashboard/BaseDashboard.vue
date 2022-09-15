@@ -34,74 +34,75 @@
                 <template v-slot:default>
                   <ControlBase
                     @selectedKey="changeKey($event)"
-                      v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
-                      :key="index"
-                      :title="control.label"
-                    >
-                      <template v-if="!Array.isArray(control.setup[0])">
-                        <ControlPanel
-                          :label="modifyLabel(control.label)"
-                          :setup="control.setup"
-                          :controlIndex="index"
-                          :defaultIndicator="defaultIndicator"
-                          :defaultDataSource="defaultDataSource"
-                          :defaultLocation="defaultLocation"
-                          :defaultYear="defaultYear"
-                        />
-                      </template>
-                      <template v-else>
-                        <div>
-                          <!-- direction buttons -->
-                          <div class="swipe-btn-flex">
-                            <button @click="swipeLeft" class="swipe-btn">
-                              <b-icon icon="chevron-left" />
-                            </button>
-                            <button @click="swipeRight" class="swipe-btn">
-                              <b-icon icon="chevron-right" />
-                            </button>
-                          </div>
-                          <div class="row dummy-row">
-                            <div
-                              class="col-md-4"
-                              v-for="(item, index2) in control.setup"
-                              :key="index2"
-                            >
-                              <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
-                              <div v-if="isAdvanced">
-                              <label class="text-uppercase work-sans label-text">program areas</label>
-                                   <SelectDropdown v-model="$data[indexModel(index2)]" :value = null
-                              :options="options"
+                    v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                    :key="index"
+                    :title="control.label"
+                  >
+                    <template v-if="!Array.isArray(control.setup[0])">
+                      <ControlPanel
+                        :label="modifyLabel(control.label)"
+                        :setup="control.setup"
+                        :controlIndex="index"
+                        :defaultIndicator="defaultIndicator"
+                        :defaultDataSource="defaultDataSource"
+                        :defaultLocation="defaultLocation"
+                        :defaultYear="defaultYear"
+                      />
+                    </template>
+                    <!-- MULTI SELECT SECTION -->
+                    <template v-else>
+                      <div>
+                        <!-- mobile view direction buttons -->
+                        <div class="swipe-btn-flex">
+                          <button @click="swipeLeft" class="swipe-btn">
+                            <b-icon icon="chevron-left" />
+                          </button>
+                          <button @click="swipeRight" class="swipe-btn">
+                            <b-icon icon="chevron-right" />
+                          </button>
+                        </div>
+                        <div class="row dummy-row">
+                          <div
+                            class="col-md-4"
+                            v-for="(item, index2) in control.setup"
+                            :key="index2"
+                          >
+                            <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
+                            <!-- ADVANCED ANALYTICS PROGRAM-AREA -->
+                            <div v-if="isAdvanced">
+                              <label class="text-uppercase work-sans label-text"
+                                >program areas</label
+                              >
+                              <SelectDropdown
+                                v-model="$data[indexModel(index2)]"
+                                :value="null"
+                                :options="options"
                               />
                             </div>
-                            <!-- <pre> -->
-                            <!-- {{index2}}
-                                {{$data}} -->
-                            <!-- {{item[0].options}}
-                              </pre> -->
-                              <ControlPanel
-                                :label="modifyLabel(control.label, index2)"
-                                :setup="item"
-                                :groupIndex="index2"
-                                :controlIndex="index"
-                                :defaultIndicator="defaultIndicator"
-                                :defaultDataSource="defaultDataSource"
-                                :defaultLocation="defaultLocation"
-                                :defaultYear="defaultYear"
-                                :updateValue="updateValue"
-                                :updateKey="updateKey"
-                                :resetData="resetData"
-                                :indicatorList="$data[indexModel(index2)]"
-                              />
-                            </div>
+                            <ControlPanel
+                              :label="modifyLabel(control.label, index2)"
+                              :setup="item"
+                              :groupIndex="index2"
+                              :controlIndex="index"
+                              :defaultIndicator="defaultIndicator"
+                              :defaultDataSource="defaultDataSource"
+                              :defaultLocation="defaultLocation"
+                              :defaultYear="defaultYear"
+                              :updateValue="updateValue"
+                              :updateKey="updateKey"
+                              :resetData="resetData"
+                              :indicatorList="$data[indexModel(index2)]"
+                            />
                           </div>
                         </div>
-                      </template>
-                    </ControlBase>
-                  </template>
-                </BasePanel>
-              </b-overlay>
-            </div>
-            <!-- control Panels ends here  -->
+                      </div>
+                    </template>
+                  </ControlBase>
+                </template>
+              </BasePanel>
+            </b-overlay>
+          </div>
+          <!-- control Panels ends here  -->
 
           <div class="container-fluid lessVisible mb-5">
             <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
