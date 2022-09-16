@@ -109,9 +109,9 @@ export default {
         const datasource = this.dlGetDataSource(query.datasource);
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
         const valuetype = this.hardCordedValueType.filter(
-          (item) => item.value_type === datasource.classification,
+          (item) => item.value_type === datasource?.classification,
         );
-        query.value_type = valuetype[0].id;
+        query.value_type = valuetype[0]?.id;
       }
 
       if (isObject(query.location)) {

@@ -278,7 +278,7 @@ export default {
     ) {
       // debugger;
       const chartSeriesArray = [];
-      const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
+      const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
       // debugger;
@@ -293,24 +293,26 @@ export default {
        * also take into consideration that sometimes the visualization may require a particular
        * Value type
        */
-      mappedDataSource.forEach((datasource) => {
-        const searchDataSource = parameterObject;
-        searchDataSource.datasource = datasource.id;
-        if (mappedValueTypes.length > 0) {
-          mappedValueTypes.forEach((valueType) => {
+      if (mappedDataSource !== undefined) {
+        mappedDataSource.forEach((datasource) => {
+          const searchDataSource = parameterObject;
+          searchDataSource.datasource = datasource.id;
+          if (mappedValueTypes.length > 0) {
+            mappedValueTypes.forEach((valueType) => {
             // The Object.assign help copy if Object before pushing it into the array
             // else it tends to push the same values again and again
-            searchDataSource.value_type = valueType.id;
-            // eslint-disable-next-line prefer-object-spread
-            const queryCopy = Object.assign({}, searchDataSource);
-            queryArray.push(queryCopy);
-          });
-        } else {
+              searchDataSource.value_type = valueType.id;
+              // eslint-disable-next-line prefer-object-spread
+              const queryCopy = Object.assign({}, searchDataSource);
+              queryArray.push(queryCopy);
+            });
+          } else {
           // The Object.assign help copy if Object before pushing it into the array
           // else it tends to push the same values again and again
-          queryArray.push({ ...searchDataSource });
-        }
-      });
+            queryArray.push({ ...searchDataSource });
+          }
+        });
+      }
 
       const mappedRequest = queryArray.map((item) => this.dlQuery(item));
       const mappedResponse = await Promise.all(mappedRequest);
