@@ -56,6 +56,7 @@
                 <button
                   class="btn btn-lg btn-light btn-outline-dark"
                   style="font-size: 15px"
+                  @click="$router.push('/register')"
                 >
                   CREATE AN ACCOUNT
                 </button>

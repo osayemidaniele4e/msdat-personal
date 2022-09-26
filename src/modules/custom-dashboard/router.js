@@ -5,7 +5,7 @@ export default [
     component: () => import('./views/landing.vue'),
   },
   {
-    path: '/login',
+    path: '/custom/login',
     name: 'custom-dashboard-login',
     component: () => import('./views/login.vue'),
   },
@@ -21,7 +21,7 @@ export default [
       const token = sessionStorage.getItem('username');
       // console.log('In before Enter', token);
       if (!token) {
-        next('/login');
+        next('/custom/login');
       } else {
         return next();
       }
@@ -61,7 +61,7 @@ export default [
     beforeEnter: (to, from, next) => {
       const token = sessionStorage.getItem('username');
       if (!token) {
-        next('/login');
+        next('/custom/login');
       } else {
         next();
       }

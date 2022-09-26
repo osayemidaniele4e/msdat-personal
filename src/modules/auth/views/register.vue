@@ -152,7 +152,7 @@
           <span>I accept all Terms and Conditions</span>
         </b-row>
         <b-row class="justify-content-center" style="margin-bottom: 17.25px;">
-          <b-button class="create-button" type="submit">CREATE AN ACCOUNT</b-button>
+          <b-button class="create-button" type="submit" @click.prevent="register()">CREATE AN ACCOUNT</b-button>
         </b-row>
         <b-row class="justify-content-center" style="margin-bottom: 17.25px;">
           <span>Already have an account?</span>
@@ -167,14 +167,15 @@
 
 <script>
 // import { ValidationObserver, ValidationProvider } from 'vee-validate';
-import authProcess from '../components/authProcess';
+import { mapActions } from 'vuex';
+// import authProcess from '../components/authProcess';
 
 export default {
   // components: {
   //   ValidationProvider,
   //   ValidationObserver,
   // },
-  mixins: [authProcess],
+  // mixins: [authProcess],
   data() {
     return {
       form: {
@@ -189,6 +190,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions('AUTH_STORE', ['CREATE_USER']),
     onSubmit() {
       this.$router.push({ name: 'my-dashboard-details' });
     },
@@ -204,11 +206,25 @@ export default {
         password: '',
         password2: '',
         terms: false,
+        profession: '',
       };
 
       this.$nextTick(() => {
         this.$refs.observer.reset();
       });
+    },
+    async register() {
+      const data = {
+        username: this.form.username,
+        email: this.form.email,
+        first_name: this.form.name,
+        last_name: this.form.name,
+        profession: this.form.profession,
+        organization: this.form.organisation,
+        password: this.form.password,
+      };
+      const response = await this.CREATE_USER({ data });
+      console.log(response);
     },
   },
 };
