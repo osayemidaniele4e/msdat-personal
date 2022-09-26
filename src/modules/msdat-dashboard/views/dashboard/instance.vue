@@ -304,11 +304,7 @@ export default {
       this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
       this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
       this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
-      // this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     }
-
-    //  Adding 'Dynamic section' to the control panel
-    //  when not in the 'Health Outcomes dashboard'
   },
 
   destroyed() {

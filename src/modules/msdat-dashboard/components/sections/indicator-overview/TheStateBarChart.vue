@@ -21,12 +21,19 @@
             >
           </p>
         </template>
-              <button @click="returnToNational" v-show="level !== 1" class="bg-transparent text-dark font-weight-bold">
-               <b-icon icon="chevron-left" />
-              &nbsp;Back to National
-          </button>
+        <button
+          @click="returnToNational"
+          v-show="level !== 1"
+          class="bg-transparent text-dark font-weight-bold"
+        >
+          <b-icon icon="chevron-left" />
+          &nbsp;Back to National
+        </button>
         <div @click="handleChartClick">
-          <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+          <BarChart ref="BaseChart"
+          :chartOptions="BarChartOptions"
+          :title="title"
+           />
         </div>
       </base-sub-card>
     </base-overlay>
@@ -53,6 +60,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       BarChartOptions: {},
       loading: false,
       showNoSubNationalData: false,
@@ -92,19 +100,15 @@ export default {
     },
     'BarChartOptions.series': {
       handler(newSeries) {
-        console.log(newSeries, 'hello');
         for (let i = 0; i < newSeries.length; i += 1) {
-          console.log('stateBarChart1', newSeries[i].data.length, newSeries.length);
           if (newSeries[0].data.length <= 0) {
             this.showNoSubNationalData = true;
-            console.log('stateBarChart2', 'firstSeries');
             return;
           }
           if (i > 0) {
             this.showNoSubNationalData = false;
             if (newSeries[i].data.length > 0) {
               this.showNoSubNationalData = false;
-              console.log('stateBarChart more', newSeries[i].data.length);
               return;
             }
           }
@@ -196,7 +200,7 @@ export default {
     },
 
     handleChartClick(e) {
-      const point = e.point.name;
+      const point = e?.point?.name;
       const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
       if (selectedPlace.length !== 0) {
         eventBus.$emit('handleClick', selectedPlace[0]);
@@ -215,6 +219,8 @@ export default {
 
   mounted() {
     this.updateData = +1;
+
+    this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>

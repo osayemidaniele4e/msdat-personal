@@ -85,7 +85,6 @@ export default {
     changeControl(index) {
       this.selectedIndex = index;
       this.checkIndex = index;
-      console.log('index', index);
       this.selectControl(index);
       this.$emit('showSection', index);
     },
@@ -104,8 +103,7 @@ export default {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
       // console.log('Controls', this.abc);
-      this.abc.forEach((control, index) => {
-        console.log('INDEX', index, controlIndex);
+      this.abc.forEach((control) => {
         // eslint-disable-next-line no-param-reassign
         control.active = control.id === controlIndex;
       });
@@ -122,7 +120,6 @@ export default {
     changeIndex(newValue) {
       this.selectedIndex = newValue;
       this.changeControl(newValue);
-      // console.log('newIndex', newValue);
     },
 
     selectedIndex(newValue) {
@@ -163,7 +160,6 @@ export default {
   },
   created() {
     this.controls = this.$children;
-    console.log('controls', this.controls);
   },
 };
 </script>

@@ -38,6 +38,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import moment from 'moment';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import config from './config/dashboard_config';
@@ -66,16 +67,25 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    /**
+     * @author davidbenard
+     * @function ClearDataFromDexie
+     * @description - clear the dexie DB if the difference between the localStorage and api date is greater than 10
+     */
     async clearData() {
-      const lastDate = localStorage.getItem('dataTimestamp');
-      if (lastDate) {
-        const lastDateMoment = moment(lastDate);
-        const now = moment();
-        const diff = now.diff(lastDateMoment, 'days');
-        // eslint-disable-next-line no-restricted-globals
-        if (diff === 10) {
+      const { data } = await apiServices.getLatestDate();
+      const clearedDate = localStorage.getItem('lastUpdateDate');
+      if (clearedDate === null) {
+        console.log('first clear, BYFORCE, in order to set the date variable');
+        await this.$store.dispatch('DL/CLEAR_DB');
+        return;
+      }
+      if (data.date) {
+        const lastDateMoment = moment(data.date);
+        const diff = lastDateMoment.diff(clearedDate, 'days');
+        if (diff > 2) {
           this.showClearDataModal = true;
-          // await this.$store.dispatch('DL/CLEAR_DB');
+          console.log('subsequent clear by users choice, update localstorage variable');
         }
       }
       Promise.resolve(false);
@@ -84,14 +94,24 @@ export default {
   async mounted() {
     this.clearData();
   },
-  created() {
+  async created() {
     // this.CLEAR_CONTROL_PANEL();
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
-    this.configObject = this.dashboardConfig.find((item) => item.name === name);
-    if (this.configObject === undefined) {
-      this.$router.push('/*');
+    try {
+      // const response = await apiServices.getDashboard();
+      // const { results } = response.data;
+      // this.configObject = results.find((item) => item.name === name);
+      // if (this.configObject === undefined) {
+      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      // }
+    } catch {
+      this.configObject = this.dashboardConfig.find((item) => item.name === name);
     }
+    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    // if (this.configObject === undefined) {
+    //   this.$router.push('/*');
+    // }
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
     }

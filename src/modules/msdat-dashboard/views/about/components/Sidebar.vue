@@ -15,7 +15,7 @@
          <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline main-item">Health Input</h5>
-          <router-link to="/dashboard/Health_Facility_Input" target="_blank"
+          <router-link to="/dashboard/Health_Facility" target="_blank"
              class="sub-item">Health Facility</router-link
           >
           <router-link to="/dashboard/Health_Financing" _target="_blank"

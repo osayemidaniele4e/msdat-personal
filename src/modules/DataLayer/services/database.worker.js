@@ -30,6 +30,19 @@ export default class DataBase {
 
   /**
    *
+   * @returns {array} a unique array of all the LOCATION
+   * objects available in iDB.
+   */
+  async listLocations() {
+    return this.db.location.orderBy('id').uniqueKeys();
+  }
+
+  async fetchTableData(tableName) {
+    return this.db[tableName].orderBy('id').toArray();
+  }
+
+  /**
+   *
    * @returns {array} a unique array of all the indicator
    * indexes available in iDB.
    * This is considerably less cpu-intensive than toArray()
@@ -97,9 +110,6 @@ export default class DataBase {
   // }
 
   async storeDataInDB(data) {
-    // get the count of the data in the db
-    // const count = await this.data.count();
-    // console.log('checks', data, 'store', count, data.map((item) => item.indicator));
     return this.db.transaction('rw', this.data, async () => {
       await this.data.bulkPut(data);
     });
@@ -124,6 +134,28 @@ export default class DataBase {
    */
   getIndicatorFromDB(id) {
     return this.data.where('indicator').equals(id).toArray();
+  }
+
+  static async getAvailableSoucesForIndicator(id) {
+    const allDataPoints = await dexie.table(DATA).where('indicator').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [
+      ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
+    ];
+    return uniqueArray.map((item) => item.datasource);
+  }
+
+  static async getAvailableIndicatorByDataSource(id) {
+    const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [
+      ...new Map(allDataPoints.map((item) => [item.indicator, item])).values(),
+    ];
+    return uniqueArray.map((item) => item.indicator);
   }
 
   async checkAllYearsExistInDB(indicatorID) {
@@ -153,7 +185,6 @@ export default class DataBase {
         const results = await Promise.all(arrayOfPromises);
         for (let index2 = 0; index2 < results.length; index2 += 1) {
           const requestResult = results[index2].data;
-          // console.log('checks', requestResult, 'indicator');
           await this.storeDataInDB(requestResult);
         }
       }
