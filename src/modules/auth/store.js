@@ -51,9 +51,9 @@ export default {
         console.log(err);
       }
     },
-    getters: {
-      getUser(state) { return state.user; },
-      getToken(state) { return state.authToken; },
-    },
+  },
+  getters: {
+    getUser(state) { return state.user; },
+    getToken(state) { return state.authToken; },
   },
 };

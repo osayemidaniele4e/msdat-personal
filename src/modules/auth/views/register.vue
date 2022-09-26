@@ -210,7 +210,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('AUTH_STORE', ['CREATE_USER']),
+    ...mapActions('AUTH_STORE', 'CREATE_USER'),
 
     // onSubmit() {
     //   this.$router.push({ name: 'my-dashboard-details' });
