@@ -108,10 +108,10 @@ export default {
       } else if (!has(query, 'value_type')) {
         const datasource = this.dlGetDataSource(query.datasource);
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
-        const valuetype = this.hardCordedValueType.filter(
-          (item) => item.value_type === datasource.classification,
+        const valuetype = this.hardCordedValueType?.filter(
+          (item) => item.value_type === datasource?.classification,
         );
-        query.value_type = valuetype[0].id;
+        query.value_type = valuetype[0]?.id;
       }
 
       if (isObject(query.location)) {
@@ -193,7 +193,7 @@ export default {
     async getDataSourceByIndicator(value) {
       const indicatorId = value || 1;
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
-      return dataSourceAvailable.data.datasources.filter((e) => e.id !== 33);
+      return dataSourceAvailable.data.datasources?.filter((e) => e.id !== 33);
     },
     //  function to get indicators based on data_source
     async getIndicatorByDataSource(value) {
