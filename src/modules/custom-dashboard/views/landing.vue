@@ -3,8 +3,8 @@
     <div>
       <div>
         <b-nav align="right">
-          <b-nav-item>Register</b-nav-item>
-          <b-nav-item>Login</b-nav-item>
+          <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
+          <b-nav-item @click="$router.push('/custom/login')">Login</b-nav-item>
         </b-nav>
       </div>
       <div class="header-text text-center">
