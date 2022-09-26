@@ -67,6 +67,25 @@
               </b-form-group>
             </ValidationProvider>
           </b-col>
+          <!-- <b-col style="margin-bottom: 28.5px;">
+            <ValidationProvider
+              name="profession"
+              :rules="{ required: true, min: 3 }"
+              v-slot="validationContext"
+            >
+              <b-form-group id="name-group" label="Name" label-for="name">
+                <b-form-input
+                  id="name"
+                  v-model="form.profession"
+                  placeholder="Your Profession"
+                  :state="getValidationState(validationContext)"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">{{
+                  validationContext.errors[0]
+                }}</b-form-invalid-feedback>
+              </b-form-group>
+            </ValidationProvider>
+          </b-col> -->
           <b-col style="margin-bottom: 28.5px;">
             <ValidationProvider
               name="Organisation"
@@ -185,15 +204,17 @@ export default {
         username: '',
         password: '',
         password2: '',
+        profession: '',
         terms: false,
       },
     };
   },
   methods: {
     ...mapActions('AUTH_STORE', ['CREATE_USER']),
-    onSubmit() {
-      this.$router.push({ name: 'my-dashboard-details' });
-    },
+
+    // onSubmit() {
+    //   this.$router.push({ name: 'my-dashboard-details' });
+    // },
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
     },
@@ -223,7 +244,8 @@ export default {
         organization: this.form.organisation,
         password: this.form.password,
       };
-      const response = await this.CREATE_USER({ data });
+      const response = await this.CREATE_USER(data);
+      this.$router.push('/custom/login');
       console.log(response);
     },
   },

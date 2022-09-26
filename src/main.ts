@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import '@/components/ui-components';
 import './scss/main.scss';
+import VueCookies from 'vue-cookies';
 import VueHtml2Canvas from 'vue-html2canvas';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import DataLayer from '@/modules/DataLayer';
@@ -28,7 +29,7 @@ Vue.use(DataLayer, {
   store,
 });
 Vue.use(VueHtml2Canvas);
-
+Vue.use(VueCookies);
 Vue.config.productionTip = false;
 
 new Vue({
