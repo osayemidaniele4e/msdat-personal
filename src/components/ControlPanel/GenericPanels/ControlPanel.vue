@@ -8,11 +8,12 @@
         v-show="values.visibility === undefined ? true : values.visibility"
       >
         <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-        <label class=" text-uppercase work-sans label-text">{{ values.label }}</label>
-      <!-- :options="values.options" -->
+        <label class="text-uppercase work-sans label-text">{{ values.label }}</label>
+        <!-- :options="values.options" -->
 
-              <!-- {{values}} -->
+        <!-- {{values}} -->
 
+        <!-- ADVANCED ANALYTICS -->
         <selectWrapper
           v-if="values.type === 'dropdown' && values.key === 'indicator'"
           :id="label"
@@ -22,8 +23,8 @@
           :multiSelectProps="values.dropdownProps"
           :NoDataLabel="values.label"
         />
-
-           <selectWrapper
+        <!-- MSDAT SUB-DASHBOARDS -->
+        <selectWrapper
           v-if="values.type === 'dropdown' && values.key !== 'indicator'"
           :id="label"
           :value="payload[values.key]"
@@ -33,23 +34,17 @@
           :NoDataLabel="values.label"
         />
         <!-- </div> -->
-        <div class="disabled_alt">
-        <toggle
-          v-if="values.type === 'toggle'"
-          @change="updatePayload($event, values.key)"
-        /></div>
+        <!-- <div class="disabled_alt"> -->
+          <div>
+          <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
+        </div>
 
         <div class="d-flex" v-if="values.type === 'checkbox'">
           <!-- National Target here -->
           <div class="d-flex disabled_alt">
             <BaseCheckbox
-             :currentValue="payload.target.national"
-              @input="
-                updatePayload(
-                  { sdg: payload.target.sdg, national: $event },
-                  'target'
-                )
-              "
+              :currentValue="payload.target.national"
+              @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')"
             />
             <p class="check-label ml-1">National</p>
           </div>
@@ -57,27 +52,15 @@
           <div class="d-flex ml-3 disabled_alt">
             <BaseCheckbox
               :currentValue="payload.target.sdg"
-              @input="
-                updatePayload(
-                  { sdg: $event, national: payload.target.national },
-                  'target'
-                )
-              "
+              @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')"
             />
             <p class="check-label ml-1">SDG</p>
           </div>
         </div>
-        <div
-          v-if="values.type === 'visualization'"
-          class="btn-group d-flex work-sans"
-          role="group"
-        >
+        <div v-if="values.type === 'visualization'" class="btn-group d-flex work-sans" role="group">
           <button
             type="button"
-            @click="
-              updatePayload('zonal_map', values.key),
-                (activeToggleButton = 'zonal_map')
-            "
+            @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
           >
@@ -85,9 +68,7 @@
             <img
               :src="
                 require(`../svg/${
-                  activeToggleButton === 'zonal_map'
-                    ? 'state_map_white'
-                    : 'zonal_map'
+                  activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map'
                 }.svg`)
               "
               alt=""
@@ -96,10 +77,7 @@
           </button>
           <button
             type="button"
-            @click="
-              updatePayload('state_map', values.key),
-                (activeToggleButton = 'state_map')
-            "
+            @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'state_map' ? 'active' : '']"
           >
@@ -108,9 +86,7 @@
               class="text-danger"
               :src="
                 require(`../svg/${
-                  activeToggleButton === 'state_map'
-                    ? 'state_map_white'
-                    : 'state_map'
+                  activeToggleButton === 'state_map' ? 'state_map_white' : 'state_map'
                 }.svg`)
               "
               alt=""
@@ -121,9 +97,7 @@
           </button>
           <button
             type="button"
-            @click="
-              updatePayload('line', values.key), (activeToggleButton = 'line')
-            "
+            @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'line' ? 'active' : '']"
           >
@@ -131,10 +105,7 @@
           </button>
           <button
             type="button"
-            @click="
-              updatePayload('column', values.key),
-                (activeToggleButton = 'column')
-            "
+            @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
             class="btn btn-sm btn-outline-primary"
             :class="[activeToggleButton === 'column' ? 'active' : '']"
           >
@@ -154,6 +125,7 @@ import selectWrapper from './SelectDropdown.vue';
 
 export default {
   // mixins: [ControlMixins],
+  name: 'ControlPanel',
   data() {
     return {
       activeToggleButton: 'state_map',
@@ -260,7 +232,6 @@ export default {
       },
       immediate: true,
     },
-
   },
   methods: {
     // eslint-disable-next-line consistent-return
@@ -305,11 +276,11 @@ export default {
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
-        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-          .payload[this.groupIndex];
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
+          this.groupIndex
+        ];
       }
-      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]
-        .payload;
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
 
@@ -323,10 +294,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.label-text{
+.label-text {
   font-weight: bold;
   font-size: 13px;
 }
-
 </style>

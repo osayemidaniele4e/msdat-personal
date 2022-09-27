@@ -5,7 +5,13 @@ export default {
     height: 800,
   },
   exporting: {
-    enabled: false,
+    enabled: true,
+    chartOptions: {
+      title: {
+        text: '',
+        x: -20,
+      },
+    },
   },
   tooltip: {
     pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
