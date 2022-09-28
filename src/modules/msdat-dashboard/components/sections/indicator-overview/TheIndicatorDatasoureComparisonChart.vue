@@ -299,7 +299,7 @@ export default {
       if (mappedDataSource !== undefined) {
         mappedDataSource.forEach((datasource) => {
           const searchDataSource = parameterObject;
-          searchDataSource.datasource = datasource.id;
+          searchDataSource.datasource = datasource?.id;
           if (mappedValueTypes.length > 0) {
             mappedValueTypes.forEach((valueType) => {
             // The Object.assign help copy if Object before pushing it into the array

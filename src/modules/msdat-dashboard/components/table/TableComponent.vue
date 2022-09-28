@@ -371,7 +371,6 @@ export default {
       );
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
-
       // adding an extra column for NHMIS monthly
       if (this.$route.params.name === 'Health_Outcomes') {
         this.classify_nm[0][1] += 1;
@@ -384,11 +383,13 @@ export default {
     getAvailableDataSources() {
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
+      // add this to use only datasource on the dropdown for the table component
+      const dropDownSource = arraySource[0];
       // debugger;
       /**
        * order AvailableSources according to the OrderSourceBy Array;
        */
-      const sortedSource = allAvailableSources.sort(
+      const sortedSource = dropDownSource.sort(
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
@@ -426,8 +427,8 @@ export default {
             `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
           )
           .then((response) => {
-            const numerator = response.data.filter((item) => item.value_type === 6);
-            const denominator = response.data.filter((item) => item.value_type === 10);
+            const numerator = response.data.results.filter((item) => item.value_type === 6);
+            const denominator = response.data.results.filter((item) => item.value_type === 10);
             if (numerator.length > 0 || denominator.length > 0) {
               this.numDenum = true;
               if (numerator.length > 0) {
