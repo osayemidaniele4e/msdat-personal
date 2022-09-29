@@ -7,7 +7,7 @@ export default [
   {
     path: '/custom/login',
     name: 'custom-dashboard-login',
-    component: () => import('./views/login.vue'),
+    component: () => import('../auth/views/login.vue'),
   },
   // {
   //   path: '/custom/details',
@@ -18,7 +18,8 @@ export default [
     path: '/my-dashboard',
     name: 'my-dashboard',
     beforeEnter: (to, from, next) => {
-      const token = sessionStorage.getItem('username');
+      // const token = sessionStorage.getItem('username');
+      const token = sessionStorage.getItem('user');
       // console.log('In before Enter', token);
       if (!token) {
         next('/custom/login');
@@ -59,7 +60,8 @@ export default [
     path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
     beforeEnter: (to, from, next) => {
-      const token = sessionStorage.getItem('username');
+      // const token = sessionStorage.getItem('username');
+      const token = sessionStorage.getItem('user');
       if (!token) {
         next('/custom/login');
       } else {

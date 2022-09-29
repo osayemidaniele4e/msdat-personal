@@ -47,35 +47,15 @@
           </b-col>
         </b-row>
         <b-row>
-          <b-col style="margin-bottom: 28.5px;">
-            <ValidationProvider
-              name="Email"
-              :rules="{ required: true, email: true }"
-              v-slot="validationContext"
-            >
-              <b-form-group id="email-group" label="Work email" label-for="email">
-                <b-form-input
-                  id="email"
-                  v-model="form.email"
-                  type="email"
-                  :state="getValidationState(validationContext)"
-                  placeholder="mail@example.com"
-                ></b-form-input>
-                <b-form-invalid-feedback id="input-1-live-feedback">{{
-                  validationContext.errors[0]
-                }}</b-form-invalid-feedback>
-              </b-form-group>
-            </ValidationProvider>
-          </b-col>
-          <!-- <b-col style="margin-bottom: 28.5px;">
+          <b-col style="margin-bottom: 28.5px; width:100%;">
             <ValidationProvider
               name="profession"
               :rules="{ required: true, min: 3 }"
               v-slot="validationContext"
             >
-              <b-form-group id="name-group" label="Name" label-for="name">
+              <b-form-group id="name-group" label="Profession" label-for="Profession">
                 <b-form-input
-                  id="name"
+                  id="Profession"
                   v-model="form.profession"
                   placeholder="Your Profession"
                   :state="getValidationState(validationContext)"
@@ -85,7 +65,7 @@
                 }}</b-form-invalid-feedback>
               </b-form-group>
             </ValidationProvider>
-          </b-col> -->
+          </b-col>
           <b-col style="margin-bottom: 28.5px;">
             <ValidationProvider
               name="Organisation"
@@ -129,7 +109,7 @@
               </b-form-group>
             </ValidationProvider>
           </b-col>
-          <b-col>
+          <!-- <b-col>
             <ValidationProvider
               name="Confirm password"
               rules="required|confirmed:password"
@@ -142,6 +122,26 @@
                   type="password"
                   placeholder="******************"
                   :state="getValidationState(validationContext)"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">{{
+                  validationContext.errors[0]
+                }}</b-form-invalid-feedback>
+              </b-form-group>
+            </ValidationProvider>
+          </b-col> -->
+          <b-col style="margin-bottom: 28.5px;">
+            <ValidationProvider
+              name="Email"
+              :rules="{ required: true, email: true }"
+              v-slot="validationContext"
+            >
+              <b-form-group id="email-group" label="Work email" label-for="email">
+                <b-form-input
+                  id="email"
+                  v-model="form.email"
+                  type="email"
+                  :state="getValidationState(validationContext)"
+                  placeholder="mail@example.com"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">{{
                   validationContext.errors[0]
@@ -177,7 +177,7 @@
           <span>Already have an account?</span>
         </b-row>
         <b-row class="justify-content-center">
-          <b-button class="login-button">LOGIN</b-button>
+          <b-button class="login-button" @click="$router.push('/custom/login')">LOGIN</b-button>
         </b-row>
       </b-form>
     </ValidationObserver>
@@ -210,7 +210,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('AUTH_STORE', 'CREATE_USER'),
+    ...mapActions('AUTH_STORE', ['CREATE_USER']),
 
     // onSubmit() {
     //   this.$router.push({ name: 'my-dashboard-details' });
@@ -239,14 +239,22 @@ export default {
         username: this.form.username,
         email: this.form.email,
         first_name: this.form.name,
-        last_name: this.form.name,
+        last_name: 'this.form.name',
         profession: this.form.profession,
         organization: this.form.organisation,
         password: this.form.password,
       };
-      const response = await this.CREATE_USER(data);
-      this.$router.push('/custom/login');
-      console.log(response);
+      try {
+        const response = await this.CREATE_USER(data);
+        if (response.status === 201) {
+          this.$router.push('/custom/login');
+        } else {
+          alert('something went wrong');
+        }
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import VueCookies from 'vue-cookies';
+// import instance from './config/axios';
 
 export default {
   namespaced: true,
@@ -28,11 +29,11 @@ export default {
     },
     async LOGIN_USER({ commit }, payload) {
       try {
-        const response = await axios.post('/login/', payload)
+        await axios.post('https://msdat-api.fmohconnect.gov.ng/api/login/', payload)
           .then((res) => {
             const user = res.data;
-            const accessToken = response.data.token;
-            const refreshToken = response.data.refresh_token;
+            const accessToken = res.data.token;
+            const refreshToken = res.data.refresh_token;
             VueCookies.set('custom-access-token', accessToken); // store the token in cookie
             VueCookies.set('custom-refresh-token', refreshToken); // store the token in cookie
             VueCookies.set('custom-user-details', user);
