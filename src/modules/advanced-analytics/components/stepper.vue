@@ -1,8 +1,8 @@
 <template>
   <div class="px-5 stepper-body">
-    <router-link to="/login" class="d-flex flex-row-reverse">
+    <h4 @click='handleLogout()' class="d-flex flex-row-reverse">
       Signout
-    </router-link>
+    </h4>
     <b-row class="mt-4 mb-1">
       <b-col sm="12" md="3" class="mb-4 mb-md-0">
         <div style="margin-top: 12px">
@@ -89,13 +89,22 @@
 </template>
 
 <script>
+import VueCookies from 'vue-cookies';
+
 export default {
   name: 'cd-stepper',
   components: {},
   data() {
     return {};
   },
-
+  methods: {
+    handleLogout() {
+      VueCookies.remove('custom-access-token');
+      VueCookies.remove('custom-refresh-token');
+      VueCookies.remove('custom-user-details');
+      this.$router.push({ path: '/custom/login' });
+    },
+  },
   computed: {
     step() {
       return this.$store.state.CUSTOM_DASHBOARD_STORE.step;

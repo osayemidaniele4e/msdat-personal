@@ -18,38 +18,35 @@ export default {
     },
   },
   actions: {
+    // eslint-disable-next-line consistent-return
     async CREATE_USER({ commit }, payload) {
       try {
         const response = await axios.post('https://msdat-api.fmohconnect.gov.ng/api/users/', payload);
         commit('setUser', response);
-        console.log(response);
+        // console.log(response);
+        return response;
       } catch (error) {
         console.log(error);
       }
     },
+    // eslint-disable-next-line consistent-return
     async LOGIN_USER({ commit }, payload) {
       try {
-        await axios.post('https://msdat-api.fmohconnect.gov.ng/api/login/', payload)
-          .then((res) => {
-            const user = res.data;
-            const accessToken = res.data.token;
-            const refreshToken = res.data.refresh_token;
-            VueCookies.set('custom-access-token', accessToken); // store the token in cookie
-            VueCookies.set('custom-refresh-token', refreshToken); // store the token in cookie
-            VueCookies.set('custom-user-details', user);
-            commit('setUser', user);
-            commit(' setToken', accessToken);
-            // this.$cookies.set('medinstance_token', response.access)
-            // this.$cookies.set('loggedIn', true)
-            return res;
-          })
-          .catch((error) => {
-            VueCookies.remove('custom-access-token'); // if the request fails, remove any possible user token
-            VueCookies.remove('custom-refresh-token'); // if the request fails, remove any possible user token
-            console.log(error);
-          });
+        const response = await axios.post('https://msdat-api.fmohconnect.gov.ng/api/login/', payload);
+        // console.log(response);
+        const user = response.data;
+        const accessToken = response.data.token;
+        const refreshToken = response.data.refresh_token;
+        VueCookies.set('custom-access-token', accessToken);
+        VueCookies.set('custom-refresh-token', refreshToken);
+        VueCookies.set('custom-user-details', user);
+        commit('setUser', user);
+        // commit(' setToken', accessToken);
+        return response;
       } catch (err) {
         console.log(err);
+        VueCookies.remove('custom-access-token');
+        VueCookies.remove('custom-refresh-token');
       }
     },
   },

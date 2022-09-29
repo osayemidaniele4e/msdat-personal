@@ -245,13 +245,20 @@ export default {
         password: this.form.password,
       };
       try {
-        const response = await this.CREATE_USER(data);
-        if (response.status === 201) {
-          this.$router.push('/custom/login');
-        } else {
-          alert('something went wrong');
-        }
-        console.log(response);
+        await this.CREATE_USER(data)
+          .then((res) => {
+            console.log(res);
+            // eslint-disable-next-line eqeqeq
+            if (res.status == 201) {
+              this.$router.push('/custom/login');
+            } else {
+              alert('something went wrong');
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            alert('something went wrong');
+          });
       } catch (err) {
         console.log(err);
       }

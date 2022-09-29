@@ -80,10 +80,10 @@
 // import axios from 'axios';
 import { mapActions } from 'vuex';
 import VueCookies from 'vue-cookies';
-// import TheLoader from '../components/Loading/TheLoader.vue';
+import TheLoader from '../../custom-dashboard/components/Loading/TheLoader.vue';
 
 export default {
-//   components: { TheLoader },
+  components: { TheLoader },
   data() {
     return {
       userName: '',
@@ -110,14 +110,26 @@ export default {
             username: this.userName,
             password: this.password,
           };
-          await this.LOGIN_USER(formData);
+          await this.LOGIN_USER(formData)
+            .then((res) => {
+              // console.log(res);
+              // eslint-disable-next-line eqeqeq
+              if (res.status == 200) {
+                this.$router.push({ path: '/my-dashboard/details' });
+              } else {
+                alert('something went wrong');
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              alert('something went wrong');
+            });
           this.isLoading = false;
-          // this.$router.push({ path: '/my-dashboard/details' });
         }
       } catch (err) {
         this.isLoading = false;
         this.formIsValid = false;
-        // this.msg = 'user not found, confirm username and password';
+        this.msg = 'user not found, confirm username and password';
         console.log(err.message);
       }
     },

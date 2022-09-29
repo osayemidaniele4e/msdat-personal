@@ -1,3 +1,5 @@
+import VueCookies from 'vue-cookies';
+
 export default [
   {
     path: '/custom',
@@ -19,7 +21,7 @@ export default [
     name: 'my-dashboard',
     beforeEnter: (to, from, next) => {
       // const token = sessionStorage.getItem('username');
-      const token = sessionStorage.getItem('user');
+      const token = VueCookies.get('custom-access-token');
       // console.log('In before Enter', token);
       if (!token) {
         next('/custom/login');
@@ -61,7 +63,7 @@ export default [
     name: 'my-custom-dashboard',
     beforeEnter: (to, from, next) => {
       // const token = sessionStorage.getItem('username');
-      const token = sessionStorage.getItem('user');
+      const token = VueCookies.get('custom-access-token');
       if (!token) {
         next('/custom/login');
       } else {

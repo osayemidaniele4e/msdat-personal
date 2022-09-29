@@ -1,6 +1,6 @@
 <template>
   <b-container class="text-justify px-5 pb-5">
-    <p class="welcome">Welcome User,</p>
+    <p class="welcome">Welcome {{username}},</p>
     <form @submit.prevent="submitForm">
       <b-row>
         <b-col cols="12" lg="6" class="forms">
@@ -117,6 +117,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
 export default {
@@ -139,17 +140,25 @@ export default {
         isValid: true,
       },
       formIsValid: true,
+      user: {},
+      username: '',
     };
   },
   mounted() {
-    this.$store.commit('updateStep', 1);
-    localStorage.removeItem('vuex');
-    this.$store.dispatch('resetState');
+    // console.log(this.getUser);
+    this.user = this.getUser;
+    this.username = this.user.username;
+    // this.$store.commit('updateStep', 1);
+    // localStorage.removeItem('vuex');
+    // this.$store.dispatch('resetState');
     // store.replaceState({})
     // this.$forceUpdate();
     // this.$router.go();
     // window.location.reload(true);
     // location.reload(1);
+  },
+  computed: {
+    ...mapGetters('AUTH_STORE', ['getUser']),
   },
   methods: {
     previewThumbnail: function getPreview(event) {
