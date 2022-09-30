@@ -250,14 +250,16 @@ export default {
             console.log(res);
             // eslint-disable-next-line eqeqeq
             if (res.status == 201) {
+              this.$swal('Congratulations, Successfully Registered');
               this.$router.push('/custom/login');
             } else {
-              alert('something went wrong');
+              // alert('something went wrong');
+              this.$swal('OOPS, something went wrong');
             }
           })
           .catch((err) => {
             console.log(err);
-            alert('something went wrong');
+            this.$swal('OOPS, something went wrong');
           });
       } catch (err) {
         console.log(err);

@@ -115,20 +115,22 @@ export default {
               // console.log(res);
               // eslint-disable-next-line eqeqeq
               if (res.status == 200) {
+                this.$swal('Welcome to your Dashboard');
                 this.$router.push({ path: '/my-dashboard/details' });
               } else {
-                alert('something went wrong');
+                this.$swal('something went wrong, confirm username and password');
               }
             })
             .catch((err) => {
               console.log(err);
-              alert('something went wrong');
+              this.$swal('confirm username and password');
             });
           this.isLoading = false;
         }
       } catch (err) {
         this.isLoading = false;
         this.formIsValid = false;
+        this.$swal('user not found, confirm username and password');
         this.msg = 'user not found, confirm username and password';
         console.log(err.message);
       }

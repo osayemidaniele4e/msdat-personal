@@ -5,6 +5,7 @@ import VueCookies from 'vue-cookies';
 import VueHtml2Canvas from 'vue-html2canvas';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import DataLayer from '@/modules/DataLayer';
+import VueSweetalert2 from 'vue-sweetalert2';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';
@@ -14,7 +15,6 @@ import './plugins/vue-sweetalert/sweetalert';
 import router from './router';
 import store from './store';
 import './plugins/veevalidate';
-
 import './assets/styles/fonts.css';
 
 // import Vue from 'vue';
@@ -24,7 +24,7 @@ export const eventBus = new Vue();
 
 Vue.use(VueFriendlyIframe);
 // import Vue from 'vue';
-
+Vue.use(VueSweetalert2);
 Vue.use(DataLayer, {
   store,
 });
