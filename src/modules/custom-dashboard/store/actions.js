@@ -47,7 +47,7 @@ export default {
       commit('setIndiLoading', loading);
       // state.loader.indicator = true;
       // await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
-      await axios.get('https://msdat-api.fmohconnect.gov.ng/api/indicators')
+      await axios.get('https://msdat-api.fmohconnect.gov.ng/api/indicators/')
         .then((res) => {
           // const { data } = res;
           const data = res.data.results;
@@ -253,7 +253,8 @@ export default {
     if (payload.checked === true || state.allSelected === true) {
       loading = true;
       commit('setYearsLoading', loading);
-      await axios.get(`https://msdat-api.fmohconnect.gov.ng/api/indicators//${payload.id}/years_available/`)
+      // await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
+      await axios.get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
         .then((res) => {
           const { data } = res;
           if (state.allSelected === false) {
