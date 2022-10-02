@@ -168,7 +168,32 @@ export default {
       this.BarChartOptions = chartOptions;
       this.loading = false;
     },
-
+    // async computeLabel(value, target) {
+    //       if (this.values.numdenum) {
+    //         const numeratorData = await this.dlQuery({
+    //           datasource: this.values.datasource.id,
+    //           indicator: this.values.indicator.id,
+    //           period: this.values.year,
+    //           location: this.values.location.id,
+    //           value_type: 6,
+    //         });
+    //         const denominatorData = await this.dlQuery({
+    //           datasource: this.values.datasource.id,
+    //           indicator: this.values.indicator.id,
+    //           period: this.values.year,
+    //           location: this.values.location.id,
+    //           value_type: 10,
+    //         });
+    //         if (numeratorData.length > 0 || denominatorData.length > 0) {
+    //           if (parseFloat(value) > target) {
+    //             return `On Target \n (${Number(numeratorData[0].value).toLocaleString()} of ${Number(denominatorData[0].value).toLocaleString()})`;
+    //           }
+    //           return `Below Target (${Number(numeratorData[0].value).toLocaleString()} of ${Number(denominatorData[0].value).toLocaleString()})`;
+    //         }
+    //         return parseFloat(value) > target ? 'On Target' : 'Below Target';
+    //       }
+    //       return parseFloat(value) > target ? 'On Target' : 'Below Target';
+    //     },
     async getData(optionsObject) {
       const {
         datasource, indicator, location, year,

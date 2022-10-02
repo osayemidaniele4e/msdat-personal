@@ -168,6 +168,9 @@ export default {
       }
       return this.dlLocation.find((item) => item.id === values);
     },
+    dlGetLocationsByLevel(value) {
+      return this.dlLocation.filter((item) => item.level === value);
+    },
     dlGetByName(values) {
       return this.dlLocation.find((item) => item.name === values);
     },
