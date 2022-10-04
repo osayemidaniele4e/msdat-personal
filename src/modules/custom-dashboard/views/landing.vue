@@ -3,8 +3,8 @@
     <div>
       <div>
         <b-nav align="right">
-          <b-nav-item>Register</b-nav-item>
-          <b-nav-item>Login</b-nav-item>
+          <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
+          <b-nav-item @click="$router.push('/custom/login')">Login</b-nav-item>
         </b-nav>
       </div>
       <div class="header-text text-center">
@@ -33,8 +33,7 @@
         </b-col>
       </b-row>
       <div class="text-center">
-        <!-- Ghufran Ahmed  -->
-        <b-button id="get-started" @click="$router.push('/login')"  class="px-5 py-3">Get Started Here</b-button>
+        <b-button id="get-started" @click="$router.push('/custom/login')"  class="px-5 py-3">Get Started Here</b-button>
       <p id="samples">View samples here</p>
       </div>
 
