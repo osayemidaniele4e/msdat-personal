@@ -306,7 +306,7 @@ export default {
   },
 
   customDashboard({ commit }, payload) {
-    // console.log('cDashb', payload);
+    console.log('cDashb', payload);
     commit('customDashboard', payload);
   },
 

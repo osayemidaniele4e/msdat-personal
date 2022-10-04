@@ -59,8 +59,8 @@ export default [
     ],
   },
   {
-    path: '/my-custom-dashboard/:title',
-    name: 'my-custom-dashboard',
+    path: '/dashboard/:title',
+    name: 'dashboard',
     beforeEnter: (to, from, next) => {
       // const token = sessionStorage.getItem('username');
       const token = VueCookies.get('custom-access-token');
@@ -73,5 +73,6 @@ export default [
     },
     props: true,
     component: () => import('./views/CustomDashboard.vue'),
+    // component: () => import('../dynamic_dashboard/index.vue'),
   },
 ];

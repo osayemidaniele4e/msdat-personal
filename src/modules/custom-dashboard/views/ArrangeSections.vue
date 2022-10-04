@@ -119,12 +119,14 @@ export default {
       }
       const cDashboard = true;
       this.$store.dispatch('customDashboard', cDashboard);
-      this.$router.push({
-        name: 'my-custom-dashboard',
-        params: {
-          title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
-        },
-      });
+      // this.$router.push({
+      //   // name: 'my-custom-dashboard',
+      //   name: 'dashboard',
+      //   params: {
+      //     title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
+      //   },
+      // });
+      this.$router.push(`/dashboard/${this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase()}`);
     },
 
     // PRESELECTION OF Dashboard widgets

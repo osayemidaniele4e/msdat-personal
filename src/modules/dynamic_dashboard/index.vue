@@ -98,12 +98,58 @@ export default {
     // this.CLEAR_CONTROL_PANEL();
     const { name } = this.$route.params;
     // this.$route.meta.title = 'Hello World From Route';
+    // custom Dashboard
+    // if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
+    //   // FOR Indicators
+    //   const ids = [];
+    //   const sourcesID = [];
+    //   this.$store.getters.getprogramArea.map((element) => {
+    //     if (element.parent.isChildSelected === true) {
+    //       element.children.map((child) => {
+    //         if (child.selected === true) {
+    //           ids.push(child.id);
+    //         }
+    //         return child;
+    //       });
+
+    //       // console.log('ids', ids);
+    //     }
+    //     return element;
+    //   });
+
+    //   // For DataSources
+    //   this.$store.getters.getDataSource.map((element) => {
+    //     element.children.map((child) => {
+    //       if (child.selected === true) {
+    //         sourcesID.push(child.id);
+    //       }
+    //       return child;
+    //     });
+    //     return element;
+    //   });
+    //   this.dashboardConfig.push({
+    //     name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+    //       .replace(/\s+/g, '_')
+    //       .toLowerCase(),
+    //     title: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+    //       .replace(/\s+/g, '_')
+    //       .toLowerCase(),
+    //     indicators: ids,
+    //     defaultIndicators: [7, 6, 5],
+    //     dataSources: sourcesID,
+    //     initialIndicator: ids[0],
+    //     initialDataSource: sourcesID[0],
+    //     initialLocation: 1,
+    //   });
+    // }
+    // ================= custom dashboard
     try {
       // const response = await apiServices.getDashboard();
       // const { results } = response.data;
       // this.configObject = results.find((item) => item.name === name);
       // if (this.configObject === undefined) {
       this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      console.log(this.configObject, this.dashboardConfig, 'hello', name);
       // }
     } catch {
       this.configObject = this.dashboardConfig.find((item) => item.name === name);
@@ -112,7 +158,7 @@ export default {
     // if (this.configObject === undefined) {
     //   this.$router.push('/*');
     // }
-    if (this.configObject.title) {
+    if (this.configObject?.title) {
       this.$route.meta.title = this.configObject.title;
     }
     if (this.configObject.name === 'Advanced_Analytics') {
