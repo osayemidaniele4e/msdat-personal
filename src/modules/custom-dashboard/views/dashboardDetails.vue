@@ -1,3 +1,4 @@
+<!-- Auther: Ghufran Ahmed -->
 <template>
   <b-container class="text-justify px-5 pb-5">
     <p class="welcome">Welcome {{username}},</p>
@@ -161,6 +162,7 @@ export default {
     ...mapGetters('AUTH_STORE', ['getUser']),
   },
   methods: {
+    // Preview of image uploaded
     previewThumbnail: function getPreview(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
@@ -176,11 +178,14 @@ export default {
     clearValidity(input) {
       this[input].isValid = true;
     },
+    // After uploading of image below function will be excuted
     onUpload() {
       const fd = new FormData();
       fd.append('Image', this.selectedImage.val, this.selectedImage.name);
       // console.log(this.selectedImage.val);
     },
+
+    // Check all the fields are filled correctly
     validateForm() {
       this.formIsValid = true;
       if (this.dName.val === '') {
@@ -197,6 +202,7 @@ export default {
       }
     },
 
+    // Below function will be excuted when Select indivisual Button is clickekd
     submitForm() {
       this.validateForm();
 
@@ -227,6 +233,7 @@ export default {
       this.$emit('save-data', formData);
       this.$router.push('preference-table');
     },
+    // Below function will be excuted when Selection of all data is selected
     selectAllData() {
       this.validateForm();
       if (this.formIsValid) {

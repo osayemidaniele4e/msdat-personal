@@ -1,4 +1,5 @@
 /* eslint-disable vue/no-unused-components */
+<!-- Auther: Ghufran Ahmed  -->
 <template>
   <div>
     <Sections
@@ -31,9 +32,6 @@
                 Indicator Overview
               </h5>
             </template>
-            <!-- lazy loading for each section starts here -->
-            <!-- the first section doesn't need the component
-                 since it will be mounted first -->
             <template>
               <ControlPanelConfiguration :controlIndex="controlIndex">
                 <BaseIndicatorOverview
@@ -65,9 +63,6 @@
                 Zonal Analysis
               </h5>
             </template>
-            <!-- lazy loading for each section starts here -->
-            <!-- the first section doesn't need the component
-                 since it will be mounted first -->
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
