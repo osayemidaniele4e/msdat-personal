@@ -414,7 +414,7 @@ export default {
     },
     /**
      * This fetches numerator denominator data from
-     * api directly using the control panel props
+     * dexie using the control panel props
      */
     async getNumDenumData() {
       if (this.values?.datasource.id !== undefined) {

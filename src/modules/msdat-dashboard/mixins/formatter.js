@@ -3,7 +3,7 @@ import {
 } from 'lodash';
 import defaultObject from '@/components/Barchart/defaultOption';
 import { formatFactor } from '@/util/helper';
-import { sortHighChartDataFormat } from './util';
+import { sortHighchartsDataInObjectFormat } from './util';
 
 export default {
   data() {
@@ -55,16 +55,27 @@ export default {
       });
       return data;
     },
-    toHighChartDataArrayFormat(data) {
+    toHighChartDataArrayFormat(data, ndData) {
       const dataValue = map(data, (item) => {
         const locationName = this.dlGetLocation(item.location);
-        return [locationName.name, Number(item.value)];
+        if (ndData.length > 0) {
+          return {
+            name: locationName.name,
+            y: Number(item.value),
+            nd: Number(ndData.find((el) => el.location === item.location).numerator).toLocaleString(),
+            dn: Number(ndData.find((el) => el.location === item.location).denominator).toLocaleString(),
+          };
+        }
+        return {
+          name: locationName.name,
+          y: Number(item.value),
+        };
       });
-      return dataValue.sort(sortHighChartDataFormat);
+      return dataValue.sort(sortHighchartsDataInObjectFormat);
     },
 
     diffBaseOnTarget(data, targetValue) {
-      const aboveTargetData = takeWhile(data, (item) => item[1] >= targetValue);
+      const aboveTargetData = takeWhile(data, (item) => item.y >= targetValue);
       const belowTargetData = difference(data, aboveTargetData);
 
       return {
@@ -169,8 +180,8 @@ export default {
       }
       return plotLines;
     },
-    genHighChartOption(data, options = {}) {
-      const dataValue = this.toHighChartDataArrayFormat(data);
+    genHighChartOption(data, options = {}, ndData) {
+      const dataValue = this.toHighChartDataArrayFormat(data, ndData);
       if (isObject(options.nationalTarget)) {
         const dataObjectWithTarget = this.diffBaseOnTarget(dataValue, options.nationalTarget.value);
         const plotLines = [];
@@ -196,6 +207,7 @@ export default {
         yAxis = Object.assign(yAxis, { plotLines });
 
         return {
+          tooltip: {},
           yAxis,
           series,
         };

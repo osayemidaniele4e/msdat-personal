@@ -97,6 +97,30 @@ export default {
   },
   methods: {
     /**
+     * Fetches NUMERATOR-DENOMINATOR data
+     * specifically
+     * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
+     * @returns {dataObjectType}
+     */
+    async queryDBForNumDenum(query) {
+      const result = await DB.queryDBForNumDenum(query);
+      const dataResult = result.map((element) => {
+        const temp = {};
+        temp.id = element.id;
+        temp.period = element.period;
+        temp.value = element.value;
+        temp.created_at = element.created_at;
+        temp.updated_at = element.updated_at;
+        temp.indicator = element.indicator;
+        temp.location = element.location;
+        temp.datasource = element.datasource;
+        temp.value_type = element.value_type;
+        return temp;
+      });
+
+      return dataResult;
+    },
+    /**
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
      * @returns {dataObjectType}
      */
