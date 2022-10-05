@@ -31,10 +31,10 @@ export default {
       type: 'dropdown',
       label: 'Year',
       key: 'year',
-      options: [
-        { id: 1, year: '2010' },
-        { id: 2, year: '2015' },
-      ],
+      // options: [
+      //   { id: 1, year: '2010' },
+      //   { id: 2, year: '2015' },
+      // ],
       dropdownProps: {
         preselectFirst: true,
       },
@@ -54,7 +54,7 @@ export default {
     {
       type: 'dropdown',
       class: ['col-md-6'],
-      label: 'indicator',
+      label: 'indicator(s)',
       key: 'indicator',
       options: [],
       dropdownProps: {
@@ -66,12 +66,12 @@ export default {
         label: 'full_name',
       },
     },
-    {
-      class: ['col'],
-      type: 'checkbox',
-      label: 'Target',
-      key: 'target',
-    },
+    // {
+    //   class: ['col'],
+    //   type: 'checkbox',
+    //   label: 'Target',
+    //   key: 'target',
+    // },
   ],
   payload: {
     indicator: [],

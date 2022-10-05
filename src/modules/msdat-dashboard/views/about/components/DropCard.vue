@@ -15,7 +15,7 @@
          <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Input</h5>
-          <router-link to="/dashboard/Health_Facility_Input" target="_blank"
+          <router-link to="/dashboard/Health_Facility" target="_blank"
             ><b-list-group-item>Health Facility</b-list-group-item></router-link
           >
           <router-link to="/dashboard/Health_Financing" _target="_blank"
@@ -31,14 +31,9 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outputs</h5>
-          <div class="mb-2">
-            <b-list-group-item><b>Health Service Access</b></b-list-group-item>
             <router-link to="/dashboard/Health_Service_Access" target="_blank">
               <b-list-group-item>Health Service Access</b-list-group-item>
             </router-link>
-          </div>
-          <div class="mb-2">
-            <b-list-group-item><b>Health Service Uptake</b></b-list-group-item>
             <a
               href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
@@ -51,22 +46,11 @@
             >
               <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
             >
-          </div>
-          <div class="mb-2">
-            <b-list-group-item
-              ><b>Surveillance Dashboards</b></b-list-group-item
-            >
             <router-link to="/coming-soon/health_surveillance"
               ><b-list-group-item
-                >Health Surveillance</b-list-group-item
+                >Disease Surveillance</b-list-group-item
               ></router-link
             >
-            <!-- <router-link to="#"
-              ><b-list-group-item
-                >RTA Surveillance</b-list-group-item
-              ></router-link
-            > -->
-          </div>
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -106,14 +90,6 @@
 
 <script>
 export default {
-  // props: {
-  //   show: {
-  //     type: Boolean,
-  //     required: true,
-  //     default: false
-  //   }
-  // },
-
   data() {
     return {};
   },
@@ -127,8 +103,9 @@ div {
     position: absolute;
     width: 80vw;
     z-index: 5;
-    left: -0.5vw;
-    top: 5.1vh;
+    // left: -0.5vw;
+    right: 2rem;
+    // top: 2.8rem;
     color: black;
     max-height: 30rem;
     overflow-y: auto;

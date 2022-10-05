@@ -10,7 +10,7 @@
         <div v-show="onboarding1st" class="onboarding__body">
           <div class="onboarding__img-container my-5 pt-4">
             <img
-              :src="aboutImg"
+              :src="launchImg"
               alt="first_img"
               class="onboarding__img"
               width="250px"
@@ -35,6 +35,7 @@ import Carousel from './carousel.vue';
 import Modal from './modal.vue';
 
 const aboutImg = require('./assets/About-Dashboard-image.svg');
+const launchImg = require('./assets/launch-new.png');
 
 export default {
   components: {
@@ -44,6 +45,7 @@ export default {
   data() {
     return {
       aboutImg,
+      launchImg,
       onboarding1st: true,
       background: true,
     };

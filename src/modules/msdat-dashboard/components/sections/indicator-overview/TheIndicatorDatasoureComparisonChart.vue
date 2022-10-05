@@ -1,52 +1,68 @@
 /* eslint-disable radix */
 <template>
-  <base-overlay :show="loading || notShow">
-    <base-sub-card
-      ref="SubCard"
-      buttonToggle
-      showControls
-      sideControl="true"
-      :dataSourceOptions="dataSourcesOptions"
-      @toggled-button="updateChart($event)"
-      @selected-datasource="onSelectedSource($event)"
-      @toggle-confidence-range="onConfidenceRangeClicked($event)"
-      :dataSourceOptionsSelected="selectedDS"
-      @dropdownTypeSelected="
-        downLoadType($event, {
-          indicator: values.indicator.short_name,
-          datasource: '',
-          year: '',
-        })
-      "
-      v-if="Object.keys(values).length"
-    >
-      <template #title>
-        <p class="work-sans mb-0 line-height">
-          Comparison Of <b>{{ values.indicator.short_name }}</b> Across
-          Different Data Source
-        </p>
-      </template>
-      <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
-
-    </base-sub-card>
-  </base-overlay>
+  <div class="iddc_wrapper">
+    <base-overlay :show="loading || notShow">
+      <base-sub-card
+        ref="SubCard"
+        buttonToggle
+        showControls
+        sideControl="true"
+        :dataSourceOptions="dataSourcesOptions"
+        @toggled-button="updateChart($event)"
+        @selected-datasource="onSelectedSource($event)"
+        @toggle-confidence-range="onConfidenceRangeClicked($event)"
+        :dataSourceOptionsSelected="selectedDS"
+        @dropdownTypeSelected="
+          downLoadType($event, {
+            indicator: values.indicator.short_name,
+            datasource: '',
+            year: '',
+          })
+        "
+        v-if="Object.keys(values).length"
+      >
+        <template #title>
+          <p class="work-sans mb-0 line-height">
+            Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
+            (Time-series comparison of {{ values.indicator.short_name }}) across different data
+            sources.
+          </p>
+        </template>
+        <BarChart ref="BaseChart"
+        :chartOptions="ChartOptions"
+        :title="title"
+        v-if="!notShow" />
+      </base-sub-card>
+    </base-overlay>
+    <!-- <div class="no_data">
+      <img
+        :src="require('@/assets/no-data/No_Available_Data.svg')"
+        alt="no data"
+        class="img-fluid"
+        height="auto"
+        width="250px"
+      />
+    </div> -->
+  </div>
 </template>
 
 <script>
 import { sortBy, uniq } from 'lodash';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
+import mixin from '@/modules/DataLayer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
 
 export default {
-  mixins: [chartDownload, formatter, controlSetup],
+  mixins: [chartDownload, mixin, formatter, controlSetup],
   components: {
     BarChart,
   },
   data() {
     return {
+      title: '',
       ChartOptions: {},
       loading: false,
       dataSourcesOptions: [
@@ -58,15 +74,16 @@ export default {
           id: 5,
           datasource: 'NNHS',
         },
-        {
-          id: 9,
-          datasource: 'WHO-GHO',
-        },
+        // {
+        //   id: 9,
+        //   datasource: 'WHO-GHO',
+        // },
       ],
       selectedDS: {},
       notShow: false,
       seriesArray: {},
       years: {},
+      selectDataSource: null,
     };
   },
   props: {
@@ -117,6 +134,14 @@ export default {
       immediate: false,
     },
 
+    selectedDS: {
+      async handler() {
+        console.log('cali');
+      },
+      deep: false,
+      immediate: false,
+    },
+
     'values.datasource': {
       async handler(selectedDataSource) {
         // debugger;
@@ -127,10 +152,10 @@ export default {
         } else {
           dataSourceSelected = selectedDataSource;
         }
+
+        this.selectDataSource = dataSourceSelected;
         // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(
-          dataSourceSelected,
-        );
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
@@ -140,15 +165,10 @@ export default {
     'values.indicator': {
       async handler() {
         this.loading = true;
-        console.log(`checking indicator${this.values.indicator.id}`);
         // change get datasource function to API matching indicator to dataSource
         if (this.values.indicator.id !== undefined) {
-          const dataSources = await this.getAvailableDataSources(
-            this.values.indicator.id,
-          );
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(
-            dataSources,
-          );
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -156,6 +176,20 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+    'values.target': {
+      async handler() {
+        this.loading = true;
+        if (this.values.indicator.id !== undefined) {
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          this.setUpHighChartConfig(seriesArray, years);
+        }
+
+        this.loading = false;
+      },
+      deep: true,
+      immediate: false,
     },
   },
   methods: {
@@ -168,7 +202,10 @@ export default {
     /**
      * @param {HighChartObject}  ChartSeriesObject
      * @param {Array} sortedYear - an arrays of years
+     * @method computeChartPlotLines is from the
+     * @mixin formatter
      */
+
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       this.ChartOptions = {
         tooltip: {
@@ -177,6 +214,14 @@ export default {
         },
         yAxis: {
           ...defaultOptions.yAxis,
+          title: {
+            ...defaultOptions.yAxis.title,
+          },
+          gridLineWidth: 0,
+          labels: {
+            ...defaultOptions.yAxis.labels,
+          },
+          plotLines: [...this.computeChartPlotLines(this.values)],
         },
         xAxis: {
           ...defaultOptions.xAxis,
@@ -210,9 +255,7 @@ export default {
           },
         },
       };
-      const displayFactor = this.dlGetFactor(
-        this.values.indicator.factor,
-      ).display_factor;
+      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       this.ChartOptions.yAxis.title.text = displayFactor;
     },
     updateChart(e) {
@@ -238,7 +281,7 @@ export default {
     ) {
       // debugger;
       const chartSeriesArray = [];
-      const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
+      const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item?.id));
       const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
       // debugger;
@@ -255,7 +298,7 @@ export default {
        */
       mappedDataSource.forEach((datasource) => {
         const searchDataSource = parameterObject;
-        searchDataSource.datasource = datasource.id;
+        searchDataSource.datasource = datasource?.id;
         if (mappedValueTypes.length > 0) {
           mappedValueTypes.forEach((valueType) => {
             // The Object.assign help copy if Object before pushing it into the array
@@ -289,10 +332,7 @@ export default {
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
-        const data = item.map((Object) => [
-          Object.period,
-          Number.parseFloat(Object.value),
-        ]);
+        const data = item.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
         sortedData = data.sort(
           // eslint-disable-next-line radix
           (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
@@ -301,14 +341,9 @@ export default {
         let seriesObject = {};
         if (mappedValueTypes.length > 0) {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
-          console.log(datasource);
-          seriesObject = this.createSeriesObject(
-            valueType,
-            datasource.datasource,
-            sortedData,
-          );
+          seriesObject = this.createSeriesObject(valueType, datasource.datasource, sortedData);
         } else {
-          seriesObject = { name: datasource.datasource, data: sortedData };
+          seriesObject = { name: datasource?.datasource, data: sortedData };
         }
         chartSeriesArray.push(seriesObject);
       });
@@ -361,6 +396,8 @@ export default {
         const [firstObject] = this.dataSourcesOptions;
         this.selectedDS = firstObject;
 
+        console.log('calis');
+
         // trying to get the value type
         const datasource = this.dlGetDataSource(firstObject.id);
         const valuetype = this.dlGetValueTypes({
@@ -374,6 +411,7 @@ export default {
           valueType,
         );
         const seriesArr = await this.Reformat(seriesArray);
+
         this.setUpHighChartConfig(seriesArr, years);
       } else {
         this.selectedDS = {};
@@ -381,16 +419,27 @@ export default {
         // const { seriesArray, years } = await this.toHighChartSeriesSetup(
         //   dataSources,
         // );
-        this.setUpHighChartConfig(this.seriesArray, this.years);
+        // resetting back to initial state
+        this.notShow = true;
+        this.loading = true;
+        if (!this.selectDataSource) {
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          this.setUpHighChartConfig(seriesArray, years);
+        } else {
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(this.selectDataSource);
+          this.setUpHighChartConfig(seriesArray, years);
+        }
+        this.loading = false;
+        this.notShow = false;
+        // this.setUpHighChartConfig(this.seriesArray, this.years);
       }
       this.loading = false;
     },
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(
-        this.values.indicator.id,
-      );
+      const availableDataSource = await this.getDataSourcesFromDexie(this.values.indicator.id);
       return availableDataSource;
     },
     // ================================ REFORMATTING DATA =====================================
@@ -444,6 +493,12 @@ export default {
       return seriesArr;
     },
   },
+
+  async mounted() {
+    this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
+        (Time-series comparison of ${this.values.indicator.short_name} ) across different data
+            sources.`;
+  },
   // async mounted() {
   //   console.log('hello =>', this.ChartOptions);
 
@@ -460,7 +515,19 @@ export default {
   //   this.setUpHighChartConfig(this.seriesArray, this.years);
   // },
 };
-
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div.iddc_wrapper {
+  position: relative;
+  div.no_data {
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

@@ -6,7 +6,6 @@
       @dropdownTypeSelected="mapDownload($event)"
     >
       <template #title>
-
         <p class="work-sans mb-0 line-height">
           Distribution of <b>{{ values.indicator.short_name }}</b> Across the Geopolitical zones in
           the Country. Source: <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
@@ -14,10 +13,13 @@
       </template>
       <BarChart
         v-if="visualization === 'line' || visualization === 'column'"
+        :title="title"
         :chartOptions="chartObject"
         ref="BaseChart"
       />
-      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName" />
+      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName"
+      :title="title"
+       />
     </base-sub-card>
     <NoAvailableData
       v-if="showNoAvailableData"
@@ -32,7 +34,7 @@
 import Maps from '@/components/maps/BaseMap.vue';
 // import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
-import { sortHighChartDataFormat } from '../../../mixins/util';
+// import { sortHighChartDataFormat } from '../../../mixins/util';
 import chartDownload from '../../../mixins/chart_download';
 import NoAvailableData from '../../NoData2.vue';
 
@@ -48,6 +50,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       level: 1,
       mapDataLevel: 3,
       visualization: 'line',
@@ -95,8 +98,17 @@ export default {
       ]);
     },
     formatDataToSeriesLineFormat(data) {
-      const dataValues = data.map((item) => [item.period, Number.parseFloat(item.value)]);
-      return dataValues.sort(sortHighChartDataFormat);
+      // this function returns data for the highchart. It was remodified to sort the chart data by year
+      const result = [];
+      // eslint-disable-next-line array-callback-return
+      data.map((item) => {
+        result.push([item.period, Number.parseFloat(item.value)]);
+      });
+      return result.sort((a, b) => a[0] - b[0]);
+
+      // the comment bellow sorts the data by values instead of year.
+
+      // return result.sort(sortHighChartDataFormat);
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
       return {
@@ -226,6 +238,25 @@ export default {
       deep: true,
       immediate: false,
     },
+  },
+
+  async mounted() {
+    this.title = ` Distribution of ${this.values.indicator.short_name} Across the Geopolitical zones in
+          the Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+    const data = await this.dlQuery({
+      indicator: this.values.indicator.id,
+      datasource: this.values.datasource.id,
+      location: this.values.location.id,
+    });
+    this.chartObject = {};
+    const formattedData = this.formatDataToSeriesLineFormat(data);
+    this.chartObject = this.formatToHighChartOptionForLine(
+      formattedData,
+      this.visualization,
+      this.values,
+    );
+
+    this.loading = false;
   },
 };
 </script>

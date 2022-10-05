@@ -2,7 +2,7 @@
   <div class="row" @click="closeSubCard = !closeSubCard">
     <div class="col-md-8">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mb-lg-5 mb-3">
           <TableComponent
             :showTableRelatedIndicator="showTableRelatedIndicator"
             :values="controlPanelProps"

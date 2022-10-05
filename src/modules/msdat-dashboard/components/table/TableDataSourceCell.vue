@@ -5,6 +5,9 @@
     :class="[selectedSource.id === source.id ? 'table-active text-white' : '']"
     @click=" emitValue(source)"
   >
+
+  <!-- {{selectedSource.id}}
+  {{source.id}} -->
     <div class="d-flex align-items-center justify-content-center" >
       <span
         class="data-source h6 mr-3 mb-0 font-weight-bold"

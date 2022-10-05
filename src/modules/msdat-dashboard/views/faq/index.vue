@@ -93,7 +93,7 @@ import searchIcon from '@/assets/searchIcon.svg';
 import caretUp from '@/assets/caretUp.svg';
 import caretDown from '@/assets/caretDown.svg';
 import caretLeft from '@/assets/caretLeft.svg';
-import headerImg from '@/assets/img/Assets/FAQ_Asset.png';
+import headerImg from '@/assets/img/Assets/FAQ_Asset.svg';
 import Accordion from './components/accordion.vue';
 import theHeader from '../about/layout/theHeader.vue';
 import theFooter from '../about/layout/theFooter.vue';

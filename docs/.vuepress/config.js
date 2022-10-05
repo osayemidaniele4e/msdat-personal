@@ -66,7 +66,8 @@ module.exports = {
             'api',
             'index-db',
             'datalayer',
-            'config'
+            'config',
+            'state-profile'
           ]
         },
         {
@@ -74,6 +75,8 @@ module.exports = {
           collapsable: false,
           children: [
             'mobile',
+            'disagg',
+            'nhmis-month'
           ]
         }
 

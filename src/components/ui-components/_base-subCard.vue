@@ -2,8 +2,9 @@
   <div class="card">
     <div
       class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
-      :style="{ backgroundColor }"
+      :class="{ 'msdat_primary': bgName }"
     >
+      <!-- :style="{ backgroundColor }" -->
       <div class="title w-100">
         <slot name="title"> slot title fallback </slot>
       </div>
@@ -12,14 +13,15 @@
           icon="arrows-fullscreen"
           @click="showModal = !showModal"
           class="pointer_click mx-1 font-weight-bold"
-          font-scale="1.1"
+          font-scale="1"
         ></b-icon>
+          <!-- icon="three-dots-vertical" -->
         <b-icon
           v-if="showDownload === true"
-          icon="three-dots-vertical"
+          icon="download"
           @click="showMenu = !showMenu"
           class="pointer_click mx-1 font-weight-bold"
-          font-scale="1.1"
+          font-scale="1"
         ></b-icon>
       </div>
     </div>
@@ -98,6 +100,10 @@ export default {
     //   type: String,
     //   default: 'red',
     // },
+    bgName: {
+      type: Boolean,
+      default: true,
+    },
     backgroundColor: {
       type: String,
       default: '#DFF3F3',

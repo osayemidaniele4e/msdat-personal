@@ -87,6 +87,7 @@ export default {
       dlValue_type: (state) => state.valuetypes,
       dlDashboardIndicator: (state) => state.availableDashboardIndicator,
       dlDashboardDataSource: (state) => state.dashboardDataSource,
+      dlAllPossibleSources: (state) => state.allSources,
       dlFactors: (state) => state.factors,
     }),
 
@@ -95,6 +96,30 @@ export default {
     },
   },
   methods: {
+    /**
+     * Fetches NUMERATOR-DENOMINATOR data
+     * specifically
+     * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
+     * @returns {dataObjectType}
+     */
+    async queryDBForNumDenum(query) {
+      const result = await DB.queryDBForNumDenum(query);
+      const dataResult = result.map((element) => {
+        const temp = {};
+        temp.id = element.id;
+        temp.period = element.period;
+        temp.value = element.value;
+        temp.created_at = element.created_at;
+        temp.updated_at = element.updated_at;
+        temp.indicator = element.indicator;
+        temp.location = element.location;
+        temp.datasource = element.datasource;
+        temp.value_type = element.value_type;
+        return temp;
+      });
+
+      return dataResult;
+    },
     /**
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
      * @returns {dataObjectType}
@@ -109,9 +134,9 @@ export default {
         const datasource = this.dlGetDataSource(query.datasource);
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
         const valuetype = this.hardCordedValueType.filter(
-          (item) => item.value_type === datasource.classification,
+          (item) => item.value_type === datasource?.classification,
         );
-        query.value_type = valuetype[0].id;
+        query.value_type = valuetype[0]?.id;
       }
 
       if (isObject(query.location)) {
@@ -120,6 +145,7 @@ export default {
         const locationValues = this.dlGetLocation(location);
         const locationID = locationValues.map((item) => item.id);
         const resultValue = await DB.queryDB(newQueryObject, locationID);
+        // console.log('yeye', newQueryObject);
         return resultValue;
       }
 
@@ -141,8 +167,12 @@ export default {
       return dataResult;
     },
 
+    /**
+     * @function dlGetDashboardDataSource
+     * @description filter the config
+     */
     dlGetDashboardDataSource() {
-      return this.dlDatasource.filter((e) => this.dlDashboardDataSource.includes(e.id));
+      return this.dlDatasource.filter((e) => this.dlAllPossibleSources.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
@@ -161,6 +191,9 @@ export default {
         return filter(this.dlLocation, matches(values));
       }
       return this.dlLocation.find((item) => item.id === values);
+    },
+    dlGetLocationsByLevel(value) {
+      return this.dlLocation.filter((item) => item.level === value);
     },
     dlGetByName(values) {
       return this.dlLocation.find((item) => item.name === values);
@@ -189,19 +222,32 @@ export default {
     // function to get data_sources based on indicator
     async getDataSourceByIndicator(value) {
       const indicatorId = value || 1;
-      console.log(indicatorId);
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
-      return dataSourceAvailable.data.datasources;
+      return dataSourceAvailable.data.datasources.filter((e) => e.id !== 33);
     },
-    // Function to store the latest database date
+    /**
+     *
+     * @param {value} Chosen indicator ID |
+     * Uses @function {getAvailableSoucesForIndicator}
+     * from database.worker class to fetch
+     * available datasources from dexie
+     * @returns array of datasource objects
+     */
+    async getDataSourcesFromDexie(value) {
+      const indicatorId = value || 1;
+      const sourcesAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
+      if (sourcesAvailable.length <= 0) {
+        return [];
+      }
+      const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
+      return sourceObjects;
+    },
     async getLatestDate() {
-      const resp = await apiServices.getLatestDate();
-      return resp.data.date;
+      const { data } = await apiServices.getLatestDate();
+      return data.date;
     },
   },
-  mounted() {
-    // const data = await this.dlQuery({ datasource: 6, indicator: 7, period: '2020' });
-    // console.log(data);
+  async mounted() {
     // console.trace(this.dlGetLocation({ level: 3 }));
   },
 };

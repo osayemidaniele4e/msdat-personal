@@ -21,7 +21,6 @@ export default {
     // The is the updated the control panels dropdown as indicator are gotten from the API
     // in the background (async)
     dlGetAvailableIndicators(newValue) {
-      console.log('update the control panels indicator dropdown');
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'indicator',
         payload: groupIndicator(newValue, 'program_area'),
@@ -42,7 +41,6 @@ export default {
         key: 'indicator',
         payload: this.defaultDataSourceDropdown,
       });
-
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
@@ -53,6 +51,7 @@ export default {
       this.defaultLocationDropdown = this.dlGetLocation({
         level: 3,
       });
+
       const location = this.dlGetLocation(1); // get nigerian Location object
       // add nigeria to the top of the array
       this.defaultLocationDropdown.unshift(location);
@@ -90,14 +89,12 @@ export default {
         return false;
       });
       const years = onlyYearData.map((item) => item.period);
-      const unqiueYears = uniq(years);
-      const sortedYears = unqiueYears.sort((a, b) => b - a);
-      return sortedYears;
+      const uniqueYears = uniq(years);
+      return uniqueYears.sort((a, b) => b - a);
     },
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
-      const data = await this.getDataSourceByIndicator(indicatorID);
-      return data;
+      return this.getDataSourcesFromDexie(indicatorID);
     },
   },
 };

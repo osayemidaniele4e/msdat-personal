@@ -15,7 +15,7 @@
          <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline main-item">Health Input</h5>
-          <router-link to="/dashboard/Health_Facility_Input" target="_blank"
+          <router-link to="/dashboard/Health_Facility" target="_blank"
              class="sub-item">Health Facility</router-link
           >
           <router-link to="/dashboard/Health_Financing" _target="_blank"
@@ -126,14 +126,15 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 div {
   &.dropdown-expanded {
     position: absolute;
     width: 80vw;
     z-index: 5;
     left: -0.5vw;
-    top: 5.1vh;
+    // right: 10px;
+    // top: 3rem;
     color: black;
     max-height: 30rem;
     overflow-y: auto;
@@ -142,6 +143,7 @@ div {
     }
   }
   div.list-group{
+
     h5.text-underline{
       font-size: 1rem !important;
     }
@@ -171,40 +173,40 @@ h5.text-underline {
 // to check this
 .main-item{
    display: flex;
-   justify-content: right;
+   justify-content: left;
     padding: 0.2rem 0;
-  margin: 0.7rem 1.3rem;
-letter-spacing: var(--unnamed-character-spacing-0);
-text-align: left;
-font: normal normal bold 20px/24px Work Sans;
-letter-spacing: 0px;
-color: #404040;
-opacity: 1;
+    margin: 0.7rem 1.3rem;
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal bold 20px/24px Work Sans;
+    letter-spacing: 0px;
+    color: #404040;
+    opacity: 1;
 }
 
 .sub-item{
   display: flex;
-  justify-content: right;
-    margin-right: 1.3rem;
-letter-spacing: var(--unnamed-character-spacing-0);
-text-align: left;
-font: normal normal normal 16px/19px Work Sans;
-letter-spacing: 0px;
-color: #404040;
-opacity: 1;
+  justify-content: left;
+  margin-left: 1.3rem;
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: left;
+  font: normal normal normal 16px/19px Work Sans;
+  letter-spacing: 0px;
+  color: #404040;
+  opacity: 1;
 
   }
 
   .sub-item-bold{
-      display: flex;
-  justify-content: right;
-  margin-right: 1.3rem;
-letter-spacing: var(--unnamed-character-spacing-0);
-font: normal normal 600 16px/19px Work Sans;
-letter-spacing: 0px;
-color: #404040;
-opacity: 1;
-font-size: 14px;
+  display: flex;
+  justify-content: left;
+  margin-left: 1.3rem;
+  letter-spacing: var(--unnamed-character-spacing-0);
+  font: normal normal 600 16px/19px Work Sans;
+  letter-spacing: 0px;
+  color: #404040;
+  opacity: 1;
+  font-size: 14px;
 
   }
 </style>
@@ -226,7 +228,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 div {
   &.dropdown-expanded {
     position: absolute;

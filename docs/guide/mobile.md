@@ -2,35 +2,56 @@
 
 ## Introduction
 
-This guide lays down the description of the MSDAT project from a developers standpoint. The MSDAT platform is an SPA built with VueJs as the frontend framework. During the development process, a modular approach was adopted following the 'folder-by-feature' file structure.
+This section outlines the changes made to the MSDAT application mobile responsiveness. Documneting the UI changes that were made with resources for changes in the codebase.
 
 
-## Top bar
+###  Desktop
+Pictorial representation of the desktop header.
+![An image](./assets/mobile/1.png)
 
-![An image](./assets-api/file-structure.png)
+###  Solution for mobile
 
-###  Topbar
-An authentication module on a main application:
+#### Top bar
+For the Topbar, the changes inovolved adding and removing text and icon elements to the codebase. Elements removed include links, the drop card, Login/ Register and an icon.
+Elements added include the select dropdown button and the breadcrumb icon.
 
-As explained all files concerning this feature will be contained in a single folder named “authentication”  which will in turn contain the following;
-Components (folder)
-Services.js (file)
-Index.js (file)
-Store.js (file)
+![An image](./assets/mobile/2.png)
 
-#### Desktop
-	Individual components that will handle different phases of the authentication feature;
-Login.vue
-Logout.vue
-Signup.vue
+Pictorial view of the dropdown select button
+![An image](./assets/mobile/4.png)
+
+Pictorial view of the drawable sidebar
+![An image](./assets/mobile/5.png)
+
+In addition to the changes in the topbar, sections in a row layout were converted to a columnm layouts.
+
+<!-- ####  Removing uneccessary elements
+####  Adding a dropdown tab
+####  Adding a Sidebar and icon  -->
+
+###  Multi-source section
+![An image](./assets/mobile/3.png)
+
+- Challenge:
+For the base panel controls and the map sections, if converted to a column layout will pose an issue to the mobile user. Control groups cannot be distinguished seperately, thus become distracting to the user.
+
+- Solution:
+The base panel control groupings were converted to a row format. To be controlled by direction buttons and scrolling triggers by the user.
+The map sections were also converted to a row format that cannot be changed when scrolled by the user. The sections are only be changed when the control panel groupings are changed.
+
+![An image](./assets/mobile/6.png)
+![An image](./assets/mobile/7.png)
 
 
 
 
-#### Soluttions
+##  Codebase
+For a detailed explanation of the changes made to the code base, kindly view the video documentation listed below:
+https://drive.google.com/file/d/1BFV9mEf1ByHE7_CnVzizlHLONqLZ6UUU/view?usp=sharing
 
-#### Renewing uneccesary elements
+The mobile responsiveness includes changes made to 4 files 
+- theHeader.vue
+- BasePanel.vue 
+- BaseDashboard.vue
+- ControlPanel.vue
 
-#### Adding a dropdown tab
-
-#### Adding a sidebar generated tab

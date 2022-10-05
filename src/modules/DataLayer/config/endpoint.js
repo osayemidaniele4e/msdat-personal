@@ -1,4 +1,5 @@
 export default {
+  getDashboard: 'dashboards',
   getDataSource: 'datasources',
   getLocation: 'location',
   getIndicator: 'indicators',
@@ -9,6 +10,6 @@ export default {
   getDSI: 'datasource_specific_indicator',
   // getData: 'http://209.182.232.228:7000/api/crud/data',
   getData: 'data/',
-  getLastUpdated: 'data/latest',
-  getUpdatedDataDate: 'data/after_datetime/',
+  getLastUpdated: 'data/latest/',
+  getUpdatedDataDate: 'data/after_datetime',
 };

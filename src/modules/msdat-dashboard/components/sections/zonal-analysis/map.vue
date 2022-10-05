@@ -13,7 +13,7 @@
         "
       >
         <template #title>
-          <p class="text-dark work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height">
             Distribution of
             <span class="font-weight-bold">
               {{ controlPanelProps.indicator.full_name }} </span
@@ -26,16 +26,13 @@
           </p>
         </template>
         <div id="zonalMapComponent">
-          <button @click="returnToNational" v-show="level !== 1">
-            <img
-              :src="require('../../../assets/chevron-left.svg')"
-              alt="caret-left"
-              width="15"
-              height="15"
-            />&nbsp;Back to National
+          <button @click="returnToNational" v-show="level !== 1" class="bg-transparent font-weight-bold">
+            <b-icon icon="chevron-left" />
+            &nbsp;Back to National
           </button>
           <BaseMap
             ref="BaseMap"
+            :title="title"
             :mapObject="chart"
             :level="level"
             :lgaState="stateName"
@@ -77,6 +74,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       chart: {},
       loader: false,
       level: 1,
@@ -126,7 +124,6 @@ export default {
             newItem[0] = newItem[0].split('LGA')[0].trim();
             return newItem;
           });
-          console.log('chart =>', sortedData, 'if');
 
           const stateData = data.find(
             (item) => item.location === val.location.id,
@@ -207,6 +204,10 @@ export default {
       deep: true,
       immediate: true,
     },
+  },
+
+  mounted() {
+    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} Across the zones in the Country. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
   },
 };
 </script>

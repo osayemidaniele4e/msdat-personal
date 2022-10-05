@@ -3,7 +3,7 @@ import {
 } from 'lodash';
 import defaultObject from '@/components/Barchart/defaultOption';
 import { formatFactor } from '@/util/helper';
-import { sortHighChartDataFormat } from './util';
+import { sortHighchartsDataInObjectFormat } from './util';
 
 export default {
   data() {
@@ -55,15 +55,27 @@ export default {
       });
       return data;
     },
-    toHighChartDataArrayFormat(data) {
+    toHighChartDataArrayFormat(data, ndData) {
       const dataValue = map(data, (item) => {
         const locationName = this.dlGetLocation(item.location);
-        return [locationName.name, Number(item.value)];
+        if (ndData.length > 0) {
+          return {
+            name: locationName.name,
+            y: Number(item.value),
+            nd: Number(ndData.find((el) => el.location === item.location).numerator).toLocaleString(),
+            dn: Number(ndData.find((el) => el.location === item.location).denominator).toLocaleString(),
+          };
+        }
+        return {
+          name: locationName.name,
+          y: Number(item.value),
+        };
       });
-      return dataValue.sort(sortHighChartDataFormat);
+      return dataValue.sort(sortHighchartsDataInObjectFormat);
     },
+
     diffBaseOnTarget(data, targetValue) {
-      const aboveTargetData = takeWhile(data, (item) => item[1] >= targetValue);
+      const aboveTargetData = takeWhile(data, (item) => item.y >= targetValue);
       const belowTargetData = difference(data, aboveTargetData);
 
       return {
@@ -71,18 +83,114 @@ export default {
         belowTargetData,
       };
     },
+    setPlotLineObjectForSDG(value) {
+      return {
+        color: '#222222',
+        width: 0.5,
+        value,
+        dashStyle: 'longdashdot',
+        label: {
+          text: 'SDG',
+          verticalAlign: 'top',
+          rotation: 0,
+          textAlign: 'right',
+          y: 0,
+          x: 0,
+          style: {
+            fontSize: '10px',
+            fontFamily: '"Open Sans", sans-serif',
+          },
+        },
+      };
+    },
     setPlotLineObject(value) {
       return {
         width: 1,
+        color: '#222222',
         value,
+        label: {
+          text: 'NT',
+          verticalAlign: 'top',
+          rotation: 0,
+          textAlign: 'left',
+          y: 0,
+          x: -10,
+          style: {
+            fontSize: '10px',
+            fontFamily: '"Open Sans", sans-serif',
+          },
+        },
       };
     },
-    genHighChartOption(data, options = {}) {
-      const dataValue = this.toHighChartDataArrayFormat(data);
-      if (isObject(options.target)) {
-        const dataObjectWithTarget = this.diffBaseOnTarget(dataValue, options.target.value);
+    /**
+     * This method adds the plotline to the
+     * chart object checking if national target
+     * and sdg target exists and also checking
+     * the checkbox in the control panel if
+     * the user has checked the box to see these
+     * lines.
+     * @param values:Object
+     * @returns plotLines:Array
+     */
+    computeChartPlotLines(values) {
+      // eslint-disable-next-line camelcase
+      const { national_target, sdg_target } = values.indicator;
+      const { national, sdg } = values.target;
+      const plotLines = [];
+      // eslint-disable-next-line camelcase
+      if (national_target && national) {
+        plotLines.push({
+          width: 0.5,
+          color: '#222222',
+          value: national_target,
+          label: {
+            text: 'NT',
+            verticalAlign: 'top',
+            rotation: 0,
+            textAlign: 'left',
+            y: 0,
+            x: -13,
+            style: {
+              fontSize: '10px',
+              fontFamily: '"Open Sans", sans-serif',
+            },
+          },
+        });
+      }
+      // eslint-disable-next-line camelcase
+      if (sdg_target && sdg) {
+        plotLines.push({
+          color: '#222222',
+          width: 0.5,
+          value: sdg_target,
+          dashStyle: 'longdashdot',
+          label: {
+            text: 'SDG',
+            verticalAlign: 'top',
+            rotation: 0,
+            textAlign: 'right',
+            y: 0,
+            x: 0,
+            style: {
+              fontSize: '10px',
+              fontFamily: '"Open Sans", sans-serif',
+            },
+          },
+        });
+      }
+      return plotLines;
+    },
+    genHighChartOption(data, options = {}, ndData) {
+      const dataValue = this.toHighChartDataArrayFormat(data, ndData);
+      if (isObject(options.nationalTarget)) {
+        const dataObjectWithTarget = this.diffBaseOnTarget(dataValue, options.nationalTarget.value);
         const plotLines = [];
-        plotLines.push(this.setPlotLineObject(options.target.value));
+        if (options.nationalTarget.show) {
+          plotLines.push(this.setPlotLineObject(options.nationalTarget.value));
+        }
+        if (options.sdgTarget.value && options.sdgTarget.show) {
+          plotLines.push(this.setPlotLineObjectForSDG(options.sdgTarget.value));
+        }
         const series = [];
         series.push({
           name: 'On Target',
@@ -99,6 +207,7 @@ export default {
         yAxis = Object.assign(yAxis, { plotLines });
 
         return {
+          tooltip: {},
           yAxis,
           series,
         };

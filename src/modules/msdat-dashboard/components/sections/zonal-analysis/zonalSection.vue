@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <base-overlay :show="loader">
+  <div>
+    <base-overlay :show="loader" class="main">
       <base-sub-card
         showControls
         v-if="Object.keys(controlPanelProps).length"
@@ -13,19 +13,15 @@
         "
       >
         <template #title>
-          <p class="text-dark work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height">
             Distribution of
-            <span class="font-weight-bold"
-              >{{ controlPanelProps.indicator.full_name }} </span
-            >Across the
-            <span class="font-weight-bold"> zones in the Country.</span> Source:
-            <span class="font-weight-bold">
-              {{ controlPanelProps.datasource.datasource }}</span
-            >
+            <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>Across
+            the <span class="font-weight-bold"> zones in the Country.</span> Source:
+            <span class="font-weight-bold"> {{ controlPanelProps.datasource.datasource }}</span>
             {{ controlPanelProps.year }}
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="chart" />
+        <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
       </base-sub-card>
     </base-overlay>
   </div>
@@ -33,16 +29,18 @@
 
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
+import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import { sortHighChartDataFormat } from '../../../mixins/util';
 
 export default {
   name: 'ZonalSectionChart',
-  mixins: [chartDownload],
+  mixins: [chartDownload, formatter],
   data() {
     return {
       // later someone can add the name property
       // so that we can know to the zones as against to searching for the ids
+      title: '',
       stateName: null,
       chart: {},
       loader: false,
@@ -67,6 +65,10 @@ export default {
   },
 
   methods: {
+    /**
+     * @method computeChartPlotLines is from the
+     * @mixin formatter
+     */
     formatToHighChart(dataSeries) {
       const displayFactor = this.dlGetFactor(
         this.controlPanelProps.indicator.factor,
@@ -79,6 +81,7 @@ export default {
         },
         yAxis: {
           gridLineWidth: 0,
+          plotLines: [...this.computeChartPlotLines(this.controlPanelProps)],
           title: {
             text: 'Values',
             style: {
@@ -95,13 +98,9 @@ export default {
     getZonalDataInHighChartFormat(data) {
       const zonesSeries = [];
       for (let index = 1; index < this.colors.length; index += 1) {
-        const zonal = data.find(
-          (item) => item.location === this.colors[index].id,
-        );
+        const zonal = data.find((item) => item.location === this.colors[index].id);
         const series = this.dlGetLocation(this.colors[index].id);
-        const { color } = this.colors.find(
-          (item) => item.id === this.colors[index].id,
-        );
+        const { color } = this.colors.find((item) => item.id === this.colors[index].id);
         if (zonal) {
           zonesSeries.push({
             name: series.name,
@@ -116,10 +115,7 @@ export default {
 
     getStateDataAccordingToRegionInHighChartFormat(data) {
       // add this function to a mixin later
-      const formatToHighChart = (dataValues) => dataValues.map((item) => [
-        this.dlGetLocation(item.location).name,
-        parseFloat(item.value),
-      ]);
+      const formatToHighChart = (dataValues) => dataValues.map((item) => [this.dlGetLocation(item.location).name, parseFloat(item.value)]);
 
       // already know the zonal levels/parent of all the value
       // index starts at one to skip region data for the series
@@ -166,9 +162,7 @@ export default {
             const formattedData = formatToHighChart(filteredLGADataForState);
             const sortedData = formattedData.sort(sortHighChartDataFormat);
             const stateObject = this.dlGetLocation(val.location.id);
-            const stateData = data.find(
-              (item) => item.location === val.location.id,
-            );
+            const stateData = data.find((item) => item.location === val.location.id);
 
             sortedData.unshift({
               name: stateObject.name,
@@ -193,12 +187,23 @@ export default {
               y: parseFloat(national.value),
               color: this.colors[0].color,
             });
-
             const zonalZee = {
               name: 'Nigeria',
               data: zonalSeries,
               color: this.colors[0].color,
             };
+            // for the new chart, eact array of states has the zone included
+            const newChart = [];
+
+            chartSeries.forEach((item) => {
+              const zonalP = zonalZee?.data.find((element) => element.color === item.color);
+              if (zonalP !== undefined) {
+                const newArr = [zonalP?.name, zonalP?.y];
+                item.data.unshift(newArr);
+                newChart.push(item);
+              }
+            });
+            newChart.unshift();
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
             this.formatToHighChart(chartSeries);
@@ -212,5 +217,15 @@ export default {
       immediate: true,
     },
   },
+
+  mounted() {
+    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} Across the zones in the Country. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
+  },
 };
 </script>
+
+<style scoped>
+.barchart {
+  height: 49.5vh;
+}
+</style>

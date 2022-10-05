@@ -10,32 +10,13 @@
       :updateValue="updateValue"
       :updateKey="updateKey"
       :resetData="resetData"
-        @swipe="changeSwipe"
-      @scrollN="changeScroll"
-
+      @swipe="changeSwipe"
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
       </template>
 
-         <template v-slot:section-0="{ payload, controlIndex }">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
-            </template>
-            <template>
-              <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
-                </ControlPanelConfiguration>
-              </LazyLoading>
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-
-      <template v-slot:section-1="{ payload, controlIndex }">
+      <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -49,9 +30,9 @@
                 <BaseIndicatorOverview
                   :showTableRelatedIndicator="showTableRelatedIndicator"
                   :controlPanelProps="payload"
-                   @value="getValue"
-                   @key="getKey"
-                   @reset="getReset"
+                  @value="getValue"
+                  @key="getKey"
+                  @reset="getReset"
                 />
               </ControlPanelConfiguration>
             </template>
@@ -59,8 +40,8 @@
         </div>
       </template>
 
-      <template v-slot:section-2="{ payload, controlIndex }">
-        <div class="col-md-12">
+      <template v-slot:section-1="{ payload, controlIndex }">
+        <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>
@@ -79,7 +60,7 @@
         </div>
       </template>
 
-      <template v-slot:section-3="{ payload, controlIndex }">
+      <template v-slot:section-2="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'">
             <template #title>
@@ -98,7 +79,7 @@
         </div>
       </template>
 
-      <template v-slot:section-4="{ payload, controlIndex }">
+      <template v-slot:section-3="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -115,7 +96,7 @@
         </div>
       </template>
 
-      <template v-slot:section-5="{ payload, controlIndex }">
+      <template v-slot:section-4="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
             <template #title>
@@ -143,12 +124,32 @@
         </div>
       </template>
 
+      <template v-slot:section-5="{ payload, controlIndex }">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
+            </template>
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
     </BaseDashboard>
   </div>
 </template>
 
 <script>
 import { mapMutations } from 'vuex';
+import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
+import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
+import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
+import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
@@ -214,11 +215,11 @@ export default {
       type: Boolean,
       default: true,
     },
-
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
+    // Function to handle Multi-Source mobile view
     scroll(timestamp) {
       // Calculate the timeelapsed
       const timeElapsed = timestamp - this.scrollStartTime;
@@ -235,24 +236,8 @@ export default {
     },
 
     changeSwipe(cord) {
-      console.log('cord', cord);
       const content = document.querySelector('.dummy-row2');
       this.scrollTo(content, cord.x, cord.y);
-    },
-
-    changeScroll(n) {
-      if (n >= 0 && n < 194) {
-        document.querySelector('.dummy-row2').scrollLeft = 0;
-        console.log('true&true');
-      }
-
-      if (n >= 194 && n < 420) {
-        document.querySelector('.dummy-row2').scrollLeft = 383;
-      }
-
-      if (n >= 420) {
-        document.querySelector('.dummy-row2').scrollLeft = 757;
-      }
     },
 
     scrollTo(element, scrollPixels, duration) {
@@ -275,15 +260,7 @@ export default {
         window.requestAnimationFrame(this.scroll);
       }
     },
-    onResize() {
-      if (window.innerWidth < 769) {
-        this.isMobile = true;
-        BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup3;
-      } else {
-        this.isMobile = false;
-        BaseMultiSourceConfig.setup = BaseMultiSourceConfig.setup2;
-      }
-    },
+
     getValue(value) {
       this.updateValue = value;
     },
@@ -297,14 +274,14 @@ export default {
     },
   },
   created() {
-    window.addEventListener('resize', this.onResize);
+    // window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
-    if (window.innerWidth < 769) {
-      this.isMobile = true;
-    } else {
-      this.isMobile = false;
-    }
+    // if (window.innerWidth < 769) {
+    //   this.isMobile = true;
+    // } else {
+    //   this.isMobile = false;
+    // }
 
     this.CLEAR_CONTROL_PANEL();
     /**
@@ -315,15 +292,19 @@ export default {
     // if (this.$route.params.name !== 'Health_Outcomes') {
     //   this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     // }
-    this.ADD_CONTROL_PANEL(DynamicSectionConfig);
-    this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
-    this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
-    this.ADD_CONTROL_PANEL(ICSConfig);
-    this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-    this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-
-    //  Adding 'Dynamic section' to the control panel
-    //  when not in the 'Health Outcomes dashboard'
+    if (this.$route.params.name !== 'Advanced_Analytics') {
+      this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
+      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+      this.ADD_CONTROL_PANEL(ICSConfig);
+      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    } else {
+      this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
+      this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
+      this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
+      this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
+    }
   },
 
   destroyed() {
@@ -345,16 +326,16 @@ export default {
 }
 
 .comparison-header {
- display: none;
+  display: none;
 }
 
-@media (max-width: 1200px) {
-.comparison-header {
-  display: inherit;
-  margin: 0 auto;
-  text-align: center;
-  font-weight: bold;
-  margin: 5px;
-}
+@media (max-width: 800px) {
+  .comparison-header {
+    display: inherit;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    margin: 5px;
+  }
 }
 </style>

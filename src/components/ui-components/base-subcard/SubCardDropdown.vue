@@ -34,10 +34,10 @@ export default {
           type: 'pdf',
           title: 'Download PDF',
         },
-        {
-          type: 'csv',
-          title: 'Download CSV',
-        },
+        // {
+        //   type: 'csv',
+        //   title: 'Download CSV',
+        // },
         {
           type: 'xls',
           title: 'Download XLS',

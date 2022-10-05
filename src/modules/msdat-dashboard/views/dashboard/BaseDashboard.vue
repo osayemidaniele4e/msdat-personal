@@ -1,16 +1,40 @@
+<!-- eslint-disable no-undef -->
 <template>
   <div class="temp">
-    <TroubleShootingModal
-      style="z-index: 1500"
-      v-if="showTroubleShootingModal"
-    />
-    <template v-if="!showTroubleShootingModal">
-      <Loading
-        v-if="!loading"
-        :noBackdrop="false"
-        :showBackground="false"
-        class="over"
+    <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
+    <div
+        id="browserSupport"
+        v-show="detect"
+        class="col-lg-4 col-md-7 col-sm-6 col-xs-12"
       >
+        <button
+          v-show="detect"
+          v-on:click="closeAlert()"
+          style="font-size: 20px"
+          type="button"
+          class="close mt-2"
+          data-dismiss="#browserSupport"
+        >
+          <span aria-hidden="true" class="mb-4 mt-4 pt-4 pr-4">&times;</span>
+        </button>
+        <h4 class="mt-4 pl-2">
+          <img src="@/assets/img/browser.png" /><strong class="alertBold"
+            >Unsupported Browser!
+          </strong>
+        </h4>
+
+        <p class="p-2">
+          Looks like you are using a browser that is not supported, so you may
+          experience some problems.
+        </p>
+        <p class="pb-4 pl-2">
+          Please use <strong class="alertBold">Google Chrome</strong> browser
+          for the best experience with <br />
+          MSDAT Platform.
+        </p>
+      </div>
+    <template v-if="!showTroubleShootingModal">
+      <Loading v-if="!loading" :noBackdrop="true" :showBackground="false" class="over">
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="250px" />
           <div class="mr-4">
@@ -20,26 +44,34 @@
         </div>
       </Loading>
 
-      <div v-else>
-        <Header v-on:tour="runIntro" ref="theHeader"></Header>
+      <div v-else class="position-relative">
+        <!-- <BaseUpdate :showPopUp="popUp" v-if="popUp" @closePopUp="handleClosePopUp" /> -->
+        <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
         <section @click="$refs.theHeader.close()">
-          <div class="sticky animated_toggle" :class="[show ? '' : 'hide']">
+          <div
+            :class="[
+              isMobile ? 'position-relative animated_toggle' : 'sticky animated_toggle',
+              show ? '' : 'hide',
+            ]"
+          >
+            <!-- Moses changed from this -->
             <b-overlay :show="!cpIsLoading">
               <BasePanel
+                :changeIndex="changeIndex"
                 :position="position"
+                :selectedPanel="selectedPanel"
                 v-if="cpIsLoading"
                 v-on:showSection="sectionFocus($event)"
               >
                 <template v-slot:default>
                   <ControlBase
-                    v-for="(control, index) in $store.state.MSDAT_STORE
-                      .controlConfig"
+                    @selectedKey="changeKey($event)"
+                    v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                     :key="index"
                     :title="control.label"
                   >
                     <template v-if="!Array.isArray(control.setup[0])">
                       <ControlPanel
-                        @data:options="log($event, index)"
                         :label="modifyLabel(control.label)"
                         :setup="control.setup"
                         :controlIndex="index"
@@ -49,27 +81,51 @@
                         :defaultYear="defaultYear"
                       />
                     </template>
+                    <!-- MULTI SELECT SECTION -->
                     <template v-else>
-                      <div class="row">
-                        <div
-                          class="col-md-4"
-                          v-for="(item, index2) in control.setup"
-                          :key="index2"
-                        >
-                          <ControlPanel
-                            @data:options="log($event, index, index2)"
-                            :setup="item"
-                            :label="modifyLabel(control.label, index2)"
-                            :groupIndex="index2"
-                            :controlIndex="index"
-                            :defaultIndicator="defaultIndicator"
-                            :defaultDataSource="defaultDataSource"
-                            :defaultLocation="defaultLocation"
-                            :defaultYear="defaultYear"
-                            :updateValue="updateValue"
-                            :updateKey="updateKey"
-                            :resetData="resetData"
-                          />
+                      <div>
+                        <!-- mobile view direction buttons -->
+                        <div class="swipe-btn-flex">
+                          <button @click="swipeLeft" class="swipe-btn">
+                            <b-icon icon="chevron-left" />
+                          </button>
+                          <button @click="swipeRight" class="swipe-btn">
+                            <b-icon icon="chevron-right" />
+                          </button>
+                        </div>
+                        <div class="row dummy-row">
+                          <div
+                            class="col-md-4"
+                            v-for="(item, index2) in control.setup"
+                            :key="index2"
+                          >
+                            <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
+                            <!-- ADVANCED ANALYTICS PROGRAM-AREA -->
+                            <div v-if="isAdvanced">
+                              <label class="text-uppercase work-sans label-text"
+                                >program areas</label
+                              >
+                              <SelectDropdown
+                                v-model="$data[indexModel(index2)]"
+                                :value="null"
+                                :options="options"
+                              />
+                            </div>
+                            <ControlPanel
+                              :label="modifyLabel(control.label, index2)"
+                              :setup="item"
+                              :groupIndex="index2"
+                              :controlIndex="index"
+                              :defaultIndicator="defaultIndicator"
+                              :defaultDataSource="defaultDataSource"
+                              :defaultLocation="defaultLocation"
+                              :defaultYear="defaultYear"
+                              :updateValue="updateValue"
+                              :updateKey="updateKey"
+                              :resetData="resetData"
+                              :indicatorList="$data[indexModel(index2)]"
+                            />
+                          </div>
                         </div>
                       </div>
                     </template>
@@ -80,15 +136,12 @@
           </div>
           <!-- control Panels ends here  -->
 
-          <div class="container-fluid lessVisible">
-            <template
-              v-for="(controlPanel, index) in $store.state.MSDAT_STORE
-                .controlConfig"
-            >
-              <slot
+          <div class="container-fluid lessVisible mb-5">
+            <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
+              <!-- <slot
                 :name="`section-before-${index}`"
                 v-if="index === selectedPanel"
-              ></slot>
+              ></slot> -->
               <!-- ========= -->
               <div
                 class="row observable"
@@ -108,10 +161,8 @@
                   :controlIndex="index"
                 ></slot>
                 <!-- ======== -->
-                <slot
-                  :name="`section-after-${index}`"
-                  v-if="index === selectedPanel"
-                ></slot>
+                <slot :name="`section-after-${index}`" v-if="index === selectedPanel" :ref="index">
+                </slot>
               </div>
             </template>
           </div>
@@ -120,10 +171,7 @@
 
         <Footer class="visible"> </Footer>
         <!-- <div v-if="configObject.name !== 'Demographics'"> -->
-        <Onboarding
-          v-if="firstTime"
-          v-on:closeOnboard="onCloseOnBoarding"
-        ></Onboarding>
+        <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
         <!-- </div> -->
       </div>
     </template>
@@ -133,10 +181,11 @@
 
 <script>
 import {
-  BasePanel,
-  ControlBase,
-  ControlPanel,
+  BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
+// import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
+// import apiServices from '@/modules/DataLayer/services/ApiServices';
+import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -147,7 +196,6 @@ import SharingDashboardState from '../../modules/dashboard_state_share/mixins';
 import Loading from '../../mixins/loading';
 import Onboarding from '../onboarding/onboarding';
 import TroubleShooting from '../../modules/troubleshooting/mixins';
-import config from '../../../dynamic_dashboard/config/dashboard_config';
 
 export default {
   name: 'BaseDashboard',
@@ -161,20 +209,62 @@ export default {
     TroubleShooting,
     SharingDashboardState,
   ],
-  data() {
-    return {
-      position: 3,
-      selectedPanel: 0,
-      dashboardConfig: config,
-      show: false,
-    };
-  },
   components: {
     ControlBase,
     BasePanel,
     ControlPanel,
+    SelectDropdown,
     Header,
     Footer,
+    // BaseUpdate,
+  },
+  data() {
+    return {
+      isAdvanced: false,
+      position: 3,
+      selectedPanel: 0,
+      dashboardConfig: config,
+      show: false,
+      changeIndex: '',
+      isMobile: false,
+      winSize: window.width,
+      scrollCont: 0,
+      scrollDuration: 0,
+      scrollStartTime: 0,
+      scrollElement: 0,
+      scrollPixels: 0,
+      scrollPos: '',
+      sectionKey: 0,
+      popUp: true,
+      program_areas: [
+        { name: 'Buy', value: 'buy' },
+        { name: 'Shortlets', value: 'shortlet' },
+        { name: 'Rent', value: 'rent' },
+      ],
+      value: null,
+      detect: false,
+      value0: null,
+      value1: null,
+      value2: null,
+      options: [
+        'Demographics',
+        'Financing',
+        'Health Financing',
+        'Facility service delivery',
+        'RMNCH',
+        'Mortality',
+        'Dental Therapy Practice',
+        'HIV',
+        'Nutrition',
+        'Service delivery',
+        'Optometry Practice',
+        'Medical Doctors',
+        'HR Guidelines and Workforce',
+        'Climate',
+        'Education',
+      ],
+      program_option: '',
+    };
   },
   props: {
     initialIndicator: {
@@ -201,7 +291,6 @@ export default {
       type: Array,
       required: false,
     },
-
     updateValue: {
       type: Object,
       required: false,
@@ -216,12 +305,146 @@ export default {
       type: Number,
       required: false,
     },
+
+    scrollLeft2: {
+      type: Number,
+    },
   },
-  created() {
+
+  async created() {
     const { name } = this.$route.params;
+    if (name === 'Advanced_Analytics') {
+      this.isAdvanced = true;
+    }
+    // try {
+    //   const response = await apiServices.getDashboard();
+    //   const { results } = response.data;
+    //   this.configObject = results.find((item) => item.name === name);
+    // } catch {
     this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    // }
+    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    window.addEventListener('resize', this.onResize);
+
+    // checking if in Mobile view
+    if (window.innerWidth < 769) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false;
+    }
+
+    window.addEventListener('wheel', this.handleScroll);
   },
+
+  destroyed() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('wheel', this.handleScroll);
+  },
+
   methods: {
+    //  passing the value of the v-model for program areas dynamically
+    indexModel(index) {
+      return `value${index}`;
+    },
+    // handleProgramArea() {
+
+    // },
+    /**
+     * Function to handle show welcome modal
+     */
+    handleClosePopUp() {
+      this.popUp = false;
+    },
+    // log(event, index, index2) {
+    //   console.log('log function =>', event, index, index2);
+    // },
+
+    changeKey(n) {
+      this.sectionKey = n;
+    },
+    scroll(timestamp) {
+      // Calculate the timeelapsed
+      const timeElapsed = timestamp - this.scrollStartTime;
+      // Calculate progress
+      const progress = Math.min(timeElapsed / this.scrollDuration, 1);
+      // Set the scrolleft
+      this.scrollElement.scrollLeft = this.scrollPos + this.scrollPixels * progress;
+      // Check if elapsed time is less then duration then
+      // call the requestAnimation, otherwise exit
+      if (timeElapsed < this.scrollDuration) {
+        // Request for animation
+        window.requestAnimationFrame(this.scroll);
+      }
+    },
+    closeAlert() {
+      this.detect = false;
+    },
+    detectBrowser() {
+      let browser = 'unknown';
+      if (navigator.userAgent.indexOf('Chrome') !== -1) {
+        browser = 'Chrome';
+      } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+        browser = 'Mozilla Firefox';
+      } else if (navigator.userAgent.indexOf('MSIE') !== -1) {
+        browser = 'Internet Explorer';
+      } else if (navigator.userAgent.indexOf('Safari') !== -1) {
+        browser = 'Safari';
+      } else if (navigator.userAgent.indexOf('Opera') !== -1) {
+        browser = 'Opera';
+      } else if (navigator.userAgent.indexOf('YaBrowser') !== -1) {
+        browser = 'IE';
+      }
+      return browser;
+    },
+    handleScroll() {
+      this.scrollCont = document.querySelector('.dummy-row').scrollLeft;
+      this.$emit('scrollN', this.scrollCont);
+    },
+    scrollTo(element, scrollPixels, duration) {
+      this.scrollPixels = scrollPixels;
+      this.scrollElement = element;
+      this.scrollDuration = duration;
+      const scrollPos = element.scrollLeft;
+      this.scrollPos = scrollPos;
+      // Condition to check if scrolling is required
+      if (
+        !(
+          (scrollPos === 0 || scrollPixels > 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+        )
+      ) {
+        // Get the start timestamp
+        const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+        this.scrollStartTime = startTime;
+        // Call requestAnimationFrame on scroll function first time
+        window.requestAnimationFrame(this.scroll);
+      }
+    },
+
+    swipeLeft() {
+      // const content = this.$refs.dummy-row;
+      const content = document.querySelector('.dummy-row');
+      this.scrollTo(content, -300, 800);
+      const cord = {
+        x: -370,
+        y: 800,
+      };
+      this.$emit('swipe', cord);
+    },
+
+    swipeRight() {
+      const content = document.querySelector('.dummy-row');
+      this.scrollTo(content, 300, 800);
+      const cord = {
+        x: 370,
+        y: 800,
+      };
+      this.$emit('swipe', cord);
+    },
+
+    getIndex(index) {
+      this.changeIndex = index;
+    },
     /**
      * Since the purpose of providing labels to
      * the multiselects is so they can have unique,
@@ -249,32 +472,49 @@ export default {
      * you can use this to check which control panel changed
      *
      */
-
-    /**
-     * *
-     */
     setState(val) {
       this.selectedMapName = val;
     },
-    async log(optionsObject, index, index2) {
-      console.log({ optionsObject, index, index2 });
-      // console.log('MSDAT2.0');
-      /**
-       * This Update the route any time the  control panel changers
-       */
-      // if (Object.keys(optionsObject).length > 0) {
-      //   const objects = this.extractIdsOfObject(optionsObject);
-      //   this.addHashToLocation({
-      //     section: index,
-      //     first_related: optionsObject.indicator.first_related,
-      //     second_related: optionsObject.indicator.second_related,
-      //     ...objects,
-      //   });
-      // }
-    },
+    // async log(optionsObject, index, index2) {
+    // console.log('MSDAT2.0');
+    /**
+     * This Update the route any time the  control panel changers
+     */
+    // if (Object.keys(optionsObject).length > 0) {
+    //   const objects = this.extractIdsOfObject(optionsObject);
+    //   this.addHashToLocation({
+    //     section: index,
+    //     first_related: optionsObject.indicator.first_related,
+    //     second_related: optionsObject.indicator.second_related,
+    //     ...objects,
+    //   });
+    // }
+    // },
     // closeOnboard() {
     //   this.firstTime = false;
     // },
+
+    onResize() {
+      if (window.innerWidth < 769) {
+        this.isMobile = true;
+      } else {
+        this.isMobile = false;
+      }
+    },
+  },
+
+  watch: {
+    async program_option(newVal) {
+      // const { name } = this.$route.params;
+      // try {
+      //   const response = await apiServices.getDashboard();
+      //   const { results } = response.data;
+      //   this.configObject = results.find((item) => item.name === newVal);
+      // } catch {
+      this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
+      // }
+      // this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
+    },
   },
 
   async mounted() {
@@ -285,6 +525,17 @@ export default {
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
     }
+    if (this.detectBrowser() !== 'Chrome') {
+      this.detect = true;
+    } else {
+      this.detect = false;
+    }
+
+    setTimeout(() => {
+      if (this.detect) {
+        this.closeAlert();
+      }
+    }, 60000);
     try {
       await this.$DL.init({
         dashboardIndicators: this.indicators,
@@ -302,19 +553,15 @@ export default {
         datasource: this.initialDataSource,
         location: this.initialLocation,
       });
-
       // The initializing the control panel
-      this.setDefaults();
-      this.setUpControlPanelDropDown();
+      await this.setDefaults();
+      await this.setUpControlPanelDropDown();
 
-      this.defaultYearDropdown = this.setYearDropdown();
+      // pick one of the available years as the default years as opposed to the static 2016 year
+      this.defaultYearDropdown = await this.setYearDropdown();
       if (this.defaultYearDropdown.length > 0) {
-        const firstItem = 0;
-        this.defaultYear = this.defaultYearDropdown[firstItem];
+        this.defaultYear = this.defaultYearDropdown[0];
       }
-      // setTimeout(() => {
-      //   this.setRouteQueryToControlPanel();
-      // }, 4000);
 
       this.cpIsLoading = true;
       this.$nextTick(() => {
@@ -361,6 +608,64 @@ div.temp {
   }
   .lessVisible {
     z-index: -1;
+  }
+}
+    div#browserSupport {
+      position:fixed;
+      margin: 5px 5px 0 0;
+      background-color: #fff3cd;
+      color:#583e03;
+      top:0;
+      border:0.5px solid #583e03;
+      font-size: 12px;
+      box-shadow: -3px 5px 10px #00000029;
+      right:0;
+      border-radius: 5px;
+      z-index:900;
+    }
+    div#browserSupport  img {
+      width: 34px;
+      height:30px;
+    }
+    .alertBold{
+      color:#583e03;
+    }
+.swipe-btn-flex {
+  display: none;
+}
+
+.control-header {
+  display: none;
+}
+.label-text {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+@media (max-width: 800px) {
+  .swipe-btn-flex {
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    justify-content: space-between;
+    /* z-index: 10; */
+    margin: 10px;
+  }
+
+  .control-header {
+    display: inherit;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    margin: 5px;
+  }
+
+  /* testing for mobile */
+  .dummy-row {
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    flex-wrap: nowrap;
   }
 }
 </style>

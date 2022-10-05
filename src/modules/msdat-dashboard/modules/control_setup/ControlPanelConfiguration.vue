@@ -10,9 +10,9 @@ import { eventBus } from '@/main';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
+  name: 'ControlPanelConfiguration',
   mixins: [controlSetup],
   props: {
-
     controlIndex: {
       type: Number,
       required: true,
@@ -41,15 +41,14 @@ export default {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
     async getAvailableYears() {
       const available = await this.setYearDropdown(
-        this.payload.indicator.id,
-        this.payload.datasource.id,
-        this.payload.location.id,
+        this.payload?.indicator?.id,
+        this.payload?.datasource?.id,
+        this.payload?.location?.id,
       );
       return available;
     },
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(this.payload.indicator.id);
-      return availableDataSource;
+      return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
   },
   watch: {
@@ -64,7 +63,8 @@ export default {
           key: 'year',
           values: availableYears,
         });
-        this.SETUP_CONTROL_OPTIONS1({
+        // Funny how this doesn't update
+        await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
           key: 'datasource',
@@ -86,7 +86,7 @@ export default {
     'payload.location': {
       async handler() {
         const availableYears = await this.getAvailableYears();
-        this.SETUP_CONTROL_OPTIONS1({
+        await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
           key: 'year',

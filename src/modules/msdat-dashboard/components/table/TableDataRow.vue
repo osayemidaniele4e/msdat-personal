@@ -6,8 +6,9 @@
       <!-- A test case could be added to ensure that this alway there -->
       <td class="align-middle table-info-icon">
         <div class="d-flex justify-content-center">
-          <b-icon-exclamation-circle-fill
+          <b-icon-info-circle-fill
             @click="$emit('indicator-info:clicked', rowData.indicator)"
+            class="info-circle"
           />
         </div>
       </td>
@@ -17,7 +18,7 @@
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
             {{ rowData.indicator.full_name }}
           </slot>
-          <span style="font-size: 10px; margin: 0 5px">{{ factor }}</span>
+          <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
         </div>
       </td>
       <!-- the default slot for the system -->
@@ -43,6 +44,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/abstracts/_variables.scss';
+
 tr {
   // icon column
   & > td:first-child {
@@ -50,9 +53,14 @@ tr {
     background-color: #ffffff;
 
     svg {
-      color: #2b5d5b;
+      // color: #2b5d5b;
+      color: $primary;
       cursor: pointer;
     }
   }
+}
+
+.info-circle{
+  font-size: 16px;
 }
 </style>

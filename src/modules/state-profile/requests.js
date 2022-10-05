@@ -1,14 +1,6 @@
 import axiosInstance from '@/plugins/axios';
 import apiEndpoints from '@/modules/DataLayer/config/endpoint';
 
-// const StateProfileDashboard = {
-//     dashboardIndicators:
-//     [1, 4, 5, 7, 8, 13, 18, 10, 17, 14, 15, 16, 20,
-//       21, 22, 23, 24, 26, 27, 28, 29, 30, 31,
-//       32, 34, 39, 41, 49, 50, 61, 63, 64, 67, 68, 70],
-//     dataSources: [19, 2, 20, 1, 5, 16, 6],
-//   };
-
 export const allLocations = () => axiosInstance.get(apiEndpoints.getLocation);
 
 export const latestData = () => axiosInstance.get('http://135.181.212.168:9234/api/data/latest/');

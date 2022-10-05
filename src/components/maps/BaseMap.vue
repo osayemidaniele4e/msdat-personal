@@ -12,6 +12,7 @@ import exportData from 'highcharts/modules/export-data';
 import exporting from 'highcharts/modules/exporting';
 import noData from 'highcharts/modules/no-data-to-display';
 import loadDrilldown from 'highcharts/modules/drilldown';
+import offlineExporting from 'highcharts/modules/offline-exporting';
 import { genComponent } from 'vue-highcharts';
 
 // default map
@@ -74,6 +75,7 @@ import {
 // load map
 loadMap(Highcharts);
 exporting(Highcharts);
+offlineExporting(Highcharts);
 exportData(Highcharts);
 noData(Highcharts);
 loadDrilldown(Highcharts);
@@ -94,6 +96,10 @@ export default {
     },
     lgaState: {
       type: String,
+    },
+    title: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -184,6 +190,11 @@ export default {
   },
   created() {
     this.plotMapLevel(this.level);
+  },
+
+  mounted() {
+    // changing the title of the text when downloaded
+    this.defaultOptions.exporting.chartOptions.title.text = this.title;
   },
 };
 </script>

@@ -261,7 +261,6 @@ export default {
       this.selectedMapName = val;
     },
     async log(optionsObject, index, index2) {
-      // console.log(optionsObject, index);
       switch (index) {
         case 0:
           // this.stateBarValue = optionsObject;

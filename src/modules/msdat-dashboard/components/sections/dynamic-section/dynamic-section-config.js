@@ -1,5 +1,5 @@
 export default {
-  label: 'Disaggregation Section',
+  label: 'Disaggregation',
   setup: [
 
   ],

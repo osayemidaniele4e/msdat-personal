@@ -18,22 +18,24 @@
       >
         <template #title>
           <p
-            class="text-dark work-sans mb-0 line-height"
+            class="work-sans mb-0 line-height"
             v-if="!Array.isArray(values.indicator.length)"
           >
-            Comparison Of <b>{{ values.indicator.short_name }}</b> according to
+           Comparison Of <b>{{ values.indicator.short_name }}</b> according to
             the <b> {{ values.datasource.datasource }} </b> across
             {{ values.compareBy.name }}
           </p>
           <p class="text-dark work-sans mb-0 line-height" v-else>
-            Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
+           Comparison Of <b>{{ values.indicator[0].short_name }}</b> and
             <b>{{ values.indicator[1].short_name }}</b>
             according to the
             <b> {{ values.datasource.datasource }} </b> across
             {{ values.compareBy.name }}s
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="chartOptions" />
+        <BarChart ref="BaseChart"
+        :title="title"
+        :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
     <div v-if="checkData() === false" class="no_data">
@@ -63,6 +65,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       color: ['#17606B', '#E85D58'],
       dataSeries: [],
       loading: false,
@@ -164,66 +167,33 @@ export default {
       },
       immediate: false,
     },
+    /**
+     * This adds or removes the target line
+     * without re-plotting the entire chart
+     */
+    'values.target.sdg': {
+      handler(val) {
+        this.toggleSDGTargetLine(val);
+      },
+    },
+    /**
+     * This adds or removes the target line
+     * without re-plotting the entire chart
+     */
     'values.target.national': {
       handler(val) {
-        const align = ['left', 'right'];
-        const options = { ...this.chartOptions };
-
-        if (val) {
-          for (let k = 0; k < options.yAxis.length; k += 1) {
-            // debugger;
-            const nationalTarget = this.dlGetIndicator(
-              this.values.indicator[k].id,
-            ).national_target;
-            if (options.yAxis[k].plotLines.length > 0) {
-              const index = options.yAxis[k].plotLines.findIndex(
-                (item) => item.id === 'national',
-              );
-              if (index > -1) {
-                options.yAxis[k].plotLines[index] = {
-                  width: 1,
-                  value: nationalTarget,
-                  zIndex: 5,
-                  label: {
-                    text: `NT-${nationalTarget}`,
-                    rotation: 90,
-                    align: align[k],
-                  },
-                };
-              }
-            } else {
-              options.yAxis[k].plotLines = [];
-              options.yAxis[k].plotLines.push({
-                width: 1,
-                value: nationalTarget,
-                zIndex: 5,
-                label: {
-                  text: `NT-${nationalTarget}`,
-                  rotation: 90,
-                  align: align[k],
-                },
-              });
-            }
-          }
-        } else {
-          for (let k = 0; k < options.yAxis.length; k += 1) {
-            const index = options.yAxis[k].plotLines.findIndex(
-              (item) => item.id === 'national',
-            );
-            options.yAxis[k].plotLines.splice(index, 1);
-          }
-        }
-
-        this.chartOptions = { ...options };
+        this.toggleNationalTargetLine(val);
       },
-      deep: true,
     },
   },
   methods: {
     checkData() {
-      const datar = this.chartOptions.series.map((el, i) => el.data[i]);
-      if (datar[0]?.length >= 1) {
-        return true;
+      const datar = this.chartOptions?.series?.map((el, i) => el.data[i]);
+      if (datar !== undefined) {
+        if (datar[0]?.length >= 1) {
+          return true;
+        }
+        return false;
       }
       return false;
     },
@@ -265,7 +235,7 @@ export default {
       } else {
         indicators = values.indicator;
       }
-      const dataPromises = indicators.map((item) => this.dlQuery({
+      const dataPromises = indicators?.map((item) => this.dlQuery({
         indicator: item.id,
         datasource: values.datasource.id,
         period: values.year,
@@ -280,13 +250,29 @@ export default {
         // formate result to HighChart Format
         const indicator = indicators[i];
         const data = results[i];
-        const toHighChartFormat = data.map((item) => [
+        const toHighChartFormat = data?.map((item) => [
           this.dlGetLocation(item.location).name,
           parseFloat(item.value),
         ]);
         const displayFactor = this.dlGetFactor(indicator.factor);
         const yAxis = {
-          ...defaultOptions.yAxis,
+          yAxis: [
+            {
+              plotLines: [],
+              labels: {
+                style: {
+                  fontFamily: 'Work Sans, sans-serif',
+                  fontSize: '11px',
+                },
+              },
+              title: {
+                style: {
+                  ...defaultOptions.yAxis.title.style,
+                  fontSize: '10px',
+                },
+              },
+            },
+          ],
           title: {
             ...defaultOptions.yAxis.title,
             text: displayFactor.display_factor,
@@ -294,7 +280,6 @@ export default {
           opposite: !!i, // this will become either true of false as 0 or 1
         };
 
-        // let fommater = () => `${point.y}${displayFactorSign1}`;
         const obj = {
           color: this.color[i],
           dataLabels: {
@@ -307,7 +292,6 @@ export default {
               fontSize: '10px',
             },
           },
-          yAxis: i,
           name: indicator.full_name,
           data: toHighChartFormat,
         };
@@ -316,7 +300,124 @@ export default {
       }
       return highChartOptions;
     },
+    /**
+     * This method loops through the list of indicators
+     * and creates the SDG target line object if the
+     * target exists and finally adds it to the chart
+     */
+    toggleSDGTargetLine(val) {
+      let indicators = null;
+      const plotLines = [];
+      const options = { ...this.chartOptions };
+      if (val) {
+        if (!Array.isArray(this.values.indicator)) {
+          indicators = [this.values.indicator];
+        } else {
+          indicators = this.values.indicator;
+        }
+        for (let n = 0; n < indicators.length; n++) {
+          if (indicators[n].sdg_target) {
+            plotLines.push({
+              width: 0.5,
+              id: 'sdgTarget',
+              color: '#222222',
+              value: indicators[n].sdg_target,
+              dashStyle: 'longdashdot',
+              label: {
+                text: 'SDG',
+                verticalAlign: 'top',
+                rotation: 0,
+                textAlign: 'right',
+                y: 0,
+                x: 0,
+                style: {
+                  fontSize: '10px',
+                  fontFamily: '"Open Sans", sans-serif',
+                },
+              },
+            });
+            // Checks if the plotLines object exists
+            if (options.yAxis[0]?.plotLines) {
+              options.yAxis[0].plotLines.push(...plotLines);
+            } else {
+              options.yAxis[0].plotLines = [];
+              options.yAxis[0].plotLines.push(...plotLines);
+            }
+            this.chartOptions = { ...options };
+          }
+        }
+      } else {
+        // Checks if the plotLines object exists
+        if (options.yAxis[0]?.plotLines) {
+          const temp = options.yAxis[0].plotLines.filter((line) => line.id !== 'sdgTarget');
+          options.yAxis[0].plotLines = temp;
+        } else {
+          options.yAxis[0].plotLines = [];
+          const temp = options.yAxis[0].plotLines.filter((line) => line.id !== 'sdgTarget');
+          options.yAxis[0].plotLines = temp;
+        }
+        this.chartOptions = { ...options };
+      }
+    },
+    /**
+     * This method loops through the list of indicators
+     * and creates the national target line object if the
+     * target exists and finally adds it to the chart
+     */
+    toggleNationalTargetLine(val) {
+      let indicators = null;
+      const plotLines = [];
+      const options = { ...this.chartOptions };
+      if (val) {
+        if (!Array.isArray(this.values.indicator)) {
+          indicators = [this.values.indicator];
+        } else {
+          indicators = this.values.indicator;
+        }
+        for (let n = 0; n < indicators.length; n++) {
+          if (indicators[n].national_target) {
+            plotLines.push({
+              width: 0.5,
+              color: '#222222',
+              id: 'ntLine',
+              value: indicators[n].national_target,
+              label: {
+                text: 'NT',
+                verticalAlign: 'top',
+                rotation: 0,
+                textAlign: 'left',
+                y: 0,
+                x: -13,
+                style: {
+                  fontSize: '10px',
+                  fontFamily: '"Open Sans", sans-serif',
+                },
+              },
+            });
+            // Checks if the plotLines object exists
+            if (options.yAxis[0]?.plotLines) {
+              options.yAxis[0].plotLines.push(...plotLines);
+            } else {
+              options.yAxis[0].plotLines = [];
+              options.yAxis[0].plotLines.push(...plotLines);
+            }
+            this.chartOptions = { ...options };
+          }
+        }
+      } else {
+        // Checks if the plotLines object exists
+        if (options.yAxis[0]?.plotLines) {
+          const temp = options.yAxis[0].plotLines.filter((line) => line.id !== 'ntLine');
+          options.yAxis[0].plotLines = temp;
+        } else {
+          options.yAxis[0].plotLines = [];
+          const temp = options.yAxis[0].plotLines.filter((line) => line.id !== 'ntLine');
+          options.yAxis[0].plotLines = temp;
+        }
 
+        this.chartOptions = { ...options };
+      }
+    },
     async plotForPeriods(values) {
       const highChartOptions = {
         chart: {
@@ -332,7 +433,7 @@ export default {
         indicators = values.indicator;
       }
 
-      const dataPromises = indicators.map((item) => this.dlQuery({
+      const dataPromises = indicators?.map((item) => this.dlQuery({
         indicator: item.id,
         datasource: values.datasource.id,
         location: values.location.id,
@@ -344,7 +445,7 @@ export default {
         const result = results[i];
         const indicator = indicators[i];
         const filterOnlyYearlyValues = result.filter((item) => moment(item.period, 'YYYY', true).isValid());
-        const formatToHighChartFormat = filterOnlyYearlyValues.map((item) => [
+        const formatToHighChartFormat = filterOnlyYearlyValues?.map((item) => [
           item.period,
           Number.parseFloat(item.value),
         ]);
@@ -352,7 +453,23 @@ export default {
 
         const displayFactor = this.dlGetFactor(indicator.factor);
         highChartOptions.yAxis.push({
-          ...defaultOptions.yAxis,
+          yAxis: [
+            {
+              plotLines: [],
+              labels: {
+                style: {
+                  fontFamily: 'Work Sans, sans-serif',
+                  fontSize: '11px',
+                },
+              },
+              title: {
+                style: {
+                  ...defaultOptions.yAxis.title.style,
+                  fontSize: '10px',
+                },
+              },
+            },
+          ],
           title: {
             ...defaultOptions.yAxis.title,
             text: displayFactor.display_factor,
@@ -362,7 +479,6 @@ export default {
         const obj = {
           color: this.color[i],
           lineWidth: 3,
-          yAxis: i,
           name: indicator.full_name,
           data: sortTheYear,
         };
@@ -372,16 +488,39 @@ export default {
     },
 
     async renderChart(panelValues) {
+      const { sdg, national } = this.values.target;
+      this.chartOptions = {};
       if (panelValues.compareBy.name === 'Period') {
         const highChartOptions = await this.plotForPeriods(panelValues);
         this.chartOptions = { ...highChartOptions };
+        /**
+         * the purpose of the if check is to make sure we
+         * don't try to add plotlines before the chart is
+         * rendered
+         */
+        if (Object.keys(this.chartOptions).length !== 0) {
+          this.toggleSDGTargetLine(sdg);
+          this.toggleNationalTargetLine(national);
+        }
       }
 
       if (panelValues.compareBy.name === 'State') {
         const highChartOptions = await this.plotForState(panelValues);
         this.chartOptions = { ...highChartOptions };
+        if (Object.keys(this.chartOptions).length !== 0) {
+          this.toggleSDGTargetLine(sdg);
+          this.toggleNationalTargetLine(national);
+        }
       }
     },
+  },
+
+  async mounted() {
+    if (!Array.isArray(this.values.indicator.length)) {
+      this.title = ` Comparison Of ${this.values.indicator.short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}`;
+    } else {
+      this.title = ` Comparison Of ${this.values.indicator[0].short_name} and ${this.values.indicator[1].short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}s`;
+    }
   },
 };
 </script>
@@ -392,6 +531,7 @@ div.ics_wrapper {
   div.no_data {
     position: absolute;
     top: 0;
+
     display: flex;
     justify-content: center;
     align-items: center;

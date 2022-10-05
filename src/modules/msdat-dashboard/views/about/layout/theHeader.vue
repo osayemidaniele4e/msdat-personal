@@ -1,6 +1,6 @@
 <template>
-  <header id="the-header" class="position-relative">
-    <!-- <header id="the-header" class="sticky"> -->
+  <!-- <header id="the-header" class="sticky"> Moses changed from this -->
+    <header id="the-header" class="position-relative">
 
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
@@ -66,6 +66,7 @@
             <b-sidebar id="sidebar-1" title="" right shadow>
               <SideBar />
             </b-sidebar>
+
           </div>
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
@@ -96,16 +97,18 @@
           >
             <b-nav class="h-100 align-items-center main">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
+                 <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link">Home</a>
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/coming-soon" class="nav-link"
+              <router-link to="/coming-soon/custom_dashboard" class="nav-link"
                 >Create New Dashboard</router-link
               >
+          <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link">Go back to MSDAT 1.5</a>
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button class="btn btn-outline-light rounded-0">
+                <button class="btn btn-outline-primary border-light rounded-0" style="font-size: 13px !important">
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
@@ -126,7 +129,7 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-
+<!--
               <router-link to="/login" v-if="!userName" class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill
                 >&nbsp;Login/Register</router-link
@@ -134,7 +137,7 @@
               <router-link to="/login" v-else class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
                 out</router-link
-              >
+              > -->
             </b-nav>
             <b-icon
               @click="toggleOption = !toggleOption"
@@ -147,6 +150,12 @@
               class="mob-grid-icon"
               v-b-toggle.sidebar-1
             ></b-icon>
+                  <b-icon
+              @click="toggleOption = !toggleOption"
+              icon="three-dots-vertical"
+              font-scale="1.5"
+              class="mob"
+            />
             <header-option
               v-if="toggleOption"
               v-on:showContact="contactBtn = true"
@@ -154,6 +163,7 @@
             />
           </div>
         </b-col>
+
       </b-row>
       <!--  please someone show separate the
       header for the about page from this it going to cause issues  -->
@@ -174,6 +184,7 @@
             Planning Research and Statistics (DHPRS)
           </p>
         </b-col>
+
       </b-row>
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
@@ -271,7 +282,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$msdat-green: #007d53;
+@import '@/scss/abstracts/_variables.scss';
 
 button {
   color: white;
@@ -283,6 +294,10 @@ button {
 
 .main {
   display: inherit;
+}
+
+.mob{
+  display: none;
 }
 
 .main-sub-text {
@@ -343,7 +358,7 @@ header#the-header {
 
       // first row
       &:first-child {
-        background-color: $msdat-green;
+        background-color: $primary;
 
         & > div {
           &:first-child {
@@ -396,7 +411,7 @@ header#the-header {
             transition: all 0.4s;
 
             &:hover {
-              background-color: $msdat-green;
+              background-color: $primary;
             }
           }
         }
@@ -437,6 +452,10 @@ header#the-header {
 @media (max-width: 576px) {
   .main {
     display: none;
+  }
+
+  .mob{
+    display: inherit;
   }
 
   .main-text {
@@ -524,6 +543,10 @@ header#the-header {
     display: none;
   }
 
+  .mob{
+    display: inherit;
+  }
+
   .main-text {
     display: none;
   }
@@ -607,6 +630,9 @@ header#the-header {
 
 /* MEDIUM */
 @media (min-width: 768px) and (max-width: 992px) {
+  .mob{
+    display: inherit;
+  }
   .main-text {
     display: none;
   }
