@@ -1,14 +1,16 @@
+import VueCookies from 'vue-cookies';
+
 export default [
   {
     path: '/custom',
     name: 'custom-dashboard',
     component: () => import('./views/landing.vue'),
   },
-  {
-    path: '/login',
-    name: 'custom-dashboard-login',
-    component: () => import('./views/login.vue'),
-  },
+  // {
+  //   path: '/login',
+  //   name: 'custom-dashboard-login',
+  //   component: () => import('./views/login.vue'),
+  // },
   // {
   //   path: '/custom/details',
   //   name: 'dashboard-details',
@@ -18,10 +20,11 @@ export default [
     path: '/my-dashboard',
     name: 'my-dashboard',
     beforeEnter: (to, from, next) => {
-      const token = sessionStorage.getItem('username');
+      // const token = sessionStorage.getItem('username');
+      const token = VueCookies.get('custom-access-token');
       // console.log('In before Enter', token);
       if (!token) {
-        next('/login');
+        next('/custom/login');
       } else {
         return next();
       }
@@ -59,9 +62,10 @@ export default [
     path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
     beforeEnter: (to, from, next) => {
-      const token = sessionStorage.getItem('username');
+      // const token = sessionStorage.getItem('username');
+      const token = VueCookies.get('custom-access-token');
       if (!token) {
-        next('/login');
+        next('/custom/login');
       } else {
         next();
       }
