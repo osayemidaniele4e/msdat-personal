@@ -19,17 +19,17 @@ export default [
   {
     path: '/my-dashboard',
     name: 'my-dashboard',
-    beforeEnter: (to, from, next) => {
-      // const token = sessionStorage.getItem('username');
-      const token = VueCookies.get('custom-access-token');
-      // console.log('In before Enter', token);
-      if (!token) {
-        next('/custom/login');
-      } else {
-        return next();
-      }
-      return null;
-    },
+    // beforeEnter: (to, from, next) => {
+    //   // const token = sessionStorage.getItem('username');
+    //   const token = VueCookies.get('custom-access-token');
+    //   // console.log('In before Enter', token);
+    //   if (!token) {
+    //     next('/custom/login');
+    //   } else {
+    //     return next();
+    //   }
+    //   return null;
+    // },
     component: () => import('./views/myDashboard.vue'),
     children: [
       // Page 1
@@ -61,16 +61,16 @@ export default [
   {
     path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
-    beforeEnter: (to, from, next) => {
-      // const token = sessionStorage.getItem('username');
-      const token = VueCookies.get('custom-access-token');
-      if (!token) {
-        next('/custom/login');
-      } else {
-        next();
-      }
-      return null;
-    },
+    // beforeEnter: (to, from, next) => {
+    //   // const token = sessionStorage.getItem('username');
+    //   const token = VueCookies.get('custom-access-token');
+    //   if (!token) {
+    //     next('/custom/login');
+    //   } else {
+    //     next();
+    //   }
+    //   return null;
+    // },
     props: true,
     component: () => import('./views/CustomDashboard.vue'),
   },
