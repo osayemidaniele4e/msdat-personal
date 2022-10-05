@@ -77,7 +77,6 @@ export default {
   methods: {
     async clearDBandReloadPage() {
       await this.$store.dispatch('DL/CLEAR_DB');
-      window.location.reload();
       this.showModal = false;
     },
   },
