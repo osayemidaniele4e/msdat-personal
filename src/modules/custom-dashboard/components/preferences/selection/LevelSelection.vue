@@ -1,3 +1,4 @@
+<!-- Auther: Ghufran Ahmed -->
 <template>
   <div style="height: 89px">
     <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
@@ -65,6 +66,7 @@ export default {
     loading() {
       return this.$store.getters.Levelsloading;
     },
+    // Levels are loaded based on indicators and sorting is applied
     distinctLevels() {
       const levelArray = [];
 
@@ -87,14 +89,12 @@ export default {
       Object.keys(levelArray).forEach((key) => {
         LArray.push(levelArray[key]);
       });
-      // for (const i in levelArray) {
-      //   LArray.push(levelArray[i]);
-      // }
       LArray.sort((a, b) => b.value - a.value);
       return LArray;
     },
   },
   methods: {
+    // For Selection of Levels
     selectLevel(e) {
       const levelSelected = e.target.checked;
       this.$store.dispatch('levelclick', {

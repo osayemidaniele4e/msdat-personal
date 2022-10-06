@@ -2,6 +2,7 @@ import { groupBy } from 'lodash';
 
 export const sortHighChartDataFormat = (a, b) => b[1] - a[1];
 
+export const sortHighchartsDataInObjectFormat = (a, b) => b.y - a.y;
 export const sortHighChartDataFormat1 = () => {};
 
 // export to be used in other modules

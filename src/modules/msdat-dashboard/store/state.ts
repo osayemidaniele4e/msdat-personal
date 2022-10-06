@@ -17,6 +17,7 @@ type setPayload = {
 }
 
 const state: State = {
+  // ***** Auther: Ghufran Ahmed
   indicatorComparision: false,
   zonalAnalysis: false,
   indicatorComparsionByPeriod: false,
