@@ -4,25 +4,7 @@
     <ul
       class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-5 mx-3 cursor-pointer main tabs-sec"
     >
-      <template v-if="customDashboard === true">
-        <li
-          class="mb-0 tab-link h6 py-2 pt-4 text-black-50 bg-tab-color work-sans main"
-          :class="[index === selectedPanel ? 'active font-weight-bold' : '']"
-          {{alert(index)}}
-          v-for="(control, index) in controls"
-          :key="index"
-          :id="`panel-${index}`"
-          @click="changeControl(index)"
-        >
-          <!-- {{index}}
-        {{selectedIndex}} -->
-
-          <!-- {{index}} index
-        {{changeIndex}} select -->
-          {{ control.title }}
-        </li>
-      </template>
-      <template v-if="customDashboard === false">
+      <!-- <template v-if="customDashboard === false">
         <li
           class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
           :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
@@ -34,6 +16,19 @@
           <!-- {{index}}
         {{selectedIndex}}
         {{checkIndex}} -->
+
+          <!-- {{ control.title }} -->
+        <!-- </li> -->
+      <!-- </template> -->
+      <template>
+        <li
+          class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          v-for="(control, index) in controls"
+          :key="index"
+          :id="`panel-${index}`"
+          @click="changeControl(index)"
+        >
 
           {{ control.title }}
         </li>
