@@ -96,6 +96,7 @@ export default {
       pointWidth: 10,
       connectNulls: true,
       pointPlacement: 'on',
+      dataLabels: {},
       // borderWidth: 0,
     },
     bar: {

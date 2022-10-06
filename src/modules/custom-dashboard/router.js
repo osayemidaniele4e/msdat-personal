@@ -1,5 +1,8 @@
 import VueCookies from 'vue-cookies';
+<<<<<<< HEAD
 // import Dashboard from '../dynamic_dashboard/index.vue';
+=======
+>>>>>>> b9f3843d36b2fbfaeccae74bb48caa34e68eb48d
 
 export default [
   {
@@ -7,11 +10,19 @@ export default [
     name: 'custom-dashboard',
     component: () => import('./views/landing.vue'),
   },
+<<<<<<< HEAD
   {
     path: '/custom/login',
     name: 'custom-dashboard-login',
     component: () => import('../auth/views/login.vue'),
   },
+=======
+  // {
+  //   path: '/login',
+  //   name: 'custom-dashboard-login',
+  //   component: () => import('./views/login.vue'),
+  // },
+>>>>>>> b9f3843d36b2fbfaeccae74bb48caa34e68eb48d
   // {
   //   path: '/custom/details',
   //   name: 'dashboard-details',

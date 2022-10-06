@@ -1,3 +1,4 @@
+<!-- Auther: Ghufran Ahmed -->
 <template>
   <b-container class="text-justify px-5 pb-5">
     <h4 class="welcome">Welcome {{username}},</h4>
@@ -145,12 +146,20 @@ export default {
     };
   },
   mounted() {
+<<<<<<< HEAD
     // console.log(this.getUser);
     this.user = this.getUser;
     this.username = this.user.username;
     // this.$store.commit('updateStep', 1);
     // localStorage.removeItem('vuex');
     // this.$store.dispatch('resetState');
+=======
+    this.user = this.getUser;
+    this.username = this.user.username;
+    this.$store.commit('updateStep', 1);
+    localStorage.removeItem('vuex');
+    this.$store.dispatch('resetState');
+>>>>>>> b9f3843d36b2fbfaeccae74bb48caa34e68eb48d
     // store.replaceState({})
     // this.$forceUpdate();
     // this.$router.go();
@@ -161,6 +170,7 @@ export default {
     ...mapGetters('AUTH_STORE', ['getUser']),
   },
   methods: {
+    // Preview of image uploaded
     previewThumbnail: function getPreview(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
@@ -176,11 +186,14 @@ export default {
     clearValidity(input) {
       this[input].isValid = true;
     },
+    // After uploading of image below function will be excuted
     onUpload() {
       const fd = new FormData();
       fd.append('Image', this.selectedImage.val, this.selectedImage.name);
       // console.log(this.selectedImage.val);
     },
+
+    // Check all the fields are filled correctly
     validateForm() {
       this.formIsValid = true;
       if (this.dName.val === '') {
@@ -197,6 +210,7 @@ export default {
       }
     },
 
+    // Below function will be excuted when Select indivisual Button is clickekd
     submitForm() {
       this.validateForm();
 
@@ -227,6 +241,7 @@ export default {
       this.$emit('save-data', formData);
       this.$router.push('preference-table');
     },
+    // Below function will be excuted when Selection of all data is selected
     selectAllData() {
       this.validateForm();
       if (this.formIsValid) {
