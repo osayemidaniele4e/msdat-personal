@@ -9,7 +9,6 @@ export default {
   async DELETE_DB() {
     await DB.delete();
     console.log('Database deleted');
-    window.location.reload();
     Promise.resolve(true);
   },
   /**
