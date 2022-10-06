@@ -221,6 +221,7 @@ export default {
   data() {
     return {
       isAdvanced: false,
+      showTroubleShootingModal: false,
       position: 3,
       selectedPanel: 0,
       dashboardConfig: config,
