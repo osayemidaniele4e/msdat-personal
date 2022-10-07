@@ -13,7 +13,6 @@
           :id="`panel-${index}`"
           @click="changeControl(index)"
         >
-          <!-- {{index}}
         {{selectedIndex}}
         {{checkIndex}} -->
 
