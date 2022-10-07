@@ -77,7 +77,8 @@ export default {
   methods: {
     async clearDBandReloadPage() {
       await this.$store.dispatch('DL/DELETE_DB');
-      document.location.reload();
+      window.location.reload();
+      this.showModal = false;
     },
   },
   mounted() {
