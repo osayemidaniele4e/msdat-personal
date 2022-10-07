@@ -114,19 +114,19 @@ export default {
     approveData() {
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
-        alert('Dashboard name not provided');
+        this.$swal('Dashboard name not provided');
         return;
       }
       const cDashboard = true;
       this.$store.dispatch('customDashboard', cDashboard);
-      // this.$router.push({
-      //   // name: 'my-custom-dashboard',
-      //   name: 'dashboard',
-      //   params: {
-      //     title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
-      //   },
-      // });
-      this.$router.push(`/dashboard/${this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase()}`);
+      const title = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
+      this.$router.push({
+        path: `/dashboard/${title}`,
+        component: () => import('../../dynamic_dashboard/index.vue'),
+        // params: {
+        //   name: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
+        // },
+      });
     },
 
     // PRESELECTION OF Dashboard widgets

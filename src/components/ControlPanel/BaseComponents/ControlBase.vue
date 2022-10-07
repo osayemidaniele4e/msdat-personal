@@ -1,7 +1,7 @@
-<template>
-  <div v-show="active">
-    <slot />
-  </div>
+ <template>
+    <div v-show="active">
+        <slot></slot>
+    </div>
 </template>
 
 <script>

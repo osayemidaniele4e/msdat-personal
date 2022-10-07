@@ -1,4 +1,5 @@
 import VueCookies from 'vue-cookies';
+// import Dashboard from '../dynamic_dashboard/index.vue';
 
 export default [
   {

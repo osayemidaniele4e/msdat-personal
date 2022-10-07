@@ -231,7 +231,8 @@ export default {
         this.$router.push('data-table');
         this.destroyPage = true;
       } else {
-        alert('You have to select atleast one item from every box');
+        this.$swal('You have to select atleast one item from every box');
+        // console.log('You have to select atleast one item from every box');
       }
     },
   },

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import VueCookies from 'vue-cookies';
-// import instance from './config/axios';
 
 export default {
   namespaced: true,

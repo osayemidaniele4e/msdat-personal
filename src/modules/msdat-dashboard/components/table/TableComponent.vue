@@ -18,7 +18,7 @@
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
               v-for="(value, index) in classify"
-              :key="index"
+              :key="index  * Math.random()"
               :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
@@ -38,7 +38,7 @@
             </div>
             <template v-for="(dt, index) in source">
               <TableDataSourceCell
-                :key="index"
+                :key="index * Math.random()"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -49,9 +49,9 @@
             </template>
           </tr>
           <tr v-else>
-            <div v-for="(dt, i) in source" :key="i">
+            <div v-for="(dt, i) in source" :key="i  * Math.random()">
               <TableDataSourceCell
-                :key="i"
+                :key="i * Math.random()"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -90,7 +90,7 @@
               </div>
               <div class="nhmis-month-text2" v-else>-</div>
 
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+              <td class="text-center p-2" v-for="(dt, index) in source" :key="index * Math.random()" scope="col">
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
                   :dataColors="' '"
@@ -98,7 +98,7 @@
               </td>
             </template>
             <template #default v-else>
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+              <td class="text-center p-2" v-for="(dt, index) in source" :key="index  * Math.random()" scope="col">
                 <!-- percentage values and year -->
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
@@ -144,7 +144,7 @@
           <!-- TODO: fix -->
           <template v-for="(indicatorData, index) in dataArray">
             <TableDataRow
-              :key="indicatorData.indicator.id"
+              :key="indicatorData.indicator.id  * Math.random()"
               v-if="index > 0"
               :rowData="indicatorData"
               @indicator-info:clicked="$emit('selected:indicator-info', $event)"
@@ -172,7 +172,7 @@
                   <div class="nhmis-rel-text1 text-center">-</div>
                   <div class="nhmis-rel-text2">-</div>
                 </td>
-                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                <td class="text-center p-2" v-for="(dt, index) in source" :key="index * Math.random()" scope="col">
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -180,7 +180,7 @@
                 </td>
               </template>
               <template #default v-else>
-                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                <td class="text-center p-2" v-for="(dt, index) in source" :key="index * Math.random()" scope="col">
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -190,7 +190,7 @@
             </TableDataRow>
 
             <!-- This creates a space between the related indicators table rows -->
-            <div :key="index" class=""></div>
+            <div :key="index * Math.random()" class=""></div>
           </template>
         </tbody>
       </table>
@@ -414,43 +414,49 @@ export default {
     },
     /**
      * This fetches numerator denominator data from
-     * api directly using the control panel props
+     * dexie using the control panel props
      */
-    getNumDenumData() {
+    async getNumDenumData() {
       if (this.values?.datasource.id !== undefined) {
         const {
           indicator, year, location, datasource,
         } = this.values;
-        axiosInstance
-          .get(
-            `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
-          )
-          .then((response) => {
-            const numerator = response.data.filter((item) => item.value_type === 6);
-            const denominator = response.data.filter((item) => item.value_type === 10);
-            if (numerator.length > 0 || denominator.length > 0) {
-              this.numDenum = true;
-              if (numerator.length > 0) {
-                this.numerator = `${this.values.indicator.short_name} - ${Number(
-                  numerator[0].value,
-                ).toLocaleString()}`;
-              } else {
-                this.numerator = 'N/a';
-              }
-              if (denominator.length > 0) {
-                this.denominator = `${this.values.indicator.short_name} - ${Number(
-                  denominator[0].value,
-                ).toLocaleString()}`;
-              } else {
-                this.denominator = 'N/a';
-              }
-            } else {
-              this.numDenum = false;
-            }
-          })
-          .catch((error) => {
-            console.log({ error });
-          });
+
+        const numeratorData = await this.dlQuery({
+          datasource: datasource.id,
+          indicator: indicator.id,
+          period: year,
+          location: location.id,
+          value_type: 6,
+        });
+        const denominatorData = await this.dlQuery({
+          datasource: datasource.id,
+          indicator: indicator.id,
+          period: year,
+          location: location.id,
+          value_type: 10,
+        });
+        if (numeratorData.length > 0 || denominatorData.length > 0) {
+          this.numDenum = true;
+          if (numeratorData.length > 0) {
+            const numerator = numeratorData[0];
+            this.numerator = `${this.values.indicator.short_name} - ${Number(
+              numerator.value,
+            ).toLocaleString()}`;
+          } else {
+            this.numerator = 'N/a';
+          }
+          if (denominatorData.length > 0) {
+            const denominator = denominatorData[0];
+            this.denominator = `${this.values.indicator.short_name} - ${Number(
+              denominator.value,
+            ).toLocaleString()}`;
+          } else {
+            this.denominator = 'N/a';
+          }
+        } else {
+          this.numDenum = false;
+        }
       }
     },
 
