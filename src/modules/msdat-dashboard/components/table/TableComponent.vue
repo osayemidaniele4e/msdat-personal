@@ -373,6 +373,7 @@ export default {
       this.classify_nm = resultSorted;
 
       // adding an extra column for NHMIS monthly
+      // todo WRITE A CONDITION TO REMOVE NHMIS-MONTHLY FROM CUSTOM DASHBOARD
       if (this.$route.params.name === 'Health_Outcomes') {
         this.classify_nm[0][1] += 1;
       }

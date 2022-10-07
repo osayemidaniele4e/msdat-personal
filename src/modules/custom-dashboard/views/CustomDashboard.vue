@@ -82,7 +82,6 @@ export default {
     const { title } = this.$route.params;
     // console.log('DCONFIG',this.dashboardConfig);
     // this.$route.meta.title = 'Hello World From Route';
-    console.log(this.dashboardConfig, 'helloWorld');
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
       // FOR Indicators
       const ids = [];

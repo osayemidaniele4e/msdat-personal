@@ -68,8 +68,8 @@ export default {
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
     /**
-     * @author davidbenard
-     * @function ClearDataFromDexie
+     * @author davebenard
+     * @function clearData
      * @description - clear the dexie DB if the difference between the localStorage and api date is greater than 10
      */
     async clearData() {
@@ -126,8 +126,8 @@ export default {
         });
         return element;
       });
-      // console.log(this.dashboardConfig, 'dashboadconfig 1')
-      this.dashboardConfig.push({
+      // console.log(this.dashboardConfig, 'dashboard config 1')
+      this.configObject = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
           .replace(/\s+/g, '_')
           .toLowerCase(),
@@ -140,24 +140,10 @@ export default {
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
-      });
+      };
 
-      this.configObject = this.dashboardConfig.find((item) => item.name === name);
-      // console.log(this.dashboardConfig, 'dashboadconfig 2');
-      // this.configObject = {
-      //   name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-      //     .replace(/\s+/g, '_')
-      //     .toLowerCase(),
-      //   title: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-      //     .replace(/\s+/g, '_')
-      //     .toLowerCase(),
-      //   indicators: ids,
-      //   defaultIndicators: [7, 6, 5],
-      //   dataSources: sourcesID,
-      //   initialIndicator: ids[0],
-      //   initialDataSource: sourcesID[0],
-      //   initialLocation: 1,
-      // };
+      console.log(this.configObject, 'dashboadconfig 2');
+      return;
     }
     // ================= CUSTOM DASHBOARD
 
@@ -181,8 +167,6 @@ export default {
     }
     if (this.configObject.name === 'Advanced_Analytics') {
       this.isAdvanced = true;
-      //   this.ADD_CONTROL_PANEL(configObj);
-      // }
     }
   },
   watch: {

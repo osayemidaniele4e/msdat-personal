@@ -1,36 +1,30 @@
-  <!-- Auther: Ghufran Ahmed -->
+<!-- Auther: Ghufran Ahmed -->
 
 <template>
   <b-container>
     <b-row>
       <h2
-        style="
-          color: #202020;
-          font-family: Work Sans;
-          font-size: 25px;
-          margin-top: -24px;
-        "
+        style="color: #202020; font-family: Work Sans; font-size: 25px; margin-top: -24px"
         class="ml-3"
       >
         Select your sections and arrange your widgets
       </h2>
       <br />
       <b-col md="8" sm="12">
-        <div v-for="(value,index) in values" :key="index">
+        <div v-for="(value, i) in values" :key="i">
           <div class="">
             <input
               type="checkbox"
               name="dashboard"
-              id="dashboard"
+              :id="'dashboard'+i"
               :checked="isSelected(value)"
               @click="selectedComponent($event, value.fieldName)"
             />
             <!-- //:checked="isSelected(value)"/> -->
-            <label for="dashboard" class="fields">{{ value.fieldName }}</label>
+            <label :for="'dashboard'+i" class="fields">{{ value.fieldName }}</label>
           </div>
           <p style="width: 100%; font-family: Work Sans; font-size: 14px">
-            This section shows an overview of your dashboard. This is a brief
-            description...
+            This section shows an overview of your dashboard. This is a brief description...
           </p>
           <img :src="value.fieldImage" class="layout" />
         </div>
@@ -43,10 +37,7 @@
               ><p class="baseline">Save for Later</p>
             </b-col> -->
             <b-col cols="auto"
-              ><b-button
-                @click="approveData"
-                class="nextBtn"
-                style="font-family: Work Sans"
+              ><b-button @click="approveData" class="nextBtn" style="font-family: Work Sans"
                 >COMPLETE</b-button
               ></b-col
             >
@@ -85,8 +76,7 @@ export default {
         {
           fieldName: 'Indicator Comparsion - By Period ',
           selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
-          fieldImage:
-            '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
+          fieldImage: '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
         },
         {
           fieldName: 'Dataset Comparison',
