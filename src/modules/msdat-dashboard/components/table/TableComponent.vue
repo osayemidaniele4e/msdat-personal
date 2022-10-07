@@ -67,7 +67,7 @@
           the main indicator and others, the related indicators -->
 
           <TableDataRow
-            class="msdat_primary text-white"
+            class="base_subCard_header text-white"
             :rowData="dataArray[0]"
             @indicator-info:clicked="$emit('selected:indicator-info', $event)"
           >
@@ -559,7 +559,7 @@ table.table {
   // selected data source
   .table-active {
     // background-color: #2b5d5b;
-    background-color: $primary;
+    background-color: #348481;
   }
 
   .classification-row {

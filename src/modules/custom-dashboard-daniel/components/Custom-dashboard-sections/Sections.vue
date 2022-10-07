@@ -9,7 +9,7 @@
       "
     >
       <div class="col-md-12">
-        <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+        <base-sub-card class="my-2 shadow-sm">
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">
               Indicator Overview
@@ -36,7 +36,7 @@
       "
     >
       <div class="col-md-12">
-        <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+        <base-sub-card class="my-2 shadow-sm">
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">
               Zonal Analysis Section
@@ -61,7 +61,7 @@
       "
     >
       <div class="col-md-12">
-        <base-sub-card :backgroundColor="'#348481'">
+        <base-sub-card>
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">
               Indicator Comparison - By Period
@@ -83,7 +83,7 @@
       "
     >
       <div class="col-md-12">
-        <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+        <base-sub-card class="my-2 shadow-sm">
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">
               Dataset Comparison
@@ -104,7 +104,7 @@
       "
     >
       <div class="col-md-12">
-        <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+        <base-sub-card class="my-2 shadow-sm">
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">
               Multi-source Indicator Comparison

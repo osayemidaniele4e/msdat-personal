@@ -26,7 +26,7 @@
             })
           "
         >
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Indicator Overview
@@ -57,7 +57,7 @@
             })
           "
         >
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Zonal Analysis
@@ -84,7 +84,7 @@
             })
           "
         >
-          <base-sub-card :backgroundColor="'#348481'">
+          <base-sub-card>
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Indicator Comparison - By Period/State
@@ -107,7 +107,7 @@
             fields.map(element => {
               element.name == 'Dataset Comparison'})
           ">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Dataset Comparison
@@ -133,7 +133,7 @@
             fields.map(element => {
               element.name == 'Multi-source Indicator Comparison'})
           ">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Multi-Source Indicator Comparison
