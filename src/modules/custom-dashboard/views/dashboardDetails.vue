@@ -146,20 +146,11 @@ export default {
     };
   },
   mounted() {
-<<<<<<< HEAD
-    // console.log(this.getUser);
-    this.user = this.getUser;
-    this.username = this.user.username;
-    // this.$store.commit('updateStep', 1);
-    // localStorage.removeItem('vuex');
-    // this.$store.dispatch('resetState');
-=======
     this.user = this.getUser;
     this.username = this.user.username;
     this.$store.commit('updateStep', 1);
     localStorage.removeItem('vuex');
     this.$store.dispatch('resetState');
->>>>>>> b9f3843d36b2fbfaeccae74bb48caa34e68eb48d
     // store.replaceState({})
     // this.$forceUpdate();
     // this.$router.go();
