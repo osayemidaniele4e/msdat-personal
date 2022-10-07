@@ -95,6 +95,7 @@ export default {
     this.clearData();
   },
   async created() {
+    const { name } = this.$route.params;
     // ==========================controlspoil=======================================//
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
       this.isCustom = true;
@@ -163,7 +164,7 @@ export default {
     // ==========================controlspoil=======================================//
 
     // this.CLEAR_CONTROL_PANEL();
-    const { name } = this.$route.params;
+
     // this.$route.meta.title = 'Hello World From Route';
     try {
       // const response = await apiServices.getDashboard();

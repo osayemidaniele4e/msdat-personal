@@ -18,7 +18,7 @@
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
               v-for="(value, index) in classify"
-              :key="index  * Math.random()"
+              :key="index"
               :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
@@ -38,7 +38,7 @@
             </div>
             <template v-for="(dt, index) in source">
               <TableDataSourceCell
-                :key="index * Math.random()"
+                :key="index"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -48,10 +48,23 @@
               />
             </template>
           </tr>
-          <tr v-else>
-            <div v-for="(dt, i) in source" :key="i  * Math.random()">
+          <tr v-else-if='customDashboard === true'>
+            <!-- <div v-for="(dt, i) in source" :key="i">
               <TableDataSourceCell
-                :key="i * Math.random()"
+                :key="i"
+                :source="dt"
+                @source:click="log($event)"
+                @source-info:click="$emit('selected:source-info', $event)"
+                :selectedSource="selectedSource"
+                @value="getValue"
+                @key="getKey"
+              />
+            </div> -->
+          </tr>
+          <tr v-else>
+            <div v-for="(dt, i) in source" :key="i">
+              <TableDataSourceCell
+                :key="i"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -90,7 +103,16 @@
               </div>
               <div class="nhmis-month-text2" v-else>-</div>
 
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index * Math.random()" scope="col">
+              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                <TableDataCell
+                  :cellData="getValueForColumn(dataArray[0].values, dt)"
+                  :dataColors="' '"
+                />
+              </td>
+            </template>
+              <template #default v-else-if='customDashboard === true'>
+              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                <!-- percentage values and year -->
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
                   :dataColors="' '"
@@ -98,7 +120,7 @@
               </td>
             </template>
             <template #default v-else>
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index  * Math.random()" scope="col">
+              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <!-- percentage values and year -->
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
@@ -144,7 +166,7 @@
           <!-- TODO: fix -->
           <template v-for="(indicatorData, index) in dataArray">
             <TableDataRow
-              :key="indicatorData.indicator.id  * Math.random()"
+              :key="indicatorData.indicator.id"
               v-if="index > 0"
               :rowData="indicatorData"
               @indicator-info:clicked="$emit('selected:indicator-info', $event)"
@@ -172,7 +194,7 @@
                   <div class="nhmis-rel-text1 text-center">-</div>
                   <div class="nhmis-rel-text2">-</div>
                 </td>
-                <td class="text-center p-2" v-for="(dt, index) in source" :key="index * Math.random()" scope="col">
+                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -180,7 +202,7 @@
                 </td>
               </template>
               <template #default v-else>
-                <td class="text-center p-2" v-for="(dt, index) in source" :key="index * Math.random()" scope="col">
+                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -190,7 +212,7 @@
             </TableDataRow>
 
             <!-- This creates a space between the related indicators table rows -->
-            <div :key="index * Math.random()" class=""></div>
+            <div :key="index" class=""></div>
           </template>
         </tbody>
       </table>
@@ -369,6 +391,7 @@ export default {
       const resultSorted = result.sort(
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
+      // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
 
@@ -523,6 +546,9 @@ export default {
   computed: {
     datatest(id) {
       return id + 2;
+    },
+    customDashboard() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
     },
   },
 
