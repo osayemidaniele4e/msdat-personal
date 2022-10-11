@@ -18,7 +18,7 @@
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
               v-for="(value, index) in classify"
-              :key="index"
+              :key="index * Math.random()"
               :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
@@ -38,7 +38,7 @@
             </div>
             <template v-for="(dt, index) in source">
               <TableDataSourceCell
-                :key="index"
+                :key="index * Math.random()"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -48,10 +48,9 @@
               />
             </template>
           </tr>
-          <tr v-else-if='customDashboard === true'>
-            <!-- <div v-for="(dt, i) in source" :key="i">
+          <tr v-else-if='customDashboard === true' class="custom">
               <TableDataSourceCell
-                :key="i"
+                v-for="(dt, i) in source" :key="i * Math.random()"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -59,7 +58,6 @@
                 @value="getValue"
                 @key="getKey"
               />
-            </div> -->
           </tr>
           <tr v-else>
             <div v-for="(dt, i) in source" :key="i">
@@ -110,7 +108,7 @@
                 />
               </td>
             </template>
-              <template #default v-else-if='customDashboard === true'>
+            <template #default v-else-if='customDashboard === true'>
               <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <!-- percentage values and year -->
                 <TableDataCell
@@ -328,7 +326,7 @@ export default {
        * This store the all the data sources available in the data parsed
        */
       source: [],
-
+      customSource: [],
       classificationOrder: ['Routine', 'Survey', 'Estimate'],
 
       // data for NHMIS monthly
@@ -357,6 +355,7 @@ export default {
      */
     getValueForColumn(valueArray, column) {
       const valueObj = valueArray.find((e) => e.dataSources === column);
+      // console.log('🚀valueObj', valueObj);
       if (valueObj) {
         return valueObj;
       }
@@ -391,7 +390,7 @@ export default {
       const resultSorted = result.sort(
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
-      // console.log(resultSorted, 'resultsorted');
+      console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
 
@@ -577,7 +576,6 @@ export default {
   background: #bebebe;
   border-radius: 4px;
 }
-
 table.table {
   td.heading_alt {
     padding: 0.5rem;
