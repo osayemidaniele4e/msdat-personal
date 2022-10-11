@@ -414,6 +414,7 @@ export default {
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
+      console.log('this.source', this.source);
     },
 
     log(e) {

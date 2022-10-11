@@ -196,8 +196,10 @@ export default {
         this.formIsValid = false;
       }
       if (this.selectedImage.val === '') {
+        // this.selectedImage.isValid = false;
+        // this.formIsValid = false;
         this.selectedImage.isValid = false;
-        this.formIsValid = false;
+        this.formIsValid = true;
       }
     },
 

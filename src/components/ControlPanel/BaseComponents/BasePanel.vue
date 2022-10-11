@@ -19,7 +19,22 @@
           <!-- {{ control.title }} -->
         <!-- </li> -->
       <!-- </template> -->
-      <template>
+      <template v-if="customDashboard === true">
+        <div  v-for="(control, index) in controls"
+          :key="index">
+        <li
+          v-if=" control.title !== 'Disaggregation'"
+          class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
+          :id="`panel-${index}`"
+          @click="changeControl(index)"
+        >
+          <!-- {{ control.title !== 'Disaggregation' && control.title}} -->
+          {{control.title}}
+        </li>
+        </div>
+      </template>
+      <template v-else>
         <li
           class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
           :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
