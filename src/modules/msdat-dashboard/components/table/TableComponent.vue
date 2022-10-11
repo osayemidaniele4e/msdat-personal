@@ -108,15 +108,6 @@
                 />
               </td>
             </template>
-            <template #default v-else-if='customDashboard === true'>
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
-                <!-- percentage values and year -->
-                <TableDataCell
-                  :cellData="getValueForColumn(dataArray[0].values, dt)"
-                  :dataColors="' '"
-                />
-              </td>
-            </template>
             <template #default v-else>
               <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <!-- percentage values and year -->
