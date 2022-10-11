@@ -390,7 +390,7 @@ export default {
       const resultSorted = result.sort(
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
-      console.log(resultSorted, 'resultsorted');
+      // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
 
@@ -414,7 +414,7 @@ export default {
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
-      console.log('this.source', this.source);
+      // console.log('this.source', this.source);
     },
 
     log(e) {

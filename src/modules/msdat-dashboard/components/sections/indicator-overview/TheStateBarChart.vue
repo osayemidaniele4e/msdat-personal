@@ -274,7 +274,7 @@ export default {
       for (let i = 0; i < data.length; i += 1) {
         data[i].value = parseFloat(data[i].value).toFixed(1);
       }
-      console.log(data, 'datata');
+      // console.log(data, 'datata');
 
       return data;
     },
