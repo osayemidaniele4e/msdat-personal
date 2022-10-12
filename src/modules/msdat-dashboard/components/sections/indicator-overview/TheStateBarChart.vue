@@ -171,7 +171,7 @@ export default {
           value: sdg_target,
           show: this.values.target.sdg,
         },
-      }, ndData);
+      }, ndData, this.values.numdenum);
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup 😢 😟 😡
 
@@ -202,6 +202,8 @@ export default {
         chartOptions.series.unshift(seriesObject);
       }
       if (this.values.numdenum) {
+        chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
+        chartOptions.tooltip.outside = true;
         chartOptions.tooltip.pointFormat = `${'<span style="font-size:10px; color:black;font-weight:bold;">'
           + '{series.name}:'
           + ' {point.y:.2f}'}<br>`
@@ -213,7 +215,6 @@ export default {
           + ')'
           + '</span>';
       }
-
       this.BarChartOptions = chartOptions;
       this.loading = false;
     },
