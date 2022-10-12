@@ -1,6 +1,5 @@
 <template>
   <div class="">
-    <!-- Toggleable tab links here -->
     <ul
       class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-5 mx-3 cursor-pointer main tabs-sec"
     >
