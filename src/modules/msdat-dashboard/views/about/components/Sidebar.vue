@@ -83,7 +83,7 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline main-item">Other Dashboards</h5>
-          <router-link to="/coming-soon/custom_dashboard"
+          <router-link to="/custom"
            class="sub-item"
             >
               Create New Dashboard

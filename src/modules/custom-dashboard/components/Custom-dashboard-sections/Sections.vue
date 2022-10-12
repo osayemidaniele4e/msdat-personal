@@ -1,4 +1,5 @@
 /* eslint-disable vue/no-unused-components */
+<!-- Auther: Ghufran Ahmed  -->
 <template>
   <div class="temp">
     <TroubleShootingModal
@@ -246,29 +247,12 @@ export default {
     },
     async log(optionsObject, index, index2) {
       console.log({ optionsObject, index, index2 });
-      // console.log('MSDAT2.0');
-      /**
-       * This Update the route any time the  control panel changers
-       */
-      // if (Object.keys(optionsObject).length > 0) {
-      //   const objects = this.extractIdsOfObject(optionsObject);
-      //   this.addHashToLocation({
-      //     section: index,
-      //     first_related: optionsObject.indicator.first_related,
-      //     second_related: optionsObject.indicator.second_related,
-      //     ...objects,
-      //   });
-      // }
     },
-    // closeOnboard() {
-    //   this.firstTime = false;
-    // },
   },
 
   async mounted() {
     this.loading = false;
     // initializing data for dashboard
-    // console.trace(this.$route.query);
     let urlRequestedIndicator = [];
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
@@ -300,9 +284,6 @@ export default {
         const firstItem = 0;
         this.defaultYear = this.defaultYearDropdown[firstItem];
       }
-      // setTimeout(() => {
-      //   this.setRouteQueryToControlPanel();
-      // }, 4000);
 
       this.cpIsLoading = true;
       this.$nextTick(() => {

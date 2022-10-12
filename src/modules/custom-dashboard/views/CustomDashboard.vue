@@ -48,7 +48,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import instance from '../components/Custom-dashboard-sections/Instance.vue';
+import instance from '../../msdat-dashboard/views/dashboard/instance.vue';
 import config from '../../dynamic_dashboard/config/dashboard_config';
 
 export default {
@@ -82,7 +82,7 @@ export default {
     const { title } = this.$route.params;
     // console.log('DCONFIG',this.dashboardConfig);
     // this.$route.meta.title = 'Hello World From Route';
-    console.log(this.dashboardConfig);
+    console.log(this.dashboardConfig, 'helloWorld');
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
       // FOR Indicators
       const ids = [];

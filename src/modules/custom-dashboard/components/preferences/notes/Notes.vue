@@ -1,3 +1,4 @@
+<!-- Auther: Ghufran Ahmed  -->
 <template>
   <div>
     <b class="selection-header" style="font-size: 13px; font-family: Work Sans;">NOTES</b><br />
@@ -21,13 +22,8 @@
 </template>
 
 <script>
-import Card from '../../Card.vue';
 
 export default {
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    Card,
-  },
   computed: {
     notes() {
       return this.$store.getters.notesArea;

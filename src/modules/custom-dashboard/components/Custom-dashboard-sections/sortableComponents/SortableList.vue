@@ -1,6 +1,5 @@
 <script>
 import { Sortable } from '@shopify/draggable';
-// import DataLayerState from '../../../../DataLayer/store/state';
 
 function move(items, oldIndex, newIndex) {
   const itemRemovedArray = [
@@ -34,11 +33,6 @@ export default {
 
     });
   },
-  Watch: {
-    arrangedList() {
-      // log('sad', this.SortedArrayList);
-    },
-  },
   mounted() {
     new Sortable(this.$el, {
       draggable: `.${this.itemClass}`,
@@ -49,8 +43,6 @@ export default {
     }).on('sortable:stop', ({ oldIndex, newIndex }) => {
       const moveData = move(this.value, oldIndex, newIndex);
       this.$emit('input', moveData);
-      // console.log(moveData);
-      // DataLayerState.factors = moveData;
       this.$store.dispatch('arrangedSection', moveData);
     });
   },

@@ -8,14 +8,13 @@
 
   <!-- {{selectedSource.id}}
   {{source.id}} -->
-    <div class="d-flex align-items-center justify-content-center" >
+    <div class="icon d-flex align-items-center justify-content-center" >
       <span
         class="data-source h6 mr-3 mb-0 font-weight-bold"
         @click="$emit('source:click', source)"
         >{{ source.datasource }}
       </span>
       <b-icon-info-circle-fill
-        :variant="selectedSource.id === source.id ? '' : 'primary'"
         @click="$emit('source-info:click', source)"
         class="data-source-info"
       />
@@ -60,4 +59,9 @@ export default {
 .data-source-info {
   cursor: pointer;
 }
+.icon {
+  svg {
+    color: #348481 !important;
+  }
+  }
 </style>

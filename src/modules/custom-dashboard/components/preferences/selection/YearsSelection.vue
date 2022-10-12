@@ -1,5 +1,7 @@
+<!-- Auther: Ghufran Ahmed -->
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-expressions */
+
 <template>
   <div>
     <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
@@ -63,6 +65,8 @@ export default {
     loading() {
       return this.$store.getters.Yearsloading;
     },
+
+    // Take out the distinct Years from the Years Api an show it after
     distinctYears() {
       const yearsArray = {};
 
@@ -87,14 +91,12 @@ export default {
       Object.keys(yearsArray).forEach((key) => {
         DArray.push(yearsArray[key]);
       });
-      // for (const i in yearsArray) {
-      //   DArray.push(yearsArray[i]);
-      // }
       DArray.sort((a, b) => b.value - a.value);
       return DArray;
     },
   },
   methods: {
+    // For Selection of Years
     selectYear(e) {
       this.yearSelected = e.target.checked;
       if (e.target.checked) {

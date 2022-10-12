@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 <template>
   <div>
-    <!-- <base-sub-card :backgroundColor="'#348481'"> -->
+    <!-- <base-sub-card> -->
 
     <base-overlay :show="loading">
       <!-- the props ConfidenceOptions and showToggle show the cofidence range component

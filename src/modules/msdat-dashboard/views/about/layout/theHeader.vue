@@ -95,12 +95,12 @@
               main
             "
           >
-            <b-nav class="h-100 align-items-center main">
+            <b-nav class="h-100 align-items-center main d-flex">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
                  <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link">Home</a>
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/coming-soon/custom_dashboard" class="nav-link"
+              <router-link to="/custom" class="nav-link"
                 >Create New Dashboard</router-link
               >
           <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link">Go back to MSDAT 1.5</a>
@@ -129,12 +129,34 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-<!--
-              <router-link to="/login" v-if="!userName" class="nav-link"
-                ><b-icon-person-fill></b-icon-person-fill
-                >&nbsp;Login/Register</router-link
-              >
-              <router-link to="/login" v-else class="nav-link"
+              <!-- <div v-b-toggle.sidebar-2>
+              <b-icon-person-fill></b-icon-person-fill
+                >&nbsp;Login/Register
+              </div> -->
+              <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff">
+              <LoginSidebar v-if="show" />
+              <SignUp v-else />
+              <div class="row" v-if="show">
+              <div class="col-12 text-center">
+                <h4 class="py-3" style="font-size: 15px">
+                  Don't have an account?
+                </h4>
+                <button
+                  class="btn btn-lg btn-light btn-outline-dark text-dark"
+                  style="font-size: 15px; background:#F7F7F7; border:1px solid #707070"
+                  @click.prevent="showLoginForm"
+                >
+                  CREATE AN ACCOUNT
+                </button>
+              </div>
+              </div>
+              <div v-else>
+              <div class="justify-content-center text-center">
+          <button class="btn btn-lg btn-light btn-outline-dark text-dark mb-3" style="background:#F7F7F7; border:1px solid #707070" @click="showRegForm">LOGIN</button>
+        </div>
+              </div>
+            </b-sidebar>
+              <!-- <router-link to="/login" v-else class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
                 out</router-link
               > -->
@@ -207,15 +229,20 @@
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
 import Sidebar from '../components/Sidebar.vue';
+import LoginSidebar from '../components/Login.vue';
+import SignUp from '../components/SignUp.vue';
 
 export default {
   components: {
     HeaderOption,
     DropCard,
     SideBar: Sidebar,
+    LoginSidebar,
+    SignUp,
   },
   data() {
     return {
+      show: true,
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
@@ -237,13 +264,20 @@ export default {
       controls: [],
     };
   },
-
   created() {
     this.controls = this.$children;
     // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
   },
 
   methods: {
+    showRegForm() {
+      // eslint-disable-next-line no-unused-expressions
+      this.show = true;
+    },
+    showLoginForm() {
+      // eslint-disable-next-line no-unused-expressions
+      this.show = false;
+    },
     runIntro() {
       this.toggleOption = !this.toggleOption;
       this.$emit('tour');
@@ -853,5 +887,8 @@ header#the-header {
   border-radius: 2px;
   position: relative;
   left: -25px;
+}
+.btn:hover{
+  color: #fff
 }
 </style>

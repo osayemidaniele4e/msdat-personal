@@ -1,14 +1,10 @@
-// import Vue from 'vue';
-// import Vuex from 'vuex';
+// Auther: Ghufran Ahmed
 
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
-// import Vuex from 'vuex';
 
-// const store = new Vuex.Store({
 const store = {
-  // state: getState(),
   state: {
     loader: {
       show: false,
@@ -18,7 +14,6 @@ const store = {
       years: false,
     },
     allSelected: false,
-    // loading: false,
     step: 0,
     customDashboard: false,
     dashboardDetails: {},
