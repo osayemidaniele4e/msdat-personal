@@ -1,3 +1,5 @@
+  <!-- Auther: Ghufran Ahmed -->
+
 <template>
   <b-container>
     <b-row>
@@ -108,25 +110,27 @@ export default {
     },
   },
   methods: {
+    // Below function is excuted when approve data button is clicked
     approveData() {
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
-        alert('Dashboard name not provided');
+        this.$swal('Dashboard name not provided');
         return;
       }
       const cDashboard = true;
       this.$store.dispatch('customDashboard', cDashboard);
+      const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
       this.$router.push({
-        name: 'my-custom-dashboard',
-        params: {
-          title: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
-        },
+        path: `/dashboard/${t}`,
+        component: () => import('../../dynamic_dashboard/index.vue'),
+        // params: {
+        //   name: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
+        // },
       });
-      // this.$router.push('/my-custom-dashboard');
     },
+
+    // PRESELECTION OF Dashboard widgets
     selectedComponent(e, fieldName) {
-      // console.log(e.target.value);
-      // console.log(fieldName);
       const payload = {
         checked: e.target.checked,
         checkedField: fieldName,

@@ -18,7 +18,7 @@
 
       <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Indicator Overview</h5>
             </template>
@@ -42,7 +42,7 @@
 
       <template v-slot:section-1="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>
             </template>
@@ -62,7 +62,7 @@
 
       <template v-slot:section-2="{ payload, controlIndex }">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'">
+          <base-sub-card :backgroundColor="'header'">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Indicator Comparison - By Period/State
@@ -81,7 +81,7 @@
 
       <template v-slot:section-3="{ payload, controlIndex }">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Dataset Comparison</h5>
             </template>
@@ -98,7 +98,7 @@
 
       <template v-slot:section-4="{ payload, controlIndex }">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Multi-Source Indicator Comparison
@@ -126,7 +126,7 @@
 
       <template v-slot:section-5="{ payload, controlIndex }">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
             </template>
@@ -216,6 +216,11 @@ export default {
       default: true,
     },
   },
+  computed: {
+    customDashboard() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
+    },
+  },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
@@ -299,6 +304,12 @@ export default {
       this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
       this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
       this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    } else if (this.customDashboard === true) {
+      this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
+      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+      this.ADD_CONTROL_PANEL(ICSConfig);
+      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
     } else {
       this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
       this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);

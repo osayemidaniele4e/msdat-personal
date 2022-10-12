@@ -34,7 +34,8 @@
           :NoDataLabel="values.label"
         />
         <!-- </div> -->
-        <div class="disabled_alt">
+        <!-- <div class="disabled_alt"> -->
+          <div>
           <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
         </div>
 

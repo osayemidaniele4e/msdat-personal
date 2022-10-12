@@ -1,6 +1,38 @@
+<!-- eslint-disable no-undef -->
 <template>
   <div class="temp">
     <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
+    <div
+        id="browserSupport"
+        v-show="detect"
+        class="col-lg-4 col-md-7 col-sm-6 col-xs-12"
+      >
+        <button
+          v-show="detect"
+          v-on:click="closeAlert()"
+          style="font-size: 20px"
+          type="button"
+          class="close mt-2"
+          data-dismiss="#browserSupport"
+        >
+          <span aria-hidden="true" class="mb-4 mt-4 pt-4 pr-4">&times;</span>
+        </button>
+        <h4 class="mt-4 pl-2">
+          <img src="@/assets/img/browser.png" /><strong class="alertBold"
+            >Unsupported Browser!
+          </strong>
+        </h4>
+
+        <p class="p-2">
+          Looks like you are using a browser that is not supported, so you may
+          experience some problems.
+        </p>
+        <p class="pb-4 pl-2">
+          Please use <strong class="alertBold">Google Chrome</strong> browser
+          for the best experience with <br />
+          MSDAT Platform.
+        </p>
+      </div>
     <template v-if="!showTroubleShootingModal">
       <Loading v-if="!loading" :noBackdrop="true" :showBackground="false" class="over">
         <div class="text-center">
@@ -163,7 +195,7 @@ import scroll from '../../modules/onScroll/onscroll';
 import SharingDashboardState from '../../modules/dashboard_state_share/mixins';
 import Loading from '../../mixins/loading';
 import Onboarding from '../onboarding/onboarding';
-import TroubleShooting from '../../modules/troubleshooting/mixins';
+import TroubleShooting from '../../modules/troubleshooting/modal.vue';
 
 export default {
   name: 'BaseDashboard',
@@ -189,6 +221,7 @@ export default {
   data() {
     return {
       isAdvanced: false,
+      showTroubleShootingModal: false,
       position: 3,
       selectedPanel: 0,
       dashboardConfig: config,
@@ -210,6 +243,7 @@ export default {
         { name: 'Rent', value: 'rent' },
       ],
       value: null,
+      detect: false,
       value0: null,
       value1: null,
       value2: null,
@@ -343,7 +377,26 @@ export default {
         window.requestAnimationFrame(this.scroll);
       }
     },
-
+    closeAlert() {
+      this.detect = false;
+    },
+    detectBrowser() {
+      let browser = 'unknown';
+      if (navigator.userAgent.indexOf('Chrome') !== -1) {
+        browser = 'Chrome';
+      } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+        browser = 'Mozilla Firefox';
+      } else if (navigator.userAgent.indexOf('MSIE') !== -1) {
+        browser = 'Internet Explorer';
+      } else if (navigator.userAgent.indexOf('Safari') !== -1) {
+        browser = 'Safari';
+      } else if (navigator.userAgent.indexOf('Opera') !== -1) {
+        browser = 'Opera';
+      } else if (navigator.userAgent.indexOf('YaBrowser') !== -1) {
+        browser = 'IE';
+      }
+      return browser;
+    },
     handleScroll() {
       this.scrollCont = document.querySelector('.dummy-row').scrollLeft;
       this.$emit('scrollN', this.scrollCont);
@@ -473,6 +526,17 @@ export default {
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
     }
+    if (this.detectBrowser() !== 'Chrome') {
+      this.detect = true;
+    } else {
+      this.detect = false;
+    }
+
+    setTimeout(() => {
+      if (this.detect) {
+        this.closeAlert();
+      }
+    }, 60000);
     try {
       await this.$DL.init({
         dashboardIndicators: this.indicators,
@@ -547,7 +611,26 @@ div.temp {
     z-index: -1;
   }
 }
-
+    div#browserSupport {
+      position:fixed;
+      margin: 5px 5px 0 0;
+      background-color: #fff3cd;
+      color:#583e03;
+      top:0;
+      border:0.5px solid #583e03;
+      font-size: 12px;
+      box-shadow: -3px 5px 10px #00000029;
+      right:0;
+      border-radius: 5px;
+      z-index:900;
+    }
+    div#browserSupport  img {
+      width: 34px;
+      height:30px;
+    }
+    .alertBold{
+      color:#583e03;
+    }
 .swipe-btn-flex {
   display: none;
 }

@@ -2,7 +2,7 @@
   <div class="card">
     <div
       class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
-      :class="{ 'msdat_primary': bgName }"
+      :class="[backgroundColor === 'header' ? 'base_subCard_header' : 'base_subCard']"
     >
       <!-- :style="{ backgroundColor }" -->
       <div class="title w-100">
@@ -106,7 +106,8 @@ export default {
     },
     backgroundColor: {
       type: String,
-      default: '#DFF3F3',
+      default: '',
+      required: false,
     },
     buttonToggle: {
       type: Boolean,
@@ -139,6 +140,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.title {
+  color: black;
+}
+</style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
