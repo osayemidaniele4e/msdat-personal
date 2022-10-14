@@ -77,7 +77,8 @@ module.exports = {
           children: [
             'mobile',
             'disagg',
-            'nhmis-month'
+            'nhmis-month',
+            'num-denum'
           ]
         }
 
