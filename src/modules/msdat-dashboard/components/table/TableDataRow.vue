@@ -54,7 +54,7 @@ tr {
 
     svg {
       // color: #2b5d5b;
-      color: $primary;
+      color: #348481;
       cursor: pointer;
     }
   }

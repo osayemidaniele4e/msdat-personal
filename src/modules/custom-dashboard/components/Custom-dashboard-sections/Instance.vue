@@ -1,4 +1,5 @@
 /* eslint-disable vue/no-unused-components */
+<!-- Auther: Ghufran Ahmed  -->
 <template>
   <div>
     <Sections
@@ -25,15 +26,12 @@
             })
           "
         >
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Indicator Overview
               </h5>
             </template>
-            <!-- lazy loading for each section starts here -->
-            <!-- the first section doesn't need the component
-                 since it will be mounted first -->
             <template>
               <ControlPanelConfiguration :controlIndex="controlIndex">
                 <BaseIndicatorOverview
@@ -59,15 +57,12 @@
             })
           "
         >
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Zonal Analysis
               </h5>
             </template>
-            <!-- lazy loading for each section starts here -->
-            <!-- the first section doesn't need the component
-                 since it will be mounted first -->
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
@@ -89,7 +84,7 @@
             })
           "
         >
-          <base-sub-card :backgroundColor="'#348481'">
+          <base-sub-card>
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Indicator Comparison - By Period/State
@@ -112,7 +107,7 @@
             fields.map(element => {
               element.name == 'Dataset Comparison'})
           ">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Dataset Comparison
@@ -138,7 +133,7 @@
             fields.map(element => {
               element.name == 'Multi-source Indicator Comparison'})
           ">
-          <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm">
+          <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Multi-Source Indicator Comparison

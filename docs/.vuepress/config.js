@@ -67,6 +67,7 @@ module.exports = {
             'index-db',
             'datalayer',
             'config',
+            'offline-feature',
             'state-profile'
           ]
         },

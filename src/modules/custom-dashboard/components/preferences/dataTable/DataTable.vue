@@ -1,3 +1,4 @@
+<!-- Auther: Ghufran Ahmed  -->
 <template>
   <div class="">
     <div
@@ -142,20 +143,6 @@
             </td>
             <td >
               <template v-for="level in child.levels">
-                <!-- <ul
-                  class="col-6"
-                  :key="level.value"
-                  v-if="level.selected"
-                  style="
-                    list-style: none;
-                    display: inline-block;
-                    font-size: 12px;
-                    font-family: Work Sans;
-                    margin-bottom: 0rem !important;
-                  "
-                >
-                  <li >{{ level.value }}</li>
-                </ul> -->
                 <div
                   class="col-8 col-md-6 p-0"
                   style="
@@ -172,23 +159,6 @@
             </td>
             <td >
               <template v-for="year in child.years">
-                <!-- <ul
-                  class="col-3"
-                  :key="year.value"
-                  style="
-                    list-style: none;
-                    display: inline-block;
-                    font-size: 12px;
-
-                    font-family: Work Sans;
-                    margin-bottom: 0rem !important;
-                  "
-                  v-if="year.selected"
-                >
-                  <li >
-                    {{ year.value }}
-                  </li>
-                </ul> -->
                 <div
                   class="col-4 p-0 col-md-3"
                   style="
@@ -228,12 +198,11 @@ export default {
   },
 
   computed: {
-    // loading() {
-    //   return this.$store.state.loader.show;
-    // },
+    // Load the selected Levels
     indicatorsLevels() {
       return this.$store.getters.getprogramArea;
     },
+    // Load the selected datasources
     dataSources() {
       return this.$store.getters.getDataSource;
     },
@@ -241,31 +210,6 @@ export default {
       return this.$store.getters.showloader;
     },
   },
-
-  // watch: {
-  //   indicators() {
-  //   this.indicatorData this.$store.getters.getprogramArea;
-  //   },
-  // },
-
-  //
-
-  // //   watch: {
-  // //     abc() {
-  // //       if (this.levelData) {
-  // //         const data = this.$store.getters["indicators/indicatorsLevels"];
-  // //         ('asd');
-  // //       }
-  // //     },
-  // //   },
-  //   mounted() {
-  //     this.levelsManagement()
-  //   },
-  //   methods: {
-  //     levelsManagement() {
-  //       this.levelData = this.$store.getters["indicators/indicatorsLevels"];
-  //     },
-  //   },
 };
 </script>
 

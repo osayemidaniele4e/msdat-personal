@@ -18,7 +18,7 @@
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
               v-for="(value, index) in classify"
-              :key="index"
+              :key="index * Math.random()"
               :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
@@ -38,7 +38,7 @@
             </div>
             <template v-for="(dt, index) in source">
               <TableDataSourceCell
-                :key="index"
+                :key="index * Math.random()"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -47,6 +47,17 @@
                 @key="getKey"
               />
             </template>
+          </tr>
+          <tr v-else-if='customDashboard === true' class="custom">
+              <TableDataSourceCell
+                v-for="(dt, i) in source" :key="i * Math.random()"
+                :source="dt"
+                @source:click="log($event)"
+                @source-info:click="$emit('selected:source-info', $event)"
+                :selectedSource="selectedSource"
+                @value="getValue"
+                @key="getKey"
+              />
           </tr>
           <tr v-else>
             <div v-for="(dt, i) in source" :key="i">
@@ -67,7 +78,7 @@
           the main indicator and others, the related indicators -->
 
           <TableDataRow
-            class="msdat_primary text-white"
+            class="base_subCard_header text-white"
             :rowData="dataArray[0]"
             @indicator-info:clicked="$emit('selected:indicator-info', $event)"
           >
@@ -306,7 +317,7 @@ export default {
        * This store the all the data sources available in the data parsed
        */
       source: [],
-
+      customSource: [],
       classificationOrder: ['Routine', 'Survey', 'Estimate'],
 
       // data for NHMIS monthly
@@ -335,6 +346,7 @@ export default {
      */
     getValueForColumn(valueArray, column) {
       const valueObj = valueArray.find((e) => e.dataSources === column);
+      // console.log('🚀valueObj', valueObj);
       if (valueObj) {
         return valueObj;
       }
@@ -369,6 +381,7 @@ export default {
       const resultSorted = result.sort(
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
+      // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
@@ -393,6 +406,7 @@ export default {
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
+      // console.log('this.source', this.source);
     },
 
     log(e) {
@@ -415,43 +429,49 @@ export default {
     },
     /**
      * This fetches numerator denominator data from
-     * api directly using the control panel props
+     * dexie using the control panel props
      */
-    getNumDenumData() {
+    async getNumDenumData() {
       if (this.values?.datasource.id !== undefined) {
         const {
           indicator, year, location, datasource,
         } = this.values;
-        axiosInstance
-          .get(
-            `data/?datasource=${datasource.id}&indicator=${indicator.id}&period=${year}&location=${location.id}`,
-          )
-          .then((response) => {
-            const numerator = response.data.results.filter((item) => item.value_type === 6);
-            const denominator = response.data.results.filter((item) => item.value_type === 10);
-            if (numerator.length > 0 || denominator.length > 0) {
-              this.numDenum = true;
-              if (numerator.length > 0) {
-                this.numerator = `${this.values.indicator.short_name} - ${Number(
-                  numerator[0].value,
-                ).toLocaleString()}`;
-              } else {
-                this.numerator = 'N/a';
-              }
-              if (denominator.length > 0) {
-                this.denominator = `${this.values.indicator.short_name} - ${Number(
-                  denominator[0].value,
-                ).toLocaleString()}`;
-              } else {
-                this.denominator = 'N/a';
-              }
-            } else {
-              this.numDenum = false;
-            }
-          })
-          .catch((error) => {
-            console.log({ error });
-          });
+
+        const numeratorData = await this.dlQuery({
+          datasource: datasource.id,
+          indicator: indicator.id,
+          period: year,
+          location: location.id,
+          value_type: 6,
+        });
+        const denominatorData = await this.dlQuery({
+          datasource: datasource.id,
+          indicator: indicator.id,
+          period: year,
+          location: location.id,
+          value_type: 10,
+        });
+        if (numeratorData.length > 0 || denominatorData.length > 0) {
+          this.numDenum = true;
+          if (numeratorData.length > 0) {
+            const numerator = numeratorData[0];
+            this.numerator = `${this.values.indicator.short_name} - ${Number(
+              numerator.value,
+            ).toLocaleString()}`;
+          } else {
+            this.numerator = 'N/a';
+          }
+          if (denominatorData.length > 0) {
+            const denominator = denominatorData[0];
+            this.denominator = `${this.values.indicator.short_name} - ${Number(
+              denominator.value,
+            ).toLocaleString()}`;
+          } else {
+            this.denominator = 'N/a';
+          }
+        } else {
+          this.numDenum = false;
+        }
       }
     },
 
@@ -519,6 +539,9 @@ export default {
     datatest(id) {
       return id + 2;
     },
+    customDashboard() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
+    },
   },
 
   async created() {
@@ -546,7 +569,6 @@ export default {
   background: #bebebe;
   border-radius: 4px;
 }
-
 table.table {
   td.heading_alt {
     padding: 0.5rem;
@@ -554,7 +576,7 @@ table.table {
   // selected data source
   .table-active {
     // background-color: #2b5d5b;
-    background-color: $primary;
+    background-color: #348481;
   }
 
   .classification-row {

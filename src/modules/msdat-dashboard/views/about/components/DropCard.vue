@@ -66,9 +66,9 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link to="/coming-soon/custom_dashboard"
+          <router-link to="/custom"
             ><b-list-group-item
-              >Create New Dashboard</b-list-group-item
+              > Create Your Dashboard</b-list-group-item
             ></router-link
           >
           <router-link to="/state-profile"
