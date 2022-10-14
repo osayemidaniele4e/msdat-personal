@@ -225,9 +225,11 @@
 </template>
 
 <script>
-import axios from '@/plugins/axios';
+// import axios from '@/plugins/axios';
+import mixin from '@/modules/DataLayer/mixin';
 
 export default {
+  mixins: [mixin],
   data() {
     return {
       loading: false,
@@ -248,18 +250,11 @@ export default {
      * @Function Function to get datasource related to a particular indicator
      * @param {Number} indicatorID
      */
-    try {
-      this.loading = true;
-      const ds = await axios.get(`/indicators/${this.indicatorSelectedID}/datasources/`);
-      this.dataSources = ds.data.datasources.map((item) => ({
-        id: item.id,
-        datasource: item.datasource,
-      }));
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.loading = false;
-    }
+    const ds = await this.getDataSourcesFromDexie(this.indicatorSelectedID);
+    this.dataSources = ds.map((item) => ({
+      id: item.id,
+      datasource: item.datasource,
+    }));
   },
 };
 </script>

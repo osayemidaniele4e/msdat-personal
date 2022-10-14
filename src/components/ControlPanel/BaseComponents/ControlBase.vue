@@ -1,4 +1,4 @@
-<template>
+ <template>
     <div v-show="active">
         <slot></slot>
     </div>
@@ -25,5 +25,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -1,16 +1,40 @@
+<!-- eslint-disable no-undef -->
 <template>
   <div class="temp">
-    <TroubleShootingModal
-      style="z-index: 1500"
-      v-if="showTroubleShootingModal"
-    />
-    <template v-if="!showTroubleShootingModal">
-      <Loading
-        v-if="!loading"
-        :noBackdrop="true"
-        :showBackground="false"
-        class="over"
+    <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
+    <div
+        id="browserSupport"
+        v-show="detect"
+        class="col-lg-4 col-md-7 col-sm-6 col-xs-12"
       >
+        <button
+          v-show="detect"
+          v-on:click="closeAlert()"
+          style="font-size: 20px"
+          type="button"
+          class="close mt-2"
+          data-dismiss="#browserSupport"
+        >
+          <span aria-hidden="true" class="mb-4 mt-4 pt-4 pr-4">&times;</span>
+        </button>
+        <h4 class="mt-4 pl-2">
+          <img src="@/assets/img/browser.png" /><strong class="alertBold"
+            >Unsupported Browser!
+          </strong>
+        </h4>
+
+        <p class="p-2">
+          Looks like you are using a browser that is not supported, so you may
+          experience some problems.
+        </p>
+        <p class="pb-4 pl-2">
+          Please use <strong class="alertBold">Google Chrome</strong> browser
+          for the best experience with <br />
+          MSDAT Platform.
+        </p>
+      </div>
+    <template v-if="!showTroubleShootingModal">
+      <Loading v-if="!loading" :noBackdrop="true" :showBackground="false" class="over">
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="250px" />
           <div class="mr-4">
@@ -18,107 +42,102 @@
             <p>{{ loadingContent }}</p>
           </div>
         </div>
-        </Loading>
+      </Loading>
 
-        <div v-else class="position-relative">
-          <!-- <BaseUpdate :showPopUp="popUp" v-if="popUp" @closePopUp="handleClosePopUp" /> -->
-          <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
-          <section @click="$refs.theHeader.close()">
-            <div
-              :class="[
-                isMobile ? 'position-relative animated_toggle' : 'sticky animated_toggle',
-                show ? '' : 'hide',
-              ]"
-            >
-              <!-- Moses changed from this -->
-              <b-overlay :show="!cpIsLoading">
-                <BasePanel
-                  :changeIndex="changeIndex"
-                  :position="position"
-                  :selectedPanel="selectedPanel"
-                  v-if="cpIsLoading"
-                  v-on:showSection="sectionFocus($event)"
-                >
-                  <template v-slot:default>
-                    <ControlBase
-
+      <div v-else class="position-relative">
+        <!-- <BaseUpdate :showPopUp="popUp" v-if="popUp" @closePopUp="handleClosePopUp" /> -->
+        <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
+        <section @click="$refs.theHeader.close()">
+          <div
+            :class="[
+              isMobile ? 'position-relative animated_toggle' : 'sticky animated_toggle',
+              show ? '' : 'hide',
+            ]"
+          >
+            <!-- Moses changed from this -->
+            <b-overlay :show="!cpIsLoading">
+              <BasePanel
+                :changeIndex="changeIndex"
+                :position="position"
+                :selectedPanel="selectedPanel"
+                v-if="cpIsLoading"
+                v-on:showSection="sectionFocus($event)"
+              >
+                <template v-slot:default>
+                  <ControlBase
                     @selectedKey="changeKey($event)"
-                      v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
-                      :key="index"
-                      :title="control.label"
-                    >
-                      <template v-if="!Array.isArray(control.setup[0])">
-                        <ControlPanel
-                          @data:options="log($event, index)"
-                          :label="modifyLabel(control.label)"
-                          :setup="control.setup"
-                          :controlIndex="index"
-                          :defaultIndicator="defaultIndicator"
-                          :defaultDataSource="defaultDataSource"
-                          :defaultLocation="defaultLocation"
-                          :defaultYear="defaultYear"
-                        />
-                      </template>
-                      <template v-else>
-                        <div>
-                          <!-- direction buttons -->
-                          <div class="swipe-btn-flex">
-                            <button @click="swipeLeft" class="swipe-btn">
-                              <b-icon icon="chevron-left" />
-                            </button>
-                            <button @click="swipeRight" class="swipe-btn">
-                              <b-icon icon="chevron-right" />
-                            </button>
-                          </div>
-                          <div class="row dummy-row">
-                            <div
-                              class="col-md-4"
-                              v-for="(item, index2) in control.setup"
-                              :key="index2"
-                            >
-                              <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
-                              <div v-if="isAdvanced">
-                              <label class="text-uppercase work-sans label-text">program areas</label>
-                                   <SelectDropdown v-model="$data[indexModel(index2)]" :value = null
-                              :options="options"
-                              />
-                              </div>
-                              <!-- <pre> -->
-                                <!-- {{index2}}
-                                {{$data}} -->
-                              <!-- {{item[0].options}}
-                              </pre> -->
-                              <ControlPanel
-                                @data:options="log($event, index, index2)"
-                                :label="modifyLabel(control.label, index2)"
-                                :setup="item"
-                                :groupIndex="index2"
-                                :controlIndex="index"
-                                :defaultIndicator="defaultIndicator"
-                                :defaultDataSource="defaultDataSource"
-                                :defaultLocation="defaultLocation"
-                                :defaultYear="defaultYear"
-                                :updateValue="updateValue"
-                                :updateKey="updateKey"
-                                :resetData="resetData"
-                                :indicatorList="$data[indexModel(index2)]"
+                    v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                    :key="index"
+                    :title="control.label"
+                  >
+                    <template v-if="!Array.isArray(control.setup[0])">
+                      <ControlPanel
+                        :label="modifyLabel(control.label)"
+                        :setup="control.setup"
+                        :controlIndex="index"
+                        :defaultIndicator="defaultIndicator"
+                        :defaultDataSource="defaultDataSource"
+                        :defaultLocation="defaultLocation"
+                        :defaultYear="defaultYear"
+                      />
+                    </template>
+                    <!-- MULTI SELECT SECTION -->
+                    <template v-else>
+                      <div>
+                        <!-- mobile view direction buttons -->
+                        <div class="swipe-btn-flex">
+                          <button @click="swipeLeft" class="swipe-btn">
+                            <b-icon icon="chevron-left" />
+                          </button>
+                          <button @click="swipeRight" class="swipe-btn">
+                            <b-icon icon="chevron-right" />
+                          </button>
+                        </div>
+                        <div class="row dummy-row">
+                          <div
+                            class="col-md-4"
+                            v-for="(item, index2) in control.setup"
+                            :key="index2"
+                          >
+                            <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
+                            <!-- ADVANCED ANALYTICS PROGRAM-AREA -->
+                            <div v-if="isAdvanced">
+                              <label class="text-uppercase work-sans label-text"
+                                >program areas</label
+                              >
+                              <SelectDropdown
+                                v-model="$data[indexModel(index2)]"
+                                :value="null"
+                                :options="options"
                               />
                             </div>
+                            <ControlPanel
+                              :label="modifyLabel(control.label, index2)"
+                              :setup="item"
+                              :groupIndex="index2"
+                              :controlIndex="index"
+                              :defaultIndicator="defaultIndicator"
+                              :defaultDataSource="defaultDataSource"
+                              :defaultLocation="defaultLocation"
+                              :defaultYear="defaultYear"
+                              :updateValue="updateValue"
+                              :updateKey="updateKey"
+                              :resetData="resetData"
+                              :indicatorList="$data[indexModel(index2)]"
+                            />
                           </div>
                         </div>
-                      </template>
-                    </ControlBase>
-                  </template>
-                </BasePanel>
-              </b-overlay>
-            </div>
-            <!-- control Panels ends here  -->
+                      </div>
+                    </template>
+                  </ControlBase>
+                </template>
+              </BasePanel>
+            </b-overlay>
+          </div>
+          <!-- control Panels ends here  -->
 
           <div class="container-fluid lessVisible mb-5">
-            <template
-              v-for="(controlPanel, index) in $store.state.MSDAT_STORE
-                .controlConfig"
-            >
+            <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
               <!-- <slot
                 :name="`section-before-${index}`"
                 v-if="index === selectedPanel"
@@ -142,34 +161,27 @@
                   :controlIndex="index"
                 ></slot>
                 <!-- ======== -->
-                <slot
-                  :name="`section-after-${index}`"
-                  v-if="index === selectedPanel"
-                  :ref="index"
-                >
+                <slot :name="`section-after-${index}`" v-if="index === selectedPanel" :ref="index">
                 </slot>
-                </div>
-              </template>
-            </div>
-          </section>
-          <!-- lazy loading ends here -->
+              </div>
+            </template>
+          </div>
+        </section>
+        <!-- lazy loading ends here -->
 
-          <Footer class="visible"> </Footer>
-          <!-- <div v-if="configObject.name !== 'Demographics'"> -->
-          <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
-          <!-- </div> -->
-        </div>
-      </template>
-      <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
-    </div>
+        <Footer class="visible"> </Footer>
+        <!-- <div v-if="configObject.name !== 'Demographics'"> -->
+        <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
+        <!-- </div> -->
+      </div>
+    </template>
+    <!-- <button class="btn btn-primary toggle_btn" @click="show = !show">toggle</button> -->
+  </div>
 </template>
 
 <script>
 import {
-  BasePanel,
-  ControlBase,
-  ControlPanel,
-  SelectDropdown,
+  BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
 // import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
@@ -183,7 +195,7 @@ import scroll from '../../modules/onScroll/onscroll';
 import SharingDashboardState from '../../modules/dashboard_state_share/mixins';
 import Loading from '../../mixins/loading';
 import Onboarding from '../onboarding/onboarding';
-import TroubleShooting from '../../modules/troubleshooting/mixins';
+import TroubleShooting from '../../modules/troubleshooting/modal.vue';
 
 export default {
   name: 'BaseDashboard',
@@ -209,6 +221,7 @@ export default {
   data() {
     return {
       isAdvanced: false,
+      showTroubleShootingModal: false,
       position: 3,
       selectedPanel: 0,
       dashboardConfig: config,
@@ -230,12 +243,27 @@ export default {
         { name: 'Rent', value: 'rent' },
       ],
       value: null,
+      detect: false,
       value0: null,
       value1: null,
       value2: null,
       options: [
-        'Demographics', 'Financing', 'Health Financing', 'Facility service delivery', 'RMNCH', 'Mortality', 'Dental Therapy Practice', 'HIV',
-        'Nutrition', 'Service delivery', 'Optometry Practice', 'Medical Doctors', 'HR Guidelines and Workforce', 'Climate', 'Education'],
+        'Demographics',
+        'Financing',
+        'Health Financing',
+        'Facility service delivery',
+        'RMNCH',
+        'Mortality',
+        'Dental Therapy Practice',
+        'HIV',
+        'Nutrition',
+        'Service delivery',
+        'Optometry Practice',
+        'Medical Doctors',
+        'HR Guidelines and Workforce',
+        'Climate',
+        'Education',
+      ],
       program_option: '',
     };
   },
@@ -294,7 +322,7 @@ export default {
       const { results } = response.data;
       this.configObject = results.find((item) => item.name === name);
     } catch {
-      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     }
     // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     window.addEventListener('resize', this.onResize);
@@ -315,7 +343,6 @@ export default {
   },
 
   methods: {
-
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
@@ -329,13 +356,12 @@ export default {
     handleClosePopUp() {
       this.popUp = false;
     },
-    log(event, index, index2) {
-      console.log('log function =>', event, index, index2);
-    },
+    // log(event, index, index2) {
+    //   console.log('log function =>', event, index, index2);
+    // },
 
     changeKey(n) {
       this.sectionKey = n;
-      console.log('sectionKey', this.sectionKey);
     },
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -351,7 +377,26 @@ export default {
         window.requestAnimationFrame(this.scroll);
       }
     },
-
+    closeAlert() {
+      this.detect = false;
+    },
+    detectBrowser() {
+      let browser = 'unknown';
+      if (navigator.userAgent.indexOf('Chrome') !== -1) {
+        browser = 'Chrome';
+      } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+        browser = 'Mozilla Firefox';
+      } else if (navigator.userAgent.indexOf('MSIE') !== -1) {
+        browser = 'Internet Explorer';
+      } else if (navigator.userAgent.indexOf('Safari') !== -1) {
+        browser = 'Safari';
+      } else if (navigator.userAgent.indexOf('Opera') !== -1) {
+        browser = 'Opera';
+      } else if (navigator.userAgent.indexOf('YaBrowser') !== -1) {
+        browser = 'IE';
+      }
+      return browser;
+    },
     handleScroll() {
       this.scrollCont = document.querySelector('.dummy-row').scrollLeft;
       this.$emit('scrollN', this.scrollCont);
@@ -366,14 +411,11 @@ export default {
       if (
         !(
           (scrollPos === 0 || scrollPixels > 0)
-          && (element.clientWidth + scrollPos === element.scrollWidth
-            || scrollPixels < 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
-        const startTime = 'now' in window.performance
-          ? performance.now()
-          : new Date().getTime();
+        const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
         this.scrollStartTime = startTime;
         // Call requestAnimationFrame on scroll function first time
         window.requestAnimationFrame(this.scroll);
@@ -383,7 +425,6 @@ export default {
     swipeLeft() {
       // const content = this.$refs.dummy-row;
       const content = document.querySelector('.dummy-row');
-      console.log('content', content);
       this.scrollTo(content, -300, 800);
       const cord = {
         x: -370,
@@ -394,7 +435,6 @@ export default {
 
     swipeRight() {
       const content = document.querySelector('.dummy-row');
-      console.log('content', content);
       this.scrollTo(content, 300, 800);
       const cord = {
         x: 370,
@@ -404,7 +444,6 @@ export default {
     },
 
     getIndex(index) {
-      console.log('this is the index i am saying', index);
       this.changeIndex = index;
     },
     /**
@@ -487,6 +526,17 @@ export default {
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
     }
+    if (this.detectBrowser() !== 'Chrome') {
+      this.detect = true;
+    } else {
+      this.detect = false;
+    }
+
+    setTimeout(() => {
+      if (this.detect) {
+        this.closeAlert();
+      }
+    }, 60000);
     try {
       await this.$DL.init({
         dashboardIndicators: this.indicators,
@@ -504,15 +554,14 @@ export default {
         datasource: this.initialDataSource,
         location: this.initialLocation,
       });
-
       // The initializing the control panel
       await this.setDefaults();
       await this.setUpControlPanelDropDown();
 
-      this.defaultYearDropdown = this.setYearDropdown();
+      // pick one of the available years as the default years as opposed to the static 2016 year
+      this.defaultYearDropdown = await this.setYearDropdown();
       if (this.defaultYearDropdown.length > 0) {
-        const firstItem = 0;
-        this.defaultYear = this.defaultYearDropdown[firstItem];
+        this.defaultYear = this.defaultYearDropdown[0];
       }
 
       this.cpIsLoading = true;
@@ -562,7 +611,26 @@ div.temp {
     z-index: -1;
   }
 }
-
+    div#browserSupport {
+      position:fixed;
+      margin: 5px 5px 0 0;
+      background-color: #fff3cd;
+      color:#583e03;
+      top:0;
+      border:0.5px solid #583e03;
+      font-size: 12px;
+      box-shadow: -3px 5px 10px #00000029;
+      right:0;
+      border-radius: 5px;
+      z-index:900;
+    }
+    div#browserSupport  img {
+      width: 34px;
+      height:30px;
+    }
+    .alertBold{
+      color:#583e03;
+    }
 .swipe-btn-flex {
   display: none;
 }
@@ -594,12 +662,11 @@ div.temp {
   }
 
   /* testing for mobile */
-.dummy-row {
-  display: flex;
-  flex-direction: row;
-  overflow: scroll;
-  flex-wrap: nowrap;
-}
-
+  .dummy-row {
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    flex-wrap: nowrap;
+  }
 }
 </style>

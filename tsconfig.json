@@ -39,5 +39,8 @@
 , "src/modules/msdat-dashboard/store.js"  ],
   "exclude": [
     "node_modules"
+  ],
+  "types": [
+    "vue-sweetalert2"
   ]
 }

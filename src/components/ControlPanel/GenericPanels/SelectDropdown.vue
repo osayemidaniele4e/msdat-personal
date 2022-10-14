@@ -1,6 +1,6 @@
 <template>
   <!-- Label to show when there is no available data as requested -->
-    <!-- @open="initialCSS" -->
+  <!-- @open="initialCSS" -->
   <multiselect
     :id="formattedID"
     v-model="selected"
@@ -13,15 +13,15 @@
     selectLabel=""
     data-visted="notVisited"
     deselectLabel=""
-    @open="initialCSS"
-    >
+  >
+    <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
     <!---
       START
       THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
       THAT HAVE GROUPED OPTIONS
     -->
-    <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
+    <!-- <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
        <template v-if="props.option.$groupLabel">
       <span class="topicHead"
       style="cursor:pointer;"
@@ -44,14 +44,13 @@
         {{props.option.full_name}}
         </div>
       </template>
-    </template>
+    </template> -->
     <!---
     END
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
     THAT HAVE GROUPED OPTIONS
     -->
-    </multiselect
-  >
+  </multiselect>
 </template>
 <script>
 import { has } from 'lodash';
@@ -61,6 +60,7 @@ export default {
     return {
       allowEmpty: true,
       dummyVariable: false,
+      loading: false,
     };
   },
   computed: {
@@ -103,22 +103,43 @@ export default {
   },
   watch: {
     options: {
-      handler(newValue) {
+      async handler(newValue) {
+        this.loading = true;
         if (this.multiSelectProps['preselect-first']) {
+          // this.selected = newValue[0];
           if (has(this.multiSelectProps, 'group-values')) {
-            // eslint-disable-next-line prefer-destructuring
-            this.selected = newValue[0][this.multiSelectProps['group-values']][0];
-            // console.log(this.selected, 'selected1');
+            this.selected = newValue[0][this?.multiSelectProps['group-values']][0];
+            // this.selected = await newValue[0];
           } else if (newValue.length > 0) {
-            // debugger;
-            // eslint-disable-next-line prefer-destructuring
-            this.selected = this.options[0];
+            this.selected = await this.options[0];
           } else {
             const date = new Date();
             const year = date.getFullYear() - 1;
             this.selected = year.toString();
           }
         }
+
+        /**
+         * @description check if the update is for datasource
+         * if it is, check if the list is an array,
+         * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
+         * if its not an array, make the object the default selected
+         */
+        if (this.multiSelectProps.label === 'datasource') {
+          if (Array.isArray(newValue) && newValue?.length > 0) {
+            const defaultSelected = newValue.find((item) => item.id === this.selected?.id);
+            if (defaultSelected?.id !== undefined) {
+              this.selected = {};
+              this.selected = defaultSelected;
+              return;
+            }
+            this.selected = {};
+            this.selected = await newValue[0];
+          }
+          this.selected = {};
+          this.selected = await newValue[0];
+        }
+        this.loading = false;
       },
     },
     deep: true,
@@ -138,22 +159,23 @@ export default {
      * is clicked, handles the show and hide of its
      * child nodes and also the dropdown caret rotation
      */
-    pickProgramArea(event) {
+    async pickProgramArea(event) {
+      this.loading = true;
       event.preventDefault();
       event.stopPropagation();
       if (event.type === 'click') {
-        const { parent } = event.target.children[0]?.children[0]?.dataset;
-        const all = Array.from(event.target.parentNode.children);
-        all.forEach((element) => {
+        const { parent } = event.target?.children[0]?.children[0]?.dataset;
+        const all = Array.from(event.target?.parentNode?.children);
+        all.forEach(async (element) => {
           // eslint-disable-next-line prefer-destructuring
-          const child = element.children[0]?.children[0]?.dataset.child;
-          const tempParent = element.children[0]?.children[0]?.dataset.parent;
+          const { child } = await element?.children[0]?.children[0]?.dataset;
+          const tempParent = await element?.children[0]?.children[0]?.dataset.parent;
           if (parent === child) {
             if (element.style.display === 'none') {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'block';
               // eslint-disable-next-line no-unused-expressions
-              element.children[0]?.children[0]?.classList.toggle('open-caret');
+              element?.children[0]?.children[0]?.classList.toggle('open-caret');
             } else {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'none';
@@ -161,10 +183,11 @@ export default {
           }
           if (parent === tempParent) {
             // eslint-disable-next-line no-unused-expressions
-            element.children[0]?.children[0]?.children[0]?.classList.toggle('open-caret');
+            element?.children[0]?.children[0]?.children[0]?.classList.toggle('open-caret');
           }
         });
       }
+      this.loading = false;
     },
     /**
      *  This methods acts only on multiselects having
@@ -173,15 +196,17 @@ export default {
      *  @var multiselectProps, its "group-value" property.
      *
      */
-    initialCSS(multiselectID) {
+    async initialCSS(multiselectID) {
+      this.loading = true;
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
         if (this.options.length !== 0) {
-          const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;
-          const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
+          const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
+          const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
+            .value;
           // eslint-disable-next-line no-plusplus
           for (let i = 0; i <= iterable.length; i++) {
-            if (iterable[i].children[0]?.children[0]?.dataset.child) {
+            if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
               iterable[i].style.display = 'none';
             } else if (tell === 'notVisited') {
               iterable[i].addEventListener('click', (e) => {
@@ -198,6 +223,7 @@ export default {
           // console.log(iterable[i].children[0]?.children[0]?.dataset.child, 'child')
         }
       }
+      this.loading = false;
     },
   },
 };
@@ -213,15 +239,15 @@ export default {
   right: 5% !important;
   position: absolute;
   transform: rotate(0deg);
-  transition: all .25s ease-in;
+  transition: all 0.25s ease-in;
   cursor: pointer;
 }
 .open-caret {
-    transform: rotate(360deg);
-    transition: all .25s ease-out;
-    cursor: pointer;
-  }
-li.multiselect__element{
+  transform: rotate(360deg);
+  transition: all 0.25s ease-out;
+  cursor: pointer;
+}
+li.multiselect__element {
   border-bottom: 1px solid #0000;
   transition: all 3.5 ease-in;
   cursor: pointer;

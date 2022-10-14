@@ -47,19 +47,18 @@
           </b-col>
         </b-row>
         <b-row>
-          <b-col style="margin-bottom: 28.5px;">
+          <b-col style="margin-bottom: 28.5px; width:100%;">
             <ValidationProvider
-              name="Email"
-              :rules="{ required: true, email: true }"
+              name="profession"
+              :rules="{ required: true, min: 3 }"
               v-slot="validationContext"
             >
-              <b-form-group id="email-group" label="Work email" label-for="email">
+              <b-form-group id="name-group" label="Profession" label-for="Profession">
                 <b-form-input
-                  id="email"
-                  v-model="form.email"
-                  type="email"
+                  id="Profession"
+                  v-model="form.profession"
+                  placeholder="Your Profession"
                   :state="getValidationState(validationContext)"
-                  placeholder="mail@example.com"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">{{
                   validationContext.errors[0]
@@ -110,7 +109,7 @@
               </b-form-group>
             </ValidationProvider>
           </b-col>
-          <b-col>
+          <!-- <b-col>
             <ValidationProvider
               name="Confirm password"
               rules="required|confirmed:password"
@@ -123,6 +122,26 @@
                   type="password"
                   placeholder="******************"
                   :state="getValidationState(validationContext)"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">{{
+                  validationContext.errors[0]
+                }}</b-form-invalid-feedback>
+              </b-form-group>
+            </ValidationProvider>
+          </b-col> -->
+          <b-col style="margin-bottom: 28.5px;">
+            <ValidationProvider
+              name="Email"
+              :rules="{ required: true, email: true }"
+              v-slot="validationContext"
+            >
+              <b-form-group id="email-group" label="Work email" label-for="email">
+                <b-form-input
+                  id="email"
+                  v-model="form.email"
+                  type="email"
+                  :state="getValidationState(validationContext)"
+                  placeholder="mail@example.com"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">{{
                   validationContext.errors[0]
@@ -152,13 +171,13 @@
           <span>I accept all Terms and Conditions</span>
         </b-row>
         <b-row class="justify-content-center" style="margin-bottom: 17.25px;">
-          <b-button class="create-button" type="submit">CREATE AN ACCOUNT</b-button>
+          <b-button class="create-button" type="submit" @click.prevent="register()">CREATE AN ACCOUNT</b-button>
         </b-row>
         <b-row class="justify-content-center" style="margin-bottom: 17.25px;">
           <span>Already have an account?</span>
         </b-row>
         <b-row class="justify-content-center">
-          <b-button class="login-button">LOGIN</b-button>
+          <b-button class="login-button" @click="$router.push('/custom/login')">LOGIN</b-button>
         </b-row>
       </b-form>
     </ValidationObserver>
@@ -167,14 +186,15 @@
 
 <script>
 // import { ValidationObserver, ValidationProvider } from 'vee-validate';
-import authProcess from '../components/authProcess';
+import { mapActions } from 'vuex';
+// import authProcess from '../components/authProcess';
 
 export default {
   // components: {
   //   ValidationProvider,
   //   ValidationObserver,
   // },
-  mixins: [authProcess],
+  // mixins: [authProcess],
   data() {
     return {
       form: {
@@ -184,14 +204,17 @@ export default {
         username: '',
         password: '',
         password2: '',
+        profession: '',
         terms: false,
       },
     };
   },
   methods: {
-    onSubmit() {
-      this.$router.push({ name: 'my-dashboard-details' });
-    },
+    ...mapActions('AUTH_STORE', ['CREATE_USER']),
+
+    // onSubmit() {
+    //   this.$router.push({ name: 'my-dashboard-details' });
+    // },
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
     },
@@ -204,11 +227,43 @@ export default {
         password: '',
         password2: '',
         terms: false,
+        profession: '',
       };
 
       this.$nextTick(() => {
         this.$refs.observer.reset();
       });
+    },
+    async register() {
+      const data = {
+        username: this.form.username,
+        email: this.form.email,
+        first_name: this.form.name,
+        last_name: 'this.form.name',
+        profession: this.form.profession,
+        organization: this.form.organisation,
+        password: this.form.password,
+      };
+      try {
+        await this.CREATE_USER(data)
+          .then((res) => {
+            console.log(res);
+            // eslint-disable-next-line eqeqeq
+            if (res.status == 201) {
+              this.$swal('Congratulations, Successfully Registered');
+              this.$router.push('/custom/login');
+            } else {
+              // alert('something went wrong');
+              this.$swal('OOPS, something went wrong');
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            this.$swal('OOPS, something went wrong');
+          });
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

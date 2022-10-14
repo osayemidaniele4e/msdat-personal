@@ -28,7 +28,10 @@
             sources.
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" v-if="!notShow" />
+        <BarChart ref="BaseChart"
+        :chartOptions="ChartOptions"
+        :title="title"
+        v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
     <!-- <div class="no_data">
@@ -47,17 +50,19 @@
 import { sortBy, uniq } from 'lodash';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
+import mixin from '@/modules/DataLayer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
 
 export default {
-  mixins: [chartDownload, formatter, controlSetup],
+  mixins: [chartDownload, mixin, formatter, controlSetup],
   components: {
     BarChart,
   },
   data() {
     return {
+      title: '',
       ChartOptions: {},
       loading: false,
       dataSourcesOptions: [
@@ -152,7 +157,6 @@ export default {
         // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
         this.setUpHighChartConfig(seriesArray, years);
-        console.log('seriesArray', seriesArray);
         this.loading = false;
       },
       deep: false,
@@ -180,7 +184,6 @@ export default {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
-          console.log('seriesArray', seriesArray);
         }
 
         this.loading = false;
@@ -278,8 +281,8 @@ export default {
     ) {
       // debugger;
       const chartSeriesArray = [];
-      const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item.id));
-      const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
+      const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
+      const mappedValueTypes = valueTypeArray?.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
       // debugger;
       /**
@@ -293,24 +296,26 @@ export default {
        * also take into consideration that sometimes the visualization may require a particular
        * Value type
        */
-      mappedDataSource.forEach((datasource) => {
-        const searchDataSource = parameterObject;
-        searchDataSource.datasource = datasource.id;
-        if (mappedValueTypes.length > 0) {
-          mappedValueTypes.forEach((valueType) => {
+      if (mappedDataSource !== undefined) {
+        mappedDataSource.forEach((datasource) => {
+          const searchDataSource = parameterObject;
+          searchDataSource.datasource = datasource?.id;
+          if (mappedValueTypes.length > 0) {
+            mappedValueTypes.forEach((valueType) => {
             // The Object.assign help copy if Object before pushing it into the array
             // else it tends to push the same values again and again
-            searchDataSource.value_type = valueType.id;
-            // eslint-disable-next-line prefer-object-spread
-            const queryCopy = Object.assign({}, searchDataSource);
-            queryArray.push(queryCopy);
-          });
-        } else {
+              searchDataSource.value_type = valueType.id;
+              // eslint-disable-next-line prefer-object-spread
+              const queryCopy = Object.assign({}, searchDataSource);
+              queryArray.push(queryCopy);
+            });
+          } else {
           // The Object.assign help copy if Object before pushing it into the array
           // else it tends to push the same values again and again
-          queryArray.push({ ...searchDataSource });
-        }
-      });
+            queryArray.push({ ...searchDataSource });
+          }
+        });
+      }
 
       const mappedRequest = queryArray.map((item) => this.dlQuery(item));
       const mappedResponse = await Promise.all(mappedRequest);
@@ -340,7 +345,7 @@ export default {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
           seriesObject = this.createSeriesObject(valueType, datasource.datasource, sortedData);
         } else {
-          seriesObject = { name: datasource.datasource, data: sortedData };
+          seriesObject = { name: datasource?.datasource, data: sortedData };
         }
         chartSeriesArray.push(seriesObject);
       });
@@ -390,7 +395,6 @@ export default {
        */
       this.loading = true;
       if (e === 'ON') {
-        console.log('checking confidence 3');
         const [firstObject] = this.dataSourcesOptions;
         this.selectedDS = firstObject;
 
@@ -408,12 +412,10 @@ export default {
           [this.selectedDS],
           valueType,
         );
-        console.log('seriesArray', seriesArray);
         const seriesArr = await this.Reformat(seriesArray);
 
         this.setUpHighChartConfig(seriesArr, years);
       } else {
-        console.log('checking confidence 2');
         this.selectedDS = {};
         // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
         // const { seriesArray, years } = await this.toHighChartSeriesSetup(
@@ -439,7 +441,7 @@ export default {
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.setDataSourcesDropdown(this.values.indicator.id);
+      const availableDataSource = await this.getDataSourcesFromDexie(this.values.indicator.id);
       return availableDataSource;
     },
     // ================================ REFORMATTING DATA =====================================
@@ -492,6 +494,12 @@ export default {
       ];
       return seriesArr;
     },
+  },
+
+  async mounted() {
+    this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
+        (Time-series comparison of ${this.values.indicator.short_name} ) across different data
+            sources.`;
   },
   // async mounted() {
   //   console.log('hello =>', this.ChartOptions);

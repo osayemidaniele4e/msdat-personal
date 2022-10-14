@@ -10,6 +10,6 @@ export default {
   getDSI: 'datasource_specific_indicator/?size=1000',
   // getData: 'http://209.182.232.228:7000/api/crud/data',
   getData: 'data/',
-  getLastUpdated: 'data/latest/?size=1000',
+  // getLastUpdated: 'data/latest/?size=1000',
   getUpdatedDataDate: 'data/after_datetime/?size=1000',
 };

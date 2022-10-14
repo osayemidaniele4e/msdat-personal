@@ -21,12 +21,19 @@
             >
           </p>
         </template>
-              <button @click="returnToNational" v-show="level !== 1" class="bg-transparent text-dark font-weight-bold">
-               <b-icon icon="chevron-left" />
-              &nbsp;Back to National
-          </button>
+        <button
+          @click="returnToNational"
+          v-show="level !== 1"
+          class="bg-transparent text-dark font-weight-bold"
+        >
+          <b-icon icon="chevron-left" />
+          &nbsp;Back to National
+        </button>
         <div @click="handleChartClick">
-          <BarChart ref="BaseChart" :chartOptions="BarChartOptions" />
+          <BarChart ref="BaseChart"
+          :chartOptions="BarChartOptions"
+          :title="title"
+           />
         </div>
       </base-sub-card>
     </base-overlay>
@@ -53,6 +60,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       BarChartOptions: {},
       loading: false,
       showNoSubNationalData: false,
@@ -94,11 +102,11 @@ export default {
       handler(newSeries) {
         for (let i = 0; i < newSeries.length; i += 1) {
           if (newSeries[0].data.length <= 0) {
-            this.showNoSubNationalData = false;
+            this.showNoSubNationalData = true;
             return;
           }
           if (i > 0) {
-            this.showNoSubNationalData = true;
+            this.showNoSubNationalData = false;
             if (newSeries[i].data.length > 0) {
               this.showNoSubNationalData = false;
               return;
@@ -117,12 +125,43 @@ export default {
     },
   },
   methods: {
+    async getNDData(queryArray) {
+      const nums = queryArray.map((item) => this.queryDBForNumDenum({
+        datasource: item.datasource,
+        period: item.period,
+        indicator: item.indicator,
+        location: item.location,
+      }));
+      const returnedNums = await Promise.allSettled(nums);
+      const noData = returnedNums.every((value) => value.value.length === 0);
+      if (!noData) {
+        const mappedValues = returnedNums.map((item) => {
+          const num = item?.value.find((el) => el.value_type === 6);
+          const denum = item?.value.find((el) => el.value_type === 10);
+          return {
+            datasource: denum?.datasource || null,
+            period: denum?.period || null,
+            indicator: denum?.indicator || null,
+            location: denum?.location || null,
+            numerator: num?.value || null,
+            denominator: denum?.value || null,
+          };
+        });
+        return mappedValues;
+      }
+      return [];
+    },
     async updateValue() {
       this.loading = true;
       const data = await this.getData(this.values);
       // eslint-disable-next-line camelcase
       const { national_target, sdg_target } = this.dlGetIndicator(this.values.indicator.id);
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+      const national = await this.computeNationalND();
+      let ndData = [];
+      if (this.values.numdenum) {
+        ndData = await this.getNDData(data);
+      }
       const chartOptions = this.genHighChartOption(data, {
         nationalTarget: {
           value: national_target,
@@ -132,7 +171,7 @@ export default {
           value: sdg_target,
           show: this.values.target.sdg,
         },
-      });
+      }, ndData, this.values.numdenum);
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup 😢 😟 😡
 
@@ -152,15 +191,65 @@ export default {
           color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
           // eslint-disable-next-line camelcase
           name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
-          data: [[this.values.location.name, Number(parseFloat(parent.value).toFixed(1))]],
+          data: [
+            {
+              name: this.values.location.name,
+              y: Number(parseFloat(parent.value).toFixed(1)),
+              nd: national.numerator || 0,
+              dn: national.denominator || 0,
+            }],
         };
         chartOptions.series.unshift(seriesObject);
       }
-
+      if (this.values.numdenum) {
+        chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
+        chartOptions.tooltip.outside = true;
+        chartOptions.tooltip.pointFormat = `${'<span style="font-size:10px; color:black;font-weight:bold;">'
+          + '{series.name}:'
+          + ' {point.y:.2f}'}<br>`
+          + '<span style="font-size:10px; color:black;">'
+          + '('
+          + '{point.nd} '
+          + 'of'
+          + ' {point.dn}'
+          + ')'
+          + '</span>';
+      }
       this.BarChartOptions = chartOptions;
       this.loading = false;
     },
-
+    async computeNationalND() {
+      if (this.values.numdenum) {
+        const numeratorData = await this.dlQuery({
+          datasource: this.values.datasource.id,
+          indicator: this.values.indicator.id,
+          period: this.values.year,
+          location: this.values.location.id,
+          value_type: 6,
+        });
+        const denominatorData = await this.dlQuery({
+          datasource: this.values.datasource.id,
+          indicator: this.values.indicator.id,
+          period: this.values.year,
+          location: this.values.location.id,
+          value_type: 10,
+        });
+        if (numeratorData.length > 0 || denominatorData.length > 0) {
+          return {
+            numerator: Number(numeratorData[0].value).toLocaleString(),
+            denominator: Number(denominatorData[0].value).toLocaleString(),
+          };
+        }
+        return {
+          numerator: null,
+          denominator: null,
+        };
+      }
+      return {
+        numerator: null,
+        denominator: null,
+      };
+    },
     async getData(optionsObject) {
       const {
         datasource, indicator, location, year,
@@ -181,15 +270,18 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
+
       // loop through data and parseFloat the value toFixed(1)
       for (let i = 0; i < data.length; i += 1) {
         data[i].value = parseFloat(data[i].value).toFixed(1);
       }
+      // console.log(data, 'datata');
+
       return data;
     },
 
     handleChartClick(e) {
-      const point = e.point.name;
+      const point = e?.point?.name;
       const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
       if (selectedPlace.length !== 0) {
         eventBus.$emit('handleClick', selectedPlace[0]);
@@ -209,7 +301,7 @@ export default {
   mounted() {
     this.updateData = +1;
 
-    // console.log('values', this.values)
+    this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>

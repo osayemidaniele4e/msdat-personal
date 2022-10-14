@@ -37,4 +37,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.btn-outline-primary:not(:disabled):not(.disabled).active {
+  background-color: #348481 !important;
+  border-color: #348481 !important;
+}
+.btn-outline-primary:not(:disabled):not(.disabled).active:hover{
+  background-color: #348481 !important;
+}
+.btn-outline-primary{
+  color: #348481;
+  border-color: #348481 !important;
+}
+.btn-outline-primary:hover{
+  background: #348481 !important;
+}
 </style>
