@@ -288,7 +288,7 @@ export default {
       const { results } = response.data;
       this.configObject = results.find((item) => item.name === name);
     } catch {
-      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     }
     // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     window.addEventListener('resize', this.onResize);

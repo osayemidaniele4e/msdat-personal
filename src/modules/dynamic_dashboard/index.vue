@@ -93,11 +93,11 @@ export default {
       const response = await apiServices.getDashboard();
       const { results } = response.data;
       this.configObject = results.find((item) => item.name === name);
-      if (this.configObject === undefined) {
-        this.configObject = this.dashboardConfig.find((item) => item.name === name);
-      }
+      // if (this.configObject === undefined) {
+      //   this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      // }
     } catch {
-      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     }
     // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     // if (this.configObject === undefined) {
