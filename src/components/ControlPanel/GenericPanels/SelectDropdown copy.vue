@@ -213,7 +213,7 @@ export default {
 
 li.multiselect__element{
   border-bottom: 1px solid #0000;
-  transition: all 3.5 ease-in
+  transition: all 1.5 ease-in
 }
 
 </style>

@@ -1,3 +1,4 @@
+<!-- Auther: Ghufran Ahmed -->
 <template>
   <div>
     <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
@@ -86,13 +87,10 @@
 
 <script>
 import Card from '../../Card.vue';
-// import LazyLoading from '../../../../msdat-dashboard/modules/onScroll/lazyLoading.vue';
 // eslint-disable-next-line import/extensions
 import TheLoader from '../../Loading/TheLoader';
 
 export default {
-  // props: ['heading','programArea'],
-  // emits: ['IndicatorSelect'],
   components: {
     Card,
     TheLoader,
@@ -111,9 +109,6 @@ export default {
     };
   },
   computed: {
-    // programAreas(){
-    //   return this.programArea;
-    // },
     loading() {
       return this.$store.getters.Indicatorloading;
     },
@@ -128,6 +123,8 @@ export default {
     isAllSelected(item) {
       return item.selected;
     },
+
+    // To select All the Indicators
     toggleAll(e, childsArray, parentName) {
       this.AllSelected = e.target.checked;
       if (this.AllSelected === true) {
@@ -143,10 +140,6 @@ export default {
         };
         this.$store.dispatch('loadYears', child);
         this.$store.dispatch('loadCoverageLevels', child);
-        // if($store.state.CUSTOM_DASHBOARD_STORE.allSelected == true){
-        //   this.$store.dispatch('loadYears', child);
-        // this.$store.dispatch('loadCoverageLevels', child);
-        // }
       });
       this.$store.dispatch('forAllSelectedIndicator', {
         checked: this.AllSelected,
@@ -162,6 +155,7 @@ export default {
       this.$store.dispatch('loadIndicators');
     },
 
+    // Selection of Indivisual Indicator
     selectIndicator(e, parentValue, childId, childName) {
       this.indicatorSelected = e.target.checked;
       this.showList = e.target.checked;

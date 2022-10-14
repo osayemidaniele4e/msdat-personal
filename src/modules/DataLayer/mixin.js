@@ -87,6 +87,7 @@ export default {
       dlValue_type: (state) => state.valuetypes,
       dlDashboardIndicator: (state) => state.availableDashboardIndicator,
       dlDashboardDataSource: (state) => state.dashboardDataSource,
+      dlAllPossibleSources: (state) => state.allSources,
       dlFactors: (state) => state.factors,
     }),
 
@@ -95,6 +96,30 @@ export default {
     },
   },
   methods: {
+    /**
+     * Fetches NUMERATOR-DENOMINATOR data
+     * specifically
+     * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
+     * @returns {dataObjectType}
+     */
+    async queryDBForNumDenum(query) {
+      const result = await DB.queryDBForNumDenum(query);
+      const dataResult = result.map((element) => {
+        const temp = {};
+        temp.id = element.id;
+        temp.period = element.period;
+        temp.value = element.value;
+        temp.created_at = element.created_at;
+        temp.updated_at = element.updated_at;
+        temp.indicator = element.indicator;
+        temp.location = element.location;
+        temp.datasource = element.datasource;
+        temp.value_type = element.value_type;
+        return temp;
+      });
+
+      return dataResult;
+    },
     /**
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
      * @returns {dataObjectType}
@@ -108,7 +133,7 @@ export default {
       } else if (!has(query, 'value_type')) {
         const datasource = this.dlGetDataSource(query.datasource);
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
-        const valuetype = this.hardCordedValueType.filter(
+        const valuetype = this.hardCordedValueType?.filter(
           (item) => item.value_type === datasource?.classification,
         );
         query.value_type = valuetype[0]?.id;
@@ -142,8 +167,12 @@ export default {
       return dataResult;
     },
 
+    /**
+     * @function dlGetDashboardDataSource
+     * @description filter the config
+     */
     dlGetDashboardDataSource() {
-      return this.dlDatasource.filter((e) => this.dlDashboardDataSource.includes(e.id));
+      return this.dlDatasource.filter((e) => this.dlAllPossibleSources.includes(e.id));
     },
     /**
      * @param {number} id The indicator ID
@@ -158,14 +187,15 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      if (typeof (values) === 'object') {
+      if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }
-      // console.log(this.dlLocation.find((item) => item.id === values), 'lalala')
       return this.dlLocation.find((item) => item.id === values);
     },
+    dlGetLocationsByLevel(value) {
+      return this.dlLocation.filter((item) => item.level === value);
+    },
     dlGetByName(values) {
-      console.log(this.dlLocation.find((item) => item.name === values), 'lalala');
       return this.dlLocation.find((item) => item.name === values);
     },
     dlGetFactor(id) {
@@ -193,24 +223,31 @@ export default {
     async getDataSourceByIndicator(value) {
       const indicatorId = value || 1;
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
-      return dataSourceAvailable.data.datasources;
+      return dataSourceAvailable.data.datasources?.filter((e) => e.id !== 33);
     },
-    //  function to get indicators based on data_source
-    async getIndicatorByDataSource(value) {
-      const dataSourceId = value || 1;
-      const indicatorAvailable = await axios.get(`/datasources/${dataSourceId}/indicators/`);
-      return indicatorAvailable.data.indicators;
+    /**
+     *
+     * @param {value} Chosen indicator ID |
+     * Uses @function {getAvailableSoucesForIndicator}
+     * from database.worker class to fetch
+     * available datasources from dexie
+     * @returns array of datasource objects
+     */
+    async getDataSourcesFromDexie(value) {
+      const indicatorId = value || 1;
+      const sourcesAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
+      if (sourcesAvailable.length <= 0) {
+        return [];
+      }
+      const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
+      return sourceObjects;
     },
-    // Function to store the latest database date
-    // !! Seems Redundant
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
       return data.date;
     },
   },
-  mounted() {
-    // const data = await this.dlQuery({ datasource: 6, indicator: 7, period: '2020' });
-    // console.log(data);
+  async mounted() {
     // console.trace(this.dlGetLocation({ level: 3 }));
   },
 };

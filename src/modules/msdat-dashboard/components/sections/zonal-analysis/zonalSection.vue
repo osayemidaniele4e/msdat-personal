@@ -21,7 +21,7 @@
             {{ controlPanelProps.year }}
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="chart" class="barchart" />
+        <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
       </base-sub-card>
     </base-overlay>
   </div>
@@ -40,6 +40,7 @@ export default {
     return {
       // later someone can add the name property
       // so that we can know to the zones as against to searching for the ids
+      title: '',
       stateName: null,
       chart: {},
       loader: false,
@@ -194,20 +195,18 @@ export default {
             // for the new chart, eact array of states has the zone included
             const newChart = [];
 
-            chartSeries.forEach(
-              (item) => {
-                const zonalP = zonalZee.data.find((element) => element.color === item.color);
-                const newArr = [zonalP.name, zonalP.y];
+            chartSeries.forEach((item) => {
+              const zonalP = zonalZee?.data.find((element) => element.color === item.color);
+              if (zonalP !== undefined) {
+                const newArr = [zonalP?.name, zonalP?.y];
                 item.data.unshift(newArr);
                 newChart.push(item);
-              },
-            );
+              }
+            });
             newChart.unshift();
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
             this.formatToHighChart(chartSeries);
-
-            console.log('chartSeries', chartSeries);
           }
         }
         // Plot for LGAs
@@ -218,13 +217,15 @@ export default {
       immediate: true,
     },
   },
+
+  mounted() {
+    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} Across the zones in the Country. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
+  },
 };
 </script>
 
 <style scoped>
-
-.barchart{
+.barchart {
   height: 49.5vh;
 }
-
 </style>

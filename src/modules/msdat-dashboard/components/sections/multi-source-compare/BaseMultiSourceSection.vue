@@ -1,8 +1,5 @@
 <template>
-<div>
-    <MultiSource :values="controlPanelProps" />
-</div>
-
+  <MultiSource :values="controlPanelProps" />
 </template>
 
 <script>
@@ -93,7 +90,6 @@ export default {
     },
   },
   async mounted() {
-    console.log('currentIndex', this.currentIndex);
     const setYearDropdown = await this.setYearDropdown();
     // debugger;
     this.SET_CONTROL_OPTIONS({
@@ -128,5 +124,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -15,7 +15,7 @@
          <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Input</h5>
-          <router-link to="/dashboard/Health_Facility_Input" target="_blank"
+          <router-link to="/dashboard/Health_Facility" target="_blank"
             ><b-list-group-item>Health Facility</b-list-group-item></router-link
           >
           <router-link to="/dashboard/Health_Financing" _target="_blank"
@@ -66,9 +66,9 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link to="/coming-soon/custom_dashboard"
+          <router-link to="/custom"
             ><b-list-group-item
-              >Create New Dashboard</b-list-group-item
+              > Create Your Dashboard</b-list-group-item
             ></router-link
           >
           <router-link to="/state-profile"

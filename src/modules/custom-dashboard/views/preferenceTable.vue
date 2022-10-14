@@ -1,3 +1,4 @@
+ <!-- Auther: Ghufran Ahmed -->
 <template>
   <b-container class="text-justify px-5" fluid>
     <p style="font-size: 14px; font-family: Work Sans">
@@ -120,9 +121,11 @@ export default {
     }
   },
   computed: {
+    // Show the loader when all data is selected
     showLoader() {
       return this.$store.getters.showloader;
     },
+    // Count Number of Indicators Selected
     indicatorsCount() {
       let count = 0;
       this.$store.getters.getprogramArea.map((element) => {
@@ -139,6 +142,7 @@ export default {
       });
       return count;
     },
+    // Count Number of Datasource Selected
     dataSourceCount() {
       let count = 0;
       this.$store.getters.getDataSource.map((element) => {
@@ -151,23 +155,8 @@ export default {
         return element;
       });
       return count;
-      // let count = 0;
-      // this.$store.getters.getDataSource.map((element) => {
-      //   if (element.parent.isChildSelected === true) {
-      //     element.children.map((child) => {
-      //       if (child.selected === true) {
-      //         child.sources.map((source) => {
-      //           count = source.children.length;
-      //           return source;
-      //         });
-      //       }
-      //       return child;
-      //     });
-      //   }
-      //   return element;
-      // });
-      // return count;
     },
+    // Count Number of Years Selected
     yearsCount() {
       let count = 0;
       const yearsArray = [];
@@ -178,9 +167,7 @@ export default {
           if (child.years) {
             child.years.map((year) => {
               if (year.value !== undefined) {
-                // year.value;
                 yearsArray[`year${year.value}`] = { ...year };
-                // yearsArray[year.value] = {...year}
               }
               return year;
             });
@@ -196,9 +183,6 @@ export default {
       Object.keys(yearsArray).forEach((key) => {
         DArray.push(yearsArray[key]);
       });
-      // for (const i in yearsArray) {
-      //   DArray.push(yearsArray[i]);
-      // }
       DArray.sort((a, b) => b.value - a.value);
       DArray.map((dyear) => {
         if (dyear.selected === true) {
@@ -208,6 +192,7 @@ export default {
       });
       return count;
     },
+    // Count Number of Levels Selected
     selectedLevel() {
       let selectedLevels = [];
       this.$store.getters.getprogramArea.map((element) => {
@@ -234,6 +219,8 @@ export default {
     },
   },
   methods: {
+
+    // The below function is called when approve button is clicked at Table maker page.
     approveData() {
       if (
         this.indicatorsCount
@@ -244,7 +231,8 @@ export default {
         this.$router.push('data-table');
         this.destroyPage = true;
       } else {
-        console.log('You have to select atleast one item from every box');
+        this.$swal('You have to select atleast one item from every box');
+        // console.log('You have to select atleast one item from every box');
       }
     },
   },
