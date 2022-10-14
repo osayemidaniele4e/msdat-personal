@@ -12367,10 +12367,15 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-sweetalert2@11.x, sweetalert2@^11.1.5:
+sweetalert2@11.x:
   version "11.4.3"
   resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.4.3.tgz#f8e623fed72abaddc1ec8836360483be27b08e55"
   integrity sha512-el3uiJQnZH/Nd/7MDkbfzZ99AKG9o8OUygpWy/wkzBj2xq/3vWtSqKJPODzimjdvniki4DWPwWEnNlgKUegBRQ==
+
+sweetalert2@^11.4.35:
+  version "11.4.35"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.4.35.tgz#61ee8591798bc82c5ca23479406c0f367c9eb108"
+  integrity sha512-nifH7Hd8oSIO8qf6GHhob6xZK2KoX7+EalTFm3nHshdQ38TY/r0m/QiuJCDL0cTGbRhzMWL7WYBSA3fjnh+F1g==
 
 symbol-observable@1.0.1:
   version "1.0.1"

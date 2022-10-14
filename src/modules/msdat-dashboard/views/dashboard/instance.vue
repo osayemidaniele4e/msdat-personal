@@ -216,6 +216,11 @@ export default {
       default: true,
     },
   },
+  computed: {
+    customDashboard() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
+    },
+  },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
@@ -299,6 +304,12 @@ export default {
       this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
       this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
       this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    } else if (this.customDashboard === true) {
+      this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
+      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+      this.ADD_CONTROL_PANEL(ICSConfig);
+      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
     } else {
       this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
       this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);

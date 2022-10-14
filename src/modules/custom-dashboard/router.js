@@ -1,4 +1,5 @@
 import VueCookies from 'vue-cookies';
+// import Dashboard from '../dynamic_dashboard/index.vue';
 
 export default [
   {
@@ -6,11 +7,11 @@ export default [
     name: 'custom-dashboard',
     component: () => import('./views/landing.vue'),
   },
-  // {
-  //   path: '/login',
-  //   name: 'custom-dashboard-login',
-  //   component: () => import('./views/login.vue'),
-  // },
+  {
+    path: '/custom/login',
+    name: 'custom-dashboard-login',
+    component: () => import('../auth/views/login.vue'),
+  },
   // {
   //   path: '/custom/details',
   //   name: 'dashboard-details',
@@ -19,17 +20,17 @@ export default [
   {
     path: '/my-dashboard',
     name: 'my-dashboard',
-    // beforeEnter: (to, from, next) => {
-    //   // const token = sessionStorage.getItem('username');
-    //   const token = VueCookies.get('custom-access-token');
-    //   // console.log('In before Enter', token);
-    //   if (!token) {
-    //     next('/custom/login');
-    //   } else {
-    //     return next();
-    //   }
-    //   return null;
-    // },
+    beforeEnter: (to, from, next) => {
+      // const token = sessionStorage.getItem('username');
+      const token = VueCookies.get('custom-access-token');
+      // console.log('In before Enter', token);
+      if (!token) {
+        next('/custom/login');
+      } else {
+        return next();
+      }
+      return null;
+    },
     component: () => import('./views/myDashboard.vue'),
     children: [
       // Page 1
@@ -61,17 +62,18 @@ export default [
   {
     path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
-    // beforeEnter: (to, from, next) => {
-    //   // const token = sessionStorage.getItem('username');
-    //   const token = VueCookies.get('custom-access-token');
-    //   if (!token) {
-    //     next('/custom/login');
-    //   } else {
-    //     next();
-    //   }
-    //   return null;
-    // },
+    beforeEnter: (to, from, next) => {
+      // const token = sessionStorage.getItem('username');
+      const token = VueCookies.get('custom-access-token');
+      if (!token) {
+        next('/custom/login');
+      } else {
+        next();
+      }
+      return null;
+    },
     props: true,
     component: () => import('./views/CustomDashboard.vue'),
+    // component: () => import('../dynamic_dashboard/index.vue'),
   },
 ];

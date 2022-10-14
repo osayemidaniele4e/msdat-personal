@@ -95,8 +95,76 @@ export default {
     this.clearData();
   },
   async created() {
-    // this.CLEAR_CONTROL_PANEL();
     const { name } = this.$route.params;
+    // ==========================controlspoil=======================================//
+    if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
+      this.isCustom = true;
+      // FOR Indicators
+      const ids = [];
+      const sourcesID = [];
+      this.$store.getters.getprogramArea.map((element) => {
+        if (element.parent.isChildSelected === true) {
+          element.children.map((child) => {
+            if (child.selected === true) {
+              ids.push(child.id);
+            }
+            return child;
+          });
+
+          // console.log('ids', ids);
+        }
+        return element;
+      });
+
+      // For DataSources
+      this.$store.getters.getDataSource.map((element) => {
+        element.children.map((child) => {
+          if (child.selected === true) {
+            sourcesID.push(child.id);
+          }
+          return child;
+        });
+        return element;
+      });
+      // console.log(this.dashboardConfig, 'dashboadconfig 1')
+      this.dashboardConfig.push({
+        name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+          .replace(/\s+/g, '_')
+          .toLowerCase(),
+        title: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+          .replace(/\s+/g, '_')
+          .toLowerCase(),
+        indicators: ids,
+        defaultIndicators: [7, 6, 5],
+        dataSources: sourcesID,
+        initialIndicator: ids[0],
+        initialDataSource: sourcesID[0],
+        initialLocation: 1,
+      });
+
+      this.configObject = this.dashboardConfig.find(
+        (item) => item.name === name,
+      );
+      // console.log(this.dashboardConfig, 'dashboadconfig 2');
+      // this.configObject = {
+      //   name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+      //     .replace(/\s+/g, '_')
+      //     .toLowerCase(),
+      //   title: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+      //     .replace(/\s+/g, '_')
+      //     .toLowerCase(),
+      //   indicators: ids,
+      //   defaultIndicators: [7, 6, 5],
+      //   dataSources: sourcesID,
+      //   initialIndicator: ids[0],
+      //   initialDataSource: sourcesID[0],
+      //   initialLocation: 1,
+      // };
+    }
+    // ==========================controlspoil=======================================//
+
+    // this.CLEAR_CONTROL_PANEL();
+
     // this.$route.meta.title = 'Hello World From Route';
     try {
       // const response = await apiServices.getDashboard();

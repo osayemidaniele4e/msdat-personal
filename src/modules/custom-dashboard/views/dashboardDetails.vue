@@ -1,7 +1,7 @@
 <!-- Auther: Ghufran Ahmed -->
 <template>
   <b-container class="text-justify px-5 pb-5">
-    <p class="welcome">Welcome {{username}},</p>
+    <h4 class="welcome">Welcome {{username}},</h4>
     <form @submit.prevent="submitForm">
       <b-row>
         <b-col cols="12" lg="6" class="forms">
@@ -28,7 +28,7 @@
             <p v-if="!description.isValid">This must not be empty.</p>
           </div>
         </b-col>
-        <b-col>
+        <b-col class="image-file">
           <b-row class="text-left text-lg-center">
             <b-col cols="auto">
               <div>
@@ -196,8 +196,10 @@ export default {
         this.formIsValid = false;
       }
       if (this.selectedImage.val === '') {
+        // this.selectedImage.isValid = false;
+        // this.formIsValid = false;
         this.selectedImage.isValid = false;
-        this.formIsValid = false;
+        this.formIsValid = true;
       }
     },
 
@@ -257,7 +259,9 @@ p {
   font-family: 'Work Sans', sans-serif;
 }
 .welcome {
-  font-weight: normal;
+  font-weight: bold;
+  color: #3f8994;
+  margin-bottom: 10px;
   font-size: 30px;
   font-family: 'Work Sans', sans-serif;
 }
@@ -272,6 +276,7 @@ p {
   margin-bottom: 40.50000001px;
   p {
     margin-bottom: 0px;
+    font-size: 20px;
   }
 }
 .field-detail:first-child {

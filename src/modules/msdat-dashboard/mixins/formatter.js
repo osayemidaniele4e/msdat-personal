@@ -180,7 +180,7 @@ export default {
       }
       return plotLines;
     },
-    genHighChartOption(data, options = {}, ndData) {
+    genHighChartOption(data, options = {}, ndData, showingNumDenum) {
       const dataValue = this.toHighChartDataArrayFormat(data, ndData);
       if (isObject(options.nationalTarget)) {
         const dataObjectWithTarget = this.diffBaseOnTarget(dataValue, options.nationalTarget.value);
@@ -205,15 +205,73 @@ export default {
         // yAxis.plotLine = plotLine;
         let { yAxis } = defaultObject;
         yAxis = Object.assign(yAxis, { plotLines });
-
+        if (showingNumDenum) {
+          return {
+            tooltip: {},
+            plotOptions: {
+              series: {
+                pointWidth: 10,
+                dataLabels: {
+                  enabled: true,
+                  useHTML: true,
+                  format: '{point.y} <span style="font-weight:normal">( {point.nd} )</span>',
+                },
+              },
+            },
+            yAxis,
+            series,
+          };
+        }
         return {
           tooltip: {},
+          plotOptions: {
+            series: {
+              pointWidth: 10,
+              dataLabels: {
+                enabled: true,
+                useHTML: true,
+                format: '{point.y}',
+              },
+            },
+          },
           yAxis,
           series,
         };
       }
       const color = this.color.green;
+      if (showingNumDenum) {
+        return {
+          tooltip: {},
+          plotOptions: {
+            series: {
+              pointWidth: 10,
+              dataLabels: {
+                enabled: true,
+                useHTML: true,
+                format: '{point.y} <span style="font-weight:normal">( {point.nd} )</span>',
+              },
+            },
+          },
+          series: [
+            {
+              name: 'state',
+              color,
+              data: dataValue,
+            },
+          ],
+        };
+      }
       return {
+        plotOptions: {
+          series: {
+            pointWidth: 10,
+            dataLabels: {
+              enabled: true,
+              useHTML: true,
+              format: '{point.y}',
+            },
+          },
+        },
         series: [
           {
             name: 'state',

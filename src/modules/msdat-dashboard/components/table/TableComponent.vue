@@ -18,7 +18,7 @@
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
               v-for="(value, index) in classify"
-              :key="index"
+              :key="index * Math.random()"
               :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
@@ -38,7 +38,7 @@
             </div>
             <template v-for="(dt, index) in source">
               <TableDataSourceCell
-                :key="index"
+                :key="index * Math.random()"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -47,6 +47,17 @@
                 @key="getKey"
               />
             </template>
+          </tr>
+          <tr v-else-if='customDashboard === true' class="custom">
+              <TableDataSourceCell
+                v-for="(dt, i) in source" :key="i * Math.random()"
+                :source="dt"
+                @source:click="log($event)"
+                @source-info:click="$emit('selected:source-info', $event)"
+                :selectedSource="selectedSource"
+                @value="getValue"
+                @key="getKey"
+              />
           </tr>
           <tr v-else>
             <div v-for="(dt, i) in source" :key="i">
@@ -306,7 +317,7 @@ export default {
        * This store the all the data sources available in the data parsed
        */
       source: [],
-
+      customSource: [],
       classificationOrder: ['Routine', 'Survey', 'Estimate'],
 
       // data for NHMIS monthly
@@ -335,6 +346,7 @@ export default {
      */
     getValueForColumn(valueArray, column) {
       const valueObj = valueArray.find((e) => e.dataSources === column);
+      // console.log('🚀valueObj', valueObj);
       if (valueObj) {
         return valueObj;
       }
@@ -369,6 +381,7 @@ export default {
       const resultSorted = result.sort(
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
+      // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
 
@@ -392,6 +405,7 @@ export default {
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
+      // console.log('this.source', this.source);
     },
 
     log(e) {
@@ -524,6 +538,9 @@ export default {
     datatest(id) {
       return id + 2;
     },
+    customDashboard() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
+    },
   },
 
   async created() {
@@ -551,7 +568,6 @@ export default {
   background: #bebebe;
   border-radius: 4px;
 }
-
 table.table {
   td.heading_alt {
     padding: 0.5rem;
