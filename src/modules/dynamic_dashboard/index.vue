@@ -125,7 +125,7 @@ export default {
         return element;
       });
       // * create the config object
-      this.dashboardConfig.push({
+      this.configObject = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
           .replace(/\s+/g, '_')
           .toLowerCase(),
@@ -138,29 +138,27 @@ export default {
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
-      });
-
-      this.configObject = this.dashboardConfig.find((item) => item.name === name);
-    }
-
-    /**
+      };
+    } else {
+      /**
      * @description Msdat Api-Config for Dashboard
      * @description get dashboard config based on route name from the msdat api
      * @author sami56
      */
-    try {
-      const response = await apiServices.getDashboard();
-      const { results } = response.data;
-      const dashboard = results.find((item) => item.name === name);
-      if (dashboard === undefined) {
-        this.$router.push('/*');
-        return;
+      try {
+        const response = await apiServices.getDashboard();
+        const { results } = response.data;
+        const dashboard = results.find((item) => item.name === name);
+        if (dashboard === undefined) {
+          this.$router.push('/*');
+          return;
+        }
+        this.configObject = dashboard;
+      } catch (err) {
+        console.log(err,
+          '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
+          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
       }
-      this.configObject = dashboard;
-    } catch (err) {
-      console.log(err,
-        '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
-        'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
     }
     // set the title from the config as the route title
     if (this.configObject.title) {
