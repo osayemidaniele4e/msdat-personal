@@ -2,37 +2,33 @@
 <template>
   <div class="temp">
     <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
-    <div
-        id="browserSupport"
+    <div id="browserSupport" v-show="detect" class="col-lg-4 col-md-7 col-sm-6 col-xs-12">
+      <button
         v-show="detect"
-        class="col-lg-4 col-md-7 col-sm-6 col-xs-12"
+        v-on:click="closeAlert()"
+        style="font-size: 20px"
+        type="button"
+        class="close mt-2"
+        data-dismiss="#browserSupport"
       >
-        <button
-          v-show="detect"
-          v-on:click="closeAlert()"
-          style="font-size: 20px"
-          type="button"
-          class="close mt-2"
-          data-dismiss="#browserSupport"
-        >
-          <span aria-hidden="true" class="mb-4 mt-4 pt-4 pr-4">&times;</span>
-        </button>
-        <h4 class="mt-4 pl-2">
-          <img src="@/assets/img/browser.png" /><strong class="alertBold"
-            >Unsupported Browser!
-          </strong>
-        </h4>
+        <span aria-hidden="true" class="mb-4 mt-4 pt-4 pr-4">&times;</span>
+      </button>
+      <h4 class="mt-4 pl-2">
+        <img src="@/assets/img/browser.png" /><strong class="alertBold"
+          >Unsupported Browser!
+        </strong>
+      </h4>
 
-        <p class="p-2">
-          Looks like you are using a browser that is not supported, so you may
-          experience some problems.
-        </p>
-        <p class="pb-4 pl-2">
-          Please use <strong class="alertBold">Google Chrome</strong> browser
-          for the best experience with <br />
-          MSDAT Platform.
-        </p>
-      </div>
+      <p class="p-2">
+        Looks like you are using a browser that is not supported, so you may experience some
+        problems.
+      </p>
+      <p class="pb-4 pl-2">
+        Please use <strong class="alertBold">Google Chrome</strong> browser for the best experience
+        with <br />
+        MSDAT Platform.
+      </p>
+    </div>
     <template v-if="!showTroubleShootingModal">
       <Loading v-if="!loading" :noBackdrop="true" :showBackground="false" class="over">
         <div class="text-center">
@@ -183,7 +179,6 @@
 import {
   BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
-// import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 import formatter from '../../mixins/formatter';
@@ -216,7 +211,6 @@ export default {
     SelectDropdown,
     Header,
     Footer,
-    // BaseUpdate,
   },
   data() {
     return {
@@ -321,10 +315,9 @@ export default {
       const response = await apiServices.getDashboard();
       const { results } = response.data;
       this.configObject = results.find((item) => item.name === name);
-    } catch {
-      // this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    } catch (err) {
+      console.log(err);
     }
-    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
     window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
@@ -347,18 +340,9 @@ export default {
     indexModel(index) {
       return `value${index}`;
     },
-    // handleProgramArea() {
-
-    // },
-    /**
-     * Function to handle show welcome modal
-     */
     handleClosePopUp() {
       this.popUp = false;
     },
-    // log(event, index, index2) {
-    //   console.log('log function =>', event, index, index2);
-    // },
 
     changeKey(n) {
       this.sectionKey = n;
@@ -503,25 +487,26 @@ export default {
       }
     },
   },
-
   watch: {
     async program_option(newVal) {
-      // const { name } = this.$route.params;
       try {
         const response = await apiServices.getDashboard();
         const { results } = response.data;
-        this.configObject = results.find((item) => item.name === newVal);
-      } catch {
-        this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
+        const dashboard = results.find((item) => item.name === newVal);
+        if (dashboard === undefined) {
+          this.$router.push('/*');
+          return;
+        }
+        this.configObject = dashboard;
+      } catch (err) {
+        console.log(err,
+          '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Base Dashboard Component, \n\n \r\r',
+          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
       }
-      // this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
     },
   },
-
   async mounted() {
     this.loading = false;
-    // initializing data for dashboard
-    // console.trace(this.$route.query);
     let urlRequestedIndicator = [];
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
@@ -611,26 +596,26 @@ div.temp {
     z-index: -1;
   }
 }
-    div#browserSupport {
-      position:fixed;
-      margin: 5px 5px 0 0;
-      background-color: #fff3cd;
-      color:#583e03;
-      top:0;
-      border:0.5px solid #583e03;
-      font-size: 12px;
-      box-shadow: -3px 5px 10px #00000029;
-      right:0;
-      border-radius: 5px;
-      z-index:900;
-    }
-    div#browserSupport  img {
-      width: 34px;
-      height:30px;
-    }
-    .alertBold{
-      color:#583e03;
-    }
+div#browserSupport {
+  position: fixed;
+  margin: 5px 5px 0 0;
+  background-color: #fff3cd;
+  color: #583e03;
+  top: 0;
+  border: 0.5px solid #583e03;
+  font-size: 12px;
+  box-shadow: -3px 5px 10px #00000029;
+  right: 0;
+  border-radius: 5px;
+  z-index: 900;
+}
+div#browserSupport img {
+  width: 34px;
+  height: 30px;
+}
+.alertBold {
+  color: #583e03;
+}
 .swipe-btn-flex {
   display: none;
 }
