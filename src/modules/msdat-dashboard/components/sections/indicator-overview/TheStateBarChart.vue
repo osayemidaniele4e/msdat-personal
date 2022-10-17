@@ -305,7 +305,7 @@ export default {
 
   mounted() {
     this.updateData = +1;
-
+    // this.updateValue();
     this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
