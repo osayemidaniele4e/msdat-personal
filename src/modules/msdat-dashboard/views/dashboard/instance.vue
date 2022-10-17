@@ -279,6 +279,7 @@ export default {
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
+    console.log(this.customDashboard, 'custom');
     if (this.$route.params.name !== 'Advanced_Analytics') {
       this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
       this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);

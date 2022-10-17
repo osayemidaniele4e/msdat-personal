@@ -195,12 +195,12 @@ export default {
         this.description.isValid = false;
         this.formIsValid = false;
       }
-      if (this.selectedImage.val === '') {
-        // this.selectedImage.isValid = false;
-        // this.formIsValid = false;
-        this.selectedImage.isValid = false;
-        this.formIsValid = true;
-      }
+      // if (this.selectedImage.val === '') {
+      //   // this.selectedImage.isValid = false;
+      //   // this.formIsValid = false;
+      //   // this.selectedImage.isValid = false;
+      //   // this.formIsValid = true;
+      // }
     },
 
     // Below function will be excuted when Select indivisual Button is clickekd
