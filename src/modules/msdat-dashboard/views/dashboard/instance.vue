@@ -140,10 +140,6 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
-import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
-import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
-import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
@@ -272,27 +268,21 @@ export default {
       this.resetData++;
     },
   },
-  created() {
-    this.CLEAR_CONTROL_PANEL();
+  async created() {
+    await this.CLEAR_CONTROL_PANEL();
     /**
+     * @author davebenard
      * passing indicator Overview first means it going to at  index 0
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
-    if (this.$route.params.name !== 'Advanced_Analytics') {
-      this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
-      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
-      this.ADD_CONTROL_PANEL(ICSConfig);
-      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-      if (this.customDashboard === false) {
-        this.ADD_CONTROL_PANEL(DynamicSectionConfig);
-      }
-    } else {
-      this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
-      this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
+    this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
+    this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+    this.ADD_CONTROL_PANEL(ICSConfig);
+    this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+    this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+    if (this.customDashboard === false) {
+      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     }
   },
 

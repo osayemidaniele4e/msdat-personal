@@ -118,19 +118,19 @@ import CorrelationAnalysisConfig from '../../components/sections/advanced/correl
 import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import PredictiveAnalysisSection from '../../components/sections/advanced/predictive-section/PredictiveSection.vue';
 // import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
-import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
-import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
-import ICSConfig from '../../components/sections/indicator-comparism/indicator-comparism-config';
+// import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
+// import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
+// import ICSConfig from '../../components/sections/indicator-comparism/indicator-comparism-config';
+// import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
+// import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
+// import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 // import ICS from '../../components/sections/indicator-comparism/ICS.vue';
-import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
+// import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
+// import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
 // import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
 import AdvancedMultiSource from '../../components/sections/advanced/multisource-section/multi-source.vue';
-import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
-// import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
-// import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
-import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 
@@ -145,17 +145,17 @@ export default {
   },
   components: {
     BaseDashboard,
-    // BaseIndicatorOverview,
     ControlPanelConfiguration,
-    // BaseZonalAnalysisSection,
     LazyLoading,
-    // ICS,
     PredictiveAnalysisSection,
-    // DataSetComparison,
-    // MultiSourceComponent,
     CorrelationAnalysisSection,
     AdvancedMultiSource,
     DescriptiveAnalysisSection,
+    // BaseZonalAnalysisSection,
+    // ICS,
+    // BaseIndicatorOverview,
+    // DataSetComparison,
+    // MultiSourceComponent,
     // DynamicSection,
   },
   props: {
@@ -267,7 +267,7 @@ export default {
       this.resetData++;
     },
   },
-  created() {
+  async created() {
     // window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
@@ -277,7 +277,7 @@ export default {
     //   this.isMobile = false;
     // }
 
-    this.CLEAR_CONTROL_PANEL();
+    await this.CLEAR_CONTROL_PANEL();
     /**
      * passing indicator Overview first means it going to at  index 0
      * in the control Panel config Array
@@ -286,20 +286,10 @@ export default {
     // if (this.$route.params.name !== 'Health_Outcomes') {
     //   this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     // }
-    if (this.$route.params.name !== 'Advanced_Analytics') {
-      this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
-      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
-      this.ADD_CONTROL_PANEL(ICSConfig);
-      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
-    } else {
-      this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
-      this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
-      // this.ADD_CONTROL_PANEL(DynamicSectionConfig);
-    }
+    this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
+    this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
+    this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
+    this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
