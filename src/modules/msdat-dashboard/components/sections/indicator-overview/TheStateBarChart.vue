@@ -93,7 +93,7 @@ export default {
     },
     values: {
       async handler() {
-        this.updateValue();
+        await this.updateValue();
       },
       deep: true,
       immediate: false,
@@ -118,7 +118,7 @@ export default {
 
     updateData: {
       async handler() {
-        this.updateValue();
+        await this.updateValue();
       },
       deep: true,
       immediate: false,
@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     async getNDData(queryArray) {
-      const nums = queryArray.map((item) => this.queryDBForNumDenum({
+      const nums = await queryArray.map((item) => this.queryDBForNumDenum({
         datasource: item.datasource,
         period: item.period,
         indicator: item.indicator,
@@ -147,6 +147,7 @@ export default {
             denominator: denum?.value || null,
           };
         });
+        console.log('first', mappedValues);
         return mappedValues;
       }
       return [];
@@ -159,7 +160,7 @@ export default {
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       const national = await this.computeNationalND();
       let ndData = [];
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         ndData = await this.getNDData(data);
       }
       const chartOptions = this.genHighChartOption(data, {
@@ -171,7 +172,8 @@ export default {
           value: sdg_target,
           show: this.values.target.sdg,
         },
-      }, ndData, this.values.numdenum);
+      }, await ndData, this.values.numdenum);
+      console.log(ndData, 'ggg', this.values.numdenum);
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup 😢 😟 😡
 
@@ -201,7 +203,7 @@ export default {
         };
         chartOptions.series.unshift(seriesObject);
       }
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
         chartOptions.tooltip.outside = true;
         chartOptions.tooltip.pointFormat = `${'<span style="font-size:10px; color:black;font-weight:bold;">'
@@ -219,7 +221,7 @@ export default {
       this.loading = false;
     },
     async computeNationalND() {
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         const numeratorData = await this.dlQuery({
           datasource: this.values.datasource.id,
           indicator: this.values.indicator.id,
