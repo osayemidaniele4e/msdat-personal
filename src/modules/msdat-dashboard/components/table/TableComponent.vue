@@ -48,7 +48,7 @@
               />
             </template>
           </tr>
-          <tr v-else-if='customDashboard === true' class="custom">
+          <tr v-else>
               <TableDataSourceCell
                 v-for="(dt, i) in source" :key="i * Math.random()"
                 :source="dt"
@@ -59,7 +59,7 @@
                 @key="getKey"
               />
           </tr>
-          <tr v-else>
+          <!-- <tr v-else>
             <div v-for="(dt, i) in source" :key="i">
               <TableDataSourceCell
                 :key="i"
@@ -71,7 +71,7 @@
                 @key="getKey"
               />
             </div>
-          </tr>
+          </tr> -->
 
           <!-- The display the the first indicator of the array of indicator -->
           <!-- please note that the first indicator is assumed to be
@@ -546,9 +546,9 @@ export default {
 
   async created() {
     if (this.$route.params.name === 'Health_Outcomes') {
-      this.getNhmisMonthly();
+      await this.getNhmisMonthly();
     }
-    this.getNumDenumData();
+    await this.getNumDenumData();
   },
 };
 </script>
