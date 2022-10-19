@@ -14,6 +14,7 @@ const LINK = 'links';
 const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
+// const NHMIS_MONTHLY = 'nhmis_monthly';
 
 export default class DataBase {
   constructor() {
@@ -27,6 +28,7 @@ export default class DataBase {
     this.location_hierarchy_level = this.db.table(LINK);
     this.valuetypes = this.db.table(VALUE_TYPES);
     this.datasources = this.db.table(DATA_SOURCE);
+    // this.nhmis_monthly = this.db.table(NHMIS_MONTHLY);
   }
 
   /**
@@ -86,6 +88,7 @@ export default class DataBase {
           await this.valuetypes.bulkPut(data[3].data);
           await this.factors.bulkPut(data[5].data);
           await this.datasources.bulkPut(data[7].data);
+          // await this.nhmis_monthly.bulkPut(data[8].data);
         },
       )
       .catch((error) => {

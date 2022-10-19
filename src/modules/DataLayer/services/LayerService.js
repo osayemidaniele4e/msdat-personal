@@ -17,6 +17,7 @@ const AVAILABLE_DASHBOARD_INDICATOR = 'availableDashboardIndicator';
 const DASHBOARD_DATESOURCE = 'dashboardDataSource';
 const ALL_DASHBOARD_SOURCES = 'allSources';
 const ALL_INDICATOR = 'allIndicator';
+// const NHMIS_MONTHLY = 'nhmis_monthly';
 
 export default class DataLayer {
   constructor(store) {
@@ -110,12 +111,14 @@ export default class DataLayer {
         this.setDataInStore(data[3].data, VALUE_TYPES);
         this.setDataInStore(data[5].data, FACTORS);
         this.setDataInStore(data[7].data, DATA_SOURCE);
+        // this.setDataInStore(data[8].data, NHMIS_MONTHLY);
         await this.DB.storeDataInDBTable(data[0].data, 'location');
         await this.DB.storeDataInDBTable(data[1].data, 'indicators');
         await this.DB.storeDataInDBTable(data[3].data, 'valuetypes');
         await this.DB.storeDataInDBTable(data[5].data, 'factors');
         await this.DB.storeDataInDBTable(data[6].data, 'datasource_specific_indicator');
         await this.DB.storeDataInDBTable(data[7].data, 'datasources');
+        // await this.DB.storeDataInDBTable(data[8].data, 'nhmis_monthly');
 
         const count = await this.DB.data.count();
         console.log('DB count is', count);
@@ -127,6 +130,7 @@ export default class DataLayer {
         this.setDataInStore(await this.DB.fetchTableData('valuetypes'), VALUE_TYPES);
         this.setDataInStore(await this.DB.fetchTableData('factors'), FACTORS);
         this.setDataInStore(await this.DB.fetchTableData('datasources'), DATA_SOURCE);
+        // this.setDataInStore(await this.DB.fetchTableData('nhmis_monthly'), NHMIS_MONTHLY);
       }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
