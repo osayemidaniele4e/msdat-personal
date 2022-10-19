@@ -1,5 +1,5 @@
-import DB from '../config/dexie';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
+import DB from '../config/dexie';
 
 export default {
   /**

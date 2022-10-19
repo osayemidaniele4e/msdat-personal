@@ -1,3 +1,4 @@
+<!-- Auther: Ghufran Ahmed -->
 <template>
   <b-container class="text-justify px-3" fluid>
     <template>
@@ -63,18 +64,6 @@ export default {
     details() {
       return this.$store.getters.dashboardDetails;
     },
-    // selectedIndicator() {
-    //   return this.$store.getters.selectedIndicator;
-    // },
-    // selectedDataSource() {
-    //   return this.$store.getters.selectedDataSource;
-    // },
-    // selectedYears() {
-    //   return this.$store.getters.selectedYears;
-    // },
-    // selectedLevels() {
-    //   return this.$store.getters.selectedLevels;
-    // },
   },
   mounted() {
     this.$store.commit('updateStep', 3);
