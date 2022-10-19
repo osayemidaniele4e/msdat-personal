@@ -204,7 +204,6 @@ export default {
       return this.dlDatasource.find((item) => item.id === id);
     },
     dlGetValueTypes(values) {
-      // console.log(this.dlValue_type);
       if (typeof values === 'object') {
         // return filter(this.dlValue_type, matches(values));
         return filter(this.hardCordedValueType, matches(values));
@@ -222,7 +221,6 @@ export default {
     async getDataSourceByIndicator(value) {
       const indicatorId = value || 1;
       const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
-      console.log(dataSourceAvailable, 'datasourceavailable');
       return dataSourceAvailable.data.datasources.filter((e) => e.id !== 33);
     },
     /**

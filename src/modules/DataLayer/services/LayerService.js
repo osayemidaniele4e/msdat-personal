@@ -95,7 +95,6 @@ export default class DataLayer {
          * @see {@link apiServices.getOtherEndpoint()}
          */
         const data = await apiServices.getOtherEndpoint();
-        console.log(data[8], 'checks');
         /**
          * we would also need to created a component
          * then display the activities  of the service layer
@@ -135,7 +134,6 @@ export default class DataLayer {
       }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
-      // console.log(difference(this.defaultIndicators, indicatorIDArray));
       const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray);
       if (indicatorsNotOnIdb.length !== 0) {
         this.storeTimestampInLocal();
@@ -239,7 +237,6 @@ export default class DataLayer {
    * this does the actual updating of the data
    */
   async updateData() {
-    // console.log('updating')
     const truthyVal = await this.isDataUpToDate();
     const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
     if (!truthyVal) {

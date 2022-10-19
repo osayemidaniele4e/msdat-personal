@@ -145,7 +145,6 @@ export default {
             denominator: denum?.value || null,
           };
         });
-        console.log('first', mappedValues);
         return mappedValues;
       }
       return [];
