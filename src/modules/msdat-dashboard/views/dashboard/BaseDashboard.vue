@@ -206,8 +206,8 @@ export default {
     Onboarding,
     tour,
     scroll,
-    TroubleShooting,
     SharingDashboardState,
+    TroubleShooting,
   ],
   components: {
     ControlBase,

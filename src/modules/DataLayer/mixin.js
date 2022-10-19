@@ -246,6 +246,16 @@ export default {
       const { data } = await apiServices.getLatestDate();
       return data.date;
     },
+    /**
+     * @function getNhmisData
+     * @author davebenard
+     * @description get the data based on th query parameter and return a single object
+     */
+    async getNhmisData(query) {
+      const result = await DB.queryDBForNhmisMonthly(query);
+      const nhmisResult = result.slice(-1);
+      return nhmisResult[0];
+    },
   },
   async mounted() {
     // console.trace(this.dlGetLocation({ level: 3 }));

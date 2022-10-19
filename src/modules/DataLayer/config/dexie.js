@@ -1,12 +1,12 @@
 import Dexie from 'dexie';
 
-Dexie.delete('msdat-database');
+Dexie.delete('msdat-database5');
 Dexie.delete('msdat-database1');
 Dexie.delete('msdat-database2');
 Dexie.delete('msdat-database3');
 Dexie.delete('msdat-database4');
 
-const db = new Dexie('msdat-database5');
+const db = new Dexie('msdat-database');
 
 db.version(1).stores({
   datasources:
@@ -27,8 +27,8 @@ db.version(1).stores({
   users: '++id, user_id, name, email, profession, organization, username, password',
   sub_dashboard_interests: '++id, email, dashboard, created',
   transactions: '++id',
-  nhmis_monthly:
-    '&id, value, period, indicator,  datasource, value_type, location,[indicator+datasource],[indicator+datasource+location], [datasource+indicator+period+location],[datasource+indicator+location+value_type]',
+  nhmisMonthly:
+    '&id, value, period, indicator,  datasource, value_type, location,[datasource+indicator],[datasource+indicator+location], [datasource+indicator+location+period],[datasource+indicator+location+value_type]',
 });
 
 export default db;

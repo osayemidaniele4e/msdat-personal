@@ -14,7 +14,7 @@ const LINK = 'links';
 const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
-// const NHMIS_MONTHLY = 'nhmis_monthly';
+const NHMIS_MONTHLY = 'nhmisMonthly';
 
 export default class DataBase {
   constructor() {
@@ -28,7 +28,7 @@ export default class DataBase {
     this.location_hierarchy_level = this.db.table(LINK);
     this.valuetypes = this.db.table(VALUE_TYPES);
     this.datasources = this.db.table(DATA_SOURCE);
-    // this.nhmis_monthly = this.db.table(NHMIS_MONTHLY);
+    this.nhmisMonthly = this.db.table(NHMIS_MONTHLY);
   }
 
   /**
@@ -81,6 +81,7 @@ export default class DataBase {
         this.valuetypes,
         this.factors,
         this.datasources,
+        this.nhmisMonthly,
         async () => {
           await this.DSI.bulkPut(data[6].data);
           await this.location.bulkPut(data[0].data);
@@ -88,7 +89,7 @@ export default class DataBase {
           await this.valuetypes.bulkPut(data[3].data);
           await this.factors.bulkPut(data[5].data);
           await this.datasources.bulkPut(data[7].data);
-          // await this.nhmis_monthly.bulkPut(data[8].data);
+          await this.nhmisMonthly.bulkPut(data[8].data);
         },
       )
       .catch((error) => {
@@ -207,7 +208,13 @@ export default class DataBase {
     }
   }
 
-  // This dexie query filter checks for value type 6 and 10 for num-denum
+  /**
+   * @function queryDBForNumDenum
+   * @author davebenard
+   * @description function to query the DATA table from num-denum data
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
   static async queryDBForNumDenum(query = {}) {
     const {
       datasource, period, indicator, location,
@@ -221,7 +228,28 @@ export default class DataBase {
   }
 
   /**
-   *
+   * @function queryDBForNhmisMonthly
+   * @author davebenard
+   * @description function to query the NHMIS_MONTHLY table
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryDBForNhmisMonthly(query = {}) {
+    const {
+      datasource, indicator, location,
+    } = query;
+    const result = await dexie
+      .table(NHMIS_MONTHLY)
+      .where('[datasource+indicator+location]')
+      .equals([datasource, indicator, location])
+      .toArray();
+    return result;
+  }
+
+  /**
+   * @function queryDB
+   * @author davebenard
+   * @description function to query the DATA table
    * @param {*} query the objet  to be queried
    * @returns {array} result of the Query
    */
@@ -232,14 +260,6 @@ export default class DataBase {
     if (indicator === undefined) {
       return [];
     }
-    // console.log('checks', ('indicator' in query && 'datasource' in query && 'location' in query && 'value_type' in query && (!('period' in query))), query);
-    // // ===================
-    // console.log('checks 2', ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && 'value_type' in query), query);
-    // // ===================
-    // console.log('checks 3', ('indicator' in query && 'datasource' in query && 'period' in query && 'value_type' in query && (!('location' in query))), query);
-    // // ===================
-    // console.log('checks 4', ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && (!('value_type' in query))), query);
-    // ===================
 
     let compoundQuery = [];
     let compoundTable = [];
@@ -282,6 +302,7 @@ export default class DataBase {
         .toArray();
       return data;
     }
+
     const data = await dexie.table(DATA).where(compoundTable).equals(compoundQuery).toArray();
     return data;
   }

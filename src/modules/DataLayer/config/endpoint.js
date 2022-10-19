@@ -11,4 +11,5 @@ export default {
   getData: 'data/',
   getLastUpdated: 'data/latest/',
   getUpdatedDataDate: 'data/after_datetime/',
+  getNhmisMonthly: `data/?datasource=${33}`,
 };

@@ -204,13 +204,14 @@
 
 <script>
 import { flatten, uniq, countBy } from 'lodash';
-import axiosInstance from '@/plugins/axios';
+import mixin from '@/modules/DataLayer/mixin';
 import TableDataCell from './TableDataCell.vue';
 import TableDataSourceCell from './TableDataSourceCell.vue';
 import TableDataRow from './TableDataRow.vue';
 
 export default {
   name: 'TableComponent',
+  mixins: [mixin],
   components: {
     TableDataCell,
     TableDataSourceCell,
@@ -471,22 +472,13 @@ export default {
     async getNhmisMonthly() {
       this.indicators = [];
       this.dataArray.forEach((element) => {
-        this.indicators.push(element.indicator.id);
+        this.indicators.push({ datasource: 33, indicator: element.indicator.id, location: this.values.location.id });
       });
 
       this.nhmisMonthData = [];
-      this.indicators.forEach((indicator) => {
-        let nhmisObj = {};
-        axiosInstance
-          .get(`data/?datasource=33&indicator=${indicator}&location=1`)
-          .then((response) => {
-            nhmisObj = response.data[response.data.length - 1];
-
-            this.nhmisMonthData.push(nhmisObj);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      this.indicators.forEach(async (el) => {
+        const data = await this.getNhmisData(el);
+        this.nhmisMonthData.push(data);
       });
     },
   },
@@ -498,7 +490,6 @@ export default {
         if (this.$route.params.name === 'Health_Outcomes') {
           this.getNhmisMonthly();
         }
-        // this.getNumeratorDenominator();
       },
       deep: true,
       immediate: true,
@@ -510,6 +501,9 @@ export default {
     // eslint-disable-next-line func-names
     'values.location': function () {
       this.getNumDenumData();
+      if (this.$route.params.name === 'Health_Outcomes') {
+        this.getNhmisMonthly();
+      }
     },
     // eslint-disable-next-line func-names
     'values.datasource': function () {
