@@ -1,8 +1,8 @@
 import Dexie from 'dexie';
 
-const db = new Dexie('msdat-database3');
+const db = new Dexie('msdat-database4');
 
-db.version(1).stores({
+db.version(2).stores({
   datasources:
     '&id,datasource,full_name,description, year_available, period_available, methodology,subnational_data, classification, created_at, updated_at',
   countries: 'id, country',
@@ -14,8 +14,7 @@ db.version(1).stores({
   datasource_specific_indicator:
     '++id, datasource_indicator, measurement_numerator, measurement_denominator, frequency, methodology_estimation, indicator_definition, data_level, national,  zonal, state, senatorial, lga, datasource, indicator',
   links: '&id, period, link, created_at, updated_at, datasource, indicator',
-  data:
-    '&id, value, period, indicator,  datasource, value_type, location, [value+period+indicator+datasource+value_type+location],[indicator+datasource],[indicator+datasource+location],[indicator+period]',
+  data: '&id, value, period, indicator,  datasource, value_type, location,[indicator+datasource],[indicator+datasource+location],[indicator+period],[datasource+indicator+period+location+value_types],[datasource+indicator+period+location],[datasource+indicator+period+value_types]',
   location_hierarchy_level: 'id, name',
   stateNumDen: '++id',
   lgaNumDen: '++id',
@@ -25,3 +24,4 @@ db.version(1).stores({
 });
 
 export default db;
+// data: '&id, value, period, indicator,  datasource, value_type, location, [value+period+indicator+datasource+value_type+location],[indicator+datasource],[indicator+datasource+location],[indicator+period],[datasource+indicator+period+location+value_types],[datasource+indicator+period+location],[datasource+indicator+period+value_types]',

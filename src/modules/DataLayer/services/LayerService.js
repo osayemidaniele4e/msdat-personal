@@ -77,15 +77,12 @@ export default class DataLayer {
    */
   async init(object) {
     try {
-      this.DB = await new Database();
+      this.DB = new Database();
       this.setup(object);
-      console.time('fetching');
       const indicatorArray = await this.DB.listAllIndicators();
       // check if data is already initialized iN DEXIE DB
       // this.DB.getIndicatorDataThatExistInDB()
       if (indicatorArray.length === 0) {
-        /** Fetching other endpoints */
-        console.log('fetching other endpoint');
         /**
          * The apiServices returns all the and array of response for the
          * axios call of all other apiEndpoints.getOtherEndpoint
@@ -117,9 +114,6 @@ export default class DataLayer {
         await this.DB.storeDataInDBTable(data[5].data.results, 'factors');
         await this.DB.storeDataInDBTable(data[6].data.results, 'datasource_specific_indicator');
         await this.DB.storeDataInDBTable(data[7].data.results, 'datasources');
-
-        const count = await this.DB.data.count();
-        console.log('DB count is', count);
       } else {
         // Populate vuex using dexie
         this.setDataInStore(await this.DB.fetchTableData('datasource_specific_indicator'), DSI);

@@ -44,7 +44,6 @@
     />
   </div>
 </template>
-
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
@@ -93,7 +92,7 @@ export default {
     },
     values: {
       async handler() {
-        this.updateValue();
+        await this.updateValue();
       },
       deep: true,
       immediate: false,
@@ -115,10 +114,9 @@ export default {
         }
       },
     },
-
     updateData: {
       async handler() {
-        this.updateValue();
+        await this.updateValue();
       },
       deep: true,
       immediate: false,
@@ -126,7 +124,7 @@ export default {
   },
   methods: {
     async getNDData(queryArray) {
-      const nums = queryArray.map((item) => this.queryDBForNumDenum({
+      const nums = await queryArray.map((item) => this.queryDBForNumDenum({
         datasource: item.datasource,
         period: item.period,
         indicator: item.indicator,
@@ -159,7 +157,7 @@ export default {
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       const national = await this.computeNationalND();
       let ndData = [];
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         ndData = await this.getNDData(data);
       }
       const chartOptions = this.genHighChartOption(data, {
@@ -171,10 +169,9 @@ export default {
           value: sdg_target,
           show: this.values.target.sdg,
         },
-      }, ndData, this.values.numdenum);
+      }, await ndData, this.values.numdenum);
       chartOptions.yAxis.title.text = `${displayFactor}`;
-      // add nation and state selected to fit according to mockup 😢 😟 😡
-
+      // add nation and state selected to fit according to mockup :cry: :worried: :rage:
       const parentValue = await this.dlQuery({
         indicator: this.values.indicator.id,
         datasource: this.values.datasource.id,
@@ -188,7 +185,7 @@ export default {
         const seriesObject = {
           showInLegend: false,
           // eslint-disable-next-line camelcase
-          color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
+          color: parseFloat(parent.value) > national_target ? '#00A65A' : '#E85D58',
           // eslint-disable-next-line camelcase
           name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
           data: [
@@ -201,7 +198,7 @@ export default {
         };
         chartOptions.series.unshift(seriesObject);
       }
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
         chartOptions.tooltip.outside = true;
         chartOptions.tooltip.pointFormat = `${'<span style="font-size:10px; color:black;font-weight:bold;">'
@@ -219,7 +216,7 @@ export default {
       this.loading = false;
     },
     async computeNationalND() {
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         const numeratorData = await this.dlQuery({
           datasource: this.values.datasource.id,
           indicator: this.values.indicator.id,
@@ -254,9 +251,7 @@ export default {
       const {
         datasource, indicator, location, year,
       } = optionsObject;
-
       let locationValue = location;
-
       if (location.id === 1) {
         locationValue = { level: 3 };
       } else {
@@ -270,16 +265,12 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
-
       // loop through data and parseFloat the value toFixed(1)
       for (let i = 0; i < data.length; i += 1) {
         data[i].value = parseFloat(data[i].value).toFixed(1);
       }
-      // console.log(data, 'datata');
-
       return data;
     },
-
     handleChartClick(e) {
       const point = e?.point?.name;
       const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
@@ -288,7 +279,6 @@ export default {
       }
       this.level = 3;
     },
-
     returnToNational() {
       const selectedPlace = this.dlGetLocation({ level: 1 });
       if (selectedPlace.length !== 0) {
@@ -297,13 +287,10 @@ export default {
       this.level = 1;
     },
   },
-
   mounted() {
     this.updateData = +1;
-
     this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>
-
 <style lang="scss" scoped></style>
