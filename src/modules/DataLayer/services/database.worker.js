@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-await-in-loop */
 
 import { take } from 'lodash';
@@ -141,9 +142,7 @@ export default class DataBase {
     if (allDataPoints.length <= 0) {
       return [];
     }
-    const uniqueArray = [
-      ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
-    ];
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.datasource, item])).values()];
     return uniqueArray.map((item) => item.datasource);
   }
 
@@ -152,9 +151,7 @@ export default class DataBase {
     if (allDataPoints.length <= 0) {
       return [];
     }
-    const uniqueArray = [
-      ...new Map(allDataPoints.map((item) => [item.indicator, item])).values(),
-    ];
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.indicator, item])).values()];
     return uniqueArray.map((item) => item.indicator);
   }
 
@@ -209,7 +206,15 @@ export default class DataBase {
 
   // This dexie query filter checks for value type 6 and 10 for num-denum
   static async queryDBForNumDenum(query = {}) {
-    return dexie.table(DATA).where(query).filter((value) => value.value_type === 6 || value.value_type === 10).toArray();
+    const {
+      datasource, period, indicator, location,
+    } = query;
+    return dexie
+      .table(DATA)
+      .where('[datasource+indicator+period+location]')
+      .equals([datasource, indicator, period, location])
+      .filter((value) => value.value_type === 6 || value.value_type === 10)
+      .toArray();
   }
 
   /**
@@ -218,13 +223,63 @@ export default class DataBase {
    * @returns {array} result of the Query
    */
   static async queryDB(query = {}, locationIDArray = []) {
+    const {
+      datasource, indicator, period, location, value_type,
+    } = query;
+    if (indicator === undefined) {
+      return [];
+    }
+    // console.log('checks', ('indicator' in query && 'datasource' in query && 'location' in query && 'value_type' in query && (!('period' in query))), query);
+    // // ===================
+    // console.log('checks 2', ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && 'value_type' in query), query);
+    // // ===================
+    // console.log('checks 3', ('indicator' in query && 'datasource' in query && 'period' in query && 'value_type' in query && (!('location' in query))), query);
+    // // ===================
+    // console.log('checks 4', ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && (!('value_type' in query))), query);
+    // ===================
+
+    let compoundQuery = [];
+    let compoundTable = [];
+    if ('indicator' in query && 'datasource' in query && 'location' in query && 'value_type' in query && (!('period' in query))) {
+      compoundQuery = [datasource, indicator, location, value_type];
+      compoundTable = '[datasource+indicator+location+value_type]';
+    }
+
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'value_type' in query && (!('location' in query))) {
+      compoundQuery = [datasource, indicator, period, value_type];
+      compoundTable = '[datasource+indicator+period+value_type]';
+    }
+
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && (!('value_type' in query))) {
+      compoundQuery = [datasource, indicator, period, location];
+      compoundTable = '[datasource+indicator+period+location]';
+    }
+
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && 'value_type' in query) {
+      compoundQuery = [datasource, indicator, period, location, value_type];
+      compoundTable = '[datasource+indicator+period+location+value_type]';
+    }
+
+    // console.log('checking', compoundQuery, compoundTable, query);
+
+    // if (locationIDArray.length > 0) {
+    //   return dexie
+    //     .table(DATA)
+    //     .where(query)
+    //     .filter((value) => locationIDArray.includes(value.location))
+    //     .toArray();
+    // }
+    // return dexie.table(DATA).where(query).toArray();
     if (locationIDArray.length > 0) {
-      return dexie
+      const data = await dexie
         .table(DATA)
-        .where(query)
+        .where(compoundTable)
+        .equals(compoundQuery)
         .filter((value) => locationIDArray.includes(value.location))
         .toArray();
+      return data;
     }
-    return dexie.table(DATA).where(query).toArray();
+    const data = await dexie.table(DATA).where(compoundTable).equals(compoundQuery).toArray();
+    return data;
   }
 }
