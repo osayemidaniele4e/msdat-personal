@@ -17,8 +17,8 @@
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
-              v-for="(value, index) in classify"
-              :key="index * Math.random()"
+              v-for="(value, i) in classify"
+              :key="`${i}-row1`"
               :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
@@ -28,49 +28,29 @@
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
           <tr v-if="$route.params.name === 'Health_Outcomes'">
-            <div class="nhmis_month_head">
-              NHMIS (monthly)
-              <!-- <b-icon-info-circle-fill
-                :variant="selectedSource.id === source.id ? '' : 'primary'"
-                @click="$emit('selected:source-info', source)"
-                class="data-source-info meta_icon"
-              /> -->
-            </div>
-            <template v-for="(dt, index) in source">
-              <TableDataSourceCell
-                :key="index * Math.random()"
-                :source="dt"
-                @source:click="log($event)"
-                @source-info:click="$emit('selected:source-info', $event)"
-                :selectedSource="selectedSource"
-                @value="getValue"
-                @key="getKey"
-              />
-            </template>
-          </tr>
-          <tr v-else-if='customDashboard === true' class="custom">
-              <TableDataSourceCell
-                v-for="(dt, i) in source" :key="i * Math.random()"
-                :source="dt"
-                @source:click="log($event)"
-                @source-info:click="$emit('selected:source-info', $event)"
-                :selectedSource="selectedSource"
-                @value="getValue"
-                @key="getKey"
-              />
+            <div class="nhmis_month_head">NHMIS (monthly)</div>
+            <TableDataSourceCell
+              v-for="(dt, i) in source"
+              :key="`${i}-row3`"
+              :source="dt"
+              @source:click="log($event)"
+              @source-info:click="$emit('selected:source-info', $event)"
+              :selectedSource="selectedSource"
+              @value="getValue"
+              @key="getKey"
+            />
           </tr>
           <tr v-else>
-            <div v-for="(dt, i) in source" :key="i">
-              <TableDataSourceCell
-                :key="i"
-                :source="dt"
-                @source:click="log($event)"
-                @source-info:click="$emit('selected:source-info', $event)"
-                :selectedSource="selectedSource"
-                @value="getValue"
-                @key="getKey"
-              />
-            </div>
+            <TableDataSourceCell
+              v-for="(dt, i) in source"
+              :key="`${i}-row4`"
+              :source="dt"
+              @source:click="log($event)"
+              @source-info:click="$emit('selected:source-info', $event)"
+              :selectedSource="selectedSource"
+              @value="getValue"
+              @key="getKey"
+            />
           </tr>
 
           <!-- The display the the first indicator of the array of indicator -->
@@ -183,7 +163,12 @@
                   <div class="nhmis-rel-text1 text-center">-</div>
                   <div class="nhmis-rel-text2">-</div>
                 </td>
-                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                <td
+                  class="text-center p-2"
+                  v-for="(dt, i) in source"
+                  :key="`${i}-row9`"
+                  scope="col"
+                >
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -191,7 +176,12 @@
                 </td>
               </template>
               <template #default v-else>
-                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                <td
+                  class="text-center p-2"
+                  v-for="(dt, i) in source"
+                  :key="`${i}-row10`"
+                  scope="col"
+                >
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -201,7 +191,7 @@
             </TableDataRow>
 
             <!-- This creates a space between the related indicators table rows -->
-            <div :key="index" class=""></div>
+            <div :key="`${index}-row11`" class=""></div>
           </template>
         </tbody>
       </table>
