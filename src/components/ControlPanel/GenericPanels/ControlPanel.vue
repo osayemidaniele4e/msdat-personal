@@ -128,7 +128,7 @@ export default {
   name: 'ControlPanel',
   data() {
     return {
-      activeToggleButton: 'state_map',
+      activeToggleButton: '',
 
       // using component data with 'Sub' addition to prevent prop mutations
       // (controlIndex & groupIndex)
@@ -289,6 +289,7 @@ export default {
     this.updatePayload(this.defaultDataSource, 'datasource');
     this.updatePayload(this.defaultLocation, 'location');
     this.updatePayload(this.defaultYear, 'year');
+    this.activeToggleButton = this.payload.visualization;
   },
 };
 </script>
