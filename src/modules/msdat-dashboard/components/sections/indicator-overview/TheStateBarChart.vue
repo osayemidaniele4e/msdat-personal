@@ -152,6 +152,9 @@ export default {
     async updateValue() {
       this.loading = true;
       const data = await this.getData(this.values);
+      if (this.values.indicator?.id === undefined) {
+        return;
+      }
       // eslint-disable-next-line camelcase
       const { national_target, sdg_target } = this.dlGetIndicator(this.values.indicator.id);
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;

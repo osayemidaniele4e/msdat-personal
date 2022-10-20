@@ -263,22 +263,33 @@ export default class DataBase {
 
     let compoundQuery = [];
     let compoundTable = [];
-    if ('indicator' in query && 'datasource' in query && 'location' in query && 'value_type' in query && (!('period' in query))) {
+
+    // query => datasource, indicator , location and value_type
+    if ('indicator' in query && 'datasource' in query && 'location' in query && 'value_type' in query && (!('period' in query)) && (Object.keys(query).length === 4)) {
       compoundQuery = [datasource, indicator, location, value_type];
       compoundTable = '[datasource+indicator+location+value_type]';
     }
 
-    if ('indicator' in query && 'datasource' in query && 'period' in query && 'value_type' in query && (!('location' in query))) {
+    // query => datasource indicator and value_type
+    if ('indicator' in query && 'datasource' in query && 'value_type' in query && !('period' in query && 'location' in query) && (Object.keys(query).length === 3)) {
+      compoundQuery = [datasource, indicator, value_type];
+      compoundTable = '[datasource+indicator+value_type]';
+    }
+
+    // query => datasource, indicator , period and value_type
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'value_type' in query && (!('location' in query)) && (Object.keys(query).length === 4)) {
       compoundQuery = [datasource, indicator, period, value_type];
       compoundTable = '[datasource+indicator+period+value_type]';
     }
 
-    if ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && (!('value_type' in query))) {
+    // query => datasource, indicator , period and location
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && (!('value_type' in query)) && (Object.keys(query).length === 4)) {
       compoundQuery = [datasource, indicator, period, location];
       compoundTable = '[datasource+indicator+period+location]';
     }
 
-    if ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && 'value_type' in query) {
+    // query => datasource, indicator , period, location and value_type
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && 'value_type' in query && (Object.keys(query).length === 5)) {
       compoundQuery = [datasource, indicator, period, location, value_type];
       compoundTable = '[datasource+indicator+period+location+value_type]';
     }
@@ -304,6 +315,23 @@ export default class DataBase {
     }
 
     const data = await dexie.table(DATA).where(compoundTable).equals(compoundQuery).toArray();
+
     return data;
+  }
+
+  /**
+   * @function queryDBForNumDenum
+   * @author davebenard
+   * @description function to query the DATA table from num-denum data
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryTableByName(tableName = '') {
+    if (tableName === '') {
+      return [];
+    }
+    return dexie
+      .table(tableName)
+      .toArray();
   }
 }

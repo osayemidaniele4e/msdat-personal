@@ -86,7 +86,9 @@ export default {
   props: {
     options: {
       type: Array,
-      default: () => [],
+      default: () => [{
+        msdat: 'msdat 3.0',
+      }],
     },
     id: {
       type: String,
@@ -108,10 +110,10 @@ export default {
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
-          // this.selected = newValue[0];
+            // this.selected = newValue[0];
             if (has(this.multiSelectProps, 'group-values')) {
               this.selected = newValue[0][this.multiSelectProps['group-values']][0];
-            // this.selected = await newValue[0];
+              // this.selected = await newValue[0];
             } else if (newValue.length > 0) {
               this.selected = await this.options[0];
             } else {
@@ -122,11 +124,11 @@ export default {
           }
 
           /**
-         * @description check if the update is for datasource
-         * if it is, check if the list is an array,
-         * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
-         * if its not an array, make the object the default selected
-         */
+           * @description check if the update is for datasource
+           * if it is, check if the list is an array,
+           * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
+           * if its not an array, make the object the default selected
+           */
           if (this.multiSelectProps.label === 'datasource') {
             if (Array.isArray(newValue) && newValue?.length > 0) {
               const defaultSelected = newValue.find((item) => item.id === this.selected?.id);

@@ -2,7 +2,6 @@ import { createNamespacedHelpers } from 'vuex';
 import {
   filter, omit, matches, isObject, has,
 } from 'lodash';
-import axios from '@/plugins/axios';
 import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
@@ -32,7 +31,8 @@ export default {
   mixins: [formatter],
   data() {
     return {
-      hardCordedValueType: [
+      // valueType: [],
+      valueType: [
         {
           id: 1,
           value_type: 'Estimate',
@@ -131,9 +131,13 @@ export default {
       if (query.datasource === 25) {
         query.value_type = 1;
       } else if (!has(query, 'value_type')) {
-        const datasource = this.dlGetDataSource(query.datasource);
-        // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
-        const valuetype = this.hardCordedValueType.filter(
+        const datasource = await this.dlGetDataSource(query.datasource);
+        // if (this.valueType?.length <= 0) {
+        //   this.valueType = await this.getDexieTableValues('valuetypes');
+        //   return false;
+        // }
+
+        const valuetype = await this.valueType.filter(
           (item) => item.value_type === datasource?.classification,
         );
         query.value_type = valuetype[0]?.id;
@@ -147,23 +151,22 @@ export default {
         const resultValue = await DB.queryDB(newQueryObject, locationID);
         return resultValue;
       }
-
+      // console.log('checkers', query);
       const result = await DB.queryDB(query);
-      const dataResult = result.map((element) => {
-        const temp = {};
-        temp.id = element.id;
-        temp.period = element.period;
-        // temp.value = this.singlePointDecimalValue(element.value);
-        temp.value = element.value;
-        temp.created_at = element.created_at;
-        temp.updated_at = element.updated_at;
-        temp.indicator = element.indicator;
-        temp.location = element.location;
-        temp.datasource = element.datasource;
-        temp.value_type = element.value_type;
-        return temp;
-      });
-      return dataResult;
+      // const dataResult = result.map((element) => {
+      //   const temp = {};
+      //   temp.id = element.id;
+      //   temp.period = element.period;
+      //   temp.value = element.value;
+      //   temp.created_at = element.created_at;
+      //   temp.updated_at = element.updated_at;
+      //   temp.indicator = element.indicator;
+      //   temp.location = element.location;
+      //   temp.datasource = element.datasource;
+      //   temp.value_type = element.value_type;
+      //   return temp;
+      // });
+      return result;
     },
 
     /**
@@ -205,23 +208,15 @@ export default {
     },
     dlGetValueTypes(values) {
       if (typeof values === 'object') {
-        // return filter(this.dlValue_type, matches(values));
-        return filter(this.hardCordedValueType, matches(values));
+        return filter(this.valueType, matches(values));
       }
-      return this.hardCordedValueType.find((item) => item.id === values);
+      return this.valueType.find((item) => item.id === values);
     },
     dlGetDataSourceSpecificIndicator(values) {
       if (typeof values === 'object') {
         return filter(this.dlDataSourceSpecificIndicator, matches(values));
       }
       return this.dlDataSourceSpecificIndicator.find((item) => item.id === values);
-    },
-    // New Feature
-    // function to get data_sources based on indicator
-    async getDataSourceByIndicator(value) {
-      const indicatorId = value || 1;
-      const dataSourceAvailable = await axios.get(`/indicators/${indicatorId}/datasources/`);
-      return dataSourceAvailable.data.datasources.filter((e) => e.id !== 33);
     },
     /**
      *
@@ -254,8 +249,15 @@ export default {
       const nhmisResult = result.slice(-1);
       return nhmisResult[0];
     },
+    async getDexieTableValues(query) {
+      if (query === '') {
+        return false;
+      }
+      const result = await DB.queryTableByName(query);
+      return result;
+    },
   },
   async mounted() {
-    // console.trace(this.dlGetLocation({ level: 3 }));
+    this.valueType = await this.getDexieTableValues('valuetypes');
   },
 };
