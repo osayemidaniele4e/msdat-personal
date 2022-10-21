@@ -143,11 +143,13 @@ export default class DataLayer {
         await this.setAvailableDashboardIndicator();
       }
       // await this.initOtherTablesFromDB();
-
-      await this.initDataWithYears(this.defaultIndicators);
+      // await this.initDataWithYears(this.defaultIndicators);
       setTimeout(async () => {
+        // await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators);
         const lateIndicators = await this.DB.checkIndicatorsInIdb();
         const indicatorsUnavailable = difference(this.indicatorList, lateIndicators);
+        console.log('checks', indicatorsUnavailable);
+        indicatorsUnavailable.unshift(...this.defaultIndicators);
 
         if (indicatorsUnavailable.length > 0) {
           const alert = this.sweetAlert();
@@ -330,6 +332,7 @@ export default class DataLayer {
     for (let i = 0; i < indicator.length; i++) {
       const indicatorID = indicator[i];
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+      console.log(yearsNotAvailableInDB, 'checks');
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
         const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;

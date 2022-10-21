@@ -230,6 +230,6 @@ export default {
     },
   },
   async mounted() {
-    this.valueType = await this.getDexieTableValues('valuetypes');
+    // this.valueType = await this.getDexieTableValues('valuetypes');
   },
 };

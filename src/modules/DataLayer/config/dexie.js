@@ -1,12 +1,12 @@
 import Dexie from 'dexie';
 
-Dexie.delete('msdat-database');
+Dexie.delete('msdat-database5');
 Dexie.delete('msdat-database1');
 Dexie.delete('msdat-database2');
 Dexie.delete('msdat-database3');
 Dexie.delete('msdat-database4');
 
-const db = new Dexie('msdat-database5');
+const db = new Dexie('msdat-database');
 
 db.version(1).stores({
   datasources:
