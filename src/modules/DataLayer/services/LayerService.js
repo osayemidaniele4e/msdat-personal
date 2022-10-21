@@ -46,7 +46,7 @@ export default class DataLayer {
     // This allows the dashboard datasources to be available
     // to the dashboard early instead of waiting for all
     // data fetching to be complete, leading to
-    // empty tables on inital load
+    // empty tables on Initial load
     this.setDataInStore(this.dataSourceList, ALL_DASHBOARD_SOURCES);
     this.setDataInStore(this.indicatorList, ALL_INDICATOR);
   }
@@ -82,6 +82,7 @@ export default class DataLayer {
       this.setup(object);
       console.time('fetching');
       const indicatorArray = await this.DB.listAllIndicators();
+
       // check if data is already initialized iN DEXIE DB
       // this.DB.getIndicatorDataThatExistInDB()
       if (indicatorArray.length === 0) {

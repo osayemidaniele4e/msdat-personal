@@ -189,13 +189,11 @@ export default {
       } else if (this.$route.meta.title === 'Demographics') {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
-          console.log(presentYear, 'hello');
           return filteredIndicator.reduce((max, currentValues) => {
             if (currentValues.period > max.period && currentValues.period <= presentYear) {
               console.log(currentValues, 'hello 1');
               return currentValues;
             }
-            console.log(max, 'hello 2');
             return max;
           });
         }

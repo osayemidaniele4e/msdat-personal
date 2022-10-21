@@ -104,21 +104,7 @@ export default {
      */
     async queryDBForNumDenum(query) {
       const result = await DB.queryDBForNumDenum(query);
-      const dataResult = result.map((element) => {
-        const temp = {};
-        temp.id = element.id;
-        temp.period = element.period;
-        temp.value = element.value;
-        temp.created_at = element.created_at;
-        temp.updated_at = element.updated_at;
-        temp.indicator = element.indicator;
-        temp.location = element.location;
-        temp.datasource = element.datasource;
-        temp.value_type = element.value_type;
-        return temp;
-      });
-
-      return dataResult;
+      return result;
     },
     /**
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
@@ -151,21 +137,7 @@ export default {
         const resultValue = await DB.queryDB(newQueryObject, locationID);
         return resultValue;
       }
-      // console.log('checkers', query);
       const result = await DB.queryDB(query);
-      // const dataResult = result.map((element) => {
-      //   const temp = {};
-      //   temp.id = element.id;
-      //   temp.period = element.period;
-      //   temp.value = element.value;
-      //   temp.created_at = element.created_at;
-      //   temp.updated_at = element.updated_at;
-      //   temp.indicator = element.indicator;
-      //   temp.location = element.location;
-      //   temp.datasource = element.datasource;
-      //   temp.value_type = element.value_type;
-      //   return temp;
-      // });
       return result;
     },
 
