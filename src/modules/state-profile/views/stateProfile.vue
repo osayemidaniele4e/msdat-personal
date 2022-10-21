@@ -26,7 +26,7 @@
         <div class="body">
           <button class="social">
             <a
-              href="https://www.linkedin.com/shareArticle?mini=true&url=http://208.87.128.190:7070/state-profile/"
+              href="https://www.linkedin.com/shareArticle?mini=true&url=http://208.87.128.190:7070/health-profiles/"
               target="_blank"
             >
               <img
@@ -38,7 +38,7 @@
           </button>
           <button class="social">
             <a
-              href="mailto:info@example.com?&subject=&cc=&bcc=&body=http://208.87.128.190:7070/state-profile/%0A"
+              href="mailto:info@example.com?&subject=&cc=&bcc=&body=http://208.87.128.190:7070/health-profiles/%0A"
               target="_blank"
             >
               <img class="img-fluid" src="@/assets/state-profile/img/email.png" alt="email-icon" />
@@ -46,7 +46,7 @@
           </button>
           <button class="social">
             <a
-              href="https://www.facebook.com/sharer/sharer.php?u=http://208.87.128.190:7070/state-profile/"
+              href="https://www.facebook.com/sharer/sharer.php?u=http://208.87.128.190:7070/health-profiles/"
               target="_blank"
             >
               <img
@@ -58,7 +58,7 @@
           </button>
           <button class="social">
             <a
-              href="https://twitter.com/intent/tweet?url=http://208.87.128.190:7070/state-profile/&text="
+              href="https://twitter.com/intent/tweet?url=http://208.87.128.190:7070/health-profiles/&text="
               target="_blank"
             >
               <img
@@ -245,7 +245,7 @@ export default {
       // });
     },
     copyTheLink() {
-      navigator.clipboard.writeText('http://208.87.128.190:7070/state-profile/');
+      navigator.clipboard.writeText('http://208.87.128.190:7070/health-profiles/');
       this.copyText = 'Link Copied!';
     },
     toggleShareModal() {
@@ -258,7 +258,7 @@ export default {
     },
     navigateToState(state) {
       // state.preventDefault()
-      this.$router.push({ name: 'state-profile', params: { state } });
+      this.$router.push({ name: 'health-profiles', params: { state } });
       // this.$router.go();
     },
     stateClicked(state) {
