@@ -111,8 +111,8 @@
             >
             <b-dropdown-item
               @click="navigateToState(s.name)"
-              v-for="s in this.states"
-              :key="s.id"
+              v-for="(s, i) in this.states"
+              :key="i"
               >{{ s.name }}</b-dropdown-item
             >
               <template #button-content>
@@ -129,8 +129,8 @@
               </template>
               <b-dropdown-item
                 @click="navigateToState(s.name)"
-                v-for="s in this.states"
-                :key="s.id"
+                v-for="(s, j) in this.states"
+                :key="j"
                 >{{ s.name }}</b-dropdown-item
               >
             </b-dropdown>
@@ -162,7 +162,7 @@
         @changeState="stateClicked"
         :stateDemographics="demographics"
       ></demographics>
-      <div class="mt-5" v-for="programArea in programAreas" :key="programArea.name">
+      <div class="mt-5" v-for="(programArea, k) in programAreas" :key="k">
         <PAoverview
           :state="state"
           @overviewLoading="setLoadingState"
