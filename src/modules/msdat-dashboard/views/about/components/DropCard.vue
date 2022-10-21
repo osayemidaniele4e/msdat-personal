@@ -71,7 +71,7 @@
               > Create Your Dashboard</b-list-group-item
             ></router-link
           >
-          <router-link to="/state-profile"
+          <router-link to="/health-profiles"
             ><b-list-group-item>Health Profiles</b-list-group-item></router-link
           >
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"

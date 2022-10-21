@@ -1,17 +1,17 @@
 export default [
   // {
-  //   path: '/state-profile',
+  //   path: '/health-profiles',
   //   name: 'comming soon',
   //   component: () => import('./views/comingSoon.vue'),
   // },
   {
-    path: '/state-profile/',
+    path: '/health-profiles/',
     name: 'intro',
     component: () => import('./views/intro.vue'),
   },
   {
-    path: '/state-profile/:state',
-    name: 'state-profile',
+    path: '/health-profiles/:state',
+    name: 'health-profiles',
     component: () => import('./views/stateProfile.vue'),
     props: true,
   },
