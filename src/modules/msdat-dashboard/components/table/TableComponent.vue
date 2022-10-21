@@ -48,7 +48,7 @@
               />
             </template>
           </tr>
-          <tr v-else-if='customDashboard === true' class="custom">
+          <!-- <tr v-else-if='customDashboard === true' class="custom">
               <TableDataSourceCell
                 v-for="(dt, i) in source" :key="i * Math.random()"
                 :source="dt"
@@ -58,11 +58,11 @@
                 @value="getValue"
                 @key="getKey"
               />
-          </tr>
+          </tr> -->
           <tr v-else>
-            <div v-for="(dt, i) in source" :key="i">
+            <!-- <div v-for="(dt, i) in source" :key="i"> -->
               <TableDataSourceCell
-                :key="i"
+                v-for="(dt, i) in source" :key="i"
                 :source="dt"
                 @source:click="log($event)"
                 @source-info:click="$emit('selected:source-info', $event)"
@@ -70,7 +70,7 @@
                 @value="getValue"
                 @key="getKey"
               />
-            </div>
+            <!-- </div> -->
           </tr>
 
           <!-- The display the the first indicator of the array of indicator -->
