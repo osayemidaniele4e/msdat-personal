@@ -65,10 +65,11 @@ export default [
     showTableRelatedIndicator: false,
     // add 65 for checks
     indicators: [
-      63, 64, 65, 1, 30, 31, 32, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
+      63, 1, 30, 31, 32, 64, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
       84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 396, 397, 398, 399, 400,
     ],
-    defaultIndicators: [63, 64, 65], // an indicator ID and related indicators,
+    // defaultIndicators: [63, 64, 65], // an indicator ID and related indicators,
+    defaultIndicators: [63],
     dataSources: [1, 2, 3, 4, 6, 7, 8, 9, 15, 18, 19, 20, 21, 22, 23, 26, 27, 28, 29, 33],
     initialIndicator: 63,
     initialDataSource: 19,

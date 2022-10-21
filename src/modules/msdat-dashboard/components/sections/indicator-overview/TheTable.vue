@@ -191,7 +191,6 @@ export default {
           const presentYear = new Date().getFullYear();
           return filteredIndicator.reduce((max, currentValues) => {
             if (currentValues.period > max.period && currentValues.period <= presentYear) {
-              console.log(currentValues, 'hello 1');
               return currentValues;
             }
             return max;

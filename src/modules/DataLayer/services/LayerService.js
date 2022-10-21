@@ -80,6 +80,7 @@ export default class DataLayer {
     try {
       this.DB = await new Database();
       this.setup(object);
+
       console.time('fetching');
       const indicatorArray = await this.DB.listAllIndicators();
 
@@ -141,12 +142,13 @@ export default class DataLayer {
         await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
         await this.setAvailableDashboardIndicator();
       }
-
       // await this.initOtherTablesFromDB();
 
       setTimeout(async () => {
+        await this.initDataWithYears(this.defaultIndicators);
         const lateIndicators = await this.DB.checkIndicatorsInIdb();
         const indicatorsUnavailable = difference(this.indicatorList, lateIndicators);
+        console.log('checks', lateIndicators, this.indicatorList, indicatorsUnavailable);
         if (indicatorsUnavailable.length > 0) {
           const alert = this.sweetAlert();
           await this.initDataWithYears(indicatorsUnavailable);
@@ -332,9 +334,7 @@ export default class DataLayer {
       if (yearsNotAvailableInDB.length > 0) {
         const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
         const theYears = take(yearsNotAvailableInDB, yearsToTake);
-        const arrayOfPromises = theYears.map(
-          (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
-        );
+        const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
         for (let j = 0; j < results.length; j++) {
           const requestResult = results[j].data;
@@ -347,8 +347,8 @@ export default class DataLayer {
   }
 
   /**
-  *
-  */
+   *
+   */
   async initDataWithYearsWithYearlyChecks(indicator, limit = 0) {
     for (let i = 0; i < indicator.length; i++) {
       const indicatorID = indicator[i];
@@ -359,9 +359,7 @@ export default class DataLayer {
       const theYears = take(dataValue, yearsToTake);
 
       // STEP 2: Get dataPoint by indicator and yearsAvailable
-      const arrayOfPromises = theYears.map(
-        (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
-      );
+      const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
       const results = await Promise.all(arrayOfPromises);
       for (let j = 0; j < results.length; j++) {
         const requestResult = results[j].data;
