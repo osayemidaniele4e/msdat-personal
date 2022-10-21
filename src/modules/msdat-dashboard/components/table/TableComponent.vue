@@ -36,8 +36,8 @@
                 class="data-source-info meta_icon"
               /> -->
             </div>
-            <template v-for="(dt, index) in source">
               <TableDataSourceCell
+              v-for="(dt, index) in source"
                 :key="index * Math.random()"
                 :source="dt"
                 @source:click="log($event)"
@@ -46,9 +46,8 @@
                 @value="getValue"
                 @key="getKey"
               />
-            </template>
           </tr>
-          <tr v-else-if='customDashboard === true' class="custom">
+          <tr v-else>
               <TableDataSourceCell
                 v-for="(dt, i) in source" :key="i * Math.random()"
                 :source="dt"
@@ -59,7 +58,7 @@
                 @key="getKey"
               />
           </tr>
-          <tr v-else>
+          <!-- <tr v-else>
             <div v-for="(dt, i) in source" :key="i">
               <TableDataSourceCell
                 :key="i"
@@ -71,7 +70,7 @@
                 @key="getKey"
               />
             </div>
-          </tr>
+          </tr> -->
 
           <!-- The display the the first indicator of the array of indicator -->
           <!-- please note that the first indicator is assumed to be
