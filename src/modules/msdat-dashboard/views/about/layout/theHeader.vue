@@ -38,10 +38,10 @@
               class="mob-img"
               variant="primary"
             />
-            <!-- <div class="mobile-flex-col">
+            <div class="mobile-flex-col">
               <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
-            </div> -->
+            </div>
 
             <div>
               <b-dropdown
@@ -484,11 +484,13 @@ header#the-header {
 // MEDIA QUERY
 
 /* EXTRA EXTRA SMALL */
-@media (max-width: 576px) {
+@media (max-width:676px) {
   .main {
     display: none;
   }
-
+  .mobile-flex-col {
+    display: none;
+  }
   .mob{
     display: none;
   }
@@ -579,11 +581,16 @@ header#the-header {
 }
 
 /* SMALL */
-@media (min-width: 576px) and (max-width: 768px) {
+@media (min-width: 676px) and (max-width: 1000px) {
   .main {
     display: none;
   }
-
+   .mains .header-navs a{
+    display: none;
+  }
+  .mains .header-navs button{
+    display: none;
+  }
   .mob{
     display: inherit;
   }
@@ -596,6 +603,7 @@ header#the-header {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    width: 100%;
   }
 
   .mob-grid-icon {
@@ -670,25 +678,27 @@ header#the-header {
 }
 
 /* MEDIUM */
-@media (min-width: 768px) and (max-width: 992px) {
-  .mob{
-    display: inherit;
-  }
-  .main-text {
-    display: none;
-  }
+// @media (min-width: 768px) and (max-width: 992px) {
+//   .mob{
+//     display: inherit;
+//   }
+//   .main-text {
+//     display: none;
+//   }
+//   .mains .header-navs a{
+//     display: none;
+//   }
+//   .mobile-flex-col-text1 {
+//     color: white;
+//     font-weight: 200;
+//     font-size: 15px;
+//   }
 
-  .mobile-flex-col-text1 {
-    color: white;
-    font-weight: 200;
-    font-size: 15px;
-  }
-
-  .mobile-flex-col-text2 {
-    color: white;
-    font-weight: 500;
-    font-size: 19px;
-  }
+//   .mobile-flex-col-text2 {
+//     color: white;
+//     font-weight: 500;
+//     font-size: 19px;
+//   }
   //    .main{
   //     display: none;
   //   }
@@ -762,10 +772,9 @@ header#the-header {
       }
     }
   }
-}
 
 /* LARGE */
-@media (min-width: 992px) and (max-width: 1200px) {
+@media (min-width: 1000px) and (max-width: 1200px) {
   .main-text {
     display: none;
   }
