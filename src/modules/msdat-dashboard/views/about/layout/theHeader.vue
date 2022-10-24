@@ -38,10 +38,10 @@
               class="mob-img"
               variant="primary"
             />
-            <div class="mobile-flex-col">
+            <!-- <div class="mobile-flex-col">
               <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
-            </div>
+            </div> -->
 
             <div>
               <b-dropdown
@@ -69,7 +69,7 @@
             </b-sidebar>
 
           </div>
-          <div v-if="dashboardName == 'MSDAT PLATFORM'">
+          <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
               <small>MSDAT PLATFORM</small>
               <br />
@@ -77,7 +77,7 @@
             </h2>
           </div>
 
-          <div v-if="dashboardName != 'MSDAT PLATFORM'">
+          <div class="main-text" v-if="dashboardName != 'MSDAT PLATFORM'">
             <h2 class="main-text">
               <small>MSDAT PLATFORM</small>
               <br />
@@ -484,7 +484,7 @@ header#the-header {
 // MEDIA QUERY
 
 /* EXTRA EXTRA SMALL */
-@media (max-width: 676px) {
+@media (max-width: 576px) {
   .main {
     display: none;
   }
@@ -499,7 +499,7 @@ header#the-header {
     display: none;
   }
 
-  .main-text {
+  .mains .main-text {
     display: none;
   }
 
@@ -507,8 +507,8 @@ header#the-header {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    width: 100%;
   }
-
   .mob-grid-icon {
     display: inherit;
   }
