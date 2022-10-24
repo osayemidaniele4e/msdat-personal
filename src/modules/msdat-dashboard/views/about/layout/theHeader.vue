@@ -26,6 +26,7 @@
             align-items-center
             border-left
             main
+            mains
           "
         >
           <!-- testing for mobile -->
@@ -483,13 +484,19 @@ header#the-header {
 // MEDIA QUERY
 
 /* EXTRA EXTRA SMALL */
-@media (max-width: 576px) {
+@media (max-width: 676px) {
   .main {
     display: none;
   }
 
   .mob{
-    display: inherit;
+    display: none;
+  }
+  .mains .header-navs a{
+    display: none;
+  }
+  .mains .header-navs button{
+    display: none;
   }
 
   .main-text {
