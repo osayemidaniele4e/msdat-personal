@@ -152,7 +152,6 @@ export default {
             denominator: denum?.value || null,
           };
         });
-        console.log('first', mappedValues);
         return mappedValues;
       }
       return [];
@@ -178,7 +177,6 @@ export default {
           show: this.values.target.sdg,
         },
       }, await ndData, this.values.numdenum);
-      console.log(ndData, 'ggg', this.values.numdenum);
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup 😢 😟 😡
 
