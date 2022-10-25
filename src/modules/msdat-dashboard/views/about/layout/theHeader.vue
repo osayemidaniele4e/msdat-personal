@@ -774,9 +774,12 @@ header#the-header {
   }
 
 /* LARGE */
-@media (min-width: 1000px) and (max-width: 1200px) {
+@media (min-width: 1000px) and (max-width: 1300px) {
   .main-text {
     display: none;
+  }
+  .mains .header-navs {
+    margin-left: 100px;
   }
   #about-wrap {
     header#the-header {
