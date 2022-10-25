@@ -36,7 +36,7 @@ export default [
       265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 329, 330, 331, 332, 333, 334,
       335, 336, 337, 338, 380, 381, 382, 383, 384,
     ],
-    defaultIndicators: [266, 265, 264], // an indicator ID and related indicators,
+    defaultIndicators: [98, 265, 264], // an indicator ID and related indicators,
     dataSources: [7, 9, 14, 17, 25],
     initialIndicator: 98,
     initialDataSource: 14,
