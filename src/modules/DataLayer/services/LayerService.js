@@ -143,7 +143,7 @@ export default class DataLayer {
         await this.setAvailableDashboardIndicator();
       }
       // await this.initOtherTablesFromDB();
-      // await this.initDataWithYears(this.defaultIndicators);
+      await this.initDataWithYears(this.defaultIndicators);
       setTimeout(async () => {
         // await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators);
         const lateIndicators = await this.DB.checkIndicatorsInIdb();
