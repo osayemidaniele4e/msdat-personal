@@ -214,7 +214,10 @@ export default {
                 dataLabels: {
                   enabled: true,
                   useHTML: true,
-                  format: '{point.y} <span style="font-weight:normal">( {point.nd} )</span>',
+                  format: '<span style="font-size:10px;">{point.y} <span style="font-weight:normal;font-size:10px;">({point.nd})</span></span>',
+                  style: {
+                    fontSize: '8px',
+                  },
                 },
               },
             },
@@ -231,6 +234,9 @@ export default {
                 enabled: true,
                 useHTML: true,
                 format: '{point.y}',
+                style: {
+                  fontSize: '8px',
+                },
               },
             },
           },

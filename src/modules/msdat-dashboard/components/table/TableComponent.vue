@@ -609,7 +609,8 @@ table.table {
         height: 34px;
         display: flex;
         border-radius: 4px;
-        padding-top: 7px;
+        padding: 7px 10px 0;
+        gap: 10px;
         justify-content: space-evenly;
         p {
           font-size: 13px !important;
