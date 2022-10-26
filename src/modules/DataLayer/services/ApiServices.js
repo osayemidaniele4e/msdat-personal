@@ -7,7 +7,9 @@ const getSingleIndicator = async (indicator) => axiosInstance.get(`${apiEndpoint
 const getRequiredEndpoint = async (apiEndpoint) => axiosInstance.get(`/${apiEndpoint}`);
 const getLatestDate = async () => axiosInstance.get('data/?order=-updated_at&size=1');
 const getIndicatorsWithAvailable = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}/years_available`);
-const getIndicatorsWithPeriod = async (indicatorID, period) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicatorID}&period=${period}`);
+const getIndicatorsWithPeriod = async (indicatorID, period) => axiosInstance.get(`${apiEndpoints.getData}indicator=${indicatorID}&period=${period}`);
+
+// https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
 const otherEndpoints = [
   apiEndpoints.getLocation,

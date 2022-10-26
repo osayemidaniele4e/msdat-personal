@@ -77,8 +77,9 @@ export default class DataLayer {
    * data layer initialization
    */
   async init(object) {
+    console.log(object, 'checks setup');
     try {
-      this.DB = new Database();
+      this.DB = await new Database();
       this.setup(object);
 
       console.time('fetching');
@@ -132,6 +133,7 @@ export default class DataLayer {
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
       const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray);
+      console.log('checks layer', indicatorsNotOnIdb, this.defaultIndicators, object, indicatorIDArray);
       if (indicatorsNotOnIdb.length !== 0) {
         this.storeTimestampInLocal();
         await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
@@ -143,7 +145,6 @@ export default class DataLayer {
         // await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators);
         const lateIndicators = await this.DB.checkIndicatorsInIdb();
         const indicatorsUnavailable = difference(this.indicatorList, lateIndicators);
-        console.log('checks', indicatorsUnavailable);
         indicatorsUnavailable.unshift(...this.defaultIndicators);
 
         if (indicatorsUnavailable.length > 0) {
@@ -195,6 +196,7 @@ export default class DataLayer {
       this.setDataInStore(data[3].data.results, VALUE_TYPES);
       this.setDataInStore(data[5].data.results, FACTORS);
       this.setDataInStore(data[7].data.results, DATA_SOURCE);
+      this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
       // store the rest of the data
       await this.DB.storeDataInDBTable(data[0].data.results, 'location');
       await this.DB.storeDataInDBTable(data[1].data.results, 'indicators');
@@ -202,6 +204,7 @@ export default class DataLayer {
       await this.DB.storeDataInDBTable(data[5].data.results, 'factors');
       await this.DB.storeDataInDBTable(data[6].data.results, 'datasource_specific_indicator');
       await this.DB.storeDataInDBTable(data[7].data.results, 'datasources');
+      await this.DB.storeDataInDBTable(data[8].data.results, 'nhmisMonthly');
     } else {
       // Populate vuex using dexie
       this.setDataInStore(await this.DB.fetchTableData('datasource_specific_indicator'), DSI);
@@ -210,6 +213,7 @@ export default class DataLayer {
       this.setDataInStore(await this.DB.fetchTableData('valuetypes'), VALUE_TYPES);
       this.setDataInStore(await this.DB.fetchTableData('factors'), FACTORS);
       this.setDataInStore(await this.DB.fetchTableData('datasources'), DATA_SOURCE);
+      this.setDataInStore(await this.DB.fetchTableData('nhmisMonthly'), NHMIS_MONTHLY);
     }
   }
 
