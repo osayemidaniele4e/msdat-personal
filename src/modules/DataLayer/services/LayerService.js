@@ -329,7 +329,6 @@ export default class DataLayer {
     for (let i = 0; i < indicator.length; i++) {
       const indicatorID = indicator[i];
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
-      console.log(yearsNotAvailableInDB, 'checks');
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
         const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
