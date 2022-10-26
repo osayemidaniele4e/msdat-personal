@@ -22,7 +22,7 @@ export default {
     },
     {
       type: 'dropdown',
-      class: ['col-md-4'],
+      class: ['col-md-4', 'col-lg-6'],
       dropdownProps: {
         'group-values': 'options',
         'group-label': 'datasource',

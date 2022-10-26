@@ -36,8 +36,8 @@
                 class="data-source-info meta_icon"
               /> -->
             </div>
-            <template v-for="(dt, index) in source">
               <TableDataSourceCell
+              v-for="(dt, index) in source"
                 :key="index * Math.random()"
                 :source="dt"
                 @source:click="log($event)"
@@ -46,7 +46,6 @@
                 @value="getValue"
                 @key="getKey"
               />
-            </template>
           </tr>
           <!-- <tr v-else-if='customDashboard === true' class="custom">
               <TableDataSourceCell
@@ -625,7 +624,8 @@ table.table {
         height: 34px;
         display: flex;
         border-radius: 4px;
-        padding-top: 7px;
+        padding: 7px 10px 0;
+        gap: 10px;
         justify-content: space-evenly;
         p {
           font-size: 13px !important;
