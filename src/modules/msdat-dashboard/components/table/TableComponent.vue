@@ -548,6 +548,11 @@ export default {
     }
     this.getNumDenumData();
   },
+
+  async mounted() {
+    // set all datasources to show in the trend analysis chart on first load
+    this.$emit('clickedReset');
+  },
 };
 </script>
 
