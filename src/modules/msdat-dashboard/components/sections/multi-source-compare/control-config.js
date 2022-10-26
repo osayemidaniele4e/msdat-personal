@@ -55,7 +55,7 @@ const payload = {
   datasource: 'NHMIS 1',
   year: '',
   compareBy: '',
-  visualization: 'state_map',
+  visualization: 'line',
   target: {
     national: false,
     sdg: false,

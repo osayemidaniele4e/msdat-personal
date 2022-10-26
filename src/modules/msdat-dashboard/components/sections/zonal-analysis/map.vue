@@ -64,7 +64,7 @@ export default {
       type: Object,
     },
     colors: {
-      type: Object,
+      type: [Object, Array],
       required: true,
     },
   },
@@ -155,7 +155,6 @@ export default {
 
           const chartSeries = [];
 
-          // let color =  [2,3,4,5,6,7]; // already know the zonal levels/parent of all the value
           for (let index = 0; index < this.colors.length; index += 1) {
             const group = data.filter(
               (item) => this.dlGetLocation(item.location).parent

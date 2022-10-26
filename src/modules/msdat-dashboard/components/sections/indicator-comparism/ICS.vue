@@ -450,7 +450,6 @@ export default {
           Number.parseFloat(item.value),
         ]);
         const sortTheYear = formatToHighChartFormat.sort((a, b) => a[0] - b[0]);
-        // console.log(sortTheYear, 'Indicator Comparison - By Period/State')
 
         const displayFactor = this.dlGetFactor(indicator.factor);
         highChartOptions.yAxis.push({
@@ -483,10 +482,8 @@ export default {
           name: indicator.full_name,
           data: sortTheYear,
         };
-        console.log(obj, 'obj');
         highChartOptions.series.push(obj);
       }
-      // console.log(highChartOptions, 'options');
       // this functions checks to make years apear from smallest to highest when the first selected indicator
       // year have higher values than that of the second selected indicator
       if (highChartOptions.series.length > 1 && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]) {

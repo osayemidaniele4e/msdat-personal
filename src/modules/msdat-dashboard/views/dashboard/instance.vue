@@ -105,20 +105,16 @@
               </h5>
             </template>
             <template>
-              <!-- <div class="row"> -->
               <div class="dummy-row2 row">
-                <template v-for="n in 3" class="flex-item">
-                  <div :key="n" class="col-lg-4 col-12">
-                    <div class="comparison-header">Comparison ({{ n }})</div>
-                    <LazyLoading>
-                      <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
-                        <MultiSourceComponent :key="n" :values="payload[n - 1]" />
-                      </ControlPanelConfiguration>
-                    </LazyLoading>
-                  </div>
-                </template>
+                <div v-for="n in 3" :key="n" class="flex-item col-lg-4 col-12">
+                  <div class="comparison-header">Comparison ({{ n }})</div>
+                  <LazyLoading>
+                    <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
+                      <MultiSourceComponent :key="n" :values="payload[n - 1]" />
+                    </ControlPanelConfiguration>
+                  </LazyLoading>
+                </div>
               </div>
-              <!-- </div> -->
             </template>
           </base-sub-card>
         </div>

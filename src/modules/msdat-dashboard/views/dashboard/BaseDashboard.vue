@@ -195,7 +195,7 @@ import scroll from '../../modules/onScroll/onscroll';
 import SharingDashboardState from '../../modules/dashboard_state_share/mixins';
 import Loading from '../../mixins/loading';
 import Onboarding from '../onboarding/onboarding';
-import TroubleShooting from '../../modules/troubleshooting/modal.vue';
+import TroubleShootingModal from '../../modules/troubleshooting/modal.vue';
 
 export default {
   name: 'BaseDashboard',
@@ -206,10 +206,10 @@ export default {
     Onboarding,
     tour,
     scroll,
-    TroubleShooting,
     SharingDashboardState,
   ],
   components: {
+    TroubleShootingModal,
     ControlBase,
     BasePanel,
     ControlPanel,
