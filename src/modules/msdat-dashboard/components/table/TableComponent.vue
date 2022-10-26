@@ -375,7 +375,6 @@ export default {
       // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
-
       // adding an extra column for NHMIS monthly
       if (this.$route.params.name === 'Health_Outcomes') {
         this.classify_nm[0][1] += 1;
@@ -388,6 +387,8 @@ export default {
     getAvailableDataSources() {
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
+      // add this to use only datasource on the dropdown for the table component
+      // const dropDownSource = arraySource[0];
       // debugger;
       /**
        * order AvailableSources according to the OrderSourceBy Array;
@@ -529,9 +530,9 @@ export default {
 
   async created() {
     if (this.$route.params.name === 'Health_Outcomes') {
-      this.getNhmisMonthly();
+      await this.getNhmisMonthly();
     }
-    this.getNumDenumData();
+    await this.getNumDenumData();
   },
 };
 </script>

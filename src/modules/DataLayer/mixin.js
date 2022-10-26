@@ -123,7 +123,8 @@ export default {
         //   return false;
         // }
 
-        const valuetype = await this.valueType.filter(
+        // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+        const valuetype = this.hardCordedValueType?.filter(
           (item) => item.value_type === datasource?.classification,
         );
         query.value_type = valuetype[0]?.id;

@@ -58,8 +58,5 @@ div.list_item {
 }
 div.cache_cleaner_loader {
   min-height: 20vh;
-  // display: flex;
-  // align-items: center;
-  // width: 100%;
 }
 </style>

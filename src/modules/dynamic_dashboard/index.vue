@@ -1,8 +1,7 @@
 <template>
   <div>
     <MSDAT
-      v-show="!isAdvanced"
-      v-if="Object.entries(configObject).length"
+      v-if="Object.entries(configObject).length && !isAdvanced"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -14,31 +13,28 @@
           ? configObject.showTableRelatedIndicator
           : true
       "
-    >
-    </MSDAT>
-        <advanceMSDAT
-          v-show="isAdvanced"
-          v-if="Object.entries(configObject).length"
-          :indicators="configObject.indicators"
-          :dataSources="configObject.dataSources"
-          :defaultIndicators="configObject.defaultIndicators"
-          :initialIndicator="configObject.initialIndicator"
-          :initialDataSource="configObject.initialDataSource"
-          :initialLocation="configObject.initialLocation"
-          :showTableRelatedIndicator="
+    />
+    <AdvanceMSDAT
+      v-if="Object.entries(configObject).length && isAdvanced"
+      :indicators="configObject.indicators"
+      :dataSources="configObject.dataSources"
+      :defaultIndicators="configObject.defaultIndicators"
+      :initialIndicator="configObject.initialIndicator"
+      :initialDataSource="configObject.initialDataSource"
+      :initialLocation="configObject.initialLocation"
+      :showTableRelatedIndicator="
         configObject.showTableRelatedIndicator != undefined
           ? configObject.showTableRelatedIndicator
           : true
       "
-    >
-        </advanceMSDAT>
-            <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
+    />
+    <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
   </div>
 </template>
 <script>
 import { mapMutations } from 'vuex';
-import moment from 'moment';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
+import moment from 'moment';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import config from './config/dashboard_config';
@@ -48,44 +44,42 @@ export default {
   name: 'DynamicDashboard',
   components: {
     MSDAT: instance,
-    advanceMSDAT: advanceInstance,
+    AdvanceMSDAT: advanceInstance,
     ClearDBModal,
   },
   data() {
     return {
       isAdvanced: false,
       dashboardConfig: config,
-      configObject: {}, // This should be an Object initially
-      // url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url: 'https://public.tableau.com/views/UpdatedDemographic1/DemographicDashboard?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url2: 'https://public.tableau.com/views/HealthWorkforceworkingdocument_16472664254450/Dashboard1?:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url3: 'https://public.tableau.com/views/Financedashboard_16472462810160/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      width: '100%',
-      height: '400',
+      configObject: {
+        name: '',
+        title: '',
+        indicators: [],
+        defaultIndicators: [],
+        dataSources: [],
+        initialIndicator: 0,
+        initialDataSource: 0,
+        initialLocation: 1,
+      },
       showClearDataModal: false,
     };
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
     /**
-     * @author davidbenard
-     * @function ClearDataFromDexie
-     * @description - clear the dexie DB if the difference between the localStorage and api date is greater than 10
+     * @function clearData
+     * @author davebenard
+     * @description clear cache data after 10days
+     * @return Boolean
      */
     async clearData() {
-      const { data } = await apiServices.getLatestDate();
-      const clearedDate = localStorage.getItem('lastUpdateDate');
-      if (clearedDate === null) {
-        console.log('first clear, BYFORCE, in order to set the date variable');
-        await this.$store.dispatch('DL/CLEAR_DB');
-        return;
-      }
-      if (data.date) {
-        const lastDateMoment = moment(data.date);
-        const diff = lastDateMoment.diff(clearedDate, 'days');
-        if (diff > 2) {
+      const lastDate = localStorage.getItem('dataTimestamp');
+      if (lastDate) {
+        const lastDateMoment = moment(lastDate);
+        const now = moment();
+        const diff = now.diff(lastDateMoment, 'days');
+        if (diff === 10) {
           this.showClearDataModal = true;
-          console.log('subsequent clear by users choice, update localstorage variable');
         }
       }
       Promise.resolve(false);
@@ -96,10 +90,15 @@ export default {
   },
   async created() {
     const { name } = this.$route.params;
-    // ==========================controlspoil=======================================//
+
+    /**
+     * @description CUSTOM-DASHBOARD
+     * @description reformat selected data into msdat config structure
+     * @author chisom.chima
+     */
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
       this.isCustom = true;
-      // FOR Indicators
+      // * FOR Indicators
       const ids = [];
       const sourcesID = [];
       this.$store.getters.getprogramArea.map((element) => {
@@ -110,13 +109,11 @@ export default {
             }
             return child;
           });
-
-          // console.log('ids', ids);
         }
         return element;
       });
 
-      // For DataSources
+      // * For DataSources
       this.$store.getters.getDataSource.map((element) => {
         element.children.map((child) => {
           if (child.selected === true) {
@@ -126,8 +123,8 @@ export default {
         });
         return element;
       });
-      // console.log(this.dashboardConfig, 'dashboadconfig 1')
-      this.dashboardConfig.push({
+      // * create the config object
+      this.configObject = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
           .replace(/\s+/g, '_')
           .toLowerCase(),
@@ -140,53 +137,54 @@ export default {
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
-      });
-
-      this.configObject = this.dashboardConfig.find(
-        (item) => item.name === name,
-      );
-      // console.log(this.dashboardConfig, 'dashboadconfig 2');
-      // this.configObject = {
-      //   name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-      //     .replace(/\s+/g, '_')
-      //     .toLowerCase(),
-      //   title: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-      //     .replace(/\s+/g, '_')
-      //     .toLowerCase(),
-      //   indicators: ids,
-      //   defaultIndicators: [7, 6, 5],
-      //   dataSources: sourcesID,
-      //   initialIndicator: ids[0],
-      //   initialDataSource: sourcesID[0],
-      //   initialLocation: 1,
-      // };
+      };
+      return;
     }
-    // ==========================controlspoil=======================================//
-
-    // this.CLEAR_CONTROL_PANEL();
-
-    // this.$route.meta.title = 'Hello World From Route';
+    // =======================
+    /**
+     * @author davebenard
+     * @description check the route params if it is advanced analytics then fetch from the config file
+     */
+    if (name === 'Advanced_Analytics') {
+      const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
+      if (dashboard === undefined) {
+        this.$router.push('/*');
+        return;
+      }
+      this.isAdvanced = true;
+      this.configObject = '';
+      this.configObject = dashboard;
+      return;
+    }
+    // =======================
+    /**
+     * @description Msdat Api-Config for Dashboard
+     * @description get dashboard config based on route name from the msdat api
+     * @author sami56
+     */
     try {
-      // const response = await apiServices.getDashboard();
-      // const { results } = response.data;
-      // this.configObject = results.find((item) => item.name === name);
-      // if (this.configObject === undefined) {
-      this.configObject = this.dashboardConfig.find((item) => item.name === name);
-      // }
-    } catch {
-      this.configObject = this.dashboardConfig.find((item) => item.name === name);
+      this.$store.dispatch('customDashboard', false);
+      this.$store.dispatch('resetState');
+      localStorage.removeItem('vuex');
+      // ============
+      const response = await apiServices.getDashboard();
+      const { results } = response.data;
+      const dashboard = results.find((item) => item.name === name);
+      if (dashboard === undefined) {
+        this.$router.push('/*');
+        return;
+      }
+      this.configObject = '';
+      this.configObject = dashboard;
+    } catch (err) {
+      console.log(err,
+        '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
+        'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
     }
-    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
-    // if (this.configObject === undefined) {
-    //   this.$router.push('/*');
-    // }
+    // =======================
+    // set the title from the config as the route title
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
-    }
-    if (this.configObject.name === 'Advanced_Analytics') {
-      this.isAdvanced = true;
-    //   this.ADD_CONTROL_PANEL(configObj);
-    // }
     }
   },
   watch: {
@@ -199,31 +197,4 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-main.main_field {
-  min-height: 45vh;
-  width: 100%;
-}
-iframe {
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px !important;
-  }
-}
-.iframe_container {
-  max-height: 450px;
-  overflow-y: auto;
-}
-.text-finance {
-  font-size: 25px;
-  text-align: center;
-}
-.sub-text-finance {
-  color: white;
-  font-size: 15px;
-  text-align: left;
-  font-weight: 100;
-}
-</style>
+<style lang="scss"></style>

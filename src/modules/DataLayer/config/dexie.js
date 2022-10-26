@@ -9,7 +9,7 @@ Dexie.delete('msdat-database4');
 
 const db = new Dexie('msdat-database6');
 
-db.version(1).stores({
+db.version(2).stores({
   datasources:
     '&id,datasource,full_name,description, year_available, period_available, methodology,subnational_data, classification, created_at, updated_at',
   countries: 'id, country',
