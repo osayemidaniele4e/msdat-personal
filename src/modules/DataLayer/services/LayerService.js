@@ -77,7 +77,6 @@ export default class DataLayer {
    * data layer initialization
    */
   async init(object) {
-    console.log(object, 'checks setup');
     try {
       this.DB = await new Database();
       this.setup(object);
@@ -133,14 +132,13 @@ export default class DataLayer {
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
       const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray);
-      console.log('checks layer', indicatorsNotOnIdb, this.defaultIndicators, object, indicatorIDArray);
       if (indicatorsNotOnIdb.length !== 0) {
         this.storeTimestampInLocal();
         await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
         await this.setAvailableDashboardIndicator();
+        await this.initDataWithYears(this.defaultIndicators);
       }
       // await this.initOtherTablesFromDB();
-      await this.initDataWithYears(this.defaultIndicators);
       setTimeout(async () => {
         // await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators);
         const lateIndicators = await this.DB.checkIndicatorsInIdb();

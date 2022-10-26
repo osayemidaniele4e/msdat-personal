@@ -1,7 +1,7 @@
 <template>
   <div>
     <MSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === false"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -15,7 +15,7 @@
       "
     />
     <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -62,6 +62,7 @@ export default {
         initialLocation: 1,
       },
       showClearDataModal: false,
+      loading: false,
     };
   },
   methods: {
@@ -163,6 +164,7 @@ export default {
      * @author sami56
      */
     try {
+      this.loading = true;
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
@@ -192,6 +194,8 @@ export default {
         '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
         'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
       );
+    } finally {
+      this.loading = false;
     }
     // =======================
     // set the title from the config as the route title

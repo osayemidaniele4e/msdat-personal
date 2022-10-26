@@ -27,8 +27,8 @@
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
-          <tr v-if="$route.params.name === 'Health_Outcomes'">
-            <div class="nhmis_month_head">NHMIS (monthly)</div>
+          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
+            <div class="nhmis_month_head">NHMIS-DHIS2 (monthly)</div>
             <TableDataSourceCell
               v-for="(dt, i) in source"
               :key="`${i}-row3`"
@@ -65,7 +65,7 @@
             <template v-slot:indicator="props">
               <slot name="indicator-0" :indicator="props"></slot>
             </template>
-            <template #default v-if="$route.params.name === 'Health_Outcomes'">
+            <template #default v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
               <div class="nhmis-month-text1" v-if="nhmisMonthData[0]">
@@ -143,7 +143,7 @@
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
               </template>
-              <template #default v-if="$route.params.name === 'Health_Outcomes'">
+              <template #default v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
                 <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
                 <td class="text-center p-2" v-if="nhmisMonthData[index]">
                   <TableDataCell />
@@ -154,8 +154,6 @@
                   <div class="nhmis-rel-text2">
                     {{ nhmisMonthData[index].period }}
                   </div>
-                  <!-- <p>
-                     {{ indicatorData.indicator.id }} </p> -->
                 </td>
 
                 <td v-else>
@@ -254,7 +252,8 @@ export default {
       required: false,
       // SOMEONE NEEDS TO COME AND REFACTOR THIS IMPLEMENTATION ASAP
       default: () => [
-        'NHMIS',
+        'NHMIS-DHIS2',
+        'NHMIS-DHIS2 (MONTHLY)',
         'SMoH-DHPRS',
         'MICS',
         'NDHS',
@@ -376,7 +375,7 @@ export default {
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
-      if (this.$route.params.name === 'Health_Outcomes') {
+      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
         this.classify_nm[0][1] += 1;
       }
     },
@@ -473,7 +472,7 @@ export default {
     async getNhmisMonthly() {
       this.indicators = [];
       this.dataArray.forEach((element) => {
-        this.indicators.push({ datasource: 33, indicator: element.indicator.id, location: this.values.location.id });
+        this.indicators.push({ datasource: 30, indicator: element.indicator.id, location: this.values.location.id });
       });
 
       this.nhmisMonthData = [];
@@ -488,7 +487,7 @@ export default {
       handler() {
         this.getAvailableDataSources();
         this.getDataSourcesClassification();
-        if (this.$route.params.name === 'Health_Outcomes') {
+        if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage') {
           this.getNhmisMonthly();
         }
       },
@@ -502,7 +501,7 @@ export default {
     // eslint-disable-next-line func-names
     'values.location': function () {
       this.getNumDenumData();
-      if (this.$route.params.name === 'Health_Outcomes') {
+      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage') {
         this.getNhmisMonthly();
       }
     },
@@ -529,7 +528,7 @@ export default {
   },
 
   async created() {
-    if (this.$route.params.name === 'Health_Outcomes') {
+    if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
       await this.getNhmisMonthly();
     }
     await this.getNumDenumData();
