@@ -129,10 +129,10 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <!-- <div v-b-toggle.sidebar-2>
+              <div v-b-toggle.sidebar-2>
               <b-icon-person-fill></b-icon-person-fill
                 >&nbsp;Login/Register
-              </div> -->
+              </div>
               <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff">
               <LoginSidebar v-if="show" />
               <SignUp v-else />
