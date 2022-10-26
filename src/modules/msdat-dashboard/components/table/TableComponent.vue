@@ -28,17 +28,24 @@
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
           <tr v-if="$route.params.name === 'Health_Outcomes'">
-            <div class="nhmis_month_head">NHMIS-DHIS2 (monthly)</div>
-            <TableDataSourceCell
-              v-for="(dt, i) in source"
-              :key="`${i}-row3`"
-              :source="dt"
-              @source:click="log($event)"
-              @source-info:click="$emit('selected:source-info', $event)"
-              :selectedSource="selectedSource"
-              @value="getValue"
-              @key="getKey"
-            />
+            <div class="nhmis_month_head">
+              NHMIS-DHIS2 (monthly)
+              <!-- <b-icon-info-circle-fill
+                :variant="selectedSource.id === source.id ? '' : 'primary'"
+                @click="$emit('selected:source-info', source)"
+                class="data-source-info meta_icon"
+              /> -->
+            </div>
+              <TableDataSourceCell
+              v-for="(dt, index) in source"
+                :key="index * Math.random()"
+                :source="dt"
+                @source:click="log($event)"
+                @source-info:click="$emit('selected:source-info', $event)"
+                :selectedSource="selectedSource"
+                @value="getValue"
+                @key="getKey"
+              />
           </tr>
           <tr v-else>
             <TableDataSourceCell
@@ -533,6 +540,11 @@ export default {
       this.getNhmisMonthly();
     }
     this.getNumDenumData();
+  },
+
+  async mounted() {
+    // set all datasources to show in the trend analysis chart on first load
+    this.$emit('clickedReset');
   },
 };
 </script>
