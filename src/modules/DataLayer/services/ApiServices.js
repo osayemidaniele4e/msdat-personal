@@ -1,7 +1,6 @@
 import axiosInstance from '@/plugins/axios';
 import apiEndpoints from '../config/endpoint';
 
-const getMainData = async () => axiosInstance.get(apiEndpoints.getData);
 const getDashboard = async () => axiosInstance.get(apiEndpoints.getDashboard);
 // Last updated DB date
 const getLastUpdatedDate = async () => axiosInstance.get(apiEndpoints.getLastUpdated);
@@ -13,6 +12,7 @@ const getLatestDate = async () => axiosInstance.get(apiEndpoints.getLastUpdated)
 // const getLatestDate = async () => axiosInstance.get('data/?order=-updated_at&size=1');
 const getIndicatorsWithAvailable = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}/years_available`);
 const getIndicatorsWithPeriod = async (indicatorID, period) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicatorID}&period=${period}`);
+
 const otherEndpoints = [
   apiEndpoints.getLocation,
   apiEndpoints.getIndicator,
@@ -22,6 +22,7 @@ const otherEndpoints = [
   apiEndpoints.getFactors,
   apiEndpoints.getDSI,
   apiEndpoints.getDataSource,
+  apiEndpoints.getNhmisMonthly,
 ];
 
 const getOtherEndpoint = async () => Promise.all(otherEndpoints.map(
@@ -33,7 +34,6 @@ export default {
   getSingleIndicator,
   getRequiredEndpoint,
   getDashboard,
-  getMainData,
   getUpdatedData,
   getOtherEndpoint,
   getLatestDate,

@@ -192,16 +192,32 @@ export default {
           plotLines.push(this.setPlotLineObjectForSDG(options.sdgTarget.value));
         }
         const series = [];
-        series.push({
-          name: 'On Target',
-          color: this.color.green,
-          data: dataObjectWithTarget.aboveTargetData,
-        });
-        series.push({
-          name: 'Below Target',
-          color: this.color.red,
-          data: dataObjectWithTarget.belowTargetData,
-        });
+
+        if (options.nationalTarget.slope === 'Positive') {
+          series.push({
+            name: 'On Target',
+            color: this.color.green,
+            data: dataObjectWithTarget.aboveTargetData,
+          });
+          series.push({
+            name: 'Below Target',
+            color: this.color.red,
+            data: dataObjectWithTarget.belowTargetData,
+          });
+        }
+
+        if (options.nationalTarget.slope === 'Negative') {
+          series.push({
+            name: 'On Target',
+            color: this.color.red,
+            data: dataObjectWithTarget.aboveTargetData,
+          });
+          series.push({
+            name: 'Below Target',
+            color: this.color.green,
+            data: dataObjectWithTarget.belowTargetData,
+          });
+        }
         // yAxis.plotLine = plotLine;
         let { yAxis } = defaultObject;
         yAxis = Object.assign(yAxis, { plotLines });
