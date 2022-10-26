@@ -141,9 +141,7 @@ export default class DataBase {
     if (allDataPoints.length <= 0) {
       return [];
     }
-    const uniqueArray = [
-      ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
-    ];
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.datasource, item])).values()];
     return uniqueArray.map((item) => item.datasource);
   }
 
@@ -152,9 +150,7 @@ export default class DataBase {
     if (allDataPoints.length <= 0) {
       return [];
     }
-    const uniqueArray = [
-      ...new Map(allDataPoints.map((item) => [item.indicator, item])).values(),
-    ];
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.indicator, item])).values()];
     return uniqueArray.map((item) => item.indicator);
   }
 

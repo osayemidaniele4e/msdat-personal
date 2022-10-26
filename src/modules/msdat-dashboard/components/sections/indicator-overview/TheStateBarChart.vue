@@ -123,6 +123,11 @@ export default {
     },
   },
   methods: {
+    /**
+     * This fetches Numerator -
+     * denominator data
+     * @param {} queryArray
+     */
     async getNDData(queryArray) {
       const nums = await queryArray.map((item) => this.queryDBForNumDenum({
         datasource: item.datasource,
