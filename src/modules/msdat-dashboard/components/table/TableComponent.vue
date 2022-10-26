@@ -29,7 +29,7 @@
           eg. Routine,Survey,Estimate -->
           <tr v-if="$route.params.name === 'Health_Outcomes'">
             <div class="nhmis_month_head">
-              NHMIS (monthly)
+              NHMIS-DHIS2 (monthly)
               <!-- <b-icon-info-circle-fill
                 :variant="selectedSource.id === source.id ? '' : 'primary'"
                 @click="$emit('selected:source-info', source)"
