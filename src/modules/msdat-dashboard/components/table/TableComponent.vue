@@ -27,9 +27,9 @@
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
-          <tr v-if="$route.params.name === 'Health_Outcomes'">
+          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
             <div class="nhmis_month_head">
-              NHMIS (monthly)
+              NHMIS-DHIS2 (monthly)
               <!-- <b-icon-info-circle-fill
                 :variant="selectedSource.id === source.id ? '' : 'primary'"
                 @click="$emit('selected:source-info', source)"
@@ -85,7 +85,7 @@
             <template v-slot:indicator="props">
               <slot name="indicator-0" :indicator="props"></slot>
             </template>
-            <template #default v-if="$route.params.name === 'Health_Outcomes'">
+            <template #default v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
               <div class="nhmis-month-text1" v-if="nhmisMonthData[0]">
@@ -163,7 +163,7 @@
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
               </template>
-              <template #default v-if="$route.params.name === 'Health_Outcomes'">
+              <template #default v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
                 <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
                 <td class="text-center p-2" v-if="nhmisMonthData[index]">
                   <TableDataCell />
@@ -263,7 +263,8 @@ export default {
       required: false,
       // SOMEONE NEEDS TO COME AND REFACTOR THIS IMPLEMENTATION ASAP
       default: () => [
-        'NHMIS',
+        'NHMIS-DHIS2',
+        'NHMIS-DHIS2 (MONTHLY)',
         'SMoH-DHPRS',
         'MICS',
         'NDHS',
@@ -385,7 +386,7 @@ export default {
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
-      if (this.$route.params.name === 'Health_Outcomes') {
+      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
         this.classify_nm[0][1] += 1;
       }
     },
@@ -397,12 +398,12 @@ export default {
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
       // add this to use only datasource on the dropdown for the table component
-      const dropDownSource = arraySource[0];
+      // const dropDownSource = arraySource[0];
       // debugger;
       /**
        * order AvailableSources according to the OrderSourceBy Array;
        */
-      const sortedSource = dropDownSource.sort(
+      const sortedSource = allAvailableSources.sort(
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
       );
       this.source = sortedSource;
@@ -506,7 +507,7 @@ export default {
       handler() {
         this.getAvailableDataSources();
         this.getDataSourcesClassification();
-        if (this.$route.params.name === 'Health_Outcomes') {
+        if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
           this.getNhmisMonthly();
         }
         // this.getNumeratorDenominator();
@@ -545,7 +546,7 @@ export default {
   },
 
   async created() {
-    if (this.$route.params.name === 'Health_Outcomes') {
+    if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
       await this.getNhmisMonthly();
     }
     await this.getNumDenumData();

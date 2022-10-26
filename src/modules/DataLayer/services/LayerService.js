@@ -77,7 +77,7 @@ export default class DataLayer {
    */
   async init(object) {
     try {
-      this.DB = new Database();
+      this.DB = await new Database();
       this.setup(object);
       const indicatorArray = await this.DB.listAllIndicators();
       // check if data is already initialized iN DEXIE DB

@@ -1,8 +1,9 @@
 import Dexie from 'dexie';
 
-const db = new Dexie('msdat-database4');
+// Dexie.delete('msdat-database6');
+const db = new Dexie('msdat-database3');
 
-db.version(2).stores({
+db.version(1).stores({
   datasources:
     '&id,datasource,full_name,description, year_available, period_available, methodology,subnational_data, classification, created_at, updated_at',
   countries: 'id, country',
