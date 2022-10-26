@@ -1,7 +1,7 @@
 <template>
   <div>
     <MSDAT
-      v-if="Object.entries(configObject).length && !isAdvanced && !loading"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -15,7 +15,7 @@
       "
     />
     <AdvanceMSDAT
-      v-if="Object.entries(configObject).length && isAdvanced && !loading"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -177,11 +177,23 @@ export default {
         return;
       }
       this.configObject = '';
-      this.configObject = dashboard;
+      this.configObject = {
+        name: dashboard.name,
+        title: dashboard.title,
+        indicators: dashboard.indicators,
+        defaultIndicators: dashboard.defaultIndicators,
+        dataSources: dashboard.dataSources,
+        initialIndicator: dashboard.initialIndicator,
+        initialDataSource: dashboard.initialDataSource,
+        initialLocation: dashboard.initialLocation,
+      };
+      this.isAdvanced = false;
     } catch (err) {
-      console.log(err,
+      console.log(
+        err,
         '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
-        'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
+        'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
+      );
     } finally {
       this.loading = false;
     }

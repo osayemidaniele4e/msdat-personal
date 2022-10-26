@@ -1,119 +1,117 @@
 <template>
   <div class="row">
-    <template v-for="(values, index) in setup">
-      <div
-        class=""
-        :class="values.class"
-        :key="index"
-        v-show="values.visibility === undefined ? true : values.visibility"
-      >
-        <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-        <label class="text-uppercase work-sans label-text">{{ values.label }}</label>
-        <!-- :options="values.options" -->
+    <div
+      v-for="(values, index) in setup"
+      :class="values.class"
+      :key="index"
+      v-show="values.visibility === undefined ? true : values.visibility"
+    >
+      <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
+      <label class="text-uppercase work-sans label-text">{{ values.label }}</label>
+      <!-- :options="values.options" -->
 
-        <!-- {{values}} -->
+      <!-- {{values}} -->
 
-        <!-- ADVANCED ANALYTICS -->
-        <selectWrapper
-          v-if="values.type === 'dropdown' && values.key === 'indicator'"
-          :id="label"
-          :value="payload[values.key]"
-          @input="updatePayload($event, values.key)"
-          :options="getIndicatorList(values.options)"
-          :multiSelectProps="values.dropdownProps"
-          :NoDataLabel="values.label"
-        />
-        <!-- MSDAT SUB-DASHBOARDS -->
-        <selectWrapper
-          v-if="values.type === 'dropdown' && values.key !== 'indicator'"
-          :id="label"
-          :value="payload[values.key]"
-          @input="updatePayload($event, values.key)"
-          :options="values.options"
-          :multiSelectProps="values.dropdownProps"
-          :NoDataLabel="values.label"
-        />
-        <!-- </div> -->
-        <!-- <div class="disabled_alt"> -->
-          <div>
-          <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
+      <!-- ADVANCED ANALYTICS -->
+      <selectWrapper
+        v-if="values.type === 'dropdown' && values.key === 'indicator'"
+        :id="label"
+        :value="payload[values.key]"
+        @input="updatePayload($event, values.key)"
+        :options="getIndicatorList(values.options)"
+        :multiSelectProps="values.dropdownProps"
+        :NoDataLabel="values.label"
+      />
+      <!-- MSDAT SUB-DASHBOARDS -->
+      <selectWrapper
+        v-if="values.type === 'dropdown' && values.key !== 'indicator'"
+        :id="label"
+        :value="payload[values.key]"
+        @input="updatePayload($event, values.key)"
+        :options="values.options"
+        :multiSelectProps="values.dropdownProps"
+        :NoDataLabel="values.label"
+      />
+      <!-- </div> -->
+      <!-- <div class="disabled_alt"> -->
+      <div>
+        <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
+      </div>
+
+      <div class="d-flex" v-if="values.type === 'checkbox'">
+        <!-- National Target here -->
+        <div class="d-flex disabled_alt">
+          <BaseCheckbox
+            :currentValue="payload.target.national"
+            @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')"
+          />
+          <p class="check-label ml-1">National</p>
         </div>
-
-        <div class="d-flex" v-if="values.type === 'checkbox'">
-          <!-- National Target here -->
-          <div class="d-flex disabled_alt">
-            <BaseCheckbox
-              :currentValue="payload.target.national"
-              @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')"
-            />
-            <p class="check-label ml-1">National</p>
-          </div>
-          <!-- SDG Target here -->
-          <div class="d-flex ml-3 disabled_alt">
-            <BaseCheckbox
-              :currentValue="payload.target.sdg"
-              @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')"
-            />
-            <p class="check-label ml-1">SDG</p>
-          </div>
-        </div>
-        <div v-if="values.type === 'visualization'" class="btn-group d-flex work-sans" role="group">
-          <button
-            type="button"
-            @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
-          >
-            Zones Map
-            <img
-              :src="
-                require(`../svg/${
-                  activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map'
-                }.svg`)
-              "
-              alt=""
-              srcset=""
-            />
-          </button>
-          <button
-            type="button"
-            @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'state_map' ? 'active' : '']"
-          >
-            State Map
-            <img
-              class="text-danger"
-              :src="
-                require(`../svg/${
-                  activeToggleButton === 'state_map' ? 'state_map_white' : 'state_map'
-                }.svg`)
-              "
-              alt=""
-              srcset=""
-            />
-
-            <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
-          </button>
-          <button
-            type="button"
-            @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'line' ? 'active' : '']"
-          >
-            Line <b-icon icon="graph-up"></b-icon>
-          </button>
-          <button
-            type="button"
-            @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
-            class="btn btn-sm btn-outline-primary"
-            :class="[activeToggleButton === 'column' ? 'active' : '']"
-          >
-            Column <b-icon icon="bar-chart-fill"></b-icon>
-          </button>
+        <!-- SDG Target here -->
+        <div class="d-flex ml-3 disabled_alt">
+          <BaseCheckbox
+            :currentValue="payload.target.sdg"
+            @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')"
+          />
+          <p class="check-label ml-1">SDG</p>
         </div>
       </div>
-    </template>
+      <div v-if="values.type === 'visualization'" class="btn-group d-flex work-sans" role="group">
+        <button
+          type="button"
+          @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
+          class="btn btn-sm btn-outline-primary"
+          :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
+        >
+          Zones Map
+          <img
+            :src="
+              require(`../svg/${
+                activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map'
+              }.svg`)
+            "
+            alt=""
+            srcset=""
+          />
+        </button>
+        <button
+          type="button"
+          @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
+          class="btn btn-sm btn-outline-primary"
+          :class="[activeToggleButton === 'state_map' ? 'active' : '']"
+        >
+          State Map
+          <img
+            class="text-danger"
+            :src="
+              require(`../svg/${
+                activeToggleButton === 'state_map' ? 'state_map_white' : 'state_map'
+              }.svg`)
+            "
+            alt=""
+            srcset=""
+          />
+
+          <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
+        </button>
+        <button
+          type="button"
+          @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
+          class="btn btn-sm btn-outline-primary"
+          :class="[activeToggleButton === 'line' ? 'active' : '']"
+        >
+          Line <b-icon icon="graph-up"></b-icon>
+        </button>
+        <button
+          type="button"
+          @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
+          class="btn btn-sm btn-outline-primary"
+          :class="[activeToggleButton === 'column' ? 'active' : '']"
+        >
+          Column <b-icon icon="bar-chart-fill"></b-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -128,7 +126,7 @@ export default {
   name: 'ControlPanel',
   data() {
     return {
-      activeToggleButton: 'line',
+      activeToggleButton: '',
 
       // using component data with 'Sub' addition to prevent prop mutations
       // (controlIndex & groupIndex)

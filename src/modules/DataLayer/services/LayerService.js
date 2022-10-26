@@ -17,6 +17,7 @@ const AVAILABLE_DASHBOARD_INDICATOR = 'availableDashboardIndicator';
 const DASHBOARD_DATESOURCE = 'dashboardDataSource';
 const ALL_DASHBOARD_SOURCES = 'allSources';
 const ALL_INDICATOR = 'allIndicator';
+const NHMIS_MONTHLY = 'nhmis_monthly';
 
 export default class DataLayer {
   constructor(store) {
@@ -45,7 +46,7 @@ export default class DataLayer {
     // This allows the dashboard datasources to be available
     // to the dashboard early instead of waiting for all
     // data fetching to be complete, leading to
-    // empty tables on inital load
+    // empty tables on Initial load
     this.setDataInStore(this.dataSourceList, ALL_DASHBOARD_SOURCES);
     this.setDataInStore(this.indicatorList, ALL_INDICATOR);
   }
@@ -79,7 +80,10 @@ export default class DataLayer {
     try {
       this.DB = await new Database();
       this.setup(object);
+
+      console.time('fetching');
       const indicatorArray = await this.DB.listAllIndicators();
+
       // check if data is already initialized iN DEXIE DB
       // this.DB.getIndicatorDataThatExistInDB()
       if (indicatorArray.length === 0) {
@@ -101,19 +105,20 @@ export default class DataLayer {
          * now initializing other tables in the store from the database directly as against the
          * previous implementation
          */
-
         this.setDataInStore(data[6].data.results, DSI);
         this.setDataInStore(data[0].data.results, LOCATION);
         this.setDataInStore(data[1].data.results, INDICATORS);
         this.setDataInStore(data[3].data.results, VALUE_TYPES);
         this.setDataInStore(data[5].data.results, FACTORS);
         this.setDataInStore(data[7].data.results, DATA_SOURCE);
+        this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
         await this.DB.storeDataInDBTable(data[0].data.results, 'location');
         await this.DB.storeDataInDBTable(data[1].data.results, 'indicators');
         await this.DB.storeDataInDBTable(data[3].data.results, 'valuetypes');
         await this.DB.storeDataInDBTable(data[5].data.results, 'factors');
         await this.DB.storeDataInDBTable(data[6].data.results, 'datasource_specific_indicator');
         await this.DB.storeDataInDBTable(data[7].data.results, 'datasources');
+        await this.DB.storeDataInDBTable(data[8].data.results, 'nhmisMonthly');
       } else {
         // Populate vuex using dexie
         this.setDataInStore(await this.DB.fetchTableData('datasource_specific_indicator'), DSI);
@@ -122,22 +127,24 @@ export default class DataLayer {
         this.setDataInStore(await this.DB.fetchTableData('valuetypes'), VALUE_TYPES);
         this.setDataInStore(await this.DB.fetchTableData('factors'), FACTORS);
         this.setDataInStore(await this.DB.fetchTableData('datasources'), DATA_SOURCE);
+        this.setDataInStore(await this.DB.fetchTableData('nhmisMonthly'), NHMIS_MONTHLY);
       }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
-      // console.log(difference(this.defaultIndicators, indicatorIDArray));
       const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray);
       if (indicatorsNotOnIdb.length !== 0) {
         this.storeTimestampInLocal();
         await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
         await this.setAvailableDashboardIndicator();
+        await this.initDataWithYears(this.defaultIndicators);
       }
-
       // await this.initOtherTablesFromDB();
-
       setTimeout(async () => {
+        // await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators);
         const lateIndicators = await this.DB.checkIndicatorsInIdb();
         const indicatorsUnavailable = difference(this.indicatorList, lateIndicators);
+        indicatorsUnavailable.unshift(...this.defaultIndicators);
+
         if (indicatorsUnavailable.length > 0) {
           const alert = this.sweetAlert();
           await this.initDataWithYears(indicatorsUnavailable);
@@ -187,6 +194,7 @@ export default class DataLayer {
       this.setDataInStore(data[3].data.results, VALUE_TYPES);
       this.setDataInStore(data[5].data.results, FACTORS);
       this.setDataInStore(data[7].data.results, DATA_SOURCE);
+      this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
       // store the rest of the data
       await this.DB.storeDataInDBTable(data[0].data.results, 'location');
       await this.DB.storeDataInDBTable(data[1].data.results, 'indicators');
@@ -194,6 +202,7 @@ export default class DataLayer {
       await this.DB.storeDataInDBTable(data[5].data.results, 'factors');
       await this.DB.storeDataInDBTable(data[6].data.results, 'datasource_specific_indicator');
       await this.DB.storeDataInDBTable(data[7].data.results, 'datasources');
+      await this.DB.storeDataInDBTable(data[8].data.results, 'nhmisMonthly');
     } else {
       // Populate vuex using dexie
       this.setDataInStore(await this.DB.fetchTableData('datasource_specific_indicator'), DSI);
@@ -202,6 +211,7 @@ export default class DataLayer {
       this.setDataInStore(await this.DB.fetchTableData('valuetypes'), VALUE_TYPES);
       this.setDataInStore(await this.DB.fetchTableData('factors'), FACTORS);
       this.setDataInStore(await this.DB.fetchTableData('datasources'), DATA_SOURCE);
+      this.setDataInStore(await this.DB.fetchTableData('nhmisMonthly'), NHMIS_MONTHLY);
     }
   }
 
@@ -229,7 +239,6 @@ export default class DataLayer {
    * this does the actual updating of the data
    */
   async updateData() {
-    // console.log('updating')
     const truthyVal = await this.isDataUpToDate();
     const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
     if (!truthyVal) {
@@ -320,13 +329,12 @@ export default class DataLayer {
     for (let i = 0; i < indicator.length; i++) {
       const indicatorID = indicator[i];
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+      console.log(yearsNotAvailableInDB, 'checks');
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
         const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
         const theYears = take(yearsNotAvailableInDB, yearsToTake);
-        const arrayOfPromises = theYears.map(
-          (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
-        );
+        const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
         for (let j = 0; j < results.length; j++) {
           const requestResult = results[j].data.results;
@@ -339,8 +347,8 @@ export default class DataLayer {
   }
 
   /**
-  *
-  */
+   *
+   */
   async initDataWithYearsWithYearlyChecks(indicator, limit = 0) {
     for (let i = 0; i < indicator.length; i++) {
       const indicatorID = indicator[i];
@@ -351,9 +359,7 @@ export default class DataLayer {
       const theYears = take(dataValue, yearsToTake);
 
       // STEP 2: Get dataPoint by indicator and yearsAvailable
-      const arrayOfPromises = theYears.map(
-        (item) => apiServices.getIndicatorsWithPeriod(indicatorID, item),
-      );
+      const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
       const results = await Promise.all(arrayOfPromises);
       for (let j = 0; j < results.length; j++) {
         const requestResult = results[j].data.results;

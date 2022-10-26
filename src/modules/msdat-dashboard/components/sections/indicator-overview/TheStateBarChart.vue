@@ -123,11 +123,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * This fetches Numerator -
-     * denominator data
-     * @param {} queryArray
-     */
     async getNDData(queryArray) {
       const nums = await queryArray.map((item) => this.queryDBForNumDenum({
         datasource: item.datasource,
@@ -157,6 +152,9 @@ export default {
     async updateValue() {
       this.loading = true;
       const data = await this.getData(this.values);
+      if (this.values.indicator?.id === undefined) {
+        return;
+      }
       // eslint-disable-next-line camelcase
       const { national_target, sdg_target } = this.dlGetIndicator(this.values.indicator.id);
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;

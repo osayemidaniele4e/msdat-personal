@@ -95,16 +95,17 @@
       </div>
     </template>
 
-    <template v-slot:section-4="{ payload, controlIndex }">
-      <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-          <template #title>
-            <h5 class="font-weight-bold work-sans text-white">Multi-Source Indicator Comparison</h5>
-          </template>
-          <template>
-            <div class="row_alt row">
-              <template v-for="n in 3" class="flex-item">
-                <div :key="n" class="col-lg-4 col-12">
+      <template v-slot:section-4="{ payload, controlIndex }">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Multi-Source Indicator Comparison
+              </h5>
+            </template>
+            <template>
+              <div class="dummy-row2 row">
+                <div v-for="n in 3" :key="n" class="flex-item col-lg-4 col-12">
                   <div class="comparison-header">Comparison ({{ n }})</div>
                   <LazyLoading>
                     <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
@@ -112,30 +113,29 @@
                     </ControlPanelConfiguration>
                   </LazyLoading>
                 </div>
-              </template>
-            </div>
-          </template>
-        </base-sub-card>
-      </div>
-    </template>
+              </div>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
 
-    <template v-slot:section-5="{ payload, controlIndex }">
-      <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-          <template #title>
-            <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
-          </template>
-          <template>
-            <LazyLoading>
-              <ControlPanelConfiguration :controlIndex="controlIndex">
-                <DynamicSection :values="payload" :controlIndex="controlIndex" />
-              </ControlPanelConfiguration>
-            </LazyLoading>
-          </template>
-        </base-sub-card>
-      </div>
-    </template>
-  </BaseDashboard>
+      <template v-slot:section-5="{ payload, controlIndex }">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
+            </template>
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+    </BaseDashboard>
 </template>
 
 <script>
@@ -269,6 +269,7 @@ export default {
     },
   },
   async created() {
+    console.log('instamce', this.indicators);
     await this.CLEAR_CONTROL_PANEL();
     /**
      * @author davebenard
