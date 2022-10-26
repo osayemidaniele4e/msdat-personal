@@ -65,12 +65,13 @@ export default {
         fontFamily: '"Work Sans", sans-serif',
       },
     },
+    tickPixelInterval: 100,
     plotLines: [
-      // {
-      //   width: 2,
-      //   value: 80,
-      //   name: 'NT'
-      // }
+      {
+        width: 2,
+        // value: 80,
+        // name: 'NT'
+      },
     ],
   },
   credits: {
@@ -103,10 +104,6 @@ export default {
       dataLabels: {
         enabled: true,
         // format: '{y}%',
-        style: {
-          fontSize: '10px',
-          fontFamily: '"Work Sans", sans-serif',
-        },
       },
     },
   },
