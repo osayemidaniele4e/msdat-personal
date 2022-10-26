@@ -1,7 +1,7 @@
 <template>
   <div>
     <MSDAT
-      v-if="Object.entries(configObject).length > 0 && !isAdvanced && loading"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -15,7 +15,7 @@
       "
     />
     <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && !isAdvanced && !loading"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"

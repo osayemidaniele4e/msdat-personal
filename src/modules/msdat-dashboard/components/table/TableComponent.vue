@@ -387,8 +387,6 @@ export default {
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
       // add this to use only datasource on the dropdown for the table component
-      // const dropDownSource = arraySource[0];
-      // debugger;
       /**
        * order AvailableSources according to the OrderSourceBy Array;
        */
