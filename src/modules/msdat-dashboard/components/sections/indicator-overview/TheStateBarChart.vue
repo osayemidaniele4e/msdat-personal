@@ -44,7 +44,6 @@
     />
   </div>
 </template>
-
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
@@ -115,7 +114,6 @@ export default {
         }
       },
     },
-
     updateData: {
       async handler() {
         await this.updateValue();
@@ -125,11 +123,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * This fetches Numerator -
-     * denominator data
-     * @param {} queryArray
-     */
     async getNDData(queryArray) {
       const nums = await queryArray.map((item) => this.queryDBForNumDenum({
         datasource: item.datasource,
@@ -159,6 +152,9 @@ export default {
     async updateValue() {
       this.loading = true;
       const data = await this.getData(this.values);
+      if (this.values.indicator?.id === undefined) {
+        return;
+      }
       // eslint-disable-next-line camelcase
       const { national_target, sdg_target } = this.dlGetIndicator(this.values.indicator.id);
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
@@ -178,8 +174,7 @@ export default {
         },
       }, await ndData, this.values.numdenum);
       chartOptions.yAxis.title.text = `${displayFactor}`;
-      // add nation and state selected to fit according to mockup 😢 😟 😡
-
+      // add nation and state selected to fit according to mockup :cry: :worried: :rage:
       const parentValue = await this.dlQuery({
         indicator: this.values.indicator.id,
         datasource: this.values.datasource.id,
@@ -193,7 +188,7 @@ export default {
         const seriesObject = {
           showInLegend: false,
           // eslint-disable-next-line camelcase
-          color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
+          color: parseFloat(parent.value) > national_target ? '#00A65A' : '#E85D58',
           // eslint-disable-next-line camelcase
           name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
           data: [
@@ -259,9 +254,7 @@ export default {
       const {
         datasource, indicator, location, year,
       } = optionsObject;
-
       let locationValue = location;
-
       if (location.id === 1) {
         locationValue = { level: 3 };
       } else {
@@ -275,16 +268,12 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
-
       // loop through data and parseFloat the value toFixed(1)
       for (let i = 0; i < data.length; i += 1) {
         data[i].value = parseFloat(data[i].value).toFixed(1);
       }
-      // console.log(data, 'datata');
-
       return data;
     },
-
     handleChartClick(e) {
       const point = e?.point?.name;
       const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
@@ -293,7 +282,6 @@ export default {
       }
       this.level = 3;
     },
-
     returnToNational() {
       const selectedPlace = this.dlGetLocation({ level: 1 });
       if (selectedPlace.length !== 0) {
@@ -302,13 +290,10 @@ export default {
       this.level = 1;
     },
   },
-
   mounted() {
     this.updateData = +1;
-
     this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>
-
 <style lang="scss" scoped></style>

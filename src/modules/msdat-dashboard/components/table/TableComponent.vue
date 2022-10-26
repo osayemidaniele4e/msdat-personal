@@ -17,8 +17,8 @@
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
             <td
-              v-for="(value, index) in classify"
-              :key="index * Math.random()"
+              v-for="(value, i) in classify"
+              :key="`${i}-row1`"
               :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
@@ -28,48 +28,29 @@
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
           <tr v-if="$route.params.name === 'Health_Outcomes'">
-            <div class="nhmis_month_head">
-              NHMIS (monthly)
-              <!-- <b-icon-info-circle-fill
-                :variant="selectedSource.id === source.id ? '' : 'primary'"
-                @click="$emit('selected:source-info', source)"
-                class="data-source-info meta_icon"
-              /> -->
-            </div>
-              <TableDataSourceCell
-              v-for="(dt, index) in source"
-                :key="index * Math.random()"
-                :source="dt"
-                @source:click="log($event)"
-                @source-info:click="$emit('selected:source-info', $event)"
-                :selectedSource="selectedSource"
-                @value="getValue"
-                @key="getKey"
-              />
+            <div class="nhmis_month_head">NHMIS-DHIS2 (monthly)</div>
+            <TableDataSourceCell
+              v-for="(dt, i) in source"
+              :key="`${i}-row3`"
+              :source="dt"
+              @source:click="log($event)"
+              @source-info:click="$emit('selected:source-info', $event)"
+              :selectedSource="selectedSource"
+              @value="getValue"
+              @key="getKey"
+            />
           </tr>
-          <!-- <tr v-else-if='customDashboard === true' class="custom">
-              <TableDataSourceCell
-                v-for="(dt, i) in source" :key="i * Math.random()"
-                :source="dt"
-                @source:click="log($event)"
-                @source-info:click="$emit('selected:source-info', $event)"
-                :selectedSource="selectedSource"
-                @value="getValue"
-                @key="getKey"
-              />
-          </tr> -->
           <tr v-else>
-            <!-- <div v-for="(dt, i) in source" :key="i"> -->
-              <TableDataSourceCell
-                v-for="(dt, i) in source" :key="i"
-                :source="dt"
-                @source:click="log($event)"
-                @source-info:click="$emit('selected:source-info', $event)"
-                :selectedSource="selectedSource"
-                @value="getValue"
-                @key="getKey"
-              />
-            <!-- </div> -->
+            <TableDataSourceCell
+              v-for="(dt, i) in source"
+              :key="`${i}-row4`"
+              :source="dt"
+              @source:click="log($event)"
+              @source-info:click="$emit('selected:source-info', $event)"
+              :selectedSource="selectedSource"
+              @value="getValue"
+              @key="getKey"
+            />
           </tr>
 
           <!-- The display the the first indicator of the array of indicator -->
@@ -182,7 +163,12 @@
                   <div class="nhmis-rel-text1 text-center">-</div>
                   <div class="nhmis-rel-text2">-</div>
                 </td>
-                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                <td
+                  class="text-center p-2"
+                  v-for="(dt, i) in source"
+                  :key="`${i}-row9`"
+                  scope="col"
+                >
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -190,7 +176,12 @@
                 </td>
               </template>
               <template #default v-else>
-                <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+                <td
+                  class="text-center p-2"
+                  v-for="(dt, i) in source"
+                  :key="`${i}-row10`"
+                  scope="col"
+                >
                   <TableDataCell
                     :cellData="getValueForColumn(indicatorData.values, dt)"
                     :dataColors="'#515151; #888888;'"
@@ -200,7 +191,7 @@
             </TableDataRow>
 
             <!-- This creates a space between the related indicators table rows -->
-            <div :key="index" class=""></div>
+            <div :key="`${index}-row11`" class=""></div>
           </template>
         </tbody>
       </table>
@@ -213,13 +204,14 @@
 
 <script>
 import { flatten, uniq, countBy } from 'lodash';
-import axiosInstance from '@/plugins/axios';
+import mixin from '@/modules/DataLayer/mixin';
 import TableDataCell from './TableDataCell.vue';
 import TableDataSourceCell from './TableDataSourceCell.vue';
 import TableDataRow from './TableDataRow.vue';
 
 export default {
   name: 'TableComponent',
+  mixins: [mixin],
   components: {
     TableDataCell,
     TableDataSourceCell,
@@ -262,7 +254,8 @@ export default {
       required: false,
       // SOMEONE NEEDS TO COME AND REFACTOR THIS IMPLEMENTATION ASAP
       default: () => [
-        'NHMIS',
+        'NHMIS-DHIS2',
+        'NHMIS-DHIS2 (MONTHLY)',
         'SMoH-DHPRS',
         'MICS',
         'NDHS',
@@ -480,22 +473,13 @@ export default {
     async getNhmisMonthly() {
       this.indicators = [];
       this.dataArray.forEach((element) => {
-        this.indicators.push(element.indicator.id);
+        this.indicators.push({ datasource: 33, indicator: element.indicator.id, location: this.values.location.id });
       });
 
       this.nhmisMonthData = [];
-      this.indicators.forEach((indicator) => {
-        let nhmisObj = {};
-        axiosInstance
-          .get(`data/?datasource=33&indicator=${indicator}&location=1`)
-          .then((response) => {
-            nhmisObj = response.data[response.data.length - 1];
-
-            this.nhmisMonthData.push(nhmisObj);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      this.indicators.forEach(async (el) => {
+        const data = await this.getNhmisData(el);
+        this.nhmisMonthData.push(data);
       });
     },
   },
@@ -507,7 +491,6 @@ export default {
         if (this.$route.params.name === 'Health_Outcomes') {
           this.getNhmisMonthly();
         }
-        // this.getNumeratorDenominator();
       },
       deep: true,
       immediate: true,
@@ -519,6 +502,9 @@ export default {
     // eslint-disable-next-line func-names
     'values.location': function () {
       this.getNumDenumData();
+      if (this.$route.params.name === 'Health_Outcomes') {
+        this.getNhmisMonthly();
+      }
     },
     // eslint-disable-next-line func-names
     'values.datasource': function () {
