@@ -26,7 +26,7 @@ export default {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
 
   .shimmerBG {
-    height: 38vh;
+    height: 100%;
     position: relative;
     animation: shimmer 1s ease-out alternate infinite both;
   }
