@@ -37,19 +37,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.icon-btn{
-    color: #348481 !important;
+.btn-outline-primary:not(:disabled):not(.disabled).active {
+  background-color: #348481 !important;
+  border-color: #348481 !important;
 }
-.icon-btn:hover{
-    background: #348481;
-  color: white;
+.btn-outline-primary:not(:disabled):not(.disabled).active:hover{
+  background-color: #348481 !important;
 }
-.line-icon{
-  background: #348481;
-  color: white;
-}
-.line-icon:hover{
+.btn-outline-primary{
   color: #348481;
-  background: white;
+  border-color: #348481 !important;
+}
+.btn-outline-primary:hover{
+  background: #348481 !important;
 }
 </style>

@@ -1,6 +1,14 @@
 import Dexie from 'dexie';
 
-const db = new Dexie('msdat-database3');
+Dexie.delete('msdat-database');
+Dexie.delete('msdat-database5');
+Dexie.delete('msdat-database6');
+Dexie.delete('msdat-database1');
+Dexie.delete('msdat-database2');
+Dexie.delete('msdat-database3');
+Dexie.delete('msdat-database4');
+
+const db = new Dexie('msdat-database0');
 
 db.version(1).stores({
   datasources:
@@ -14,14 +22,16 @@ db.version(1).stores({
   datasource_specific_indicator:
     '++id, datasource_indicator, measurement_numerator, measurement_denominator, frequency, methodology_estimation, indicator_definition, data_level, national,  zonal, state, senatorial, lga, datasource, indicator',
   links: '&id, period, link, created_at, updated_at, datasource, indicator',
-  data:
-    '&id, value, period, indicator,  datasource, value_type, location, [value+period+indicator+datasource+value_type+location],[indicator+datasource],[indicator+datasource+location],[indicator+period]',
+  data: '&id, value, period, indicator,  datasource, value_type, location,[indicator+datasource],[indicator+period],[indicator+datasource+location],[datasource+indicator+value_type],[datasource+indicator+period+location+value_type],[datasource+indicator+period+location],[datasource+indicator+location+value_type],[datasource+indicator+period+value_type]',
   location_hierarchy_level: 'id, name',
   stateNumDen: '++id',
   lgaNumDen: '++id',
   users: '++id, user_id, name, email, profession, organization, username, password',
   sub_dashboard_interests: '++id, email, dashboard, created',
   transactions: '++id',
+  nhmisMonthly:
+    '&id, value, period, indicator,  datasource, value_type, location,[datasource+indicator],[datasource+indicator+location], [datasource+indicator+location+period],[datasource+indicator+location+value_type]',
 });
 
 export default db;
+// data: '&id, value, period, indicator,  datasource, value_type, location, [value+period+indicator+datasource+value_type+location],[indicator+datasource],[indicator+datasource+location],[indicator+period],[datasource+indicator+period+location+value_type],[datasource+indicator+period+location],[datasource+indicator+period+value_type]',

@@ -189,13 +189,10 @@ export default {
       } else if (this.$route.meta.title === 'Demographics') {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
-          console.log(presentYear, 'hello');
           return filteredIndicator.reduce((max, currentValues) => {
             if (currentValues.period > max.period && currentValues.period <= presentYear) {
-              console.log(currentValues, 'hello 1');
               return currentValues;
             }
-            console.log(max, 'hello 2');
             return max;
           });
         }
@@ -239,9 +236,42 @@ export default {
     getReset() {
       this.$emit('reset');
     },
+    async populateTableData() {
+      const newValues = this.values.indicator;
+      this.loading = true;
+      const formattedData = [];
+      let indicators = [newValues.id, newValues.first_related, newValues.second_related];
+
+      if (!this.showTableRelatedIndicator) {
+        indicators = [newValues.id];
+      }
+
+      for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
+        const indicatorID = indicators[indicatorIndex];
+        if (indicatorID) {
+          const data = [];
+          const dataSources = this.dlGetDashboardDataSource();
+          const indicatorObject = this.dlGetIndicator(indicatorID);
+          for (let index = 0; index < dataSources.length; index += 1) {
+            const element = dataSources[index];
+            // eslint-disable-next-line no-await-in-loop
+            const ab = await this.dlGetLatestSourceAndIndicatorData({
+              indicator: indicatorID,
+              datasource: element.id,
+              location: 1,
+            });
+            data.push(ab);
+          }
+          formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
+        }
+        this.TableData = formattedData;
+        this.loading = false;
+      }
+    },
   },
   mounted() {
     this.updateData += 1;
+    this.populateTableData();
   },
 };
 </script>

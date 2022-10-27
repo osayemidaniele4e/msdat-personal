@@ -484,6 +484,13 @@ export default {
         };
         highChartOptions.series.push(obj);
       }
+      // this functions checks to make years apear from smallest to highest when the first selected indicator
+      // year have higher values than that of the second selected indicator
+      if (highChartOptions.series.length > 1 && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]) {
+        const temporary = highChartOptions.series[1];
+        highChartOptions.series[1] = highChartOptions.series[0];
+        highChartOptions.series[0] = temporary;
+      }
       return highChartOptions;
     },
 

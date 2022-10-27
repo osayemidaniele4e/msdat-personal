@@ -71,7 +71,6 @@
       </b-col>
       <b-col sm="12" md="5" class="mt-5">
         <BaseMap :level="1" :mapObject="mapOptions"/>
-        <!-- <stateProfileSvg :name="'map'"> </stateProfileSvg> -->
         <p class="mt-2 text-center map-text">Select a state on the map to view state profile</p>
         <div class="row justify-content-center">
           <button class="btn bottom-btn px-4 mt-3" @click='viewNationalProfile'>
@@ -149,7 +148,7 @@ export default {
               click: (event) => {
                 let state = event.point.name;
                 state = state.replace(/\s+/g, '');
-                this.$router.push({ name: 'state-profile', params: { state } });
+                this.$router.push({ name: 'health-profiles', params: { state } });
               },
             },
           },
@@ -178,7 +177,7 @@ export default {
   methods: {
     viewNationalProfile() {
       const state = 'National';
-      this.$router.push({ name: 'state-profile', params: { state } });
+      this.$router.push({ name: 'health-profiles', params: { state } });
     },
   },
 };
