@@ -208,6 +208,11 @@ export default class DataBase {
     }
   }
 
+  // This dexie query filter checks for value type 6 and 10 for num-denum
+  static async queryDBForNumDenum(query = {}) {
+    return dexie.table(DATA).where(query).filter((value) => value.value_type === 6 || value.value_type === 10).toArray();
+  }
+
   /**
    * @function queryDBForNumDenum
    * @author davebenard
