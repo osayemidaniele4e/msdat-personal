@@ -164,6 +164,7 @@ export default {
       if (this.values.numdenum === true) {
         ndData = await this.getNDData(data);
       }
+
       const chartOptions = this.genHighChartOption(data, {
         nationalTarget: {
           value: national_target,
@@ -188,11 +189,12 @@ export default {
       // because i know i am expecting only on value in the array of results
       if (parentValue.length > 0) {
         const parent = parentValue[0];
-        if (desirable_slope === 'Positive') {
+
+        if (national_target === null) {
           const seriesObject = {
             showInLegend: false,
             // eslint-disable-next-line camelcase
-            color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
+            color: '#58a5e8',
             // eslint-disable-next-line camelcase
             name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
             data: [
@@ -206,22 +208,42 @@ export default {
           chartOptions.series.unshift(seriesObject);
         }
 
-        if (desirable_slope === 'Negative') {
-          const seriesObject = {
-            showInLegend: false,
-            // eslint-disable-next-line camelcase
-            color: parseFloat(parent.value) > national_target ? '#E85D58' : '#00a65a',
-            // eslint-disable-next-line camelcase
-            name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
-            data: [
-              {
-                name: this.values.location.name,
-                y: Number(parseFloat(parent.value).toFixed(1)),
-                nd: national.numerator || 0,
-                dn: national.denominator || 0,
-              }],
-          };
-          chartOptions.series.unshift(seriesObject);
+        if (national_target !== null) {
+          if (desirable_slope === 'Positive') {
+            const seriesObject = {
+              showInLegend: false,
+              // eslint-disable-next-line camelcase
+              color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
+              // eslint-disable-next-line camelcase
+              name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
+              data: [
+                {
+                  name: this.values.location.name,
+                  y: Number(parseFloat(parent.value).toFixed(1)),
+                  nd: national.numerator || 0,
+                  dn: national.denominator || 0,
+                }],
+            };
+            chartOptions.series.unshift(seriesObject);
+          }
+
+          if (desirable_slope === 'Negative') {
+            const seriesObject = {
+              showInLegend: false,
+              // eslint-disable-next-line camelcase
+              color: parseFloat(parent.value) > national_target ? '#E85D58' : '#00a65a',
+              // eslint-disable-next-line camelcase
+              name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
+              data: [
+                {
+                  name: this.values.location.name,
+                  y: Number(parseFloat(parent.value).toFixed(1)),
+                  nd: national.numerator || 0,
+                  dn: national.denominator || 0,
+                }],
+            };
+            chartOptions.series.unshift(seriesObject);
+          }
         }
       }
       if (this.values.numdenum === true) {
