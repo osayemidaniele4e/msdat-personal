@@ -86,9 +86,7 @@ export default {
   props: {
     options: {
       type: Array,
-      default: () => [{
-        msdat: 'msdat 3.0',
-      }],
+      default: () => [],
     },
     id: {
       type: String,

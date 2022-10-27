@@ -188,6 +188,7 @@ export default {
       // because i know i am expecting only on value in the array of results
       if (parentValue.length > 0) {
         const parent = parentValue[0];
+        // eslint-disable-next-line camelcase
         if (desirable_slope === 'Positive') {
           const seriesObject = {
             showInLegend: false,
@@ -206,6 +207,7 @@ export default {
           chartOptions.series.unshift(seriesObject);
         }
 
+        // eslint-disable-next-line camelcase
         if (desirable_slope === 'Negative') {
           const seriesObject = {
             showInLegend: false,

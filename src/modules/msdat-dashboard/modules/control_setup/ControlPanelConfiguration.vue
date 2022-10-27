@@ -32,9 +32,16 @@ export default {
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
-  mounted() {
+  async mounted() {
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
+    });
+    const availableYears = await this.getAvailableYears();
+    this.SETUP_CONTROL_OPTIONS1({
+      groupIndex: this.groupIndex,
+      panelIndex: this.controlIndex,
+      key: 'year',
+      values: availableYears,
     });
   },
   methods: {
