@@ -200,7 +200,7 @@ export default {
 
         if (options.nationalTarget.value === null) {
           series.push({
-            name: 'On Target',
+            name: 'No Target',
             color: this.color.blue,
             data: dataObjectWithTarget.aboveTargetData,
           });

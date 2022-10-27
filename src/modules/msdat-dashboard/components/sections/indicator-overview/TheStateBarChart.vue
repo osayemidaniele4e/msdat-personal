@@ -196,7 +196,7 @@ export default {
             // eslint-disable-next-line camelcase
             color: '#58a5e8',
             // eslint-disable-next-line camelcase
-            name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
+            name: 'No Target',
             data: [
               {
                 name: this.values.location.name,
