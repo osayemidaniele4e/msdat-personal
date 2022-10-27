@@ -12,6 +12,7 @@ export default {
       color: {
         green: '#00AC40',
         red: '#E85D58',
+        blue: '#0000FF',
       },
     };
   },
@@ -62,8 +63,12 @@ export default {
           return {
             name: locationName.name,
             y: Number(item.value),
-            nd: Number(ndData.find((el) => el.location === item.location).numerator).toLocaleString(),
-            dn: Number(ndData.find((el) => el.location === item.location).denominator).toLocaleString(),
+            nd: Number(
+              ndData.find((el) => el.location === item.location).numerator,
+            ).toLocaleString(),
+            dn: Number(
+              ndData.find((el) => el.location === item.location).denominator,
+            ).toLocaleString(),
           };
         }
         return {
@@ -193,31 +198,47 @@ export default {
         }
         const series = [];
 
-        if (options.nationalTarget.slope === 'Positive') {
+        if (options.nationalTarget.value === null) {
           series.push({
             name: 'On Target',
-            color: this.color.green,
+            color: this.color.blue,
             data: dataObjectWithTarget.aboveTargetData,
           });
-          series.push({
-            name: 'Below Target',
-            color: this.color.red,
-            data: dataObjectWithTarget.belowTargetData,
-          });
+          // series.push({
+          //   name: 'Below Target',
+          //   color: this.color.blue,
+          //   data: dataObjectWithTarget.belowTargetData,
+          // });
         }
 
-        if (options.nationalTarget.slope === 'Negative') {
-          series.push({
-            name: 'On Target',
-            color: this.color.red,
-            data: dataObjectWithTarget.aboveTargetData,
-          });
-          series.push({
-            name: 'Below Target',
-            color: this.color.green,
-            data: dataObjectWithTarget.belowTargetData,
-          });
+        if (options.nationalTarget.value !== null) {
+          if (options.nationalTarget.slope === 'Positive') {
+            series.push({
+              name: 'On Target',
+              color: this.color.green,
+              data: dataObjectWithTarget.aboveTargetData,
+            });
+            series.push({
+              name: 'Below Target',
+              color: this.color.red,
+              data: dataObjectWithTarget.belowTargetData,
+            });
+          }
+
+          if (options.nationalTarget.slope === 'Negative') {
+            series.push({
+              name: 'On Target',
+              color: this.color.red,
+              data: dataObjectWithTarget.aboveTargetData,
+            });
+            series.push({
+              name: 'Below Target',
+              color: this.color.green,
+              data: dataObjectWithTarget.belowTargetData,
+            });
+          }
         }
+
         // yAxis.plotLine = plotLine;
         let { yAxis } = defaultObject;
         yAxis = Object.assign(yAxis, { plotLines });
@@ -230,7 +251,8 @@ export default {
                 dataLabels: {
                   enabled: true,
                   useHTML: true,
-                  format: '<span style="font-size:10px;">{point.y} <span style="font-weight:normal;font-size:10px;">({point.nd})</span></span>',
+                  format:
+                    '<span style="font-size:10px;">{point.y} <span style="font-weight:normal;font-size:10px;">({point.nd})</span></span>',
                   style: {
                     fontSize: '8px',
                   },
