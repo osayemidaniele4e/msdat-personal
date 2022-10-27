@@ -12,7 +12,7 @@ export default {
       color: {
         green: '#00AC40',
         red: '#E85D58',
-        blue: '#0000FF',
+        blue: '#58a5e8',
       },
     };
   },

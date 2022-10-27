@@ -65,7 +65,7 @@ export default {
       showNoSubNationalData: false,
       level: 1,
       updateData: 0,
-      desirable_slope: '',
+      desirableSlope: '',
     };
   },
   props: {
@@ -157,7 +157,7 @@ export default {
         return;
       }
       // eslint-disable-next-line camelcase
-      const { national_target, sdg_target, desirable_slope } = this.dlGetIndicator(this.values.indicator.id);
+      const { nationalTarget, sdg_target, desirableSlope } = this.dlGetIndicator(this.values.indicator.id);
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       const national = await this.computeNationalND();
       let ndData = [];
@@ -167,14 +167,14 @@ export default {
 
       const chartOptions = this.genHighChartOption(data, {
         nationalTarget: {
-          value: national_target,
+          value: nationalTarget,
           show: this.values.target.national,
-          slope: desirable_slope,
+          slope: desirableSlope,
         },
         sdgTarget: {
           value: sdg_target,
           show: this.values.target.sdg,
-          slope: desirable_slope,
+          slope: desirableSlope,
         },
       }, await ndData, this.values.numdenum);
       chartOptions.yAxis.title.text = `${displayFactor}`;
@@ -190,13 +190,13 @@ export default {
       if (parentValue.length > 0) {
         const parent = parentValue[0];
 
-        if (national_target === null) {
+        if (nationalTarget === null) {
           const seriesObject = {
             showInLegend: false,
             // eslint-disable-next-line camelcase
-            color: '#0000FF',
+            color: '#58a5e8',
             // eslint-disable-next-line camelcase
-            name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
+            name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
             data: [
               {
                 name: this.values.location.name,
@@ -208,14 +208,14 @@ export default {
           chartOptions.series.unshift(seriesObject);
         }
 
-        if (national_target !== null) {
-          if (desirable_slope === 'Positive') {
+        if (nationalTarget !== null) {
+          if (desirableSlope === 'Positive') {
             const seriesObject = {
               showInLegend: false,
               // eslint-disable-next-line camelcase
-              color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
+              color: parseFloat(parent.value) > nationalTarget ? '#00a65a' : '#E85D58',
               // eslint-disable-next-line camelcase
-              name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
+              name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
               data: [
                 {
                   name: this.values.location.name,
@@ -227,13 +227,13 @@ export default {
             chartOptions.series.unshift(seriesObject);
           }
 
-          if (desirable_slope === 'Negative') {
+          if (desirableSlope === 'Negative') {
             const seriesObject = {
               showInLegend: false,
               // eslint-disable-next-line camelcase
-              color: parseFloat(parent.value) > national_target ? '#E85D58' : '#00a65a',
+              color: parseFloat(parent.value) > nationalTarget ? '#E85D58' : '#00a65a',
               // eslint-disable-next-line camelcase
-              name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
+              name: parseFloat(parent.value) > nationalTarget ? 'On Target' : 'Below Target',
               data: [
                 {
                   name: this.values.location.name,
