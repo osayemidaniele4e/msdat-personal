@@ -1,5 +1,5 @@
 <template>
-  <MultiSource :values="controlPanelProps" />
+    <MultiSource :values="controlPanelProps" />
 </template>
 
 <script>

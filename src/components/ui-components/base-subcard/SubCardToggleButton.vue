@@ -6,7 +6,7 @@
           (activeToggleButton = 'line'),
             $emit('button-clicked', activeToggleButton)
         "
-        class="btn btn-sm btn-outline-primary"
+        class="line-icon btn btn-sm"
         :class="[activeToggleButton === 'line' ? 'active' : '']"
       >
         Line <b-icon icon="graph-up"></b-icon>
@@ -17,7 +17,7 @@
           (activeToggleButton = 'column'),
             $emit('button-clicked', activeToggleButton)
         "
-        class="btn btn-sm btn-outline-primary"
+        class="icon-btn btn btn-sm"
         :class="[activeToggleButton === 'column' ? 'active' : '']"
       >
         Column <b-icon icon="bar-chart-fill"></b-icon>
