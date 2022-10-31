@@ -544,7 +544,7 @@ export default {
 
   async mounted() {
     // set all datasources to show in the trend analysis chart on first load
-    this.$emit('clickedReset');
+    // this.$emit('clickedReset');
   },
 };
 </script>

@@ -339,4 +339,21 @@ export default class DataBase {
       .table(tableName)
       .toArray();
   }
+
+  /**
+   * @function queryDBForYearsBS
+   * @author davebenard
+   * @description function to query the NHMIS_MONTHLY table
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryDBForYearsByDs(query) {
+    console.log(query, 'helloWorld2');
+    const result = await dexie
+      .table(DATA)
+      .where('datasource')
+      .equals(query)
+      .toArray();
+    return result;
+  }
 }

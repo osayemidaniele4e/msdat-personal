@@ -108,7 +108,6 @@ export default {
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
-            // this.selected = newValue[0];
             if (has(this.multiSelectProps, 'group-values')) {
               this.selected = newValue[0][this.multiSelectProps['group-values']][0];
               // this.selected = await newValue[0];

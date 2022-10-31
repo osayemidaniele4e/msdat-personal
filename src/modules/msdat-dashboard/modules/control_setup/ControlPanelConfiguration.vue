@@ -63,7 +63,8 @@ export default {
     'payload.indicator': {
       async handler() {
         const availableYears = await this.getAvailableYears();
-        const availableDS = await this.getAvailableDataSources();
+        // const availableDS = await this.getAvailableDataSources();
+        const availableDS = await this.setDataSourcesDropdown(this.payload?.indicator?.id);
         this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,

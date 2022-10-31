@@ -140,7 +140,11 @@ export default {
       const result = await DB.queryDB(query);
       return result;
     },
-
+    // get yeardropdown by Datasource
+    async queryDBForYearByDs(query) {
+      const result = await DB.queryDBForYearsByDs(query);
+      return result;
+    },
     /**
      * @function dlGetDashboardDataSource
      * @description filter the config
