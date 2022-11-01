@@ -15,6 +15,9 @@ export default {
       },
     },
   },
+  tooltip: {
+    pointFormat: '{point.name}: <b>{point.value:.1f}</b><br/>',
+  },
   title: {
     enabled: true,
     text: '',

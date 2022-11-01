@@ -34,6 +34,7 @@ export default {
 
     'controlPanelProps.indicator': {
       async handler(newVal) {
+        console.log({ newVal });
         let indicator = newVal;
         if (Array.isArray(newVal)) {
           // eslint-disable-next-line prefer-destructuring
