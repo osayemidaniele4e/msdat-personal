@@ -65,20 +65,7 @@ export default {
       title: '',
       ChartOptions: {},
       loading: false,
-      dataSourcesOptions: [
-        {
-          id: 8,
-          datasource: 'IHME',
-        },
-        {
-          id: 5,
-          datasource: 'NNHS',
-        },
-        // {
-        //   id: 9,
-        //   datasource: 'WHO-GHO',
-        // },
-      ],
+      dataSourcesOptions: [],
       selectedDS: {},
       notShow: false,
       seriesArray: {},
@@ -497,6 +484,27 @@ export default {
   },
 
   async mounted() {
+    if (this.$route.params.name === 'Demographics') {
+      this.dataSourcesOptions = [
+        {
+          id: 8,
+          datasource: 'IHME',
+        },
+      ];
+    }
+
+    if (this.$route.params.name !== 'Demographics') {
+      this.dataSourcesOptions = [
+        {
+          id: 8,
+          datasource: 'IHME',
+        },
+        {
+          id: 5,
+          datasource: 'NNHS',
+        },
+      ];
+    }
     this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
         (Time-series comparison of ${this.values.indicator.short_name} ) across different data
             sources.`;
