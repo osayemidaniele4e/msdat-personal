@@ -94,7 +94,6 @@ export default {
     },
     // get years by datasource
     async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
-      console.log({ dataSourceID });
       const data = await this.queryDBForYearByDs(dataSourceID);
       // debugger;
       const onlyYearData = data.filter((item) => {

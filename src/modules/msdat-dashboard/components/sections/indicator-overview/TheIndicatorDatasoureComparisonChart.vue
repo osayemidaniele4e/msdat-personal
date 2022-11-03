@@ -2,6 +2,39 @@
 <template>
   <div class="iddc_wrapper">
     <base-overlay :show="loading || notShow">
+    <!-- BASE SUBCARD FOR INDICATORS WITH CONFIDENCE RANGE -->
+      <base-sub-card
+        ref="SubCard"
+        buttonToggle
+        showControls
+        :dataSourceOptions="dataSourcesOptions"
+        @toggled-button="updateChart($event)"
+        @selected-datasource="onSelectedSource($event)"
+        @toggle-confidence-range="onConfidenceRangeClicked($event)"
+        :dataSourceOptionsSelected="selectedDS"
+        @dropdownTypeSelected="
+          downLoadType($event, {
+            indicator: values.indicator.short_name,
+            datasource: '',
+            year: '',
+          })
+        "
+        v-if="Object.keys(values).length && dataSourcesOptions.length === 0"
+      >
+
+        <template #title>
+          <p class="work-sans mb-0 line-height">
+            Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
+            (Time-series comparison of {{ values.indicator.short_name }}) across different data
+            sources.
+          </p>
+        </template>
+        <BarChart ref="BaseChart"
+        :chartOptions="ChartOptions"
+        :title="title"
+        v-if="!notShow" />
+      </base-sub-card>
+      <!-- BASE SUBCARD FOR INDICATORS WITHOUT CONFIDENCE RANGE -->
       <base-sub-card
         ref="SubCard"
         buttonToggle
@@ -19,8 +52,9 @@
             year: '',
           })
         "
-        v-if="Object.keys(values).length"
+        v-if="Object.keys(values).length && dataSourcesOptions.length !== 0"
       >
+
         <template #title>
           <p class="work-sans mb-0 line-height">
             Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
@@ -158,6 +192,8 @@ export default {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
+          // added this so that the datasource list will update anytime an indicator is selected
+          await this.getDataSourceFromDropdown();
         }
 
         this.loading = false;
@@ -430,6 +466,42 @@ export default {
       const availableDataSource = await this.getDataSourcesFromDexie(this.values.indicator.id);
       return availableDataSource;
     },
+    // Function to get datasource from dropdown
+    async getDataSourceFromDropdown() {
+      // get datasource from the dropdown
+      const dataSourceDropdown = await this.setDataSourcesDropdown(this.values.indicator.id);
+      const dataSourceList = [];
+      dataSourceDropdown.forEach((item) => {
+        const arr = item.datasource;
+        dataSourceList.push(arr);
+      });
+      // checks the dataSourceList and sets the dataSourcesOptions to be shown on the confidence range
+      if (dataSourceList.includes('IHME')) {
+        this.dataSourcesOptions = [
+          {
+            id: 8,
+            datasource: 'IHME',
+          },
+        ];
+      }
+      // checks the dataSourceList and sets the dataSourcesOptions to be shown on the confidence range
+      if (dataSourceList.includes('IHME') && dataSourceList.includes('NNHS')) {
+        this.dataSourcesOptions = [
+          {
+            id: 8,
+            datasource: 'IHME',
+          },
+          {
+            id: 5,
+            datasource: 'NNHS',
+          },
+        ];
+      }
+      // checks the dataSourceList and sets the dataSourcesOptions to be shown on the confidence range
+      if (!dataSourceList.includes('IHME') && !dataSourceList.includes('NNHS')) {
+        this.dataSourcesOptions = [];
+      }
+    },
     // ================================ REFORMATTING DATA =====================================
     async Reformat(seriesArray) {
       const name1 = seriesArray[0].name;
@@ -483,35 +555,9 @@ export default {
   },
 
   async mounted() {
-    if (this.$route.params.name === 'Demographics') {
-      this.dataSourcesOptions = [
-        {
-          id: 8,
-          datasource: 'IHME',
-        },
-      ];
-    }
-
-    if (this.$route.params.name !== 'Demographics') {
-      this.dataSourcesOptions = [
-        {
-          id: 8,
-          datasource: 'IHME',
-        },
-        {
-          id: 5,
-          datasource: 'NNHS',
-        },
-      ];
-    }
     this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
         (Time-series comparison of ${this.values.indicator.short_name} ) across different data
             sources.`;
-
-    // setting initial datasources
-    const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-    const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-    this.setUpHighChartConfig(seriesArray, years);
   },
   // async mounted() {
   //   console.log('hello =>', this.ChartOptions);

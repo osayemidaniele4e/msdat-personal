@@ -41,7 +41,7 @@
         </div>
       </template>
     </div>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -86,6 +86,40 @@ export default {
       handler(newValue) {
         this.selected = newValue;
       },
+    },
+  },
+  methods: {
+    async test() {
+      const dataSourceDropdown = await this.setDataSourcesDropdown(this.values.indicator.id);
+      const datasourceList = [];
+      dataSourceDropdown.forEach((item) => {
+        const arr = item.datasource;
+        datasourceList.push(arr);
+      });
+      if (datasourceList.includes('IHME')) {
+        this.dataSourcesOptions = [
+          {
+            id: 8,
+            datasource: 'IHME',
+          },
+        ];
+      }
+      if (datasourceList.includes('IHME') && datasourceList.includes('NNHS')) {
+        this.dataSourcesOptions = [
+          {
+            id: 8,
+            datasource: 'IHME',
+          },
+          {
+            id: 5,
+            datasource: 'NNHS',
+          },
+        ];
+      }
+      if (!datasourceList.includes('IHME') && !datasourceList.includes('NNHS')) {
+        this.dataSourcesOptions = [];
+        this.sideControl = false;
+      }
     },
   },
 };
