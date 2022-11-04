@@ -111,5 +111,10 @@ export default {
       const data = await this.getDataSourcesFromDexie(indicatorID);
       return data;
     },
+    // Get available Indicator
+    async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorFromDexie(datasourceID);
+      return data;
+    },
   },
 };

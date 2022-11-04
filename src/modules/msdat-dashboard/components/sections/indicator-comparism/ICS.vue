@@ -99,17 +99,8 @@ export default {
   methods: {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
     ...mapMutations('MSDAT_STORE', [
-      'TOGGLE_VISIBILITY', // -> this.toggleVisibility()
+      'TOGGLE_VISIBILITY', 'SETUP_CONTROL_OPTIONS1',
     ]),
-    async setYearDropdown2() {
-      const hello = await this.setYearDropdownByDatasource(this.values?.datasource?.id);
-      console.log('hello', hello);
-      this.SET_CONTROL_OPTIONS({
-        panelIndex: 2,
-        controlIndex: 2,
-        values: hello,
-      });
-    },
     checkData() {
       const datar = this.chartOptions?.series?.map((el, i) => el.data[i]);
       if (datar !== undefined) {
@@ -445,7 +436,6 @@ export default {
     'values.indicator': {
       async handler() {
         // this.chartOptions = {};
-        await this.setYearDropdown2();
         this.loading = true;
         await this.renderChart(this.values);
         this.loading = false;

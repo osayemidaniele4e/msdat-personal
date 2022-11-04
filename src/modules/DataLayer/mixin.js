@@ -211,6 +211,23 @@ export default {
       const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
       return sourceObjects;
     },
+    /**
+     *
+     * @param {value} Chosen indicator ID |
+     * Uses @function {getIndicatorFromDexie}
+     * from database.worker class to fetch
+     * available datasources from dexie
+     * @returns array of datasource objects
+     */
+    async getIndicatorFromDexie(value) {
+      const datasourceId = value || 1;
+      const sourcesAvailable = await DB.getAvailableIndicatorBySource(datasourceId);
+      if (sourcesAvailable.length <= 0) {
+        return [];
+      }
+      const sourceObjects = sourcesAvailable.map((source) => this.dlGetIndicator(source));
+      return sourceObjects;
+    },
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
       return data.date;
