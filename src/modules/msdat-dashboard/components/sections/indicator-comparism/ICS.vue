@@ -435,7 +435,7 @@ export default {
   watch: {
     'values.indicator': {
       async handler() {
-        // this.chartOptions = {};
+        // this.chartOptions = {}; // remove soon
         this.loading = true;
         await this.renderChart(this.values);
         this.loading = false;
