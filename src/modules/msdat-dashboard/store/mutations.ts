@@ -34,6 +34,7 @@ const mutations: MutationTree<State> = {
 
   SETUP_CONTROL_OPTIONS1: (state, obj: setOptionsPayload) => {
     const checkTheObject = state.controlConfig[obj.panelIndex].setup[0];
+    // console.log('object2', checkTheObject);
     if (Array.isArray(checkTheObject)) {
       const setUpArrayOfObject = state.controlConfig[obj.panelIndex].setup[obj.groupIndex];
       const keyIndex = setUpArrayOfObject.findIndex((option) => option.key === obj.key);
@@ -43,6 +44,7 @@ const mutations: MutationTree<State> = {
         (item) => item.key === obj.key,
       );
       state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj.values;
+      // console.log('object', state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj.values);
     }
   },
 

@@ -140,7 +140,11 @@ export default {
       const result = await DB.queryDB(query);
       return result;
     },
-
+    // get yeardropdown by Datasource
+    async queryDBForYearByDs(query) {
+      const result = await DB.queryDBForYearsByDs(query);
+      return result;
+    },
     /**
      * @function dlGetDashboardDataSource
      * @description filter the config
@@ -205,6 +209,23 @@ export default {
         return [];
       }
       const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
+      return sourceObjects;
+    },
+    /**
+     *
+     * @param {value} Chosen indicator ID |
+     * Uses @function {getIndicatorFromDexie}
+     * from database.worker class to fetch
+     * available datasources from dexie
+     * @returns array of datasource objects
+     */
+    async getIndicatorFromDexie(value) {
+      const datasourceId = value || 1;
+      const sourcesAvailable = await DB.getAvailableIndicatorBySource(datasourceId);
+      if (sourcesAvailable.length <= 0) {
+        return [];
+      }
+      const sourceObjects = sourcesAvailable.map((source) => this.dlGetIndicator(source));
       return sourceObjects;
     },
     async getLatestDate() {

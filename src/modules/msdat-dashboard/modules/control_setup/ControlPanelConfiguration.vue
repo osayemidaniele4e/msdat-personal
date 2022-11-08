@@ -32,9 +32,17 @@ export default {
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
-  mounted() {
+  async mounted() {
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
+    });
+    const availableYears = await this.getAvailableYears();
+    // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+    this.SETUP_CONTROL_OPTIONS1({
+      groupIndex: this.groupIndex,
+      panelIndex: this.controlIndex,
+      key: 'year',
+      values: availableYears,
     });
   },
   methods: {
@@ -50,13 +58,22 @@ export default {
     async getAvailableDataSources() {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
+    // !!OUT OF COMMISSION
+    async getAvailableDataIndicators() {
+      return this.setIndicatorDropdown(this.payload?.datasource?.id);
+    },
   },
   watch: {
     // get latest available years when indicator , datasource or location are changed
+    /**
+     * TODO: update the indicator list and year by datasource on CONTROLINDEX 2
+     */
     'payload.indicator': {
       async handler() {
         const availableYears = await this.getAvailableYears();
+        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
         const availableDS = await this.getAvailableDataSources();
+        // const availableDS = await this.setDataSourcesDropdown(this.payload?.indicator?.id);
         this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
@@ -74,6 +91,8 @@ export default {
     },
     'payload.datasource': {
       async handler() {
+        // this.getAvailableDataIndicators();
+        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
         const availableYears = await this.getAvailableYears();
         this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
@@ -86,6 +105,7 @@ export default {
     'payload.location': {
       async handler() {
         const availableYears = await this.getAvailableYears();
+        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
         await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,

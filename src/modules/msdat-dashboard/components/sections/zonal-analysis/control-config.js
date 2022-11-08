@@ -39,7 +39,7 @@ export default {
       type: 'dropdown',
       label: 'Year',
       key: 'year',
-      options: ['2015', '2010'],
+      options: [],
       dropdownProps: {
         'preselect-first': true,
       },

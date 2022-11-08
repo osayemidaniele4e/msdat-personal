@@ -198,7 +198,6 @@
             </TableDataRow>
 
             <!-- This creates a space between the related indicators table rows -->
-            <div :key="`${index}-row11`" class=""></div>
           </template>
         </tbody>
       </table>
@@ -542,10 +541,10 @@ export default {
     this.getNumDenumData();
   },
 
-  async mounted() {
-    // set all datasources to show in the trend analysis chart on first load
-    this.$emit('clickedReset');
-  },
+  // async mounted() {
+  //   // set all datasources to show in the trend analysis chart on first load
+  //   this.$emit('clickedReset');
+  // },
 };
 </script>
 

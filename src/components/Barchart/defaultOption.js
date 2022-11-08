@@ -65,7 +65,7 @@ export default {
         fontFamily: '"Work Sans", sans-serif',
       },
     },
-    tickPixelInterval: 100,
+    tickPixelInterval: 400,
     plotLines: [
       {
         width: 2,
@@ -74,6 +74,13 @@ export default {
       },
     ],
   },
+  // responsive: {
+  //   rules: [{
+  //     condition: {
+  //       maxWidth: 500,
+  //     },
+  //   }],
+  // },
   credits: {
     enabled: false,
   },
