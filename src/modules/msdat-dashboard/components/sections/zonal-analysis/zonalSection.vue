@@ -131,6 +131,7 @@ export default {
           data: sortedData,
         });
       }
+      // console.log(chartSeries, 'chartseries')
       return chartSeries;
     },
   },
@@ -203,7 +204,7 @@ export default {
             });
             newChart.unshift();
             // add zonal series to top of main the series
-            chartSeries.unshift(zonalZee);
+            // chartSeries.unshift(zonalZee); //  removed this part
             this.formatToHighChart(chartSeries);
           }
         }
