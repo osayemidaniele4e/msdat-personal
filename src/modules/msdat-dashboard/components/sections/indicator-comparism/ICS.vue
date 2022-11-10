@@ -51,15 +51,16 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
 import moment from 'moment';
+import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import chartDownload from '../../../mixins/chart_download';
 
 export default {
   name: 'ICS',
-  mixins: [chartDownload],
+  mixins: [chartDownload, ControlPanelSetup],
   components: {
     BarChart,
   },
@@ -95,98 +96,11 @@ export default {
   //     this.chartOptions.series.push(dataSeries);
   //   },
   // },
-  watch: {
-    'values.indicator': {
-      async handler() {
-        // this.chartOptions = {};
-        this.loading = true;
-        await this.renderChart(this.values);
-        this.loading = false;
-      },
-      immediate: true,
-      // deep: true,
-    },
-    'values.datasource': {
-      async handler() {
-        // this.chartOptions = {};
-        this.loading = true;
-        await this.renderChart(this.values);
-        this.loading = false;
-      },
-      // immediate: true,
-      // deep: true,
-    },
-    'values.year': {
-      async handler() {
-        // this.chartOptions = {};
-        this.loading = true;
-        await this.renderChart(this.values);
-        this.loading = false;
-      },
-    },
-    'values.location': {
-      async handler() {
-        this.loading = true;
-        await this.renderChart(this.values);
-        this.loading = false;
-      },
-    },
-    'values.compareBy': {
-      async handler(data) {
-        if (data.name === 'Period') {
-          this.TOGGLE_VISIBILITY({
-            panelIndex: this.controlIndex,
-            key: 'year',
-            value: false,
-          });
-
-          this.TOGGLE_VISIBILITY({
-            panelIndex: this.controlIndex,
-            key: 'location',
-            value: true,
-          });
-          this.loading = true;
-          await this.renderChart(this.values);
-          this.loading = false;
-        } else if (data.name === 'State') {
-          this.TOGGLE_VISIBILITY({
-            panelIndex: this.controlIndex,
-            key: 'year',
-            value: true,
-          });
-          this.TOGGLE_VISIBILITY({
-            panelIndex: this.controlIndex,
-            key: 'location',
-            value: false,
-          });
-
-          this.loading = true;
-          await this.renderChart(this.values);
-          this.loading = false;
-        }
-      },
-      immediate: false,
-    },
-    /**
-     * This adds or removes the target line
-     * without re-plotting the entire chart
-     */
-    'values.target.sdg': {
-      handler(val) {
-        this.toggleSDGTargetLine(val);
-      },
-    },
-    /**
-     * This adds or removes the target line
-     * without re-plotting the entire chart
-     */
-    'values.target.national': {
-      handler(val) {
-        this.toggleNationalTargetLine(val);
-      },
-    },
-  },
   methods: {
+    ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
+    ...mapMutations('MSDAT_STORE', [
+      'TOGGLE_VISIBILITY', 'SETUP_CONTROL_OPTIONS1',
+    ]),
     checkData() {
       const datar = this.chartOptions?.series?.map((el, i) => el.data[i]);
       if (datar !== undefined) {
@@ -197,9 +111,6 @@ export default {
       }
       return false;
     },
-    ...mapMutations('MSDAT_STORE', [
-      'TOGGLE_VISIBILITY', // -> this.toggleVisibility()
-    ]),
     displayFactorSign(factor) {
       const dpfactor = factor;
       let sign;
@@ -519,6 +430,105 @@ export default {
           this.toggleNationalTargetLine(national);
         }
       }
+    },
+  },
+  watch: {
+    'values.indicator': {
+      async handler() {
+        // this.chartOptions = {}; // remove soon
+        this.loading = true;
+        await this.renderChart(this.values);
+        this.loading = false;
+      },
+      immediate: true,
+      // deep: true,
+    },
+    'values.datasource': {
+      async handler() {
+        // this.chartOptions = {};
+        this.loading = true;
+        await this.renderChart(this.values);
+        this.loading = false;
+      },
+      // immediate: true,
+      // deep: true,
+    },
+    'values.year': {
+      async handler() {
+        // this.chartOptions = {};
+        this.loading = true;
+        await this.renderChart(this.values);
+        this.loading = false;
+      },
+    },
+    'values.location': {
+      async handler() {
+        this.loading = true;
+        await this.renderChart(this.values);
+        this.loading = false;
+      },
+    },
+    'values.compareBy': {
+      async handler(data) {
+        if (data.name === 'Period') {
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: false,
+          });
+
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: true,
+          });
+          this.loading = true;
+          await this.renderChart(this.values);
+          this.loading = false;
+        } else if (data.name === 'State') {
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: true,
+          });
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: false,
+          });
+
+          // get the list of years by datasource
+          const setYearDropdown = await this.setYearDropdown();
+          // period dropdown;
+          this.SET_CONTROL_OPTIONS({
+            panelIndex: 2,
+            controlIndex: 2,
+            values: setYearDropdown,
+          });
+          this.loading = true;
+          await this.renderChart(this.values);
+          this.loading = false;
+        }
+      },
+      immediate: false,
+    },
+    /**
+     * This adds or removes the target line
+     * without re-plotting the entire chart
+     */
+    'values.target.sdg': {
+      handler(val) {
+        this.toggleSDGTargetLine(val);
+      },
+    },
+    /**
+     * This adds or removes the target line
+     * without re-plotting the entire chart
+     */
+    'values.target.national': {
+      handler(val) {
+        this.toggleNationalTargetLine(val);
+      },
     },
   },
 
