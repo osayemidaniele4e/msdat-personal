@@ -94,7 +94,6 @@ export default {
     },
     // get years by datasource
     async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
-      console.log({ dataSourceID });
       const data = await this.queryDBForYearByDs(dataSourceID);
       // debugger;
       const onlyYearData = data.filter((item) => {
@@ -110,6 +109,11 @@ export default {
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
       const data = await this.getDataSourcesFromDexie(indicatorID);
+      return data;
+    },
+    // Get available Indicator
+    async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorFromDexie(datasourceID);
       return data;
     },
   },

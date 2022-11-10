@@ -198,7 +198,6 @@
             </TableDataRow>
 
             <!-- This creates a space between the related indicators table rows -->
-            <div :key="`${index}-row11`" class=""></div>
           </template>
         </tbody>
       </table>

@@ -150,6 +150,19 @@ export default class DataBase {
     return uniqueArray.map((item) => item.datasource);
   }
 
+  /**
+   * @function getAvailableIndicatorBySource
+   * !! Throws a conflict exception as it enters an infinite loop
+   */
+  static async getAvailableIndicatorBySource(id) {
+    const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.indicator, item])).values()];
+    return uniqueArray.map((item) => item.indicator);
+  }
+
   static async getAvailableIndicatorByDataSource(id) {
     const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
     if (allDataPoints.length <= 0) {
@@ -343,12 +356,11 @@ export default class DataBase {
   /**
    * @function queryDBForYearsBS
    * @author davebenard
-   * @description function to query the NHMIS_MONTHLY table
+   * @description function to query the DATA table by datasource id
    * @param {*} query the objet  to be queried
    * @returns {array} result of the Query
    */
   static async queryDBForYearsByDs(query) {
-    console.log(query, 'helloWorld2');
     const result = await dexie
       .table(DATA)
       .where('datasource')
