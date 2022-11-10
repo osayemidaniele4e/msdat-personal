@@ -43,7 +43,7 @@
         <!-- ****** Selected Items Table ****** -->
 
         <b-col sm="12" lg="9">
-          <data-table />
+          <data-table class='data-table'/>
           <b-row align-h="end" class="text-right">
             <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
               >Indicators: <b>{{ indicatorsCount }} Selected</b></b-col
@@ -313,5 +313,10 @@ thead {
 }
 #link-to-about {
   color: #1496b1;
+}
+@media(max-width: 680px) {
+  .data-table{
+    display: none;
+  }
 }
 </style>
