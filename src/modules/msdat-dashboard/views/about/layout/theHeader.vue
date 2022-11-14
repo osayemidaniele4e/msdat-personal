@@ -26,6 +26,7 @@
             align-items-center
             border-left
             main
+            mains
           "
         >
           <!-- testing for mobile -->
@@ -68,7 +69,7 @@
             </b-sidebar>
 
           </div>
-          <div v-if="dashboardName == 'MSDAT PLATFORM'">
+          <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
               <small>MSDAT PLATFORM</small>
               <br />
@@ -76,7 +77,7 @@
             </h2>
           </div>
 
-          <div v-if="dashboardName != 'MSDAT PLATFORM'">
+          <div class="main-text" v-if="dashboardName != 'MSDAT PLATFORM'">
             <h2 class="main-text">
               <small>MSDAT PLATFORM</small>
               <br />
@@ -483,16 +484,24 @@ header#the-header {
 // MEDIA QUERY
 
 /* EXTRA EXTRA SMALL */
-@media (max-width: 576px) {
+@media (max-width:676px) {
   .main {
     display: none;
   }
-
+  .mobile-flex-col {
+    display: none;
+  }
   .mob{
-    display: inherit;
+    display: none;
+  }
+  .mains .header-navs a{
+    display: none;
+  }
+  .mains .header-navs button{
+    display: none;
   }
 
-  .main-text {
+  .mains .main-text {
     display: none;
   }
 
@@ -500,8 +509,8 @@ header#the-header {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    width: 100%;
   }
-
   .mob-grid-icon {
     display: inherit;
   }
@@ -572,11 +581,16 @@ header#the-header {
 }
 
 /* SMALL */
-@media (min-width: 576px) and (max-width: 768px) {
+@media (min-width: 676px) and (max-width: 1000px) {
   .main {
     display: none;
   }
-
+   .mains .header-navs a{
+    display: none;
+  }
+  .mains .header-navs button{
+    display: none;
+  }
   .mob{
     display: inherit;
   }
@@ -589,6 +603,7 @@ header#the-header {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    width: 100%;
   }
 
   .mob-grid-icon {
@@ -663,25 +678,27 @@ header#the-header {
 }
 
 /* MEDIUM */
-@media (min-width: 768px) and (max-width: 992px) {
-  .mob{
-    display: inherit;
-  }
-  .main-text {
-    display: none;
-  }
+// @media (min-width: 768px) and (max-width: 992px) {
+//   .mob{
+//     display: inherit;
+//   }
+//   .main-text {
+//     display: none;
+//   }
+//   .mains .header-navs a{
+//     display: none;
+//   }
+//   .mobile-flex-col-text1 {
+//     color: white;
+//     font-weight: 200;
+//     font-size: 15px;
+//   }
 
-  .mobile-flex-col-text1 {
-    color: white;
-    font-weight: 200;
-    font-size: 15px;
-  }
-
-  .mobile-flex-col-text2 {
-    color: white;
-    font-weight: 500;
-    font-size: 19px;
-  }
+//   .mobile-flex-col-text2 {
+//     color: white;
+//     font-weight: 500;
+//     font-size: 19px;
+//   }
   //    .main{
   //     display: none;
   //   }
@@ -755,12 +772,14 @@ header#the-header {
       }
     }
   }
-}
 
 /* LARGE */
-@media (min-width: 992px) and (max-width: 1200px) {
+@media (min-width: 1000px) and (max-width: 1300px) {
   .main-text {
     display: none;
+  }
+  .mains .header-navs {
+    margin-left: 100px;
   }
   #about-wrap {
     header#the-header {

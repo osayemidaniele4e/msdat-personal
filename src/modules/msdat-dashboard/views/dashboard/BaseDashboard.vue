@@ -190,7 +190,7 @@ import scroll from '../../modules/onScroll/onscroll';
 import SharingDashboardState from '../../modules/dashboard_state_share/mixins';
 import Loading from '../../mixins/loading';
 import Onboarding from '../onboarding/onboarding';
-import TroubleShooting from '../../modules/troubleshooting/modal.vue';
+import TroubleShootingModal from '../../modules/troubleshooting/modal.vue';
 
 export default {
   name: 'BaseDashboard',
@@ -201,10 +201,10 @@ export default {
     Onboarding,
     tour,
     scroll,
-    TroubleShooting,
     SharingDashboardState,
   ],
   components: {
+    TroubleShootingModal,
     ControlBase,
     BasePanel,
     ControlPanel,
@@ -314,7 +314,22 @@ export default {
     try {
       const response = await apiServices.getDashboard();
       const { results } = response.data;
-      this.configObject = results.find((item) => item.name === name);
+      const dashboard = results.find((item) => item.name === name);
+      if (dashboard === undefined) {
+        this.$router.push('/*');
+        return;
+      }
+      this.configObject = '';
+      this.configObject = {
+        name: dashboard.name,
+        title: dashboard.title,
+        indicators: dashboard.indicators,
+        defaultIndicators: dashboard.defaultIndicators,
+        dataSources: dashboard.dataSources,
+        initialIndicator: dashboard.initialIndicator,
+        initialDataSource: dashboard.initialDataSource,
+        initialLocation: dashboard.initialLocation,
+      };
     } catch (err) {
       console.log(err);
     }
@@ -522,6 +537,7 @@ export default {
         this.closeAlert();
       }
     }, 60000);
+    console.log('checks baseDashboard', this.indicator);
     try {
       await this.$DL.init({
         dashboardIndicators: this.indicators,

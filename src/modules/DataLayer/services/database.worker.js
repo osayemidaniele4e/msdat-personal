@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-await-in-loop */
 
 import { take } from 'lodash';
@@ -13,6 +14,7 @@ const LINK = 'links';
 const VALUE_TYPES = 'valuetypes';
 const DATA_SOURCE = 'datasources';
 const LOCATION = 'location';
+const NHMIS_MONTHLY = 'nhmisMonthly';
 
 export default class DataBase {
   constructor() {
@@ -26,6 +28,7 @@ export default class DataBase {
     this.location_hierarchy_level = this.db.table(LINK);
     this.valuetypes = this.db.table(VALUE_TYPES);
     this.datasources = this.db.table(DATA_SOURCE);
+    this.nhmisMonthly = this.db.table(NHMIS_MONTHLY);
   }
 
   /**
@@ -78,6 +81,7 @@ export default class DataBase {
         this.valuetypes,
         this.factors,
         this.datasources,
+        this.nhmisMonthly,
         async () => {
           await this.DSI.bulkPut(data[6].data);
           await this.location.bulkPut(data[0].data);
@@ -85,6 +89,7 @@ export default class DataBase {
           await this.valuetypes.bulkPut(data[3].data);
           await this.factors.bulkPut(data[5].data);
           await this.datasources.bulkPut(data[7].data);
+          await this.nhmisMonthly.bulkPut(data[8].data);
         },
       )
       .catch((error) => {
@@ -141,10 +146,21 @@ export default class DataBase {
     if (allDataPoints.length <= 0) {
       return [];
     }
-    const uniqueArray = [
-      ...new Map(allDataPoints.map((item) => [item.datasource, item])).values(),
-    ];
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.datasource, item])).values()];
     return uniqueArray.map((item) => item.datasource);
+  }
+
+  /**
+   * @function getAvailableIndicatorBySource
+   * !! Throws a conflict exception as it enters an infinite loop
+   */
+  static async getAvailableIndicatorBySource(id) {
+    const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.indicator, item])).values()];
+    return uniqueArray.map((item) => item.indicator);
   }
 
   static async getAvailableIndicatorByDataSource(id) {
@@ -152,9 +168,7 @@ export default class DataBase {
     if (allDataPoints.length <= 0) {
       return [];
     }
-    const uniqueArray = [
-      ...new Map(allDataPoints.map((item) => [item.indicator, item])).values(),
-    ];
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.indicator, item])).values()];
     return uniqueArray.map((item) => item.indicator);
   }
 
@@ -208,23 +222,150 @@ export default class DataBase {
   }
 
   // This dexie query filter checks for value type 6 and 10 for num-denum
+  // static async queryDBForNumDenum(query = {}) {
+  //   return dexie.table(DATA).where(query).filter((value) => value.value_type === 6 || value.value_type === 10).toArray();
+  // }
+
+  /**
+   * @function queryDBForNumDenum
+   * @author davebenard
+   * @description function to query the DATA table from num-denum data
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
   static async queryDBForNumDenum(query = {}) {
-    return dexie.table(DATA).where(query).filter((value) => value.value_type === 6 || value.value_type === 10).toArray();
+    const {
+      datasource, period, indicator, location,
+    } = query;
+    return dexie
+      .table(DATA)
+      .where('[datasource+indicator+period+location]')
+      .equals([datasource, indicator, period, location])
+      .filter((value) => value.value_type === 6 || value.value_type === 10)
+      .toArray();
   }
 
   /**
-   *
+   * @function queryDBForNhmisMonthly
+   * @author davebenard
+   * @description function to query the NHMIS_MONTHLY table
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryDBForNhmisMonthly(query = {}) {
+    const {
+      datasource, indicator, location,
+    } = query;
+    const result = await dexie
+      .table(NHMIS_MONTHLY)
+      .where('[datasource+indicator+location]')
+      .equals([datasource, indicator, location])
+      .toArray();
+    return result;
+  }
+
+  /**
+   * @function queryDB
+   * @author davebenard
+   * @description function to query the DATA table
    * @param {*} query the objet  to be queried
    * @returns {array} result of the Query
    */
   static async queryDB(query = {}, locationIDArray = []) {
+    const {
+      datasource, indicator, period, location, value_type,
+    } = query;
+    if (indicator === undefined) {
+      return [];
+    }
+
+    let compoundQuery = [];
+    let compoundTable = [];
+
+    // query => datasource, indicator , location and value_type
+    if ('indicator' in query && 'datasource' in query && 'location' in query && 'value_type' in query && (!('period' in query)) && (Object.keys(query).length === 4)) {
+      compoundQuery = [datasource, indicator, location, value_type];
+      compoundTable = '[datasource+indicator+location+value_type]';
+    }
+
+    // query => datasource indicator and value_type
+    if ('indicator' in query && 'datasource' in query && 'value_type' in query && !('period' in query && 'location' in query) && (Object.keys(query).length === 3)) {
+      compoundQuery = [datasource, indicator, value_type];
+      compoundTable = '[datasource+indicator+value_type]';
+    }
+
+    // query => datasource, indicator , period and value_type
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'value_type' in query && (!('location' in query)) && (Object.keys(query).length === 4)) {
+      compoundQuery = [datasource, indicator, period, value_type];
+      compoundTable = '[datasource+indicator+period+value_type]';
+    }
+
+    // query => datasource, indicator , period and location
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && (!('value_type' in query)) && (Object.keys(query).length === 4)) {
+      compoundQuery = [datasource, indicator, period, location];
+      compoundTable = '[datasource+indicator+period+location]';
+    }
+
+    // query => datasource, indicator , period, location and value_type
+    if ('indicator' in query && 'datasource' in query && 'period' in query && 'location' in query && 'value_type' in query && (Object.keys(query).length === 5)) {
+      compoundQuery = [datasource, indicator, period, location, value_type];
+      compoundTable = '[datasource+indicator+period+location+value_type]';
+    }
+
+    // console.log('checking', compoundQuery, compoundTable, query);
+
+    // if (locationIDArray.length > 0) {
+    //   return dexie
+    //     .table(DATA)
+    //     .where(query)
+    //     .filter((value) => locationIDArray.includes(value.location))
+    //     .toArray();
+    // }
+    // return dexie.table(DATA).where(query).toArray();
     if (locationIDArray.length > 0) {
-      return dexie
+      const data = await dexie
         .table(DATA)
-        .where(query)
+        .where(compoundTable)
+        .equals(compoundQuery)
         .filter((value) => locationIDArray.includes(value.location))
         .toArray();
+      return data;
     }
-    return dexie.table(DATA).where(query).toArray();
+
+    const data = await dexie.table(DATA).where(compoundTable).equals(compoundQuery).toArray();
+
+    return data;
+  }
+
+  /**
+   * @function queryDBForNumDenum
+   * @author davebenard
+   * @description function to query the DATA table from num-denum data
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryTableByName(tableName = '') {
+    if (tableName === '') {
+      return [];
+    }
+    return dexie
+      .table(tableName)
+      .toArray();
+  }
+
+  /**
+   * @function queryDBForYearsBS
+   * @author davebenard
+   * @description function to query the DATA table by datasource id
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryDBForYearsByDs(query) {
+    const result = await dexie
+      .table(DATA)
+      .where('datasource')
+      .equals(query)
+      .toArray();
+    return result;
   }
 }

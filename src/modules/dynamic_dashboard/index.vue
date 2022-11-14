@@ -1,8 +1,7 @@
 <template>
   <div>
     <MSDAT
-      v-show="!isAdvanced"
-      v-if="Object.entries(configObject).length"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -16,8 +15,7 @@
       "
     />
     <AdvanceMSDAT
-      v-show="isAdvanced"
-      v-if="Object.entries(configObject).length"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -64,6 +62,7 @@ export default {
         initialLocation: 1,
       },
       showClearDataModal: false,
+      loading: false,
     };
   },
   methods: {
@@ -92,6 +91,7 @@ export default {
   },
   async created() {
     const { name } = this.$route.params;
+
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure
@@ -139,34 +139,68 @@ export default {
         initialDataSource: sourcesID[0],
         initialLocation: 1,
       };
-    } else {
-      /**
+      return;
+    }
+    // =======================
+    /**
+     * @author davebenard
+     * @description check the route params if it is advanced analytics then fetch from the config file
+     */
+    if (name === 'Advanced_Analytics') {
+      const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
+      if (dashboard === undefined) {
+        this.$router.push('/*');
+        return;
+      }
+      this.isAdvanced = true;
+      this.configObject = '';
+      this.configObject = dashboard;
+      return;
+    }
+    // =======================
+    /**
      * @description Msdat Api-Config for Dashboard
      * @description get dashboard config based on route name from the msdat api
      * @author sami56
      */
-      try {
-        const response = await apiServices.getDashboard();
-        const { results } = response.data;
-        const dashboard = results.find((item) => item.name === name);
-        if (dashboard === undefined) {
-          this.$router.push('/*');
-          return;
-        }
-        this.configObject = dashboard;
-      } catch (err) {
-        console.log(err,
-          '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
-          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
+    try {
+      this.loading = true;
+      this.$store.dispatch('customDashboard', false);
+      this.$store.dispatch('resetState');
+      localStorage.removeItem('vuex');
+      // ============
+      const response = await apiServices.getDashboard();
+      const { results } = response.data;
+      const dashboard = results.find((item) => item.name === name);
+      if (dashboard === undefined) {
+        this.$router.push('/*');
+        return;
       }
+      this.configObject = '';
+      this.configObject = {
+        name: dashboard.name,
+        title: dashboard.title,
+        indicators: dashboard.indicators,
+        defaultIndicators: dashboard.defaultIndicators,
+        dataSources: dashboard.dataSources,
+        initialIndicator: dashboard.initialIndicator,
+        initialDataSource: dashboard.initialDataSource,
+        initialLocation: dashboard.initialLocation,
+      };
+      this.isAdvanced = false;
+    } catch (err) {
+      console.log(
+        err,
+        '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
+        'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
+      );
+    } finally {
+      this.loading = false;
     }
+    // =======================
     // set the title from the config as the route title
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
-    }
-    // update the advanced analytics props by config object
-    if (this.configObject.name === 'Advanced_Analytics') {
-      this.isAdvanced = true;
     }
   },
   watch: {

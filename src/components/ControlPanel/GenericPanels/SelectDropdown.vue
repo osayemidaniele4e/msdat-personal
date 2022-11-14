@@ -13,6 +13,7 @@
     selectLabel=""
     data-visted="notVisited"
     deselectLabel=""
+    autocomplete="off"
   >
     <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
@@ -105,39 +106,40 @@ export default {
     options: {
       async handler(newValue) {
         this.loading = true;
-        if (this.multiSelectProps['preselect-first']) {
-          // this.selected = newValue[0];
-          if (has(this.multiSelectProps, 'group-values')) {
-            this.selected = newValue[0][this?.multiSelectProps['group-values']][0];
-            // this.selected = await newValue[0];
-          } else if (newValue.length > 0) {
-            this.selected = await this.options[0];
-          } else {
-            const date = new Date();
-            const year = date.getFullYear() - 1;
-            this.selected = year.toString();
+        if (this.options?.length > 0) {
+          if (this.multiSelectProps['preselect-first']) {
+            if (has(this.multiSelectProps, 'group-values')) {
+              this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+              // this.selected = await newValue[0];
+            } else if (newValue.length > 0) {
+              this.selected = await this.options[0];
+            } else {
+              const date = new Date();
+              const year = date.getFullYear() - 1;
+              this.selected = year.toString();
+            }
           }
-        }
 
-        /**
-         * @description check if the update is for datasource
-         * if it is, check if the list is an array,
-         * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
-         * if its not an array, make the object the default selected
-         */
-        if (this.multiSelectProps.label === 'datasource') {
-          if (Array.isArray(newValue) && newValue?.length > 0) {
-            const defaultSelected = newValue.find((item) => item.id === this.selected?.id);
-            if (defaultSelected?.id !== undefined) {
+          /**
+           * @description check if the update is for datasource
+           * if it is, check if the list is an array,
+           * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
+           * if its not an array, make the object the default selected
+           */
+          if (this.multiSelectProps.label === 'datasource') {
+            if (Array.isArray(newValue) && newValue?.length > 0) {
+              const defaultSelected = newValue.find((item) => item.id === this.selected?.id);
+              if (defaultSelected?.id !== undefined) {
+                this.selected = {};
+                this.selected = defaultSelected;
+                return;
+              }
               this.selected = {};
-              this.selected = defaultSelected;
-              return;
+              this.selected = await newValue[0];
             }
             this.selected = {};
             this.selected = await newValue[0];
           }
-          this.selected = {};
-          this.selected = await newValue[0];
         }
         this.loading = false;
       },
@@ -200,7 +202,7 @@ export default {
       this.loading = true;
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
-        if (this.options.length !== 0) {
+        if (this.options?.length !== 0) {
           const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
           const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
             .value;

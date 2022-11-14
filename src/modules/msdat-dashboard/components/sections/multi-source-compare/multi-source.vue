@@ -30,11 +30,8 @@
 </template>
 
 <script>
-// import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import Maps from '@/components/maps/BaseMap.vue';
-// import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
-// import { sortHighChartDataFormat } from '../../../mixins/util';
 import chartDownload from '../../../mixins/chart_download';
 import NoAvailableData from '../../NoData2.vue';
 
@@ -105,10 +102,6 @@ export default {
         result.push([item.period, Number.parseFloat(item.value)]);
       });
       return result.sort((a, b) => a[0] - b[0]);
-
-      // the comment bellow sorts the data by values instead of year.
-
-      // return result.sort(sortHighChartDataFormat);
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
       return {

@@ -1,30 +1,28 @@
 <template>
-  <div>
-    <base-overlay :show="loader" class="main">
-      <base-sub-card
-        showControls
-        v-if="Object.keys(controlPanelProps).length"
-        @dropdownTypeSelected="
-          downLoadType($event, {
-            indicator: controlPanelProps.indicator.short_name,
-            datasource: '',
-            year: '',
-          })
-        "
-      >
-        <template #title>
-          <p class="work-sans mb-0 line-height">
-            Distribution of
-            <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>Across
-            the <span class="font-weight-bold"> zones in the Country.</span> Source:
-            <span class="font-weight-bold"> {{ controlPanelProps.datasource.datasource }}</span>
-            {{ controlPanelProps.year }}
-          </p>
-        </template>
-        <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
-      </base-sub-card>
-    </base-overlay>
-  </div>
+  <base-overlay :show="loader" class="main">
+    <base-sub-card
+      showControls
+      v-if="Object.keys(controlPanelProps).length"
+      @dropdownTypeSelected="
+        downLoadType($event, {
+          indicator: controlPanelProps.indicator.short_name,
+          datasource: '',
+          year: '',
+        })
+      "
+    >
+      <template #title>
+        <p class="work-sans mb-0 line-height">
+          Distribution of
+          <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>Across
+          the <span class="font-weight-bold"> zones in the Country.</span> Source:
+          <span class="font-weight-bold"> {{ controlPanelProps.datasource.datasource }}</span>
+          {{ controlPanelProps.year }}
+        </p>
+      </template>
+      <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
+    </base-sub-card>
+  </base-overlay>
 </template>
 
 <script>
@@ -55,11 +53,11 @@ export default {
       type: String,
     },
     controlPanelProps: {
-      types: Object,
+      type: Object,
       required: true,
     },
     colors: {
-      type: Object,
+      type: [Object, Array],
       required: true,
     },
   },
@@ -133,6 +131,7 @@ export default {
           data: sortedData,
         });
       }
+      // console.log(chartSeries, 'chartseries')
       return chartSeries;
     },
   },
@@ -205,7 +204,7 @@ export default {
             });
             newChart.unshift();
             // add zonal series to top of main the series
-            chartSeries.unshift(zonalZee);
+            // chartSeries.unshift(zonalZee); //  removed this part
             this.formatToHighChart(chartSeries);
           }
         }

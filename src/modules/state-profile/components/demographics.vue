@@ -378,7 +378,7 @@ export default {
               // click: (event) => {
               //   console.log(event.point.name);
               //   const state = event.point.name;
-              //   this.$router.push({ name: 'state-profile', params: { state } });
+              //   this.$router.push({ name: 'health-profiles', params: { state } });
               // },
             },
           },

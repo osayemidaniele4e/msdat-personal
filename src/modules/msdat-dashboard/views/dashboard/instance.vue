@@ -95,16 +95,17 @@
       </div>
     </template>
 
-    <template v-slot:section-4="{ payload, controlIndex }">
-      <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-          <template #title>
-            <h5 class="font-weight-bold work-sans text-white">Multi-Source Indicator Comparison</h5>
-          </template>
-          <template>
-            <div class="row_alt row">
-              <template v-for="n in 3" class="flex-item">
-                <div :key="n" class="col-lg-4 col-12">
+      <template v-slot:section-4="{ payload, controlIndex }">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Multi-Source Indicator Comparison
+              </h5>
+            </template>
+            <template>
+              <div class="dummy-row2 row">
+                <div v-for="n in 3" :key="n" class="flex-item col-lg-4 col-12">
                   <div class="comparison-header">Comparison ({{ n }})</div>
                   <LazyLoading>
                     <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
@@ -112,38 +113,33 @@
                     </ControlPanelConfiguration>
                   </LazyLoading>
                 </div>
-              </template>
-            </div>
-          </template>
-        </base-sub-card>
-      </div>
-    </template>
+              </div>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
 
-    <template v-slot:section-5="{ payload, controlIndex }">
-      <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-          <template #title>
-            <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
-          </template>
-          <template>
-            <LazyLoading>
-              <ControlPanelConfiguration :controlIndex="controlIndex">
-                <DynamicSection :values="payload" :controlIndex="controlIndex" />
-              </ControlPanelConfiguration>
-            </LazyLoading>
-          </template>
-        </base-sub-card>
-      </div>
-    </template>
-  </BaseDashboard>
+      <template v-slot:section-5="{ payload, controlIndex }">
+        <div class="col-md-12">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
+            </template>
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+    </BaseDashboard>
 </template>
 
 <script>
 import { mapMutations } from 'vuex';
-import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
-import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
-import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
-import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
@@ -272,28 +268,22 @@ export default {
       this.resetData++;
     },
   },
-  created() {
-    this.CLEAR_CONTROL_PANEL();
+  async created() {
+    console.log('instamce', this.indicators);
+    await this.CLEAR_CONTROL_PANEL();
     /**
+     * @author davebenard
      * passing indicator Overview first means it going to at  index 0
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
-    console.log(this.customDashboard, 'custom');
-    if (this.$route.params.name !== 'Advanced_Analytics') {
-      this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
-      this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
-      this.ADD_CONTROL_PANEL(ICSConfig);
-      this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-      this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-      if (this.customDashboard === false) {
-        this.ADD_CONTROL_PANEL(DynamicSectionConfig);
-      }
-    } else {
-      this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
-      this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
+    this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
+    this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
+    this.ADD_CONTROL_PANEL(ICSConfig);
+    this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
+    this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
+    if (this.customDashboard === false) {
+      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     }
   },
 

@@ -12,11 +12,6 @@ export default [
     name: 'custom-dashboard-login',
     component: () => import('../auth/views/login.vue'),
   },
-  // {
-  //   path: '/custom/details',
-  //   name: 'dashboard-details',
-  //   component: () => import('./views/dashboardDetails.vue'),
-  // },
   {
     path: '/my-dashboard',
     name: 'my-dashboard',
@@ -63,7 +58,6 @@ export default [
     path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
     beforeEnter: (to, from, next) => {
-      // const token = sessionStorage.getItem('username');
       const token = VueCookies.get('custom-access-token');
       if (!token) {
         next('/custom/login');
@@ -74,6 +68,5 @@ export default [
     },
     props: true,
     component: () => import('./views/CustomDashboard.vue'),
-    // component: () => import('../dynamic_dashboard/index.vue'),
   },
 ];

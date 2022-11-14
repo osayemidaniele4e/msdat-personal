@@ -46,7 +46,7 @@
             >
               <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
             >
-            <router-link to="/coming-soon/health_surveillance"
+            <router-link to="/dashboard/Disease_Surveillance"
               ><b-list-group-item
                 >Disease Surveillance</b-list-group-item
               ></router-link
@@ -71,7 +71,7 @@
               > Create Your Dashboard</b-list-group-item
             ></router-link
           >
-          <router-link to="/state-profile"
+          <router-link to="/health-profiles"
             ><b-list-group-item>Health Profiles</b-list-group-item></router-link
           >
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"

@@ -1,3 +1,5 @@
+<!-- eslint-disable camelcase -->
+<!-- eslint-disable camelcase -->
 <template>
   <div class="position-relative" id="stateBarChartComponent">
     <base-overlay :show="loading">
@@ -30,10 +32,7 @@
           &nbsp;Back to National
         </button>
         <div @click="handleChartClick">
-          <BarChart ref="BaseChart"
-          :chartOptions="BarChartOptions"
-          :title="title"
-           />
+          <BarChart ref="BaseChart" :chartOptions="BarChartOptions" :title="title" />
         </div>
       </base-sub-card>
     </base-overlay>
@@ -44,7 +43,6 @@
     />
   </div>
 </template>
-
 <script>
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
@@ -66,6 +64,7 @@ export default {
       showNoSubNationalData: false,
       level: 1,
       updateData: 0,
+      desirable_slope: '',
     };
   },
   props: {
@@ -93,7 +92,7 @@ export default {
     },
     values: {
       async handler() {
-        this.updateValue();
+        await this.updateValue();
       },
       deep: true,
       immediate: false,
@@ -115,10 +114,9 @@ export default {
         }
       },
     },
-
     updateData: {
       async handler() {
-        this.updateValue();
+        await this.updateValue();
       },
       deep: true,
       immediate: false,
@@ -126,7 +124,7 @@ export default {
   },
   methods: {
     async getNDData(queryArray) {
-      const nums = queryArray.map((item) => this.queryDBForNumDenum({
+      const nums = await queryArray.map((item) => this.queryDBForNumDenum({
         datasource: item.datasource,
         period: item.period,
         indicator: item.indicator,
@@ -154,27 +152,39 @@ export default {
     async updateValue() {
       this.loading = true;
       const data = await this.getData(this.values);
+      if (this.values.indicator?.id === undefined) {
+        return;
+      }
       // eslint-disable-next-line camelcase
-      const { national_target, sdg_target } = this.dlGetIndicator(this.values.indicator.id);
+      const { national_target, sdg_target, desirable_slope } = this.dlGetIndicator(
+        this.values.indicator.id,
+      );
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       const national = await this.computeNationalND();
       let ndData = [];
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         ndData = await this.getNDData(data);
       }
-      const chartOptions = this.genHighChartOption(data, {
-        nationalTarget: {
-          value: national_target,
-          show: this.values.target.national,
-        },
-        sdgTarget: {
-          value: sdg_target,
-          show: this.values.target.sdg,
-        },
-      }, ndData, this.values.numdenum);
-      chartOptions.yAxis.title.text = `${displayFactor}`;
-      // add nation and state selected to fit according to mockup 😢 😟 😡
 
+      const chartOptions = this.genHighChartOption(
+        data,
+        {
+          nationalTarget: {
+            value: national_target,
+            show: this.values.target.national,
+            slope: desirable_slope,
+          },
+          sdgTarget: {
+            value: sdg_target,
+            show: this.values.target.sdg,
+            slope: desirable_slope,
+          },
+        },
+        await ndData,
+        this.values.numdenum,
+      );
+      chartOptions.yAxis.title.text = `${displayFactor}`;
+      // add nation and state selected to fit according to mockup :cry: :worried: :rage:
       const parentValue = await this.dlQuery({
         indicator: this.values.indicator.id,
         datasource: this.values.datasource.id,
@@ -185,28 +195,76 @@ export default {
       // because i know i am expecting only on value in the array of results
       if (parentValue.length > 0) {
         const parent = parentValue[0];
-        const seriesObject = {
-          showInLegend: false,
+        // eslint-disable-next-line camelcase
+        if (national_target === null) {
+          const seriesObject = {
+            showInLegend: false,
+            // eslint-disable-next-line camelcase
+            color: '#58a5e8',
+            // eslint-disable-next-line camelcase
+            name: 'No Target',
+            data: [
+              {
+                name: this.values.location.name,
+                y: Number(parseFloat(parent.value).toFixed(1)),
+                nd: national.numerator || 0,
+                dn: national.denominator || 0,
+              },
+            ],
+          };
+          chartOptions.series.unshift(seriesObject);
+        }
+
+        // eslint-disable-next-line camelcase
+        if (national_target !== null) {
           // eslint-disable-next-line camelcase
-          color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
+          if (desirable_slope === 'Positive') {
+            const seriesObject = {
+              showInLegend: false,
+              // eslint-disable-next-line camelcase
+              color: parseFloat(parent.value) > national_target ? '#00a65a' : '#E85D58',
+              // eslint-disable-next-line camelcase
+              name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
+              data: [
+                {
+                  name: this.values.location.name,
+                  y: Number(parseFloat(parent.value).toFixed(1)),
+                  nd: national.numerator || 0,
+                  dn: national.denominator || 0,
+                },
+              ],
+            };
+            chartOptions.series.unshift(seriesObject);
+          }
           // eslint-disable-next-line camelcase
-          name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
-          data: [
-            {
-              name: this.values.location.name,
-              y: Number(parseFloat(parent.value).toFixed(1)),
-              nd: national.numerator || 0,
-              dn: national.denominator || 0,
-            }],
-        };
-        chartOptions.series.unshift(seriesObject);
+          if (desirable_slope === 'Negative') {
+            const seriesObject = {
+              showInLegend: false,
+              // eslint-disable-next-line camelcase
+              color: parseFloat(parent.value) > national_target ? '#E85D58' : '#00a65a',
+              // eslint-disable-next-line camelcase
+              name: parseFloat(parent.value) > national_target ? 'On Target' : 'Below Target',
+              data: [
+                {
+                  name: this.values.location.name,
+                  y: Number(parseFloat(parent.value).toFixed(1)),
+                  nd: national.numerator || 0,
+                  dn: national.denominator || 0,
+                },
+              ],
+            };
+            chartOptions.series.unshift(seriesObject);
+          }
+        }
       }
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
         chartOptions.tooltip.outside = true;
-        chartOptions.tooltip.pointFormat = `${'<span style="font-size:10px; color:black;font-weight:bold;">'
-          + '{series.name}:'
-          + ' {point.y:.2f}'}<br>`
+        chartOptions.tooltip.pointFormat = `${
+          '<span style="font-size:10px; color:black;font-weight:bold;">'
+            + '{series.name}:'
+            + ' {point.y:.2f}'
+        }<br>`
           + '<span style="font-size:10px; color:black;">'
           + '('
           + '{point.nd} '
@@ -219,7 +277,7 @@ export default {
       this.loading = false;
     },
     async computeNationalND() {
-      if (this.values.numdenum) {
+      if (this.values.numdenum === true) {
         const numeratorData = await this.dlQuery({
           datasource: this.values.datasource.id,
           indicator: this.values.indicator.id,
@@ -254,9 +312,7 @@ export default {
       const {
         datasource, indicator, location, year,
       } = optionsObject;
-
       let locationValue = location;
-
       if (location.id === 1) {
         locationValue = { level: 3 };
       } else {
@@ -279,7 +335,6 @@ export default {
 
       return data;
     },
-
     handleChartClick(e) {
       const point = e?.point?.name;
       const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
@@ -288,7 +343,6 @@ export default {
       }
       this.level = 3;
     },
-
     returnToNational() {
       const selectedPlace = this.dlGetLocation({ level: 1 });
       if (selectedPlace.length !== 0) {
@@ -297,13 +351,10 @@ export default {
       this.level = 1;
     },
   },
-
   mounted() {
     this.updateData = +1;
-
     this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>
-
 <style lang="scss" scoped></style>
