@@ -74,7 +74,7 @@
 
       <p>
         <div class="text1">Link</div>
-        <div class="text2">Nigeria Health Workforce Country Profile</div>
+        <div class="text2">{{ dataSourceDetails.link }}</div>
       <p>
 
       <p>

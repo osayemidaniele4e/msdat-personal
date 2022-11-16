@@ -531,10 +531,10 @@ export default {
     await this.getNumDenumData();
   },
 
-  mounted() {
-    console.log(this.source, 'source');
-    console.log(this.dataArray, 'datasrray');
-  },
+  // async mounted() {
+  //   // set all datasources to show in the trend analysis chart on first load
+  //   this.$emit('clickedReset');
+  // },
 };
 </script>
 
