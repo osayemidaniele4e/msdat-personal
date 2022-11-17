@@ -8,7 +8,7 @@
 
   <!-- {{selectedSource.id}}
   {{source.id}} -->
-    <div  :class="{hover: isclicked}" class="icon d-flex align-items-center justify-content-center" @click="isclicked = true">
+    <div   class="icon d-flex align-items-center justify-content-center" >
       <span
         class="data-source h6 mr-3 mb-0 font-weight-bold"
         @click="$emit('source:click', source)"
@@ -24,11 +24,7 @@
 
 <script>
 export default {
-  data() {
-    return {
-      isClicked: false,
-    };
-  },
+
   props: {
     source: {
       type: [Object, Array, String],
@@ -69,9 +65,11 @@ export default {
     color: #348481 !important;
   }
   }
-.hover {
-  svg {
-    color: gray !important;
-  }
+   .table-active  {
+    .icon {
+        svg {
+           color: white !important;
+       }
+    }
   }
 </style>

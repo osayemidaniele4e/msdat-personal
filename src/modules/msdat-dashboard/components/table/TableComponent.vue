@@ -585,7 +585,7 @@ table.table {
         svg {
           font-size: 20px;
           // color: #2b5d5b;
-          color: $primary;
+          // color: $primary;
           cursor: pointer;
         }
       }
