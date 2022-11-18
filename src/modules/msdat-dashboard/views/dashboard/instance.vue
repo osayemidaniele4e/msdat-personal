@@ -269,7 +269,6 @@ export default {
     },
   },
   async created() {
-    console.log('instamce', this.indicators);
     await this.CLEAR_CONTROL_PANEL();
     /**
      * @author davebenard
