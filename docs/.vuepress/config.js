@@ -78,7 +78,9 @@ module.exports = {
             'mobile',
             'disagg',
             'nhmis-month',
-            'num-denum'
+            'num-denum',
+            'NGF',
+            'custom-dashboard'
           ]
         }
 

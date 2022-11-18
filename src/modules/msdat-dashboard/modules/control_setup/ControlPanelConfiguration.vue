@@ -55,32 +55,48 @@ export default {
     // get latest available years when indicator , datasource or location are changed
     'payload.indicator': {
       async handler() {
-        const availableYears = await this.getAvailableYears();
-        const availableDS = await this.getAvailableDataSources();
-        this.SETUP_CONTROL_OPTIONS1({
-          groupIndex: this.groupIndex,
-          panelIndex: this.controlIndex,
-          key: 'year',
-          values: availableYears,
-        });
-        // Funny how this doesn't update
-        await this.SETUP_CONTROL_OPTIONS1({
-          groupIndex: this.groupIndex,
-          panelIndex: this.controlIndex,
-          key: 'datasource',
-          values: availableDS,
-        });
+        if (this.controlIndex !== 2) {
+          const availableYears = await this.getAvailableYears();
+          this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'year',
+            values: availableYears,
+          });
+          const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
+          await this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'datasource',
+            values: availableDS,
+          });
+        }
       },
     },
     'payload.datasource': {
       async handler() {
-        const availableYears = await this.getAvailableYears();
-        this.SETUP_CONTROL_OPTIONS1({
+        let availableYears;
+        if (this.controlIndex === 2) {
+          availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+        } else {
+          availableYears = await this.getAvailableYears();
+        }
+        await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
           key: 'year',
           values: availableYears,
         });
+        // ============
+        if (this.controlIndex === 2) {
+          const availableIndicator = await this.getAvailableDataIndicators();
+          await this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'indicator',
+            values: availableIndicator,
+          });
+        }
       },
     },
     'payload.location': {

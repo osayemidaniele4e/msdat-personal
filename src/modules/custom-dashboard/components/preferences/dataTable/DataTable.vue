@@ -1,6 +1,6 @@
 <!-- Auther: Ghufran Ahmed  -->
 <template>
-  <div class="">
+  <div class="container-fluid">
     <div
       v-show="
         this.$store.state.CUSTOM_DASHBOARD_STORE.allSelected === true &&
@@ -37,7 +37,7 @@
         </p>
       </div>
     </div>
-  <div class="">
+  <div class="container-fluid overflow-auto" style="overflow-x:auto;">
       <table class="table" style="border: 1px solid #e3e3e3">
       <thead>
         <tr style="">
