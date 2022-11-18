@@ -71,7 +71,7 @@
         coverage area (National or subnational).
       </p>
           <b-button id="individual" type="submit" class="w-100 button"
-            >SELECT INDIVIDUAL DATA</b-button
+            >PROCEED TO SELECT DATA</b-button
           >
     </form>
   </b-container>

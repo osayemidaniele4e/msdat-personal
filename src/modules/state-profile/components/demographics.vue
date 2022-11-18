@@ -235,7 +235,7 @@ export default {
         this.data = temp;
         this.extractDemographicValues();
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
 
       return temp;
