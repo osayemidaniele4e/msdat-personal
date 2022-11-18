@@ -112,11 +112,13 @@ export default {
               this.selected = newValue[0][this.multiSelectProps['group-values']][0];
               // this.selected = await newValue[0];
             } else if (newValue.length > 0) {
+              this.selected = '';
               this.selected = await this.options[0];
             } else {
               const date = new Date();
               const year = date.getFullYear() - 1;
-              this.selected = year.toString();
+              this.selected = {};
+              this.selected = newValue[0] || year.toString();
             }
           }
 

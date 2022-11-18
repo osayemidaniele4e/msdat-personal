@@ -115,7 +115,7 @@ export default {
               // console.log(res);
               // eslint-disable-next-line eqeqeq
 
-              if (res.status == 200) {
+              if (res.status === 200) {
                 this.$swal(`Hi ${formData.username} 👋, Welcome to your Dashboard`);
                 this.$router.push({ path: '/my-dashboard/details' });
               } else {
