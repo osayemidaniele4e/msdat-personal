@@ -29,8 +29,9 @@ export default {
   methods: {
     async getLatestDate() {
       const res = await apiServices.getLatestDate();
-      // const date = moment(res.data.results[0].updated_at, 'YYYY-MM-DD').format('MMMM Do YYYY');
-      const date = moment(res.data.date, 'YYYY-MM-DD').format('MMMM Do YYYY');
+      const { results } = res.data;
+      const el = results[0];
+      const date = moment(el.updated_at, 'YYYY-MM-DD').format('MMMM Do YYYY');
       this.latestDate = date;
     },
     async getConfigData() {

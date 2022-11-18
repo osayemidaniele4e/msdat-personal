@@ -231,7 +231,7 @@ export default {
     },
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
-      return data.date;
+      return data.results[0].updated_at;
     },
     /**
      * @function getNhmisData
