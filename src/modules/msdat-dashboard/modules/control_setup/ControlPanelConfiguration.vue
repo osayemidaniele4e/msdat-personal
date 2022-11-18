@@ -70,16 +70,16 @@ export default {
      */
     'payload.indicator': {
       async handler() {
-        const availableYears = await this.getAvailableYears();
         // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
         // const availableDS = await this.setDataSourcesDropdown(this.payload?.indicator?.id);
-        this.SETUP_CONTROL_OPTIONS1({
-          groupIndex: this.groupIndex,
-          panelIndex: this.controlIndex,
-          key: 'year',
-          values: availableYears,
-        });
         if (this.controlIndex !== 2) {
+          const availableYears = await this.getAvailableYears();
+          this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'year',
+            values: availableYears,
+          });
           const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
           await this.SETUP_CONTROL_OPTIONS1({
             groupIndex: this.groupIndex,
