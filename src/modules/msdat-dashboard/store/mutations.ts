@@ -116,7 +116,8 @@ const mutations: MutationTree<State> = {
               control.options = payload;
             }
           });
-        } else {
+        }
+       else {
           // Taking into consideration the multi-source comparison section
           controlPanel.setup.forEach((control) => {
             control.forEach((groupControl) => {

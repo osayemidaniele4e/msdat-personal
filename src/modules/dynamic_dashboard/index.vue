@@ -33,8 +33,8 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
 import moment from 'moment';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import config from './config/dashboard_config';
@@ -74,13 +74,20 @@ export default {
      * @return Boolean
      */
     async clearData() {
-      const lastDate = localStorage.getItem('dataTimestamp');
-      if (lastDate) {
-        const lastDateMoment = moment(lastDate);
-        const now = moment();
-        const diff = now.diff(lastDateMoment, 'days');
-        if (diff === 10) {
+      const { data } = await apiServices.getLatestDate();
+      const clearedDate = localStorage.getItem('lastUpdatedDate');
+      if (clearedDate === null) {
+        console.log('first clear, BYFORCE, in order to set the date variable');
+        await this.$store.dispatch('DL/CLEAR_DB');
+        return;
+      }
+      if (data.results[0].updated_at) {
+        const lastDateMoment = moment(data.results[0].updated_at);
+        const formattedClearedDate = moment(clearedDate);
+        const diff = formattedClearedDate.diff(lastDateMoment, 'days');
+        if (diff > 10) {
           this.showClearDataModal = true;
+          console.log('subsequent clear by users choice, update localstorage variable');
         }
       }
       Promise.resolve(false);

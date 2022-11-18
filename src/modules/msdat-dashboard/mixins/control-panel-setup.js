@@ -92,9 +92,30 @@ export default {
       const uniqueYears = uniq(years);
       return uniqueYears.sort((a, b) => b - a);
     },
+    // get years by datasource
+    async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
+      const data = await this.queryDBForYearByDs(dataSourceID);
+      // debugger;
+      const onlyYearData = data.filter((item) => {
+        if (isDataYearly(item.period)) {
+          return item.period;
+        }
+        return false;
+      });
+      const years = onlyYearData.map((item) => item.period);
+      const uniqueYears = uniq(years);
+      return uniqueYears.sort((a, b) => b - a);
+    },
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
-      return this.getDataSourcesFromDexie(indicatorID);
+      const data = await this.getDataSourcesFromDexie(indicatorID);
+      return data;
+    },
+    // Get available Indicator
+    async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorFromDexie(datasourceID);
+      const formattedData = groupIndicator(data, 'program_area');
+      return formattedData;
     },
   },
 };

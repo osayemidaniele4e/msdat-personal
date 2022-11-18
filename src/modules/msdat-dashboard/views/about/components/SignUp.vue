@@ -111,7 +111,7 @@ export default {
     async signUp() {
       try {
         await this.CREATE_USER({
-          username: 'samuel',
+          username: this.first_name,
           email: this.email,
           first_name: this.first_name,
           last_name: this.last_name,

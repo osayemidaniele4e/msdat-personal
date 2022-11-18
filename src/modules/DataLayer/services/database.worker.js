@@ -150,6 +150,19 @@ export default class DataBase {
     return uniqueArray.map((item) => item.datasource);
   }
 
+  /**
+   * @function getAvailableIndicatorBySource
+   * !! Throws a conflict exception as it enters an infinite loop
+   */
+  static async getAvailableIndicatorBySource(id) {
+    const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.indicator, item])).values()];
+    return uniqueArray.map((item) => item.indicator);
+  }
+
   static async getAvailableIndicatorByDataSource(id) {
     const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
     if (allDataPoints.length <= 0) {
@@ -207,6 +220,11 @@ export default class DataBase {
       }
     }
   }
+
+  // This dexie query filter checks for value type 6 and 10 for num-denum
+  // static async queryDBForNumDenum(query = {}) {
+  //   return dexie.table(DATA).where(query).filter((value) => value.value_type === 6 || value.value_type === 10).toArray();
+  // }
 
   /**
    * @function queryDBForNumDenum
@@ -333,5 +351,21 @@ export default class DataBase {
     return dexie
       .table(tableName)
       .toArray();
+  }
+
+  /**
+   * @function queryDBForYearsBS
+   * @author davebenard
+   * @description function to query the DATA table by datasource id
+   * @param {*} query the objet  to be queried
+   * @returns {array} result of the Query
+   */
+  static async queryDBForYearsByDs(query) {
+    const result = await dexie
+      .table(DATA)
+      .where('datasource')
+      .equals(query)
+      .toArray();
+    return result;
   }
 }
