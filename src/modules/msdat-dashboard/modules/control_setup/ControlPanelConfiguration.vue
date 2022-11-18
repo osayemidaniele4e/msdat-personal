@@ -70,8 +70,6 @@ export default {
      */
     'payload.indicator': {
       async handler() {
-        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-        // const availableDS = await this.setDataSourcesDropdown(this.payload?.indicator?.id);
         if (this.controlIndex !== 2) {
           const availableYears = await this.getAvailableYears();
           this.SETUP_CONTROL_OPTIONS1({
