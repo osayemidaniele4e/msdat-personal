@@ -1,4 +1,4 @@
-import apiServices from '@/modules/DataLayer/services/ApiServices';
+import moment from 'moment';
 import DB from '../config/dexie';
 
 export default {
@@ -16,8 +16,9 @@ export default {
    */
   async CLEAR_DB() {
     localStorage.removeItem('defaultClear');
-    const { data } = await apiServices.getLatestDate();
-    localStorage.setItem('lastUpdateDate', data.results[0].updated_at);
+    localStorage.removeItem('lastUpdateDate');
+    const newDate = moment().format();
+    localStorage.setItem('lastUpdatedDate', newDate);
     await DB.delete();
     window.location.reload();
     Promise.resolve(true);
