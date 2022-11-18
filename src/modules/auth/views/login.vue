@@ -2,7 +2,7 @@
   <div class="">
     <header class="header sticky-top"></header>
     <section class="container-fluid">
-      <div class="container">
+      <div class="container mt-5">
         <h3 class="w-100 text-center mx-auto">Log in to your account</h3>
         <div class="loader" v-if="isLoading">
           <the-loader />
@@ -164,6 +164,11 @@ h4::after {
   margin: 0 1rem;
   transform: translateY(-0.5rem);
 }
+@media(max-width: 680px) {
+  h4::before, h4::after {
+  display: none;
+}
+}
 .login-button {
   background: #3f8994;
   color: white;
@@ -215,11 +220,17 @@ h4::after {
   background: #035c6e;
   opacity: 1;
 }
+
 .footer small {
   width: 100%;
   font-size: 16px;
   letter-spacing: 1px;
   color: #ffffff;
   opacity: 1;
+}
+@media(max-width: 680px) {
+  h4::before, h4::after {
+  display: none;
+}
 }
 </style>
