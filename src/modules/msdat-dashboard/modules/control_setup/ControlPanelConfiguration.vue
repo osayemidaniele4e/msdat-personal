@@ -92,9 +92,12 @@ export default {
     },
     'payload.datasource': {
       async handler() {
-        // const availableIndicator = await this.getAvailableDataIndicators();
-        // console.log({ availableIndicator });
-        const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+        let availableYears;
+        if (this.controlIndex === 2) {
+          availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+        } else {
+          availableYears = await this.getAvailableYears();
+        }
         await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
