@@ -135,7 +135,7 @@ export default {
       if (!noData) {
         const mappedValues = returnedNums.map((item) => {
           const num = item?.value.find((el) => el.value_type === 6);
-          const denum = item?.value.find((el) => el.value_type === 10);
+          const denum = item?.value.find((el) => el.value_type === 7);
           return {
             datasource: denum?.datasource || null,
             period: denum?.period || null,
@@ -283,14 +283,14 @@ export default {
           indicator: this.values.indicator.id,
           period: this.values.year,
           location: this.values.location.id,
-          value_type: 6,
+          value_type: 6, // numerator
         });
         const denominatorData = await this.dlQuery({
           datasource: this.values.datasource.id,
           indicator: this.values.indicator.id,
           period: this.values.year,
           location: this.values.location.id,
-          value_type: 10,
+          value_type: 7, // denominator
         });
         if (numeratorData.length > 0 || denominatorData.length > 0) {
           return {

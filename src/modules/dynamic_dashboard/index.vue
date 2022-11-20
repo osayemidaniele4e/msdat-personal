@@ -75,10 +75,10 @@ export default {
      */
     async clearData() {
       const { data } = await apiServices.getLatestDate();
+      localStorage.removeItem('lastUpdateDate'); // previous clear cache variable
       const clearedDate = localStorage.getItem('lastUpdatedDate');
       if (clearedDate === null) {
-        console.log('first clear, BYFORCE, in order to set the date variable');
-        await this.$store.dispatch('DL/CLEAR_DB');
+        await this.$store.dispatch('DL/CLEAR_DB'); // first clear is BY-FORCE, in order to set the date variable for subsequent comparisons
         return;
       }
       if (data.results[0].updated_at) {
@@ -86,8 +86,7 @@ export default {
         const formattedClearedDate = moment(clearedDate);
         const diff = formattedClearedDate.diff(lastDateMoment, 'days');
         if (diff > 10) {
-          this.showClearDataModal = true;
-          console.log('subsequent clear by users choice, update localstorage variable');
+          this.showClearDataModal = true; // subsequent clear is by users choice, update localstorage lastUpdatedDate variable
         }
       }
       Promise.resolve(false);
