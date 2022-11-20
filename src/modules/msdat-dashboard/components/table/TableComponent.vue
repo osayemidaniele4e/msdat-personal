@@ -474,7 +474,7 @@ export default {
       this.nhmisMonthData = [];
       this.dataArray.map(async (element) => {
         await this.indicators.push({
-          datasource: 30,
+          datasource: 30, // nhmis monthly id
           indicator: element.indicator.id,
           location: this.values.location.id,
         });
@@ -534,6 +534,7 @@ export default {
   },
 
   async mounted() {
+    // Add a delay to get nhmis monthly data
     setTimeout(async () => {
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
         await this.getNhmisMonthly();
