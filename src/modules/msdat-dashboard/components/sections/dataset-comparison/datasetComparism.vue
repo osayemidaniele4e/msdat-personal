@@ -161,8 +161,8 @@ export default {
           });
 
           const nationValueSeries = [
-            this.dlGetLocation(query[0].location).name,
-            parseFloat(query[0].value),
+            this.dlGetLocation(query[0]?.location)?.name,
+            parseFloat(query[0]?.value),
           ];
 
           // add it ot the top of the series
