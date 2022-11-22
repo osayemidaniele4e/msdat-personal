@@ -33,8 +33,8 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
 import moment from 'moment';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import config from './config/dashboard_config';
@@ -60,6 +60,7 @@ export default {
         initialIndicator: 0,
         initialDataSource: 0,
         initialLocation: 1,
+        showTableRelatedIndicator: true,
       },
       showClearDataModal: false,
       loading: false,
@@ -74,13 +75,19 @@ export default {
      * @return Boolean
      */
     async clearData() {
-      const lastDate = localStorage.getItem('dataTimestamp');
-      if (lastDate) {
-        const lastDateMoment = moment(lastDate);
-        const now = moment();
-        const diff = now.diff(lastDateMoment, 'days');
-        if (diff === 10) {
-          this.showClearDataModal = true;
+      const { data } = await apiServices.getLatestDate();
+      localStorage.removeItem('lastUpdateDate'); // previous clear cache variable
+      const clearedDate = localStorage.getItem('lastUpdatedDate');
+      if (clearedDate === null) {
+        await this.$store.dispatch('DL/CLEAR_DB'); // first clear is BY-FORCE, in order to set the date variable for subsequent comparisons
+        return;
+      }
+      if (data.results[0].updated_at) {
+        const lastDateMoment = moment(data.results[0].updated_at);
+        const formattedClearedDate = moment(clearedDate);
+        const diff = formattedClearedDate.diff(lastDateMoment, 'days');
+        if (diff > 10) {
+          this.showClearDataModal = true; // subsequent clear is by users choice, update localstorage lastUpdatedDate variable
         }
       }
       Promise.resolve(false);
@@ -138,6 +145,7 @@ export default {
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
+        showTableRelatedIndicator: false,
       };
       return;
     }
@@ -186,6 +194,7 @@ export default {
         initialIndicator: dashboard.initialIndicator,
         initialDataSource: dashboard.initialDataSource,
         initialLocation: dashboard.initialLocation,
+        showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
       };
       this.isAdvanced = false;
     } catch (err) {

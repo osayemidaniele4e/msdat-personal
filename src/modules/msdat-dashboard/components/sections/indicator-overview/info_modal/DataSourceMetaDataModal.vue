@@ -74,7 +74,7 @@
 
       <p>
         <div class="text1">Link</div>
-        <div class="text2">{{ dataSourceDetails.link }}</div>
+        <a :href="dataSourceDetails.link" class="text2">{{ dataSourceDetails.link }}</a>
       <p>
 
       <p>

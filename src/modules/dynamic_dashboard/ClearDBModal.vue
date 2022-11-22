@@ -2,7 +2,7 @@
   <base-modal class="work-sans" :showModal="showModal" :size="''" :header="'white'">
     <template #title>
       <div class="w-75 work-sans">
-        <h6 class="mb-0">CLEARING SEQUENCE STARTED</h6>
+        <h6 class="mb-0">DATA CLEARING SEQUENCE STARTED</h6>
       </div>
     </template>
     <template>
