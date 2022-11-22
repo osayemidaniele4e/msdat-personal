@@ -60,6 +60,7 @@ export default {
         initialIndicator: 0,
         initialDataSource: 0,
         initialLocation: 1,
+        showTableRelatedIndicator: true,
       },
       showClearDataModal: false,
       loading: false,
@@ -144,6 +145,7 @@ export default {
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
+        showTableRelatedIndicator: false,
       };
       return;
     }
@@ -192,6 +194,7 @@ export default {
         initialIndicator: dashboard.initialIndicator,
         initialDataSource: dashboard.initialDataSource,
         initialLocation: dashboard.initialLocation,
+        showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
       };
       this.isAdvanced = false;
     } catch (err) {
