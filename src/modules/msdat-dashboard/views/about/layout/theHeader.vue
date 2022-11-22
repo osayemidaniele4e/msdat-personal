@@ -1,16 +1,11 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
-    <header id="the-header" class="position-relative">
-
+  <header id="the-header" class="position-relative">
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
-            <img
-              src="@/assets/img/Logo.svg"
-              alt="FMOH Logo"
-              class="img-fluid"
-            />
+            <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
           </div>
           <div v-if="dashboardName != 'MSDAT PLATFORM'">
             <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
@@ -20,14 +15,7 @@
           cols
           md="11"
           lg="11"
-          class="
-            d-flex
-            justify-content-between
-            align-items-center
-            border-left
-            main
-            mains
-          "
+          class="d-flex justify-content-between align-items-center border-left main mains"
         >
           <!-- testing for mobile -->
           <div class="mobile-flex">
@@ -55,8 +43,7 @@
                   href="#"
                   id="dropdownMenuButton"
                   class="select-dropdown-item"
-                  v-for="(control, index) in $store.state.MSDAT_STORE
-                    .controlConfig"
+                  v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                   :key="index"
                   @click="emitIndex(index)"
                   >{{ control.label }}
@@ -67,7 +54,6 @@
             <b-sidebar id="sidebar-1" title="" right shadow>
               <SideBar />
             </b-sidebar>
-
           </div>
           <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
@@ -86,30 +72,24 @@
           </div>
 
           <!-- <b-col cols md="6" lg="6"> -->
-          <div
-            class="
-              d-flex
-              justify-content-end
-              h-100
-              align-items-center
-              header-navs
-              main
-            "
-          >
+          <div class="d-flex justify-content-end h-100 align-items-center header-navs main">
             <b-nav class="h-100 align-items-center main d-flex">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
-                 <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link">Home</a>
+              <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link" v-if="isAuthenticated === false"
+                >Home</a
+              >
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/custom" class="nav-link"
-                >Create New Dashboard</router-link
-              >
-          <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link">Go back to MSDAT 1.5</a>
+              <router-link to="/custom" class="nav-link">Create New Dashboard</router-link>
+              <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link" v-if="isAuthenticated === false">Go back to MSDAT 1.5</a>
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button class="btn btn-outline-primary border-light rounded-0" style="font-size: 13px !important">
+                <button
+                  class="btn btn-outline-primary border-light rounded-0"
+                  style="font-size: 13px !important"
+                >
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
@@ -130,33 +110,40 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <!-- <div v-b-toggle.sidebar-2>
-              <b-icon-person-fill></b-icon-person-fill
-                >&nbsp;Login/Register
-              </div> -->
+              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false">
+                <b-icon-person-fill></b-icon-person-fill>&nbsp;Login/Register
+              </div>
+              <div v-else class="ml-2">
+                <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
+                Hi, {{ getUser.username }}
+              </div>
               <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff">
-              <LoginSidebar v-if="show" />
-              <SignUp v-else />
-              <div class="row" v-if="show">
-              <div class="col-12 text-center">
-                <h4 class="py-3" style="font-size: 15px">
-                  Don't have an account?
-                </h4>
-                <button
-                  class="btn btn-lg btn-light btn-outline-dark text-dark"
-                  style="font-size: 15px; background:#F7F7F7; border:1px solid #707070"
-                  @click.prevent="showLoginForm"
-                >
-                  CREATE AN ACCOUNT
-                </button>
-              </div>
-              </div>
-              <div v-else>
-              <div class="justify-content-center text-center">
-          <button class="btn btn-lg btn-light btn-outline-dark text-dark mb-3" style="background:#F7F7F7; border:1px solid #707070" @click="showRegForm">LOGIN</button>
-        </div>
-              </div>
-            </b-sidebar>
+                <LoginSidebar v-if="show" />
+                <SignUp v-else />
+                <div class="row" v-if="show">
+                  <div class="col-12 text-center">
+                    <h4 class="py-3" style="font-size: 15px">Don't have an account?</h4>
+                    <button
+                      class="btn btn-lg btn-light btn-outline-dark text-dark"
+                      style="font-size: 15px; background: #f7f7f7; border: 1px solid #707070"
+                      @click.prevent="showLoginForm"
+                    >
+                      CREATE AN ACCOUNT
+                    </button>
+                  </div>
+                </div>
+                <div v-else>
+                  <div class="justify-content-center text-center">
+                    <button
+                      class="btn btn-lg btn-light btn-outline-dark text-dark mb-3"
+                      style="background: #f7f7f7; border: 1px solid #707070"
+                      @click="showRegForm"
+                    >
+                      LOGIN
+                    </button>
+                  </div>
+                </div>
+              </b-sidebar>
               <!-- <router-link to="/login" v-else class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
                 out</router-link
@@ -168,12 +155,8 @@
               font-scale="1.5"
               class="main"
             />
+            <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon" v-b-toggle.sidebar-1></b-icon>
             <b-icon
-              icon="grid3x3-gap-fill"
-              class="mob-grid-icon"
-              v-b-toggle.sidebar-1
-            ></b-icon>
-                  <b-icon
               @click="toggleOption = !toggleOption"
               icon="three-dots-vertical"
               font-scale="1.5"
@@ -186,35 +169,28 @@
             />
           </div>
         </b-col>
-
       </b-row>
       <!--  please someone show separate the
       header for the about page from this it going to cause issues  -->
       <b-row v-show="aboutPage" class="main">
         <b-col cols="1">
           <!-- <a href=""> -->
-          <b-icon
-            @click="$router.go(-1)"
-            class="back-icn main"
-            icon="chevron-left"
-          />
+          <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
           <!-- </a> -->
         </b-col>
         <b-col class="main">
           <h4>About the MSDAT Dashboard</h4>
           <p>
-            This dashboard is developed and managed by the Department of Health
-            Planning Research and Statistics (DHPRS)
+            This dashboard is developed and managed by the Department of Health Planning Research
+            and Statistics (DHPRS)
           </p>
         </b-col>
-
       </b-row>
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
   </header>
-  <!--
-  to deltete
-       // using provide inject and watcher to work on this feature.
+  <!--  to deltete
+        // using provide inject and watcher to work on this feature.
         // inject into base panel to affect the entire dashboard
         // controls if from the global storage
         // this.controls = this.$children;
@@ -227,6 +203,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
 import Sidebar from '../components/Sidebar.vue';
@@ -264,6 +241,9 @@ export default {
       ],
       controls: [],
     };
+  },
+  computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
   },
   created() {
     this.controls = this.$children;
@@ -331,7 +311,7 @@ button {
   display: inherit;
 }
 
-.mob{
+.mob {
   display: none;
 }
 
@@ -484,20 +464,20 @@ header#the-header {
 // MEDIA QUERY
 
 /* EXTRA EXTRA SMALL */
-@media (max-width:676px) {
+@media (max-width: 676px) {
   .main {
     display: none;
   }
   .mobile-flex-col {
     display: none;
   }
-  .mob{
+  .mob {
     display: none;
   }
-  .mains .header-navs a{
+  .mains .header-navs a {
     display: none;
   }
-  .mains .header-navs button{
+  .mains .header-navs button {
     display: none;
   }
 
@@ -585,13 +565,13 @@ header#the-header {
   .main {
     display: none;
   }
-   .mains .header-navs a{
+  .mains .header-navs a {
     display: none;
   }
-  .mains .header-navs button{
+  .mains .header-navs button {
     display: none;
   }
-  .mob{
+  .mob {
     display: inherit;
   }
 
@@ -699,79 +679,79 @@ header#the-header {
 //     font-weight: 500;
 //     font-size: 19px;
 //   }
-  //    .main{
-  //     display: none;
-  //   }
+//    .main{
+//     display: none;
+//   }
 
-  // .mobile-flex{
-  //    display: flex;
-  //  justify-content: space-between;
-  //  flex-direction: row;
-  // //  display: grid;
-  // //  grid-template-columns: 20% 50% 20% 10%;
-  // }
+// .mobile-flex{
+//    display: flex;
+//  justify-content: space-between;
+//  flex-direction: row;
+// //  display: grid;
+// //  grid-template-columns: 20% 50% 20% 10%;
+// }
 
-  // .mob-grid-icon{
-  //   display: inherit;
-  // }
-  #about-wrap {
-    header#the-header {
-      & > .container-fluid {
-        & > .row {
-          height: 65px;
-          padding: 10px;
+// .mob-grid-icon{
+//   display: inherit;
+// }
+#about-wrap {
+  header#the-header {
+    & > .container-fluid {
+      & > .row {
+        height: 65px;
+        padding: 10px;
 
-          // first row
-          &:first-child {
-            & > div {
-              &:first-child {
-                padding-left: 0.5%;
-                img {
-                  float: left;
-                  height: 40px !important;
-                }
+        // first row
+        &:first-child {
+          & > div {
+            &:first-child {
+              padding-left: 0.5%;
+              img {
+                float: left;
+                height: 40px !important;
               }
+            }
 
-              &:last-child {
-                padding: 0 10px;
+            &:last-child {
+              padding: 0 10px;
 
-                h2 {
-                  font: normal normal 600 17px/20px Work Sans;
+              h2 {
+                font: normal normal 600 17px/20px Work Sans;
 
-                  // 3-dots icon
-                  & ~ div {
-                    font-size: 13px;
-                  }
+                // 3-dots icon
+                & ~ div {
+                  font-size: 13px;
                 }
               }
             }
           }
+        }
 
-          // second row
-          &:last-child {
-            padding: 0 10px;
+        // second row
+        &:last-child {
+          padding: 0 10px;
 
-            & > :first-child {
-              justify-content: center;
-              padding: 8px;
-              font-size: 38px;
-            }
+          & > :first-child {
+            justify-content: center;
+            padding: 8px;
+            font-size: 38px;
+          }
 
-            & > :last-child {
-              // padding: 0 5% !important;
-              line-height: 16px;
+          & > :last-child {
+            // padding: 0 5% !important;
+            line-height: 16px;
 
-              h4 {
-                margin-bottom: 4px;
-                padding-bottom: 2px;
-                font-size: 17px !important;
-              }
+            h4 {
+              margin-bottom: 4px;
+              padding-bottom: 2px;
+              font-size: 17px !important;
             }
           }
         }
       }
     }
   }
+}
 
 /* LARGE */
 @media (min-width: 1000px) and (max-width: 1300px) {
@@ -907,7 +887,10 @@ header#the-header {
   position: relative;
   left: -25px;
 }
-.btn:hover{
-  color: #fff
+.btn:hover {
+  color: #fff;
+}
+.profile-picture{
+  border-radius: 48px;
 }
 </style>

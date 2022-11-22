@@ -4,13 +4,14 @@ import VueCookies from 'vue-cookies';
 export default {
   namespaced: true,
   state: {
-    isAuthtenticated: false,
+    isAuthenticated: false,
     authToken: '',
     user: {},
   },
   mutations: {
     setUser(state, payload) {
       state.user = payload;
+      state.isAuthenticated = true;
     },
     setToken(state, payload) {
       state.authToken = payload;
@@ -50,7 +51,8 @@ export default {
     },
   },
   getters: {
-    getUser(state) { return state.user; },
-    getToken(state) { return state.authToken; },
+    getUser: (state) => state.user,
+    getToken: (state) => state.authToken,
+    isAuthenticated: (state) => state.isAuthenticated && state.user?.id !== '',
   },
 };
