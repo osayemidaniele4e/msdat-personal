@@ -10,7 +10,7 @@ export default {
   getDSI: 'datasource_specific_indicator/?size=1500',
   getData: 'data/?size=1000&',
   getUpdatedDataDate: 'after_datetime/?size=1500',
-  getNhmisMonthly: `data/?datasource=${30}&size=1500`,
+  getNhmisMonthly: `data/?datasource=${30}&size=1500`, // 30, nhmisMonthly ID
 };
 
 // https://msdat-api.fmohconnect.gov.ng/api/datasources/?size=2000&datasource=NHMIS-DHIS2%20(monthly)

@@ -59,7 +59,7 @@ export default {
     toHighChartDataArrayFormat(data, ndData) {
       const dataValue = map(data, (item) => {
         const locationName = this.dlGetLocation(item.location);
-        if (ndData.length > 0) {
+        if (ndData?.length > 0) {
           return {
             name: locationName.name,
             y: Number(item.value),

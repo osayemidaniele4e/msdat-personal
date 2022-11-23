@@ -143,7 +143,10 @@
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
               </template>
-              <template #default v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
+              <template
+                #default
+                v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'"
+              >
                 <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
                 <td class="text-center p-2" v-if="nhmisMonthData[index]">
                   <TableDataCell />
@@ -463,29 +466,35 @@ export default {
     },
 
     // getting NHMIS monthly for the 1st realted indicator
-    // get the data Array
+    // get the data Arrays
     // use the function similar
 
     async getNhmisMonthly() {
       this.indicators = [];
-      this.dataArray.forEach((element) => {
-        this.indicators.push({ datasource: 30, indicator: element.indicator.id, location: this.values.location.id });
-      });
-
       this.nhmisMonthData = [];
-      this.indicators.forEach(async (el) => {
+      this.dataArray.map(async (element) => {
+        await this.indicators.push({
+          datasource: 30, // nhmis monthly id
+          indicator: element.indicator.id,
+          location: this.values.location.id,
+        });
+      });
+      // Step 2: get the data for the selected indicator and the related indicator
+      Promise.all(this.indicators.map(async (el) => {
         const data = await this.getNhmisData(el);
         this.nhmisMonthData.push(data);
-      });
+      }));
     },
   },
   watch: {
     dataArray: {
-      handler() {
+      async handler() {
         this.getAvailableDataSources();
         this.getDataSourcesClassification();
-        if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage') {
-          this.getNhmisMonthly();
+        if (
+          this.$route.params.name === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage'
+        ) {
+          await this.getNhmisMonthly();
         }
       },
       deep: true,
@@ -496,10 +505,10 @@ export default {
       this.getNumDenumData();
     },
     // eslint-disable-next-line func-names
-    'values.location': function () {
+    'values.location': async function () {
       this.getNumDenumData();
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage') {
-        this.getNhmisMonthly();
+        await this.getNhmisMonthly();
       }
     },
     // eslint-disable-next-line func-names
@@ -524,10 +533,13 @@ export default {
     },
   },
 
-  async created() {
-    if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-      await this.getNhmisMonthly();
-    }
+  async mounted() {
+    // Add a delay to get nhmis monthly data
+    setTimeout(async () => {
+      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+        await this.getNhmisMonthly();
+      }
+    }, 500);
     await this.getNumDenumData();
   },
 
