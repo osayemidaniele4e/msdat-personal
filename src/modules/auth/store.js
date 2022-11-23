@@ -16,6 +16,10 @@ export default {
     setToken(state, payload) {
       state.authToken = payload;
     },
+    logout(state) {
+      state.user = {};
+      state.isAuthenticated = false;
+    },
   },
   actions: {
     // eslint-disable-next-line consistent-return
@@ -48,6 +52,13 @@ export default {
         VueCookies.remove('custom-access-token');
         VueCookies.remove('custom-refresh-token');
       }
+    },
+    logout({ commit }) {
+      commit('logout');
+      VueCookies.remove('custom-access-token');
+      VueCookies.remove('custom-refresh-token');
+      VueCookies.remove('custom-user-details');
+      VueCookies.remove('vuex');
     },
   },
   getters: {

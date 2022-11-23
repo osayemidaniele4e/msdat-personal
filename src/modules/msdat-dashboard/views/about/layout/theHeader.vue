@@ -113,10 +113,19 @@
               <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false">
                 <b-icon-person-fill></b-icon-person-fill>&nbsp;Login/Register
               </div>
-              <div v-else class="ml-2">
+              <div v-else @click="showCard = true">
+              <div class="ml-2 profile">
                 <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
                 Hi, {{ getUser.username }}
               </div>
+              <Drop v-show="showCard"/>
+              </div>
+              <!-- <div>
+                <div class="card card-body border-0 mb-3 shadow">
+                  <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
+                  {{ getUser.username }}
+                  </div>
+                </div> -->
               <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff">
                 <LoginSidebar v-if="show" />
                 <SignUp v-else />
@@ -206,6 +215,7 @@
 import { mapGetters } from 'vuex';
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
+import Drop from '../components/Drop.vue';
 import Sidebar from '../components/Sidebar.vue';
 import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
@@ -214,6 +224,7 @@ export default {
   components: {
     HeaderOption,
     DropCard,
+    Drop,
     SideBar: Sidebar,
     LoginSidebar,
     SignUp,
@@ -221,6 +232,7 @@ export default {
   data() {
     return {
       show: true,
+      showCard: false,
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
@@ -268,6 +280,9 @@ export default {
     },
     emitIndex(index) {
       this.$emit('index', index);
+    },
+    showC() {
+      this.showCard = true;
     },
   },
   watch: {
@@ -892,5 +907,8 @@ header#the-header {
 }
 .profile-picture{
   border-radius: 48px;
+}
+.profile{
+  cursor: pointer;
 }
 </style>
