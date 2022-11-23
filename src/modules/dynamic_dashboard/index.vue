@@ -85,8 +85,9 @@ export default {
       if (data.results[0].updated_at) {
         const lastDateMoment = moment(data.results[0].updated_at);
         const formattedClearedDate = moment(clearedDate);
-        const diff = formattedClearedDate.diff(lastDateMoment, 'days');
-        if (diff > 10) {
+        const diff = lastDateMoment.diff(formattedClearedDate, 'days');
+        // check if api date is greater than localstorage date by 9 days
+        if (diff > 9) {
           this.showClearDataModal = true; // subsequent clear is by users choice, update localstorage lastUpdatedDate variable
         }
       }
