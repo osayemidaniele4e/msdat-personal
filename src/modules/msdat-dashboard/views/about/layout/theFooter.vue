@@ -2,9 +2,14 @@
   <footer id="the-footer" class="work-sans">
     <div>Built with <b-icon-heart-fill /> by eHealth4everyone</div>
     <div>
-      <span
-        >{{ dlDashboardIndicator.length > indicatorCount ? indicatorCount : dlDashboardIndicator.length }}/{{ indicatorCount}}&ensp;Indicators,
-        {{ dlDashboardDataSource.length }}/{{dataSourceCount}}&ensp;Data&nbsp;sources</span
+      <span v-if="checkIfDashboard"
+        >{{
+          dlDashboardIndicator.length > indicatorCount
+            ? indicatorCount
+            : dlDashboardIndicator.length
+        }}/{{ indicatorCount }}&ensp;Indicators, {{ dlDashboardDataSource.length }}/{{
+          dataSourceCount
+        }}&ensp;Data&nbsp;sources</span
       >
       <span>Last Updated {{ latestDate }}</span>
     </div>
@@ -24,6 +29,7 @@ export default {
       dashboard: {},
       indicatorCount: 0,
       dataSourceCount: 0,
+      checkIfDashboard: false,
     };
   },
   methods: {
@@ -43,6 +49,8 @@ export default {
   async mounted() {
     await this.getLatestDate();
     await this.getConfigData();
+    const checkIfDashboardStatus = this.$route.fullPath.split('/');
+    this.checkIfDashboard = checkIfDashboardStatus?.includes('dashboard');
   },
 };
 </script>

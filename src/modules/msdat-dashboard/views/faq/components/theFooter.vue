@@ -2,10 +2,10 @@
   <footer id="the-footer" class="work-sans">
     <div>Built with <b-icon-heart-fill /> by eHealth4everyone</div>
     <div>
-      <span
+      <!-- <span
         >{{ dlDashboardIndicator.length }} Indicators, {{ dlDashboardDataSource.length }} Data
         sources</span
-      >
+      > -->
       <span>Last Updated {{ latestDate }}</span>
     </div>
   </footer>
