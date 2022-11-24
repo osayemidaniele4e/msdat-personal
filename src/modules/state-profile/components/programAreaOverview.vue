@@ -1,9 +1,8 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-param-reassign */
+/* eslint-disable array-callback-return */ /* eslint-disable no-param-reassign */ /* eslint-disable
+no-param-reassign */
 <template>
   <b-container fluid>
-    <hr style="  border-top: 1px dashed #CCCCCC;" class="mb-5 mt-5" />
+    <hr style="border-top: 1px dashed #cccccc" class="mb-5 mt-5" />
     <b-row class="mb-5">
       <program-area-icon :programArea="this.programArea" />
       <h2 class="my-auto">
@@ -34,20 +33,20 @@
       <b-col sm="12" :md="this.programArea.name == 'Health Services' ? 'auto' : '8'">
         <div class="ml-3" v-if="this.programArea.name != 'Health Services'">
           <b-row>
-           <b-col>
-              <p>{{this.barChartOptions.xAxis.categories[0]}}</p>
+            <b-col>
+              <p>{{ this.barChartOptions.xAxis.categories[0] }}</p>
               <p class="source">
-                {{`${this.programArea.name == 'mortality' ? 'Per 100,000' : 'In Percentage'}`}}
+                {{ `${this.programArea.name == 'mortality' ? 'Per 100,000' : 'In Percentage'}` }}
               </p>
             </b-col>
             <b-col cols="auto">
               <p>National</p>
-              <p class="grey-value">{{this.singleNational}}</p>
+              <p class="grey-value">{{ this.singleNational }}</p>
             </b-col>
             <b-col cols="auto">
               <p v-if="state != 'National'">{{ this.state }}</p>
-              <p class="grey-value" v-if="state != 'National'">{{this.singleStateValue}}</p>
-              <p class="source">Source:{{this.singleSrcnYear}}</p>
+              <p class="grey-value" v-if="state != 'National'">{{ this.singleStateValue }}</p>
+              <p class="source">Source:{{ this.singleSrcnYear }}</p>
             </b-col>
           </b-row>
           <hr />
@@ -57,37 +56,29 @@
           :chartOptions="barChartOptions"
         />
         <b-row
-          style="color: #FFFFFF; font-size: 12px;"
+          style="color: #ffffff; font-size: 12px"
           class="pl-5 mt-4"
           v-show="this.programArea.name == 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH'"
         >
           <b-col
             class="px-auto"
-            style="
-            background-color: #054A80;
-            border: 1px solid white;
-            height: 40px"
+            style="background-color: #054a80; border: 1px solid white; height: 40px"
           >
             <p class="mx-auto">Pre-pregnancy</p>
           </b-col>
-          <b-col style="background-color: #2C8CCA; border: 1px solid white;
-            height: 40px">
+          <b-col style="background-color: #2c8cca; border: 1px solid white; height: 40px">
             <p>Pregnancy</p>
           </b-col>
-          <b-col style="background-color: #3F7299; border: 1px solid white;
-            height: 40px">
+          <b-col style="background-color: #3f7299; border: 1px solid white; height: 40px">
             <p>Birth</p>
           </b-col>
-          <b-col style="background-color: #43893B; border: 1px solid white;
-            height: 40px">
+          <b-col style="background-color: #43893b; border: 1px solid white; height: 40px">
             <p>Postnatal</p>
           </b-col>
-          <b-col style="background-color: #2C9F35; border: 1px solid white;
-            height: 40px">
+          <b-col style="background-color: #2c9f35; border: 1px solid white; height: 40px">
             <p>Infancy</p>
           </b-col>
-          <b-col style="background-color: #8FB438; border: 1px solid white;
-            height: 40px">
+          <b-col style="background-color: #8fb438; border: 1px solid white; height: 40px">
             <p>Childhood</p>
           </b-col>
         </b-row>
@@ -105,8 +96,8 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">{{HRGuidelinesValue.value}}%</p>
-              <p class="source text-right">Source: NHFS {{HRGuidelinesValue.year}}</p>
+              <p class="value text-right">{{ HRGuidelinesValue.value }}%</p>
+              <p class="source text-right">Source: NHFS {{ HRGuidelinesValue.year }}</p>
             </b-col>
           </b-row>
         </div>
@@ -136,8 +127,8 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">{{facilityMng.value}}%</p>
-              <p class="source text-right">Source: NHFS {{facilityMng.year}}</p>
+              <p class="value text-right">{{ facilityMng.value }}%</p>
+              <p class="source text-right">Source: NHFS {{ facilityMng.year }}</p>
             </b-col>
           </b-row>
         </div>
@@ -150,13 +141,11 @@
           <p class="blue-heading">Facility readiness to deliver services</p>
           <b-row>
             <b-col>
-              <p class="hfs-details">
-                Percentage of facilities with malaria test capacity
-              </p>
+              <p class="hfs-details">Percentage of facilities with malaria test capacity</p>
             </b-col>
             <b-col>
-              <p class="value text-right">{{facilityReadiness[0].value}}%</p>
-              <p class="source text-right">Source: NHFS {{facilityReadiness[0].year}}</p>
+              <p class="value text-right">{{ facilityReadiness[0].value }}%</p>
+              <p class="source text-right">Source: NHFS {{ facilityReadiness[0].year }}</p>
             </b-col>
           </b-row>
         </div>
@@ -169,8 +158,8 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">{{facilityReadiness[1].value}}%</p>
-              <p class="source text-right">Source: NHFS {{facilityReadiness[1].year}}</p>
+              <p class="value text-right">{{ facilityReadiness[1].value }}%</p>
+              <p class="source text-right">Source: NHFS {{ facilityReadiness[1].year }}</p>
             </b-col>
           </b-row>
         </div>
@@ -183,8 +172,8 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">{{drugsAndCommodities[0].value}}%</p>
-              <p class="source text-right">Source: NHFS {{drugsAndCommodities[0].year}}</p>
+              <p class="value text-right">{{ drugsAndCommodities[0].value }}%</p>
+              <p class="source text-right">Source: NHFS {{ drugsAndCommodities[0].year }}</p>
             </b-col>
           </b-row>
         </div>
@@ -197,8 +186,8 @@
               </p>
             </b-col>
             <b-col>
-              <p class="value text-right">{{drugsAndCommodities[1].value}}%</p>
-              <p class="source text-right">Source: NHFS {{drugsAndCommodities[1].year}}</p>
+              <p class="value text-right">{{ drugsAndCommodities[1].value }}%</p>
+              <p class="source text-right">Source: NHFS {{ drugsAndCommodities[1].year }}</p>
             </b-col>
           </b-row>
         </div>
@@ -206,9 +195,7 @@
     </b-row>
     <b-row v-show="this.isDefinitionVisible">
       <p>
-        <b>
-          Indicator definitions
-        </b>
+        <b> Indicator definitions </b>
       </p>
       <ul>
         <li v-for="(definition, index) in definitions" :key="index">
@@ -263,27 +250,30 @@ export default {
         value: 0,
         year: 2000,
       },
-      facilityReadiness: [{
-        id: 39,
-        value: 0,
-        year: 2000,
-      },
-      {
-        id: 41,
-        value: 0,
-        year: 2000,
-      },
+      facilityReadiness: [
+        {
+          id: 39,
+          value: 0,
+          year: 2000,
+        },
+        {
+          id: 41,
+          value: 0,
+          year: 2000,
+        },
       ],
-      drugsAndCommodities: [{
-        id: 49,
-        value: 0,
-        year: 2000,
-      },
-      {
-        id: 50,
-        value: 0,
-        year: 2000,
-      }],
+      drugsAndCommodities: [
+        {
+          id: 49,
+          value: 0,
+          year: 2000,
+        },
+        {
+          id: 50,
+          value: 0,
+          year: 2000,
+        },
+      ],
       singleNational: 0,
       singleStateValue: 0,
       stateSeries: {},
@@ -336,9 +326,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          categories: [
-
-          ],
+          categories: [],
           labels: {
             rotation: 0,
             style: {
@@ -350,8 +338,7 @@ export default {
         series: [
           {
             name: 'National',
-            data: [
-            ],
+            data: [],
             pointPadding: 0.1,
             pointPlacement: 0,
           },
@@ -359,9 +346,7 @@ export default {
             name: this.state,
             className: 'test',
             color: this.programArea.colors[1],
-            data: [
-
-            ],
+            data: [],
             pointPadding: 0.3,
             pointPlacement: 0,
           },
@@ -374,10 +359,10 @@ export default {
       this.isDefinitionVisible = !this.isDefinitionVisible;
     },
     getIndicatorInfo(id) {
-      return this.allIndicators.find((item) => item.id === id);
+      return this.allIndicators.results.find((item) => item.id === id);
     },
     getDataSourceInfo(src) {
-      return this.allDataSources.find((item) => item.id === src);
+      return this.allDataSources.results.find((item) => item.id === src);
     },
     /**
      * This function sets the national
@@ -396,7 +381,10 @@ export default {
         this.programArea.specificIndicators.map((value) => {
           // eslint-disable-next-line array-callback-return
           this.nationalObjects.map((element) => {
-            if (value.indicator === element.indicator && value.dataSource === element.datasource) {
+            if (
+              value?.indicator === element?.indicator
+              && value.dataSource === element?.datasource
+            ) {
               // eslint-disable-next-line no-param-reassign
               element.color = value.color;
             }
@@ -405,25 +393,42 @@ export default {
         });
         // eslint-disable-next-line array-callback-return
         this.nationalObjects.map((val) => {
-          data.push({
-            y: Number(val.value),
-            name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period})`,
-            color: val.color,
-          });
+          if (val !== undefined) {
+            data.push({
+              y: Number(val.value),
+              name: `${this.getIndicatorInfo(val.indicator).short_name} (${
+                this.getDataSourceInfo(val.datasource).datasource
+              } ${val.period})`,
+              color: val.color,
+            });
+          }
         });
       } else {
         // eslint-disable-next-line array-callback-return
         this.nationalObjects.map((val) => {
-          data.push([`${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period}), `, Number(val.value)]);
+          if (val !== undefined) {
+            data.push([
+              `${this.getIndicatorInfo(val?.indicator).short_name} (${
+                this.getDataSourceInfo(val?.datasource).datasource
+              } ${val.period}), `,
+              Number(val.value),
+            ]);
+          }
         });
       }
-      this.singleSrcnYear = data[0][0] ? `(${data[0][0].split('(')[1]}` : `(${data[0].name.split('(')[1]}`;
-      // eslint-disable-next-line prefer-destructuring
-      this.singleNational = Array.isArray(data[0]) ? data[0][1] : data[0].y;
-      // eslint-disable-next-line max-len
-      this.barChartOptions.series[0].color = noStates ? this.programArea.colors[1] : this.programArea.colors[0];
-      this.barChartOptions.series[0].data = data;
-      this.populateCategories();
+      if (data?.length > 0) {
+        this.singleSrcnYear = data[0][0]
+          ? `(${data[0][0].split('(')[1]}`
+          : `(${data[0].name.split('(')[1]}`;
+        // eslint-disable-next-line prefer-destructuring
+        this.singleNational = Array.isArray(data[0]) ? data[0][1] : data[0].y;
+        // eslint-disable-next-line max-len
+        this.barChartOptions.series[0].color = noStates
+          ? this.programArea.colors[1]
+          : this.programArea.colors[0];
+        this.barChartOptions.series[0].data = data;
+        this.populateCategories();
+      }
     },
     /**
      * This fills in the names of the various data points
@@ -435,7 +440,9 @@ export default {
       const indicatorShortNames = [];
       // eslint-disable-next-line array-callback-return
       this.nationalObjects.map((id) => {
-        indicatorShortNames.push(this.getIndicatorInfo(id.indicator).short_name);
+        if (id !== undefined) {
+          indicatorShortNames.push(this.getIndicatorInfo(id?.indicator).short_name);
+        }
       });
       this.barChartOptions.xAxis.categories = indicatorShortNames;
     },
@@ -476,6 +483,9 @@ export default {
       }
       // eslint-disable-next-line array-callback-return
       availableData.map((el) => {
+        if (el === undefined) {
+          return;
+        }
         if (el.indicator === this.HRGuidelinesValue.id) {
           this.HRGuidelinesValue.value = el.value;
           this.HRGuidelinesValue.year = el.period;
@@ -516,9 +526,8 @@ export default {
         // eslint-disable-next-line array-callback-return
         this.nonDemographicData.map((element) => {
           if (element) {
-            if (value.indicator === element.indicator
-          && value.dataSource === element.datasource) {
-            // eslint-disable-next-line no-param-reassign
+            if (value.indicator === element.indicator && value.dataSource === element.datasource) {
+              // eslint-disable-next-line no-param-reassign
               element.color = value.color;
             }
           }
@@ -529,7 +538,9 @@ export default {
         if (val) {
           data.push({
             y: Number(val.value),
-            name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource} ${val.period})`,
+            name: `${this.getIndicatorInfo(val.indicator).short_name} (${
+              this.getDataSourceInfo(val.datasource).datasource
+            } ${val.period})`,
             color: val.color,
           });
         }
@@ -587,11 +598,13 @@ export default {
           selectedState = el;
         }
       });
-      const { national, state } = await requests.getRegularData(this.programArea.specificIndicators,
-        selectedState.id);
+      const { newNational, newState } = await requests.getRegularData(
+        this.programArea.specificIndicators,
+        selectedState.id,
+      );
       this.$emit('overviewLoading');
-      national.map((el) => this.nationalObjects.push(el.data[0]));
-      state.map((el) => this.nonDemographicData.push(el.data[0]));
+      newNational.map((el) => this.nationalObjects.push(el.results[0]));
+      newState.map((el) => this.nonDemographicData.push(el.results[0]));
       this.presentNationalData();
       this.presentStateData();
       this.getHealthFacilityData();
@@ -609,9 +622,11 @@ export default {
       this.barChartOptions.series[1].data = [];
       this.nonDemographicData = [];
       if (oldVal !== 'National' && newVal === 'National') {
-        const { national } = await requests.getRegularData(this.programArea.specificIndicators,
-          this.locations[0].id);
-        national.map((el) => this.nationalObjects.push(el.data[0]));
+        const { newNational } = await requests.getRegularData(
+          this.programArea.specificIndicators,
+          this.locations[0].id,
+        );
+        newNational.map((el) => this.nationalObjects.push(el.results[0]));
         this.$emit('overviewLoading');
         this.justNationalData();
       } else {
@@ -634,9 +649,11 @@ export default {
       if (this.state == 'National') {
         // eslint-disable-next-line prefer-destructuring
         selectedState = this.locations[0];
-        const { national } = await requests.getRegularData(this.programArea.specificIndicators,
-          selectedState.id);
-        national.map((el) => this.nationalObjects.push(el.data[0]));
+        const { newNational } = await requests.getRegularData(
+          this.programArea.specificIndicators,
+          selectedState.id,
+        );
+        newNational.map((el) => this.nationalObjects.push(el.results[0]));
         this.$emit('overviewLoading');
         this.justNationalData();
         this.getHealthFacilityData();
@@ -652,7 +669,7 @@ export default {
 
 <style lang="scss">
 .container-fluid {
-  font-family: "Muli", sans-serif !important;
+  font-family: 'Muli', sans-serif !important;
 }
 .program-area-icon {
   border-radius: 50%;
@@ -663,7 +680,7 @@ export default {
 }
 p {
   margin-bottom: 0px;
-  font-family: "Muli", sans-serif;
+  font-family: 'Muli', sans-serif;
 }
 ul {
   list-style-type: none;
