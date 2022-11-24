@@ -25,6 +25,7 @@
               :checked="isSelected(value)"
               @click="selectedComponent($event, value.fieldName)"
             />
+            <!-- //:checked="isSelected(value)"/> -->
             <label for="dashboard" class="fields">{{ value.fieldName }}</label>
           </div>
           <p style="width: 100%; font-family: Work Sans; font-size: 14px">
@@ -38,6 +39,9 @@
         <div class="dragable-list">
           <dragable-list />
           <b-row align-h="center" class="mt-3 text-right">
+            <!-- <b-col class="align-baseline" cols="auto"
+              ><p class="baseline">Save for Later</p>
+            </b-col> -->
             <b-col cols="auto"
               ><b-button
                 @click="approveData"
@@ -161,11 +165,14 @@ export default {
   .dragable-list {
     display: inline-block;
     position: fixed;
+    /* margin-top: -45px; */
   }
 }
 
 @media screen and (max-width: 520px) {
   .dragable-list {
+    /* display: block; */
+    /* margin-top: -45px;  */
     position: relative;
   }
   .fields {

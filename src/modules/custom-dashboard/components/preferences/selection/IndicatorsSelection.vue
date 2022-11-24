@@ -159,7 +159,7 @@ export default {
     selectIndicator(e, parentValue, childId, childName) {
       this.indicatorSelected = e.target.checked;
       this.showList = e.target.checked;
-      this.$store.dispatch('forSelectedIndicator', {
+      this.$store.dispatch('SelectedIndicator', {
         checked: this.indicatorSelected,
         id: childId,
         showList: this.showList,
