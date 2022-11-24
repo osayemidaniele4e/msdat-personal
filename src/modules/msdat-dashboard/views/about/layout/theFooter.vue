@@ -19,7 +19,6 @@
 <script>
 import moment from 'moment';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
-import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 
 export default {
   name: 'theFooter',
@@ -41,7 +40,8 @@ export default {
       this.latestDate = date;
     },
     async getConfigData() {
-      this.dashboard = config.find((item) => item.title === this.$route.meta.title);
+      const { data } = await apiServices.getDashboard();
+      this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
       this.indicatorCount = this.dashboard?.indicators.length;
       this.dataSourceCount = this.dashboard?.dataSources.length;
     },

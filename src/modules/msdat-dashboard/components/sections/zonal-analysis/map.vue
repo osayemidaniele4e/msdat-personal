@@ -25,7 +25,7 @@
             >
           </p>
         </template>
-        <div id="zonalMapComponent">
+        <div id="zonalMapComponent" class="col-12 position-relative">
           <button @click="returnToNational" v-show="level !== 1" class="bg-transparent font-weight-bold">
             <b-icon icon="chevron-left" />
             &nbsp;Back to National

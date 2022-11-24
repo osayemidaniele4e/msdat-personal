@@ -218,6 +218,12 @@ export default {
             datasource: value.datasource.id,
             location: value.location.id,
           });
+          // condition to check if data is available
+          if (data.length === 0) {
+            this.showNoAvailableData = true;
+          } else {
+            this.showNoAvailableData = false;
+          }
           this.chartObject = {};
           const formattedData = this.formatDataToSeriesLineFormat(data);
           this.chartObject = this.formatToHighChartOptionForLine(
