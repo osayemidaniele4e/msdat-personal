@@ -176,8 +176,8 @@ export default {
 
         this.selectDataSource = dataSourceSelected;
         // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
-        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+        // const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
