@@ -3,7 +3,7 @@
     <theHeader />
     <div class="d-flex flex-column align-items-center justify-content-center">
       <h3 class="mb-4">404 | Page not found</h3>
-      <a class="btn btn-primary px-2" href="/">&larr;&nbsp;Back to Home</a>
+      <button class="btn btn-primary px-2" @click="$router.go(-1)">&larr;&nbsp;Back to Home</button>
     </div>
     <theFooter class="footer" />
   </div>
@@ -18,12 +18,15 @@ export default {
   components: { theHeader, theFooter },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 div {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialised;
   -moz-osx-font-smoothing: greyscale;
   text-align: center;
   height: 90vh;
+  button.btn.btn-primary {
+    font-size: 1rem !important;
+  }
 }
 </style>
