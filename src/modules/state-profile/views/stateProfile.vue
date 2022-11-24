@@ -208,11 +208,13 @@ export default {
       // Dynamically populating the list
       // of states in the dropdown
       const states = [];
-      this.allLocations.forEach((el) => {
-        if (el.level === 3) {
-          states.push(el);
-        }
-      });
+      if (this.allLocations.results !== undefined) {
+        this.allLocations.results.forEach((el) => {
+          if (el.level === 3) {
+            states.push(el);
+          }
+        });
+      }
       return states;
     },
     lgaNames() {
