@@ -393,7 +393,7 @@ export default {
        * order AvailableSources according to the OrderSourceBy Array;
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b.datasource),
+        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
       );
       this.source = sortedSource;
       // console.log('this.source', this.source);
@@ -597,7 +597,7 @@ table.table {
         svg {
           font-size: 20px;
           // color: #2b5d5b;
-          color: $primary;
+          // color: $primary;
           cursor: pointer;
         }
       }

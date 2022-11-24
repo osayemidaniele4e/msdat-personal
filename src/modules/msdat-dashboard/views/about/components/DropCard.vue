@@ -46,7 +46,7 @@
             >
               <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
             >
-            <router-link to="/coming-soon/health_surveillance"
+            <router-link to="/dashboard/Disease_Surveillance"
               ><b-list-group-item
                 >Disease Surveillance</b-list-group-item
               ></router-link
