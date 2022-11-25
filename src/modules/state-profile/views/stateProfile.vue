@@ -1,12 +1,7 @@
 <template>
   <b-container>
-    <genericModal
-      v-if="overviewLoading"
-      :noBackdrop="false"
-      :showBackground="false"
-      class="over"
-    >
-     <div class="text-center">
+    <genericModal v-if="overviewLoading" :noBackdrop="false" :showBackground="false" class="over">
+      <div class="text-center">
         <img
           src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg"
           alt="first_img"
@@ -80,41 +75,35 @@
         </div>
       </div>
     </genericModal>
-  <div ref="printMe" id="printMe">
-    <b-row class="mt-4">
-      <b-col cols="auto">
-        <div>
-          <b-dropdown
-            variant="text"
-            dropright
-            toggle-class="text-decoration-none p-0 m-0 display-block state-select"
-            no-caret
-          >
-            <template #button-content>
-              <b-row align-v="center">
-                <b-col>
-                  <h1>
-                    {{ state }}
-                  </h1>
-                </b-col>
-                <b-col>
-                  <b-icon
-                    style="font-size: 10px; color: #232323"
-                    icon="chevron-down"
-                  ></b-icon>
-                </b-col>
-              </b-row>
-            </template>
-             <b-dropdown-item
-              @click="navigateToState('National')"
-              >National</b-dropdown-item
+    <div ref="printMe" id="printMe">
+      <b-row class="mt-4">
+        <b-col cols="auto">
+          <div>
+            <b-dropdown
+              variant="text"
+              dropright
+              toggle-class="text-decoration-none p-0 m-0 display-block state-select"
+              no-caret
             >
-            <b-dropdown-item
-              @click="navigateToState(s.name)"
-              v-for="(s, i) in this.states"
-              :key="i"
-              >{{ s.name }}</b-dropdown-item
-            >
+              <template #button-content>
+                <b-row align-v="center">
+                  <b-col>
+                    <h1>
+                      {{ state }}
+                    </h1>
+                  </b-col>
+                  <b-col>
+                    <b-icon style="font-size: 10px; color: #232323" icon="chevron-down"></b-icon>
+                  </b-col>
+                </b-row>
+              </template>
+              <b-dropdown-item @click="navigateToState('National')">National</b-dropdown-item>
+              <b-dropdown-item
+                @click="navigateToState(s.name)"
+                v-for="(s, i) in this.states"
+                :key="`${s}+${i}`"
+                >{{ s.name }}</b-dropdown-item
+              >
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
@@ -130,13 +119,14 @@
               <b-dropdown-item
                 @click="navigateToState(s.name)"
                 v-for="(s, j) in this.states"
-                :key="j"
+                :key="`$[s]+${j}`"
                 >{{ s.name }}</b-dropdown-item
               >
             </b-dropdown>
           </div>
           <h3 style="font-size: 15px">
-            {{ `${state === "National"? '' : 'State'}` }} Health Profile</h3>
+            {{ `${state === 'National' ? '' : 'State'}` }} Health Profile
+          </h3>
         </b-col>
         <b-col cols="12" class="my-auto">
           <b-row align-h="end" class="mx-auto">
@@ -201,92 +191,7 @@ export default {
     demographics,
     genericModal: modalComponent,
   },
-  created() {},
-  computed: {
-    ...mapState([]),
-    states() {
-      // Dynamically populating the list
-      // of states in the dropdown
-      const states = [];
-      if (this.allLocations.results !== undefined) {
-        this.allLocations.results.forEach((el) => {
-          if (el.level === 3) {
-            states.push(el);
-          }
-        });
-      }
-      return states;
-    },
-    lgaNames() {
-      const chosenState = this.allLocations.filter(
-        (el) => el.name.includes(this.state) && el.level === 3,
-      )[0];
-      const lgaObjects = this.allLocations.filter(
-        (val) => val.parent === chosenState?.id && val.level === 4,
-      );
-      return lgaObjects;
-    },
-  },
-  methods: {
-    async printing() {
-      const el = this.$refs.printMe;
-      const options = {
-        type: 'dataURL',
-      };
-      const output = await this.$html2canvas(el, options);
-      const temp = document.createElement('a');
-      temp.href = output;
-      temp.download = 'StateProfile.png';
-      temp.click();
-      // eslint-disable-next-line new-cap
-      // const pdf = new jsPDF();
-      // pdf.html(document.getElementById('printMe'), {
-      //   callback(pdf) {
-      //     pdf.save();
-      //   },
-      // });
-    },
-    copyTheLink() {
-      navigator.clipboard.writeText('http://208.87.128.190:7070/health-profiles/');
-      this.copyText = 'Link Copied!';
-    },
-    toggleShareModal() {
-      if (this.shareModalShowing) {
-        this.shareModalShowing = false;
-        this.copyText = 'Copy Link';
-      } else {
-        this.shareModalShowing = true;
-      }
-    },
-    navigateToState(state) {
-      // state.preventDefault()
-      this.$router.push({ name: 'health-profiles', params: { state } });
-      // this.$router.go();
-    },
-    stateClicked(state) {
-      this.navigateToState(state);
-    },
-    /**
-     * The reason we're checking if
-     * @param this.incomingData is 7 is because
-     * we have 7 program areas, so the loading
-     * is done when all seven send events to
-     * indicate that their done fetching
-     */
-    setLoadingState() {
-      // eslint-disable-next-line no-plusplus
-      this.incomingData++;
-      if (this.incomingData === 7) {
-        this.overviewLoading = false;
-      }
-    },
-  },
-  watch: {
-    state() {
-      this.incomingData = 0;
-      this.overviewLoading = true;
-    },
-  },
+
   data() {
     return {
       loading: true,
@@ -661,14 +566,104 @@ export default {
       ],
     };
   },
+  created() {},
+  computed: {
+    ...mapState([]),
+    states() {
+      // Dynamically populating the list
+      // of states in the dropdown
+      const states = [];
+      if (this.allLocations !== undefined) {
+        this.allLocations.forEach((el) => {
+          if (el.level === 3) {
+            states.push(el);
+          }
+        });
+      }
+      return states;
+    },
+    lgaNames() {
+      const chosenState = this.allLocations.filter(
+        (el) => el.name.includes(this.state) && el.level === 3,
+      )[0];
+      const lgaObjects = this.allLocations.filter(
+        (val) => val.parent === chosenState?.id && val.level === 4,
+      );
+      return lgaObjects;
+    },
+  },
+  methods: {
+    async printing() {
+      const el = this.$refs.printMe;
+      const options = {
+        type: 'dataURL',
+      };
+      const output = await this.$html2canvas(el, options);
+      const temp = document.createElement('a');
+      temp.href = output;
+      temp.download = 'StateProfile.png';
+      temp.click();
+      // eslint-disable-next-line new-cap
+      // const pdf = new jsPDF();
+      // pdf.html(document.getElementById('printMe'), {
+      //   callback(pdf) {
+      //     pdf.save();
+      //   },
+      // });
+    },
+    copyTheLink() {
+      navigator.clipboard.writeText('http://208.87.128.190:7070/health-profiles/');
+      this.copyText = 'Link Copied!';
+    },
+    toggleShareModal() {
+      if (this.shareModalShowing) {
+        this.shareModalShowing = false;
+        this.copyText = 'Copy Link';
+      } else {
+        this.shareModalShowing = true;
+      }
+    },
+    navigateToState(state) {
+      // state.preventDefault()
+      this.$router.push({ name: 'health-profiles', params: { state } });
+      // this.$router.go();
+    },
+    stateClicked(state) {
+      this.navigateToState(state);
+    },
+    /**
+     * The reason we're checking if
+     * @param this.incomingData is 7 is because
+     * we have 7 program areas, so the loading
+     * is done when all seven send events to
+     * indicate that their done fetching
+     */
+    setLoadingState() {
+      // eslint-disable-next-line no-plusplus
+      this.incomingData++;
+      if (this.incomingData === 7) {
+        this.overviewLoading = false;
+      }
+    },
+  },
+  watch: {
+    state() {
+      this.incomingData = 0;
+      this.overviewLoading = true;
+    },
+  },
   async mounted() {
     this.overviewLoading = true;
-    const locate = await requests.allLocations();
-    this.allLocations = locate.data;
+    // Get all locations
+    const locationData = await requests.allLocations();
+    const { results } = locationData.data;
+    this.allLocations = results;
+    // get the API date
     const theDate = await requests.latestData();
     this.regularDateFormat = new Date(theDate.data).toLocaleDateString().replaceAll('/', '.');
-    const dataSourceSpecifics = await requests.datasourceSpecific();
-    this.indicatorDefinitions = dataSourceSpecifics.data;
+    // Get specific datasource
+    const { data } = await requests.datasourceSpecific();
+    this.indicatorDefinitions = data.results;
   },
 };
 </script>
@@ -705,7 +700,7 @@ export default {
     }
   }
 }
-.state-select {
+.state-select, .state-select:hover {
   color: #3a3a3a;
 }
 .print-button {
@@ -752,9 +747,9 @@ h1 {
   border: none;
   height: 84px;
   width: 84px;
-};
+}
 
-ul.dropdown-menu.show{
+ul.dropdown-menu.show {
   min-height: 20rem;
   max-height: 20rem;
   overflow-y: auto;
