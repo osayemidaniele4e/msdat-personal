@@ -148,6 +148,8 @@ export default {
         initialLocation: 1,
         showTableRelatedIndicator: false,
       };
+      localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
+      localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
       return;
     }
     // =======================
@@ -172,40 +174,42 @@ export default {
      * @description get dashboard config based on route name from the msdat api
      * @author sami56
      */
-    try {
-      this.loading = true;
-      this.$store.dispatch('customDashboard', false);
-      this.$store.dispatch('resetState');
-      localStorage.removeItem('vuex');
-      // ============
-      const response = await apiServices.getDashboard();
-      const { results } = response.data;
-      const dashboard = results.find((item) => item.name === name);
-      if (dashboard === undefined) {
-        this.$router.push('/*');
-        return;
+    if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
+      try {
+        this.loading = true;
+        this.$store.dispatch('customDashboard', false);
+        this.$store.dispatch('resetState');
+        localStorage.removeItem('vuex');
+        // ============
+        const response = await apiServices.getDashboard();
+        const { results } = response.data;
+        const dashboard = results.find((item) => item?.name === name);
+        if (dashboard === undefined) {
+          this.$router.push('/*');
+          return;
+        }
+        this.configObject = '';
+        this.configObject = {
+          name: dashboard.name,
+          title: dashboard.title,
+          indicators: dashboard.indicators,
+          defaultIndicators: dashboard.defaultIndicators,
+          dataSources: dashboard.dataSources,
+          initialIndicator: dashboard.initialIndicator,
+          initialDataSource: dashboard.initialDataSource,
+          initialLocation: dashboard.initialLocation,
+          showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
+        };
+        this.isAdvanced = false;
+      } catch (err) {
+        console.log(
+          err,
+          '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
+          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
+        );
+      } finally {
+        this.loading = false;
       }
-      this.configObject = '';
-      this.configObject = {
-        name: dashboard.name,
-        title: dashboard.title,
-        indicators: dashboard.indicators,
-        defaultIndicators: dashboard.defaultIndicators,
-        dataSources: dashboard.dataSources,
-        initialIndicator: dashboard.initialIndicator,
-        initialDataSource: dashboard.initialDataSource,
-        initialLocation: dashboard.initialLocation,
-        showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
-      };
-      this.isAdvanced = false;
-    } catch (err) {
-      console.log(
-        err,
-        '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
-        'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
-      );
-    } finally {
-      this.loading = false;
     }
     // =======================
     // set the title from the config as the route title
