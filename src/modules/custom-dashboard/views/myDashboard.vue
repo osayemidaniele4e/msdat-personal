@@ -22,5 +22,10 @@ export default {
   components: {
     stepper,
   },
+  data() {
+    return {};
+  },
 };
 </script>
+
+<style></style>

@@ -149,8 +149,9 @@ export default {
 
   // Selecting All the Indicators
   AllselectionIndicator(state, payload) {
-    // console.log(payload);
+    console.log(payload);
     state.masterData = state.masterData.map((element) => {
+      console.log(element, 'element');
       element.children.map((child) => {
         if (element.parent.value === payload.name) {
           element.parent.selected = payload.checked;

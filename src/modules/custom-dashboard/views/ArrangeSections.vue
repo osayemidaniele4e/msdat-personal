@@ -117,8 +117,7 @@ export default {
         this.$swal('Dashboard name not provided');
         return;
       }
-      const cDashboard = true;
-      this.$store.dispatch('customDashboard', cDashboard);
+      this.$store.dispatch('customDashboard', true);
       const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
       this.$router.push({
         path: `/dashboard/${t}`,
