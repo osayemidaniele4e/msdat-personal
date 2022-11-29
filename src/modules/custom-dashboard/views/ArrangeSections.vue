@@ -122,9 +122,6 @@ export default {
       this.$router.push({
         path: `/dashboard/${t}`,
         component: () => import('../../dynamic_dashboard/index.vue'),
-        // params: {
-        //   name: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
-        // },
       });
     },
 
@@ -164,14 +161,11 @@ export default {
   .dragable-list {
     display: inline-block;
     position: fixed;
-    /* margin-top: -45px; */
   }
 }
 
 @media screen and (max-width: 520px) {
   .dragable-list {
-    /* display: block; */
-    /* margin-top: -45px;  */
     position: relative;
   }
   .fields {

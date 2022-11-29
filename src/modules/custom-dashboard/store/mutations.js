@@ -88,9 +88,6 @@ export default {
     state.masterData = payload;
     state.SurveyArray = payload;
   },
-  // loading(state,payload){
-  //   console.log('abc',payload);
-  // },
 
   // Dashboard Details
   dashboardDetails(state, payload) {
@@ -149,9 +146,7 @@ export default {
 
   // Selecting All the Indicators
   AllselectionIndicator(state, payload) {
-    console.log(payload);
     state.masterData = state.masterData.map((element) => {
-      console.log(element, 'element');
       element.children.map((child) => {
         if (element.parent.value === payload.name) {
           element.parent.selected = payload.checked;
@@ -172,7 +167,6 @@ export default {
   },
 
   selectionDataSource(state, payload) {
-    // console.log('In Mutations', payload);
     state.SurveyArray = state.SurveyArray.map((element) => {
       // eslint-disable-next-line no-unused-vars
       let counter = 0;
@@ -301,8 +295,6 @@ export default {
 
   // For Arranging the Sections
   arrangedSections(state, payload) {
-    // console.log('State O', state.ArrangedSections);
-    // console.log('State P', payload);
     state.ArrangedSections = payload;
   },
 
@@ -324,7 +316,6 @@ export default {
   // ******** Select All Data ********* //
 
   selectAll(state, payload) {
-    // console.log('asdw', payload);
     state.allSelected = payload;
   },
 
