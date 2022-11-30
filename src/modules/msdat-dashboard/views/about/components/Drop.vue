@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="d-flex py-2">
-        <a href="#" class="ml-2">View Account</a>
+        <router-link to="/userHistory"><a href="#" class="ml-2">View Account</a></router-link>
         <div class="logout">
         <a href="#" class="mr-2" @click.prevent="logout">Log Out</a>
         </div>
@@ -32,9 +32,8 @@ export default {
   },
   methods: {
     ...mapActions('AUTH_STORE', ['logout']),
-    logout() {
-      localStorage.removeItem('vuex');
-      window.location.reload();
+    async logout() {
+      await this.logout();
     },
   },
 };

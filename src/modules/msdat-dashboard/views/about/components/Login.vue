@@ -59,6 +59,7 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
+      // showSidebar: true,
       username: '',
       password: '',
     };
@@ -76,6 +77,7 @@ export default {
             // console.log(res);
             // eslint-disable-next-line eqeqeq
             if (res.status == 200) {
+              // this.$refs.mysidebar.hide();
               this.$swal('Welcome to your Dashboard');
               // this.$router.push({ path: '/my-dashboard/details' });
             } else {

@@ -502,6 +502,13 @@ export default {
         this.isMobile = false;
       }
     },
+    getConnectionStatus() {
+      if (navigator.onLine) {
+        console.log('Connected to internet.');
+      } else {
+        console.log('Unable to connect to internet.');
+      }
+    },
   },
 
   watch: {
@@ -520,6 +527,7 @@ export default {
 
   async mounted() {
     this.loading = false;
+    this.getConnectionStatus();
     // initializing data for dashboard
     // console.trace(this.$route.query);
     let urlRequestedIndicator = [];

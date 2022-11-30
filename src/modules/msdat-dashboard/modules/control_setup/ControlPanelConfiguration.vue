@@ -85,6 +85,7 @@ export default {
             key: 'datasource',
             values: availableDS,
           });
+          console.log('payload', this.payload.indicator.id, this.payload.datasource.id, this.payload.location.id, this.payload.year);
         }
       },
     },

@@ -8,7 +8,7 @@ export default [
     component: index,
   },
   {
-    path: '/dashboard',
+    path: '/userHistory',
     name: 'Dashboard',
     component: dashboard,
   },
