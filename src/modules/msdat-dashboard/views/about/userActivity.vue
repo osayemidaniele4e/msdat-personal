@@ -82,6 +82,7 @@ button {
   border: none;
   height: 50px;
   background: #fcfcfc;
+  color: #000;
 }
 h4 {
   color: #5e5e5e;

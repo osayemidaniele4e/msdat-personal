@@ -33,7 +33,13 @@ export default {
   methods: {
     ...mapActions('AUTH_STORE', ['logout']),
     async logout() {
-      await this.logout();
+      // await this.logout();
+      this.$store.AUTH_STORE.dispatch('logout');
+      // localStorage.removeItem('vuex', 'AUTH_STORE');
+      // if (this.$route.fullPath.includes('dashboard')) {
+      //   window.location.reload();
+      // }
+      // this.$router.push('/');
     },
   },
 };
