@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid  d-flex align-items-center justify-content-center">
-    <div class="container d-flex align-items-center justify-content-center flex-column">
-    <h4 class="mb-3"> MSDAT Intelligent Indicator Search</h4>
+  <div class="container-fluid">
+    <div class="container d-flex align-items-center justify-content-center flex-column p-5">
+      <h4 class="mb-3"> MSDAT Intelligent Indicator Search</h4>
       <form class="input-group w-75  shadow">
         <input
           type="text"
@@ -13,12 +13,20 @@
         </button>
       </form>
     </div>
+    <div class="container d-flex align-items-center justify-content-center">
+      <IndicatorTable/>
+    </div>
   </div>
 </template>
 
 <script>
+import IndicatorTable from './indicatorTable.vue';
+
 export default {
   name: 'IndicatorSearch',
+  components: {
+    IndicatorTable,
+  },
 };
 </script>
 
@@ -27,6 +35,7 @@ export default {
   height: 100vh;
   color: green;
   background-color: #cee4e9;
+  flex-direction: column;
 }
 .form-control {
     width: 93%;
