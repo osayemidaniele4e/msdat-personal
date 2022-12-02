@@ -1,7 +1,11 @@
 <template>
   <div>
     <MSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
+      v-if="
+        Object.entries(configObject).length > 0 &&
+        isAdvanced === false &&
+        loading === false
+      "
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -15,7 +19,11 @@
       "
     />
     <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
+      v-if="
+        Object.entries(configObject).length > 0 &&
+        isAdvanced === true &&
+        loading === false
+      "
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -33,6 +41,7 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
+import VueCookies from 'vue-cookies';
 import moment from 'moment';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
@@ -67,7 +76,10 @@ export default {
     };
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    ...mapMutations('MSDAT_STORE', [
+      'ADD_CONTROL_PANEL',
+      'CLEAR_CONTROL_PANEL',
+    ]),
     /**
      * @function clearData
      * @author davebenard
@@ -113,6 +125,7 @@ export default {
       this.$store.getters.getprogramArea.map((element) => {
         if (element.parent.isChildSelected === true) {
           element.children.map((child) => {
+            console.log(element, 'hello', child);
             if (child.selected === true) {
               ids.push(child.id);
             }
@@ -133,7 +146,7 @@ export default {
         return element;
       });
       // * create the config object
-      this.configObject = {
+      const formattedConfig = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
           .replace(/\s+/g, '_')
           .toLowerCase(),
@@ -141,17 +154,28 @@ export default {
           .replace(/\s+/g, '_')
           .toLowerCase(),
         indicators: ids,
-        defaultIndicators: [7, 6, 5],
+        defaultIndicators: ids.slice(0, 3),
         dataSources: sourcesID,
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
-        showTableRelatedIndicator: false,
       };
-      localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
-      localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
+      VueCookies.set('customDashboardConfig', formattedConfig);
+      const getFormattedConfig = VueCookies.get('customDashboardConfig');
+      // console.log('dynamicDashboard', getFormattedConfig, formattedConfig);
+      this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
+      localStorage.setItem(
+        'lsDataSourceCount',
+        this.configObject.dataSources.length,
+      );
+      localStorage.setItem(
+        'lsIndicatorCount',
+        this.configObject.indicators.length,
+      );
       return;
     }
+    // if it is not custom dashboard for safety reasons set it to false
+    localStorage.setItem('customDashboardStatus', JSON.stringify(false));
     // =======================
     /**
      * @author davebenard

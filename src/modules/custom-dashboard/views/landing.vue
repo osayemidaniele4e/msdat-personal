@@ -12,7 +12,7 @@
         <h2>Design your dashboard, customize your data</h2>
         <h3>No coding skills required!</h3>
       </div>
-      <b-row align="center" class='mt-5'>
+      <b-row align="center" class='mt-5 m-auto'>
         <b-col md="auto" sm="12" class="svg">
           <customDashboardSvg :name="61"></customDashboardSvg>
           <p style="font-size: 24px !important;">Select Data</p>

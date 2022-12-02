@@ -1,4 +1,10 @@
 /* eslint-disable no-param-reassign */
+
+const composedData = localStorage.getItem('composedData');
+const SurveyArray = localStorage.getItem('surveyArray');
+const dashboardDetails = localStorage.getItem('dashboardDetails');
+const customDashboard = localStorage.getItem('customDashboardStatus') || false;
+
 const forRefreshingAll = (fieldArray) => {
   fieldArray.years.map((year) => {
     if (year.selected === true) {
@@ -28,11 +34,11 @@ function getDefaultState() {
     allSelected: false,
     // loading: false,
     step: 0,
-    customDashboard: false,
-    dashboardDetails: {},
+    customDashboard: JSON.parse(customDashboard),
+    dashboardDetails: JSON.parse(dashboardDetails) || {},
     rmnchs: [],
-    masterData: [],
-    SurveyArray: [],
+    masterData: JSON.parse(composedData) || [],
+    SurveyArray: JSON.parse(SurveyArray) || [],
     notes: [],
     ArrangedSections: [
       {
@@ -91,10 +97,12 @@ export default {
 
   // Dashboard Details
   dashboardDetails(state, payload) {
+    localStorage.setItem('dashboardDetails', JSON.stringify(payload));
     state.dashboardDetails = payload;
   },
 
   setPArea(state, payload) {
+    localStorage.setItem('dashboardDetails', JSON.stringify(payload));
     state.masterData = payload;
   },
 
@@ -115,7 +123,7 @@ export default {
             found = true;
             child.selected = payload.checked;
             if (payload.checked) {
-              // element.parent.selected = true;
+              element.parent.selected = true;
             } else {
               element.parent.selected = false;
             }
@@ -139,7 +147,6 @@ export default {
       if (element.parent.isChildSelected === true) {
         element.showList = true;
       }
-
       return element;
     });
   },
@@ -181,6 +188,7 @@ export default {
         }
         return child;
       });
+      localStorage.setItem('surveyArray', JSON.stringify(element));
       return element;
     });
   },
@@ -310,6 +318,7 @@ export default {
   },
 
   customDashboard(state, payload) {
+    localStorage.setItem('customDashboardStatus', JSON.stringify(payload));
     state.customDashboard = payload;
   },
 
