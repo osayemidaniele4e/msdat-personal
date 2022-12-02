@@ -25,9 +25,9 @@
         </div>
         <div class="activity mt-3">
           <div class="mb-3">
-            <span class="month">August 2022</span>
+            <span class="month" style="font-size: 16px">August 2022</span>
           </div>
-          <div class="row">
+          <div class="row content">
             <div class="col-md-3">
               <input type="checkbox" class="mr-2" />&nbsp;August 13, 2022 at 2:34am
             </div>
@@ -94,5 +94,9 @@ h4 {
   /* display: flex; */
   /* justify-content: space-around; */
   list-style: none;
+  font-size: 20px;
+}
+.content{
+  font-size: 16px;
 }
 </style>

@@ -220,6 +220,7 @@ export default {
   },
   data() {
     return {
+      test: navigator.onLine,
       isAdvanced: false,
       showTroubleShootingModal: false,
       position: 3,
@@ -503,10 +504,10 @@ export default {
       }
     },
     getConnectionStatus() {
-      if (navigator.onLine) {
-        console.log('Connected to internet.');
+      if (this.test === true) {
+        alert('Connected to internet.');
       } else {
-        console.log('Unable to connect to internet.');
+        alert('Unable to connect to internet.');
       }
     },
   },
@@ -524,7 +525,6 @@ export default {
       // this.configObject = this.dashboardConfig.find((item) => item.name === newVal);
     },
   },
-
   async mounted() {
     this.loading = false;
     this.getConnectionStatus();

@@ -17,7 +17,7 @@ export default {
       state.authToken = payload;
     },
     logout(state) {
-      // state.user = {};
+      state.user = {};
       state.isAuthenticated = false;
     },
   },
@@ -54,12 +54,10 @@ export default {
       }
     },
     logout({ commit }) {
-      console.log('yiprrrrr');
+      VueCookies.remove('custom-access-token');
+      VueCookies.remove('custom-refresh-token');
+      VueCookies.remove('custom-user-details');
       commit('logout');
-      // VueCookies.remove('custom-access-token');
-      // VueCookies.remove('custom-refresh-token');
-      // VueCookies.remove('custom-user-details');
-      // VueCookies.remove('vuex');
     },
   },
   getters: {

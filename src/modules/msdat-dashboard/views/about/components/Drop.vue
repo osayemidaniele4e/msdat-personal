@@ -19,7 +19,7 @@
   </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 // import VueCookies from 'vue-cookies';
 
 export default {
@@ -31,15 +31,12 @@ export default {
     ...mapGetters('AUTH_STORE', ['getUser']),
   },
   methods: {
-    ...mapActions('AUTH_STORE', ['logout']),
+    // ...mapActions('AUTH_STORE', ['logout'])
     async logout() {
-      // await this.logout();
-      this.$store.AUTH_STORE.dispatch('logout');
-      // localStorage.removeItem('vuex', 'AUTH_STORE');
-      // if (this.$route.fullPath.includes('dashboard')) {
-      //   window.location.reload();
-      // }
-      // this.$router.push('/');
+      this.$store.dispatch('AUTH_STORE/logout');
+      if (!(this.$route.fullPath.includes('dashboard'))) {
+        this.$router.push('/');
+      }
     },
   },
 };

@@ -1,8 +1,13 @@
+import Middleware from '@/modules/auth/middleware/route-guard';
+
 export default [
   // make root route redirect to Health Outcomes Dashboard,
   {
     path: '/',
     redirect: '/dashboard/Health_Outcomes',
+    meta: {
+      middleware: Middleware,
+    },
   },
   {
     path: '/dashboard/:name',
