@@ -42,7 +42,7 @@
 
       <div v-else class="position-relative">
         <!-- <BaseUpdate :showPopUp="popUp" v-if="popUp" @closePopUp="handleClosePopUp" /> -->
-        <Header v-if="connected" v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
+        <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
         <section @click="$refs.theHeader.close()">
           <div
             :class="[
@@ -215,7 +215,6 @@ export default {
   },
   data() {
     return {
-      connected: navigator.onLine,
       isAdvanced: false,
       showTroubleShootingModal: false,
       position: 3,
@@ -357,8 +356,7 @@ export default {
   methods: {
     getConnectionStatus(e) {
       const { type } = e;
-      this.connected = type;
-      if (this.connected === 'online') {
+      if (type === 'online') {
         Vue.swal({
           toast: true,
           position: 'bottom',
