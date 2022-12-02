@@ -2,8 +2,8 @@ import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 
-const composedData = localStorage.getItem('composedData');
-const SurveyArray = localStorage.getItem('surveyArray');
+const composedData = sessionStorage.getItem('composedData');
+const SurveyArray = sessionStorage.getItem('surveyArray');
 const dashboardDetails = localStorage.getItem('dashboardDetails');
 const customDashboard = localStorage.getItem('customDashboardStatus') || false;
 
