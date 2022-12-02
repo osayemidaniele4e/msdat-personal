@@ -1,18 +1,18 @@
 <template>
   <b-container fluid>
-    <div>
+    <div class='mt-0'>
       <div>
-        <b-nav align="right">
+        <b-nav align="right" class='nav'>
           <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
           <b-nav-item @click="$router.push('/custom/login')">Login</b-nav-item>
         </b-nav>
       </div>
-      <div class="header-text text-center">
+      <div class="header-text text-center mb-5">
         <h1>The Custom Dashboard</h1>
         <h2>Design your dashboard, customize your data</h2>
         <h3>No coding skills required!</h3>
       </div>
-      <b-row align-h="center">
+      <b-row align="center" class='mt-5 mx-auto w-100 d-flex justify-content-center'>
         <b-col md="auto" sm="12" class="svg">
           <customDashboardSvg :name="61"></customDashboardSvg>
           <p style="font-size: 24px !important;">Select Data</p>
@@ -72,7 +72,7 @@
     </div>
 
     <b-row
-      style="padding-left: 105.000000026px; padding-right: 105.000000026px"
+      style="padding-left: 70.000000026px; padding-right: 70.000000026px"
     >
       <b-col md="7" sm="12" class="p-0 text-left">
         <b-row class="features">
@@ -233,5 +233,26 @@ a {
 }
 .list-group::-webkit-scrollbar {
   display: none;
+}
+
+@media(max-width: 680px) {
+.nav{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+  // background: #201f1f;
+ }
+ .header-text h1{
+  font-size: 30px;
+  margin-top:30px;
+ }
+  .header-text h2{
+  font-size: 20px;
+ }
+  .header-text h3{
+  font-size: 20px;
+   margin-top:20px;
+ }
 }
 </style>

@@ -112,11 +112,13 @@ export default {
               this.selected = newValue[0][this.multiSelectProps['group-values']][0];
               // this.selected = await newValue[0];
             } else if (newValue.length > 0) {
+              this.selected = '';
               this.selected = await this.options[0];
             } else {
               const date = new Date();
               const year = date.getFullYear() - 1;
-              this.selected = year.toString();
+              this.selected = {};
+              this.selected = newValue[0] || year.toString();
             }
           }
 
@@ -126,9 +128,9 @@ export default {
            * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
            * if its not an array, make the object the default selected
            */
-          if (this.multiSelectProps.label === 'datasource') {
+          if (this.multiSelectProps?.label === 'datasource') {
             if (Array.isArray(newValue) && newValue?.length > 0) {
-              const defaultSelected = newValue.find((item) => item.id === this.selected?.id);
+              const defaultSelected = newValue.find((item) => item?.id === this.selected?.id);
               if (defaultSelected?.id !== undefined) {
                 this.selected = {};
                 this.selected = defaultSelected;

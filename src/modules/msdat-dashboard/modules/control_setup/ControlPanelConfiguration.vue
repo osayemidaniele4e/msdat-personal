@@ -32,17 +32,9 @@ export default {
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
-  async mounted() {
+  mounted() {
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
-    });
-    const availableYears = await this.getAvailableYears();
-    // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-    this.SETUP_CONTROL_OPTIONS1({
-      groupIndex: this.groupIndex,
-      panelIndex: this.controlIndex,
-      key: 'year',
-      values: availableYears,
     });
   },
   methods: {
@@ -58,54 +50,58 @@ export default {
     async getAvailableDataSources() {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
-    // !!OUT OF COMMISSION
-    async getAvailableDataIndicators() {
-      return this.setIndicatorDropdown(this.payload?.datasource?.id);
-    },
   },
   watch: {
     // get latest available years when indicator , datasource or location are changed
-    /**
-     * TODO: update the indicator list and year by datasource on CONTROLINDEX 2
-     */
     'payload.indicator': {
       async handler() {
-        const availableYears = await this.getAvailableYears();
-        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-        const availableDS = await this.getAvailableDataSources();
-        // const availableDS = await this.setDataSourcesDropdown(this.payload?.indicator?.id);
-        this.SETUP_CONTROL_OPTIONS1({
-          groupIndex: this.groupIndex,
-          panelIndex: this.controlIndex,
-          key: 'year',
-          values: availableYears,
-        });
-        // Funny how this doesn't update
-        await this.SETUP_CONTROL_OPTIONS1({
-          groupIndex: this.groupIndex,
-          panelIndex: this.controlIndex,
-          key: 'datasource',
-          values: availableDS,
-        });
+        if (this.controlIndex !== 2) {
+          const availableYears = await this.getAvailableYears();
+          this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'year',
+            values: availableYears,
+          });
+          const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
+          await this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'datasource',
+            values: availableDS,
+          });
+        }
       },
     },
     'payload.datasource': {
       async handler() {
-        // this.getAvailableDataIndicators();
-        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-        const availableYears = await this.getAvailableYears();
-        this.SETUP_CONTROL_OPTIONS1({
+        let availableYears;
+        if (this.controlIndex === 2) {
+          availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+        } else {
+          availableYears = await this.getAvailableYears();
+        }
+        await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,
           key: 'year',
           values: availableYears,
         });
+        // ============
+        if (this.controlIndex === 2) {
+          const availableIndicator = await this.getAvailableDataIndicators();
+          await this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'indicator',
+            values: availableIndicator,
+          });
+        }
       },
     },
     'payload.location': {
       async handler() {
         const availableYears = await this.getAvailableYears();
-        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
         await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,

@@ -47,7 +47,7 @@ export default {
     tickWidth: 1,
   },
   yAxis: {
-    // min: 0,
+    min: 0,
     title: {
       text: 'Values',
       style: {

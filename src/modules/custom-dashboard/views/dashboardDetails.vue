@@ -1,4 +1,3 @@
-<!-- Auther: Ghufran Ahmed -->
 <template>
   <b-container class="text-justify px-5 pb-5">
     <h4 class="welcome">Welcome {{username}},</h4>
@@ -71,41 +70,9 @@
         Select your indicators, your preferred data source, the years and the
         coverage area (National or subnational).
       </p>
-      <!-- <b-row id="bottom-row" class="w-100"> -->
-        <!-- <b-col cols="auto mb-5"> -->
           <b-button id="individual" type="submit" class="w-100 button"
-            >SELECT INDIVIDUAL DATA</b-button
+            >PROCEED TO SELECT DATA</b-button
           >
-        <!-- </b-col> -->
-        <!-- <b-col cols="auto" xl="6" md="4" sm="12">
-          <p class="help-text">
-            I know the exact data I want,<br />
-            I will choose just the ones I need
-          </p>
-        </b-col> -->
-        <!-- <b-col cols="auto" class="mt-5 mt-lg-5 mt-xl-0">
-          <b-button id="available" disabled>SELECT all available DATA</b-button>
-          <p class="help-text">
-            Skip the data table, I want all the available data
-          </p>
-        </b-col> -->
-        <!-- <b-col cols="auto mb-5" style="margin-left: -93px !important">
-          <b-button id="available" @click="selectAllData($event)"
-            >SELECT all available DATA</b-button
-          >
-        </b-col>
-        <b-col>
-          <p class="help-text">
-            Skip the data table,<br />
-            I want all the available data
-          </p>
-        </b-col> -->
-        <!-- <p class="help-text">
-            Skip the data table,<br />
-            I want all the available data
-          </p>
-        </b-col> -->
-      <!-- </b-row> -->
     </form>
   </b-container>
 </template>
@@ -188,12 +155,6 @@ export default {
         this.description.isValid = false;
         this.formIsValid = false;
       }
-      // if (this.selectedImage.val === '') {
-      //   // this.selectedImage.isValid = false;
-      //   // this.formIsValid = false;
-      //   // this.selectedImage.isValid = false;
-      //   // this.formIsValid = true;
-      // }
     },
 
     // Below function will be excuted when Select indivisual Button is clickekd
