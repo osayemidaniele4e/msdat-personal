@@ -311,27 +311,29 @@ export default {
     if (name === 'Advanced_Analytics') {
       this.isAdvanced = true;
     }
-    try {
-      const response = await apiServices.getDashboard();
-      const { results } = response.data;
-      const dashboard = results.find((item) => item.name === name);
-      if (dashboard === undefined) {
-        this.$router.push('/*');
-        return;
+    if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
+      try {
+        const response = await apiServices.getDashboard();
+        const { results } = response.data;
+        const dashboard = results.find((item) => item.name === name);
+        if (dashboard === undefined) {
+          this.$router.push('/*');
+          return;
+        }
+        this.configObject = '';
+        this.configObject = {
+          name: dashboard.name,
+          title: dashboard.title,
+          indicators: dashboard.indicators,
+          defaultIndicators: dashboard.defaultIndicators,
+          dataSources: dashboard.dataSources,
+          initialIndicator: dashboard.initialIndicator,
+          initialDataSource: dashboard.initialDataSource,
+          initialLocation: dashboard.initialLocation,
+        };
+      } catch (err) {
+        console.log(err);
       }
-      this.configObject = '';
-      this.configObject = {
-        name: dashboard.name,
-        title: dashboard.title,
-        indicators: dashboard.indicators,
-        defaultIndicators: dashboard.defaultIndicators,
-        dataSources: dashboard.dataSources,
-        initialIndicator: dashboard.initialIndicator,
-        initialDataSource: dashboard.initialDataSource,
-        initialLocation: dashboard.initialLocation,
-      };
-    } catch (err) {
-      console.log(err);
     }
     window.addEventListener('resize', this.onResize);
 
@@ -504,19 +506,21 @@ export default {
   },
   watch: {
     async program_option(newVal) {
-      try {
-        const response = await apiServices.getDashboard();
-        const { results } = response.data;
-        const dashboard = results.find((item) => item.name === newVal);
-        if (dashboard === undefined) {
-          this.$router.push('/*');
-          return;
+      if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
+        try {
+          const response = await apiServices.getDashboard();
+          const { results } = response.data;
+          const dashboard = results.find((item) => item.name === newVal);
+          if (dashboard === undefined) {
+            this.$router.push('/*');
+            return;
+          }
+          this.configObject = dashboard;
+        } catch (err) {
+          console.log(err,
+            '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Base Dashboard Component, \n\n \r\r',
+            'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
         }
-        this.configObject = dashboard;
-      } catch (err) {
-        console.log(err,
-          '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Base Dashboard Component, \n\n \r\r',
-          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
       }
     },
   },
@@ -537,7 +541,6 @@ export default {
         this.closeAlert();
       }
     }, 60000);
-    console.log('checks baseDashboard', this.indicator);
     try {
       await this.$DL.init({
         dashboardIndicators: this.indicators,

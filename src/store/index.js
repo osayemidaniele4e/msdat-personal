@@ -18,5 +18,4 @@ export default new Vuex.Store({
     AUTH_STORE,
   },
   strict: process.env.NODE_ENV !== 'production',
-  // plugins: [createPersistedState()],
 });

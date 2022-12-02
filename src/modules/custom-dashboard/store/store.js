@@ -2,6 +2,11 @@ import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 
+const composedData = localStorage.getItem('composedData');
+const SurveyArray = localStorage.getItem('surveyArray');
+const dashboardDetails = localStorage.getItem('dashboardDetails');
+const customDashboard = localStorage.getItem('customDashboardStatus') || false;
+
 const store = {
   state: {
     loader: {
@@ -13,11 +18,11 @@ const store = {
     },
     allSelected: false,
     step: 0,
-    customDashboard: false,
-    dashboardDetails: {},
+    customDashboard: JSON.parse(customDashboard),
+    dashboardDetails: JSON.parse(dashboardDetails),
     rmnchs: [],
-    masterData: [],
-    SurveyArray: [],
+    masterData: JSON.parse(composedData),
+    SurveyArray: JSON.parse(SurveyArray),
     notes: [],
     ArrangedSections: [
       {

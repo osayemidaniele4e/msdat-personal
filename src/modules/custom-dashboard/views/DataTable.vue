@@ -30,6 +30,9 @@
     </template>
     <data-table />
     <b-row align-h="end" class="mt-5 mb-5 mr-2 text-right">
+      <!-- <b-col class="align-baseline" cols="auto"
+              ><p class="baseline">Save for Later</p>
+            </b-col> -->
       <b-col cols="auto"
         ><b-button
           style="font-family: Work Sans"
