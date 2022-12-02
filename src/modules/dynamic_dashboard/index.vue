@@ -156,6 +156,9 @@ export default {
      * @description check the route params if it is advanced analytics then fetch from the config file
      */
     if (name === 'Advanced_Analytics') {
+      this.$store.dispatch('customDashboard', false);
+      this.$store.dispatch('resetState');
+      localStorage.removeItem('vuex');
       const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
       if (dashboard === undefined) {
         this.$router.push('/*');
