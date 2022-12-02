@@ -42,7 +42,7 @@
 
       <div v-else class="position-relative">
         <!-- <BaseUpdate :showPopUp="popUp" v-if="popUp" @closePopUp="handleClosePopUp" /> -->
-        <Header v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
+        <Header v-if="connected" v-on:tour="runIntro" ref="theHeader" @index="getIndex"></Header>
         <section @click="$refs.theHeader.close()">
           <div
             :class="[
@@ -181,6 +181,7 @@ import {
 } from '@/components/ControlPanel';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
+import Vue from 'vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -214,6 +215,7 @@ export default {
   },
   data() {
     return {
+      connected: navigator.onLine,
       isAdvanced: false,
       showTroubleShootingModal: false,
       position: 3,
@@ -341,16 +343,42 @@ export default {
     } else {
       this.isMobile = false;
     }
-
+    // this.getConnectionStatus();
     window.addEventListener('wheel', this.handleScroll);
   },
 
   destroyed() {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('wheel', this.handleScroll);
+    window.removeEventListener('online', this.getConnectionStatus);
+    window.removeEventListener('offline', this.getConnectionStatus);
   },
 
   methods: {
+    getConnectionStatus(e) {
+      const { type } = e;
+      this.connected = type;
+      if (this.connected === 'online') {
+        Vue.swal({
+          toast: true,
+          position: 'bottom',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'success',
+          title: 'Connection Restored',
+        });
+      } else {
+        Vue.swal({
+          toast: true,
+          position: 'bottom',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'error',
+          title: ' Offline',
+          text: 'Check Your Internet Connection',
+        });
+      }
+    },
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
@@ -521,6 +549,8 @@ export default {
     },
   },
   async mounted() {
+    window.addEventListener('online', this.getConnectionStatus);
+    window.addEventListener('offline', this.getConnectionStatus);
     this.loading = false;
     let urlRequestedIndicator = [];
     if (this.$route.query.indicator) {
@@ -576,6 +606,7 @@ export default {
       }
     }
   },
+
 };
 </script>
 
