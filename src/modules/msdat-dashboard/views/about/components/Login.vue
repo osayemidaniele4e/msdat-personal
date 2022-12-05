@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="" >
     <section class="container-fluid">
       <div class="container">
         <h2 class="w-100 text-center mx-auto">Log in to your account</h2>
@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       // showSidebar: true,
+      logged: false,
       username: '',
       password: '',
     };
@@ -79,6 +80,7 @@ export default {
             if (res.status == 200) {
               // this.$refs.mysidebar.hide();
               this.$swal('Welcome to your Dashboard');
+              this.logged = true;
               // this.$router.push({ path: '/my-dashboard/details' });
             } else {
               this.$swal('something went wrong, confirm username and password');

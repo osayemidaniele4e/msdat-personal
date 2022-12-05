@@ -220,7 +220,6 @@ export default {
   },
   data() {
     return {
-      test: navigator.onLine,
       isAdvanced: false,
       showTroubleShootingModal: false,
       position: 3,
@@ -503,13 +502,6 @@ export default {
         this.isMobile = false;
       }
     },
-    getConnectionStatus() {
-      if (this.test === true) {
-        alert('Connected to internet.');
-      } else {
-        alert('Unable to connect to internet.');
-      }
-    },
   },
 
   watch: {
@@ -527,7 +519,6 @@ export default {
   },
   async mounted() {
     this.loading = false;
-    this.getConnectionStatus();
     // initializing data for dashboard
     // console.trace(this.$route.query);
     let urlRequestedIndicator = [];

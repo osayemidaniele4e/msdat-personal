@@ -126,7 +126,7 @@
                   {{ getUser.username }}
                   </div>
                 </div> -->
-              <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff">
+              <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff" v-if="isAuthenticated === false">
                 <LoginSidebar v-if="show" />
                 <SignUp v-else />
                 <div class="row" v-if="show">

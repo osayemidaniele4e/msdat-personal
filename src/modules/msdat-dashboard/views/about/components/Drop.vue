@@ -1,12 +1,15 @@
 <template>
-    <div class="container-fluid card shadow dropdown work-sans">
+    <div class="container-fluid card shadow dropdown work-sans" v-if="show">
       <div class="row p-3 d-flex user-details">
         <div class="col-3">
         <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
         </div>
-        <div class="col-9">
+        <div class="col-8">
         <div>{{ getUser.username }}</div>
         <div>{{ getUser.email }}</div>
+        </div>
+        <div class="col-1">
+          <b-icon-x-circle @click="close"></b-icon-x-circle>
         </div>
       </div>
       <div class="d-flex py-2">
@@ -25,7 +28,9 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'drop',
   data() {
-    return {};
+    return {
+      show: true,
+    };
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
@@ -37,6 +42,9 @@ export default {
       if (!(this.$route.fullPath.includes('dashboard'))) {
         this.$router.push('/');
       }
+    },
+    close() {
+      this.show = false;
     },
   },
 };
