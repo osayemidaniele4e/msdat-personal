@@ -1,6 +1,6 @@
 <!-- Auther: Ghufran Ahmed -->
 <template>
-  <b-container class="text-justify px-3" fluid>
+  <b-container style="width: 85%;  " fluid>
     <template>
       <h2
         style="
@@ -9,6 +9,7 @@
           font-family: Work Sans;
           font-size: 23px;
           font-weight: bold;
+          margin-left: 30px;
         "
       >
         <span class="col-6">
@@ -21,6 +22,8 @@
           width: 70%;
           font-family: Work Sans;
           font-size: 14px;
+          margin-left: 30px;
+          margin-bottom: 10px;
         "
       >
         <p class="col-12">

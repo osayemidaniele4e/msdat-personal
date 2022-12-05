@@ -11,7 +11,7 @@
     <p id="link-to-about" style="font-size: 13px; font-family: Work Sans">
       <b>View datasheet</b>- see all available data in database
     </p>
-    <b-col
+    <!-- <b-col
       cols="auto"
       style="position: fixed; top: 35%; right: 0; z-index: 9999"
       ><b-button
@@ -19,7 +19,7 @@
         style="font-size: 12.000004px; font-family: Work Sans"
         >approve Data</b-button
       ></b-col
-    >
+    > -->
     <b-card>
       <b-row>
         <!-- **** Preferences Selection *****  -->
@@ -43,7 +43,7 @@
         <!-- ****** Selected Items Table ****** -->
 
         <b-col sm="12" lg="9">
-          <data-table class='data-table'/>
+          <data-table class="data-table" />
           <b-row align-h="end" class="text-right">
             <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
               >Indicators: <b>{{ indicatorsCount }} Selected</b></b-col
@@ -61,22 +61,38 @@
               ></b-col
             >
           </b-row>
+          <div class="d-flex align-self-end justify-content-end w-100">
           <b-row
             align-h="end"
-            class="mt-5 text-right"
+            class="mt-5 mr-5 text-right"
             v-if="
-              indicatorsCount && dataSourceCount && yearsCount && selectedLevel.length > 0
+              indicatorsCount &&
+              dataSourceCount &&
+              yearsCount &&
+              selectedLevel.length > 0
             "
           >
             <b-col class="align-baseline" cols="auto" style=""
               ><p
-                class="baseline"
+                class="baseline mt-5"
                 style="font-size: 12.000004px; font-family: Work Sans"
               >
                 Save for Later
               </p>
             </b-col>
           </b-row>
+          <b-row  align-h="end" class=" mt-5 text-right">
+            <b-col
+              cols="auto"
+              class='approve'
+              ><b-button
+                @click="approveData"
+                style="font-size: 12.000004px; font-family: Work Sans"
+                >approve Data</b-button
+              ></b-col
+            >
+          </b-row>
+          </div>
         </b-col>
       </b-row>
     </b-card>
@@ -219,7 +235,6 @@ export default {
     },
   },
   methods: {
-
     // The below function is called when approve button is clicked at Table maker page.
     approveData() {
       if (
@@ -314,8 +329,8 @@ thead {
 #link-to-about {
   color: #1496b1;
 }
-@media(max-width: 680px) {
-  .data-table{
+@media (max-width: 680px) {
+  .data-table {
     display: none;
   }
 }
