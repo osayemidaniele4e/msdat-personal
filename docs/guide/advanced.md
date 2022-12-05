@@ -111,21 +111,30 @@ export default {
 This guide lays down the description of the Governors Dashboard project from a developers standpoint. The Governors Dashboard  built with VueJs as the frontend framework. During the development process, a modular approach was adopted following the 'folder-by-feature' file structure.
 
  ```js
-// registration process
-    <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
-      :indicators="configObject.indicators"
-      :dataSources="configObject.dataSources"
-      :defaultIndicators="configObject.defaultIndicators"
-      :initialIndicator="configObject.initialIndicator"
-      :initialDataSource="configObject.initialDataSource"
-      :initialLocation="configObject.initialLocation"
-      :showTableRelatedIndicator="
-        configObject.showTableRelatedIndicator != undefined
-          ? configObject.showTableRelatedIndicator
-          : true
-      "
-    />
+
+      const { name } = this.$route.params;
+      if (name === 'Advanced_Analytics') {
+        if (newValue === 0) {
+          this.title = 'Correlation Analysis';
+          this.$store.dispatch('setSectionTitle', 'Correlation Analysis');
+        }
+        if (newValue === 1) {
+          this.title = 'Descriptive Analysis';
+          this.$store.dispatch('setSectionTitle', 'Descriptive Analysis');
+        }
+        if (newValue === 2) {
+          this.title = 'Indicator Comparison';
+          this.$store.dispatch('setSectionTitle', 'Indicator Comparison');
+        }
+        if (newValue === 3) {
+          this.title = 'Predictive Analysis';
+          this.$store.dispatch('setSectionTitle', 'Predictive Analysis');
+        }
+        if (newValue === 4) {
+          this.title = 'Multisource Inidcator Comparison';
+          this.$store.dispatch('setSectionTitle', 'Multisource Inidcator Comparison');
+        }
+      }
  ```
 
   ```js
@@ -160,6 +169,8 @@ export default {
 
 
 # Modular Structure
+
+![Folder structure](./assets/advanced/folder.png)
 
 ## Overview
 
