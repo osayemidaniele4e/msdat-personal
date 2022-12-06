@@ -64,6 +64,7 @@ export default {
     async clearDBandReloadPage() {
       await this.$store.dispatch('DL/DELETE_DB');
       window.location.reload();
+      this.$store.dispatch('resetState');
       this.showModal = false;
     },
   },

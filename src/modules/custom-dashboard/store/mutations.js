@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
-const composedData = localStorage.getItem('composedData');
-const SurveyArray = localStorage.getItem('surveyArray');
+const composedData = sessionStorage.getItem('composedData');
+const SurveyArray = sessionStorage.getItem('surveyArray');
 const dashboardDetails = localStorage.getItem('dashboardDetails');
 const customDashboard = localStorage.getItem('customDashboardStatus') || false;
 
@@ -102,7 +102,6 @@ export default {
   },
 
   setPArea(state, payload) {
-    localStorage.setItem('dashboardDetails', JSON.stringify(payload));
     state.masterData = payload;
   },
 
@@ -188,7 +187,6 @@ export default {
         }
         return child;
       });
-      localStorage.setItem('surveyArray', JSON.stringify(element));
       return element;
     });
   },

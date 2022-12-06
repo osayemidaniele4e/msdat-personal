@@ -1,11 +1,7 @@
 <template>
   <div>
     <MSDAT
-      v-if="
-        Object.entries(configObject).length > 0 &&
-        isAdvanced === false &&
-        loading === false
-      "
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -19,11 +15,7 @@
       "
     />
     <AdvanceMSDAT
-      v-if="
-        Object.entries(configObject).length > 0 &&
-        isAdvanced === true &&
-        loading === false
-      "
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -76,10 +68,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', [
-      'ADD_CONTROL_PANEL',
-      'CLEAR_CONTROL_PANEL',
-    ]),
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
     /**
      * @function clearData
      * @author davebenard
@@ -119,13 +108,14 @@ export default {
      */
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
       this.isCustom = true;
+      sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
+      sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
       this.$store.getters.getprogramArea.map((element) => {
         if (element.parent.isChildSelected === true) {
           element.children.map((child) => {
-            console.log(element, 'hello', child);
             if (child.selected === true) {
               ids.push(child.id);
             }
@@ -162,16 +152,9 @@ export default {
       };
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
-      // console.log('dynamicDashboard', getFormattedConfig, formattedConfig);
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
-      localStorage.setItem(
-        'lsDataSourceCount',
-        this.configObject.dataSources.length,
-      );
-      localStorage.setItem(
-        'lsIndicatorCount',
-        this.configObject.indicators.length,
-      );
+      localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
+      localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
       return;
     }
     // if it is not custom dashboard for safety reasons set it to false
@@ -182,6 +165,9 @@ export default {
      * @description check the route params if it is advanced analytics then fetch from the config file
      */
     if (name === 'Advanced_Analytics') {
+      this.$store.dispatch('customDashboard', false);
+      this.$store.dispatch('resetState');
+      localStorage.removeItem('vuex');
       const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
       if (dashboard === undefined) {
         this.$router.push('/*');
