@@ -47,9 +47,9 @@ deploy_develop:
       - chmod 600 ~/.ssh/id_rsa
       - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh -p3322 e4esysadmin@208.87.128.190 "cd ~/msdat/ && sudo chown e4esysadmin:e4esysadmin -R docs/ && git checkout . && git checkout develop && git pull && sudo yarn install  && sudo yarn build  && sudo yarn docs:build && sudo systemctl reload nginx "
+    - ssh -p3322 e4esysadmin@208.87.128.190 "cd ~/msdat/ && sudo chown e4esysadmin:e4esysadmin -R docs/ && git checkout . && git checkout staging && git pull && sudo yarn install  && sudo yarn build  && sudo yarn docs:build && sudo systemctl reload nginx "
   only:
-    - develop
+    - staging
   # when: manual
 
 deploy_master:
