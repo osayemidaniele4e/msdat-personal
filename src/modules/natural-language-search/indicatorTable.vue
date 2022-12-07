@@ -9,22 +9,17 @@
           <th scope="col">VALUE</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-for='(el, i) in dataArray' :key="i">
+        <pre>{{el.dataSources}}</pre>
         <tr>
-          <th scope="row" rowspan="5">1</th>
-          <td rowspan="5">under 5 mortality rate</td>
+          <th scope="row">{{i + 1}}</th>
+          <!-- :rowspan="el.dataSources?.length + 1" -->
+          <td >{{el.indicator}}</td>
         </tr>
-        <tr>
-          <td>MICS 2010</td>
-          <td>50%</td>
-        </tr>
-         <tr>
-          <td>MICS 2010</td>
-          <td>50%</td>
-        </tr>
-        <tr>
-          <td>MICS 2010</td>
-          <td>50%</td>
+        <tr v-for="et in loop(el.dataSources)" :key='et'>
+          <pre>{{et}}</pre>
+          <td>{{et.datasource}}</td>
+          <td>{{et.value}} %</td>
         </tr>
       </tbody>
 
@@ -36,5 +31,14 @@
 <script>
 export default {
   name: 'IndicatorTable',
+  props: {
+    dataArray: Array,
+  },
+  methods: {
+    loop(datasource) {
+      return datasource;
+    },
+  },
 };
+
 </script>
