@@ -62,9 +62,13 @@ export default {
   },
   methods: {
     async clearDBandReloadPage() {
+      if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
+        this.showModal = false;
+      }
       await this.$store.dispatch('DL/DELETE_DB');
       window.location.reload();
       this.$store.dispatch('resetState');
+      this.$store.dispatch('customDashboard', false);
       this.showModal = false;
     },
   },

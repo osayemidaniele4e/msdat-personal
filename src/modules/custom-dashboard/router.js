@@ -60,6 +60,21 @@ export default [
     ],
   },
   {
+    path: '/account-settings',
+    name: 'account-settings',
+    beforeEnter: (to, from, next) => {
+      const token = VueCookies.get('custom-access-token');
+      if (!token) {
+        next('/custom/login');
+      } else {
+        next();
+      }
+      return null;
+    },
+    props: true,
+    component: () => import('./views/AccountSettings.vue'),
+  },
+  {
     path: '/my-custom-dashboard/:title',
     name: 'my-custom-dashboard',
     beforeEnter: (to, from, next) => {

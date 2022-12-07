@@ -1,8 +1,90 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
-    <header id="the-header" class="position-relative">
-
-    <b-container fluid>
+  <header id="the-header" class="position-relative">
+    <div
+      class="container-fluid"
+      style="background-color: #348481"
+      v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
+    >
+      <div class="w-100 custom-header">
+        {{
+          this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.description
+        }}
+      </div>
+    </div>
+    <div
+      class="container-fluid bg-light"
+      v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
+    >
+      <div class="w-100 d-flex align-items-center justify-content-between">
+        <div class="d-flex">
+          <h2 class="me-5">Share your dashboard</h2>
+          <div class="img ms-5 d-flex">
+            <img
+              src="https://www.pngitem.com/pimgs/m/299-2994644_svg-link-jpg-library-stock-link-icon-png.png"
+              style="
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+                object-fit: contain;
+              "
+            />
+            <img
+              src="https://e7.pngegg.com/pngimages/184/147/png-clipart-facebook-computer-icons-social-media-social-networking-service-scalable-graphics-facebook-f-logo-white-background-facebook-lite-logo-angle-text.png"
+              style="
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+                object-fit: contain;
+              "
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/2491px-Twitter-logo.svg.png"
+              alt=""
+              style="
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+                object-fit: contain;
+              "
+            />
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJYxFSn8Siueit7bVNmPDwVpA0Cq3_4rOxDA&usqp=CAU"
+              alt=""
+              style="
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+                object-fit: contain;
+              "
+            />
+          </div>
+        </div>
+        <router-link to="/account-settings" class="d-flex">
+          <img
+            v-if="!customImg"
+            src="https://w7.pngwing.com/pngs/340/956/png-transparent-profile-user-icon-computer-icons-user-profile-head-ico-miscellaneous-black-desktop-wallpaper.png"
+            style="
+              width: 35px;
+              height: 35px;
+              border-radius: 50px;
+              object-fit: contain;
+            "
+          />
+          <img
+            v-else
+            :src="customImg"
+            style="
+              width: 40px;
+              height: 40px;
+              border-radius: 50px;
+              object-fit: contain;
+            "
+          />
+        </router-link>
+      </div>
+    </div>
+    <b-container fluid v-else>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
@@ -67,7 +149,6 @@
             <b-sidebar id="sidebar-1" title="" right shadow>
               <SideBar />
             </b-sidebar>
-
           </div>
           <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
@@ -98,18 +179,28 @@
           >
             <b-nav class="h-100 align-items-center main d-flex">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
-                 <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link">Home</a>
+              <a
+                href="https://fmohconnect.gov.ng/landing.html"
+                target="_blank"
+                class="nav-link"
+                >Home</a
+              >
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
               <router-link to="/custom" class="nav-link"
                 >Create New Dashboard</router-link
               >
-          <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link">Go back to MSDAT 1.5</a>
+              <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link"
+                >Go back to MSDAT 1.5</a
+              >
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button class="btn btn-outline-primary border-light rounded-0" style="font-size: 13px !important">
+                <button
+                  class="btn btn-outline-primary border-light rounded-0"
+                  style="font-size: 13px !important"
+                >
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
@@ -134,29 +225,49 @@
               <b-icon-person-fill></b-icon-person-fill
                 >&nbsp;Login/Register
               </div> -->
-              <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff">
-              <LoginSidebar v-if="show" />
-              <SignUp v-else />
-              <div class="row" v-if="show">
-              <div class="col-12 text-center">
-                <h4 class="py-3" style="font-size: 15px">
-                  Don't have an account?
-                </h4>
-                <button
-                  class="btn btn-lg btn-light btn-outline-dark text-dark"
-                  style="font-size: 15px; background:#F7F7F7; border:1px solid #707070"
-                  @click.prevent="showLoginForm"
-                >
-                  CREATE AN ACCOUNT
-                </button>
-              </div>
-              </div>
-              <div v-else>
-              <div class="justify-content-center text-center">
-          <button class="btn btn-lg btn-light btn-outline-dark text-dark mb-3" style="background:#F7F7F7; border:1px solid #707070" @click="showRegForm">LOGIN</button>
-        </div>
-              </div>
-            </b-sidebar>
+              <b-sidebar
+                id="sidebar-2"
+                title=""
+                right
+                shadow
+                style="background: #fff"
+              >
+                <LoginSidebar v-if="show" />
+                <SignUp v-else />
+                <div class="row" v-if="show">
+                  <div class="col-12 text-center">
+                    <h4 class="py-3" style="font-size: 15px">
+                      Don't have an account?
+                    </h4>
+                    <button
+                      class="btn btn-lg btn-light btn-outline-dark text-dark"
+                      style="
+                        font-size: 15px;
+                        background: #f7f7f7;
+                        border: 1px solid #707070;
+                      "
+                      @click.prevent="showLoginForm"
+                    >
+                      CREATE AN ACCOUNT
+                    </button>
+                  </div>
+                </div>
+                <div v-else>
+                  <div class="justify-content-center text-center">
+                    <button
+                      class="
+                        btn btn-lg btn-light btn-outline-dark
+                        text-dark
+                        mb-3
+                      "
+                      style="background: #f7f7f7; border: 1px solid #707070"
+                      @click="showRegForm"
+                    >
+                      LOGIN
+                    </button>
+                  </div>
+                </div>
+              </b-sidebar>
               <!-- <router-link to="/login" v-else class="nav-link"
                 ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
                 out</router-link
@@ -173,7 +284,7 @@
               class="mob-grid-icon"
               v-b-toggle.sidebar-1
             ></b-icon>
-                  <b-icon
+            <b-icon
               @click="toggleOption = !toggleOption"
               icon="three-dots-vertical"
               font-scale="1.5"
@@ -186,7 +297,6 @@
             />
           </div>
         </b-col>
-
       </b-row>
       <!--  please someone show separate the
       header for the about page from this it going to cause issues  -->
@@ -207,7 +317,6 @@
             Planning Research and Statistics (DHPRS)
           </p>
         </b-col>
-
       </b-row>
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
@@ -318,7 +427,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/scss/abstracts/_variables.scss';
-
+.custom-header {
+  color: #ffffff;
+  padding: 10px;
+  font-size: 20px;
+}
 button {
   color: white;
 }
@@ -331,7 +444,7 @@ button {
   display: inherit;
 }
 
-.mob{
+.mob {
   display: none;
 }
 
@@ -484,20 +597,20 @@ header#the-header {
 // MEDIA QUERY
 
 /* EXTRA EXTRA SMALL */
-@media (max-width:676px) {
+@media (max-width: 676px) {
   .main {
     display: none;
   }
   .mobile-flex-col {
     display: none;
   }
-  .mob{
+  .mob {
     display: none;
   }
-  .mains .header-navs a{
+  .mains .header-navs a {
     display: none;
   }
-  .mains .header-navs button{
+  .mains .header-navs button {
     display: none;
   }
 
@@ -585,13 +698,13 @@ header#the-header {
   .main {
     display: none;
   }
-   .mains .header-navs a{
+  .mains .header-navs a {
     display: none;
   }
-  .mains .header-navs button{
+  .mains .header-navs button {
     display: none;
   }
-  .mob{
+  .mob {
     display: inherit;
   }
 
@@ -699,79 +812,79 @@ header#the-header {
 //     font-weight: 500;
 //     font-size: 19px;
 //   }
-  //    .main{
-  //     display: none;
-  //   }
+//    .main{
+//     display: none;
+//   }
 
-  // .mobile-flex{
-  //    display: flex;
-  //  justify-content: space-between;
-  //  flex-direction: row;
-  // //  display: grid;
-  // //  grid-template-columns: 20% 50% 20% 10%;
-  // }
+// .mobile-flex{
+//    display: flex;
+//  justify-content: space-between;
+//  flex-direction: row;
+// //  display: grid;
+// //  grid-template-columns: 20% 50% 20% 10%;
+// }
 
-  // .mob-grid-icon{
-  //   display: inherit;
-  // }
-  #about-wrap {
-    header#the-header {
-      & > .container-fluid {
-        & > .row {
-          height: 65px;
-          padding: 10px;
+// .mob-grid-icon{
+//   display: inherit;
+// }
+#about-wrap {
+  header#the-header {
+    & > .container-fluid {
+      & > .row {
+        height: 65px;
+        padding: 10px;
 
-          // first row
-          &:first-child {
-            & > div {
-              &:first-child {
-                padding-left: 0.5%;
-                img {
-                  float: left;
-                  height: 40px !important;
-                }
+        // first row
+        &:first-child {
+          & > div {
+            &:first-child {
+              padding-left: 0.5%;
+              img {
+                float: left;
+                height: 40px !important;
               }
+            }
 
-              &:last-child {
-                padding: 0 10px;
+            &:last-child {
+              padding: 0 10px;
 
-                h2 {
-                  font: normal normal 600 17px/20px Work Sans;
+              h2 {
+                font: normal normal 600 17px/20px Work Sans;
 
-                  // 3-dots icon
-                  & ~ div {
-                    font-size: 13px;
-                  }
+                // 3-dots icon
+                & ~ div {
+                  font-size: 13px;
                 }
               }
             }
           }
+        }
 
-          // second row
-          &:last-child {
-            padding: 0 10px;
+        // second row
+        &:last-child {
+          padding: 0 10px;
 
-            & > :first-child {
-              justify-content: center;
-              padding: 8px;
-              font-size: 38px;
-            }
+          & > :first-child {
+            justify-content: center;
+            padding: 8px;
+            font-size: 38px;
+          }
 
-            & > :last-child {
-              // padding: 0 5% !important;
-              line-height: 16px;
+          & > :last-child {
+            // padding: 0 5% !important;
+            line-height: 16px;
 
-              h4 {
-                margin-bottom: 4px;
-                padding-bottom: 2px;
-                font-size: 17px !important;
-              }
+            h4 {
+              margin-bottom: 4px;
+              padding-bottom: 2px;
+              font-size: 17px !important;
             }
           }
         }
       }
     }
   }
+}
 
 /* LARGE */
 @media (min-width: 1000px) and (max-width: 1300px) {
@@ -907,7 +1020,7 @@ header#the-header {
   position: relative;
   left: -25px;
 }
-.btn:hover{
-  color: #fff
+.btn:hover {
+  color: #fff;
 }
 </style>
