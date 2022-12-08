@@ -65,7 +65,7 @@ export default {
     ...mapMutations('MSDAT_STORE', [
       'ADD_CONTROL_PANEL',
       'CLEAR_CONTROL_PANEL',
-      'setConfigurations',
+      'SET_CONFIGURATIONS',
     ]),
 
     /**
@@ -210,7 +210,7 @@ export default {
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
-        this.setConfigurations(this.configObject);
+        this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;
       } catch (err) {
         console.log(

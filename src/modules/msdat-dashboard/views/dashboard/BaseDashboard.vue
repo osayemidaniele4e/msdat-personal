@@ -306,7 +306,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations('MSDAT_STORE', ['setConfigurations']),
+    ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
@@ -470,7 +470,7 @@ export default {
             return;
           }
           this.configObject = dashboard;
-          this.setConfigurations(this.configObject);
+          this.SET_CONFIGURATIONS(this.configObject);
         } catch (err) {
           console.log(
             err,

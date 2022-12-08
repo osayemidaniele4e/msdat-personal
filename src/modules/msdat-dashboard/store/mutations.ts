@@ -130,7 +130,7 @@ const mutations: MutationTree<State> = {
     });
   },
 
-  setConfigurations: (state, payload) => {
+  SET_CONFIGURATIONS: (state, payload) => {
     state.configObject = payload;
   },
 };
