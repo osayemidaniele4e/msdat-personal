@@ -241,7 +241,7 @@ export default class DataBase {
       .table(DATA)
       .where('[datasource+indicator+period+location]')
       .equals([datasource, indicator, period, location])
-      .filter((value) => value.value_type === 6 || value.value_type === 10)
+      .filter((value) => value.value_type === 6 || value.value_type === 7)
       .toArray();
   }
 
@@ -254,14 +254,19 @@ export default class DataBase {
    */
   static async queryDBForNhmisMonthly(query = {}) {
     const {
-      datasource, indicator, location,
+      datasource, indicator, location = 1,
     } = query;
-    const result = await dexie
+    return dexie
       .table(NHMIS_MONTHLY)
       .where('[datasource+indicator+location]')
       .equals([datasource, indicator, location])
       .toArray();
-    return result;
+  //   const result = await dexie
+  //   .table(NHMIS_MONTHLY)
+  //   .where('[datasource+indicator+location]')
+  //   .equals([datasource, indicator, location])
+  //   .toArray();
+  // return result;
   }
 
   /**

@@ -9,7 +9,8 @@
             : dlDashboardIndicator.length
         }}/{{ indicatorCount }}&ensp;Indicators, {{ dlDashboardDataSource.length }}/{{
           dataSourceCount
-        }}&ensp;Data&nbsp;sources</span>
+        }}&ensp;Data&nbsp;sources</span
+      >
       <span>Last Updated {{ latestDate }}</span>
     </div>
   </footer>
@@ -18,7 +19,6 @@
 <script>
 import moment from 'moment';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
-import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 
 export default {
   name: 'theFooter',
@@ -34,14 +34,16 @@ export default {
   methods: {
     async getLatestDate() {
       const res = await apiServices.getLatestDate();
-      // const date = moment(res.data.results[0].updated_at, 'YYYY-MM-DD').format('MMMM Do YYYY');
-      const date = moment(res.data.date, 'YYYY-MM-DD').format('MMMM Do YYYY');
+      const { results } = res.data;
+      const el = results[0];
+      const date = moment(el.updated_at, 'YYYY-MM-DD').format('MMMM Do YYYY');
       this.latestDate = date;
     },
     async getConfigData() {
-      this.dashboard = config.find((item) => item.title === this.$route.meta.title);
-      this.indicatorCount = this.dashboard?.indicators.length;
-      this.dataSourceCount = this.dashboard?.dataSources.length;
+      const { data } = await apiServices.getDashboard();
+      this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      this.indicatorCount = this.dashboard?.indicators.length || localStorage.getItem('lsIndicatorCount');
+      this.dataSourceCount = this.dashboard?.dataSources.length || localStorage.getItem('lsDataSourceCount');
     },
   },
   async mounted() {

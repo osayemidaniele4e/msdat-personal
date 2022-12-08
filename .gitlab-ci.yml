@@ -1,45 +1,22 @@
-image: node:14
+image: "docker:20.10.16"
 
 variables:
-  HOST: $DASHBOARD_HOST
-  USERNAME: $DASHBOARD_USERNAME
-  PASSWORD: $DASHBOARD_PASSWORD
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:20.10.16-dind
+  
 
 stages:
- # - ver
-  # - test
-  - deploy
 
-cache:
-  paths:
-    - node_modules/
-
-# ver:
-#   stage: ver
-#   script:
-#     - node --version
-#     - whoami
-
-#include:
- # - template: Code-Quality.gitlab-ci.yml
-
-# code_quality:
-#   stage: test
-#   # variables:
-#   #   REPORT_FORMAT: html
-#   # artifacts:
-#   #   paths: [gl-code-quality-report.html]
-  # script:
-  #   - yarn run lint --fix
-  # rules:
-  #   - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-  #     when: always
-  #     allow_failure: true
-  #   - when: always
+  - Deploy
 
 
-deploy_develop:
-  stage: deploy
+
+
+
+deploy 3.0:
+  stage: Deploy
   
   before_script: 
       - mkdir -p ~/.ssh
@@ -47,21 +24,8 @@ deploy_develop:
       - chmod 600 ~/.ssh/id_rsa
       - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh -p3322 e4esysadmin@208.87.128.190 "cd ~/msdat/ && sudo chown e4esysadmin:e4esysadmin -R docs/ && git checkout . && git checkout staging && git pull && sudo yarn install  && sudo yarn build  && sudo yarn docs:build && sudo systemctl reload nginx "
+    - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat/  && git pull origin develop && docker-compose up -d --build && docker ps "
   only:
-    - staging
-  # when: manual
-
-deploy_master:
-  stage: deploy
+    - develop
   
-  before_script: 
-      - mkdir -p ~/.ssh
-      - echo -e "$MSDATMASTER" > ~/.ssh/id_rsa
-      - chmod 600 ~/.ssh/id_rsa
-      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  script:
-    - ssh -p3322 e4esysadmin@172.93.48.4 "cd /srv/msdat/ && git checkout . && git checkout master && git pull && sudo yarn install && sudo yarn  build && sudo systemctl restart nginx && sudo systemctl status nginx "
-  only:
-    - master
-  when: manual
+

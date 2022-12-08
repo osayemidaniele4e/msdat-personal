@@ -56,7 +56,7 @@
       <div class="divider"></div>
       <li>
         <a
-          href="https://mapping.fmohconnect.gov.ng/dataset/submit-dataset"
+          href="https://mapping.fmohconnect.gov.ng/"
           target="_blank"
         >
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />

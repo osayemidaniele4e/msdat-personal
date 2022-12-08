@@ -123,7 +123,8 @@ export default {
         //   return false;
         // }
 
-        const valuetype = await this.valueType.filter(
+        // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+        const valuetype = this.valueType?.filter(
           (item) => item.value_type === datasource?.classification,
         );
         query.value_type = valuetype[0]?.id;
@@ -230,7 +231,7 @@ export default {
     },
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
-      return data.date;
+      return data.results[0].updated_at;
     },
     /**
      * @function getNhmisData
@@ -239,8 +240,8 @@ export default {
      */
     async getNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
-      const nhmisResult = result.slice(-1);
-      return nhmisResult[0];
+      // const nhmisResult = result.slice(-1);
+      return result[0];
     },
     async getDexieTableValues(query) {
       if (query === '') {

@@ -42,8 +42,7 @@ const mutations: MutationTree<State> = {
       const keyIndex = state.controlConfig[obj.panelIndex].setup.findIndex(
         (item) => item.key === obj.key,
       );
-      state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj.values;
-      // console.log('object', state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj.values);
+      state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj?.values;
     }
   },
 
@@ -117,8 +116,7 @@ const mutations: MutationTree<State> = {
               control.options = payload;
             }
           });
-        }
-       else {
+        } else {
           // Taking into consideration the multi-source comparison section
           controlPanel.setup.forEach((control) => {
             control.forEach((groupControl) => {

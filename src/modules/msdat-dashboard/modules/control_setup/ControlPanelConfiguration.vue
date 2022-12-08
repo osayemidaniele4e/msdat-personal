@@ -33,17 +33,9 @@ export default {
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
-  async mounted() {
+  mounted() {
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
-    });
-    const availableYears = await this.getAvailableYears();
-    // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-    this.SETUP_CONTROL_OPTIONS1({
-      groupIndex: this.groupIndex,
-      panelIndex: this.controlIndex,
-      key: 'year',
-      values: availableYears,
     });
   },
   methods: {
@@ -60,9 +52,8 @@ export default {
     async getAvailableDataSources() {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
-    // !!OUT OF COMMISSION
     async getAvailableDataIndicators() {
-      return this.setIndicatorDropdown(this.payload?.datasource?.id);
+      return this.setIndicatorDropdown(this.payload?.indicator?.id);
     },
     async setInteractions() {
       if (this.isAuthenticated === true) {
@@ -80,9 +71,6 @@ export default {
   },
   watch: {
     // get latest available years when indicator , datasource or location are changed
-    /**
-     * TODO: update the indicator list and year by datasource on CONTROLINDEX 2
-     */
     'payload.indicator': {
       async handler() {
         if (this.controlIndex !== 2) {
@@ -134,7 +122,6 @@ export default {
     'payload.location': {
       async handler() {
         const availableYears = await this.getAvailableYears();
-        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
         await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,

@@ -178,7 +178,7 @@
           <!-- </a> -->
         </b-col>
         <b-col class="main">
-          <h4>About the MSDAT Dashboard</h4>
+          <h4 class="mt-4">About the MSDAT Dashboard</h4>
           <p>
             This dashboard is developed and managed by the Department of Health Planning Research
             and Statistics (DHPRS)

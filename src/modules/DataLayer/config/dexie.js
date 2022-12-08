@@ -34,4 +34,3 @@ db.version(1).stores({
 });
 
 export default db;
-// data: '&id, value, period, indicator,  datasource, value_type, location, [value+period+indicator+datasource+value_type+location],[indicator+datasource],[indicator+datasource+location],[indicator+period],[datasource+indicator+period+location+value_type],[datasource+indicator+period+location],[datasource+indicator+period+value_type]',

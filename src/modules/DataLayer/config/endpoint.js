@@ -1,15 +1,16 @@
 export default {
-  getDashboard: 'dashboards/',
-  getDataSource: 'datasources/',
-  getLocation: 'location/',
-  getIndicator: 'indicators/',
-  getLHL: 'location_hierarchy_level/',
-  getValueType: 'valuetypes/',
-  getLinks: 'links/',
-  getFactors: 'factors/',
-  getDSI: 'datasource_specific_indicator/',
-  getData: 'data/',
-  getLastUpdated: 'data/latest/',
-  getUpdatedDataDate: 'data/after_datetime/',
-  getNhmisMonthly: `data/?datasource=${33}`,
+  getDashboard: 'dashboards/?size=1500',
+  getDataSource: 'datasources/?size=1500',
+  getLocation: 'location/?size=1500',
+  getIndicator: 'indicators/?size=1500',
+  getLHL: 'location_hierarchy_level/?size=1500',
+  getValueType: 'valuetypes/?size=1500',
+  getLinks: 'links/?size=1500',
+  getFactors: 'factors/?size=1500',
+  getDSI: 'datasource_specific_indicator/?size=1500',
+  getData: 'data/?size=1000&',
+  getUpdatedDataDate: 'after_datetime/?size=1500',
+  getNhmisMonthly: `data/?datasource=${30}&size=1500`, // 30, nhmisMonthly ID
 };
+
+// https://msdat-api.fmohconnect.gov.ng/api/datasources/?size=2000&datasource=NHMIS-DHIS2%20(monthly)

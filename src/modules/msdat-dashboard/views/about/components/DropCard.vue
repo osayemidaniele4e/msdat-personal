@@ -46,7 +46,7 @@
             >
               <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
             >
-            <router-link to="/coming-soon/health_surveillance"
+            <router-link to="/dashboard/Disease_Surveillance"
               ><b-list-group-item
                 >Disease Surveillance</b-list-group-item
               ></router-link
@@ -56,7 +56,7 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outcomes</h5>
-          <router-link to="/dashboard/Health_Outcomes" target="_blank"
+          <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank"
             ><b-list-group-item
               >Health Outcomes and Service Coverage</b-list-group-item
             ></router-link
