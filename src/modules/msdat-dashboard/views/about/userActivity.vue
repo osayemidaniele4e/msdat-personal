@@ -29,7 +29,7 @@
           </div>
           <div class="row content" v-for="el in getInteractions" :key="el.id">
             <div class="col-md-3">
-              <input type="checkbox" class="mr-2" />&nbsp;August 13, 2022 at 2:34am
+              <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
             </div>
             <div class="col-md-3"><b>{{ el.dashboard }}</b>-{{ el.section }}</div>
             <div class="col-md-4">{{ el.indicator }}, {{ el.datasource }} {{ el.year }}, {{ el.location }}</div>
@@ -40,7 +40,7 @@
         </div>
         <pagination
           v-model="currentPage"
-          :records="items.length"
+          :records="rows"
           :per-page="perPage"
           class="mb-5"
           align="center"
@@ -70,18 +70,18 @@ export default {
     return {
       perPage: 10,
       currentPage: 1,
-      items: [],
+      records: [],
     };
   },
   computed: {
     ...mapGetters(['getInteractions', 'getInteraction']),
-    ...mapGetters('AUTH_STORE', ['isAuthenticated']),
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
     rows() {
       return this.getInteractions.length;
     },
   },
   async mounted() {
-    await this.GET_INTERACTIONS();
+    await this.GET_INTERACTIONS(this.getUser.id);
     this.itemsForList(this.currentPage);
   },
   methods: {
@@ -90,19 +90,22 @@ export default {
       await this.DELETE_INTERACTION(id);
     },
     itemsForList(currentPage) {
-      this.items = [];
+      this.records = [];
       const startIndex = this.perPage * (currentPage - 1) + 1;
       const endIndex = startIndex + this.perPage - 1;
       for (let i = startIndex; i <= endIndex; i++) {
-        this.items.push(`Item ${i}`);
+        const a = this.records.push(`Item ${i}`);
+        console.log('omo', a);
       }
+      console.log('records', this.records);
+    },
+    formatDate(date) {
+      return moment(date.created_at).format('MMMM DD, YYYY [at] hh:mma');
     },
   },
 };
 </script>
 <style scoped>
-/* *{ */
-/* } */
 .title {
   display: flex;
   height: 70px;
@@ -141,7 +144,7 @@ h4 {
   font-size: 20px;
 }
 .content{
-  font-size: 16px;
+  font-size: 14px;
 }
 .del {
   cursor: pointer;

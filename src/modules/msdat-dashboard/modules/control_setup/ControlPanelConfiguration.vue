@@ -8,6 +8,7 @@
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
+import moment from 'moment';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
@@ -54,11 +55,12 @@ export default {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
     async getAvailableDataIndicators() {
-      return this.setIndicatorDropdown(this.payload?.indicator?.id);
+      return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
     async setInteractions() {
       const { data } = await apiServices.getDashboard();
       this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      console.log('ashboard', moment(this.dashboard.created_at).format('MMMM DD, YYYY [at] hh:mma'));
       if (this.isAuthenticated === true) {
         await this.SET_INTERACTIONS({
           year: this.payload.year,
@@ -92,7 +94,6 @@ export default {
             values: availableDS,
           });
           // console.log('payload', this.payload.indicator.id, this.payload.datasource.id, this.payload.location.id, this.payload.year);
-          this.setInteractions();
         }
       },
     },
@@ -120,6 +121,7 @@ export default {
             values: availableIndicator,
           });
         }
+        this.setInteractions();
       },
     },
     'payload.location': {
