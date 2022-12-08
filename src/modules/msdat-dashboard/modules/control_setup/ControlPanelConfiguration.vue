@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { eventBus } from '@/main';
 import controlSetup from '../../mixins/control-panel-setup';
 
@@ -23,6 +23,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
     payload() {
       if (this.groupIndex != null) {
         return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
@@ -47,6 +48,7 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
+    ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS']),
     async getAvailableYears() {
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
@@ -61,6 +63,19 @@ export default {
     // !!OUT OF COMMISSION
     async getAvailableDataIndicators() {
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
+    },
+    async setInteractions() {
+      if (this.isAuthenticated === true) {
+        await this.SET_INTERACTIONS({
+          year: this.payload.year,
+          user: this.getUser.id,
+          dashboard: 2,
+          section: 4,
+          indicator: this.payload.indicator.id,
+          datasource: this.payload.datasource.id,
+          location: this.payload.location.id,
+        });
+      }
     },
   },
   watch: {
@@ -85,7 +100,8 @@ export default {
             key: 'datasource',
             values: availableDS,
           });
-          console.log('payload', this.payload.indicator.id, this.payload.datasource.id, this.payload.location.id, this.payload.year);
+          // console.log('payload', this.payload.indicator.id, this.payload.datasource.id, this.payload.location.id, this.payload.year);
+          this.setInteractions();
         }
       },
     },

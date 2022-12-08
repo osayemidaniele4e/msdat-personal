@@ -118,14 +118,8 @@
                 <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
                 Hi, {{ getUser.username }}
               </div>
-              <Drop v-show="showCard"/>
+              <Drop v-show="showCard" />
               </div>
-              <!-- <div>
-                <div class="card card-body border-0 mb-3 shadow">
-                  <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
-                  {{ getUser.username }}
-                  </div>
-                </div> -->
               <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff" v-if="isAuthenticated === false">
                 <LoginSidebar v-if="show" />
                 <SignUp v-else />
@@ -153,10 +147,6 @@
                   </div>
                 </div>
               </b-sidebar>
-              <!-- <router-link to="/login" v-else class="nav-link"
-                ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
-                out</router-link
-              > -->
             </b-nav>
             <b-icon
               @click="toggleOption = !toggleOption"

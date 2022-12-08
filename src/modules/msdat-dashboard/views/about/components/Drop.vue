@@ -8,8 +8,8 @@
         <div>{{ getUser.username }}</div>
         <div>{{ getUser.email }}</div>
         </div>
-        <div class="col-1">
-          <b-icon-x-circle @click="close"></b-icon-x-circle>
+        <div class="close mr-2" @click.prevent="close">
+          <b-icon-x-circle></b-icon-x-circle>
         </div>
       </div>
       <div class="d-flex py-2">
@@ -56,9 +56,7 @@ export default {
       position: absolute;
       width: 26vw;
       z-index: 5;
-      // left: -0.5vw;
       right: 1rem;
-      // top: 2.8rem;
       color: black;
       max-height: 30rem;
       overflow-y: auto;
@@ -66,36 +64,15 @@ export default {
         color: inherit;
       }
     }
-    div.list-group{
-      h5.text-underline{
-        font-size: 1rem !important;
-      }
-    }
-    .list-group-item {
-      font-family: 'Work Sans';
-      padding: 0.25rem 1.25rem;
-      border: 0;
-      font-size: 0.95rem;
-    }
-    .sub-nav {
-      margin-top: 1rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      font-family: 'Work Sans';
-    }
-  }
-  h5.text-underline {
-    border-bottom: 1px solid lightgrey;
-    padding: 0.2rem 0;
-    margin: 0.7rem 1.3rem;
-    font-size: 1.2rem;
-    font-family: 'Work Sans';
-    font-weight: 700;
   }
   .user-details{
     background: #FAFAFA;
   }
   .logout{
+    position: absolute;
+    right: 0;
+  }
+  .close {
     position: absolute;
     right: 0;
   }
