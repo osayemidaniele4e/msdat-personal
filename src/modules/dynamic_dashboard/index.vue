@@ -2,12 +2,6 @@
   <div>
     <MSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
-      :indicators="configObject.indicators"
-      :dataSources="configObject.dataSources"
-      :defaultIndicators="configObject.defaultIndicators"
-      :initialIndicator="configObject.initialIndicator"
-      :initialDataSource="configObject.initialDataSource"
-      :initialLocation="configObject.initialLocation"
       :showTableRelatedIndicator="
         configObject.showTableRelatedIndicator != undefined
           ? configObject.showTableRelatedIndicator
@@ -68,7 +62,12 @@ export default {
     };
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    ...mapMutations('MSDAT_STORE', [
+      'ADD_CONTROL_PANEL',
+      'CLEAR_CONTROL_PANEL',
+      'setConfigurations',
+    ]),
+
     /**
      * @function clearData
      * @author davebenard
@@ -191,6 +190,7 @@ export default {
         this.$store.dispatch('resetState');
         localStorage.removeItem('vuex');
         // ============
+
         const response = await apiServices.getDashboard();
         const { results } = response.data;
         const dashboard = results.find((item) => item?.name === name);
@@ -210,6 +210,7 @@ export default {
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
+        this.setConfigurations(this.configObject);
         this.isAdvanced = false;
       } catch (err) {
         console.log(
@@ -223,8 +224,8 @@ export default {
     }
     // =======================
     // set the title from the config as the route title
-    if (this.configObject.title) {
-      this.$route.meta.title = this.configObject.title;
+    if (this.$store.state.MSDAT_STORE.configObject.title) {
+      this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
     }
   },
   watch: {

@@ -1,11 +1,5 @@
 <template>
   <BaseDashboard
-    :indicators="indicators"
-    :dataSources="dataSources"
-    :defaultIndicators="defaultIndicators"
-    :initialIndicator="initialIndicator"
-    :initialDataSource="initialDataSource"
-    :initialLocation="initialLocation"
     :updateValue="updateValue"
     :updateKey="updateKey"
     :resetData="resetData"
@@ -95,47 +89,45 @@
       </div>
     </template>
 
-      <template v-slot:section-4="{ payload, controlIndex }">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Multi-Source Indicator Comparison
-              </h5>
-            </template>
-            <template>
-              <div class="dummy-row2 row">
-                <div v-for="n in 3" :key="n" class="flex-item col-lg-4 col-12">
-                  <div class="comparison-header">Comparison ({{ n }})</div>
-                  <LazyLoading>
-                    <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
-                      <MultiSourceComponent :key="n" :values="payload[n - 1]" />
-                    </ControlPanelConfiguration>
-                  </LazyLoading>
-                </div>
+    <template v-slot:section-4="{ payload, controlIndex }">
+      <div class="col-md-12">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">Multi-Source Indicator Comparison</h5>
+          </template>
+          <template>
+            <div class="dummy-row2 row">
+              <div v-for="n in 3" :key="n" class="flex-item col-lg-4 col-12">
+                <div class="comparison-header">Comparison ({{ n }})</div>
+                <LazyLoading>
+                  <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
+                    <MultiSourceComponent :key="n" :values="payload[n - 1]" />
+                  </ControlPanelConfiguration>
+                </LazyLoading>
               </div>
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
+            </div>
+          </template>
+        </base-sub-card>
+      </div>
+    </template>
 
-      <template v-slot:section-5="{ payload, controlIndex }">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
-            </template>
-            <template>
-              <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <DynamicSection :values="payload" :controlIndex="controlIndex" />
-                </ControlPanelConfiguration>
-              </LazyLoading>
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-    </BaseDashboard>
+    <template v-slot:section-5="{ payload, controlIndex }">
+      <div class="col-md-12">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
+          </template>
+          <template>
+            <LazyLoading>
+              <ControlPanelConfiguration :controlIndex="controlIndex">
+                <DynamicSection :values="payload" :controlIndex="controlIndex" />
+              </ControlPanelConfiguration>
+            </LazyLoading>
+          </template>
+        </base-sub-card>
+      </div>
+    </template>
+  </BaseDashboard>
 </template>
 
 <script>
@@ -177,30 +169,6 @@ export default {
     DynamicSection,
   },
   props: {
-    initialIndicator: {
-      type: Number,
-      required: true,
-    },
-    initialDataSource: {
-      type: Number,
-      required: true,
-    },
-    initialLocation: {
-      type: Number,
-      required: true,
-    },
-    indicators: {
-      type: Array,
-      required: false,
-    },
-    dataSources: {
-      type: Array,
-      required: false,
-    },
-    defaultIndicators: {
-      type: Array,
-      required: false,
-    },
     showTableRelatedIndicator: {
       type: Boolean,
       default: true,

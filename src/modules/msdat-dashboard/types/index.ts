@@ -7,6 +7,7 @@ export interface State {
   dynamicDashboard: boolean;
   default: Defaults;
   controlConfig: ControlPanelConfig[];
+  configObject: {};
 }
 
 export interface SetupObject {
