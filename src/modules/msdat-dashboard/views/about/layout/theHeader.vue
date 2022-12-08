@@ -115,7 +115,7 @@
               </div>
               <div v-else @click="showCard = true">
               <div class="ml-2 profile">
-                <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
+                <img :src="getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
                 Hi, {{ getUser.username }}
               </div>
               <Drop v-show="showCard" />

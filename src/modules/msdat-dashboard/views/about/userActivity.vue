@@ -27,8 +27,7 @@
           <div class="mb-3">
             <span class="month" style="font-size: 16px">August 2022</span>
           </div>
-          <div class="row content" v-for="el in items" :key="el.id" :per-page="perPage"
-      :current-page="currentPage">
+          <div class="row content" v-for="el in getInteractions" :key="el.id">
             <div class="col-md-3">
               <input type="checkbox" class="mr-2" />&nbsp;August 13, 2022 at 2:34am
             </div>
@@ -39,14 +38,14 @@
             </div>
           </div>
         </div>
-        <b-pagination
+        <pagination
           v-model="currentPage"
-          :total-rows="rows"
+          :records="items.length"
           :per-page="perPage"
-          aria-controls="my-table"
           class="mb-5"
           align="center"
-        ></b-pagination>
+          @paginate="itemsForList"
+        ></pagination>
       </div>
     </div>
     <Footer />
@@ -55,6 +54,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import Pagination from 'vue-pagination-2';
+import moment from 'moment';
 import Header from './layout/theHeader.vue';
 import Footer from './layout/theFooter.vue';
 
@@ -63,6 +64,7 @@ export default {
   components: {
     Header,
     Footer,
+    Pagination,
   },
   data() {
     return {
@@ -80,19 +82,20 @@ export default {
   },
   async mounted() {
     await this.GET_INTERACTIONS();
-    this.itemsForList();
+    this.itemsForList(this.currentPage);
   },
   methods: {
     ...mapActions(['GET_INTERACTIONS', 'DELETE_INTERACTION']),
     async destroy(id) {
       await this.DELETE_INTERACTION(id);
     },
-    itemsForList() {
-      this.items = this.getInteractions.slice(
-        (this.currentPage - 1) * this.perPage,
-        this.currentPage * this.perPage,
-      );
-      console.log('items', this.items);
+    itemsForList(currentPage) {
+      this.items = [];
+      const startIndex = this.perPage * (currentPage - 1) + 1;
+      const endIndex = startIndex + this.perPage - 1;
+      for (let i = startIndex; i <= endIndex; i++) {
+        this.items.push(`Item ${i}`);
+      }
     },
   },
 };
