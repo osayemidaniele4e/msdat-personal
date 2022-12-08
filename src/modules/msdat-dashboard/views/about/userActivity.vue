@@ -27,7 +27,8 @@
           <div class="mb-3">
             <span class="month" style="font-size: 16px">August 2022</span>
           </div>
-          <div class="row content" v-for="el in getInteractions" :key="el.id">
+          <div class="row content" v-for="el in items" :key="el.id" :per-page="perPage"
+      :current-page="currentPage">
             <div class="col-md-3">
               <input type="checkbox" class="mr-2" />&nbsp;August 13, 2022 at 2:34am
             </div>
@@ -38,6 +39,14 @@
             </div>
           </div>
         </div>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          aria-controls="my-table"
+          class="mb-5"
+          align="center"
+        ></b-pagination>
       </div>
     </div>
     <Footer />
@@ -55,16 +64,35 @@ export default {
     Header,
     Footer,
   },
+  data() {
+    return {
+      perPage: 10,
+      currentPage: 1,
+      items: [],
+    };
+  },
   computed: {
     ...mapGetters(['getInteractions', 'getInteraction']),
+    ...mapGetters('AUTH_STORE', ['isAuthenticated']),
+    rows() {
+      return this.getInteractions.length;
+    },
   },
   async mounted() {
     await this.GET_INTERACTIONS();
+    this.itemsForList();
   },
   methods: {
     ...mapActions(['GET_INTERACTIONS', 'DELETE_INTERACTION']),
     async destroy(id) {
       await this.DELETE_INTERACTION(id);
+    },
+    itemsForList() {
+      this.items = this.getInteractions.slice(
+        (this.currentPage - 1) * this.perPage,
+        this.currentPage * this.perPage,
+      );
+      console.log('items', this.items);
     },
   },
 };

@@ -7,6 +7,7 @@
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { eventBus } from '@/main';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
@@ -56,12 +57,14 @@ export default {
       return this.setIndicatorDropdown(this.payload?.indicator?.id);
     },
     async setInteractions() {
+      const { data } = await apiServices.getDashboard();
+      this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
       if (this.isAuthenticated === true) {
         await this.SET_INTERACTIONS({
           year: this.payload.year,
           user: this.getUser.id,
-          dashboard: 2,
-          section: 4,
+          dashboard: this.dashboard.id,
+          section: this.controlIndex + 1,
           indicator: this.payload.indicator.id,
           datasource: this.payload.datasource.id,
           location: this.payload.location.id,

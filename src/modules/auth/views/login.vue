@@ -94,7 +94,7 @@ export default {
     };
   },
   mounted() {
-    VueCookies.remove('custom-user-details');
+    VueCookies.remove('msdat-user-details');
   },
   methods: {
     ...mapActions('AUTH_STORE', ['LOGIN_USER']),

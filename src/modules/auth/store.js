@@ -1,12 +1,14 @@
 import axios from 'axios';
 import VueCookies from 'vue-cookies';
 
+const userDetails = VueCookies.get('msdat-user-details');
+
 export default {
   namespaced: true,
   state: {
     isAuthenticated: false,
     authToken: '',
-    user: {},
+    user: userDetails || {},
   },
   mutations: {
     setUser(state, payload) {
@@ -41,22 +43,22 @@ export default {
         const user = response.data;
         const accessToken = response.data.token;
         const refreshToken = response.data.refresh_token;
-        VueCookies.set('custom-access-token', accessToken);
-        VueCookies.set('custom-refresh-token', refreshToken);
-        VueCookies.set('custom-user-details', user);
+        VueCookies.set('msdat-access-token', accessToken);
+        VueCookies.set('msdat-refresh-token', refreshToken);
+        VueCookies.set('msdat-user-details', user);
         commit('setUser', user);
         // commit(' setToken', accessToken);
         return response;
       } catch (err) {
         console.log(err);
-        VueCookies.remove('custom-access-token');
-        VueCookies.remove('custom-refresh-token');
+        VueCookies.remove('msdat-access-token');
+        VueCookies.remove('msdat-refresh-token');
       }
     },
     logout({ commit }) {
-      VueCookies.remove('custom-access-token');
-      VueCookies.remove('custom-refresh-token');
-      VueCookies.remove('custom-user-details');
+      VueCookies.remove('msdat-access-token');
+      VueCookies.remove('msdat-refresh-token');
+      VueCookies.remove('msdat-user-details');
       commit('logout');
     },
   },

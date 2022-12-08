@@ -12,7 +12,7 @@ export default {
   },
   async GET_INTERACTIONS({ commit }) {
     try {
-      const response = await axios.get('https://msdat-api.fmohconnect.gov.ng/api/user_interactions/?size=10');
+      const response = await axios.get('https://msdat-api.fmohconnect.gov.ng/api/user_interactions/?size=12');
       const { results } = response.data;
       commit('setInteractions', results);
       console.log('results', results);
