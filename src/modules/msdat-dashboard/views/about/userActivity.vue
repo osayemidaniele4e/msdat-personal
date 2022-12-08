@@ -25,9 +25,9 @@
         </div>
         <div class="activity mt-3 mb-5">
           <div class="mb-3">
-            <span class="month" style="font-size: 16px">August 2022</span>
+            <span class="month" style="font-size: 16px">December 2022</span>
           </div>
-          <div class="row content" v-for="el in getInteractions" :key="el.id">
+          <div class="row content" v-for="el in records" :key="el.id">
             <div class="col-md-3">
               <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
             </div>
@@ -38,14 +38,16 @@
             </div>
           </div>
         </div>
+        <div class="d-flex justify-content-center">
         <pagination
           v-model="currentPage"
           :records="rows"
           :per-page="perPage"
           class="mb-5"
           align="center"
-          @paginate="itemsForList"
+          @paginate="getPage"
         ></pagination>
+        </div>
       </div>
     </div>
     <Footer />
@@ -82,22 +84,18 @@ export default {
   },
   async mounted() {
     await this.GET_INTERACTIONS(this.getUser.id);
-    this.itemsForList(this.currentPage);
+    this.getPage();
   },
   methods: {
     ...mapActions(['GET_INTERACTIONS', 'DELETE_INTERACTION']),
     async destroy(id) {
       await this.DELETE_INTERACTION(id);
     },
-    itemsForList(currentPage) {
-      this.records = [];
-      const startIndex = this.perPage * (currentPage - 1) + 1;
-      const endIndex = startIndex + this.perPage - 1;
-      for (let i = startIndex; i <= endIndex; i++) {
-        const a = this.records.push(`Item ${i}`);
-        console.log('omo', a);
-      }
-      console.log('records', this.records);
+    getPage() {
+      this.records = this.getInteractions.slice(
+        (this.currentPage - 1) * this.perPage,
+        this.currentPage * this.perPage,
+      );
     },
     formatDate(date) {
       return moment(date.created_at).format('MMMM DD, YYYY [at] hh:mma');
