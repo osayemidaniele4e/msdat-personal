@@ -23,20 +23,30 @@
           <img src="./assets/analytics.png" height="33px" width="33px" />
           <h4 class="ml-2 mt-2">Dashboard History</h4>
         </div>
-        <div class="activity mt-3">
+        <div class="activity mt-3 mb-5">
           <div class="mb-3">
-            <span class="month" style="font-size: 16px">August 2022</span>
+            <span class="month" style="font-size: 16px">December 2022</span>
           </div>
-          <div class="row content">
+          <div class="row content" v-for="el in records" :key="el.id">
             <div class="col-md-3">
-              <input type="checkbox" class="mr-2" />&nbsp;August 13, 2022 at 2:34am
+              <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
             </div>
-            <div class="col-md-3"><b>Dashboard</b>-Section</div>
-            <div class="col-md-4">Indicator, Datasource Period, Location</div>
+            <div class="col-md-3"><b>{{ el.dashboard }}</b>-{{ el.section }}</div>
+            <div class="col-md-4">{{ el.indicator }}, {{ el.datasource }} {{ el.year }}, {{ el.location }}</div>
             <div class="col-md-1">
-              <b-icon-trash></b-icon-trash>
+              <b-icon-trash class="del" @click.prevent="destroy(el.id)"></b-icon-trash>
             </div>
           </div>
+        </div>
+        <div class="d-flex justify-content-center">
+        <pagination
+          v-model="currentPage"
+          :records="rows"
+          :per-page="perPage"
+          class="mb-5"
+          align="center"
+          @paginate="getPage"
+        ></pagination>
         </div>
       </div>
     </div>
@@ -45,6 +55,9 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import Pagination from 'vue-pagination-2';
+import moment from 'moment';
 import Header from './layout/theHeader.vue';
 import Footer from './layout/theFooter.vue';
 
@@ -53,12 +66,44 @@ export default {
   components: {
     Header,
     Footer,
+    Pagination,
+  },
+  data() {
+    return {
+      perPage: 10,
+      currentPage: 1,
+      records: [],
+    };
+  },
+  computed: {
+    ...mapGetters(['getInteractions', 'getInteraction']),
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
+    rows() {
+      return this.getInteractions.length;
+    },
+  },
+  async mounted() {
+    await this.GET_INTERACTIONS(this.getUser.id);
+    this.getPage();
+  },
+  methods: {
+    ...mapActions(['GET_INTERACTIONS', 'DELETE_INTERACTION']),
+    async destroy(id) {
+      await this.DELETE_INTERACTION(id);
+    },
+    getPage() {
+      this.records = this.getInteractions.slice(
+        (this.currentPage - 1) * this.perPage,
+        this.currentPage * this.perPage,
+      );
+    },
+    formatDate(date) {
+      return moment(date.created_at).format('MMMM DD, YYYY [at] hh:mma');
+    },
   },
 };
 </script>
 <style scoped>
-/* *{ */
-/* } */
 .title {
   display: flex;
   height: 70px;
@@ -97,6 +142,9 @@ h4 {
   font-size: 20px;
 }
 .content{
-  font-size: 16px;
+  font-size: 14px;
+}
+.del {
+  cursor: pointer;
 }
 </style>

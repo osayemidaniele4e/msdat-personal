@@ -152,7 +152,7 @@ export default {
             container.year = this.data[i].data[0].period;
             container.compare = false;
           } else {
-            const fullYears = this.data[i].data.filter((value) => value.period.length === 4);
+            const fullYears = this.data[i].data.results.filter((value) => value.period.length === 4);
             container.compare = true;
             // Sort returned results by latest year
             fullYears.sort((a, b) => b.period - a.period);
@@ -231,7 +231,7 @@ export default {
         });
       }
       try {
-        temp = await requests.fetchDemographics(this.stateDemographics, selectedState.id);
+        temp = await requests.fetchDemographics(this.stateDemographics, selectedState?.id);
         this.data = temp;
         this.extractDemographicValues();
       } catch (err) {
@@ -403,9 +403,9 @@ export default {
   },
   async mounted() {
     const { theSources } = await requests.getIndicatorsAndSources();
-    this.allSources = theSources.data;
+    this.allSources = theSources.data.results;
     const locate = await requests.allLocations();
-    this.locations = locate.data;
+    this.locations = locate.data.results;
     this.prepareDemographicData();
     this.setLandAreaData();
   },

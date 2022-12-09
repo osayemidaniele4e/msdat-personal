@@ -5,8 +5,10 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { eventBus } from '@/main';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
+import moment from 'moment';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
@@ -23,6 +25,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
     payload() {
       if (this.groupIndex != null) {
         return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
@@ -32,21 +35,14 @@ export default {
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
-  async mounted() {
+  mounted() {
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
-    });
-    const availableYears = await this.getAvailableYears();
-    // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-    this.SETUP_CONTROL_OPTIONS1({
-      groupIndex: this.groupIndex,
-      panelIndex: this.controlIndex,
-      key: 'year',
-      values: availableYears,
     });
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
+    ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS']),
     async getAvailableYears() {
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
@@ -58,16 +54,28 @@ export default {
     async getAvailableDataSources() {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
-    // !!OUT OF COMMISSION
     async getAvailableDataIndicators() {
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
+    },
+    async setInteractions() {
+      const { data } = await apiServices.getDashboard();
+      this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      console.log('ashboard', moment(this.dashboard.created_at).format('MMMM DD, YYYY [at] hh:mma'));
+      if (this.isAuthenticated === true) {
+        await this.SET_INTERACTIONS({
+          year: this.payload.year,
+          user: this.getUser.id,
+          dashboard: this.dashboard.id,
+          section: this.controlIndex + 1,
+          indicator: this.payload.indicator.id,
+          datasource: this.payload.datasource.id,
+          location: this.payload.location.id,
+        });
+      }
     },
   },
   watch: {
     // get latest available years when indicator , datasource or location are changed
-    /**
-     * TODO: update the indicator list and year by datasource on CONTROLINDEX 2
-     */
     'payload.indicator': {
       async handler() {
         if (this.controlIndex !== 2) {
@@ -85,7 +93,7 @@ export default {
             key: 'datasource',
             values: availableDS,
           });
-          console.log('payload', this.payload.indicator.id, this.payload.datasource.id, this.payload.location.id, this.payload.year);
+          // console.log('payload', this.payload.indicator.id, this.payload.datasource.id, this.payload.location.id, this.payload.year);
         }
       },
     },
@@ -113,12 +121,12 @@ export default {
             values: availableIndicator,
           });
         }
+        this.setInteractions();
       },
     },
     'payload.location': {
       async handler() {
         const availableYears = await this.getAvailableYears();
-        // const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
         await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
           panelIndex: this.controlIndex,

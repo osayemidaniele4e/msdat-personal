@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
+// import createPersistedState from 'vuex-persistedstate';
 import MSDAT_STORE from '../modules/msdat-dashboard/store';
 import { store as CUSTOM_DASHBOARD_STORE } from '../modules/custom-dashboard';
 import { store as AUTH_STORE } from '../modules/auth';
@@ -26,5 +26,4 @@ export default new Vuex.Store({
     AUTH_STORE,
   },
   strict: process.env.NODE_ENV !== 'production',
-  plugins: [createPersistedState()],
 });

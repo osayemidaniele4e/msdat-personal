@@ -265,7 +265,7 @@ export default [
     path: '/my-dashboard',
     name: 'my-dashboard',
     beforeEnter: (to, from, next) => {
-      const token = VueCookies.get('custom-access-token');
+      const token = VueCookies.get('msdat-access-token');
       if (!token) {
         next('/custom/login');
       } else {

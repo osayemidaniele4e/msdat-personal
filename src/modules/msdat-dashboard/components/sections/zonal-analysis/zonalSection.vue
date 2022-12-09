@@ -179,6 +179,7 @@ export default {
             // index starts at one to skip region data for the series
             const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
             const zonalSeries = this.getZonalDataInHighChartFormat(data);
+            // console.log(zonalSeries);
             // add national to top of the zonal series series
             const national = data.find((item) => item.location === 1);
             zonalSeries.unshift({
@@ -204,6 +205,7 @@ export default {
             });
             newChart.unshift();
             // add zonal series to top of main the series
+            chartSeries.unshift(zonalZee);
             // chartSeries.unshift(zonalZee); //  removed this part
             this.formatToHighChart(chartSeries);
           }

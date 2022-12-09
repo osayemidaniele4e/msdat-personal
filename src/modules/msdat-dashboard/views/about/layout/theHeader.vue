@@ -115,17 +115,11 @@
               </div>
               <div v-else @click="showCard = true">
               <div class="ml-2 profile">
-                <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
+                <img :src="'https://msdat-api.fmohconnect.gov.ng/api' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
                 Hi, {{ getUser.username }}
               </div>
-              <Drop v-show="showCard"/>
+              <Drop v-show="showCard" />
               </div>
-              <!-- <div>
-                <div class="card card-body border-0 mb-3 shadow">
-                  <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
-                  {{ getUser.username }}
-                  </div>
-                </div> -->
               <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff" v-if="isAuthenticated === false">
                 <LoginSidebar v-if="show" />
                 <SignUp v-else />
@@ -153,10 +147,6 @@
                   </div>
                 </div>
               </b-sidebar>
-              <!-- <router-link to="/login" v-else class="nav-link"
-                ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
-                out</router-link
-              > -->
             </b-nav>
             <b-icon
               @click="toggleOption = !toggleOption"
@@ -188,7 +178,7 @@
           <!-- </a> -->
         </b-col>
         <b-col class="main">
-          <h4>About the MSDAT Dashboard</h4>
+          <h4 class="mt-4">About the MSDAT Dashboard</h4>
           <p>
             This dashboard is developed and managed by the Department of Health Planning Research
             and Statistics (DHPRS)

@@ -1,8 +1,11 @@
-// Auther: Ghufran Ahmed
-
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
+
+const composedData = sessionStorage.getItem('composedData');
+const SurveyArray = sessionStorage.getItem('surveyArray');
+const dashboardDetails = localStorage.getItem('dashboardDetails');
+const customDashboard = localStorage.getItem('customDashboardStatus') || false;
 
 const store = {
   state: {
@@ -15,11 +18,11 @@ const store = {
     },
     allSelected: false,
     step: 0,
-    customDashboard: false,
-    dashboardDetails: {},
+    customDashboard: JSON.parse(customDashboard),
+    dashboardDetails: JSON.parse(dashboardDetails),
     rmnchs: [],
-    masterData: [],
-    SurveyArray: [],
+    masterData: JSON.parse(composedData),
+    SurveyArray: JSON.parse(SurveyArray),
     notes: [],
     ArrangedSections: [
       {

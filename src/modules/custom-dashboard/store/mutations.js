@@ -1,4 +1,10 @@
 /* eslint-disable no-param-reassign */
+
+const composedData = sessionStorage.getItem('composedData');
+const SurveyArray = sessionStorage.getItem('surveyArray');
+const dashboardDetails = localStorage.getItem('dashboardDetails');
+const customDashboard = localStorage.getItem('customDashboardStatus') || false;
+
 const forRefreshingAll = (fieldArray) => {
   fieldArray.years.map((year) => {
     if (year.selected === true) {
@@ -28,11 +34,11 @@ function getDefaultState() {
     allSelected: false,
     // loading: false,
     step: 0,
-    customDashboard: false,
-    dashboardDetails: {},
+    customDashboard: JSON.parse(customDashboard),
+    dashboardDetails: JSON.parse(dashboardDetails) || {},
     rmnchs: [],
-    masterData: [],
-    SurveyArray: [],
+    masterData: JSON.parse(composedData) || [],
+    SurveyArray: JSON.parse(SurveyArray) || [],
     notes: [],
     ArrangedSections: [
       {
@@ -88,12 +94,10 @@ export default {
     state.masterData = payload;
     state.SurveyArray = payload;
   },
-  // loading(state,payload){
-  //   console.log('abc',payload);
-  // },
 
   // Dashboard Details
   dashboardDetails(state, payload) {
+    localStorage.setItem('dashboardDetails', JSON.stringify(payload));
     state.dashboardDetails = payload;
   },
 
@@ -118,7 +122,7 @@ export default {
             found = true;
             child.selected = payload.checked;
             if (payload.checked) {
-              // element.parent.selected = true;
+              element.parent.selected = true;
             } else {
               element.parent.selected = false;
             }
@@ -142,14 +146,12 @@ export default {
       if (element.parent.isChildSelected === true) {
         element.showList = true;
       }
-
       return element;
     });
   },
 
   // Selecting All the Indicators
   AllselectionIndicator(state, payload) {
-    // console.log(payload);
     state.masterData = state.masterData.map((element) => {
       element.children.map((child) => {
         if (element.parent.value === payload.name) {
@@ -171,7 +173,6 @@ export default {
   },
 
   selectionDataSource(state, payload) {
-    // console.log('In Mutations', payload);
     state.SurveyArray = state.SurveyArray.map((element) => {
       // eslint-disable-next-line no-unused-vars
       let counter = 0;
@@ -300,8 +301,6 @@ export default {
 
   // For Arranging the Sections
   arrangedSections(state, payload) {
-    // console.log('State O', state.ArrangedSections);
-    // console.log('State P', payload);
     state.ArrangedSections = payload;
   },
 
@@ -317,13 +316,13 @@ export default {
   },
 
   customDashboard(state, payload) {
+    localStorage.setItem('customDashboardStatus', JSON.stringify(payload));
     state.customDashboard = payload;
   },
 
   // ******** Select All Data ********* //
 
   selectAll(state, payload) {
-    // console.log('asdw', payload);
     state.allSelected = payload;
   },
 
