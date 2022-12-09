@@ -2,11 +2,13 @@ import axios from 'axios';
 import VueCookies from 'vue-cookies';
 
 const userDetails = VueCookies.get('msdat-user-details');
+VueCookies.set('isauthenticated', true);
+const loggedIn = VueCookies.get('isauthenticated');
 
 export default {
   namespaced: true,
   state: {
-    isAuthenticated: false,
+    isAuthenticated: false || loggedIn,
     authToken: '',
     user: userDetails || {},
   },
@@ -46,19 +48,21 @@ export default {
         VueCookies.set('msdat-access-token', accessToken);
         VueCookies.set('msdat-refresh-token', refreshToken);
         VueCookies.set('msdat-user-details', user);
+        // VueCookies.set('user-authenticated', true);
         commit('setUser', user);
-        // commit(' setToken', accessToken);
         return response;
       } catch (err) {
         console.log(err);
         VueCookies.remove('msdat-access-token');
         VueCookies.remove('msdat-refresh-token');
+        VueCookies.remove('user-authenticated');
       }
     },
     logout({ commit }) {
       VueCookies.remove('msdat-access-token');
       VueCookies.remove('msdat-refresh-token');
       VueCookies.remove('msdat-user-details');
+      VueCookies.remove('user-authenticated');
       commit('logout');
     },
   },

@@ -27,7 +27,7 @@
           <div class="mb-3">
             <span class="month" style="font-size: 16px">December 2022</span>
           </div>
-          <div class="row content" v-for="el in records" :key="el.id">
+          <div class="row content" v-for="el in getInteractions" :key="el.id">
             <div class="col-md-3">
               <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
             </div>
@@ -84,14 +84,16 @@ export default {
   },
   async mounted() {
     await this.GET_INTERACTIONS(this.getUser.id);
-    this.getPage();
+    await this.getPage();
   },
   methods: {
     ...mapActions(['GET_INTERACTIONS', 'DELETE_INTERACTION']),
     async destroy(id) {
       await this.DELETE_INTERACTION(id);
+      await this.getPage();
     },
-    getPage() {
+    async getPage() {
+      await this.GET_INTERACTIONS(this.getUser.id);
       this.records = this.getInteractions.slice(
         (this.currentPage - 1) * this.perPage,
         this.currentPage * this.perPage,
@@ -121,7 +123,6 @@ h3 {
   list-style: none;
   margin: 0;
   padding: 0;
-  /* row-gap: 20px; */
 }
 button {
   border: none;
@@ -136,8 +137,6 @@ h4 {
   font-weight: bold;
 }
 .activity ul {
-  /* display: flex; */
-  /* justify-content: space-around; */
   list-style: none;
   font-size: 20px;
 }
