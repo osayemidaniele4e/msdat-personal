@@ -2,8 +2,8 @@ import axios from 'axios';
 import VueCookies from 'vue-cookies';
 
 const userDetails = VueCookies.get('msdat-user-details');
-VueCookies.set('isauthenticated', true);
-const loggedIn = VueCookies.get('isauthenticated');
+VueCookies.set('isAuthenticated', true);
+const loggedIn = VueCookies.get('isAuthenticated');
 
 export default {
   namespaced: true,
