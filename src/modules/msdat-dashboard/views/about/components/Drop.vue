@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid card shadow dropdown work-sans" v-if="show">
+    <div class="container-fluid card shadow dropdown work-sans" v-if="open === true" >
       <div class="row p-3 d-flex user-details">
         <div class="col-3">
         <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
@@ -29,7 +29,7 @@ export default {
   name: 'drop',
   data() {
     return {
-      show: true,
+      open: true,
     };
   },
   computed: {
@@ -44,7 +44,7 @@ export default {
       }
     },
     close() {
-      this.show = false;
+      this.open = false;
     },
   },
 };
