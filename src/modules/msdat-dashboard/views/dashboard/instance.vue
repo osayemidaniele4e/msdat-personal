@@ -21,7 +21,6 @@
           <template>
             <ControlPanelConfiguration :controlIndex="controlIndex">
               <BaseIndicatorOverview
-                :showTableRelatedIndicator="showTableRelatedIndicator"
                 :controlPanelProps="payload"
                 @value="getValue"
                 @key="getKey"

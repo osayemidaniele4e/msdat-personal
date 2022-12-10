@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import TableComponent from '@/modules/msdat-dashboard/components/table/TableComponent.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
@@ -73,6 +74,7 @@ export default {
       modalTitle: '',
       DisplayType: '',
       updateData: 0,
+      showTableRelatedIndicator: true,
     };
   },
   props: {
@@ -82,11 +84,6 @@ export default {
     values: {
       type: [Object, String, Array],
       required: true,
-    },
-
-    showTableRelatedIndicator: {
-      type: Boolean,
-      default: true,
     },
   },
   watch: {
@@ -137,11 +134,9 @@ export default {
         //   this.values.indicator.first_related,
         //   this.values.indicator.second_related,
         // ];
-
         // if (!this.showTableRelatedIndicator) {
         //   indicators = [this.values.indicator.id];
         // }
-
         // for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
         //   const indicatorID = indicators[indicatorIndex];
         //   if (indicatorID) {
@@ -169,6 +164,7 @@ export default {
     },
   },
   methods: {
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     /**
      * @param {Object} queryObject  The query Object
      * @param {number} queryObject.indicator The id of the indicator
@@ -272,6 +268,9 @@ export default {
   mounted() {
     this.updateData += 1;
     this.populateTableData();
+    this.showTableRelatedIndicator = this.getConfigObject().showTableRelatedIndicator !== undefined
+      ? this.getConfigObject().showTableRelatedIndicator
+      : true;
   },
 };
 </script>

@@ -2,11 +2,6 @@
   <div>
     <MSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
-      :showTableRelatedIndicator="
-        configObject.showTableRelatedIndicator != undefined
-          ? configObject.showTableRelatedIndicator
-          : true
-      "
     />
     <AdvanceMSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"

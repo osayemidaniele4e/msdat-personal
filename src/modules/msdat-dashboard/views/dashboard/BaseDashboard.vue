@@ -176,7 +176,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex';
 import {
   BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
@@ -282,12 +282,12 @@ export default {
   },
 
   async created() {
-    this.indicators = this.$store.state.MSDAT_STORE.configObject.indicators;
-    this.dataSources = this.$store.state.MSDAT_STORE.configObject.dataSources;
-    this.defaultIndicators = this.$store.state.MSDAT_STORE.configObject.defaultIndicators;
-    this.initialIndicator = this.$store.state.MSDAT_STORE.configObject.initialIndicator;
-    this.initialDataSource = this.$store.state.MSDAT_STORE.configObject.initialDataSource;
-    this.initialLocation = this.$store.state.MSDAT_STORE.configObject.initialLocation;
+    this.indicators = this.getConfigObject().indicators;
+    this.dataSources = this.getConfigObject().dataSources;
+    this.defaultIndicators = this.getConfigObject().defaultIndicators;
+    this.initialIndicator = this.getConfigObject().initialIndicator;
+    this.initialDataSource = this.getConfigObject().initialDataSource;
+    this.initialLocation = this.getConfigObject().initialLocation;
     window.addEventListener('resize', this.onResize);
 
     // checking if in Mobile view
@@ -307,6 +307,7 @@ export default {
 
   methods: {
     ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
