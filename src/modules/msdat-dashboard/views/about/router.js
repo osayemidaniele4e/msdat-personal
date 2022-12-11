@@ -1,6 +1,6 @@
 import Middleware from '@/modules/auth/middleware/route-guard';
 import index from './index.vue';
-import dashboard from './userActivity.vue';
+import sidenavVue from './sidenav.vue';
 
 export default [
   {
@@ -9,9 +9,9 @@ export default [
     component: index,
   },
   {
-    path: '/userHistory',
-    name: 'Dashboard',
-    component: dashboard,
+    path: '/account',
+    name: 'Account',
+    component: sidenavVue,
     meta: {
       middleware: Middleware,
     },
