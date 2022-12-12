@@ -1,24 +1,7 @@
 <template>
   <div>
-    <Header />
-    <div class="title text-center border-0">
-      <h3 class="mt-2">Account Settings</h3>
-    </div>
     <div class="row">
-      <div class="side-list mt-5 col-md-2">
-        <!-- <ul> -->
-        <button type="button">
-          <b-icon-person-circle></b-icon-person-circle>&nbsp;&nbsp;Profile >
-        </button>
-        <button type="button">
-          <b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp;Notifications
-        </button>
-        <button type="button">
-          <b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp;Activity History
-        </button>
-        <!-- </ul> -->
-      </div>
-      <div class="col-md-10 mt-3 border-left">
+      <div class="col-md-10 mt-3 ml-4">
         <div class="d-flex">
           <img src="./assets/analytics.png" height="33px" width="33px" />
           <h4 class="ml-2 mt-2">Dashboard History</h4>
@@ -50,7 +33,6 @@
         </div>
       </div>
     </div>
-    <Footer />
   </div>
 </template>
 
@@ -58,14 +40,10 @@
 import { mapActions, mapGetters } from 'vuex';
 import Pagination from 'vue-pagination-2';
 import moment from 'moment';
-import Header from './layout/theHeader.vue';
-import Footer from './layout/theFooter.vue';
 
 export default {
   name: 'Dashboard',
   components: {
-    Header,
-    Footer,
     Pagination,
   },
   data() {
