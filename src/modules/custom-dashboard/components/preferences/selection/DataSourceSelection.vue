@@ -106,6 +106,7 @@ export default {
     // below function is excuted when datasource are selected
     selectSource(e, parentValue, childId, childName) {
       this.DataSourceSelected = e.target.checked;
+      console.log(this.DataSourceSelected, 'ischecked');
       this.showList = e.target.checked;
       this.$store.dispatch('forSelectedDataSource', {
         checked: this.DataSourceSelected,

@@ -25,6 +25,7 @@
               :checked="isSelected(value)"
               @click="selectedComponent($event, value.fieldName)"
             />
+            <!-- //:checked="isSelected(value)"/> -->
             <label for="dashboard" class="fields">{{ value.fieldName }}</label>
           </div>
           <p style="width: 100%; font-family: Work Sans; font-size: 14px">
@@ -38,6 +39,9 @@
         <div class="dragable-list">
           <dragable-list />
           <b-row align-h="center" class="mt-3 text-right">
+            <!-- <b-col class="align-baseline" cols="auto"
+              ><p class="baseline">Save for Later</p>
+            </b-col> -->
             <b-col cols="auto"
               ><b-button
                 @click="approveData"
@@ -113,15 +117,11 @@ export default {
         this.$swal('Dashboard name not provided');
         return;
       }
-      const cDashboard = true;
-      this.$store.dispatch('customDashboard', cDashboard);
+      this.$store.dispatch('customDashboard', true);
       const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
       this.$router.push({
         path: `/dashboard/${t}`,
         component: () => import('../../dynamic_dashboard/index.vue'),
-        // params: {
-        //   name: this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase(),
-        // },
       });
     },
 

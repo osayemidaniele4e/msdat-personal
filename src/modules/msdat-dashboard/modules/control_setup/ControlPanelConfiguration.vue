@@ -50,6 +50,9 @@ export default {
     async getAvailableDataSources() {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
+    async getAvailableDataIndicators() {
+      return this.setIndicatorDropdown(this.payload?.indicator?.id);
+    },
   },
   watch: {
     // get latest available years when indicator , datasource or location are changed

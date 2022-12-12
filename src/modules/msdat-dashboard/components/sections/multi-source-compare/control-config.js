@@ -3,7 +3,6 @@ const indicatorSetConfig = [
     type: 'dropdown',
     class: ['col-md-12'],
     dropdownProps: {
-      // multiple: true,
       'group-values': 'indicators',
       'group-label': 'program_area',
       label: 'full_name',
@@ -28,16 +27,86 @@ const indicatorSetConfig = [
     },
     options: [],
   },
-  // {
-  //   class: ['col-md-4'],
-  //   type: 'dropdown',
-  //   label: 'location',
-  //   key: 'location',
-  //   dropdownProps: {
-  //     label: 'name',
-  //   },
-  //   options: [],
-  // },
+  {
+    class: ['col-md-4'],
+    type: 'dropdown',
+    label: 'Year',
+    key: 'year',
+    options: [],
+    dropdownProps: {
+      'preselect-first': true,
+    },
+  },
+];
+const indicatorSetConfig2 = [
+  {
+    type: 'dropdown',
+    class: ['col-md-12'],
+    dropdownProps: {
+      'group-values': 'indicators',
+      'group-label': 'program_area',
+      label: 'full_name',
+    },
+    label: 'indicator(s)',
+    key: 'indicator',
+    options: [],
+  },
+  {
+    class: ['col-md-12'],
+    type: 'visualization',
+    label: 'select visualizations',
+    key: 'visualization',
+  },
+  {
+    class: ['col-md-4'],
+    type: 'dropdown',
+    label: 'data Source',
+    key: 'datasource',
+    dropdownProps: {
+      label: 'datasource',
+    },
+    options: [],
+  },
+  {
+    class: ['col-md-4'],
+    type: 'dropdown',
+    label: 'Year',
+    key: 'year',
+    options: [],
+    dropdownProps: {
+      'preselect-first': true,
+    },
+  },
+];
+const indicatorSetConfig3 = [
+  {
+    type: 'dropdown',
+    class: ['col-md-12'],
+    dropdownProps: {
+      'group-values': 'indicators',
+      'group-label': 'program_area',
+      label: 'full_name',
+    },
+    label: 'indicator(s)',
+    key: 'indicator',
+    options: [],
+  },
+  {
+    class: ['col-md-12'],
+    type: 'visualization',
+    label: 'select visualizations',
+    key: 'visualization',
+  },
+  {
+    class: ['col-md-4'],
+    type: 'dropdown',
+    label: 'data Source',
+    key: 'datasource',
+    dropdownProps: {
+      label: 'datasource',
+    },
+    options: [],
+  },
   {
     class: ['col-md-4'],
     type: 'dropdown',
@@ -66,16 +135,6 @@ const payload = {
 export default {
   label: 'Multi-Source comparison',
   grouped: true,
-  setup: [[...indicatorSetConfig], [...indicatorSetConfig], [...indicatorSetConfig]],
+  setup: [[...indicatorSetConfig], [...indicatorSetConfig2], [...indicatorSetConfig3]],
   payload: [{ ...payload }, { ...payload }, { ...payload }],
-
-  // const arr = [
-  //   ...(trueCondition ? ["dog"] : []),
-  //   ...(falseCondition ? ["cat"] : [])
-  // ];
-
-  // from moses
-  // setup: [[...indicatorSetConfig]],
-  // payload: [{ ...payload }],
-
 };

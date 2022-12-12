@@ -33,6 +33,7 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
+import VueCookies from 'vue-cookies';
 import moment from 'moment';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
@@ -107,6 +108,8 @@ export default {
      */
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
       this.isCustom = true;
+      sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
+      sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
@@ -133,7 +136,7 @@ export default {
         return element;
       });
       // * create the config object
-      this.configObject = {
+      const formattedConfig = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
           .replace(/\s+/g, '_')
           .toLowerCase(),
@@ -141,21 +144,30 @@ export default {
           .replace(/\s+/g, '_')
           .toLowerCase(),
         indicators: ids,
-        defaultIndicators: [7, 6, 5],
+        defaultIndicators: ids.slice(0, 3),
         dataSources: sourcesID,
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
-        showTableRelatedIndicator: false,
       };
+      VueCookies.set('customDashboardConfig', formattedConfig);
+      const getFormattedConfig = VueCookies.get('customDashboardConfig');
+      this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
+      localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
+      localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
       return;
     }
+    // if it is not custom dashboard for safety reasons set it to false
+    localStorage.setItem('customDashboardStatus', JSON.stringify(false));
     // =======================
     /**
      * @author davebenard
      * @description check the route params if it is advanced analytics then fetch from the config file
      */
     if (name === 'Advanced_Analytics') {
+      this.$store.dispatch('customDashboard', false);
+      this.$store.dispatch('resetState');
+      localStorage.removeItem('vuex');
       const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
       if (dashboard === undefined) {
         this.$router.push('/*');
@@ -172,41 +184,42 @@ export default {
      * @description get dashboard config based on route name from the msdat api
      * @author sami56
      */
-    try {
-      this.loading = true;
-      this.$store.dispatch('customDashboard', false);
-      this.$store.dispatch('resetState');
-      localStorage.removeItem('vuex');
-      // ============
-      const response = await apiServices.getDashboard();
-      const { results } = response.data;
-      const dashboard = results.find((item) => item.name === name);
-      console.log(dashboard, 'dashboard');
-      if (dashboard === undefined) {
-        this.$router.push('/*');
-        return;
+    if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
+      try {
+        this.loading = true;
+        this.$store.dispatch('customDashboard', false);
+        this.$store.dispatch('resetState');
+        localStorage.removeItem('vuex');
+        // ============
+        const response = await apiServices.getDashboard();
+        const { results } = response.data;
+        const dashboard = results.find((item) => item?.name === name);
+        if (dashboard === undefined) {
+          this.$router.push('/*');
+          return;
+        }
+        this.configObject = '';
+        this.configObject = {
+          name: dashboard.name,
+          title: dashboard.title,
+          indicators: dashboard.indicators,
+          defaultIndicators: dashboard.defaultIndicators,
+          dataSources: dashboard.dataSources,
+          initialIndicator: dashboard.initialIndicator,
+          initialDataSource: dashboard.initialDataSource,
+          initialLocation: dashboard.initialLocation,
+          showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
+        };
+        this.isAdvanced = false;
+      } catch (err) {
+        console.log(
+          err,
+          '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
+          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
+        );
+      } finally {
+        this.loading = false;
       }
-      this.configObject = '';
-      this.configObject = {
-        name: dashboard.name,
-        title: dashboard.title,
-        indicators: dashboard.indicators,
-        defaultIndicators: dashboard.defaultIndicators,
-        dataSources: dashboard.dataSources,
-        initialIndicator: dashboard.initialIndicator,
-        initialDataSource: dashboard.initialDataSource,
-        initialLocation: dashboard.initialLocation,
-        showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
-      };
-      this.isAdvanced = false;
-    } catch (err) {
-      console.log(
-        err,
-        '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
-        'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
-      );
-    } finally {
-      this.loading = false;
     }
     // =======================
     // set the title from the config as the route title

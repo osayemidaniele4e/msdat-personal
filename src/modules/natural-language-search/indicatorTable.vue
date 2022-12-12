@@ -1,29 +1,37 @@
 <template>
-  <div class="container-fluid d-flex align-items-center justify-content-center h-75">
-    <table style="width: 75%" class="table table-light shadow h-20">
-      <thead class="thead-dark" style="position: sticky; top: 0">
+  <div
+    class="
+      container-fluid
+      d-flex
+      align-items-center
+      justify-content-center
+    "
+  >
+    <table
+      class="table table-light shadow table-bordered"
+    >
+      <thead class="thead-dark">
         <tr>
           <th scope="col">S/N</th>
           <th scope="col">INDICATORS</th>
           <th scope="col">SOURCE</th>
-          <th scope="col">VALUE</th>
+          <th scope="col">VALUES</th>
         </tr>
       </thead>
-      <tbody v-for='(el, i) in dataArray' :key="i">
-        <pre>{{el.dataSources}}</pre>
-        <tr>
-          <th scope="row">{{i + 1}}</th>
-          <!-- :rowspan="el.dataSources?.length + 1" -->
-          <td >{{el.indicator}}</td>
+      <tbody v-for="(el, i) in dataArray" :key="i">
+        <tr class="">
+          <th scope="row" :rowspan="100">{{ i + 1 }}</th>
+          <th scope='row' :rowspan="100">{{ el.indicator }}</th>
         </tr>
-        <tr v-for="et in loop(el.dataSources)" :key='et'>
-          <pre>{{et}}</pre>
-          <td>{{et.datasource}}</td>
-          <td>{{et.value}} %</td>
+        <tr v-for="(ef, j) in el.datasourceArr" :key="j">
+          <td scope="col" :colspan="100">
+            <div class='d-flex justify-content-around' v-for="(ed, m) in ef.dataValues" :key="m">
+              <td class=""> <span>{{ ef.datasourceName }}</span>  {{ ed.period }}</td>
+              <td>{{ ed.value }} %</td>
+            </div>
+          </td>
         </tr>
       </tbody>
-
-      <tbody></tbody>
     </table>
   </div>
 </template>
@@ -31,14 +39,12 @@
 <script>
 export default {
   name: 'IndicatorTable',
+  data() {
+    return {};
+  },
   props: {
     dataArray: Array,
   },
-  methods: {
-    loop(datasource) {
-      return datasource;
-    },
-  },
+  methods: {},
 };
-
 </script>
