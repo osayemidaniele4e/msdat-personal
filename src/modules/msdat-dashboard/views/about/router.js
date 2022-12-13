@@ -10,7 +10,7 @@ export default [
   },
   {
     path: '/account',
-    name: 'Account',
+    name: 'Sidenav',
     component: sidenavVue,
     meta: {
       middleware: Middleware,

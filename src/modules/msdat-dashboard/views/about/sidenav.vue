@@ -67,6 +67,10 @@ h3 {
   font-weight: bold;
 }
 
+.item{
+  color: black !important;
+}
+
 .item:hover{
     text-decoration: none;
 }
