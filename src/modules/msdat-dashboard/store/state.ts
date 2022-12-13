@@ -4,17 +4,17 @@ import { MutationTree } from 'vuex';
 import { State, ControlPanelConfig } from '../types/index';
 
 type setOptionsPayload = {
-  panelIndex: number,
-  groupIndex: number,
-  key: string,
-  values: [] | string | number,
-}
+  panelIndex: number;
+  groupIndex: number;
+  key: string;
+  values: [] | string | number;
+};
 type setPayload = {
-  controlIndex: number,
-  groupIndex: number,
-  key: string,
-  value: [] | string | number,
-}
+  controlIndex: number;
+  groupIndex: number;
+  key: string;
+  value: [] | string | number;
+};
 
 const state: State = {
   // ***** Auther: Ghufran Ahmed
@@ -31,6 +31,7 @@ const state: State = {
     year: null,
   },
   controlConfig: [],
+  selectedConfigurations: null,
 };
 
 export default state;
