@@ -358,6 +358,7 @@ export default {
     getConnectionStatus(e) {
       const { type } = e;
       if (type === 'online') {
+        this.$store.dispatch('setInternetStatus', true);
         Vue.swal({
           toast: true,
           position: 'bottom',
@@ -367,6 +368,7 @@ export default {
           title: 'Connection Restored',
         });
       } else {
+        this.$store.dispatch('setInternetStatus', false);
         Vue.swal({
           toast: true,
           position: 'bottom',

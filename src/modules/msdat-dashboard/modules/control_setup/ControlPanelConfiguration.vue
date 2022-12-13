@@ -9,6 +9,7 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
 import VueCookies from 'vue-cookies';
+import moment from 'moment';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
@@ -31,6 +32,7 @@ export default {
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
+    ...mapGetters(['getInternetStatus']),
     payload() {
       if (this.groupIndex != null) {
         return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
@@ -40,12 +42,16 @@ export default {
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
   },
+  created() {
+    const interactions = JSON.parse(VueCookies.get('user_interactions'));
+    if (interactions.length <= 10) {
+      this.interactions = interactions || [];
+    }
+  },
   mounted() {
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
     });
-    const interactions = VueCookies.get('user_interactions');
-    console.log('interaction', interactions);
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
@@ -68,29 +74,24 @@ export default {
       const { data } = await apiServices.getDashboard();
       this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
       // this.interactions = [];
-      const a = {
+      const interaction = {
         year: this.payload.year,
         user: this.getUser.id,
-        dashboard: 2,
+        dashboard: this.dashboard.id,
         section: this.controlIndex + 1,
         indicator: this.payload.indicator.id,
         datasource: this.payload.datasource.id,
         location: this.payload.location.id,
+        DateTime: moment().format('MMMM DD, YYYY [at] hh:mma'),
       };
-      this.interactions.push(a);
-      console.log('interac', this.interactions);
-      VueCookies.set('user_interactions', this.interactions);
-      // if (this.isAuthenticated === true) {
-      //   await this.SET_INTERACTIONS({
-      //     year: this.payload.year,
-      //     user: this.getUser.id,
-      //     dashboard: this.dashboard.id,
-      //     section: this.controlIndex + 1,
-      //     indicator: this.payload.indicator.id,
-      //     datasource: this.payload.datasource.id,
-      //     location: this.payload.location.id,
-      //   });
-      // }
+      this.interactions.push(interaction);
+      VueCookies.set('user_interactions', JSON.stringify(this.interactions));
+      const interactions = JSON.parse(VueCookies.get('user_interactions'));
+      if (this.isAuthenticated === true && interactions.length === 10 && this.getInternetStatus === true) {
+        interactions.forEach(async (el) => {
+          await this.SET_INTERACTIONS(el);
+        });
+      }
     },
   },
   watch: {
@@ -113,7 +114,6 @@ export default {
             values: availableDS,
           });
         }
-        this.setInteractions();
       },
     },
     'payload.datasource': {
@@ -140,6 +140,7 @@ export default {
             values: availableIndicator,
           });
         }
+        this.setInteractions();
       },
     },
     'payload.location': {
