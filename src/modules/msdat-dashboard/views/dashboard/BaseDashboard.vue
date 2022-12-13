@@ -351,7 +351,6 @@ export default {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('wheel', this.handleScroll);
   },
-
   methods: {
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {

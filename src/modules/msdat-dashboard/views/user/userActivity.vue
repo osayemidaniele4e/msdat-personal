@@ -4,13 +4,13 @@
       <div class="col-md-10 mt-3 ml-4">
         <div class="d-flex">
           <img src="./assets/analytics.png" height="33px" width="33px" />
-          <h4 class="ml-2 mt-2">Dashboard History</h4>
+          <h4 class="mt-2">Dashboard History</h4>
         </div>
         <div class="activity mt-3 mb-5">
           <div class="mb-3">
             <span class="month" style="font-size: 16px">December 2022</span>
           </div>
-          <div class="row content" v-for="el in getInteractions" :key="el.id">
+          <div class="row content" v-for="el in records" :key="el.id">
             <div class="col-md-3">
               <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
             </div>
@@ -51,6 +51,7 @@ export default {
       perPage: 10,
       currentPage: 1,
       records: [],
+      groupedData: [],
     };
   },
   computed: {
@@ -119,7 +120,7 @@ h4 {
   font-size: 20px;
 }
 .content{
-  font-size: 14px;
+  font-size: 12px;
 }
 .del {
   cursor: pointer;

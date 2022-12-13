@@ -59,8 +59,6 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
-      // showSidebar: true,
-      logged: false,
       username: '',
       password: '',
     };
@@ -78,17 +76,28 @@ export default {
             // console.log(res);
             // eslint-disable-next-line eqeqeq
             if (res.status == 200) {
-              // this.$refs.mysidebar.hide();
-              this.$swal('Welcome to your Dashboard');
-              this.logged = true;
-              // this.$router.push({ path: '/my-dashboard/details' });
-            } else {
-              this.$swal('something went wrong, confirm username and password');
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
             }
           })
           .catch((err) => {
             console.log(err);
-            this.$swal('confirm username and password');
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Confirm username and password',
+            });
           });
       } catch (err) {
         this.isLoading = false;

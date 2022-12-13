@@ -14,16 +14,16 @@
         <component :is="currentView" />
        </div>
      </div>
-     <Footer/>
+     <Footer />
     </div>
    </template>
 
 <script>
+import Header from '@/modules/msdat-dashboard/views/about/layout/theHeader.vue';
+import Footer from '@/modules/msdat-dashboard/views/about/layout/theFooter.vue';
 import Profile from './profile.vue';
 import Notification from './notifications.vue';
 import userActivity from './userActivity.vue';
-import Header from './layout/theHeader.vue';
-import Footer from './layout/theFooter.vue';
 
 const routes = {
   '/profile': Profile,
@@ -69,5 +69,8 @@ h3 {
 
 .item:hover{
     text-decoration: none;
+}
+a{
+  color: #000 !important;
 }
 </style>

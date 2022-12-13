@@ -8,11 +8,17 @@
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
+import VueCookies from 'vue-cookies';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
   name: 'ControlPanelConfiguration',
   mixins: [controlSetup],
+  data() {
+    return {
+      interactions: [],
+    };
+  },
   props: {
     controlIndex: {
       type: Number,
@@ -38,6 +44,8 @@ export default {
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
     });
+    const interactions = VueCookies.get('user_interactions');
+    console.log('interaction', interactions);
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
@@ -59,17 +67,30 @@ export default {
     async setInteractions() {
       const { data } = await apiServices.getDashboard();
       this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
-      if (this.isAuthenticated === true) {
-        await this.SET_INTERACTIONS({
-          year: this.payload.year,
-          user: this.getUser.id,
-          dashboard: this.dashboard.id,
-          section: this.controlIndex + 1,
-          indicator: this.payload.indicator.id,
-          datasource: this.payload.datasource.id,
-          location: this.payload.location.id,
-        });
-      }
+      // this.interactions = [];
+      const a = {
+        year: this.payload.year,
+        user: this.getUser.id,
+        dashboard: 2,
+        section: this.controlIndex + 1,
+        indicator: this.payload.indicator.id,
+        datasource: this.payload.datasource.id,
+        location: this.payload.location.id,
+      };
+      this.interactions.push(a);
+      console.log('interac', this.interactions);
+      VueCookies.set('user_interactions', this.interactions);
+      // if (this.isAuthenticated === true) {
+      //   await this.SET_INTERACTIONS({
+      //     year: this.payload.year,
+      //     user: this.getUser.id,
+      //     dashboard: this.dashboard.id,
+      //     section: this.controlIndex + 1,
+      //     indicator: this.payload.indicator.id,
+      //     datasource: this.payload.datasource.id,
+      //     location: this.payload.location.id,
+      //   });
+      // }
     },
   },
   watch: {
@@ -91,8 +112,8 @@ export default {
             key: 'datasource',
             values: availableDS,
           });
-          // console.log('payload', this.payload.indicator.id, this.payload.datasource.id, this.payload.location.id, this.payload.year);
         }
+        this.setInteractions();
       },
     },
     'payload.datasource': {
@@ -119,7 +140,6 @@ export default {
             values: availableIndicator,
           });
         }
-        this.setInteractions();
       },
     },
     'payload.location': {
