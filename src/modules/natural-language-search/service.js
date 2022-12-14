@@ -18,6 +18,7 @@ const getYearsByIndicatorId = async (id) => {
     return data.results;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 
