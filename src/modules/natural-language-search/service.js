@@ -9,4 +9,47 @@ const getIndicators = async ({ search }) => {
     console.log(err);
   }
 };
-export default { getIndicators };
+
+const getYearsByIndicatorId = async (id) => {
+  try {
+    const { data } = await axiosInstance.get(
+      `indicator_years_available/?indicator=${id}&size=3&ordering=-updated_at/`,
+    );
+    return data.results;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getDataSourceById = async (id) => {
+  try {
+    const { data } = await axiosInstance.get(`/datasources/${id}/`);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getLocationById = async (id) => {
+  try {
+    const { data } = await axiosInstance.get(`/location/${id}/`);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getDataByQuery = async (indicatorId, dataSourceId, period) => {
+  try {
+    const { data } = await axiosInstance.get(
+      `data/?indicator=${indicatorId}&datasource=${dataSourceId}&period=${period}`,
+    );
+    return data.results;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export default {
+  getIndicators, getYearsByIndicatorId, getDataSourceById, getLocationById, getDataByQuery,
+};

@@ -1,13 +1,11 @@
 <template>
   <section class="charts w-100">
-  <pre>{{ optionsArray[0] }}</pre>
     <BarChart
       ref="BaseChart"
-      :title="'Hi Chisom'"
+      :title="details[0]"
       :chartOptions="options"
       class="barchart"
     />
-    <!-- <highcharts :options="options" class='shadow' ref="barChart"></highcharts> -->
   </section>
 </template>
 
@@ -20,6 +18,11 @@ export default {
   },
   props: {
     optionsArray: Array,
+    details: {
+      type: Array,
+      default: () => ['dataSource', 'indicator', '2016'],
+      required: true,
+    },
   },
   data() {
     return {
@@ -55,9 +58,9 @@ export default {
       //   legend: {
       //     enabled: false,
       //   },
-      //   tooltip: {
-      //     pointFormat: 'Value: <b>{point.y:.1f} %</b>',
-      //   },
+      // tooltip: {
+      //   pointFormat: 'Value: <b>{point.y:.1f} %</b>',
+      // },
       //   series: [{
       //     name: 'Values',
       //     color: '#98fb98',
@@ -83,19 +86,31 @@ export default {
     this.options = {
       chart: {
         type: 'column',
-        zoomType: 'xy',
+      },
+      plotOptions: {
+        column: {
+          dataLabels: {
+            enabled: true,
+          },
+        },
       },
       yAxis: {
-        gridLineWidth: 0,
         title: {
-          text: 'Values',
+          text: `${this.details[0]} - ${this.details[2]}`, // datasource - year
           style: {
             fontSize: '13px',
             fontFamily: '"Work Sans", sans-serif',
           },
         },
       },
-      series: this.optionsArray,
+      series: [{
+        color: '#98fb98',
+        name: this.details[1],
+        data: this.optionsArray,
+        dataLabels: {
+          enabled: true,
+        },
+      }],
     };
   },
 };

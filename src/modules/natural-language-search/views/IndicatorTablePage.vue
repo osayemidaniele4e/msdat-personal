@@ -34,9 +34,9 @@
 
 <script>
 import axiosInstance from '@/plugins/axios';
-import { uniq, uniqBy } from 'lodash';
+import { uniq } from 'lodash';
 import IndicatorTable from '../components/indicatorTable.vue';
-import Services from '../service';
+import Services from '../Service';
 
 export default {
   name: 'IndicatorSearch',
