@@ -11,10 +11,7 @@
       "
     >
       <h4 class="mb-3">MSDAT Intelligent Indicator Search</h4>
-      <form
-        class="input-group w-75 shadow"
-        @submit.prevent="handleSearch"
-      >
+      <form class="input-group w-75 shadow" @submit.prevent="handleSearch">
         <input
           v-model="search"
           type="text"
@@ -30,15 +27,14 @@
       class="container d-flex align-items-center justify-content-center"
       style="height: 60vh; width: 100%"
     >
-      <Barchart :optionsArray="options" />
+      <Barchart :optionsArray="dataArray" />
     </div>
   </div>
 </template>
 
 <script>
 import axiosInstance from '@/plugins/axios';
-import { uniq, uniqBy } from 'lodash';
-import IndicatorTable from '../components/indicatorTable.vue';
+import { uniq } from 'lodash';
 import Barchart from '../components/Barchart.vue';
 import Services from '../service';
 
@@ -58,96 +54,55 @@ export default {
   methods: {
     // eslint-disable-next-line consistent-return
     async handleSearch() {
-      let datasourceArr = [];
       const newArray = [];
-      const newSourceArray = [];
       if (this.search.length > 3) {
         try {
           // step 1: Get the ai indicator
           this.indicators = await Services.getIndicators({
             search: this.search,
           });
-          console.log(this.indicators, 'this.indicators');
-          // step 2: get the datasources and their values using the id in the data object
-          this.indicators.map(async (el) => {
-            // console.log(el, 'el');
-            datasourceArr = await Promise.all(
-              el.datasources.map(async (ds) => {
-                const { data } = await axiosInstance.get(`/datasources/${ds}`);
-                return data;
-              }),
-            );
-            newArray.push({
-              indicatorId: el.id,
-              indicator: el.full_name,
-              datasourceArr: await datasourceArr,
-            });
-            // console.log(newArray, 'newArray');
-            const SourceValue = await newArray.map(async (newarr) => {
-              // console.log(newarr, 'newArr');
-              const sources = await Promise.all(
-                newarr.datasourceArr.map(async (dataArr, k) => {
-                  const { data } = await axiosInstance.get(
-                    `/data/?datasource=${dataArr.id}&location=1&indicator=${newarr.indicatorId}`,
-                  );
-                  const dataValues = await data.results;
-                  console.log(dataValues, 'dataarrk');
-                  const locationArray = await Promise.all(
-                    dataValues.map(async (locationArr) => {
-                      const locations = await axiosInstance.get(
-                        `/location/${locationArr.location}`,
-                      );
-                      return [
-                        locations.data.name,
-                        parseFloat(locationArr.value),
-                      ];
-                    }),
-                  );
-                  const stateArray = await locationArray;
-                  // console.log(stateArray, 'location');
-                  this.options = await stateArray;
-                  // console.log(this.options, 'val options');
-                  return { dataValues, datasourceName: dataArr.datasource };
-                }),
-              );
-              newSourceArray.push({
-                indicatorId: newarr.indicatorId,
-                indicator: newarr.indicator,
-                datasourceArr: await sources,
-              });
-              // console.log(newSourceArray, 'dataarr');
-              this.dataArray = await newSourceArray;
-              console.log(this.dataArray, 'dataArray');
-              return newSourceArray;
-            });
-            // console.log(SourceValue, 'newArray');
-          });
+          // console.log(this.indicators, 'this.indicators');
+          const indicatoryears = await axiosInstance.get(
+            `https://msdat-api.fmohconnect.gov.ng/api/indicator_years_available/?indicator=${this.indicators[0].id}&size=3&ordering=-updated_at`,
+          );
+          // console.log(indicatoryears.data.results, 'indicatoryears');
+
+          const datasourceArr = await Promise.all(
+            this.indicators[0].datasources.map(async (ds) => {
+              const { data } = await axiosInstance.get(`/datasources/${ds}`);
+              return data;
+            }),
+          );
+
+          // step 3: get the latest years
+          const years = indicatoryears.data.results.map((el) => el.year);
+          const uniqYears = uniq(years?.map((el) => el.split('-')[0]));
+          const checkUniqYears = uniqYears.map((el) => (el?.split(' ')?.length > 1 ? el?.split(' ')[1] : el?.split(' ')[0]));
+          // sort the checkUniqYears
+          const sortedYears = checkUniqYears.sort((a, b) => a - b);
+
+          // STEP 4: using the datasource array get the values for the indicators by year and datasource
+          const datavalues = Promise.all(datasourceArr.map(async (el) => {
+            await Promise.all(sortedYears.map(async (et) => {
+              const { data } = await axiosInstance.get(`https://msdat-api.fmohconnect.gov.ng/api/data/?indicator=${this.indicators[0].id}&datasource=${el.id}&period=${et}`);
+              // console.log(data, 'data');
+              const getLocation = Promise.all(data.results.map(async (ef) => {
+                // console.log(ef, 'ef');
+                const locdata = await axiosInstance.get(`https://msdat-api.fmohconnect.gov.ng/api/location/${ef.location}`);
+                // console.log(locdata.data, 'locdata');
+                if (locdata.data.level === 3) {
+                  newArray.push([locdata.data.name, Number(ef.value)]);
+                  this.dataArray = await newArray;
+                  console.log(newArray, 'dataarray');
+                // return this.dataArray;
+                }
+                return [ef.value, locdata.name];
+              }));
+            }));
+          }));
         } catch (err) {
           console.log(err);
         }
-      }
-    },
-    async getIndicatorsByPeriod() {
-      try {
-        const indicatorArr = await Services.getIndicators({
-          search: this.search,
-        });
-        console.log(indicatorArr);
-        const indicatoryears = await axiosInstance.get(
-          `https://msdat-api.fmohconnect.gov.ng/api/indicator_years_available/?indicator=${indicatorArr[0].id}&size=3&ordering=-updated_at`,
-        );
-        console.log(indicatoryears.data.results, 'indicatoryears');
-        const years = indicatoryears.data.results.map((el) => el.year);
-        const uniqYears = uniq(years?.map((el) => el.split('-')[0]));
-        const checkUniqYears = uniqYears.map((el) => (el?.split(' ')?.length > 1
-          ? el?.split(' ')[1]
-          : el?.split(' ')[0]));
-        // sort the checkUniqYears
-        const sortedYears = checkUniqYears.sort((a, b) => a - b);
-        console.log(sortedYears, 'sorted');
-        return sortedYears;
-      } catch (err) {
-        console.log(err);
       }
     },
   },

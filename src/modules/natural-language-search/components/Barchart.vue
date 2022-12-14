@@ -95,7 +95,7 @@ export default {
           },
         },
       },
-      series: this.optionsArray[0],
+      series: this.optionsArray,
     };
   },
 };

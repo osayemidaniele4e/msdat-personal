@@ -1,1 +1,4 @@
-query period by indicator:- https://msdat-api.fmohconnect.gov.ng/api/indicator_years_available/?indicator=7&size=2&ordering=-updated_at
+query period by indicator: https://msdat-api.fmohconnect.gov.ng/api/indicator_years_available/?indicator=7&size=2&ordering=-updated_at
+qurey location data: https://msdat-api.fmohconnect.gov.ng/api/data/?indicator=7&datasource=1&period=2011
+get location name : https://msdat-api.fmohconnect.gov.ng/api/location/
+if level is !== 3 dont show
