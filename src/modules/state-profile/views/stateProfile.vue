@@ -21,7 +21,7 @@
         <div class="body">
           <button class="social">
             <a
-              href="https://www.linkedin.com/shareArticle?mini=true&url=http://208.87.128.190:7070/health-profiles/"
+              :href="`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`"
               target="_blank"
             >
               <img
@@ -33,15 +33,14 @@
           </button>
           <button class="social">
             <a
-              href="mailto:info@example.com?&subject=&cc=&bcc=&body=http://208.87.128.190:7070/health-profiles/%0A"
-              target="_blank"
+              :href="`mailto:info@mail.com?subject=${shareText}&body=${shareUrl}`"
             >
               <img class="img-fluid" src="@/assets/state-profile/img/email.png" alt="email-icon" />
             </a>
           </button>
           <button class="social">
             <a
-              href="https://www.facebook.com/sharer/sharer.php?u=http://208.87.128.190:7070/health-profiles/"
+              :href="`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`"
               target="_blank"
             >
               <img
@@ -53,7 +52,7 @@
           </button>
           <button class="social">
             <a
-              href="https://twitter.com/intent/tweet?url=http://208.87.128.190:7070/health-profiles/&text="
+              :href="`https://twitter.com/intent/tweet?url=${shareUrl}&text=`"
               target="_blank"
             >
               <img
@@ -564,9 +563,13 @@ export default {
           ],
         },
       ],
+      shareUrl: '',
+      shareText: 'Health Profile Dashboard',
     };
   },
-  created() {},
+  created() {
+    this.shareUrl = window.location.href;
+  },
   computed: {
     ...mapState([]),
     states() {
@@ -612,7 +615,7 @@ export default {
       // });
     },
     copyTheLink() {
-      navigator.clipboard.writeText('http://208.87.128.190:7070/health-profiles/');
+      navigator.clipboard.writeText(this.shareUrl);
       this.copyText = 'Link Copied!';
     },
     toggleShareModal() {
@@ -700,7 +703,8 @@ export default {
     }
   }
 }
-.state-select, .state-select:hover {
+.state-select,
+.state-select:hover {
   color: #3a3a3a;
 }
 .print-button {

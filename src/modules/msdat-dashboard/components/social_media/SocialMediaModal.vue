@@ -144,7 +144,7 @@ export default {
     },
     shareViaEmail() {
       console.log(
-        `mailto:${this.email}?subject=${this.shareText}d&body=${this.shareURL}`,
+        `mailto:${this.email}?subject=${this.shareText}&body=${this.shareURL}`,
       );
       window.location = `mailto:${this.email}?subject=${this.shareText}d&body=${this.shareURL}`;
     },
