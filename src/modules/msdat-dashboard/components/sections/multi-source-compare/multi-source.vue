@@ -239,7 +239,7 @@ export default {
           this.chartObject = this.formatToHighChartOptionForLine(
             formattedData,
             this.visualization,
-            value
+            value,
           );
         }
         this.loading = false;
@@ -262,7 +262,7 @@ export default {
     this.chartObject = this.formatToHighChartOptionForLine(
       formattedData,
       this.visualization,
-      this.values
+      this.values,
     );
 
     this.loading = false;

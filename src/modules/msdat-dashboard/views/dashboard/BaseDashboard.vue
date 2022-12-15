@@ -177,7 +177,9 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex';
-import { BasePanel, ControlBase, ControlPanel, SelectDropdown } from '@/components/ControlPanel';
+import {
+  BasePanel, ControlBase, ControlPanel, SelectDropdown,
+} from '@/components/ControlPanel';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 import formatter from '../../mixins/formatter';
@@ -367,8 +369,8 @@ export default {
       // Condition to check if scrolling is required
       if (
         !(
-          (scrollPos === 0 || scrollPixels > 0) &&
-          (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+          (scrollPos === 0 || scrollPixels > 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
@@ -477,7 +479,7 @@ export default {
           console.log(
             err,
             '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Base Dashboard Component, \n\n \r\r',
-            'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem'
+            'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
           );
         }
       }

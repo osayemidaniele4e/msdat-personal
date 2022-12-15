@@ -1,10 +1,6 @@
 const getters = {
-  getConfigObject: (state) => {
-    return state.configObject;
-  },
-  getSelectedConfig: (state) => {
-    return state.selectedConfigurations;
-  },
+  getConfigObject: (state) => state.configObject,
+  getSelectedConfig: (state) => state.selectedConfigurations,
 };
 
 export default getters;
