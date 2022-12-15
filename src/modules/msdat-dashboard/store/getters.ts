@@ -1,7 +1,5 @@
 const getters = {
-  getConfigObject: (state) => {
-    return state.configObject;
-  },
+  getConfigObject: (state) => state.configObject,
 };
 
 export default getters;
