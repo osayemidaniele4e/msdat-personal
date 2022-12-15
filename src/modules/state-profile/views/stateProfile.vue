@@ -614,9 +614,25 @@ export default {
       //   },
       // });
     },
-    copyTheLink() {
-      navigator.clipboard.writeText(this.shareUrl);
-      this.copyText = 'Link Copied!';
+    // async copyTheLink() {
+    //   // await navigator.clipboard.writeText(this.shareUrl);
+    //   const Url = document.getElementById('myid'); /* GET vuejs el reference here (via $ref) but how? */
+    //   Url.innerHTML = window.location.href;
+    //   console.log(Url.innerHTML);
+    //   Url.select();
+    //   document.execCommand('copy');
+    //   this.shareUrl.select();
+    //   document.execCommand('copy');
+    // this.copyText = 'Link Copied!';
+    // },
+    async copyTheLink() {
+      try {
+        await navigator.clipboard.writeText(this.shareUrl);
+        this.copyText = 'Link Copied!';
+        console.log('Copied');
+      } catch (err) {
+        console.log('Cannot copy');
+      }
     },
     toggleShareModal() {
       if (this.shareModalShowing) {
