@@ -8,6 +8,7 @@ export interface State {
   default: Defaults;
   controlConfig: ControlPanelConfig[];
   selectedConfigurations: Object;
+  configObject: Object;
 }
 
 export interface SetupObject {

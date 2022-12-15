@@ -32,6 +32,7 @@ const state: State = {
   },
   controlConfig: [],
   selectedConfigurations: null,
+  configObject: {},
 };
 
 export default state;

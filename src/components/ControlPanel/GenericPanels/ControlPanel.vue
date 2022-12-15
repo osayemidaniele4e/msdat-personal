@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from 'vuex';
 // import ControlMixins from '@/components/ControlPanel/ControlMixins';
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
@@ -210,6 +211,7 @@ export default {
     },
     payload: {
       handler(newValue) {
+        console.log(newValue, 'newValue');
         this.$emit('data:options', newValue);
       },
       immediate: true,
@@ -233,6 +235,7 @@ export default {
   },
   methods: {
     // eslint-disable-next-line consistent-return
+    ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
 
     getIndicatorList(data) {
       const { name } = this.$route.params;
@@ -251,6 +254,7 @@ export default {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
         // debugger;
+
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: this.controlIndexSub,
           groupIndex: this.groupIndexSub,
@@ -288,8 +292,11 @@ export default {
     this.updatePayload(this.defaultLocation, 'location');
     this.updatePayload(this.defaultYear, 'year');
     this.activeToggleButton = this.payload.visualization;
-  },
 
+    // console.log(this.defaultDataSource, 'default data');
+    // console.log(this.defaultIndicator, 'default indicator');
+    // console.log(this.defaultLocation, 'default location');
+  },
 };
 </script>
 

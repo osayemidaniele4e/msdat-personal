@@ -176,9 +176,8 @@
 </template>
 
 <script>
-import {
-  BasePanel, ControlBase, ControlPanel, SelectDropdown,
-} from '@/components/ControlPanel';
+import { mapMutations, mapGetters } from 'vuex';
+import { BasePanel, ControlBase, ControlPanel, SelectDropdown } from '@/components/ControlPanel';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 import formatter from '../../mixins/formatter';
@@ -194,15 +193,7 @@ import TroubleShootingModal from '../../modules/troubleshooting/modal.vue';
 
 export default {
   name: 'BaseDashboard',
-  mixins: [
-    Loading,
-    formatter,
-    controlPanelSetup,
-    Onboarding,
-    tour,
-    scroll,
-    SharingDashboardState,
-  ],
+  mixins: [Loading, formatter, controlPanelSetup, Onboarding, tour, scroll, SharingDashboardState],
   components: {
     TroubleShootingModal,
     ControlBase,
@@ -259,33 +250,15 @@ export default {
         'Education',
       ],
       program_option: '',
+      indicators: [],
+      dataSources: [],
+      defaultIndicators: [],
+      initialIndicator: null,
+      initialDataSource: null,
+      initialLocation: null,
     };
   },
   props: {
-    initialIndicator: {
-      type: Number,
-      required: true,
-    },
-    initialDataSource: {
-      type: Number,
-      required: true,
-    },
-    initialLocation: {
-      type: Number,
-      required: true,
-    },
-    indicators: {
-      type: Array,
-      required: false,
-    },
-    dataSources: {
-      type: Array,
-      required: false,
-    },
-    defaultIndicators: {
-      type: Array,
-      required: false,
-    },
     updateValue: {
       type: Object,
       required: false,
@@ -307,35 +280,16 @@ export default {
   },
 
   async created() {
-    const { name } = this.$route.params;
-    if (name === 'Advanced_Analytics') {
-      this.isAdvanced = true;
-    }
-    if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
-      try {
-        const response = await apiServices.getDashboard();
-        const { results } = response.data;
-        const dashboard = results.find((item) => item.name === name);
-        if (dashboard === undefined) {
-          this.$router.push('/*');
-          return;
-        }
-        this.configObject = '';
-        this.configObject = {
-          name: dashboard.name,
-          title: dashboard.title,
-          indicators: dashboard.indicators,
-          defaultIndicators: dashboard.defaultIndicators,
-          dataSources: dashboard.dataSources,
-          initialIndicator: dashboard.initialIndicator,
-          initialDataSource: dashboard.initialDataSource,
-          initialLocation: dashboard.initialLocation,
-        };
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    this.indicators = this.getConfigObject().indicators;
+    this.dataSources = this.getConfigObject().dataSources;
+    this.defaultIndicators = this.getConfigObject().defaultIndicators;
+    this.initialIndicator = this.getConfigObject().initialIndicator;
+    this.initialDataSource = this.getConfigObject().initialDataSource;
+    this.initialLocation = this.getConfigObject().initialLocation;
     window.addEventListener('resize', this.onResize);
+
+    // console.log(this.getSelectedConfig());
+    // console.log(this.getConfigObject().indicators);
 
     // checking if in Mobile view
     if (window.innerWidth < 769) {
@@ -353,6 +307,8 @@ export default {
   },
 
   methods: {
+    ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
+    ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
@@ -411,8 +367,8 @@ export default {
       // Condition to check if scrolling is required
       if (
         !(
-          (scrollPos === 0 || scrollPixels > 0)
-          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+          (scrollPos === 0 || scrollPixels > 0) &&
+          (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
@@ -516,10 +472,13 @@ export default {
             return;
           }
           this.configObject = dashboard;
+          this.SET_CONFIGURATIONS(this.configObject);
         } catch (err) {
-          console.log(err,
+          console.log(
+            err,
             '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Base Dashboard Component, \n\n \r\r',
-            'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem');
+            'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem'
+          );
         }
       }
     },

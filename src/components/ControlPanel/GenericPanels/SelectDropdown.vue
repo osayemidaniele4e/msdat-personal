@@ -69,15 +69,12 @@ export default {
   computed: {
     selected: {
       get() {
-        // console.log(this.value, 'Value');
-
-        // console.log(this.selectedOption);
         return this.value;
       },
       set(val) {
+        // console.log(val, 'val');
         if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
           this.selectedOption = val;
-          console.log(val, 'Val');
           this.SET_SELECTED_CONFIG(val);
         }
 
