@@ -25,34 +25,24 @@ There are 4 core sections in the Advanced Analytics dashboard i.e;
 
 ## Predictive Analysis
 
-The State Profile button is located on the Navigation bar that pulls up dynamic data when clicked by the user. It comprises of 4 fields thus; Demography, Human Resources, Health Training Institutions, Health Facilities.
+This section makes predictions about future outcomes using historical data combined with statistical modeling, data mining techniques and machine learning
 
-![An image](./assets/state-profile.png)
+![An image](./assets/advanced/predictive.png)
 
 ## Correlation Analysis
-This section is designed to allow governors to view indicator data. The trend line is drawn to easily identify what indicators 
-fall below or above and  a status field helps improve visualisation with red and green dots indicating hight performance or under performance.
+This section finds out whether a relationship exists between variables and then determining the magnitude and action of that relationship. A plotly emebed was used for this section.
 
-![An image](./assets/health-indices.png)
-
-## Indicator Comparison Section
-Similar to the Key health indices, This section is designed to allow users to compare indicator data from the different data sources across state.
-
-![An image](./assets/detailed-indices.png)
-
-It has a more detailed option to sort from i.e Year, Zonal Comparism, National Comparism,
-
-![An image](./assets/comparisms.png)
+![An image](./assets/advanced/correlation.png)
 
 ## Multisource Indicator Comparison
-This section is designed to allow users to compare indicator status with respect to a particular period.
+Comparison Indicator comparison done across multiple program areas
 
-![An image](./assets/score-card.png)
+![An image](./assets/advanced/multisource.png)
 
 
 
 # Codebase Edits
-    Edits were made to the codebase to account for some similar changes that were made
+Edits were made to the codebase to account for some similar changes that were made
 
 ## index.vue
 

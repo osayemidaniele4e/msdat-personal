@@ -56,9 +56,14 @@
           <div class="vl"></div>
       </b-col>
       <b-col md="5">
+         <pre>
+          {{ this.mapOptions }}
+         </pre>
         <BaseMap v-if="state != 'National'"
         :level="3" :lgaState="selectedState"
          :mapObject="this.mapOptions"/>
+
+        
         <BaseMap  v-else :level="1"
          :mapObject="mapOptionsNational"/>
          <p v-if="state == 'National'" class="text-center map-text">Select a state on the map to view state profile</p><br/>
