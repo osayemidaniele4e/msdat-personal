@@ -39,6 +39,15 @@
                   placeholder="mail@example.com"
                 />
               </div>
+              <!-- <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
+                <label for="" class="form-label">Username</label>
+                <input
+                  type="text"
+                  v-model="username"
+                  class="form-control"
+                  placeholder="Username"
+                />
+              </div> -->
               <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
                 <label for="" class="form-label">Organisation</label>
                 <input
@@ -111,7 +120,7 @@ export default {
     async signUp() {
       try {
         await this.CREATE_USER({
-          username: this.first_name,
+          username: this.username,
           email: this.email,
           first_name: this.first_name,
           last_name: this.last_name,

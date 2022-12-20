@@ -1,6 +1,7 @@
 <template>
     <div>
-        <Header/>
+      <Header ref="theHeader" />
+      <div @click="$refs.theHeader.close()">
         <div class="title text-center border-0">
       <h3 class="mt-2">Account Settings</h3>
     </div>
@@ -13,6 +14,7 @@
        <div class="col-10">
         <component :is="currentView" />
        </div>
+     </div>
      </div>
      <Footer />
     </div>

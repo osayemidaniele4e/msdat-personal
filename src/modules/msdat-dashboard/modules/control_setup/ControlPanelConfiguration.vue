@@ -44,9 +44,9 @@ export default {
   },
   created() {
     const interactions = JSON.parse(VueCookies.get('user_interactions'));
-    if (interactions.length <= 10) {
-      this.interactions = interactions || [];
-    }
+    // if (interactions.length <= 10) {
+    this.interactions = interactions || [];
+    // }
   },
   mounted() {
     eventBus.$on('handleClick', (data) => {
@@ -73,7 +73,6 @@ export default {
     async setInteractions() {
       const { data } = await apiServices.getDashboard();
       this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
-      // this.interactions = [];
       const interaction = {
         year: this.payload.year,
         user: this.getUser.id,
@@ -82,15 +81,21 @@ export default {
         indicator: this.payload.indicator.id,
         datasource: this.payload.datasource.id,
         location: this.payload.location.id,
-        DateTime: moment().format('MMMM DD, YYYY [at] hh:mma'),
+        viewed_at: moment().format(),
       };
       this.interactions.push(interaction);
-      VueCookies.set('user_interactions', JSON.stringify(this.interactions));
-      const interactions = JSON.parse(VueCookies.get('user_interactions'));
-      if (this.isAuthenticated === true && interactions.length === 10 && this.getInternetStatus === true) {
-        interactions.forEach(async (el) => {
-          await this.SET_INTERACTIONS(el);
-        });
+      if (this.isAuthenticated === true) {
+        VueCookies.set('user_interactions', JSON.stringify(this.interactions), { expires: '2h' });
+        const interactions = JSON.parse(VueCookies.get('user_interactions'));
+        console.log('interactions', interactions);
+        if (interactions.length > 9 && this.getInternetStatus === true) {
+          interactions.forEach(async (el) => {
+            await this.SET_INTERACTIONS(el);
+          });
+        }
+        if (interactions.length > 9 && this.getInternetStatus === true) {
+          this.interactions = [];
+        }
       }
     },
   },

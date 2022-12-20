@@ -115,10 +115,9 @@
               </div>
               <div v-else @click="showCard = true">
               <div class="ml-2 profile">
-                <img :src="'https://msdat-api.fmohconnect.gov.ng/api' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
+                <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
                 Hi, {{ getUser.username }}
               </div>
-              <Drop v-show="showCard" />
               </div>
               <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff" v-if="isAuthenticated === false">
                 <LoginSidebar v-if="show" />
@@ -187,6 +186,28 @@
       </b-row>
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
+    <div v-if="isAuthenticated === true">
+    <div class="container card shadow dropdown work-sans" v-if="showCard">
+      <div class="row p-3 d-flex user-details">
+        <div class="col-3">
+        <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
+        </div>
+        <div class="col-8">
+        <div>{{ getUser.username }}</div>
+        <div>{{ getUser.email }}</div>
+        </div>
+        <div class="close mr-2" @click.prevent="showCard = false">
+          <b-icon-x-circle></b-icon-x-circle>
+        </div>
+      </div>
+      <div class="d-flex py-2">
+        <router-link to="/account"><a href="#" class="ml-2">View Account</a></router-link>
+        <div class="logout">
+        <a href="#" class="mr-2" @click.prevent="logout">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
   </header>
   <!--  to deltete
         // using provide inject and watcher to work on this feature.
@@ -205,7 +226,6 @@
 import { mapGetters } from 'vuex';
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
-import Drop from '../components/Drop.vue';
 import Sidebar from '../components/Sidebar.vue';
 import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
@@ -214,7 +234,6 @@ export default {
   components: {
     HeaderOption,
     DropCard,
-    Drop,
     SideBar: Sidebar,
     LoginSidebar,
     SignUp,
@@ -260,6 +279,12 @@ export default {
     showLoginForm() {
       // eslint-disable-next-line no-unused-expressions
       this.show = false;
+    },
+    async logout() {
+      this.$store.dispatch('AUTH_STORE/logout');
+      if (!(this.$route.fullPath.includes('dashboard'))) {
+        this.$router.push('/');
+      }
     },
     runIntro() {
       this.toggleOption = !this.toggleOption;
@@ -806,6 +831,31 @@ header#the-header {
     }
   }
 }
+div {
+    &.dropdown {
+      position: absolute;
+      width: 26vw;
+      z-index: 5;
+      right: 1rem;
+      color: black;
+      max-height: 30rem;
+      overflow-y: auto;
+      a {
+        color: inherit;
+      }
+    }
+  }
+  .user-details{
+    background: #FAFAFA;
+  }
+  .logout{
+    position: absolute;
+    right: 0;
+  }
+  .close {
+    position: absolute;
+    right: 0;
+  }
 </style>
 
 <style scoped>

@@ -1,27 +1,39 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-10 mt-3 ml-4">
+      <div class="col-md-12 mt-3">
         <div class="d-flex">
           <img src="./assets/analytics.png" height="33px" width="33px" />
           <h4 class="mt-2">Dashboard History</h4>
         </div>
-        <div class="activity mt-3 mb-5">
+        <SelectDropdown class="multiselect mr-2"
+        v-model="period"
+        :value="null"
+              :options="uniqueDate"
+                                />
+        <div class="activity mt-3 mb-3">
           <div class="mb-3">
-            <span class="month" style="font-size: 16px">December 2022</span>
-          </div>
-          <div class="row content" v-for="el in records" :key="el.id">
+            <span class="month" style="font-size: 16px">{{ period }}</span>
+            </div>
+            <div class="scroll-active">
+          <div class="row content" v-for="el in filter" :key="el.id">
             <div class="col-md-3">
               <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
             </div>
-            <div class="col-md-3"><b>{{ el.dashboard }}</b>-{{ el.section }}</div>
+            <div class="col-md-4"><b>{{ el.dashboard }}</b>-{{ el.section }}</div>
             <div class="col-md-4">{{ el.indicator }}, {{ el.datasource }} {{ el.year }}, {{ el.location }}</div>
             <div class="col-md-1">
               <b-icon-trash class="del" @click.prevent="destroy(el.id)"></b-icon-trash>
             </div>
           </div>
+          <div v-if="filter.length === 0" class="col-12">
+          <span>
+            No activity was recorded
+          </span>
         </div>
-        <div class="d-flex justify-content-center">
+          </div>
+        </div>
+        <!-- <div class="d-flex justify-content-center">
         <pagination
           v-model="currentPage"
           :records="rows"
@@ -30,7 +42,7 @@
           align="center"
           @paginate="getPage"
         ></pagination>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -38,48 +50,66 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Pagination from 'vue-pagination-2';
+// import Pagination from 'vue-pagination-2';
 import moment from 'moment';
+import { SelectDropdown } from '@/components/ControlPanel';
 
 export default {
   name: 'Dashboard',
   components: {
-    Pagination,
+    // Pagination,
+    SelectDropdown,
   },
   data() {
     return {
       perPage: 10,
       currentPage: 1,
       records: [],
-      groupedData: [],
+      loading: false,
+      date: [],
+      uniqueDate: [],
+      filter: [],
+      period: '',
     };
   },
   computed: {
     ...mapGetters(['getInteractions', 'getInteraction']),
     ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
-    rows() {
-      return this.getInteractions.length;
+  },
+  watch: {
+    async period(val) {
+      await this.GET_INTERACTIONS(this.getUser.id);
+      this.filter = this.getInteractions.filter((el) => moment(el.viewed_at).format('MMMM YYYY') === val);
     },
   },
   async mounted() {
     await this.GET_INTERACTIONS(this.getUser.id);
-    await this.getPage();
+    for (let i = 0; i < this.getInteractions.length; i++) {
+      const el = this.getInteractions[i];
+      const Date = el.created_at;
+      const formatDate = moment(Date).format('MMMM YYYY');
+      this.date.push(formatDate);
+    }
+    this.uniqueDate = new Set(this.date);
+    this.uniqueDate = [...this.uniqueDate];
+    this.uniqueDate.push('January 2022');
+    this.period = this.uniqueDate[0];
   },
   methods: {
     ...mapActions(['GET_INTERACTIONS', 'DELETE_INTERACTION']),
     async destroy(id) {
-      await this.DELETE_INTERACTION(id);
-      await this.getPage();
-    },
-    async getPage() {
       await this.GET_INTERACTIONS(this.getUser.id);
-      this.records = this.getInteractions.slice(
-        (this.currentPage - 1) * this.perPage,
-        this.currentPage * this.perPage,
-      );
+      await this.DELETE_INTERACTION(id);
     },
+    // async getPage() {
+    //   this.records = this.filter.slice(
+    //     (this.currentPage - 1) * this.perPage,
+    //     this.currentPage * this.perPage,
+    //   );
+    //   console.log('records', this.records);
+    // },
     formatDate(date) {
-      return moment(date.created_at).format('MMMM DD, YYYY [at] hh:mma');
+      return moment(date.viewed_at).format('MMMM DD, YYYY [at] hh:mma');
     },
   },
 };
@@ -124,5 +154,15 @@ h4 {
 }
 .del {
   cursor: pointer;
+}
+.scroll-active {
+  max-height: 30vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.multiselect{
+  width: 20% !important;
+  position: absolute;
+  right: 0;
 }
 </style>
