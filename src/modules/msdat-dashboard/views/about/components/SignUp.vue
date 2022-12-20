@@ -39,7 +39,7 @@
                   placeholder="mail@example.com"
                 />
               </div>
-              <!-- <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
+              <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
                 <label for="" class="form-label">Username</label>
                 <input
                   type="text"
@@ -47,7 +47,7 @@
                   class="form-control"
                   placeholder="Username"
                 />
-              </div> -->
+              </div>
               <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
                 <label for="" class="form-label">Organisation</label>
                 <input

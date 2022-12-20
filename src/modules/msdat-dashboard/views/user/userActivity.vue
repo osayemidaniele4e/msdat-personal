@@ -6,31 +6,35 @@
           <img src="./assets/analytics.png" height="33px" width="33px" />
           <h4 class="mt-2">Dashboard History</h4>
         </div>
-        <SelectDropdown class="multiselect mr-2"
-        v-model="period"
-        :value="null"
-              :options="uniqueDate"
-                                />
+        <SelectDropdown
+          class="multiselect mr-2"
+          v-model="period"
+          :value="null"
+          :options="uniqueDate"
+        />
         <div class="activity mt-3 mb-3">
           <div class="mb-3">
             <span class="month" style="font-size: 16px">{{ period }}</span>
-            </div>
-            <div class="scroll-active">
-          <div class="row content" v-for="el in filter" :key="el.id">
-            <div class="col-md-3">
-              <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
-            </div>
-            <div class="col-md-4"><b>{{ el.dashboard }}</b>-{{ el.section }}</div>
-            <div class="col-md-4">{{ el.indicator }}, {{ el.datasource }} {{ el.year }}, {{ el.location }}</div>
-            <div class="col-md-1">
-              <b-icon-trash class="del" @click.prevent="destroy(el.id)"></b-icon-trash>
+          </div>
+          <div class="scroll-active">
+            <div class="row content" v-for="el in filter" :key="el.id">
+              <div class="col-md-3">
+                <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
+              </div>
+              <div class="col-md-4">
+                <b>{{ el.dashboard }}</b
+                >-{{ el.section }}
+              </div>
+              <div class="col-md-4">
+                {{ el.indicator }}, {{ el.datasource }} {{ el.year }}, {{ el.location }}
+              </div>
+              <div class="col-md-1">
+                <b-icon-trash class="del" @click.prevent="destroy(el.id)"></b-icon-trash>
+              </div>
             </div>
           </div>
-          <div v-if="filter.length === 0" class="col-12">
-          <span>
-            No activity was recorded
-          </span>
-        </div>
+          <div v-if="filter.length === 0" class="col-12 text-center mt-2">
+            <span> No activity recorded for this period </span>
           </div>
         </div>
         <!-- <div class="d-flex justify-content-center">
@@ -70,6 +74,7 @@ export default {
       uniqueDate: [],
       filter: [],
       period: '',
+      interactions: [],
     };
   },
   computed: {
@@ -79,7 +84,9 @@ export default {
   watch: {
     async period(val) {
       await this.GET_INTERACTIONS(this.getUser.id);
-      this.filter = this.getInteractions.filter((el) => moment(el.viewed_at).format('MMMM YYYY') === val);
+      this.filter = this.getInteractions.filter(
+        (el) => moment(el.viewed_at).format('MMMM YYYY') === val,
+      );
     },
   },
   async mounted() {
@@ -115,23 +122,8 @@ export default {
 };
 </script>
 <style scoped>
-.title {
-  display: flex;
-  height: 70px;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
-}
 h3 {
   font-weight: bold;
-}
-.side-list {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  list-style: none;
-  margin: 0;
-  padding: 0;
 }
 button {
   border: none;
@@ -149,18 +141,18 @@ h4 {
   list-style: none;
   font-size: 20px;
 }
-.content{
+.content {
   font-size: 12px;
 }
 .del {
   cursor: pointer;
 }
 .scroll-active {
-  max-height: 30vw;
+  max-height: 29vw;
   overflow-y: auto;
   overflow-x: hidden;
 }
-.multiselect{
+.multiselect {
   width: 20% !important;
   position: absolute;
   right: 0;
