@@ -5,47 +5,50 @@
         container
         d-flex
         align-items-center
-        justify-content-center
+        justify-content-between
         flex-column
         p-5
       "
     >
       <h4 class="mb-3">MSDAT Intelligent Indicator Search</h4>
-      <form
-        class="input-group w-75 shadow"
-        @submit.prevent="handleSearch"
-      >
+      <form class="input-group w-75 shadow" @submit.prevent="handleSearch">
         <input
           v-model="search"
           type="text"
           class="form-control border-0"
           placeholder="Search an indicator ..."
         />
-        <button class="btn input-group-append" type="submit">
+        <button class="btn input-group-append" type="submit" :disabled="isLoading">
           <i class="fa fa-search"></i>
         </button>
       </form>
     </div>
-    <div class="container d-flex align-items-center justify-content-center"  style="height: 60vh; overflow:auto;">
-      <IndicatorTable :dataArray="dataArray" />
+    <div class="loader" v-if="isLoading">
+      <Theloader />
+    </div>
+    <div v-else>
+      <div class="bg-light p-5 d-flex w-50 m-auto align-items-center justify-content-center h-100" v-if="dataArray.length <= 0 && isLoading === false"> <h6 class="text-align-center"> No data to display !!!</h6></div>
+      <IndicatorTable v-else :dataArray="dataArray" />
     </div>
   </div>
 </template>
 
 <script>
-import axiosInstance from '@/plugins/axios';
-import { uniq } from 'lodash';
+import { _, uniqBy } from 'lodash';
 import IndicatorTable from '../components/indicatorTable.vue';
 import Services from '../Service';
+import Theloader from '../components/theLoader.vue';
 
 export default {
   name: 'IndicatorSearch',
   components: {
     IndicatorTable,
+    Theloader,
   },
   data() {
     return {
       search: '',
+      isLoading: false,
       indicators: [],
       dataArray: [],
       options: [],
@@ -57,19 +60,19 @@ export default {
       let datasourceArr = [];
       const newArray = [];
       const newSourceArray = [];
+      this.isLoading = true;
       if (this.search.length > 3) {
         try {
           // step 1: Get the ai indicator
           this.indicators = await Services.getIndicators({
             search: this.search,
           });
-          console.log(this.indicators, 'this.indicators');
           // step 2: get the datasources and their values using the id in the data object
           this.indicators.map(async (el) => {
             // console.log(el, 'el');
             datasourceArr = await Promise.all(
               el.datasources.map(async (ds) => {
-                const { data } = await axiosInstance.get(`/datasources/${ds}`);
+                const data = await Services.getDataSourceById(ds);
                 return data;
               }),
             );
@@ -78,32 +81,29 @@ export default {
               indicator: el.full_name,
               datasourceArr: await datasourceArr,
             });
-            // console.log(newArray, 'newArray');
-            const SourceValue = await newArray.map(async (newarr) => {
-              // console.log(newarr, 'newArr');
+            newArray.map(async (newarr) => {
               const sources = await Promise.all(
-                newarr.datasourceArr.map(async (dataArr, k) => {
-                  const { data } = await axiosInstance.get(
-                    `/data/?datasource=${dataArr.id}&location=1&indicator=${newarr.indicatorId}`,
+                newarr?.datasourceArr.map(async (dataArr) => {
+                  const data = await Services.getDataByIndicators(
+                    dataArr.id,
+                    newarr.indicatorId,
                   );
-                  const dataValues = await data.results;
-                  console.log(dataValues, 'dataarrk');
+                  const dataValues = await data;
                   const locationArray = await Promise.all(
-                    dataValues.map(async (locationArr) => {
-                      const locations = await axiosInstance.get(
-                        `/location/${locationArr.location}`,
+                    dataValues?.data?.results.map(async (locationArr) => {
+                      const locations = await Services.getLocationById(
+                        locationArr.location,
                       );
-                      return [
-                        locations.data.name,
-                        parseFloat(locationArr.value),
-                      ];
+                      // console.log(locations, 'loc');
+                      return [locations.name, parseFloat(locationArr.value)];
                     }),
                   );
                   const stateArray = await locationArray;
-                  // console.log(stateArray, 'location');
                   this.options = await stateArray;
-                  // console.log(this.options, 'val options');
-                  return { dataValues, datasourceName: dataArr.datasource };
+                  return {
+                    dataValues: dataValues.data.results,
+                    datasourceName: dataArr.datasource,
+                  };
                 }),
               );
               newSourceArray.push({
@@ -111,39 +111,17 @@ export default {
                 indicator: newarr.indicator,
                 datasourceArr: await sources,
               });
-              // console.log(newSourceArray, 'dataarr');
-              this.dataArray = await newSourceArray;
-              console.log(this.dataArray, 'dataArray');
-              return newSourceArray;
+              // this.dataArray = uniq(newSourceArray);
+              // eslint-disable-next-line no-sequences
+              this.dataArray = uniqBy(newSourceArray, 'indicatorId');
+              console.log(this.dataArray, 'newArray');
             });
-            // console.log(SourceValue, 'newArray');
           });
         } catch (err) {
           console.log(err);
+        } finally {
+          this.isLoading = false;
         }
-      }
-    },
-    async getIndicatorsByPeriod() {
-      try {
-        const indicatorArr = await Services.getIndicators({
-          search: this.search,
-        });
-        console.log(indicatorArr);
-        const indicatoryears = await axiosInstance.get(
-          `https://msdat-api.fmohconnect.gov.ng/api/indicator_years_available/?indicator=${indicatorArr[0].id}&size=3&ordering=-updated_at`,
-        );
-        console.log(indicatoryears.data.results, 'indicatoryears');
-        const years = indicatoryears.data.results.map((el) => el.year);
-        const uniqYears = uniq(years?.map((el) => el.split('-')[0]));
-        const checkUniqYears = uniqYears.map((el) => (el?.split(' ')?.length > 1
-          ? el?.split(' ')[1]
-          : el?.split(' ')[0]));
-        // sort the checkUniqYears
-        const sortedYears = checkUniqYears.sort((a, b) => a - b);
-        console.log(sortedYears, 'sorted');
-        return sortedYears;
-      } catch (err) {
-        console.log(err);
       }
     },
   },
@@ -151,6 +129,21 @@ export default {
 </script>
 
 <style scoped>
+.loader {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 999999;
+  align-items: center;
+  background: rgba(76, 175, 80, 0.3);
+  /* height: 67% !important; */
+  /* transform: translate(-50%, -50%); */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
 .container-fluid {
   height: 100vh;
   color: green;

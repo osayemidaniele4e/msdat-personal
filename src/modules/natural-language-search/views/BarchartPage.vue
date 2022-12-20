@@ -9,16 +9,16 @@
           class="form-control border-0"
           placeholder="Search an indicator ..."
         />
-        <button class="btn input-group-append" type="submit" :disabled="loading">
+        <button class="btn input-group-append" type="submit" :disabled="isLoading">
           <i class="fa fa-search"></i>
         </button>
       </form>
     </div>
-    <div
-      class="container d-flex align-items-center justify-content-center"
-      style="height: 60vh; width: 100%"
-    >
-      <Barchart v-if="!loading" :optionsArray="dataArray" :details="[dataSourceName, indicatorName, year]" />
+     <div class="loader" v-if="isLoading">
+      <Theloader />
+    </div>
+    <div class="w-75 m-auto">
+      <Barchart v-if="!isLoading" :optionsArray="dataArray" :details="[dataSourceName, indicatorName, year]" />
     </div>
   </div>
 </template>
@@ -27,17 +27,19 @@
 import { uniq } from 'lodash';
 import Barchart from '../components/Barchart.vue';
 import Services from '../Service';
+import Theloader from '../components/theLoader.vue';
 
 export default {
   name: 'IndicatorSearch',
   components: {
     Barchart,
+    Theloader,
   },
   data() {
     return {
-      search: 'growth',
+      search: 'mother',
       dataArray: [],
-      loading: false,
+      isLoading: false,
       dataSourceName: '',
       indicatorName: '',
       year: '',
@@ -45,7 +47,7 @@ export default {
   },
   methods: {
     async handleSearch() {
-      this.loading = true;
+      this.isLoading = true;
       const newArray = [];
       if (this.search.length > 3) {
         try {
@@ -92,22 +94,35 @@ export default {
               }
             }),
           );
+          this.isLoading = false;
           // }));
         } catch (err) {
           console.log(err);
         } finally {
-          this.loading = false;
+          this.isLoading = false;
         }
       }
     },
-  },
-  async mounted() {
-    await this.handleSearch();
   },
 };
 </script>
 
 <style scoped>
+.loader {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 999999;
+  align-items: center;
+  background: rgba(76, 175, 80, 0.3);
+  /* height: 67% !important; */
+  /* transform: translate(-50%, -50%); */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
 .container-fluid {
   height: 100vh;
   color: green;

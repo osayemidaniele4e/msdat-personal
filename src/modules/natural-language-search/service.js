@@ -40,6 +40,17 @@ const getLocationById = async (id) => {
   }
 };
 
+const getDataByIndicators = async (dataSourceId, indicatorId) => {
+  try {
+    const data = await axiosInstance.get(
+      `/data/?datasource=${dataSourceId}&location=1&indicator=${indicatorId}`
+    );
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const getDataByQuery = async (indicatorId, dataSourceId, period) => {
   try {
     const { data } = await axiosInstance.get(
@@ -52,5 +63,5 @@ const getDataByQuery = async (indicatorId, dataSourceId, period) => {
 };
 
 export default {
-  getIndicators, getYearsByIndicatorId, getDataSourceById, getLocationById, getDataByQuery,
+  getIndicators, getYearsByIndicatorId,getDataByIndicators, getDataSourceById, getLocationById, getDataByQuery,
 };

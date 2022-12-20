@@ -1,12 +1,14 @@
 <template>
-  <section class="charts w-100">
+<section class="w-100">
+  <!-- <pre>{{ optionsArray }}</pre> -->
     <BarChart
       ref="BaseChart"
-      :title="details[0]"
+      :title="'Hi Chisom'"
       :chartOptions="options"
       class="barchart"
     />
-  </section>
+    <!-- <highcharts :options="options" class='shadow' ref="barChart"></highcharts> -->
+</section>
 </template>
 
 <script lang="js">
@@ -18,16 +20,12 @@ export default {
   },
   props: {
     optionsArray: Array,
-    details: {
-      type: Array,
-      default: () => ['dataSource', 'indicator', '2016'],
-      required: true,
-    },
   },
   data() {
     return {
       // options: {
-      //   chart: {
+      // //   chart: {
+      //   "marginBottom": 100,
       //     type: 'column',
       //   },
       //   title: {
@@ -58,9 +56,9 @@ export default {
       //   legend: {
       //     enabled: false,
       //   },
-      // tooltip: {
-      //   pointFormat: 'Value: <b>{point.y:.1f} %</b>',
-      // },
+      //   tooltip: {
+      //     pointFormat: 'Value: <b>{point.y:.1f} %</b>',
+      //   },
       //   series: [{
       //     name: 'Values',
       //     color: '#98fb98',
@@ -82,21 +80,17 @@ export default {
       options: {},
     };
   },
+
   mounted() {
     this.options = {
       chart: {
         type: 'column',
-      },
-      plotOptions: {
-        column: {
-          dataLabels: {
-            enabled: true,
-          },
-        },
+        zoomType: 'xy',
       },
       yAxis: {
+        gridLineWidth: 0,
         title: {
-          text: `${this.details[0]} - ${this.details[2]}`, // datasource - year
+          text: 'Values',
           style: {
             fontSize: '13px',
             fontFamily: '"Work Sans", sans-serif',
@@ -104,13 +98,24 @@ export default {
         },
       },
       series: [{
+        name: 'Location',
         color: '#98fb98',
-        name: this.details[1],
-        data: this.optionsArray,
+        pointWidth: 100,
+        pointPadding: 0.25,
+        data: [...this.optionsArray],
         dataLabels: {
           enabled: true,
+          //   rotation: -90,
+          color: '#FFFFFF',
+          y: -5,
+          style: {
+            fontSize: '9px',
+            horizontalAlign: 'left',
+            fontFamily: 'Verdana, sans-serif',
+          },
         },
       }],
+      // series: this.optionsArray,
     };
   },
 };
