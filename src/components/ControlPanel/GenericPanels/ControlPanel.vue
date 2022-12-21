@@ -292,6 +292,7 @@ export default {
     this.updatePayload(this.defaultLocation, 'location');
     this.updatePayload(this.defaultYear, 'year');
     this.activeToggleButton = this.payload.visualization;
+    console.log(this.defaultIndicator, 'Default');
 
     // console.log(this.defaultDataSource, 'default data');
     // console.log(this.defaultIndicator, 'default indicator');
