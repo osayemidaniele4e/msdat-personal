@@ -16,6 +16,12 @@
           <div class="mb-3">
             <span class="month" style="font-size: 16px">{{ period }}</span>
           </div>
+          <b-skeleton-table
+          v-if="loading === true"
+            :rows="5"
+            :columns="4"
+            :table-props="{ bordered: false, striped: true }"
+          ></b-skeleton-table>
           <div class="scroll-active">
             <div class="row content mb-2" v-for="el in filter" :key="el.id">
               <div class="col-md-3">
@@ -33,7 +39,7 @@
               </div>
             </div>
           </div>
-          <div v-if="filter.length === 0" class="col-12 text-center mt-2">
+          <div v-if="filter.length === 0 && !loading" class="col-12 text-center mt-2">
             <span> No activity recorded for this period </span>
           </div>
         </div>
@@ -87,6 +93,7 @@ export default {
     },
   },
   async mounted() {
+    this.loading = true;
     await this.GET_INTERACTIONS(this.getUser.id);
     for (let i = 0; i < this.getInteractions.length; i++) {
       const el = this.getInteractions[i];
@@ -98,6 +105,7 @@ export default {
     this.uniqueDate = [...this.uniqueDate];
     this.uniqueDate.push('January 2022');
     this.period = this.uniqueDate[0];
+    this.loading = false;
   },
   methods: {
     ...mapActions(['GET_INTERACTIONS', 'DELETE_INTERACTION']),
