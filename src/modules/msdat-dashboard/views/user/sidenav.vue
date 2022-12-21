@@ -12,7 +12,7 @@
         <a href="#/userActivity" class="mt-4 item"><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp; User Activity</a>
        </div>
        <div class="col-10">
-        <component :is="currentView" />
+        <Profile :is="currentView" />
        </div>
      </div>
      </div>

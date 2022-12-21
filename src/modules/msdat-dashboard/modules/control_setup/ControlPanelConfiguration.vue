@@ -85,15 +85,14 @@ export default {
       };
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
-        VueCookies.set('user_interactions', JSON.stringify(this.interactions), { expires: '2h' });
+        VueCookies.set('user_interactions', JSON.stringify(this.interactions), { expires: '24h' });
         const interactions = JSON.parse(VueCookies.get('user_interactions'));
-        console.log('interactions', interactions);
         if (interactions.length > 9 && this.getInternetStatus === true) {
           interactions.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
           });
         }
-        if (interactions.length > 9 && this.getInternetStatus === true) {
+        if (interactions.length === 10 && this.getInternetStatus === true) {
           this.interactions = [];
         }
       }
@@ -157,6 +156,7 @@ export default {
           key: 'year',
           values: availableYears,
         });
+        this.setInteractions();
       },
     },
   },

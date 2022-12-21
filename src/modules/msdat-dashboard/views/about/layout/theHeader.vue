@@ -280,6 +280,7 @@ export default {
       // eslint-disable-next-line no-unused-expressions
       this.show = false;
     },
+    // function to logout a particular user
     async logout() {
       this.$store.dispatch('AUTH_STORE/logout');
       if (!(this.$route.fullPath.includes('dashboard'))) {

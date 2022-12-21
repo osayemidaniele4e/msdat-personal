@@ -17,7 +17,7 @@
             <span class="month" style="font-size: 16px">{{ period }}</span>
           </div>
           <div class="scroll-active">
-            <div class="row content" v-for="el in filter" :key="el.id">
+            <div class="row content mb-2" v-for="el in filter" :key="el.id">
               <div class="col-md-3">
                 <input type="checkbox" class="mr-2" />&nbsp;{{ formatDate(el) }}
               </div>
@@ -82,11 +82,8 @@ export default {
     ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
   },
   watch: {
-    async period(val) {
-      await this.GET_INTERACTIONS(this.getUser.id);
-      this.filter = this.getInteractions.filter(
-        (el) => moment(el.viewed_at).format('MMMM YYYY') === val,
-      );
+    async period() {
+      this.filterByPeriod();
     },
   },
   async mounted() {
@@ -104,9 +101,15 @@ export default {
   },
   methods: {
     ...mapActions(['GET_INTERACTIONS', 'DELETE_INTERACTION']),
+    /**
+     * @function destroy
+     * @author samuel
+     * @description function to delete user interactions by id
+     * @param {*} id the id of the interaction to be deleted
+     */
     async destroy(id) {
-      await this.GET_INTERACTIONS(this.getUser.id);
       await this.DELETE_INTERACTION(id);
+      this.filterByPeriod();
     },
     // async getPage() {
     //   this.records = this.filter.slice(
@@ -115,8 +118,27 @@ export default {
     //   );
     //   console.log('records', this.records);
     // },
+    /**
+     * @function formatDate
+     * @author samuel
+     * @description function to format date
+     * @param {*} date the date to be formatted
+     * @returns {object} formatted date
+     */
     formatDate(date) {
       return moment(date.viewed_at).format('MMMM DD, YYYY [at] hh:mma');
+    },
+    /**
+     * @function filterByPeriod
+     * @author samuel
+     * @description function to filter user interactions by period which is the month and year
+     * @returns {array} result of the filter
+     */
+    async filterByPeriod() {
+      await this.GET_INTERACTIONS(this.getUser.id);
+      this.filter = this.getInteractions.filter(
+        (el) => moment(el.viewed_at).format('MMMM YYYY') === this.period,
+      );
     },
   },
 };
