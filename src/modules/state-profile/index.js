@@ -1,7 +1,6 @@
 import router from './router';
-import store from './store';
 
 export {
+  // eslint-disable-next-line import/prefer-default-export
   router,
-  store,
 };
