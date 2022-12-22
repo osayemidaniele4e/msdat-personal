@@ -56,9 +56,6 @@
           <div class="vl"></div>
       </b-col>
       <b-col md="5">
-         <pre>
-          {{ this.mapOptions }}
-         </pre>
         <BaseMap v-if="state != 'National'"
         :level="3" :lgaState="selectedState"
          :mapObject="this.mapOptions"/>
