@@ -1,12 +1,14 @@
 import axios from 'axios';
 import VueCookies from 'vue-cookies';
 
+const User = VueCookies.get('custom-user-details');
+
 export default {
   namespaced: true,
   state: {
     isAuthtenticated: false,
     authToken: '',
-    user: {},
+    user: User || {},
   },
   mutations: {
     setUser(state, payload) {
