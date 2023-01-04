@@ -211,7 +211,6 @@ export default {
     },
     payload: {
       handler(newValue) {
-        console.log(newValue, 'newValue');
         this.$emit('data:options', newValue);
       },
       immediate: true,
@@ -292,11 +291,6 @@ export default {
     this.updatePayload(this.defaultLocation, 'location');
     this.updatePayload(this.defaultYear, 'year');
     this.activeToggleButton = this.payload.visualization;
-    console.log(this.defaultIndicator, 'Default');
-
-    // console.log(this.defaultDataSource, 'default data');
-    // console.log(this.defaultIndicator, 'default indicator');
-    // console.log(this.defaultLocation, 'default location');
   },
 };
 </script>
