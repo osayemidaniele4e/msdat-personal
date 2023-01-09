@@ -22,9 +22,11 @@ export default {
     // eslint-disable-next-line consistent-return
     async CREATE_USER({ commit }, payload) {
       try {
-        const response = await axios.post('https://msdat-api.fmohconnect.gov.ng/api/users/', payload);
+        const response = await axios.post(
+          'https://msdat-api.fmohconnect.gov.ng/api/users/',
+          payload,
+        );
         commit('setUser', response);
-        // console.log(response);
         return response;
       } catch (error) {
         console.log(error);
@@ -33,7 +35,10 @@ export default {
     // eslint-disable-next-line consistent-return
     async LOGIN_USER({ commit }, payload) {
       try {
-        const response = await axios.post('https://msdat-api.fmohconnect.gov.ng/api/login/', payload);
+        const response = await axios.post(
+          'https://msdat-api.fmohconnect.gov.ng/api/login/',
+          payload,
+        );
         // console.log(response);
         const user = response.data;
         const accessToken = response.data.token;
@@ -52,7 +57,11 @@ export default {
     },
   },
   getters: {
-    getUser(state) { return state.user; },
-    getToken(state) { return state.authToken; },
+    getUser(state) {
+      return state.user;
+    },
+    getToken(state) {
+      return state.authToken;
+    },
   },
 };

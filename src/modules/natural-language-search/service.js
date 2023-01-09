@@ -61,7 +61,7 @@ const getDataByQuery = async (indicatorId, dataSourceId, period) => {
     console.log(err);
   }
 };
-
-export default {
+const Services = {
   getIndicators, getYearsByIndicatorId, getDataByIndicators, getDataSourceById, getLocationById, getDataByQuery,
 };
+export default Services;

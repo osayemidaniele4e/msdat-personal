@@ -187,7 +187,6 @@ export default {
         let seriesObject = {};
         if (mappedValueTypes.length > 0) {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
-          console.log(datasource);
           seriesObject = this.createSeriesObject(
             valueType,
             datasource.datasource,
