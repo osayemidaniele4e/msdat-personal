@@ -28,6 +28,7 @@ import Notification from './notifications.vue';
 import userActivity from './userActivity.vue';
 
 const routes = {
+  '/': Profile,
   '/profile': Profile,
   '/notification': Notification,
   '/userActivity': userActivity,
@@ -67,6 +68,10 @@ export default {
 }
 h3 {
   font-weight: bold;
+}
+
+.item{
+  color: black !important;
 }
 
 .item:hover{
