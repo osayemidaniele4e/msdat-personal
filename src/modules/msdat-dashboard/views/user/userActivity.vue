@@ -103,7 +103,6 @@ export default {
     }
     this.uniqueDate = new Set(this.date);
     this.uniqueDate = [...this.uniqueDate];
-    this.uniqueDate.push('January 2022');
     this.period = this.uniqueDate[0];
     this.loading = false;
   },
