@@ -26,4 +26,7 @@ export default {
       console.log(error);
     }
   },
+  setInternetStatus({ commit }, payload) {
+    commit('setInternetStatus', payload);
+  },
 };

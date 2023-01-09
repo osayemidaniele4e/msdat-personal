@@ -1,7 +1,7 @@
 <template>
   <div>
-    <the-header />
-    <main class="container pb-5 mb-5">
+    <the-header ref="theHeader"/>
+    <main class="container pb-5 mb-5" @click="$refs.theHeader.close()">
       <div class="">
         <div
           v-b-tooltip.hover.right.v-info="'Back to platform'"

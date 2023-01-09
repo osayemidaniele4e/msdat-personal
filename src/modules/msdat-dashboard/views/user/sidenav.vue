@@ -1,6 +1,7 @@
 <template>
     <div>
-        <Header/>
+      <Header ref="theHeader" />
+      <div @click="$refs.theHeader.close()">
         <div class="title text-center border-0">
       <h3 class="mt-2">Account Settings</h3>
     </div>
@@ -11,19 +12,20 @@
         <a href="#/userActivity" class="mt-4 item"><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp; User Activity</a>
        </div>
        <div class="col-10">
-        <component :is="currentView" />
+        <Profile :is="currentView" />
        </div>
      </div>
-     <Footer/>
+     </div>
+     <Footer />
     </div>
    </template>
 
 <script>
+import Header from '@/modules/msdat-dashboard/views/about/layout/theHeader.vue';
+import Footer from '@/modules/msdat-dashboard/views/about/layout/theFooter.vue';
 import Profile from './profile.vue';
 import Notification from './notifications.vue';
 import userActivity from './userActivity.vue';
-import Header from './layout/theHeader.vue';
-import Footer from './layout/theFooter.vue';
 
 const routes = {
   '/': Profile,
@@ -74,5 +76,8 @@ h3 {
 
 .item:hover{
     text-decoration: none;
+}
+a{
+  color: #000 !important;
 }
 </style>

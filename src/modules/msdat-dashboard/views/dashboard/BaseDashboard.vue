@@ -181,6 +181,7 @@ import {
 } from '@/components/ControlPanel';
 import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
+import Vue from 'vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -343,16 +344,42 @@ export default {
     } else {
       this.isMobile = false;
     }
-
+    // this.getConnectionStatus();
     window.addEventListener('wheel', this.handleScroll);
   },
 
   destroyed() {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('wheel', this.handleScroll);
+    window.removeEventListener('online', this.getConnectionStatus);
+    window.removeEventListener('offline', this.getConnectionStatus);
   },
-
   methods: {
+    getConnectionStatus(e) {
+      const { type } = e;
+      if (type === 'online') {
+        this.$store.dispatch('setInternetStatus', true);
+        Vue.swal({
+          toast: true,
+          position: 'bottom',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'success',
+          title: 'Connection Restored',
+        });
+      } else {
+        this.$store.dispatch('setInternetStatus', false);
+        Vue.swal({
+          toast: true,
+          position: 'bottom',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'error',
+          title: ' Offline',
+          text: 'Check Your Internet Connection',
+        });
+      }
+    },
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
@@ -525,6 +552,8 @@ export default {
     },
   },
   async mounted() {
+    window.addEventListener('online', this.getConnectionStatus);
+    window.addEventListener('offline', this.getConnectionStatus);
     this.loading = false;
     let urlRequestedIndicator = [];
     if (this.$route.query.indicator) {
@@ -579,6 +608,7 @@ export default {
       }
     }
   },
+
 };
 </script>
 

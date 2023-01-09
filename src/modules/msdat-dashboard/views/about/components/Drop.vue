@@ -2,7 +2,7 @@
     <div class="container-fluid card shadow dropdown work-sans" v-if="open === true" >
       <div class="row p-3 d-flex user-details">
         <div class="col-3">
-        <img :src="getUser.picture" class="profile-picture mr-1" width="48" height="48" />
+        <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
         </div>
         <div class="col-8">
         <div>{{ getUser.username }}</div>

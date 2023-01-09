@@ -68,6 +68,10 @@ export default {
     };
   },
   methods: {
+    omo() {
+      console.log('Loading ');
+      alert('Loading ');
+    },
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
     /**
      * @function clearData
@@ -101,6 +105,7 @@ export default {
   async created() {
     const { name } = this.$route.params;
 
+    window.addEventListener('beforeunload', this.omo);
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure
