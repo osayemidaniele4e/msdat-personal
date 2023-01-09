@@ -26,6 +26,7 @@ import Header from './layout/theHeader.vue';
 import Footer from './layout/theFooter.vue';
 
 const routes = {
+  '/': Profile,
   '/profile': Profile,
   '/notification': Notification,
   '/userActivity': userActivity,
