@@ -110,7 +110,7 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false">
+              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false" class="auth">
                 <b-icon-person-fill></b-icon-person-fill>&nbsp;Login/Register
               </div>
               <div v-else @click="showCard = true">
@@ -296,9 +296,6 @@ export default {
     },
     emitIndex(index) {
       this.$emit('index', index);
-    },
-    showC() {
-      this.showCard = true;
     },
   },
   watch: {
@@ -812,6 +809,9 @@ header#the-header {
   .select-dropdown {
     margin-left: 100px;
   }
+  .auth {
+    font-size: 10px;
+  }
 }
 </style>
 <style lang="scss">
@@ -832,20 +832,6 @@ header#the-header {
     }
   }
 }
-div {
-    &.dropdown {
-      position: absolute;
-      width: 26vw;
-      z-index: 5;
-      right: 1rem;
-      color: black;
-      max-height: 30rem;
-      overflow-y: auto;
-      a {
-        color: inherit;
-      }
-    }
-  }
   .user-details{
     background: #FAFAFA;
   }

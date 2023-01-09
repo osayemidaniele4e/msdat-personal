@@ -7,6 +7,7 @@
           <h4 class="mt-2">Dashboard History</h4>
         </div>
         <SelectDropdown
+        v-if="uniqueDate.length !== 0"
           class="multiselect mr-2"
           v-model="period"
           :value="null"
@@ -97,9 +98,11 @@ export default {
     await this.GET_INTERACTIONS(this.getUser.id);
     for (let i = 0; i < this.getInteractions.length; i++) {
       const el = this.getInteractions[i];
-      const Date = el.created_at;
-      const formatDate = moment(Date).format('MMMM YYYY');
-      this.date.push(formatDate);
+      if (el.viewed_at !== null) {
+        const Date = el.viewed_at;
+        const formatDate = moment(Date).format('MMMM YYYY');
+        this.date.push(formatDate);
+      }
     }
     this.uniqueDate = new Set(this.date);
     this.uniqueDate = [...this.uniqueDate];

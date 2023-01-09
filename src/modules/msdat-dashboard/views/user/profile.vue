@@ -2,8 +2,8 @@
   <div class="d-flex mt-3">
     <div class="d-flex col-md-6 flex-column w-50 mr-4">
       <div class="d-flex justify-content-between border rounded mr-4  p-3">
-          <div class="border ml-3 rounded-circle p-3">
-            <img src="#">
+          <div class="ml-3 p-3">
+            <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="avatar" width="55" height="55">
           </div>
         <div class="d-flex justify-content-between">
           <button class="button text-success">Upload</button>
@@ -45,7 +45,7 @@
         </form>
 
       </div>
-        <div class="mt-5 mr-4">
+        <div class="mt-3 mr-4">
           <button class="w-100 px-2 py-3" >UPDATE INFORMATION</button>
         </div>
     </div>
@@ -61,14 +61,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
-
+  computed: {
+    ...mapGetters('AUTH_STORE', ['getUser']),
+  },
 };
 </script>
 
-<style>
-
+<style scoped>
 button{
   border:none;
   background-color:#007D53;
@@ -77,11 +79,9 @@ button{
   font-family: sans-serif;
   font-size: small;
 }
-
 button:hover{
   background-color: #00a26c;
 }
-
 .button{
   background-color: #fff;
   box-shadow: 0 1px 3px 0  rgb(149, 148, 148);
@@ -93,19 +93,15 @@ button:hover{
   margin: 10px ;
   border-radius: 2px;
 }
-
 .text-success{
   color: #007D53 !important;
 }
-
 .button:hover{
   background-color: #faf7f7;
 }
-
 input:focus{
   border: none;
 }
-
 input::placeholder{
   font-family: sans-serif;
   font-weight: normal;
@@ -113,11 +109,9 @@ input::placeholder{
   color: #232323;
   opacity: 0.7;
 }
-
 input.pass{
   font-size: 30px;
 }
-
 label{
   font-family: sans-serif;
   font-weight: normal;
@@ -125,11 +119,12 @@ label{
   margin-bottom: 5px;
   color:#5e5e5e;
 }
-
 span{
   font-size: small;
   font-family: sans-serif;
   opacity: 0.5;
 }
-
+.avatar{
+  border-radius: 55px;
+}
 </style>
