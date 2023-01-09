@@ -7,7 +7,7 @@
           <h4 class="mt-2">Dashboard History</h4>
         </div>
         <SelectDropdown
-        v-if="uniqueDate.length !== 0"
+          v-if="uniqueDate.length !== 0"
           class="multiselect mr-2"
           v-model="period"
           :value="null"
@@ -18,7 +18,7 @@
             <span class="month" style="font-size: 16px">{{ period }}</span>
           </div>
           <b-skeleton-table
-          v-if="loading === true"
+            v-if="loading === true"
             :rows="5"
             :columns="4"
             :table-props="{ bordered: false, striped: true }"
@@ -149,6 +149,12 @@ export default {
       this.filter = this.getInteractions.filter(
         (el) => moment(el.viewed_at).format('MMMM YYYY') === this.period,
       );
+      this.filter.sort((a, b) => {
+        if (a.viewed_at > b.viewed_at) {
+          return 1;
+        }
+        return -1;
+      });
     },
   },
 };

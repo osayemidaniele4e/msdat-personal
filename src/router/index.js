@@ -48,6 +48,7 @@ router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some((record) => record.meta.requiresAuth);
 
   if (!isAuthenticated && requireAuth) {
+    // eslint-disable-next-line no-alert
     alert('Access Denied, Please Login');
     next({
       path: '/',
