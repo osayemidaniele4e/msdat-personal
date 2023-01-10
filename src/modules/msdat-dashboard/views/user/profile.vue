@@ -1,13 +1,11 @@
 <template>
-  <div class="d-flex mt-3">
-    <div class="d-flex col-md-6 flex-column w-50 mr-4">
+  <div class="d-flex flex-lg-row flex-column gap-2 mt-3">
+    <div class="d-flex col-12 col-lg-6 flex-column w-full mr-4">
       <div class="d-flex justify-content-between border rounded mr-4  p-3">
-          <div class="border ml-3 rounded-circle p-3">
-            <img src="#">
-          </div>
+        <b-icon-x-circle></b-icon-x-circle>
         <div class="d-flex justify-content-between">
-          <button class="button text-success">Upload</button>
-          <button class="button text-dark">Remove</button>
+          <button class="bg-white shadow-sm text-success font-weight-bolder">Upload</button>
+          <button class="bg-white shadow-sm text-dark font-weight-bolder">Remove</button>
         </div>
       </div>
       <div class="mt-3">
@@ -82,7 +80,7 @@ button:hover{
   background-color: #00a26c;
 }
 
-.button{
+/* .button{
   background-color: #fff;
   box-shadow: 0 1px 3px 0  rgb(149, 148, 148);
   font-weight: bold;
@@ -92,7 +90,7 @@ button:hover{
   padding: 10px 30px;
   margin: 10px ;
   border-radius: 2px;
-}
+} */
 
 .text-success{
   color: #007D53 !important;
