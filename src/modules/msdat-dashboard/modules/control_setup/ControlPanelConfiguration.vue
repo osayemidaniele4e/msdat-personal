@@ -87,14 +87,14 @@ export default {
       if (this.isAuthenticated === true) {
         VueCookies.set('user_interactions', JSON.stringify(this.interactions), { expires: '24h' });
         const interactions = JSON.parse(VueCookies.get('user_interactions'));
+        console.log('inter', interactions);
         if (interactions.length > 9 && this.getInternetStatus === true) {
           interactions.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
           });
-        }
-        if (interactions.length === 10 && this.getInternetStatus === true) {
           this.interactions = [];
         }
+        // }
       }
     },
   },

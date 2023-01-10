@@ -110,8 +110,8 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false">
-                <b-icon-person-fill></b-icon-person-fill>&nbsp;Login/Register
+              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false" class="auth ml-2">
+                <b-icon-person-circle></b-icon-person-circle>&nbsp;Login/Register
               </div>
               <div v-else @click="showCard = true">
               <div class="ml-2 profile">
@@ -814,7 +814,7 @@ header#the-header {
   }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 header#the-header {
   div.header-navs {
     button.btn-secondary {
@@ -832,20 +832,21 @@ header#the-header {
     }
   }
 }
-div {
-    &.dropdown {
-      position: absolute;
-      width: 26vw;
-      z-index: 5;
-      right: 1rem;
-      color: black;
-      max-height: 30rem;
-      overflow-y: auto;
-      a {
-        color: inherit;
-      }
-    }
-  }
+// div {
+//     &.dropdown {
+//       position: absolute;
+//       // float: right;
+//       width: 26vw;
+//       z-index: 5;
+//       right: 1rem;
+//       color: black;
+//       max-height: 30rem;
+//       overflow-y: auto;
+//       a {
+//         color: inherit;
+//       }
+//     }
+//   }
   .user-details{
     background: #FAFAFA;
   }
@@ -951,5 +952,8 @@ div {
 }
 .profile{
   cursor: pointer;
+}
+.auth {
+  font-size: 12px;
 }
 </style>

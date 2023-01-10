@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import createPersistedState from 'vuex-persistedstate';
 import store from '@/store/index';
-import USER_ROUTE from '@/modules/msdat-dashboard/views/user/router';
+import USER_ROUTE from '@/modules/msdat-dashboard/views/userLog/router';
 import MSDAT_ABOUT_ROUTE from '../modules/msdat-dashboard/views/about/router';
 import MSDAT_FAQ_ROUTE from '../modules/msdat-dashboard/views/faq/router';
 import MSDAT_UPDATE_LOG from '../modules/msdat-dashboard/views/update_log/router';
@@ -11,6 +11,7 @@ import { router as STATE_PROFILE_ROUTE } from '../modules/state-profile';
 import { router as HEALTH_THINK_ROUTE } from '../modules/health-think';
 import DYNAMICS_DASHBOARD_ROUTE from '../modules/dynamic_dashboard/router';
 import COMING_SOON from '../modules/coming-soon/router';
+import NATURAL_LANGUAGE_SEARCH from '../modules/natural-language-search/router';
 import NotFound from '../modules/msdat-dashboard/views/NotFound.vue';
 import AUTH_ROUTE from '../modules/auth/router';
 
@@ -25,6 +26,7 @@ const routes = [
   ...HEALTH_THINK_ROUTE,
   ...DYNAMICS_DASHBOARD_ROUTE,
   ...COMING_SOON,
+  ...NATURAL_LANGUAGE_SEARCH,
   ...AUTH_ROUTE,
   ...USER_ROUTE,
   {
@@ -46,6 +48,7 @@ router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some((record) => record.meta.requiresAuth);
 
   if (!isAuthenticated && requireAuth) {
+    // eslint-disable-next-line no-alert
     alert('Access Denied, Please Login');
     next({
       path: '/',

@@ -7,6 +7,7 @@
           <h4 class="mt-2">Dashboard History</h4>
         </div>
         <SelectDropdown
+          v-if="uniqueDate.length !== 0"
           class="multiselect mr-2"
           v-model="period"
           :value="null"
@@ -17,7 +18,7 @@
             <span class="month" style="font-size: 16px">{{ period }}</span>
           </div>
           <b-skeleton-table
-          v-if="loading === true"
+            v-if="loading === true"
             :rows="5"
             :columns="4"
             :table-props="{ bordered: false, striped: true }"
@@ -97,9 +98,11 @@ export default {
     await this.GET_INTERACTIONS(this.getUser.id);
     for (let i = 0; i < this.getInteractions.length; i++) {
       const el = this.getInteractions[i];
-      const Date = el.created_at;
-      const formatDate = moment(Date).format('MMMM YYYY');
-      this.date.push(formatDate);
+      if (el.viewed_at !== null) {
+        const Date = el.viewed_at;
+        const formatDate = moment(Date).format('MMMM YYYY');
+        this.date.push(formatDate);
+      }
     }
     this.uniqueDate = new Set(this.date);
     this.uniqueDate = [...this.uniqueDate];
@@ -146,6 +149,12 @@ export default {
       this.filter = this.getInteractions.filter(
         (el) => moment(el.viewed_at).format('MMMM YYYY') === this.period,
       );
+      this.filter.sort((a, b) => {
+        if (a.viewed_at > b.viewed_at) {
+          return 1;
+        }
+        return -1;
+      });
     },
   },
 };

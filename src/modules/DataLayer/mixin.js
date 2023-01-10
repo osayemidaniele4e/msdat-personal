@@ -237,11 +237,11 @@ export default {
      * @function getNhmisData
      * @author davebenard
      * @description get the data based on th query parameter and return a single object
+     * rewrite to standard 'result[result.length - 1]' to get latest month data
      */
     async getNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
-      // const nhmisResult = result.slice(-1);
-      return result[0];
+      return result[result.length - 1];
     },
     async getDexieTableValues(query) {
       if (query === '') {

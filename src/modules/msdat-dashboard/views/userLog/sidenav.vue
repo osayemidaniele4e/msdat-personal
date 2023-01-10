@@ -6,10 +6,10 @@
       <h3 class="mt-2">Account Settings</h3>
     </div>
      <div class="d-flex ">
-       <div class="col-2 d-flex flex-column mt-3 p-5 border-right">
-        <a href="#/profile" class="item"><b-icon-person-circle></b-icon-person-circle>&nbsp;&nbsp; Profile</a>
-        <a href="#/notification" class="mt-4 item"><b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp; Notification</a>
-        <a href="#/userActivity" class="mt-4 item"><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp; User Activity</a>
+       <div class="col-lg-2 col-1 d-flex flex-column mt-3 px-2 py-5 border-right">
+        <a href="#/profile" class="item"><b-icon-person-circle></b-icon-person-circle>&nbsp;&nbsp; <span class="d-none d-md-inline">Profile</span></a>
+        <a href="#/notification" class="mt-4 item"><b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp; <span class="d-none d-md-inline">Notification</span></a>
+        <a href="#/userActivity" class="mt-4 item"><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp; <span class="d-none d-md-inline">User Activity</span></a>
        </div>
        <div class="col-10">
         <Profile :is="currentView" />
