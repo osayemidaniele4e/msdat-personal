@@ -289,7 +289,6 @@ export default {
     this.updatePayload(this.defaultYear, 'year');
     this.activeToggleButton = this.payload.visualization;
   },
-
 };
 </script>
 

@@ -74,7 +74,7 @@ export default {
     // selectControll(controlIndex) {
     //   this.selectedIndex = controlIndex;
     //   // loop over all the tabs
-    //   // console.log('Controls', this.abc);
+
     //   this.abc.forEach((control) => {
     //     // eslint-disable-next-line no-param-reassign
     //     control.active = control.id === controlIndex;

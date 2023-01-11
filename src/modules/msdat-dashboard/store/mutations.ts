@@ -103,6 +103,7 @@ const mutations: MutationTree<State> = {
   CLEAR_CONTROL_PANEL: (state) => {
     state.controlConfig = [];
   },
+
   /**
    * This function is used to set control options
    */
@@ -129,6 +130,10 @@ const mutations: MutationTree<State> = {
         }
       }
     });
+  },
+
+  SET_CONFIGURATIONS: (state, payload) => {
+    state.configObject = payload;
   },
 };
 
