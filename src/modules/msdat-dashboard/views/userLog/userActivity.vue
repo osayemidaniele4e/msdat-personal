@@ -195,4 +195,16 @@ h4 {
   position: absolute;
   right: 0;
 }
+/* EXTRA EXTRA SMALL */
+@media (max-width: 676px) {
+  .scroll-active {
+  max-height: 90vw;
+  }
+}
+/* SMALL */
+@media (min-width: 676px) and (max-width: 1000px) {
+  .scroll-active {
+  max-height: 50vw;
+  }
+}
 </style>

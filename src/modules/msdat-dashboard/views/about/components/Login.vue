@@ -106,6 +106,9 @@ export default {
         this.msg = 'user not found, confirm username and password';
         console.log(err.message);
       }
+      if (window.innerWidth < 700) {
+        this.$router.push('/account');
+      }
     },
   },
 };

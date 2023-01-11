@@ -31,7 +31,7 @@
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
             </div>
 
-            <div>
+            <div v-if="$route.path !== '/account'">
               <b-dropdown
                 text="Select"
                 toggle-class="select-dropdown"
@@ -88,7 +88,6 @@
               >
                 <button
                   class="btn btn-outline-primary border-light rounded-0"
-                  style="font-size: 13px !important"
                 >
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
@@ -110,13 +109,13 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false" class="auth ml-2">
-                <b-icon-person-circle></b-icon-person-circle>&nbsp;Login/Register
+              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false" class="auth ml-1 d-flex align-items-center">
+                <b-icon-person-circle style="width: 18px; height: 18px;"></b-icon-person-circle>&nbsp;<span class="d-none d-md-inline">Login/Register</span>
               </div>
               <div v-else @click="showCard = true">
-              <div class="ml-2 profile">
+              <div class="ml-2 profile d-flex align-items-center">
                 <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
-                Hi, {{ getUser.username }}
+                Hi,&nbsp;{{ getUser.username }}
               </div>
               </div>
               <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff" v-if="isAuthenticated === false">
@@ -187,7 +186,7 @@
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
     <div v-if="isAuthenticated === true">
-    <div class="container card shadow dropdown work-sans" v-if="showCard">
+    <div class="container card shadow dropCard work-sans" v-if="showCard">
       <div class="row p-3 d-flex user-details">
         <div class="col-3">
         <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
@@ -261,6 +260,7 @@ export default {
         { title: 'Create Dashboard +', link: '/' },
       ],
       controls: [],
+      screenWidth: 0,
     };
   },
   computed: {
@@ -268,6 +268,7 @@ export default {
   },
   created() {
     this.controls = this.$children;
+    this.screenWidth = window.innerWidth;
     // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
   },
 
@@ -378,7 +379,7 @@ header#the-header {
     a.nav-link {
       text-decoration: none;
       color: white;
-      font: normal normal 600 14px/20px Muli;
+      font: normal normal 600 12px/20px Muli;
       &.active {
         background: #154736;
         border-radius: 5px;
@@ -499,6 +500,12 @@ header#the-header {
   .main {
     display: none;
   }
+  .auth {
+    display: none !important;
+  }
+  .profile{
+    display: none !important;
+  }
   .mobile-flex-col {
     display: none;
   }
@@ -595,6 +602,12 @@ header#the-header {
 @media (min-width: 676px) and (max-width: 1000px) {
   .main {
     display: none;
+  }
+  .profile {
+    margin: 0px 20px 0px 0px;
+  }
+  .auth {
+    margin: 0px 20px 0px 0px !important;
   }
   .mains .header-navs a {
     display: none;
@@ -789,6 +802,9 @@ header#the-header {
   .main-text {
     display: none;
   }
+  .profile {
+    margin: 0px 20px 0px 0px;
+  }
   .mains .header-navs {
     margin-left: 100px;
   }
@@ -832,21 +848,20 @@ header#the-header {
     }
   }
 }
-// div {
-//     &.dropdown {
-//       position: absolute;
-//       // float: right;
-//       width: 26vw;
-//       z-index: 5;
-//       right: 1rem;
-//       color: black;
-//       max-height: 30rem;
-//       overflow-y: auto;
-//       a {
-//         color: inherit;
-//       }
-//     }
-//   }
+div {
+    &.dropCard {
+      position: absolute;
+      width: 26vw;
+      z-index: 5;
+      right: 1rem;
+      color: black;
+      max-height: 30rem;
+      overflow-y: auto;
+      a {
+        color: inherit;
+      }
+    }
+  }
   .user-details{
     background: #FAFAFA;
   }
@@ -858,6 +873,18 @@ header#the-header {
     position: absolute;
     right: 0;
   }
+  .profile-picture{
+  border-radius: 48px;
+}
+.profile{
+  cursor: pointer;
+  font: normal normal 600 12px/20px Muli;
+  color: white;
+}
+.auth {
+  font: normal normal 600 12px/20px Muli;
+  color: white;
+}
 </style>
 
 <style scoped>
@@ -946,14 +973,5 @@ header#the-header {
 }
 .btn:hover {
   color: #fff;
-}
-.profile-picture{
-  border-radius: 48px;
-}
-.profile{
-  cursor: pointer;
-}
-.auth {
-  font-size: 12px;
 }
 </style>
