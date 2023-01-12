@@ -19,14 +19,16 @@
         </tr>
       </thead>
       <tbody v-for="(el, i) in dataArray" :key="i">
+        <!-- <pre>{{el}}</pre> -->
         <tr class="w-100 border">
           <th scope="row"  class='border' :rowspan="100">{{ i + 1 }}</th>
           <th scope='row'  class='border' :rowspan="100">{{ el.indicator }}</th>
         </tr>
         <tr class="w-100 border" v-for="(ef, j) in el.datasourceArr" :key="j">
+          <!-- <pre>{{ef}}</pre> -->
           <!-- <td scope="col" :colspan="100"> -->
             <div class='d-flex justify-content-between w-100 '  v-for="(ed, m) in ef.dataValues" :key="m">
-              <td> <span>{{ ef.datasourceName }}</span>  {{ ed.period }}</td>
+              <td> <span><router-link :to='`/indicator-search/datasource-search/${el.indicatorId}/${ed.datasource}/${ed.period}/`'>{{ ef.datasourceName }}</router-link></span>  {{ ed.period }}</td>
               <td>{{ ed.value }} %</td>
             </div>
           <!-- </td> -->

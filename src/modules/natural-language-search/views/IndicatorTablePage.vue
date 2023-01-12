@@ -117,6 +117,7 @@ export default {
               console.log(this.dataArray, 'newArray');
             });
           });
+          this.isLoading = true;
         } catch (err) {
           console.log(err);
         } finally {
