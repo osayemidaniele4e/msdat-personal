@@ -105,11 +105,21 @@
           >
         </b-list-group>
       </div>
+      <div class="col mb-3 d-md-none">
+        <b-list-group>
+          <h5 class="text-underline main-item">User Profile</h5>
+            <div v-b-toggle.sidebar-2 class="text-dark sub-item">
+               Login/Register
+              </div>
+        </b-list-group>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+// import { mapGetters } from 'vuex';
+
 export default {
   // props: {
   //   show: {

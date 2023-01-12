@@ -22,7 +22,7 @@ export default [
     name: 'my-dashboard',
     beforeEnter: (to, from, next) => {
       // const token = sessionStorage.getItem('username');
-      const token = VueCookies.get('custom-access-token');
+      const token = VueCookies.get('msdat-access-token');
       // console.log('In before Enter', token);
       if (!token) {
         next('/custom/login');
@@ -64,7 +64,7 @@ export default [
     name: 'my-custom-dashboard',
     beforeEnter: (to, from, next) => {
       // const token = sessionStorage.getItem('username');
-      const token = VueCookies.get('custom-access-token');
+      const token = VueCookies.get('msdat-access-token');
       if (!token) {
         next('/custom/login');
       } else {

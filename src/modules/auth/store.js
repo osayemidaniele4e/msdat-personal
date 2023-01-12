@@ -1,21 +1,25 @@
 import axios from 'axios';
 import VueCookies from 'vue-cookies';
 
-const User = VueCookies.get('custom-user-details');
+const userDetails = VueCookies.get('msdat-user-details');
 
 export default {
   namespaced: true,
   state: {
-    isAuthtenticated: false,
-    authToken: '',
-    user: User || {},
+    isAuthenticated: false,
+    user: userDetails || {},
   },
   mutations: {
     setUser(state, payload) {
       state.user = payload;
+      state.isAuthenticated = true;
     },
     setToken(state, payload) {
       state.authToken = payload;
+    },
+    logout(state) {
+      state.user = {};
+      state.isAuthenticated = false;
     },
   },
   actions: {
@@ -41,27 +45,21 @@ export default {
         );
         // console.log(response);
         const user = response.data;
-        const accessToken = response.data.token;
-        const refreshToken = response.data.refresh_token;
-        VueCookies.set('custom-access-token', accessToken);
-        VueCookies.set('custom-refresh-token', refreshToken);
-        VueCookies.set('custom-user-details', user);
+        VueCookies.set('msdat-user-details', user);
         commit('setUser', user);
-        // commit(' setToken', accessToken);
         return response;
       } catch (err) {
         console.log(err);
-        VueCookies.remove('custom-access-token');
-        VueCookies.remove('custom-refresh-token');
       }
+    },
+    logout({ commit }) {
+      VueCookies.remove('msdat-user-details');
+      commit('logout');
     },
   },
   getters: {
-    getUser(state) {
-      return state.user;
-    },
-    getToken(state) {
-      return state.authToken;
-    },
+    getUser: (state) => state.user,
+    getToken: (state) => state.user?.token,
+    isAuthenticated: (state) => (state.user?.token !== '' && state.user?.token !== undefined),
   },
 };

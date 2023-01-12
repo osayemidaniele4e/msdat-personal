@@ -5,7 +5,7 @@ import Vue from 'vue';
 const instance = axios.create({
   baseURL: process.env.VUE_APP_API_BASE_URL1,
 });
-const AUTH_TOKEN = sessionStorage.getItem('custom-access-token');
+const AUTH_TOKEN = sessionStorage.getItem('msdat-access-token');
 // eslint-disable-next-line dot-notation
 instance.defaults.headers.common['Authorization'] = `token ${AUTH_TOKEN}`;
 // instance.interceptors.request.use(

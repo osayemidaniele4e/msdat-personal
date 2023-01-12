@@ -95,6 +95,7 @@ export default {
   async created() {
     const { name } = this.$route.params;
 
+    window.addEventListener('beforeunload', this.omo);
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure

@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="" >
     <section class="container-fluid">
       <div class="container">
         <h2 class="w-100 text-center mx-auto">Log in to your account</h2>
@@ -76,15 +76,28 @@ export default {
             // console.log(res);
             // eslint-disable-next-line eqeqeq
             if (res.status == 200) {
-              this.$swal('Welcome to your Dashboard');
-              // this.$router.push({ path: '/my-dashboard/details' });
-            } else {
-              this.$swal('something went wrong, confirm username and password');
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
             }
           })
           .catch((err) => {
             console.log(err);
-            this.$swal('confirm username and password');
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Confirm username and password',
+            });
           });
       } catch (err) {
         this.isLoading = false;
@@ -92,6 +105,9 @@ export default {
         this.$swal('user not found, confirm username and password');
         this.msg = 'user not found, confirm username and password';
         console.log(err.message);
+      }
+      if (window.innerWidth < 700) {
+        this.$router.push('/account');
       }
     },
   },

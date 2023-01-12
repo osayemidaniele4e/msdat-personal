@@ -36,7 +36,7 @@
 <script>
 import { _, uniqBy } from 'lodash';
 import IndicatorTable from '../components/indicatorTable.vue';
-import Services from '../Service';
+import Services from '../service';
 import Theloader from '../components/theLoader.vue';
 
 export default {

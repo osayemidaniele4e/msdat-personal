@@ -26,7 +26,7 @@
 <script>
 import { uniq } from 'lodash';
 import Barchart from '../components/Barchart.vue';
-import Services from '../Service';
+import Services from '../service';
 import Theloader from '../components/theLoader.vue';
 
 export default {
