@@ -85,7 +85,7 @@ export default {
       };
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
-        VueCookies.set('user_interactions', JSON.stringify(this.interactions), { expires: '24h' });
+        VueCookies.set('user_interactions', JSON.stringify(this.interactions));
         const interactions = JSON.parse(VueCookies.get('user_interactions'));
         if (interactions.length > 9 && this.getInternetStatus === true) {
           interactions.forEach(async (el) => {
