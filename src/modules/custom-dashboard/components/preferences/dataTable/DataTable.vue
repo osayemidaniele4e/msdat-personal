@@ -37,7 +37,7 @@
         </p>
       </div>
     </div>
-  <div class="container-fluid table-responsive overflow-auto shadow-sm" style="overflow-x:auto; height: 60vh; overflow-y: auto;">
+  <div class="container-fluid table-responsive overflow-auto shadow-sm" >
       <table class="table" style="border: 1px solid #e3e3e3">
       <thead style="position: sticky; top: 0: back-ground-color: white;">
         <tr>

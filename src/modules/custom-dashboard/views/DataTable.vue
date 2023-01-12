@@ -1,34 +1,51 @@
 <!-- Auther: Ghufran Ahmed -->
 <template>
-  <b-container style="width: 85%;  " fluid>
+  <b-container style="width: 85%" fluid>
     <template>
-      <h2
-        style="
-          background-color: #f5f5f5;
-          width: 45%;
-          font-family: Work Sans;
-          font-size: 23px;
-          font-weight: bold;
-          margin-left: 30px;
-        "
-      >
-        <span class="col-6">
-          {{ details.name }}
-        </span>
-      </h2>
-      <div
-        style="
-          background-color: #f5f5f5;
-          width: 70%;
-          font-family: Work Sans;
-          font-size: 14px;
-          margin-left: 30px;
-          margin-bottom: 10px;
-        "
-      >
-        <p class="col-12">
-          {{ details.description }}
-        </p>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h2
+            style="
+              background-color: #f5f5f5;
+              width: 45%;
+              font-family: Work Sans;
+              font-size: 23px;
+              font-weight: bold;
+              margin-left: 30px;
+            "
+          >
+            <span class="col-6">
+              {{ details.name }}
+            </span>
+          </h2>
+          <div
+            style="
+              background-color: #f5f5f5;
+              width: 70%;
+              font-family: Work Sans;
+              font-size: 14px;
+              margin-left: 30px;
+              margin-bottom: 10px;
+            "
+          >
+            <p class="col-12">
+              {{ details.description }}
+            </p>
+          </div>
+        </div>
+        <!-- <span class="mb-5"
+          ><b-button
+            @click="approveData"
+            style="
+              font-size: 12.000004px;
+              font-family: Work Sans;
+              border-color: #3f8994;
+              color: #3f8994;
+              background-color: #ffffff;
+            "
+            >approve Data</b-button
+          ></span -->
+        <!-- > -->
       </div>
     </template>
     <data-table />

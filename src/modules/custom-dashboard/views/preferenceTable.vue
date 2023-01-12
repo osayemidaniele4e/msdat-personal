@@ -8,18 +8,17 @@
       Select the Program Areas, Data Sources, Period and Coverage Levels you are
       interested in.
     </p>
-    <p id="link-to-about" style="font-size: 13px; font-family: Work Sans">
-      <b>View datasheet</b>- see all available data in database
-    </p>
-    <!-- <b-col
-      cols="auto"
-      style="position: fixed; top: 35%; right: 0; z-index: 9999"
-      ><b-button
-        @click="approveData"
-        style="font-size: 12.000004px; font-family: Work Sans"
-        >approve Data</b-button
-      ></b-col
-    > -->
+    <div class="d-flex align-items-center justify-content-between">
+      <p id="link-to-about" style="font-size: 13px; font-family: Work Sans">
+        <b>View datasheet</b>- see all available data in database
+      </p>
+       <span class="mb-5"
+          ><b-button
+            @click="approveData"
+            style="font-size: 12.000004px; font-family: Work Sans; border-color:#3f8994; color: #3f8994; background-color: #ffffff;"
+            >approve Data</b-button
+          ></span>
+    </div>
     <b-card>
       <b-row>
         <!-- **** Preferences Selection *****  -->
@@ -62,36 +61,34 @@
             >
           </b-row>
           <div class="d-flex align-self-end justify-content-end w-100">
-          <b-row
-            align-h="end"
-            class="mt-5 mr-5 text-right"
-            v-if="
-              indicatorsCount &&
-              dataSourceCount &&
-              yearsCount &&
-              selectedLevel.length > 0
-            "
-          >
-            <b-col class="align-baseline" cols="auto" style=""
-              ><p
-                class="baseline mt-5"
-                style="font-size: 12.000004px; font-family: Work Sans"
-              >
-                Save for Later
-              </p>
-            </b-col>
-          </b-row>
-          <b-row  align-h="end" class=" mt-5 text-right">
-            <b-col
-              cols="auto"
-              class='approve'
-              ><b-button
-                @click="approveData"
-                style="font-size: 12.000004px; font-family: Work Sans"
-                >approve Data</b-button
-              ></b-col
+            <b-row
+              align-h="end"
+              class="mt-5 mr-5 text-right"
+              v-if="
+                indicatorsCount &&
+                dataSourceCount &&
+                yearsCount &&
+                selectedLevel.length > 0
+              "
             >
-          </b-row>
+              <b-col class="align-baseline" cols="auto" style=""
+                ><p
+                  class="baseline mt-5"
+                  style="font-size: 12.000004px; font-family: Work Sans"
+                >
+                  Save for Later
+                </p>
+              </b-col>
+            </b-row>
+            <b-row align-h="end" class="mt-5 text-right">
+              <b-col cols="auto" class="approve"
+                ><b-button
+                  @click="approveData"
+                  style="font-size: 12.000004px; font-family: Work Sans"
+                  >approve Data</b-button
+                ></b-col
+              >
+            </b-row>
           </div>
         </b-col>
       </b-row>
