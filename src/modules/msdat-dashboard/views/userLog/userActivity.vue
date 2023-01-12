@@ -150,7 +150,7 @@ export default {
         (el) => moment(el.viewed_at).format('MMMM YYYY') === this.period,
       );
       this.filter.sort((a, b) => {
-        if (a.viewed_at > b.viewed_at) {
+        if (b.viewed_at > a.viewed_at) {
           return 1;
         }
         return -1;
