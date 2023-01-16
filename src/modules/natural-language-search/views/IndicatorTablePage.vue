@@ -18,6 +18,7 @@
           class="form-control border-0"
           placeholder="Search an indicator ..."
         />
+
         <button
           class="btn input-group-append"
           type="submit"
