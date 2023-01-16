@@ -12,22 +12,22 @@
         <h2>Design your dashboard, customize your data</h2>
         <h3>No coding skills required!</h3>
       </div>
-      <b-row align="center" class='mt-5 mx-auto w-100 d-flex justify-content-center'>
-        <b-col md="auto" sm="12" class="svg">
+      <b-row align="center" class='m-5 p-5 hero'>
+        <b-col md="auto" lg="auto" sm="12" class="svg">
           <customDashboardSvg :name="61"></customDashboardSvg>
           <p style="font-size: 24px !important;">Select Data</p>
         </b-col>
-        <b-col md="auto" sm="12" align-self="center" class="svg-arrow">
+        <b-col md="auto" lg="auto" sm="12" align-self="center" class="svg-arrow">
           <customDashboardSvg :name="78"></customDashboardSvg>
         </b-col>
-        <b-col md="auto" sm="12" class="svg">
+        <b-col md="auto" lg="auto" sm="12" class="svg">
           <customDashboardSvg :name="62"></customDashboardSvg>
           <p style="font-size: 24px !important;">Arrange Widgets</p>
         </b-col>
-        <b-col md="auto" sm="12" align-self="center" class="svg-arrow">
+        <b-col md="auto" lg="auto" sm="12" align-self="center" class="svg-arrow">
           <customDashboardSvg :name="79"></customDashboardSvg>
         </b-col>
-        <b-col md="auto" sm="12" class="svg">
+        <b-col md="auto" lg="auto" sm="12" class="svg">
           <customDashboardSvg :name="77"></customDashboardSvg>
           <p style="font-size: 24px !important;">Visualize Dashboard</p>
         </b-col>
@@ -136,6 +136,12 @@ export default {
 <style lang="scss" scoped>
 .container-fluid {
   margin-top: 54.750000014px;
+}
+.hero{
+  width: 100%;
+  margin: auto !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 #get-started {
   margin-top: 30px;
