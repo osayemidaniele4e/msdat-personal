@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import createPersistedState from 'vuex-persistedstate';
+import store from '@/store/index';
+import USER_ROUTE from '@/modules/msdat-dashboard/views/userLog/router';
 import MSDAT_ABOUT_ROUTE from '../modules/msdat-dashboard/views/about/router';
 import MSDAT_FAQ_ROUTE from '../modules/msdat-dashboard/views/faq/router';
 import MSDAT_UPDATE_LOG from '../modules/msdat-dashboard/views/update_log/router';
@@ -26,6 +28,7 @@ const routes = [
   ...COMING_SOON,
   ...NATURAL_LANGUAGE_SEARCH,
   ...AUTH_ROUTE,
+  ...USER_ROUTE,
   {
     path: '*',
     name: 'NotFound',
@@ -40,4 +43,18 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = store.getters['AUTH_STORE/isAuthenticated'];
+  const requireAuth = to.matched.some((record) => record.meta.requiresAuth);
+
+  if (!isAuthenticated && requireAuth) {
+    // eslint-disable-next-line no-alert
+    alert('Access Denied, Please Login');
+    next({
+      path: '/',
+    });
+  } else {
+    next(); // make sure to always call next()!
+  }
+});
 export default router;
