@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axiosInstance from '@/config/axios';
 
 export default {
   async SET_INTERACTIONS({ commit }, payload) {
     try {
-      const { data } = await axios.post('https://msdat-api.fmohconnect.gov.ng/api/user_interactions/', payload);
+      const { data } = await axiosInstance.post('/user_interactions/', payload);
       commit('setInteraction', data);
     } catch (error) {
       console.log(error);
@@ -11,7 +11,7 @@ export default {
   },
   async GET_INTERACTIONS({ commit }, payload) {
     try {
-      const response = await axios.get(`https://msdat-api.fmohconnect.gov.ng/api/user_interactions/?user=${payload}&size=10000`);
+      const response = await axiosInstance.get(`/user_interactions/?user=${payload}&size=10000`);
       const { results } = response.data;
       commit('setInteractions', results);
     } catch (error) {
@@ -20,7 +20,7 @@ export default {
   },
   async DELETE_INTERACTION({ commit }, payload) {
     try {
-      const response = await axios.delete(`https://msdat-api.fmohconnect.gov.ng/api/user_interactions/${payload}/`);
+      const response = await axiosInstance.delete(`/user_interactions/${payload}/`);
       commit('set_success', response);
     } catch (error) {
       console.log(error);
