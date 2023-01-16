@@ -99,9 +99,9 @@ export default {
   },
   methods: {
     handleLogout() {
-      VueCookies.remove('custom-access-token');
-      VueCookies.remove('custom-refresh-token');
-      VueCookies.remove('custom-user-details');
+      VueCookies.remove('msdat-access-token');
+      VueCookies.remove('msdat-refresh-token');
+      VueCookies.remove('msdat-user-details');
       this.$router.push({ path: '/custom/login' });
     },
   },

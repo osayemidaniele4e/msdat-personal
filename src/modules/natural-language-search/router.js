@@ -5,7 +5,7 @@ export default [
     component: () => import('./views/index.vue'),
     children: [
       {
-        path: 'indicator-table-view',
+        path: '/',
         name: 'indicator-table-view',
         component: () => import('./views/IndicatorTablePage.vue'),
       },
@@ -18,6 +18,11 @@ export default [
         path: 'state-table-view',
         name: 'state-table-view',
         component: () => import('./components/stateTable.vue'),
+      },
+      {
+        path: 'datasource-search/:indicator/:datasource/:period/',
+        name: 'datasource-search-view',
+        component: () => import('./views/datasourceSearch.vue'),
       },
     ],
   },

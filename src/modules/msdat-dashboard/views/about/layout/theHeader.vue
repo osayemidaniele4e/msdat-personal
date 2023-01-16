@@ -1,16 +1,11 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
-    <header id="the-header" class="position-relative">
-
+  <header id="the-header" class="position-relative">
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
-            <img
-              src="@/assets/img/Logo.svg"
-              alt="FMOH Logo"
-              class="img-fluid"
-            />
+            <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
           </div>
           <div v-if="dashboardName != 'MSDAT PLATFORM'">
             <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
@@ -20,14 +15,7 @@
           cols
           md="11"
           lg="11"
-          class="
-            d-flex
-            justify-content-between
-            align-items-center
-            border-left
-            main
-            mains
-          "
+          class="d-flex justify-content-between align-items-center border-left main mains"
         >
           <!-- testing for mobile -->
           <div class="mobile-flex">
@@ -43,7 +31,7 @@
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
             </div>
 
-            <div>
+            <div v-if="$route.path !== '/account'">
               <b-dropdown
                 text="Select"
                 toggle-class="select-dropdown"
@@ -55,8 +43,7 @@
                   href="#"
                   id="dropdownMenuButton"
                   class="select-dropdown-item"
-                  v-for="(control, index) in $store.state.MSDAT_STORE
-                    .controlConfig"
+                  v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                   :key="index"
                   @click="emitIndex(index)"
                   >{{ control.label }}
@@ -67,7 +54,6 @@
             <b-sidebar id="sidebar-1" title="" right shadow>
               <SideBar />
             </b-sidebar>
-
           </div>
           <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
@@ -86,30 +72,23 @@
           </div>
 
           <!-- <b-col cols md="6" lg="6"> -->
-          <div
-            class="
-              d-flex
-              justify-content-end
-              h-100
-              align-items-center
-              header-navs
-              main
-            "
-          >
+          <div class="d-flex justify-content-end h-100 align-items-center header-navs main">
             <b-nav class="h-100 align-items-center main d-flex">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
-                 <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link">Home</a>
+              <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link" v-if="isAuthenticated === false"
+                >Home</a
+              >
               <router-link to="/about" class="nav-link">About</router-link>
               <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/custom" class="nav-link"
-                >Create New Dashboard</router-link
-              >
-          <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link">Go back to MSDAT 1.5</a>
+              <router-link to="/custom" class="nav-link">Create New Dashboard</router-link>
+              <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link" v-if="isAuthenticated === false">Go back to MSDAT 1.5</a>
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button class="btn btn-outline-primary border-light rounded-0" style="font-size: 13px !important">
+                <button
+                  class="btn btn-outline-primary border-light rounded-0"
+                >
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
@@ -130,37 +109,42 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <!-- <div v-b-toggle.sidebar-2>
-              <b-icon-person-fill></b-icon-person-fill
-                >&nbsp;Login/Register
-              </div> -->
-              <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff">
-              <LoginSidebar v-if="show" />
-              <SignUp v-else />
-              <div class="row" v-if="show">
-              <div class="col-12 text-center">
-                <h4 class="py-3" style="font-size: 15px">
-                  Don't have an account?
-                </h4>
-                <button
-                  class="btn btn-lg btn-light btn-outline-dark text-dark"
-                  style="font-size: 15px; background:#F7F7F7; border:1px solid #707070"
-                  @click.prevent="showLoginForm"
-                >
-                  CREATE AN ACCOUNT
-                </button>
+              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false" class="auth ml-1 d-flex align-items-center">
+                <b-icon-person-circle style="width: 18px; height: 18px;"></b-icon-person-circle>&nbsp;<span class="d-none d-md-inline">Login/Register</span>
+              </div>
+              <div v-else @click="showCard = true">
+              <div class="ml-2 profile d-flex align-items-center">
+                <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
+                Hi,&nbsp;{{ getUser.username }}
               </div>
               </div>
-              <div v-else>
-              <div class="justify-content-center text-center">
-          <button class="btn btn-lg btn-light btn-outline-dark text-dark mb-3" style="background:#F7F7F7; border:1px solid #707070" @click="showRegForm">LOGIN</button>
-        </div>
-              </div>
-            </b-sidebar>
-              <!-- <router-link to="/login" v-else class="nav-link"
-                ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
-                out</router-link
-              > -->
+              <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff" v-if="isAuthenticated === false">
+                <LoginSidebar v-if="show" />
+                <SignUp v-else />
+                <div class="row" v-if="show">
+                  <div class="col-12 text-center">
+                    <h4 class="py-3" style="font-size: 15px">Don't have an account?</h4>
+                    <button
+                      class="btn btn-lg btn-light btn-outline-dark text-dark"
+                      style="font-size: 15px; background: #f7f7f7; border: 1px solid #707070"
+                      @click.prevent="showLoginForm"
+                    >
+                      CREATE AN ACCOUNT
+                    </button>
+                  </div>
+                </div>
+                <div v-else>
+                  <div class="justify-content-center text-center">
+                    <button
+                      class="btn btn-lg btn-light btn-outline-dark text-dark mb-3"
+                      style="background: #f7f7f7; border: 1px solid #707070"
+                      @click="showRegForm"
+                    >
+                      LOGIN
+                    </button>
+                  </div>
+                </div>
+              </b-sidebar>
             </b-nav>
             <b-icon
               @click="toggleOption = !toggleOption"
@@ -168,12 +152,8 @@
               font-scale="1.5"
               class="main"
             />
+            <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon" v-b-toggle.sidebar-1></b-icon>
             <b-icon
-              icon="grid3x3-gap-fill"
-              class="mob-grid-icon"
-              v-b-toggle.sidebar-1
-            ></b-icon>
-                  <b-icon
               @click="toggleOption = !toggleOption"
               icon="three-dots-vertical"
               font-scale="1.5"
@@ -186,35 +166,50 @@
             />
           </div>
         </b-col>
-
       </b-row>
       <!--  please someone show separate the
       header for the about page from this it going to cause issues  -->
       <b-row v-show="aboutPage" class="main">
         <b-col cols="1">
           <!-- <a href=""> -->
-          <b-icon
-            @click="$router.go(-1)"
-            class="back-icn main"
-            icon="chevron-left"
-          />
+          <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
           <!-- </a> -->
         </b-col>
         <b-col class="main">
           <h4 class="mt-4">About the MSDAT Dashboard</h4>
           <p>
-            This dashboard is developed and managed by the Department of Health
-            Planning Research and Statistics (DHPRS)
+            This dashboard is developed and managed by the Department of Health Planning Research
+            and Statistics (DHPRS)
           </p>
         </b-col>
-
       </b-row>
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
+    <div v-if="isAuthenticated === true">
+    <div class="container card shadow dropCard work-sans" v-if="showCard">
+      <div class="row p-3 d-flex user-details">
+        <div class="col-3">
+        <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
+        </div>
+        <div class="col-8">
+        <div>{{ getUser.username }}</div>
+        <div>{{ getUser.email }}</div>
+        </div>
+        <div class="close mr-2" @click.prevent="showCard = false">
+          <b-icon-x-circle></b-icon-x-circle>
+        </div>
+      </div>
+      <div class="d-flex py-2">
+        <router-link to="/account"><a href="#" class="ml-2">View Account</a></router-link>
+        <div class="logout">
+        <a href="#" class="mr-2" @click.prevent="logout">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
   </header>
-  <!--
-  to deltete
-       // using provide inject and watcher to work on this feature.
+  <!--  to deltete
+        // using provide inject and watcher to work on this feature.
         // inject into base panel to affect the entire dashboard
         // controls if from the global storage
         // this.controls = this.$children;
@@ -227,6 +222,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
 import Sidebar from '../components/Sidebar.vue';
@@ -244,6 +240,7 @@ export default {
   data() {
     return {
       show: true,
+      showCard: false,
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
@@ -263,10 +260,15 @@ export default {
         { title: 'Create Dashboard +', link: '/' },
       ],
       controls: [],
+      screenWidth: 0,
     };
+  },
+  computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
   },
   created() {
     this.controls = this.$children;
+    this.screenWidth = window.innerWidth;
     // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
   },
 
@@ -279,6 +281,13 @@ export default {
       // eslint-disable-next-line no-unused-expressions
       this.show = false;
     },
+    // function to logout a particular user
+    async logout() {
+      this.$store.dispatch('AUTH_STORE/logout');
+      if (!(this.$route.fullPath.includes('dashboard'))) {
+        this.$router.push('/');
+      }
+    },
     runIntro() {
       this.toggleOption = !this.toggleOption;
       this.$emit('tour');
@@ -288,6 +297,9 @@ export default {
     },
     emitIndex(index) {
       this.$emit('index', index);
+    },
+    showC() {
+      this.showCard = true;
     },
   },
   watch: {
@@ -331,7 +343,7 @@ button {
   display: inherit;
 }
 
-.mob{
+.mob {
   display: none;
 }
 
@@ -367,7 +379,7 @@ header#the-header {
     a.nav-link {
       text-decoration: none;
       color: white;
-      font: normal normal 600 14px/20px Muli;
+      font: normal normal 600 12px/20px Muli;
       &.active {
         background: #154736;
         border-radius: 5px;
@@ -484,20 +496,26 @@ header#the-header {
 // MEDIA QUERY
 
 /* EXTRA EXTRA SMALL */
-@media (max-width:676px) {
+@media (max-width: 676px) {
   .main {
     display: none;
+  }
+  .auth {
+    display: none !important;
+  }
+  .profile{
+    display: none !important;
   }
   .mobile-flex-col {
     display: none;
   }
-  .mob{
+  .mob {
     display: none;
   }
-  .mains .header-navs a{
+  .mains .header-navs a {
     display: none;
   }
-  .mains .header-navs button{
+  .mains .header-navs button {
     display: none;
   }
 
@@ -585,13 +603,19 @@ header#the-header {
   .main {
     display: none;
   }
-   .mains .header-navs a{
+  .profile {
+    margin: 0px 20px 0px 0px;
+  }
+  .auth {
+    margin: 0px 20px 0px 0px !important;
+  }
+  .mains .header-navs a {
     display: none;
   }
-  .mains .header-navs button{
+  .mains .header-navs button {
     display: none;
   }
-  .mob{
+  .mob {
     display: inherit;
   }
 
@@ -699,84 +723,87 @@ header#the-header {
 //     font-weight: 500;
 //     font-size: 19px;
 //   }
-  //    .main{
-  //     display: none;
-  //   }
+//    .main{
+//     display: none;
+//   }
 
-  // .mobile-flex{
-  //    display: flex;
-  //  justify-content: space-between;
-  //  flex-direction: row;
-  // //  display: grid;
-  // //  grid-template-columns: 20% 50% 20% 10%;
-  // }
+// .mobile-flex{
+//    display: flex;
+//  justify-content: space-between;
+//  flex-direction: row;
+// //  display: grid;
+// //  grid-template-columns: 20% 50% 20% 10%;
+// }
 
-  // .mob-grid-icon{
-  //   display: inherit;
-  // }
-  #about-wrap {
-    header#the-header {
-      & > .container-fluid {
-        & > .row {
-          height: 65px;
-          padding: 10px;
+// .mob-grid-icon{
+//   display: inherit;
+// }
+#about-wrap {
+  header#the-header {
+    & > .container-fluid {
+      & > .row {
+        height: 65px;
+        padding: 10px;
 
-          // first row
-          &:first-child {
-            & > div {
-              &:first-child {
-                padding-left: 0.5%;
-                img {
-                  float: left;
-                  height: 40px !important;
-                }
+        // first row
+        &:first-child {
+          & > div {
+            &:first-child {
+              padding-left: 0.5%;
+              img {
+                float: left;
+                height: 40px !important;
               }
+            }
 
-              &:last-child {
-                padding: 0 10px;
+            &:last-child {
+              padding: 0 10px;
 
-                h2 {
-                  font: normal normal 600 17px/20px Work Sans;
+              h2 {
+                font: normal normal 600 17px/20px Work Sans;
 
-                  // 3-dots icon
-                  & ~ div {
-                    font-size: 13px;
-                  }
+                // 3-dots icon
+                & ~ div {
+                  font-size: 13px;
                 }
               }
             }
           }
+        }
 
-          // second row
-          &:last-child {
-            padding: 0 10px;
+        // second row
+        &:last-child {
+          padding: 0 10px;
 
-            & > :first-child {
-              justify-content: center;
-              padding: 8px;
-              font-size: 38px;
-            }
+          & > :first-child {
+            justify-content: center;
+            padding: 8px;
+            font-size: 38px;
+          }
 
-            & > :last-child {
-              // padding: 0 5% !important;
-              line-height: 16px;
+          & > :last-child {
+            // padding: 0 5% !important;
+            line-height: 16px;
 
-              h4 {
-                margin-bottom: 4px;
-                padding-bottom: 2px;
-                font-size: 17px !important;
-              }
+            h4 {
+              margin-bottom: 4px;
+              padding-bottom: 2px;
+              font-size: 17px !important;
             }
           }
         }
       }
     }
   }
+}
 
 /* LARGE */
 @media (min-width: 1000px) and (max-width: 1300px) {
   .main-text {
     display: none;
+  }
+  .profile {
+    margin: 0px 20px 0px 0px;
   }
   .mains .header-navs {
     margin-left: 100px;
@@ -803,7 +830,7 @@ header#the-header {
   }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 header#the-header {
   div.header-navs {
     button.btn-secondary {
@@ -820,6 +847,43 @@ header#the-header {
       }
     }
   }
+}
+div {
+    &.dropCard {
+      position: absolute;
+      width: 26vw;
+      z-index: 5;
+      right: 1rem;
+      color: black;
+      max-height: 30rem;
+      overflow-y: auto;
+      a {
+        color: inherit;
+      }
+    }
+  }
+  .user-details{
+    background: #FAFAFA;
+  }
+  .logout{
+    position: absolute;
+    right: 0;
+  }
+  .close {
+    position: absolute;
+    right: 0;
+  }
+  .profile-picture{
+  border-radius: 48px;
+}
+.profile{
+  cursor: pointer;
+  font: normal normal 600 12px/20px Muli;
+  color: white;
+}
+.auth {
+  font: normal normal 600 12px/20px Muli;
+  color: white;
 }
 </style>
 
@@ -907,7 +971,7 @@ header#the-header {
   position: relative;
   left: -25px;
 }
-.btn:hover{
-  color: #fff
+.btn:hover {
+  color: #fff;
 }
 </style>
