@@ -101,6 +101,7 @@ export default {
           period: val.year,
         });
         const stateObject = this.dlGetLocation(val.location.id);
+        console.log('state', stateObject);
         // plot for LGA Data
         if (val.location.id !== 1) {
           const filteredLGADataForState = data.filter(
@@ -118,6 +119,7 @@ export default {
           const chartSeries = [];
           const formattedData = formatToHighChart(filteredLGADataForState);
           const sortedData = formattedData.sort(sortHighChartDataFormat);
+          console.log('sorted', sortedData);
           // remove LGAs sting from LGA name cause mapdata does not support the format
           sortedData.forEach((item) => {
             const newItem = item;
@@ -140,7 +142,6 @@ export default {
             name: stateObject.name,
             data: sortedData,
           });
-
           this.stateName = stateObject.name; // Please always change the state name before
           // changing the level else you would get an error
           this.level = 3;

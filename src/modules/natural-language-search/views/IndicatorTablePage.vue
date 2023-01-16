@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { _, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 import IndicatorTable from '../components/indicatorTable.vue';
 import Services from '../Service';
 import Theloader from '../components/theLoader.vue';
