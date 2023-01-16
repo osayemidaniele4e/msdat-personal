@@ -116,10 +116,15 @@ export default {
               // eslint-disable-next-line eqeqeq
 
               if (res.status === 200) {
-                this.$swal(`Hi ${formData.username} 👋, Welcome to your Dashboard`);
+                // VueCookies.set('msdat-access-token', res.data.token);
+                this.$swal(
+                  `Hi ${formData.username} 👋, Welcome to your Dashboard`,
+                );
                 this.$router.push({ path: '/my-dashboard/details' });
               } else {
-                this.$swal('something went wrong, confirm username and password');
+                this.$swal(
+                  'something went wrong, confirm username and password',
+                );
               }
             })
             .catch((err) => {
@@ -164,10 +169,11 @@ h4::after {
   margin: 0 1rem;
   transform: translateY(-0.5rem);
 }
-@media(max-width: 680px) {
-  h4::before, h4::after {
-  display: none;
-}
+@media (max-width: 680px) {
+  h4::before,
+  h4::after {
+    display: none;
+  }
 }
 .login-button {
   background: #3f8994;
@@ -228,9 +234,10 @@ h4::after {
   color: #ffffff;
   opacity: 1;
 }
-@media(max-width: 680px) {
-  h4::before, h4::after {
-  display: none;
-}
+@media (max-width: 680px) {
+  h4::before,
+  h4::after {
+    display: none;
+  }
 }
 </style>

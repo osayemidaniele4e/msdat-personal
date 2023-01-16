@@ -22,8 +22,8 @@ export default [
     name: 'my-dashboard',
     beforeEnter: (to, from, next) => {
       // const token = sessionStorage.getItem('username');
-      const token = VueCookies.get('msdat-access-token');
-      // console.log('In before Enter', token);
+      const { token } = VueCookies.get('msdat-user-details');
+      console.log('In before Enter', token);
       if (!token) {
         next('/custom/login');
       } else {
