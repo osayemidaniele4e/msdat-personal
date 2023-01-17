@@ -162,6 +162,7 @@
                 href="https://fmohconnect.gov.ng/landing.html"
                 target="_blank"
                 class="nav-link"
+                v-if="isAuthenticated === false"
                 >Home</a
               >
               <router-link to="/about" class="nav-link">About</router-link>
@@ -169,7 +170,7 @@
               <router-link to="/custom" class="nav-link"
                 >Create New Dashboard</router-link
               >
-              <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link"
+              <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link" v-if="isAuthenticated === false"
                 >Go back to MSDAT 1.5</a
               >
               <div
@@ -178,7 +179,6 @@
               >
                 <button
                   class="btn btn-outline-primary border-light rounded-0"
-                  style="font-size: 13px !important"
                 >
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
@@ -200,17 +200,16 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <!-- <div v-b-toggle.sidebar-2>
-              <b-icon-person-fill></b-icon-person-fill
-                >&nbsp;Login/Register
-              </div> -->
-              <b-sidebar
-                id="sidebar-2"
-                title=""
-                right
-                shadow
-                style="background: #fff"
-              >
+              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false" class="auth ml-2 d-flex align-items-center">
+                <b-icon-person-circle style="width: 18px; height: 18px;"></b-icon-person-circle>&nbsp;<span class="d-none d-md-inline">Login/Register</span>
+              </div>
+              <div v-else @click="showCard = true">
+              <div class="ml-2 profile d-flex align-items-center">
+                <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
+                Hi,&nbsp;{{ getUser.username }}
+              </div>
+              </div>
+              <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff" v-if="isAuthenticated === false">
                 <LoginSidebar v-if="show" />
                 <SignUp v-else />
                 <div class="row" v-if="show">
@@ -259,11 +258,6 @@
               class="main"
             />
             <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon" v-b-toggle.sidebar-1></b-icon>
-            <b-icon
-              icon="grid3x3-gap-fill"
-              class="mob-grid-icon"
-              v-b-toggle.sidebar-1
-            ></b-icon>
             <b-icon
               @click="toggleOption = !toggleOption"
               icon="three-dots-vertical"
@@ -717,6 +711,12 @@ header#the-header {
 @media (min-width: 676px) and (max-width: 1000px) {
   .main {
     display: none;
+  }
+  .profile {
+    margin: 0px 20px 0px 0px;
+  }
+  .auth {
+    margin: 0px 20px 0px 0px !important;
   }
   .mains .header-navs a {
     display: none;
