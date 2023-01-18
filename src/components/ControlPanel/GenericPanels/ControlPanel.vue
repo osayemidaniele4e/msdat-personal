@@ -7,10 +7,15 @@
       v-show="values.visibility === undefined ? true : values.visibility"
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-      <label class="text-uppercase work-sans label-text">{{ values.label }}</label>
-      <!-- :options="values.options" -->
-
-      <!-- {{values}} -->
+      <label
+        class="text-uppercase work-sans label-text"
+        v-if="!hasNHMIS && values.label == 'Num/Denom'"
+      >
+        {{ '' }}
+      </label>
+      <label class="text-uppercase work-sans label-text" v-else>
+        {{ values.label }}
+      </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -22,6 +27,7 @@
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       />
+      {{ checkNHMISDHIS2() }}
       <!-- MSDAT SUB-DASHBOARDS -->
       <selectWrapper
         v-if="values.type === 'dropdown' && values.key !== 'indicator'"
@@ -35,7 +41,10 @@
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
       <div>
-        <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
+        <toggle
+          v-if="values.type === 'toggle' && hasNHMIS"
+          @change="updatePayload($event, values.key)"
+        />
       </div>
 
       <div class="d-flex" v-if="values.type === 'checkbox'">
@@ -145,6 +154,7 @@ export default {
       //   },
       //   numdenum: false,
       // },
+      hasNHMIS: false,
     };
   },
   components: {
@@ -233,7 +243,23 @@ export default {
   },
   methods: {
     // eslint-disable-next-line consistent-return
-
+    /**
+     * @description check if datasource dropdown has NHMIS-DHIS2
+     * checks if the key is datasource then create a new array of datasource id
+     * checks if the array has NHMIS-DHIS2 with id of 6
+     */
+    checkNHMISDHIS2() {
+      this.setup.forEach((item) => {
+        if (item.key === 'datasource') {
+          const datasourceArr = item?.options?.map((el) => el.id);
+          if (datasourceArr?.includes(6)) {
+            this.hasNHMIS = true;
+          } else {
+            this.hasNHMIS = false;
+          }
+        }
+      });
+    },
     getIndicatorList(data) {
       const { name } = this.$route.params;
       if (name === 'Advanced_Analytics') {
