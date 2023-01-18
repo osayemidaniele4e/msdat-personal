@@ -92,6 +92,7 @@ export default {
   async mounted() {
     this.clearData();
   },
+
   async created() {
     const { name } = this.$route.params;
 
@@ -114,6 +115,7 @@ export default {
             if (child.selected === true) {
               ids.push(child.id);
             }
+            // console.log(child, 'ind');
             return child;
           });
         }
@@ -126,6 +128,7 @@ export default {
           if (child.selected === true) {
             sourcesID.push(child.id);
           }
+          // console.log(child, 'dat');
           return child;
         });
         return element;
@@ -148,6 +151,7 @@ export default {
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
+      console.log(this.configObject, 'configobj');
       localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
       localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
       return;
