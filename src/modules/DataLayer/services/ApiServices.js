@@ -28,6 +28,7 @@ const getOtherEndpoint = async () => Promise.all(otherEndpoints.map(
 ));
 
 export default {
+  otherEndpoints,
   // getLastUpdatedDate,
   getSingleIndicator,
   getRequiredEndpoint,
