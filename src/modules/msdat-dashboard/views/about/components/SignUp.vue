@@ -16,18 +16,18 @@
 
                 <label for="" class="form-label">Name</label>
                 <div class="d-flex">
-                <input
-                  type="text"
-                  v-model="first_name"
-                  class="form-control"
-                  placeholder="First name"
-                />
-                <input
-                  type="text"
-                  v-model="last_name"
-                  class="form-control ml-2"
-                  placeholder="Last name"
-                />
+                  <input
+                    type="text"
+                    v-model="first_name"
+                    class="form-control"
+                    placeholder="First name"
+                  />
+                  <input
+                    type="text"
+                    v-model="last_name"
+                    class="form-control ml-2"
+                    placeholder="Last name"
+                  />
                 </div>
               </div>
               <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
@@ -75,8 +75,10 @@
                   placeholder="******************"
                 />
               </div>
-              <input type="checkbox" class="mr-2" v-model="terms">
-              <span style="font-size: 14px">I accept all Terms and Conditions</span>
+              <input type="checkbox" class="mr-2" v-model="terms" />
+              <span style="font-size: 14px"
+                >I accept all Terms and Conditions</span
+              >
               <div class="text-center lg">
                 <button
                   type="submit"
@@ -87,8 +89,11 @@
                   CREATE AN ACCOUNT
                   <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
                 </button>
-                <div class="justify-content-center mt-3" style="margin-bottom: 17.25px;">
-                    <span>Already have an account?</span>
+                <div
+                  class="justify-content-center mt-3"
+                  style="margin-bottom: 17.25px"
+                >
+                  <span>Already have an account?</span>
                 </div>
               </div>
             </form>
@@ -127,25 +132,14 @@ export default {
           organization: this.organisation,
           password: this.password,
           profession: 'kosi',
-
-        })
-          .then((res) => {
-            console.log(res);
-            // eslint-disable-next-line eqeqeq
-            if (res.status == 201) {
-              this.$swal('Congratulations, Successfully Registered, Please Login');
-            //   this.$router.push('/custom/login');
-            } else {
-              // alert('something went wrong');
-              this.$swal('OOPS, something went wrong');
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            this.$swal('OOPS, something went wrong');
-          });
+        });
+        this.$swal('Congratulations, Successfully Registered, Please Login');
       } catch (err) {
-        console.log(err);
+        const { username, email, password } = err;
+        const errorMsg = (username ? `Username: ${username[0]}` : '')
+          || (email ? `, Email: ${email[0]}` : '')
+          || (password ? `, Password: ${password[0]}` : '');
+        this.$swal(errorMsg);
       }
     },
   },
