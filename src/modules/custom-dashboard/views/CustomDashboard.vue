@@ -1,49 +1,42 @@
 <template>
-  <div>
-    <CustomDashboard
-      v-if="Object.entries(configObject).length"
-      :indicators="configObject.indicators"
-      :dataSources="configObject.dataSources"
-      :defaultIndicators="configObject.defaultIndicators"
-      :initialIndicator="configObject.initialIndicator"
-      :initialDataSource="configObject.initialDataSource"
-      :initialLocation="configObject.initialLocation"
-      :showTableRelatedIndicator="
-        configObject.showTableRelatedIndicator != undefined
-          ? configObject.showTableRelatedIndicator
-          : true
-      "
-      :fields="fieldsArray"
-    >
-      <template v-slot:top-section v-if="configObject.name === 'Demographics'">
-        <div class="col-md-12">
-          <base-sub-card
-            :backgroundColor="'#348481'"
-            class="my-2 shadow-sm iframe_container"
-          >
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Demographics
-              </h5>
-            </template>
-            <template>
-              <div style="text-align: center">
-                <!-- <iframe :src="url" :width="width" :height="height"></iframe> -->
-              </div>
-              <b-embed
-                type="iframe"
-                aspect="21by9"
-                :src="url"
-                :width="width"
-                :height="height"
-              ></b-embed>
-              <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-    </CustomDashboard>
-  </div>
+  <CustomDashboard
+    v-if="Object.entries(configObject).length"
+    :indicators="configObject.indicators"
+    :dataSources="configObject.dataSources"
+    :defaultIndicators="configObject.defaultIndicators"
+    :initialIndicator="configObject.initialIndicator"
+    :initialDataSource="configObject.initialDataSource"
+    :initialLocation="configObject.initialLocation"
+    :showTableRelatedIndicator="
+      configObject.showTableRelatedIndicator != undefined
+        ? configObject.showTableRelatedIndicator
+        : true
+    "
+    :fields="fieldsArray"
+  >
+    <template v-slot:top-section v-if="configObject.name === 'Demographics'">
+      <div class="col-md-12">
+        <base-sub-card :backgroundColor="'#348481'" class="my-2 shadow-sm iframe_container">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">Demographics</h5>
+          </template>
+          <template>
+            <div style="text-align: center">
+              <!-- <iframe :src="url" :width="width" :height="height"></iframe> -->
+            </div>
+            <b-embed
+              type="iframe"
+              aspect="21by9"
+              :src="url"
+              :width="width"
+              :height="height"
+            ></b-embed>
+            <!-- <b-embed type="iframe" aspect="10by4" :src="url" allowfullscreen></b-embed> -->
+          </template>
+        </base-sub-card>
+      </div>
+    </template>
+  </CustomDashboard>
 </template>
 
 <script>
@@ -72,10 +65,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', [
-      'ADD_CONTROL_PANEL',
-      'CLEAR_CONTROL_PANEL',
-    ]),
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
   },
   created() {
     // this.CLEAR_CONTROL_PANEL();

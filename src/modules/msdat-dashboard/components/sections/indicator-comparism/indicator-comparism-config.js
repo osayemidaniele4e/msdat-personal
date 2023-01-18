@@ -36,7 +36,7 @@ export default {
       //   { id: 2, year: '2015' },
       // ],
       dropdownProps: {
-        preselectFirst: true,
+        'preselect-first': true,
       },
     },
     {
@@ -47,7 +47,7 @@ export default {
       key: 'location',
       dropdownProps: {
         label: 'name',
-        // preselectFirst: true
+        // 'preselect-first': true
       },
       options: [],
     },

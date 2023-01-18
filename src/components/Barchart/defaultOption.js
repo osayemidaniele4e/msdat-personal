@@ -47,7 +47,7 @@ export default {
     tickWidth: 1,
   },
   yAxis: {
-    // min: 0,
+    min: 0,
     title: {
       text: 'Values',
       style: {
@@ -56,6 +56,7 @@ export default {
       },
     },
     gridLineWidth: 0,
+    // minRange: 10,
 
     labels: {
       // rotation: -90,
@@ -96,6 +97,10 @@ export default {
   },
   plotOptions: {
     column: {
+      pointPadding: 0,
+      borderWidth: 0,
+      groupPadding: 0,
+      shadow: false,
       // pointPlacement: 'between',
       // borderWidth: 0,
     },

@@ -1,6 +1,6 @@
 <!-- Auther: Ghufran Ahmed  -->
 <template>
-  <div class="">
+  <div class="container-fluid">
     <div
       v-show="
         this.$store.state.CUSTOM_DASHBOARD_STORE.allSelected === true &&
@@ -37,12 +37,13 @@
         </p>
       </div>
     </div>
-  <div class="">
+  <div class="container-fluid table-responsive overflow-auto shadow-sm" >
       <table class="table" style="border: 1px solid #e3e3e3">
-      <thead>
-        <tr style="">
+      <thead style="position: sticky; top: 0: back-ground-color: white;">
+        <tr>
           <th
             class="col-3"
+            scope="col"
             style="
               text-align: left;
               font-size: 13px;
@@ -54,6 +55,7 @@
             INDICATORS
           </th>
           <th
+            scope="col"
             class="col-3"
             style="
               text-align: left;
@@ -67,6 +69,7 @@
           </th>
           <th
             class="col-3"
+            scope="col"
             style="
               text-align: left;
               font-size: 13px;
@@ -79,6 +82,7 @@
           </th>
           <th
             class="col-3"
+            scope="col"
             style="
               text-align: left;
               font-size: 13px;
@@ -95,6 +99,7 @@
         <tr style="" v-if="ind.parent.isChildSelected">
           <td
             colspan="4"
+            scope="row"
             style="
               background-color: #cee4e9;
               padding: 4px;

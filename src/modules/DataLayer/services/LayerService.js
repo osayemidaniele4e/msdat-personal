@@ -87,8 +87,6 @@ export default class DataLayer {
       // check if data is already initialized iN DEXIE DB
       // this.DB.getIndicatorDataThatExistInDB()
       if (indicatorArray.length === 0) {
-        /** Fetching other endpoints */
-        console.log('fetching other endpoint');
         /**
          * The apiServices returns all the and array of response for the
          * axios call of all other apiEndpoints.getOtherEndpoint
@@ -107,23 +105,20 @@ export default class DataLayer {
          * now initializing other tables in the store from the database directly as against the
          * previous implementation
          */
-        this.setDataInStore(data[6].data, DSI);
-        this.setDataInStore(data[0].data, LOCATION);
-        this.setDataInStore(data[1].data, INDICATORS);
-        this.setDataInStore(data[3].data, VALUE_TYPES);
-        this.setDataInStore(data[5].data, FACTORS);
-        this.setDataInStore(data[7].data, DATA_SOURCE);
-        this.setDataInStore(data[8].data, NHMIS_MONTHLY);
-        await this.DB.storeDataInDBTable(data[0].data, 'location');
-        await this.DB.storeDataInDBTable(data[1].data, 'indicators');
-        await this.DB.storeDataInDBTable(data[3].data, 'valuetypes');
-        await this.DB.storeDataInDBTable(data[5].data, 'factors');
-        await this.DB.storeDataInDBTable(data[6].data, 'datasource_specific_indicator');
-        await this.DB.storeDataInDBTable(data[7].data, 'datasources');
-        await this.DB.storeDataInDBTable(data[8].data, 'nhmisMonthly');
-
-        const count = await this.DB.data.count();
-        console.log('DB count is', count);
+        this.setDataInStore(data[6].data.results, DSI);
+        this.setDataInStore(data[0].data.results, LOCATION);
+        this.setDataInStore(data[1].data.results, INDICATORS);
+        this.setDataInStore(data[3].data.results, VALUE_TYPES);
+        this.setDataInStore(data[5].data.results, FACTORS);
+        this.setDataInStore(data[7].data.results, DATA_SOURCE);
+        this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
+        await this.DB.storeDataInDBTable(data[0].data.results, 'location');
+        await this.DB.storeDataInDBTable(data[1].data.results, 'indicators');
+        await this.DB.storeDataInDBTable(data[3].data.results, 'valuetypes');
+        await this.DB.storeDataInDBTable(data[5].data.results, 'factors');
+        await this.DB.storeDataInDBTable(data[6].data.results, 'datasource_specific_indicator');
+        await this.DB.storeDataInDBTable(data[7].data.results, 'datasources');
+        await this.DB.storeDataInDBTable(data[8].data.results, 'nhmisMonthly');
       } else {
         // Populate vuex using dexie
         this.setDataInStore(await this.DB.fetchTableData('datasource_specific_indicator'), DSI);
@@ -141,9 +136,9 @@ export default class DataLayer {
         this.storeTimestampInLocal();
         await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
         await this.setAvailableDashboardIndicator();
+        await this.initDataWithYears(this.defaultIndicators);
       }
       // await this.initOtherTablesFromDB();
-      await this.initDataWithYears(this.defaultIndicators);
       setTimeout(async () => {
         // await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators);
         const lateIndicators = await this.DB.checkIndicatorsInIdb();
@@ -193,19 +188,21 @@ export default class DataLayer {
     if (locationCheck.length <= 0) {
       // fetch from api and store in vuex and dexie
       const data = await apiServices.getOtherEndpoint();
-      this.setDataInStore(data[6].data, DSI);
-      this.setDataInStore(data[0].data, LOCATION);
-      this.setDataInStore(data[1].data, INDICATORS);
-      this.setDataInStore(data[3].data, VALUE_TYPES);
-      this.setDataInStore(data[5].data, FACTORS);
-      this.setDataInStore(data[7].data, DATA_SOURCE);
+      this.setDataInStore(data[6].data.results, DSI);
+      this.setDataInStore(data[0].data.results, LOCATION);
+      this.setDataInStore(data[1].data.results, INDICATORS);
+      this.setDataInStore(data[3].data.results, VALUE_TYPES);
+      this.setDataInStore(data[5].data.results, FACTORS);
+      this.setDataInStore(data[7].data.results, DATA_SOURCE);
+      this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
       // store the rest of the data
-      await this.DB.storeDataInDBTable(data[0].data, 'location');
-      await this.DB.storeDataInDBTable(data[1].data, 'indicators');
-      await this.DB.storeDataInDBTable(data[3].data, 'valuetypes');
-      await this.DB.storeDataInDBTable(data[5].data, 'factors');
-      await this.DB.storeDataInDBTable(data[6].data, 'datasource_specific_indicator');
-      await this.DB.storeDataInDBTable(data[7].data, 'datasources');
+      await this.DB.storeDataInDBTable(data[0].data.results, 'location');
+      await this.DB.storeDataInDBTable(data[1].data.results, 'indicators');
+      await this.DB.storeDataInDBTable(data[3].data.results, 'valuetypes');
+      await this.DB.storeDataInDBTable(data[5].data.results, 'factors');
+      await this.DB.storeDataInDBTable(data[6].data.results, 'datasource_specific_indicator');
+      await this.DB.storeDataInDBTable(data[7].data.results, 'datasources');
+      await this.DB.storeDataInDBTable(data[8].data.results, 'nhmisMonthly');
     } else {
       // Populate vuex using dexie
       this.setDataInStore(await this.DB.fetchTableData('datasource_specific_indicator'), DSI);
@@ -214,6 +211,7 @@ export default class DataLayer {
       this.setDataInStore(await this.DB.fetchTableData('valuetypes'), VALUE_TYPES);
       this.setDataInStore(await this.DB.fetchTableData('factors'), FACTORS);
       this.setDataInStore(await this.DB.fetchTableData('datasources'), DATA_SOURCE);
+      this.setDataInStore(await this.DB.fetchTableData('nhmisMonthly'), NHMIS_MONTHLY);
     }
   }
 
@@ -338,7 +336,7 @@ export default class DataLayer {
         const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
         for (let j = 0; j < results.length; j++) {
-          const requestResult = results[j].data;
+          const requestResult = results[j].data.results;
           // check if empty
           await this.DB.storeDataInDB(requestResult);
         }
@@ -363,7 +361,7 @@ export default class DataLayer {
       const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
       const results = await Promise.all(arrayOfPromises);
       for (let j = 0; j < results.length; j++) {
-        const requestResult = results[j].data;
+        const requestResult = results[j].data.results;
         await this.DB.storeDataInDB(requestResult);
       }
       this.updatedStoreAvailableIndicator(indicatorID);

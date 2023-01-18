@@ -74,7 +74,7 @@
       <!-- <b-row id="bottom-row" class="w-100"> -->
         <!-- <b-col cols="auto mb-5"> -->
           <b-button id="individual" type="submit" class="w-100 button"
-            >SELECT INDIVIDUAL DATA</b-button
+            >PROCEED TO SELECT DATA</b-button
           >
         <!-- </b-col> -->
         <!-- <b-col cols="auto" xl="6" md="4" sm="12">

@@ -2,7 +2,7 @@
   <div class="">
     <header class="header sticky-top"></header>
     <section class="container-fluid">
-      <div class="container">
+      <div class="container mt-5">
         <h3 class="w-100 text-center mx-auto">Log in to your account</h3>
         <div class="loader" v-if="isLoading">
           <the-loader />
@@ -94,7 +94,7 @@ export default {
     };
   },
   mounted() {
-    VueCookies.remove('custom-user-details');
+    VueCookies.remove('msdat-user-details');
   },
   methods: {
     ...mapActions('AUTH_STORE', ['LOGIN_USER']),
@@ -115,11 +115,16 @@ export default {
               // console.log(res);
               // eslint-disable-next-line eqeqeq
 
-              if (res.status == 200) {
-                this.$swal(`Hi ${formData.username} 👋, Welcome to your Dashboard`);
+              if (res.status === 200) {
+                // VueCookies.set('msdat-access-token', res.data.token);
+                this.$swal(
+                  `Hi ${formData.username} 👋, Welcome to your Dashboard`,
+                );
                 this.$router.push({ path: '/my-dashboard/details' });
               } else {
-                this.$swal('something went wrong, confirm username and password');
+                this.$swal(
+                  'something went wrong, confirm username and password',
+                );
               }
             })
             .catch((err) => {
@@ -163,6 +168,12 @@ h4::after {
   width: 4rem;
   margin: 0 1rem;
   transform: translateY(-0.5rem);
+}
+@media (max-width: 680px) {
+  h4::before,
+  h4::after {
+    display: none;
+  }
 }
 .login-button {
   background: #3f8994;
@@ -215,11 +226,18 @@ h4::after {
   background: #035c6e;
   opacity: 1;
 }
+
 .footer small {
   width: 100%;
   font-size: 16px;
   letter-spacing: 1px;
   color: #ffffff;
   opacity: 1;
+}
+@media (max-width: 680px) {
+  h4::before,
+  h4::after {
+    display: none;
+  }
 }
 </style>

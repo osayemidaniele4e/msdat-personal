@@ -3,32 +3,16 @@
     <ul
       class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-5 mx-3 cursor-pointer main tabs-sec"
     >
-      <template v-if="customDashboard === true">
-        <div  v-for="(control, index) in controls"
-          :key="index">
-        <li
-          v-if=" control.title !== 'Disaggregation'"
-          class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
-          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
-          :id="`panel-${index}`"
-          @click="changeControl(index)"
-        >
-          {{control.title}}
-        </li>
-        </div>
-      </template>
-      <template v-else>
-        <li
-          class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
-          :class="[index === selectedIndex ? 'active font-weight-bold' : '']"
-          v-for="(control, index) in controls"
-          :key="index"
-          :id="`panel-${index}`"
-          @click="changeControl(index)"
-        >
-          {{ control.title }}
-        </li>
-      </template>
+      <li
+        class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+        :class="[i === selectedIndex ? 'active font-weight-bold' : '']"
+        v-for="(el, i) in controls"
+        :key="i"
+        :id="`panel-${i}`"
+        @click="changeControl(i)"
+      >
+        {{ el.title }}
+      </li>
     </ul>
 
     <div class="control-title">{{ title }}</div>
@@ -82,23 +66,20 @@ export default {
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
-      // console.log('Controls', this.controls);
       this.controls.forEach((control, index) => {
-        // console.log('INDEX =>', index, controlIndex);
         // eslint-disable-next-line no-param-reassign
         control.active = index === controlIndex;
-        // console.log(controlIndex, index)
       });
     },
-    selectControll(controlIndex) {
-      this.selectedIndex = controlIndex;
-      // loop over all the tabs
-      // console.log('Controls', this.abc);
-      this.abc.forEach((control) => {
-        // eslint-disable-next-line no-param-reassign
-        control.active = control.id === controlIndex;
-      });
-    },
+    // selectControll(controlIndex) {
+    //   this.selectedIndex = controlIndex;
+    //   // loop over all the tabs
+
+    //   this.abc.forEach((control) => {
+    //     // eslint-disable-next-line no-param-reassign
+    //     control.active = control.id === controlIndex;
+    //   });
+    // },
   },
 
   watch: {
@@ -136,12 +117,9 @@ export default {
     },
   },
   computed: {
-    abc() {
-      // console.log('ar', this.$store.getters.arrangedSections);
-      // const data2 = this.$store.getters.arrangedSections
-      // console.log('data1', data2);
-      return this.$store.getters.arrangedSections.filter((element) => element.isShow === true);
-    },
+    // abc() {
+    //   return this.$store.getters.arrangedSections.filter((element) => element.isShow === true);
+    // },
     customDashboard() {
       return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
     },

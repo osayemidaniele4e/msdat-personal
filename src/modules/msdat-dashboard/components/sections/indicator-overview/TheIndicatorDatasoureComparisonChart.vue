@@ -123,6 +123,11 @@ export default {
       type: Boolean,
     },
   },
+  async mounted() {
+    this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
+        (Time-series comparison of ${this.values.indicator.short_name} ) across different data
+            sources.`;
+  },
   watch: {
     // Watch closeOverlay
     closeOverlay: {
@@ -164,22 +169,25 @@ export default {
     },
 
     'values.datasource': {
-      async handler(selectedDataSource) {
+      async handler(newVal, oldVal) {
         // debugger;
         // this.loading = true;
+        // first condition checks if there is change in the old and new datasource then sets newVal as datasource selected
         let dataSourceSelected = [];
-        if (!Array.isArray(selectedDataSource)) {
-          dataSourceSelected = [selectedDataSource];
+        if (oldVal !== newVal) {
+          if (!Array.isArray(newVal)) {
+            dataSourceSelected = [newVal];
+          } else {
+            dataSourceSelected = newVal;
+          }
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
+          this.setUpHighChartConfig(seriesArray, years);
+          this.loading = false;
         } else {
-          dataSourceSelected = selectedDataSource;
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          this.setUpHighChartConfig(seriesArray, years);
         }
-
-        this.selectDataSource = dataSourceSelected;
-        // const dataSources = this.getAvailableDataSources(); // get all dataSource for dashboard
-        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-        this.setUpHighChartConfig(seriesArray, years);
-        this.loading = false;
       },
       deep: false,
       immediate: false,
@@ -305,8 +313,8 @@ export default {
     ) {
       // debugger;
       const chartSeriesArray = [];
-      const mappedDataSource = dataSources.map((item) => this.dlGetDataSource(item?.id));
-      const mappedValueTypes = valueTypeArray.map((item) => this.dlGetValueTypes(item));
+      const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
+      const mappedValueTypes = valueTypeArray?.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
       // debugger;
       /**
@@ -320,24 +328,26 @@ export default {
        * also take into consideration that sometimes the visualization may require a particular
        * Value type
        */
-      mappedDataSource.forEach((datasource) => {
-        const searchDataSource = parameterObject;
-        searchDataSource.datasource = datasource?.id;
-        if (mappedValueTypes.length > 0) {
-          mappedValueTypes.forEach((valueType) => {
+      if (mappedDataSource !== undefined) {
+        mappedDataSource.forEach((datasource) => {
+          const searchDataSource = parameterObject;
+          searchDataSource.datasource = datasource?.id;
+          if (mappedValueTypes.length > 0) {
+            mappedValueTypes.forEach((valueType) => {
             // The Object.assign help copy if Object before pushing it into the array
             // else it tends to push the same values again and again
-            searchDataSource.value_type = valueType.id;
-            // eslint-disable-next-line prefer-object-spread
-            const queryCopy = Object.assign({}, searchDataSource);
-            queryArray.push(queryCopy);
-          });
-        } else {
+              searchDataSource.value_type = valueType.id;
+              // eslint-disable-next-line prefer-object-spread
+              const queryCopy = Object.assign({}, searchDataSource);
+              queryArray.push(queryCopy);
+            });
+          } else {
           // The Object.assign help copy if Object before pushing it into the array
           // else it tends to push the same values again and again
-          queryArray.push({ ...searchDataSource });
-        }
-      });
+            queryArray.push({ ...searchDataSource });
+          }
+        });
+      }
 
       const mappedRequest = queryArray.map((item) => this.dlQuery(item));
       const mappedResponse = await Promise.all(mappedRequest);
@@ -553,27 +563,6 @@ export default {
       return seriesArr;
     },
   },
-
-  async mounted() {
-    this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
-        (Time-series comparison of ${this.values.indicator.short_name} ) across different data
-            sources.`;
-  },
-  // async mounted() {
-  //   console.log('hello =>', this.ChartOptions);
-
-  //   const dataSources = await this.getAvailableDataSources();
-  //   const { seriesArray, years } = await this.toHighChartSeriesSetup(
-  //     dataSources,
-  //   );
-
-  //   this.seriesArray = seriesArray;
-  //   console.log('seriesArray', seriesArray);
-  //   console.log('years', years);
-  //   this.years = years;
-
-  //   this.setUpHighChartConfig(this.seriesArray, this.years);
-  // },
 };
 </script>
 

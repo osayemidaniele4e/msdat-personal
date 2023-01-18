@@ -17,7 +17,7 @@ export default {
   async CLEAR_DB() {
     localStorage.removeItem('defaultClear');
     const { data } = await apiServices.getLatestDate();
-    localStorage.setItem('lastUpdateDate', data.date);
+    localStorage.setItem('lastUpdatedDate', data.results[0].updated_at);
     await DB.delete();
     window.location.reload();
     Promise.resolve(true);
