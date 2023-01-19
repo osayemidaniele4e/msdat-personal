@@ -17,6 +17,28 @@ import store from './store';
 import './plugins/veevalidate';
 import './assets/styles/fonts.css';
 
+// import firebase from 'firebase';
+import GAuth from 'vue-google-oauth2';
+
+const gauthOption = {
+  clientId: '1015559969016-0td102ag1odnn0vcc6golaf8n65cqr18.apps.googleusercontent.com',
+  scope: 'profile email',
+  prompt: 'consent',
+  fetch_basic_profile: true,
+};
+Vue.use(GAuth, gauthOption);
+
+// const firebaseConfig = {
+//   apiKey: 'AIzaSyCUnDadQjgK7XGtCWfWlMyC-FDBq0i1EVg',
+//   authDomain: 'e4e--auth.firebaseapp.com',
+//   projectId: 'e4e--auth',
+//   storageBucket: 'e4e--auth.appspot.com',
+//   messagingSenderId: '125707950263',
+//   appId: '1:125707950263:web:a38ff9022872473e065532',
+// };
+
+// firebase.initializeApp(firebaseConfig);
+
 // import Vue from 'vue';
 
 // eslint-disable-next-line import/prefer-default-export

@@ -50,9 +50,7 @@
             </form>
             <div class="row">
               <div class="col-12 text-center">
-                <h4 class="py-3" style="font-size: 15px">
-                  Don't have an account?
-                </h4>
+                <h4 class="py-3" style="font-size: 15px">Don't have an account?</h4>
                 <button
                   class="btn btn-lg btn-light btn-outline-dark"
                   style="font-size: 15px"
@@ -68,9 +66,7 @@
     </section>
     <footer class="footer fixed-bottom">
       <div class="container text-right pt-2">
-        <small class="text-right pr-5"
-          >Built with ❤️️ by eHealth4everyone</small
-        >
+        <small class="text-right pr-5">Built with ❤️️ by eHealth4everyone</small>
       </div>
     </footer>
   </div>
@@ -164,10 +160,11 @@ h4::after {
   margin: 0 1rem;
   transform: translateY(-0.5rem);
 }
-@media(max-width: 680px) {
-  h4::before, h4::after {
-  display: none;
-}
+@media (max-width: 680px) {
+  h4::before,
+  h4::after {
+    display: none;
+  }
 }
 .login-button {
   background: #3f8994;
@@ -228,9 +225,10 @@ h4::after {
   color: #ffffff;
   opacity: 1;
 }
-@media(max-width: 680px) {
-  h4::before, h4::after {
-  display: none;
-}
+@media (max-width: 680px) {
+  h4::before,
+  h4::after {
+    display: none;
+  }
 }
 </style>

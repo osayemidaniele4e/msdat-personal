@@ -1,11 +1,24 @@
 <template>
-  <div class="" >
+  <div class="">
     <section class="container-fluid">
       <div class="container">
         <h2 class="w-100 text-center mx-auto">Log in to your account</h2>
         <!-- <div class="loader" v-if="isLoading">
           <the-loader />
         </div> -->
+        <h2 class="w-100 text-center mx-auto mt-3">Login with</h2>
+        <div class="d-flex w-100 justify-content-center">
+          <button type="submit" class="btn btn-lg btn-primary px-4 py-2" @click="googleAuth()">
+            <b-icon-google class="mr-2"></b-icon-google>
+            GOOGLE
+            <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
+          </button>
+          <button @click="Logout" type="submit" class="btn btn-lg btn-primary px-4 py-2">
+            <b-icon-facebook class="mr-2"></b-icon-facebook>
+            FACEBOOK
+            <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
+          </button>
+        </div>
         <div class="row">
           <div class="col-12 mx-auto h-50px">
             <form>
@@ -54,6 +67,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import firebase from 'firebase';
 // import VueCookies from 'vue-cookies';
 
 export default {
@@ -110,7 +124,40 @@ export default {
         this.$router.push('/account');
       }
     },
+
+    loginWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: 'select_account',
+      });
+
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((user) => {
+          // let newData = {
+          //   Provider: 'google',
+          //   Email: user.additionalUserInfo.profile.email,
+          //   name: user.additionalUserInfo.profile.name,
+          // };
+          console.log(user);
+        })
+        .catch((error) => console.log(error));
+    },
+
+    async googleAuth() {
+      const googleUser = await this.$gAuth.signIn();
+      console.log(googleUser);
+    },
+
+    async Logout() {
+      // firebase.auth().signOut();
+      const response = await this.$gAuth.signOut();
+
+      console.log('clicked');
+    },
   },
+  mounted() {},
 };
 </script>
 
