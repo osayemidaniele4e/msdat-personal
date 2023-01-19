@@ -94,8 +94,6 @@ export default {
   },
   async created() {
     const { name } = this.$route.params;
-
-    window.addEventListener('beforeunload', this.omo);
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure
@@ -148,6 +146,7 @@ export default {
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
+      this.SET_CONFIGURATIONS(getFormattedConfig || this.configObject);
       localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
       localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
       return;
