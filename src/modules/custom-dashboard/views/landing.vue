@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <div class='mt-0'>
-      <div>
+      <div v-if='!isAuthenticated'>
         <b-nav align="right" class='nav'>
           <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
           <b-nav-item @click="$router.push('/custom/login')">Login</b-nav-item>
@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import CdFooter from '../components/footer.vue';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
@@ -129,6 +130,9 @@ export default {
   components: {
     CdFooter,
     customDashboardSvg,
+  },
+  computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated']),
   },
 };
 </script>

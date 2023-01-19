@@ -212,11 +212,9 @@
                 v-if="isAuthenticated === false"
                 >Home</a
               >
-              <router-link to="/about" class="nav-link">About</router-link>
-              <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/custom" class="nav-link"
-                >Create New Dashboard</router-link
-              >
+              <router-link to="/about" class="nav-link" v-if='!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard'>About</router-link>
+              <router-link to="/faq" class="nav-link" v-if='!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard'>Help & FAQ</router-link>
+              <router-link to="/custom" class="nav-link" v-if='!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard'>Create New Dashboard</router-link>
               <a
                 href="https://msdat.fmohconnect.gov.ng/"
                 class="nav-link"
