@@ -9,12 +9,12 @@ services:
 
 stages:
 
-  - Deploy
+  - deploy
 
 
 
 deploy_3.0:
-  stage: Deploy
+  stage: deploy
   
   before_script: 
       - mkdir -p ~/.ssh
@@ -62,7 +62,7 @@ deploy_staging:
 
 
 deploy_beta:
-  stage: Deploy
+  stage: deploy
   
   before_script: 
       - mkdir -p ~/.ssh
