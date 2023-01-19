@@ -1,7 +1,7 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
   <header id="the-header" class="position-relative">
-    <div
+    <!-- <div
       class="container-fluid"
       style="background-color: #348481"
       v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
@@ -11,8 +11,8 @@
           this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.description
         }}
       </div>
-    </div>
-    <div
+    </div> -->
+    <!-- <div
       class="container-fluid bg-light"
       v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
     >
@@ -83,10 +83,10 @@
           />
         </router-link>
       </div>
-    </div>
-    <b-container fluid v-else>
-      <b-row class="d-flex justify-content-between align-items-center">
-        <b-col cols md="1" lg="1" class="main">
+    </div> -->
+    <b-container fluid>
+      <b-row class="d-flex justify-content-between align-items-center" >
+        <b-col cols md="1" lg="1" class="main" v-if='this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false'>
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
             <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
           </div>
@@ -114,7 +114,7 @@
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
             </div>
 
-            <div v-if="$route.path !== '/account'">
+            <div v-if="$route.path !== '/account' && this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true" >
               <b-dropdown
                 text="Select"
                 toggle-class="select-dropdown"
