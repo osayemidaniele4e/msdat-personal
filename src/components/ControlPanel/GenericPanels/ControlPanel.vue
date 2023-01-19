@@ -125,6 +125,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 // import ControlMixins from '@/components/ControlPanel/ControlMixins';
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
@@ -243,6 +244,8 @@ export default {
   },
   methods: {
     // eslint-disable-next-line consistent-return
+    ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
+
     /**
      * @description check if datasource dropdown has NHMIS-DHIS2
      * checks if the key is datasource then create a new array of datasource id
@@ -277,6 +280,7 @@ export default {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
         // debugger;
+
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: this.controlIndexSub,
           groupIndex: this.groupIndexSub,

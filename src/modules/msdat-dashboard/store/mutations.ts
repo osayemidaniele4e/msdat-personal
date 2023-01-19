@@ -131,7 +131,9 @@ const mutations: MutationTree<State> = {
       }
     });
   },
-
+  SET_SELECTED_CONFIG: (state, payload) => {
+    state.selectedConfigurations = payload;
+  },
   SET_CONFIGURATIONS: (state, payload) => {
     state.configObject = payload;
   },

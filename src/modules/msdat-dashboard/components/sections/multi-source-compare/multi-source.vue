@@ -17,9 +17,15 @@
         :chartOptions="chartObject"
         ref="BaseChart"
       />
-      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName"
-      :title="title"
-       />
+      <BaseMap
+        ref="BaseMap"
+        v-else
+        :mapObject="mapObject"
+        :level="level"
+        :lgaState="stateName"
+        :title="title"
+      />
+      {{ displayItem(mapObject) }}
     </base-sub-card>
     <NoAvailableData
       v-if="showNoAvailableData"
@@ -86,6 +92,10 @@ export default {
           year: this.values.year,
         });
       }
+    },
+
+    displayItem(item) {
+      console.log(item, 'mapObject');
     },
 
     formatDataToSeriesMapFormat(data) {

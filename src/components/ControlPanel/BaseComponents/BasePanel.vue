@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'BasePanel',
   data() {
@@ -57,10 +59,25 @@ export default {
     },
   },
   methods: {
+    ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
+
     changeControl(index) {
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
+      if (index !== 4 && this.getSelectedConfig() !== null) {
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'indicator',
+          value: this.getSelectedConfig(),
+        });
+        // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        //   controlIndex: index,
+        //   key: 'datasource',
+        //   value: this.getSelectedConfig(),
+        // });
+      }
+
       this.$emit('showSection', index);
     },
     selectControl(controlIndex) {
