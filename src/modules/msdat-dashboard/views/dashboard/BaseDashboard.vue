@@ -291,9 +291,6 @@ export default {
     this.initialLocation = this.getConfigObject().initialLocation;
     window.addEventListener('resize', this.onResize);
 
-    // console.log(this.getSelectedConfig());
-    // console.log(this.getConfigObject().indicators);
-
     // checking if in Mobile view
     if (window.innerWidth < 769) {
       this.isMobile = true;
@@ -337,7 +334,7 @@ export default {
       }
     },
     ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
-    ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig']),
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;

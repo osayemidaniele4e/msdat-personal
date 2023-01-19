@@ -2,9 +2,17 @@
 <!-- Auther: Ghufran Ahmed  -->
 <template>
   <div class="temp">
-    <TroubleShootingModal style="z-index: 1500" v-if="showTroubleShootingModal" />
+    <TroubleShootingModal
+      style="z-index: 1500"
+      v-if="showTroubleShootingModal"
+    />
     <template v-if="!showTroubleShootingModal">
-      <Loading v-if="!loading" :noBackdrop="false" :showBackground="false" class="over">
+      <Loading
+        v-if="!loading"
+        :noBackdrop="false"
+        :showBackground="false"
+        class="over"
+      >
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="250px" />
           <div class="mr-4">
@@ -26,7 +34,8 @@
               >
                 <template v-slot:default>
                   <ControlBase
-                    v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                    v-for="(control, index) in $store.state.MSDAT_STORE
+                      .controlConfig"
                     :key="index"
                     :title="control.label"
                   >
@@ -43,8 +52,12 @@
                     </template>
                     <template v-else>
                       <div class="row">
-                        <div class="col-md-4" v-for="(item, index2) in control.setup" :key="index2">
-                          <div>{{ 'reset' + resetData }}</div>
+                        <div
+                          class="col-md-4"
+                          v-for="(item, index2) in control.setup"
+                          :key="index2"
+                        >
+                        <div>{{'reset'+resetData}} </div>
 
                           <ControlPanel
                             @data:options="log($event, index, index2)"
@@ -70,8 +83,14 @@
           <!-- control Panels ends here  -->
 
           <div class="container-fluid lessVisible">
-            <template v-for="(controlPanel, index) in $store.state.MSDAT_STORE.controlConfig">
-              <slot :name="`section-before-${index}`" v-if="index === selectedPanel"></slot>
+            <template
+              v-for="(controlPanel, index) in $store.state.MSDAT_STORE
+                .controlConfig"
+            >
+              <slot
+                :name="`section-before-${index}`"
+                v-if="index === selectedPanel"
+              ></slot>
               <!-- ========= -->
               <div
                 class="row observable"
@@ -91,7 +110,10 @@
                   :controlIndex="index"
                 ></slot>
                 <!-- ======== -->
-                <slot :name="`section-after-${index}`" v-if="index === selectedPanel"></slot>
+                <slot
+                  :name="`section-after-${index}`"
+                  v-if="index === selectedPanel"
+                ></slot>
               </div>
             </template>
           </div>
@@ -100,7 +122,10 @@
 
         <Footer class="visible"> </Footer>
         <!-- <div v-if="configObject.name !== 'Demographics'"> -->
-        <Onboarding v-if="firstTime" v-on:closeOnboard="onCloseOnBoarding"></Onboarding>
+        <Onboarding
+          v-if="firstTime"
+          v-on:closeOnboard="onCloseOnBoarding"
+        ></Onboarding>
         <!-- </div> -->
       </div>
     </template>
@@ -109,7 +134,11 @@
 </template>
 
 <script>
-import { BasePanel, ControlBase, ControlPanel } from '@/components/ControlPanel';
+import {
+  BasePanel,
+  ControlBase,
+  ControlPanel,
+} from '@/components/ControlPanel';
 import formatter from '../../../msdat-dashboard/mixins/formatter';
 import controlPanelSetup from '../../../msdat-dashboard/mixins/control-panel-setup';
 import tour from '../../../msdat-dashboard/views/onboarding/tour';
@@ -268,4 +297,5 @@ export default {
     }
   },
 };
+
 </script>

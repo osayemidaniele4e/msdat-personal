@@ -55,7 +55,6 @@
 </template>
 <script>
 import { has } from 'lodash';
-import { mapMutations } from 'vuex';
 
 export default {
   data() {
@@ -63,7 +62,6 @@ export default {
       allowEmpty: true,
       dummyVariable: false,
       loading: false,
-      selectedOption: null,
     };
   },
   computed: {
@@ -72,12 +70,6 @@ export default {
         return this.value;
       },
       set(val) {
-        // console.log(val, 'val');
-        if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
-          this.selectedOption = val;
-          this.SET_SELECTED_CONFIG(val);
-        }
-
         this.$emit('input', val);
       },
     },
@@ -158,7 +150,6 @@ export default {
     immediate: false,
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
     modifyDataSourceChildLabel(tag) {
       const tempArray = tag.split(' ');
       tempArray.pop();
