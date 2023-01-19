@@ -92,6 +92,7 @@ export default {
   async mounted() {
     this.clearData();
   },
+
   async created() {
     const { name } = this.$route.params;
     /**
@@ -112,6 +113,7 @@ export default {
             if (child.selected === true) {
               ids.push(child.id);
             }
+            // console.log(child, 'ind');
             return child;
           });
         }
@@ -124,6 +126,7 @@ export default {
           if (child.selected === true) {
             sourcesID.push(child.id);
           }
+          // console.log(child, 'dat');
           return child;
         });
         return element;

@@ -245,24 +245,14 @@ export default {
         password: this.form.password,
       };
       try {
-        await this.CREATE_USER(data)
-          .then((res) => {
-            console.log(res);
-            // eslint-disable-next-line eqeqeq
-            if (res.status == 201) {
-              this.$swal('Congratulations, Successfully Registered');
-              this.$router.push('/custom/login');
-            } else {
-              // alert('something went wrong');
-              this.$swal('OOPS, something went wrong');
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            this.$swal('OOPS, something went wrong');
-          });
+        await this.CREATE_USER(data);
+        this.$swal('Congratulations, Successfully Registered, Please Login');
       } catch (err) {
-        console.log(err);
+        const { username, email, password } = err;
+        const errorMsg = (username ? `Username: ${username[0]}` : '')
+          || (email ? `, Email: ${email[0]}` : '')
+          || (password ? `, Password: ${password[0]}` : '');
+        this.$swal(errorMsg);
       }
     },
   },

@@ -25,7 +25,7 @@
               style="
                 width: 20px;
                 height: 20px;
-                border-radius: 50px;
+                border-radius: 50px;customImg
                 object-fit: contain;
               "
             />
@@ -345,6 +345,7 @@ export default {
   data() {
     return {
       show: true,
+      customImg: '',
       showCard: false,
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
