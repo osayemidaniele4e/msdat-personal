@@ -92,9 +92,9 @@ export default {
   async mounted() {
     this.clearData();
   },
+
   async created() {
     const { name } = this.$route.params;
-
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure
@@ -113,6 +113,7 @@ export default {
             if (child.selected === true) {
               ids.push(child.id);
             }
+            // console.log(child, 'ind');
             return child;
           });
         }
@@ -125,6 +126,7 @@ export default {
           if (child.selected === true) {
             sourcesID.push(child.id);
           }
+          // console.log(child, 'dat');
           return child;
         });
         return element;
@@ -147,6 +149,7 @@ export default {
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
+      this.SET_CONFIGURATIONS(getFormattedConfig || this.configObject); // make use of the new state implementation to avoid prop drilling
       localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
       localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
       return;
