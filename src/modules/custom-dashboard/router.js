@@ -13,7 +13,7 @@ export default [
     beforeEnter: (to, from, next) => {
       const user = VueCookies.get('msdat-user-details');
       if (user) {
-        next('/my-dashboard');
+        next('/my-dashboard/details');
       } else {
         next();
       }
@@ -30,7 +30,9 @@ export default [
     path: '/my-dashboard',
     name: 'my-dashboard',
     beforeEnter: (to, from, next) => {
+      // const token = sessionStorage.getItem('username');
       const { token } = VueCookies.get('msdat-user-details');
+      console.log('In before Enter', token);
       if (!token) {
         next('/custom/login');
       } else {
