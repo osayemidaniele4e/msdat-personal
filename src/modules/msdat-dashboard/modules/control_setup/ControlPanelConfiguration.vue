@@ -6,10 +6,10 @@
 
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex';
-import { eventBus } from '@/main';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
 import VueCookies from 'vue-cookies';
 import moment from 'moment';
+import { eventBus } from '@/main';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
@@ -71,12 +71,15 @@ export default {
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
     async setInteractions() {
+      const getFormattedConfig = VueCookies.get('customDashboardConfig');
       const { data } = await apiServices.getDashboard();
       this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
+
       const interaction = {
         year: this.payload.year,
         user: this.getUser.id,
-        dashboard: this.dashboard.id,
+        dashboard: dashboardName,
         section: this.controlIndex + 1,
         indicator: this.payload.indicator.id,
         datasource: this.payload.datasource.id,
