@@ -89,7 +89,7 @@ export default {
     },
 
     formatDataToSeriesMapFormat(data) {
-      return data.map((item) => [
+      return data?.map((item) => [
         this.dlGetLocation(item.location).name,
         Number.parseFloat(item.value),
       ]);
@@ -98,9 +98,14 @@ export default {
       // this function returns data for the highchart. It was remodified to sort the chart data by year
       const result = [];
       // eslint-disable-next-line array-callback-return
+      if (!data || !Array.isArray(data)) {
+        return;
+      }
+      // eslint-disable-next-line array-callback-return
       data.map((item) => {
         result.push([item.period, Number.parseFloat(item.value)]);
       });
+      // eslint-disable-next-line consistent-return
       return result.sort((a, b) => a[0] - b[0]);
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
@@ -205,7 +210,7 @@ export default {
             },
           });
           // condition to check if data is available
-          if (data.length === 0) {
+          if (data?.length === 0) {
             this.showNoAvailableData = true;
           } else {
             this.showNoAvailableData = false;
@@ -219,7 +224,7 @@ export default {
             location: value.location.id,
           });
           // condition to check if data is available
-          if (data.length === 0) {
+          if (data?.length === 0) {
             this.showNoAvailableData = true;
           } else {
             this.showNoAvailableData = false;

@@ -7,8 +7,10 @@ export default {
    * Delete dexie database
    */
   async DELETE_DB() {
+    // Since we've cleared the data, update the variable for the time prompt cache clear
+    const { data } = await apiServices.getLatestDate();
+    localStorage.setItem('lastUpdatedDate', data.results[0].updated_at);
     await DB.delete();
-    console.log('Database deleted');
     Promise.resolve(true);
   },
   /**

@@ -90,6 +90,7 @@ export default {
       if (this.isAuthenticated === true) {
         VueCookies.set('user_interactions', JSON.stringify(this.interactions));
         const interactions = JSON.parse(VueCookies.get('user_interactions'));
+        console.log('test', interactions);
         if (interactions.length > 9 && this.getInternetStatus === true) {
           interactions.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
@@ -120,6 +121,7 @@ export default {
             values: availableDS,
           });
         }
+        this.setInteractions();
       },
     },
     'payload.datasource': {
