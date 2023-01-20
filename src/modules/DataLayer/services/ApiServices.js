@@ -1,4 +1,4 @@
-import axiosInstance from '@/plugins/axios';
+import axiosInstance from '../config/api';
 import apiEndpoints from '../config/endpoint';
 
 const getDashboard = async () => axiosInstance.get(apiEndpoints.getDashboard);
