@@ -31,6 +31,7 @@ const state: State = {
     year: null,
   },
   controlConfig: [],
+  selectedConfigurations: null,
   configObject: {},
 };
 
