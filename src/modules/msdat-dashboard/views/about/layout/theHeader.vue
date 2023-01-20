@@ -1,11 +1,98 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
   <header id="the-header" class="position-relative">
+    <!-- <div
+      class="container-fluid"
+      style="background-color: #348481"
+      v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
+    >
+      <div class="w-100 custom-header">
+        {{
+          this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.description
+        }}
+      </div>
+    </div>
+    <div
+      class="container-fluid bg-light"
+      v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
+    >
+      <div class="w-100 d-flex align-items-center justify-content-between">
+        <div class="d-flex">
+          <h2 class="me-5">Share your dashboard</h2>
+          <div class="img ms-5 d-flex">
+            <img
+              src="https://www.pngitem.com/pimgs/m/299-2994644_svg-link-jpg-library-stock-link-icon-png.png"
+              style="
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;customImg
+                object-fit: contain;
+              "
+            />
+            <img
+              src="https://e7.pngegg.com/pngimages/184/147/png-clipart-facebook-computer-icons-social-media-social-networking-service-scalable-graphics-facebook-f-logo-white-background-facebook-lite-logo-angle-text.png"
+              style="
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+                object-fit: contain;
+              "
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/2491px-Twitter-logo.svg.png"
+              alt=""
+              style="
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+                object-fit: contain;
+              "
+            />
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJYxFSn8Siueit7bVNmPDwVpA0Cq3_4rOxDA&usqp=CAU"
+              alt=""
+              style="
+                width: 20px;
+                height: 20px;
+                border-radius: 50px;
+                object-fit: contain;
+              "
+            />
+          </div>
+        </div>
+        <router-link to="/account" class="d-flex">
+          <img
+            v-if="!customImg"
+            src="https://w7.pngwing.com/pngs/340/956/png-transparent-profile-user-icon-computer-icons-user-profile-head-ico-miscellaneous-black-desktop-wallpaper.png"
+            style="
+              width: 35px;
+              height: 35px;
+              border-radius: 50px;
+              object-fit: contain;
+            "
+          />
+          <img
+            v-else
+            :src="customImg"
+            style="
+              width: 40px;
+              height: 40px;
+              border-radius: 50px;
+              object-fit: contain;
+            "
+          />
+        </router-link>
+      </div>
+    </div> -->
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
-            <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
+            <img
+              src="@/assets/img/Logo.svg"
+              alt="FMOH Logo"
+              class="img-fluid"
+            />
           </div>
           <div v-if="dashboardName != 'MSDAT PLATFORM'">
             <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
@@ -15,7 +102,14 @@
           cols
           md="11"
           lg="11"
-          class="d-flex justify-content-between align-items-center border-left main mains"
+          class="
+            d-flex
+            justify-content-between
+            align-items-center
+            border-left
+            main
+            mains
+          "
         >
           <!-- testing for mobile -->
           <div class="mobile-flex">
@@ -43,7 +137,8 @@
                   href="#"
                   id="dropdownMenuButton"
                   class="select-dropdown-item"
-                  v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                  v-for="(control, index) in $store.state.MSDAT_STORE
+                    .controlConfig"
                   :key="index"
                   @click="emitIndex(index)"
                   >{{ control.label }}
@@ -55,7 +150,33 @@
               <SideBar />
             </b-sidebar>
           </div>
-          <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
+
+          <div
+            class="main-text"
+            v-if="
+              this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true
+            "
+          >
+            <h2 class="main-text">
+              <small>{{
+                this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+              }}</small>
+              <br />
+              {{
+                this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails
+                  .description
+              }}
+            </h2>
+          </div>
+          <div class="main-text" v-else>
+            <h2 class="main-text">
+              <small>MSDAT PLATFORM</small>
+              <br />
+              {{ $route.meta.title }}
+            </h2>
+          </div>
+
+          <!-- <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
               <small>MSDAT PLATFORM</small>
               <br />
@@ -69,26 +190,42 @@
               <br />
               {{ dashboardName }}
             </h2>
-          </div>
+          </div> -->
 
           <!-- <b-col cols md="6" lg="6"> -->
-          <div class="d-flex justify-content-end h-100 align-items-center header-navs main">
+          <div
+            class="
+              d-flex
+              justify-content-end
+              h-100
+              align-items-center
+              header-navs
+              main
+            "
+          >
             <b-nav class="h-100 align-items-center main d-flex">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
-              <a href="https://fmohconnect.gov.ng/landing.html" target="_blank" class="nav-link" v-if="isAuthenticated === false"
+              <a
+                href="https://fmohconnect.gov.ng/landing.html"
+                target="_blank"
+                class="nav-link"
+                v-if="isAuthenticated === false"
                 >Home</a
               >
-              <router-link to="/about" class="nav-link">About</router-link>
-              <router-link to="/faq" class="nav-link">Help & FAQ</router-link>
-              <router-link to="/custom" class="nav-link">Create New Dashboard</router-link>
-              <a href="https://msdat.fmohconnect.gov.ng/" class="nav-link" v-if="isAuthenticated === false">Go back to MSDAT 1.5</a>
+              <router-link to="/about" class="nav-link" v-if='!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard'>About</router-link>
+              <router-link to="/faq" class="nav-link" v-if='!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard'>Help & FAQ</router-link>
+              <router-link to="/custom" class="nav-link" v-if='!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard'>Create New Dashboard</router-link>
+              <a
+                href="https://msdat.fmohconnect.gov.ng/"
+                class="nav-link"
+                v-if="isAuthenticated === false"
+                >Go back to MSDAT 1.5</a
+              >
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button
-                  class="btn btn-outline-primary border-light rounded-0"
-                >
+                <button class="btn btn-outline-primary border-light rounded-0">
                   Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
@@ -109,24 +246,51 @@
                   </div>
                 </b-dropdown>
               </b-nav-item> -->
-              <div v-b-toggle.sidebar-2 v-if="isAuthenticated === false" class="auth ml-1 d-flex align-items-center">
-                <b-icon-person-circle style="width: 18px; height: 18px;"></b-icon-person-circle>&nbsp;<span class="d-none d-md-inline">Login/Register</span>
+              <div
+                v-b-toggle.sidebar-2
+                v-if="isAuthenticated === false"
+                class="auth ml-2 d-flex align-items-center"
+              >
+                <b-icon-person-circle
+                  style="width: 18px; height: 18px"
+                ></b-icon-person-circle
+                >&nbsp;<span class="d-none d-md-inline">Login/Register</span>
               </div>
               <div v-else @click="showCard = true">
-              <div class="ml-2 profile d-flex align-items-center">
-                <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
-                Hi,&nbsp;{{ getUser.username }}
+                <div class="ml-2 profile d-flex align-items-center">
+                  <img
+                    :src="
+                      'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar
+                    "
+                    class="profile-picture mr-1"
+                    width="48"
+                    height="48"
+                  />
+                  Hi,&nbsp;{{ getUser.username }}
+                </div>
               </div>
-              </div>
-              <b-sidebar id="sidebar-2" title="" right shadow style="background: #fff" v-if="isAuthenticated === false">
+              <b-sidebar
+                id="sidebar-2"
+                title=""
+                right
+                shadow
+                style="background: #fff"
+                v-if="isAuthenticated === false"
+              >
                 <LoginSidebar v-if="show" />
                 <SignUp v-else />
                 <div class="row" v-if="show">
                   <div class="col-12 text-center">
-                    <h4 class="py-3" style="font-size: 15px">Don't have an account?</h4>
+                    <h4 class="py-3" style="font-size: 15px">
+                      Don't have an account?
+                    </h4>
                     <button
                       class="btn btn-lg btn-light btn-outline-dark text-dark"
-                      style="font-size: 15px; background: #f7f7f7; border: 1px solid #707070"
+                      style="
+                        font-size: 15px;
+                        background: #f7f7f7;
+                        border: 1px solid #707070;
+                      "
                       @click.prevent="showLoginForm"
                     >
                       CREATE AN ACCOUNT
@@ -136,7 +300,11 @@
                 <div v-else>
                   <div class="justify-content-center text-center">
                     <button
-                      class="btn btn-lg btn-light btn-outline-dark text-dark mb-3"
+                      class="
+                        btn btn-lg btn-light btn-outline-dark
+                        text-dark
+                        mb-3
+                      "
                       style="background: #f7f7f7; border: 1px solid #707070"
                       @click="showRegForm"
                     >
@@ -145,6 +313,10 @@
                   </div>
                 </div>
               </b-sidebar>
+              <!-- <router-link to="/login" v-else class="nav-link"
+                ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
+                out</router-link
+              > -->
             </b-nav>
             <b-icon
               @click="toggleOption = !toggleOption"
@@ -152,7 +324,11 @@
               font-scale="1.5"
               class="main"
             />
-            <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon" v-b-toggle.sidebar-1></b-icon>
+            <b-icon
+              icon="grid3x3-gap-fill"
+              class="mob-grid-icon"
+              v-b-toggle.sidebar-1
+            ></b-icon>
             <b-icon
               @click="toggleOption = !toggleOption"
               icon="three-dots-vertical"
@@ -172,41 +348,52 @@
       <b-row v-show="aboutPage" class="main">
         <b-col cols="1">
           <!-- <a href=""> -->
-          <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
+          <b-icon
+            @click="$router.go(-1)"
+            class="back-icn main"
+            icon="chevron-left"
+          />
           <!-- </a> -->
         </b-col>
         <b-col class="main">
           <h4 class="mt-4">About the MSDAT Dashboard</h4>
           <p>
-            This dashboard is developed and managed by the Department of Health Planning Research
-            and Statistics (DHPRS)
+            This dashboard is developed and managed by the Department of Health
+            Planning Research and Statistics (DHPRS)
           </p>
         </b-col>
       </b-row>
     </b-container>
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
     <div v-if="isAuthenticated === true">
-    <div class="container card shadow dropCard work-sans" v-if="showCard">
-      <div class="row p-3 d-flex user-details">
-        <div class="col-3">
-        <img :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar" class="profile-picture mr-1" width="48" height="48" />
+      <div class="container card shadow dropCard work-sans" v-if="showCard">
+        <div class="row p-3 d-flex user-details">
+          <div class="col-3">
+            <img
+              :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar"
+              class="profile-picture mr-1"
+              width="48"
+              height="48"
+            />
+          </div>
+          <div class="col-8">
+            <div>{{ getUser.username }}</div>
+            <div>{{ getUser.email }}</div>
+          </div>
+          <div class="close mr-2" @click.prevent="showCard = false">
+            <b-icon-x-circle></b-icon-x-circle>
+          </div>
         </div>
-        <div class="col-8">
-        <div>{{ getUser.username }}</div>
-        <div>{{ getUser.email }}</div>
-        </div>
-        <div class="close mr-2" @click.prevent="showCard = false">
-          <b-icon-x-circle></b-icon-x-circle>
-        </div>
-      </div>
-      <div class="d-flex py-2">
-        <router-link to="/account"><a href="#" class="ml-2">View Account</a></router-link>
-        <div class="logout">
-        <a href="#" class="mr-2" @click.prevent="logout">Log Out</a>
+        <div class="d-flex py-2">
+          <router-link to="/account"
+            ><a href="#" class="ml-2">View Account</a></router-link
+          >
+          <div class="logout">
+            <a href="#" class="mr-2" @click.prevent="logout">Log Out</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </header>
   <!--  to deltete
         // using provide inject and watcher to work on this feature.
@@ -240,6 +427,7 @@ export default {
   data() {
     return {
       show: true,
+      customImg: '',
       showCard: false,
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
@@ -284,7 +472,7 @@ export default {
     // function to logout a particular user
     async logout() {
       this.$store.dispatch('AUTH_STORE/logout');
-      if (!(this.$route.fullPath.includes('dashboard'))) {
+      if (!this.$route.fullPath.includes('dashboard')) {
         this.$router.push('/');
       }
     },
@@ -330,7 +518,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/scss/abstracts/_variables.scss';
-
+.custom-header {
+  color: #ffffff;
+  padding: 10px;
+  font-size: 20px;
+}
 button {
   color: white;
 }
@@ -503,7 +695,7 @@ header#the-header {
   .auth {
     display: none !important;
   }
-  .profile{
+  .profile {
     display: none !important;
   }
   .mobile-flex-col {
@@ -849,34 +1041,34 @@ header#the-header {
   }
 }
 div {
-    &.dropCard {
-      position: absolute;
-      width: 26vw;
-      z-index: 5;
-      right: 1rem;
-      color: black;
-      max-height: 30rem;
-      overflow-y: auto;
-      a {
-        color: inherit;
-      }
+  &.dropCard {
+    position: absolute;
+    width: 26vw;
+    z-index: 5;
+    right: 1rem;
+    color: black;
+    max-height: 30rem;
+    overflow-y: auto;
+    a {
+      color: inherit;
     }
   }
-  .user-details{
-    background: #FAFAFA;
-  }
-  .logout{
-    position: absolute;
-    right: 0;
-  }
-  .close {
-    position: absolute;
-    right: 0;
-  }
-  .profile-picture{
+}
+.user-details {
+  background: #fafafa;
+}
+.logout {
+  position: absolute;
+  right: 0;
+}
+.close {
+  position: absolute;
+  right: 0;
+}
+.profile-picture {
   border-radius: 48px;
 }
-.profile{
+.profile {
   cursor: pointer;
   font: normal normal 600 12px/20px Muli;
   color: white;

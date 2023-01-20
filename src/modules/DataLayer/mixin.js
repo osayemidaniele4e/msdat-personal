@@ -110,6 +110,7 @@ export default {
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
      * @returns {dataObjectType}
      */
+    // eslint-disable-next-line consistent-return
     async dlQuery(queryObject) {
       // i could do this in individual component when making request with the
       // function by after this it will after all at once
@@ -125,7 +126,7 @@ export default {
 
         // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
         const valuetype = this.valueType?.filter(
-          (item) => item.value_type === datasource?.classification,
+          (item) => item.value_type === datasource?.classification
         );
         query.value_type = valuetype[0]?.id;
       }
@@ -138,8 +139,16 @@ export default {
         const resultValue = await DB.queryDB(newQueryObject, locationID);
         return resultValue;
       }
-      const result = await DB.queryDB(query);
-      return result;
+
+      // check for undefined
+      function hasUndefinedOrNullValues(obj) {
+        return Object.values(obj).some((val) => val === undefined || val === null);
+      }
+
+      if (hasUndefinedOrNullValues(query) === false) {
+        const result = await DB.queryDB(query);
+        return result;
+      }
     },
     // get yeardropdown by Datasource
     async queryDBForYearByDs(query) {

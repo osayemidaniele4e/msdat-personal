@@ -482,7 +482,8 @@ export default {
       // Step 2: get the data for the selected indicator and the related indicator
       Promise.all(this.indicators.map(async (el) => {
         const data = await this.getNhmisData(el);
-        this.nhmisMonthData.push(data);
+        const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
+        this.nhmisMonthData.push(updatedData);
       }));
     },
   },
