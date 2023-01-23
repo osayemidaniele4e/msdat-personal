@@ -101,22 +101,6 @@ no-param-reassign */
             </b-col>
           </b-row>
         </div>
-
-        <!-- <div class="mb-4">
-          <p class="blue-heading">Financing</p>
-          <b-row>
-            <b-col>
-              <p class="hfs-details">
-                Proportion of PHCs receiving funds in cash and kind
-              </p>
-            </b-col>
-            <b-col>
-              <p class="value text-right">{{financing}}%</p>
-              <p class="source text-right">Source: NHFS 2018</p>
-            </b-col>
-          </b-row>
-        </div> -->
-
         <div>
           <p class="blue-heading">Facility Management</p>
           <b-row>
@@ -150,7 +134,6 @@ no-param-reassign */
           </b-row>
         </div>
         <div class="mb-4">
-          <!-- <p class="blue-heading">HR Guideline and Workforce</p> -->
           <b-row>
             <b-col>
               <p class="hfs-details">
@@ -178,7 +161,6 @@ no-param-reassign */
           </b-row>
         </div>
         <div>
-          <!-- <p class="blue-heading">HR Guideline and Workforce</p> -->
           <b-row>
             <b-col>
               <p class="hfs-details">
@@ -207,7 +189,6 @@ no-param-reassign */
 </template>
 
 <script>
-// import { mapState } from 'vuex';
 import BaseBar from '@/components/Barchart/BaseBarChart.vue';
 import ProgramAreaIcon from './programAreaIcon.vue';
 import dataMixins from '../../DataLayer/mixin';
@@ -241,10 +222,6 @@ export default {
         value: 0,
         year: 2000,
       },
-      // financing: {
-      //   id:61,
-      //   value: 0
-      // },
       facilityMng: {
         id: 61,
         value: 0,
@@ -382,8 +359,8 @@ export default {
           // eslint-disable-next-line array-callback-return
           this.nationalObjects.map((element) => {
             if (
-              value?.indicator === element?.indicator
-              && value.dataSource === element?.datasource
+              value?.indicator === element?.indicator &&
+              value.dataSource === element?.datasource
             ) {
               // eslint-disable-next-line no-param-reassign
               element.color = value.color;
@@ -600,7 +577,7 @@ export default {
       });
       const { newNational, newState } = await requests.getRegularData(
         this.programArea.specificIndicators,
-        selectedState.id,
+        selectedState.id
       );
       this.$emit('overviewLoading');
       newNational.map((el) => this.nationalObjects.push(el.results[0]));
@@ -624,7 +601,7 @@ export default {
       if (oldVal !== 'National' && newVal === 'National') {
         const { newNational } = await requests.getRegularData(
           this.programArea.specificIndicators,
-          this.locations[0].id,
+          this.locations[0].id
         );
         newNational.map((el) => this.nationalObjects.push(el.results[0]));
         this.$emit('overviewLoading');
@@ -651,7 +628,7 @@ export default {
         selectedState = this.locations[0];
         const { newNational } = await requests.getRegularData(
           this.programArea.specificIndicators,
-          selectedState.id,
+          selectedState.id
         );
         newNational.map((el) => this.nationalObjects.push(el.results[0]));
         this.$emit('overviewLoading');

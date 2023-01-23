@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import '@/components/ui-components';
 import './scss/main.scss';
+import GAuth from 'vue-google-oauth2';
 import VueCookies from 'vue-cookies';
 import VueHtml2Canvas from 'vue-html2canvas';
 import VueFriendlyIframe from 'vue-friendly-iframe';
@@ -17,16 +18,24 @@ import store from './store';
 import './plugins/veevalidate';
 import './assets/styles/fonts.css';
 
-// import firebase from 'firebase';
-import GAuth from 'vue-google-oauth2';
-
 const gauthOption = {
-  clientId: '1015559969016-0td102ag1odnn0vcc6golaf8n65cqr18.apps.googleusercontent.com',
+  clientId: '1049612850562-rg9dcooe3o2589bva85p3kcsfieuic0t.apps.googleusercontent.com',
   scope: 'profile email',
-  prompt: 'consent',
-  fetch_basic_profile: true,
+  prompt: 'select_account',
+  plugin_name: 'social-auth',
 };
 Vue.use(GAuth, gauthOption);
+
+// import firebase from 'firebase';
+// import GAuth from 'vue-google-oauth2';
+
+// const gauthOption = {
+//   clientId: '1015559969016-0td102ag1odnn0vcc6golaf8n65cqr18.apps.googleusercontent.com',
+//   scope: 'profile email',
+//   prompt: 'consent',
+//   fetch_basic_profile: true,
+// };
+// Vue.use(GAuth, gauthOption);
 
 // const firebaseConfig = {
 //   apiKey: 'AIzaSyCUnDadQjgK7XGtCWfWlMyC-FDBq0i1EVg',

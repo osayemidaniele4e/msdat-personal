@@ -1,3 +1,5 @@
+<!-- eslint-disable no-alert -->
+<!-- eslint-disable no-alert -->
 <template>
   <div class="">
     <section class="container-fluid">
@@ -8,12 +10,20 @@
         </div> -->
         <h2 class="w-100 text-center mx-auto mt-3">Login with</h2>
         <div class="d-flex w-100 justify-content-center">
-          <button type="submit" class="btn btn-lg btn-primary px-4 py-2" @click="googleAuth()">
+          <button
+            type="submit"
+            class="btn btn-lg btn-primary px-4 py-2"
+            @click="handleClickSignIn()"
+          >
             <b-icon-google class="mr-2"></b-icon-google>
             GOOGLE
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
-          <button @click="Logout" type="submit" class="btn btn-lg btn-primary px-4 py-2">
+          <button
+            @click="logInWithFacebook()"
+            type="submit"
+            class="btn btn-lg btn-primary px-4 py-2"
+          >
             <b-icon-facebook class="mr-2"></b-icon-facebook>
             FACEBOOK
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
@@ -67,7 +77,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import firebase from 'firebase';
+
 // import VueCookies from 'vue-cookies';
 
 export default {
@@ -125,34 +135,80 @@ export default {
       }
     },
 
-    loginWithGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account',
-      });
-
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((user) => {
-          // let newData = {
-          //   Provider: 'google',
-          //   Email: user.additionalUserInfo.profile.email,
-          //   name: user.additionalUserInfo.profile.name,
-          // };
-          console.log(user);
-        })
-        .catch((error) => console.log(error));
-    },
-
     async googleAuth() {
       const googleUser = await this.$gAuth.signIn();
       console.log(googleUser);
+    },
+    handleClickLogin() {
+      this.$gAuth
+        .getAuthCode()
+        .then((authCode) => {
+          console.log('authCode', authCode);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    // eslint-disable-next-line consistent-return
+    async handleClickSignIn() {
+      try {
+        const googleUser = await this.$gAuth.signIn();
+        if (!googleUser) {
+          return null;
+        }
+        console.log('googleUser', googleUser);
+        console.log('getId', googleUser.getId());
+        console.log('getBasicProfile', googleUser.getBasicProfile());
+        console.log('getAuthResponse', googleUser.getAuthResponse());
+        console.log('getAuthResponse', this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse());
+        this.isSignIn = this.$gAuth.isAuthorized;
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    },
+
+    async logInWithFacebook() {
+      console.log(window);
+      await this.loadFacebookSDK(document, 'script', 'facebook-jssdk');
+      await this.initFacebook();
+      window.FB.login((response) => {
+        if (response.authResponse) {
+          console.log(response);
+          // Now you can redirect the user or do an AJAX request to
+          // a PHP script that grabs the signed request from the cookie.
+        } else {
+          console.log('User cancelled login or did not fully authorize.');
+        }
+      });
+      return false;
+    },
+
+    async initFacebook() {
+      window.fbAsyncInit = function () {
+        window.FB.init({
+          appId: '1231947387726582', // You will need to change this
+          cookie: true, // This is important, it's not enabled by default
+          version: 'v13.0',
+        });
+      };
+    },
+    async loadFacebookSDK(d, s, id) {
+      let js;
+      const fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js';
+      fjs.parentNode.insertBefore(js, fjs);
     },
 
     async Logout() {
       // firebase.auth().signOut();
       const response = await this.$gAuth.signOut();
+      console.log(response);
 
       console.log('clicked');
     },
