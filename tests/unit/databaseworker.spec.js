@@ -1,7 +1,3 @@
-// import { take } from 'lodash';
-// import dexie from '../config/dexie';
-// import { getIndicatorsFromApi } from './helper';
-// import apiServices from './ApiServices';
 import DataBase from '@/modules/DataLayer/services/database.worker';
 
 describe('DataBase', () => {
