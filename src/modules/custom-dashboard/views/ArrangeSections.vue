@@ -48,7 +48,9 @@
         >
         <b-col cols="auto"
           ><b-button class="SFL" disabled style="font-family: Work Sans"
-            >Save for Later</b-button
+            >
+            <!-- Save for Later -->
+            </b-button
           ></b-col
         >
         </div>
@@ -58,7 +60,7 @@
           <dragable-list />
           <b-row align-h="center" class="mt-3 text-right">
             // eslint-disable-next-line vue/no-parsing-error
-            <!-- <b-col class="align-baseline" cols="auto"
+            <!- <b-col class="align-baseline" cols="auto"
               ><p class="baseline">Save for Later</p>
             </b-col> -->
       <!-- <b-col cols="auto"
