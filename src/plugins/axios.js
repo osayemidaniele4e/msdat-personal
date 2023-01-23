@@ -5,7 +5,7 @@ const AxiosInstance = axios.create({
   baseURL: process.env.VUE_APP_API_BASE_URL,
 });
 
-AxiosInstance.interceptors.response.use(
+AxiosInstance.interceptors.request.use(
   (response) => response,
   (error) => {
     // console.trace(error);
