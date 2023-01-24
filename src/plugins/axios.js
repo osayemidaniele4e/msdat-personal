@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import Vue from 'vue';
+import Vue from 'vue';
 
 const AxiosInstance = axios.create({
   baseURL: process.env.VUE_APP_API_BASE_URL,
