@@ -50,9 +50,7 @@
             </form>
             <div class="row">
               <div class="col-12 text-center">
-                <h4 class="py-3" style="font-size: 15px">
-                  Don't have an account?
-                </h4>
+                <h4 class="py-3" style="font-size: 15px">Don't have an account?</h4>
                 <button
                   class="btn btn-lg btn-light btn-outline-dark"
                   style="font-size: 15px"
@@ -68,9 +66,7 @@
     </section>
     <footer class="footer fixed-bottom">
       <div class="container text-right pt-2">
-        <small class="text-right pr-5"
-          >Built with ❤️️ by eHealth4everyone</small
-        >
+        <small class="text-right pr-5">Built with ❤️️ by eHealth4everyone</small>
       </div>
     </footer>
   </div>

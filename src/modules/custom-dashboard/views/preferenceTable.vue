@@ -76,7 +76,7 @@
                   class="baseline mt-5"
                   style="font-size: 12.000004px; font-family: Work Sans"
                 >
-                  Save for Later
+                  <!-- Save for Later -->
                 </p>
               </b-col>
             </b-row>

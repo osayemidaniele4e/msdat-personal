@@ -135,6 +135,9 @@ const mutations: MutationTree<State> = {
   SET_CONFIGURATIONS: (state, payload) => {
     state.configObject = payload;
   },
+  SET_SELECTED_CONFIG: (state, payload) => {
+    state.selectedConfigurations = payload;
+  },
 };
 
 export default mutations;
