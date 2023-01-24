@@ -195,7 +195,7 @@ export default {
       //   console.log('samuel =>', error);
       // }
       window.location.href =
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://208.87.128.190:3030/';
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=https://msdat3.e4eweb.space';
     },
 
     async logInWithFacebook() {
@@ -260,7 +260,7 @@ export default {
     if (code !== undefined) {
       try {
         const response = await axiosInstance.post(
-          `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=774lsdliz8nidi&client_secret=7Sb74ygbihcJUzCH&code=${code}8&redirect_uri=http://208.87.128.190:3030/`
+          `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=774lsdliz8nidi&client_secret=7Sb74ygbihcJUzCH&code=${code}8&redirect_uri=https://msdat3.e4eweb.space`
         );
         const tokenResponse = await axiosInstance.get(
           `https://api.linkedin.com/v2/me?oauth2_access_token=${response.access_token}`
