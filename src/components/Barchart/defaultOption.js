@@ -11,25 +11,6 @@ export default {
         text: '',
         x: -20,
       },
-      chart: {
-        events: {
-          load() {
-            const url = `<a href=${window.location.origin}>chiamaka</a>`;
-            this.renderer.text(url, 300, 150)
-              .attr({
-                zIndex: 5,
-              })
-              .css({
-                fontSize: '15px',
-                'text-anchor': 'middle',
-                color: 'gray',
-                opacity: 0.5,
-                fontFamily: ['sans-serif', 'Arial'],
-              })
-              .add();
-          },
-        },
-      },
     },
   },
   tooltip: {
