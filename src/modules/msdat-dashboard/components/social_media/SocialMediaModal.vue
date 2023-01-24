@@ -107,6 +107,7 @@ export default {
   data() {
     return {
       shareURL: window.location.origin,
+      shareDesc: 'Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform.',
       copy_text: 'Copy',
       shareText: 'MSDAT Platform',
       email: '',
@@ -119,7 +120,7 @@ export default {
       this.copy_text = 'Copied';
     },
     shareFacebook() {
-      const facebookURL = `https://www.facebook.com/sharer.php?u=${this.shareURL}`;
+      const facebookURL = `https://www.facebook.com/sharer.php?u=${this.shareDesc}`;
       window.open(
         facebookURL,
         '_blank',
@@ -127,7 +128,7 @@ export default {
       );
     },
     shareViaTwitter() {
-      const url = `https://twitter.com/share?text=${this.shareText}&url=${this.shareURL}&hashtags=fmohconnect`;
+      const url = `https://twitter.com/share?text=${this.shareDesc}&url=${this.shareURL}&hashtags=fmohconnect`;
       window.open(
         url,
         '_blank',
@@ -135,7 +136,7 @@ export default {
       );
     },
     shareViaLinkedin() {
-      const url = `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareURL}&title=${this.shareText}&summary=Health%20Dashboards`;
+      const url = `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareDesc}&title=${this.shareText}&summary=Health%20Dashboards`;
       window.open(
         url,
         '_blank',
@@ -146,7 +147,7 @@ export default {
       console.log(
         `mailto:${this.email}?subject=${this.shareText}&body=${this.shareURL}`,
       );
-      window.location = `mailto:${this.email}?subject=${this.shareText}d&body=${this.shareURL}`;
+      window.location = `mailto:${this.email}?subject=${this.shareText}&body=${this.shareDesc} : ${this.shareURL}`;
     },
   },
 };

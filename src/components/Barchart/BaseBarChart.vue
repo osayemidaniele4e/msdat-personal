@@ -53,6 +53,10 @@ export default {
       type: String,
       default: '',
     },
+    chart: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   watch: {
