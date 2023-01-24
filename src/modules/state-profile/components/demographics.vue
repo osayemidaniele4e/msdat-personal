@@ -1,93 +1,106 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable eqeqeq */
-/* eslint-disable eqeqeq */
+/* eslint-disable no-param-reassign */ /* eslint-disable eqeqeq */ /* eslint-disable eqeqeq */
 <template>
-    <b-container fluid>
+  <b-container fluid>
     <b-row class="mb-3">
       <div class="program-icon shadow">
-        <img src="@/assets/state-profile/svg/location.svg" alt="location">
+        <img src="@/assets/state-profile/svg/location.svg" alt="location" />
       </div>
-      <h2 class="ml-3 my-auto"> <b>DEMOGRAPHICS</b> </h2>
+      <h2 class="ml-3 my-auto"><b>DEMOGRAPHICS</b></h2>
     </b-row>
     <b-row align-h="between">
       <b-col md="6">
-        <p class="mb-5">This section provides
-          demographic information about {{this.selectedState}}
-           <span v-show="state !== 'Fct' && state !== 'National'">State</span>.</p>
-        <div v-for=" d in dataContainer" :key= d.name>
-          <hr v-show="dataContainer.indexOf(d) > 0 && d.value !== 0">
-        <b-row v-show="d.value !== 0" >
-          <b-col>
-            <p class="capitalize"> <b>{{d.name}}</b> </p>
-          </b-col>
-          <b-col class="text-right">
-            <p v-if="d.indicatorId === 64" class="value"><b>{{d.value | commaValue}}%</b></p>
-            <p v-else-if="d.sourceId === 19" class="value">
-               <b>{{Math.round(d.value) | commaValue}}</b></p>
-            <p v-else class="value"> <b>{{d.value  | commaValue}}</b></p>
-            <p class="source">Source: {{d.source}} {{d.year}} <span><b-icon-info-circle-fill
-        variant="primary"
-        @click="showSrcModal(d.sourceId)"
-        class="data-source-info"
-      /></span> </p>
-          </b-col>
-        </b-row>
-        <b-row class="compare">
-          <b-col cols="auto" class="text-right" v-if="d.compare">
-  <b-icon :icon= 'getChangeIcon()' :variant="pointer"></b-icon>
-          </b-col>
-          <b-col  v-if="d.compare" cols="auto">
-            <p style="font-size: 11.50002625px">
-           <b class="pr-1">{{d.change }}%</b>
+        <p class="mb-5">
+          This section provides demographic information about {{ this.selectedState }}
+          <span v-show="state !== 'Fct' && state !== 'National'">State</span>.
+        </p>
+        <div v-for="d in dataContainer" :key="d.name">
+          <hr v-show="dataContainer.indexOf(d) > 0 && d.value !== 0" />
+          <b-row v-show="d.value !== 0">
+            <b-col>
+              <p class="capitalize">
+                <b>{{ d.name }}</b>
+              </p>
+            </b-col>
+            <b-col class="text-right">
+              <p v-if="d.indicatorId === 64" class="value">
+                <b>{{ d.value | commaValue }}%</b>
+              </p>
+              <p v-else-if="d.sourceId === 19" class="value">
+                <b>{{ Math.round(d.value) | commaValue }}</b>
+              </p>
+              <p v-else class="value">
+                <b>{{ d.value | commaValue }}</b>
+              </p>
+              <p class="source">
+                Source: {{ d.source }} {{ d.year }}
+                <span
+                  ><b-icon-info-circle-fill
+                    variant="primary"
+                    @click="showSrcModal(d.sourceId)"
+                    class="data-source-info"
+                /></span>
+              </p>
+            </b-col>
+          </b-row>
+          <b-row class="compare">
+            <b-col cols="auto" class="text-right" v-if="d.compare">
+              <b-icon :icon="getChangeIcon()" :variant="pointer"></b-icon>
+            </b-col>
+            <b-col v-if="d.compare" cols="auto">
+              <p style="font-size: 11.50002625px">
+                <b class="pr-1">{{ d.change }}%</b>
 
-           <b>
-             {{ pointer=='success'?'increase':'decrease'}}
-             </b>
-           since {{d.previousYear}}
-            ({{d.previousValue | commaValue}}
-            <span v-if="d.indicatorId == 64">%</span>)
-            </p>
-          </b-col>
+                <b>
+                  {{ pointer == 'success' ? 'increase' : 'decrease' }}
+                </b>
+                since {{ d.previousYear }} ({{ d.previousValue | commaValue }}
+                <span v-if="d.indicatorId == 64">%</span>)
+              </p>
+            </b-col>
           </b-row>
         </div>
-
       </b-col>
       <b-col cols="auto">
-          <div class="vl"></div>
+        <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <BaseMap v-if="state != 'National'"
-        :level="3" :lgaState="selectedState"
-         :mapObject="this.mapOptions"/>
+        <BaseMap
+          v-if="state != 'National'"
+          :level="3"
+          :lgaState="selectedState"
+          :mapObject="this.mapOptions"
+        />
 
-        <BaseMap  v-else :level="1"
-         :mapObject="mapOptionsNational"/>
-         <p v-if="state == 'National'" class="text-center map-text">Select a state on the map to view state profile</p><br/>
+        <BaseMap v-else :level="1" :mapObject="mapOptionsNational" />
+        <p v-if="state == 'National'" class="text-center map-text">
+          Select a state on the map to view state profile
+        </p>
+        <br />
         <b-row>
           <b-col cols="auto">
             <p>Land Area</p>
-            <p><b>{{this.area | commaValue}} km<sup>2</sup></b></p>
+            <p>
+              <b>{{ this.area | commaValue }} km<sup>2</sup></b>
+            </p>
           </b-col>
           <b-col cols="auto">
             <p>Co-ordinates</p>
-            <p><b>{{this.coordinates}}</b></p>
+            <p>
+              <b>{{ this.coordinates }}</b>
+            </p>
           </b-col>
         </b-row>
       </b-col>
     </b-row>
-     <base-modal :showModal="show" v-on:hidden="show = false" size="lg">
-       <template #title>
+    <base-modal :showModal="show" v-on:hidden="show = false" size="lg">
+      <template #title>
         <h5>{{ modalTitle }}</h5>
       </template>
       <div id="srcModal">
-    <DataSourceMetaDataModal
-        v-if="show"
-        :rawObject="singleSrc"
-        :dataSourceID="srcId"
-      />
+        <DataSourceMetaDataModal v-if="show" :rawObject="singleSrc" :dataSourceID="srcId" />
       </div>
-     </base-modal>
-    </b-container>
+    </base-modal>
+  </b-container>
 </template>
 
 <script>
@@ -153,7 +166,9 @@ export default {
             container.year = this.data[i].data[0].period;
             container.compare = false;
           } else {
-            const fullYears = this.data[i].data.results.filter((value) => value.period.length === 4);
+            const fullYears = this.data[i].data.results.filter(
+              (value) => value.period.length === 4,
+            );
             container.compare = true;
             // Sort returned results by latest year
             fullYears.sort((a, b) => b.period - a.period);
@@ -197,8 +212,7 @@ export default {
      * year and the closest year
      */
     calcDiff(val) {
-      const ans = ((Number(val.value) - Number(val.previousValue))
-       / Number(val.previousValue)) * 100;
+      const ans = ((Number(val.value) - Number(val.previousValue)) / Number(val.previousValue)) * 100;
       if (val.previousValue > val.value) {
         this.pointer = 'danger';
       } else {
@@ -247,7 +261,8 @@ export default {
     selectedState() {
       if (this.state === 'FCT') {
         return 'FCT';
-      } if (this.state === 'National') {
+      }
+      if (this.state === 'National') {
         return 'Nigeria';
       }
       return this.state;
@@ -306,26 +321,27 @@ export default {
             },
           },
         },
-        series: [{
-          name: 'Nigeria',
-          states: {
-            hover: {
-              color: '#3F6040',
-
-            },
-          },
-          point: {
-            events: {
-              click: (event) => {
-                let state = event.point.name;
-                state = state.replace(/\s+/g, '');
-                this.$emit('changeState', state);
+        series: [
+          {
+            name: 'Nigeria',
+            states: {
+              hover: {
+                color: '#3F6040',
               },
             },
+            point: {
+              events: {
+                click: (event) => {
+                  let state = event.point.name;
+                  state = state.replace(/\s+/g, '');
+                  this.$emit('changeState', state);
+                },
+              },
+            },
+            borderColor: 'white',
+            borderWidth: 3,
           },
-          borderColor: 'white',
-          borderWidth: 3,
-        }],
+        ],
         colors: ['#007d53', '#fff'],
         legend: {
           enabled: false,
@@ -368,24 +384,19 @@ export default {
             },
           },
         },
-        series: [{
-          name: this.selectedState,
-          data: [
-            // ['Edu', 23]
-          ],
-          point: {
-            events: {
-              // //-----function to fire with point name --------//
-              // click: (event) => {
-              //   console.log(event.point.name);
-              //   const state = event.point.name;
-              //   this.$router.push({ name: 'health-profiles', params: { state } });
-              // },
+        series: [
+          {
+            name: this.selectedState,
+            data: [
+              // ['Edu', 23]
+            ],
+            point: {
+              events: {},
             },
+            borderColor: 'white',
+            borderWidth: 3,
           },
-          borderColor: 'white',
-          borderWidth: 3,
-        }],
+        ],
         colors: ['#F3C382'],
         legend: {
           enabled: false,
@@ -414,9 +425,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 hr {
-  border-top: 1px solid #CCCCCC;
+  border-top: 1px solid #cccccc;
 }
-.bi-info-circle-fill{
+.bi-info-circle-fill {
   cursor: pointer;
 }
 #srcModal {
@@ -432,7 +443,7 @@ hr {
   padding-top: 7px;
 }
 .source {
-  color: #7C7C7C
+  color: #7c7c7c;
 }
 .value {
   color: #232323;
@@ -440,7 +451,7 @@ hr {
   font-weight: 600;
 }
 
-.capitalize{
-  text-transform:capitalize;
+.capitalize {
+  text-transform: capitalize;
 }
 </style>

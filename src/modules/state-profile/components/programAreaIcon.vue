@@ -39,8 +39,7 @@ export default {
 </script>
 
 <style>
-
-.program-icon{
+.program-icon {
   display: flex;
   justify-content: center;
   align-items: center;

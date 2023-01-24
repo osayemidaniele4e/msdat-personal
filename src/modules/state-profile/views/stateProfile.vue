@@ -32,17 +32,12 @@
             </a>
           </button>
           <button class="social">
-            <a
-              :href="`mailto:info@mail.com?subject=${shareText}&body=${shareUrl}`"
-            >
+            <a :href="`mailto:info@mail.com?subject=${shareText}&body=${shareUrl}`">
               <img class="img-fluid" src="@/assets/state-profile/img/email.png" alt="email-icon" />
             </a>
           </button>
           <button class="social">
-            <a
-              :href="`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`"
-              target="_blank"
-            >
+            <a :href="`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`" target="_blank">
               <img
                 class="img-fluid"
                 src="@/assets/state-profile/img/facebook.png"
@@ -51,10 +46,7 @@
             </a>
           </button>
           <button class="social">
-            <a
-              :href="`https://twitter.com/intent/tweet?url=${shareUrl}&text=`"
-              target="_blank"
-            >
+            <a :href="`https://twitter.com/intent/tweet?url=${shareUrl}&text=`" target="_blank">
               <img
                 class="img-fluid"
                 src="@/assets/state-profile/img/twitter.png"
@@ -530,11 +522,6 @@ export default {
               dataSource: 17,
               year: 2016,
             },
-            // {
-            //   indicator: 58,
-            //   dataSource: 2,
-            //   year: 2018,
-            // },
             {
               indicator: 61,
               dataSource: 17,
@@ -606,25 +593,7 @@ export default {
       temp.href = output;
       temp.download = 'StateProfile.png';
       temp.click();
-      // eslint-disable-next-line new-cap
-      // const pdf = new jsPDF();
-      // pdf.html(document.getElementById('printMe'), {
-      //   callback(pdf) {
-      //     pdf.save();
-      //   },
-      // });
     },
-    // async copyTheLink() {
-    //   // await navigator.clipboard.writeText(this.shareUrl);
-    //   const Url = document.getElementById('myid'); /* GET vuejs el reference here (via $ref) but how? */
-    //   Url.innerHTML = window.location.href;
-    //   console.log(Url.innerHTML);
-    //   Url.select();
-    //   document.execCommand('copy');
-    //   this.shareUrl.select();
-    //   document.execCommand('copy');
-    // this.copyText = 'Link Copied!';
-    // },
     async copyTheLink() {
       try {
         await navigator.clipboard.writeText(this.shareUrl);
@@ -643,9 +612,7 @@ export default {
       }
     },
     navigateToState(state) {
-      // state.preventDefault()
       this.$router.push({ name: 'health-profiles', params: { state } });
-      // this.$router.go();
     },
     stateClicked(state) {
       this.navigateToState(state);
@@ -696,7 +663,6 @@ export default {
     color: #3a3a3a;
   }
   button.social.link {
-    // border: 1px solid #3a3a3a;
     img {
       width: 16px;
     }
