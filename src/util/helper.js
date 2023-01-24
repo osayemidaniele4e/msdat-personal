@@ -22,6 +22,7 @@ export const groupIndicator = (indicators, by) => {
   const multiSelectFormat = entries.map((item) => ({
     [by]: item[0],
     indicators: item[1],
+    collapsed: true,
   }));
 
   return multiSelectFormat;
