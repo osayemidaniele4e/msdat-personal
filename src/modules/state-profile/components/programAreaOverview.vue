@@ -359,8 +359,8 @@ export default {
           // eslint-disable-next-line array-callback-return
           this.nationalObjects.map((element) => {
             if (
-              value?.indicator === element?.indicator &&
-              value.dataSource === element?.datasource
+              value?.indicator === element?.indicator
+              && value.dataSource === element?.datasource
             ) {
               // eslint-disable-next-line no-param-reassign
               element.color = value.color;
@@ -577,7 +577,7 @@ export default {
       });
       const { newNational, newState } = await requests.getRegularData(
         this.programArea.specificIndicators,
-        selectedState.id
+        selectedState.id,
       );
       this.$emit('overviewLoading');
       newNational.map((el) => this.nationalObjects.push(el.results[0]));
@@ -601,7 +601,7 @@ export default {
       if (oldVal !== 'National' && newVal === 'National') {
         const { newNational } = await requests.getRegularData(
           this.programArea.specificIndicators,
-          this.locations[0].id
+          this.locations[0].id,
         );
         newNational.map((el) => this.nationalObjects.push(el.results[0]));
         this.$emit('overviewLoading');
@@ -628,7 +628,7 @@ export default {
         selectedState = this.locations[0];
         const { newNational } = await requests.getRegularData(
           this.programArea.specificIndicators,
-          selectedState.id
+          selectedState.id,
         );
         newNational.map((el) => this.nationalObjects.push(el.results[0]));
         this.$emit('overviewLoading');

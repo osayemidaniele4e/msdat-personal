@@ -167,7 +167,7 @@ export default {
             container.compare = false;
           } else {
             const fullYears = this.data[i].data.results.filter(
-              (value) => value.period.length === 4
+              (value) => value.period.length === 4,
             );
             container.compare = true;
             // Sort returned results by latest year
@@ -212,8 +212,7 @@ export default {
      * year and the closest year
      */
     calcDiff(val) {
-      const ans =
-        ((Number(val.value) - Number(val.previousValue)) / Number(val.previousValue)) * 100;
+      const ans = ((Number(val.value) - Number(val.previousValue)) / Number(val.previousValue)) * 100;
       if (val.previousValue > val.value) {
         this.pointer = 'danger';
       } else {

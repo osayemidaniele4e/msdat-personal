@@ -574,10 +574,10 @@ export default {
     },
     lgaNames() {
       const chosenState = this.allLocations.filter(
-        (el) => el.name.includes(this.state) && el.level === 3
+        (el) => el.name.includes(this.state) && el.level === 3,
       )[0];
       const lgaObjects = this.allLocations.filter(
-        (val) => val.parent === chosenState?.id && val.level === 4
+        (val) => val.parent === chosenState?.id && val.level === 4,
       );
       return lgaObjects;
     },

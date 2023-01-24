@@ -28,6 +28,15 @@
             FACEBOOK
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
+          <button
+            @click="loginWithLinkedIn()"
+            type="submit"
+            class="btn btn-lg btn-primary px-4 py-2"
+          >
+            <b-icon-linkedin class="mr-2"></b-icon-linkedin>
+            LinkedIn
+            <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
+          </button>
         </div>
         <div class="row">
           <div class="col-12 mx-auto h-50px">
@@ -77,18 +86,26 @@
 
 <script>
 import { mapActions } from 'vuex';
+import axios from 'axios';
+import axiosInstance from '@/config/axios';
 
 // import VueCookies from 'vue-cookies';
+
+// "ya29.a0AVvZVsrx-2eK4kRE4Ed4moROas9ASzuIvLiDmTMZ8yB8x8p6chI-D00X2v0MkwPDIqsfLAPLJVq0zKhzHP-3-vCyXu1aleQd1pyEYZNjo0EAMv5-3El8g8CzowsDLjy4HA8PPPFdJB0AHTm7KjsQNQDBi-y8dAaCgYKAZ0SARESFQGbdwaILHCye5hUytMSpXyhRgq-eQ0165"
 
 export default {
   data() {
     return {
       username: '',
       password: '',
+      client_id: '774lsdliz8nidi',
+      client_secret: '7Sb74ygbihcJUzCH',
+      urlEncode: 'http%3A%2F%2Flocalhost%3A8080',
     };
   },
   methods: {
     ...mapActions('AUTH_STORE', ['LOGIN_USER']),
+
     async login() {
       try {
         const formData = {
@@ -168,6 +185,19 @@ export default {
       }
     },
 
+    async loginWithLinkedIn() {
+      // try {
+      //   const response = await axiosInstance.post(
+      //     'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://208.87.128.190:3030/'
+      //   );
+      //   console.log('Baby_George', response);
+      // } catch (error) {
+      //   console.log('samuel =>', error);
+      // }
+      window.location.href =
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://208.87.128.190:3030/';
+    },
+
     async logInWithFacebook() {
       console.log(window);
       await this.loadFacebookSDK(document, 'script', 'facebook-jssdk');
@@ -213,7 +243,34 @@ export default {
       console.log('clicked');
     },
   },
-  mounted() {},
+  async mounted() {
+    // window.location =
+    //   'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://208.87.128.190:3030/';
+    // (function () {
+    //   var e = document.createElement('script');
+    //   e.type = 'text/javascript';
+    //   e.async = true;
+    //   e.src = 'http://platform.linkedin.com/in.js?async=true';
+    //   var t = document.getElementsByTagName('script')[0];
+    //   t.parentNode.insertBefore(e, t);
+    // })();
+    // console.log(window);
+
+    const code = this.$route.query.code;
+    if (code !== undefined) {
+      try {
+        const response = await axiosInstance.post(
+          `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=774lsdliz8nidi&client_secret=7Sb74ygbihcJUzCH&code=${code}8&redirect_uri=http://208.87.128.190:3030/`
+        );
+        const tokenResponse = await axiosInstance.get(
+          `https://api.linkedin.com/v2/me?oauth2_access_token=${response.access_token}`
+        );
+        console.log('Baby_George', response, tokenResponse);
+      } catch (error) {
+        console.log('samuel =>', error);
+      }
+    }
+  },
 };
 </script>
 
