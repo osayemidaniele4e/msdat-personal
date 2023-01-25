@@ -3,7 +3,7 @@ export default {
   setup: [
     {
       type: 'dropdown',
-      class: ['col-lg-4 col-md-6 step-indicator'],
+      class: ['col-md-4 step-indicator'],
       dropdownProps: {
         // multiple: true,
         'group-values': 'indicators',
@@ -15,7 +15,7 @@ export default {
       options: [],
     },
     {
-      class: ['col-lg-2 col-md-2 col-4 step-datasource'],
+      class: ['col-lg col-md-2 col-4 step-datasource'],
       type: 'dropdown',
       label: 'data Source',
       key: 'datasource',
@@ -25,7 +25,7 @@ export default {
       options: [],
     },
     {
-      class: ['col-lg-2 col-md-2 col-4 step-location'],
+      class: ['col-lg col-md-2 col-4 step-location'],
       type: 'dropdown',
       label: 'location',
       key: 'location',
@@ -35,7 +35,7 @@ export default {
       options: [],
     },
     {
-      class: ['col-lg-2 col-md-2 col-4'],
+      class: ['col-lg col-md-2 col-4'],
       type: 'dropdown',
       label: 'Year',
       key: 'year',
