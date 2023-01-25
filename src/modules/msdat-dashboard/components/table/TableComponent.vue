@@ -439,7 +439,7 @@ export default {
           indicator: indicator.id,
           period: year,
           location: location.id,
-          value_type: 10,
+          value_type: 7,
         });
         if (numeratorData.length > 0 || denominatorData.length > 0) {
           this.numDenum = true;
