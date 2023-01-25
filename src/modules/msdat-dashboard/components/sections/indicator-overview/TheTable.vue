@@ -74,7 +74,6 @@ export default {
       modalTitle: '',
       DisplayType: '',
       updateData: 0,
-      showTableRelatedIndicator: true,
     };
   },
   props: {
@@ -93,7 +92,7 @@ export default {
         const formattedData = [];
         let indicators = [newValues.id, newValues.first_related, newValues.second_related];
 
-        if (!this.showTableRelatedIndicator) {
+        if (!this.getConfigObject.showTableRelatedIndicator) {
           indicators = [newValues.id];
         }
 
@@ -134,7 +133,7 @@ export default {
         //   this.values.indicator.first_related,
         //   this.values.indicator.second_related,
         // ];
-        // if (!this.showTableRelatedIndicator) {
+        // if (!this.getConfigObject.showTableRelatedIndicator) {
         //   indicators = [this.values.indicator.id];
         // }
         // for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
@@ -163,8 +162,10 @@ export default {
       immediate: false,
     },
   },
-  methods: {
+  computed: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+  },
+  methods: {
     /**
      * @param {Object} queryObject  The query Object
      * @param {number} queryObject.indicator The id of the indicator
@@ -238,7 +239,7 @@ export default {
       const formattedData = [];
       let indicators = [newValues.id, newValues.first_related, newValues.second_related];
 
-      if (!this.showTableRelatedIndicator) {
+      if (!this.getConfigObject.showTableRelatedIndicator) {
         indicators = [newValues.id];
       }
 
@@ -268,9 +269,6 @@ export default {
   mounted() {
     this.updateData += 1;
     this.populateTableData();
-    this.showTableRelatedIndicator = this.getConfigObject().showTableRelatedIndicator !== undefined
-      ? this.getConfigObject().showTableRelatedIndicator
-      : true;
   },
 };
 </script>

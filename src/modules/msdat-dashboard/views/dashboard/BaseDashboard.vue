@@ -334,7 +334,7 @@ export default {
       }
     },
     ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
-    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+    ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
@@ -566,7 +566,6 @@ export default {
       }
     }
   },
-
 };
 </script>
 

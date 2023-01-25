@@ -64,10 +64,10 @@ export default {
             name: locationName.name,
             y: Number(item.value),
             nd: Number(
-              ndData.find((el) => el.location === item.location).numerator,
+              ndData.find((el) => el.location === item.location)?.numerator || 0,
             ).toLocaleString(),
             dn: Number(
-              ndData.find((el) => el.location === item.location).denominator,
+              ndData.find((el) => el.location === item.location)?.denominator || 0,
             ).toLocaleString(),
           };
         }
