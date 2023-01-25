@@ -22,7 +22,8 @@ deploy_3.0:
       - chmod 600 ~/.ssh/id_rsa
       - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat/  && git pull origin develop && sudo rm yarn.lock && docker-compose up -d --build && docker ps "
+    # - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat/  && git pull origin develop && sudo rm yarn.lock && docker-compose up -d --build && docker ps "
+     - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat/  && git checkout . && git checkout develop && git pull && sudo yarn install && sudo yarn run build && sudo systemctl restart nginx "
   only:
     - develop
 
