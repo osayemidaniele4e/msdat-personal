@@ -294,8 +294,8 @@ export default {
         });
         if (numeratorData.length > 0 || denominatorData.length > 0) {
           return {
-            numerator: Number(numeratorData[0].value).toLocaleString(),
-            denominator: Number(denominatorData[0].value).toLocaleString(),
+            numerator: Number(numeratorData[0]?.value).toLocaleString(),
+            denominator: Number(denominatorData[0]?.value).toLocaleString(),
           };
         }
         return {

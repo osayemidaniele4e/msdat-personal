@@ -439,7 +439,7 @@ export default {
           indicator: indicator.id,
           period: year,
           location: location.id,
-          value_type: 10,
+          value_type: 7,
         });
         if (numeratorData.length > 0 || denominatorData.length > 0) {
           this.numDenum = true;
@@ -482,7 +482,8 @@ export default {
       // Step 2: get the data for the selected indicator and the related indicator
       Promise.all(this.indicators.map(async (el) => {
         const data = await this.getNhmisData(el);
-        this.nhmisMonthData.push(data);
+        const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
+        this.nhmisMonthData.push(updatedData);
       }));
     },
   },

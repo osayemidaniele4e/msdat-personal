@@ -253,20 +253,18 @@ export default class DataBase {
    * @returns {array} result of the Query
    */
   static async queryDBForNhmisMonthly(query = {}) {
-    const {
-      datasource, indicator, location = 1,
-    } = query;
+    const { datasource, indicator, location = 1 } = query;
     return dexie
       .table(NHMIS_MONTHLY)
       .where('[datasource+indicator+location]')
       .equals([datasource, indicator, location])
       .toArray();
-  //   const result = await dexie
-  //   .table(NHMIS_MONTHLY)
-  //   .where('[datasource+indicator+location]')
-  //   .equals([datasource, indicator, location])
-  //   .toArray();
-  // return result;
+    //   const result = await dexie
+    //   .table(NHMIS_MONTHLY)
+    //   .where('[datasource+indicator+location]')
+    //   .equals([datasource, indicator, location])
+    //   .toArray();
+    // return result;
   }
 
   /**
@@ -353,9 +351,7 @@ export default class DataBase {
     if (tableName === '') {
       return [];
     }
-    return dexie
-      .table(tableName)
-      .toArray();
+    return dexie.table(tableName).toArray();
   }
 
   /**
@@ -366,11 +362,7 @@ export default class DataBase {
    * @returns {array} result of the Query
    */
   static async queryDBForYearsByDs(query) {
-    const result = await dexie
-      .table(DATA)
-      .where('datasource')
-      .equals(query)
-      .toArray();
+    const result = await dexie.table(DATA).where('datasource').equals(query).toArray();
     return result;
   }
 }

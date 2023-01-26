@@ -126,6 +126,7 @@
 
 <script>
 // import ControlMixins from '@/components/ControlPanel/ControlMixins';
+import { mapMutations } from 'vuex';
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
@@ -243,6 +244,8 @@ export default {
   },
   methods: {
     // eslint-disable-next-line consistent-return
+
+    ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
     /**
      * @description check if datasource dropdown has NHMIS-DHIS2
      * checks if the key is datasource then create a new array of datasource id
