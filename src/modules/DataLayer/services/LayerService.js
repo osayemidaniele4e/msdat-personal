@@ -82,6 +82,7 @@ export default class DataLayer {
       this.setup(object);
 
       console.time('fetching');
+
       const indicatorArray = await this.DB.listAllIndicators();
 
       // check if data is already initialized iN DEXIE DB
@@ -131,7 +132,8 @@ export default class DataLayer {
       }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
-      const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray);
+      const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray); // A more conclusive check can be done
+
       if (indicatorsNotOnIdb.length !== 0) {
         this.storeTimestampInLocal();
         await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
@@ -324,6 +326,11 @@ export default class DataLayer {
     }
     return yearsNotAvailable;
   }
+
+  /**
+   * check available datasources
+   * @author davebenard
+   */
 
   async initDataWithYears(indicator, limit = 0) {
     for (let i = 0; i < indicator.length; i++) {
