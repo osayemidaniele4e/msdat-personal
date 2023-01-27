@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 <template>
-  <div class="iddc_wrapper">
+  <div class="iddc_wrapper confidenceRange_Intro">
     <base-overlay :show="loading || notShow">
     <!-- BASE SUBCARD FOR INDICATORS WITH CONFIDENCE RANGE -->
       <base-sub-card
