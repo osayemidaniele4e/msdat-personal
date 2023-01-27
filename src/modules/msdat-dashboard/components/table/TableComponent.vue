@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <div v-if="!loading" class="table-responsive">
       <table class="table table-bordered align-middle text-nowrap">
         <tbody>
@@ -124,13 +124,13 @@
             </tr>
           </transition>
 
+          <!-- RELATED INDICATOR -->
           <tr class="" v-if="dataArray.length > 1">
             <td class="border-0"></td>
             <td colspan="30" class="border-0 heading_alt">
               <h6 class="font-weight-bold mb-0">Related Indicators</h6>
             </td>
           </tr>
-
           <!-- This loops  the the other indicator of the array of indicators -->
           <!-- TODO: fix -->
           <template v-for="(indicatorData, index) in dataArray">
