@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-parsing-error -->
   <!-- Auther: Ghufran Ahmed -->
 
 <template>
@@ -16,7 +17,7 @@
       </h2>
       <br />
       <b-col md="8" sm="12">
-        <div v-for="(value,index) in values" :key="index">
+        <div v-for="(value, index) in values" :key="index">
           <div class="">
             <input
               type="checkbox"
@@ -35,29 +36,49 @@
           <img :src="value.fieldImage" class="layout" />
         </div>
       </b-col>
-      <b-col md="4" sm="12">
+      <b-col md="12" lg='12' sm="12">
+        <div class="d-flex mb-5">
+        <b-col cols="auto"
+          ><b-button
+            @click="approveData"
+            class="nextBtn"
+            style="font-family: Work Sans"
+            >COMPLETE</b-button
+          ></b-col
+        >
+        <b-col cols="auto"
+          ><b-button class="SFL" disabled style="font-family: Work Sans"
+            >
+            <!-- Save for Later -->
+            </b-button
+          ></b-col
+        >
+        </div>
+      </b-col>
+      <!-- <b-col md="4" sm="12">
         <div class="dragable-list">
           <dragable-list />
           <b-row align-h="center" class="mt-3 text-right">
-            <!-- <b-col class="align-baseline" cols="auto"
+            // eslint-disable-next-line vue/no-parsing-error
+            <!- <b-col class="align-baseline" cols="auto"
               ><p class="baseline">Save for Later</p>
             </b-col> -->
-            <b-col cols="auto"
+      <!-- <b-col cols="auto"
               ><b-button
                 @click="approveData"
                 class="nextBtn"
                 style="font-family: Work Sans"
                 >COMPLETE</b-button
               ></b-col
-            >
-            <b-col cols="auto"
+            > -->
+      <!-- <b-col cols="auto"
               ><b-button class="SFL" disabled style="font-family: Work Sans"
                 >Save for Later</b-button
               ></b-col
-            >
-          </b-row>
+            > -->
+      <!-- </b-row>
         </div>
-      </b-col>
+      </b-col> -->
       <br />
     </b-row>
   </b-container>
@@ -67,6 +88,7 @@ import DragableList from '../components/Custom-dashboard-sections/Dragable-List.
 
 export default {
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     DragableList,
   },
   data() {

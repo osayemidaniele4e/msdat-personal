@@ -101,7 +101,6 @@ export default {
           period: val.year,
         });
         const stateObject = this.dlGetLocation(val.location.id);
-        console.log('state', stateObject);
         // plot for LGA Data
         if (val.location.id !== 1) {
           const filteredLGADataForState = data.filter(

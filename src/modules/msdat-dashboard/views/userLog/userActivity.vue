@@ -150,7 +150,7 @@ export default {
         (el) => moment(el.viewed_at).format('MMMM YYYY') === this.period,
       );
       this.filter.sort((a, b) => {
-        if (a.viewed_at > b.viewed_at) {
+        if (b.viewed_at > a.viewed_at) {
           return 1;
         }
         return -1;
@@ -194,5 +194,17 @@ h4 {
   width: 20% !important;
   position: absolute;
   right: 0;
+}
+/* EXTRA EXTRA SMALL */
+@media (max-width: 676px) {
+  .scroll-active {
+  max-height: 90vw;
+  }
+}
+/* SMALL */
+@media (min-width: 676px) and (max-width: 1000px) {
+  .scroll-active {
+  max-height: 50vw;
+  }
 }
 </style>

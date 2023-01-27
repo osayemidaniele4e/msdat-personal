@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     cpGetAvailableYears(dataValues) {
-      const years = dataValues.map((item) => item.period);
+      const years = dataValues?.map((item) => item.period);
       const uniqueYears = uniq(years);
       return sortBy(uniqueYears);
     },
@@ -82,13 +82,13 @@ export default {
       });
       // debugger;
       // console.log(data);
-      const onlyYearData = data.filter((item) => {
+      const onlyYearData = data?.filter((item) => {
         if (isDataYearly(item.period)) {
           return item.period;
         }
         return false;
       });
-      const years = onlyYearData.map((item) => item.period);
+      const years = onlyYearData?.map((item) => item.period);
       const uniqueYears = uniq(years);
       return uniqueYears.sort((a, b) => b - a);
     },
@@ -96,13 +96,13 @@ export default {
     async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
       const data = await this.queryDBForYearByDs(dataSourceID);
       // debugger;
-      const onlyYearData = data.filter((item) => {
+      const onlyYearData = data?.filter((item) => {
         if (isDataYearly(item.period)) {
           return item.period;
         }
         return false;
       });
-      const years = onlyYearData.map((item) => item.period);
+      const years = onlyYearData?.map((item) => item.period);
       const uniqueYears = uniq(years);
       return uniqueYears.sort((a, b) => b - a);
     },

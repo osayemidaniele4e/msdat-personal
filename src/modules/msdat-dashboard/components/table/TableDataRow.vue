@@ -12,7 +12,7 @@
           />
         </div>
       </td>
-      <td class="align-middle p-2 table-indicators" scope="col">
+      <td class="align-middle p-2 table-indicators-1" id="table-indicators-1">
         <!-- Use this slot to set the related indicator multiselect and it options -->
         <div class="d-flex flex-column">
           <slot :name="`indicator`" :indicator="rowData.indicator.id">

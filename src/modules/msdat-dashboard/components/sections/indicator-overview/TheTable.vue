@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import TableComponent from '@/modules/msdat-dashboard/components/table/TableComponent.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
@@ -83,11 +84,6 @@ export default {
       type: [Object, String, Array],
       required: true,
     },
-
-    showTableRelatedIndicator: {
-      type: Boolean,
-      default: true,
-    },
   },
   watch: {
     'values.indicator': {
@@ -96,7 +92,7 @@ export default {
         const formattedData = [];
         let indicators = [newValues.id, newValues.first_related, newValues.second_related];
 
-        if (!this.showTableRelatedIndicator) {
+        if (!this.getConfigObject.showTableRelatedIndicator) {
           indicators = [newValues.id];
         }
 
@@ -137,11 +133,9 @@ export default {
         //   this.values.indicator.first_related,
         //   this.values.indicator.second_related,
         // ];
-
-        // if (!this.showTableRelatedIndicator) {
+        // if (!this.getConfigObject.showTableRelatedIndicator) {
         //   indicators = [this.values.indicator.id];
         // }
-
         // for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
         //   const indicatorID = indicators[indicatorIndex];
         //   if (indicatorID) {
@@ -167,6 +161,9 @@ export default {
       deep: true,
       immediate: false,
     },
+  },
+  computed: {
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
   },
   methods: {
     /**
@@ -242,7 +239,7 @@ export default {
       const formattedData = [];
       let indicators = [newValues.id, newValues.first_related, newValues.second_related];
 
-      if (!this.showTableRelatedIndicator) {
+      if (!this.getConfigObject.showTableRelatedIndicator) {
         indicators = [newValues.id];
       }
 

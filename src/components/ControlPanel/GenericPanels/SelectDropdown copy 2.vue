@@ -14,7 +14,6 @@
     data-visted="notVisited"
     deselectLabel=""
     autocomplete="off"
-    @open="initialCSS"
   >
     <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
@@ -23,39 +22,30 @@
       THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
       THAT HAVE GROUPED OPTIONS
     -->
-    <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
-      <!-- {{ multiSelectProps['group-values'] }} {{ section }} {{ props }} -->
-      <template v-if="props.option.$groupLabel">
-        <span class="overflow-text" :data-parent="props.option.$groupLabel">
-          {{ props.option.$groupLabel }}
-          <span
-            v-if="
-              multiSelectProps['group-values'] === 'indicators' &&
-              section !== 'Indicator-Comparison'
-            "
-            class="down-caret"
-          ></span>
-        </span>
+    <!-- <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
+       <template v-if="props.option.$groupLabel">
+      <span class="topicHead"
+      style="cursor:pointer;"
+       :data-parent="props.option.$groupLabel"
+
+      >
+       {{props.option.$groupLabel}} <span class="down-caret"></span> </span>
       </template>
       <template v-if="props.option.item">
-        <div
-          v-if="!props.option.$groupLabel"
-          class="overflow-text"
-          :data-child="modifyDataSourceChildLabel(props.option.item)"
-        >
-          {{ props.option.item }}
+        <div v-if="!props.option.$groupLabel"
+        style="cursor:pointer;"
+        :data-child="modifyDataSourceChildLabel(props.option.item)">
+        {{props.option.item}}
         </div>
       </template>
       <template v-else-if="props.option.full_name">
-        <div
-          v-if="!props.option.$groupLabel"
-          class="overflow-text"
-          :data-child="props.option.program_area"
-        >
-          {{ props.option.full_name }}
+        <div v-if="!props.option.$groupLabel"
+        style="cursor:pointer;"
+        :data-child="props.option.program_area">
+        {{props.option.full_name}}
         </div>
       </template>
-    </template>
+    </template> -->
     <!---
     END
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
@@ -73,7 +63,6 @@ export default {
       allowEmpty: true,
       dummyVariable: false,
       loading: false,
-      section: '',
     };
   },
   computed: {
@@ -186,14 +175,12 @@ export default {
       event.preventDefault();
       event.stopPropagation();
       if (event.type === 'click') {
-        const parent = event.target?.children[0]?.children[0]?.dataset?.parent;
-        // if (parent === undefined) return;
+        const { parent } = event.target?.children[0]?.children[0]?.dataset;
         const all = Array.from(event.target?.parentNode?.children);
         all.forEach(async (element) => {
           // eslint-disable-next-line prefer-destructuring
-          const child = await element?.children[0]?.children[0]?.dataset?.child;
-          const tempParent = await element?.children[0]?.children[0]?.dataset?.parent;
-          // if (child === undefined || tempParent === undefined) return;
+          const { child } = await element?.children[0]?.children[0]?.dataset;
+          const tempParent = await element?.children[0]?.children[0]?.dataset.parent;
           if (parent === child) {
             if (element.style.display === 'none') {
               // eslint-disable-next-line no-param-reassign
@@ -221,13 +208,6 @@ export default {
      *
      */
     async initialCSS(multiselectID) {
-      this.section = multiselectID;
-      if (
-        this.multiSelectProps['group-values'] !== 'indicators'
-        || multiselectID === 'Indicator-Comparison'
-      ) {
-        return;
-      }
       this.loading = true;
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
@@ -240,7 +220,6 @@ export default {
             if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
               iterable[i].style.display = 'none';
             } else if (tell === 'notVisited') {
-              if (iterable[i] === undefined) return;
               iterable[i].addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -249,6 +228,10 @@ export default {
               specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
             }
           }
+          // else{
+          //   iterable[i].style.display = 'block';
+          // }
+          // console.log(iterable[i].children[0]?.children[0]?.dataset.child, 'child')
         }
       }
       this.loading = false;
@@ -256,8 +239,7 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
+<style lang="scss" scoped>
 .down-caret {
   width: 0;
   height: 0;
@@ -276,15 +258,9 @@ export default {
   transition: all 0.25s ease-out;
   cursor: pointer;
 }
-ul li.multiselect__element {
-  // border-bottom: 1px solid #0000;
-  transition: all 1.5s ease-in-out;
-  cursor: pointer;
-}
-.overflow-text {
-  // text-overflow: ellipsis;
-  // overflow: hidden;
-  // white-space: nowrap;
+li.multiselect__element {
+  border-bottom: 1px solid #0000;
+  transition: all 3.5 ease-in;
   cursor: pointer;
 }
 </style>

@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'BasePanel',
   data() {
@@ -57,10 +59,19 @@ export default {
     },
   },
   methods: {
+    ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
+
     changeControl(index) {
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
+      if (index !== 4 && this.getSelectedConfig() !== null) {
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'indicator',
+          value: this.getSelectedConfig(),
+        });
+      }
       this.$emit('showSection', index);
     },
     selectControl(controlIndex) {
@@ -74,7 +85,7 @@ export default {
     // selectControll(controlIndex) {
     //   this.selectedIndex = controlIndex;
     //   // loop over all the tabs
-    //   // console.log('Controls', this.abc);
+
     //   this.abc.forEach((control) => {
     //     // eslint-disable-next-line no-param-reassign
     //     control.active = control.id === controlIndex;

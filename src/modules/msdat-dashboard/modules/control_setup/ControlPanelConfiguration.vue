@@ -6,10 +6,10 @@
 
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex';
-import { eventBus } from '@/main';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
 import VueCookies from 'vue-cookies';
 import moment from 'moment';
+import { eventBus } from '@/main';
+import apiServices from '@/modules/DataLayer/services/ApiServices';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
@@ -71,12 +71,15 @@ export default {
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
     async setInteractions() {
+      const getFormattedConfig = VueCookies.get('customDashboardConfig');
       const { data } = await apiServices.getDashboard();
       this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
+
       const interaction = {
         year: this.payload.year,
         user: this.getUser.id,
-        dashboard: this.dashboard.id,
+        dashboard: dashboardName,
         section: this.controlIndex + 1,
         indicator: this.payload.indicator.id,
         datasource: this.payload.datasource.id,
@@ -85,9 +88,9 @@ export default {
       };
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
-        VueCookies.set('user_interactions', JSON.stringify(this.interactions), { expires: '24h' });
+        VueCookies.set('user_interactions', JSON.stringify(this.interactions));
         const interactions = JSON.parse(VueCookies.get('user_interactions'));
-        console.log('inter', interactions);
+        console.log('test', interactions);
         if (interactions.length > 9 && this.getInternetStatus === true) {
           interactions.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
@@ -118,6 +121,7 @@ export default {
             values: availableDS,
           });
         }
+        this.setInteractions();
       },
     },
     'payload.datasource': {

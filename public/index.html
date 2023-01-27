@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>img/icons/favicon-2.png" />
   <meta name="theme-color" content="#007d53" />
   <!-- Add to home screen for Safari on iOS -->
-  <meta name="author" content="James Chinwokwu, Iboro Iyang, Mansi Kelvin, Ekwere Ime, Benard Z. David, Akpabio Moses">
+  <meta name="author" content="James Chinwokwu, Iboro Iyang, Mansi Kelvin, Ekwere Ime, Benard Z. David, Akpabio Moses, George Manger">
   <meta name="author" content="eHealth4Everyone">
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -18,6 +18,9 @@
   <!-- Add to home screen for Windows -->
   <meta name="msapplication-TileImage" content="<%= BASE_URL %>img/icons/msapplication-icon-144x144.png" />
   <meta name="msapplication-TileColor" content="#000000" />
+  <!--page description-->
+  <meta name="description" content="The Multi-Source Data Analytic and Triangulation (MSDAT) platform developed by the Federal Ministry of Health (FMoH) Nigeria is your one-stop shop for Health Data and Analytics. It provides access to key health indicators/metrics at different levels (federal, state and LGA) and across three categories of data sources (routine, surveys, & global estimates).">
+
   <style>
     body {
       width: 100%;
@@ -36,7 +39,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127976918-1"></script>
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127976918-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -45,7 +48,19 @@
     gtag('js', new Date());
 
     gtag('config', 'UA-127976918-1');
-  </script>
+  </script> -->
+  <script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-VSGQ4LNYE1"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'G-VSGQ4LNYE1');
+</script>
   <!-- Userback Feedback -->
   <script>
     Userback = window.Userback || {};

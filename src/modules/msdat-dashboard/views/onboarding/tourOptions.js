@@ -32,24 +32,25 @@ const steps = [
     title: 'Data source',
     position: 'bottom',
   },
+  // {
+  //   element: '#table-indicators-1',
+  //   intro: ` Click here to select your preferred related indicator from the drop-down menu <br/> <img src="${img}" height= "40px"/><img src="${img2}" height= "40px"/>`,
+  //   title: 'Selected Indicator',
+  //   position: 'bottom',
+  // },
+  // {
+  //   element: '.table-info-icon',
+  //   intro: ` Click on any info icon on the platform for more information on the feature next to it <br/> <img src="${img}" height= "40px"/><img src="${img2}" height= "40px"/> `,
+  //   position: 'bottom',
+  //   title: 'Info Icons',
+  // },
   {
-    element: '.table-indicators',
-    intro: ` Click here to select your preferred related indicator from the drop-down menu <br/> <img src="${img}" height= "40px"/><img src="${img2}" height= "40px"/>`,
-    title: 'Related Indicators',
-    position: 'bottom',
-  },
-  {
-    element: '.table-info-icon',
-    intro: ` Click on any info icon on the platform for more information on the feature next to it <br/> <img src="${img}" height= "40px"/><img src="${img2}" height= "40px"/> `,
-    position: 'bottom',
-    title: 'Info Icons',
-  },
-  {
-    element:
-      ' div:nth-child(2) > div > div > div.card-body.work-sans.p-0 > div > div.col.p-2.bg-gray',
+    // element:
+    //   ' div:nth-child(2) > div > div > div.card-body.work-sans.p-0 > div > div.col.p-2.bg-gray',
+    element: '.confidenceRange_Intro',
     intro: ` Toggle on the confidence range button to view data range from listed sources <br/> <img src="${img}" height= "40px"/><img src="${img2}" height= "40px"/> `,
     position: 'bottom',
-    title: 'Confidence Range',
+    title: 'Trend Analysis',
   },
 ];
 

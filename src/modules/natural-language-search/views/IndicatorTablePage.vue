@@ -18,25 +18,44 @@
           class="form-control border-0"
           placeholder="Search an indicator ..."
         />
-        <button class="btn input-group-append" type="submit" :disabled="isLoading">
+
+        <button
+          class="btn input-group-append"
+          type="submit"
+          :disabled="isLoading"
+        >
           <i class="fa fa-search"></i>
         </button>
       </form>
     </div>
-    <div class="loader" v-if="isLoading">
-      <Theloader />
+    <div
+        class="
+          bg-light
+          p-5
+          d-flex
+          w-50
+          m-auto
+          align-items-center
+          justify-content-center
+          h-100
+        "
+        v-if="isClicked && dataArray.length == 0 && !isLoading"
+      >
+        <h6 class="text-align-center">No data to display !!!</h6>
+      </div>
+    <div v-if="isClicked && dataArray.length > 0 && !isLoading">
+      <IndicatorTable  :dataArray="dataArray" />
     </div>
-    <div v-else>
-      <div class="bg-light p-5 d-flex w-50 m-auto align-items-center justify-content-center h-100" v-if="dataArray.length <= 0 && isLoading === false"> <h6 class="text-align-center"> No data to display !!!</h6></div>
-      <IndicatorTable v-else :dataArray="dataArray" />
+     <div class="loader" v-if="isLoading">
+      <Theloader />
     </div>
   </div>
 </template>
 
 <script>
-import { _, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 import IndicatorTable from '../components/indicatorTable.vue';
-import Services from '../service';
+import Services from '../Service';
 import Theloader from '../components/theLoader.vue';
 
 export default {
@@ -47,6 +66,7 @@ export default {
   },
   data() {
     return {
+      isClicked: false,
       search: '',
       isLoading: false,
       indicators: [],
@@ -57,66 +77,74 @@ export default {
   methods: {
     // eslint-disable-next-line consistent-return
     async handleSearch() {
+      this.isClicked = true;
       let datasourceArr = [];
       const newArray = [];
       const newSourceArray = [];
-      this.isLoading = true;
+      // this.isLoading = true;
       if (this.search.length > 3) {
         try {
+          this.isLoading = true;
           // step 1: Get the ai indicator
           this.indicators = await Services.getIndicators({
             search: this.search,
           });
           // step 2: get the datasources and their values using the id in the data object
-          this.indicators.map(async (el) => {
+          Promise.all(
+            await this.indicators.map(async (el) => {
             // console.log(el, 'el');
-            datasourceArr = await Promise.all(
-              el.datasources.map(async (ds) => {
-                const data = await Services.getDataSourceById(ds);
-                return data;
-              }),
-            );
-            newArray.push({
-              indicatorId: el.id,
-              indicator: el.full_name,
-              datasourceArr: await datasourceArr,
-            });
-            newArray.map(async (newarr) => {
-              const sources = await Promise.all(
-                newarr?.datasourceArr.map(async (dataArr) => {
-                  const data = await Services.getDataByIndicators(
-                    dataArr.id,
-                    newarr.indicatorId,
-                  );
-                  const dataValues = await data;
-                  const locationArray = await Promise.all(
-                    dataValues?.data?.results.map(async (locationArr) => {
-                      const locations = await Services.getLocationById(
-                        locationArr.location,
-                      );
-                      // console.log(locations, 'loc');
-                      return [locations.name, parseFloat(locationArr.value)];
-                    }),
-                  );
-                  const stateArray = await locationArray;
-                  this.options = await stateArray;
-                  return {
-                    dataValues: dataValues.data.results,
-                    datasourceName: dataArr.datasource,
-                  };
+              datasourceArr = await Promise.all(
+                await el.datasources.map(async (ds) => {
+                  const data = await Services.getDataSourceById(ds);
+                  return data;
                 }),
               );
-              newSourceArray.push({
-                indicatorId: newarr.indicatorId,
-                indicator: newarr.indicator,
-                datasourceArr: await sources,
+              await newArray.push({
+                indicatorId: await el.id,
+                indicator: await el.full_name,
+                datasourceArr: await datasourceArr,
               });
-              // this.dataArray = uniq(newSourceArray);
-              // eslint-disable-next-line no-sequences
-              this.dataArray = uniqBy(newSourceArray, 'indicatorId');
-              console.log(this.dataArray, 'newArray');
-            });
-          });
+              Promise.all(
+                await newArray.map(async (newarr) => {
+                  const sources = await Promise.all(
+                    await newarr?.datasourceArr.map(async (dataArr) => {
+                      const data = await Services.getDataByIndicators(
+                        await dataArr.id,
+                        await newarr.indicatorId,
+                      );
+                      const dataValues = await data;
+                      const locationArray = await Promise.all(
+                        await dataValues?.data?.results.map(async (locationArr) => {
+                          const locations = await Services.getLocationById(
+                            locationArr.location,
+                          );
+                          // console.log(locations, 'loc');
+                          return [await locations.name, await parseFloat(locationArr.value)];
+                        }),
+                      );
+                      const stateArray = await locationArray;
+                      this.options = await stateArray;
+                      return {
+                        dataValues: await dataValues.data.results,
+                        datasourceName: await dataArr.datasource,
+                      };
+                    }),
+                  );
+                  await newSourceArray.push({
+                    indicatorId: await newarr.indicatorId,
+                    indicator: await newarr.indicator,
+                    datasourceArr: await sources,
+                  });
+                  // this.dataArray = uniq(newSourceArray);
+                  // eslint-disable-next-line no-sequences
+                  const dataArray = await uniqBy(newSourceArray, 'indicatorId');
+                  this.dataArray = await dataArray;
+                  console.log(this.dataArray, 'newArray');
+                }),
+              );
+            }),
+          );
+          this.isLoading = true;
         } catch (err) {
           console.log(err);
         } finally {

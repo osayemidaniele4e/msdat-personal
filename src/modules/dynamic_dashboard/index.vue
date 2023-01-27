@@ -2,17 +2,6 @@
   <div>
     <MSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
-      :indicators="configObject.indicators"
-      :dataSources="configObject.dataSources"
-      :defaultIndicators="configObject.defaultIndicators"
-      :initialIndicator="configObject.initialIndicator"
-      :initialDataSource="configObject.initialDataSource"
-      :initialLocation="configObject.initialLocation"
-      :showTableRelatedIndicator="
-        configObject.showTableRelatedIndicator != undefined
-          ? configObject.showTableRelatedIndicator
-          : true
-      "
     />
     <AdvanceMSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
@@ -68,11 +57,12 @@ export default {
     };
   },
   methods: {
-    omo() {
-      console.log('Loading ');
-      alert('Loading ');
-    },
-    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    ...mapMutations('MSDAT_STORE', [
+      'ADD_CONTROL_PANEL',
+      'CLEAR_CONTROL_PANEL',
+      'SET_CONFIGURATIONS',
+    ]),
+
     /**
      * @function clearData
      * @author davebenard
@@ -102,10 +92,9 @@ export default {
   async mounted() {
     this.clearData();
   },
+
   async created() {
     const { name } = this.$route.params;
-
-    window.addEventListener('beforeunload', this.omo);
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure
@@ -124,6 +113,7 @@ export default {
             if (child.selected === true) {
               ids.push(child.id);
             }
+            // console.log(child, 'ind');
             return child;
           });
         }
@@ -136,6 +126,7 @@ export default {
           if (child.selected === true) {
             sourcesID.push(child.id);
           }
+          // console.log(child, 'dat');
           return child;
         });
         return element;
@@ -158,6 +149,7 @@ export default {
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
+      this.SET_CONFIGURATIONS(getFormattedConfig || this.configObject); // make use of the new state implementation to avoid prop drilling
       localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
       localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
       return;
@@ -196,6 +188,7 @@ export default {
         this.$store.dispatch('resetState');
         localStorage.removeItem('vuex');
         // ============
+
         const response = await apiServices.getDashboard();
         const { results } = response.data;
         const dashboard = results.find((item) => item?.name === name);
@@ -215,6 +208,7 @@ export default {
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
+        this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;
       } catch (err) {
         console.log(
@@ -228,8 +222,8 @@ export default {
     }
     // =======================
     // set the title from the config as the route title
-    if (this.configObject.title) {
-      this.$route.meta.title = this.configObject.title;
+    if (this.$store.state.MSDAT_STORE.configObject.title) {
+      this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
     }
   },
   watch: {
