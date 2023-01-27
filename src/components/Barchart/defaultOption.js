@@ -11,6 +11,26 @@ export default {
         text: '',
         x: -20,
       },
+      chart: {
+        // plotBackground: 'https://i.stack.imgur.com/E1r9X.png',
+        events: {
+          load() {
+            this.renderer.text('Source: msdat.fmohconnect.gov.ng')
+              .attr({
+                zIndex: 1000,
+                x: '55%',
+                y: '99%',
+              })
+              .css({
+                fontSize: '15px',
+                color: 'gray',
+                opacity: 0.9,
+              })
+              .add();
+          },
+
+        },
+      },
     },
   },
   tooltip: {

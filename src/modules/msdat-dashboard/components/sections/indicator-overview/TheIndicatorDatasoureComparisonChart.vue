@@ -205,6 +205,9 @@ export default {
         }
 
         this.loading = false;
+        this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
+        (Time-series comparison of ${this.values.indicator.short_name} ) across different data
+            sources.`;
       },
       deep: true,
       immediate: true,
