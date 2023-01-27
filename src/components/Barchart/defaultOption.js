@@ -15,16 +15,17 @@ export default {
         // plotBackground: 'https://i.stack.imgur.com/E1r9X.png',
         events: {
           load() {
-            this.renderer.text('Source: msdat.fmohconnect.gov.ng')
+            this.renderer.text('Source: MSDAT. <br/> msdat.fmohconnect.gov.ng')
               .attr({
                 zIndex: 1000,
-                x: '55%',
-                y: '99%',
+                x: '73%',
+                y: '92%',
               })
               .css({
-                fontSize: '15px',
+                fontSize: '0.5rem',
                 color: 'gray',
                 opacity: 0.9,
+                lineHeight: '10rem',
               })
               .add();
           },
