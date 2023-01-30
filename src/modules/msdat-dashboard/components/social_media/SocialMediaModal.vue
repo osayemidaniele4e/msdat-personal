@@ -16,7 +16,7 @@
         <div class="col-md-2">
           <button
             type="submit"
-            class="btn btn-block btn-primary text-uppercase"
+            class="btn btn-block btn-primary py-2 text-uppercase"
             style="
               border-bottom-left-radius: 0px;
               border-top-left-radius: 0;
@@ -28,7 +28,7 @@
               class=""
               style="color: #ffffff"
               icon="caret-right-fill"
-              @click="shareViaTwitter"
+              @click="shareViaEmail"
             />
           </button>
         </div>
@@ -50,7 +50,7 @@
         <div class="col-md-3">
           <button
             type="button"
-            class="btn btn-block btn-primary text-uppercase border"
+            class="btn btn-block btn-primary py-2 text-uppercase border"
             style="
               color: #007d53;
               border-bottom-left-radius: 0px;
@@ -65,7 +65,7 @@
               class=""
               style="color: #007d53"
               icon="bookmarks"
-              @click="shareViaTwitter"
+              @click="copy"
             />
           </button>
         </div>
@@ -107,7 +107,7 @@ export default {
   data() {
     return {
       shareURL: window.location.origin,
-      shareDesc: 'Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform.',
+      shareDesc: 'Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform',
       copy_text: 'Copy',
       shareText: 'MSDAT Platform',
       email: '',
