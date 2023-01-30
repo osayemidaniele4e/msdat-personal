@@ -20,7 +20,7 @@
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <button
-            @click="logInWithFacebook()"
+            @click.prevent="loginWithFacebook"
             type="submit"
             class="btn btn-lg btn-primary px-4 py-2"
           >
@@ -28,6 +28,7 @@
             FACEBOOK
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
+
           <button
             @click="loginWithLinkedIn()"
             type="submit"
@@ -86,25 +87,20 @@
 
 <script>
 import { mapActions } from 'vuex';
-import axios from 'axios';
 import axiosInstance from '@/config/axios';
+import { initFbsdk } from '@/config/facebook';
 
 // import VueCookies from 'vue-cookies';
-
-// "ya29.a0AVvZVsrx-2eK4kRE4Ed4moROas9ASzuIvLiDmTMZ8yB8x8p6chI-D00X2v0MkwPDIqsfLAPLJVq0zKhzHP-3-vCyXu1aleQd1pyEYZNjo0EAMv5-3El8g8CzowsDLjy4HA8PPPFdJB0AHTm7KjsQNQDBi-y8dAaCgYKAZ0SARESFQGbdwaILHCye5hUytMSpXyhRgq-eQ0165"
 
 export default {
   data() {
     return {
       username: '',
       password: '',
-      client_id: '774lsdliz8nidi',
-      client_secret: '7Sb74ygbihcJUzCH',
-      urlEncode: 'http%3A%2F%2Flocalhost%3A8080',
     };
   },
   methods: {
-    ...mapActions('AUTH_STORE', ['LOGIN_USER']),
+    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE']),
 
     async login() {
       try {
@@ -173,12 +169,38 @@ export default {
         if (!googleUser) {
           return null;
         }
-        console.log('googleUser', googleUser);
-        console.log('getId', googleUser.getId());
-        console.log('getBasicProfile', googleUser.getBasicProfile());
-        console.log('getAuthResponse', googleUser.getAuthResponse());
-        console.log('getAuthResponse', this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse());
-        this.isSignIn = this.$gAuth.isAuthorized;
+        console.log(googleUser, 'User');
+        const data = {
+          auth_token: googleUser.getAuthResponse().access_token,
+          provider: 'google',
+        };
+
+        await this.AUTHENTICATE(data)
+          .then((res) => {
+            if (res.status == 200) {
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with google',
+            });
+          });
       } catch (error) {
         console.error(error);
         return null;
@@ -186,52 +208,57 @@ export default {
     },
 
     async loginWithLinkedIn() {
-      // try {
-      //   const response = await axiosInstance.post(
-      //     'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://208.87.128.190:3030/'
-      //   );
-      //   console.log('Baby_George', response);
-      // } catch (error) {
-      //   console.log('samuel =>', error);
-      // }
-      window.location.href = 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=https://msdat3.e4eweb.space';
+      window.location.href = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=https://localhost:8080`;
     },
 
-    async logInWithFacebook() {
-      console.log(window);
-      await this.loadFacebookSDK(document, 'script', 'facebook-jssdk');
-      await this.initFacebook();
-      window.FB.login((response) => {
-        if (response.authResponse) {
-          console.log(response);
-          // Now you can redirect the user or do an AJAX request to
-          // a PHP script that grabs the signed request from the cookie.
-        } else {
-          console.log('User cancelled login or did not fully authorize.');
-        }
-      });
-      return false;
-    },
+    async loginWithFacebook() {
+      try {
+        window.FB.login(
+          async (response) => {
+            const data = {
+              accessToken: response.authResponse.accessToken,
 
-    async initFacebook() {
-      window.fbAsyncInit = function () {
-        window.FB.init({
-          appId: '1231947387726582', // You will need to change this
-          cookie: true, // This is important, it's not enabled by default
-          version: 'v13.0',
-        });
-      };
-    },
-    async loadFacebookSDK(d, s, id) {
-      let js;
-      const fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
-        return;
+              provider: 'facebook',
+            };
+            console.log(data);
+            await this.AUTHENTICATE(data)
+              .then((res) => {
+                console.log('res', res);
+                if (res.status == 200) {
+                  this.$swal({
+                    toast: true,
+                    position: 'bottom',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Login successful',
+                  });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+                this.$swal({
+                  toast: true,
+                  position: 'bottom',
+                  showConfirmButton: false,
+                  timer: 5000,
+                  icon: 'error',
+                  title: 'Something went wrong',
+                  text: 'Something went wrong signing you in with facebook',
+                });
+              });
+
+            // console.log('fb response', data);
+          },
+          {
+            scope: 'email',
+            return_scopes: true,
+          }
+        );
+      } catch (error) {
+        return null;
       }
-      js = d.createElement(s);
-      js.id = id;
-      js.src = 'https://connect.facebook.net/en_US/sdk.js';
-      fjs.parentNode.insertBefore(js, fjs);
     },
 
     async Logout() {
@@ -243,31 +270,19 @@ export default {
     },
   },
   async mounted() {
-    // window.location =
-    //   'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://208.87.128.190:3030/';
-    // (function () {
-    //   var e = document.createElement('script');
-    //   e.type = 'text/javascript';
-    //   e.async = true;
-    //   e.src = 'http://platform.linkedin.com/in.js?async=true';
-    //   var t = document.getElementsByTagName('script')[0];
-    //   t.parentNode.insertBefore(e, t);
-    // })();
-    // console.log(window);
+    initFbsdk();
 
     const code = this.$route.query.code;
     if (code !== undefined) {
-      try {
-        const response = await axiosInstance.post(
-          `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=774lsdliz8nidi&client_secret=7Sb74ygbihcJUzCH&code=${code}8&redirect_uri=https://msdat3.e4eweb.space`,
-        );
-        const tokenResponse = await axiosInstance.get(
-          `https://api.linkedin.com/v2/me?oauth2_access_token=${response.access_token}`,
-        );
-        console.log('Baby_George', response, tokenResponse);
-      } catch (error) {
-        console.log('samuel =>', error);
-      }
+      alert(code);
+
+      let query = Object.assign({}, this.$route.query);
+      delete query.code;
+      delete query.state;
+
+      this.$router.replace({ query });
+
+      // this.$router.replace('/');
     }
   },
 };

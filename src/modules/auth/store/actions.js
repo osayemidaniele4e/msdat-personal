@@ -25,6 +25,22 @@ export default {
       // console.log(err);
     }
   },
+
+  async AUTHENTICATE({ commit }, payload) {
+    console.log(payload);
+    try {
+      const response = await axiosInstance.post(
+        `/social/auth/register/${payload.provider}/`,
+        payload
+      );
+      const user = response.data;
+      VueCookies.set('msdat-user-details', user);
+      commit('setUser', user);
+      return response;
+    } catch (err) {
+      // console.log(err);
+    }
+  },
   logout({ commit }) {
     VueCookies.remove('msdat-user-details');
     commit('logout');
