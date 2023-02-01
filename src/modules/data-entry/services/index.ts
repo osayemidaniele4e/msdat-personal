@@ -4,6 +4,7 @@ import { dataSourceI } from './types';
 class DataEntryService {
   /**
    * @function getDataSources
+   * @author davebenard
    * @param {Number} id?
    * @returns {Array}
    */
@@ -28,6 +29,12 @@ class DataEntryService {
     }
   };
 
+  /**
+   * @function getDataSources
+   * @author davebenard
+   * @param {Number} id?
+   * @returns {Array}
+   */
   getPeriodsByDs = async (id: number) => {
     try {
       const resp = await this.getDataSources(id);
@@ -47,6 +54,35 @@ class DataEntryService {
     }
   };
 
+  /**
+   * @function getLocation
+   * @author davebenard
+   * @param {Number, Number} [DS, locationId]
+   * @returns {Array}
+   */
+  getLocation = async ({ DS, locationId }: { [key: string]: number }) => {
+    const indicatorIds = [];
+    const urlSource = `location/${locationId}/`;
+    const urlSource2 = (levelName: string) => `datasource_specific_indicator/?datasource=${DS}&${levelName}=true&size=1000`;
+
+    const locationName = ['national', 'zonal', 'state', 'lga', 'senatorial'];
+    try {
+      const { data } = await instance.get(urlSource);
+      const specificIndicator = await instance.get(urlSource2(locationName[data.level - 1]));
+      await specificIndicator.data.results.map((el) => indicatorIds.push(el.indicator));
+      this.extractIndicators(indicatorIds);
+      // console.log(data, locationName[data.level], specificIndicator.data.results, indicatorIds);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * @function getDataSources
+   * @author davebenard
+   * @param {Number} id?
+   * @returns {Array}
+   */
   extractClassification = async (id: number, value: string) => {
     const valueTypes = [
       {
@@ -98,6 +134,12 @@ class DataEntryService {
     return valueType;
   };
 
+  /**
+   * @function getDataSources
+   * @author davebenard
+   * @param {Number} id?
+   * @returns {Array}
+   */
   extractYears = (yearStr: string): string[] => {
     const years: string[] = [];
 
@@ -129,6 +171,12 @@ class DataEntryService {
     return years;
   };
 
+  /**
+   * @function getDataSources
+   * @author davebenard
+   * @param {Number} id?
+   * @returns {Array}
+   */
   extractLocationLevel = async (id: number) => {
     // const urlSource = `datasource_specific_indicator/?datasource=${id}&size=1000`;
     // const { data } = await instance.get(urlSource);
@@ -177,6 +225,12 @@ class DataEntryService {
     console.log(locationResult, 'hello');
   };
 
+  /**
+   * @function getDataSources
+   * @author davebenard
+   * @param {Number} id?
+   * @returns {Array}
+   */
   extractIndicators = async (indicatorIds: number[]) => {
     const indicatorResult = [];
     const requests = indicatorIds.map((id) => {
@@ -198,31 +252,31 @@ class DataEntryService {
     console.log({ group });
   };
 
-  getLocation = async ({ DS, locationId }: { [key: string]: number }) => {
-    const indicatorIds = [];
-    const urlSource = `location/${locationId}/`;
-    const urlSource2 = (levelName: string) => `datasource_specific_indicator/?datasource=${DS}&${levelName}=true&size=1000`;
+  /**
+   * @function getDataSources
+   * @author davebenard
+   * @param {Number} id?
+   * @returns {Array}
+   */
+  groupByProgramArea = (data) => {
+    const groupedData = data.reduce((acc, curr) => {
+      const { program_area: area } = curr;
+      if (!acc[area]) {
+        acc[area] = [];
+      }
+      acc[area].push(curr);
+      return acc;
+    }, {});
 
-    const locationName = ['national', 'zonal', 'state', 'lga', 'senatorial'];
-    try {
-      const { data } = await instance.get(urlSource);
-      const specificIndicator = await instance.get(urlSource2(locationName[data.level - 1]));
-      await specificIndicator.data.results.map((el) => indicatorIds.push(el.indicator));
-      this.extractIndicators(indicatorIds);
-      // console.log(data, locationName[data.level], specificIndicator.data.results, indicatorIds);
-    } catch (error) {
-      console.log(error);
-    }
+    const programAreas = Object.keys(groupedData);
+    const groupedIndicators = programAreas.map((area) => ({
+      programArea: area,
+      data: groupedData[area],
+    }));
+
+    console.log(groupedIndicators);
+    return groupedIndicators;
   };
-
-  groupByProgramArea = (data) => data.reduce((acc, curr) => {
-    const { program_area: area } = curr;
-    if (!acc[area]) {
-      acc[area] = [];
-    }
-    acc[area].push(curr);
-    return acc;
-  }, {});
 }
 
 export default new DataEntryService();
