@@ -9,13 +9,16 @@
           :options="DSList"
           placeholder="Pick a value"
           label="name"
+          value="id"
           searchable
-          close-on-select
+          :close-on-select="true"
+          :show-labels="false"
+          :allow-empty="false"
           :hide-selected="true"
-          @select="dispatchDataSource"
           selectLabel=""
           :loading="DSLoading"
         />
+        <!-- @select="dispatchDataSource" -->
       </div>
     </div>
     <!-- -------- -->
@@ -44,7 +47,7 @@
 </template>
 
 <script lang="js">
-import { getDataSources, getPeriodsByDs } from '../services';
+import DataEntryService from '../services';
 
 export default {
   name: 'panel',
@@ -62,20 +65,23 @@ export default {
   },
   computed: {
     DSValueString() {
-      return this.DSValue.id;
+      return this.DSValue?.id;
     },
   },
   methods: {
     async dispatchDataSource() {
       if (this.DSValueString !== undefined) {
-        this.periodList = await getPeriodsByDs(this.DSValueString);
+        this.periodList = await DataEntryService.getPeriodsByDs(this.DSValueString);
         console.log(this.periodList, 'DSValue');
       }
     },
+    // async getLocation() {
+
+    // },
   },
   async mounted() {
     this.DSLoading = true;
-    this.DSList = await getDataSources();
+    this.DSList = await DataEntryService.getDataSources();
     this.DSLoading = false;
   },
 };

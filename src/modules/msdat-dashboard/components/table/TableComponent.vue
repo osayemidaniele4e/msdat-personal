@@ -204,7 +204,7 @@
 
 <script>
 import { flatten, uniq, countBy } from 'lodash';
-import mixin from '@/modules/DataLayer/mixin';
+import mixin from '@/modules/data-layer/mixin';
 import TableDataCell from './TableDataCell.vue';
 import TableDataSourceCell from './TableDataSourceCell.vue';
 import TableDataRow from './TableDataRow.vue';
