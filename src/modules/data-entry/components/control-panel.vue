@@ -22,7 +22,7 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label for="period">Period</label>
-        <multiselect v-model="periodValue" :options="options"></multiselect>
+        <multiselect v-model="periodValue" :options="periodList"></multiselect>
       </div>
     </div>
     <!-- -------- -->
@@ -60,10 +60,16 @@ export default {
       DSLoading: false,
     };
   },
+  computed: {
+    DSValueString() {
+      return this.DSValue.id;
+    },
+  },
   methods: {
     async dispatchDataSource() {
-      if (this.DSValue?.id !== undefined) {
-        this.periodList = await getPeriodsByDs(this.DSValue.id);
+      if (this.DSValueString !== undefined) {
+        this.periodList = await getPeriodsByDs(this.DSValueString);
+        console.log(this.periodList, 'DSValue');
       }
     },
   },

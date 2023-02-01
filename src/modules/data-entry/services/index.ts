@@ -23,7 +23,11 @@ const getDataSources = async (id?: number) => {
 const getPeriodsByDs = async (id: number) => {
   try {
     const response = await getDataSources(id);
-    console.log(response.year_available, 'hello');
+    const yearString = response.year_available.split(',');
+    console.log(yearString, 'yearString');
+    return yearString;
+
+    // console.log(response.year_available, 'hello');
     // const { data } = await instance.get(urlSource);
     // const dataArray = await data.results.map((el: selectType) => ({
     //   id: el.id,
