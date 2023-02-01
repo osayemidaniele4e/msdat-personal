@@ -288,9 +288,9 @@ ul li.multiselect__element {
   cursor: pointer;
 }
 .overflow-text {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  // text-overflow: ellipsis;
+  // overflow: hidden;
+  // white-space: nowrap;
   cursor: pointer;
 }
 </style>
