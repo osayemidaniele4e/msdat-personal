@@ -1,4 +1,5 @@
 <template>
+  <div class="w-100">
   <div class="row">
     <!-- -------- -->
     <div class="col-md-3 mb-3">
@@ -25,24 +26,91 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label for="period">Period</label>
-        <multiselect v-model="periodValue" :options="periodList"></multiselect>
+        <multiselect
+          v-model="periodValue"
+          placeholder="Pick a value"
+          :options="periodList"
+          :close-on-select="true"
+          :show-labels="false"
+          :allow-empty="false"
+          :hide-selected="true"
+          :loading="periodLoading"
+        />
       </div>
     </div>
     <!-- -------- -->
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label for="period">Value Type</label>
-        <multiselect v-model="typeValue" :options="options"></multiselect>
+        <multiselect
+          v-model="typeValue"
+          :options="typeList"
+          :close-on-select="true"
+          :show-labels="false"
+          :allow-empty="false"
+          :hide-selected="true"
+          :loading="periodLoading"
+        />
       </div>
     </div>
     <!-- -------- -->
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label for="period">Location</label>
-        <multiselect v-model="LocValue" :options="options"></multiselect>
+        <multiselect
+          v-model="LocValue"
+          :options="locList"
+          :close-on-select="true"
+          :show-labels="false"
+          :allow-empty="false"
+          :hide-selected="true"
+          :loading="periodLoading"
+        />
       </div>
     </div>
-    <!-- -------- -->
+  </div>
+    <!-- -------- PROGRAM AREA ACCORDIONS-->
+    <div class="accordion" role="tablist">
+      <b-card no-body class="mb-1">
+        <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-button block v-b-toggle.accordion-1 variant="primary">Program Area</b-button>
+        </b-card-header>
+        <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
+          <b-card-body>
+            <div class="list_entry">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="font-weight-bold text-uppercase">indicator</label>
+                </div>
+                <div class="col-md-3">
+                  <label class="font-weight-bold text-uppercase">Value</label>
+                </div>
+              </div>
+            </div>
+            <div class="">
+              <div class="row d-flex align-items-center">
+                <div class="col-md-6 mb-sm-3">
+                  <p>chisom</p>
+                </div>
+                <div class="col-md-6 mb-sm-3">
+                  <div class="form-group">
+                    <label class="font-weight-bold text-uppercase sr-only" for="value">Value</label>
+                    <input
+                      type="text"
+                      name="value"
+                      id=""
+                      class="form-control"
+                      placeholder="Value"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
+    </div>
+
   </div>
 </template>
 
@@ -55,12 +123,15 @@ export default {
     return {
       options: ['list', 'of', 'options'],
       DSValue: '',
-      periodValue: '',
-      typeValue: '',
-      LocValue: '',
       DSList: [],
-      periodList: [],
       DSLoading: false,
+      periodValue: '',
+      periodList: [],
+      periodLoading: false,
+      typeValue: '',
+      typeList: [],
+      LocValue: '',
+      locList: [],
     };
   },
   computed: {
@@ -70,10 +141,15 @@ export default {
   },
   methods: {
     async dispatchDataSource() {
+      this.periodLoading = true;
       if (this.DSValueString !== undefined) {
-        this.periodList = await DataEntryService.getPeriodsByDs(this.DSValueString);
-        console.log(this.periodList, 'DSValue');
+        const resp = await DataEntryService.getDataSources(this.DSValueString);
+        console.log(resp, 'resp');
+        this.periodList = resp.period;
+        this.typeList = resp.classification.map((el) => el.value_type);
+        this.locList = resp.location.map((el) => el.name);
       }
+      this.periodLoading = false;
     },
   },
   async mounted() {
