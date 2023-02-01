@@ -1,6 +1,12 @@
+/* eslint-disable consistent-return */
 import instance from '@/config/axios';
 import {
-  dataSourceI, indicatorI, ProgramAreaIndicatorI, LocationI,
+  dataSourceI,
+  indicatorI,
+  ProgramAreaIndicatorI,
+  LocationI,
+  valueTypeI,
+  dataSourceConfigI,
 } from './types';
 
 class DataEntryService {
@@ -8,21 +14,19 @@ class DataEntryService {
    * @function getDataSources
    * @author davebenard
    * @param {Number} id?
-   * @returns {Array}
+   * @returns {Array<dataSourceConfigI | dataSourceI[]>}
    */
-  getDataSources = async (id?: number): Promise<dataSourceI[] | dataSourceI | any> => {
+  getDataSources = async (id?: number): Promise<dataSourceConfigI> => {
     const urlSource = `datasources/${id || '?size=1000'}`;
     try {
       const { data } = await instance.get(urlSource);
       if (id !== undefined) {
         const locationData = await this.extractLocationLevel(id);
-        // const indicatorsData = await this.extractIndicators(data.indicators);
         const classificationData = await this.extractClassification(id, data.classification);
         const periodData = await this.extractYears(data.year_available);
         return {
           data,
           location: locationData,
-          // indicators: indicatorsData,
           classification: classificationData,
           period: periodData,
         };
@@ -41,14 +45,13 @@ class DataEntryService {
   /**
    * @function getDataSources
    * @author davebenard
-   * @param {Number} id?
-   * @returns {Array}
+   * @param {Number} id
+   * @returns {Promise<string[]>}
    */
-  getPeriodsByDs = async (id: number) => {
+  getPeriodsByDs = async (id: number): Promise<string[]> => {
     try {
-      const resp = await this.getDataSources(id);
-
-      const period = await this.extractYears(resp.data.year_available);
+      const { data } = await this.getDataSources(id);
+      const period = await this.extractYears(data.year_available);
       return period;
     } catch (error) {
       console.log(error);
@@ -57,12 +60,20 @@ class DataEntryService {
   };
 
   /**
-   * @function getLocation
-   * @author davebenard
-   * @param {Number, Number} [DS, locationId]
-   * @returns {Array}
-   */
-  getLocation = async ({ DS, locationId }: { [key: string]: number }) => {
+    @function getLocation
+    @author davebenard
+    @param {Object} options - The options object.
+    @param {Number} options.DS - The datasource id.
+    @param {Number} options.locationId - The location id.
+    @returns {Array<ProgramAreaIndicatorI>}
+  */
+  getLocation = async ({
+    DS,
+    locationId,
+  }: {
+    DS: number;
+    locationId: number;
+  }): Promise<ProgramAreaIndicatorI[]> => {
     const indicatorIds = [];
     const urlSource = `location/${locationId}/`;
     const urlSource2 = (levelName: string) => `datasource_specific_indicator/?datasource=${DS}&${levelName}=true&size=1000`;
@@ -74,7 +85,6 @@ class DataEntryService {
       await specificIndicator.data.results.map((el) => indicatorIds.push(el.indicator));
       const indicatorList = await this.extractIndicators(indicatorIds);
       return indicatorList;
-      // console.log(data, locationName[data.level], specificIndicator.data.results, indicatorIds);
     } catch (error) {
       console.log(error);
     }
@@ -83,10 +93,11 @@ class DataEntryService {
   /**
    * @function getDataSources
    * @author davebenard
-   * @param {Number} id?
-   * @returns {Array}
+   * @param {Number} id
+   * @param {String} value
+   * @returns {Array<valueTypeI>}
    */
-  extractClassification = async (id: number, value: string) => {
+  extractClassification = (id: number, value: string): valueTypeI[] => {
     const valueTypes = [
       {
         id: 1,
@@ -140,8 +151,8 @@ class DataEntryService {
   /**
    * @function getDataSources
    * @author davebenard
-   * @param {Number} id?
-   * @returns {Array}
+   * @param {string} yearStr
+   * @returns {string[]}
    */
   extractYears = (yearStr: string): string[] => {
     const years: string[] = [];
@@ -177,7 +188,7 @@ class DataEntryService {
    * @function getDataSources
    * @author davebenard
    * @param {Number} id?
-   * @returns {Array}
+   * @returns {Array<LocationI>}
    */
   extractLocationLevel = async (id: number): Promise<LocationI[]> => {
     const levels = [1, 2, 3];
@@ -205,7 +216,7 @@ class DataEntryService {
    * @author davebenard
    * @param {Number[]} indicatorIds - Array of indicator ids to extract.
    * @returns {ProgramAreaIndicatorI[]} Array of program area and indicators grouped by program area.
-  */
+   */
   extractIndicators = async (indicatorIds: number[]): Promise<ProgramAreaIndicatorI[]> => {
     const indicatorResult = [];
     const requests = indicatorIds.map((id) => {

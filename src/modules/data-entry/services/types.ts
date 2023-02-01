@@ -51,3 +51,15 @@ export interface LocationI {
   created_at: string;
   updated_at: string;
 }
+
+export interface valueTypeI {
+    id: number
+    value_type: string,
+}
+
+export interface dataSourceConfigI {
+  data: dataSourceI;
+  location: LocationI[];
+  classification: valueTypeI[];
+  period: string[];
+}
