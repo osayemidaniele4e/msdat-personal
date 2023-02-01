@@ -11,11 +11,18 @@ class DataEntryService {
     const urlSource = `datasources/${id || '?size=1000'}`;
     try {
       const { data } = await instance.get(urlSource);
-      if (id) {
-        await this.extractLocationLevel(id);
-        await this.extractIndicators(data.indicators);
-        await this.extractClassification(id, data.classification);
-        return data;
+      if (id !== undefined) {
+        const locationData = await this.extractLocationLevel(id);
+        const indicatorsData = await this.extractIndicators(data.indicators);
+        const classificationData = await this.extractClassification(id, data.classification);
+        const periodData = await this.extractYears(data.year_available);
+        return {
+          data,
+          location: locationData,
+          indicators: indicatorsData,
+          classification: classificationData,
+          period: periodData,
+        };
       }
       const dataArray = await data.results.map((el: dataSourceI) => ({
         id: el.id,
@@ -31,9 +38,9 @@ class DataEntryService {
   getPeriodsByDs = async (id: number) => {
     try {
       const resp = await this.getDataSources(id);
-      const period = await this.extractYears(resp.year_available);
+
+      const period = await this.extractYears(resp.data.year_available);
       return period;
-      console.log(period, 'hello', resp.year_available);
       // const { data } = await instance.get(urlSource);
       // const dataArray = await data.results.map((el: selectType) => ({
       //   id: el.id,
@@ -125,7 +132,6 @@ class DataEntryService {
         years.push(yearSegment.trim());
       }
     });
-    console.log({ years });
     return years;
   };
 
@@ -174,7 +180,8 @@ class DataEntryService {
       .catch((error) => {
         console.error(error);
       });
-    console.log(locationResult, 'hello');
+
+    return locationResult;
   };
 
   extractIndicators = async (indicatorIds: number[]) => {
@@ -195,7 +202,7 @@ class DataEntryService {
       });
 
     const group = await this.groupByProgramArea(indicatorResult);
-    console.log({ group });
+    return group;
   };
 
   getLocation = async ({ DS, locationId }: { [key: string]: number }) => {
@@ -221,6 +228,7 @@ class DataEntryService {
       acc[area] = [];
     }
     acc[area].push(curr);
+    console.log(acc, 'acc');
     return acc;
   }, {});
 }
