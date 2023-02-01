@@ -48,13 +48,6 @@ class DataEntryService {
 
       const period = await this.extractYears(resp.data.year_available);
       return period;
-      // const { data } = await instance.get(urlSource);
-      // const dataArray = await data.results.map((el: selectType) => ({
-      //   id: el.id,
-      //   name: el.datasource,
-      // }));
-      // console.log(dataArray);
-      // return dataArray;
     } catch (error) {
       console.log(error);
       throw error;
@@ -184,34 +177,6 @@ class DataEntryService {
    * @returns {Array}
    */
   extractLocationLevel = async (id: number) => {
-    // const urlSource = `datasource_specific_indicator/?datasource=${id}&size=1000`;
-    // const { data } = await instance.get(urlSource);
-
-    // const locationData = data.results;
-
-    // let national = true;
-    // let senatorial = true;
-    // let state = true;
-
-    // locationData.forEach((item) => {
-    //   if (!item.national) national = false;
-    //   if (!item.senatorial) senatorial = false;
-    //   if (!item.state) state = false;
-    // });
-    // console.log({ national, senatorial, state }, locationData);
-    // return { national, senatorial, state };
-
-    // const locationLevels = data.results.reduce((acc, item) => {
-    //   if (item.national) acc.national = 'national';
-    //   if (item.state) acc.state = 'state';
-    //   if (item.senatorial) acc.senatorial = 'senatorial';
-    //   return acc;
-    // }, {});
-    // console.log(Object.values(locationLevels), data.results, locationLevels);
-    // const levels = [1, 2, 3];
-    // const urlSource = `location/?level=${id}&size=1000`;
-    // const { data } = await instance.get(urlSource);
-
     const levels = [1, 2, 3];
     const locationResult = [];
     const requests = levels.map((level) => {
@@ -280,20 +245,8 @@ class DataEntryService {
       programArea: area,
       data: groupedData[area],
     }));
-
-    console.log(groupedIndicators);
     return groupedIndicators;
   };
-
-  // groupByProgramArea = (data) => data.reduce((acc, curr) => {
-  //   const { program_area: area } = curr;
-  //   if (!acc[area]) {
-  //     acc[area] = [];
-  //   }
-  //   acc[area].push(curr);
-  //   console.log(acc, 'acc', 'dr.ime');
-  //   return acc;
-  // }, {});
 }
 
 export default new DataEntryService();
