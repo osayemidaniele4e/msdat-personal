@@ -226,7 +226,7 @@
 
 <script>
 // import axios from '@/plugins/axios';
-import mixin from '@/modules/DataLayer/mixin';
+import mixin from '@/modules/data-layer/mixin';
 
 export default {
   mixins: [mixin],

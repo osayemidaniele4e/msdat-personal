@@ -44,7 +44,7 @@
 </template>
 
 <script lang="js">
-import { getDataSources, getPeriodsByDs } from '../services';
+import DataEntryService from '../services';
 
 export default {
   name: 'panel',
@@ -63,13 +63,13 @@ export default {
   methods: {
     async dispatchDataSource() {
       if (this.DSValue?.id !== undefined) {
-        this.periodList = await getPeriodsByDs(this.DSValue.id);
+        this.periodList = await DataEntryService.getPeriodsByDs(this.DSValue.id);
       }
     },
   },
   async mounted() {
     this.DSLoading = true;
-    this.DSList = await getDataSources();
+    this.DSList = await DataEntryService.getDataSources();
     this.DSLoading = false;
   },
 };

@@ -24,7 +24,7 @@
 import { mapMutations } from 'vuex';
 import VueCookies from 'vue-cookies';
 import moment from 'moment';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import config from './config/dashboard_config';
