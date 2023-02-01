@@ -12,6 +12,8 @@ class DataEntryService {
     try {
       const { data } = await instance.get(urlSource);
       if (id) {
+        await this.extractLocationLevel(id);
+        console.log(data.results, id);
         return data;
       }
       const dataArray = await data.results.map((el: dataSourceI) => ({
@@ -29,6 +31,7 @@ class DataEntryService {
     try {
       const resp = await this.getDataSources(id);
       const period = await this.extractYears(resp.year_available);
+      return period;
       console.log(period, 'hello', resp.year_available);
       // const { data } = await instance.get(urlSource);
       // const dataArray = await data.results.map((el: selectType) => ({
@@ -72,6 +75,72 @@ class DataEntryService {
     });
 
     return years;
+  };
+
+  extractLocationLevel = async (id: number) => {
+    // const urlSource = `datasource_specific_indicator/?datasource=${id}&size=1000`;
+    // const { data } = await instance.get(urlSource);
+
+    // const locationData = data.results;
+
+    // let national = true;
+    // let senatorial = true;
+    // let state = true;
+
+    // locationData.forEach((item) => {
+    //   if (!item.national) national = false;
+    //   if (!item.senatorial) senatorial = false;
+    //   if (!item.state) state = false;
+    // });
+    // console.log({ national, senatorial, state }, locationData);
+    // return { national, senatorial, state };
+
+    // const locationLevels = data.results.reduce((acc, item) => {
+    //   if (item.national) acc.national = 'national';
+    //   if (item.state) acc.state = 'state';
+    //   if (item.senatorial) acc.senatorial = 'senatorial';
+    //   return acc;
+    // }, {});
+    // console.log(Object.values(locationLevels), data.results, locationLevels);
+    // const levels = [1, 2, 3];
+    // const urlSource = `location/?level=${id}&size=1000`;
+    // const { data } = await instance.get(urlSource);
+
+    const levels = [1, 2, 3];
+    const locationResult = [];
+    const requests = levels.map((level) => {
+      const urlSource = `location/?level=${level}&size=1000`;
+      return instance.get(urlSource);
+    });
+
+    await Promise.all(requests)
+      .then((responses) => {
+        responses.forEach((response) => {
+          locationResult.push(...response.data.results);
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    console.log(locationResult, 'hello');
+  };
+
+  extractIndicator = async (indicatorId: number) => {
+    const indicatorResult = [];
+    // const requests = levels.map((id) => {
+    //   const urlSource = `indicator/?id=${id}&size=1000`;
+    //   return instance.get(urlSource);
+    // });
+
+    // await Promise.all(requests)
+    //   .then((responses) => {
+    //     responses.forEach((response) => {
+    //       indicatorResult.push(...response.data.results);
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   };
 }
 
