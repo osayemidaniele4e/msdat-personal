@@ -13,7 +13,7 @@ class DataEntryService {
       const { data } = await instance.get(urlSource);
       if (id) {
         await this.extractLocationLevel(id);
-        console.log(data.results, id);
+        await this.extractIndicators(data.indicators);
         return data;
       }
       const dataArray = await data.results.map((el: dataSourceI) => ({
@@ -73,7 +73,7 @@ class DataEntryService {
         years.push(yearSegment.trim());
       }
     });
-
+    console.log({ years });
     return years;
   };
 
@@ -125,23 +125,52 @@ class DataEntryService {
     console.log(locationResult, 'hello');
   };
 
-  extractIndicator = async (indicatorId: number) => {
+  extractIndicators = async (indicatorIds: number[]) => {
     const indicatorResult = [];
-    // const requests = levels.map((id) => {
-    //   const urlSource = `indicator/?id=${id}&size=1000`;
-    //   return instance.get(urlSource);
-    // });
+    const requests = indicatorIds.map((id) => {
+      const urlSource = `indicators/${id}/`;
+      return instance.get(urlSource);
+    });
 
-    // await Promise.all(requests)
-    //   .then((responses) => {
-    //     responses.forEach((response) => {
-    //       indicatorResult.push(...response.data.results);
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+    await Promise.all(requests)
+      .then((responses) => {
+        responses.forEach((response) => {
+          indicatorResult.push(response.data);
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    const group = await this.groupByProgramArea(indicatorResult);
+    console.log({ group });
   };
+
+  getLocation = async ({ DS, locationId }: { [key: string]: number }) => {
+    const indicatorIds = [];
+    const urlSource = `location/${locationId}/`;
+    const urlSource2 = (levelName: string) => `datasource_specific_indicator/?datasource=${DS}&${levelName}=true&size=1000`;
+
+    const locationName = ['national', 'zonal', 'state', 'lga', 'senatorial'];
+    try {
+      const { data } = await instance.get(urlSource);
+      const specificIndicator = await instance.get(urlSource2(locationName[data.level - 1]));
+      await specificIndicator.data.results.map((el) => indicatorIds.push(el.indicator));
+      this.extractIndicators(indicatorIds);
+      // console.log(data, locationName[data.level], specificIndicator.data.results, indicatorIds);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  groupByProgramArea = (data) => data.reduce((acc, curr) => {
+    const { program_area: area } = curr;
+    if (!acc[area]) {
+      acc[area] = [];
+    }
+    acc[area].push(curr);
+    return acc;
+  }, {});
 }
 
 export default new DataEntryService();

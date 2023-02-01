@@ -15,10 +15,10 @@
           :show-labels="false"
           :allow-empty="false"
           :hide-selected="true"
+          @select="dispatchDataSource"
           selectLabel=""
           :loading="DSLoading"
         />
-        <!-- @select="dispatchDataSource" -->
       </div>
     </div>
     <!-- -------- -->
@@ -69,9 +69,6 @@ export default {
         this.periodList = await DataEntryService.getPeriodsByDs(this.DSValue.id);
       }
     },
-    // async getLocation() {
-
-    // },
   },
   async mounted() {
     this.DSLoading = true;
