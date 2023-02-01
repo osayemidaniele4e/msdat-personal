@@ -1,5 +1,7 @@
 import instance from '@/config/axios';
-import { dataSourceI } from './types';
+import {
+  dataSourceI, indicatorI, ProgramAreaIndicatorI, LocationI,
+} from './types';
 
 class DataEntryService {
   /**
@@ -176,7 +178,7 @@ class DataEntryService {
    * @param {Number} id?
    * @returns {Array}
    */
-  extractLocationLevel = async (id: number) => {
+  extractLocationLevel = async (id: number): Promise<LocationI[]> => {
     const levels = [1, 2, 3];
     const locationResult = [];
     const requests = levels.map((level) => {
@@ -198,12 +200,12 @@ class DataEntryService {
   };
 
   /**
-   * @function getDataSources
+   * @function extractIndicators
    * @author davebenard
-   * @param {Number} id?
-   * @returns {Array}
-   */
-  extractIndicators = async (indicatorIds: number[]) => {
+   * @param {Number[]} indicatorIds - Array of indicator ids to extract.
+   * @returns {ProgramAreaIndicatorI[]} Array of program area and indicators grouped by program area.
+  */
+  extractIndicators = async (indicatorIds: number[]): Promise<ProgramAreaIndicatorI[]> => {
     const indicatorResult = [];
     const requests = indicatorIds.map((id) => {
       const urlSource = `indicators/${id}/`;
@@ -225,12 +227,12 @@ class DataEntryService {
   };
 
   /**
-   * @function getDataSources
-   * @author davebenard
-   * @param {any} data?
-   * @returns {Array}
-   */
-  groupByProgramArea = (data: any[]) => {
+    @function groupByProgramArea
+    @author davebenard
+    @param {indicatorI[]} data - An array of indicators
+    @returns {ProgramAreaIndicatorI[]} - An array of objects that contain program area as string and data as an array of indicators
+  */
+  groupByProgramArea = (data: indicatorI[]): Array<ProgramAreaIndicatorI> => {
     const groupedData = data.reduce((acc, curr) => {
       const { program_area: area } = curr;
       if (!acc[area]) {
