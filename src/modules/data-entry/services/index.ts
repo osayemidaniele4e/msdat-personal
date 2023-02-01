@@ -228,7 +228,7 @@ class DataEntryService {
       acc[area] = [];
     }
     acc[area].push(curr);
-    console.log(acc, 'acc');
+    console.log(acc, 'acc', 'dr.ime');
     return acc;
   }, {});
 }
