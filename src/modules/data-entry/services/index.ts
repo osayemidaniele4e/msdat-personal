@@ -255,10 +255,10 @@ class DataEntryService {
   /**
    * @function getDataSources
    * @author davebenard
-   * @param {Number} id?
+   * @param {any} data?
    * @returns {Array}
    */
-  groupByProgramArea = (data) => {
+  groupByProgramArea = (data: any[]) => {
     const groupedData = data.reduce((acc, curr) => {
       const { program_area: area } = curr;
       if (!acc[area]) {
