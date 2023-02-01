@@ -14,6 +14,7 @@ class DataEntryService {
       if (id) {
         await this.extractLocationLevel(id);
         await this.extractIndicators(data.indicators);
+        await this.extractClassification(id, data.classification);
         return data;
       }
       const dataArray = await data.results.map((el: dataSourceI) => ({
@@ -44,6 +45,57 @@ class DataEntryService {
       console.log(error);
       throw error;
     }
+  };
+
+  extractClassification = async (id: number, value: string) => {
+    const valueTypes = [
+      {
+        id: 1,
+        value_type: 'Estimate',
+      },
+      {
+        id: 2,
+        value_type: 'Survey',
+      },
+      {
+        id: 3,
+        value_type: 'Lower bound',
+      },
+      {
+        id: 4,
+        value_type: 'Upper bound',
+      },
+      {
+        id: 5,
+        value_type: 'Routine',
+      },
+      {
+        id: 6,
+        value_type: 'Numerator',
+      },
+      {
+        id: 7,
+        value_type: 'Denominator',
+      },
+    ];
+    if (id === 6) {
+      return [
+        {
+          id: 5,
+          value_type: 'Routine',
+        },
+        {
+          id: 6,
+          value_type: 'Numerator',
+        },
+        {
+          id: 7,
+          value_type: 'Denominator',
+        },
+      ];
+    }
+    const valueType = valueTypes.filter((el) => el.value_type === value);
+    return valueType;
   };
 
   extractYears = (yearStr: string): string[] => {
