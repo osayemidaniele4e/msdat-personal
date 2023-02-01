@@ -14,13 +14,13 @@ class DataEntryService {
       const { data } = await instance.get(urlSource);
       if (id !== undefined) {
         const locationData = await this.extractLocationLevel(id);
-        const indicatorsData = await this.extractIndicators(data.indicators);
+        // const indicatorsData = await this.extractIndicators(data.indicators);
         const classificationData = await this.extractClassification(id, data.classification);
         const periodData = await this.extractYears(data.year_available);
         return {
           data,
           location: locationData,
-          indicators: indicatorsData,
+          // indicators: indicatorsData,
           classification: classificationData,
           period: periodData,
         };
@@ -70,7 +70,8 @@ class DataEntryService {
       const { data } = await instance.get(urlSource);
       const specificIndicator = await instance.get(urlSource2(locationName[data.level - 1]));
       await specificIndicator.data.results.map((el) => indicatorIds.push(el.indicator));
-      this.extractIndicators(indicatorIds);
+      const indicatorList = await this.extractIndicators(indicatorIds);
+      return indicatorList;
       // console.log(data, locationName[data.level], specificIndicator.data.results, indicatorIds);
     } catch (error) {
       console.log(error);
