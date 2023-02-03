@@ -72,8 +72,10 @@ export default {
     },
     async setInteractions() {
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
-      const { data } = await apiServices.getDashboard();
-      this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      if (this.getInternetStatus === true) {
+        const { data } = await apiServices.getDashboard();
+        this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      }
       const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
 
       const interaction = {
@@ -121,7 +123,6 @@ export default {
             values: availableDS,
           });
         }
-        this.setInteractions();
       },
     },
     'payload.datasource': {
