@@ -12,10 +12,10 @@ export default {
         x: -20,
       },
       chart: {
-        // plotBackground: 'https://i.stack.imgur.com/E1r9X.png',
+        // plotBackground: 'https://i.stack.imgur.com/E1r9X.png', https://gitlab.com/e4e-webdev/msdat/-/blob/feature/george-chart-watermark/src/assets/img/watermark.png
         events: {
           load() {
-            this.renderer.text('Source: MSDAT. <br/> msdat.fmohconnect.gov.ng')
+            this.renderer.image('./watermark.png', 150, 150, 150, 60)
               .attr({
                 zIndex: 1000,
                 x: '73%',
@@ -29,8 +29,8 @@ export default {
               })
               .add();
           },
-
         },
+
       },
     },
   },
