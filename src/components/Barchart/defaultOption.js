@@ -38,10 +38,10 @@ export default {
         // plotBackground: 'https://i.stack.imgur.com/E1r9X.png', https://gitlab.com/e4e-webdev/msdat/-/blob/feature/george-chart-watermark/src/assets/img/watermark.png
         events: {
           load() {
-            this.renderer.image('https://ik.imagekit.io/h0qyqq5iiw/MSDAT_Reference_u0eALHH2F.png', 150, 65, 220, 55)
+            this.renderer.image('https://ik.imagekit.io/h0qyqq5iiw/MSDAT_Reference_u0eALHH2F.png', 150, 65, 230, 53)
               .attr({
                 zIndex: 1000,
-                x: '65%',
+                x: '63%',
                 y: '82%',
                 // width: '32%',
                 // height: '15%',
