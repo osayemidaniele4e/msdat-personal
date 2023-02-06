@@ -15,7 +15,6 @@ import exporting from 'highcharts/modules/exporting';
 import noData from 'highcharts/modules/no-data-to-display';
 import { genComponent } from 'vue-highcharts';
 import { cloneDeep } from 'lodash';
-import './watermark.png';
 /**
  * The default options
  */
