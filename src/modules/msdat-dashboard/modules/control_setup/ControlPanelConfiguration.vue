@@ -70,6 +70,14 @@ export default {
     async getAvailableDataIndicators() {
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
+    removeDuplicates(arr) {
+      const seen = {};
+      return arr.filter((item) => {
+        const key = JSON.stringify(item);
+        // eslint-disable-next-line no-return-assign, no-prototype-builtins
+        return seen.hasOwnProperty(key) ? false : (seen[key] = true);
+      });
+    },
     async setInteractions() {
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       if (this.getInternetStatus === true) {
@@ -90,16 +98,15 @@ export default {
       };
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
-        VueCookies.set('user_interactions', JSON.stringify(this.interactions));
+        const uniqueArr = this.removeDuplicates(this.interactions);
+        VueCookies.set('user_interactions', JSON.stringify(uniqueArr));
         const interactions = JSON.parse(VueCookies.get('user_interactions'));
-        console.log('test', interactions);
         if (interactions.length > 9 && this.getInternetStatus === true) {
           interactions.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
           });
           this.interactions = [];
         }
-        // }
       }
     },
   },
@@ -154,6 +161,7 @@ export default {
     },
     'payload.location': {
       async handler() {
+        this.setInteractions();
         const availableYears = await this.getAvailableYears();
         await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
@@ -161,9 +169,13 @@ export default {
           key: 'year',
           values: availableYears,
         });
-        this.setInteractions();
       },
     },
+    // 'payload.year': {
+    //   async handler() {
+    //     this.setInteractions();
+    //   },
+    // },
   },
 };
 </script>
