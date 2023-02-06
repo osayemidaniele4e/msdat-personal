@@ -100,9 +100,10 @@ export default {
       if (this.isAuthenticated === true) {
         const uniqueArr = this.removeDuplicates(this.interactions);
         VueCookies.set('user_interactions', JSON.stringify(uniqueArr));
-        const interactions = JSON.parse(VueCookies.get('user_interactions'));
-        if (interactions.length > 9 && this.getInternetStatus === true) {
-          interactions.forEach(async (el) => {
+        const interactions = VueCookies.get('user_interactions');
+        const parsedInteraction = JSON.parse(interactions);
+        if (parsedInteraction.length > 9 && this.getInternetStatus === true) {
+          parsedInteraction.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
           });
           this.interactions = [];
