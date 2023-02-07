@@ -99,8 +99,8 @@ export default {
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
         const uniqueArr = this.removeDuplicates(this.interactions);
-        VueCookies.set('user_interactions', JSON.stringify(uniqueArr));
-        const interactions = VueCookies.get('user_interactions');
+        localStorage.setItem('user_interactions', JSON.stringify(uniqueArr));
+        const interactions = localStorage.getItem('user_interactions');
         const parsedInteraction = JSON.parse(interactions);
         if (parsedInteraction.length > 9 && this.getInternetStatus === true) {
           parsedInteraction.forEach(async (el) => {
