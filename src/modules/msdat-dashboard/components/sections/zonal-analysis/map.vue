@@ -15,10 +15,8 @@
         <template #title>
           <p class="work-sans mb-0 line-height">
             Distribution of
-            <span class="font-weight-bold">
-              {{ controlPanelProps.indicator.full_name }} </span
-            >Across the
-            <span class="font-weight-bold"> zones in the Country.</span> Source:
+            <span class="font-weight-bold"> {{ controlPanelProps.indicator.full_name }} </span
+            >Across the <span class="font-weight-bold"> zones in the Country.</span> Source:
             <span class="font-weight-bold">
               {{ controlPanelProps.datasource.datasource }}
               {{ controlPanelProps.year }}</span
@@ -26,7 +24,11 @@
           </p>
         </template>
         <div id="zonalMapComponent" class="col-12 position-relative">
-          <button @click="returnToNational" v-show="level !== 1" class="bg-transparent font-weight-bold">
+          <button
+            @click="returnToNational"
+            v-show="level !== 1"
+            class="bg-transparent font-weight-bold"
+          >
             <b-icon icon="chevron-left" />
             &nbsp;Back to National
           </button>
@@ -41,8 +43,7 @@
           <NoAvailableData
             v-if="showNoAvailableData"
             class="position-absolute"
-            style="top: 9%;
-            width: 50%; left: 25%"
+            style="top: 9%; width: 50%; left: 25%"
           />
         </div>
       </base-sub-card>
@@ -126,9 +127,7 @@ export default {
             return newItem;
           });
 
-          const stateData = data.find(
-            (item) => item.location === val.location.id,
-          );
+          const stateData = data.find((item) => item.location === val.location.id);
 
           sortedData.unshift({
             name: stateObject.name,
@@ -136,8 +135,7 @@ export default {
             color: this.colors[0].color,
           });
           chartSeries.push({
-            color: this.colors.find((item) => item.id === stateObject.parent)
-              .color,
+            color: this.colors.find((item) => item.id === stateObject.parent).color,
             name: stateObject.name,
             data: sortedData,
           });
@@ -156,9 +154,9 @@ export default {
           const chartSeries = [];
 
           for (let index = 0; index < this.colors.length; index += 1) {
-            const group = data.filter(
-              (item) => this.dlGetLocation(item.location).parent
-                === this.colors[index].id,
+            // console.log(data, 'DATA');
+            const group = data?.filter(
+              (item) => this.dlGetLocation(item.location).parent === this.colors[index].id
             );
 
             // if(group.length > 0 && group.length < 8){
@@ -167,9 +165,7 @@ export default {
             // }else{
             //   this.level = 3;
             // }
-            const { color } = this.colors.find(
-              (item) => item.id === this.colors[index].id,
-            );
+            const { color } = this.colors.find((item) => item.id === this.colors[index].id);
             const formattedData = formatToHighChart(group);
             const sortedData = formattedData.sort(sortHighChartDataFormat);
             const series = this.dlGetLocation(this.colors[index].id);

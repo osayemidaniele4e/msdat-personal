@@ -56,7 +56,7 @@
                 :changeIndex="changeIndex"
                 :position="position"
                 :selectedPanel="selectedPanel"
-                v-if="cpIsLoading"
+                v-if="getLoadingStatus() === false"
                 v-on:showSection="sectionFocus($event)"
               >
                 <template v-slot:default>
@@ -128,6 +128,19 @@
                   </ControlBase>
                 </template>
               </BasePanel>
+              <div
+                style="
+                  height: 4rem;
+                  width: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+                v-else
+                class="d-flex justify-content-center text-center"
+              >
+                <div class="spinner-border" style="width: 2rem; height: 2rem" role="status"></div>
+              </div>
             </b-overlay>
           </div>
           <!-- control Panels ends here  -->
@@ -334,7 +347,7 @@ export default {
       }
     },
     ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
-    ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig']),
+    ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;

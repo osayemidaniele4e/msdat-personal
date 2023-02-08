@@ -40,9 +40,11 @@ const mutations: MutationTree<State> = {
       state.controlConfig[obj.panelIndex].setup[obj.groupIndex][keyIndex].options = obj.values;
     } else {
       const keyIndex = state.controlConfig[obj.panelIndex].setup.findIndex(
-        (item) => item.key === obj.key,
+        (item) => item.key === obj.key
       );
-      state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj?.values;
+      if (state.controlConfig[obj.panelIndex].setup[keyIndex] !== undefined) {
+        state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj?.values;
+      }
     }
   },
 
@@ -57,9 +59,7 @@ const mutations: MutationTree<State> = {
    */
   setControlOptions: (
     state,
-    {
-      panelIndex, controlIndex, controlIndex2, values, multipleSetup,
-    },
+    { panelIndex, controlIndex, controlIndex2, values, multipleSetup }
   ) => {
     if (multipleSetup) {
       state.controlConfig[panelIndex].setup[controlIndex][controlIndex2].options = values;
@@ -136,7 +136,32 @@ const mutations: MutationTree<State> = {
     state.configObject = payload;
   },
   SET_SELECTED_CONFIG: (state, payload) => {
-    state.selectedConfigurations = payload;
+    state.selectedConfigurations[`${payload.entity}`] = payload.payload;
+  },
+  UPDATE_ALL_DATASOURCES: (state, payload) => {
+    state.controlConfig.forEach((item) => {
+      if (item.label !== 'Multi-Source comparison' && item.label !== 'Disaggregation') {
+        item.setup.forEach((source) => {
+          if (source.key === 'datasource') {
+            source.options = payload;
+          }
+        });
+      }
+    });
+  },
+  UPDATE_LOADING_STATUS: (state) => {
+    state.loading = false;
+  },
+  UPDATE_ALL_YEARS: (state, payload) => {
+    state.controlConfig.forEach((item) => {
+      if (item.label !== 'Multi-Source comparison' && item.label !== 'Disaggregation') {
+        item.setup.forEach((source) => {
+          if (source.key === 'year') {
+            source.options = payload;
+          }
+        });
+      }
+    });
   },
 };
 

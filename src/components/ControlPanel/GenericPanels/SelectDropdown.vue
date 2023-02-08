@@ -84,7 +84,32 @@ export default {
       set(val) {
         if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
           this.selectedOption = val;
-          this.SET_SELECTED_CONFIG(val);
+          const item = {
+            payload: val,
+            entity: 'indicator',
+          };
+          this.SET_SELECTED_CONFIG(item);
+        } else if (
+          typeof val === 'object'
+          && val.id !== undefined
+          && val.methodology !== undefined
+        ) {
+          // console.log(val, 'val');
+          const item = {
+            payload: val,
+            entity: 'dataSource',
+          };
+          this.SET_SELECTED_CONFIG(item);
+        } else if (
+          typeof val !== 'object'
+          && val.id === undefined
+          && val.created_at === undefined
+        ) {
+          const item = {
+            payload: val,
+            entity: 'period',
+          };
+          this.SET_SELECTED_CONFIG(item);
         }
         this.$emit('input', val);
       },
@@ -125,16 +150,22 @@ export default {
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
             if (has(this.multiSelectProps, 'group-values')) {
+              // console.log(newValue, 'OMO');
               this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+
               // this.selected = await newValue[0];
             } else if (newValue.length > 0) {
+              // console.log(newValue, 'OMO 2');
               this.selected = '';
               this.selected = await this.options[0];
+              this.UPDATE_ALL_YEARS(this.options);
             } else {
+              // console.log(newValue, 'OMO 3');
               const date = new Date();
               const year = date.getFullYear() - 1;
               this.selected = {};
               this.selected = newValue[0] || year.toString();
+              this.UPDATE_ALL_YEARS(newValue || year.toString());
             }
           }
 
@@ -146,6 +177,7 @@ export default {
            */
           if (this.multiSelectProps?.label === 'datasource') {
             if (Array.isArray(newValue) && newValue?.length > 0) {
+              this.UPDATE_ALL_DATASOURCES(newValue);
               const defaultSelected = newValue.find((item) => item?.id === this.selected?.id);
               if (defaultSelected?.id !== undefined) {
                 this.selected = {};
@@ -166,7 +198,11 @@ export default {
     immediate: false,
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
+    ...mapMutations('MSDAT_STORE', [
+      'SET_SELECTED_CONFIG',
+      'UPDATE_ALL_DATASOURCES',
+      'UPDATE_ALL_YEARS',
+    ]),
 
     modifyDataSourceChildLabel(tag) {
       const tempArray = tag.split(' ');
