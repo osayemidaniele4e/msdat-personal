@@ -8,6 +8,13 @@ class DataEntryService {
    * @param {Number} id?
    * @returns {Array}
    */
+  postDataEntry = async (dataVal) => {
+    const url = 'dmi/fileuploads/json/';
+    const response = await instance.post(url, dataVal);
+    console.log(response);
+    return response;
+  };
+
   getDataSources = async (id?: number): Promise<dataSourceI[] | dataSourceI | any> => {
     const urlSource = `datasources/${id || '?size=1000'}`;
     try {
@@ -45,7 +52,7 @@ class DataEntryService {
   getPeriodsByDs = async (id: number) => {
     try {
       const resp = await this.getDataSources(id);
-
+      console.log(resp, 'respobj');
       const period = await this.extractYears(resp.data.year_available);
       return period;
     } catch (error) {
