@@ -1,12 +1,20 @@
+/* eslint-disable consistent-return */
 import instance from '@/config/axios';
-import { dataSourceI } from './types';
+import {
+  dataSourceI,
+  indicatorI,
+  ProgramAreaIndicatorI,
+  LocationI,
+  valueTypeI,
+  dataSourceConfigI,
+} from './types';
 
 class DataEntryService {
   /**
    * @function getDataSources
    * @author davebenard
    * @param {Number} id?
-   * @returns {Array}
+   * @returns {Array<dataSourceConfigI | dataSourceI[]>}
    */
   postDataEntry = async (dataVal) => {
     const url = 'dmi/fileuploads/json/';
@@ -21,13 +29,11 @@ class DataEntryService {
       const { data } = await instance.get(urlSource);
       if (id !== undefined) {
         const locationData = await this.extractLocationLevel(id);
-        // const indicatorsData = await this.extractIndicators(data.indicators);
         const classificationData = await this.extractClassification(id, data.classification);
         const periodData = await this.extractYears(data.year_available);
         return {
           data,
           location: locationData,
-          // indicators: indicatorsData,
           classification: classificationData,
           period: periodData,
         };
@@ -46,10 +52,10 @@ class DataEntryService {
   /**
    * @function getDataSources
    * @author davebenard
-   * @param {Number} id?
-   * @returns {Array}
+   * @param {Number} id
+   * @returns {Promise<string[]>}
    */
-  getPeriodsByDs = async (id: number) => {
+  getPeriodsByDs = async (id: number): Promise<string[]> => {
     try {
       const resp = await this.getDataSources(id);
       console.log(resp, 'respobj');
@@ -62,12 +68,20 @@ class DataEntryService {
   };
 
   /**
-   * @function getLocation
-   * @author davebenard
-   * @param {Number, Number} [DS, locationId]
-   * @returns {Array}
-   */
-  getLocation = async ({ DS, locationId }: { [key: string]: number }) => {
+    @function getLocation
+    @author davebenard
+    @param {Object} options - The options object.
+    @param {Number} options.DS - The datasource id.
+    @param {Number} options.locationId - The location id.
+    @returns {Array<ProgramAreaIndicatorI>}
+  */
+  getLocation = async ({
+    DS,
+    locationId,
+  }: {
+    DS: number;
+    locationId: number;
+  }): Promise<ProgramAreaIndicatorI[]> => {
     const indicatorIds = [];
     const urlSource = `location/${locationId}/`;
     const urlSource2 = (levelName: string) => `datasource_specific_indicator/?datasource=${DS}&${levelName}=true&size=1000`;
@@ -79,7 +93,6 @@ class DataEntryService {
       await specificIndicator.data.results.map((el) => indicatorIds.push(el.indicator));
       const indicatorList = await this.extractIndicators(indicatorIds);
       return indicatorList;
-      // console.log(data, locationName[data.level], specificIndicator.data.results, indicatorIds);
     } catch (error) {
       console.log(error);
     }
@@ -88,10 +101,11 @@ class DataEntryService {
   /**
    * @function getDataSources
    * @author davebenard
-   * @param {Number} id?
-   * @returns {Array}
+   * @param {Number} id
+   * @param {String} value
+   * @returns {Array<valueTypeI>}
    */
-  extractClassification = async (id: number, value: string) => {
+  extractClassification = (id: number, value: string): valueTypeI[] => {
     const valueTypes = [
       {
         id: 1,
@@ -145,8 +159,8 @@ class DataEntryService {
   /**
    * @function getDataSources
    * @author davebenard
-   * @param {Number} id?
-   * @returns {Array}
+   * @param {string} yearStr
+   * @returns {string[]}
    */
   extractYears = (yearStr: string): string[] => {
     const years: string[] = [];
@@ -182,9 +196,9 @@ class DataEntryService {
    * @function getDataSources
    * @author davebenard
    * @param {Number} id?
-   * @returns {Array}
+   * @returns {Array<LocationI>}
    */
-  extractLocationLevel = async (id: number) => {
+  extractLocationLevel = async (id: number): Promise<LocationI[]> => {
     const levels = [1, 2, 3];
     const locationResult = [];
     const requests = levels.map((level) => {
@@ -206,12 +220,12 @@ class DataEntryService {
   };
 
   /**
-   * @function getDataSources
+   * @function extractIndicators
    * @author davebenard
-   * @param {Number} id?
-   * @returns {Array}
+   * @param {Number[]} indicatorIds - Array of indicator ids to extract.
+   * @returns {ProgramAreaIndicatorI[]} Array of program area and indicators grouped by program area.
    */
-  extractIndicators = async (indicatorIds: number[]) => {
+  extractIndicators = async (indicatorIds: number[]): Promise<ProgramAreaIndicatorI[]> => {
     const indicatorResult = [];
     const requests = indicatorIds.map((id) => {
       const urlSource = `indicators/${id}/`;
@@ -233,12 +247,12 @@ class DataEntryService {
   };
 
   /**
-   * @function getDataSources
-   * @author davebenard
-   * @param {any} data?
-   * @returns {Array}
-   */
-  groupByProgramArea = (data: any[]) => {
+    @function groupByProgramArea
+    @author davebenard
+    @param {indicatorI[]} data - An array of indicators
+    @returns {ProgramAreaIndicatorI[]} - An array of objects that contain program area as string and data as an array of indicators
+  */
+  groupByProgramArea = (data: indicatorI[]): Array<ProgramAreaIndicatorI> => {
     const groupedData = data.reduce((acc, curr) => {
       const { program_area: area } = curr;
       if (!acc[area]) {
