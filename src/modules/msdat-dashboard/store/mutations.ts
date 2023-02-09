@@ -1,5 +1,6 @@
 import { MutationTree } from 'vuex';
 import { State, ControlPanelConfig } from '../types/index';
+import { clone, cloneDeep } from 'lodash';
 
 type setOptionsPayload = {
   panelIndex: number;
@@ -154,7 +155,11 @@ const mutations: MutationTree<State> = {
   },
   UPDATE_ALL_YEARS: (state, payload) => {
     state.controlConfig.forEach((item) => {
-      if (item.label !== 'Multi-Source comparison' && item.label !== 'Disaggregation') {
+      if (
+        item.label !== 'Multi-Source comparison' &&
+        item.label !== 'Disaggregation' &&
+        item.label !== 'Dataset Comparison'
+      ) {
         item.setup.forEach((source) => {
           if (source.key === 'year') {
             source.options = payload;

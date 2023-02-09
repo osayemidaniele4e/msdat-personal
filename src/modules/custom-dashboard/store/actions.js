@@ -5,7 +5,6 @@
 import axios from 'axios';
 
 export default {
-
   resetState({ commit }) {
     commit('resetState');
   },
@@ -27,7 +26,8 @@ export default {
       commit('setIndiLoading', loading);
       // state.loader.indicator = true;
       // await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
-      await axios.get('https://msdat-api.fmohconnect.gov.ng/api/indicators/')
+      await axios
+        .get('https://msdat-api.fmohconnect.gov.ng/api/indicators/')
         .then((res) => {
           // const { data } = res;
           const data = res.data.results;
@@ -35,47 +35,42 @@ export default {
           const distinctArray = [...new Set(array)];
           const composedData = [];
 
-          distinctArray.forEach(((distItem) => {
+          distinctArray.forEach((distItem) => {
             if (state.allSelected === false) {
               composedData.push({
-                children: data.filter(
-                  (x) => {
-                    if (x.program_area === distItem) {
-                      x.selected = false;
-                      x.sources = [];
-                      x.years = [];
-                      x.levels = [];
-                      return x;
-                    }
-                    if (state.allSelected === true) {
-                      x.selected = true;
-                    }
-                  },
-                ),
+                children: data.filter((x) => {
+                  if (x.program_area === distItem) {
+                    x.selected = false;
+                    x.sources = [];
+                    x.years = [];
+                    x.levels = [];
+                    return x;
+                  }
+                  if (state.allSelected === true) {
+                    x.selected = true;
+                  }
+                }),
                 parent: { selected: false, isChildSelected: false, value: distItem.toUpperCase() },
                 showList: false,
                 showNotes: false,
-
               });
             } else {
               composedData.push({
-                children: data.filter(
-                  (x) => {
-                    if (x.program_area === distItem) {
-                      x.selected = true;
-                      x.sources = [];
-                      x.years = [];
-                      x.levels = [];
-                      return x;
-                    }
-                  },
-                ),
+                children: data.filter((x) => {
+                  if (x.program_area === distItem) {
+                    x.selected = true;
+                    x.sources = [];
+                    x.years = [];
+                    x.levels = [];
+                    return x;
+                  }
+                }),
                 parent: { selected: true, isChildSelected: true, value: distItem.toUpperCase() },
                 showList: true,
                 showNotes: true,
               });
             }
-          }));
+          });
           // console.log('CD', composedData);
           loading = false;
           commit('setIndiLoading', loading);
@@ -93,7 +88,8 @@ export default {
           }
 
           // dispatch('loadCoverageLevels', childs)
-        }).catch((err) => {
+        })
+        .catch((err) => {
           console.log(err);
           loading = true;
           commit('setIndiLoading', loading);
@@ -110,7 +106,8 @@ export default {
       commit('setDSLoading', loading);
       // state.indicatorloading = true;
       // await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
-      await axios.get('https://msdat-api.fmohconnect.gov.ng/api/datasources/')
+      await axios
+        .get('https://msdat-api.fmohconnect.gov.ng/api/datasources/')
         .then((res) => {
           // const { data } = res;
           const data = res.data.results;
@@ -119,19 +116,16 @@ export default {
           const distinctDataArray = [...new Set(array)];
           const SurveyArray = [];
 
-          distinctDataArray.forEach(((distItem) => {
+          distinctDataArray.forEach((distItem) => {
             if (state.allSelected === false) {
               SurveyArray.push({
-                children: data.filter(
-                  (x) => {
-                    if (x.classification === distItem) {
-                      x.selected = false;
-                      return x;
-                    }
-                  },
-                ),
+                children: data.filter((x) => {
+                  if (x.classification === distItem) {
+                    x.selected = false;
+                    return x;
+                  }
+                }),
                 parent: distItem?.toUpperCase(),
-
               });
             } else {
               SurveyArray.push({
@@ -155,12 +149,13 @@ export default {
               if (keyA === 'ROUTINE') return -1;
               return 0;
             });
-          }));
+          });
           loading = false;
           commit('setDSLoading', loading);
           // state.loader.datasource = false;
           commit('setDArea', SurveyArray);
-        }).catch((err) => {
+        })
+        .catch((err) => {
           // eslint-disable-next-line no-unused-expressions
           console.log(err);
           loading = false;
@@ -181,7 +176,8 @@ export default {
       // state.loader.levels = true;
       // commit('setshowLoader');
       // await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
-      await axios.get(`https://msdat-api.fmohconnect.gov.ng/api/datasource_specific_indicator/${payload.id}`)
+      await axios
+        .get(`https://msdat-api.fmohconnect.gov.ng/api/datasource_specific_indicator/${payload.id}`)
         .then((res) => {
           const { data } = res;
           // const data = res.data;
@@ -200,7 +196,8 @@ export default {
           // state.loader.levels = false;
           loading = false;
           commit('setLevelsLoading', loading);
-        }).catch((err) => {
+        })
+        .catch((err) => {
           console.log(err);
           loading = false;
           commit('setLevelsLoading', loading);
@@ -221,24 +218,34 @@ export default {
   // ********* For Years ******** //
   // Load Years based on indicators
   async loadYears({ commit, state }, payload) {
+    console.log('called 1');
     let dataObj = {};
     let loading = true;
     if (payload.checked === true || state.allSelected === true) {
       loading = true;
       commit('setYearsLoading', loading);
       // await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
-      await axios.get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
+      await axios
+        .get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
         .then((res) => {
           const { data } = res;
           if (state.allSelected === false) {
             const yearsData = data.years.map((year) => ({ selected: false, value: year }));
             dataObj = {
-              id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
+              id: payload.id,
+              childName: payload.child,
+              years: yearsData,
+              parentName: payload.parent,
+              checked: payload.checked,
             };
           } else {
             const yearsData = data.years.map((year) => ({ selected: true, value: year }));
             dataObj = {
-              id: payload.id, childName: payload.child, years: yearsData, parentName: payload.parent, checked: payload.checked,
+              id: payload.id,
+              childName: payload.child,
+              years: yearsData,
+              parentName: payload.parent,
+              checked: payload.checked,
             };
           }
           loading = false;
@@ -246,7 +253,11 @@ export default {
         });
     } else {
       dataObj = {
-        id: payload.id, childName: payload.child, years: [], parentName: payload.parent, checked: payload.checked,
+        id: payload.id,
+        childName: payload.child,
+        years: [],
+        parentName: payload.parent,
+        checked: payload.checked,
       };
     }
     loading = false;

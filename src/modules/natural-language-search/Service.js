@@ -20,6 +20,7 @@ const getIndicatorById = async (id) => {
 };
 
 const getYearsByIndicatorId = async (id) => {
+  console.log('called 2');
   try {
     const { data } = await axiosInstance.get(
       `indicator_years_available/?indicator=${id}&size=3&ordering=-updated_at/`,
@@ -71,6 +72,12 @@ const getDataByQuery = async (indicatorId, dataSourceId, period) => {
   }
 };
 const Services = {
-  getIndicators, getYearsByIndicatorId, getDataByIndicators, getIndicatorById, getDataSourceById, getLocationById, getDataByQuery,
+  getIndicators,
+  getYearsByIndicatorId,
+  getDataByIndicators,
+  getIndicatorById,
+  getDataSourceById,
+  getLocationById,
+  getDataByQuery,
 };
 export default Services;
