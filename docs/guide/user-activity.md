@@ -17,15 +17,17 @@ The user activity log is accessible on the User activity page on the View accoun
 
 ## Process Flow
 
-Each User interaction is stored in a cookie. When the amount of user interaction reaches 10, the user interactions are sent to the API endpoint to be retrieved on the user activity page  in descending order. It also saves interactions to the cookie if user internet connection is detected to be offline and makes a post request when the user comes back online and user activity is above 9
+Each User interaction is stored in a localStorage. When the amount of user interaction reaches 10, the user interactions are sent to the API endpoint to be retrieved on the user activity page  in descending order. It also saves interactions to the localStorage if user internet connection is detected to be offline and makes a post request when the user comes back online and user activity is above 9
 
 ### Key Functions
- This function is used to get the user interactions on the Dashboard and sent to the cookie. it also makes a post request to the endpoint through store ACTIONS when interactions exceed 9
+ This function is used to get the user interactions on the Dashboard and sent to the localStorage. it also makes a post request to the endpoint through store ACTIONS when interactions exceed 9
 ```js
-async setInteractions() {
+    async setInteractions() {
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
-      const { data } = await apiServices.getDashboard();
-      this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      if (this.getInternetStatus === true) {
+        const { data } = await apiServices.getDashboard();
+        this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      }
       const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
 
       const interaction = {
@@ -40,16 +42,16 @@ async setInteractions() {
       };
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
-        VueCookies.set('user_interactions', JSON.stringify(this.interactions));
-        const interactions = JSON.parse(VueCookies.get('user_interactions'));
-        console.log('test', interactions);
-        if (interactions.length > 9 && this.getInternetStatus === true) {
-          interactions.forEach(async (el) => {
+        const uniqueArr = this.removeDuplicates(this.interactions);
+        localStorage.setItem('user_interactions', JSON.stringify(uniqueArr));
+        const interactions = localStorage.getItem('user_interactions');
+        const parsedInteraction = JSON.parse(interactions);
+        if (parsedInteraction.length > 9 && this.getInternetStatus === true) {
+          parsedInteraction.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
           });
           this.interactions = [];
         }
-        // }
       }
     },
 ```
