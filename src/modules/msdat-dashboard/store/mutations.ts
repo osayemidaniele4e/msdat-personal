@@ -89,6 +89,18 @@ const mutations: MutationTree<State> = {
     }
   },
 
+  SET_MULTI_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[4].payload !== null) {
+      state.controlConfig[4].payload.forEach((item) => (item.indicator = obj.value));
+    }
+  },
+
+  SET_MULTI_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[4].payload !== null) {
+      state.controlConfig[4].payload.forEach((item) => (item.datasource = obj.value));
+    }
+  },
+
   /**
    * This function is used to add configuration to the control panel
    * in other world create a control panel
