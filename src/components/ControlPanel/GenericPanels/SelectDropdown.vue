@@ -223,8 +223,8 @@ export default {
     async initialCSS(multiselectID) {
       this.section = multiselectID;
       if (
-        this.multiSelectProps['group-values'] !== 'indicators' ||
-        multiselectID === 'Indicator-Comparison'
+        this.multiSelectProps['group-values'] !== 'indicators'
+        || multiselectID === 'Indicator-Comparison'
       ) {
         return;
       }
