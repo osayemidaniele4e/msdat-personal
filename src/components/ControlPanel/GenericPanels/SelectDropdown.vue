@@ -27,7 +27,7 @@
       <!-- {{ multiSelectProps['group-values'] }} {{ section }} {{ props }} -->
       <template v-if="props.option.$groupLabel">
         <span class="overflow-text" :data-parent="props.option.$groupLabel">
-          {{ props.option.$groupLabel }} {{ display(multiSelectProp) }}
+          {{ props.option.$groupLabel }}
           <span
             v-if="
               multiSelectProps['group-values'] === 'indicators' &&
@@ -223,8 +223,8 @@ export default {
     async initialCSS(multiselectID) {
       this.section = multiselectID;
       if (
-        this.multiSelectProps['group-values'] !== 'indicators'
-        || multiselectID === 'Indicator-Comparison'
+        this.multiSelectProps['group-values'] !== 'indicators' ||
+        multiselectID === 'Indicator-Comparison'
       ) {
         return;
       }
@@ -252,9 +252,6 @@ export default {
         }
       }
       this.loading = false;
-    },
-    display(item) {
-      console.log(item, 'Item');
     },
   },
   mounted() {

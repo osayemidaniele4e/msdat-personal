@@ -9,6 +9,7 @@
           <the-loader />
         </div> -->
         <h2 class="w-100 text-center mx-auto mt-3">Login with</h2>
+
         <div class="d-flex w-100 justify-content-center">
           <button
             type="submit"
@@ -20,12 +21,12 @@
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <button
-            @click.prevent="loginWithFacebook"
+            @click.prevent="buttonClicked"
             type="submit"
             class="btn btn-lg btn-primary px-4 py-2"
           >
             <b-icon-facebook class="mr-2"></b-icon-facebook>
-            FACEBOOK
+            {{ getButtonText }}
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
 
@@ -87,17 +88,54 @@
 
 <script>
 import { mapActions } from 'vuex';
-import axiosInstance from '@/config/axios';
-import { initFbsdk } from '@/config/facebook';
+import { loadFbSdk, getFbLoginStatus, fbLogout, fbLogin } from '@/config/facebook';
 
 // import VueCookies from 'vue-cookies';
 
 export default {
+  props: {
+    version: {
+      type: String,
+      default: 'v2.10',
+    },
+    logoutLabel: {
+      type: String,
+      default: 'Log out ',
+    },
+    loginLabel: {
+      type: String,
+      default: 'Facebook',
+    },
+    loginOptions: {
+      type: Object,
+      default: function () {
+        return {
+          scope: 'email',
+        };
+      },
+    },
+  },
   data() {
     return {
       username: '',
       password: '',
+      clientId: process.env.VUE_APP_FACEBOOK_APP_ID,
+      isWorking: false,
+      isConnected: false,
     };
+  },
+
+  computed: {
+    getButtonText() {
+      switch (this.isConnected) {
+        case true:
+          return this.logoutLabel;
+        case false:
+          return this.loginLabel;
+        default:
+          return 'this is default';
+      }
+    },
   },
   methods: {
     ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE']),
@@ -221,33 +259,33 @@ export default {
               provider: 'facebook',
             };
             console.log(data);
-            await this.AUTHENTICATE(data)
-              .then((res) => {
-                console.log('res', res);
-                if (res.status == 200) {
-                  this.$swal({
-                    toast: true,
-                    position: 'bottom',
-                    showConfirmButton: false,
-                    timer: 5000,
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Login successful',
-                  });
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-                this.$swal({
-                  toast: true,
-                  position: 'bottom',
-                  showConfirmButton: false,
-                  timer: 5000,
-                  icon: 'error',
-                  title: 'Something went wrong',
-                  text: 'Something went wrong signing you in with facebook',
-                });
-              });
+            // await this.AUTHENTICATE(data)
+            //   .then((res) => {
+            //     console.log('res', res);
+            //     if (res.status == 200) {
+            //       this.$swal({
+            //         toast: true,
+            //         position: 'bottom',
+            //         showConfirmButton: false,
+            //         timer: 5000,
+            //         icon: 'success',
+            //         title: 'Success',
+            //         text: 'Login successful',
+            //       });
+            //     }
+            //   })
+            //   .catch((err) => {
+            //     console.log(err);
+            //     this.$swal({
+            //       toast: true,
+            //       position: 'bottom',
+            //       showConfirmButton: false,
+            //       timer: 5000,
+            //       icon: 'error',
+            //       title: 'Something went wrong',
+            //       text: 'Something went wrong signing you in with facebook',
+            //     });
+            //   });
 
             // console.log('fb response', data);
           },
@@ -261,16 +299,77 @@ export default {
       }
     },
 
-    async Logout() {
-      // firebase.auth().signOut();
-      const response = await this.$gAuth.signOut();
-      console.log(response);
+    async facebookLogin() {
+      window.open(
+        'https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:8088/facebook-auth.html&scope=email',
+        '',
+        'width=600,height=400'
+      );
+    },
 
-      console.log('clicked');
+    getUserData(item) {
+      console.log(item);
+    },
+
+    // async Logout() {
+    //   // firebase.auth().signOut();
+    //   const response = await this.$gAuth.signOut();
+    //   console.log(response);
+
+    //   console.log('clicked');
+    // },
+
+    buttonClicked() {
+      this.$emit('click');
+      if (this.isConnected) {
+        this.logout();
+      } else {
+        this.loginWFB();
+      }
+    },
+    loginWFB() {
+      this.isWorking = true;
+      fbLogin(this.loginOptions).then((response) => {
+        if (response.status === 'connected') {
+          console.log(response);
+          this.isConnected = true;
+        } else {
+          this.isConnected = false;
+        }
+        this.isWorking = false;
+        this.$emit('login', {
+          response,
+          FB: window.FB,
+        });
+      });
+    },
+    logout() {
+      this.isWorking = true;
+      fbLogout().then((response) => {
+        this.isWorking = false;
+        this.isConnected = false;
+        this.$emit('logout', response);
+      });
     },
   },
   async mounted() {
-    initFbsdk();
+    // initFbsdk();
+
+    this.isWorking = true;
+    loadFbSdk(this.appId, this.version)
+      .then(getFbLoginStatus)
+      .then((response) => {
+        if (response.status === 'connected') {
+          this.isConnected = true;
+        }
+        this.isWorking = false;
+        /** Event `get-initial-status` to be deprecated in next major version! */
+        this.$emit('get-initial-status', response);
+        this.$emit('sdk-loaded', {
+          isConnected: this.isConnected,
+          FB: window.FB,
+        });
+      });
 
     const code = this.$route.query.code;
     if (code !== undefined) {
@@ -342,5 +441,14 @@ h4::after {
 }
 .h-50px input {
   height: 50px;
+}
+.button {
+  border: none;
+  color: #fff;
+  position: relative;
+  line-height: 34px;
+  min-width: 225px;
+  padding: 0 15px 0px 46px;
+  background-image: linear-gradient(#4c69ba, #3b55a0);
 }
 </style>
