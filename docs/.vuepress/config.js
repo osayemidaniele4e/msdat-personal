@@ -83,8 +83,14 @@ module.exports = {
             'NGF',
             'custom-dashboard'
           ]
+        },
+        {
+          title: '2023 Edits',
+          collapsable: false,
+          children: [
+            'user-activity'
+          ]
         }
-
         
 
       ],
