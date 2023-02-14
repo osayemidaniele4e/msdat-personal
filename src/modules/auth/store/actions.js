@@ -33,7 +33,7 @@ export default {
     try {
       const response = await authInstance.post(
         `/api/social/auth/register/${payload.provider}/`,
-        payload
+        payload,
       );
       const user = response.data.data;
 

@@ -88,7 +88,9 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { loadFbSdk, getFbLoginStatus, fbLogout, fbLogin } from '@/config/facebook';
+import {
+  loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
+} from '@/config/facebook';
 
 // import VueCookies from 'vue-cookies';
 
@@ -323,7 +325,7 @@ export default {
           {
             scope: 'email',
             return_scopes: true,
-          }
+          },
         );
       } catch (error) {
         return null;
@@ -334,7 +336,7 @@ export default {
       window.open(
         'https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:8088/facebook-auth.html&scope=email',
         '',
-        'width=600,height=400'
+        'width=600,height=400',
       );
     },
 
