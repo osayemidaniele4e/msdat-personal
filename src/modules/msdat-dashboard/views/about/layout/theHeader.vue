@@ -237,7 +237,6 @@
                 v-b-toggle.sidebar-2
                 v-if="isAuthenticated === false"
                 class="auth ml-2 d-flex align-items-center"
-                @click="loadLink"
               >
                 <b-icon-person-circle style="width: 18px; height: 18px"></b-icon-person-circle
                 >&nbsp;<span class="d-none d-md-inline">Login/Register</span>
@@ -245,7 +244,11 @@
               <div v-else @click="showCard = true">
                 <div class="ml-2 profile d-flex align-items-center">
                   <img
-                    :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar"
+                    :src="
+                      getUser.avatar !== undefined
+                        ? 'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar
+                        : 'https://w7.pngwing.com/pngs/754/2/png-transparent-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-blue-angle-sphere-thumbnail.png'
+                    "
                     class="profile-picture mr-1"
                     width="48"
                     height="48"
@@ -274,7 +277,9 @@
                       CREATE AN ACCOUNT
                     </button>
                   </div>
+                  {{ showUser(getUser) }}
                 </div>
+
                 <div v-else>
                   <div class="justify-content-center text-center">
                     <button
@@ -336,7 +341,11 @@
         <div class="row p-3 d-flex user-details">
           <div class="col-3">
             <img
-              :src="'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar"
+              :src="
+                getUser.avatar !== undefined
+                  ? 'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar
+                  : 'https://w7.pngwing.com/pngs/754/2/png-transparent-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-blue-angle-sphere-thumbnail.png'
+              "
               class="profile-picture mr-1"
               width="48"
               height="48"
@@ -345,6 +354,7 @@
           <div class="col-8">
             <div>{{ getUser.username }}</div>
             <div>{{ getUser.email }}</div>
+            {{ showUser(getUser) }}
           </div>
           <div class="close mr-2" @click.prevent="showCard = false">
             <b-icon-x-circle></b-icon-x-circle>
@@ -453,15 +463,9 @@ export default {
     showC() {
       this.showCard = true;
     },
-    loadLink() {
-      console.log('Load');
-      // window.location.replace(
-      //   'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://localhost:8080'
-      // );
-      // 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://localhost:8080';
-      // this.$router.push(
-      //   'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://localhost:8080'
-      // );
+
+    showUser(user) {
+      console.log(user, 'User');
     },
   },
   watch: {

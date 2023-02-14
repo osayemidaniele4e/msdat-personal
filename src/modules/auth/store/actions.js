@@ -1,5 +1,6 @@
 import VueCookies from 'vue-cookies';
 import axiosInstance from '../config/axios';
+import authInstance from '../config/axiosAuth';
 
 export default {
   // eslint-disable-next-line consistent-return
@@ -27,18 +28,21 @@ export default {
   },
 
   async AUTHENTICATE({ commit }, payload) {
-    console.log(payload);
+    console.log(payload, 'PAYLOAD');
+
     try {
-      const response = await axiosInstance.post(
-        `/social/auth/register/${payload.provider}/`,
+      const response = await authInstance.post(
+        `/api/social/auth/register/${payload.provider}/`,
         payload
       );
-      const user = response.data;
+      const user = response.data.data;
+
+      console.log(user, 'USER');
       VueCookies.set('msdat-user-details', user);
       commit('setUser', user);
       return response;
     } catch (err) {
-      // console.log(err);
+      console.log(err);
     }
   },
   logout({ commit }) {

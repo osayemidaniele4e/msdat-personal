@@ -88,9 +88,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import {
-  loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
-} from '@/config/facebook';
+import { loadFbSdk, getFbLoginStatus, fbLogout, fbLogin } from '@/config/facebook';
 
 // import VueCookies from 'vue-cookies';
 
@@ -217,6 +215,7 @@ export default {
 
         await this.AUTHENTICATE(data)
           .then((res) => {
+            console.log(res, 'res');
             if (res.status == 200) {
               this.$swal({
                 toast: true,
@@ -247,8 +246,39 @@ export default {
       }
     },
 
+    async completeLinkedAuth(data) {
+      alert(data);
+      await this.AUTHENTICATE(data)
+        .then((res) => {
+          console.log(res, 'res');
+          if (res.status == 200) {
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'success',
+              title: 'Success',
+              text: 'Login successful',
+            });
+          }
+        })
+        .catch((err) => {
+          console.log('res', err);
+          this.$swal({
+            toast: true,
+            position: 'bottom',
+            showConfirmButton: false,
+            timer: 5000,
+            icon: 'error',
+            title: 'Something went wrong',
+            text: 'Something went wrong signing you in with google',
+          });
+        });
+    },
+
     async loginWithLinkedIn() {
-      window.location.href = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=https://localhost:8080`;
+      window.location.href = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://localhost:8080/dashboard/Health_Outcomes_and_Service_Coverage`;
     },
 
     async loginWithFacebook() {
@@ -260,41 +290,40 @@ export default {
 
               provider: 'facebook',
             };
-            console.log(data);
-            // await this.AUTHENTICATE(data)
-            //   .then((res) => {
-            //     console.log('res', res);
-            //     if (res.status == 200) {
-            //       this.$swal({
-            //         toast: true,
-            //         position: 'bottom',
-            //         showConfirmButton: false,
-            //         timer: 5000,
-            //         icon: 'success',
-            //         title: 'Success',
-            //         text: 'Login successful',
-            //       });
-            //     }
-            //   })
-            //   .catch((err) => {
-            //     console.log(err);
-            //     this.$swal({
-            //       toast: true,
-            //       position: 'bottom',
-            //       showConfirmButton: false,
-            //       timer: 5000,
-            //       icon: 'error',
-            //       title: 'Something went wrong',
-            //       text: 'Something went wrong signing you in with facebook',
-            //     });
-            //   });
+            await this.AUTHENTICATE(data)
+              .then((res) => {
+                console.log('res', res);
+                if (res.status == 200) {
+                  this.$swal({
+                    toast: true,
+                    position: 'bottom',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Login successful',
+                  });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+                this.$swal({
+                  toast: true,
+                  position: 'bottom',
+                  showConfirmButton: false,
+                  timer: 5000,
+                  icon: 'error',
+                  title: 'Something went wrong',
+                  text: 'Something went wrong signing you in with facebook',
+                });
+              });
 
             // console.log('fb response', data);
           },
           {
             scope: 'email',
             return_scopes: true,
-          },
+          }
         );
       } catch (error) {
         return null;
@@ -305,12 +334,48 @@ export default {
       window.open(
         'https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=1528751870549294&display=popup&redirect_uri=http://localhost:8088/facebook-auth.html&scope=email',
         '',
-        'width=600,height=400',
+        'width=600,height=400'
       );
     },
 
-    getUserData(item) {
-      console.log(item);
+    async getUserData(item) {
+      try {
+        const data = {
+          auth_token: item.accessToken,
+          provider: 'facebook',
+        };
+
+        await this.AUTHENTICATE(data)
+          .then((res) => {
+            console.log(res, 'res');
+            if (res.status == 200) {
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with google',
+            });
+          });
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
     },
 
     // async Logout() {
@@ -334,7 +399,41 @@ export default {
       fbLogin(this.loginOptions).then((response) => {
         if (response.status === 'connected') {
           console.log(response);
-          this.isConnected = true;
+
+          const data = {
+            auth_token: response.authResponse.accessToken,
+            provider: 'facebook',
+          };
+
+          this.AUTHENTICATE(data)
+            .then((res) => {
+              console.log(res, 'res');
+              if (res.status == 200) {
+                this.isConnected = true;
+                console.log(res, 'res');
+                this.$swal({
+                  toast: true,
+                  position: 'bottom',
+                  showConfirmButton: false,
+                  timer: 5000,
+                  icon: 'success',
+                  title: 'Success',
+                  text: 'Login successful',
+                });
+              }
+            })
+            .catch((err) => {
+              console.log('res', err);
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'error',
+                title: 'Something went wrong',
+                text: 'Something went wrong signing you in with google',
+              });
+            });
         } else {
           this.isConnected = false;
         }
@@ -376,12 +475,18 @@ export default {
     const code = this.$route.query.code;
     if (code !== undefined) {
       alert(code);
+      const data = {
+        auth_token: code,
+        provider: 'linkedin',
+      };
 
-      const query = { ...this.$route.query };
-      delete query.code;
-      delete query.state;
+      this.completeLinkedAuth(data);
 
-      this.$router.replace({ query });
+      // const query = { ...this.$route.query };
+      // delete query.code;
+      // delete query.state;
+
+      // this.$router.replace({ query });
 
       // this.$router.replace('/');
     }
