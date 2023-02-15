@@ -11,18 +11,139 @@ import {
 
 class DataEntryService {
   /**
-   * @function getDataSources
-   * @author davebenard
-   * @param {Number} id?
-   * @returns {Array<dataSourceConfigI | dataSourceI[]>}
+   * @function postDataEntry
+   * @author chisomchima
+   * @param {dataVal} {}?
+   * @returns {Array}
    */
-  postDataEntry = async (dataVal) => {
+  postDataEntry = async (dataVal: any) => {
     const url = 'dmi/fileuploads/json/';
     const response = await instance.post(url, dataVal);
     console.log(response);
     return response;
   };
 
+  /**
+   * @function GET_DATA_ENTRIES
+   * @author chisomchima
+   * @returns {Array}
+   */
+
+  getDataEntries = async () => {
+    try {
+      const response = await instance.get('dmi/fileuploads?approved=false&application=NGF');
+      console.log(response, 'chisom');
+      return response.data.results;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /**
+   * @function APPROVE_DATA_ENTRIES
+   * @author chisomchima
+   * @returns {Array}
+   */
+
+  approveDataEntry = async ({ id, comment }) => {
+    try {
+      const response = await instance.post(`dmi/fileuploads/${id}/approve/`, comment);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /**
+   * @function REJECT_DATA_ENTRIES
+   * @author chisomchima
+   * @returns {Array}
+   */
+
+  rejectDataEntry = async ({ id, comment }) => {
+    try {
+      const response = await instance.post(`dmi/fileuploads/${id}/reject/`, comment);
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /**
+   * @function GET_DATAENTRIES_BY_ID
+   * @author chisomchima
+   * @returns {Array}
+   */
+
+  getDataEntryById = async (id: any) => {
+    const result = [];
+    try {
+      const response = await instance.get(`dmi/fileuploads/${id}/get_data/`);
+      console.log(response,'response');
+      // ============================================================
+      // STEP 1 :  getting indicators, location and datasource data and return the result 3 array
+      // getting indicators, location and datasource data
+      await Promise.all(
+        response.data?.map(async (el: { [x: string]: any; indicator?: any; location?: any; datasource?: any; }) => {
+          const { ...details } = el;
+          if (el?.indicator !== undefined && el?.location !== undefined && el?.datasource !== undefined) {
+            const indicatorData = await instance.get(`indicators/${el?.indicator}/`);
+            const locationData = await instance.get(`location/${el.location}/`);
+            const datasourceData = await instance.get(`datasources/${el.datasource}/`);
+            // ============================================================
+            // STEP 2 :  getting indicators, location and datasource data and return the result 3 array
+            // creating a new object with results gotten from the above funtion
+            // creating a new object with results gotten from the above funtion
+            result.push({
+              msg: 'Data Available',
+              indicatorName: indicatorData.data.full_name,
+              locationName: locationData.data.name,
+              datasourceName: datasourceData.data.datasource,
+              ...details,
+            });
+            // console.log(result);
+          } else {
+            // console.log('hi chisom')
+            // eslint-disable-next-line no-const-assign
+            result.push({
+              msg: 'No Data Available',
+            });
+          }
+        }),
+      );
+      return result;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /**
+   * @function GET_CLASSIFICATION
+   * @author chisomchima
+   * @returns {Array}
+   */
+
+   getClassification = async () => {
+     try {
+       const response = await instance.get('valuetypes/');
+       // eslint-disable-next-line camelcase
+       const valueType = [...new Set(response.data.results.map((el: { id: any; value_type: any; }) => ({
+         id: el.id,
+         value_type: el.value_type,
+       })))];
+       Promise.resolve(valueType);
+       return valueType;
+     } catch (err) {
+       console.log(err);
+     }
+   }
+
+  /**
+   * @function getDataSources
+   * @author davebenard
+   * @param {Number} id?
+   * @returns {Array<dataSourceConfigI | dataSourceI[]>}
+   */
   getDataSources = async (id?: number): Promise<dataSourceI[] | dataSourceI | any> => {
     const urlSource = `datasources/${id || '?size=1000'}`;
     try {
@@ -90,7 +211,7 @@ class DataEntryService {
     try {
       const { data } = await instance.get(urlSource);
       const specificIndicator = await instance.get(urlSource2(locationName[data.level - 1]));
-      await specificIndicator.data.results.map((el) => indicatorIds.push(el.indicator));
+      await specificIndicator.data.results.map((el: { indicator: any; }) => indicatorIds.push(el.indicator));
       const indicatorList = await this.extractIndicators(indicatorIds);
       return indicatorList;
     } catch (error) {

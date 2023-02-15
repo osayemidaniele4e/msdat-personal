@@ -201,7 +201,7 @@ export default {
   methods: {
     handleSubmit() {
       if (this.entry.length > 0) {
-        this.$bvModal.hide('data-enty');
+        // this.$bvModal.show('data-enty');
       } else {
         this.$swal({
           toast: true,
@@ -217,6 +217,7 @@ export default {
       this.loading = true;
 
       try {
+        this.$bvModal.hide('modal-1');
         const validEntry = this.entry.map((el) => ({
           datasource: el.datasource,
           indicator: el.indicator,
