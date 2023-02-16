@@ -1,29 +1,11 @@
-// export const initFbsdk = () => {
-//   return new Promise((resolve) => {
-//     window.fbAsyncInit = function () {
-//       FB.init({
-//         appId: process.env.VUE_APP_FACEBOOK_APP_ID,
-//         cookie: true,
-//         xfbml: true, // parse social plugins on this page
-//         version: 'v2.8', // use graph api version 2.8
-//       });
-//     };
-//     (function (d, s, id) {
-//       var js,
-//         fjs = d.getElementsByTagName(s)[0];
-//       if (d.getElementById(id)) return;
-//       js = d.createElement(s);
-//       js.id = id;
-//       js.src = '//connect.facebook.net/en_US/sdk.js';
-//       fjs.parentNode.insertBefore(js, fjs);
-//     })(document, 'script', 'facebook-jssdk');
-//   });
-// };
-
+// eslint-disable-line func-names
+/* global FB */
 export function loadFbSdk(appId, version) {
   return new Promise((resolve) => {
+    /* eslint func-names: ["error", "never"] */
     window.fbAsyncInit = function () {
       // eslint-disable-line func-names
+      /* eslint func-names: ["error", "always"] */
       FB.init({
         appId: process.env.VUE_APP_FACEBOOK_APP_ID,
         xfbml: false,
@@ -33,6 +15,8 @@ export function loadFbSdk(appId, version) {
       FB.AppEvents.logPageView();
       resolve('SDK Loaded!');
     };
+    // eslint-disable-next-line no-use-before-define
+    /* eslint func-names: ["error", "never"] */
     (function (d, s, id) {
       // eslint-disable-line func-names
       const fjs = d.getElementsByTagName(s)[0];
@@ -46,7 +30,7 @@ export function loadFbSdk(appId, version) {
     }(document, 'script', 'facebook-jssdk'));
   });
 }
-
+// eslint-disable-line func-names
 export function getFbLoginStatus() {
   return new Promise((resolve) => {
     window.FB.getLoginStatus((responseStatus) => {
