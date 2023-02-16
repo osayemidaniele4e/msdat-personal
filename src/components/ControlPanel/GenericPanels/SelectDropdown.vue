@@ -14,7 +14,7 @@
     data-visted="notVisited"
     deselectLabel=""
     autocomplete="off"
-    @open="initialCSS"
+
   >
     <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
