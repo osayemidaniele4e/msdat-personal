@@ -28,8 +28,6 @@ export default {
   },
 
   async AUTHENTICATE({ commit }, payload) {
-    console.log(payload, 'PAYLOAD');
-
     try {
       const response = await authInstance.post(
         `/api/social/auth/register/${payload.provider}/`,
@@ -37,13 +35,13 @@ export default {
       );
       const user = response.data.data;
 
-      console.log(user, 'USER');
       VueCookies.set('msdat-user-details', user);
       commit('setUser', user);
       return response;
     } catch (err) {
       console.log(err);
     }
+    return null;
   },
   logout({ commit }) {
     VueCookies.remove('msdat-user-details');
