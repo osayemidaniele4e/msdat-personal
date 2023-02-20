@@ -8,7 +8,7 @@
         <!-- <div class="loader" v-if="isLoading">
           <the-loader />
         </div> -->
-        <h2 class="w-100 text-center mx-auto mt-3">Login with</h2>
+        <h2 class="w-100 text-center mx-auto mt-3">Signin with</h2>
 
         <div class="d-flex w-100 justify-content-center">
           <button
