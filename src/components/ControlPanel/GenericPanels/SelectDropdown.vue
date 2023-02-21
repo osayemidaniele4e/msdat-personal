@@ -254,6 +254,9 @@ export default {
     //   this.loading = false;
     // },
   },
+  mounted() {
+    // console.log(this.options[0], 'Options');
+  },
 };
 </script>
 
