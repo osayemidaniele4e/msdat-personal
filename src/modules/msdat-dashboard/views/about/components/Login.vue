@@ -17,7 +17,7 @@
             @click="handleClickSignIn()"
           >
             <b-icon-google class="mr-2"></b-icon-google>
-            GOOGLE
+            Google
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <button
@@ -26,7 +26,7 @@
             class="btn btn-lg btn-primary px-4 py-2"
           >
             <b-icon-facebook class="mr-2"></b-icon-facebook>
-            {{ getButtonText }}
+            Facebook
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
         </div>
