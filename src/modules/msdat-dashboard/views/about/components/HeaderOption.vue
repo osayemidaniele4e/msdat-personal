@@ -94,6 +94,12 @@
           <span>Help and FAQs</span>
         </router-link>
       </li>
+       <li>
+        <router-link to="/data-entry">
+          <img src="@/assets/img/icons/ic_upload.svg" alt="" />
+          <span>Data Entry</span>
+        </router-link>
+      </li>
       <li>
         <a href="#" @click.prevent="showModal" ref="btnShow">
           <img src="@/assets/img/icons/ic_email.svg" alt="" />

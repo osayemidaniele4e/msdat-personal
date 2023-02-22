@@ -191,7 +191,7 @@ no-param-reassign */
 <script>
 import BaseBar from '@/components/Barchart/BaseBarChart.vue';
 import ProgramAreaIcon from './programAreaIcon.vue';
-import dataMixins from '../../DataLayer/mixin';
+import dataMixins from '../../data-layer/mixin';
 import * as requests from '../requests';
 
 export default {

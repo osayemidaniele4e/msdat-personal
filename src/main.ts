@@ -6,7 +6,7 @@ import VueCookies from 'vue-cookies';
 import VueHtml2Canvas from 'vue-html2canvas';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import VueSweetalert2 from 'vue-sweetalert2';
-import DataLayer from '@/modules/DataLayer';
+import DataLayer from '@/modules/data-layer';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';

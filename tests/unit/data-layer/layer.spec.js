@@ -1,7 +1,7 @@
 // import Dexie from 'dexie';
 // import indexedDB from 'fake-indexeddb';
-// import DataBase from '@/modules/DataLayer/services/LayerService';
-// // import mockDataInIbdexedDB from '@/modules/DataLayer/sample_data';
+// import DataBase from '@/modules/data-layer/services/LayerService';
+// // import mockDataInIbdexedDB from '@/modules/data-layer/sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
 
 // const DB = new Dexie('MyDatabase', { indexedDB });

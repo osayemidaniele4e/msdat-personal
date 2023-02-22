@@ -230,6 +230,7 @@ export default {
       await axios.get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
         .then((res) => {
           const { data } = res;
+          console.log(data, 'data');
           if (state.allSelected === false) {
             const yearsData = data.years.map((year) => ({ selected: false, value: year }));
             dataObj = {

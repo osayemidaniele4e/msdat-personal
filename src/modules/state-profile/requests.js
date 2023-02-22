@@ -1,5 +1,5 @@
 import axiosInstance from '@/plugins/axios';
-import apiEndpoints from '@/modules/DataLayer/config/endpoint';
+import apiEndpoints from '@/modules/data-layer/config/endpoint';
 
 export const allLocations = () => axiosInstance.get(apiEndpoints.getLocation);
 

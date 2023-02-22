@@ -88,6 +88,7 @@ export default {
           await Promise.all(
             resData.map(async (ef) => {
               const locationData = await Services.getLocationById(ef.location);
+              console.log(locationData, 'locationData');
               if (locationData?.level === 3 || locationData?.level === 1) {
                 newArray.push([locationData.name, Number(ef.value)]);
                 this.dataArray = await newArray;

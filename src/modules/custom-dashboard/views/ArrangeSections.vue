@@ -143,7 +143,7 @@ export default {
       const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
       this.$router.push({
         path: `/dashboard/${t}`,
-        component: () => import('../../dynamic_dashboard/index.vue'),
+        component: () => import('../../dynamic-dashboard/index.vue'),
       });
     },
 
