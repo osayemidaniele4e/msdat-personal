@@ -29,10 +29,9 @@ export default {
 
   async AUTHENTICATE({ commit }, payload) {
     try {
-      const response = await authInstance.post(
-        `/api/social/auth/register/${payload.provider}/`,
-        payload,
-      );
+      const response = await authInstance.post(`/api/auth/register/${payload.provider}/user/`, {
+        auth_token: payload.auth_token,
+      });
       const user = response.data.data;
 
       VueCookies.set('msdat-user-details', user);
@@ -43,6 +42,20 @@ export default {
     }
     return null;
   },
+
+  async AUTHENTICATE_LINKEDIN({ commit }, payload) {
+    try {
+      const user = payload.data;
+
+      VueCookies.set('msdat-user-details', user);
+      commit('setUser', user);
+      return payload;
+    } catch (err) {
+      console.log(err);
+    }
+    return null;
+  },
+
   logout({ commit }) {
     VueCookies.remove('msdat-user-details');
     commit('logout');
