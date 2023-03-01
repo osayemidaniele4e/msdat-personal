@@ -309,6 +309,7 @@
               v-if="toggleOption"
               v-on:showContact="contactBtn = true"
               v-on:tour="runIntro"
+              v-on:print="print"
             />
           </div>
         </b-col>
@@ -443,6 +444,12 @@ export default {
     runIntro() {
       this.toggleOption = !this.toggleOption;
       this.$emit('tour');
+    },
+    print() {
+      this.toggleOption = !this.toggleOption;
+      setTimeout(() => {
+        window.print();
+      }, 500);
     },
     close() {
       this.toggleOption = false;
@@ -1140,4 +1147,14 @@ div {
 .btn:hover {
   color: #fff;
 }
+
+@media print{
+  @page {
+    size: landscape
+  }
+  body{
+    -webkit-print-color-adjust: exact !important;
+  }
+}
+
 </style>

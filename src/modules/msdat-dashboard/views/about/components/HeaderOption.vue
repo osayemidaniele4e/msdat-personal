@@ -35,7 +35,7 @@
         </a>
       </li>
       <li>
-        <a href="#" @click.prevent="PrintPage()">
+        <a href="#" @click.prevent="$emit('print')">
           <img src="@/assets/img/icons/ic_print.svg" alt="" />
           <span>Print</span>
         </a>
