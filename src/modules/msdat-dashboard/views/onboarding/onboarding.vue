@@ -16,7 +16,7 @@
               width="250px"
             />
           </div>
-          <h2 class="text" @click="removeBackground">Welcome to MSDAT V2.0</h2>
+          <h2 class="text" @click="removeBackground">Welcome to MSDAT V2.6</h2>
           <p class="text">Get analysis of health indicators easily</p>
           <button @click="onboarding1st = !onboarding1st">
             Start Tutorial

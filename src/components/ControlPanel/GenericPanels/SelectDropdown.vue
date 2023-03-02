@@ -14,7 +14,6 @@
     data-visted="notVisited"
     deselectLabel=""
     autocomplete="off"
-    @open="initialCSS"
   >
     <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
@@ -33,7 +32,6 @@
               multiSelectProps['group-values'] === 'indicators' &&
               section !== 'Indicator-Comparison'
             "
-            class="down-caret"
           ></span>
         </span>
       </template>
@@ -253,6 +251,9 @@ export default {
     //   }
     //   this.loading = false;
     // },
+  },
+  mounted() {
+    // console.log(this.options[0], 'Options');
   },
 };
 </script>

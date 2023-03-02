@@ -18,7 +18,7 @@
 
 <script>
 import moment from 'moment';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   name: 'theFooter',

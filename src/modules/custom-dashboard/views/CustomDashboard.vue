@@ -42,7 +42,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import instance from '../../msdat-dashboard/views/dashboard/instance.vue';
-import config from '../../dynamic_dashboard/config/dashboard_config';
+import config from '../../dynamic-dashboard/config/dashboard_config';
 
 export default {
   name: 'DynamicDashboard',

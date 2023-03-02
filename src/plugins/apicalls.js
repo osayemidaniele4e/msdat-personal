@@ -1,4 +1,4 @@
-import apiEndpoints from '@/modules/DataLayer/config/endpoint';
+import apiEndpoints from '@/modules/data-layer/config/endpoint';
 import testInstance from './test-axios';
 
 const getDashboard = await testInstance.get(apiEndpoints.getDashboard);

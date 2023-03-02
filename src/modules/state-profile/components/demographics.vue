@@ -107,7 +107,7 @@
 import { mapState } from 'vuex';
 import BaseMap from '@/components/maps/BaseMap.vue';
 import DataSourceMetaDataModal from '@/modules/msdat-dashboard/components/sections/indicator-overview/info_modal/DataSourceMetaDataModal.vue';
-import dataMixins from '../../DataLayer/mixin';
+import dataMixins from '../../data-layer/mixin';
 import * as requests from '../requests';
 import landAreaData from './landData';
 
