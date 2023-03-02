@@ -2,7 +2,7 @@
 <template>
   <div class="iddc_wrapper confidenceRange_Intro">
     <base-overlay :show="loading || notShow">
-    <!-- BASE SUBCARD FOR INDICATORS WITH CONFIDENCE RANGE -->
+      <!-- BASE SUBCARD FOR INDICATORS WITH CONFIDENCE RANGE -->
       <base-sub-card
         ref="SubCard"
         buttonToggle
@@ -21,18 +21,17 @@
         "
         v-if="Object.keys(values).length && dataSourcesOptions.length === 0"
       >
-
         <template #title>
-          <p class="work-sans mb-0 line-height">
+          <!-- <p class="work-sans mb-0 line-height">
             Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
             (Time-series comparison of {{ values.indicator.short_name }}) across different data
             sources.
-          </p>
+
+          </p> -->
+
+          <span @click="getReset()">Rest</span>
         </template>
-        <BarChart ref="BaseChart"
-        :chartOptions="ChartOptions"
-        :title="title"
-        v-if="!notShow" />
+        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
       <!-- BASE SUBCARD FOR INDICATORS WITHOUT CONFIDENCE RANGE -->
       <base-sub-card
@@ -54,7 +53,6 @@
         "
         v-if="Object.keys(values).length && dataSourcesOptions.length !== 0"
       >
-
         <template #title>
           <p class="work-sans mb-0 line-height">
             Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
@@ -62,10 +60,17 @@
             sources.
           </p>
         </template>
-        <BarChart ref="BaseChart"
-        :chartOptions="ChartOptions"
-        :title="title"
-        v-if="!notShow" />
+
+        <!-- refresh button to show all datasources in the chart -->
+        <template #refresh>
+          <b-icon-arrow-clockwise
+            id="reset"
+            @click="getReset()"
+            class="pointer_click mx-1 font-weight-bold"
+            font-scale="1"
+          ></b-icon-arrow-clockwise>
+        </template>
+        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
     <!-- <div class="no_data">
@@ -337,16 +342,16 @@ export default {
           searchDataSource.datasource = datasource?.id;
           if (mappedValueTypes.length > 0) {
             mappedValueTypes.forEach((valueType) => {
-            // The Object.assign help copy if Object before pushing it into the array
-            // else it tends to push the same values again and again
+              // The Object.assign help copy if Object before pushing it into the array
+              // else it tends to push the same values again and again
               searchDataSource.value_type = valueType.id;
               // eslint-disable-next-line prefer-object-spread
               const queryCopy = Object.assign({}, searchDataSource);
               queryArray.push(queryCopy);
             });
           } else {
-          // The Object.assign help copy if Object before pushing it into the array
-          // else it tends to push the same values again and again
+            // The Object.assign help copy if Object before pushing it into the array
+            // else it tends to push the same values again and again
             queryArray.push({ ...searchDataSource });
           }
         });
@@ -565,11 +570,26 @@ export default {
       ];
       return seriesArr;
     },
+
+    getReset() {
+      this.$emit('reset');
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+#reset {
+  transform: rotate(360deg);
+  transition: all 1s ease-in-out;
+  /* background-color: black; */
+}
+
+#reset:hover {
+  font-weight: 700;
+  transform: rotate(180deg);
+}
+
 div.iddc_wrapper {
   position: relative;
   div.no_data {

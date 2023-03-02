@@ -12,7 +12,7 @@
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
-                <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span>
+                <!-- <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span> -->
               </div>
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
