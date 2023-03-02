@@ -88,9 +88,7 @@
 <script>
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import {
-  loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
-} from '@/config/facebook';
+import { loadFbSdk, getFbLoginStatus, fbLogout, fbLogin } from '@/config/facebook';
 
 import VueAxios from 'vue-axios';
 import VueAuthenticate from 'vue-authenticate';
@@ -98,12 +96,12 @@ import axios from 'axios';
 
 Vue.use(VueAxios, axios);
 Vue.use(VueAuthenticate, {
-  baseUrl: 'https://msdatlogin.e4eweb.space', // Your API domain
+  baseUrl: 'http://localhost:3001', // Your API domain
 
   providers: {
     linkedin: {
       clientId: process.env.VUE_APP_API_LINKEDIN_ID,
-      url: '/api/auth/register/linkedin/user/',
+      url: '/api/todos',
       name: 'linkedin',
       authorizationEndpoint: 'https://www.linkedin.com/oauth/v2/authorization',
       redirectUri: 'https://localhost:8080/dashboard/Health_Outcomes_and_Service_Coverage',
