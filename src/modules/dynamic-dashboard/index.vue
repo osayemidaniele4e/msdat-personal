@@ -236,4 +236,22 @@ export default {
   },
 };
 </script>
-<style lang="scss"></style>
+
+<style lang="scss">
+main.main_field {
+  min-height: 45vh;
+  width: 100%;
+}
+iframe {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px !important;
+  }
+}
+.iframe_container {
+  max-height: 450px;
+  overflow-y: auto;
+}
+</style>
