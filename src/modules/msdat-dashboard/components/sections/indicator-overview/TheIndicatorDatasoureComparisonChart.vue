@@ -22,14 +22,12 @@
         v-if="Object.keys(values).length && dataSourcesOptions.length === 0"
       >
         <template #title>
-          <!-- <p class="work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height">
             Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
             (Time-series comparison of {{ values.indicator.short_name }}) across different data
             sources.
 
-          </p> -->
-
-          <span @click="getReset()">Rest</span>
+          </p>
         </template>
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
