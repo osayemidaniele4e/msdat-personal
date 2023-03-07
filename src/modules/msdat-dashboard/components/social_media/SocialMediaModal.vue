@@ -61,12 +61,7 @@
             @click="copy"
           >
             {{ copy_text }}
-            <b-icon
-              class=""
-              style="color: #007d53"
-              icon="bookmarks"
-              @click="copy"
-            />
+            <b-icon class="" style="color: #007d53" icon="bookmarks" @click="copy" />
           </button>
         </div>
       </div>
@@ -106,8 +101,9 @@
 export default {
   data() {
     return {
-      shareURL: window.location.origin,
-      shareDesc: 'Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform',
+      shareURL: window.location.href,
+      shareDesc:
+        'Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform',
       copy_text: 'Copy',
       shareText: 'MSDAT Platform',
       email: '',
@@ -120,7 +116,7 @@ export default {
       this.copy_text = 'Copied';
     },
     shareFacebook() {
-      const facebookURL = `https://www.facebook.com/sharer.php?u=${this.shareDesc}`;
+      const facebookURL = `https://www.facebook.com/sharer.php?u=${this.shareURL}`;
       window.open(
         facebookURL,
         '_blank',
@@ -136,7 +132,7 @@ export default {
       );
     },
     shareViaLinkedin() {
-      const url = `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareDesc}&title=${this.shareText}&summary=Health%20Dashboards`;
+      const url = `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareURL}&title=${this.shareText}&summary=Health%20Dashboards`;
       window.open(
         url,
         '_blank',
@@ -144,14 +140,11 @@ export default {
       );
     },
     shareViaEmail() {
-      console.log(
-        `mailto:${this.email}?subject=${this.shareText}&body=${this.shareURL}`,
-      );
+      console.log(`mailto:${this.email}?subject=${this.shareText}&body=${this.shareURL}`);
       window.location = `mailto:${this.email}?subject=${this.shareText}&body=${this.shareDesc} : ${this.shareURL}`;
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
