@@ -88,7 +88,9 @@
 <script>
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { loadFbSdk, getFbLoginStatus, fbLogout, fbLogin } from '@/config/facebook';
+import {
+  loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
+} from '@/config/facebook';
 
 import VueAxios from 'vue-axios';
 import VueAuthenticate from 'vue-authenticate';
