@@ -88,9 +88,7 @@
 <script>
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import {
-  loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
-} from '@/config/facebook';
+import { loadFbSdk, getFbLoginStatus, fbLogout, fbLogin } from '@/config/facebook';
 
 import VueAxios from 'vue-axios';
 import VueAuthenticate from 'vue-authenticate';
@@ -281,7 +279,7 @@ export default {
 
           this.AUTHENTICATE(data)
             .then((res) => {
-              console.log(res, 'res');
+              // console.log(res, 'res');
               if (res.status === 200 || res.status === 201) {
                 this.isConnected = true;
                 console.log(res, 'res');
@@ -323,7 +321,33 @@ export default {
       this.$auth
         .authenticate(provider)
         .then((response) => {
-          console.log(response, 'response');
+          // make api call
+          this.AUTHENTICATE_LINKEDIN(response)
+            .then((res) => {
+              if (res !== null) {
+                this.$swal({
+                  toast: true,
+                  position: 'bottom',
+                  showConfirmButton: false,
+                  timer: 5000,
+                  icon: 'success',
+                  title: 'Success',
+                  text: 'Login successful',
+                });
+              }
+            })
+            .catch((err) => {
+              console.log('res', err);
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'error',
+                title: 'Something went wrong',
+                text: 'Something went wrong signing you in with linkedin',
+              });
+            });
         })
         .catch((err) => {
           console.log(err);

@@ -45,11 +45,15 @@ export default {
 
   async AUTHENTICATE_LINKEDIN({ commit }, payload) {
     try {
-      const user = payload.data;
+      const response = await authInstance.post('/api/auth/register/linkedin/user/', {
+        code: payload.code,
+      });
+
+      const user = response.data.data;
 
       VueCookies.set('msdat-user-details', user);
       commit('setUser', user);
-      return payload;
+      return response;
     } catch (err) {
       console.log(err);
     }
