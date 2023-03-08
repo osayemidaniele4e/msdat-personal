@@ -5,7 +5,6 @@ const AxiosInstance = axios.create({
   baseURL: process.env.VUE_APP_API_BASE_URL,
 });
 
-// eslint-disable-next-line no-unused-expressions
 AxiosInstance.interceptors?.response.use(
   (response) => response,
   (error) => {
