@@ -70,7 +70,39 @@
       <h6 class="font-weight-bold work-sans">Share on social media</h6>
       <div class="row no-gutters">
         <div class="col">
-          <b-icon
+          <ShareNetwork
+            network="facebook"
+            :url="shareURL"
+            :title="shareText"
+            :description="shareDesc"
+            :quote="shareDesc"
+            hashtags="vuejs,vite"
+          >
+            <b-icon class="mx-3" style="color: #3b5998" font-scale="3" icon="facebook" />
+          </ShareNetwork>
+
+          <ShareNetwork
+            network="twitter"
+            :url="shareURL"
+            :title="shareText"
+            :description="shareDesc"
+            :quote="shareDesc"
+            hashtags="vuejs,vite,javascript"
+            twitterUser="youyuxi"
+          >
+            <b-icon class="mx-3" style="color: #55acee" font-scale="3" icon="twitter" />
+          </ShareNetwork>
+
+          <ShareNetwork
+            network="linkedin"
+            :url="shareURL"
+            :title="shareText"
+            :description="shareDesc"
+            :quote="shareDesc"
+          >
+            <b-icon class="mx-3" style="color: #55acee" font-scale="3" icon="linkedin" />
+          </ShareNetwork>
+          <!-- <b-icon
             style="color: #007ab9"
             class="mx-3"
             font-scale="3"
@@ -90,7 +122,7 @@
             font-scale="3"
             icon="twitter"
             @click="shareViaTwitter"
-          />
+          /> -->
         </div>
       </div>
     </div>
@@ -107,6 +139,7 @@ export default {
       copy_text: 'Copy',
       shareText: 'MSDAT Platform',
       email: '',
+      twitterUser: 'youyuxi',
     };
   },
   methods: {
@@ -115,30 +148,30 @@ export default {
       document.execCommand('copy');
       this.copy_text = 'Copied';
     },
-    shareFacebook() {
-      const facebookURL = `https://www.facebook.com/sharer.php?u=${this.shareURL}`;
-      window.open(
-        facebookURL,
-        '_blank',
-        'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480',
-      );
-    },
-    shareViaTwitter() {
-      const url = `https://twitter.com/share?text=${this.shareDesc}&url=${this.shareURL}&hashtags=fmohconnect`;
-      window.open(
-        url,
-        '_blank',
-        'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480',
-      );
-    },
-    shareViaLinkedin() {
-      const url = `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareURL}&title=${this.shareText}&summary=Health%20Dashboards`;
-      window.open(
-        url,
-        '_blank',
-        'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480',
-      );
-    },
+    // shareFacebook() {
+    //   const facebookURL = `https://www.facebook.com/sharer.php?u=${this.shareURL}`;
+    //   window.open(
+    //     facebookURL,
+    //     '_blank',
+    //     'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480'
+    //   );
+    // },
+    // shareViaTwitter() {
+    //   const url = `https://twitter.com/share?text=${this.shareDesc}&url=${this.shareURL}&hashtags=fmohconnect`;
+    //   window.open(
+    //     url,
+    //     '_blank',
+    //     'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480'
+    //   );
+    // },
+    // shareViaLinkedin() {
+    //   const url = `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareURL}&title=${this.shareText}&summary=Health%20Dashboards`;
+    //   window.open(
+    //     url,
+    //     '_blank',
+    //     'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480'
+    //   );
+    // },
     shareViaEmail() {
       console.log(`mailto:${this.email}?subject=${this.shareText}&body=${this.shareURL}`);
       window.location = `mailto:${this.email}?subject=${this.shareText}&body=${this.shareDesc} : ${this.shareURL}`;
