@@ -98,15 +98,15 @@ import axios from 'axios';
 
 Vue.use(VueAxios, axios);
 Vue.use(VueAuthenticate, {
-  baseUrl: 'http://localhost:3001', // Your API domain
+  baseUrl: 'http://135.181.212.168:8788/', // Your API domain
 
   providers: {
     linkedin: {
       clientId: process.env.VUE_APP_API_LINKEDIN_ID,
-      url: '/api/todos',
+      url: '',
       name: 'linkedin',
       authorizationEndpoint: 'https://www.linkedin.com/oauth/v2/authorization',
-      redirectUri: 'https://localhost:8080/dashboard/Health_Outcomes_and_Service_Coverage',
+      redirectUri: process.env.VUE_APP_LINKEDIN_REDIRECT_URI,
       requiredUrlParams: ['display', 'scope'],
       scope: ['r_emailaddress'],
       scopeDelimiter: ' ',
