@@ -12,7 +12,8 @@
     "test:unit:update": "vue-cli-service test:unit -- -u",
     "test:unit:watch": "vue-cli-service test:unit --watch",
     "docs": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "dev": "vue-cli-service serve  --https true "
   },
   "dependencies": {
     "@highcharts/map-collection": "^1.1.3",

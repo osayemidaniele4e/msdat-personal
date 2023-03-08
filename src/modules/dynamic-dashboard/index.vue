@@ -24,7 +24,7 @@
 import { mapMutations } from 'vuex';
 import VueCookies from 'vue-cookies';
 import moment from 'moment';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import config from './config/dashboard_config';
@@ -236,4 +236,22 @@ export default {
   },
 };
 </script>
-<style lang="scss"></style>
+
+<style lang="scss">
+main.main_field {
+  min-height: 45vh;
+  width: 100%;
+}
+iframe {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px !important;
+  }
+}
+.iframe_container {
+  max-height: 450px;
+  overflow-y: auto;
+}
+</style>

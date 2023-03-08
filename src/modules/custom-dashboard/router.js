@@ -1,5 +1,5 @@
 import VueCookies from 'vue-cookies';
-// import Dashboard from '../dynamic_dashboard/index.vue';
+// import Dashboard from '../dynamic-dashboard/index.vue';
 
 export default [
   {
@@ -98,6 +98,6 @@ export default [
     },
     props: true,
     component: () => import('./views/CustomDashboard.vue'),
-    // component: () => import('../dynamic_dashboard/index.vue'),
+    // component: () => import('../dynamic-dashboard/index.vue'),
   },
 ];

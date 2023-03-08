@@ -2,6 +2,7 @@ import axiosInstance from '@/plugins/axios';
 import apiEndpoints from '../config/endpoint';
 
 const getDashboard = async () => axiosInstance.get(apiEndpoints.getDashboard);
+const getDashboardById = async (id) => axiosInstance.get(apiEndpoints.getDashboard + id);
 const getUpdatedData = async (theDate) => axiosInstance.get(`${apiEndpoints.getUpdatedDataDate}?datetime=${theDate}`);
 const getSingleIndicator = async (indicator) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicator}`);
 const getRequiredEndpoint = async (apiEndpoint) => axiosInstance.get(`/${apiEndpoint}`);
@@ -23,9 +24,7 @@ const otherEndpoints = [
   apiEndpoints.getNhmisMonthly,
 ];
 
-const getOtherEndpoint = async () => Promise.all(otherEndpoints.map(
-  (endpoint) => getRequiredEndpoint(endpoint),
-));
+const getOtherEndpoint = async () => Promise.all(otherEndpoints.map((endpoint) => getRequiredEndpoint(endpoint)));
 
 export default {
   otherEndpoints,
@@ -38,4 +37,5 @@ export default {
   getLatestDate,
   getIndicatorsWithAvailable,
   getIndicatorsWithPeriod,
+  getDashboardById,
 };

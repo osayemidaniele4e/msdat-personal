@@ -184,7 +184,7 @@ Detialed overview of the Modules folder used for the MSDAT application. Each fea
 ## custom-dashboard
 ![An image](./assets/module/custom-dashboard.drawio.png)
 
-## DataLayer
+## data-layer
 ![An image](./assets/module/data-layer.drawio.png)
 
 ## Dynamic_dashboard

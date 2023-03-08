@@ -12,7 +12,7 @@
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
-                <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span>
+                <!-- <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span> -->
               </div>
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
@@ -204,7 +204,7 @@
 
 <script>
 import { flatten, uniq, countBy } from 'lodash';
-import mixin from '@/modules/DataLayer/mixin';
+import mixin from '@/modules/data-layer/mixin';
 import TableDataCell from './TableDataCell.vue';
 import TableDataSourceCell from './TableDataSourceCell.vue';
 import TableDataRow from './TableDataRow.vue';
@@ -352,7 +352,9 @@ export default {
      *
      */
     getDataSourcesClassification() {
-      const countClassification = this.dataArray.map((e) => e.values.map((et) => et.classification));
+      const countClassification = this.dataArray.map((e) =>
+        e.values.map((et) => et.classification)
+      );
       const counted = countClassification.map((e) => countBy(e));
       const classic = {};
       counted.forEach((e) => {
@@ -371,7 +373,7 @@ export default {
       // Order classification following the Order
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
       const resultSorted = result.sort(
-        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
+        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0])
       );
       // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
@@ -393,7 +395,8 @@ export default {
        * order AvailableSources according to the OrderSourceBy Array;
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
+        (a, b) =>
+          this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource)
       );
       this.source = sortedSource;
       // console.log('this.source', this.source);
@@ -423,9 +426,7 @@ export default {
      */
     async getNumDenumData() {
       if (this.values?.datasource.id !== undefined) {
-        const {
-          indicator, year, location, datasource,
-        } = this.values;
+        const { indicator, year, location, datasource } = this.values;
 
         const numeratorData = await this.dlQuery({
           datasource: datasource.id,
@@ -444,18 +445,22 @@ export default {
         if (numeratorData.length > 0 || denominatorData.length > 0) {
           this.numDenum = true;
           if (numeratorData.length > 0) {
+            const numeratorName = this.dlGetDataSourceSpecificIndicator({
+              indicator: indicator.id,
+              datasource: datasource.id,
+            })[0].measurement_numerator;
             const numerator = numeratorData[0];
-            this.numerator = `${this.values.indicator.short_name} - ${Number(
-              numerator.value,
-            ).toLocaleString()}`;
+            this.numerator = `${numeratorName} - ${Number(numerator.value).toLocaleString()}`;
           } else {
             this.numerator = 'N/a';
           }
           if (denominatorData.length > 0) {
+            const denominatorName = this.dlGetDataSourceSpecificIndicator({
+              indicator: indicator.id,
+              datasource: datasource.id,
+            })[0].measurement_denominator;
             const denominator = denominatorData[0];
-            this.denominator = `${this.values.indicator.short_name} - ${Number(
-              denominator.value,
-            ).toLocaleString()}`;
+            this.denominator = `${denominatorName} - ${Number(denominator.value).toLocaleString()}`;
           } else {
             this.denominator = 'N/a';
           }
@@ -480,11 +485,13 @@ export default {
         });
       });
       // Step 2: get the data for the selected indicator and the related indicator
-      Promise.all(this.indicators.map(async (el) => {
-        const data = await this.getNhmisData(el);
-        const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
-        this.nhmisMonthData.push(updatedData);
-      }));
+      Promise.all(
+        this.indicators.map(async (el) => {
+          const data = await this.getNhmisData(el);
+          const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
+          this.nhmisMonthData.push(updatedData);
+        })
+      );
     },
   },
   watch: {

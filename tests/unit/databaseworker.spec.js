@@ -1,4 +1,4 @@
-import DataBase from '@/modules/DataLayer/services/database.worker';
+import DataBase from '@/modules/data-layer/services/database.worker';
 
 describe('DataBase', () => {
   let dataBase;
