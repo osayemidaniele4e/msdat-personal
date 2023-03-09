@@ -32,10 +32,10 @@
           <button
             @click="authenticate('linkedin')"
             type="submit"
-            class="btn btn-lg btn-primary px-4 py-2"
+            class="btn btn-lg btn-primary px-3 py-2"
           >
             <b-icon-linkedin class="mr-2"></b-icon-linkedin>
-            Linkedin
+
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
         </div>
@@ -88,9 +88,7 @@
 <script>
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import {
-  loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
-} from '@/config/facebook';
+import { loadFbSdk, getFbLoginStatus, fbLogout, fbLogin } from '@/config/facebook';
 
 import VueAxios from 'vue-axios';
 import VueAuthenticate from 'vue-authenticate';

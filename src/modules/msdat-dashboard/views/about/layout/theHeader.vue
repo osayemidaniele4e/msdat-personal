@@ -253,7 +253,7 @@
                     width="48"
                     height="48"
                   />
-                  Hi,&nbsp;{{ getUser.username }}
+                  Hi,&nbsp;{{ getUser.username !== undefined ? getUser.username : getUser.email }}
                 </div>
               </div>
               <b-sidebar
@@ -1152,13 +1152,12 @@ div {
   color: #fff;
 }
 
-@media print{
+@media print {
   @page {
-    size: landscape
+    size: landscape;
   }
-  body{
+  body {
     -webkit-print-color-adjust: exact !important;
   }
 }
-
 </style>
