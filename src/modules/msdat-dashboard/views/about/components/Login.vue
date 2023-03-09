@@ -13,20 +13,20 @@
         <div class="d-flex w-100 justify-content-center">
           <button
             type="submit"
-            class="btn btn-lg btn-primary px-4 py-2"
+            class="btn btn-lg btn-primary px-3 py-2"
             @click="handleClickSignIn()"
           >
             <b-icon-google class="mr-2"></b-icon-google>
-            Google
+
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <button
             @click.prevent="buttonClicked"
             type="submit"
-            class="btn btn-lg btn-primary px-4 py-2"
+            class="btn btn-lg btn-primary px-3 py-2"
           >
             <b-icon-facebook class="mr-2"></b-icon-facebook>
-            Facebook
+
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <button
