@@ -212,11 +212,6 @@ export default {
       }
     },
 
-    async googleAuth() {
-      const googleUser = await this.$gAuth.signIn();
-      console.log(googleUser);
-    },
-
     // eslint-disable-next-line consistent-return
     async handleClickSignIn() {
       try {
@@ -224,7 +219,7 @@ export default {
         if (!googleUser) {
           return null;
         }
-        console.log(googleUser, 'User');
+
         const data = {
           auth_token: googleUser.getAuthResponse().access_token,
           provider: 'google',
@@ -233,7 +228,6 @@ export default {
         // console.log(data);
         await this.AUTHENTICATE(data)
           .then((res) => {
-            console.log(res, 'res');
             if (res.status === 200 || res.status === 201) {
               this.$swal({
                 toast: true,
@@ -272,19 +266,16 @@ export default {
       this.isWorking = true;
       fbLogin(this.loginOptions).then((response) => {
         if (response.status === 'connected') {
-          console.log(response);
-
           const data = {
-            code: response.authResponse.accessToken,
+            auth_token: response.authResponse.accessToken,
             provider: 'facebook',
           };
 
           this.AUTHENTICATE(data)
             .then((res) => {
-              // console.log(res, 'res');
               if (res.status === 200 || res.status === 201) {
                 this.isConnected = true;
-                console.log(res, 'res');
+
                 this.$swal({
                   toast: true,
                   position: 'bottom',

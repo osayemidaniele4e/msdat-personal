@@ -277,7 +277,6 @@
                       CREATE AN ACCOUNT
                     </button>
                   </div>
-                  {{ showUser(getUser) }}
                 </div>
 
                 <div v-else>
@@ -469,10 +468,6 @@ export default {
     },
     showC() {
       this.showCard = true;
-    },
-
-    showUser(user) {
-      console.log(user, 'User');
     },
   },
   watch: {
