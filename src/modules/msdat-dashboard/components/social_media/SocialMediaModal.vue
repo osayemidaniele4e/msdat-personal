@@ -76,7 +76,7 @@
             :title="shareText"
             :description="shareDesc"
             :quote="shareDesc"
-            hashtags="vuejs,vite"
+            :hashtags="hashtags"
           >
             <b-icon class="mx-3" style="color: #3b5998" font-scale="3" icon="facebook" />
           </ShareNetwork>
@@ -87,8 +87,8 @@
             :title="shareText"
             :description="shareDesc"
             :quote="shareDesc"
-            hashtags="vuejs,vite,javascript"
-            twitterUser="youyuxi"
+            :hashtags="hashtags"
+            :twitterUser="twitterUser"
           >
             <b-icon class="mx-3" style="color: #55acee" font-scale="3" icon="twitter" />
           </ShareNetwork>
@@ -118,7 +118,9 @@ export default {
       copy_text: 'Copy',
       shareText: 'MSDAT Platform',
       email: '',
-      twitterUser: 'youyuxi',
+      twitterUser: '@eHealth4every1',
+      hashtags:
+        'HealthTech,HealthData,DataAnalytics,HealthDataAnalytics,BigData,DataSources,Data,DataScientist,DataAnalyst,HealthIndicators',
     };
   },
   methods: {

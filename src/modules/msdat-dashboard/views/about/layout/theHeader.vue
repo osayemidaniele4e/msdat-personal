@@ -253,7 +253,7 @@
                     width="48"
                     height="48"
                   />
-                  Hi,&nbsp;{{ getUser.username }}
+                  Hi,&nbsp;{{ getUser.username !== undefined ? getUser.username : getUser.email }}
                 </div>
               </div>
               <b-sidebar
@@ -277,7 +277,6 @@
                       CREATE AN ACCOUNT
                     </button>
                   </div>
-                  {{ showUser(getUser) }}
                 </div>
 
                 <div v-else>
@@ -469,10 +468,6 @@ export default {
     },
     showC() {
       this.showCard = true;
-    },
-
-    showUser(user) {
-      console.log(user, 'User');
     },
   },
   watch: {
@@ -1152,13 +1147,12 @@ div {
   color: #fff;
 }
 
-@media print{
+@media print {
   @page {
-    size: landscape
+    size: landscape;
   }
-  body{
+  body {
     -webkit-print-color-adjust: exact !important;
   }
 }
-
 </style>
