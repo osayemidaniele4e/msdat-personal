@@ -315,33 +315,33 @@ export default {
         .authenticate(provider)
         .then((response) => {
           // make api call
-          console.log(response);
-          // this.AUTHENTICATE_LINKEDIN(response)
-          //   .then((res) => {
-          //     if (res !== null) {
-          //       this.$swal({
-          //         toast: true,
-          //         position: 'bottom',
-          //         showConfirmButton: false,
-          //         timer: 5000,
-          //         icon: 'success',
-          //         title: 'Success',
-          //         text: 'Login successful',
-          //       });
-          //     }
-          //   })
-          //   .catch((err) => {
-          //     console.log('res', err);
-          //     this.$swal({
-          //       toast: true,
-          //       position: 'bottom',
-          //       showConfirmButton: false,
-          //       timer: 5000,
-          //       icon: 'error',
-          //       title: 'Something went wrong',
-          //       text: 'Something went wrong signing you in with linkedin',
-          //     });
-          //   });
+
+          this.AUTHENTICATE_LINKEDIN(response)
+            .then((res) => {
+              if (res !== null) {
+                this.$swal({
+                  toast: true,
+                  position: 'bottom',
+                  showConfirmButton: false,
+                  timer: 5000,
+                  icon: 'success',
+                  title: 'Success',
+                  text: 'Login successful',
+                });
+              }
+            })
+            .catch((err) => {
+              console.log('res', err);
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'error',
+                title: 'Something went wrong',
+                text: 'Something went wrong signing you in with linkedin',
+              });
+            });
         })
         .catch((err) => {
           console.log(err);
