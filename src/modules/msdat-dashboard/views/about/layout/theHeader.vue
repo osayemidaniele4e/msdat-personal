@@ -202,6 +202,29 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               >
+              <div>
+  <b-dropdown size="lg"  variant="link" toggle-class="text-decoration-none" no-caret>
+    <template #button-content>
+    <span class="external">External dashboards</span>
+    </template>
+    <b-dropdown-item href="#">
+      <router-link class="external-link" to="/external-ncdc">
+        National Disease Outbreak Dashboard
+      </router-link>
+      </b-dropdown-item>
+    <b-dropdown-item href="#">
+      <router-link class="external-link" to="/external-ndr1">
+  The Nigeria National Data Repository (NDR) 1
+      </router-link>
+    </b-dropdown-item>
+    <b-dropdown-item href="#"
+    >
+    <router-link class="external-link" to="/external-ndr2">
+ The Nigeria National Data Repository (NDR) 2
+    </router-link >
+   </b-dropdown-item>
+  </b-dropdown>
+</div>
               <a
                 href="https://msdat.fmohconnect.gov.ng/"
                 class="nav-link"
@@ -534,6 +557,23 @@ button {
 
 .mob-grid-icon {
   display: none;
+}
+
+.external{
+     text-decoration: none;
+      color: white;
+      font: normal normal 600 12px/20px Muli;
+      &-link{
+        text-decoration: none;
+        color: black;
+      };
+      .active{
+color: white;
+      };
+      .hover{
+        color: white;
+      }
+
 }
 
 header#the-header {

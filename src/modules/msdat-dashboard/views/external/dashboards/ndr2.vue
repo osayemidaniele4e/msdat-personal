@@ -3,19 +3,43 @@
     <the-header ref="theHeader" />
     <b-container>
          <main @click="$refs.theHeader.close()">
-      <link-prevue url="http://localhost:8080/ "></link-prevue>
+<br>
 
-      <h1>MSDAT External Dashboards</h1>
+
+   <b-icon-info-circle-fill
+                 
+                />
+                 MSDAT External Dashboards.
+  <!-- This is a dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021. It can be viewed via: https://ncdc.gov.ng/data -->
+
+ <!-- <b-alert show>This is a dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021. It can be viewed via: https://ncdc.gov.ng/data </b-alert> -->
+      <!-- <h1 class="text-align">MSDAT External Dashboards</h1> -->
+    <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">National Data Repository Dashboard 2</h5>
+          </template>
+          <!-- lazy loading for each section starts here -->
+          <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+     <b-embed
+    type="iframe"
+    aspect="16by9"
+    src="https://ndr.nascp.gov.ng/public/dashboard"
+    allowfullscreen
+    class="embed"
+  ></b-embed>
+        </base-sub-card>
+
+<!-- 
       <b-row>
         <b-col class="m-8"> 
           <b-card
-            header="featured"
             header-tag="header"
             footer="Card Footer"
             footer-tag="footer"
             title="Title"
           >
-            <b-card-text>Header and footers using props.</b-card-text>
+           <img src="./assets/ncdc.png" alt="" width="300px">
             <b-button href="#" variant="primary" v-b-toggle.collapse-1>Go somewhere</b-button>
 
               <b-collapse id="collapse-1" class="mt-2">
@@ -57,7 +81,7 @@
             <b-button href="#" variant="primary">Go somewhere</b-button>
           </b-card></b-col
         >
-      </b-row>
+      </b-row> -->
     </main>
     </b-container>
    
@@ -66,9 +90,9 @@
 </template>
 
 <script>
-import theHeader from '../about/layout/theHeader.vue';
-import theFooter from '../about/layout/theFooter.vue';
-import LinkPrevue from './preview/index.js';
+import theHeader from '../../about/layout/theHeader.vue';
+import theFooter from '../../about/layout/theFooter.vue';
+import LinkPrevue from '../preview/index.js';
 
 export default {
   components: {
@@ -203,4 +227,16 @@ export default {
 $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
+
+.main-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 100px;
+  width: 70vw;
+}
+
+.embed{
+  height: 100vh;
+}
 </style>
