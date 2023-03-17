@@ -119,6 +119,8 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               >
+              <div>
+</div>
               <a
                 href="https://msdat.fmohconnect.gov.ng/"
                 class="nav-link"
@@ -430,6 +432,23 @@ button {
 
 .mob-grid-icon {
   display: none;
+}
+
+.external{
+     text-decoration: none;
+      color: white;
+      font: normal normal 600 12px/20px Muli;
+      &-link{
+        text-decoration: none;
+        color: black;
+      };
+      .active{
+color: white;
+      };
+      .hover{
+        color: white;
+      }
+
 }
 
 header#the-header {
