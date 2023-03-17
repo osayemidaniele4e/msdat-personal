@@ -203,27 +203,6 @@
                 >Create New Dashboard</router-link
               >
               <div>
-  <b-dropdown size="lg"  variant="link" toggle-class="text-decoration-none" no-caret>
-    <template #button-content>
-    <span class="external">External dashboards</span>
-    </template>
-    <b-dropdown-item href="#">
-      <router-link class="external-link" to="/external-ncdc">
-        National Disease Outbreak Dashboard
-      </router-link>
-      </b-dropdown-item>
-    <b-dropdown-item href="#">
-      <router-link class="external-link" to="/external-ndr1">
-  The Nigeria National Data Repository (NDR) 1
-      </router-link>
-    </b-dropdown-item>
-    <b-dropdown-item href="#"
-    >
-    <router-link class="external-link" to="/external-ndr2">
- The Nigeria National Data Repository (NDR) 2
-    </router-link >
-   </b-dropdown-item>
-  </b-dropdown>
 </div>
               <a
                 href="https://msdat.fmohconnect.gov.ng/"
