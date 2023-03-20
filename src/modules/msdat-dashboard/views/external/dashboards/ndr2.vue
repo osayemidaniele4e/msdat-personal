@@ -10,7 +10,7 @@
     </span> -->
       <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm base">
         <template #title>
-          <h5 class="font-weight-bold work-sans text-white">National Disease Outbreak Dashboard</h5>
+          <h5 class="font-weight-bold work-sans text-white">National Data Repository Dashboard 2</h5>
         </template>
         
         <b-embed type="iframe" aspect="16by9" :src="url" :width="width" :height="height"></b-embed>
