@@ -3,22 +3,25 @@ import VueRouter from 'vue-router';
 import createPersistedState from 'vuex-persistedstate';
 import store from '@/store/index';
 import USER_ROUTE from '@/modules/msdat-dashboard/views/userLog/router';
-import MSDAT_ABOUT_ROUTE from '../modules/msdat-dashboard/views/about/router';
-import MSDAT_FAQ_ROUTE from '../modules/msdat-dashboard/views/faq/router';
-import MSDAT_UPDATE_LOG from '../modules/msdat-dashboard/views/update_log/router';
-import { router as CUSTOM_DASHBOARD_ROUTE } from '../modules/custom-dashboard';
-import { router as STATE_PROFILE_ROUTE } from '../modules/state-profile';
-import { router as HEALTH_THINK_ROUTE } from '../modules/health-think';
-import DYNAMICS_DASHBOARD_ROUTE from '../modules/dynamic_dashboard/router';
-import COMING_SOON from '../modules/coming-soon/router';
-import NATURAL_LANGUAGE_SEARCH from '../modules/natural-language-search/router';
-import NotFound from '../modules/msdat-dashboard/views/NotFound.vue';
-import AUTH_ROUTE from '../modules/auth/router';
+import MSDAT_ABOUT_ROUTE from '@/modules/msdat-dashboard/views/about/router';
+import MSDAT_EXTERNAL_ROUTE from '@/modules/msdat-dashboard/views/external/router';
+import MSDAT_FAQ_ROUTE from '@/modules/msdat-dashboard/views/faq/router';
+import MSDAT_UPDATE_LOG from '@/modules/msdat-dashboard/views/update_log/router';
+import { router as CUSTOM_DASHBOARD_ROUTE } from '@/modules/custom-dashboard';
+import { router as STATE_PROFILE_ROUTE } from '@/modules/state-profile';
+import { router as HEALTH_THINK_ROUTE } from '@/modules/health-think';
+import DYNAMICS_DASHBOARD_ROUTE from '@/modules/dynamic-dashboard/router';
+import COMING_SOON from '@/modules/coming-soon/router';
+import NATURAL_LANGUAGE_SEARCH from '@/modules/natural-language-search/router';
+import NotFound from '@/modules/msdat-dashboard/views/NotFound.vue';
+import AUTH_ROUTE from '@/modules/auth/router';
+import DATA_ENTRY from '@/modules/data-entry/router';
 
 Vue.use(VueRouter);
 
 const routes = [
   ...MSDAT_ABOUT_ROUTE,
+  ...MSDAT_EXTERNAL_ROUTE,
   ...MSDAT_FAQ_ROUTE,
   ...MSDAT_UPDATE_LOG,
   ...CUSTOM_DASHBOARD_ROUTE,
@@ -29,6 +32,7 @@ const routes = [
   ...NATURAL_LANGUAGE_SEARCH,
   ...AUTH_ROUTE,
   ...USER_ROUTE,
+  ...DATA_ENTRY,
   {
     path: '*',
     name: 'NotFound',

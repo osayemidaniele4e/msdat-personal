@@ -1,11 +1,10 @@
 <template>
   <div>
-
     <div v-if="showComing" class="show-coming">
       <div class="coming-soon-text">This section is coming soon....</div>
-      <img src="../../../../../assets/svg/chart2.svg" alt="" class="svg1">
+      <img src="../../../../../assets/svg/chart2.svg" alt="" class="svg1" />
     </div>
-     <!-- creating seaperate tabs for tableeu embeds
+    <!-- creating seaperate tabs for tableeu embeds
      for each sub dashboard asides 'Health Outcomes' -->
     <div v-if="title === 'Demographics'">
       <div class="heading">
@@ -30,6 +29,22 @@
       </div>
       <b-embed type="iframe" aspect="21by9" :src="url3" :width="width" :height="height"></b-embed>
     </div>
+
+    <div v-if="title === 'Health_Outcomes_and_Service_Coverage'">
+      <div class="heading">
+        <!-- <div class="main-text">Health Finance in Nigeria</div>
+        <div class="sub-text">Source: NHA 2017</div> -->
+      </div>
+      <b-embed type="iframe" aspect="21by9" :src="url4" :width="width" :height="height"></b-embed>
+    </div>
+
+    <div v-if="title === 'Health_Facility'">
+      <div class="heading">
+        <!-- <div class="main-text">Health Finance in Nigeria</div>
+        <div class="sub-text">Source: NHA 2017</div> -->
+      </div>
+      <b-embed type="iframe" aspect="21by9" :src="url5" :width="width" :height="height"></b-embed>
+    </div>
   </div>
 </template>
 
@@ -50,7 +65,8 @@ export default {
       url: 'https://public.tableau.com/views/UpdatedDemographicDashboardVersion2_16472527584120/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url2: 'https://public.tableau.com/views/HealthWorkforceDashboard/3rddashboard?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url3: 'https://public.tableau.com/views/Financedashboard_16472462810160/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      width: '100%',
+      url4: 'https://public.tableau.com/views/Health_Outcomesdisaggregation/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url5: 'https://public.tableau.com/views/HealthFacilitymulti-source/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       height: '400',
       showComing: true,
     };
@@ -61,7 +77,13 @@ export default {
   created() {
     this.title = this.$route.params.name;
 
-    if (this.title === 'Demographics' || this.title === 'Health_Workforce' || this.title === 'Health_Financing') {
+    if (
+      this.title === 'Demographics'
+      || this.title === 'Health_Workforce'
+      || this.title === 'Health_Financing'
+      || this.title === 'Health_Outcomes_and_Service_Coverage'
+      || this.title === 'Health_Facility'
+    ) {
       this.showComing = false;
     }
   },
@@ -85,18 +107,18 @@ export default {
   font-weight: 100;
 }
 
-.show-coming{
+.show-coming {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.svg1{
+.svg1 {
   width: 400px;
 }
 
-.coming-soon-text{
+.coming-soon-text {
   font-size: 15px;
   font-weight: 500;
   margin: 30px;

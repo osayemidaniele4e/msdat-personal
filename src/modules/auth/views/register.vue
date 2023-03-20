@@ -1,13 +1,13 @@
 <template>
   <b-container class="justify-content-content p-5">
-    <b-row class="justify-content-center" style="margin-bottom: 48.75px;">
+    <b-row class="justify-content-center" style="margin-bottom: 48.75px">
       <span class="header">Register your account</span>
     </b-row>
     <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
       <!-- <b-form slot-scope="{ validate }" @submit.prevent="validate().then(handleSubmit)"> -->
-        <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
+      <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <b-row>
-          <b-col style="margin-bottom: 28.5px;">
+          <b-col style="margin-bottom: 28.5px">
             <ValidationProvider
               name="Name"
               :rules="{ required: true, min: 3 }"
@@ -26,7 +26,7 @@
               </b-form-group>
             </ValidationProvider>
           </b-col>
-          <b-col style="margin-bottom: 28.5px;">
+          <b-col style="margin-bottom: 28.5px">
             <ValidationProvider
               name="User name"
               :rules="{ required: true, min: 3 }"
@@ -47,7 +47,7 @@
           </b-col>
         </b-row>
         <b-row>
-          <b-col style="margin-bottom: 28.5px; width:100%;">
+          <b-col style="margin-bottom: 28.5px; width: 100%">
             <ValidationProvider
               name="profession"
               :rules="{ required: true, min: 3 }"
@@ -66,7 +66,7 @@
               </b-form-group>
             </ValidationProvider>
           </b-col>
-          <b-col style="margin-bottom: 28.5px;">
+          <b-col style="margin-bottom: 28.5px">
             <ValidationProvider
               name="Organisation"
               :rules="{ required: true }"
@@ -87,7 +87,7 @@
             </ValidationProvider>
           </b-col>
         </b-row>
-        <b-row style="margin-bottom: 69.75px;">
+        <b-row style="margin-bottom: 69.75px">
           <b-col>
             <ValidationProvider
               name="Password"
@@ -109,27 +109,8 @@
               </b-form-group>
             </ValidationProvider>
           </b-col>
-          <!-- <b-col>
-            <ValidationProvider
-              name="Confirm password"
-              rules="required|confirmed:password"
-              v-slot="validationContext"
-            >
-              <b-form-group id="password-group2" label="Re-type Password" label-for="password2">
-                <b-form-input
-                  id="password2"
-                  v-model="form.password2"
-                  type="password"
-                  placeholder="******************"
-                  :state="getValidationState(validationContext)"
-                ></b-form-input>
-                <b-form-invalid-feedback id="input-1-live-feedback">{{
-                  validationContext.errors[0]
-                }}</b-form-invalid-feedback>
-              </b-form-group>
-            </ValidationProvider>
-          </b-col> -->
-          <b-col style="margin-bottom: 28.5px;">
+
+          <b-col style="margin-bottom: 28.5px">
             <ValidationProvider
               name="Email"
               :rules="{ required: true, email: true }"
@@ -150,7 +131,7 @@
             </ValidationProvider>
           </b-col>
         </b-row>
-        <b-row class="justify-content-center" style="margin-bottom: 17.25px;">
+        <b-row class="justify-content-center" style="margin-bottom: 17.25px">
           <ValidationProvider
             name="terms and conditions"
             :rules="{ is: 'true' }"
@@ -160,8 +141,8 @@
               <b-form-checkbox
                 v-model="form.terms"
                 :state="getValidationState(validationContext)"
-                value=true
-                unchecked-value=false
+                value="true"
+                unchecked-value="false"
               />
               <b-form-invalid-feedback>
                 {{ validationContext.errors[0] }}
@@ -170,10 +151,12 @@
           </ValidationProvider>
           <span>I accept all Terms and Conditions</span>
         </b-row>
-        <b-row class="justify-content-center" style="margin-bottom: 17.25px;">
-          <b-button class="create-button" type="submit" @click.prevent="register()">CREATE AN ACCOUNT</b-button>
+        <b-row class="justify-content-center" style="margin-bottom: 17.25px">
+          <b-button class="create-button" type="submit" @click.prevent="register()"
+            >CREATE AN ACCOUNT</b-button
+          >
         </b-row>
-        <b-row class="justify-content-center" style="margin-bottom: 17.25px;">
+        <b-row class="justify-content-center" style="margin-bottom: 17.25px">
           <span>Already have an account?</span>
         </b-row>
         <b-row class="justify-content-center">
@@ -185,16 +168,9 @@
 </template>
 
 <script>
-// import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { mapActions } from 'vuex';
-// import authProcess from '../components/authProcess';
 
 export default {
-  // components: {
-  //   ValidationProvider,
-  //   ValidationObserver,
-  // },
-  // mixins: [authProcess],
   data() {
     return {
       form: {
@@ -212,9 +188,6 @@ export default {
   methods: {
     ...mapActions('AUTH_STORE', ['CREATE_USER']),
 
-    // onSubmit() {
-    //   this.$router.push({ name: 'my-dashboard-details' });
-    // },
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
     },

@@ -113,14 +113,10 @@ export default {
 
               if (res.status === 200) {
                 // VueCookies.set('msdat-access-token', res.data.token);
-                this.$swal(
-                  `Hi ${formData.username} 👋, Welcome to your Dashboard`,
-                );
+                this.$swal(`Hi ${formData.username} 👋, Welcome to your Dashboard`);
                 this.$router.push({ path: '/my-dashboard/details' });
               } else {
-                this.$swal(
-                  'something went wrong, confirm username and password',
-                );
+                this.$swal('something went wrong, confirm username and password');
               }
             })
             .catch((err) => {

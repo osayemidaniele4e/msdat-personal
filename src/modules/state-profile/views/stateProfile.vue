@@ -170,7 +170,7 @@ import { mapState } from 'vuex';
 import * as requests from '../requests';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
-import dataMixins from '../../DataLayer/mixin';
+import dataMixins from '../../data-layer/mixin';
 import modalComponent from '../../msdat-dashboard/views/onboarding/modal.vue';
 
 export default {

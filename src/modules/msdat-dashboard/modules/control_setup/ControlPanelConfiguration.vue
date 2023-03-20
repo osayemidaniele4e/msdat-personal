@@ -9,7 +9,7 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
 import VueCookies from 'vue-cookies';
 import moment from 'moment';
 import { eventBus } from '@/main';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {
@@ -70,10 +70,20 @@ export default {
     async getAvailableDataIndicators() {
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
+    removeDuplicates(arr) {
+      const seen = {};
+      return arr.filter((item) => {
+        const key = JSON.stringify(item);
+        // eslint-disable-next-line no-return-assign, no-prototype-builtins
+        return seen.hasOwnProperty(key) ? false : (seen[key] = true);
+      });
+    },
     async setInteractions() {
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
-      const { data } = await apiServices.getDashboard();
-      this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      if (this.getInternetStatus === true) {
+        const { data } = await apiServices.getDashboard();
+        this.dashboard = data.results.find((item) => item.title === this.$route.meta.title);
+      }
       const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
 
       const interaction = {
@@ -88,16 +98,16 @@ export default {
       };
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
-        VueCookies.set('user_interactions', JSON.stringify(this.interactions));
-        const interactions = JSON.parse(VueCookies.get('user_interactions'));
-        console.log('test', interactions);
-        if (interactions.length > 9 && this.getInternetStatus === true) {
-          interactions.forEach(async (el) => {
+        const uniqueArr = this.removeDuplicates(this.interactions);
+        localStorage.setItem('user_interactions', JSON.stringify(uniqueArr));
+        const interactions = localStorage.getItem('user_interactions');
+        const parsedInteraction = JSON.parse(interactions);
+        if (parsedInteraction.length > 9 && this.getInternetStatus === true) {
+          parsedInteraction.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
           });
           this.interactions = [];
         }
-        // }
       }
     },
   },
@@ -121,7 +131,6 @@ export default {
             values: availableDS,
           });
         }
-        this.setInteractions();
       },
     },
     'payload.datasource': {
@@ -153,6 +162,7 @@ export default {
     },
     'payload.location': {
       async handler() {
+        this.setInteractions();
         const availableYears = await this.getAvailableYears();
         await this.SETUP_CONTROL_OPTIONS1({
           groupIndex: this.groupIndex,
@@ -160,9 +170,13 @@ export default {
           key: 'year',
           values: availableYears,
         });
-        this.setInteractions();
       },
     },
+    // 'payload.year': {
+    //   async handler() {
+    //     this.setInteractions();
+    //   },
+    // },
   },
 };
 </script>

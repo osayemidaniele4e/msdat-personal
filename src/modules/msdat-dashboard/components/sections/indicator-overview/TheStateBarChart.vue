@@ -93,9 +93,10 @@ export default {
     values: {
       async handler() {
         await this.updateValue();
+        this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
       },
       deep: true,
-      immediate: false,
+      immediate: true,
     },
     'BarChartOptions.series': {
       handler(newSeries) {
@@ -331,7 +332,6 @@ export default {
       for (let i = 0; i < data.length; i += 1) {
         data[i].value = parseFloat(data[i].value).toFixed(1);
       }
-      // console.log(data, 'datata');
 
       return data;
     },

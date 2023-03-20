@@ -180,8 +180,8 @@ import { mapMutations, mapGetters } from 'vuex';
 import {
   BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
-import config from '@/modules/dynamic_dashboard/config/dashboard_config';
+import apiServices from '@/modules/data-layer/services/ApiServices';
+import config from '@/modules/dynamic-dashboard/config/dashboard_config';
 import Vue from 'vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';

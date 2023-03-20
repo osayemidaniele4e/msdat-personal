@@ -16,7 +16,7 @@
         <div class="col-md-2">
           <button
             type="submit"
-            class="btn btn-block btn-primary text-uppercase"
+            class="btn btn-block btn-primary py-2 text-uppercase"
             style="
               border-bottom-left-radius: 0px;
               border-top-left-radius: 0;
@@ -28,7 +28,7 @@
               class=""
               style="color: #ffffff"
               icon="caret-right-fill"
-              @click="shareViaTwitter"
+              @click="shareViaEmail"
             />
           </button>
         </div>
@@ -50,7 +50,7 @@
         <div class="col-md-3">
           <button
             type="button"
-            class="btn btn-block btn-primary text-uppercase border"
+            class="btn btn-block btn-primary py-2 text-uppercase border"
             style="
               color: #007d53;
               border-bottom-left-radius: 0px;
@@ -61,12 +61,7 @@
             @click="copy"
           >
             {{ copy_text }}
-            <b-icon
-              class=""
-              style="color: #007d53"
-              icon="bookmarks"
-              @click="shareViaTwitter"
-            />
+            <b-icon class="" style="color: #007d53" icon="bookmarks" @click="copy" />
           </button>
         </div>
       </div>
@@ -75,27 +70,38 @@
       <h6 class="font-weight-bold work-sans">Share on social media</h6>
       <div class="row no-gutters">
         <div class="col">
-          <b-icon
-            style="color: #007ab9"
-            class="mx-3"
-            font-scale="3"
-            icon="linkedin"
-            @click="shareViaLinkedin"
-          />
-          <b-icon
-            class="mx-3"
-            style="color: #3b5998"
-            font-scale="3"
-            icon="facebook"
-            @click="shareFacebook"
-          />
-          <b-icon
-            class="mx-3"
-            style="color: #55acee"
-            font-scale="3"
-            icon="twitter"
-            @click="shareViaTwitter"
-          />
+          <ShareNetwork
+            network="facebook"
+            :url="shareURL"
+            :title="shareText"
+            :description="shareDesc"
+            :quote="shareDesc"
+            :hashtags="hashtags"
+          >
+            <b-icon class="mx-3" style="color: #3b5998" font-scale="3" icon="facebook" />
+          </ShareNetwork>
+
+          <ShareNetwork
+            network="twitter"
+            :url="shareURL"
+            :title="shareText"
+            :description="shareDesc"
+            :quote="shareDesc"
+            :hashtags="hashtags"
+            :twitterUser="twitterUser"
+          >
+            <b-icon class="mx-3" style="color: #55acee" font-scale="3" icon="twitter" />
+          </ShareNetwork>
+
+          <ShareNetwork
+            network="linkedin"
+            :url="shareURL"
+            :title="shareText"
+            :description="shareDesc"
+            :quote="shareDesc"
+          >
+            <b-icon class="mx-3" style="color: #55acee" font-scale="3" icon="linkedin" />
+          </ShareNetwork>
         </div>
       </div>
     </div>
@@ -106,11 +112,15 @@
 export default {
   data() {
     return {
-      shareURL: window.location.origin,
-      shareDesc: 'Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform.',
+      shareURL: window.location.href,
+      shareDesc:
+        'Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform',
       copy_text: 'Copy',
       shareText: 'MSDAT Platform',
       email: '',
+      twitterUser: '@eHealth4every1',
+      hashtags:
+        'HealthTech,HealthData,DataAnalytics,HealthDataAnalytics,BigData,DataSources,Data,DataScientist,DataAnalyst,HealthIndicators',
     };
   },
   methods: {
@@ -119,39 +129,13 @@ export default {
       document.execCommand('copy');
       this.copy_text = 'Copied';
     },
-    shareFacebook() {
-      const facebookURL = `https://www.facebook.com/sharer.php?u=${this.shareDesc}`;
-      window.open(
-        facebookURL,
-        '_blank',
-        'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480',
-      );
-    },
-    shareViaTwitter() {
-      const url = `https://twitter.com/share?text=${this.shareDesc}&url=${this.shareURL}&hashtags=fmohconnect`;
-      window.open(
-        url,
-        '_blank',
-        'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480',
-      );
-    },
-    shareViaLinkedin() {
-      const url = `https://www.linkedin.com/shareArticle?mini=true&url=${this.shareDesc}&title=${this.shareText}&summary=Health%20Dashboards`;
-      window.open(
-        url,
-        '_blank',
-        'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=640, height=480',
-      );
-    },
+
     shareViaEmail() {
-      console.log(
-        `mailto:${this.email}?subject=${this.shareText}&body=${this.shareURL}`,
-      );
+      console.log(`mailto:${this.email}?subject=${this.shareText}&body=${this.shareURL}`);
       window.location = `mailto:${this.email}?subject=${this.shareText}&body=${this.shareDesc} : ${this.shareURL}`;
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
