@@ -1,89 +1,6 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
   <header id="the-header" class="position-relative">
-    <!-- <div
-      class="container-fluid"
-      style="background-color: #348481"
-      v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
-    >
-      <div class="w-100 custom-header">
-        {{
-          this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.description
-        }}
-      </div>
-    </div>
-    <div
-      class="container-fluid bg-light"
-      v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
-    >
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div class="d-flex">
-          <h2 class="me-5">Share your dashboard</h2>
-          <div class="img ms-5 d-flex">
-            <img
-              src="https://www.pngitem.com/pimgs/m/299-2994644_svg-link-jpg-library-stock-link-icon-png.png"
-              style="
-                width: 20px;
-                height: 20px;
-                border-radius: 50px;customImg
-                object-fit: contain;
-              "
-            />
-            <img
-              src="https://e7.pngegg.com/pngimages/184/147/png-clipart-facebook-computer-icons-social-media-social-networking-service-scalable-graphics-facebook-f-logo-white-background-facebook-lite-logo-angle-text.png"
-              style="
-                width: 20px;
-                height: 20px;
-                border-radius: 50px;
-                object-fit: contain;
-              "
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/2491px-Twitter-logo.svg.png"
-              alt=""
-              style="
-                width: 20px;
-                height: 20px;
-                border-radius: 50px;
-                object-fit: contain;
-              "
-            />
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJYxFSn8Siueit7bVNmPDwVpA0Cq3_4rOxDA&usqp=CAU"
-              alt=""
-              style="
-                width: 20px;
-                height: 20px;
-                border-radius: 50px;
-                object-fit: contain;
-              "
-            />
-          </div>
-        </div>
-        <router-link to="/account" class="d-flex">
-          <img
-            v-if="!customImg"
-            src="https://w7.pngwing.com/pngs/340/956/png-transparent-profile-user-icon-computer-icons-user-profile-head-ico-miscellaneous-black-desktop-wallpaper.png"
-            style="
-              width: 35px;
-              height: 35px;
-              border-radius: 50px;
-              object-fit: contain;
-            "
-          />
-          <img
-            v-else
-            :src="customImg"
-            style="
-              width: 40px;
-              height: 40px;
-              border-radius: 50px;
-              object-fit: contain;
-            "
-          />
-        </router-link>
-      </div>
-    </div> -->
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
@@ -202,6 +119,8 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               >
+              <div>
+</div>
               <a
                 href="https://msdat.fmohconnect.gov.ng/"
                 class="nav-link"
@@ -253,7 +172,7 @@
                     width="48"
                     height="48"
                   />
-                  Hi,&nbsp;{{ getUser.username }}
+                  Hi,&nbsp;{{ getUser.username !== undefined ? getUser.username : getUser.email }}
                 </div>
               </div>
               <b-sidebar
@@ -277,7 +196,6 @@
                       CREATE AN ACCOUNT
                     </button>
                   </div>
-                  {{ showUser(getUser) }}
                 </div>
 
                 <div v-else>
@@ -292,10 +210,6 @@
                   </div>
                 </div>
               </b-sidebar>
-              <!-- <router-link to="/login" v-else class="nav-link"
-                ><b-icon-person-fill></b-icon-person-fill>&nbsp;Sign
-                out</router-link
-              > -->
             </b-nav>
             <b-icon
               @click="toggleOption = !toggleOption"
@@ -355,7 +269,6 @@
           <div class="col-8">
             <div>{{ getUser.username }}</div>
             <div>{{ getUser.email }}</div>
-            {{ showUser(getUser) }}
           </div>
           <div class="close mr-2" @click.prevent="showCard = false">
             <b-icon-x-circle></b-icon-x-circle>
@@ -370,17 +283,6 @@
       </div>
     </div>
   </header>
-  <!--  to deltete
-        // using provide inject and watcher to work on this feature.
-        // inject into base panel to affect the entire dashboard
-        // controls if from the global storage
-        // this.controls = this.$children;
-      >
-      // or much better, emiting the value to parent component to then inject in the child component
-      // the parent component is the base dashboard
-      // from there, you will inject into other components
-      // use a different source from $children
-      // or rather take the index to the component -->
 </template>
 
 <script>
@@ -470,10 +372,6 @@ export default {
     showC() {
       this.showCard = true;
     },
-
-    showUser(user) {
-      console.log(user, 'User');
-    },
   },
   watch: {
     $route: {
@@ -534,6 +432,23 @@ button {
 
 .mob-grid-icon {
   display: none;
+}
+
+.external{
+     text-decoration: none;
+      color: white;
+      font: normal normal 600 12px/20px Muli;
+      &-link{
+        text-decoration: none;
+        color: black;
+      };
+      .active{
+color: white;
+      };
+      .hover{
+        color: white;
+      }
+
 }
 
 header#the-header {
@@ -878,43 +793,6 @@ header#the-header {
   }
 }
 
-/* MEDIUM */
-// @media (min-width: 768px) and (max-width: 992px) {
-//   .mob{
-//     display: inherit;
-//   }
-//   .main-text {
-//     display: none;
-//   }
-//   .mains .header-navs a{
-//     display: none;
-//   }
-//   .mobile-flex-col-text1 {
-//     color: white;
-//     font-weight: 200;
-//     font-size: 15px;
-//   }
-
-//   .mobile-flex-col-text2 {
-//     color: white;
-//     font-weight: 500;
-//     font-size: 19px;
-//   }
-//    .main{
-//     display: none;
-//   }
-
-// .mobile-flex{
-//    display: flex;
-//  justify-content: space-between;
-//  flex-direction: row;
-// //  display: grid;
-// //  grid-template-columns: 20% 50% 20% 10%;
-// }
-
-// .mob-grid-icon{
-//   display: inherit;
-// }
 #about-wrap {
   header#the-header {
     & > .container-fluid {
@@ -1152,13 +1030,12 @@ div {
   color: #fff;
 }
 
-@media print{
+@media print {
   @page {
-    size: landscape
+    size: landscape;
   }
-  body{
+  body {
     -webkit-print-color-adjust: exact !important;
   }
 }
-
 </style>

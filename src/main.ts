@@ -19,6 +19,8 @@ import 'regenerator-runtime';
 import './plugins/veevalidate';
 import './assets/styles/fonts.css';
 
+import VueSocialSharing from 'vue-social-sharing';
+
 const gauthOption = {
   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
   scope: 'profile email',
@@ -26,6 +28,8 @@ const gauthOption = {
   plugin_name: 'social-auth',
 };
 Vue.use(GAuth, gauthOption);
+
+Vue.use(VueSocialSharing);
 
 // import Vue from 'vue';
 

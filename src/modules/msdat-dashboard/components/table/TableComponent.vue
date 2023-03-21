@@ -27,7 +27,7 @@
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
-          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
+          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis">
             <div class="nhmis_month_head">NHMIS-DHIS2 (monthly)</div>
             <TableDataSourceCell
               v-for="(dt, i) in source"
@@ -70,14 +70,17 @@
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
               <div class="nhmis-month-text1" v-if="nhmisMonthData[0]">
                 <!-- static data (only for overview table) for NHMIS data -->
-                {{ nhmisMonthData[0].value }}%
+
+                <span v-if="nhmisMonthData[0].value === null"> - </span>
+                <span v-else> {{ nhmisMonthData[0].value }}%</span>
               </div>
               <div class="nhmis-month-text1" v-else>
                 <!-- static data (only for overview table) for NHMIS data -->
                 -
               </div>
               <div class="nhmis-month-text2" v-if="nhmisMonthData[0]">
-                {{ nhmisMonthData[0].period }}
+                <span v-if="nhmisMonthData[0].value === null"> - </span>
+                <span v-else> {{ nhmisMonthData[0].period }}</span>
               </div>
               <div class="nhmis-month-text2" v-else>-</div>
 
@@ -152,10 +155,13 @@
                   <TableDataCell />
                   <!-- id's -->
                   <!-- static data (only for overview table) for NHMIS data -->
-
-                  <div class="nhmis-rel-text1">{{ nhmisMonthData[index].value }}%</div>
+                  <div class="nhmis-rel-text1">
+                    <span v-if="nhmisMonthData[index].value === null"> - </span>
+                    <span v-else> {{ nhmisMonthData[index].value }}%</span>
+                  </div>
                   <div class="nhmis-rel-text2">
-                    {{ nhmisMonthData[index].period }}
+                    <span v-if="nhmisMonthData[index].value === null"> - </span>
+                    <span v-else> {{ nhmisMonthData[index].period }}</span>
                   </div>
                 </td>
 
@@ -319,6 +325,7 @@ export default {
       denominator: null,
       numerator: null,
       numDenum: false,
+      hasNhmis: false,
     };
   },
   methods: {
@@ -399,6 +406,12 @@ export default {
           this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource)
       );
       this.source = sortedSource;
+
+      // checking if it has NHMIS as a datasource
+      if (this.source.some((item) => item.id === 6)) {
+        this.hasNhmis = true;
+      }
+
       // console.log('this.source', this.source);
     },
 
@@ -488,8 +501,13 @@ export default {
       Promise.all(
         this.indicators.map(async (el) => {
           const data = await this.getNhmisData(el);
-          const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
-          this.nhmisMonthData.push(updatedData);
+          if (data === undefined) {
+            const updatedData = { ...data, value: null };
+            this.nhmisMonthData.push(updatedData);
+          } else {
+            const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
+            this.nhmisMonthData.push(updatedData);
+          }
         })
       );
     },
@@ -549,6 +567,11 @@ export default {
       }
     }, 500);
     await this.getNumDenumData();
+
+    // checking if it has NHMIS as a datasource
+    if (this.source.some((item) => item.id === 6)) {
+      this.hasNhmis = true;
+    }
   },
 
   // async mounted() {

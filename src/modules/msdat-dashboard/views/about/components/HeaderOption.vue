@@ -21,6 +21,12 @@
           <span>About Dashboard</span>
         </router-link>
       </li>
+         <li>
+        <router-link to="/external-dashboards">
+          <img src="@/assets/img/icons/ic_info.svg" alt="" />
+          <span>External Dashboards</span>
+        </router-link>
+      </li>
       <li @click="$emit('tour')">
         <router-link to="/">
           <img src="@/assets/img/icons/ic_play.svg" alt="" />
