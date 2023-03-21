@@ -65,7 +65,7 @@
             <template v-slot:indicator="props">
               <slot name="indicator-0" :indicator="props"></slot>
             </template>
-            <template #default v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
+            <template #default v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis">
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
               <div class="nhmis-month-text1" v-if="nhmisMonthData[0]">
