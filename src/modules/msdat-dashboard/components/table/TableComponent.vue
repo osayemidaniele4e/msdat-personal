@@ -148,7 +148,7 @@
               </template>
               <template
                 #default
-                v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'"
+                v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
               >
                 <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
                 <td class="text-center p-2" v-if="nhmisMonthData[index]">
