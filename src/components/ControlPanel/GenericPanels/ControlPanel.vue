@@ -316,18 +316,18 @@ export default {
     const getYear = date.getFullYear + 1;
     // pick one of the available years as the default years as opposed to the static 2016 year
     const defaultYears = this.setup[3].options;
-    console.log(defaultYears);
-    console.log(defaultYears, 'defaultyears');
+    // console.log(defaultYears);
+    // console.log(defaultYears, 'defaultyears');
     const newArr = [];
     defaultYears.map((el) => {
       if (el < getYear) {
         newArr.push(el);
         this.defaultYearDropdown = newArr;
-        console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
+        // console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
       }
       return el;
     });
-    console.log(this.setup, 'setup');
+    // console.log(this.setup, 'setup');
     this.updatePayload(this.defaultIndicator, 'indicator');
     this.updatePayload(this.defaultDataSource, 'datasource');
     this.updatePayload(this.defaultLocation, 'location');
