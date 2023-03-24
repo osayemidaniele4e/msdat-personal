@@ -165,8 +165,9 @@ export default {
 
             sortedData.unshift({
               name: stateObject.name,
-              y: parseFloat(stateData.value),
-              color: this.colors[0].color,
+              y: parseFloat(stateData?.value),
+              // color: this.colors[0].color,
+              color: this.colors.find((item2) => item2.id === stateObject.parent).color,
             });
             chartSeries.push({
               color: this.colors[stateObject.parent].color,

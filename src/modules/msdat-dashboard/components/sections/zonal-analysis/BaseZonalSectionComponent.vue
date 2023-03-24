@@ -1,16 +1,10 @@
 <template>
   <div class="row">
     <div class="col-md-8">
-      <ZonalColumnChart
-        :controlPanelProps="controlPanelProps"
-        :colors="regionalColor"
-      />
+      <ZonalColumnChart :controlPanelProps="controlPanelProps" :colors="regionalColor" />
     </div>
     <div class="col-md-4" @click="handleMapClick">
-      <ZonalMap
-        :controlPanelProps="controlPanelProps"
-        :colors="regionalColor"
-      />
+      <ZonalMap :controlPanelProps="controlPanelProps" :colors="regionalColor" />
     </div>
   </div>
 </template>
@@ -68,7 +62,12 @@ export default {
   methods: {
     handleMapClick(e) {
       const point = e.point['hc-key'];
-      const selectedPlace = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+      const selectedPlaceByZone = this.dlGetLocation({ level: 2 }).filter((val) => val.name === point);
+
+      const selectedPlaceByState = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+
+      const selectedPlace = selectedPlaceByZone.length === 0 ? selectedPlaceByState : selectedPlaceByZone;
+
       if (selectedPlace.length !== 0) {
         eventBus.$emit('handleClick', selectedPlace[0]);
       }
@@ -77,5 +76,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
