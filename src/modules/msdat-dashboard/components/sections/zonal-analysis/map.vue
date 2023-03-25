@@ -24,13 +24,13 @@
           </p>
         </template>
         <div id="zonalMapComponent" class="col-12 position-relative">
-          <button title="hello" @click="returnToNational" v-if="level === 4" class="bg-primary font-weight-bold">
+          <button title="Back to National" @click="returnToNational" v-if="level === 4" class="bg-primary font-weight-bold">
             <b-icon icon="chevron-left" />
-            <!-- &nbsp;Back to National -->
+            &nbsp;Back to National
           </button>
-          <button title="hi " @click="returnToZonal" v-if="level === 3" class="bg-primary font-weight-bold">
+          <button title="Back to Zonal " @click="returnToZonal" v-if="level === 3" class="bg-primary font-weight-bold">
             <b-icon icon="chevron-left" />
-            <!-- &nbsp;Back to Zonal -->
+            &nbsp;Back to Zonal
           </button>
           <BaseMap
             ref="BaseMap"
