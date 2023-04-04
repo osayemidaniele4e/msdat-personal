@@ -1,3 +1,5 @@
+<!-- eslint-disable camelcase -->
+<!-- eslint-disable camelcase -->
 /* eslint-disable camelcase */
 <template>
   <div>
@@ -44,32 +46,15 @@ import {
 } from './mapData/south-west';
 
 import {
-  Adamawa,
-  Bauchi,
-  Borno,
-  Gombe,
-  Taraba,
-  Yobe,
+  Adamawa, Bauchi, Borno, Gombe, Taraba, Yobe,
 } from './mapData/north-east';
 
 import {
-  Jigawa,
-  Kano,
-  Katsina,
-  Kebbi,
-  Sokoto,
-  Kaduna,
-  Zamfara,
+  Jigawa, Kano, Katsina, Kebbi, Sokoto, Kaduna, Zamfara,
 } from './mapData/north-west';
 
 import {
-  Nasarawa,
-  Niger,
-  Plateau,
-  Kwara,
-  Kogi,
-  Benue,
-  Fct as FCT,
+  Nasarawa, Niger, Plateau, Kwara, Kogi, Benue, Fct as FCT,
 } from './mapData/north-central';
 
 // load map
@@ -162,9 +147,10 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = regionsMap;
           break;
         case 3:
-          // console.trace(lgaState);
           this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[lgaState].data;
-          // console.log(this.lgaMapData[this.lgaState].data);
+          break;
+        case 4:
+          this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
         default:
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;

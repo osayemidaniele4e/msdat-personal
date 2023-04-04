@@ -6,13 +6,13 @@
 <br>
 
    <b-icon-info-circle-fill
-                 
+
                 />
                 MSDAT External Dashboards.
   <!-- This is a dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021. It can be viewed via: https://ncdc.gov.ng/data -->
  <!-- <b-alert show>
         <b-icon-info-circle-fill
-                 
+
                 />
   This is a dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021. It can be viewed via: https://ncdc.gov.ng/data </b-alert> -->
       <!-- <h1 class="text-align">MSDAT External Dashboards</h1> -->
@@ -23,7 +23,7 @@
           <!-- lazy loading for each section starts here -->
           <!-- the first section doesn't need the component
                  since it will be mounted first -->
-                 
+
      <b-embed
     type="iframe"
     aspect="16by9"
@@ -34,9 +34,9 @@
   ></b-embed>
         </base-sub-card>
 
-<!-- 
+<!--
       <b-row>
-        <b-col class="m-8"> 
+        <b-col class="m-8">
           <b-card
             header-tag="header"
             footer="Card Footer"
@@ -69,7 +69,7 @@
             <b-button href="#" variant="primary">Go somewhere</b-button>
           </b-card>
         </b-col>
-      
+
       </b-row>
 
       <b-row>
@@ -90,7 +90,7 @@
       </b-row> -->
     </main>
     </b-container>
-   
+
     <the-footer />
   </div>
 </template>
@@ -108,9 +108,9 @@ export default {
   },
   data() {
     return {
-        width: '100%',
+      width: '100%',
       height: '400',
-            url: 'https://public.tableau.com/views/NCDCHistoricalDashboard/Dashboard_1?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url: 'https://public.tableau.com/views/NCDCHistoricalDashboard/Dashboard_1?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       selected: null,
       macBookImg,
       indicators: [

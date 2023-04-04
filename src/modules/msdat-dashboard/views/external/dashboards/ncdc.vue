@@ -1,7 +1,7 @@
 <template>
   <div>
     <the-header ref="theHeader" />
- 
+
     <div class="main d-flex flex-column">
       <br>
          <!-- <span>
@@ -12,7 +12,7 @@
         <template #title>
           <h5 class="font-weight-bold work-sans text-white">National Disease Outbreak Dashboard</h5>
         </template>
-        
+
         <b-embed type="iframe" aspect="16by9" :src="url" :width="width" :height="height"></b-embed>
       </base-sub-card>
     </div>

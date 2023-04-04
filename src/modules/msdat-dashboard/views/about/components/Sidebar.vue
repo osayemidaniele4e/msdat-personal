@@ -45,7 +45,7 @@
               target="_blank"
                class="sub-item"
             >
-              HUC Dashboard
+              HSU Dashboard
             </a>
             <a
               href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/"

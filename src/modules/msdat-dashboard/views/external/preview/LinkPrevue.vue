@@ -33,15 +33,15 @@
 
 <script>
 export default {
-  name: "link-prevue",
+  name: 'link-prevue',
   props: {
     url: {
       type: String,
-      default: "",
+      default: '',
     },
     cardWidth: {
       type: String,
-      default: "400px",
+      default: '400px',
     },
     onButtonClick: {
       type: Function,
@@ -53,11 +53,11 @@ export default {
     },
     apiUrl: {
       type: String,
-      default: "http://localhost:8080/",
+      default: 'http://localhost:8080/',
     },
   },
   watch: {
-    url: function () {
+    url() {
       this.response = null;
       this.getLinkPreview();
     },
@@ -65,27 +65,27 @@ export default {
   created() {
     this.getLinkPreview();
   },
-  data: function () {
+  data() {
     return {
       response: null,
       validUrl: false,
     };
   },
   methods: {
-    viewMore: function () {
+    viewMore() {
       if (this.onButtonClick !== undefined) {
         this.onButtonClick(this.response);
       } else {
-        const win = window.open(this.url, "_blank");
+        const win = window.open(this.url, '_blank');
         win.focus();
       }
     },
-    isValidUrl: function (url) {
+    isValidUrl(url) {
       const regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
       this.validUrl = regex.test(url);
       return this.validUrl;
     },
-    getLinkPreview: function () {
+    getLinkPreview() {
       if (this.isValidUrl(this.url)) {
         this.httpRequest(
           (response) => {
@@ -94,17 +94,17 @@ export default {
           () => {
             this.response = null;
             this.validUrl = false;
-          }
+          },
         );
       }
     },
-    httpRequest: function (success, error) {
+    httpRequest(success, error) {
       const http = new XMLHttpRequest();
-      const params = "url=" + this.url;
-      http.open("POST", this.apiUrl, true);
+      const params = `url=${this.url}`;
+      http.open('POST', this.apiUrl, true);
       http.setRequestHeader(
-        "Content-type",
-        "application/x-www-form-urlencoded"
+        'Content-type',
+        'application/x-www-form-urlencoded',
       );
       http.onreadystatechange = function () {
         if (http.readyState === 4 && http.status === 200) {

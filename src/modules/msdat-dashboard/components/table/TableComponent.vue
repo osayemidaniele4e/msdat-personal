@@ -359,9 +359,7 @@ export default {
      *
      */
     getDataSourcesClassification() {
-      const countClassification = this.dataArray.map((e) =>
-        e.values.map((et) => et.classification)
-      );
+      const countClassification = this.dataArray.map((e) => e.values.map((et) => et.classification));
       const counted = countClassification.map((e) => countBy(e));
       const classic = {};
       counted.forEach((e) => {
@@ -380,7 +378,7 @@ export default {
       // Order classification following the Order
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
       const resultSorted = result.sort(
-        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0])
+        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
       // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
@@ -402,8 +400,7 @@ export default {
        * order AvailableSources according to the OrderSourceBy Array;
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) =>
-          this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource)
+        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
       );
       this.source = sortedSource;
 
@@ -439,7 +436,9 @@ export default {
      */
     async getNumDenumData() {
       if (this.values?.datasource.id !== undefined) {
-        const { indicator, year, location, datasource } = this.values;
+        const {
+          indicator, year, location, datasource,
+        } = this.values;
 
         const numeratorData = await this.dlQuery({
           datasource: datasource.id,
@@ -508,7 +507,7 @@ export default {
             const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
             this.nhmisMonthData.push(updatedData);
           }
-        })
+        }),
       );
     },
   },
