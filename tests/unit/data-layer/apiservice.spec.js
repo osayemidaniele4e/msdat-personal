@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
-import apiEndpoints from '@/modules/DataLayer/config/endpoint';
-import mockResponseData from '@/modules/DataLayer/sample_data';
+import apiEndpoints from '@/modules/data-layer/config/endpoint';
+import mockResponseData from '@/modules/data-layer/sample_data';
 
 jest.mock('axios');
 

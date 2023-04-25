@@ -120,7 +120,7 @@ import SharingDashboardState from '../../../msdat-dashboard/modules/dashboard_st
 import Loading from '../../../msdat-dashboard/mixins/loading';
 import Onboarding from '../../../msdat-dashboard/views/onboarding/onboarding';
 import TroubleShooting from '../../../msdat-dashboard/modules/troubleshooting/mixins';
-import config from '../../../dynamic_dashboard/config/dashboard_config';
+import config from '../../../dynamic-dashboard/config/dashboard_config';
 
 export default {
   name: 'BaseDashboard',

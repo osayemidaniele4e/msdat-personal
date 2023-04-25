@@ -38,7 +38,7 @@
               href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
             >
-              <b-list-group-item>HUC Dashboard</b-list-group-item>
+              <b-list-group-item>HSU Dashboard</b-list-group-item>
             </a>
             <a
               href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/"
@@ -51,6 +51,11 @@
                 >Disease Surveillance</b-list-group-item
               ></router-link
             >
+               <router-link to="/external-ncdc"
+              ><b-list-group-item
+                >Disease Surveillance (NCDC)</b-list-group-item
+              ></router-link
+            >
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -59,6 +64,17 @@
           <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank"
             ><b-list-group-item
               >Health Outcomes and Service Coverage</b-list-group-item
+            ></router-link
+          >
+             <router-link to="/external-ndr1" target="_blank"
+            ><b-list-group-item
+              >National Data Repository Dashboard 1</b-list-group-item
+            ></router-link
+          >
+
+             <router-link to="/external-ndr2" target="_blank"
+            ><b-list-group-item
+              >National Data Repository Dashboard 2</b-list-group-item
             ></router-link
           >
         </b-list-group>

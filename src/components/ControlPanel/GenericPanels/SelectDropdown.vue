@@ -14,7 +14,6 @@
     data-visted="notVisited"
     deselectLabel=""
     autocomplete="off"
-
   >
     <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
@@ -33,7 +32,6 @@
               multiSelectProps['group-values'] === 'indicators' &&
               section !== 'Indicator-Comparison'
             "
-            class="down-caret"
           ></span>
         </span>
       </template>
@@ -49,7 +47,7 @@
       <template v-else-if="props.option.full_name">
         <div
           v-if="!props.option.$groupLabel"
-          class="overflow-text"
+          class="overflow-text text-wrap"
           :data-child="props.option.program_area"
         >
           {{ props.option.full_name }}
@@ -272,39 +270,42 @@ export default {
      *  @var multiselectProps, its "group-value" property.
      *
      */
-    async initialCSS(multiselectID) {
-      this.section = multiselectID;
-      if (
-        this.multiSelectProps['group-values'] !== 'indicators'
-        || multiselectID === 'Indicator-Comparison'
-      ) {
-        return;
-      }
-      this.loading = true;
-      if (this.multiSelectProps['group-values']) {
-        const specificPart = document.querySelector(`input#${multiselectID}`);
-        if (this.options?.length !== 0) {
-          const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
-          const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
-            .value;
-          // eslint-disable-next-line no-plusplus
-          for (let i = 0; i <= iterable.length; i++) {
-            if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
-              iterable[i].style.display = 'none';
-            } else if (tell === 'notVisited') {
-              if (iterable[i] === undefined) return;
-              iterable[i].addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.pickProgramArea(e);
-              });
-              specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
-            }
-          }
-        }
-      }
-      this.loading = false;
-    },
+    // async initialCSS(multiselectID) {
+    //   this.section = multiselectID;
+    //   if (
+    //     this.multiSelectProps['group-values'] !== 'indicators'
+    //     || multiselectID === 'Indicator-Comparison'
+    //   ) {
+    //     return;
+    //   }
+    //   this.loading = true;
+    //   if (this.multiSelectProps['group-values']) {
+    //     const specificPart = document.querySelector(`input#${multiselectID}`);
+    //     if (this.options?.length !== 0) {
+    //       const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
+    //       const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
+    //         .value;
+    //       // eslint-disable-next-line no-plusplus
+    //       for (let i = 0; i <= iterable.length; i++) {
+    //         if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
+    //           iterable[i].style.display = 'none';
+    //         } else if (tell === 'notVisited') {
+    //           if (iterable[i] === undefined) return;
+    //           iterable[i].addEventListener('click', (e) => {
+    //             e.preventDefault();
+    //             e.stopPropagation();
+    //             this.pickProgramArea(e);
+    //           });
+    //           specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
+    //         }
+    //       }
+    //     }
+    //   }
+    //   this.loading = false;
+    // },
+  },
+  mounted() {
+    // console.log(this.options[0], 'Options');
   },
 };
 </script>

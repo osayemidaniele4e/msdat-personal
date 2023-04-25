@@ -9,6 +9,11 @@ export default [
         name: 'dashboard',
         component: () => import('./views/dashboard.vue'),
       },
+      {
+        path: 'approval',
+        name: 'Approval',
+        component: () => import('./views/approval.vue'),
+      },
     ],
   },
 ];

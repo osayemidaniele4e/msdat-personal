@@ -9,7 +9,7 @@ import { mapMutations, mapActions, mapGetters } from 'vuex';
 import VueCookies from 'vue-cookies';
 import moment from 'moment';
 import { eventBus } from '@/main';
-import apiServices from '@/modules/DataLayer/services/ApiServices';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import controlSetup from '../../mixins/control-panel-setup';
 
 export default {

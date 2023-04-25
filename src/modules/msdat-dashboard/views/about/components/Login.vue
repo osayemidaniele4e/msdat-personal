@@ -8,33 +8,34 @@
         <!-- <div class="loader" v-if="isLoading">
           <the-loader />
         </div> -->
-        <h2 class="w-100 text-center mx-auto mt-3">Login with</h2>
+        <h2 class="w-100 text-center mx-auto mt-3">Signin with</h2>
+
         <div class="d-flex w-100 justify-content-center">
           <button
             type="submit"
-            class="btn btn-lg btn-primary px-4 py-2"
+            class="btn btn-lg btn-primary px-3 py-2"
             @click="handleClickSignIn()"
           >
             <b-icon-google class="mr-2"></b-icon-google>
-            GOOGLE
+
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <button
-            @click="logInWithFacebook()"
+            @click.prevent="buttonClicked"
             type="submit"
-            class="btn btn-lg btn-primary px-4 py-2"
+            class="btn btn-lg btn-primary px-3 py-2"
           >
             <b-icon-facebook class="mr-2"></b-icon-facebook>
-            FACEBOOK
+
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <button
-            @click="loginWithLinkedIn()"
+            @click="authenticate('linkedin')"
             type="submit"
-            class="btn btn-lg btn-primary px-4 py-2"
+            class="btn btn-lg btn-primary px-3 py-2"
           >
             <b-icon-linkedin class="mr-2"></b-icon-linkedin>
-            LinkedIn
+
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
         </div>
@@ -85,26 +86,85 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapActions } from 'vuex';
+import {
+  loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
+} from '@/config/facebook';
+
+import VueAxios from 'vue-axios';
+import VueAuthenticate from 'vue-authenticate';
 import axios from 'axios';
-import axiosInstance from '@/config/axios';
 
-// import VueCookies from 'vue-cookies';
+Vue.use(VueAxios, axios);
+Vue.use(VueAuthenticate, {
+  baseUrl: 'http://135.181.212.168:8788/', // Your API domain
 
-// "ya29.a0AVvZVsrx-2eK4kRE4Ed4moROas9ASzuIvLiDmTMZ8yB8x8p6chI-D00X2v0MkwPDIqsfLAPLJVq0zKhzHP-3-vCyXu1aleQd1pyEYZNjo0EAMv5-3El8g8CzowsDLjy4HA8PPPFdJB0AHTm7KjsQNQDBi-y8dAaCgYKAZ0SARESFQGbdwaILHCye5hUytMSpXyhRgq-eQ0165"
+  providers: {
+    linkedin: {
+      clientId: process.env.VUE_APP_API_LINKEDIN_ID,
+      url: '',
+      name: 'linkedin',
+      authorizationEndpoint: 'https://www.linkedin.com/oauth/v2/authorization',
+      redirectUri: process.env.VUE_APP_LINKEDIN_REDIRECT_URI,
+      requiredUrlParams: ['display', 'scope'],
+      scope: ['r_emailaddress'],
+      scopeDelimiter: ' ',
+      state: 'STATE',
+      oauthType: '2.0',
+      popupOptions: { width: 600, height: 700 },
+      tokenPath: 'code',
+    },
+  },
+});
 
 export default {
+  props: {
+    version: {
+      type: String,
+      default: 'v2.10',
+    },
+    logoutLabel: {
+      type: String,
+      default: 'Log out ',
+    },
+    loginLabel: {
+      type: String,
+      default: 'Facebook',
+    },
+    loginOptions: {
+      type: Object,
+      default() {
+        return {
+          scope: 'email',
+        };
+      },
+    },
+  },
   data() {
     return {
       username: '',
       password: '',
-      client_id: '774lsdliz8nidi',
-      client_secret: '7Sb74ygbihcJUzCH',
-      urlEncode: 'http%3A%2F%2Flocalhost%3A8080',
+      clientId: process.env.VUE_APP_FACEBOOK_APP_ID,
+      isWorking: false,
+      isConnected: false,
     };
   },
+
+  computed: {
+    getButtonText() {
+      switch (this.isConnected) {
+        case true:
+          return this.logoutLabel;
+        case false:
+          return this.loginLabel;
+        default:
+          return 'this is default';
+      }
+    },
+  },
   methods: {
-    ...mapActions('AUTH_STORE', ['LOGIN_USER']),
+    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE', 'AUTHENTICATE_LINKEDIN']),
 
     async login() {
       try {
@@ -152,20 +212,6 @@ export default {
       }
     },
 
-    async googleAuth() {
-      const googleUser = await this.$gAuth.signIn();
-      console.log(googleUser);
-    },
-    handleClickLogin() {
-      this.$gAuth
-        .getAuthCode()
-        .then((authCode) => {
-          console.log('authCode', authCode);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
     // eslint-disable-next-line consistent-return
     async handleClickSignIn() {
       try {
@@ -173,102 +219,160 @@ export default {
         if (!googleUser) {
           return null;
         }
-        console.log('googleUser', googleUser);
-        console.log('getId', googleUser.getId());
-        console.log('getBasicProfile', googleUser.getBasicProfile());
-        console.log('getAuthResponse', googleUser.getAuthResponse());
-        console.log('getAuthResponse', this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse());
-        this.isSignIn = this.$gAuth.isAuthorized;
+
+        const data = {
+          auth_token: googleUser.getAuthResponse().access_token,
+          provider: 'google',
+        };
+
+        // console.log(data);
+        await this.AUTHENTICATE(data)
+          .then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with google',
+            });
+          });
       } catch (error) {
         console.error(error);
         return null;
       }
     },
 
-    async loginWithLinkedIn() {
-      // try {
-      //   const response = await axiosInstance.post(
-      //     'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://208.87.128.190:3030/'
-      //   );
-      //   console.log('Baby_George', response);
-      // } catch (error) {
-      //   console.log('samuel =>', error);
-      // }
-      window.location.href = 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=https://msdat3.e4eweb.space';
+    buttonClicked() {
+      this.$emit('click');
+      this.loginWFB();
     },
+    loginWFB() {
+      this.isWorking = true;
+      fbLogin(this.loginOptions).then((response) => {
+        if (response.status === 'connected') {
+          const data = {
+            auth_token: response.authResponse.accessToken,
+            provider: 'facebook',
+          };
 
-    async logInWithFacebook() {
-      console.log(window);
-      await this.loadFacebookSDK(document, 'script', 'facebook-jssdk');
-      await this.initFacebook();
-      window.FB.login((response) => {
-        if (response.authResponse) {
-          console.log(response);
-          // Now you can redirect the user or do an AJAX request to
-          // a PHP script that grabs the signed request from the cookie.
+          this.AUTHENTICATE(data)
+            .then((res) => {
+              if (res.status === 200 || res.status === 201) {
+                this.isConnected = true;
+
+                this.$swal({
+                  toast: true,
+                  position: 'bottom',
+                  showConfirmButton: false,
+                  timer: 5000,
+                  icon: 'success',
+                  title: 'Success',
+                  text: 'Login successful',
+                });
+              }
+            })
+            .catch((err) => {
+              console.log('res', err);
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'error',
+                title: 'Something went wrong',
+                text: 'Something went wrong signing you in with facebook',
+              });
+            });
         } else {
-          console.log('User cancelled login or did not fully authorize.');
+          this.isConnected = false;
         }
-      });
-      return false;
-    },
-
-    async initFacebook() {
-      window.fbAsyncInit = function () {
-        window.FB.init({
-          appId: '1231947387726582', // You will need to change this
-          cookie: true, // This is important, it's not enabled by default
-          version: 'v13.0',
+        this.isWorking = false;
+        this.$emit('login', {
+          response,
+          FB: window.FB,
         });
-      };
-    },
-    async loadFacebookSDK(d, s, id) {
-      let js;
-      const fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
-        return;
-      }
-      js = d.createElement(s);
-      js.id = id;
-      js.src = 'https://connect.facebook.net/en_US/sdk.js';
-      fjs.parentNode.insertBefore(js, fjs);
+      });
     },
 
-    async Logout() {
-      // firebase.auth().signOut();
-      const response = await this.$gAuth.signOut();
-      console.log(response);
+    authenticate(provider) {
+      this.$auth
+        .authenticate(provider)
+        .then((response) => {
+          // make api call
 
-      console.log('clicked');
+          this.AUTHENTICATE_LINKEDIN(response)
+            .then((res) => {
+              if (res !== null) {
+                this.$swal({
+                  toast: true,
+                  position: 'bottom',
+                  showConfirmButton: false,
+                  timer: 5000,
+                  icon: 'success',
+                  title: 'Success',
+                  text: 'Login successful',
+                });
+              }
+            })
+            .catch((err) => {
+              console.log('res', err);
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'error',
+                title: 'Something went wrong',
+                text: 'Something went wrong signing you in with linkedin',
+              });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    logout() {
+      this.isWorking = true;
+      fbLogout().then((response) => {
+        this.isWorking = false;
+        this.isConnected = false;
+        this.$emit('logout', response);
+      });
     },
   },
   async mounted() {
-    // window.location =
-    //   'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=774lsdliz8nidi&scope=scope=r_liteprofile%20r_emailaddress&state=123456&redirect_uri=http://208.87.128.190:3030/';
-    // (function () {
-    //   var e = document.createElement('script');
-    //   e.type = 'text/javascript';
-    //   e.async = true;
-    //   e.src = 'http://platform.linkedin.com/in.js?async=true';
-    //   var t = document.getElementsByTagName('script')[0];
-    //   t.parentNode.insertBefore(e, t);
-    // })();
-    // console.log(window);
-
-    const code = this.$route.query.code;
-    if (code !== undefined) {
-      try {
-        const response = await axiosInstance.post(
-          `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=774lsdliz8nidi&client_secret=7Sb74ygbihcJUzCH&code=${code}8&redirect_uri=https://msdat3.e4eweb.space`,
-        );
-        const tokenResponse = await axiosInstance.get(
-          `https://api.linkedin.com/v2/me?oauth2_access_token=${response.access_token}`,
-        );
-        console.log('Baby_George', response, tokenResponse);
-      } catch (error) {
-        console.log('samuel =>', error);
-      }
-    }
+    this.isWorking = true;
+    loadFbSdk(this.appId, this.version)
+      .then(getFbLoginStatus)
+      .then((response) => {
+        if (response.status === 'connected') {
+          this.isConnected = true;
+        }
+        this.isWorking = false;
+        /** Event `get-initial-status` to be deprecated in next major version! */
+        this.$emit('get-initial-status', response);
+        this.$emit('sdk-loaded', {
+          isConnected: this.isConnected,
+          FB: window.FB,
+        });
+      });
   },
 };
 </script>
@@ -327,5 +431,14 @@ h4::after {
 }
 .h-50px input {
   height: 50px;
+}
+.button {
+  border: none;
+  color: #fff;
+  position: relative;
+  line-height: 34px;
+  min-width: 225px;
+  padding: 0 15px 0px 46px;
+  background-image: linear-gradient(#4c69ba, #3b55a0);
 }
 </style>

@@ -57,6 +57,16 @@
             sources.
           </p>
         </template>
+
+        <!-- refresh button to show all datasources in the chart -->
+        <template #refresh>
+          <b-icon-arrow-clockwise
+            id="reset"
+            @click="getReset()"
+            class="pointer_click mx-1 font-weight-bold"
+            font-scale="1"
+          ></b-icon-arrow-clockwise>
+        </template>
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
@@ -76,7 +86,7 @@
 import { sortBy, uniq } from 'lodash';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
-import mixin from '@/modules/DataLayer/mixin';
+import mixin from '@/modules/data-layer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
@@ -557,11 +567,26 @@ export default {
       ];
       return seriesArr;
     },
+
+    getReset() {
+      this.$emit('reset');
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+#reset {
+  transform: rotate(360deg);
+  transition: all 1s ease-in-out;
+  /* background-color: black; */
+}
+
+#reset:hover {
+  font-weight: 700;
+  transform: rotate(180deg);
+}
+
 div.iddc_wrapper {
   position: relative;
   div.no_data {

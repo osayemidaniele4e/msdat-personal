@@ -21,6 +21,12 @@
           <span>About Dashboard</span>
         </router-link>
       </li>
+         <li>
+        <router-link to="/external-dashboards">
+          <img src="@/assets/img/icons/ic_info.svg" alt="" />
+          <span>External Dashboards</span>
+        </router-link>
+      </li>
       <li @click="$emit('tour')">
         <router-link to="/">
           <img src="@/assets/img/icons/ic_play.svg" alt="" />
@@ -35,7 +41,7 @@
         </a>
       </li>
       <li>
-        <a href="#" @click.prevent="PrintPage()">
+        <a href="#" @click.prevent="$emit('print')">
           <img src="@/assets/img/icons/ic_print.svg" alt="" />
           <span>Print</span>
         </a>
@@ -92,6 +98,12 @@
         <router-link to="/faq">
           <img src="@/assets/img/icons/ic_help.svg" alt="" />
           <span>Help and FAQs</span>
+        </router-link>
+      </li>
+       <li>
+        <router-link to="/data-entry">
+          <img src="@/assets/img/icons/ic_upload.svg" alt="" />
+          <span>Data Entry</span>
         </router-link>
       </li>
       <li>

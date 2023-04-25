@@ -12,7 +12,7 @@
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
-                <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span>
+                <!-- <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span> -->
               </div>
             </th>
             <!-- This loop through the available classification eg. Routine,Survey,Estimate -->
@@ -27,7 +27,7 @@
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
-          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
+          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis">
             <div class="nhmis_month_head">NHMIS-DHIS2 (monthly)</div>
             <TableDataSourceCell
               v-for="(dt, i) in source"
@@ -65,19 +65,25 @@
             <template v-slot:indicator="props">
               <slot name="indicator-0" :indicator="props"></slot>
             </template>
-            <template #default v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'">
+            <template
+              #default
+              v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
+            >
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
               <div class="nhmis-month-text1" v-if="nhmisMonthData[0]">
                 <!-- static data (only for overview table) for NHMIS data -->
-                {{ nhmisMonthData[0].value }}%
+
+                <span v-if="nhmisMonthData[0].value === null"> - </span>
+                <span v-else> {{ nhmisMonthData[0].value }}%</span>
               </div>
               <div class="nhmis-month-text1" v-else>
                 <!-- static data (only for overview table) for NHMIS data -->
                 -
               </div>
               <div class="nhmis-month-text2" v-if="nhmisMonthData[0]">
-                {{ nhmisMonthData[0].period }}
+                <span v-if="nhmisMonthData[0].value === null"> - </span>
+                <span v-else> {{ nhmisMonthData[0].period }}</span>
               </div>
               <div class="nhmis-month-text2" v-else>-</div>
 
@@ -145,17 +151,20 @@
               </template>
               <template
                 #default
-                v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage'"
+                v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
               >
                 <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
                 <td class="text-center p-2" v-if="nhmisMonthData[index]">
                   <TableDataCell />
                   <!-- id's -->
                   <!-- static data (only for overview table) for NHMIS data -->
-
-                  <div class="nhmis-rel-text1">{{ nhmisMonthData[index].value }}%</div>
+                  <div class="nhmis-rel-text1">
+                    <span v-if="nhmisMonthData[index].value === null"> - </span>
+                    <span v-else> {{ nhmisMonthData[index].value }}%</span>
+                  </div>
                   <div class="nhmis-rel-text2">
-                    {{ nhmisMonthData[index].period }}
+                    <span v-if="nhmisMonthData[index].value === null"> - </span>
+                    <span v-else> {{ nhmisMonthData[index].period }}</span>
                   </div>
                 </td>
 
@@ -204,7 +213,7 @@
 
 <script>
 import { flatten, uniq, countBy } from 'lodash';
-import mixin from '@/modules/DataLayer/mixin';
+import mixin from '@/modules/data-layer/mixin';
 import TableDataCell from './TableDataCell.vue';
 import TableDataSourceCell from './TableDataSourceCell.vue';
 import TableDataRow from './TableDataRow.vue';
@@ -319,6 +328,7 @@ export default {
       denominator: null,
       numerator: null,
       numDenum: false,
+      hasNhmis: false,
     };
   },
   methods: {
@@ -396,6 +406,12 @@ export default {
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
       );
       this.source = sortedSource;
+
+      // checking if it has NHMIS as a datasource
+      if (this.source.some((item) => item.id === 6)) {
+        this.hasNhmis = true;
+      }
+
       // console.log('this.source', this.source);
     },
 
@@ -444,18 +460,22 @@ export default {
         if (numeratorData.length > 0 || denominatorData.length > 0) {
           this.numDenum = true;
           if (numeratorData.length > 0) {
+            const numeratorName = this.dlGetDataSourceSpecificIndicator({
+              indicator: indicator.id,
+              datasource: datasource.id,
+            })[0].measurement_numerator;
             const numerator = numeratorData[0];
-            this.numerator = `${this.values.indicator.short_name} - ${Number(
-              numerator.value,
-            ).toLocaleString()}`;
+            this.numerator = `${numeratorName} - ${Number(numerator.value).toLocaleString()}`;
           } else {
             this.numerator = 'N/a';
           }
           if (denominatorData.length > 0) {
+            const denominatorName = this.dlGetDataSourceSpecificIndicator({
+              indicator: indicator.id,
+              datasource: datasource.id,
+            })[0].measurement_denominator;
             const denominator = denominatorData[0];
-            this.denominator = `${this.values.indicator.short_name} - ${Number(
-              denominator.value,
-            ).toLocaleString()}`;
+            this.denominator = `${denominatorName} - ${Number(denominator.value).toLocaleString()}`;
           } else {
             this.denominator = 'N/a';
           }
@@ -483,8 +503,13 @@ export default {
       Promise.all(
         this.indicators.map(async (el) => {
           const data = await this.getNhmisData(el);
-          const updatedData = { ...data, value: parseFloat(data?.value).toFixed(1) };
-          this.nhmisMonthData.push(updatedData);
+          if (data === undefined) {
+            const updatedData = { ...data, value: null };
+            this.nhmisMonthData.push(updatedData);
+          } else {
+            const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
+            this.nhmisMonthData.push(updatedData);
+          }
         }),
       );
     },
@@ -544,6 +569,11 @@ export default {
       }
     }, 500);
     await this.getNumDenumData();
+
+    // checking if it has NHMIS as a datasource
+    if (this.source.some((item) => item.id === 6)) {
+      this.hasNhmis = true;
+    }
   },
 
   // async mounted() {

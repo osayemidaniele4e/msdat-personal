@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mounted StateBarChart Component  renders correctly 1`] = `
+<div>
+  <!---->
+   
+  <tableloader-stub />
+   
+  <base-modal
+    size="lg"
+  >
+     
+    <!---->
+     
+    <!---->
+  </base-modal>
+</div>
+`;

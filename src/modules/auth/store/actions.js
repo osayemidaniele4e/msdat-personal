@@ -1,5 +1,6 @@
 import VueCookies from 'vue-cookies';
 import axiosInstance from '../config/axios';
+import authInstance from '../config/axiosAuth';
 
 export default {
   // eslint-disable-next-line consistent-return
@@ -25,6 +26,40 @@ export default {
       // console.log(err);
     }
   },
+
+  async AUTHENTICATE({ commit }, payload) {
+    try {
+      const response = await authInstance.post(`/api/auth/register/${payload.provider}/user/`, {
+        auth_token: payload.auth_token,
+      });
+      const user = response.data.data;
+
+      VueCookies.set('msdat-user-details', user);
+      commit('setUser', user);
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+    return null;
+  },
+
+  async AUTHENTICATE_LINKEDIN({ commit }, payload) {
+    try {
+      const response = await authInstance.post('/api/auth/register/linkedin/user/', {
+        code: payload.code,
+      });
+
+      const user = response.data.data;
+
+      VueCookies.set('msdat-user-details', user);
+      commit('setUser', user);
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+    return null;
+  },
+
   logout({ commit }) {
     VueCookies.remove('msdat-user-details');
     commit('logout');

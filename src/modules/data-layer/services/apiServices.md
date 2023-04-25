@@ -6,9 +6,9 @@ or expose the various API endpoints for the various
 methods needed by the dashboards.
 
 >The two needed imports in this file are the *axios instance* 
-gotten from the *api.js* file (`src/modules/DataLayer/config/api.js`),
+gotten from the *api.js* file (`src/modules/data-layer/config/api.js`),
 where the axios instance is initialized and the *apiEndpoints.js* file 
-(`src/modules/DataLayer/config/endpoint.js`) where the route names 
+(`src/modules/data-layer/config/endpoint.js`) where the route names 
 are stored in an object for easy referencing
 
 >All the methods exported by this component file returns data directly as 

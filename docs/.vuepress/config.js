@@ -1,4 +1,4 @@
-const { description } = require('../../package')
+const { description } = require('../../package');
 
 module.exports = {
   /**
@@ -18,7 +18,7 @@ module.exports = {
   head: [
     ['meta', { name: 'theme-color', content: '#3eaf7c' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
-    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }]
+    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
   ],
 
   /**
@@ -39,24 +39,20 @@ module.exports = {
       },
       {
         text: 'MSDAT',
-        link: 'https://msdat.fmohconnect.gov.ng/central_analytics'
-      }
+        link: 'https://msdat.fmohconnect.gov.ng/central_analytics',
+      },
     ],
     sidebar: {
       '/guide/': [
         {
           title: 'Get Started',
           collapsable: false,
-          children: [
-            ''
-          ]
+          children: [''],
         },
         {
           title: 'Dashboard Overview',
           collapsable: false,
-          children: [
-            'overview'
-          ]
+          children: ['overview'],
         },
         {
           title: 'Developer Guide',
@@ -68,8 +64,8 @@ module.exports = {
             'datalayer',
             'config',
             'offline-feature',
-            'state-profile'
-          ]
+            'state-profile',
+          ],
         },
         {
           title: '2022 Edits',
@@ -81,35 +77,27 @@ module.exports = {
             'advanced',
             'num-denum',
             'NGF',
-            'custom-dashboard'
-          ]
+            'custom-dashboard',
+          ],
         },
         {
           title: '2023 Edits',
           collapsable: false,
-          children: [
-            'user-activity'
-          ]
-        }
-        
-
+          children: ['user-activity', 'social-authentication'],
+        },
       ],
 
       '/config/': [
         {
           title: 'Bolo',
           collapsable: false,
-        
-        }
+        },
       ],
-    }
+    },
   },
 
   /**
    * Apply plugins，ref：https://v1.vuepress.vuejs.org/zh/plugin/
    */
-  plugins: [
-    '@vuepress/plugin-back-to-top',
-    '@vuepress/plugin-medium-zoom',
-  ]
-}
+  plugins: ['@vuepress/plugin-back-to-top', '@vuepress/plugin-medium-zoom'],
+};

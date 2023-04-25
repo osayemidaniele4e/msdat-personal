@@ -5,14 +5,14 @@ The Data layer provides a plugin
 
 
 ## Installation
-The data layer is installed a as a vue plugin The DataLayer plugin request you to install 
+The data layer is installed a as a vue plugin The data-layer plugin request you to install 
 
 ```js
 import Vue from 'vue';
-import DataLayer from '@/modules/DataLayer';
+import DataLayer from '@/modules/data-layer';
 import store from './store';
 
-Vue.use(DataLayer, {
+Vue.use(data-layer, {
   store,
 });
 

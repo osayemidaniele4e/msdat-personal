@@ -9,6 +9,9 @@
         <slot name="title"> slot title fallback </slot>
       </div>
       <div class="action-icon d-flex justify-content-around align-items-center" v-if="showControls">
+         <div>
+        <slot name="refresh">  </slot>
+      </div>
         <b-icon
           icon="arrows-fullscreen"
           @click="showModal = !showModal"

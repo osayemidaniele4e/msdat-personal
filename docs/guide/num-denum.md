@@ -28,8 +28,8 @@ Regarding the table component, when the toggle comes on, the function in the wat
 - src/modules/msdat-dashboard/components/sections/indicator-overview/TheStateBarChart.vue
 - src/modules/msdat-dashboard/mixins/formatter.js
 - src/components/Barchart/defaultOption.js
-- src/modules/DataLayer/mixin.js
-- src/modules/DataLayer/services/database.worker.js
+- src/modules/data-layer/mixin.js
+- src/modules/data-layer/services/database.worker.js
 - src/modules/msdat-dashboard/mixins/util.js
 
 #### Additional Info
