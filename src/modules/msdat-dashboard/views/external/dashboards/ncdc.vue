@@ -3,8 +3,8 @@
     <the-header ref="theHeader" />
 
     <div class="main d-flex flex-column">
-      <br>
-         <!-- <span>
+      <br />
+      <!-- <span>
           <b-icon-info-circle-fill />
       Dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021.
     </span> -->
@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
 import theHeader from '../../about/layout/theHeader.vue';
 import theFooter from '../../about/layout/theFooter.vue';
 

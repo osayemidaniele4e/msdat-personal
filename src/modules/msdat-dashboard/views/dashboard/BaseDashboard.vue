@@ -56,7 +56,6 @@
                 :changeIndex="changeIndex"
                 :position="position"
                 :selectedPanel="selectedPanel"
-                v-if="cpIsLoading"
                 v-on:showSection="sectionFocus($event)"
               >
                 <template v-slot:default>
@@ -334,7 +333,7 @@ export default {
       }
     },
     ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
-    ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig']),
+    ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
