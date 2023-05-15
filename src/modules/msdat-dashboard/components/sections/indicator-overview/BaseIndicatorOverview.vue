@@ -11,7 +11,12 @@
           />
         </div>
         <div class="col-md-12">
-          <IDCC :values="controlPanelProps" :closeOverlay="closeSubCard" :resetIndex="resetIndex" @reset="getReset" />
+          <IDCC
+            :values="controlPanelProps"
+            :closeOverlay="closeSubCard"
+            :resetIndex="resetIndex"
+            @reset="getReset"
+          />
         </div>
       </div>
     </div>

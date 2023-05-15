@@ -13,6 +13,7 @@ span.multiselect__single {
   white-space: nowrap;
 }
 span.multiselect__tag {
+  background-color: #494299 !important;
   max-width: 45%;
 }
 span.multiselect__option--selected.multiselect__option--highlight {
@@ -82,7 +83,7 @@ ul {
     span.dropdown-item {
       cursor: pointer;
       &:hover{
-        background-color: $primary;
+        background-color: #CCD6EB;
         color: #ffffff;
       }
     }
@@ -92,7 +93,7 @@ ul {
 #zonalMapComponent {
   display: relative;
   button {
-    background-color: #348481;
+    background-color: #494299;
     color: aliceblue;
     height: 2rem;
     padding-left: 0.5rem ;
@@ -107,13 +108,13 @@ ul {
 }
 
 #zonalMapComponent > button:hover{
-  background-color: #085856;
+  background-color: #494299;
   padding-left: 0.25rem;
 }
 
 #stateBarChartComponent{
   button {
-    background-color: #348481;
+    background-color: #494299;
     color: aliceblue;
     height: 2rem;
     padding-left: 0.5rem ;
@@ -128,7 +129,7 @@ ul {
 }
 
 #stateBarChartComponent > button:hover{
-  background-color: #085856;
+  background-color: #494299;
   padding-left: 0.25rem;
 }
 
@@ -136,8 +137,8 @@ ul {
 #indicatorMeta{
   .nav-item {
   background-color: white;
-   color: #559895;
-   border: 1px solid #559895;
+   color: #494299;
+   border: 1px solid #494299;
    border-radius: 5px;
    margin: 5px;
    height: 30px;
@@ -148,9 +149,9 @@ ul {
   }
 
   .nav-pills .active {
-    background-color: #007d53 !important;
+    background-color: #494299 !important;
     color: white;
-    border: 1px solid #007d53;
+    border: 1px solid #494299;
     height: 30px;
     display: flex;
     justify-content: center;

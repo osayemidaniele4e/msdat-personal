@@ -1,23 +1,11 @@
 <template>
   <div>
-    <label
-      :for="id + '_button'"
-      :class="{ active: isActive }"
-      class="toggle__button flex"
-    >
-      <input
-        type="checkbox"
-        :disabled="disabled"
-        :id="id + '_button'"
-        v-model="checkedValue"
-      />
+    <label :for="id + '_button'" :class="{ active: isActive }" class="toggle__button flex">
+      <input type="checkbox" :disabled="disabled" :id="id + '_button'" v-model="checkedValue" />
 
       <span class="toggle__switch">
-        <p
-          class="toggle-text pt-1"
-          :class="{ on: isActive == true, off: isActive == false }"
-        >
-          {{ isActive ? "ON" : "OFF" }}
+        <p class="toggle-text pt-1" :class="{ on: isActive == true, off: isActive == false }">
+          {{ isActive ? 'ON' : 'OFF' }}
         </p>
       </span>
     </label>
@@ -77,7 +65,7 @@ export default {
 .toggle-text {
   color: #ffffff;
   font-size: 0.875rem;
-  font-family: "Work Sans", sans-serif;
+  font-family: 'Work Sans', sans-serif;
 }
 .toggle__label {
   color: #bdbdbd;
@@ -92,7 +80,7 @@ export default {
   user-select: none;
   cursor: pointer;
 }
-.toggle__button input[type="checkbox"] {
+.toggle__button input[type='checkbox'] {
   opacity: 0;
   position: absolute;
   width: 1px;
@@ -110,7 +98,7 @@ export default {
 
 .toggle__button .toggle__switch::after,
 .toggle__button .toggle__switch::before {
-  content: "";
+  content: '';
   position: absolute;
   display: block;
   height: 28px;
@@ -134,7 +122,7 @@ export default {
   opacity: 0;
 }
 .active .toggle__switch {
-  background: #00ac40 0% 0% no-repeat padding-box;
+  background: #47427d 0% 0% no-repeat padding-box;
 }
 .active .toggle__switch::after,
 .active .toggle__switch::before {
