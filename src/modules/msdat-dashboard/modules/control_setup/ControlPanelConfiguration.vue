@@ -62,6 +62,7 @@ export default {
         this.payload?.datasource?.id,
         this.payload?.location?.id,
       );
+
       return available;
     },
     async getAvailableDataSources() {

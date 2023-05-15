@@ -20,20 +20,12 @@
 
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
-          <button
-            @click.prevent="buttonClicked"
-            type="submit"
-            class="btn btn-lg btn-primary px-3 py-2"
-          >
+          <button type="submit" class="btn btn-lg btn-primary px-3 py-2">
             <b-icon-facebook class="mr-2"></b-icon-facebook>
 
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
-          <button
-            @click="authenticate('linkedin')"
-            type="submit"
-            class="btn btn-lg btn-primary px-3 py-2"
-          >
+          <button type="submit" class="btn btn-lg btn-primary px-3 py-2">
             <b-icon-linkedin class="mr-2"></b-icon-linkedin>
 
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
@@ -88,9 +80,9 @@
 <script>
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import {
-  loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
-} from '@/config/facebook';
+// import {
+//   loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
+// } from '@/config/facebook';
 
 import VueAxios from 'vue-axios';
 import VueAuthenticate from 'vue-authenticate';
@@ -258,57 +250,57 @@ export default {
       }
     },
 
-    buttonClicked() {
-      this.$emit('click');
-      this.loginWFB();
-    },
-    loginWFB() {
-      this.isWorking = true;
-      fbLogin(this.loginOptions).then((response) => {
-        if (response.status === 'connected') {
-          const data = {
-            auth_token: response.authResponse.accessToken,
-            provider: 'facebook',
-          };
+    // buttonClicked() {
+    //   this.$emit('click');
+    //   this.loginWFB();
+    // },
+    // loginWFB() {
+    //   this.isWorking = true;
+    //   fbLogin(this.loginOptions).then((response) => {
+    //     if (response.status === 'connected') {
+    //       const data = {
+    //         auth_token: response.authResponse.accessToken,
+    //         provider: 'facebook',
+    //       };
 
-          this.AUTHENTICATE(data)
-            .then((res) => {
-              if (res.status === 200 || res.status === 201) {
-                this.isConnected = true;
+    //       this.AUTHENTICATE(data)
+    //         .then((res) => {
+    //           if (res.status === 200 || res.status === 201) {
+    //             this.isConnected = true;
 
-                this.$swal({
-                  toast: true,
-                  position: 'bottom',
-                  showConfirmButton: false,
-                  timer: 5000,
-                  icon: 'success',
-                  title: 'Success',
-                  text: 'Login successful',
-                });
-              }
-            })
-            .catch((err) => {
-              console.log('res', err);
-              this.$swal({
-                toast: true,
-                position: 'bottom',
-                showConfirmButton: false,
-                timer: 5000,
-                icon: 'error',
-                title: 'Something went wrong',
-                text: 'Something went wrong signing you in with facebook',
-              });
-            });
-        } else {
-          this.isConnected = false;
-        }
-        this.isWorking = false;
-        this.$emit('login', {
-          response,
-          FB: window.FB,
-        });
-      });
-    },
+    //             this.$swal({
+    //               toast: true,
+    //               position: 'bottom',
+    //               showConfirmButton: false,
+    //               timer: 5000,
+    //               icon: 'success',
+    //               title: 'Success',
+    //               text: 'Login successful',
+    //             });
+    //           }
+    //         })
+    //         .catch((err) => {
+    //           console.log('res', err);
+    //           this.$swal({
+    //             toast: true,
+    //             position: 'bottom',
+    //             showConfirmButton: false,
+    //             timer: 5000,
+    //             icon: 'error',
+    //             title: 'Something went wrong',
+    //             text: 'Something went wrong signing you in with facebook',
+    //           });
+    //         });
+    //     } else {
+    //       this.isConnected = false;
+    //     }
+    //     this.isWorking = false;
+    //     this.$emit('login', {
+    //       response,
+    //       FB: window.FB,
+    //     });
+    //   });
+    // },
 
     authenticate(provider) {
       this.$auth
@@ -348,31 +340,31 @@ export default {
         });
     },
 
-    logout() {
-      this.isWorking = true;
-      fbLogout().then((response) => {
-        this.isWorking = false;
-        this.isConnected = false;
-        this.$emit('logout', response);
-      });
-    },
+    // logout() {
+    //   this.isWorking = true;
+    //   fbLogout().then((response) => {
+    //     this.isWorking = false;
+    //     this.isConnected = false;
+    //     this.$emit('logout', response);
+    //   });
+    // },
   },
   async mounted() {
     this.isWorking = true;
-    loadFbSdk(this.appId, this.version)
-      .then(getFbLoginStatus)
-      .then((response) => {
-        if (response.status === 'connected') {
-          this.isConnected = true;
-        }
-        this.isWorking = false;
-        /** Event `get-initial-status` to be deprecated in next major version! */
-        this.$emit('get-initial-status', response);
-        this.$emit('sdk-loaded', {
-          isConnected: this.isConnected,
-          FB: window.FB,
-        });
-      });
+    // loadFbSdk(this.appId, this.version)
+    //   .then(getFbLoginStatus)
+    //   .then((response) => {
+    //     if (response.status === 'connected') {
+    //       this.isConnected = true;
+    //     }
+    //     this.isWorking = false;
+    //     /** Event `get-initial-status` to be deprecated in next major version! */
+    //     this.$emit('get-initial-status', response);
+    //     this.$emit('sdk-loaded', {
+    //       isConnected: this.isConnected,
+    //       FB: window.FB,
+    //     });
+    //   });
   },
 };
 </script>

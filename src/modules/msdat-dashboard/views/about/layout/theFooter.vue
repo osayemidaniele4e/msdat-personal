@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import moment from 'moment';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 
@@ -31,7 +32,19 @@ export default {
       checkIfDashboard: false,
     };
   },
+
+  watch: {
+    dlDashboardDataSource: {
+      handler(value) {
+        if (value.length === this.dataSourceCount) {
+          this.UPDATE_LOADING_STATUS();
+        }
+      },
+    },
+  },
   methods: {
+    ...mapMutations('MSDAT_STORE', ['UPDATE_LOADING_STATUS']),
+
     async getLatestDate() {
       const res = await apiServices.getLatestDate();
       const { results } = res.data;
