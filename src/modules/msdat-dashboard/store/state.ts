@@ -19,6 +19,7 @@ type setPayload = {
 const state: State = {
   // ***** Auther: Ghufran Ahmed
   indicatorComparision: false,
+  selectedConfigurations: {},
   zonalAnalysis: false,
   indicatorComparsionByPeriod: false,
   multisourceComparison: false,
@@ -31,7 +32,6 @@ const state: State = {
     year: null,
   },
   controlConfig: [],
-  selectedConfigurations: null,
   configObject: {},
 };
 
