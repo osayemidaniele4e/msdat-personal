@@ -66,12 +66,6 @@ export default {
         label: 'full_name',
       },
     },
-    // {
-    //   class: ['col'],
-    //   type: 'checkbox',
-    //   label: 'Target',
-    //   key: 'target',
-    // },
   ],
   payload: {
     indicator: [],
