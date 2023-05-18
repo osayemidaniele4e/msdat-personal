@@ -7,8 +7,15 @@ export interface State {
   dynamicDashboard: boolean;
   default: Defaults;
   controlConfig: ControlPanelConfig[];
-  selectedConfigurations: Object;
+  selectedConfigurations: {
+    indicator: Object;
+    dataSource: Object;
+    period: Object;
+    allDataSources: Object;
+    allYears: Object;
+  };
   configObject: {};
+  loading: boolean;
 }
 
 export interface SetupObject {

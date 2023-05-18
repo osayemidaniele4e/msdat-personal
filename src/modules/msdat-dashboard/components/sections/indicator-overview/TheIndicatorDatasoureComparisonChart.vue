@@ -26,7 +26,6 @@
             Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
             (Time-series comparison of {{ values.indicator.short_name }}) across different data
             sources.
-
           </p>
         </template>
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
@@ -362,7 +361,7 @@ export default {
       // mapping out all the years
       const allYears = [];
       mappedResponse.forEach((item) => {
-        const years = item.map((itemObject) => itemObject.period);
+        const years = item?.map((itemObject) => itemObject.period);
         allYears.push(...years);
       });
       // sort and get only unique ears for the categories
@@ -372,7 +371,7 @@ export default {
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
-        const data = item.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
+        const data = item?.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
         sortedData = data.sort(
           // eslint-disable-next-line radix
           (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),

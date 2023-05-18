@@ -65,11 +65,32 @@ export default {
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
-      if (index !== 4 && this.getSelectedConfig() !== null) {
+      if (index !== 4 && this.getSelectedConfig().indicator !== null) {
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: index,
           key: 'indicator',
-          value: this.getSelectedConfig(),
+          value: this.getSelectedConfig().indicator,
+        });
+      }
+      if (index !== 4) {
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'datasource',
+          value: this.getSelectedConfig().dataSource,
+        });
+      }
+
+      if (index === 4) {
+        this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
+          controlIndex: index,
+          key: 'indicator',
+          value: this.getSelectedConfig().indicator,
+        });
+
+        this.$store.commit('MSDAT_STORE/SET_MULTI_DATASOURCE_PAYLOAD', {
+          controlIndex: index,
+          key: 'indicator',
+          value: this.getSelectedConfig().dataSource,
         });
       }
       this.$emit('showSection', index);

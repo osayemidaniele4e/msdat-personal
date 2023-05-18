@@ -14,8 +14,7 @@
     >
       <template #title>
         <h6 class="work-sans">
-          Comparison Of <b>{{ values.indicator.short_name }}</b> Across
-          Different Data Source
+          Comparison Of <b>{{ values.indicator.short_name }}</b> Across Different Data Source
         </h6>
       </template>
       <BarChart :chartOptions="ChartOptions" />
@@ -69,9 +68,7 @@ export default {
       async handler() {
         this.loading = true;
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(
-          dataSources,
-        );
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
@@ -175,10 +172,7 @@ export default {
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
-        const data = item.map((Object) => [
-          Object.period,
-          Number.parseFloat(Object.value),
-        ]);
+        const data = item.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
         sortedData = data.sort(
           // eslint-disable-next-line radix
           (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
@@ -187,11 +181,7 @@ export default {
         let seriesObject = {};
         if (mappedValueTypes.length > 0) {
           const valueType = this.dlGetValueTypes(queryArray[index].value_type);
-          seriesObject = this.createSeriesObject(
-            valueType,
-            datasource.datasource,
-            sortedData,
-          );
+          seriesObject = this.createSeriesObject(valueType, datasource.datasource, sortedData);
         } else {
           seriesObject = { name: datasource.datasource, data: sortedData };
         }
@@ -244,9 +234,7 @@ export default {
       } else {
         this.selectedDS = {};
         const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(
-          dataSources,
-        );
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
         this.setUpHighChartConfig(seriesArray, years);
       }
       this.loading = false;

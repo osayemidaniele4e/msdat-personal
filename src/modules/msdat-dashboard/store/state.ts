@@ -32,7 +32,15 @@ const state: State = {
     year: null,
   },
   controlConfig: [],
+  selectedConfigurations: {
+    indicator: null,
+    dataSource: null,
+    period: null,
+    allDataSources: null,
+    allYears: null,
+  },
   configObject: {},
+  loading: true,
 };
 
 export default state;
