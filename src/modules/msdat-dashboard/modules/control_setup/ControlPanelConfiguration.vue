@@ -44,7 +44,7 @@ export default {
   },
   created() {
     const interactions = JSON.parse(VueCookies.get('user_interactions'));
-    // if (interactions.length <== 10) {
+    // if (interactions.length <= 10) {
     this.interactions = interactions || [];
     // }
   },
@@ -100,12 +100,10 @@ export default {
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
         const uniqueArr = this.removeDuplicates(this.interactions);
-        const Chelsea = localStorage.setItem('user_interactions', JSON.stringify(uniqueArr));
+        localStorage.setItem('user_interactions', JSON.stringify(uniqueArr));
         const interactions = localStorage.getItem('user_interactions');
-        console.log(Chelsea, 'chelseaaa', interactions);
         const parsedInteraction = JSON.parse(interactions);
-        console.log(parsedInteraction, 'interaction');
-        if (this.getInternetStatus === true) {
+        if (parsedInteraction.length > 9 && this.getInternetStatus === true) {
           parsedInteraction.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
           });
