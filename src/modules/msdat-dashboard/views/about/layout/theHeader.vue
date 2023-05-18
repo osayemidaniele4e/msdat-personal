@@ -119,7 +119,8 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               >
-              <div></div>
+              <div>
+</div>
               <a
                 href="https://msdat.fmohconnect.gov.ng/"
                 class="nav-link"
@@ -334,7 +335,6 @@ export default {
     this.controls = this.$children;
     this.screenWidth = window.innerWidth;
     // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
-    console.log('Chelsea', this.isAuthenticated, this.getUser);
   },
 
   methods: {
@@ -434,20 +434,21 @@ button {
   display: none;
 }
 
-.external {
-  text-decoration: none;
-  color: white;
-  font: normal normal 600 12px/20px Muli;
-  &-link {
-    text-decoration: none;
-    color: black;
-  }
-  .active {
-    color: white;
-  }
-  .hover {
-    color: white;
-  }
+.external{
+     text-decoration: none;
+      color: white;
+      font: normal normal 600 12px/20px Muli;
+      &-link{
+        text-decoration: none;
+        color: black;
+      };
+      .active{
+color: white;
+      };
+      .hover{
+        color: white;
+      }
+
 }
 
 header#the-header {
