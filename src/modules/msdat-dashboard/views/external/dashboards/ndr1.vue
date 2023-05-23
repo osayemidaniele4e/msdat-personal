@@ -3,14 +3,16 @@
     <the-header ref="theHeader" />
 
     <div class="main d-flex flex-column">
-      <br>
-         <!-- <span>
+      <br />
+      <!-- <span>
           <b-icon-info-circle-fill />
       Dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021.
     </span> -->
       <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm base">
         <template #title>
-          <h5 class="font-weight-bold work-sans text-white">National Data Repository Dashboard 1</h5>
+          <h5 class="font-weight-bold work-sans text-white">
+            National Data Repository Dashboard 1
+          </h5>
         </template>
 
         <b-embed type="iframe" aspect="16by9" :src="url" :width="width" :height="height"></b-embed>
@@ -21,7 +23,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
 import theHeader from '../../about/layout/theHeader.vue';
 import theFooter from '../../about/layout/theFooter.vue';
 

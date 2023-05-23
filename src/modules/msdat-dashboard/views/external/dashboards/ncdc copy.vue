@@ -2,39 +2,39 @@
   <div id="about-wrap">
     <the-header ref="theHeader" />
     <b-container>
-         <main @click="$refs.theHeader.close()">
-<br>
+      <main @click="$refs.theHeader.close()">
+        <br />
 
-   <b-icon-info-circle-fill
-
-                />
-                MSDAT External Dashboards.
-  <!-- This is a dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021. It can be viewed via: https://ncdc.gov.ng/data -->
- <!-- <b-alert show>
+        <b-icon-info-circle-fill />
+        MSDAT External Dashboards.
+        <!-- This is a dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021. It can be viewed via: https://ncdc.gov.ng/data -->
+        <!-- <b-alert show>
         <b-icon-info-circle-fill
 
                 />
   This is a dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021. It can be viewed via: https://ncdc.gov.ng/data </b-alert> -->
-      <!-- <h1 class="text-align">MSDAT External Dashboards</h1> -->
-    <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+        <!-- <h1 class="text-align">MSDAT External Dashboards</h1> -->
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
-            <h5 class="font-weight-bold work-sans text-white">National Disease Outbreak Dashboard</h5>
+            <h5 class="font-weight-bold work-sans text-white">
+              National Disease Outbreak Dashboard
+            </h5>
           </template>
           <!-- lazy loading for each section starts here -->
           <!-- the first section doesn't need the component
                  since it will be mounted first -->
 
-     <b-embed
-    type="iframe"
-    aspect="16by9"
-    :width="width"
-    :height="height"
-    src="https://public.tableau.com/views/NCDCHistoricalDashboard/Dashboard_1?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true"
-    class="embed"
-  ></b-embed>
+          <b-embed
+            type="iframe"
+            aspect="16by9"
+            :width="width"
+            :height="height"
+            src="https://public.tableau.com/views/NCDCHistoricalDashboard/Dashboard_1?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true"
+            class="embed"
+          ></b-embed>
         </base-sub-card>
 
-<!--
+        <!--
       <b-row>
         <b-col class="m-8">
           <b-card
@@ -88,7 +88,7 @@
         https://ndr.nascp.gov.ng/public/wallboard
         https://ndr.nascp.gov.ng/public/dashboard
       </b-row> -->
-    </main>
+      </main>
     </b-container>
 
     <the-footer />
@@ -98,13 +98,12 @@
 <script>
 import theHeader from '../../about/layout/theHeader.vue';
 import theFooter from '../../about/layout/theFooter.vue';
-import LinkPrevue from '../preview/index.js';
+// import LinkPrevue from '../preview/index';
 
 export default {
   components: {
     theHeader,
     theFooter,
-    LinkPrevue,
   },
   data() {
     return {
@@ -112,7 +111,7 @@ export default {
       height: '400',
       url: 'https://public.tableau.com/views/NCDCHistoricalDashboard/Dashboard_1?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       selected: null,
-      macBookImg,
+      macBookImg: null,
       indicators: [
         {
           name: 'Mortality',
@@ -237,7 +236,7 @@ $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
 
-.main-section{
+.main-section {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -245,7 +244,7 @@ $msdat-darkgrey: #dedede;
   width: 70vw;
 }
 
-.embed{
+.embed {
   height: 100vh;
 }
 </style>
