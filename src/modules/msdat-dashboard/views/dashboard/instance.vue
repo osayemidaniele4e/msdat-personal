@@ -9,7 +9,7 @@
       <slot name="top-section"></slot>
     </template>
 
-    <template v-slot:section-0="{ payload, controlIndex }">
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -32,7 +32,7 @@
       </div>
     </template>
 
-    <template v-slot:section-1="{ payload, controlIndex }">
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }">
       <div class="col-md-12" style="margin-bottom: 4rem">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -52,7 +52,7 @@
       </div>
     </template>
 
-    <template v-slot:section-2="{ payload, controlIndex }">
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'">
           <template #title>
@@ -71,7 +71,7 @@
       </div>
     </template>
 
-    <template v-slot:section-3="{ payload, controlIndex }">
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -88,7 +88,7 @@
       </div>
     </template>
 
-    <template v-slot:section-4="{ payload, controlIndex }">
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -110,7 +110,7 @@
       </div>
     </template>
 
-    <template v-slot:section-5="{ payload, controlIndex }">
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -154,6 +154,15 @@ export default {
       updateValue: {},
       updateKey: '',
       resetData: 1,
+      sectionArray: [0, 1, 2, 3, 4, 5],
+      allSections: [
+        'Indicator Overview',
+        'Zonal analysis',
+        'Indicator Comparison',
+        'Dataset Comparison',
+        'Multi-Source comparison',
+        'Disaggregation',
+      ],
     };
   },
   components: {
@@ -176,6 +185,9 @@ export default {
   computed: {
     customDashboard() {
       return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
+    },
+    fieldsArray() {
+      return this.$store.getters.arrangedSections;
     },
   },
   methods: {
@@ -234,6 +246,9 @@ export default {
     getReset() {
       this.resetData++;
     },
+    setIndex(propertyName) {
+      return this.$store.state.MSDAT_STORE.controlConfig.findIndex((obj) => obj.label === propertyName);
+    },
   },
   async created() {
     await this.CLEAR_CONTROL_PANEL();
@@ -243,12 +258,27 @@ export default {
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
-    this.ADD_CONTROL_PANEL(IndicatorOverviewConfig);
-    this.ADD_CONTROL_PANEL(ZonalAnalysisConfig);
-    this.ADD_CONTROL_PANEL(ICSConfig);
-    this.ADD_CONTROL_PANEL(DataSetComparisonConfig);
-    this.ADD_CONTROL_PANEL(BaseMultiSourceConfig);
-    if (this.customDashboard === false) {
+    const configs = [
+      IndicatorOverviewConfig,
+      ZonalAnalysisConfig,
+      ICSConfig,
+      DataSetComparisonConfig,
+      BaseMultiSourceConfig,
+    ];
+
+    if (this.customDashboard === true) {
+      for (let i = 0; i < configs.length; i++) {
+        const config = configs[i];
+
+        if (this.fieldsArray[i].isShow === true) {
+          this.ADD_CONTROL_PANEL(config);
+        }
+      }
+    } else {
+      for (let i = 0; i < configs.length; i++) {
+        const config = configs[i];
+        this.ADD_CONTROL_PANEL(config);
+      }
       this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     }
   },

@@ -313,6 +313,10 @@ export default {
     commit('arrangedSections', payload);
   },
 
+  deactivateAllSections({ commit }) {
+    commit('deactivateAllSections');
+  },
+
   dynamicSection({ commit }, payload) {
     commit('dynamicSection', payload);
   },

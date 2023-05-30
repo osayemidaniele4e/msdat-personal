@@ -101,9 +101,11 @@ export default {
      * @author chisom.chima
      */
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
-      this.isCustom = true;
+      // this.isCustom = true; // this variable doesn't exist
       sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
+      sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
+
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];

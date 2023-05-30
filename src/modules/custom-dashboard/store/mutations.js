@@ -2,6 +2,7 @@
 
 const composedData = sessionStorage.getItem('composedData');
 const SurveyArray = sessionStorage.getItem('surveyArray');
+const SectionsArray = sessionStorage.getItem('sectionsArray');
 const dashboardDetails = localStorage.getItem('dashboardDetails');
 const customDashboard = localStorage.getItem('customDashboardStatus') || false;
 
@@ -40,7 +41,7 @@ function getDefaultState() {
     masterData: JSON.parse(composedData) || [],
     SurveyArray: JSON.parse(SurveyArray) || [],
     notes: [],
-    ArrangedSections: [
+    ArrangedSections: JSON.parse(SectionsArray) || [
       {
         id: 0,
         name: 'Indicator Overview',
@@ -49,13 +50,13 @@ function getDefaultState() {
       },
       {
         id: 1,
-        name: 'Zonal Analysis',
+        name: 'Zonal analysis',
         active: false,
         isShow: true,
       },
       {
         id: 2,
-        name: 'Indicator Comparsion - By Period',
+        name: 'Indicator Comparison',
         active: false,
         isShow: true,
       },
@@ -67,7 +68,7 @@ function getDefaultState() {
       },
       {
         id: 4,
-        name: 'Multi-source Indicator Comparison',
+        name: 'Multi-source Comparison',
         active: false,
         isShow: true,
       },
@@ -302,6 +303,13 @@ export default {
   // For Arranging the Sections
   arrangedSections(state, payload) {
     state.ArrangedSections = payload;
+  },
+
+  deactivateAllSections(state) {
+    state.ArrangedSections.map((element) => {
+      element.isShow = false;
+      return element;
+    });
   },
 
   dynamicSection(state, payload) {
