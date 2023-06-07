@@ -1,7 +1,7 @@
 @import '@/scss/abstracts/_variables.scss';
 // OVERRIDE Styling to add ... after 40characters on the dropdown component
 span.multiselect__single {
-  font-size: 0.7rem !important;
+  font-size: 1rem !important;
   color: #000000 !important;
   font-family: 'Work Sans', sans-serif !important;
   font-weight: 500;
@@ -18,7 +18,7 @@ span.multiselect__tag {
 span.multiselect__option--selected.multiselect__option--highlight {
   background-color: $primary;
   color: white  !important;
-  
+
 }
 
 span.multiselect__option--selected{
@@ -31,6 +31,9 @@ span.multiselect__option--highlight{
   background-color: #e0f3f3;
 }
 
+.xxl-max-width{
+  max-width: 1440px;
+}
 
 span.multiselect__option multiselect__option--highlight multiselect__option--selected{
   background-color: #000
@@ -70,7 +73,7 @@ span.h6,
 div.temp table span.data-source,
 label span,
 button.btn {
-  font-size: 0.7rem !important;
+  font-size: 1.2rem !important;
 }
 
 .pointer_click {
@@ -144,7 +147,7 @@ ul {
    display: flex;
    justify-content: center;
    align-items: center;
-  
+
   }
 
   .nav-pills .active {
