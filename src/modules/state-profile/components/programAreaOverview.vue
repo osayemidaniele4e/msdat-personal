@@ -51,7 +51,6 @@ no-param-reassign */
           </b-row>
           <hr />
         </div>
-        <pre>{{ barChartOptions }}</pre>
         <BaseBar
           v-show="this.programArea.name != 'Health Services'"
           :chartOptions="barChartOptions"
@@ -65,22 +64,22 @@ no-param-reassign */
             class="px-auto"
             style="background-color: #054a80; border: 1px solid white; height: 40px"
           >
-            <span class="mx-auto">Pre-pregnancy</span>
+            <p class="mx-auto">Pre-pregnancy</p>
           </b-col>
           <b-col style="background-color: #2c8cca; border: 1px solid white; height: 40px">
-            <span>Pregnancy</span>
+            <p>Pregnancy</p>
           </b-col>
           <b-col style="background-color: #3f7299; border: 1px solid white; height: 40px">
-            <span>Birth</span>
+            <p>Birth</p>
           </b-col>
           <b-col style="background-color: #43893b; border: 1px solid white; height: 40px">
-            <span>Postnatal</span>
+            <p>Postnatal</p>
           </b-col>
           <b-col style="background-color: #2c9f35; border: 1px solid white; height: 40px">
-            <span>Infancy</span>
+            <p>Infancy</p>
           </b-col>
           <b-col style="background-color: #8fb438; border: 1px solid white; height: 40px">
-            <span>Childhood</span>
+            <p>Childhood</p>
           </b-col>
         </b-row>
       </b-col>
@@ -178,7 +177,7 @@ no-param-reassign */
     </b-row>
     <b-row v-show="this.isDefinitionVisible">
       <p>
-        <strong> Indicator definitions</strong>
+        <b> Indicator definitions </b>
       </p>
       <ul>
         <li v-for="(definition, index) in definitions" :key="index">
@@ -641,7 +640,6 @@ export default {
     } catch (err) {
       console.log(err);
     }
-    console.log('specific-indicators', this.programArea.specificIndicators);
   },
 };
 </script>
@@ -650,7 +648,6 @@ export default {
 .container-fluid {
   font-family: 'Muli', sans-serif !important;
 }
-
 .program-area-icon {
   border-radius: 50%;
   background-color: #ffffff;
@@ -658,80 +655,65 @@ export default {
   height: 84px;
   width: 84px;
 }
-
 p {
   margin-bottom: 0px;
   font-family: 'Muli', sans-serif;
 }
-
 ul {
   list-style-type: none;
 }
-
 .toggle {
   background-color: #f2f2f2;
   border: 1px solid #cccccc;
   color: #232323;
 }
-
 .btn-secondary:hover {
   background-color: #f2f2f2 !important;
   border: 1px solid #cccccc !important;
   color: #232323 !important;
 }
-
 .vl {
   border: 1px dashed rgba(197, 197, 197, 1);
   width: 1px;
   opacity: 1;
   height: 100%;
 }
-
 .test {
   position: absolute;
   left: 50%;
   margin-left: 30px;
 }
-
 .title {
   font-size: 21.0000525px;
   font-weight: 800;
 }
-
 .sources {
   color: #5a5a5a;
   font-size: 15px;
 }
-
 .source {
   color: #5a5a5a;
   font-size: 12px;
 }
-
 .note {
   font-weight: 900;
   font-size: 15px;
 }
-
 .blue-heading {
   color: #0592bd;
   font-weight: 800;
 }
-
 .hfs-details {
   font-size: 12px;
   font-weight: 800;
 }
-
 .value {
   font-weight: 900;
 }
-
 .grey-balue {
   color: #5c5c5c;
   font-weight: 900;
 }
-
 .red-value {
   color: #ff0000;
   font-weight: 900;
