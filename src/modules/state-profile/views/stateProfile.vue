@@ -1,5 +1,5 @@
 <template>
-  <b-container class="xxl-max-width">
+  <b-container>
     <genericModal v-if="overviewLoading" :noBackdrop="false" :showBackground="false" class="over">
       <div class="text-center">
         <img
@@ -115,7 +115,7 @@
               >
             </b-dropdown>
           </div>
-          <h3 style="font-size: 20px">
+          <h3 style="font-size: 15px">
             {{ `${state === 'National' ? '' : 'State'}` }} Health Profile
           </h3>
         </b-col>
@@ -209,7 +209,7 @@ export default {
         {
           name: 'Total Fertility Rate',
           indicatorId: 1,
-          source: 'NHMIS-DHIS2',
+          source: 'NDHS',
           sourceId: 2,
           year: 2018,
           value: 0,
@@ -562,21 +562,16 @@ export default {
     states() {
       // Dynamically populating the list
       // of states in the dropdown
-      const states = new Set();
-      // By using a Set, duplicate elements will be automatically eliminated,
-      // ensuring that only unique elements are displayed in the dropdown menu.
-      // The Array.from() method is then used to convert the Set back into an array
-      // for compatibility with the v-for loop.
+      const states = [];
       if (this.allLocations !== undefined) {
         this.allLocations.forEach((el) => {
           if (el.level === 3) {
-            states.add(el);
+            states.push(el);
           }
         });
       }
-      return Array.from(states);
+      return states;
     },
-
     lgaNames() {
       const chosenState = this.allLocations.filter(
         (el) => el.name.includes(this.state) && el.level === 3,
@@ -699,21 +694,12 @@ export default {
   border: 1px solid #cccccc;
   height: 38.250103125px;
   color: #3a3a3a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25em;
 }
 .share-button {
   background-color: #f2f2f2;
   border: 1px solid #cccccc;
   height: 38.250103125px;
   color: #3a3a3a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25em;
-
 }
 p.final-text {
   margin-bottom: 9vh;
