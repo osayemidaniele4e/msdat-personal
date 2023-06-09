@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters, mapActions } from 'vuex';
 import VueCookies from 'vue-cookies';
 import moment from 'moment';
 import apiServices from '@/modules/data-layer/services/ApiServices';
@@ -62,7 +62,7 @@ export default {
       'CLEAR_CONTROL_PANEL',
       'SET_CONFIGURATIONS',
     ]),
-
+    ...mapActions('AUTH_STORE', ['SAVE_USER_DASHBOARD']),
     /**
      * @function clearData
      * @author davebenard
@@ -88,11 +88,33 @@ export default {
       }
       Promise.resolve(false);
     },
+    async saveDashboard(indicators, sources, dashboardTitle) {
+      const sections = this.fieldsArray.filter((item) => item.isShow === true).map((item) => item.name);
+      const payload = {
+        title: dashboardTitle,
+        showTableRelatedIndicator: false,
+        visibility: 'private',
+        user: this.getUser.id,
+        initialIndicator: indicators[0],
+        initialDatasource: sources[0],
+        indicators,
+        dataSources: sources,
+        initialLocation: 1,
+        defaultIndicators: [indicators[0]],
+        sections,
+      };
+      await this.SAVE_USER_DASHBOARD(payload);
+    },
   },
   async mounted() {
     this.clearData();
   },
-
+  computed: {
+    ...mapGetters('AUTH_STORE', ['getUser']),
+    fieldsArray() {
+      return this.$store.getters.arrangedSections;
+    },
+  },
   async created() {
     const { name } = this.$route.params;
     /**
@@ -148,6 +170,7 @@ export default {
         initialDataSource: sourcesID[0],
         initialLocation: 1,
       };
+      this.saveDashboard(ids, sourcesID, this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name);
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;

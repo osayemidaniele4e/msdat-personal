@@ -46,13 +46,6 @@
             >COMPLETE</b-button
           ></b-col
         >
-        <b-col cols="auto"
-          ><b-button class="SFL" disabled style="font-family: Work Sans"
-            >
-            <!-- Save for Later -->
-            </b-button
-          ></b-col
-        >
         </div>
       </b-col>
       <!-- <b-col md="4" sm="12">
