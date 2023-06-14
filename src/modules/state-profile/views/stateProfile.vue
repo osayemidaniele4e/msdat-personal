@@ -107,13 +107,8 @@
                   </b-col>
                 </b-row>
               </template>
-              <b-dropdown-item
-                @click="navigateToState(s.name)"
-                v-for="(s, j) in this.states"
-                :key="`$[s]+${j}`"
-                >{{ s.name }}</b-dropdown-item
-              >
             </b-dropdown>
+
           </div>
           <h3 style="font-size: 20px">
             {{ `${state === 'National' ? '' : 'State'}` }} Health Profile
@@ -662,38 +657,47 @@ export default {
 <style lang="scss">
 .modal-body {
   padding: 0;
+
   button.social {
     background-color: transparent;
     margin: 5px 10px;
     color: #3a3a3a;
   }
+
   button.social.link {
     img {
       width: 16px;
     }
   }
 }
+
 .share-modal {
+
   .top,
   .footer {
     background-color: #d6cfcf;
     padding: 15px 25px;
   }
+
   button {
     font-size: 17px;
     padding: 5px;
   }
+
   .body {
     padding: 25px 20px;
+
     img {
       width: 32px;
     }
   }
 }
+
 .state-select,
 .state-select:hover {
   color: #3a3a3a;
 }
+
 .print-button {
   background-color: #f2f2f2;
   border: 1px solid #cccccc;
@@ -704,6 +708,7 @@ export default {
   justify-content: center;
   gap: 0.25em;
 }
+
 .share-button {
   background-color: #f2f2f2;
   border: 1px solid #cccccc;
@@ -715,30 +720,38 @@ export default {
   gap: 0.25em;
 
 }
+
 p.final-text {
   margin-bottom: 9vh;
   margin-top: 11vh !important;
+
   span a {
     color: #007d53;
     font-weight: bolder;
   }
 }
+
 p.final-text span a:hover {
   text-decoration: none;
 }
+
 .btn:focus {
   box-shadow: none;
 }
+
 h3 {
   font-size: 20px;
 }
+
 h2 {
   font-weight: bold;
   font-size: 21px;
 }
+
 h1 {
   font-size: 56px;
 }
+
 .program-icon {
   border-radius: 50%;
   background-color: #ffffff;
