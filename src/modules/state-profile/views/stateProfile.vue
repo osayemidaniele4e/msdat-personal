@@ -2,11 +2,8 @@
   <b-container class="xxl-max-width">
     <genericModal v-if="overviewLoading" :noBackdrop="false" :showBackground="false" class="over">
       <div class="text-center">
-        <img
-          src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg"
-          alt="first_img"
-          width="250px"
-        />
+        <img src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg" alt="first_img"
+          width="250px" />
         <div class="">
           <h3 class="mr-4 mt-3">Fetching Data...</h3>
         </div>
@@ -20,15 +17,8 @@
         </div>
         <div class="body">
           <button class="social">
-            <a
-              :href="`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`"
-              target="_blank"
-            >
-              <img
-                class="img-fluid"
-                src="@/assets/state-profile/img/linkedin.png"
-                alt="linkedin-icon"
-              />
+            <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`" target="_blank">
+              <img class="img-fluid" src="@/assets/state-profile/img/linkedin.png" alt="linkedin-icon" />
             </a>
           </button>
           <button class="social">
@@ -38,20 +28,12 @@
           </button>
           <button class="social">
             <a :href="`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`" target="_blank">
-              <img
-                class="img-fluid"
-                src="@/assets/state-profile/img/facebook.png"
-                alt="facebook-icon"
-              />
+              <img class="img-fluid" src="@/assets/state-profile/img/facebook.png" alt="facebook-icon" />
             </a>
           </button>
           <button class="social">
             <a :href="`https://twitter.com/intent/tweet?url=${shareUrl}&text=`" target="_blank">
-              <img
-                class="img-fluid"
-                src="@/assets/state-profile/img/twitter.png"
-                alt="twitter-icon"
-              />
+              <img class="img-fluid" src="@/assets/state-profile/img/twitter.png" alt="twitter-icon" />
             </a>
           </button>
           <button class="social link btn btn-outline-secondary" @click="copyTheLink">
@@ -70,12 +52,8 @@
       <b-row class="mt-4">
         <b-col cols="auto">
           <div>
-            <b-dropdown
-              variant="text"
-              dropright
-              toggle-class="text-decoration-none p-0 m-0 display-block state-select"
-              no-caret
-            >
+            <b-dropdown variant="text" dropright toggle-class="text-decoration-none p-0 m-0 display-block state-select"
+              no-caret>
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
@@ -89,12 +67,8 @@
                 </b-row>
               </template>
               <b-dropdown-item @click="navigateToState('National')">National</b-dropdown-item>
-              <b-dropdown-item
-                @click="navigateToState(s.name)"
-                v-for="(s, i) in this.states"
-                :key="`${s}+${i}`"
-                >{{ s.name }}</b-dropdown-item
-              >
+              <b-dropdown-item @click="navigateToState(s.name)" v-for="(s, i) in this.states" :key="`${s}+${i}`">{{ s.name
+              }}</b-dropdown-item>
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
@@ -122,38 +96,21 @@
               Share
             </b-button>
             <b-button class="print-button" @click="printing">
-              <img
-                class="img-fluid"
-                src="@/assets/state-profile/svg/printing.svg"
-                alt="print-icon"
-              />
+              <img class="img-fluid" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
               Print Profile
             </b-button>
           </b-row>
         </b-col>
       </b-row>
       <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
-      <demographics
-        :state="state"
-        @changeState="stateClicked"
-        :stateDemographics="demographics"
-      ></demographics>
+      <demographics :state="state" @changeState="stateClicked" :stateDemographics="demographics"></demographics>
       <div class="mt-5" v-for="(programArea, k) in programAreas" :key="k">
-        <PAoverview
-          :state="state"
-          @overviewLoading="setLoadingState"
-          :locations="allLocations"
-          :indicatorDefinitions="indicatorDefinitions"
-          :programArea="programArea"
-        ></PAoverview>
+        <PAoverview :state="state" @overviewLoading="setLoadingState" :locations="allLocations"
+          :indicatorDefinitions="indicatorDefinitions" :programArea="programArea"></PAoverview>
       </div>
       <p class="text-center final-text">
         This state profile dashboard has been curated majorly from the MSDAT Dashboard available at
-        <span
-          ><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank"
-            >msdat.fmohconnect.gov.ng</a
-          ></span
-        >
+        <span><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank">msdat.fmohconnect.gov.ng</a></span>
       </p>
     </div>
   </b-container>
