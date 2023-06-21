@@ -1,9 +1,19 @@
+image: "docker:20.10.16"
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:20.10.16-dind
+  
+
 stages:
 
   - deploy
 
-deploy_develop:
-  
+
+
+deploy_3.0:
   stage: deploy
   
   before_script: 
@@ -12,82 +22,55 @@ deploy_develop:
       - chmod 600 ~/.ssh/id_rsa
       - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh -p3322 e4esysadmin@208.87.128.190 "cd /home/e4esysadmin/msdat-clone/  && git pull origin develop && sudo yarn install && sudo yarn build && sudo systemctl reload nginx"
+    - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat/  && git pull origin develop && sudo yarn install && sudo yarn build && sudo systemctl reload nginx "
   only:
     - develop
-#image: "docker:20.10.16"
 
-#variables:
- # DOCKER_TLS_CERTDIR: "/certs"
 
-#services:
- # - docker:20.10.16-dind
+
+
+
+deploy_advanced analytics:
+  stage: deploy
   
+  before_script: 
+      - mkdir -p ~/.ssh
+      - echo -e "$MSDATDEVELOP" > ~/.ssh/id_rsa
+      - chmod 600 ~/.ssh/id_rsa
+      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat/ && git checkout . && git checkout advanced && git pull && sudo yarn install && sudo yarn run build && sudo systemctl restart nginx "
+  only:
+    - advanced
 
-#stages:
-
- # - deploy
 
 
 
-#deploy_3.0:
- # stage: deploy
+
+deploy_staging:
+  stage: deploy
   
-  #before_script: 
-   #   - mkdir -p ~/.ssh
-    #  - echo -e "$MSDATDEVELOP" > ~/.ssh/id_rsa
-     # - chmod 600 ~/.ssh/id_rsa
-      #- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  #script:
-   # - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat/  && git pull origin develop && sudo yarn install && sudo yarn build && sudo systemctl reload nginx "
-  #only:
-   # - develop
+  before_script: 
+      - mkdir -p ~/.ssh
+      - echo -e "$MSDATDEVELOP" > ~/.ssh/id_rsa
+      - chmod 600 ~/.ssh/id_rsa
+      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh -p3322 e4esysadmin@208.87.128.190 "cd ~/msdat/ && sudo chown e4esysadmin:e4esysadmin -R docs/ && git checkout . && git checkout staging && git pull && sudo yarn install  && sudo yarn build  && sudo yarn docs:build && sudo systemctl reload nginx "
+  only:
+    - staging
 
 
-
-
-
-#deploy_advanced analytics:
- # stage: deploy
+deploy_beta:
+  stage: deploy
   
-  #before_script: 
-   #   - mkdir -p ~/.ssh
-    #  - echo -e "$MSDATDEVELOP" > ~/.ssh/id_rsa
-     # - chmod 600 ~/.ssh/id_rsa
-      #- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  #script:
-   # - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat/ && git checkout . && git checkout advanced && git pull && sudo yarn install && sudo yarn run build && sudo systemctl restart nginx "
-  #only:
-   # - advanced
-
-
-
-
-
-#deploy_staging:
- # stage: deploy
-  
-  #before_script: 
-   #   - mkdir -p ~/.ssh
-    #  - echo -e "$MSDATDEVELOP" > ~/.ssh/id_rsa
-     # - chmod 600 ~/.ssh/id_rsa
-      #- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  #script:
-   # - ssh -p3322 e4esysadmin@208.87.128.190 "cd ~/msdat/ && sudo chown e4esysadmin:e4esysadmin -R docs/ && git checkout . && git checkout staging && git pull && sudo yarn install  && sudo yarn build  && sudo yarn docs:build && sudo systemctl reload nginx "
- # only:
-  #  - staging
-
-
-#deploy_beta:
- # stage: deploy
-  
-  #before_script: 
-   #   - mkdir -p ~/.ssh
-    #  - echo -e "$MSDATMASTER" > ~/.ssh/id_rsa
-     # - chmod 600 ~/.ssh/id_rsa
-      #- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  #script:
-   # - ssh -p3322 e4esysadmin@172.93.48.4 "cd /srv/msdat/  && git pull origin master && sudo yarn install &&  sudo yarn build && sudo systemctl reload nginx "
-  #only:
-   # - master
-  #when: manual
+  before_script: 
+      - mkdir -p ~/.ssh
+      - echo -e "$MSDATMASTER" > ~/.ssh/id_rsa
+      - chmod 600 ~/.ssh/id_rsa
+      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh -p3322 e4esysadmin@172.93.48.4 "cd /srv/msdat/  && git pull origin master && sudo yarn install &&  sudo yarn build && sudo systemctl reload nginx "
+  only:
+    - master
+  when: manual
