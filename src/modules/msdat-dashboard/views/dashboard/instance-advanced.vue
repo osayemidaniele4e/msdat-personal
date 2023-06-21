@@ -10,14 +10,13 @@
       :updateValue="updateValue"
       :updateKey="updateKey"
       :resetData="resetData"
-        @swipe="changeSwipe"
-
+      @swipe="changeSwipe"
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
       </template>
 
-            <template v-slot:section-0="{ payload, controlIndex }">
+      <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
@@ -61,9 +60,7 @@
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'header'">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Predictive Analysis
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Predictive Analysis</h5>
             </template>
             <template>
               <LazyLoading>
@@ -76,7 +73,7 @@
         </div>
       </template>
 
-         <template v-slot:section-3="{ payload, controlIndex }">
+      <template v-slot:section-3="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
@@ -103,7 +100,6 @@
           </base-sub-card>
         </div>
       </template>
-
     </BaseDashboard>
   </div>
 </template>
@@ -187,7 +183,6 @@ export default {
       type: Boolean,
       default: true,
     },
-
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
@@ -314,16 +309,16 @@ export default {
 }
 
 .comparison-header {
- display: none;
+  display: none;
 }
 
 @media (max-width: 800px) {
-.comparison-header {
-  display: inherit;
-  margin: 0 auto;
-  text-align: center;
-  font-weight: bold;
-  margin: 5px;
-}
+  .comparison-header {
+    display: inherit;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    margin: 5px;
+  }
 }
 </style>

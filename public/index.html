@@ -5,11 +5,12 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <link rel="icon" type="image/png" sizes="16x16" href="<%= BASE_URL %>img/icons/favicon-1.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>img/icons/favicon-2.png" />
-  <meta name="theme-color" content="#007d53" />
+  <link rel="icon" type="image/png" sizes="16x16" href="<%= BASE_URL %>img/icons/favicon-3.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>img/icons/favicon-3.png" />
+  <meta name="theme-color" content="#5C54BE" />
   <!-- Add to home screen for Safari on iOS -->
-  <meta name="author" content="James Chinwokwu, Iboro Iyang, Mansi Kelvin, Ekwere Ime, Benard Z. David, Akpabio Moses, Chisom Chima, Samuel Adegbite, Henry Linus, George Manger">
+  <meta name="author"
+    content="James Chinwokwu, Iboro Iyang, Mansi Kelvin, Ekwere Ime, Benard Z. David, Akpabio Moses, Chisom Chima, Samuel Adegbite, Henry Linus, George Manger, Chelsea Ezeakaile">
   <meta name="author" content="eHealth4Everyone">
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -19,7 +20,8 @@
   <meta name="msapplication-TileImage" content="<%= BASE_URL %>img/icons/msapplication-icon-144x144.png" />
   <meta name="msapplication-TileColor" content="#000000" />
   <!--page description-->
-  <meta name="description" content="The Multi-Source Data Analytic and Triangulation (MSDAT) platform developed by the Federal Ministry of Health (FMoH) Nigeria is your one-stop shop for Health Data and Analytics. It provides access to key health indicators/metrics at different levels (federal, state and LGA) and across three categories of data sources (routine, surveys, & global estimates).">
+  <meta name="description"
+    content="The Multi-Source Data Analytic and Triangulation (MSDAT) platform developed by the Federal Ministry of Health (FMoH) Nigeria is your one-stop shop for Health Data and Analytics. It provides access to key health indicators/metrics at different levels (federal, state and LGA) and across three categories of data sources (routine, surveys, & global estimates).">
 
   <style>
     body {
@@ -32,7 +34,7 @@
     }
   </style>
   <!-- <title><%= htmlWebpackPlugin.options.title %></title> -->
-  <title>MSDAT Platform</title>
+  <title>HealthThink</title>
   <script src="https://kit.fontawesome.com/00d9c5fa35.js" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/ea5d2d64a6.js" crossorigin="anonymous"></script>
   <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -49,18 +51,16 @@
 
     gtag('config', 'UA-127976918-1');
   </script> -->
-  <script
-  async
-  src="https://www.googletagmanager.com/gtag/js?id=G-VSGQ4LNYE1"
-></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag('js', new Date());
-  gtag('config', 'G-VSGQ4LNYE1');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VSGQ4LNYE1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-VSGQ4LNYE1');
+  </script>
   <!-- Userback Feedback -->
   <script>
     Userback = window.Userback || {};
@@ -85,8 +85,8 @@
 <body>
   <noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-        properly without JavaScript enabled. Please enable it to
-        continue.</strong>
+      properly without JavaScript enabled. Please enable it to
+      continue.</strong>
   </noscript>
   <div id="app"></div>
   <!-- built files will be auto injected -->
