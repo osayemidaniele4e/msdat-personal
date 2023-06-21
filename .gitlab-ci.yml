@@ -2,7 +2,7 @@ stages:
 
   - deploy
 
-deploy_SPA:
+deploy_develop:
   
   stage: deploy
   
