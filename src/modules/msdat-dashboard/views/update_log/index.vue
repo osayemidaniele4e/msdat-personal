@@ -4,11 +4,18 @@
     <div class="container-fluid">
       <div class="align-items-center my-3 row work-sans">
         <div class="col-1">
-          <b-icon @click="$router.go(-1)" class="back-icn" icon="chevron-left" />
+          <b-icon
+            @click="$router.go(-1)"
+            class="back-icn"
+            icon="chevron-left"
+          />
         </div>
         <div class="col m-auto text-center">
-          <h5 class="font-weight-bold">HealthThink Release Note</h5>
-          <p>The Platform is updated regularly for optimum experience and data quality</p>
+          <h5 class="font-weight-bold">MSDAT Platform Release Note</h5>
+          <p>
+            The Platform is updated regularly for optimum experience and data
+            quality
+          </p>
         </div>
       </div>
       <div class="row">

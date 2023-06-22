@@ -13,7 +13,6 @@ export default {
         green: '#00AC40',
         red: '#E85D58',
         blue: '#58a5e8',
-        black: '#222222',
       },
     };
   },
@@ -220,14 +219,9 @@ export default {
               data: dataObjectWithTarget.aboveTargetData,
             });
             series.push({
-              name: 'Not on Target',
+              name: 'Below Target',
               color: this.color.red,
               data: dataObjectWithTarget.belowTargetData,
-            });
-            series.push({
-              name: 'National Target',
-              color: this.color.black,
-              data: dataObjectWithTarget.nationalTarget,
             });
           }
 
@@ -238,14 +232,9 @@ export default {
               data: dataObjectWithTarget.aboveTargetData,
             });
             series.push({
-              name: 'Not on Target',
+              name: 'Below Target',
               color: this.color.green,
               data: dataObjectWithTarget.belowTargetData,
-            });
-            series.push({
-              name: 'National Target',
-              color: this.color.black,
-              data: dataObjectWithTarget.nationalTarget,
             });
           }
         }

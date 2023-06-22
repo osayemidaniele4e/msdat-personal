@@ -54,13 +54,13 @@ tr {
 
     svg {
       // color: #2b5d5b;
-      color: #47427d;
+      color: #348481;
       cursor: pointer;
     }
   }
 }
 
-.info-circle {
+.info-circle{
   font-size: 16px;
 }
 </style>

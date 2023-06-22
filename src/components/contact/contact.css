@@ -1,9 +1,9 @@
 .fonttxt {
-  font-family: "adobe-clean", "Work Sans";
-  margin: 5px 2px;
-  padding: 5px 10px;
-  word-wrap: break-word;
-  border-color: rgb(206, 212, 218);
+   font-family:  "adobe-clean", "Work Sans";
+    margin: 5px 2px;
+     padding: 5px 10px;
+     word-wrap: break-word;    
+   border-color: rgb(206, 212, 218);
 }
 
 
@@ -12,7 +12,7 @@
 }
 
 .alerts {
-  display: inline-block;
+      display: inline-block;
 }
 
 .lineHeight {
@@ -24,83 +24,76 @@
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
-
 .inputMargin {
   margin-top: 0.5rem
-}
+ }
 
 
-input,
-select {
+input, select {
   margin: 10px 10px;
-  padding: 0px 10px;
-  border-radius: 0px;
-  /* background-color: rgb(206, 212, 218);
+   padding: 0px 10px;
+   border-radius: 0px;
+   /* background-color: rgb(206, 212, 218);
    border-color: rgb(206, 212, 218); */
   outline: none;
   -webkit-appearance: none;
-
+ 
 }
 
-.form-control:focus {
+.form-control:focus{
 
-  box-shadow: none;
+     box-shadow:none;
 }
-
-label,
-.bold {
+label, .bold{
   margin-left: 3px;
   font-weight: 500;
 }
-
 .form-control {
   border-radius: 0px;
 }
 
 textarea {
-  padding: 0px 10px;
-  resize: none;
-  outline: none;
-  display: block;
+   padding: 0px 10px;
+    resize: none;
+    outline: none;
+    display: block;
 }
-
 .send {
-  position: relative;
-  color: white;
-  background-color: #494299;
-  border-radius: 3px;
-  font-size: 15px;
-  border: none;
-  cursor: pointer;
-  padding: 5px 20px;
-
-  outline: none;
-}
+    position: relative;
+    color: white;
+    background-color: #007D53;
+    border-radius: 3px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    padding: 5px 20px;
+   
+    outline: none;
+    }
 
 h1 {
-  font-weight: 1000;
-  font-size: 17px;
+    font-weight: 1000;
+    font-size: 17px;
 
-}
-
+    }
 strong {
   color: rgb(78, 68, 68);
 }
 
 .modal {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  inset: 0;
-}
+    position: fixed;
+    display: flex;
+    align-items: center;
+    inset: 0;
+    }
 
 .emailField {
-  background-color: rgb(240, 247, 248);
-  margin: 2px;
-  width: 80%;
-  padding: 15px 4px;
-  border: 1px solid rgb(193, 223, 240);
-}
+    background-color:rgb(240, 247, 248);
+    margin: 2px;
+    width: 80%;
+    padding: 15px 4px;
+    border: 1px solid rgb(193, 223, 240);
+    }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
