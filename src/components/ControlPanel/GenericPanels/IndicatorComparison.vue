@@ -2,14 +2,14 @@
   <div class="row">
     <!-- Compare by here -->
     <div class="col">
-      <label class="h6 text-uppercase work-sans">compare by</label>
+   <label class="h6 text-uppercase work-sans">compare by</label>
 
       <div>
         <multiselect
           v-model="payload.indicator"
           :options="compareOptions"
           track-by="id"
-          label="short_name"
+           label="short_name"
           :searchable="false"
           :close-on-select="true"
           :show-labels="false"
@@ -20,7 +20,7 @@
 
     <!-- Data sources here -->
     <div class="col">
-      <label class="h6 text-uppercase work-sans">data sources</label>
+    <label class="h6 text-uppercase work-sans">data sources</label>
 
       <div>
         <multiselect
@@ -38,7 +38,7 @@
 
     <!-- year here -->
     <div class="col">
-      <label class="h6 text-uppercase work-sans">year</label>
+    <label class="h6 text-uppercase work-sans">year</label>
 
       <div>
         <multiselect
@@ -54,7 +54,7 @@
 
     <!-- Indicator here -->
     <div class="col-md-4">
-      <label class="h6 text-uppercase work-sans">Indicator</label>
+   <label class="h6 text-uppercase work-sans">Indicator</label>
 
       <div>
         <multiselect
@@ -69,8 +69,8 @@
           label="name"
           track-by="id"
           :preselect-first="false"
-          group-values="indicators"
-          group-label="program_area"
+           group-values="indicators"
+           group-label="program_area"
         >
         </multiselect>
       </div>
@@ -89,7 +89,7 @@
 
         <!-- SDG Target here -->
         <div class="d-flex ml-3">
-          <BaseCheckbox @input="payload.target.sdg = $event" />
+          <BaseCheckbox  @input="payload.target.sdg = $event" />
           <p class="check-label ml-1">SDG</p>
         </div>
       </div>
@@ -109,4 +109,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
