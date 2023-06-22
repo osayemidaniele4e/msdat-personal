@@ -3,15 +3,12 @@
     class="text-center align-middle"
     scope="col"
     :class="[selectedSource.id === source.id ? 'table-active text-white' : '']"
-    @click=" emitValue(source)"
+    @click="emitValue(source)"
   >
-
-  <!-- {{selectedSource.id}}
+    <!-- {{selectedSource.id}}
   {{source.id}} -->
-    <div   class="icon d-flex align-items-center justify-content-center" >
-      <span
-        class="data-source h6 mr-3 mb-0 font-weight-bold"
-        @click="$emit('source:click', source)"
+    <div class="icon d-flex align-items-center justify-content-center">
+      <span class="data-source h6 mr-3 mb-0 font-weight-bold" @click="$emit('source:click', source)"
         >{{ source.datasource }}
       </span>
       <b-icon-info-circle-fill
@@ -24,7 +21,6 @@
 
 <script>
 export default {
-
   props: {
     source: {
       type: [Object, Array, String],
@@ -62,14 +58,14 @@ export default {
 }
 .icon {
   svg {
-    color: #348481 !important;
+    color: #47427d !important;
   }
-  }
-   .table-active  {
-    .icon {
-        svg {
-           color: white !important;
-       }
+}
+.table-active {
+  .icon {
+    svg {
+      color: white !important;
     }
   }
+}
 </style>
