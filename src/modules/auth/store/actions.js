@@ -14,6 +14,17 @@ export default {
       // return err.username[0] || err.email[0] || err.password[0];
     }
   },
+
+  // eslint-disable-next-line consistent-return, no-unused-vars
+  async SAVE_USER_DASHBOARD({ commit }, payload) {
+    try {
+      const response = await axiosInstance.post('/dashboards/', payload);
+      return response;
+    } catch (err) {
+      // console.log(err);
+    }
+  },
+
   // eslint-disable-next-line consistent-return
   async LOGIN_USER({ commit }, payload) {
     try {

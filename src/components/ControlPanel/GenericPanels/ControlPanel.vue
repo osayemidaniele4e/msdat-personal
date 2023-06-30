@@ -327,7 +327,6 @@ export default {
       }
       return el;
     });
-    // console.log(this.setup, 'setup');
     this.updatePayload(this.defaultIndicator, 'indicator');
     this.updatePayload(this.defaultDataSource, 'datasource');
     this.updatePayload(this.defaultLocation, 'location');

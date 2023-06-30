@@ -53,7 +53,7 @@
           v-if="
             $store.state.MSDAT_STORE.zonalAnalysis == true &&
             fields.map((element) => {
-              element.name == 'Zonal Analysis';
+              element.name == 'Zonal analysis';
             })
           "
         >
@@ -80,7 +80,7 @@
           v-if="
             $store.state.MSDAT_STORE.indicatorComparsionByPeriod == true &&
             fields.map((element) => {
-              element.name == 'Indicator Comparsion - By Period';
+              element.name == 'Indicator Comparison';
             })
           "
         >
@@ -131,7 +131,7 @@
         <div class="col-md-12" v-if="
             $store.state.MSDAT_STORE.multisourceComparison == true &&
             fields.map(element => {
-              element.name == 'Multi-source Indicator Comparison'})
+              element.name == 'Multi-source Comparison'})
           ">
           <base-sub-card class="my-2 shadow-sm">
             <template #title>
