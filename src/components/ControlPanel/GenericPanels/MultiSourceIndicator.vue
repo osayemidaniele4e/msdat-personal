@@ -25,7 +25,7 @@
     <!-- filter-tab here -->
     <div class="row">
       <div class="col">
-      <label class="h6 text-uppercase work-sans">Select Visualization</label>
+        <label class="h6 text-uppercase work-sans">Select Visualization</label>
         <div class="row">
           <div class="col">
             <div class="btn-group btn-block mb-1 work-sans" role="group">
@@ -33,48 +33,35 @@
                 type="button"
                 @click="payload.visualization = 'zonal_map'"
                 class="btn btn-sm btn-outline-secondary"
-                :class="{ active:  (payload.visualization === 'zonal_map') }"
+                :class="{ active: payload.visualization === 'zonal_map' }"
               >
                 Zones Map
-                <img
-                  :src="require('../svg/zonal_map.svg')"
-                  alt=""
-                  srcset=""
-                />
+                <img :src="require('../svg/zonal_map.svg')" alt="" srcset="" />
               </button>
               <button
                 type="button"
                 @click="payload.visualization = 'state_map'"
                 class="btn btn-sm btn-outline-secondary"
-                :class="{ active:  (payload.visualization === 'state_map') }"
+                :class="{ active: payload.visualization === 'state_map' }"
               >
-               State Map
-               <img
-                  class="text-danger"
-                  :src="require('../svg/state_map.svg')"
-                  alt=""
-                  srcset=""
-                />
+                State Map
+                <img class="text-danger" :src="require('../svg/state_map.svg')" alt="" srcset="" />
               </button>
               <button
                 type="button"
                 @click="payload.visualization = 'line'"
                 class="btn btn-sm btn-outline-secondary"
-                :class="{ active:  (payload.visualization === 'line') }"
+                :class="{ active: payload.visualization === 'line' }"
               >
-               Line <img :src="require('../svg/line.svg')" alt="" srcset="" />
+                Lines <img :src="require('../svg/line.svg')" alt="" srcset="" />
               </button>
               <button
                 type="button"
                 @click="payload.visualization = 'column'"
                 class="btn btn-sm btn-outline-secondary"
-                :class="{ active:  (payload.visualization === 'column') }"
+                :class="{ active: payload.visualization === 'column' }"
               >
-               Column<img
-                  :src="require('../svg/column.svg')"
-                  alt=""
-                  srcset=""
-                />
+                Column<img :src="require('../svg/column.svg')" alt="" srcset="" />
               </button>
             </div>
           </div>
@@ -96,14 +83,14 @@
             :show-labels="false"
             :preselect-first="true"
             track-by="id"
-           label="datasource"
+            label="datasource"
           ></multiselect>
         </div>
       </div>
 
       <!-- year here -->
       <div class="col">
-      <label class="h6 text-uppercase work-sans">year</label>
+        <label class="h6 text-uppercase work-sans">year</label>
         <div>
           <multiselect
             v-model="payload.year"
@@ -127,8 +114,7 @@ export default {
   mixins: [ControlMixins],
   components: { Multiselect },
   data() {
-    return {
-    };
+    return {};
   },
 };
 </script>

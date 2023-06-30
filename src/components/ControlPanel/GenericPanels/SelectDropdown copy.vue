@@ -1,7 +1,7 @@
 <template>
   <!-- Label to show when there is no available data as requested
   for by chiamaka on the 2-12-2021 during msdat meeting -->
-    <!--  -->
+  <!--  -->
   <multiselect
     :id="formattedID"
     v-model="selected"
@@ -15,7 +15,7 @@
     selectLabel=""
     data-visted="notVisited"
     deselectLabel=""
-    >
+  >
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}s</span>
     <!---
       START
@@ -23,32 +23,31 @@
       THAT HAVE GROUPED OPTIONS
     -->
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
-       <template v-if="props.option.$groupLabel">
-      <span class="topicHead"
-       :data-parent="props.option.$groupLabel">
-       {{props.option.$groupLabel}} <span class="down-caret"></span> </span>
+      <template v-if="props.option.$groupLabel">
+        <span class="topicHead" :data-parent="props.option.$groupLabel">
+          {{ props.option.$groupLabel }} <span class="down-caret"></span>
+        </span>
       </template>
       <template v-if="props.option.item">
-        <div v-if="!props.option.$groupLabel"
-        :data-child="modifyDataSourceChildLabel(props.option.item)">
-        {{props.option.item}}
+        <div
+          v-if="!props.option.$groupLabel"
+          :data-child="modifyDataSourceChildLabel(props.option.item)"
+        >
+          {{ props.option.item }}
         </div>
       </template>
       <template v-else-if="props.option.full_name">
-        <div v-if="!props.option.$groupLabel"
-        :data-child="props.option.program_area">
-        {{props.option.full_name}}
+        <div v-if="!props.option.$groupLabel" :data-child="props.option.program_area">
+          {{ props.option.full_name }}
         </div>
       </template>
-
     </template>
     <!---
     END
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
     THAT HAVE GROUPED OPTIONS
     -->
-    </multiselect
-  >
+  </multiselect>
 </template>
 
 <script>
@@ -187,33 +186,30 @@ export default {
       }
     },
   },
-
 };
 </script>
 
 <style lang="scss" scoped>
-
 .down-caret {
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 5px 5px 0 5px;
-  border-color: #58af5f transparent transparent transparent;
+  border-color: #47427d transparent transparent transparent;
   top: 13px;
   right: 5% !important;
   position: absolute;
   transform: rotate(0deg);
-  transition: all .25s ease-in;
+  transition: all 0.25s ease-in;
 }
 
 .open-caret {
-    transform: rotate(180deg);
-    transition: all .25s ease-out;
-  }
-
-li.multiselect__element{
-  border-bottom: 1px solid #0000;
-  transition: all 1.5 ease-in
+  transform: rotate(180deg);
+  transition: all 0.25s ease-out;
 }
 
+li.multiselect__element {
+  border-bottom: 1px solid #0000;
+  transition: all 1.5 ease-in;
+}
 </style>

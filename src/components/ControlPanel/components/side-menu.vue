@@ -30,10 +30,7 @@
           type="button"
           class="dotted-btn menu-item d-flex align-items-center mb-3"
         >
-          <img
-            src="@/assets/img/Hamburger Icons/ic_autorenew.svg"
-            alt="autorenew"
-          />
+          <img src="@/assets/img/Hamburger Icons/ic_autorenew.svg" alt="autorenew" />
           <span class="ml-25">Change/Select Datasets</span>
         </button>
         <button
@@ -49,10 +46,7 @@
           type="button"
           class="dotted-btn menu-item d-flex align-items-center mb-3"
         >
-          <img
-            src="@/assets/img/Hamburger Icons/ic_recommendation.svg"
-            alt="recommendation"
-          />
+          <img src="@/assets/img/Hamburger Icons/ic_recommendation.svg" alt="recommendation" />
           <span class="ml-25">Suggest Indicator/Data Source</span>
         </button>
         <button
@@ -98,10 +92,7 @@
           type="button"
           class="dotted-btn menu-item d-flex align-items-center mb-3"
         >
-          <img
-            src="@/assets/img/Hamburger Icons/ic_download.svg"
-            alt="download"
-          />
+          <img src="@/assets/img/Hamburger Icons/ic_download.svg" alt="download" />
           <span class="ml-25">Download Data</span>
         </button>
         <button
@@ -139,10 +130,7 @@
           type="button"
           class="dotted-btn menu-item d-flex align-items-center mb-3"
         >
-          <img
-            src="@/assets/img/Hamburger Icons/ic_contact.svg"
-            alt="contact"
-          />
+          <img src="@/assets/img/Hamburger Icons/ic_contact.svg" alt="contact" />
           <span class="ml-25">Contact</span>
         </button>
         <button
@@ -173,7 +161,7 @@
   border: 1px solid #cfcfcf;
   border-radius: 0px 5px 5px 5px;
   width: 346px;
-  font-family: "Work Sans", sans-serif;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .menu-item {

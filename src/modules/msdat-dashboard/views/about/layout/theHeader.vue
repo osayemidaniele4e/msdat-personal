@@ -5,7 +5,7 @@
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
-            <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
+            <img src="@/assets/img/Logo-mob1.svg" alt="FMOH Logo" class="img-fluid" />
           </div>
           <div v-if="dashboardName != 'MSDAT PLATFORM'">
             <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
@@ -21,13 +21,13 @@
           <div class="mobile-flex">
             <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
             <img
-              src="@/assets/img/Logo-mob.svg"
+              src="@/assets/img/Logo-mob1.svg"
               alt="FMOH Logo"
               class="mob-img"
               variant="primary"
             />
             <div class="mobile-flex-col">
-              <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
+              <small class="mobile-flex-col-text1">HealthThink</small>
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
             </div>
 
@@ -68,7 +68,7 @@
           </div>
           <div class="main-text" v-else>
             <h2 class="main-text">
-              <small>MSDAT PLATFORM</small>
+              <small>HealthThink</small>
               <br />
               {{ $route.meta.title }}
             </h2>
@@ -95,44 +95,43 @@
             <b-nav class="h-100 align-items-center main d-flex">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
               <a
-                href="https://fmohconnect.gov.ng/landing.html"
+                href="https://fmohconnect.gov.ng/"
                 target="_blank"
                 class="nav-link"
                 v-if="isAuthenticated === false"
-                >Home</a
+                >HealthThink Database</a
               >
               <router-link
                 to="/about"
                 class="nav-link"
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >About</router-link
+                >Custom Dashboard</router-link
               >
-              <router-link
+              <!-- <router-link
                 to="/faq"
                 class="nav-link"
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Help & FAQ</router-link
-              >
-              <router-link
+              > -->
+              <!-- <router-link
                 to="/custom"
                 class="nav-link"
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               >
-              <div>
-</div>
-              <a
+              <div></div> -->
+              <!-- <a
                 href="https://msdat.fmohconnect.gov.ng/"
                 class="nav-link"
                 v-if="isAuthenticated === false"
                 >Go back to MSDAT 1.5</a
-              >
+              > -->
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button class="btn btn-outline-primary border-light rounded-0">
-                  Select&nbsp;Dashboard&nbsp;<b-icon
+                <button class="btn rounded-0">
+                  Other&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
                     class="btn-icon"
@@ -411,7 +410,7 @@ button {
 }
 
 .btn {
-  color: white;
+  color: #161616;
 }
 
 .main {
@@ -434,21 +433,20 @@ button {
   display: none;
 }
 
-.external{
-     text-decoration: none;
-      color: white;
-      font: normal normal 600 12px/20px Muli;
-      &-link{
-        text-decoration: none;
-        color: black;
-      };
-      .active{
-color: white;
-      };
-      .hover{
-        color: white;
-      }
-
+.external {
+  text-decoration: none;
+  color: white;
+  font: normal normal 600 12px/20px Muli;
+  &-link {
+    text-decoration: none;
+    color: black;
+  }
+  .active {
+    color: white;
+  }
+  .hover {
+    color: white;
+  }
 }
 
 header#the-header {
@@ -470,7 +468,7 @@ header#the-header {
   div.header-navs {
     a.nav-link {
       text-decoration: none;
-      color: white;
+      color: #161616;
       font: normal normal 600 12px/20px Muli;
       &.active {
         background: #154736;
@@ -497,7 +495,7 @@ header#the-header {
 
       // first row
       &:first-child {
-        background-color: $primary;
+        background-color: #ffffff;
 
         & > div {
           &:first-child {
@@ -510,7 +508,7 @@ header#the-header {
 
           &:last-child {
             padding: 0 10px 0 30px;
-            color: #fbfbfb;
+            color: #161616;
 
             h2 {
               font: normal normal 600 18px/20px Work Sans;
@@ -626,7 +624,7 @@ header#the-header {
   }
 
   .btn {
-    color: white;
+    color: #161616;
   }
 
   #about-wrap {
@@ -727,7 +725,7 @@ header#the-header {
   }
 
   .btn {
-    color: white;
+    color: #161616;
   }
 
   #about-wrap {
@@ -896,7 +894,7 @@ header#the-header {
       &:focus,
       &:active,
       &:hover {
-        color: white;
+        color: #161616;
         border: 0;
         background-color: transparent;
       }
@@ -938,7 +936,7 @@ div {
 }
 .auth {
   font: normal normal 600 12px/20px Muli;
-  color: white;
+  color: #161616;
 }
 </style>
 
@@ -975,13 +973,13 @@ div {
   font-weight: 500;
   font-size: 2vw;
 }
-
+/*
 .mob-img {
   width: 50px;
   height: 50px;
   position: relative;
   left: -30px;
-}
+} */
 
 .mob-select1 {
   height: 40px;

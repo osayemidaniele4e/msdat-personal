@@ -174,7 +174,7 @@ export default {
 }
 
 .border-b {
-  border-bottom: 0.5px solid #759b99;
+  border-bottom: 0.5px solid #b6b1f8;
 }
 .bg-tab-color {
   color: #515151;
