@@ -2,7 +2,10 @@
   <div class="btn-group" role="group">
     <button
       type="button"
-      @click="(activeToggleButton = 'line'), $emit('button-clicked', activeToggleButton)"
+      @click="
+        (activeToggleButton = 'line'),
+          $emit('button-clicked', activeToggleButton)
+      "
       class="btn btn-sm btn-outline-primary"
       :class="[activeToggleButton === 'line' ? 'active' : '']"
     >
@@ -10,7 +13,10 @@
     </button>
     <button
       type="button"
-      @click="(activeToggleButton = 'column'), $emit('button-clicked', activeToggleButton)"
+      @click="
+        (activeToggleButton = 'column'),
+          $emit('button-clicked', activeToggleButton)
+      "
       class="btn btn-sm btn-outline-primary"
       :class="[activeToggleButton === 'column' ? 'active' : '']"
     >
@@ -32,19 +38,17 @@ export default {
 
 <style lang="scss" scoped>
 .btn-outline-primary:not(:disabled):not(.disabled).active {
-  background-color: #47427d !important;
-  border-color: #47427d !important;
+background-color: #348481 !important;
+border-color: #348481 !important;
 }
-.btn-outline-primary:not(:disabled):not(.disabled).active:hover {
-  color: #fff;
-  background-color: #47427d !important;
+.btn-outline-primary:not(:disabled):not(.disabled).active:hover{
+background-color: #348481 !important;
 }
-.btn-outline-primary {
-  color: #47427d;
-  border-color: #47427d !important;
+.btn-outline-primary{
+color: #348481;
+border-color: #348481 !important;
 }
-.btn-outline-primary:hover {
-  color: #fff;
-  background: #47427d !important;
+.btn-outline-primary:hover{
+background: #348481 !important;
 }
 </style>

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <button @click="barObject.title.text = 'HEHE'">A Button</button>
+    <button @click="barObject.title.text = 'HEHE' "> A Button</button>
     <BaseBar :chartOptions="barObject" />
-    <button @click="log()">A Button</button>
+    <button @click="log() "> A Button</button>
   </div>
+
 </template>
 
 <script>
@@ -19,7 +20,7 @@ export default {
       data: [
         {
           name: 'Valtdmot',
-          color: '#494299',
+          color: '#10AC40',
           data: [
             ['Gantt chart', 1000],
             ['Autocalculation and plotting of trend lines', 575],

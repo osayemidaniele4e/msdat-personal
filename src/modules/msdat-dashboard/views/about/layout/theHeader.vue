@@ -5,7 +5,7 @@
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
           <div v-if="dashboardName == 'MSDAT PLATFORM'">
-            <img src="@/assets/img/Logo-mob1.svg" alt="FMOH Logo" class="img-fluid" />
+            <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
           </div>
           <div v-if="dashboardName != 'MSDAT PLATFORM'">
             <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
@@ -21,13 +21,13 @@
           <div class="mobile-flex">
             <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
             <img
-              src="@/assets/img/Logo-mob1.svg"
+              src="@/assets/img/Logo-mob.svg"
               alt="FMOH Logo"
               class="mob-img"
               variant="primary"
             />
             <div class="mobile-flex-col">
-              <small class="mobile-flex-col-text1">HealthThink</small>
+              <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
             </div>
 
@@ -68,7 +68,7 @@
           </div>
           <div class="main-text" v-else>
             <h2 class="main-text">
-              <small>HealthThink</small>
+              <small>MSDAT PLATFORM</small>
               <br />
               {{ $route.meta.title }}
             </h2>
@@ -99,39 +99,40 @@
                 target="_blank"
                 class="nav-link"
                 v-if="isAuthenticated === false"
-                >HealthThink Database</a
+                >Home</a
               >
               <router-link
                 to="/about"
                 class="nav-link"
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Custom Dashboard</router-link
+                >About</router-link
               >
-              <!-- <router-link
+              <router-link
                 to="/faq"
                 class="nav-link"
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Help & FAQ</router-link
-              > -->
-              <!-- <router-link
+              >
+              <router-link
                 to="/custom"
                 class="nav-link"
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               >
-              <div></div> -->
-              <!-- <a
+              <div>
+</div>
+              <a
                 href="https://msdat.fmohconnect.gov.ng/"
                 class="nav-link"
                 v-if="isAuthenticated === false"
                 >Go back to MSDAT 1.5</a
-              > -->
+              >
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
               >
-                <button class="btn rounded-0">
-                  Other&nbsp;Dashboard&nbsp;<b-icon
+                <button class="btn btn-outline-primary border-light rounded-0">
+                  Select&nbsp;Dashboard&nbsp;<b-icon
                     icon="triangle-fill"
                     font-scale="0.5"
                     class="btn-icon"
@@ -410,7 +411,7 @@ button {
 }
 
 .btn {
-  color: #161616;
+  color: white;
 }
 
 .main {
@@ -433,20 +434,21 @@ button {
   display: none;
 }
 
-.external {
-  text-decoration: none;
-  color: white;
-  font: normal normal 600 12px/20px Muli;
-  &-link {
-    text-decoration: none;
-    color: black;
-  }
-  .active {
-    color: white;
-  }
-  .hover {
-    color: white;
-  }
+.external{
+     text-decoration: none;
+      color: white;
+      font: normal normal 600 12px/20px Muli;
+      &-link{
+        text-decoration: none;
+        color: black;
+      };
+      .active{
+color: white;
+      };
+      .hover{
+        color: white;
+      }
+
 }
 
 header#the-header {
@@ -468,7 +470,7 @@ header#the-header {
   div.header-navs {
     a.nav-link {
       text-decoration: none;
-      color: #161616;
+      color: white;
       font: normal normal 600 12px/20px Muli;
       &.active {
         background: #154736;
@@ -495,7 +497,7 @@ header#the-header {
 
       // first row
       &:first-child {
-        background-color: #ffffff;
+        background-color: $primary;
 
         & > div {
           &:first-child {
@@ -508,7 +510,7 @@ header#the-header {
 
           &:last-child {
             padding: 0 10px 0 30px;
-            color: #161616;
+            color: #fbfbfb;
 
             h2 {
               font: normal normal 600 18px/20px Work Sans;
@@ -624,7 +626,7 @@ header#the-header {
   }
 
   .btn {
-    color: #161616;
+    color: white;
   }
 
   #about-wrap {
@@ -725,7 +727,7 @@ header#the-header {
   }
 
   .btn {
-    color: #161616;
+    color: white;
   }
 
   #about-wrap {
@@ -894,7 +896,7 @@ header#the-header {
       &:focus,
       &:active,
       &:hover {
-        color: #161616;
+        color: white;
         border: 0;
         background-color: transparent;
       }
@@ -936,7 +938,7 @@ div {
 }
 .auth {
   font: normal normal 600 12px/20px Muli;
-  color: #161616;
+  color: white;
 }
 </style>
 
@@ -973,13 +975,13 @@ div {
   font-weight: 500;
   font-size: 2vw;
 }
-/*
+
 .mob-img {
   width: 50px;
   height: 50px;
   position: relative;
   left: -30px;
-} */
+}
 
 .mob-select1 {
   height: 40px;

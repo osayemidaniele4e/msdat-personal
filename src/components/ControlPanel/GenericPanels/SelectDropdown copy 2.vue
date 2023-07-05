@@ -245,7 +245,7 @@ export default {
   height: 0;
   border-style: solid;
   border-width: 5px 5px 0 5px;
-  border-color: #47427d transparent transparent transparent;
+  border-color: #58af5f transparent transparent transparent;
   top: 13px;
   right: 5% !important;
   position: absolute;
