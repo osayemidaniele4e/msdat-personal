@@ -62,7 +62,7 @@
                     </h1>
                   </b-col>
                   <b-col>
-                    <b-icon style="font-size: 10px; color: #232323" icon="chevron-down"></b-icon>
+                    <b-icon style="font-size: 20px; color: #232323" icon="chevron-down"></b-icon>
                   </b-col>
                 </b-row>
               </template>
@@ -84,7 +84,7 @@
             </b-dropdown>
 
           </div>
-          <h3 style="font-size: 20px">
+          <h3 style="font-size: 30px">
             {{ `${state === 'National' ? '' : 'State'}` }} Health Profile
           </h3>
         </b-col>
@@ -697,16 +697,16 @@ p.final-text span a:hover {
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 30px;
 }
 
 h2 {
   font-weight: bold;
-  font-size: 21px;
+  font-size: 31px;
 }
 
 h1 {
-  font-size: 56px;
+  font-size: 66px;
 }
 
 .program-icon {

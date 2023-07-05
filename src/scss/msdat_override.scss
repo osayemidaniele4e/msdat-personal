@@ -1,7 +1,7 @@
 @import '@/scss/abstracts/_variables.scss';
 // OVERRIDE Styling to add ... after 40characters on the dropdown component
 span.multiselect__single {
-  font-size: 1rem !important;
+  font-size: 0.7rem !important;
   color: #000000 !important;
   font-family: 'Work Sans', sans-serif !important;
   font-weight: 500;
@@ -17,48 +17,59 @@ span.multiselect__tag {
 }
 span.multiselect__option--selected.multiselect__option--highlight {
   background-color: $primary;
-  color: white  !important;
-
+  color: white !important;
 }
 
-span.multiselect__option--selected{
+span.multiselect__option--selected {
   background-color: $primary;
-  color: white  !important;
+  color: white !important;
 }
 
 // hover for select options
-span.multiselect__option--highlight{
+span.multiselect__option--highlight {
   background-color: #e0f3f3;
 }
 
-.xxl-max-width{
+.xxl-max-width {
   max-width: 1440px;
+  body label.h6,
+  p,
+  h6,
+  h5,
+  td,
+  div.temp table span,
+  div.temp table div span,
+  div.temp div h5,
+  span.h6,
+  div.temp table span.data-source,
+  label span,
+  button.btn {
+    font-size: 1.2em;
+  }
 }
 
-span.multiselect__option multiselect__option--highlight multiselect__option--selected{
-  background-color: #000
+span.multiselect__option
+  multiselect__option--highlight
+  multiselect__option--selected {
+  background-color: #000;
 }
 
 // span.multiselect__tags-wrap{
 //   background-color: purple;
 // }
 
-
-span.multiselect__option--disabled{
+span.multiselect__option--disabled {
   background-color: #696969 !important;
-  color: white  !important;
+  color: white !important;
   // override the default pointe-events: none;
   // pointer-events: auto;
 }
-
-
 
 // span.topicHead{
 //   background-color: black;
 // }
 
-
-span.multiselect__option--group{
+span.multiselect__option--group {
   background-color: black;
 }
 body label.h6,
@@ -73,7 +84,7 @@ span.h6,
 div.temp table span.data-source,
 label span,
 button.btn {
-  font-size: 1.2rem !important;
+  font-size: 0.7rem;
 }
 
 .pointer_click {
@@ -84,7 +95,7 @@ ul {
   li {
     span.dropdown-item {
       cursor: pointer;
-      &:hover{
+      &:hover {
         background-color: $primary;
         color: #ffffff;
       }
@@ -98,8 +109,8 @@ ul {
     background-color: #348481;
     color: aliceblue;
     height: 2rem;
-    padding-left: 0.5rem ;
-    padding-right: 0.5rem ;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     display: flex;
     align-items: center;
     transition: all 0.25s ease-in;
@@ -109,18 +120,18 @@ ul {
   }
 }
 
-#zonalMapComponent > button:hover{
+#zonalMapComponent > button:hover {
   background-color: #085856;
   padding-left: 0.25rem;
 }
 
-#stateBarChartComponent{
+#stateBarChartComponent {
   button {
     background-color: #348481;
     color: aliceblue;
     height: 2rem;
-    padding-left: 0.5rem ;
-    padding-right: 0.5rem ;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     display: flex;
     align-items: center;
     transition: all 0.25s ease-in;
@@ -130,24 +141,22 @@ ul {
   }
 }
 
-#stateBarChartComponent > button:hover{
+#stateBarChartComponent > button:hover {
   background-color: #085856;
   padding-left: 0.25rem;
 }
 
-
-#indicatorMeta{
+#indicatorMeta {
   .nav-item {
-  background-color: white;
-   color: #559895;
-   border: 1px solid #559895;
-   border-radius: 5px;
-   margin: 5px;
-   height: 30px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-
+    background-color: white;
+    color: #559895;
+    border: 1px solid #559895;
+    border-radius: 5px;
+    margin: 5px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .nav-pills .active {
@@ -159,9 +168,7 @@ ul {
     justify-content: center;
     align-items: center;
   }
-
 }
-
 
 // div.temp {
 //   button.toggle_btn {
@@ -213,22 +220,22 @@ ul {
 //     }
 //   }
 // }
-.disabled_alt{
+.disabled_alt {
   // diable everything here
   opacity: 0.25;
   pointer-events: none;
 }
 
-.msdat_primary{
+.msdat_primary {
   background-color: $primary;
   color: white;
 }
-.base_subCard{
+.base_subCard {
   background-color: $baseCard;
   color: black;
 }
 
-.base_subCard_header{
+.base_subCard_header {
   background-color: $baseCardHeader;
-  color: white
+  color: white;
 }
