@@ -19,9 +19,12 @@
         </div>
         <div class="mx-5">
           <h3 class="mt-5">Sections</h3>
-          <p class="mb-0">This Platform contains <strong>five main sections.</strong></p>
+          <p class="mb-0">
+            This Platform contains <strong>five main sections.</strong>
+          </p>
           <p>
-            Each section allows you to carry out analysis with ease in relation to the title section
+            Each section allows you to carry out analysis with ease in relation
+            to the title section
           </p>
         </div>
       </section>
@@ -34,8 +37,11 @@
           <p>
             The function of the platform is managed with this
             <strong>control panel</strong>. <br />
-            The user is able to select different variables and change the state of<br />
-            the platform.<strong> The control also changes with respect to section</strong>
+            The user is able to select different variables and change the state
+            of<br />
+            the platform.<strong>
+              The control also changes with respect to section</strong
+            >
           </p>
         </div>
       </section>
@@ -54,7 +60,9 @@
         </div>
         <div class="mx-3 mt-4">
           <h3>Zonal Analysis</h3>
-          <p class="mb-0">Shows the zonal distribution of key health indicators in the country</p>
+          <p class="mb-0">
+            Shows the zonal distribution of key health indicators in the country
+          </p>
         </div>
       </section>
       <section>
@@ -88,7 +96,13 @@
         </div>
       </section>
       <section>
-        <img :src="pic8" alt="eight image" height="250px" width="200px" class="finalImg mt-2" />
+        <img
+          :src="pic8"
+          alt="eight image"
+          height="250px"
+          width="200px"
+          class="finalImg mt-2"
+        />
         <h3>You're all set</h3>
         <p>
           Please always leave a feedback, help us make the platform more <br />
@@ -153,7 +167,7 @@ export default {
 button {
   position: relative;
   color: white;
-  background-color: #494299;
+  background-color: #007d53;
   border-radius: 3px;
   font-size: 12px;
   border: none;
@@ -192,7 +206,7 @@ p h2 {
   bottom: 0.2rem;
   left: 16.2rem;
   background-color: white;
-  color: #494299;
+  color: #007d53;
   outline: none;
   bottom: 1rem;
 }

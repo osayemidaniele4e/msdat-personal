@@ -1,20 +1,12 @@
 .multiselect__tags {
-    border: 1px solid #5A376E !important;
+    border: 1px solid #348481 !important;
     height: 38px !important;
     min-height: 38px !important;
 }
 
-.multiselect__tag-icon:after {
-    color: #fff !important;
-}
-
 .multiselect__select:before {
-    border-color: #5A376E transparent !important;
+    border-color: #348481 transparent !important;
     border-width: 6px 8px 0px !important;
-}
-
-.multiselect__tag-icon:hover {
-    background: #494299;
 }
 
 .multiselect__option {
