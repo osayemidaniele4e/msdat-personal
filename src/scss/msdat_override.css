@@ -12,33 +12,31 @@ span.multiselect__single {
 }
 
 span.multiselect__tag {
-
-  background-color: #494299 !important;
   max-width: 45%;
 }
 
-span.multiselect__option--disabled {
+span.multiselect__option--disabled{
   background-color: blue;
 }
 
-span.multiselect__option {
-  background-color: blue;
-}
-
-span.multiselect__option--group {
+span.multiselect__option{
   background-color: blue;
 }
 
 
-span.multiselect__option--highlight {
+span.multiselect__option--group{
   background-color: blue;
 }
 
-span.multiselect__option--selected {
+
+ span.multiselect__option--highlight{
   background-color: blue;
+ }
+   span.multiselect__option--selected{
+    background-color: blue;
+    
 
-
-}
+   }
 
 
 
@@ -79,7 +77,7 @@ ul li span.dropdown-item {
 }
 
 ul li span.dropdown-item:hover {
-  background-color: #494299;
+  background-color: #007d53;
   color: #ffffff;
 }
 
@@ -88,7 +86,7 @@ ul li span.dropdown-item:hover {
 }
 
 #zonalMapComponent button {
-  background-color: #494299;
+  background-color: #348481;
   color: aliceblue;
   height: 2rem;
   padding-left: 0.5rem;
@@ -97,17 +95,16 @@ ul li span.dropdown-item:hover {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-transition: all 0.25s ease-in;
   transition: all 0.25s ease-in;
   margin-top: 0.3rem;
   margin-left: 0.2rem;
 }
 
-#zonalMapComponent>button:hover {
-  background-color: #494299;
+#zonalMapComponent > button:hover {
+  background-color: #085856;
   padding-left: 0.25rem;
 }
-
 /*# sourceMappingURL=msdat_override.css.map */

@@ -606,7 +606,7 @@ table.table {
   // selected data source
   .table-active {
     // background-color: #2b5d5b;
-    background-color: #47427d;
+    background-color: #348481;
   }
 
   .classification-row {

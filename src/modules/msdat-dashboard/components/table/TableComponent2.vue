@@ -27,23 +27,46 @@
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
-              <span ref="ndhs" accordion="indicator" @click="updateTable('ndhs')">ndhs</span>
+              <span
+                ref="ndhs"
+                accordion="indicator"
+                @click="updateTable('ndhs')"
+                >ndhs</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
-              <span ref="mics" accordion="indicator" @click="updateTable('mics')">mics</span>
+              <span
+                ref="mics"
+                accordion="indicator"
+                @click="updateTable('mics')"
+                >mics</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
-              <span ref="nars" accordion="indicator" @click="updateTable('nars')">narhs</span>
+              <span
+                ref="nars"
+                accordion="indicator"
+                @click="updateTable('nars')"
+                >narhs</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
-              <span ref="ihme" accordion="indicator" @click="updateTable('ihme')">ihme</span>
+              <span
+                ref="ihme"
+                accordion="indicator"
+                @click="updateTable('ihme')"
+                >ihme</span
+              >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
             </th>
             <th>
-              <span ref="ihme_sdg" accordion="indicator" @click="updateTable('ihme_sdg')"
+              <span
+                ref="ihme_sdg"
+                accordion="indicator"
+                @click="updateTable('ihme_sdg')"
                 >ihme sdg</span
               >
               <b-icon-exclamation-circle-fill v-b-modal.modal />
@@ -58,13 +81,24 @@
             <td>
               <div class="d-flex flex-column">
                 <select @change="indicatorChanged" v-model="selectedIndicator">
-                  <option class="py-2" value="skilled attendance at delivery Or birth">
+                  <option
+                    class="py-2"
+                    value="skilled attendance at delivery Or birth"
+                  >
                     skilled attendance at delivery Or birth
                   </option>
-                  <option class="py-2" value="data source2">data source 2</option>
-                  <option class="py-2" value="data source 3">data source 3</option>
-                  <option class="py-2" value="data source 4">data source 4</option>
-                  <option class="py-2" value="data source 5">data source 5</option>
+                  <option class="py-2" value="data source2">
+                    data source 2
+                  </option>
+                  <option class="py-2" value="data source 3">
+                    data source 3
+                  </option>
+                  <option class="py-2" value="data source 4">
+                    data source 4
+                  </option>
+                  <option class="py-2" value="data source 5">
+                    data source 5
+                  </option>
                 </select>
                 <span>in percentage</span>
               </div>
@@ -110,7 +144,9 @@
             <td></td>
             <td colspan="7">
               <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex"><span class="mr-1">nhmis</span> <span>2016</span></div>
+                <div class="d-flex">
+                  <span class="mr-1">nhmis</span> <span>2016</span>
+                </div>
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <b>numerator:</b>
@@ -194,7 +230,9 @@
               <div class="d-flex flex-column">
                 <div class="d-flex flex-column">
                   <select>
-                    <option value="">anc coverage (at least 1 visit visit)</option>
+                    <option value="">
+                      anc coverage (at least 1 visit visit)
+                    </option>
                     <option value="">data source 2</option>
                     <option value="">data source 3</option>
                     <option value="">data source 4</option>
@@ -244,21 +282,26 @@
         </tbody>
 
         <!-- modal -->
-        <modal-component :modalSize="'lg'" v-model="showModal">
+        <modal-component
+          :modalSize="'lg'"
+          v-model="showModal"
+        >
           <!-- modal title -->
           <span
             slot="modal-title"
             class="d-flex flex-column align-items-start flex-md-row align-items-md-center"
           >
             <span>Indicator:</span>
-            <span>{{ selectedIndicator }}</span>
+            <span>{{selectedIndicator}}</span>
           </span>
 
           <!-- modal body -->
           <b-tabs>
-            <b-tab v-for="(dataSource, index) in dataSources" :key="index">
+            <b-tab
+              v-for="(dataSource, index) in dataSources" :key="index"
+            >
               <template #title>
-                <span>{{ dataSource }}</span>
+                <span>{{dataSource}}</span>
               </template>
               <div class="my-2">
                 <p>
@@ -271,15 +314,17 @@
                 </p>
                 <p>
                   <span class="mr-1">Indicator definition:</span>
-                  <span
-                    >The percentage of live births in the health facility attended to by a skilled
-                    birth attendant</span
-                  >
+                  <span>The percentage of live births in the health facility attended
+                    to by a skilled birth attendant</span>
                 </p>
                 <p class="d-flex flex-column align-items-start">
                   <span class="mr-1">measurement:</span>
-                  <span> <b>Numerator:</b> Deliveries by skilled birth attendants </span>
-                  <span> <b>Denominator:</b> Total number of live births </span>
+                  <span>
+                    <b>Numerator:</b> Deliveries by skilled birth attendants
+                  </span>
+                  <span>
+                    <b>Denominator:</b> Total number of live births
+                  </span>
                 </p>
                 <p>
                   <span class="mr-1">multiplier factor:</span>
@@ -302,35 +347,44 @@
                 </p>
                 <p>
                   <span class="mr-1">Level Of Data Available:</span>
-                  <span
-                    class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center"
-                  >
+                  <span class="d-flex flex-column flex-lg-row align-items-start
+                  align-items-lg-center">
                     <div class="available d-flex align-items-center mr-3">
                       <span class="mr-1">National</span>
-                      <b-icon-check-circle-fill scale="0.9" />
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
                     </div>
                     <div class="d-flex align-items-center mr-3">
                       <span class="mr-1">Geopolitical Zone</span>
-                      <b-icon-check-circle-fill scale="0.9" />
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
                     </div>
                     <div class="available d-flex align-items-center mr-3">
                       <span class="mr-1">State Level</span>
-                      <b-icon-check-circle-fill scale="0.9" />
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
                     </div>
                     <div class="d-flex align-items-center mr-3">
                       <span class="mr-1">Senatorial Level</span>
-                      <b-icon-check-circle-fill scale="0.9" />
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
                     </div>
                     <div class="d-flex align-items-center mr-3">
                       <span class="mr-1">Local Govt Area</span>
-                      <b-icon-check-circle-fill scale="0.9" />
+                      <b-icon-check-circle-fill
+                        scale="0.9"
+                      />
                     </div>
                   </span>
                 </p>
                 <p>
                   <a class="modal-lnk d-flex align-items-center" href="#">
                     <span class="mr-1">Open Meta-Data library</span>
-                    <b-icon-box-arrow-up-right scale="0.9 " />
+                    <b-icon-box-arrow-up-right scale="0.9 "/>
                   </a>
                 </p>
               </div>
@@ -339,13 +393,13 @@
 
           <!-- modal footer -->
           <div slot="modal-footer">
-            <button @click="closeModal" class="btn btn-danger text-uppercase small px-4">
-              close
-            </button>
+            <button @click="closeModal"
+            class="btn btn-danger text-uppercase small px-4">close</button>
           </div>
         </modal-component>
       </table>
     </div>
+
   </div>
 </template>
 
@@ -357,7 +411,16 @@ export default {
   data() {
     return {
       selectedIndicator: 'skilled attendance at delivery or birth',
-      dataSources: ['NHMIS', 'NDHS', 'MICS', 'NNHS', 'NARHS', 'WHO-GO', 'World Bank', 'IHME'],
+      dataSources: [
+        'NHMIS',
+        'NDHS',
+        'MICS',
+        'NNHS',
+        'NARHS',
+        'WHO-GO',
+        'World Bank',
+        'IHME',
+      ],
     };
   },
   methods: {
@@ -389,7 +452,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans&display=swap");
 
 $msdat-darkgreen: #2b5d5b;
 $msdat-leafgreen: #007d53;
@@ -407,8 +470,8 @@ $msdat-leafgreen: #007d53;
 }
 
 #table-wrap {
-  table {
-    // width: 650px;
+    table {
+      // width: 650px;
 
     svg {
       cursor: pointer;

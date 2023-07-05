@@ -11,7 +11,7 @@ export default [
     path: '/dashboard/:name',
     component: () => import('./index.vue'),
     meta: {
-      title: 'HealthThink PLATFORM', // The title of the page on the Header.This ia also changed dynamically
+      title: 'MSDAT PLATFORM', // The title of the page on the Header.This ia also changed dynamically
     },
   },
 ];
