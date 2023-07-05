@@ -1,5 +1,5 @@
 <template>
-  <b-container class="overflow-hidden">
+  <b-container class="overflow-hidden  xxl-max-width">
     <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
         <h4 class="mt-3 mb-4 tittle">
@@ -183,7 +183,7 @@ export default {
 .msg {
   font-weight: normal;
   color: #232323;
-  font-size: 16px;
+  font-size: 1rem;
   font-family: 'Muli', sans-serif;
 }
 

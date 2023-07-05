@@ -4,10 +4,10 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Population</h5>
-          <router-link to="/dashboard/Demographics"
+          <router-link to="/dashboard/Demographics" target="_blank"
             ><b-list-group-item>Demographics</b-list-group-item></router-link
           >
-          <router-link to="/coming-soon/gis_mapping" _target="_blank"
+          <router-link to="/coming-soon/gis_mapping" target="_blank"
             ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
           >
         </b-list-group>
@@ -18,10 +18,10 @@
           <router-link to="/dashboard/Health_Facility" target="_blank"
             ><b-list-group-item>Health Facility</b-list-group-item></router-link
           >
-          <router-link to="/dashboard/Health_Financing" _target="_blank"
+          <router-link to="/dashboard/Health_Financing" target="_blank"
             ><b-list-group-item>Health Finance</b-list-group-item></router-link
           >
-          <router-link to="/dashboard/Health_Workforce" _target="_blank"
+          <router-link to="/dashboard/Health_Workforce" target="_blank"
             ><b-list-group-item
               >Health Workforce</b-list-group-item
             ></router-link
@@ -57,12 +57,12 @@
             >
               <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
             >
-            <router-link to="/dashboard/Disease_Surveillance"
+            <router-link to="/dashboard/Disease_Surveillance" target="_blank"
               ><b-list-group-item
                 >Disease Surveillance</b-list-group-item
               ></router-link
             >
-               <router-link to="/external-ncdc"
+               <router-link to="/external-ncdc" target="_blank"
               ><b-list-group-item
                 >Disease Surveillance (NCDC)</b-list-group-item
               ></router-link
@@ -82,18 +82,18 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link to="/custom"
+          <router-link to="/custom" target="_blank"
             ><b-list-group-item
               > Create Your Dashboard</b-list-group-item
             ></router-link
           >
-          <router-link to="/health-profiles"
+          <router-link to="/health-profiles" target="_blank"
             ><b-list-group-item>Health Profiles</b-list-group-item></router-link
           >
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
             ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
           >
-          <router-link to="/coming-soon/advanced_analytics"
+          <router-link to="/coming-soon/advanced_analytics" target="_blank"
             ><b-list-group-item
               >Advanced Analytics</b-list-group-item
             ></router-link
