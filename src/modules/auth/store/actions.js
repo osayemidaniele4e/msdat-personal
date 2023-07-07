@@ -19,12 +19,25 @@ export default {
     try {
       const response = await axiosInstance.post('/login/', payload);
       const user = response.data;
-      VueCookies.set('msdat-user-details', user);
-      commit('setUser', user);
+      console.log(user);
+
+      const formattedUser = {
+        avatar: user.avatar,
+        email: user.email,
+        id: user.id,
+        username: user.username,
+        tokens: {
+          access_token: user.token,
+        },
+      };
+
+      VueCookies.set('msdat-user-details', formattedUser);
+      commit('setUser', formattedUser);
       return response;
     } catch (err) {
-      // console.log(err);
+      console.log(err);
     }
+    return null;
   },
 
   async AUTHENTICATE({ commit }, payload) {
@@ -33,6 +46,7 @@ export default {
         auth_token: payload.auth_token,
       });
       const user = response.data.data;
+      console.log(user);
 
       VueCookies.set('msdat-user-details', user);
       commit('setUser', user);
