@@ -116,13 +116,13 @@
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
           </template>
-          <template>
+          <!-- <template>
             <LazyLoading>
               <ControlPanelConfiguration :controlIndex="controlIndex">
                 <DynamicSection :values="payload" :controlIndex="controlIndex" />
               </ControlPanelConfiguration>
             </LazyLoading>
-          </template>
+          </template> -->
         </base-sub-card>
       </div>
     </template>

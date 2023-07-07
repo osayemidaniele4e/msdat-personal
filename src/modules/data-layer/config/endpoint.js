@@ -1,4 +1,5 @@
 export default {
+  // getDashboard: 'dashboards/?size=1500',
   getDashboard: 'dashboards/?size=1500',
   getDashboardById: 'dashboards/',
   getDataSource: 'datasources/?size=1500',
