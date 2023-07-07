@@ -5,4 +5,5 @@ console.log(userDetails, 'uuuuu');
 export default {
   isAuthenticated: false,
   user: userDetails || {},
+  dashboards: {}
 };
