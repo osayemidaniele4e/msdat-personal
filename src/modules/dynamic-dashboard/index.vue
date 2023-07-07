@@ -215,7 +215,7 @@ export default {
         // ============
 
         const response = await apiServices.getDashboard();
-        const { results } = response.data;
+        const results = response.data;
         const dashboard = results.find((item) => item?.name === name);
         if (dashboard === undefined) {
           this.$router.push('/*');
