@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="xxl-max-width" >
     <genericModal v-if="overviewLoading" :noBackdrop="false" :showBackground="false" class="over">
       <div class="text-center">
         <img src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg" alt="first_img"
@@ -84,11 +84,7 @@
             </b-dropdown>
 
           </div>
-<<<<<<< HEAD
           <h3 style="font-size: 30px">
-=======
-          <h3 style="font-size: 15px">
->>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
             {{ `${state === 'National' ? '' : 'State'}` }} Health Profile
           </h3>
         </b-col>
