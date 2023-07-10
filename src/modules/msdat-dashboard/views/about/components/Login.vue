@@ -166,7 +166,7 @@ export default {
         };
         await this.LOGIN_USER(formData)
           .then((res) => {
-            // console.log(res);
+            console.log(res);
             // eslint-disable-next-line eqeqeq
             if (res.status == 200) {
               this.$swal({

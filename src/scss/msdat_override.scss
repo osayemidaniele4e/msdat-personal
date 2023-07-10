@@ -17,7 +17,12 @@ span.multiselect__tag {
 }
 span.multiselect__option--selected.multiselect__option--highlight {
   background-color: $primary;
+<<<<<<< HEAD
   color: white !important;
+=======
+  color: white  !important;
+  
+>>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
 }
 
 span.multiselect__option--selected {
@@ -30,6 +35,7 @@ span.multiselect__option--highlight {
   background-color: #e0f3f3;
 }
 
+<<<<<<< HEAD
 .xxl-max-width {
   max-width: 1440px;
   body label.h6,
@@ -47,6 +53,8 @@ span.multiselect__option--highlight {
     font-size: 1.2em;
   }
 }
+=======
+>>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
 
 span.multiselect__option
   multiselect__option--highlight
@@ -84,7 +92,11 @@ span.h6,
 div.temp table span.data-source,
 label span,
 button.btn {
+<<<<<<< HEAD
   font-size: 0.7rem;
+=======
+  font-size: 0.7rem !important;
+>>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
 }
 
 .pointer_click {
@@ -148,6 +160,7 @@ ul {
 
 #indicatorMeta {
   .nav-item {
+<<<<<<< HEAD
     background-color: white;
     color: #559895;
     border: 1px solid #559895;
@@ -157,6 +170,18 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
+=======
+  background-color: white;
+   color: #559895;
+   border: 1px solid #559895;
+   border-radius: 5px;
+   margin: 5px;
+   height: 30px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  
+>>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
   }
 
   .nav-pills .active {

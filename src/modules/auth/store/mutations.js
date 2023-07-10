@@ -6,6 +6,9 @@ export default {
   setToken(state, payload) {
     state.authToken = payload;
   },
+  setDashboards(state, payload) {
+    state.dashboards = payload;
+  },
   logout(state) {
     state.user = {};
     state.isAuthenticated = false;
