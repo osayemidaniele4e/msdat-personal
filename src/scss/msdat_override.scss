@@ -17,12 +17,7 @@ span.multiselect__tag {
 }
 span.multiselect__option--selected.multiselect__option--highlight {
   background-color: $primary;
-<<<<<<< HEAD
   color: white !important;
-=======
-  color: white  !important;
-  
->>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
 }
 
 span.multiselect__option--selected {
@@ -35,7 +30,7 @@ span.multiselect__option--highlight {
   background-color: #e0f3f3;
 }
 
-<<<<<<< HEAD
+<<<<<<<<< Temporary merge branch 1
 .xxl-max-width {
   max-width: 1440px;
   body label.h6,
@@ -53,8 +48,8 @@ span.multiselect__option--highlight {
     font-size: 1.2em;
   }
 }
-=======
->>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
+=========
+>>>>>>>>> Temporary merge branch 2
 
 span.multiselect__option
   multiselect__option--highlight
@@ -92,11 +87,11 @@ span.h6,
 div.temp table span.data-source,
 label span,
 button.btn {
-<<<<<<< HEAD
+<<<<<<<<< Temporary merge branch 1
   font-size: 0.7rem;
-=======
+=========
   font-size: 0.7rem !important;
->>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
+>>>>>>>>> Temporary merge branch 2
 }
 
 .pointer_click {
@@ -107,7 +102,7 @@ ul {
   li {
     span.dropdown-item {
       cursor: pointer;
-      &:hover {
+      &:hover{
         background-color: $primary;
         color: #ffffff;
       }
@@ -132,7 +127,7 @@ ul {
   }
 }
 
-#zonalMapComponent > button:hover {
+#zonalMapComponent > button:hover{
   background-color: #085856;
   padding-left: 0.25rem;
 }
@@ -153,14 +148,14 @@ ul {
   }
 }
 
-#stateBarChartComponent > button:hover {
+#stateBarChartComponent > button:hover{
   background-color: #085856;
   padding-left: 0.25rem;
 }
 
 #indicatorMeta {
   .nav-item {
-<<<<<<< HEAD
+<<<<<<<<< Temporary merge branch 1
     background-color: white;
     color: #559895;
     border: 1px solid #559895;
@@ -170,7 +165,7 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
-=======
+=========
   background-color: white;
    color: #559895;
    border: 1px solid #559895;
@@ -180,8 +175,8 @@ ul {
    display: flex;
    justify-content: center;
    align-items: center;
-  
->>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
+
+>>>>>>>>> Temporary merge branch 2
   }
 
   .nav-pills .active {

@@ -51,10 +51,7 @@ no-param-reassign */
           </b-row>
           <hr />
         </div>
-<<<<<<< HEAD
         <!-- <pre>{{ barChartOptions }}</pre> -->
-=======
->>>>>>> 27e20f464f407bb93eb8221e77ab1705996d55cd
         <BaseBar
           v-show="this.programArea.name != 'Health Services'"
           :chartOptions="barChartOptions"

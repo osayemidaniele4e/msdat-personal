@@ -76,7 +76,7 @@ export default {
 }
 .toggle-text {
   color: #ffffff;
-  font-size: 0.7rem;
+  font-size: 0.875rem;
   font-family: "Work Sans", sans-serif;
 }
 .toggle__label {
