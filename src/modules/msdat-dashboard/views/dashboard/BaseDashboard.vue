@@ -490,7 +490,7 @@ export default {
       if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
         try {
           const response = await apiServices.getDashboard();
-          const { results } = response.data;
+          const results = response.data;
           const dashboard = results.find((item) => item.name === newVal);
           if (dashboard === undefined) {
             this.$router.push('/*');
