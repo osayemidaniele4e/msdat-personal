@@ -30,7 +30,6 @@ span.multiselect__option--highlight {
   background-color: #e0f3f3;
 }
 
-<<<<<<<<< Temporary merge branch 1
 .xxl-max-width {
   max-width: 1440px;
   body label.h6,
@@ -48,8 +47,6 @@ span.multiselect__option--highlight {
     font-size: 1.2em;
   }
 }
-=========
->>>>>>>>> Temporary merge branch 2
 
 span.multiselect__option
   multiselect__option--highlight
@@ -87,11 +84,7 @@ span.h6,
 div.temp table span.data-source,
 label span,
 button.btn {
-<<<<<<<<< Temporary merge branch 1
   font-size: 0.7rem;
-=========
-  font-size: 0.7rem !important;
->>>>>>>>> Temporary merge branch 2
 }
 
 .pointer_click {
@@ -102,7 +95,7 @@ ul {
   li {
     span.dropdown-item {
       cursor: pointer;
-      &:hover{
+      &:hover {
         background-color: $primary;
         color: #ffffff;
       }
@@ -127,7 +120,7 @@ ul {
   }
 }
 
-#zonalMapComponent > button:hover{
+#zonalMapComponent > button:hover {
   background-color: #085856;
   padding-left: 0.25rem;
 }
@@ -148,14 +141,13 @@ ul {
   }
 }
 
-#stateBarChartComponent > button:hover{
+#stateBarChartComponent > button:hover {
   background-color: #085856;
   padding-left: 0.25rem;
 }
 
 #indicatorMeta {
   .nav-item {
-<<<<<<<<< Temporary merge branch 1
     background-color: white;
     color: #559895;
     border: 1px solid #559895;
@@ -165,18 +157,6 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
-=========
-  background-color: white;
-   color: #559895;
-   border: 1px solid #559895;
-   border-radius: 5px;
-   margin: 5px;
-   height: 30px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-
->>>>>>>>> Temporary merge branch 2
   }
 
   .nav-pills .active {

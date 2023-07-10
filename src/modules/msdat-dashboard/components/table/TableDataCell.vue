@@ -43,7 +43,7 @@ export default {
       &>div {
         // percentage value
         &:first-child h5{
-          font-size: 15px;
+          font-size: 12px;
         }
         // year
         &:last-child {
