@@ -2,11 +2,8 @@
   <b-container>
     <genericModal v-if="overviewLoading" :noBackdrop="false" :showBackground="false" class="over">
       <div class="text-center">
-        <img
-          src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg"
-          alt="first_img"
-          width="250px"
-        />
+        <img src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg" alt="first_img"
+          width="250px" />
         <div class="">
           <h3 class="mr-4 mt-3">Fetching Data...</h3>
         </div>
@@ -20,15 +17,8 @@
         </div>
         <div class="body">
           <button class="social">
-            <a
-              :href="`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`"
-              target="_blank"
-            >
-              <img
-                class="img-fluid"
-                src="@/assets/state-profile/img/linkedin.png"
-                alt="linkedin-icon"
-              />
+            <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`" target="_blank">
+              <img class="img-fluid" src="@/assets/state-profile/img/linkedin.png" alt="linkedin-icon" />
             </a>
           </button>
           <button class="social">
@@ -38,20 +28,12 @@
           </button>
           <button class="social">
             <a :href="`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`" target="_blank">
-              <img
-                class="img-fluid"
-                src="@/assets/state-profile/img/facebook.png"
-                alt="facebook-icon"
-              />
+              <img class="img-fluid" src="@/assets/state-profile/img/facebook.png" alt="facebook-icon" />
             </a>
           </button>
           <button class="social">
             <a :href="`https://twitter.com/intent/tweet?url=${shareUrl}&text=`" target="_blank">
-              <img
-                class="img-fluid"
-                src="@/assets/state-profile/img/twitter.png"
-                alt="twitter-icon"
-              />
+              <img class="img-fluid" src="@/assets/state-profile/img/twitter.png" alt="twitter-icon" />
             </a>
           </button>
           <button class="social link btn btn-outline-secondary" @click="copyTheLink">
@@ -70,12 +52,8 @@
       <b-row class="mt-4">
         <b-col cols="auto">
           <div>
-            <b-dropdown
-              variant="text"
-              dropright
-              toggle-class="text-decoration-none p-0 m-0 display-block state-select"
-              no-caret
-            >
+            <b-dropdown variant="text" dropright toggle-class="text-decoration-none p-0 m-0 display-block state-select"
+              no-caret>
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
@@ -84,17 +62,13 @@
                     </h1>
                   </b-col>
                   <b-col>
-                    <b-icon style="font-size: 10px; color: #232323" icon="chevron-down"></b-icon>
+                    <b-icon style="font-size: 20px; color: #232323" icon="chevron-down"></b-icon>
                   </b-col>
                 </b-row>
               </template>
               <b-dropdown-item @click="navigateToState('National')">National</b-dropdown-item>
-              <b-dropdown-item
-                @click="navigateToState(s.name)"
-                v-for="(s, i) in this.states"
-                :key="`${s}+${i}`"
-                >{{ s.name }}</b-dropdown-item
-              >
+              <b-dropdown-item @click="navigateToState(s.name)" v-for="(s, i) in this.states" :key="`${s}+${i}`">{{ s.name
+              }}</b-dropdown-item>
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
@@ -107,15 +81,10 @@
                   </b-col>
                 </b-row>
               </template>
-              <b-dropdown-item
-                @click="navigateToState(s.name)"
-                v-for="(s, j) in this.states"
-                :key="`$[s]+${j}`"
-                >{{ s.name }}</b-dropdown-item
-              >
             </b-dropdown>
+
           </div>
-          <h3 style="font-size: 15px">
+          <h3 style="font-size: 30px">
             {{ `${state === 'National' ? '' : 'State'}` }} Health Profile
           </h3>
         </b-col>
@@ -127,38 +96,21 @@
               Share
             </b-button>
             <b-button class="print-button" @click="printing">
-              <img
-                class="img-fluid"
-                src="@/assets/state-profile/svg/printing.svg"
-                alt="print-icon"
-              />
+              <img class="img-fluid" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
               Print Profile
             </b-button>
           </b-row>
         </b-col>
       </b-row>
       <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
-      <demographics
-        :state="state"
-        @changeState="stateClicked"
-        :stateDemographics="demographics"
-      ></demographics>
+      <demographics :state="state" @changeState="stateClicked" :stateDemographics="demographics"></demographics>
       <div class="mt-5" v-for="(programArea, k) in programAreas" :key="k">
-        <PAoverview
-          :state="state"
-          @overviewLoading="setLoadingState"
-          :locations="allLocations"
-          :indicatorDefinitions="indicatorDefinitions"
-          :programArea="programArea"
-        ></PAoverview>
+        <PAoverview :state="state" @overviewLoading="setLoadingState" :locations="allLocations"
+          :indicatorDefinitions="indicatorDefinitions" :programArea="programArea"></PAoverview>
       </div>
       <p class="text-center final-text">
         This state profile dashboard has been curated majorly from the MSDAT Dashboard available at
-        <span
-          ><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank"
-            >msdat.fmohconnect.gov.ng</a
-          ></span
-        >
+        <span><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank">msdat.fmohconnect.gov.ng</a></span>
       </p>
     </div>
   </b-container>
@@ -657,74 +609,92 @@ export default {
 <style lang="scss">
 .modal-body {
   padding: 0;
+
   button.social {
     background-color: transparent;
     margin: 5px 10px;
     color: #3a3a3a;
   }
+
   button.social.link {
     img {
       width: 16px;
     }
   }
 }
+
 .share-modal {
+
   .top,
   .footer {
     background-color: #d6cfcf;
     padding: 15px 25px;
   }
+
   button {
     font-size: 17px;
     padding: 5px;
   }
+
   .body {
     padding: 25px 20px;
+
     img {
       width: 32px;
     }
   }
 }
+
 .state-select,
 .state-select:hover {
   color: #3a3a3a;
 }
+
 .print-button {
   background-color: #f2f2f2;
   border: 1px solid #cccccc;
   height: 38.250103125px;
   color: #3a3a3a;
 }
+
 .share-button {
   background-color: #f2f2f2;
   border: 1px solid #cccccc;
   height: 38.250103125px;
   color: #3a3a3a;
 }
+
 p.final-text {
   margin-bottom: 9vh;
   margin-top: 11vh !important;
+
   span a {
     color: #007d53;
     font-weight: bolder;
   }
 }
+
 p.final-text span a:hover {
   text-decoration: none;
 }
+
 .btn:focus {
   box-shadow: none;
 }
+
 h3 {
-  font-size: 20px;
+  font-size: 30px;
 }
+
 h2 {
   font-weight: bold;
-  font-size: 21px;
+  font-size: 31px;
 }
+
 h1 {
-  font-size: 56px;
+  font-size: 66px;
 }
+
 .program-icon {
   border-radius: 50%;
   background-color: #ffffff;

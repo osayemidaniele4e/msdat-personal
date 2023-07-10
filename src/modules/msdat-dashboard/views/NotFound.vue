@@ -26,7 +26,7 @@ div {
   text-align: center;
   height: 90vh;
   button.btn.btn-primary {
-    font-size: 1rem !important;
+    font-size: 0.7rem;
   }
 }
 </style>

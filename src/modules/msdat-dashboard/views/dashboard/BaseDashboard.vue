@@ -578,13 +578,13 @@ div.temp {
   h3,
   h4,
   h1 {
-    font-size: 1rem !important;
+    font-size: 0.7rem ;
   }
   li {
     font-size: 0.9rem !important;
   }
   table span {
-    font-size: 1rem !important;
+    font-size: 0.7rem !important;
   }
   .sticky {
     position: sticky;
