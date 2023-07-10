@@ -5,7 +5,7 @@
         <img src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg" alt="first_img"
           width="250px" />
         <div class="">
-          <h3 class="mr-4 mt-3">Fetching Data...</h3>
+          <h3 class="fetching mr-4 mt-3">Fetching Data...</h3>
         </div>
       </div>
     </genericModal>
@@ -709,5 +709,9 @@ ul.dropdown-menu.show {
   min-height: 20rem;
   max-height: 20rem;
   overflow-y: auto;
+}
+
+.fetching{
+  font-size: 28px;
 }
 </style>
