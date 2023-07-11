@@ -8,7 +8,7 @@
         :key="dashboard.id"
         :title="dashboard.name" header-tag="header" footer-tag="footer">
           <b-card-text>{{ dashboard.title }}</b-card-text>
-         
+
           <router-link :to="'/dashboard/'+dashboard.name">
             <b-button variant="primary">Visit dashboard</b-button>
           </router-link>
@@ -31,6 +31,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
