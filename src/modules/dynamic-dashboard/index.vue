@@ -95,12 +95,12 @@ export default {
         showTableRelatedIndicator: false,
         visibility: 'private',
         user: this.getUser.id,
-        initialIndicator: indicators[0],
-        initialDatasource: sources[0],
+        initial_indicator: indicators[0],
+        initial_datasource: sources[0],
         indicators,
         dataSources: sources,
-        initialLocation: 1,
-        defaultIndicators: [indicators[0]],
+        initial_location: 1,
+        default_indicators: [indicators[0]],
         sections,
       };
       await this.SAVE_USER_DASHBOARD(payload);

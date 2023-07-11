@@ -1,30 +1,26 @@
 <template>
   <div>
-    <h1>Saved dashboards</h1>
+    <br>
+    <h3>Saved dashboards</h3>
+    <div class="loader-screen" v-if="loading">
+      <b-spinner variant="success" label="Spinning"></b-spinner>
+    </div>
     <div>
-      <b-card-group deck>
-        <b-card
-        v-for="dashboard in userDashboards"
-        :key="dashboard.id"
-        :title="dashboard.name" header-tag="header" footer-tag="footer">
-          <b-card-text>{{ dashboard.title }}</b-card-text>
-         
-          <router-link :to="'/dashboard/'+dashboard.name">
-            <b-button variant="primary">Visit dashboard</b-button>
-          </router-link>
-          <template #footer>
-            <em>Private</em>
-          </template>
-        </b-card>
-
-        <!-- <b-card title="Title" header-tag="header" footer-tag="footer">
-          <b-card-text>Header and footers using slots.</b-card-text>
-          <b-button href="#" variant="primary">Go somewhere</b-button>
-          <template #footer>
-            <em>Footer Slot</em>
-          </template>
-        </b-card> -->
-      </b-card-group>
+      <b-row>
+        <template v-for="dashboard in userDashboards">
+          <b-col cols="4" :key="dashboard.id">
+            <b-card :title="dashboard.name" header-tag="header" footer-tag="footer">
+              <b-card-text>{{ dashboard.title }}</b-card-text>
+              <router-link target="_blank" :to="'/dashboard/' + dashboard.name">
+                <b-button variant="primary">Visit dashboard</b-button>
+              </router-link>
+              <template #footer>
+                <em>Private</em>
+              </template>
+            </b-card>
+          </b-col>
+        </template>
+      </b-row>
     </div>
   </div>
 </template>
@@ -34,6 +30,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
+      loading: true,
       userDashboards: {},
     };
   },
@@ -53,10 +50,19 @@ export default {
   },
 
   async mounted() {
+    this.loading = true;
     await this.SAVE_DASHBOARDS();
     this.userDashboards = this.filterArray(this.getUser, this.getDashboards.data);
+    this.loading = false;
   },
 };
 </script>
 
-<style></style>
+<style>
+.loader_screen {
+  width: 100vh;
+  height: 100vw;
+  justify-content: center;
+  align-items: center;
+}
+</style>
