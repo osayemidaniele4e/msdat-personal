@@ -27,6 +27,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
