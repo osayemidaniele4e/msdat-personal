@@ -254,7 +254,7 @@ export default {
     checkNHMISDHIS2() {
       this.setup.forEach((item) => {
         if (item.key === 'datasource') {
-          const datasourceArr = item?.options?.map((el) => el.id);
+          const datasourceArr = item?.options.map((el) => el.id);
           if (datasourceArr?.includes(6)) {
             this.hasNHMIS = true;
           } else {
