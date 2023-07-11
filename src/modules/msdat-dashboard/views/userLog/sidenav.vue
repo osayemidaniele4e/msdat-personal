@@ -1,25 +1,31 @@
 <template>
-    <div>
-      <Header ref="theHeader" />
-      <div @click="$refs.theHeader.close()">
-        <div class="title text-center border-0">
-      <h3 class="mt-2">Account Settings</h3>
+  <div>
+    <Header ref="theHeader" />
+    <div @click="$refs.theHeader.close()">
+      <div class="title text-center border-0">
+        <h3 class="mt-2">Account Settings</h3>
+      </div>
+      <div class="d-flex">
+        <div class="col-lg-2 col-1 d-flex flex-column mt-3 px-2 py-5 border-right">
+          <!-- <a href="#/profile" class="item"><b-icon-person-circle></b-icon-person-circle>&nbsp;&nbsp; <span class="d-none d-lg-inline">Profile</span></a>
+        <a href="#/notification" class="mt-4 item"><b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp; <span class="d-none d-lg-inline">Notification</span></a> -->
+          <a href="#/userActivity" class="mt-4 item"
+            ><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp;
+            <span class="d-none d-lg-inline">User Activity</span></a
+          >
+          <a href="#/savedDashboards" class="mt-4 item"
+            ><b-icon-card-heading></b-icon-card-heading>&nbsp;&nbsp;
+            <span class="d-none d-lg-inline">Saved Dashboards</span></a
+          >
+        </div>
+        <div class="col-lg-10 col-11">
+          <savedDashboards :is="currentView" />
+        </div>
+      </div>
     </div>
-     <div class="d-flex ">
-       <div class="col-lg-2 col-1 d-flex flex-column mt-3 px-2 py-5 border-right">
-        <a href="#/profile" class="item"><b-icon-person-circle></b-icon-person-circle>&nbsp;&nbsp; <span class="d-none d-lg-inline">Profile</span></a>
-        <a href="#/notification" class="mt-4 item"><b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp; <span class="d-none d-lg-inline">Notification</span></a>
-        <a href="#/userActivity" class="mt-4 item"><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp; <span class="d-none d-lg-inline">User Activity</span></a>
-        <a href="#/savedDashboards" class="mt-4 item"><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp; <span class="d-none d-lg-inline">Saved Dashboards</span></a>
-       </div>
-       <div class="col-lg-10 col-11">
-        <Profile :is="currentView" />
-       </div>
-     </div>
-     </div>
-     <Footer />
-    </div>
-   </template>
+    <Footer />
+  </div>
+</template>
 
 <script>
 import Header from '@/modules/msdat-dashboard/views/about/layout/theHeader.vue';
@@ -30,12 +36,11 @@ import userActivity from './userActivity.vue';
 import savedDashboards from './savedDashboards.vue';
 
 const routes = {
-  '/': Profile,
+  '/': savedDashboards,
   '/profile': Profile,
   '/notification': Notification,
   '/userActivity': userActivity,
   '/savedDashboards': savedDashboards,
-
 };
 
 export default {
@@ -73,14 +78,14 @@ h3 {
   font-weight: bold;
 }
 
-.item{
+.item {
   color: black !important;
 }
 
-.item:hover{
-    text-decoration: none;
+.item:hover {
+  text-decoration: none;
 }
-a{
+a {
   color: #000 !important;
 }
 </style>
