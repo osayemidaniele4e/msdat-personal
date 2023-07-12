@@ -14,17 +14,53 @@ export default {
       // return err.username[0] || err.email[0] || err.password[0];
     }
   },
+
+  // eslint-disable-next-line consistent-return, no-unused-vars
+  async SAVE_USER_DASHBOARD({ commit }, payload) {
+    try {
+      const response = await axiosInstance.post('/dashboards/', payload);
+      return response;
+    } catch (err) {
+      // console.log(err);
+    }
+  },
+
+   // eslint-disable-next-line consistent-return, no-unused-vars
+   async SAVE_DASHBOARDS({ commit }, payload) {
+    try {
+      const response = await axiosInstance.get('/dashboards/');
+      commit('setDashboards', response);
+      return response;
+    } catch (err) {
+      // console.log(err);
+    }
+  },
+
+
   // eslint-disable-next-line consistent-return
   async LOGIN_USER({ commit }, payload) {
     try {
       const response = await axiosInstance.post('/login/', payload);
       const user = response.data;
-      VueCookies.set('msdat-user-details', user);
-      commit('setUser', user);
+      console.log(user);
+
+      const formattedUser = {
+        avatar: user.avatar,
+        email: user.email,
+        id: user.id,
+        username: user.username,
+        tokens: {
+          access_token: user.token,
+        },
+      };
+
+      VueCookies.set('msdat-user-details', formattedUser);
+      commit('setUser', formattedUser);
       return response;
     } catch (err) {
-      // console.log(err);
+      console.log(err);
     }
+    return null;
   },
 
   async AUTHENTICATE({ commit }, payload) {
@@ -33,6 +69,7 @@ export default {
         auth_token: payload.auth_token,
       });
       const user = response.data.data;
+      console.log(user);
 
       VueCookies.set('msdat-user-details', user);
       commit('setUser', user);

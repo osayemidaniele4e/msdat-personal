@@ -46,13 +46,6 @@
             >COMPLETE</b-button
           ></b-col
         >
-        <b-col cols="auto"
-          ><b-button class="SFL" disabled style="font-family: Work Sans"
-            >
-            <!-- Save for Later -->
-            </b-button
-          ></b-col
-        >
         </div>
       </b-col>
       <!-- <b-col md="4" sm="12">
@@ -100,12 +93,12 @@ export default {
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
         {
-          fieldName: 'Zonal Analysis',
+          fieldName: 'Zonal analysis',
           selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
           fieldImage: '/img/dashboardPreviewImages/ZonalAnalysis.PNG',
         },
         {
-          fieldName: 'Indicator Comparsion - By Period ',
+          fieldName: 'Indicator Comparison',
           selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
           fieldImage:
             '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
@@ -116,7 +109,7 @@ export default {
           fieldImage: '/img/dashboardPreviewImages/DataSetComparison.PNG',
         },
         {
-          fieldName: 'Multi-source Indicator Comparison',
+          fieldName: 'Multi-source Comparison',
           selected: this.$store.state.MSDAT_STORE.multisourceComparison,
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
@@ -125,6 +118,8 @@ export default {
   },
   mounted() {
     this.$store.commit('updateStep', 4);
+    // Deactivate all dashboard sections by default
+    this.$store.dispatch('deactivateAllSections');
   },
   computed: {
     dashboardDetails() {
@@ -157,14 +152,14 @@ export default {
       if (fieldName === 'Indicator Overview') {
         this.$store.state.MSDAT_STORE.indicatorComparision = e.target.checked;
       }
-      if (fieldName === 'Zonal Analysis') {
+      if (fieldName === 'Zonal analysis') {
         this.$store.state.MSDAT_STORE.zonalAnalysis = e.target.checked;
       }
-      if (fieldName === 'Indicator Comparsion - By Period') {
+      if (fieldName === 'Indicator Comparison') {
         this.$store.state.MSDAT_STORE.indicatorComparsionByPeriod = e.target.checked;
       }
 
-      if (fieldName === 'Multi-source Indicator Comparison') {
+      if (fieldName === 'Multi-source Comparison') {
         this.$store.state.MSDAT_STORE.multisourceComparison = e.target.checked;
       }
       if (fieldName === 'Dataset Comparison') {
