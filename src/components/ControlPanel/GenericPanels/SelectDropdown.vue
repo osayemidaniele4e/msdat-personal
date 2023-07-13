@@ -93,6 +93,7 @@ export default {
           && val.methodology !== undefined
         ) {
           // console.log(val, 'val');
+
           const item = {
             payload: val,
             entity: 'dataSource',
@@ -144,6 +145,7 @@ export default {
   watch: {
     options: {
       async handler(newValue) {
+        console.log('newVlaue', newValue);
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
