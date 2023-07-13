@@ -69,7 +69,7 @@ deploy_beta:
       - chmod 600 ~/.ssh/id_rsa
       - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh -p3322 e4esysadmin@172.93.48.4 "cd /srv/msdat/  && git pull origin master && sudo rm yarn.lock && sudo yarn install &&  sudo yarn build && sudo systemctl reload nginx "
+    - ssh -p3322 e4esysadmin@172.93.48.4 "cd /srv/msdat/  && git pull origin master && sudo rm yarn.lock && git stash && sudo yarn install &&  sudo yarn build && sudo systemctl reload nginx "
   only:
     - master
   when: manual
