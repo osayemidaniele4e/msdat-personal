@@ -1,5 +1,5 @@
 <template>
-  <b-container class="overflow-hidden">
+  <b-container class="overflow-hidden xxl-max-width">
     <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
         <h4 class="mt-3 mb-4 tittle">
@@ -10,7 +10,7 @@
         <p class="text-left msg">
           This dashboard provides a single transparent view of health data across the country. It
           presents health data across seven (7) program areas: RMNCH, Nutrition, Malaria,
-          Immunization, HIV/AIDS and Mortality. It also provides insight on health facility service
+          Immunization, HIV/AIDS, Mortality and Health Services. It also provides insight on health facility service
           availability and readiness for each state.
         </p>
         <b-row align-h="start">
