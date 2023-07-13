@@ -50,8 +50,6 @@ export default {
     // Watch for changes in the activeToggleButton and update the chart configuration accordingly
     activeToggleButton(newValue) {
       this.$parent.$parent.$parent.$parent.ChartOptions.chart.type = newValue;
-      console.log('chart active toggle button:', newValue);
-      console.log('chart active toggle button chart type:', this.$parent.$parent.$parent.$parent.ChartOptions.chart.type);
     },
   },
 
