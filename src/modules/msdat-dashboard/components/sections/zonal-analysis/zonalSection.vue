@@ -1,16 +1,12 @@
 <template>
   <base-overlay :show="loader" class="main">
-    <base-sub-card
-      showControls
-      v-if="Object.keys(controlPanelProps).length"
-      @dropdownTypeSelected="
-        downLoadType($event, {
-          indicator: controlPanelProps.indicator.short_name,
-          datasource: '',
-          year: '',
-        })
-      "
-    >
+    <base-sub-card showControls v-if="Object.keys(controlPanelProps).length" @dropdownTypeSelected="
+      downLoadType($event, {
+        indicator: controlPanelProps.indicator.short_name,
+        datasource: '',
+        year: '',
+      })
+      ">
       <template #title>
         <p class="work-sans mb-0 line-height">
           Distribution of
@@ -20,7 +16,8 @@
           {{ controlPanelProps.year }}
         </p>
       </template>
-      <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
+      <BarChart v-if="hasData" ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
+      <NoAvailableData v-else class="position-absolute" style="top: 20px; width: 30%; left: 40%" />
     </base-sub-card>
   </base-overlay>
 </template>
@@ -30,6 +27,7 @@ import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
 import { sortHighChartDataFormat } from '../../../mixins/util';
+import NoAvailableData from '../../NoData2.vue';
 
 export default {
   name: 'ZonalSectionChart',
@@ -47,6 +45,7 @@ export default {
   },
   components: {
     BarChart,
+    NoAvailableData,
   },
   props: {
     mapSelectedState: {
@@ -59,6 +58,12 @@ export default {
     colors: {
       type: [Object, Array],
       required: true,
+    },
+  },
+
+  computed: {
+    hasData() {
+      return Object.keys(this.chart).length !== 0;
     },
   },
 
