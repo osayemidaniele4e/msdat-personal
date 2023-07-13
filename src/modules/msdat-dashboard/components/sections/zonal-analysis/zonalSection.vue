@@ -17,6 +17,7 @@
         </p>
       </template>
       <BarChart v-if="hasData" ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
+      <!-- handles no data found -->
       <NoAvailableData v-else class="position-absolute" style="top: 20px; width: 30%; left: 40%" />
     </base-sub-card>
   </base-overlay>
