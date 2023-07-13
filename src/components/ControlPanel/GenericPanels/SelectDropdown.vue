@@ -93,6 +93,7 @@ export default {
           && val.methodology !== undefined
         ) {
           // console.log(val, 'val');
+
           const item = {
             payload: val,
             entity: 'dataSource',

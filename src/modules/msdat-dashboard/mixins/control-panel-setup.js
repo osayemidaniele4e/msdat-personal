@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
-import { uniq, sortBy } from 'lodash';
 import { groupIndicator, isDataYearly } from '@/util/helper';
+import { sortBy, uniq } from 'lodash';
 
 export default {
   data() {
@@ -70,6 +70,7 @@ export default {
       );
       this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
     },
+
     async setYearDropdown(
       indicatorID = this.defaultIndicator.id,
       dataSourceID = this.defaultDataSource.id,

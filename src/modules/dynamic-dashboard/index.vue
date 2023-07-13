@@ -21,14 +21,15 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapGetters, mapActions } from 'vuex';
-import VueCookies from 'vue-cookies';
-import moment from 'moment';
 import apiServices from '@/modules/data-layer/services/ApiServices';
-import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
-import config from './config/dashboard_config';
+import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
+import moment from 'moment';
+import VueCookies from 'vue-cookies';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import ClearDBModal from './ClearDBModal.vue';
+import config from './config/dashboard_config';
+import defaultData from './defaultIndicator.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -61,6 +62,7 @@ export default {
       'ADD_CONTROL_PANEL',
       'CLEAR_CONTROL_PANEL',
       'SET_CONFIGURATIONS',
+      'SET_SELECTED_CONFIG',
     ]),
     ...mapActions('AUTH_STORE', ['SAVE_USER_DASHBOARD']),
     /**
@@ -108,6 +110,8 @@ export default {
   },
   async mounted() {
     this.clearData();
+    // this sets skilled attendance at birth indicator on mounted
+    this.SET_SELECTED_CONFIG(defaultData);
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
@@ -259,6 +263,7 @@ export default {
       }
     },
   },
+
 };
 </script>
 
