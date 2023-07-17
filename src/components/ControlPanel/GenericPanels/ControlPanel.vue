@@ -315,11 +315,11 @@ export default {
     const date = new Date();
     const getYear = date.getFullYear + 1;
     // pick one of the available years as the default years as opposed to the static 2016 year
-    const defaultYears = this.setup[3].options;
+    const defaultYears = this.setup[3]?.options;
     // console.log(defaultYears);
     // console.log(defaultYears, 'defaultyears');
     const newArr = [];
-    defaultYears.map((el) => {
+    defaultYears && defaultYears.map((el) => {
       if (el < getYear) {
         newArr.push(el);
         this.defaultYearDropdown = newArr;

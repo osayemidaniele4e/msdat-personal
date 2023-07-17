@@ -125,43 +125,45 @@ export default {
       async handler(newValue) {
         this.loading = true;
         if (Array.isArray(newValue) && newValue.length > 0) {
-          // Rest of the code
-          if (this.options?.length > 0) {
+          if (this.options && this.options?.length > 0) {
             if (this.multiSelectProps['preselect-first']) {
-              if (has(this.multiSelectProps, 'group-values')) {
-                this.selected = newValue[0][this.multiSelectProps['group-values']][0];
-              } else if (newValue.length > 0) {
-                const { name } = this.$route.params;
-                if (name === 'Demographics') {
-                  this.selected = '';
-                  const newArr = this.options.filter(
-                    (year) => parseInt(year, 10) < new Date().getFullYear() + 1,
-                  );
-                  this.selected = newArr[0];
+              if (newValue[0]) {
+                if (has(this.multiSelectProps, 'group-values')) {
+                  this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+                } else if (newValue.length > 0) {
+                  const { name } = this.$route.params;
+                  if (name === 'Demographics') {
+                    this.selected = '';
+                    const newArr = this.options.filter(
+                      (year) => parseInt(year, 10) < new Date().getFullYear() + 1,
+                    );
+                    this.selected = newArr[0];
+                  } else {
+                    this.selected = '';
+                    this.selected = await this.options[0];
+                  }
+                  this.UPDATE_ALL_YEARS(this.options);
                 } else {
-                  this.selected = '';
-                  this.selected = await this.options[0];
-                }
-                this.UPDATE_ALL_YEARS(this.options);
-              } else {
-                const { name } = this.$route.params;
-                if (name === 'Demographics') {
-                  const date = new Date();
-                  const year = date.getFullYear() - 1;
-                  this.selected = {};
-                  const newArr = this.newValue.filter(
-                    (item) => parseInt(item, 10) < new Date().getFullYear() + 1,
-                  );
-                  this.selected = newArr[0] || year.toString();
-                  this.UPDATE_ALL_YEARS(newValue || year.toString());
-                } else {
-                  const date = new Date();
-                  const year = date.getFullYear() - 1;
-                  this.selected = {};
-                  this.selected = newValue[0] || year.toString();
-                  this.UPDATE_ALL_YEARS(newValue || year.toString());
+                  const { name } = this.$route.params;
+                  if (name === 'Demographics') {
+                    const date = new Date();
+                    const year = date.getFullYear() - 1;
+                    this.selected = {};
+                    const newArr = this.newValue.filter(
+                      (item) => parseInt(item, 10) < new Date().getFullYear() + 1,
+                    );
+                    this.selected = newArr[0] || year.toString();
+                    this.UPDATE_ALL_YEARS(newValue || year.toString());
+                  } else {
+                    const date = new Date();
+                    const year = date.getFullYear() - 1;
+                    this.selected = {};
+                    this.selected = newValue[0] || year.toString();
+                    this.UPDATE_ALL_YEARS(newValue || year.toString());
+                  }
                 }
               }
+
             }
 
             /**
@@ -288,8 +290,9 @@ export default {
   },
   mounted() {
     // console.log(this.options[0], 'Options');
-    console.log('options', this.options);
+    // console.log('options', this.options);
   },
+
 };
 </script>
 
