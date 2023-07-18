@@ -1,20 +1,9 @@
 <template>
   <!-- Label to show when there is no available data as requested -->
   <!-- @open="initialCSS" -->
-  <multiselect
-    :id="formattedID"
-    v-model="selected"
-    :options="options"
-    searchable
-    close-on-select
-    :allow-empty="allowEmpty"
-    placeholder="Pick a value"
-    v-bind="multiSelectProps"
-    selectLabel=""
-    data-visted="notVisited"
-    deselectLabel=""
-    autocomplete="off"
-  >
+  <multiselect :id="formattedID" v-model="selected" :options="options" searchable close-on-select
+    :allow-empty="allowEmpty" placeholder="Pick a value" v-bind="multiSelectProps" selectLabel="" data-visted="notVisited"
+    deselectLabel="" autocomplete="off">
     <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
     <!---
@@ -27,29 +16,19 @@
       <template v-if="props.option.$groupLabel">
         <span class="overflow-text" :data-parent="props.option.$groupLabel">
           {{ props.option.$groupLabel }}
-          <span
-            v-if="
-              multiSelectProps['group-values'] === 'indicators' &&
-              section !== 'Indicator-Comparison'
-            "
-          ></span>
+          <span v-if="multiSelectProps['group-values'] === 'indicators' &&
+            section !== 'Indicator-Comparison'
+            "></span>
         </span>
       </template>
       <template v-if="props.option.item">
-        <div
-          v-if="!props.option.$groupLabel"
-          class="overflow-text"
-          :data-child="modifyDataSourceChildLabel(props.option.item)"
-        >
+        <div v-if="!props.option.$groupLabel" class="overflow-text"
+          :data-child="modifyDataSourceChildLabel(props.option.item)">
           {{ props.option.item }}
         </div>
       </template>
       <template v-else-if="props.option.full_name">
-        <div
-          v-if="!props.option.$groupLabel"
-          class="overflow-text text-wrap"
-          :data-child="props.option.program_area"
-        >
+        <div v-if="!props.option.$groupLabel" class="overflow-text text-wrap" :data-child="props.option.program_area">
           {{ props.option.full_name }}
         </div>
       </template>
@@ -80,7 +59,7 @@ export default {
         return this.value;
       },
       set(val) {
-        if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
+        if (val && typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
           this.selectedOption = val;
           const item = {
             payload: val,
@@ -146,64 +125,69 @@ export default {
     options: {
       async handler(newValue) {
         this.loading = true;
-        if (this.options?.length > 0) {
-          if (this.multiSelectProps['preselect-first']) {
-            if (has(this.multiSelectProps, 'group-values')) {
-              this.selected = newValue[0][this.multiSelectProps['group-values']][0];
-            } else if (newValue.length > 0) {
-              const { name } = this.$route.params;
-              if (name === 'Demographics') {
-                this.selected = '';
-                const newArr = this.options.filter(
-                  (year) => parseInt(year, 10) < new Date().getFullYear() + 1,
-                );
-                this.selected = newArr[0];
-              } else {
-                this.selected = '';
-                this.selected = await this.options[0];
+        if (Array.isArray(newValue) && newValue.length > 0) {
+          if (this.options && this.options?.length > 0) {
+            if (this.multiSelectProps['preselect-first']) {
+              if (newValue[0]) {
+                if (has(this.multiSelectProps, 'group-values')) {
+                  this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+                } else if (newValue.length > 0) {
+                  const { name } = this.$route.params;
+                  if (name === 'Demographics') {
+                    this.selected = '';
+                    const newArr = this.options.filter(
+                      (year) => parseInt(year, 10) < new Date().getFullYear() + 1,
+                    );
+                    this.selected = newArr[0];
+                  } else {
+                    this.selected = '';
+                    this.selected = await this.options[0];
+                  }
+                  this.UPDATE_ALL_YEARS(this.options);
+                } else {
+                  const { name } = this.$route.params;
+                  if (name === 'Demographics') {
+                    const date = new Date();
+                    const year = date.getFullYear() - 1;
+                    this.selected = {};
+                    const newArr = this.newValue.filter(
+                      (item) => parseInt(item, 10) < new Date().getFullYear() + 1,
+                    );
+                    this.selected = newArr[0] || year.toString();
+                    this.UPDATE_ALL_YEARS(newValue || year.toString());
+                  } else {
+                    const date = new Date();
+                    const year = date.getFullYear() - 1;
+                    this.selected = {};
+                    this.selected = newValue[0] || year.toString();
+                    this.UPDATE_ALL_YEARS(newValue || year.toString());
+                  }
+                }
               }
-              this.UPDATE_ALL_YEARS(this.options);
-            } else {
-              const { name } = this.$route.params;
-              if (name === 'Demographics') {
-                const date = new Date();
-                const year = date.getFullYear() - 1;
-                this.selected = {};
-                const newArr = this.newValue.filter(
-                  (item) => parseInt(item, 10) < new Date().getFullYear() + 1,
-                );
-                this.selected = newArr[0] || year.toString();
-                this.UPDATE_ALL_YEARS(newValue || year.toString());
-              } else {
-                const date = new Date();
-                const year = date.getFullYear() - 1;
-                this.selected = {};
-                this.selected = newValue[0] || year.toString();
-                this.UPDATE_ALL_YEARS(newValue || year.toString());
-              }
-            }
-          }
 
-          /**
-           * @description check if the update is for datasource
-           * if it is, check if the list is an array,
-           * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
-           * if its not an array, make the object the default selected
-           */
-          if (this.multiSelectProps?.label === 'datasource') {
-            if (Array.isArray(newValue) && newValue?.length > 0) {
-              this.UPDATE_ALL_DATASOURCES(newValue);
-              const defaultSelected = newValue.find((item) => item?.id === this.selected?.id);
-              if (defaultSelected?.id !== undefined) {
+            }
+
+            /**
+             * @description check if the update is for datasource
+             * if it is, check if the list is an array,
+             * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
+             * if its not an array, make the object the default selected
+             */
+            if (this.multiSelectProps?.label === 'datasource') {
+              if (Array.isArray(newValue) && newValue?.length > 0) {
+                this.UPDATE_ALL_DATASOURCES(newValue);
+                const defaultSelected = newValue.find((item) => item?.id === this.selected?.id);
+                if (defaultSelected?.id !== undefined) {
+                  this.selected = {};
+                  this.selected = defaultSelected;
+                  return;
+                }
                 this.selected = {};
-                this.selected = defaultSelected;
-                return;
+                this.selected = await newValue[0];
               }
               this.selected = {};
               this.selected = await newValue[0];
             }
-            this.selected = {};
-            this.selected = await newValue[0];
           }
         }
         this.loading = false;
@@ -307,7 +291,9 @@ export default {
   },
   mounted() {
     // console.log(this.options[0], 'Options');
+    // console.log('options', this.options);
   },
+
 };
 </script>
 
@@ -325,16 +311,19 @@ export default {
   transition: all 0.25s ease-in;
   cursor: pointer;
 }
+
 .open-caret {
   transform: rotate(360deg);
   transition: all 0.25s ease-out;
   cursor: pointer;
 }
+
 ul li.multiselect__element {
   // border-bottom: 1px solid #0000;
   transition: all 1.5s ease-in-out;
   cursor: pointer;
 }
+
 .overflow-text {
   // text-overflow: ellipsis;
   // overflow: hidden;
