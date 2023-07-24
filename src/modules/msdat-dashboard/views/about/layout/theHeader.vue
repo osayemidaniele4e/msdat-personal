@@ -713,6 +713,7 @@ header#the-header {
 
   .main-text {
     display: none;
+    font-size: 1rem;
   }
 
   .mobile-flex {

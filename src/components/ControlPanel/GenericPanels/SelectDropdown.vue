@@ -124,6 +124,7 @@ export default {
   watch: {
     options: {
       async handler(newValue) {
+        console.log('newVlaue', newValue);
         this.loading = true;
         if (Array.isArray(newValue) && newValue.length > 0) {
           if (this.options && this.options?.length > 0) {

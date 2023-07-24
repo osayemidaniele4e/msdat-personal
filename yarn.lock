@@ -14615,7 +14615,7 @@ vue-functional-data-merge@^3.1.0:
   resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz#08a7797583b7f35680587f8a1d51d729aa1dc657"
   integrity sha512-leT4kdJVQyeZNY1kmnS1xiUlQ9z1B/kdBFCILIjYYQDqZgLqCLa0UhjSSeRX6c3mUe6U5qYeM8LrEqkHJ1B4LA==
 
-vue-google-oauth2@^1.5.8:
+vue-google-oauth2@^1.5.10:
   version "1.5.10"
   resolved "https://registry.yarnpkg.com/vue-google-oauth2/-/vue-google-oauth2-1.5.10.tgz#e8798c2481a5e2862a8e195184539685c968b5d6"
   integrity sha512-0+ZGbauhkBhvTln2RPyeaSvRdrka194h+MeEQngy1H4UvGOC5hxRMB8QvUrVRP/w2Tt8/ByCqGDko6MuHpFpbQ==
