@@ -82,7 +82,8 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link to="/custom" target="_blank"
+          <router-link 
+          to="/custom" target="_blank"
             ><b-list-group-item
               > Create Your Dashboard</b-list-group-item
             ></router-link
@@ -100,18 +101,61 @@
           >
         </b-list-group>
       </div>
+      <div class="col mb-3"
+      v-if="isAuthenticated"
+      >
+        <b-list-group>
+          <h5 class="text-underline">Custom Dashboards</h5>
+          <div
+          v-for="dashboard in userDashboards"
+          :key="dashboard.id">
+            <router-link :to="'/dashboard/' + dashboard.name" target="_blank"
+       
+            ><b-list-group-item
+              >  {{ dashboard.title }}</b-list-group-item
+            ></router-link
+          >
+          </div>
+        </b-list-group>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   data() {
-    return {};
+    return {
+      loading: true,
+      userDashboards: {},
+    };
   },
-  methods: {},
+
+  computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser', 'getDashboards']),
+  },
+
+  methods: {
+    ...mapActions('AUTH_STORE', ['SAVE_DASHBOARDS']),
+
+    filterArray(obj, arr) {
+      const userId = obj.id;
+      const filteredArr = arr.filter((item) => item.user === userId);
+      return filteredArr;
+    },
+  },
+
+  async mounted() {
+    this.loading = true;
+    await this.SAVE_DASHBOARDS();
+    this.userDashboards = await this.filterArray(this.getUser, this.getDashboards.data);
+    this.loading = false;
+  },
 };
 </script>
+
 
 <style lang="scss">
 div {
