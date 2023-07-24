@@ -115,6 +115,14 @@ export default {
       // i could do this in individual component when making request with the
       // function by after this it will after all at once
       const query = queryObject;
+
+      //NPC indicator has its values uploaded on to value type 2, therefore we
+      //set the value type to 2 if the Datasource is NPC
+      if (query.datasource === 19) {
+        query.value_type = 2;
+      }
+
+
       if (query.datasource === 25) {
         query.value_type = 1;
       } else if (!has(query, 'value_type')) {
