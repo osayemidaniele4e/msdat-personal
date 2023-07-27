@@ -23,7 +23,6 @@
               class="classification-row text-uppercase text-center align-middle p-0"
             >
               {{ value[0] }}
-
             </td>
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
@@ -575,7 +574,6 @@ export default {
     if (this.source.some((item) => item.id === 6)) {
       this.hasNhmis = true;
     }
-    console.log('source', this.source);
   },
 
   // async mounted() {
