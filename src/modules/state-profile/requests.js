@@ -13,11 +13,13 @@ export const fetchDemographics = async (params, locationId) => {
 };
 
 export const getRegularData = async (params, locationId) => {
-  const national = await Promise.all(params.map((el) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${el.indicator}&datasource=${el.dataSource}&period=${el.year}&location=1`)));
+  console.log('params - programArea specific I & locati id', params);
+  const national = await Promise.all(params.map((el) => axiosInstance.get(`${apiEndpoints.getData}indicator=${el.indicator}&datasource=${el.dataSource}&period=${el.year}&location=1`)));
+  console.log('national', national);
 
   const newNational = national.map((el) => el.data);
   if (locationId !== 1) {
-    const state = await Promise.all(params.map((el) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${el.indicator}&datasource=${el.dataSource}&period=${el.year}&location=${locationId}`)));
+    const state = await Promise.all(params.map((el) => axiosInstance.get(`${apiEndpoints.getData}indicator=${el.indicator}&datasource=${el.dataSource}&period=${el.year}&location=${locationId}`)));
     const newState = state.map((el) => el.data);
     return { newNational, newState };
   }

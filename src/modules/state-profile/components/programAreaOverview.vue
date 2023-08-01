@@ -15,8 +15,7 @@ no-param-reassign */
           {{ programArea.detail }}
         </p>
         <p class="mb-4 note">
-          <b
-            >NOTE: Sources for each of the indicators in the graph were selected based on most
+          <b>NOTE: Sources for each of the indicators in the graph were selected based on most
             recent and most reliable estimates.
           </b>
         </p>
@@ -52,19 +51,10 @@ no-param-reassign */
           <hr />
         </div>
         <!-- <pre>{{ barChartOptions }}</pre> -->
-        <BaseBar
-          v-show="this.programArea.name != 'Health Services'"
-          :chartOptions="barChartOptions"
-        />
-        <b-row
-          style="color: #ffffff; font-size: 12px"
-          class="pl-5 mt-4"
-          v-show="this.programArea.name == 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH'"
-        >
-          <b-col
-            class="px-auto"
-            style="background-color: #054a80; border: 1px solid white; height: 40px"
-          >
+        <BaseBar v-show="this.programArea.name != 'Health Services'" :chartOptions="barChartOptions" />
+        <b-row style="color: #ffffff; font-size: 12px" class="pl-5 mt-4"
+          v-show="this.programArea.name == 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH'">
+          <b-col class="px-auto" style="background-color: #054a80; border: 1px solid white; height: 40px">
             <p class="mx-auto">Pre-pregnancy</p>
           </b-col>
           <b-col style="background-color: #2c8cca; border: 1px solid white; height: 40px">
@@ -357,6 +347,7 @@ export default {
       const data = [];
       if (noStates) {
         this.programArea.specificIndicators.map((value) => {
+          // console.log(value);
           // eslint-disable-next-line array-callback-return
           this.nationalObjects.map((element) => {
             if (
@@ -374,8 +365,7 @@ export default {
           if (val !== undefined) {
             data.push({
               y: Number(val.value),
-              name: `${this.getIndicatorInfo(val.indicator).short_name} (${
-                this.getDataSourceInfo(val.datasource).datasource
+              name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource
               } ${val.period})`,
               color: val.color,
             });
@@ -386,8 +376,7 @@ export default {
         this.nationalObjects.map((val) => {
           if (val !== undefined) {
             data.push([
-              `${this.getIndicatorInfo(val?.indicator).short_name} (${
-                this.getDataSourceInfo(val?.datasource).datasource
+              `${this.getIndicatorInfo(val?.indicator).short_name} (${this.getDataSourceInfo(val?.datasource).datasource
               } ${val.period}), `,
               Number(val.value),
             ]);
@@ -516,8 +505,7 @@ export default {
         if (val) {
           data.push({
             y: Number(val.value),
-            name: `${this.getIndicatorInfo(val.indicator).short_name} (${
-              this.getDataSourceInfo(val.datasource).datasource
+            name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource
             } ${val.period})`,
             color: val.color,
           });
@@ -526,6 +514,8 @@ export default {
       this.singleStateValue = data[0].y;
       this.barChartOptions.series[1].data = data;
       this.barChartOptions.series[1].name = this.state;
+
+      // console.log(this.barChartOptions.series[1].data)
     },
     addIndicatorDefinitions() {
       this.definitions = [];
@@ -580,6 +570,8 @@ export default {
         this.programArea.specificIndicators,
         selectedState.id,
       );
+
+      // console.log("Program specific indicators", this.programArea.specificIndicators)
       this.$emit('overviewLoading');
       newNational.map((el) => this.nationalObjects.push(el.results[0]));
       newState.map((el) => this.nonDemographicData.push(el.results[0]));
@@ -618,6 +610,8 @@ export default {
   },
   async mounted() {
     const { theIndicators, theSources } = await requests.getIndicatorsAndSources();
+    const test = await requests.getIndicatorsAndSources();
+    // console.log(test)
     this.allDataSources = theSources.data;
     this.allIndicators = theIndicators.data;
     let selectedState;
@@ -631,7 +625,9 @@ export default {
           this.programArea.specificIndicators,
           selectedState.id,
         );
+        // console.log("new national",newNational);
         newNational.map((el) => this.nationalObjects.push(el.results[0]));
+        // console.log("national objects" , this.nationalObjects)
         this.$emit('overviewLoading');
         this.justNationalData();
         this.getHealthFacilityData();
@@ -642,6 +638,7 @@ export default {
       console.log(err);
     }
   },
+
 };
 </script>
 
@@ -649,6 +646,7 @@ export default {
 .container-fluid {
   font-family: 'Muli', sans-serif !important;
 }
+
 .program-area-icon {
   border-radius: 50%;
   background-color: #ffffff;
@@ -656,65 +654,80 @@ export default {
   height: 84px;
   width: 84px;
 }
+
 p {
   margin-bottom: 0px;
   font-family: 'Muli', sans-serif;
 }
+
 ul {
   list-style-type: none;
 }
+
 .toggle {
   background-color: #f2f2f2;
   border: 1px solid #cccccc;
   color: #232323;
 }
+
 .btn-secondary:hover {
   background-color: #f2f2f2 !important;
   border: 1px solid #cccccc !important;
   color: #232323 !important;
 }
+
 .vl {
   border: 1px dashed rgba(197, 197, 197, 1);
   width: 1px;
   opacity: 1;
   height: 100%;
 }
+
 .test {
   position: absolute;
   left: 50%;
   margin-left: 30px;
 }
+
 .title {
   font-size: 21.0000525px;
   font-weight: 800;
 }
+
 .sources {
   color: #5a5a5a;
   font-size: 15px;
 }
+
 .source {
   color: #5a5a5a;
   font-size: 12px;
 }
+
 .note {
   font-weight: 900;
   font-size: 15px;
 }
+
 .blue-heading {
   color: #0592bd;
   font-weight: 800;
 }
+
 .hfs-details {
   font-size: 12px;
   font-weight: 800;
 }
+
 .value {
   font-weight: 900;
 }
+
 .grey-balue {
   color: #5c5c5c;
   font-weight: 900;
 }
+
 .red-value {
   color: #ff0000;
   font-weight: 900;
