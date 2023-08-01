@@ -33,27 +33,25 @@
               </p>
               <p class="source">
                 Source: {{ d.source }} {{ d.year }}
-                <span
-                  ><b-icon-info-circle-fill
-                    variant="primary"
-                    @click="showSrcModal(d.sourceId)"
-                    class="data-source-info"
-                /></span>
+                <span><b-icon-info-circle-fill variant="primary" @click="showSrcModal(d.sourceId)"
+                    class="data-source-info" /></span>
               </p>
             </b-col>
           </b-row>
+
           <b-row class="compare">
             <b-col cols="auto" class="text-right" v-if="d.compare">
               <b-icon :icon="getChangeIcon()" :variant="pointer"></b-icon>
             </b-col>
+
             <b-col v-if="d.compare" cols="auto">
               <p style="font-size: 11.50002625px">
                 <b class="pr-1">{{ d.change }}%</b>
-
                 <b>
                   {{ pointer == 'success' ? 'increase' : 'decrease' }}
                 </b>
                 since {{ d.previousYear }} ({{ d.previousValue | commaValue }}
+
                 <span v-if="d.indicatorId == 64">%</span>)
               </p>
             </b-col>
@@ -64,12 +62,7 @@
         <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <BaseMap
-          v-if="state != 'National'"
-          :level="3"
-          :lgaState="selectedState"
-          :mapObject="this.mapOptions"
-        />
+        <BaseMap v-if="state != 'National'" :level="3" :lgaState="selectedState" :mapObject="this.mapOptions" />
 
         <BaseMap v-else :level="1" :mapObject="mapOptionsNational" />
         <p v-if="state == 'National'" class="text-center map-text">
@@ -169,14 +162,37 @@ export default {
             const fullYears = this.data[i].data.results.filter(
               (value) => value.period.length === 4,
             );
+            console.log('fullyears before sort', fullYears);
+
             container.compare = true;
             // Sort returned results by latest year
-            fullYears.sort((a, b) => b.period - a.period);
-            container.value = fullYears[0].value;
-            container.year = fullYears[0].period;
-            container.previousValue = fullYears[1]?.value || null;
-            container.previousYear = fullYears[1]?.period || null;
-            container.change = this.calcDiff(container);
+            if (fullYears.length > 0) {
+              fullYears.sort((a, b) => b.period - a.period);
+              container.value = fullYears[0]?.value;
+              container.year = fullYears[0]?.period;
+              container.previousValue = fullYears[1]?.value || null;
+              container.previousYear = fullYears[1]?.period || null;
+              console.log('container', container);
+              container.change = this.calcDiff(container);
+            }
+
+            // if (fullYears.length > 0) {
+            //   // Find the latest year
+            //   const latestYear = Math.max(...fullYears.map((year) => Number(year.period)));
+
+            //   // Find the previous year
+            //   const previousYear = fullYears
+            //     .map((year) => Number(year.period))
+            //     .filter((year) => year < latestYear)
+            //     .reduce((prev, curr) => (curr > prev ? curr : prev), -Infinity);
+
+            //   container.value = fullYears.find((year) => Number(year.period) === latestYear)?.value;
+            //   container.year = String(latestYear);
+            //   container.previousValue = fullYears.find((year) => Number(year.period) === previousYear)?.value || null;
+            //   container.previousYear = String(previousYear) || null;
+            //   console.log("container", container);
+            //   container.change = this.calcDiff(container);
+            // }
           }
         } else {
           container.value = 0;
@@ -213,6 +229,8 @@ export default {
      */
     calcDiff(val) {
       const ans = ((Number(val.value) - Number(val.previousValue)) / Number(val.previousValue)) * 100;
+      console.log('ans', ans);
+      console.log('val', val);
       if (val.previousValue > val.value) {
         this.pointer = 'danger';
       } else {
@@ -427,24 +445,30 @@ export default {
 hr {
   border-top: 1px solid #cccccc;
 }
+
 .bi-info-circle-fill {
   cursor: pointer;
 }
+
 #srcModal {
   padding: 35px 25px;
 }
+
 .vl {
   border: 1px dashed rgba(197, 197, 197, 1);
   opacity: 1;
   height: 100%;
 }
+
 .compare {
   justify-content: flex-end;
   padding-top: 7px;
 }
+
 .source {
   color: #7c7c7c;
 }
+
 .value {
   color: #232323;
   font-size: 22.50005625px;

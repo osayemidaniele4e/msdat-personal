@@ -8,7 +8,7 @@ export const latestData = () => axiosInstance.get('http://135.181.212.168:9234/a
 export const datasourceSpecific = () => axiosInstance.get(apiEndpoints.getDSI);
 
 export const fetchDemographics = async (params, locationId) => {
-  const values = await Promise.all(params.map((el) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${el.indicatorId}&datasource=${el.sourceId}&location=${locationId}`)));
+  const values = await Promise.all(params.map((el) => axiosInstance.get(`${apiEndpoints.getData}indicator=${el.indicatorId}&datasource=${el.sourceId}&location=${locationId}`)));
   return values;
 };
 
