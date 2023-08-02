@@ -347,7 +347,6 @@ export default {
       const data = [];
       if (noStates) {
         this.programArea.specificIndicators.map((value) => {
-          // console.log(value);
           // eslint-disable-next-line array-callback-return
           this.nationalObjects.map((element) => {
             if (
@@ -514,8 +513,6 @@ export default {
       this.singleStateValue = data[0].y;
       this.barChartOptions.series[1].data = data;
       this.barChartOptions.series[1].name = this.state;
-
-      // console.log(this.barChartOptions.series[1].data)
     },
     addIndicatorDefinitions() {
       this.definitions = [];
@@ -570,8 +567,6 @@ export default {
         this.programArea.specificIndicators,
         selectedState.id,
       );
-
-      // console.log("Program specific indicators", this.programArea.specificIndicators)
       this.$emit('overviewLoading');
       newNational.map((el) => this.nationalObjects.push(el.results[0]));
       newState.map((el) => this.nonDemographicData.push(el.results[0]));
@@ -611,7 +606,6 @@ export default {
   async mounted() {
     const { theIndicators, theSources } = await requests.getIndicatorsAndSources();
     const test = await requests.getIndicatorsAndSources();
-    // console.log(test)
     this.allDataSources = theSources.data;
     this.allIndicators = theIndicators.data;
     let selectedState;
@@ -625,9 +619,7 @@ export default {
           this.programArea.specificIndicators,
           selectedState.id,
         );
-        // console.log("new national",newNational);
         newNational.map((el) => this.nationalObjects.push(el.results[0]));
-        // console.log("national objects" , this.nationalObjects)
         this.$emit('overviewLoading');
         this.justNationalData();
         this.getHealthFacilityData();

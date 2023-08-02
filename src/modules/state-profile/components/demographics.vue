@@ -26,7 +26,9 @@
                 <b>{{ d.value | commaValue }}%</b>
               </p>
               <p v-else-if="d.sourceId === 19" class="value">
-                <b>{{ Math.round(d.value) | commaValue }}</b>
+                <!-- <b>{{ Math.round(d.value) | commaValue }}</b> -->
+                <b>{{ d.value | commaValue }}</b>
+
               </p>
               <p v-else class="value">
                 <b>{{ d.value | commaValue }}</b>
@@ -139,9 +141,8 @@ export default {
      * data and populates the data object
      * accordingly
      */
+
     extractDemographicValues() {
-      // Loop through the demographics object to
-      // assign the required data
       this.dataContainer = this.stateDemographics.map((val, i) => {
         const container = {};
         container.name = val.name;
@@ -149,60 +150,59 @@ export default {
         container.source = val.source;
         container.sourceId = val.sourceId;
 
-        // Only performs further computations where data
-        // is available
-        if (this.data[i].data.length !== 0) {
+        if (this.data[i].data?.length !== 0) {
           if (this.data[i].data.length === 1) {
-            // In this scenario there is no
-            // previous data to compare it to
             container.value = this.data[i].data[0].value;
             container.year = this.data[i].data[0].period;
             container.compare = false;
+            container.previousValue = null; // Set previousValue to null as there is no previous year
+            container.previousYear = null; // Set previousYear to null as there is no previous year
           } else {
             const fullYears = this.data[i].data.results.filter(
-              (value) => value.period.length === 4,
+              (value) => value.period.length === 4
             );
-            console.log('fullyears before sort', fullYears);
 
-            container.compare = true;
-            // Sort returned results by latest year
             if (fullYears.length > 0) {
+              // Sort returned results by latest year
               fullYears.sort((a, b) => b.period - a.period);
               container.value = fullYears[0]?.value;
               container.year = fullYears[0]?.period;
               container.previousValue = fullYears[1]?.value || null;
               container.previousYear = fullYears[1]?.period || null;
-              console.log('container', container);
-              container.change = this.calcDiff(container);
+              container.compare = true;
+            } else {
+              container.value = 0;
+              container.year = 'N/a';
+              container.previousValue = null; // Set previousValue to null as there is no previous year
+              container.previousYear = null; // Set previousYear to null as there is no previous year
+              container.compare = false; // Set compare to false as there is no previous year
             }
-
-            // if (fullYears.length > 0) {
-            //   // Find the latest year
-            //   const latestYear = Math.max(...fullYears.map((year) => Number(year.period)));
-
-            //   // Find the previous year
-            //   const previousYear = fullYears
-            //     .map((year) => Number(year.period))
-            //     .filter((year) => year < latestYear)
-            //     .reduce((prev, curr) => (curr > prev ? curr : prev), -Infinity);
-
-            //   container.value = fullYears.find((year) => Number(year.period) === latestYear)?.value;
-            //   container.year = String(latestYear);
-            //   container.previousValue = fullYears.find((year) => Number(year.period) === previousYear)?.value || null;
-            //   container.previousYear = String(previousYear) || null;
-            //   console.log("container", container);
-            //   container.change = this.calcDiff(container);
-            // }
           }
         } else {
           container.value = 0;
           container.year = 'N/a';
-          container.previousValue = ' ';
-          container.change = ' ';
+          container.previousValue = null; // Set previousValue to null as there is no previous year
+          container.previousYear = null; // Set previousYear to null as there is no previous year
+          container.compare = false; // Set compare to false as there is no previous year
         }
+
+        // Calculate the change if data is available for comparison
+        if (container.compare) {
+          container.change = this.calcDiff(container);
+        } else {
+          container.change = null; // Set change to null when there is no previous year
+        }
+
         return container;
       });
     },
+
+
+
+
+
+
+
     /**
      * This function sets the land area and
      * coordinate values for each state. These values
@@ -229,8 +229,6 @@ export default {
      */
     calcDiff(val) {
       const ans = ((Number(val.value) - Number(val.previousValue)) / Number(val.previousValue)) * 100;
-      console.log('ans', ans);
-      console.log('val', val);
       if (val.previousValue > val.value) {
         this.pointer = 'danger';
       } else {
