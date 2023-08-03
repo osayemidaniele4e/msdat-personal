@@ -37,4 +37,5 @@ export default {
       return Promise.resolve(true);
     },
   },
+  commit: jest.fn(),
 };
