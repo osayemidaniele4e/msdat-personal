@@ -223,18 +223,30 @@ export default class DataLayer {
    * on the dashboard is up to date or not
    */
   async isDataUpToDate() {
-    const serverDate = await apiServices.getLatestDate();
+    // const serverDate = await apiServices.getLatestDate();
+    // const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
+    // // Check if its more recent than the date in localStorage
+    // const oldDateObject = new Date(localDate);
+    // const newDateObject = new Date(serverDate.data);
+    // if (oldDateObject.getTime() === newDateObject.getTime()) {
+    //   return true;
+    // }
+    // if (oldDateObject <= newDateObject) {
+    //   return false;
+    // }
+    // return true;
+
+    const serverDateResponse = await apiServices.getLatestDate();
+    const serverDate = new Date(serverDateResponse.data[0].updated_at);
+
     const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-    // Check if its more recent than the date in localStorage
     const oldDateObject = new Date(localDate);
-    const newDateObject = new Date(serverDate.data);
-    if (oldDateObject.getTime() === newDateObject.getTime()) {
+
+    if (Number.isNaN(serverDate.getTime())) {
+      // Invalid server date, return true to avoid unnecessary data update
       return true;
     }
-    if (oldDateObject <= newDateObject) {
-      return false;
-    }
-    return true;
+    return oldDateObject >= serverDate;
   }
 
   /**
