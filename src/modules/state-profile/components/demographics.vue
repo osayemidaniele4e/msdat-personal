@@ -26,34 +26,34 @@
                 <b>{{ d.value | commaValue }}%</b>
               </p>
               <p v-else-if="d.sourceId === 19" class="value">
-                <b>{{ Math.round(d.value) | commaValue }}</b>
+                <!-- <b>{{ Math.round(d.value) | commaValue }}</b> -->
+                <b>{{ d.value | commaValue }}</b>
+
               </p>
               <p v-else class="value">
                 <b>{{ d.value | commaValue }}</b>
               </p>
               <p class="source">
                 Source: {{ d.source }} {{ d.year }}
-                <span
-                  ><b-icon-info-circle-fill
-                    variant="primary"
-                    @click="showSrcModal(d.sourceId)"
-                    class="data-source-info"
-                /></span>
+                <span><b-icon-info-circle-fill variant="primary" @click="showSrcModal(d.sourceId)"
+                    class="data-source-info" /></span>
               </p>
             </b-col>
           </b-row>
+
           <b-row class="compare">
             <b-col cols="auto" class="text-right" v-if="d.compare">
               <b-icon :icon="getChangeIcon()" :variant="pointer"></b-icon>
             </b-col>
+
             <b-col v-if="d.compare" cols="auto">
               <p style="font-size: 11.50002625px">
                 <b class="pr-1">{{ d.change }}%</b>
-
                 <b>
                   {{ pointer == 'success' ? 'increase' : 'decrease' }}
                 </b>
                 since {{ d.previousYear }} ({{ d.previousValue | commaValue }}
+
                 <span v-if="d.indicatorId == 64">%</span>)
               </p>
             </b-col>
@@ -64,12 +64,7 @@
         <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <BaseMap
-          v-if="state != 'National'"
-          :level="3"
-          :lgaState="selectedState"
-          :mapObject="this.mapOptions"
-        />
+        <BaseMap v-if="state != 'National'" :level="3" :lgaState="selectedState" :mapObject="this.mapOptions" />
 
         <BaseMap v-else :level="1" :mapObject="mapOptionsNational" />
         <p v-if="state == 'National'" class="text-center map-text">
@@ -146,9 +141,8 @@ export default {
      * data and populates the data object
      * accordingly
      */
+
     extractDemographicValues() {
-      // Loop through the demographics object to
-      // assign the required data
       this.dataContainer = this.stateDemographics.map((val, i) => {
         const container = {};
         container.name = val.name;
@@ -156,37 +150,59 @@ export default {
         container.source = val.source;
         container.sourceId = val.sourceId;
 
-        // Only performs further computations where data
-        // is available
-        if (this.data[i].data.length !== 0) {
+        if (this.data[i].data?.length !== 0) {
           if (this.data[i].data.length === 1) {
-            // In this scenario there is no
-            // previous data to compare it to
             container.value = this.data[i].data[0].value;
             container.year = this.data[i].data[0].period;
             container.compare = false;
+            container.previousValue = null; // Set previousValue to null as there is no previous year
+            container.previousYear = null; // Set previousYear to null as there is no previous year
           } else {
             const fullYears = this.data[i].data.results.filter(
-              (value) => value.period.length === 4,
+              (value) => value.period.length === 4
             );
-            container.compare = true;
-            // Sort returned results by latest year
-            fullYears.sort((a, b) => b.period - a.period);
-            container.value = fullYears[0].value;
-            container.year = fullYears[0].period;
-            container.previousValue = fullYears[1]?.value || null;
-            container.previousYear = fullYears[1]?.period || null;
-            container.change = this.calcDiff(container);
+
+            if (fullYears.length > 0) {
+              // Sort returned results by latest year
+              fullYears.sort((a, b) => b.period - a.period);
+              container.value = fullYears[0]?.value;
+              container.year = fullYears[0]?.period;
+              container.previousValue = fullYears[1]?.value || null;
+              container.previousYear = fullYears[1]?.period || null;
+              container.compare = true;
+            } else {
+              container.value = 0;
+              container.year = 'N/a';
+              container.previousValue = null; // Set previousValue to null as there is no previous year
+              container.previousYear = null; // Set previousYear to null as there is no previous year
+              container.compare = false; // Set compare to false as there is no previous year
+            }
           }
         } else {
           container.value = 0;
           container.year = 'N/a';
-          container.previousValue = ' ';
-          container.change = ' ';
+          container.previousValue = null; // Set previousValue to null as there is no previous year
+          container.previousYear = null; // Set previousYear to null as there is no previous year
+          container.compare = false; // Set compare to false as there is no previous year
         }
+
+        // Calculate the change if data is available for comparison
+        if (container.compare) {
+          container.change = this.calcDiff(container);
+        } else {
+          container.change = null; // Set change to null when there is no previous year
+        }
+
         return container;
       });
     },
+
+
+
+
+
+
+
     /**
      * This function sets the land area and
      * coordinate values for each state. These values
@@ -427,24 +443,30 @@ export default {
 hr {
   border-top: 1px solid #cccccc;
 }
+
 .bi-info-circle-fill {
   cursor: pointer;
 }
+
 #srcModal {
   padding: 35px 25px;
 }
+
 .vl {
   border: 1px dashed rgba(197, 197, 197, 1);
   opacity: 1;
   height: 100%;
 }
+
 .compare {
   justify-content: flex-end;
   padding-top: 7px;
 }
+
 .source {
   color: #7c7c7c;
 }
+
 .value {
   color: #232323;
   font-size: 22.50005625px;
