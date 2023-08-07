@@ -102,7 +102,7 @@ export default {
         indicators,
         dataSources: sources,
         initial_location: 1,
-        default_indicators: [indicators[0]],
+        default_indictors: [indicators[0]],
         sections,
       };
       await this.SAVE_USER_DASHBOARD(payload);

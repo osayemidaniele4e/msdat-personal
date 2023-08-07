@@ -51,7 +51,7 @@ no-param-reassign */
           </b-row>
           <hr />
         </div>
-        <!-- <pre>{{ barChartOptions }}</pre> -->
+        <pre>{{ barChartOptions }}</pre>
         <BaseBar
           v-show="this.programArea.name != 'Health Services'"
           :chartOptions="barChartOptions"
@@ -617,6 +617,7 @@ export default {
     },
   },
   async mounted() {
+    console.log('programArea', this.programArea);
     const { theIndicators, theSources } = await requests.getIndicatorsAndSources();
     this.allDataSources = theSources.data;
     this.allIndicators = theIndicators.data;
@@ -631,7 +632,8 @@ export default {
           this.programArea.specificIndicators,
           selectedState.id,
         );
-        newNational.map((el) => this.nationalObjects.push(el.results[0]));
+        console.log('newNational', newNational);
+        newNational.map((el) => this.nationalObjects.push(el.results[1]));
         this.$emit('overviewLoading');
         this.justNationalData();
         this.getHealthFacilityData();
@@ -641,6 +643,7 @@ export default {
     } catch (err) {
       console.log(err);
     }
+    console.log('National objects', this.nationalObjects)
   },
 };
 </script>
