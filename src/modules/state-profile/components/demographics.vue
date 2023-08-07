@@ -43,7 +43,7 @@
           </b-row>
           <b-row class="compare">
             <b-col cols="auto" class="text-right" v-if="d.compare">
-              <b-icon  :icon="getChangeIcon(d)" :variant="d.pointer"></b-icon>
+              <b-icon :icon="getChangeIcon(d.pointer)" :variant="d.pointer"></b-icon>
             </b-col>
 
             <b-col v-if="d.compare" cols="auto">
@@ -129,8 +129,10 @@ export default {
     },
   },
   methods: {
-    getChangeIcon() {
-      if (this.pointer === 'success') {
+
+    getChangeIcon(d) {
+      // console.log("poiner" this.pointer)
+      if (d === 'success') {
         return 'caret-up-fill';
       }
       return 'caret-down-fill';
@@ -221,8 +223,8 @@ export default {
      * year and the closest year
      */
     calcDiff(val) {
-    // console.log('Value:', val.value);
-    // console.log('Previous Value:', val.previousValue);
+      // console.log('Value:', val.value);
+      // console.log('Previous Value:', val.previousValue);
 
       if (val.previousValue === null || val.previousValue === 0) {
         console.log('no previous data');
@@ -234,8 +236,8 @@ export default {
       const change = ((parseFloat(val.value) - parseFloat(val.previousValue)) / parseFloat(val.previousValue)) * 100;
       // console.log("Change:",change)
 
-      if (change > 0) val.pointer = 'success';
-      if (change <= 0) val.pointer = 'danger';
+      if (change > 0) { val.pointer = 'success'; }
+      if (change <= 0) { val.pointer = 'danger'; }
 
       return Number(change.toFixed(2)); // Return the absolute value of change rounded to 2 decimal places
     },
