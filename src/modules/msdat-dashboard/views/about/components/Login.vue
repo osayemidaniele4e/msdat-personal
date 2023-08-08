@@ -20,14 +20,16 @@
 
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
-          <!-- <button type="submit" class="btn btn-lg btn-primary px-3 py-2">
+          <button type="submit" class="btn btn-lg btn-primary px-3 py-2">
             <b-icon-facebook class="mr-2"></b-icon-facebook>
 
+            <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <button type="submit" class="btn btn-lg btn-primary px-3 py-2">
             <b-icon-linkedin class="mr-2"></b-icon-linkedin>
 
-          </button> -->
+            <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
+          </button>
         </div>
         <div class="row">
           <div class="col-12 mx-auto h-50px">
@@ -82,9 +84,9 @@ import { mapActions } from 'vuex';
 //   loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
 // } from '@/config/facebook';
 
-import axios from 'axios';
-import VueAuthenticate from 'vue-authenticate';
 import VueAxios from 'vue-axios';
+import VueAuthenticate from 'vue-authenticate';
+import axios from 'axios';
 
 Vue.use(VueAxios, axios);
 Vue.use(VueAuthenticate, {

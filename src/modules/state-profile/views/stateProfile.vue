@@ -161,8 +161,8 @@ export default {
         {
           name: 'Total Fertility Rate',
           indicatorId: 1,
-          source: 'NDHS',
-          sourceId: 2,
+          source: 'NHMIS-DHIS2',
+          sourceId: 6,
           year: 2018,
           value: 0,
           previousValue: 0,
