@@ -8,7 +8,7 @@ const localVue = createLocalVue();
 
 localVue.use(Vuex);
 
-describe('Getters.vue', () => {
+describe('DragableList.vue', () => {
   let getters;
   let store;
 
