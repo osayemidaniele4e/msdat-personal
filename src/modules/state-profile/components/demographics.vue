@@ -42,12 +42,12 @@
             </b-col>
           </b-row>
           <b-row class="compare">
-            <b-col cols="auto" class="text-right" v-if="d.compare">
+            <b-col cols="auto" class="text-right p-1" v-if="d.compare">
               <b-icon :icon="getChangeIcon(d.pointer)" :variant="d.pointer"></b-icon>
             </b-col>
 
-            <b-col v-if="d.compare" cols="auto">
-              <p style="font-size: 11.50002625px">
+            <b-col v-if="d.compare" cols="auto" class="p-2">
+              <p style="font-size: 12px">
                 <b class="pr-1">{{ Math.abs(d.change) }}%</b>
                 <b>
                   {{ d.pointer === 'success' ? 'increase' : 'decrease' }}
