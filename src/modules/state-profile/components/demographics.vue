@@ -46,7 +46,7 @@
               <b-icon :icon="getChangeIcon(d.pointer)" :variant="d.pointer"></b-icon>
             </b-col>
 
-            <b-col v-if="d.compare" cols="auto" class="p-2">
+            <b-col v-if="d.compare" cols="auto" class="py-2">
               <p style="font-size: 12px">
                 <b class="pr-1">{{ Math.abs(d.change) }}%</b>
                 <b>
