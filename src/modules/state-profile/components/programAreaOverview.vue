@@ -54,22 +54,22 @@ no-param-reassign */
         <BaseBar v-show="this.programArea.name != 'Health Services'" :chartOptions="barChartOptions" />
         <b-row style="color: #ffffff; font-size: 12px" class="pl-5 mt-4"
           v-show="this.programArea.name == 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH'">
-          <b-col class="px-auto" style="background-color: #054a80; border: 1px solid white; height: 40px">
-            <p class="mx-auto">Pre-pregnancy</p>
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #054a80; border: 1px solid white; height: 40px">
+            <p >Pre-pregnancy</p>
           </b-col>
-          <b-col style="background-color: #2c8cca; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #2c8cca; border: 1px solid white; height: 40px">
             <p>Pregnancy</p>
           </b-col>
-          <b-col style="background-color: #3f7299; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #3f7299; border: 1px solid white; height: 40px">
             <p>Birth</p>
           </b-col>
-          <b-col style="background-color: #43893b; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #43893b; border: 1px solid white; height: 40px">
             <p>Postnatal</p>
           </b-col>
-          <b-col style="background-color: #2c9f35; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #2c9f35; border: 1px solid white; height: 40px">
             <p>Infancy</p>
           </b-col>
-          <b-col style="background-color: #8fb438; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #8fb438; border: 1px solid white; height: 40px">
             <p>Childhood</p>
           </b-col>
         </b-row>
