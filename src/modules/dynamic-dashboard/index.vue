@@ -30,6 +30,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
+import defaultDiseaseSurveillanceData from './defaultDS.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -91,7 +92,9 @@ export default {
       Promise.resolve(false);
     },
     async saveDashboard(indicators, sources, dashboardTitle) {
-      const sections = this.fieldsArray.filter((item) => item.isShow === true).map((item) => item.name);
+      const sections = this.fieldsArray
+        .filter((item) => item.isShow === true)
+        .map((item) => item.name);
       const payload = {
         title: dashboardTitle,
         showTableRelatedIndicator: false,
@@ -110,8 +113,13 @@ export default {
   },
   async mounted() {
     this.clearData();
-    // this sets skilled attendance at birth indicator on mounted
-    this.SET_SELECTED_CONFIG(defaultData);
+    if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+      // this sets skilled attendance at birth indicator on mounted
+      this.SET_SELECTED_CONFIG(defaultData);
+    } else if (this.$route.params.name === 'Disease_Surveillance') {
+      // this sets covid 19 confirmed cases indicator on mounted
+      this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+    }
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
@@ -174,7 +182,11 @@ export default {
         initialDataSource: sourcesID[0],
         initialLocation: 1,
       };
-      this.saveDashboard(ids, sourcesID, this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name);
+      this.saveDashboard(
+        ids,
+        sourcesID,
+        this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name,
+      );
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
@@ -263,7 +275,6 @@ export default {
       }
     },
   },
-
 };
 </script>
 

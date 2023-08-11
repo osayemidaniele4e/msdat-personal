@@ -87,6 +87,7 @@ export default {
             entity: 'indicator',
           };
           this.SET_SELECTED_CONFIG(item);
+          console.log(JSON.stringify(item), '@@@@');
         } else if (
           typeof val === 'object'
           && val.id !== undefined
