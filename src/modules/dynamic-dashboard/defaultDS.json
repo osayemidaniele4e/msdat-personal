@@ -1,0 +1,25 @@
+{
+  "payload": {
+    "id": 499,
+    "full_name": "COVID-19 confirmed cases (cumulative)",
+    "short_name": "COVID-19 confirmed cases (cumulative)",
+    "desirable_slope": "Negative",
+    "indicator_type": "Outcome",
+    "program_area": "IDSR",
+    "national_target": null,
+    "national_source": "nan",
+    "national_information": "nan",
+    "sdg_target": null,
+    "sdg_information": "nan",
+    "created_at": "2022-11-08T15:55:11.946689Z",
+    "updated_at": "2022-11-16T15:34:54.309964Z",
+    "factor": 4,
+    "first_related": 500,
+    "second_related": 501,
+    "third_related": null,
+    "fourth_related": null,
+    "datasources": [31],
+    "group": []
+  },
+  "entity": "indicator"
+}
