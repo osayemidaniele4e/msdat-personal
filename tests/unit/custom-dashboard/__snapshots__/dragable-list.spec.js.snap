@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DragableList.vue renders correctly given the store data 1`] = `
+<div
+  class="
+    ml-auto mr-auto"
+  id="app"
+  style="background: rgb(206, 228, 233); opacity: 1; top: 314px; left: 1258px; width: 95%; height: 354px; margin-bottom: 15px; font-family: Work Sans;"
+>
+  <h4
+    style="padding: 29px 2px 14px 19px; font-size: 18px;"
+  >
+    
+      Arrange the position of your widgets
+    
+  </h4>
+   
+  <sortable-list-stub
+    handleclass="sortable-handle"
+    itemclass="sortable-item"
+    value="[object Object],[object Object],[object Object],[object Object],[object Object]"
+  />
+</div>
+`;
+
 exports[`Getters.vue renders correctly given the store data 1`] = `
 <div
   class="

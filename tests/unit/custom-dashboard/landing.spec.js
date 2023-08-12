@@ -7,19 +7,21 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('Landing.vue', () => {
-  let getters;
   let store;
 
-  beforeEach(() => {
-    getters = {
-      isAuthenticated: () => false,
-    };
+  const isAuthenticated = jest
+    .fn()
+    .mockImplementationOnce(() => false)
+    .mockReturnValueOnce(() => true);
 
+  beforeEach(() => {
     store = new Vuex.Store({
       namespaced: true,
       modules: {
         AUTH_STORE: {
-          getters,
+          getters: {
+            isAuthenticated,
+          },
         },
       },
     });
@@ -32,9 +34,15 @@ describe('Landing.vue', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('shows auth bar when user is unauthenticated', () => {
+  it('shows auth bar when user is not authenticated', () => {
     const wrapper = shallowMount(Landing, { localVue, store });
 
     expect(wrapper.findAll('.nav')).toHaveLength(1);
+  });
+
+  xit('hides auth bar when user is authenticated', () => {
+    const wrapper = shallowMount(Landing, { localVue, store });
+
+    expect(wrapper.findAll('.nav')).toHaveLength(0);
   });
 });

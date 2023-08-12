@@ -9,16 +9,18 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('DragableList.vue', () => {
-  let getters;
   let store;
 
   beforeEach(() => {
-    getters = {
-      arrangedSections: () => sections,
-    };
-
     store = new Vuex.Store({
-      getters,
+      namespaced: true,
+      modules: {
+        AUTH_STORE: {
+          getters: {
+            arrangedSections: () => sections,
+          },
+        },
+      },
     });
   });
 
