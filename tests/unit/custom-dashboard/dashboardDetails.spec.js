@@ -8,17 +8,17 @@
 // localVue.use(Vuex);
 
 // describe('DragableList.vue', () => {
-//   let getters;
 //   let store;
 
 //   beforeEach(() => {
-//     getters = {
-//       getUser: () => ({ username: 'test' }),
-//     };
-
 //     store = new Vuex.Store({
-//       namespaced: true,
-//       getters,
+//       modules: {
+//         AUTH_STORE: {
+//           getters: {
+//             getUser: () => ({ username: 'test' }),
+//           },
+//         },
+//       },
 //     });
 //   });
 
@@ -31,7 +31,7 @@
 //     const wrapper = mount(DashboardDetails, {
 //       store,
 //       localVue,
-//       global: { mock: { $store } },
+//       global: { mocks: { $store, user: { username: 'test' } } },
 //     });
 
 //     expect($store.commit).toHaveBeenCalled();
