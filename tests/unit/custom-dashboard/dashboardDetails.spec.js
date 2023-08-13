@@ -1,46 +1,64 @@
-// import { mount, createLocalVue } from '@vue/test-utils';
-// import Vuex from 'vuex';
+import { mount, createLocalVue } from '@vue/test-utils';
+import Vuex from 'vuex';
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
+import DashboardDetails from '@/modules/custom-dashboard/views/dashboardDetails.vue';
 
-// import DashboardDetails from '@/modules/custom-dashboard/views/dashboardDetails.vue';
+const localVue = createLocalVue();
 
-// const localVue = createLocalVue();
+localVue.use(Vuex);
+localVue.use(BootstrapVue);
+localVue.use(BootstrapVueIcons);
 
-// localVue.use(Vuex);
+describe('dashboardDetails.vue', () => {
+  let store;
+  const updateStep = jest.fn();
+  const resetState = jest.fn();
+  const dashboardConfiguration = jest.fn();
+  const allSelection = jest.fn();
+  const clearAllData = jest.fn();
 
-// describe('DragableList.vue', () => {
-//   let store;
+  beforeEach(() => {
+    store = new Vuex.Store({
+      mutations: { updateStep },
+      actions: {
+        resetState, dashboardConfiguration, allSelection, clearAllData,
+      },
+      modules: {
+        AUTH_STORE: {
+          namespaced: true,
+          getters: {
+            getUser: () => ({ username: 'test' }),
+          },
+        },
+      },
+    });
+  });
 
-//   beforeEach(() => {
-//     store = new Vuex.Store({
-//       modules: {
-//         AUTH_STORE: {
-//           getters: {
-//             getUser: () => ({ username: 'test' }),
-//           },
-//         },
-//       },
-//     });
-//   });
+  it('renders correctly', () => {
+    const wrapper = mount(DashboardDetails, { store, localVue });
 
-//   const $store = {
-//     commit: jest.fn(),
-//     dispatch: jest.fn(),
-//   };
+    expect(updateStep).toHaveBeenCalled();
+    expect(resetState).toHaveBeenCalled();
+    expect(wrapper.element).toMatchSnapshot();
+  });
 
-//   it('renders correctly', () => {
-//     const wrapper = mount(DashboardDetails, {
-//       store,
-//       localVue,
-//       global: { mocks: { $store, user: { username: 'test' } } },
-//     });
+  it('validates user data when form is submitted', async () => {
+    const wrapper = mount(DashboardDetails, { store, localVue });
 
-//     expect($store.commit).toHaveBeenCalled();
-//     expect($store.dispatch).toHaveBeenCalled();
-//     expect(localStorage.removeItem).toHaveBeenCalled();
+    expect(wrapper.vm.formIsValid).toEqual(true);
 
-//     expect($store.commit).toHaveBeenCalledWith('updateStep', 1);
-//     expect($store.dispatch).toHaveBeenCalledWith('resetState');
-//     expect(localStorage.removeItem).toHaveBeenCalledWith('vuex');
-//     expect(wrapper.element).toMatchSnapshot();
-//   });
-// });
+    await wrapper.find('form').trigger('submit');
+    expect(wrapper.vm.formIsValid).toEqual(false);
+  });
+
+  it('dispatches new configuration and emits `save-data` event on save user data', async () => {
+    const wrapper = mount(DashboardDetails, { store, localVue });
+
+    await wrapper.find('#d-Name').setValue('name');
+    await wrapper.find('#description').setValue('description');
+    await wrapper.find('form').trigger('submit');
+
+    expect(dashboardConfiguration).toHaveBeenCalled();
+    expect(wrapper.emitted()).toHaveProperty('save-data');
+  });
+});

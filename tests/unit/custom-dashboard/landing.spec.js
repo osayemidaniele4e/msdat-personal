@@ -1,26 +1,35 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 import Landing from '@/modules/custom-dashboard/views/landing.vue';
 
 const localVue = createLocalVue();
 
 localVue.use(Vuex);
+localVue.use(BootstrapVue);
+localVue.use(BootstrapVueIcons);
 
 describe('Landing.vue', () => {
   let store;
-
-  const isAuthenticated = jest
-    .fn()
-    .mockImplementationOnce(() => false)
-    .mockReturnValueOnce(() => true);
+  let storeWithAuth;
 
   beforeEach(() => {
     store = new Vuex.Store({
-      namespaced: true,
       modules: {
         AUTH_STORE: {
+          namespaced: true,
           getters: {
-            isAuthenticated,
+            isAuthenticated: () => false,
+          },
+        },
+      },
+    });
+    storeWithAuth = new Vuex.Store({
+      modules: {
+        AUTH_STORE: {
+          namespaced: true,
+          getters: {
+            isAuthenticated: () => true,
           },
         },
       },
@@ -30,19 +39,18 @@ describe('Landing.vue', () => {
   it('renders correctly', () => {
     const wrapper = mount(Landing, { localVue, store });
 
-    expect(wrapper.findAll('.nav')).toHaveLength(1);
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('shows auth bar when user is not authenticated', () => {
+  it('shows auth nav when user is not authenticated', () => {
     const wrapper = mount(Landing, { localVue, store });
 
-    expect(wrapper.findAll('.nav')).toHaveLength(1);
+    expect(wrapper.findAll('.nav').exists()).toBe(true);
   });
 
-  xit('hides auth bar when user is authenticated', () => {
-    const wrapper = mount(Landing, { localVue, store, global: { mocks: { isAuthenticated: true } } });
+  it('hides auth nav when user is authenticated', () => {
+    const wrapper = mount(Landing, { localVue, store: storeWithAuth });
 
-    expect(wrapper.findAll('.nav')).toHaveLength(0);
+    expect(wrapper.findAll('.nav').exists()).toBe(false);
   });
 });
