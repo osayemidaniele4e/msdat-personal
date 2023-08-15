@@ -51,15 +51,18 @@
     <div ref="printMe" id="printMe">
       <b-row class="mt-4">
         <b-col cols="auto">
+          <h1>
+            Health Profile
+          </h1>
           <div>
             <b-dropdown variant="text" dropright toggle-class="text-decoration-none p-0 m-0 display-block state-select"
               no-caret>
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
-                    <h1>
-                      {{ state }}
-                    </h1>
+                    <h3>
+                      {{ state }} {{ `${state === 'National' ? '' : 'State'}` }}
+                    </h3>
                   </b-col>
                   <b-col>
                     <b-icon style="font-size: 20px; color: #232323" icon="chevron-down"></b-icon>
@@ -72,9 +75,9 @@
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
-                    <h1>
-                      {{ state }}
-                    </h1>
+                    <h3>
+                      {{ state }} {{ `${state === 'National' ? '' : 'State'}` }}
+                    </h3>
                   </b-col>
                   <b-col>
                     <b-icon style="font-size: 10px; color: #232323" icon="chevron-down"></b-icon>
@@ -84,19 +87,16 @@
             </b-dropdown>
 
           </div>
-          <h3 style="font-size: 30px">
-            {{ `${state === 'National' ? '' : 'State'}` }} Health Profile
-          </h3>
         </b-col>
         <b-col cols="12" class="my-auto">
-          <b-row align-h="end" class="mx-auto">
+          <b-row align-h="end" class="mx-auto align-items-center">
             <p class="mr-3">Last Updated: {{ this.regularDateFormat }}</p>
-            <b-button class="mr-4 share-button" @click="toggleShareModal">
-              <img class="img-fluid" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
+            <b-button class="mr-4 share-button d-flex align-items-center" @click="toggleShareModal">
+              <img class="img-fluid pr-2" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
               Share
             </b-button>
-            <b-button class="print-button" @click="printing">
-              <img class="img-fluid" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
+            <b-button class="print-button d-flex align-items-center" @click="printing">
+              <img class="img-fluid pr-2" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
               Print Profile
             </b-button>
           </b-row>

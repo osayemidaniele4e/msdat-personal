@@ -10,7 +10,7 @@ no-param-reassign */
       </h2>
     </b-row>
     <b-row class="mb-5">
-      <b-col cols="">
+      <b-col cols="" class="h-auto d-flex flex-column">
         <p class="mb-4">
           {{ programArea.detail }}
         </p>
@@ -20,11 +20,11 @@ no-param-reassign */
           </b>
         </p>
         <p class="mb-4 sources">Sources: {{ this.programArea.sources }}</p>
-        <b-button @click="toggleDefinition" v-show="!isDefinitionVisible" class="toggle">
+        <b-button @click="toggleDefinition" v-show="!isDefinitionVisible" class="toggle mt-auto">
           Show indicator definitions
           <b-icon icon="caret-down-fill"></b-icon>
         </b-button>
-        <b-button @click="toggleDefinition" v-show="isDefinitionVisible" class="toggle">
+        <b-button @click="toggleDefinition" v-show="isDefinitionVisible" class="toggle mt-auto">
           Hide indicator definitions
           <b-icon icon="caret-up-fill"></b-icon>
         </b-button>
