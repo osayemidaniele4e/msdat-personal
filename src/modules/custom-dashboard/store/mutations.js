@@ -355,6 +355,10 @@ export default {
     // state.loader.show = payload;
     showLoaderTrue(state.loader);
   },
+
+  setVisibility(state, payload) {
+    state.visibility = payload;
+  },
   // setshowLoader(state) {
   //   const loader = state.loader;
   //   if (loader.levels === true || loader.indicator === true || loader.datasource === true || loader.years === true) {

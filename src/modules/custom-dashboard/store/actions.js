@@ -330,4 +330,9 @@ export default {
     // console.log('actions', payload);
     commit('selectAll', payload.allselected);
   },
+
+
+  setVisibility({ commit }, payload) {
+    commit('setVisibility', payload);
+  },
 };

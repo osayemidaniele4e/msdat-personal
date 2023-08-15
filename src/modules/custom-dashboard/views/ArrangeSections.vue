@@ -50,9 +50,21 @@
         <button v-b-modal.modal-visibility>Choose visibility</button>
 
 
-<b-modal id="modal-visibility" title="BootstrapVue">
-  <b-button v-b-toggle.collapse-1 variant="primary">Toggle Collapse</b-button>
-  <b-collapse id="collapse-1" class="mt-2">
+<b-modal id="modal-visibility" title="BootstrapVue" size="lg">
+  <b-button v-b-toggle.collapse-private variant="primary">Create a private dashboard</b-button>
+  <b-collapse id="collapse-private" class="mt-2">
+    <b-button
+            @click="approveData"
+            class="nextBtn"
+            style="font-family: Work Sans"
+            >COMPLETE</b-button
+          >
+
+
+  </b-collapse>
+
+  <b-button v-b-toggle.collapse-public variant="primary">Create a public dashboard</b-button>
+  <b-collapse id="collapse-public" class="mt-2">
     <b-card>
       <p class="card-text">Collapse contents Here</p>
       <b-button v-b-toggle.collapse-1-inner size="sm">Toggle Inner Collapse</b-button>
@@ -61,6 +73,14 @@
       </b-collapse>
     </b-card>
   </b-collapse>
+
+  <button @click="changeVisibility('private')">
+    change to private
+  </button>
+  
+  <button @click="changeVisibility('public')">
+    change to public
+  </button>
 </b-modal>
         </div>
       </b-col>
@@ -143,6 +163,15 @@ export default {
     },
   },
   methods: {
+    changeVisibility(status){
+      if(status === 'private'){
+        this.$store.dispatch('setVisibility', 'private');
+      }
+
+      if(status === 'public'){
+        this.$store.dispatch('setVisibility', 'public');
+      }
+    },
     // Below function is excuted when approve data button is clicked
     approveData() {
       if (!this.dashboardDetails.name) {
