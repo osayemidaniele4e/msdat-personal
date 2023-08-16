@@ -1,5 +1,5 @@
-import DataBase from './../../../src/modules/data-layer/services/database.worker'; // Import the DataBase class
-import dexie from "./../../../src/modules/data-layer/config/dexie"; // Import dexie or mock it if needed
+import DataBase from '../../../src/modules/data-layer/services/database.worker'; // Import the DataBase class
+import dexie from '../../../src/modules/data-layer/config/dexie'; // Import dexie or mock it if needed
 
 describe('DataBase Initialization', () => {
   let database;
@@ -36,5 +36,4 @@ describe('DataBase Initialization', () => {
   it('should initialize the location property correctly', () => {
     expect(database.location).toBeDefined();
   });
-
 });
