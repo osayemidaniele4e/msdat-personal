@@ -13,9 +13,7 @@
       >
         {{ '' }}
       </label>
-      <label class="text-uppercase work-sans label-text" v-else>
-        {{ values.label }}
-      </label>
+      <label class="text-uppercase work-sans label-text" v-else> {{ values.label }} </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -34,10 +32,11 @@
         :id="label"
         :value="payload[values.key]"
         @input="updatePayload($event, values.key)"
-        :options="values.options"
+        :options="locationCheck(values.options)"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       />
+      <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
       <div>
@@ -251,6 +250,29 @@ export default {
      * checks if the key is datasource then create a new array of datasource id
      * checks if the array has NHMIS-DHIS2 with id of 6
      */
+
+    showItem(item) {
+      if (item !== null && item.length === 38) {
+        console.log(item, 'UUU');
+        const main = item.filter((s) => s.name === 'Nigeria');
+        console.log(this.$route.params.name, 'Nigeria');
+        console.log(main, 'Nigeria');
+      }
+    },
+
+    locationCheck(options) {
+      console.log(options, 'options');
+      if (
+        this.$route.params.name === 'Disease_Surveillance'
+        && options !== null
+        && options.length === 38
+      ) {
+        const main = options.filter((s) => s.name === 'Nigeria');
+        console.log(main, 'Nigeria');
+        return options.filter((s) => s.name === 'Nigeria');
+      }
+      return options;
+    },
     checkNHMISDHIS2() {
       this.setup.forEach((item) => {
         if (item.key === 'datasource') {

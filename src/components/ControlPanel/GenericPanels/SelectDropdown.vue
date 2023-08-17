@@ -80,6 +80,7 @@ export default {
         return this.value;
       },
       set(val) {
+        console.log(val, '@@@');
         if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
           this.selectedOption = val;
           const item = {
@@ -87,7 +88,7 @@ export default {
             entity: 'indicator',
           };
           this.SET_SELECTED_CONFIG(item);
-          console.log(JSON.stringify(item), '@@@@');
+          // console.log(JSON.stringify(item), '@@@@');
         } else if (
           typeof val === 'object'
           && val.id !== undefined
@@ -109,6 +110,7 @@ export default {
             payload: val,
             entity: 'period',
           };
+
           this.SET_SELECTED_CONFIG(item);
         }
         this.$emit('input', val);
