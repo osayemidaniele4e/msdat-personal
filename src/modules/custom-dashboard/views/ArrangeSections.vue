@@ -53,6 +53,7 @@
 <b-modal id="modal-visibility" title="BootstrapVue" size="lg">
   <b-button v-b-toggle.collapse-private variant="primary">Create a private dashboard</b-button>
   <b-collapse id="collapse-private" class="mt-2">
+    <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel, nisi? </div>
     <b-button
             @click="approveData"
             class="nextBtn"
@@ -66,11 +67,14 @@
   <b-button v-b-toggle.collapse-public variant="primary">Create a public dashboard</b-button>
   <b-collapse id="collapse-public" class="mt-2">
     <b-card>
-      <p class="card-text">Collapse contents Here</p>
-      <b-button v-b-toggle.collapse-1-inner size="sm">Toggle Inner Collapse</b-button>
-      <b-collapse id="collapse-1-inner" class="mt-2">
-        <b-card>Hello!</b-card>
-      </b-collapse>
+      <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel, nisi? </div>
+      <b-form-input v-model="public_creator.name" placeholder="Full name"></b-form-input>
+      <br>
+      <b-form-input v-model="public_creator.email" placeholder="Email address"></b-form-input>
+      <br>
+      <b-form-input v-model="public_creator.organization" placeholder="Organisation"></b-form-input>
+      <br>
+      <b-form-input v-model="public_creator.reason" placeholder="Reason"></b-form-input>
     </b-card>
   </b-collapse>
 
@@ -150,6 +154,13 @@ export default {
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
       ],
+      public_creator: {
+        name: "",
+        email: "",
+        organization: "",
+        reasons: "",
+        dashboard_name: "",
+      }
     };
   },
   mounted() {
@@ -172,7 +183,18 @@ export default {
         this.$store.dispatch('setVisibility', 'public');
       }
     },
+
+    async createPublicDashboard(){
+      // send the request to create a public daashboard
+      
+      // change the visibility
+      await this.changeVisibility('public')
+      // create the dashboard using the approveData() function
+      await this.approveData();
+    },
+
     // Below function is excuted when approve data button is clicked
+
     approveData() {
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
