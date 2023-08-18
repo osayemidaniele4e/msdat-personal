@@ -10,7 +10,7 @@ no-param-reassign */
       </h2>
     </b-row>
     <b-row class="mb-5">
-      <b-col cols="">
+      <b-col cols="" class="h-auto d-flex flex-column">
         <p class="mb-4">
           {{ programArea.detail }}
         </p>
@@ -20,11 +20,11 @@ no-param-reassign */
           </b>
         </p>
         <p class="mb-4 sources">Sources: {{ this.programArea.sources }}</p>
-        <b-button @click="toggleDefinition" v-show="!isDefinitionVisible" class="toggle">
+        <b-button @click="toggleDefinition" v-show="!isDefinitionVisible" class="toggle mt-auto">
           Show indicator definitions
           <b-icon icon="caret-down-fill"></b-icon>
         </b-button>
-        <b-button @click="toggleDefinition" v-show="isDefinitionVisible" class="toggle">
+        <b-button @click="toggleDefinition" v-show="isDefinitionVisible" class="toggle mt-auto">
           Hide indicator definitions
           <b-icon icon="caret-up-fill"></b-icon>
         </b-button>
@@ -54,22 +54,22 @@ no-param-reassign */
         <BaseBar v-show="this.programArea.name != 'Health Services'" :chartOptions="barChartOptions" />
         <b-row style="color: #ffffff; font-size: 12px" class="pl-5 mt-4"
           v-show="this.programArea.name == 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH'">
-          <b-col class="px-auto" style="background-color: #054a80; border: 1px solid white; height: 40px">
-            <p class="mx-auto">Pre-pregnancy</p>
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #054a80; border: 1px solid white; height: 40px">
+            <p >Pre-pregnancy</p>
           </b-col>
-          <b-col style="background-color: #2c8cca; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #2c8cca; border: 1px solid white; height: 40px">
             <p>Pregnancy</p>
           </b-col>
-          <b-col style="background-color: #3f7299; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #3f7299; border: 1px solid white; height: 40px">
             <p>Birth</p>
           </b-col>
-          <b-col style="background-color: #43893b; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #43893b; border: 1px solid white; height: 40px">
             <p>Postnatal</p>
           </b-col>
-          <b-col style="background-color: #2c9f35; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #2c9f35; border: 1px solid white; height: 40px">
             <p>Infancy</p>
           </b-col>
-          <b-col style="background-color: #8fb438; border: 1px solid white; height: 40px">
+          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #8fb438; border: 1px solid white; height: 40px">
             <p>Childhood</p>
           </b-col>
         </b-row>

@@ -1,0 +1,25 @@
+{
+  "payload": {
+    "id": 62,
+    "full_name": "Total population",
+    "short_name": "Total population",
+    "desirable_slope": "Negative",
+    "indicator_type": "Impact",
+    "program_area": "Population and Vital Statistics",
+    "national_target": null,
+    "national_source": "Not available",
+    "national_information": "Not available",
+    "sdg_target": "",
+    "sdg_information": "Not available",
+    "created_at": "2022-10-20T08:42:09.652914Z",
+    "updated_at": "2023-05-02T14:11:56.783723Z",
+    "factor": 4,
+    "first_related": 63,
+    "second_related": null,
+    "third_related": null,
+    "fourth_related": null,
+    "datasources": [6, 7, 8, 18, 19, 25, 27, 28],
+    "group": []
+  },
+  "entity": "indicator"
+}
