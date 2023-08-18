@@ -146,7 +146,6 @@ export default {
   watch: {
     options: {
       async handler(newValue) {
-        console.log('newVlaue', newValue);
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {

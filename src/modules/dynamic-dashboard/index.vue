@@ -245,6 +245,7 @@ export default {
           defaultIndicators: dashboard.defaultIndicators,
           dataSources: dashboard.dataSources,
           initialIndicator: dashboard.initialIndicator,
+          sections: dashboard.sections,
           initialDataSource: dashboard.initialDataSource,
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
