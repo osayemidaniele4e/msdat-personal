@@ -152,6 +152,7 @@ import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
 import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
+import StaticConfig from '../../components/sections/dynamic-section/config/dashboard_config';
 import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
 import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
 import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
@@ -219,6 +220,26 @@ export default {
         // Request for animation
         window.requestAnimationFrame(this.scroll);
       }
+    },
+
+    setAllSections(configs) {
+      for (let i = 0; i < configs.length; i++) {
+        const config = configs[i];
+        this.ADD_CONTROL_PANEL(config);
+      }
+      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    },
+    filterSectionArray(configs, activeSections) {
+      const arrayCopyModified = this.fieldsArray.map((el) => ({
+        isShow: activeSections.includes(el.name),
+        ...el,
+      }));
+
+      arrayCopyModified.forEach((item, i) => {
+        if (item.isShow) {
+          this.ADD_CONTROL_PANEL(configs[i]);
+        }
+      });
     },
 
     changeSwipe(cord) {
@@ -294,6 +315,28 @@ export default {
         this.ADD_CONTROL_PANEL(config);
       }
       this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    }
+
+    // Updated flow
+    const { name: queryParameter } = this.$route.params;
+    if (this.customDashboard) {
+      this.fieldsArray.forEach((field, i) => {
+        if (field.isShow) {
+          this.ADD_CONTROL_PANEL(configs[i]);
+        }
+      });
+    } else if (queryParameter) {
+      const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
+      if (preexistingDashboard) {
+        this.setAllSections(configs);
+      } else {
+        const retrievedSections = this.getConfigObject()?.sections;
+        if (retrievedSections && retrievedSections.length > 0) {
+          this.filterSectionArray(configs, retrievedSections);
+        } else {
+          this.setAllSections(configs);
+        }
+      }
     }
   },
 
