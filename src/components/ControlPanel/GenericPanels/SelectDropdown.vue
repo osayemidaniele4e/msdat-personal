@@ -94,8 +94,6 @@ export default {
           && val.id !== undefined
           && val.methodology !== undefined
         ) {
-          // console.log(val, 'val');
-
           const item = {
             payload: val,
             entity: 'dataSource',
@@ -112,6 +110,7 @@ export default {
           };
 
           this.SET_SELECTED_CONFIG(item);
+          console.log(JSON.stringify(item), '@@@@');
         }
         this.$emit('input', val);
       },
@@ -148,7 +147,6 @@ export default {
   watch: {
     options: {
       async handler(newValue) {
-        console.log('newVlaue', newValue);
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
@@ -161,12 +159,14 @@ export default {
                 const newArr = this.options.filter(
                   (year) => parseInt(year, 10) < new Date().getFullYear() + 1,
                 );
+
                 this.selected = newArr[0];
               } else {
                 this.selected = '';
                 this.selected = await this.options[0];
               }
               this.UPDATE_ALL_YEARS(this.options);
+              this.UPDATE_MULTI_YEARS(this.options);
             } else {
               const { name } = this.$route.params;
               if (name === 'Demographics') {
@@ -176,6 +176,7 @@ export default {
                 const newArr = this.newValue.filter(
                   (item) => parseInt(item, 10) < new Date().getFullYear() + 1,
                 );
+
                 this.selected = newArr[0] || year.toString();
                 this.UPDATE_ALL_YEARS(newValue || year.toString());
               } else {
@@ -221,6 +222,7 @@ export default {
       'SET_SELECTED_CONFIG',
       'UPDATE_ALL_DATASOURCES',
       'UPDATE_ALL_YEARS',
+      'UPDATE_MULTI_YEARS',
     ]),
 
     modifyDataSourceChildLabel(tag) {

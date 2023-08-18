@@ -252,12 +252,15 @@ export default {
      */
 
     showItem(item) {
-      if (item !== null && item.length === 38) {
-        console.log(item, 'UUU');
-        const main = item.filter((s) => s.name === 'Nigeria');
-        console.log(this.$route.params.name, 'Nigeria');
-        console.log(main, 'Nigeria');
+      if (item !== null && item.length === 2) {
+        console.log(JSON.stringify(item), 'item');
       }
+      // if (item !== null && item.length === 38) {
+      //   console.log(item, 'UUU');
+      //   const main = item.filter((s) => s.name === 'Nigeria');
+      //   console.log(this.$route.params.name, 'Nigeria');
+      //   console.log(main, 'Nigeria');
+      // }
     },
 
     locationCheck(options) {

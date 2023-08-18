@@ -9,7 +9,9 @@
       <slot name="top-section"></slot>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -32,7 +34,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12" style="margin-bottom: 4rem">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -52,7 +56,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'">
           <template #title>
@@ -71,7 +77,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -88,7 +96,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -110,7 +120,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -247,7 +259,9 @@ export default {
       this.resetData++;
     },
     setIndex(propertyName) {
-      return this.$store.state.MSDAT_STORE.controlConfig.findIndex((obj) => obj.label === propertyName);
+      return this.$store.state.MSDAT_STORE.controlConfig.findIndex(
+        (obj) => obj.label === propertyName,
+      );
     },
   },
   async created() {
