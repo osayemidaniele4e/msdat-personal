@@ -1,32 +1,24 @@
 <template>
   <div>
-    <MSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
-    />
-    <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
-      :indicators="configObject.indicators"
-      :dataSources="configObject.dataSources"
-      :defaultIndicators="configObject.defaultIndicators"
-      :initialIndicator="configObject.initialIndicator"
-      :initialDataSource="configObject.initialDataSource"
-      :initialLocation="configObject.initialLocation"
-      :showTableRelatedIndicator="
-        configObject.showTableRelatedIndicator != undefined
-          ? configObject.showTableRelatedIndicator
-          : true
-      "
-    />
+    <MSDAT v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false" />
+    <AdvanceMSDAT v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
+      :indicators="configObject.indicators" :dataSources="configObject.dataSources"
+      :defaultIndicators="configObject.defaultIndicators" :initialIndicator="configObject.initialIndicator"
+      :initialDataSource="configObject.initialDataSource" :initialLocation="configObject.initialLocation"
+      :showTableRelatedIndicator="configObject.showTableRelatedIndicator != undefined
+        ? configObject.showTableRelatedIndicator
+        : true
+        " />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
   </div>
 </template>
 <script>
-import apiServices from '@/modules/data-layer/services/ApiServices';
-import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
-import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import moment from 'moment';
 import VueCookies from 'vue-cookies';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import apiServices from '@/modules/data-layer/services/ApiServices';
+import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
+import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
@@ -77,8 +69,12 @@ export default {
       localStorage.removeItem('lastUpdateDate'); // previous clear cache variable
       const clearedDate = localStorage.getItem('lastUpdatedDate');
       if (clearedDate === null) {
-        await this.$store.dispatch('DL/CLEAR_DB'); // first clear is BY-FORCE, in order to set the date variable for subsequent comparisons
-        return;
+        console.warn('Data not available for clearing');
+        try {
+          await this.$store.dispatch('DL/CLEAR_DB'); // first clear is BY-FORCE, in order to set the date variable for subsequent comparisons
+        } catch (error) {
+          console.log('an error occured in dispatching clearDb:', error);
+        }
       }
       if (data.results[0].updated_at) {
         const lastDateMoment = moment(data.results[0].updated_at);
@@ -89,7 +85,7 @@ export default {
           this.showClearDataModal = true; // subsequent clear is by users choice, update localstorage lastUpdatedDate variable
         }
       }
-      Promise.resolve(false);
+      return Promise.resolve(false);
     },
     async saveDashboard(indicators, sources, dashboardTitle) {
       const sections = this.fieldsArray
@@ -284,6 +280,7 @@ main.main_field {
   min-height: 45vh;
   width: 100%;
 }
+
 iframe {
   body {
     display: flex;
@@ -292,6 +289,7 @@ iframe {
     font-size: 14px !important;
   }
 }
+
 .iframe_container {
   max-height: 450px;
   overflow-y: auto;
