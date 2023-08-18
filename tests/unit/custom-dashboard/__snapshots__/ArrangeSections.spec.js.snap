@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArrangeSections.vue renders correctly and updates store 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="row"
+  >
+    <h2
+      class="ml-3"
+      style="color: rgb(32, 32, 32); font-family: Work Sans; font-size: 25px; margin-top: -24px;"
+    >
+      
+      Select your sections and arrange your widgets
+    
+    </h2>
+     
+    <br />
+     
+    <div
+      class="col-sm-12 col-md-8"
+    >
+      <div>
+        <div>
+          <input
+            id="dashboard"
+            name="dashboard"
+            type="checkbox"
+          />
+           
+          <label
+            class="fields"
+            for="dashboard"
+          >
+            Indicator Overview
+          </label>
+        </div>
+         
+        <p
+          style="width: 100%; font-family: Work Sans; font-size: 14px;"
+        >
+          
+          This section shows an overview of your dashboard. This is a brief
+          description...
+        
+        </p>
+         
+        <img
+          class="layout"
+          src="/img/dashboardPreviewImages/Dashboard.PNG"
+        />
+      </div>
+      <div>
+        <div>
+          <input
+            id="dashboard"
+            name="dashboard"
+            type="checkbox"
+          />
+           
+          <label
+            class="fields"
+            for="dashboard"
+          >
+            Zonal analysis
+          </label>
+        </div>
+         
+        <p
+          style="width: 100%; font-family: Work Sans; font-size: 14px;"
+        >
+          
+          This section shows an overview of your dashboard. This is a brief
+          description...
+        
+        </p>
+         
+        <img
+          class="layout"
+          src="/img/dashboardPreviewImages/ZonalAnalysis.PNG"
+        />
+      </div>
+      <div>
+        <div>
+          <input
+            id="dashboard"
+            name="dashboard"
+            type="checkbox"
+          />
+           
+          <label
+            class="fields"
+            for="dashboard"
+          >
+            Indicator Comparison
+          </label>
+        </div>
+         
+        <p
+          style="width: 100%; font-family: Work Sans; font-size: 14px;"
+        >
+          
+          This section shows an overview of your dashboard. This is a brief
+          description...
+        
+        </p>
+         
+        <img
+          class="layout"
+          src="/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG"
+        />
+      </div>
+      <div>
+        <div>
+          <input
+            id="dashboard"
+            name="dashboard"
+            type="checkbox"
+          />
+           
+          <label
+            class="fields"
+            for="dashboard"
+          >
+            Dataset Comparison
+          </label>
+        </div>
+         
+        <p
+          style="width: 100%; font-family: Work Sans; font-size: 14px;"
+        >
+          
+          This section shows an overview of your dashboard. This is a brief
+          description...
+        
+        </p>
+         
+        <img
+          class="layout"
+          src="/img/dashboardPreviewImages/DataSetComparison.PNG"
+        />
+      </div>
+      <div>
+        <div>
+          <input
+            id="dashboard"
+            name="dashboard"
+            type="checkbox"
+          />
+           
+          <label
+            class="fields"
+            for="dashboard"
+          >
+            Multi-source Comparison
+          </label>
+        </div>
+         
+        <p
+          style="width: 100%; font-family: Work Sans; font-size: 14px;"
+        >
+          
+          This section shows an overview of your dashboard. This is a brief
+          description...
+        
+        </p>
+         
+        <img
+          class="layout"
+          src="/img/dashboardPreviewImages/MultiSourceComparison.PNG"
+        />
+      </div>
+    </div>
+     
+    <div
+      class="col-sm-12 col-md-12 col-lg-12"
+    >
+      <div
+        class="d-flex mb-5"
+      >
+        <div
+          class="col-auto"
+        >
+          <button
+            class="btn nextBtn btn-secondary"
+            style="font-family: Work Sans;"
+            type="button"
+          >
+            COMPLETE
+          </button>
+        </div>
+      </div>
+    </div>
+     
+    <br />
+  </div>
+</div>
+`;

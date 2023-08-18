@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataTable.vue renders properly 1`] = `
+<div
+  class="container-fluid"
+  style="width: 85%;"
+>
+  <div
+    class="d-flex align-items-center justify-content-between"
+  >
+    <div>
+      <h2
+        style="background-color: rgb(245, 245, 245); width: 45%; font-family: Work Sans; font-size: 23px; font-weight: bold; margin-left: 30px;"
+      >
+        <span
+          class="col-6"
+        >
+          
+            name
+          
+        </span>
+      </h2>
+       
+      <div
+        style="background-color: rgb(245, 245, 245); width: 70%; font-family: Work Sans; font-size: 14px; margin-left: 30px; margin-bottom: 10px;"
+      >
+        <p
+          class="col-12"
+        >
+          
+            description
+          
+        </p>
+      </div>
+    </div>
+  </div>
+   
+  <datatable-stub />
+   
+  <div
+    class="row mt-5 mb-5 mr-2 text-right justify-content-end"
+  >
+    <div
+      class="col-auto"
+    >
+      <button
+        class="btn editBtn btn-secondary"
+        style="font-family: Work Sans;"
+        type="button"
+      >
+        Edit Data Table
+      </button>
+    </div>
+     
+    <div
+      class="col-auto"
+    >
+      <button
+        class="btn nextBtn btn-secondary"
+        style="font-family: Work Sans;"
+        type="button"
+      >
+        Next Page
+      </button>
+    </div>
+  </div>
+</div>
+`;
