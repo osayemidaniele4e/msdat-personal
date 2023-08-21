@@ -80,6 +80,7 @@ export default {
         return this.value;
       },
       set(val) {
+        console.log(val, '@@@');
         if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
           this.selectedOption = val;
           const item = {
@@ -87,14 +88,12 @@ export default {
             entity: 'indicator',
           };
           this.SET_SELECTED_CONFIG(item);
-          console.log(JSON.stringify(item), '@@@@');
+          // console.log(JSON.stringify(item), '@@@@');
         } else if (
           typeof val === 'object'
           && val.id !== undefined
           && val.methodology !== undefined
         ) {
-          // console.log(val, 'val');
-
           const item = {
             payload: val,
             entity: 'dataSource',
@@ -109,7 +108,9 @@ export default {
             payload: val,
             entity: 'period',
           };
+
           this.SET_SELECTED_CONFIG(item);
+          console.log(JSON.stringify(item), '@@@@');
         }
         this.$emit('input', val);
       },
@@ -158,12 +159,14 @@ export default {
                 const newArr = this.options.filter(
                   (year) => parseInt(year, 10) < new Date().getFullYear() + 1,
                 );
+
                 this.selected = newArr[0];
               } else {
                 this.selected = '';
                 this.selected = await this.options[0];
               }
               this.UPDATE_ALL_YEARS(this.options);
+              this.UPDATE_MULTI_YEARS(this.options);
             } else {
               const { name } = this.$route.params;
               if (name === 'Demographics') {
@@ -173,6 +176,7 @@ export default {
                 const newArr = this.newValue.filter(
                   (item) => parseInt(item, 10) < new Date().getFullYear() + 1,
                 );
+
                 this.selected = newArr[0] || year.toString();
                 this.UPDATE_ALL_YEARS(newValue || year.toString());
               } else {
@@ -218,6 +222,7 @@ export default {
       'SET_SELECTED_CONFIG',
       'UPDATE_ALL_DATASOURCES',
       'UPDATE_ALL_YEARS',
+      'UPDATE_MULTI_YEARS',
     ]),
 
     modifyDataSourceChildLabel(tag) {

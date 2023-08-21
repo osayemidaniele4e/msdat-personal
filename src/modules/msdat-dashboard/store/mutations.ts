@@ -100,6 +100,11 @@ const mutations: MutationTree<State> = {
       state.controlConfig[4].payload.forEach((item) => (item.datasource = obj.value));
     }
   },
+  SET_MULTI_YEAR_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[4].payload !== null) {
+      state.controlConfig[4].payload.forEach((item) => (item.year = obj.value));
+    }
+  },
 
   /**
    * This function is used to add configuration to the control panel
@@ -176,6 +181,21 @@ const mutations: MutationTree<State> = {
           if (source.key === 'year') {
             source.options = payload;
           }
+        });
+      }
+    });
+  },
+  UPDATE_MULTI_YEARS: (state, payload) => {
+    //console.log(payload, 'Henry');
+
+    state.controlConfig.forEach((item) => {
+      if (item.label === 'Multi-Source comparison') {
+        item.setup.forEach((source) => {
+          source.forEach((item) => {
+            if (item.key === 'year') {
+              item.options = payload;
+            }
+          });
         });
       }
     });

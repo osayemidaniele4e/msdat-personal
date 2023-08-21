@@ -7,21 +7,21 @@
         <multiselect
           v-model="payload.indicator"
           :options="indicatorOptions"
-           track-by="id"
-           label="short_name"
+          track-by="id"
+          label="short_name"
           :searchable="false"
           :close-on-select="true"
           :show-labels="false"
           :preselect-first="true"
-           group-values="indicators"
-           group-label="program_area"
+          group-values="indicators"
+          group-label="program_area"
         ></multiselect>
       </div>
     </div>
 
     <!-- Data sources here -->
     <div class="col-md-5">
-    <label class="h6 text-uppercase work-sans">data sources</label>
+      <label class="h6 text-uppercase work-sans">data sources</label>
       <div>
         <multiselect
           v-model="payload.datasource"
@@ -53,7 +53,7 @@
 
         <!-- SDG Target here -->
         <div class="d-flex ml-3">
-          <BaseCheckbox  @input="payload.target.sdg = $event" />
+          <BaseCheckbox @input="payload.target.sdg = $event" />
           <p class="check-label ml-1">SDG</p>
         </div>
       </div>
@@ -73,6 +73,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

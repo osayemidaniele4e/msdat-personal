@@ -23,6 +23,7 @@ import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
+import defaultDSyear from './defaultDSYear.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -57,7 +58,7 @@ export default {
       'SET_CONFIGURATIONS',
       'SET_SELECTED_CONFIG',
     ]),
-    ...mapActions('AUTH_STORE', ['SAVE_USER_DASHBOARD']),
+    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'SAVE_USER_DASHBOARD']),
     /**
      * @function clearData
      * @author davebenard
@@ -115,6 +116,7 @@ export default {
     } else if (this.$route.params.name === 'Disease_Surveillance') {
       // this sets covid 19 confirmed cases indicator on mounted
       this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+      this.SET_SELECTED_CONFIG(defaultDSyear);
     }
   },
   computed: {
@@ -124,6 +126,14 @@ export default {
     },
   },
   async created() {
+    // const formData = {
+    //   username: 'ummi',
+    //   password: 'ummi',
+    // };
+
+    // const response = await this.LOGIN_USER(formData);
+    // console.log(response);
+
     const { name } = this.$route.params;
     /**
      * @description CUSTOM-DASHBOARD
