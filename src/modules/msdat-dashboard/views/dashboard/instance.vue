@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
@@ -152,7 +152,7 @@ import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
 import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
-import StaticConfig from '../../components/sections/dynamic-section/config/dashboard_config';
+// import StaticConfig from '../../components/sections/dynamic-section/config/dashboard_config';
 import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
 import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
 import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
@@ -205,7 +205,7 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
-
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     // Function to handle Multi-Source mobile view
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -221,7 +221,13 @@ export default {
         window.requestAnimationFrame(this.scroll);
       }
     },
-
+    setPresetSections(arg, configs) {
+      arg.forEach((field, i) => {
+        if (field.isShow) {
+          this.ADD_CONTROL_PANEL(configs[i]);
+        }
+      });
+    },
     setAllSections(configs) {
       for (let i = 0; i < configs.length; i++) {
         const config = configs[i];
@@ -301,42 +307,22 @@ export default {
       BaseMultiSourceConfig,
     ];
 
-    if (this.customDashboard === true) {
-      for (let i = 0; i < configs.length; i++) {
-        const config = configs[i];
-
-        if (this.fieldsArray[i].isShow === true) {
-          this.ADD_CONTROL_PANEL(config);
-        }
-      }
-    } else {
-      for (let i = 0; i < configs.length; i++) {
-        const config = configs[i];
-        this.ADD_CONTROL_PANEL(config);
-      }
-      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
-    }
-
     // Updated flow
     const { name: queryParameter } = this.$route.params;
     if (this.customDashboard) {
-      this.fieldsArray.forEach((field, i) => {
-        if (field.isShow) {
-          this.ADD_CONTROL_PANEL(configs[i]);
-        }
-      });
-    } else if (queryParameter) {
-      const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
-      if (preexistingDashboard) {
-        this.setAllSections(configs);
-      } else {
+      if (queryParameter) {
+      // const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
         const retrievedSections = this.getConfigObject()?.sections;
         if (retrievedSections && retrievedSections.length > 0) {
           this.filterSectionArray(configs, retrievedSections);
         } else {
-          this.setAllSections(configs);
+          this.setPresetSections(this.fieldsArray, configs);
         }
+      } else {
+        this.setPresetSections(this.fieldsArray, configs);
       }
+    } else {
+      this.setAllSections(configs);
     }
   },
 
