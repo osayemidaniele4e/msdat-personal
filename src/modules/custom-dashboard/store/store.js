@@ -58,6 +58,7 @@ const store = {
         isShow: true,
       },
     ],
+    dashboardRequest: {}
   },
 
   mutations,

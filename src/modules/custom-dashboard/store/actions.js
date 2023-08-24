@@ -335,4 +335,9 @@ export default {
   setVisibility({ commit }, payload) {
     commit('setVisibility', payload);
   },
+
+  // making requests to make new public dashboards
+  setDashboardRequest({ commit }, payload) {
+    commit('setDashboardRequest', payload);
+  },
 };

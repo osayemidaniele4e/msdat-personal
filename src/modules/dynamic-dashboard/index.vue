@@ -113,7 +113,7 @@ export default {
         const payload = {
         title: dashboardTitle,
         showTableRelatedIndicator: false,
-        visibility: 'public',
+        visibility: 'pending',
         user: this.getUser.id,
         initial_indicator: indicators[0],
         initial_datasource: sources[0],

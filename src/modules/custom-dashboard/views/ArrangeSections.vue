@@ -50,17 +50,17 @@
         <button v-b-modal.modal-visibility>Choose visibility</button>
 
 
-<b-modal id="modal-visibility" title="BootstrapVue" size="lg">
+<b-modal id="modal-visibility" title="BootstrapVue" size="lg" hide-footer>
   <b-button v-b-toggle.collapse-private variant="primary">Create a private dashboard</b-button>
   <b-collapse id="collapse-private" class="mt-2">
     <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel, nisi? </div>
-    <b-button
+    <!-- <b-button
             @click="approveData"
             class="nextBtn"
             style="font-family: Work Sans"
             >COMPLETE</b-button
-          >
-
+          > -->
+          <button @click="createPrivateDashboard()">Private dashboard</button>
 
   </b-collapse>
 
@@ -75,16 +75,18 @@
       <b-form-input v-model="public_creator.organization" placeholder="Organisation"></b-form-input>
       <br>
       <b-form-input v-model="public_creator.reason" placeholder="Reason"></b-form-input>
+      <br>
+      <button @click="createPublicDashboard()">Public dashboard</button>
     </b-card>
   </b-collapse>
-
+<!-- 
   <button @click="changeVisibility('private')">
     change to private
   </button>
   
   <button @click="changeVisibility('public')">
     change to public
-  </button>
+  </button> -->
 </b-modal>
         </div>
       </b-col>
@@ -189,6 +191,15 @@ export default {
       
       // change the visibility
       await this.changeVisibility('public')
+      // create the dashboard using the approveData() function
+      await this.approveData();
+    },
+
+    async createPrivateDashboard(){
+      // send the request to create a public daashboard
+      
+      // change the visibility
+      await this.changeVisibility('private')
       // create the dashboard using the approveData() function
       await this.approveData();
     },
