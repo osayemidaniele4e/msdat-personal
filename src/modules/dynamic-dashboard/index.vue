@@ -145,7 +145,6 @@ export default {
       sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
-
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
@@ -173,6 +172,15 @@ export default {
         });
         return element;
       });
+      // try {
+      //   const response = await apiServices.getDashboard();
+      //   const results = response.data;
+      //   console.log({ results })
+      //   // const dashboard = results.find((item) => item?.name === name);
+      // } catch (e) {
+      //   console.log({ e });
+      // }
+
       // * create the config object
       const formattedConfig = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
@@ -182,6 +190,7 @@ export default {
           .replace(/\s+/g, '_')
           .toLowerCase(),
         indicators: ids,
+        // sections: dashboard.sections,
         defaultIndicators: ids.slice(0, 3),
         dataSources: sourcesID,
         initialIndicator: ids[0],
