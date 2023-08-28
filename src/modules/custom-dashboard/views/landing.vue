@@ -1,16 +1,22 @@
 <template>
   <b-container fluid>
     <div class='mt-0'>
-      <div v-if='!isAuthenticated'>
-        <b-nav align="right" class='nav'>
-          <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
+      <div v-if='!isAuthenticated' class="mb-4">
+        <b-nav  class='nav align-self-center justify-content-between'>
+          <div class="flex-grow-1 d-flex justify-content-center">
+            <h1 style="width:fit-content; margin-left: 14%;">The Custom Dashboard</h1>
+          </div>
+          <div class="d-flex">
+            <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
           <b-nav-item @click="$router.push('/custom/login')">Login</b-nav-item>
+          </div>
         </b-nav>
       </div>
-      <div class="header-text text-center mb-5">
-        <h1>The Custom Dashboard</h1>
+      <div class="container">
+        <div class="header-text text-center mb-5">
         <h2>Design your dashboard, customize your data</h2>
         <h3>No coding skills required!</h3>
+      </div>
       </div>
       <b-row align="center" class='m-5 p-5 hero'>
         <b-col md="auto" lg="auto" sm="12" class="svg">
