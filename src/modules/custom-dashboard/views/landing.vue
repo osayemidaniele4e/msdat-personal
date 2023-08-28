@@ -1,5 +1,6 @@
 <template>
-  <b-container fluid>
+  <div>
+    <b-container fluid>
     <div class='mt-0'>
       <div v-if='!isAuthenticated' class="mb-4">
         <b-nav  class='nav align-self-center justify-content-between'>
@@ -122,8 +123,9 @@
         </div>
       </b-col>
     </b-row>
-    <CdFooter />
   </b-container>
+  <CdFooter />
+  </div>
 </template>
 
 <script>
