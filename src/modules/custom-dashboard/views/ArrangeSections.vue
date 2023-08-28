@@ -38,22 +38,58 @@
       </b-col>
       <b-col md="12" lg='12' sm="12">
         <div class="d-flex mb-5">
-        <b-col cols="auto"
+        <!-- <b-col cols="auto"
           ><b-button
             @click="approveData"
             class="nextBtn"
             style="font-family: Work Sans"
             >COMPLETE</b-button
           ></b-col
-        >
+        > -->
 
-        <button v-b-modal.modal-visibility>Choose visibility</button>
+        <!-- v-b-modal.modal-visibility -->
+
+        <button id="popover-button-event">Create dashboard</button>
+
+        <b-popover ref="popover" target="popover-button-event" triggers="hover" title="Choose visibility">
+     <span @click="createPrivateDashboard()"> 
+      <b-icon icon="battery-full" style="color: #7952b3;"></b-icon>
+      Private dashboard</span>
+     <br>
+     <span
+     v-b-modal.modal-public-dashboard> 
+     <b-icon icon="battery-full" style="color: #7952b3;"></b-icon>
+     Public dashboard</span>
+    </b-popover>
+
+    <b-modal id="modal-in-review" title="BootstrapVue" size="lg" hide-footer hide-header>
+      <span>Dashboard is in review</span>
+</b-modal>
+
+
+    <b-modal id="modal-public-dashboard" title="BootstrapVue" size="lg" hide-footer hide-header>
+      <span class="modalHeader1">Create a Public dashboard</span>
+      <b-row>
+        <b-col>      <b-form-input v-model="public_creator.name" placeholder="Full name" class="input"></b-form-input></b-col>
+        <b-col>       <b-form-input v-model="public_creator.email" placeholder="Email address" class="input"></b-form-input>
+</b-col>
+      </b-row>
+      <br>
+      <b-form-input v-model="public_creator.organization" placeholder="Organisation" class="input" ></b-form-input>
+      <br>
+      <b-form-input v-model="public_creator.Reason" placeholder="Reason" class="input"></b-form-input>
+      <br>
+      <b-form-input v-model="public_creator.name_of_dashboard" placeholder="Dashboard name" class="input"></b-form-input>
+      <br>
+      <button @click="createPublicDashboard()" class="create_dashboard_btn">Create dashboard</button>
+
+
+</b-modal>
 
 
 <b-modal id="modal-visibility" title="BootstrapVue" size="lg" hide-footer>
   <b-button v-b-toggle.collapse-private variant="primary">Create a private dashboard</b-button>
   <b-collapse id="collapse-private" class="mt-2">
-    <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel, nisi? </div>
     <!-- <b-button
             @click="approveData"
             class="nextBtn"
@@ -64,17 +100,18 @@
 
   </b-collapse>
 
-  <b-button v-b-toggle.collapse-public variant="primary">Create a public dashboard</b-button>
+  <b-button v-b-toggle.collapse-public variant="primary" hide-header>Create a public dashboard</b-button>
   <b-collapse id="collapse-public" class="mt-2">
     <b-card>
-      <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel, nisi? </div>
-      <b-form-input v-model="public_creator.name" placeholder="Full name"></b-form-input>
+      <b-form-input v-model="public_creator.name" placeholder="Full name" class="input"></b-form-input>
       <br>
       <b-form-input v-model="public_creator.email" placeholder="Email address"></b-form-input>
       <br>
       <b-form-input v-model="public_creator.organization" placeholder="Organisation"></b-form-input>
       <br>
-      <b-form-input v-model="public_creator.reason" placeholder="Reason"></b-form-input>
+      <b-form-input v-model="public_creator.Reason" placeholder="Reason"></b-form-input>
+      <br>
+      <b-form-input v-model="public_creator.name_of_dashboard" placeholder="Name of Dashboard"></b-form-input>
       <br>
       <button @click="createPublicDashboard()">Public dashboard</button>
     </b-card>
@@ -160,8 +197,8 @@ export default {
         name: "",
         email: "",
         organization: "",
-        reasons: "",
-        dashboard_name: "",
+        Reason: "",
+        name_of_dashboard: "",
       }
     };
   },
@@ -188,11 +225,13 @@ export default {
 
     async createPublicDashboard(){
       // send the request to create a public daashboard
-      
-      // change the visibility
-      await this.changeVisibility('public')
-      // create the dashboard using the approveData() function
-      await this.approveData();
+      await this.$store.dispatch('setDashboardRequest', this.public_creator);
+      // // change the visibility
+      // await this.changeVisibility('public')
+      await this.$bvModal.hide('modal-public-dashboard')	
+      await this.$bvModal.show('modal-in-review')	
+      // // create the dashboard using the approveData() function
+      setTimeout( await this.approveData(), 2000);
     },
 
     async createPrivateDashboard(){
@@ -299,5 +338,29 @@ export default {
   text-transform: uppercase;
   border-color: #eaeaea;
   font-size: 15.00000375px;
+}
+
+.modalHeader1{
+letter-spacing: var(--unnamed-character-spacing-0);
+color: var(--unnamed-color-202020);
+text-align: left;
+font: normal normal bold 35px/47px DM Sans;
+letter-spacing: 0px;
+color: #202020;
+opacity: 1
+}
+
+.input{
+  /* UI Properties */
+background: #EAEAEA 0% 0% no-repeat padding-box;
+opacity: 1;
+}
+
+.create_dashboard_btn{
+  /* UI Properties */
+background: #3F8994 0% 0% no-repeat padding-box;
+box-shadow: 0px 3px 6px #00000029;
+border-radius: 10px;
+opacity: 1;
 }
 </style>
