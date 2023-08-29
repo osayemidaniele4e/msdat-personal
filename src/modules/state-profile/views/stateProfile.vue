@@ -216,7 +216,7 @@ export default {
         {
           name: 'Maternal Mortality Ratio',
           indicatorId: 29,
-          source: 'NHMIS',
+          source: 'NHMIS-DHIS2',
           sourceId: 6,
           year: 2019,
           value: 0,
@@ -232,7 +232,7 @@ export default {
           detail:
             'This section includes a set of indicators along the continuum of care - from pre-pregnancy to childhood. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
-            'Multiple Indicator Cluster Survey (MICS) and Nigeria Demographic and Health Survey (NDHS).',
+            'Multiple Indicator Cluster Survey (MICS) and National Nutrition and Health Survey (NNHS).',
 
           chartTitle: 'Coverage for key interventions across the continuum of care',
           colors: [
@@ -400,7 +400,7 @@ export default {
           detail:
             'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
-            'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
+            'Multiple Indicator Cluster Survey (MICS), Nigeria HIV/AIDS Indicator and Impact Survey (NAIIS), and National Nutrition and Health Survey (NNHS).',
           chartTitle: 'Coverage for key interventions in HIV',
           colors: ['#FBE5EA', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B'],
           specificIndicators: [
@@ -429,7 +429,7 @@ export default {
           icon: 'patient',
           detail:
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
-          sources: 'Nigeria Demographic and Health Survey (NDHS)',
+          sources: 'National Health Management Information System (NHMIS-DHIS2)',
           chartTitle: 'Other Mortality Indicators',
           colors: ['#EAEAEA', '#313131'],
           specificIndicators: [
@@ -465,7 +465,7 @@ export default {
           detail:
             'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
-            'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
+            'National Health Facility Survey (NHFS)',
           chartTitle: '',
           colors: ['rgba(5, 146, 189, 1)'],
           specificIndicators: [
