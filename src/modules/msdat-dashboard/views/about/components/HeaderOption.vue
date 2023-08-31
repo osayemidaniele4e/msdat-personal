@@ -29,7 +29,7 @@
         <b-card no-body class="external-dropdown px-2">
       <b-card-header header-tag="header" class="external-dropdown p-1" role="tab">
         <li v-b-toggle.accordion-1>
-          <img src="@/assets/img/icons/ic_info.svg" style="height: 15px; margin-left: ;"  alt="" />
+          <img src="@/assets/img/icons/ic_info.svg" style="height: 15px; margin-left: 0.2rem;"  alt="" />
           <span class="ml-2" style="font-size: small;">External Dashboards</span>
       </li>
         <!-- <b-button class="external-dashboards-btn mb-2" block >
