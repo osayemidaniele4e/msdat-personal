@@ -120,8 +120,6 @@
       </div>
     </template>
 
-
-    
     <template
       v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
     >
@@ -140,7 +138,6 @@
         </base-sub-card>
       </div>
     </template>
-
 
     <template
       v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }"
@@ -161,7 +158,6 @@
         </base-sub-card>
       </div>
     </template>
-
 
   </BaseDashboard>
 </template>
@@ -201,7 +197,7 @@ export default {
         'Dataset Comparison',
         'Multi-Source comparison',
         'Disaggregation',
-        'Policy Simulator'
+        'Policy Simulator',
       ],
     };
   },
@@ -283,8 +279,8 @@ export default {
       // Condition to check if scrolling is required
       if (
         !(
-          (scrollPos === 0 || scrollPixels > 0) &&
-          (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+          (scrollPos === 0 || scrollPixels > 0)
+          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
@@ -308,7 +304,7 @@ export default {
     },
     setIndex(propertyName) {
       return this.$store.state.MSDAT_STORE.controlConfig.findIndex(
-        (obj) => obj.label === propertyName
+        (obj) => obj.label === propertyName,
       );
     },
   },
