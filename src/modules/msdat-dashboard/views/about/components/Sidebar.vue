@@ -45,7 +45,7 @@
               target="_blank"
                class="sub-item"
             >
-              HSU Dashboard
+              Health Service Uptake
             </a>
             <a
               href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/"
