@@ -110,7 +110,7 @@
       </div>
       <p class="text-center final-text">
         This state profile dashboard has been curated majorly from the MSDAT Dashboard available at
-        <span><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank">msdat.fmohconnect.gov.ng</a></span>
+        <span><a href="https://msdat.fmohconnect.gov.ng" target="_blank">msdat.fmohconnect.gov.ng</a></span>
       </p>
     </div>
   </b-container>

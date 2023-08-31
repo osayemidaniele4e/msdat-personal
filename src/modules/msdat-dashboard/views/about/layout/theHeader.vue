@@ -95,7 +95,7 @@
             <b-nav class="h-100 align-items-center main d-flex">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
               <a
-                href="https://fmohconnect.gov.ng/"
+                href="https://msdat.fmohconnect.gov.ng/"
                 target="_blank"
                 class="nav-link"
                 v-if="isAuthenticated === false"
