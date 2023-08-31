@@ -1,6 +1,6 @@
 <template>
         <div class="container">
-        <h1>MSDAT Apps Plugins: Simplifying Plugin Development</h1>
+        <!-- <h1>MSDAT Apps Plugins: Simplifying Plugin Development</h1> -->
         <h2>Introduction:</h2>
         <p>The MSDAT (Microsoft Data Application Toolkit) Apps Plugins offer a streamlined approach to extending the functionality of various applications within the Microsoft ecosystem. These plugins empower developers to enhance and customize the capabilities of Microsoft applications, tailoring them to specific needs. Whether you're looking to add features, integrate external services, or optimize workflows, MSDAT Apps Plugins provide a structured framework to accomplish your goals.</p>
         <h2>Step 1: Cloning the Boilerplate</h2>
@@ -11,7 +11,7 @@
         <p>For detailed instructions on using the MSDAT boilerplate, refer to the comprehensive documentation provided below. This documentation walks you through the process of utilizing the MSDAT boilerplate effectively, ensuring you understand how to harness its capabilities to craft robust app plugins.</p>
         <h2>Step 2: Plugin Development and Packaging</h2>
         <ol>
-            <li>Develop Your Plugin: Leverage the boilerplate as a starting point. Implement your desired features, integrations, or improvements within the plugin's codebase.</li>
+            <li>Develop Your Plugin: Leverage the bioilerplate as a starting point. Implement your desired features, integrations, or improvements within the plugin's codebase.</li>
             <li>Create a Zip Folder: Once your plugin development is complete, organize the plugin files and resources into a structured directory. Then, create a compressed zip folder containing these files. This packaged zip folder will be used for submission and review.</li>
         </ol>
         <h2>Step 3: Submission and Explanation</h2>
@@ -23,7 +23,16 @@
   <b-collapse visible id="collapse-3">
     <b-card>
         <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-form-group
+          <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.name"
+          placeholder="Enter name"
+          required
+        ></b-form-input>
+      </b-form-group>
+    
+          <b-form-group
         id="input-group-1"
         label="Email address:"
         label-for="input-1"
@@ -38,31 +47,49 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+      <b-form-group id="input-group-2" label="Phone" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="form.name"
-          placeholder="Enter name"
+          v-model="form.phone"
+          placeholder="Enter phone number"
           required
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-3" label="Food:" label-for="input-3">
-        <b-form-select
-          id="input-3"
-          v-model="form.food"
-          :options="foods"
+      <b-form-group id="input-group-2" label="Purpose" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.purpose"
+          placeholder="Purpose"
           required
-        ></b-form-select>
+        ></b-form-input>
       </b-form-group>
 
-      <b-form-textarea
+      <b-form-group id="input-group-2" label="Description" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.description"
+          placeholder="Enter description"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-2" label="Plugin file" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.file"
+          placeholder="Enter file link"
+          required
+        ></b-form-input>
+      </b-form-group>
+ 
+      <!-- <b-form-textarea
       id="textarea"
       v-model="text"
       placeholder="Enter something..."
       rows="3"
       max-rows="6"
-    ></b-form-textarea>
+    ></b-form-textarea> -->
 
       <input type="file">
 
@@ -113,23 +140,29 @@ p {
 
 
 <script>
+import { mapActions } from 'vuex';
+
   export default {
     data() {
       return {
         form: {
           email: '',
           name: '',
-          food: null,
-          checked: []
+          phone: null,
+          purpose: [],
+          description: '',
+          file: ''
         },
         foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
         show: true
       }
     },
     methods: {
+      ...mapActions(['SUBMIT_PLUGIN']),
       onSubmit(event) {
         event.preventDefault()
         alert(JSON.stringify(this.form))
+        this.SUBMIT_PLUGIN(this.form)
       },
       onReset(event) {
         event.preventDefault()

@@ -29,4 +29,14 @@ export default {
   setInternetStatus({ commit }, payload) {
     commit('setInternetStatus', payload);
   },
+
+  // submitting a plugin
+  async SUBMIT_PLUGIN({ commit }, payload) {
+    try {
+      const { data } = await axiosInstance.post('/submit_plugins/', payload);
+      // commit('setInteraction', data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
