@@ -46,7 +46,7 @@
               <b-list-group-item>Health Service Access</b-list-group-item>
             </router-link>
             <a
-              href="https://msdat.old.fmohconnect.gov.ngcovid19_health_service_uptake/index.html"
+              href="https://msdat.old.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
             >
               <b-list-group-item>HSU Dashboard</b-list-group-item>
