@@ -158,7 +158,7 @@ const mutations: MutationTree<State> = {
   },
   UPDATE_ALL_DATASOURCES: (state, payload) => {
     state.controlConfig.forEach((item) => {
-      if (item.label !== 'Multi-Source comparison' && item.label !== 'Disaggregation') {
+      if (item.label !== 'Multi-Source Comparison' && item.label !== 'Disaggregation') {
         item.setup.forEach((source) => {
           if (source.key === 'datasource') {
             source.options = payload;
@@ -173,7 +173,7 @@ const mutations: MutationTree<State> = {
   UPDATE_ALL_YEARS: (state, payload) => {
     state.controlConfig.forEach((item) => {
       if (
-        item.label !== 'Multi-Source comparison' &&
+        item.label !== 'Multi-Source Comparison' &&
         item.label !== 'Disaggregation' &&
         item.label !== 'Dataset Comparison'
       ) {
@@ -189,7 +189,7 @@ const mutations: MutationTree<State> = {
     //console.log(payload, 'Henry');
 
     state.controlConfig.forEach((item) => {
-      if (item.label === 'Multi-Source comparison') {
+      if (item.label === 'Multi-Source Comparison') {
         item.setup.forEach((source) => {
           source.forEach((item) => {
             if (item.key === 'year') {
