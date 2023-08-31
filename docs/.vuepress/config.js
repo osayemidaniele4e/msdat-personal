@@ -39,7 +39,7 @@ module.exports = {
       },
       {
         text: 'MSDAT',
-        link: 'https://msdat1-5.fmohconnect.gov.ng/central_analytics',
+        link: 'https://msdat.old.fmohconnect.gov.ngcentral_analytics',
       },
     ],
     sidebar: {
