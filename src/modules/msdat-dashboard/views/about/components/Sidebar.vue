@@ -41,7 +41,7 @@
           <div class="mb-2">
             <div class="sub-item-bold">Health Service Uptake</div>
             <a
-              href="https://msdat.old.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
+              href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
                class="sub-item"
             >
