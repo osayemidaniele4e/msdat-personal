@@ -120,6 +120,8 @@
       </div>
     </template>
 
+
+    
     <template
       v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
     >
@@ -138,6 +140,29 @@
         </base-sub-card>
       </div>
     </template>
+
+
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }"
+    >
+      <div class="col-md-12">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">Policy Simulator</h5>
+          </template>
+          <template>
+            <!-- <LazyLoading>
+              <ControlPanelConfiguration :controlIndex="controlIndex">
+                <DynamicSection :values="payload" :controlIndex="controlIndex" />
+              </ControlPanelConfiguration>
+            </LazyLoading> -->
+            <div>HEYYY</div>
+          </template>
+        </base-sub-card>
+      </div>
+    </template>
+
+
   </BaseDashboard>
 </template>
 
@@ -159,6 +184,7 @@ import DynamicSection from '../../components/sections/dynamic-section/DynamicSec
 import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
+import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config';
 
 export default {
   data() {
@@ -167,7 +193,7 @@ export default {
       updateValue: {},
       updateKey: '',
       resetData: 1,
-      sectionArray: [0, 1, 2, 3, 4, 5],
+      sectionArray: [0, 1, 2, 3, 4, 5, 6],
       allSections: [
         'Indicator Overview',
         'Zonal analysis',
@@ -175,6 +201,7 @@ export default {
         'Dataset Comparison',
         'Multi-Source comparison',
         'Disaggregation',
+        'Policy Simulator'
       ],
     };
   },
@@ -256,8 +283,8 @@ export default {
       // Condition to check if scrolling is required
       if (
         !(
-          (scrollPos === 0 || scrollPixels > 0)
-          && (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
+          (scrollPos === 0 || scrollPixels > 0) &&
+          (element.clientWidth + scrollPos === element.scrollWidth || scrollPixels < 0)
         )
       ) {
         // Get the start timestamp
@@ -281,7 +308,7 @@ export default {
     },
     setIndex(propertyName) {
       return this.$store.state.MSDAT_STORE.controlConfig.findIndex(
-        (obj) => obj.label === propertyName,
+        (obj) => obj.label === propertyName
       );
     },
   },
@@ -299,6 +326,7 @@ export default {
       ICSConfig,
       DataSetComparisonConfig,
       BaseMultiSourceConfig,
+      PolicySimulatorConfiguration,
     ];
 
     if (this.customDashboard === true) {
