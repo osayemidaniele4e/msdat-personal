@@ -53,7 +53,7 @@
           v-if="
             $store.state.MSDAT_STORE.zonalAnalysis == true &&
             fields.map((element) => {
-              element.name == 'Zonal analysis';
+              element.name == 'Zonal Analysis';
             })
           "
         >

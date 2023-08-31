@@ -41,11 +41,11 @@
           <div class="mb-2">
             <div class="sub-item-bold">Health Service Uptake</div>
             <a
-              href="https://msdat1-5.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
+              href="https://msdat.old.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
                class="sub-item"
             >
-              HSU Dashboard
+              Health Service Uptake
             </a>
             <a
               href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/"

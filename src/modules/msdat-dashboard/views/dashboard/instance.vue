@@ -170,10 +170,10 @@ export default {
       sectionArray: [0, 1, 2, 3, 4, 5],
       allSections: [
         'Indicator Overview',
-        'Zonal analysis',
+        'Zonal Analysis',
         'Indicator Comparison',
         'Dataset Comparison',
-        'Multi-Source comparison',
+        'Multi-Source Comparison',
         'Disaggregation',
       ],
     };
