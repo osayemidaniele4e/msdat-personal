@@ -89,9 +89,15 @@ export default {
 
         this.$store.commit('MSDAT_STORE/SET_MULTI_DATASOURCE_PAYLOAD', {
           controlIndex: index,
-          key: 'indicator',
+          key: 'datasource',
           value: this.getSelectedConfig().dataSource,
         });
+        this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
+          controlIndex: index,
+          key: 'period',
+          value: this.getSelectedConfig().period,
+        });
+        console.log(this.getSelectedConfig(), 'CONFIG');
       }
       this.$emit('showSection', index);
     },

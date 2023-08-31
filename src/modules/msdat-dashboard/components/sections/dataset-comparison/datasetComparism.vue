@@ -21,6 +21,20 @@
           <span class="font-weight-bold">states</span>
         </p>
       </template>
+      <div class="datasetComparison" v-show="showNationalComparison">
+        <div class="noComparison" v-if="comparisonUnavailable">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z" stroke="#E85D58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <p>Comparison not allowed</p>
+        </div>
+        <div class="comparison" v-else>
+          <p>Overall comparison ratio between <strong>{{indicatorOne}}</strong> and <strong>{{indicatorTwo}}</strong>:</p>
+          <h6>{{this.value}}%</h6>
+        </div>
+      </div>
       <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
     </base-sub-card>
   </base-overlay>
@@ -43,7 +57,12 @@ export default {
   data() {
     return {
       title: '',
+      showNationalComparison: false,
+      comparisonUnavailable: true,
       chartConfig: {},
+      indicatorOne: null,
+      indicatorTwo: null,
+      value: null,
       // DataSetConfig: cloneDeep(DataSetConfig),
       loading: true,
     };
@@ -52,7 +71,23 @@ export default {
     ...mapMutations('MSDAT_STORE', [
       'SETUP_CONTROL_OPTIONS1', // -> this.foo()
     ]),
-
+    configureDifferenceIndicator() {
+      const series = this.chartConfig.series;
+      if (series.length === 2) {
+        this.comparisonUnavailable = false;
+        const seriesOne = series[0]?.data[0];
+        const seriesTwo = series[1]?.data[0];
+        if (seriesOne.length && seriesTwo.length) {
+          this.indicatorOne = series[0].name;
+          this.indicatorTwo = series[1].name;
+          const diff = seriesOne[1] - seriesTwo[1];
+          this.value = Math.round(Math.abs(diff));
+        }
+      } else {
+        this.comparisonUnavailable = true;
+      }
+      return null;
+    },
     async setUpDataSourceNYearDropdown() {
       const multiSelectGroup = [];
       const dataSources = this.dlGetDashboardDataSource();
@@ -221,6 +256,12 @@ export default {
         const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
         this.chartConfig.yAxis.title.text = displayFactor;
         this.chartConfig.series = orderResult;
+        if (this.chartConfig.series.length > 1) {
+          this.showNationalComparison = true;
+          this.configureDifferenceIndicator();
+        } else {
+          this.showNationalComparison = false;
+        }
         this.loading = false;
       },
       deep: true,
@@ -241,4 +282,66 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.datasetComparison {
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.comparison {
+  border-radius: 10px;
+  border: 1px solid #C1C1C1;
+  width: auto;
+  padding-left: 10em;
+  padding-right: 10em;
+height: 83px;
+text-align: center;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+gap: 20px
+}
+.noComparison{
+  border-radius: 10px;
+  border: 1px solid #E85D58;
+  width: auto;
+height: 83px;
+text-align: center;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+align-items: baseline;
+gap: 20px;
+padding-top: 25px;
+padding-left: 5em;
+  padding-right: 5em;
+}
+.comparison p {
+  color: #000;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.noComparison p {
+  color: #E85D58;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.comparison h6 {
+  color: #000;
+font-size: 30px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+}
+</style>

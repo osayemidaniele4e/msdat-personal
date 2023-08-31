@@ -23,6 +23,7 @@ import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
+import defaultDSyear from './defaultDSYear.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -57,7 +58,7 @@ export default {
       'SET_CONFIGURATIONS',
       'SET_SELECTED_CONFIG',
     ]),
-    ...mapActions('AUTH_STORE', ['SAVE_USER_DASHBOARD']),
+    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'SAVE_USER_DASHBOARD']),
     /**
      * @function clearData
      * @author davebenard
@@ -115,6 +116,7 @@ export default {
     } else if (this.$route.params.name === 'Disease_Surveillance') {
       // this sets covid 19 confirmed cases indicator on mounted
       this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+      this.SET_SELECTED_CONFIG(defaultDSyear);
     }
   },
   computed: {
@@ -124,6 +126,14 @@ export default {
     },
   },
   async created() {
+    // const formData = {
+    //   username: 'ummi',
+    //   password: 'ummi',
+    // };
+
+    // const response = await this.LOGIN_USER(formData);
+    // console.log(response);
+
     const { name } = this.$route.params;
     /**
      * @description CUSTOM-DASHBOARD
@@ -135,7 +145,6 @@ export default {
       sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
-
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
@@ -163,6 +172,15 @@ export default {
         });
         return element;
       });
+      // try {
+      //   const response = await apiServices.getDashboard();
+      //   const results = response.data;
+      //   console.log({ results })
+      //   // const dashboard = results.find((item) => item?.name === name);
+      // } catch (e) {
+      //   console.log({ e });
+      // }
+
       // * create the config object
       const formattedConfig = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
@@ -172,6 +190,7 @@ export default {
           .replace(/\s+/g, '_')
           .toLowerCase(),
         indicators: ids,
+        // sections: dashboard.sections,
         defaultIndicators: ids.slice(0, 3),
         dataSources: sourcesID,
         initialIndicator: ids[0],
@@ -241,6 +260,7 @@ export default {
           defaultIndicators: dashboard.defaultIndicators,
           dataSources: dashboard.dataSources,
           initialIndicator: dashboard.initialIndicator,
+          sections: dashboard.sections,
           initialDataSource: dashboard.initialDataSource,
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
