@@ -52,19 +52,20 @@
         <button id="popover-button-event">Create dashboard</button>
 
         <b-popover ref="popover" target="popover-button-event" triggers="hover" title="Choose visibility">
-     <span @click="createPrivateDashboard()">
-      <b-icon icon="battery-full" style="color: #7952b3;"></b-icon>
+     <span @click="createPrivateDashboard()" class="choose-visibility-option">
+      <b-icon icon="person-fill" style="color: #7952b3;"></b-icon>
       Private dashboard</span>
      <br>
      <span
+     class="choose-visibility-option"
      v-b-modal.modal-public-dashboard>
-     <b-icon icon="battery-full" style="color: #7952b3;"></b-icon>
+     <b-icon icon="globe" style="color: #7952b3;"></b-icon>
      Public dashboard</span>
     </b-popover>
 
     <b-modal id="modal-in-review" title="BootstrapVue" size="lg" hide-footer hide-header>
       <div class="in-review">
-        <b-icon icon="battery-full" style="color: #7952b3;"></b-icon>
+        <b-icon icon="exclamation-circle" style="color: #7952b3;"></b-icon>
         <h2>Your dashboard is currently in review</h2>
         <span>You will be notified when your dashboard is published</span>
         <span>you will be directed to your dashboard in 5 seconds</span>
@@ -92,7 +93,6 @@
         id="input-group-1"
         label="Email address:"
         label-for="input-1"
-        description="We'll never share your email with anyone else."
         required
       >
         <b-form-input
@@ -100,6 +100,7 @@
           v-model="public_creator.email"
           type="email"
           placeholder="Enter email"
+          class="input"
           required
         ></b-form-input>
       </b-form-group>
@@ -111,6 +112,7 @@
           id="input-2"
           v-model="public_creator.organization"
           placeholder="Organization"
+          class="input"
           required
         ></b-form-input>
       </b-form-group>
@@ -120,6 +122,7 @@
           id="input-2"
           v-model="public_creator.Reason"
           placeholder="Reason"
+          class="input"
           required
         ></b-form-input>
       </b-form-group>
@@ -129,12 +132,13 @@
           id="input-2"
           v-model="public_creator.name_of_dashboard"
           placeholder="Dashboard name"
+          class="input"
           required
         ></b-form-input>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
     </b-form>
 
 </b-modal>
@@ -446,5 +450,13 @@ opacity: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.choose-visibility-option{
+  cursor: pointer;
+}
+
+.choose-visibility-option:hover{
+  opacity: 0.7;
 }
 </style>
