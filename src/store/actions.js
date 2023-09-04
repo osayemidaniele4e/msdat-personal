@@ -1,4 +1,5 @@
 import axiosInstance from '@/config/axios';
+import axios from 'axios';
 
 export default {
   async SET_INTERACTIONS({ commit }, payload) {
@@ -33,7 +34,7 @@ export default {
   // submitting a plugin
   async SUBMIT_PLUGIN({ commit }, payload) {
     try {
-      const { data } = await axiosInstance.post('/submit_plugins/', payload);
+      const { data } = await axios.post('http://172.93.52.240:3001/api/submit_plugins/', payload);
       // commit('setInteraction', data);
     } catch (error) {
       console.log(error);
