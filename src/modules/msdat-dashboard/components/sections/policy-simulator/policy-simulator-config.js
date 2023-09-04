@@ -36,12 +36,18 @@ export default {
     //     'preselect-first': true,
     //   },
     // },
-
     {
       class: ['col-lg col-md-2 col-4 mt-4'],
-      type: 'button',
+      type: 'generate',
       label: '',
       key: 'Generate',
+      options: [],
+    },
+    {
+      class: ['col-lg col-md-2 col-4 mt-4'],
+      type: 'history',
+      label: '',
+      key: 'History',
       options: [],
     },
   ],

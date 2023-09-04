@@ -1,23 +1,23 @@
 <template>
-  <button @click="generate()">
-    <slot></slot>
-  </button>
-</template>
+    <button @click="action()">
+      <slot></slot>
+    </button>
+  </template>
 <script>
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Generate',
+  name: 'History',
   props: {},
   computed: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
   },
   methods: {
-    generate() {
+    action() {
       // use selected config to generate policy
-      console.log(this.getSelectedConfig);
+      console.log('history clicked');
     },
   },
 };
 </script>
-<style scoped></style>
+  <style scoped></style>
