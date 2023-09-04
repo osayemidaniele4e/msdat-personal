@@ -76,7 +76,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  height: calc(100vh - 480px);
+  height: calc(100vh - 460px);
 
   .response {
     padding-inline: 150px;

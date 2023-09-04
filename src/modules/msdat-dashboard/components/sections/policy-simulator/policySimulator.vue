@@ -4,8 +4,8 @@
     <Body></Body>
     <div class="promptPolicyContainer" >
       <Prompt></Prompt>
-
     </div>
+    <!-- <PolicySidebar></PolicySidebar> -->
   </div>
 </template>
 
@@ -13,6 +13,7 @@
 import Header from './components/header.vue';
 import Body from './components/body.vue';
 import Prompt from './components/prompt.vue';
+import PolicySidebar from './components/sidebar.vue';
 
 export default {
   name: 'PolicySimulator',
@@ -20,6 +21,7 @@ export default {
     Header,
     Body,
     Prompt,
+    PolicySidebar,
   },
   data() {
     return {};
