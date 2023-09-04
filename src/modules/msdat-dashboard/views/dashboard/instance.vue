@@ -147,18 +147,18 @@
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">Policy Simulator</h5>
           </template>
+
           <template>
-            <!-- <LazyLoading>
+            <LazyLoading>
               <ControlPanelConfiguration :controlIndex="controlIndex">
-                <DynamicSection :values="payload" :controlIndex="controlIndex" />
+                <!-- <DynamicSection :values="payload" :controlIndex="controlIndex" /> -->
+                <PolicySimulator />
               </ControlPanelConfiguration>
-            </LazyLoading> -->
-            <div>HEYYY</div>
+            </LazyLoading>
           </template>
         </base-sub-card>
       </div>
     </template>
-
   </BaseDashboard>
 </template>
 
@@ -181,6 +181,7 @@ import DynamicSectionConfig from '../../components/sections/dynamic-section/dyna
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config';
+import PolicySimulator from '../../components/sections/policy-simulator/policySimulator.vue';
 
 export default {
   data() {
@@ -211,6 +212,7 @@ export default {
     DataSetComparison,
     MultiSourceComponent,
     DynamicSection,
+    PolicySimulator,
   },
   props: {
     showTableRelatedIndicator: {
