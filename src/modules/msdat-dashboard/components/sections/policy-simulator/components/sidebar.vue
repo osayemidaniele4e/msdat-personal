@@ -5,12 +5,10 @@
     </div>
 </template>
 
-
 <script>
 export default {
-    name: 'PolicySidebar'
-}
-
+  name: 'PolicySidebar',
+};
 
 </script>
 
