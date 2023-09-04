@@ -1,18 +1,60 @@
 export default {
   label: 'Policy Simulator',
   setup: [
+    {
+      type: 'dropdown',
+      class: ['col-md-4 step-indicator'],
+      dropdownProps: {
+        // multiple: true,
+        'group-values': 'indicators',
+        'group-label': 'program_area',
+        label: 'full_name',
+      },
+      label: 'indicator(s)',
+      key: 'indicator',
+      options: [],
+    },
+    {
+      class: ['col-lg col-md-2 col-4 step-location'],
+      type: 'dropdown',
+      label: 'location',
+      key: 'location',
+      dropdownProps: {
+        label: 'name',
+      },
+      options: [],
+    },
 
+    // year ??
+    // {
+    //   class: ['col-lg col-md-2 col-4'],
+    //   type: 'dropdown',
+    //   label: 'Year',
+    //   key: 'year',
+    //   options: [],
+    //   dropdownProps: {
+    //     'preselect-first': true,
+    //   },
+    // },
+
+    {
+      class: ['col-lg col-md-2 col-4 mt-4'],
+      type: 'button',
+      label: '',
+      key: 'Generate',
+      options: [],
+    },
   ],
   payload: {
-    indicator: '',
+    indicator: 'indicator 2',
     location: '',
-    datasource: '',
+    datasource: 'NHMIS 1',
     year: '',
     compareBy: '',
-    visualization: '',
+    visualization: 'state_map',
     target: {
-      national: false,
-      sdg: false,
+      national: true,
+      sdg: true,
     },
     numdenum: false,
   },
