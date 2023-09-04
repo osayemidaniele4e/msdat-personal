@@ -36,6 +36,10 @@
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       />
+
+      <!-- Policy Simulator -->
+      <Generate v-if="values.type === 'button'" :options="values.options" :value="payload[values.key]"/>
+
       <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
@@ -129,6 +133,7 @@ import { mapMutations } from 'vuex';
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
+import Generate from '../components/generate.vue';
 
 export default {
   // mixins: [ControlMixins],
@@ -161,6 +166,7 @@ export default {
     selectWrapper,
     BaseCheckbox,
     toggle,
+    Generate,
   },
   props: {
     setup: {
