@@ -89,10 +89,9 @@ export default {
       return Promise.resolve(false);
     },
     async saveDashboard(indicators, sources, dashboardTitle) {
-      const sections = this.fieldsArray
-        .filter((item) => item.isShow === true)
-        .map((item) => item.name);
-      const payload = {
+      const sections = this.fieldsArray.filter((item) => item.isShow === true).map((item) => item.name);
+      if (this.$store.getters.getVisibility === 'private'){
+        const payload = {
         title: dashboardTitle,
         showTableRelatedIndicator: false,
         visibility: 'private',
@@ -102,10 +101,31 @@ export default {
         indicators,
         dataSources: sources,
         initial_location: 1,
-        default_indicators: [indicators[0]],
+        default_indictors: [indicators[0]],
         sections,
       };
       await this.SAVE_USER_DASHBOARD(payload);
+      }
+
+      if (this.$store.getters.getVisibility === 'public'){
+        const payload = {
+        title: dashboardTitle,
+        showTableRelatedIndicator: false,
+        visibility: 'pending',
+        user: this.getUser.id,
+        initial_indicator: indicators[0],
+        initial_datasource: sources[0],
+        indicators,
+        dataSources: sources,
+        initial_location: 1,
+        default_indictors: [indicators[0]],
+        sections,
+      };
+      await this.SAVE_USER_DASHBOARD(payload);
+      }
+
+
+  
     },
   },
   async mounted() {
