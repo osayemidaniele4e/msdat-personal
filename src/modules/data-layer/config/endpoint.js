@@ -9,7 +9,7 @@ export default {
   getValueType: 'valuetypes/?size=1500',
   getLinks: 'links/?size=1500',
   getFactors: 'factors/?size=1500',
-  getDSI: 'datasource_specific_indicator/?size=500',
+  getDSI: 'datasource_specific_indicator/?size=1500',
   getData: 'data/?size=1500&',
   getUpdatedDataDate: 'after_datetime/?size=1500',
   getNhmisMonthly: `data/?datasource=${30}&size=1500`, // 30, nhmisMonthly ID
