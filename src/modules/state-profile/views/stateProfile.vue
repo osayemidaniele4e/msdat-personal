@@ -439,14 +439,14 @@ export default {
           detail:
             'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
-            'Multiple Indicator Cluster Survey (MICS), Nigeria HIV/AIDS Indicator and Impact Survey (NAIIS), and National Nutrition and Health Survey (NNHS).',
+            'Nigeria HIV /AIDS Indicator and Impact Survey (NAIIS), Multiple Indicator Cluster Survey (MICS), and National Nutrition and Health Survey (NNHS).',
           chartTitle: 'Coverage for key interventions in HIV',
           colors: ['#FBE5EA', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B'],
           specificIndicators: [
             {
               indicator: 26,
               dataSource: 16,
-              year: 2019,
+              year: 2018,
               color: '#EA1B4B',
             },
             {
@@ -468,32 +468,32 @@ export default {
           icon: 'patient',
           detail:
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
-          sources: 'National Health Management Information System (NHMIS-DHIS2)',
+          sources: 'National Health Management Information System (DHIS2)',
           chartTitle: 'Other Mortality Indicators',
           colors: ['#EAEAEA', '#313131'],
           specificIndicators: [
             {
               indicator: 29,
               dataSource: 6,
-              year: 2019,
+              year: 2022,
               color: '#313131',
             },
             {
               indicator: 30,
-              dataSource: 1,
-              year: 2016,
+              dataSource: 6,
+              year: 2022,
               color: '#313131',
             },
             {
               indicator: 31,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 6,
+              year: 2022,
               color: '#313131',
             },
             {
               indicator: 32,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 6,
+              year: 2022,
               color: '#313131',
             },
           ],
