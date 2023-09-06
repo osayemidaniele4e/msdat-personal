@@ -66,16 +66,20 @@
     <b-modal id="modal-in-review" title="BootstrapVue" size="lg" hide-footer hide-header>
       <div class="in-review">
         <b-icon icon="exclamation-circle" style="color: #7952b3;"></b-icon>
+        <br>
         <h2>Your dashboard is currently in review</h2>
         <span>You will be notified when your dashboard is published</span>
+        <br>
         <span>you will be directed to your dashboard in 5 seconds</span>
-        <button>Continue</button>
+        <!-- <button>Continue</button> -->
       </div>
 
 </b-modal>
 
     <b-modal id="modal-public-dashboard" title="BootstrapVue" size="lg" hide-footer hide-header>
-      <span class="modalHeader1">Create a Public dashboard</span>
+      <div class="modal-form-div">
+        <span class="modalHeader1">Create a Public Dashboard</span>
+      <br><br>
       <b-form @submit="onSubmit" @reset="onReset">
         <b-row>
           <b-col>        <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
@@ -136,10 +140,12 @@
           required
         ></b-form-input>
       </b-form-group>
-
-      <b-button type="submit" variant="primary">Submit</b-button>
+<br>
+      <b-button type="submit" variant="primary" class="create_dashboard_btn">Create Dashboard</b-button>
       <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
     </b-form>
+      </div>
+
 
 </b-modal>
 
@@ -422,28 +428,38 @@ export default {
 }
 
 .modalHeader1{
+  font: var(--unnamed-font-style-normal) normal bold 35px/47px var(--unnamed-font-family-dm-sans);
 letter-spacing: var(--unnamed-character-spacing-0);
 color: var(--unnamed-color-202020);
 text-align: left;
 font: normal normal bold 35px/47px DM Sans;
 letter-spacing: 0px;
 color: #202020;
-opacity: 1
+opacity: 1;
+}
+
+.modal-form-div{
+  padding: 20px;
 }
 
 .input{
   /* UI Properties */
 background: #EAEAEA 0% 0% no-repeat padding-box;
 opacity: 1;
+border: none;
+padding: 20px;
 }
 
 .create_dashboard_btn{
-  /* UI Properties */
-background: #3F8994 0% 0% no-repeat padding-box;
+  background: #3F8994 0% 0% no-repeat padding-box;
 box-shadow: 0px 3px 6px #00000029;
 border-radius: 10px;
 opacity: 1;
+width: 188px;
+height: 43px;
+font-size: 15px;
 }
+
 
 .in-review{
   display: flex;
