@@ -1,7 +1,7 @@
 <template>
   <b-jumbotron fluid container-fluid text-variant="black" border-variant="null">
     <b-row class="text-left">
-      <b-col>
+      <b-col class="mr-5">
         <p>Platform</p>
         <ul>
           <li>Features</li>

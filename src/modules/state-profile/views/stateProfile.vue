@@ -51,15 +51,18 @@
     <div ref="printMe" id="printMe">
       <b-row class="mt-4">
         <b-col cols="auto">
+          <h1>
+            Health Profile
+          </h1>
           <div>
             <b-dropdown variant="text" dropright toggle-class="text-decoration-none p-0 m-0 display-block state-select"
               no-caret>
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
-                    <h1>
-                      {{ state }}
-                    </h1>
+                    <h3>
+                      {{ state }} {{ `${state === 'National' ? '' : 'State'}` }}
+                    </h3>
                   </b-col>
                   <b-col>
                     <b-icon style="font-size: 20px; color: #232323" icon="chevron-down"></b-icon>
@@ -72,9 +75,9 @@
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
-                    <h1>
-                      {{ state }}
-                    </h1>
+                    <h3>
+                      {{ state }} {{ `${state === 'National' ? '' : 'State'}` }}
+                    </h3>
                   </b-col>
                   <b-col>
                     <b-icon style="font-size: 10px; color: #232323" icon="chevron-down"></b-icon>
@@ -84,19 +87,16 @@
             </b-dropdown>
 
           </div>
-          <h3 style="font-size: 30px">
-            {{ `${state === 'National' ? '' : 'State'}` }} Health Profile
-          </h3>
         </b-col>
         <b-col cols="12" class="my-auto">
-          <b-row align-h="end" class="mx-auto">
+          <b-row align-h="end" class="mx-auto align-items-center">
             <p class="mr-3">Last Updated: {{ this.regularDateFormat }}</p>
-            <b-button class="mr-4 share-button" @click="toggleShareModal">
-              <img class="img-fluid" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
+            <b-button class="mr-4 share-button d-flex align-items-center" @click="toggleShareModal">
+              <img class="img-fluid pr-2" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
               Share
             </b-button>
-            <b-button class="print-button" @click="printing">
-              <img class="img-fluid" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
+            <b-button class="print-button d-flex align-items-center" @click="printing">
+              <img class="img-fluid pr-2" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
               Print Profile
             </b-button>
           </b-row>
@@ -110,7 +110,7 @@
       </div>
       <p class="text-center final-text">
         This state profile dashboard has been curated majorly from the MSDAT Dashboard available at
-        <span><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank">msdat.fmohconnect.gov.ng</a></span>
+        <span><a href="https://msdat.fmohconnect.gov.ng" target="_blank">msdat.fmohconnect.gov.ng</a></span>
       </p>
     </div>
   </b-container>
@@ -148,32 +148,32 @@ export default {
       overviewLoading: false,
       demographics: [
         {
-          name: 'Population Estimate',
-          indicatorId: 63,
+          name: 'Total Population',
+          indicatorId: 62,
           source: 'NPC',
           sourceId: 19,
-          year: 2018,
+          year: 2022,
           value: 0,
           previousValue: 0,
-          previousYear: 2015,
+          previousYear: 2021,
           change: '+2',
         },
         {
           name: 'Total Fertility Rate',
           indicatorId: 1,
-          source: 'NDHS',
-          sourceId: 2,
-          year: 2018,
+          source: 'NHMIS-DHIS2',
+          sourceId: 6,
+          year: 2022,
           value: 0,
           previousValue: 0,
-          previousYear: 2015,
+          previousYear: 2021,
           change: '-2',
         },
         {
           name: 'Birth Registration (Under Age 1)',
-          indicatorId: 68,
-          source: 'NPC',
-          sourceId: 19,
+          indicatorId: 66,
+          source: 'NDHS',
+          sourceId: 2,
           year: 2018,
           value: 0,
           previousYear: 2015,
@@ -182,18 +182,18 @@ export default {
         },
         {
           name: 'Dependency Ratio',
-          indicatorId: 67,
-          source: 'NLSS',
-          sourceId: 20,
-          year: 2018,
+          indicatorId: 65,
+          source: 'NPC',
+          sourceId: 19,
+          year: 2022,
           value: 0,
           previousValue: 0,
-          previousYear: 2015,
+          previousYear: 2021,
           change: '+2',
         },
         {
           name: 'Population Who Have Never Attended School',
-          indicatorId: 70,
+          indicatorId: 68,
           source: 'NLSS',
           sourceId: 20,
           year: 2018,
@@ -204,9 +204,9 @@ export default {
         },
         {
           name: 'Population Growth Rate',
-          indicatorId: 64,
-          source: 'NPE',
-          sourceId: 2,
+          indicatorId: 63,
+          source: 'NPC',
+          sourceId: 19,
           year: 2018,
           value: 0,
           previousValue: 0,
@@ -216,7 +216,7 @@ export default {
         {
           name: 'Maternal Mortality Ratio',
           indicatorId: 29,
-          source: 'NHMIS',
+          source: 'NHMIS-DHIS2',
           sourceId: 6,
           year: 2019,
           value: 0,
@@ -232,7 +232,7 @@ export default {
           detail:
             'This section includes a set of indicators along the continuum of care - from pre-pregnancy to childhood. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
-            'Multiple Indicator Cluster Survey (MICS) and Nigeria Demographic and Health Survey (NDHS).',
+            'Multiple Indicator Cluster Survey (MICS) and National Nutrition and Health Survey (NNHS).',
 
           chartTitle: 'Coverage for key interventions across the continuum of care',
           colors: [
@@ -249,49 +249,49 @@ export default {
           specificIndicators: [
             {
               indicator: 4,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#054a80',
             },
             {
               indicator: 5,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#2c8cca',
             },
             {
               indicator: 7,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#3f7299',
             },
             {
               indicator: 8,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#43893b',
             },
             {
               indicator: 13,
               dataSource: 1,
-              year: 2016,
+              year: 2021,
               color: '#2c9f35',
             },
             {
               indicator: 18,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#2c9f35',
             },
             {
               indicator: 10,
-              dataSource: 5,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#8fb438',
             },
             {
               indicator: 17,
-              dataSource: 2,
+              dataSource: 5,
               year: 2018,
               color: '#8fb438',
             },
@@ -400,7 +400,7 @@ export default {
           detail:
             'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
-            'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
+            'Multiple Indicator Cluster Survey (MICS), Nigeria HIV/AIDS Indicator and Impact Survey (NAIIS), and National Nutrition and Health Survey (NNHS).',
           chartTitle: 'Coverage for key interventions in HIV',
           colors: ['#FBE5EA', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B'],
           specificIndicators: [
@@ -429,7 +429,7 @@ export default {
           icon: 'patient',
           detail:
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
-          sources: 'Nigeria Demographic and Health Survey (NDHS)',
+          sources: 'National Health Management Information System (NHMIS-DHIS2)',
           chartTitle: 'Other Mortality Indicators',
           colors: ['#EAEAEA', '#313131'],
           specificIndicators: [
@@ -465,7 +465,7 @@ export default {
           detail:
             'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
-            'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
+            'National Health Facility Survey (NHFS)',
           chartTitle: '',
           colors: ['rgba(5, 146, 189, 1)'],
           specificIndicators: [

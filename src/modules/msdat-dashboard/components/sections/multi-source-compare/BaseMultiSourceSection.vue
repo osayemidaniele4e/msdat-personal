@@ -1,5 +1,5 @@
 <template>
-    <MultiSource :values="controlPanelProps" />
+  <MultiSource :values="controlPanelProps" />
 </template>
 
 <script>
@@ -46,6 +46,7 @@ export default {
           this.controlPanelProps.datasource.id,
           this.controlPanelProps.location.id,
         );
+
         this.SET_CONTROL_OPTIONS({
           multipleSetup: true,
           panelIndex: 4,
@@ -91,6 +92,8 @@ export default {
   },
   async mounted() {
     const setYearDropdown = await this.setYearDropdown();
+
+    console.log(setYearDropdown, 'available');
     // debugger;
     this.SET_CONTROL_OPTIONS({
       multipleSetup: true,

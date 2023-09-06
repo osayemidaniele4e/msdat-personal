@@ -17,9 +17,14 @@
         :chartOptions="chartObject"
         ref="BaseChart"
       />
-      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName"
-      :title="title"
-       />
+      <BaseMap
+        ref="BaseMap"
+        v-else
+        :mapObject="mapObject"
+        :level="level"
+        :lgaState="stateName"
+        :title="title"
+      />
     </base-sub-card>
     <NoAvailableData
       v-if="showNoAvailableData"

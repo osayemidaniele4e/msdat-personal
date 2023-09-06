@@ -22,10 +22,32 @@
         </router-link>
       </li>
          <li>
-        <router-link to="/external-dashboards">
+        <!-- <router-link to="/external-dashboards">
           <img src="@/assets/img/icons/ic_info.svg" alt="" />
           <span>External Dashboards</span>
-        </router-link>
+        </router-link> -->
+        <b-card no-body class="external-dropdown px-2">
+      <b-card-header header-tag="header" class="external-dropdown p-1" role="tab">
+        <li v-b-toggle.accordion-1>
+          <img src="@/assets/img/icons/ic_info.svg" style="height: 15px; margin-left: 0.2rem;"  alt="" />
+          <span class="ml-2" style="font-size: small;">External Dashboards</span>
+      </li>
+        <!-- <b-button class="external-dashboards-btn mb-2" block >
+        </b-button> -->
+      </b-card-header>
+      <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
+        <div class="my-2 mx-3">
+          <router-link to="/external-ndr1">
+            National Data Repository Dashboard 1
+          </router-link>
+        </div>
+        <div class="mx-3">
+          <router-link to="/external-ndr2">
+            National Data Repository Dashboard 2
+          </router-link>
+        </div>
+      </b-collapse>
+    </b-card>
       </li>
       <li @click="$emit('tour')">
         <router-link to="/">
@@ -165,6 +187,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.external-dashboards-btn, .external-dropdown
+{
+  border: none !important;
+  background-color: transparent;
+  box-shadow: none;
+  color: black;
+}
+.external-dashboards-btn:hover
+{
+  color: black;
+}
+
 .send {
   position: relative;
   color: white;

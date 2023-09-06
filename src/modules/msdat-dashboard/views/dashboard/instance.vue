@@ -9,7 +9,9 @@
       <slot name="top-section"></slot>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -32,7 +34,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12" style="margin-bottom: 4rem">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -52,7 +56,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'">
           <template #title>
@@ -71,7 +77,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -88,7 +96,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -110,7 +120,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -130,7 +142,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
@@ -140,6 +152,7 @@ import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
 import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
+// import StaticConfig from '../../components/sections/dynamic-section/config/dashboard_config';
 import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
 import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
 import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
@@ -157,10 +170,10 @@ export default {
       sectionArray: [0, 1, 2, 3, 4, 5],
       allSections: [
         'Indicator Overview',
-        'Zonal analysis',
+        'Zonal Analysis',
         'Indicator Comparison',
         'Dataset Comparison',
-        'Multi-Source comparison',
+        'Multi-Source Comparison',
         'Disaggregation',
       ],
     };
@@ -192,7 +205,7 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
-
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     // Function to handle Multi-Source mobile view
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -207,6 +220,32 @@ export default {
         // Request for animation
         window.requestAnimationFrame(this.scroll);
       }
+    },
+    setPresetSections(arg, configs) {
+      arg.forEach((field, i) => {
+        if (field.isShow) {
+          this.ADD_CONTROL_PANEL(configs[i]);
+        }
+      });
+    },
+    setAllSections(configs) {
+      for (let i = 0; i < configs.length; i++) {
+        const config = configs[i];
+        this.ADD_CONTROL_PANEL(config);
+      }
+      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+    },
+    filterSectionArray(configs, activeSections) {
+      const arrayCopyModified = this.fieldsArray.map((el) => ({
+        isShow: activeSections.includes(el.name),
+        ...el,
+      }));
+
+      arrayCopyModified.forEach((item, i) => {
+        if (item.isShow) {
+          this.ADD_CONTROL_PANEL(configs[i]);
+        }
+      });
     },
 
     changeSwipe(cord) {
@@ -247,7 +286,9 @@ export default {
       this.resetData++;
     },
     setIndex(propertyName) {
-      return this.$store.state.MSDAT_STORE.controlConfig.findIndex((obj) => obj.label === propertyName);
+      return this.$store.state.MSDAT_STORE.controlConfig.findIndex(
+        (obj) => obj.label === propertyName,
+      );
     },
   },
   async created() {
@@ -266,20 +307,22 @@ export default {
       BaseMultiSourceConfig,
     ];
 
-    if (this.customDashboard === true) {
-      for (let i = 0; i < configs.length; i++) {
-        const config = configs[i];
-
-        if (this.fieldsArray[i].isShow === true) {
-          this.ADD_CONTROL_PANEL(config);
+    // Updated flow
+    const { name: queryParameter } = this.$route.params;
+    if (this.customDashboard) {
+      if (queryParameter) {
+      // const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
+        const retrievedSections = this.getConfigObject()?.sections;
+        if (retrievedSections && retrievedSections.length > 0) {
+          this.filterSectionArray(configs, retrievedSections);
+        } else {
+          this.setPresetSections(this.fieldsArray, configs);
         }
+      } else {
+        this.setPresetSections(this.fieldsArray, configs);
       }
     } else {
-      for (let i = 0; i < configs.length; i++) {
-        const config = configs[i];
-        this.ADD_CONTROL_PANEL(config);
-      }
-      this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+      this.setAllSections(configs);
     }
   },
 

@@ -234,7 +234,7 @@ export default {
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
         {
-          fieldName: 'Zonal analysis',
+          fieldName: 'Zonal Analysis',
           selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
           fieldImage: '/img/dashboardPreviewImages/ZonalAnalysis.PNG',
         },
@@ -356,7 +356,7 @@ export default {
       if (fieldName === 'Indicator Overview') {
         this.$store.state.MSDAT_STORE.indicatorComparision = e.target.checked;
       }
-      if (fieldName === 'Zonal analysis') {
+      if (fieldName === 'Zonal Analysis') {
         this.$store.state.MSDAT_STORE.zonalAnalysis = e.target.checked;
       }
       if (fieldName === 'Indicator Comparison') {

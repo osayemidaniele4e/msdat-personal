@@ -1,35 +1,29 @@
 <template>
   <div>
-    <MSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
-    />
-    <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
-      :indicators="configObject.indicators"
-      :dataSources="configObject.dataSources"
-      :defaultIndicators="configObject.defaultIndicators"
-      :initialIndicator="configObject.initialIndicator"
-      :initialDataSource="configObject.initialDataSource"
-      :initialLocation="configObject.initialLocation"
-      :showTableRelatedIndicator="
-        configObject.showTableRelatedIndicator != undefined
-          ? configObject.showTableRelatedIndicator
-          : true
-      "
-    />
+    <MSDAT v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false" />
+    <AdvanceMSDAT v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
+      :indicators="configObject.indicators" :dataSources="configObject.dataSources"
+      :defaultIndicators="configObject.defaultIndicators" :initialIndicator="configObject.initialIndicator"
+      :initialDataSource="configObject.initialDataSource" :initialLocation="configObject.initialLocation"
+      :showTableRelatedIndicator="configObject.showTableRelatedIndicator != undefined
+        ? configObject.showTableRelatedIndicator
+        : true
+        " />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
   </div>
 </template>
 <script>
-import apiServices from '@/modules/data-layer/services/ApiServices';
-import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
-import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import moment from 'moment';
 import VueCookies from 'vue-cookies';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import apiServices from '@/modules/data-layer/services/ApiServices';
+import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
+import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
+import defaultDiseaseSurveillanceData from './defaultDS.json';
+import defaultDSyear from './defaultDSYear.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -64,7 +58,7 @@ export default {
       'SET_CONFIGURATIONS',
       'SET_SELECTED_CONFIG',
     ]),
-    ...mapActions('AUTH_STORE', ['SAVE_USER_DASHBOARD']),
+    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'SAVE_USER_DASHBOARD']),
     /**
      * @function clearData
      * @author davebenard
@@ -76,8 +70,12 @@ export default {
       localStorage.removeItem('lastUpdateDate'); // previous clear cache variable
       const clearedDate = localStorage.getItem('lastUpdatedDate');
       if (clearedDate === null) {
-        await this.$store.dispatch('DL/CLEAR_DB'); // first clear is BY-FORCE, in order to set the date variable for subsequent comparisons
-        return;
+        console.warn('Data not available for clearing');
+        try {
+          await this.$store.dispatch('DL/CLEAR_DB'); // first clear is BY-FORCE, in order to set the date variable for subsequent comparisons
+        } catch (error) {
+          console.log('an error occured in dispatching clearDb:', error);
+        }
       }
       if (data.results[0].updated_at) {
         const lastDateMoment = moment(data.results[0].updated_at);
@@ -88,7 +86,7 @@ export default {
           this.showClearDataModal = true; // subsequent clear is by users choice, update localstorage lastUpdatedDate variable
         }
       }
-      Promise.resolve(false);
+      return Promise.resolve(false);
     },
     async saveDashboard(indicators, sources, dashboardTitle) {
       const sections = this.fieldsArray.filter((item) => item.isShow === true).map((item) => item.name);
@@ -132,8 +130,14 @@ export default {
   },
   async mounted() {
     this.clearData();
-    // this sets skilled attendance at birth indicator on mounted
-    this.SET_SELECTED_CONFIG(defaultData);
+    if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+      // this sets skilled attendance at birth indicator on mounted
+      this.SET_SELECTED_CONFIG(defaultData);
+    } else if (this.$route.params.name === 'Disease_Surveillance') {
+      // this sets covid 19 confirmed cases indicator on mounted
+      this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+      this.SET_SELECTED_CONFIG(defaultDSyear);
+    }
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
@@ -142,6 +146,14 @@ export default {
     },
   },
   async created() {
+    // const formData = {
+    //   username: 'ummi',
+    //   password: 'ummi',
+    // };
+
+    // const response = await this.LOGIN_USER(formData);
+    // console.log(response);
+
     const { name } = this.$route.params;
     /**
      * @description CUSTOM-DASHBOARD
@@ -153,7 +165,6 @@ export default {
       sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
-
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
@@ -181,6 +192,15 @@ export default {
         });
         return element;
       });
+      // try {
+      //   const response = await apiServices.getDashboard();
+      //   const results = response.data;
+      //   console.log({ results })
+      //   // const dashboard = results.find((item) => item?.name === name);
+      // } catch (e) {
+      //   console.log({ e });
+      // }
+
       // * create the config object
       const formattedConfig = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
@@ -190,13 +210,18 @@ export default {
           .replace(/\s+/g, '_')
           .toLowerCase(),
         indicators: ids,
+        // sections: dashboard.sections,
         defaultIndicators: ids.slice(0, 3),
         dataSources: sourcesID,
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
       };
-      this.saveDashboard(ids, sourcesID, this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name);
+      this.saveDashboard(
+        ids,
+        sourcesID,
+        this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name,
+      );
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
@@ -255,6 +280,7 @@ export default {
           defaultIndicators: dashboard.defaultIndicators,
           dataSources: dashboard.dataSources,
           initialIndicator: dashboard.initialIndicator,
+          sections: dashboard.sections,
           initialDataSource: dashboard.initialDataSource,
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
@@ -285,7 +311,6 @@ export default {
       }
     },
   },
-
 };
 </script>
 
@@ -294,6 +319,7 @@ main.main_field {
   min-height: 45vh;
   width: 100%;
 }
+
 iframe {
   body {
     display: flex;
@@ -302,6 +328,7 @@ iframe {
     font-size: 14px !important;
   }
 }
+
 .iframe_container {
   max-height: 450px;
   overflow-y: auto;

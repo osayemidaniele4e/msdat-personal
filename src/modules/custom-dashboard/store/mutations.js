@@ -50,7 +50,7 @@ function getDefaultState() {
       },
       {
         id: 1,
-        name: 'Zonal analysis',
+        name: 'Zonal Analysis',
         active: false,
         isShow: true,
       },

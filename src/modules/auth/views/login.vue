@@ -46,8 +46,17 @@
                   LOG IN
                   <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
                 </button>
+                <h4 class="py-3" style="font-size: 15px">Social Authentication</h4>
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary px-3 py-2"
+                  @click="handleClickSignIn()"
+                >
+                  <b-icon-google class="mr-2"></b-icon-google>
+                </button>
               </div>
             </form>
+
             <div class="row">
               <div class="col-12 text-center">
                 <h4 class="py-3" style="font-size: 15px">Don't have an account?</h4>
@@ -74,8 +83,8 @@
 
 <script>
 // import axios from 'axios';
-import { mapActions } from 'vuex';
 import VueCookies from 'vue-cookies';
+import { mapActions } from 'vuex';
 import TheLoader from '../../custom-dashboard/components/Loading/TheLoader.vue';
 
 export default {
@@ -93,7 +102,7 @@ export default {
     VueCookies.remove('msdat-user-details');
   },
   methods: {
-    ...mapActions('AUTH_STORE', ['LOGIN_USER']),
+    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE']),
     async submitForm() {
       this.isLoading = true;
       this.formIsValid = true;
@@ -132,6 +141,53 @@ export default {
         this.msg = 'user not found, confirm username and password';
         console.log(err.message);
       }
+    },
+
+    async handleClickSignIn() {
+      try {
+        const googleUser = await this.$gAuth.signIn();
+
+        if (!googleUser) {
+          return null;
+        }
+
+        const data = {
+          auth_token: googleUser.getAuthResponse().access_token,
+          provider: 'google',
+        };
+
+        await this.AUTHENTICATE(data)
+          .then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+            this.$router.push({ path: '/my-dashboard/details' });
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with google',
+            });
+          });
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+      return 0;
     },
   },
 };

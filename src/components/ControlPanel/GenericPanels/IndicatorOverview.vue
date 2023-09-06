@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+  <div class="row">
     <div class="col-md-4">
       <label class="h6 text-uppercase work-sans">Indicator(s)</label>
 
@@ -8,8 +8,8 @@
           v-model="payload.indicator"
           :options="indicatorOptions"
           :searchable="true"
-           track-by="id"
-           label="short_name"
+          track-by="id"
+          label="short_name"
           :close-on-select="true"
           :show-labels="false"
           group-values="indicators"
@@ -39,7 +39,7 @@
 
     <!-- Data sources here -->
     <div class="col">
-     <label class="h6 text-uppercase work-sans">data sources</label>
+      <label class="h6 text-uppercase work-sans">data sources</label>
 
       <div>
         <multiselect
@@ -57,7 +57,7 @@
 
     <!-- year here -->
     <div class="col">
-    <label class="h6 text-uppercase work-sans">year</label>
+      <label class="h6 text-uppercase work-sans">year</label>
 
       <div>
         <multiselect
@@ -72,7 +72,7 @@
     </div>
 
     <!-- Targets here -->
-   <div class="col">
+    <div class="col">
       <label class="h6 text-uppercase work-sans">Targets</label>
 
       <div class="d-flex">
@@ -84,7 +84,7 @@
 
         <!-- SDG Target here -->
         <div class="d-flex ml-3">
-          <BaseCheckbox  @input="payload.target.sdg = $event" />
+          <BaseCheckbox @input="payload.target.sdg = $event" />
           <p class="check-label ml-1">SDG</p>
         </div>
       </div>
@@ -97,7 +97,7 @@
         <p class="px-4 numerator align-items-center">Numerator/ Denominator</p>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -112,6 +112,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

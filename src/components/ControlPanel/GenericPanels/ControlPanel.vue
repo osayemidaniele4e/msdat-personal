@@ -13,9 +13,7 @@
       >
         {{ '' }}
       </label>
-      <label class="text-uppercase work-sans label-text" v-else>
-        {{ values.label }}
-      </label>
+      <label class="text-uppercase work-sans label-text" v-else> {{ values.label }} </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -34,10 +32,11 @@
         :id="label"
         :value="payload[values.key]"
         @input="updatePayload($event, values.key)"
-        :options="values.options"
+        :options="locationCheck(values.options)"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       />
+      <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
       <div>
@@ -251,10 +250,36 @@ export default {
      * checks if the key is datasource then create a new array of datasource id
      * checks if the array has NHMIS-DHIS2 with id of 6
      */
+
+    showItem(item) {
+      if (item !== null && item.length === 2) {
+        console.log(JSON.stringify(item), 'item');
+      }
+      // if (item !== null && item.length === 38) {
+      //   console.log(item, 'UUU');
+      //   const main = item.filter((s) => s.name === 'Nigeria');
+      //   console.log(this.$route.params.name, 'Nigeria');
+      //   console.log(main, 'Nigeria');
+      // }
+    },
+
+    locationCheck(options) {
+      console.log(options, 'options');
+      if (
+        this.$route.params.name === 'Disease_Surveillance'
+        && options !== null
+        && options.length === 38
+      ) {
+        const main = options.filter((s) => s.name === 'Nigeria');
+        console.log(main, 'Nigeria');
+        return options.filter((s) => s.name === 'Nigeria');
+      }
+      return options;
+    },
     checkNHMISDHIS2() {
       this.setup.forEach((item) => {
         if (item.key === 'datasource') {
-          const datasourceArr = item?.options.map((el) => el.id);
+          const datasourceArr = item?.options?.map((el) => el.id);
           if (datasourceArr?.includes(6)) {
             this.hasNHMIS = true;
           } else {
@@ -315,11 +340,12 @@ export default {
     const date = new Date();
     const getYear = date.getFullYear + 1;
     // pick one of the available years as the default years as opposed to the static 2016 year
-    const defaultYears = this.setup[3]?.options;
+    console.log('setup', this.setup);
+    const defaultYears = this.setup[3].options;
     // console.log(defaultYears);
     // console.log(defaultYears, 'defaultyears');
     const newArr = [];
-    defaultYears && defaultYears.map((el) => {
+    defaultYears.map((el) => {
       if (el < getYear) {
         newArr.push(el);
         this.defaultYearDropdown = newArr;
