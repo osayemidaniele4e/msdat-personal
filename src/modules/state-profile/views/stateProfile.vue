@@ -1,9 +1,12 @@
 <template>
-  <b-container class="xxl-max-width" >
+  <b-container class="xxl-max-width">
     <genericModal v-if="overviewLoading" :noBackdrop="false" :showBackground="false" class="over">
       <div class="text-center">
-        <img src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg" alt="first_img"
-          width="250px" />
+        <img
+          src="@/modules/msdat-dashboard/views/onboarding/assets/About-Dashboard-image.svg"
+          alt="first_img"
+          width="250px"
+        />
         <div class="">
           <h3 class="fetching mr-4 mt-3">Fetching Data...</h3>
         </div>
@@ -17,8 +20,15 @@
         </div>
         <div class="body">
           <button class="social">
-            <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`" target="_blank">
-              <img class="img-fluid" src="@/assets/state-profile/img/linkedin.png" alt="linkedin-icon" />
+            <a
+              :href="`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`"
+              target="_blank"
+            >
+              <img
+                class="img-fluid"
+                src="@/assets/state-profile/img/linkedin.png"
+                alt="linkedin-icon"
+              />
             </a>
           </button>
           <button class="social">
@@ -28,12 +38,20 @@
           </button>
           <button class="social">
             <a :href="`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`" target="_blank">
-              <img class="img-fluid" src="@/assets/state-profile/img/facebook.png" alt="facebook-icon" />
+              <img
+                class="img-fluid"
+                src="@/assets/state-profile/img/facebook.png"
+                alt="facebook-icon"
+              />
             </a>
           </button>
           <button class="social">
             <a :href="`https://twitter.com/intent/tweet?url=${shareUrl}&text=`" target="_blank">
-              <img class="img-fluid" src="@/assets/state-profile/img/twitter.png" alt="twitter-icon" />
+              <img
+                class="img-fluid"
+                src="@/assets/state-profile/img/twitter.png"
+                alt="twitter-icon"
+              />
             </a>
           </button>
           <button class="social link btn btn-outline-secondary" @click="copyTheLink">
@@ -51,18 +69,18 @@
     <div ref="printMe" id="printMe">
       <b-row class="mt-4">
         <b-col cols="auto">
-          <h1>
-            Health Profile
-          </h1>
+          <h1>Health Profile</h1>
           <div>
-            <b-dropdown variant="text" dropright toggle-class="text-decoration-none p-0 m-0 display-block state-select"
-              no-caret>
+            <b-dropdown
+              variant="text"
+              dropright
+              toggle-class="text-decoration-none p-0 m-0 display-block state-select"
+              no-caret
+            >
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
-                    <h3>
-                      {{ state }} {{ `${state === 'National' ? '' : 'State'}` }}
-                    </h3>
+                    <h3>{{ state }} {{ `${state === 'National' ? '' : 'State'}` }}</h3>
                   </b-col>
                   <b-col>
                     <b-icon style="font-size: 20px; color: #232323" icon="chevron-down"></b-icon>
@@ -70,14 +88,16 @@
                 </b-row>
               </template>
               <b-dropdown-item @click="navigateToState('National')">National</b-dropdown-item>
-              <b-dropdown-item @click="navigateToState(s.name)" v-for="(s, i) in this.states" :key="`${s}+${i}`">{{ s.name
-              }}</b-dropdown-item>
+              <b-dropdown-item
+                @click="navigateToState(s.name)"
+                v-for="(s, i) in this.states"
+                :key="`${s}+${i}`"
+                >{{ s.name }}</b-dropdown-item
+              >
               <template #button-content>
                 <b-row align-v="center">
                   <b-col>
-                    <h3>
-                      {{ state }} {{ `${state === 'National' ? '' : 'State'}` }}
-                    </h3>
+                    <h3>{{ state }} {{ `${state === 'National' ? '' : 'State'}` }}</h3>
                   </b-col>
                   <b-col>
                     <b-icon style="font-size: 10px; color: #232323" icon="chevron-down"></b-icon>
@@ -85,32 +105,52 @@
                 </b-row>
               </template>
             </b-dropdown>
-
           </div>
         </b-col>
         <b-col cols="12" class="my-auto">
           <b-row align-h="end" class="mx-auto align-items-center">
             <p class="mr-3">Last Updated: {{ this.regularDateFormat }}</p>
             <b-button class="mr-4 share-button d-flex align-items-center" @click="toggleShareModal">
-              <img class="img-fluid pr-2" src="@/assets/state-profile/svg/share.svg" alt="share-icon" />
+              <img
+                class="img-fluid pr-2"
+                src="@/assets/state-profile/svg/share.svg"
+                alt="share-icon"
+              />
               Share
             </b-button>
             <b-button class="print-button d-flex align-items-center" @click="printing">
-              <img class="img-fluid pr-2" src="@/assets/state-profile/svg/printing.svg" alt="print-icon" />
+              <img
+                class="img-fluid pr-2"
+                src="@/assets/state-profile/svg/printing.svg"
+                alt="print-icon"
+              />
               Print Profile
             </b-button>
           </b-row>
         </b-col>
       </b-row>
       <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
-      <demographics :state="state" @changeState="stateClicked" :stateDemographics="demographics"></demographics>
+      <demographics
+        :state="state"
+        @changeState="stateClicked"
+        :stateDemographics="demographics"
+      ></demographics>
       <div class="mt-5" v-for="(programArea, k) in programAreas" :key="k">
-        <PAoverview :state="state" @overviewLoading="setLoadingState" :locations="allLocations"
-          :indicatorDefinitions="indicatorDefinitions" :programArea="programArea"></PAoverview>
+        <PAoverview
+          :state="state"
+          @overviewLoading="setLoadingState"
+          :locations="allLocations"
+          :indicatorDefinitions="indicatorDefinitions"
+          :programArea="programArea"
+        ></PAoverview>
       </div>
       <p class="text-center final-text">
         This state profile dashboard has been curated majorly from the MSDAT Dashboard available at
-        <span><a href="https://msdat.fmohconnect.gov.ng" target="_blank">msdat.fmohconnect.gov.ng</a></span>
+        <span
+          ><a href="https://www.msdat.fmohconnect.gov.ng" target="_blank"
+            >msdat.fmohconnect.gov.ng</a
+          ></span
+        >
       </p>
     </div>
   </b-container>
@@ -337,27 +377,26 @@ export default {
           icon: 'injection',
           detail:
             'This section includes a set of immunization indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
-          sources:
-            'Multiple Indicator Cluster Survey (MICS), Nigeria Demographic and Health Survey (NDHS), and National Nutrition and Health Survey (NNHS).',
+          sources: 'Multiple Indicator Cluster Survey (MICS)',
           chartTitle: 'Coverage for key interventions in Immunization',
           colors: ['#FBF0E4', '#EE9632', '#EE9632', '#EE9632', '#EE9632', '#EE9632'],
           specificIndicators: [
             {
               indicator: 18,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#EE9632',
             },
             {
               indicator: 20,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#EE9632',
             },
             {
               indicator: 21,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 1,
+              year: 2021,
               color: '#EE9632',
             },
           ],
@@ -400,14 +439,14 @@ export default {
           detail:
             'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
           sources:
-            'Multiple Indicator Cluster Survey (MICS), Nigeria HIV/AIDS Indicator and Impact Survey (NAIIS), and National Nutrition and Health Survey (NNHS).',
+            'Nigeria HIV /AIDS Indicator and Impact Survey (NAIIS), Multiple Indicator Cluster Survey (MICS), and National Nutrition and Health Survey (NNHS).',
           chartTitle: 'Coverage for key interventions in HIV',
           colors: ['#FBE5EA', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B', '#EA1B4B'],
           specificIndicators: [
             {
               indicator: 26,
               dataSource: 16,
-              year: 2019,
+              year: 2018,
               color: '#EA1B4B',
             },
             {
@@ -429,32 +468,32 @@ export default {
           icon: 'patient',
           detail:
             'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
-          sources: 'National Health Management Information System (NHMIS-DHIS2)',
+          sources: 'National Health Management Information System (DHIS2)',
           chartTitle: 'Other Mortality Indicators',
           colors: ['#EAEAEA', '#313131'],
           specificIndicators: [
             {
               indicator: 29,
               dataSource: 6,
-              year: 2019,
+              year: 2022,
               color: '#313131',
             },
             {
               indicator: 30,
-              dataSource: 1,
-              year: 2016,
+              dataSource: 6,
+              year: 2022,
               color: '#313131',
             },
             {
               indicator: 31,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 6,
+              year: 2022,
               color: '#313131',
             },
             {
               indicator: 32,
-              dataSource: 2,
-              year: 2018,
+              dataSource: 6,
+              year: 2022,
               color: '#313131',
             },
           ],
@@ -464,8 +503,7 @@ export default {
           icon: 'hospital',
           detail:
             'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for select interventions.',
-          sources:
-            'National Health Facility Survey (NHFS)',
+          sources: 'National Health Facility Survey (NHFS)',
           chartTitle: '',
           colors: ['rgba(5, 146, 189, 1)'],
           specificIndicators: [
@@ -624,7 +662,6 @@ export default {
 }
 
 .share-modal {
-
   .top,
   .footer {
     background-color: #d6cfcf;
@@ -711,7 +748,7 @@ ul.dropdown-menu.show {
   overflow-y: auto;
 }
 
-.fetching{
+.fetching {
   font-size: 28px;
 }
 </style>
