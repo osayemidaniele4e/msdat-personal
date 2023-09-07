@@ -89,10 +89,9 @@ export default {
       return Promise.resolve(false);
     },
     async saveDashboard(indicators, sources, dashboardTitle) {
-      const sections = this.fieldsArray
-        .filter((item) => item.isShow === true)
-        .map((item) => item.name);
-      const payload = {
+      const sections = this.fieldsArray.filter((item) => item.isShow === true).map((item) => item.name);
+      if (this.$store.getters.getVisibility === 'private'){
+        const payload = {
         title: dashboardTitle,
         showTableRelatedIndicator: false,
         visibility: 'private',
@@ -102,10 +101,31 @@ export default {
         indicators,
         dataSources: sources,
         initial_location: 1,
-        default_indicators: [indicators[0]],
+        default_indictors: [indicators[0]],
         sections,
       };
       await this.SAVE_USER_DASHBOARD(payload);
+      }
+
+      if (this.$store.getters.getVisibility === 'public'){
+        const payload = {
+        title: dashboardTitle,
+        showTableRelatedIndicator: false,
+        visibility: 'pending',
+        user: this.getUser.id,
+        initial_indicator: indicators[0],
+        initial_datasource: sources[0],
+        indicators,
+        dataSources: sources,
+        initial_location: 1,
+        default_indictors: [indicators[0]],
+        sections,
+      };
+      await this.SAVE_USER_DASHBOARD(payload);
+      }
+
+
+  
     },
   },
   async mounted() {
@@ -145,7 +165,6 @@ export default {
       sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
-
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
@@ -173,6 +192,15 @@ export default {
         });
         return element;
       });
+      // try {
+      //   const response = await apiServices.getDashboard();
+      //   const results = response.data;
+      //   console.log({ results })
+      //   // const dashboard = results.find((item) => item?.name === name);
+      // } catch (e) {
+      //   console.log({ e });
+      // }
+
       // * create the config object
       const formattedConfig = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
@@ -182,6 +210,7 @@ export default {
           .replace(/\s+/g, '_')
           .toLowerCase(),
         indicators: ids,
+        // sections: dashboard.sections,
         defaultIndicators: ids.slice(0, 3),
         dataSources: sourcesID,
         initialIndicator: ids[0],

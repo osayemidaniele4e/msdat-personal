@@ -11,7 +11,7 @@ export const themeData = {
     },
     {
       "text": "MSDAT",
-      "link": "https://msdat.fmohconnect.gov.ng/central_analytics"
+      "link": "https://msdat.old.fmohconnect.gov.ng/central_analytics"
     }
   ],
   "sidebar": {

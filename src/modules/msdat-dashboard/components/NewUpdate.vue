@@ -9,7 +9,7 @@
       <p>Introducing the MSDAT 2.0 Platform with up to 9 sub-dashboards</p>
       <!-- <p>What's new? <a href="http://" target="_blank" rel="noopener noreferrer">Click here</a></p> -->
       <div class="w-100 text-right">
-        <a href="https://msdat.fmohconnect.gov.ng/" target="_blank" rel="noopener noreferrer">
+        <a href="https://msdat.old.fmohconnect.gov.ng" target="_blank" rel="noopener noreferrer">
           <button class="btn btn-sm py-2">GO BACK TO MSDAT 1.5</button>
         </a>
       </div>
