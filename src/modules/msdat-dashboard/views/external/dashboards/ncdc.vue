@@ -1,29 +1,27 @@
 <template>
   <div>
     <the-header ref="theHeader" />
-
     <div class="main d-flex flex-column">
       <br />
       <!-- <span>
           <b-icon-info-circle-fill />
       Dashboard developed by NCDC to show the outbreak of diseases across states in Nigeria from 2006 - 2021.
     </span> -->
-      <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm base">
+      <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm base pb-2">
         <template #title>
           <h5 class="font-weight-bold work-sans text-white">National Disease Outbreak Dashboard</h5>
         </template>
-
-        <b-embed type="iframe" aspect="16by9" :src="url" :width="width" :height="height"></b-embed>
+        <div class="container pl-5">
+          <b-embed type="iframe" aspect="16by9" :src="url" :width="width" :height="height"></b-embed>
+        </div>
       </base-sub-card>
     </div>
     <the-footer />
   </div>
 </template>
-
 <script>
 import theHeader from '../../about/layout/theHeader.vue';
 import theFooter from '../../about/layout/theFooter.vue';
-
 export default {
   name: 'NCDC',
   components: {
@@ -42,7 +40,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .main {
   display: flex;
@@ -51,9 +48,8 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 .base {
-  height: 75vh;
+  height: auto;
   width: 70vw;
 }
 .heading {
