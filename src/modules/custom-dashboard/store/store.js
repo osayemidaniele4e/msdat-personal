@@ -25,6 +25,7 @@ const store = {
     masterData: JSON.parse(composedData),
     SurveyArray: JSON.parse(SurveyArray),
     notes: [],
+    visibility: 'private',
     ArrangedSections: JSON.parse(SectionsArray) || [
       {
         id: 0,
@@ -57,6 +58,7 @@ const store = {
         isShow: true,
       },
     ],
+    dashboardRequest: {}
   },
 
   mutations,

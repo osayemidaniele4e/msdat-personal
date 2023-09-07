@@ -15,7 +15,7 @@
                 <b-button variant="primary">Visit dashboard</b-button>
               </router-link>
               <template #footer>
-                <em>Private</em>
+                <em>{{ dashboard.visibility }}</em>
               </template>
             </b-card>
           </b-col>

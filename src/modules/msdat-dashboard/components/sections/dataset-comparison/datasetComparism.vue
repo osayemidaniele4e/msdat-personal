@@ -21,7 +21,7 @@
           <span class="font-weight-bold">states</span>
         </p>
       </template>
-      <div class="datasetComparison" v-show="showNationalComparison">
+      <!-- <div class="datasetComparison" v-show="showNationalComparison">
         <div class="noComparison" v-if="comparisonUnavailable">
           <span>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -34,7 +34,7 @@
           <p>Overall comparison ratio between <strong>{{indicatorOne}}</strong> and <strong>{{indicatorTwo}}</strong>:</p>
           <h6>{{this.value}}%</h6>
         </div>
-      </div>
+      </div> -->
       <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
     </base-sub-card>
   </base-overlay>
