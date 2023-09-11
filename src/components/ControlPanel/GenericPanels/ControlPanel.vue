@@ -289,6 +289,10 @@ export default {
       });
     },
     getIndicatorList(data) {
+<<<<<<< Updated upstream
+=======
+      // console.log('active section 1', this.$store.getters.getSectionTitle);
+>>>>>>> Stashed changes
       const { name } = this.$route.params;
       if (name === 'Advanced_Analytics') {
         return data?.filter((item) => item.program_area === this.indicatorList);

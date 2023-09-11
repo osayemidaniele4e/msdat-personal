@@ -40,11 +40,19 @@
                 right
               >
                 <b-dropdown-item
+<<<<<<< Updated upstream
                   href="#"
                   id="dropdownMenuButton"
                   class="select-dropdown-item"
                   v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+=======
+                id="dropdownMenuButton"
+                class="select-dropdown-item"
+                v-for="(control, index) in $store.state.MSDAT_STORE
+                    .controlConfig"
+>>>>>>> Stashed changes
                   :key="index"
+                  :href="$route.path == '/advanced_analytics' ? `/dashboard/Advanced_Analytics?index=${index}` : '#'"
                   @click="emitIndex(index)"
                   >{{ control.label }}
                 </b-dropdown-item>
