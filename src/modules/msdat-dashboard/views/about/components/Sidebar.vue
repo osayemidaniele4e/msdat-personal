@@ -221,7 +221,7 @@ h5.text-underline {
 
   }
 </style>
-
+<!--
 <script>
 export default {
   // props: {
@@ -280,4 +280,4 @@ h5.text-underline {
   font-family: 'Work Sans';
   font-weight: 700;
 }
-</style>
+</style> -->

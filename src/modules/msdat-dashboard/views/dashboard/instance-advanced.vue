@@ -62,27 +62,6 @@
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
-<<<<<<< Updated upstream
-=======
-                Indicator Comparison - By Period/State
-              </h5>
-            </template>
-            <template>
-              <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <AdvancedICS :values="payload" :controlIndex="controlIndex" />
-                </ControlPanelConfiguration>
-              </LazyLoading>
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-      <template v-slot:section-3="{ payload, controlIndex }">
-        <div class="col-md-12">
-          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
->>>>>>> Stashed changes
                 Predictive Analysis
               </h5>
             </template>
