@@ -40,11 +40,11 @@
                 right
               >
                 <b-dropdown-item
-                  href="#"
                   id="dropdownMenuButton"
                   class="select-dropdown-item"
                   v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                   :key="index"
+                  :href="$route.path == '/advanced_analytics' ? `/dashboard/Advanced_Analytics?index=${index}` : '#'"
                   @click="emitIndex(index)"
                   >{{ control.label }}
                 </b-dropdown-item>

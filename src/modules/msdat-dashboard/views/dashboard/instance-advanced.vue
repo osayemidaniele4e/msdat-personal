@@ -17,7 +17,7 @@
         <slot name="top-section"></slot>
       </template>
 
-            <template v-slot:section-0="{ payload, controlIndex }">
+      <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
@@ -59,7 +59,7 @@
 
       <template v-slot:section-2="{ payload, controlIndex }">
         <div class="col-md-12">
-          <base-sub-card :backgroundColor="'header'">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
                 Predictive Analysis

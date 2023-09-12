@@ -176,12 +176,12 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex';
+import Vue from 'vue';
 import {
   BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import config from '@/modules/dynamic-dashboard/config/dashboard_config';
-import Vue from 'vue';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -206,11 +206,12 @@ export default {
     Footer,
   },
   data() {
+    const index = parseInt(this.$route.query.index, 10) || 0;
     return {
       isAdvanced: false,
       showTroubleShootingModal: false,
       position: 3,
-      selectedPanel: 0,
+      selectedPanel: index,
       dashboardConfig: config,
       show: false,
       changeIndex: '',
@@ -437,9 +438,9 @@ export default {
      */
     modifyLabel(fullName, index) {
       if (index) {
-        return fullName.replace(' ', '-') + index;
+        return fullName.replace(' ', '_') + index;
       }
-      return fullName.replace(' ', '-');
+      return fullName.replace(' ', '_');
     },
     /**
      * This handles hiding the other sections
@@ -521,7 +522,6 @@ export default {
     } else {
       this.detect = false;
     }
-
     setTimeout(() => {
       if (this.detect) {
         this.closeAlert();

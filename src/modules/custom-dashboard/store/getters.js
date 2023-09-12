@@ -16,6 +16,9 @@ export default {
   getprogramArea(state) {
     return state.masterData;
   },
+  getVisibility(state) {
+    return state.visibility;
+  },
   notesArea(state) {
     // console.log(state.isNotExistYear);
     return state.notes;
