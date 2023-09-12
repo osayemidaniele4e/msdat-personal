@@ -390,7 +390,7 @@ export default class DataLayer {
   //  static sweetAlert(title, text, type) {
   // eslint-disable-next-line class-methods-use-this
   sweetAlert() {
-    Vue.swal({
+    return Vue.swal({
       toast: true,
       position: 'bottom-end',
       icon: 'info',
@@ -403,12 +403,12 @@ export default class DataLayer {
     });
 
     // Return a Promise that resolves when data synchronization is complete
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Close the alert
-        Vue.swal.close();
-        resolve(); // Resolve the Promise to signal completion
-      }, 15000); // Modify the timeout value as needed
-    });
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     // Close the alert
+    //     Vue.swal.close();
+    //     resolve(); // Resolve the Promise to signal completion
+    //   }, 15000); // Modify the timeout value as needed
+    // });
   }
 }
