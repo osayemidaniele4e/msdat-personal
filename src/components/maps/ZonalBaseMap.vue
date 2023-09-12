@@ -162,16 +162,7 @@ export default {
   watch: {
     mapObject: {
       handler(newVal) {
-        const filteredSeries = newVal.series && newVal.series.filter((item) => item.data.length > 0);
-
-        if (filteredSeries.length === 1) {
-          this.defaultOptions = Object.assign(this.defaultOptions, newVal);
-          this.level = 2;
-        } else {
-          this.defaultOptions = Object.assign(this.defaultOptions, newVal);
-          this.level = 1;
-        }
-        // this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+        this.defaultOptions = Object.assign(this.defaultOptions, newVal);
       },
       immediate: true,
       deep: true,
