@@ -33,7 +33,7 @@
 
             <div v-if="$route.path !== '/account'">
               <b-dropdown
-                text="Select Indicator"
+                text="Select Dashboard"
                 toggle-class="select-dropdown"
                 variant="none"
                 text-variant="none"
