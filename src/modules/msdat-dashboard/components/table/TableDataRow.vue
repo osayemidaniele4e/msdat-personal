@@ -14,12 +14,12 @@
       </td>
       <td class="align-middle p-2 table-indicators-1" id="table-indicators-1">
         <!-- Use this slot to set the related indicator multiselect and it options -->
-        <div class="d-flex flex-column">
-          <slot :name="`indicator`" :indicator="rowData.indicator.id">
-            {{ rowData.indicator.full_name }}
-          </slot>
-          <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
-        </div>
+        <div class="d-flex flex-column indicator-container">
+    <slot :name="`indicator`" :indicator="rowData.indicator.id">
+      <div class="indicator-name">{{ rowData.indicator.full_name }}</div>
+    </slot>
+    <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
+  </div>
       </td>
       <!-- the default slot for the system -->
       <slot></slot>
@@ -62,5 +62,15 @@ tr {
 
 .info-circle{
   font-size: 16px;
+}
+
+.indicator-container {
+  max-width: 100ch; /* Limit to 20 characters */
+  word-wrap: break-word; /* Force text to wrap within the cell */
+  white-space: initial; /* Reset white-space property */
+}
+
+.indicator-name {
+  word-wrap: break-word; /* Allow text to wrap */
 }
 </style>
