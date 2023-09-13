@@ -14,9 +14,16 @@
       </td>
       <td class="align-middle p-2 table-indicators-1" id="table-indicators-1">
         <!-- Use this slot to set the related indicator multiselect and it options -->
-        <div class="d-flex flex-column indicator-container">
+        <div class="d-flex flex-column indicator-container" v-if="dashboardName === 'Health Facility'">
     <slot :name="`indicator`" :indicator="rowData.indicator.id">
       <div class="indicator-name">{{ rowData.indicator.full_name }}</div>
+    </slot>
+    <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
+  </div>
+
+  <div class="d-flex flex-column" v-else>
+    <slot :name="`indicator`" :indicator="rowData.indicator.id">
+      <div class="">{{ rowData.indicator.full_name }}</div>
     </slot>
     <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
   </div>
@@ -29,6 +36,11 @@
 
 <script>
 export default {
+  data(){
+    return{
+      dashboardName: ''
+    }
+  },
   props: {
     rowData: {
       type: [Object, String],
@@ -40,6 +52,11 @@ export default {
       return this.dlGetFactor(this.rowData.indicator.factor).display_factor;
     },
   },
+
+  mounted(){
+    const { name } = this.$route.params;
+    this.dashboardName = name
+  }
 };
 </script>
 
