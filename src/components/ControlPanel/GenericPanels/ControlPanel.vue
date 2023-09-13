@@ -13,6 +13,12 @@
       >
         {{ '' }}
       </label>
+      <label
+        class="text-uppercase work-sans label-text"
+        v-if="values.label == 'Target' && dashboardName === 'Demographics'"
+      >
+        {{ '' }}
+      </label>
       <label class="text-uppercase work-sans label-text" v-else> {{ values.label }} </label>
 
       <!-- ADVANCED ANALYTICS -->
@@ -46,7 +52,7 @@
         />
       </div>
 
-      <div class="d-flex" v-if="values.type === 'checkbox'">
+      <div class="d-flex" v-if="values.type === 'checkbox' && dashboardName !== 'Demographics'">
         <!-- National Target here -->
         <div class="d-flex disabled_alt">
           <BaseCheckbox
@@ -136,7 +142,7 @@ export default {
   data() {
     return {
       activeToggleButton: '',
-
+      dashboardName: '',
       // using component data with 'Sub' addition to prevent prop mutations
       // (controlIndex & groupIndex)
       controlIndexSub: this.controlIndex,
@@ -337,6 +343,8 @@ export default {
   },
 
   mounted() {
+    const { name } = this.$route.params;
+    this.dashboardName = name;
     const date = new Date();
     const getYear = date.getFullYear + 1;
     // pick one of the available years as the default years as opposed to the static 2016 year

@@ -95,14 +95,18 @@
               v-slot="validationContext"
               vid="password"
             >
-              <b-form-group id="password-group" label="Password" label-for="password">
+              <b-form-group id="password-group" label="Password" label-for="password" class="position-relative">
                 <b-form-input
                   id="password"
                   v-model="form.password"
-                  type="password"
+                  :type="passwordVisible ? 'text' : 'password'"
                   :state="getValidationState(validationContext)"
                   placeholder="******************"
                 ></b-form-input>
+                <b-icon @click="passwordVisible = !passwordVisible" v-if="passwordVisible"
+                  icon="eye-slash" class="position-absolute p-3" style="right: 1rem; top: 2rem; cursor: pointer;"></b-icon>
+                <b-icon @click="passwordVisible = !passwordVisible" v-else icon="eye"
+                  class="position-absolute p-3" style="right: 1rem; top: 2rem; cursor: pointer;"></b-icon>
                 <b-form-invalid-feedback id="input-1-live-feedback">{{
                   validationContext.errors[0]
                 }}</b-form-invalid-feedback>
@@ -183,6 +187,7 @@ export default {
         profession: '',
         terms: false,
       },
+      passwordVisible: false,
     };
   },
   methods: {

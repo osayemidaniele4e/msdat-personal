@@ -93,7 +93,8 @@
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
             ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
           >
-          <router-link to="/coming-soon/advanced_analytics" target="_blank"
+          <!-- <router-link to="/coming-soon/advanced_analytics" -->
+          <router-link to="/advanced_analytics"
             ><b-list-group-item
               >Advanced Analytics</b-list-group-item
             ></router-link

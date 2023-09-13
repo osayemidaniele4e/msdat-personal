@@ -33,18 +33,18 @@
 
             <div v-if="$route.path !== '/account'">
               <b-dropdown
-                text="Select"
+                text="Select Dashboard"
                 toggle-class="select-dropdown"
                 variant="none"
                 text-variant="none"
                 right
               >
                 <b-dropdown-item
-                  href="#"
                   id="dropdownMenuButton"
                   class="select-dropdown-item"
                   v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                   :key="index"
+                  :href="$route.path == '/advanced_analytics' ? `/dashboard/Advanced_Analytics?index=${index}` : '#'"
                   @click="emitIndex(index)"
                   >{{ control.label }}
                 </b-dropdown-item>
