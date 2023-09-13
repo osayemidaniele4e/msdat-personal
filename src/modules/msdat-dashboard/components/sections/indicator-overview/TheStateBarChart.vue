@@ -16,9 +16,15 @@
         "
       >
         <template #title>
-          <p class="work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height" v-if="level === 1">
             Distribution Of
             <b>{{ values.indicator.short_name }}</b> Across The Country. Source:<b>
+              {{ values.datasource.datasource }} {{ values.year }}</b
+            >
+          </p>
+          <p class="work-sans mb-0 line-height" v-if="level !== 1">
+            Distribution Of
+            <b>{{ values.indicator.short_name }}</b> Across The States. Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b
             >
           </p>

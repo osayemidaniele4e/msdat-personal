@@ -3,6 +3,7 @@
     <the-header ref="theHeader" />
     <main @click="$refs.theHeader.close()">
       <!-- about MSDAT dashboard -->
+
       <section class="mt-5">
         <b-container fluid>
           <b-row>
