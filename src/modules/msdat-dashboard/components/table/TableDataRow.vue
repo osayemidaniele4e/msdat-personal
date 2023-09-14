@@ -14,7 +14,7 @@
       </td>
       <td class="align-middle p-2 table-indicators-1" id="table-indicators-1">
         <!-- Use this slot to set the related indicator multiselect and it options -->
-        <div class="d-flex flex-column indicator-container" v-if="dashboardName === 'Health Facility'">
+        <div class="d-flex flex-column indicator-container" v-if="dashboardName === 'Health_Facility'">
     <slot :name="`indicator`" :indicator="rowData.indicator.id">
       <div class="indicator-name">{{ rowData.indicator.full_name }}</div>
     </slot>
@@ -55,7 +55,8 @@ export default {
 
   mounted(){
     const { name } = this.$route.params;
-    this.dashboardName = name
+    this.dashboardName = name;
+    console.log('zonal map', this.dashboardName)
   }
 };
 </script>
