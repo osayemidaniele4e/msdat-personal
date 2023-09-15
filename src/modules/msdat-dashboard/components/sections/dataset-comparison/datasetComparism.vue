@@ -21,20 +21,36 @@
           <span class="font-weight-bold">states</span>
         </p>
       </template>
-      <!-- <div class="datasetComparison" v-show="showNationalComparison">
+      <div class="datasetComparison" v-show="showNationalComparison">
         <div class="noComparison" v-if="comparisonUnavailable">
           <span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z" stroke="#E85D58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z"
+                stroke="#E85D58"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </span>
           <p>Comparison not allowed</p>
         </div>
         <div class="comparison" v-else>
-          <p>Overall comparison ratio between <strong>{{indicatorOne}}</strong> and <strong>{{indicatorTwo}}</strong>:</p>
-          <h6>{{this.value}}%</h6>
+          <p>
+            Overall comparison ratio between <strong>{{ indicatorOne }}</strong> and
+            <strong>{{ indicatorTwo }}</strong
+            >:
+          </p>
+          <h6>{{ this.value }}%</h6>
         </div>
-      </div> -->
+      </div>
       <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
     </base-sub-card>
   </base-overlay>
@@ -71,6 +87,19 @@ export default {
     ...mapMutations('MSDAT_STORE', [
       'SETUP_CONTROL_OPTIONS1', // -> this.foo()
     ]),
+    getOlderYear(year1, year2) {
+      // eslint-disable-next-line radix
+      const extractYear = (str) => parseInt(str.match(/\d{4}/)?.[0] || 0);
+      const yearValue1 = extractYear(year1);
+      const yearValue2 = extractYear(year2);
+
+      if (yearValue1 < yearValue2) {
+        return year1;
+      } if (yearValue1 > yearValue2) {
+        return year2;
+      }
+      return 'equal';
+    },
     configureDifferenceIndicator() {
       const series = this.chartConfig.series;
       if (series.length === 2) {
@@ -78,10 +107,19 @@ export default {
         const seriesOne = series[0]?.data[0];
         const seriesTwo = series[1]?.data[0];
         if (seriesOne.length && seriesTwo.length) {
+          let denominator;
           this.indicatorOne = series[0].name;
           this.indicatorTwo = series[1].name;
-          const diff = seriesOne[1] - seriesTwo[1];
-          this.value = Math.round(Math.abs(diff));
+          const olderIndicator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
+          if (olderIndicator === this.indicatorOne) {
+            denominator = seriesOne[1];
+          } else if (olderIndicator === this.indicatorTwo) {
+            denominator = seriesTwo[1];
+          } else {
+            denominator = seriesOne[1] >= seriesTwo[1] ? seriesTwo[1] : seriesOne[1];
+          }
+          const diff = Math.abs(seriesOne[1] - seriesTwo[1]);
+          this.value = Math.round((diff / denominator) * 100);
         }
       } else {
         this.comparisonUnavailable = true;
@@ -293,55 +331,55 @@ export default {
 
 .comparison {
   border-radius: 10px;
-  border: 1px solid #C1C1C1;
+  border: 1px solid #c1c1c1;
   width: auto;
   padding-left: 10em;
   padding-right: 10em;
-height: 83px;
-text-align: center;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-gap: 20px
+  height: 83px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
-.noComparison{
+.noComparison {
   border-radius: 10px;
-  border: 1px solid #E85D58;
+  border: 1px solid #e85d58;
   width: auto;
-height: 83px;
-text-align: center;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-align-items: baseline;
-gap: 20px;
-padding-top: 25px;
-padding-left: 5em;
+  height: 83px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-items: baseline;
+  gap: 20px;
+  padding-top: 25px;
+  padding-left: 5em;
   padding-right: 5em;
 }
 .comparison p {
   color: #000;
-font-size: 14px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .noComparison p {
-  color: #E85D58;
-font-size: 14px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
+  color: #e85d58;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .comparison h6 {
   color: #000;
-font-size: 30px;
-font-style: normal;
-font-weight: 600;
-line-height: normal;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
 </style>
