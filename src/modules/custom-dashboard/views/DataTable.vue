@@ -90,6 +90,10 @@ export default {
   },
   methods: {
     approveData() {
+      // Deactivate all dashboard sections by default
+      if (!this.$store.getters.editMode) {
+        this.$store.dispatch('deactivateAllSections');
+      }
       this.$router.push('sections');
     },
     backToPrefrence() {

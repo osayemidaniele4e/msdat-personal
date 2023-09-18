@@ -21,13 +21,13 @@
           <div class="">
             <input
               type="checkbox"
-              name="dashboard"
-              id="dashboard"
+              :name="`dashboard${index}`"
+              :id="`dashboard${index}`"
               :checked="isSelected(value)"
               @click="selectedComponent($event, value.fieldName)"
             />
             <!-- //:checked="isSelected(value)"/> -->
-            <label for="dashboard" class="fields">{{ value.fieldName }}</label>
+            <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
           </div>
           <p style="width: 100%; font-family: Work Sans; font-size: 14px">
             This section shows an overview of your dashboard. This is a brief
@@ -49,7 +49,7 @@
 
         <!-- v-b-modal.modal-visibility -->
 
-        <button id="popover-button-event">Create dashboard</button>
+        <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button>
 
         <b-popover ref="popover" target="popover-button-event" triggers="hover" title="Choose visibility">
      <span @click="createPrivateDashboard()" class="choose-visibility-option">
@@ -146,7 +146,6 @@
     </b-form>
       </div>
 
-
 </b-modal>
 
 <b-modal id="modal-visibility" title="BootstrapVue" size="lg" hide-footer>
@@ -218,6 +217,7 @@
   </b-container>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import DragableList from '../components/Custom-dashboard-sections/Dragable-List.vue';
 
 export default {
@@ -230,28 +230,33 @@ export default {
       values: [
         {
           fieldName: 'Indicator Overview',
-          selected: this.$store.state.MSDAT_STORE.indicatorComparision,
+          // selected: this.$store.state.MSDAT_STORE.indicatorComparision,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Overview').isShow,
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
         {
           fieldName: 'Zonal Analysis',
-          selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
+          // selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Zonal Analysis').isShow,
           fieldImage: '/img/dashboardPreviewImages/ZonalAnalysis.PNG',
         },
         {
           fieldName: 'Indicator Comparison',
-          selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
+          // selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Comparison').isShow,
           fieldImage:
             '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
         },
         {
           fieldName: 'Dataset Comparison',
-          selected: this.$store.state.MSDAT_STORE.datasetComperision,
+          // selected: this.$store.state.MSDAT_STORE.datasetComperision,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Dataset Comparison').isShow,
           fieldImage: '/img/dashboardPreviewImages/DataSetComparison.PNG',
         },
         {
           fieldName: 'Multi-source Comparison',
-          selected: this.$store.state.MSDAT_STORE.multisourceComparison,
+          // selected: this.$store.state.MSDAT_STORE.multisourceComparison,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Multi-source Comparison').isShow,
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
       ],
@@ -274,10 +279,9 @@ export default {
   },
   mounted() {
     this.$store.commit('updateStep', 4);
-    // Deactivate all dashboard sections by default
-    this.$store.dispatch('deactivateAllSections');
   },
   computed: {
+    ...mapGetters('AUTH_STORE', ['getUser']),
     dashboardDetails() {
       return this.$store.getters.dashboardDetails;
     },
@@ -338,6 +342,43 @@ export default {
         this.$swal('Dashboard name not provided');
         return;
       }
+
+      //
+      // SAVE DASHBOARD LOCALLY
+      //
+      // retrieve initial currentDashboard value (consisting only id & userId)
+      const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
+      // retrieve all saved dashboards
+      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      // retrieve dashboards belonging to current user
+      let list = customDashboardsList[this.getUser.username];
+      // create the dashboard config to be saved
+      const config = {
+        dashboardDetails: this.$store.getters.dashboardDetails,
+        composedData: this.$store.getters.getprogramArea,
+        surveyArray: this.$store.getters.getDataSource,
+        sectionsArray: this.$store.getters.arrangedSections,
+      };
+      // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
+      const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
+      if (dashboard) {
+        dashboard.lastEdited = Date.now();
+        dashboard.config = config;
+        localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
+        this.$store.commit('endEdit');
+      } else {
+        // (new dashboard) -> add 'config' and 'created' properties to currentDashboard and insert to start of list
+        if (!list) {
+          customDashboardsList[this.getUser.username] = [];
+          list = customDashboardsList[this.getUser.username];
+        }
+        currentCustomDashboard.created = Date.now();
+        currentCustomDashboard.config = config;
+        list.unshift(currentCustomDashboard);
+        localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
+      }
+      console.log(customDashboardsList);
+
       this.$store.dispatch('customDashboard', true);
       const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
       this.$router.push({
@@ -459,7 +500,6 @@ width: 188px;
 height: 43px;
 font-size: 15px;
 }
-
 
 .in-review{
   display: flex;

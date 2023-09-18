@@ -125,7 +125,7 @@ export default {
     };
   },
   beforeDestroy() {
-    if (this.destroyPage === false) {
+    if (this.destroyPage === false && !this.$store.getters.editMode) {
       // eslint-disable-next-line no-restricted-globals
       // location.reload(true);
       this.$store.dispatch('resetState');

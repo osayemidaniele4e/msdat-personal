@@ -18,6 +18,9 @@
         <h2>Design your dashboard, customize your data</h2>
         <h3>No coding skills required!</h3>
       </div>
+
+      <saved-dashboard-list v-if="isAuthenticated" />
+
       </div>
       <b-row align="center" class='m-5 p-5 hero'>
         <b-col md="auto" lg="auto" sm="12" class="svg">
@@ -133,6 +136,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import CdFooter from '../components/footer.vue';
+import SavedDashboardList from '../components/SavedDashboardList.vue';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
 export default {
@@ -140,6 +144,7 @@ export default {
   components: {
     CdFooter,
     customDashboardSvg,
+    SavedDashboardList,
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['isAuthenticated']),
