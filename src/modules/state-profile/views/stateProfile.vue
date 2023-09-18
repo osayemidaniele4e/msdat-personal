@@ -160,7 +160,6 @@
 import { mapState } from 'vuex';
 // import { jsPDF } from 'jspdf';
 import * as requests from '../requests';
-import DSI from './DSI.json';
 import programAreaOverview from '../components/programAreaOverview.vue';
 import demographics from '../components/demographics.vue';
 import dataMixins from '../../data-layer/mixin';
@@ -630,8 +629,6 @@ export default {
     },
   },
   async mounted() {
-    this.indicatorDefinitions = DSI.results;
-    console.log('im working');
     this.overviewLoading = true;
     // Get all locations
     const locationData = await requests.allLocations();
@@ -641,12 +638,8 @@ export default {
     const theDate = await requests.latestData();
     this.regularDateFormat = new Date(theDate.data).toLocaleDateString().replaceAll('/', '.');
     // Get specific datasource
-    // const { data } = await requests.datasourceSpecific();
-    // this.indicatorDefinitions = data.results;
-    /*
-    *this is a temporary fix for the indicator definitions section of the api,
-    *currently the endpoint does not work from an HTTPs source
-    */
+    const { data } = await requests.datasourceSpecific();
+    this.indicatorDefinitions = data.results;
   },
 };
 </script>
