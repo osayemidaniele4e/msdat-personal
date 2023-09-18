@@ -630,6 +630,7 @@ export default {
     },
   },
   async mounted() {
+    this.indicatorDefinitions = DSI.results;
     console.log('im working');
     this.overviewLoading = true;
     // Get all locations
@@ -646,7 +647,6 @@ export default {
     *this is a temporary fix for the indicator definitions section of the api,
     *currently the endpoint does not work from an HTTPs source
     */
-    this.indicatorDefinitions = DSI.results;
   },
 };
 </script>
