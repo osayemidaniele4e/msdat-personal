@@ -136,12 +136,6 @@ export default {
       this.SET_SELECTED_CONFIG(defaultDSyear);
     }
   },
-  computed: {
-    ...mapGetters('AUTH_STORE', ['getUser']),
-    fieldsArray() {
-      return this.$store.getters.arrangedSections;
-    },
-  },
   async created() {
     // const formData = {
     //   username: 'ummi',
@@ -152,6 +146,11 @@ export default {
     // console.log(response);
 
     const { name } = this.$route.params;
+
+    if (this.$store.getters.customDashboard && name === 'Health_Outcomes_and_Service_Coverage') {
+      this.$store.dispatch('customDashboard', false);
+      await this.$store.dispatch('DL/CLEAR_DB');
+    }
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure
