@@ -26,7 +26,22 @@
               class="mob-img"
               variant="primary"
             />
-            <div class="mobile-flex-col">
+            <div class="mobile-flex-col"
+              v-if="this.$store.getters.customDashboard === true">
+              <small class="mobile-flex-col-text1">{{ this.$store.getters.dashboardDetails.name }}</small>
+              <div class="mobile-flex-col-text2">
+                {{ this.$store.getters.dashboardDetails.description }}
+                  <small v-if="isAuthenticated && isAuthor"
+                    class="text-warning ml-2 tools">
+                    <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                    <b-icon font-scale="2" icon="dot"></b-icon>
+                    <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')">Create New</span>
+                    <b-icon font-scale="2" icon="dot"></b-icon>
+                    <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                  </small>
+              </div>
+            </div>
+            <div class="mobile-flex-col" v-else>
               <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
             </div>
@@ -58,12 +73,21 @@
 
           <div
             class="main-text"
-            v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
+            v-if="this.$store.getters.customDashboard === true"
           >
             <h2 class="main-text">
-              <small>{{ this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name }}</small>
-              <br />
-              {{ this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.description }}
+              <small>{{ this.$store.getters.dashboardDetails.name }}</small>
+            <div>
+              {{ this.$store.getters.dashboardDetails.description }}
+              <small v-if="isAuthenticated && isAuthor"
+                class="text-warning ml-2 tools">
+                <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                <b-icon font-scale="2" icon="dot"></b-icon>
+                <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')">Create New</span>
+                <b-icon font-scale="2" icon="dot"></b-icon>
+                <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+              </small>
+            </div>
             </h2>
           </div>
           <div class="main-text" v-else>
@@ -378,6 +402,18 @@ export default {
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
+
+    // check if current user is author of displayed custom dashboard
+    isAuthor() {
+      // retrieve all saved dashboards
+      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      // retrieve dashboards belonging to current user
+      const list = customDashboardsList[this.getUser.username];
+      // find currently loaded dashboard in list
+      const { name, description } = this.$store.getters.dashboardDetails;
+      return list?.find((dashb) => (dashb.config.dashboardDetails.name === name)
+        && (dashb.config.dashboardDetails.description === description));
+    },
   },
   created() {
     this.controls = this.$children;
@@ -428,6 +464,10 @@ export default {
     showC() {
       this.showCard = true;
     },
+    editDashboard() {
+      this.$store.commit('startEdit');
+      this.$router.push('/my-dashboard/details');
+    },
   },
   watch: {
     $route: {
@@ -457,6 +497,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/scss/abstracts/_variables.scss';
+
+.tools {
+  display: inline-flex;
+  align-items: center;
+}
+.tools span:hover {
+  text-decoration: underline;
+}
 .custom-header {
   color: #ffffff;
   padding: 10px;

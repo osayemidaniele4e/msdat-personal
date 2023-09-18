@@ -4,6 +4,7 @@ import createPersistedState from 'vuex-persistedstate';
 import store from '@/store/index';
 import USER_ROUTE from '@/modules/msdat-dashboard/views/userLog/router';
 import MSDAT_ABOUT_ROUTE from '@/modules/msdat-dashboard/views/about/router';
+import MSDAT_SETTINGS_ROUTE from '@/modules/msdat-dashboard/views/settings/router';
 import MSDAT_EXTERNAL_ROUTE from '@/modules/msdat-dashboard/views/external/router';
 import MSDAT_FAQ_ROUTE from '@/modules/msdat-dashboard/views/faq/router';
 import MSDAT_UPDATE_LOG from '@/modules/msdat-dashboard/views/update_log/router';
@@ -21,6 +22,7 @@ Vue.use(VueRouter);
 
 const routes = [
   ...MSDAT_ABOUT_ROUTE,
+  ...MSDAT_SETTINGS_ROUTE,
   ...MSDAT_EXTERNAL_ROUTE,
   ...MSDAT_FAQ_ROUTE,
   ...MSDAT_UPDATE_LOG,
