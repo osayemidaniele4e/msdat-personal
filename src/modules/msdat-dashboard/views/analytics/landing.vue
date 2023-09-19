@@ -38,6 +38,7 @@ import DescriptiveAnalysisConfig from '../../components/sections/advanced/descri
 import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
 import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
+import ScatterplotConfig from '../../components/sections/advanced/scatterplot-section/scatterplot-section-config';
 
 export default {
   name: 'Landing',
@@ -71,6 +72,7 @@ export default {
       this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
       this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
       this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
+      this.ADD_CONTROL_PANEL(ScatterplotConfig);
     },
   },
 };

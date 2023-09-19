@@ -1,0 +1,61 @@
+<template>
+  <div>
+    <div v-if="showComing" class="show-coming">
+      <div class="coming-soon-text">This section is coming soon....</div>
+      <img src="../../../../../../assets/svg/chart2.svg" alt="" class="svg1">
+    </div>
+    <div v-if="title === 'Demographics'">
+      <b-embed type="iframe" aspect="21by9" :src="url" :width="width" :height="height"></b-embed>
+    </div>
+  </div>
+</template>
+<script>
+import { mapMutations } from 'vuex';
+// import config from './config/dashboard_config';
+export default {
+  name: 'ScatterplotSection',
+  data() {
+    return {
+      title: '',
+      // url: 'https://public.tableau.com/views/UpdatedDemographicDashboardVersion2_16472527584120/Dashboard3?:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url: 'https://public.tableau.com/app/profile/data.team8402/viz/CrossAnalysischartAdvancedAnalytics/Dashboard12?:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      width: '100%',
+      height: '400',
+      showComing: false,
+    };
+  },
+  methods: {
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+  },
+};
+</script>
+<style scoped>
+.heading {
+  margin: 10px;
+}
+.main-text {
+  font-size: 25px;
+  text-align: center;
+  color: black;
+}
+.sub-text {
+  color: black;
+  font-size: 15px;
+  text-align: left;
+  font-weight: 100;
+}
+.show-coming{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.svg1{
+  width: 400px;
+}
+.coming-soon-text{
+  font-size: 15px;
+  font-weight: 500;
+  margin: 30px;
+}
+</style>

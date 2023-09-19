@@ -76,7 +76,7 @@
         </div>
       </template>
 
-         <template v-slot:section-3="{ payload, controlIndex }">
+      <template v-slot:section-3="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
@@ -104,6 +104,26 @@
         </div>
       </template>
 
+      <template v-slot:section-4="{ payload, controlIndex }">
+        <div class="col-md-12" style="margin-bottom: 4rem">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Scatter Plot</h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                since it will be mounted first -->
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <ScatterplotSection :controlPanelProps="payload" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
     </BaseDashboard>
   </div>
 </template>
@@ -120,6 +140,8 @@ import PredictiveAnalysisSection from '../../components/sections/advanced/predic
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
 import AdvancedMultiSource from '../../components/sections/advanced/multisource-section/multi-source.vue';
+import ScatterplotConfig from '../../components/sections/advanced/scatterplot-section/scatterplot-section-config';
+import ScatterplotSection from '../../components/sections/advanced/scatterplot-section/ScatterplotSection.vue';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 // import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
@@ -151,6 +173,7 @@ export default {
     CorrelationAnalysisSection,
     AdvancedMultiSource,
     DescriptiveAnalysisSection,
+    ScatterplotSection,
     // BaseZonalAnalysisSection,
     // ICS,
     // BaseIndicatorOverview,
@@ -290,6 +313,7 @@ export default {
     this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
     this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
     this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
+    this.ADD_CONTROL_PANEL(ScatterplotConfig);
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
