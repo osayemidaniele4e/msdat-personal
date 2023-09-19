@@ -88,6 +88,7 @@ export default {
       this.$swal.fire({
         title: 'Confirm delete Dashboard',
         showDenyButton: true,
+        denyButtonText: 'Cancel',
       }).then((result) => {
         if (result.isConfirmed) {
           const newList = this.list.filter((dashb) => dashb.id !== dashboard.id);
