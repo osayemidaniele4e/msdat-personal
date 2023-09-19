@@ -81,4 +81,7 @@ export default {
   Yearsloading(state) {
     return state.loader.years;
   },
+  editMode(state) {
+    return state.editMode;
+  },
 };

@@ -90,42 +90,39 @@ export default {
     },
     async saveDashboard(indicators, sources, dashboardTitle) {
       const sections = this.fieldsArray.filter((item) => item.isShow === true).map((item) => item.name);
-      if (this.$store.getters.getVisibility === 'private'){
+      if (this.$store.getters.getVisibility === 'private') {
         const payload = {
-        title: dashboardTitle,
-        showTableRelatedIndicator: false,
-        visibility: 'private',
-        user: this.getUser.id,
-        initial_indicator: indicators[0],
-        initial_datasource: sources[0],
-        indicators,
-        dataSources: sources,
-        initial_location: 1,
-        default_indictors: [indicators[0]],
-        sections,
-      };
-      await this.SAVE_USER_DASHBOARD(payload);
+          title: dashboardTitle,
+          showTableRelatedIndicator: false,
+          visibility: 'private',
+          user: this.getUser.id,
+          initial_indicator: indicators[0],
+          initial_datasource: sources[0],
+          indicators,
+          dataSources: sources,
+          initial_location: 1,
+          default_indictors: [indicators[0]],
+          sections,
+        };
+        await this.SAVE_USER_DASHBOARD(payload);
       }
 
-      if (this.$store.getters.getVisibility === 'public'){
+      if (this.$store.getters.getVisibility === 'public') {
         const payload = {
-        title: dashboardTitle,
-        showTableRelatedIndicator: false,
-        visibility: 'pending',
-        user: this.getUser.id,
-        initial_indicator: indicators[0],
-        initial_datasource: sources[0],
-        indicators,
-        dataSources: sources,
-        initial_location: 1,
-        default_indictors: [indicators[0]],
-        sections,
-      };
-      await this.SAVE_USER_DASHBOARD(payload);
+          title: dashboardTitle,
+          showTableRelatedIndicator: false,
+          visibility: 'pending',
+          user: this.getUser.id,
+          initial_indicator: indicators[0],
+          initial_datasource: sources[0],
+          indicators,
+          dataSources: sources,
+          initial_location: 1,
+          default_indictors: [indicators[0]],
+          sections,
+        };
+        await this.SAVE_USER_DASHBOARD(payload);
       }
-
-
-  
     },
   },
   async mounted() {
@@ -139,12 +136,6 @@ export default {
       this.SET_SELECTED_CONFIG(defaultDSyear);
     }
   },
-  computed: {
-    ...mapGetters('AUTH_STORE', ['getUser']),
-    fieldsArray() {
-      return this.$store.getters.arrangedSections;
-    },
-  },
   async created() {
     // const formData = {
     //   username: 'ummi',
@@ -155,6 +146,11 @@ export default {
     // console.log(response);
 
     const { name } = this.$route.params;
+
+    if (this.$store.getters.customDashboard && name === 'Health_Outcomes_and_Service_Coverage') {
+      this.$store.dispatch('customDashboard', false);
+      await this.$store.dispatch('DL/CLEAR_DB');
+    }
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure

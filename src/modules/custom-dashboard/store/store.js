@@ -18,7 +18,7 @@ const store = {
       years: false,
     },
     allSelected: false,
-    step: 0,
+    step: 1,
     customDashboard: JSON.parse(customDashboard),
     dashboardDetails: JSON.parse(dashboardDetails),
     rmnchs: [],
@@ -26,39 +26,40 @@ const store = {
     SurveyArray: JSON.parse(SurveyArray),
     notes: [],
     visibility: 'private',
-    ArrangedSections: JSON.parse(SectionsArray) || [
+    editMode: false,
+    ArrangedSections: SectionsArray ? JSON.parse(SectionsArray) : [
       {
         id: 0,
         name: 'Indicator Overview',
         active: false,
-        isShow: true,
+        isShow: false,
       },
       {
         id: 1,
         name: 'Zonal analysis',
         active: false,
-        isShow: true,
+        isShow: false,
       },
       {
         id: 2,
         name: 'Indicator Comparison',
         active: false,
-        isShow: true,
+        isShow: false,
       },
       {
         id: 3,
         name: 'Dataset Comparison',
         active: false,
-        isShow: true,
+        isShow: false,
       },
       {
         id: 4,
         name: 'Multi-source Comparison',
         active: false,
-        isShow: true,
+        isShow: false,
       },
     ],
-    dashboardRequest: {}
+    dashboardRequest: {},
   },
 
   mutations,

@@ -11,6 +11,9 @@
     >
       <stepper />
     </div>
+    <div v-if="$store.state.CUSTOM_DASHBOARD_STORE.editMode" class="text-center">
+      <span class="w-100 bg-warning text-white d-block small">Edit Mode</span>
+    </div>
     <router-view class="mt-5" />
   </div>
 </template>

@@ -3,8 +3,7 @@ import apiEndpoints from '@/modules/data-layer/config/endpoint';
 
 export const allLocations = () => axiosInstance.get(apiEndpoints.getLocation);
 
-export const latestData = () => axiosInstance.get('http://135.181.212.168:9234/api/data/latest/');
-
+export const latestData = () => axiosInstance.get('https://msdatapi.e4eweb.space/api/data/latest');
 export const datasourceSpecific = () => axiosInstance.get(apiEndpoints.getDSI);
 
 export const fetchDemographics = async (params, locationId) => {

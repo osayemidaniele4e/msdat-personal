@@ -14,10 +14,10 @@
         {{ '' }}
       </label>
       <label
-        class="text-uppercase work-sans label-text"
-        v-if="values.label == 'Target' && dashboardName === 'Demographics'"
+        class="text-uppercase work-sans label-text disabled_alt"
+        v-if="values.label == 'Target'"
       >
-        {{ '' }}
+      {{ values.label }}
       </label>
       <label class="text-uppercase work-sans label-text" v-else> {{ values.label }} </label>
 
@@ -52,7 +52,7 @@
         />
       </div>
 
-      <div class="d-flex" v-if="values.type === 'checkbox' && dashboardName !== 'Demographics'">
+      <div class="d-flex" v-if="values.type === 'checkbox'">
         <!-- National Target here -->
         <div class="d-flex disabled_alt">
           <BaseCheckbox
