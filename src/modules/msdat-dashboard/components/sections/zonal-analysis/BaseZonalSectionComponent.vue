@@ -20,7 +20,7 @@ export default {
       regionalColor: [
         {
           id: 1,
-          color: '#228B22',
+          color: '#EB928F',
         },
         {
           id: 2,
