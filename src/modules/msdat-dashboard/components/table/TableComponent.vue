@@ -265,7 +265,7 @@ export default {
       default: () => [
         'NHMIS-DHIS2',
         'NHMIS-DHIS2 (MONTHLY)',
-        'SMoH-DHPRS',
+        'SMoH-DPRS',
         'MICS',
         'NDHS',
         'NARHS',
