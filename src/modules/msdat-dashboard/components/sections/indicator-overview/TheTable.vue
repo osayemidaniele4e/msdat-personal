@@ -5,10 +5,13 @@
     <div v-if="!loading">
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
-          <p class="work-sans mb-0 line-height">
-            <b>{{ values.indicator.short_name }}</b>
-            and related indicators (with year of latest values) across available data sources.
-          </p>
+          <div class="w-100 d-flex justify-content-between">
+            <p class="work-sans mb-0 line-height">
+              <b>{{ values.indicator.short_name }}</b>
+              and related indicators (with year of latest values) across available data sources.
+            </p>
+            <button @click="toggleShowShareModal()" class="share-btn">share</button>
+          </div>
         </template>
         <TableComponent
           class="work-sans"
@@ -22,6 +25,7 @@
           @clickedDatasource="getValue"
           @key="getKey"
           @clickedReset="getReset"
+          id="indicatorTable"
         />
       </base-sub-card>
     </div>
@@ -42,7 +46,13 @@
       />
       <!-- </template> -->
     </base-modal>
+    <ShareCodeModal
+      @toggleShowShareModal="toggleShowShareModal"
+      v-if="showShareCodeModal"
+      :tableContent="tableObj"
+    />
   </div>
+
   <!-- </base-overlay> -->
 </template>
 
@@ -54,6 +64,7 @@ import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
+import ShareCodeModal from './shareTableModal.vue';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -62,6 +73,7 @@ export default {
     IndicatorMetaDataModal,
     DataSourceMetaDataModal,
     TableLoader,
+    ShareCodeModal,
   },
   data() {
     return {
@@ -74,6 +86,10 @@ export default {
       modalTitle: '',
       DisplayType: '',
       updateData: 0,
+      showShareCodeModal: false,
+      tableObj: null,
+      bootstrapCDN:
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">',
     };
   },
   props: {
@@ -172,6 +188,12 @@ export default {
      * @param {number} queryObject.datasource The id of the datasource
      * @returns {dataObjectType}
      */
+
+    toggleShowShareModal() {
+      this.showShareCodeModal = !this.showShareCodeModal;
+      const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
+      this.tableObj = this.bootstrapCDN + tableObjTemp;
+    },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const filteredIndicator = await this.dlQuery(queryObject);
       if (this.$route.meta.title !== 'Demographics') {
@@ -280,5 +302,15 @@ export default {
   opacity: 1;
   margin-left: 10px;
   font-size: 14px;
+}
+
+.share-btn {
+  height: auto;
+  padding: 0;
+  margin: 0;
+  padding: 0 10px;
+  margin-right: 20px;
+  margin-top: 2px;
+  padding-bottom: 2px;
 }
 </style>
