@@ -11,7 +11,7 @@
           </div>
           <div class="d-flex flex-column input-item">
             <!-- <textarea v-model="tableContent" name="" id="" cols="20" rows="5"></textarea> -->
-            <iframe width="1000" height="400" :srcdoc="tableContent"></iframe>
+            <iframe style="padding: 5px" width="1000" height="400" :srcdoc="tableContent"></iframe>
           </div>
         </div>
 
