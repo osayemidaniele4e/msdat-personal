@@ -22,11 +22,14 @@ import { genComponent } from 'vue-highcharts';
 // default map
 import NigerianMap from './ng-all.geo.json';
 
+// test config
+import TestConfig from './tenp.json';
+
 // default map options
 import defaultOptions from './defaultOptions';
 
 // map data
-import regionsMap from './mapData/regions';
+// import regionsMap from './mapData/regions';
 
 import {
   // eslint-disable-next-line camelcase
@@ -146,22 +149,24 @@ export default {
 
       switch (level) {
         case 1:
+          this.defaultOptions = { ...defaultOptions };
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
         case 2:
-          this.defaultOptions.plotOptions.map.mapData = regionsMap;
+          this.defaultOptions = { ...TestConfig };
           break;
         case 3:
           this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[lgaState].data;
           break;
         case 4:
+          this.defaultOptions = { ...defaultOptions };
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
         default:
+          this.defaultOptions = { ...defaultOptions };
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
       }
-      this.defaultOptions = { ...this.defaultOptions };
     },
   },
   watch: {
