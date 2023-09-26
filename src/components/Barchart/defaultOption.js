@@ -29,10 +29,10 @@ export default {
             this.renderer.image('https://i.imgur.com/yyqklZM.png', 150, 62, 230, 53)
               .attr({
                 zIndex: 1000,
-                x: '64%',
+                x: '80%',
                 y: '84%',
-                // width: '32%',
-                // height: '15%',
+                width: '116',
+                height: '25',
               })
               .add();
           },
@@ -68,7 +68,10 @@ export default {
         fontSize: '11px',
         fontFamily: '"Work Sans", sans-serif',
         fontWeight: 'normal',
+        whiteSpace: 'nowrap',
+        maxWidth: '20px',
       },
+      maxWidth: 20,
     },
     tickLength: 5,
     tickWidth: 1,
@@ -91,6 +94,7 @@ export default {
       style: {
         fontSize: '11px',
         fontFamily: '"Work Sans", sans-serif',
+        whiteSpace: 'normal',
       },
     },
     tickPixelInterval: 400,
