@@ -32,7 +32,7 @@ no-param-reassign */
       </b-col>
       <b-col sm="12" :md="this.programArea.name == 'Health Services' ? 'auto' : '8'">
         <div class="ml-3" v-if="this.programArea.name != 'Health Services'">
-          <b-row>
+          <!-- <b-row>
             <b-col>
               <p>{{ this.barChartOptions.xAxis.categories[0] }}</p>
               <p class="source">
@@ -48,7 +48,7 @@ no-param-reassign */
               <p class="grey-value" v-if="state != 'National'">{{ this.singleStateValue }}</p>
               <p class="source">Source:{{ this.singleSrcnYear }}</p>
             </b-col>
-          </b-row>
+          </b-row> -->
           <hr />
         </div>
         <!-- <pre>{{ barChartOptions }}</pre> -->
@@ -192,7 +192,7 @@ no-param-reassign */
         </div>
       </b-col>
     </b-row>
-    <b-row v-show="this.isDefinitionVisible">
+    <b-row style="flex-direction: column;" v-show="this.isDefinitionVisible">
       <p>
         <b> Indicator definitions </b>
       </p>
