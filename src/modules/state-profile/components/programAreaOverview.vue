@@ -300,6 +300,7 @@ export default {
             style: {
               fontSize: '8px',
               fontFamily: '"Muli", sans-serif',
+              textOverflow: 'none',
             },
           },
         },
