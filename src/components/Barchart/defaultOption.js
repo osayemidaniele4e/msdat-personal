@@ -7,10 +7,10 @@ export default {
   exporting: {
     enabled: true,
     chartOptions: {
-      title: {
-        text: '',
-        x: -20,
-      },
+      // title: {
+      //   text: '',
+      //   x: -20,
+      // },
       legend: {
         align: 'left',
         width: '70%',
@@ -26,7 +26,8 @@ export default {
         // plotBackground: 'https://i.stack.imgur.com/E1r9X.png', https://gitlab.com/e4e-webdev/msdat/-/blob/feature/george-chart-watermark/src/assets/img/watermark.png
         events: {
           load() {
-            this.renderer.image('https://i.imgur.com/yyqklZM.png', 150, 62, 230, 53)
+            this.renderer
+              .image('https://i.imgur.com/yyqklZM.png', 150, 62, 230, 53)
               .attr({
                 zIndex: 1000,
                 x: '80%',
