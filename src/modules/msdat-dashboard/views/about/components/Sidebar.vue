@@ -75,7 +75,7 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline main-item">Health Outcomes</h5>
-          <router-link to="/dashboard/Health_Outcomes" target="_blank"  class="sub-item"
+          <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank"  class="sub-item"
             >Health Outcomes and Service Coverage</router-link
           >
         </b-list-group>

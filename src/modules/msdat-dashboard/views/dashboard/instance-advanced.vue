@@ -77,6 +77,26 @@
       </template>
 
       <template v-slot:section-3="{ payload, controlIndex }">
+        <div class="col-md-12" style="margin-bottom: 4rem">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Scatterplot Analysis</h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                since it will be mounted first -->
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <ScatterplotSection :controlPanelProps="payload" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
+      <template v-slot:section-4="{ payload, controlIndex }">
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
@@ -99,26 +119,6 @@
                 </template>
               </div>
               <!-- </div> -->
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-
-      <template v-slot:section-4="{ payload, controlIndex }">
-        <div class="col-md-12" style="margin-bottom: 4rem">
-          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Scatter Plot</h5>
-            </template>
-            <!-- lazy loading for each section starts here -->
-            <!-- the first section doesn't need the component
-                since it will be mounted first -->
-            <template>
-              <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <ScatterplotSection :controlPanelProps="payload" />
-                </ControlPanelConfiguration>
-              </LazyLoading>
             </template>
           </base-sub-card>
         </div>
@@ -312,11 +312,12 @@ export default {
     this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
     this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
     this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
-    this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
     this.ADD_CONTROL_PANEL(ScatterplotConfig);
+    this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
+    this.$route.meta.title = 'Advanced Analytics';
   },
 
   destroyed() {
