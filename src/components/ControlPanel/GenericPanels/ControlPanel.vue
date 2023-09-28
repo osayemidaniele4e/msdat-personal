@@ -259,7 +259,7 @@ export default {
 
     showItem(item) {
       if (item !== null && item.length === 2) {
-        console.log(JSON.stringify(item), 'item');
+        // console.log(JSON.stringify(item), 'item');
       }
       // if (item !== null && item.length === 38) {
       //   console.log(item, 'UUU');
@@ -270,14 +270,14 @@ export default {
     },
 
     locationCheck(options) {
-      console.log(options, 'options');
+      // console.log(options, 'options');
       if (
         this.$route.params.name === 'Disease_Surveillance'
         && options !== null
         && options.length === 38
       ) {
-        const main = options.filter((s) => s.name === 'Nigeria');
-        console.log(main, 'Nigeria');
+        // const main = options.filter((s) => s.name === 'Nigeria');
+        // console.log(main, 'Nigeria');
         return options.filter((s) => s.name === 'Nigeria');
       }
       return options;
@@ -348,7 +348,7 @@ export default {
     const date = new Date();
     const getYear = date.getFullYear + 1;
     // pick one of the available years as the default years as opposed to the static 2016 year
-    console.log('setup', this.setup);
+    // console.log('setup', this.setup);
     const defaultYears = this.setup[3].options;
     // console.log(defaultYears);
     // console.log(defaultYears, 'defaultyears');
