@@ -122,38 +122,80 @@ export default {
   data() {
     return {
       selectedImage: {
-        val: '',
+        val: this.$store.getters.editMode
+          ? this.$store.getters.dashboardDetails.image : '',
         isValid: true,
       },
       dName: {
-        val: '',
+        val: this.$store.getters.editMode
+          ? this.$store.getters.dashboardDetails.name : '',
         isValid: true,
       },
       description: {
-        val: '',
+        val: this.$store.getters.editMode
+          ? this.$store.getters.dashboardDetails.description : '',
         isValid: true,
       },
       formIsValid: true,
       user: {},
       username: '',
+      endEdit: true,
     };
   },
   mounted() {
     this.user = this.getUser;
     this.username = this.user.username;
     this.$store.commit('updateStep', 1);
-    localStorage.removeItem('vuex');
-    this.$store.dispatch('resetState');
+
+    this.initializeToLocal();
+
     // store.replaceState({})
     // this.$forceUpdate();
     // this.$router.go();
     // window.location.reload(true);
     // location.reload(1);
   },
+  beforeDestroy() {
+    if (this.endEdit) this.$store.commit('endEdit');
+  },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
   },
   methods: {
+    // INITIALIZE CURRENT DASHBOARD TO LOCAL
+    initializeToLocal() {
+    // set initial value of currentDashboard to localStorage (with only id & userId parameters)
+      let currentCustomDashboard;
+      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      // get list for current user
+      const list = customDashboardsList[this.getUser.username];
+      if (!this.$store.getters.editMode) {
+        localStorage.removeItem('vuex');
+        this.$store.dispatch('resetState');
+
+        // incrementally generate id from current saved list, defaults to 1
+        currentCustomDashboard = {
+          id: (list && list.length) ? (list[0].id + 1) : 1,
+          userId: this.getUser.id,
+        };
+      } else {
+      // retrieve id of existing dashboard, exit edit mode if not found
+        const id = list?.find((dashboard) => ((dashboard.config.dashboardDetails.name === this.dName.val)
+        && (dashboard.config.dashboardDetails.description === this.description.val))).id;
+        if (!id) {
+          this.$store.commit('endEdit');
+          this.$store.dispatch('resetState');
+        }
+        currentCustomDashboard = {
+        // eslint-disable-next-line no-nested-ternary, no-unneeded-ternary
+          id: id ? id : (list && list.length) ? (list[list.length - 1].id + 1) : 1,
+          userId: this.getUser.id,
+        };
+      }
+      console.log(currentCustomDashboard);
+      localStorage.setItem('currentCustomDashboard', JSON.stringify(currentCustomDashboard));
+    },
+
     // Preview of image uploaded
     previewThumbnail: function getPreview(event) {
       const input = event.target;
@@ -204,6 +246,26 @@ export default {
         return;
       }
 
+      // do not submit if dashboard name already exists in saved list
+      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      const list = customDashboardsList[this.getUser.username] || [];
+      const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
+      let existing;
+      if (this.$store.getters.editMode) {
+        existing = list.find((dashboard) => (dashboard.id !== currentCustomDashboard.id)
+          && (dashboard.config.dashboardDetails.name === this.dName.val));
+      } else {
+        existing = list.find((dashboard) => dashboard.config.dashboardDetails.name === this.dName.val);
+
+        // clear dataArray (for next page)
+        const dataArray = [];
+        this.$store.dispatch('clearAllData', dataArray);
+      }
+      if (existing) {
+        this.$swal('The dashboard name you inputed already exists, kindly edit.');
+        return;
+      }
+
       const formData = {
         dashboardName: this.dName,
         description: this.description,
@@ -219,10 +281,9 @@ export default {
       this.$store.dispatch('allSelection', {
         allselected: false,
       });
-      const dataArray = [];
-      this.$store.dispatch('clearAllData', dataArray);
       // this.$store.state.CUSTOM_DASHBOARD_STORE.masterData = [];
       // this.$store.state.CUSTOM_DASHBOARD_STORE.SurveyArray = [];
+      this.endEdit = false;
 
       this.$emit('save-data', formData);
       this.$router.push('preference-table');

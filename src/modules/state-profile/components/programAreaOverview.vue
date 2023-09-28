@@ -606,7 +606,8 @@ export default {
   async mounted() {
     console.log('programArea', this.programArea);
     const { theIndicators, theSources } = await requests.getIndicatorsAndSources();
-    const test = await requests.getIndicatorsAndSources();
+    // const test = await requests.getIndicatorsAndSources();
+    // leave above line for future debugging purposes
     this.allDataSources = theSources.data;
     this.allIndicators = theIndicators.data;
     let selectedState;
@@ -621,7 +622,7 @@ export default {
           selectedState.id,
         );
         console.log('newNational', newNational);
-        newNational.map((el) => this.nationalObjects.push(el.results[1]));
+        newNational.map((el) => this.nationalObjects.push(el.results[0]));
         this.$emit('overviewLoading');
         this.justNationalData();
         this.getHealthFacilityData();
@@ -631,7 +632,7 @@ export default {
     } catch (err) {
       console.log(err);
     }
-    console.log('National objects', this.nationalObjects)
+    console.log('National objects', this.nationalObjects);
   },
 
 };
