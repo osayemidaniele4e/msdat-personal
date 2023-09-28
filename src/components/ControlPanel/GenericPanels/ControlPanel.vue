@@ -131,7 +131,7 @@
 
 <script>
 // import ControlMixins from '@/components/ControlPanel/ControlMixins';
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex';
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
@@ -227,6 +227,7 @@ export default {
     payload: {
       handler(newValue) {
         this.$emit('data:options', newValue);
+        this.saveNewActivity(newValue);
       },
       immediate: true,
       deep: true,
@@ -256,7 +257,36 @@ export default {
      * checks if the key is datasource then create a new array of datasource id
      * checks if the array has NHMIS-DHIS2 with id of 6
      */
-
+    saveNewActivity(newValue) {
+      const {
+        indicator, datasource, location, year,
+      } = newValue;
+      // eslint-disable-next-line camelcase
+      const ind = Array.isArray(indicator) ? indicator[indicator.length - 1]?.short_name : indicator?.short_name;
+      // eslint-disable-next-line no-nested-ternary
+      const dat = Array.isArray(datasource) ? datasource[datasource.length - 1]?.item : datasource.datasource
+        ? datasource.datasource : datasource?.item;
+      const loc = location?.name === 'Nigeria' ? 'National' : location?.name;
+      if (ind && dat && this.getUser.id) {
+        const activityObject = {
+          id: `${this.getUser.id}${Date.now()}`,
+          datetime: Date.now(),
+          page: this.$route.params.name.split('_').slice(0, 2).join(' '),
+          section: this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].label,
+          parameters: `${ind}, ${dat}${year ? ` ${year}` : ''}${loc ? `, ${loc}` : ''}`,
+        };
+        const lastActivity = JSON.parse(localStorage.getItem('lastActivity') || '{}');
+        const hold = (Date.now() - lastActivity.datetime || 0) >= 5000;
+        const diff = (lastActivity.page !== activityObject.page)
+          || (lastActivity.section !== activityObject.section)
+          || (lastActivity.parameters !== activityObject.parameters);
+        if (hold && diff) {
+          // send activity post request to backend
+          console.log('activity', activityObject);
+        }
+        localStorage.setItem('lastActivity', (JSON.stringify(activityObject)));
+      }
+    },
     showItem(item) {
       if (item !== null && item.length === 2) {
         // console.log(JSON.stringify(item), 'item');
@@ -330,6 +360,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('AUTH_STORE', ['getUser']),
     payload() {
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
