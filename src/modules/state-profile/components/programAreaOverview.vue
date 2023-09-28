@@ -15,7 +15,8 @@ no-param-reassign */
           {{ programArea.detail }}
         </p>
         <p class="mb-4 note">
-          <b>NOTE: Sources for each of the indicators in the graph were selected based on most
+          <b
+            >NOTE: Sources for each of the indicators in the graph were selected based on most
             recent and most reliable estimates.
           </b>
         </p>
@@ -31,7 +32,7 @@ no-param-reassign */
       </b-col>
       <b-col sm="12" :md="this.programArea.name == 'Health Services' ? 'auto' : '8'">
         <div class="ml-3" v-if="this.programArea.name != 'Health Services'">
-          <b-row>
+          <!-- <b-row>
             <b-col>
               <p>{{ this.barChartOptions.xAxis.categories[0] }}</p>
               <p class="source">
@@ -47,29 +48,54 @@ no-param-reassign */
               <p class="grey-value" v-if="state != 'National'">{{ this.singleStateValue }}</p>
               <p class="source">Source:{{ this.singleSrcnYear }}</p>
             </b-col>
-          </b-row>
+          </b-row> -->
           <hr />
         </div>
         <!-- <pre>{{ barChartOptions }}</pre> -->
-        <BaseBar v-show="this.programArea.name != 'Health Services'" :chartOptions="barChartOptions" />
-        <b-row style="color: #ffffff; font-size: 12px" class="pl-5 mt-4"
-          v-show="this.programArea.name == 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH'">
-          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #054a80; border: 1px solid white; height: 40px">
-            <p >Pre-pregnancy</p>
+        <BaseBar
+          v-show="this.programArea.name != 'Health Services'"
+          :chartOptions="barChartOptions"
+          :title="getTitle"
+        />
+        <b-row
+          style="color: #ffffff; font-size: 12px"
+          class="pl-5 mt-4"
+          v-show="this.programArea.name == 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH'"
+        >
+          <b-col
+            class="d-flex align-items-center justify-content-center"
+            style="background-color: #054a80; border: 1px solid white; height: 40px"
+          >
+            <p>Pre-pregnancy</p>
           </b-col>
-          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #2c8cca; border: 1px solid white; height: 40px">
+          <b-col
+            class="d-flex align-items-center justify-content-center"
+            style="background-color: #2c8cca; border: 1px solid white; height: 40px"
+          >
             <p>Pregnancy</p>
           </b-col>
-          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #3f7299; border: 1px solid white; height: 40px">
+          <b-col
+            class="d-flex align-items-center justify-content-center"
+            style="background-color: #3f7299; border: 1px solid white; height: 40px"
+          >
             <p>Birth</p>
           </b-col>
-          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #43893b; border: 1px solid white; height: 40px">
+          <b-col
+            class="d-flex align-items-center justify-content-center"
+            style="background-color: #43893b; border: 1px solid white; height: 40px"
+          >
             <p>Postnatal</p>
           </b-col>
-          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #2c9f35; border: 1px solid white; height: 40px">
+          <b-col
+            class="d-flex align-items-center justify-content-center"
+            style="background-color: #2c9f35; border: 1px solid white; height: 40px"
+          >
             <p>Infancy</p>
           </b-col>
-          <b-col class="d-flex align-items-center justify-content-center" style="background-color: #8fb438; border: 1px solid white; height: 40px">
+          <b-col
+            class="d-flex align-items-center justify-content-center"
+            style="background-color: #8fb438; border: 1px solid white; height: 40px"
+          >
             <p>Childhood</p>
           </b-col>
         </b-row>
@@ -166,7 +192,7 @@ no-param-reassign */
         </div>
       </b-col>
     </b-row>
-    <b-row v-show="this.isDefinitionVisible">
+    <b-row style="flex-direction: column;" v-show="this.isDefinitionVisible">
       <p>
         <b> Indicator definitions </b>
       </p>
@@ -300,6 +326,7 @@ export default {
             style: {
               fontSize: '8px',
               fontFamily: '"Muli", sans-serif',
+              textOverflow: 'none',
             },
           },
         },
@@ -364,7 +391,8 @@ export default {
           if (val !== undefined) {
             data.push({
               y: Number(val.value),
-              name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource
+              name: `${this.getIndicatorInfo(val.indicator).short_name} (${
+                this.getDataSourceInfo(val.datasource).datasource
               } ${val.period})`,
               color: val.color,
             });
@@ -375,7 +403,8 @@ export default {
         this.nationalObjects.map((val) => {
           if (val !== undefined) {
             data.push([
-              `${this.getIndicatorInfo(val?.indicator).short_name} (${this.getDataSourceInfo(val?.datasource).datasource
+              `${this.getIndicatorInfo(val?.indicator).short_name} (${
+                this.getDataSourceInfo(val?.datasource).datasource
               } ${val.period}), `,
               Number(val.value),
             ]);
@@ -504,7 +533,8 @@ export default {
         if (val) {
           data.push({
             y: Number(val.value),
-            name: `${this.getIndicatorInfo(val.indicator).short_name} (${this.getDataSourceInfo(val.datasource).datasource
+            name: `${this.getIndicatorInfo(val.indicator).short_name} (${
+              this.getDataSourceInfo(val.datasource).datasource
             } ${val.period})`,
             color: val.color,
           });
@@ -575,6 +605,14 @@ export default {
       this.getHealthFacilityData();
     },
   },
+  computed: {
+    getTitle() {
+      const title = `${this.programArea.chartTitle}, <br>
+          <strong>Sources:</strong> <small>${this.programArea.sources}</small>
+          `;
+      return title;
+    },
+  },
   watch: {
     async state(newVal, oldVal) {
       this.resetHealthFacilityData();
@@ -634,7 +672,6 @@ export default {
     }
     console.log('National objects', this.nationalObjects);
   },
-
 };
 </script>
 
