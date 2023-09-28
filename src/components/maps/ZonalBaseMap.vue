@@ -4,6 +4,7 @@
 <template>
   <div>
     <Highmaps :options="defaultOptions" />
+
   </div>
 </template>
 
@@ -132,6 +133,7 @@ export default {
     };
   },
   methods: {
+
     plotMapLevel(level) {
       // check space is in string and add underscore
       let lgaState = '';

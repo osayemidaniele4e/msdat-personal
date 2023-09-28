@@ -115,7 +115,7 @@ export default {
           };
 
           this.SET_SELECTED_CONFIG(item);
-          console.log(JSON.stringify(item), '@@@@');
+          // console.log(JSON.stringify(item), '@@@@');
           // this.addQueryParamToUrl();
         }
         this.$emit('input', val);

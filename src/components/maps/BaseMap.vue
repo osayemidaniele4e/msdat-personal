@@ -4,8 +4,6 @@
 <template>
   <div>
     <Highmaps :options="defaultOptions" />
-
-    {{ showItem(defaultOptions) }}
   </div>
 </template>
 
@@ -137,9 +135,6 @@ export default {
     };
   },
   methods: {
-    showItem(item) {
-      console.log(item, 'BBB');
-    },
     plotMapLevel(level) {
       // check space is in string and add underscore
       let lgaState = '';
@@ -175,12 +170,22 @@ export default {
         const filteredSeries = newVal.series && newVal.series.filter((item) => item.data.length > 0);
 
         if (filteredSeries.length === 1) {
-          this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+          const filteredData = filteredSeries[0].data;
+
+          filteredData.forEach(([state, value]) => {
+            const foundItem = TestConfig.series.find((item) => item.name === state);
+            if (foundItem) {
+              foundItem.data[0][1] = value;
+            }
+          });
+
+          Object.assign(this.defaultOptions, TestConfig);
           this.level = 2;
         } else {
-          this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+          Object.assign(this.defaultOptions, newVal);
           this.level = 1;
         }
+
         // this.defaultOptions = Object.assign(this.defaultOptions, newVal);
       },
       immediate: true,
