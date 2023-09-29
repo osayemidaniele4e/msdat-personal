@@ -214,7 +214,7 @@ export default {
               const foundZone = TestConfig.series.find((item) => item.name === zone);
               if (foundZone) {
                 foundZone.color = '#f1f1f1';
-                foundZone.data[0][1] = 'N/A';
+                foundZone.data[0][1] = '-';
               }
             });
           });
