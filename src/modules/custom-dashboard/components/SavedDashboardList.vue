@@ -19,7 +19,7 @@
               <strong class="text-primary mr-2">{{ dashboard.config.dashboardDetails.name }}</strong>
               <b-button-group size="xs">
                 <b-button @click="edit($event, dashboard)" class="py-1" variant="info"><b-icon icon="pencil"></b-icon></b-button>
-                <b-button @click="remove($event, dashboard)" class="py-1" variant="danger"><b-icon icon="x-circle"></b-icon></b-button>
+                <b-button @click="remove($event, dashboard)" class="py-1" variant="danger"><b-icon icon="trash-fill"></b-icon></b-button>
               </b-button-group>
             </div>
             <small>{{ moment(dashboard.lastEdited || dashboard.created).fromNow() }}</small>

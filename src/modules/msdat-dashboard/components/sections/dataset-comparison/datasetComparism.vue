@@ -21,6 +21,7 @@
           <span class="font-weight-bold">states</span>
         </p>
       </template>
+      <transition name="fade">
       <div class="datasetComparison" v-show="showNationalComparison">
         <div class="noComparison" v-if="comparisonUnavailable">
           <span>
@@ -46,11 +47,12 @@
           <p>
             Overall comparison ratio between <strong>{{ indicatorOne }}</strong> and
             <strong>{{ indicatorTwo }}</strong
-            >:
+            > for  <strong>{{ comparisonLocation }}</strong>:
           </p>
           <h6>{{ this.value }}%</h6>
         </div>
       </div>
+      </transition>
       <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
     </base-sub-card>
   </base-overlay>
@@ -77,6 +79,7 @@ export default {
       comparisonUnavailable: true,
       chartConfig: {},
       indicatorOne: null,
+      comparisonLocation: null,
       indicatorTwo: null,
       value: null,
       // DataSetConfig: cloneDeep(DataSetConfig),
@@ -100,31 +103,71 @@ export default {
       }
       return 'equal';
     },
-    configureDifferenceIndicator() {
+    configureDifferenceForAllLocations() {
       const series = this.chartConfig.series;
       if (series.length === 2) {
         this.comparisonUnavailable = false;
-        const seriesOne = series[0]?.data[0];
-        const seriesTwo = series[1]?.data[0];
-        if (seriesOne.length && seriesTwo.length) {
-          let denominator;
+        const obj1Data = series[0].data;
+        const obj2Data = series[1].data;
+        if (obj1Data.length && obj2Data.length) {
           this.indicatorOne = series[0].name;
           this.indicatorTwo = series[1].name;
-          const olderIndicator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
-          if (olderIndicator === this.indicatorOne) {
-            denominator = seriesOne[1];
-          } else if (olderIndicator === this.indicatorTwo) {
-            denominator = seriesTwo[1];
-          } else {
-            denominator = seriesOne[1] >= seriesTwo[1] ? seriesTwo[1] : seriesOne[1];
-          }
-          const diff = Math.abs(seriesOne[1] - seriesTwo[1]);
-          this.value = Math.round((diff / denominator) * 100);
+
+          const updatedObj1 = obj1Data.map((item1) => {
+            const matchingItem2 = obj2Data.find((item2) => item1.name === item2.name);
+            if (matchingItem2) {
+              return { ...item1, extraData: this.computeDiffValues(item1, matchingItem2) };
+            }
+            return item1;
+          });
+          const updatedObj2 = obj2Data.map((item1) => {
+            const matchingItem1 = updatedObj1.find((item2) => item1.name === item2.name);
+            if (matchingItem1) {
+              return { ...item1, extraData: matchingItem1.extraData };
+            }
+            return item1;
+          });
+          this.chartConfig.series[0].data = updatedObj1;
+          this.chartConfig.series[1].data = updatedObj2;
+          this.chartConfig.tooltip.pointFormat = '{point.name}: <b>{point.y:.1f}</b><br>Comparison:{point.extraData}%';
         }
       } else {
         this.comparisonUnavailable = true;
       }
       return null;
+    },
+    handleMouseOut(data) {
+      if (data.comparisonData) {
+        this.comparisonLocation = 'Nigeria';
+        this.value = data.comparisonData;
+      }
+    },
+    handlePointMouseOver(data) {
+      if (data.comparisonData) {
+        this.showNationalComparison = true;
+        if (data.location === 'Nigeria') {
+          this.comparisonLocation = data.location;
+        } else {
+          this.comparisonLocation = `${data.location} state`;
+        }
+        this.value = data.comparisonData;
+      } else {
+        this.showNationalComparison = false;
+      }
+    },
+    computeDiffValues(indicatorOne, indicatorTwo) {
+      const olderIndicator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
+      let denominator;
+      if (olderIndicator === this.indicatorOne) {
+        denominator = indicatorOne.y;
+      } else if (olderIndicator === this.indicatorTwo) {
+        denominator = indicatorTwo.y;
+      } else {
+        denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
+      }
+      const diff = Math.abs(indicatorOne.y - indicatorTwo.y);
+      const value = Math.round((diff / denominator) * 100);
+      return value;
     },
     async setUpDataSourceNYearDropdown() {
       const multiSelectGroup = [];
@@ -178,6 +221,8 @@ export default {
     },
   },
   async mounted() {
+    this.$on('pointMouseOver', this.handlePointMouseOver);
+    this.$on('mouseOut', this.handleMouseOut);
     this.title = ` Comparison of ${this.values.indicator.full_name} ${this.values.datasource.full_name}} across different sources by states`;
     this.loading = true;
     const dropDown = await this.setUpDataSourceNYearDropdown();
@@ -218,10 +263,11 @@ export default {
         const orderResult = [];
         for (let index = 0; index < queryObject.length; index += 1) {
           const response = result[index];
-          const dataValues = response.map((element) => [
-            this.dlGetLocation(element.location).name,
-            parseFloat(element.value),
-          ]);
+          const dataValues = response.map((element) => ({
+            name: this.dlGetLocation(element.location).name,
+            y: parseFloat(element.value),
+            extraData: '',
+          }));
 
           // This adds national to the top;
           // eslint-disable-next-line no-await-in-loop
@@ -233,10 +279,11 @@ export default {
             location: 1,
           });
 
-          const nationValueSeries = [
-            this.dlGetLocation(query[0]?.location)?.name,
-            parseFloat(query[0]?.value),
-          ];
+          const nationValueSeries = {
+            name: this.dlGetLocation(query[0]?.location)?.name,
+            y: parseFloat(query[0]?.value),
+            extraData: '',
+          };
 
           // add it ot the top of the series
           dataValues.unshift(nationValueSeries);
@@ -293,10 +340,34 @@ export default {
         };
         const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
         this.chartConfig.yAxis.title.text = displayFactor;
+        this.chartConfig.tooltip = {};
+        this.chartConfig.plotOptions.series = {};
+        this.chartConfig.plotOptions.series.point = {};
+        this.chartConfig.plotOptions.series.point.events = {};
         this.chartConfig.series = orderResult;
-        if (this.chartConfig.series.length > 1) {
-          this.showNationalComparison = true;
-          this.configureDifferenceIndicator();
+        if (this.chartConfig.series.length === 2) {
+          this.comparisonUnavailable = false;
+          // Only add the event listeners if the series length is 2
+          this.configureDifferenceForAllLocations();
+          this.chartConfig.plotOptions.series.point.events.mouseOver = (event) => {
+            this.$emit('pointMouseOver', {
+              seriesName: event.target.series.name,
+              comparisonData: event.target.extraData,
+              location: event.target.name,
+              value: event.target.y,
+            });
+          };
+
+          this.chartConfig.plotOptions.series.point.events.mouseOut = (event) => {
+            this.$emit('pointMouseOut', {
+              seriesName: event.target.series.name,
+              comparisonData: event.target.extraData,
+              location: event.target.name,
+              value: event.target.y,
+            });
+          };
+        } else if (this.chartConfig.series.length > 2) {
+          this.comparisonUnavailable = true;
         } else {
           this.showNationalComparison = false;
         }
@@ -321,6 +392,12 @@ export default {
 </script>
 
 <style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+}
 .datasetComparison {
   height: 100px;
   display: flex;

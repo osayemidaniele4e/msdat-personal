@@ -18,7 +18,7 @@
     </b-row>
     <b-container class="d-flex flex-column align-items-center mb-3">
       <span class="mb-3">Select a dashboard to start</span>
-      <b-row cols="2" cols-md="4" cols-lg="4" class="w-100">
+      <b-row cols="2" cols-md="3" cols-lg="5" class="w-100">
         <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center">
           <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`"><img class="section" :src="imgsrc(section)" :alt="section"></router-link>
           <small style="font-size: 0.6rem; font-weight: 600" class="py-2">{{ section }}</small>
@@ -53,8 +53,8 @@ export default {
         'Descriptive Analysis',
         // 'Indicator Comparison',
         'Predictive Analysis',
+        'Scatter Plot Analysis',
         'Multi-source Indicator Comparison',
-        // 'Scatter Plot Analysis',
       ],
     };
   },
@@ -65,15 +65,15 @@ export default {
       // eslint-disable-next-line global-require, import/no-dynamic-require
       return require(`@/assets/img/analytics/${sec}.png`);
     },
-    async created() {
-      await this.CLEAR_CONTROL_PANEL();
+  },
+  async created() {
+    await this.CLEAR_CONTROL_PANEL();
 
-      this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
-      this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
-      this.ADD_CONTROL_PANEL(ScatterplotConfig);
-    },
+    this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
+    this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
+    this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
+    this.ADD_CONTROL_PANEL(ScatterplotConfig);
+    this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
   },
 };
 </script>

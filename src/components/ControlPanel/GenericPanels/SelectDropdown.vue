@@ -72,6 +72,8 @@ export default {
       dummyVariable: false,
       loading: false,
       section: '',
+      indicatorId: 7,
+      datasourceId: 6,
     };
   },
   computed: {
@@ -80,20 +82,23 @@ export default {
         return this.value;
       },
       set(val) {
-        console.log(val, '@@@');
         if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
           this.selectedOption = val;
+          // this.indicatorId = val.id;
+          // this.saveIndicatorToStorage(val.id);
           const item = {
             payload: val,
             entity: 'indicator',
           };
           this.SET_SELECTED_CONFIG(item);
+
           // console.log(JSON.stringify(item), '@@@@');
         } else if (
           typeof val === 'object'
           && val.id !== undefined
           && val.methodology !== undefined
         ) {
+          // this.saveDataSourceToStorage(val.id);
           const item = {
             payload: val,
             entity: 'dataSource',
@@ -110,7 +115,8 @@ export default {
           };
 
           this.SET_SELECTED_CONFIG(item);
-          console.log(JSON.stringify(item), '@@@@');
+          // console.log(JSON.stringify(item), '@@@@');
+          // this.addQueryParamToUrl();
         }
         this.$emit('input', val);
       },
@@ -148,6 +154,7 @@ export default {
   watch: {
     options: {
       async handler(newValue) {
+        // this.addQueryParamToUrl();
         console.log('tag it', newValue);
         this.loading = true;
         if (this.options?.length > 0) {
@@ -220,7 +227,6 @@ export default {
       if (newValue.parent !== undefined) {
         this.setSelectedState(newValue);
       }
-      console.log('Mc oloumo:', this.selectedState);
     },
     deep: true,
     immediate: false,
@@ -318,6 +324,36 @@ export default {
     //     }
     //   }
     //   this.loading = false;
+    // },
+    // saveIndicatorToStorage(item) {
+    //   localStorage.setItem('indicatorId', item);
+    // },
+    // saveDataSourceToStorage(item) {
+    //   localStorage.setItem('datasourceId', item);
+    // },
+    // addQueryParamToUrl() {
+    //   const paramName = 'indicatorId';
+    //   const param2Name = 'datasourceId';
+
+    //   const savedIndicatorId = localStorage.getItem('indicatorId');
+    //   const savedDataSourceId = localStorage.getItem('datasourceId');
+
+    //   // console.log(savedIndicatorId, 'savedIndicatorId');
+
+    //   // Get the current URL and parse its query parameters
+    //   const url = new URL(window.location.href);
+    //   const searchParams = new URLSearchParams(url.search);
+
+    //   // Add or update the query parameter
+    //   searchParams.set(paramName, savedIndicatorId);
+
+    //   // Add or update the second query parameter
+    //   searchParams.set(param2Name, savedDataSourceId);
+
+    //   // Modify the URL without navigating using replaceState
+    //   window.history.replaceState(null, '', `${url.pathname}?${searchParams.toString()}`);
+
+    //   // Now the URL has the new parameter, but you stay on the same page
     // },
   },
   mounted() {

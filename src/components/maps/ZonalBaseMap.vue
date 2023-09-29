@@ -4,6 +4,7 @@
 <template>
   <div>
     <Highmaps :options="defaultOptions" />
+
   </div>
 </template>
 
@@ -20,14 +21,11 @@ import { genComponent } from 'vue-highcharts';
 // default map
 import NigerianMap from './ng-all.geo.json';
 
-// test config
-import TestConfig from './tenp.json';
-
 // default map options
 import defaultOptions from './defaultOptions';
 
 // map data
-// import regionsMap from './mapData/regions';
+import regionsMap from './mapData/regions';
 
 import {
   // eslint-disable-next-line camelcase
@@ -135,6 +133,7 @@ export default {
     };
   },
   methods: {
+
     plotMapLevel(level) {
       // check space is in string and add underscore
       let lgaState = '';
@@ -144,49 +143,28 @@ export default {
 
       switch (level) {
         case 1:
-          this.defaultOptions = { ...defaultOptions };
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
         case 2:
-          this.defaultOptions = { ...TestConfig };
+          this.defaultOptions.plotOptions.map.mapData = regionsMap;
           break;
         case 3:
           this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[lgaState].data;
           break;
         case 4:
-          this.defaultOptions = { ...defaultOptions };
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
         default:
-          this.defaultOptions = { ...defaultOptions };
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
       }
+      this.defaultOptions = { ...this.defaultOptions };
     },
   },
   watch: {
     mapObject: {
       handler(newVal) {
-        const filteredSeries = newVal.series && newVal.series.filter((item) => item.data.length > 0);
-
-        if (filteredSeries.length === 1) {
-          const filteredData = filteredSeries[0].data;
-
-          filteredData.forEach(([state, value]) => {
-            const foundItem = TestConfig.series.find((item) => item.name === state);
-            if (foundItem) {
-              foundItem.data[0][1] = value;
-            }
-          });
-
-          Object.assign(this.defaultOptions, TestConfig);
-          this.level = 2;
-        } else {
-          Object.assign(this.defaultOptions, newVal);
-          this.level = 1;
-        }
-
-        // this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+        this.defaultOptions = Object.assign(this.defaultOptions, newVal);
       },
       immediate: true,
       deep: true,

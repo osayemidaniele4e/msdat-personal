@@ -82,7 +82,7 @@ export default {
     async setInteractions() {
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       if (this.getInternetStatus === true) {
-        const data  = await apiServices.getDashboard();
+        const data = await apiServices.getDashboard();
         this.dashboard = data.data.find((item) => item.title === this.$route.meta.title);
       }
       const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
@@ -103,7 +103,8 @@ export default {
         localStorage.setItem('user_interactions', JSON.stringify(uniqueArr));
         const interactions = localStorage.getItem('user_interactions');
         const parsedInteraction = JSON.parse(interactions);
-        if (parsedInteraction.length > 9 && this.getInternetStatus === true) {
+        //  if (parsedInteraction.length > 9 && this.getInternetStatus === true)
+        if (this.getInternetStatus === true) {
           parsedInteraction.forEach(async (el) => {
             await this.SET_INTERACTIONS(el);
           });
