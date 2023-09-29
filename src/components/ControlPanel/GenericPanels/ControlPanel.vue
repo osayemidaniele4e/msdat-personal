@@ -33,6 +33,15 @@
       />
       {{ checkNHMISDHIS2() }}
       <!-- MSDAT SUB-DASHBOARDS -->
+      <!-- <selectWrapper
+        v-if="values.type === 'dropdown' && values.key !== 'indicator'"
+        :id="label"
+        :value="payload[values.key]"
+        @input="updatePayload($event, values.key)"
+        :options="locationCheck(values.options)"
+        :multiSelectProps="values.dropdownProps"
+        :NoDataLabel="values.label"
+      /> -->
       <selectWrapper
         v-if="values.type === 'dropdown' && values.key !== 'indicator'"
         :id="label"
@@ -349,6 +358,17 @@ export default {
     const getYear = date.getFullYear + 1;
     // pick one of the available years as the default years as opposed to the static 2016 year
     console.log('setup', this.setup);
+    // console.log('setup location', this.setup[2].key, this.setup[2].options.length);
+
+    this.setup.forEach((item) => {
+      if (item.key === 'datasource') {
+        console.log('moi moi');
+      } else {
+        console.log('did not find a datasource');
+      }
+    });
+
+    console.log('MADD');
     const defaultYears = this.setup[3].options;
     // console.log(defaultYears);
     // console.log(defaultYears, 'defaultyears');

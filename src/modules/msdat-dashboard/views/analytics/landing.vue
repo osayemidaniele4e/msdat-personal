@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+// import { mapMutations } from 'vuex';
 
 import Header from '../about/layout/theHeader.vue';
 import tour from '../onboarding/tour';
@@ -59,7 +59,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    // ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
     imgsrc(sec) {
       // eslint-disable-next-line global-require, import/no-dynamic-require

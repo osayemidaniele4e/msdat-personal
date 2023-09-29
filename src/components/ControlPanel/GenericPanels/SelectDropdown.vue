@@ -124,6 +124,7 @@ export default {
       }
       return null;
     },
+
   },
   props: {
     options: {
@@ -147,6 +148,7 @@ export default {
   watch: {
     options: {
       async handler(newValue) {
+        console.log('tag it', newValue);
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
@@ -214,6 +216,12 @@ export default {
         this.loading = false;
       },
     },
+    selected(newValue) {
+      if (newValue.parent !== undefined) {
+        this.setSelectedState(newValue);
+      }
+      console.log('Mc oloumo:', this.selectedState);
+    },
     deep: true,
     immediate: false,
   },
@@ -223,6 +231,7 @@ export default {
       'UPDATE_ALL_DATASOURCES',
       'UPDATE_ALL_YEARS',
       'UPDATE_MULTI_YEARS',
+      'setSelectedState',
     ]),
 
     modifyDataSourceChildLabel(tag) {
