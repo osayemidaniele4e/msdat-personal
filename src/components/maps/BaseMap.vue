@@ -135,6 +135,11 @@ export default {
     };
   },
   methods: {
+    findMissingZones(zones, zones2) {
+      // Use filter to find zones that are in zones but not in zones2
+      const missingZones = zones.filter((zone) => !zones2.includes(zone));
+      return missingZones;
+    },
     plotMapLevel(level) {
       // check space is in string and add underscore
       let lgaState = '';
@@ -171,12 +176,47 @@ export default {
 
         if (filteredSeries.length === 1) {
           const filteredData = filteredSeries[0].data;
+          const zones = [
+            'South-West',
+            'South-East',
+            'North-Central',
+            'North-East',
+            'North-West',
+            'South-South',
+          ];
+          const zonesAndColor = [
+            { zone: 'South-West', color: '#7D8ADE' },
+            { zone: 'North-Central', color: '#89d880' },
+            { zone: 'North-East', color: '#83CFDB' },
+            { zone: 'North-West', color: '#5c3819' },
+            { zone: 'South-South', color: '#FFFF17' },
+            { zone: 'South-East', color: '#f872a0' },
+          ];
+          const availableZone = filteredData.map((item) => item[0]);
+          // console.log(state, value, 'VALUE XXX');
 
+          const missingZones = this.findMissingZones(zones, availableZone);
+
+          filteredData.forEach(([state, value]) => {
+            const foundItem = TestConfig.series.find((item) => item.name === state);
+            const foundZone = zonesAndColor.find((item) => item.zone === state);
+            if (foundItem) {
+              foundItem.data[0][1] = value;
+              foundItem.color = foundZone.color;
+            }
+          });
           filteredData.forEach(([state, value]) => {
             const foundItem = TestConfig.series.find((item) => item.name === state);
             if (foundItem) {
               foundItem.data[0][1] = value;
             }
+            missingZones.forEach((zone) => {
+              const foundZone = TestConfig.series.find((item) => item.name === zone);
+              if (foundZone) {
+                foundZone.color = '#f1f1f1';
+                foundZone.data[0][1] = 'N/A';
+              }
+            });
           });
 
           Object.assign(this.defaultOptions, TestConfig);
