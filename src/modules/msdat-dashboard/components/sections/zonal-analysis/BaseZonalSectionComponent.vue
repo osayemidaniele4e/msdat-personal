@@ -20,7 +20,7 @@ export default {
       regionalColor: [
         {
           id: 1,
-          color: 'black',
+          color: '#61a229',
         },
         {
           id: 2,
@@ -62,9 +62,13 @@ export default {
   methods: {
     handleMapClick(e) {
       const point = e.point['hc-key'];
-      const selectedPlaceByZone = this.dlGetLocation({ level: 2 }).filter((val) => val.name === point);
+      const selectedPlaceByZone = this.dlGetLocation({ level: 2 }).filter(
+        (val) => val.name === point,
+      );
 
-      const selectedPlaceByState = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+      const selectedPlaceByState = this.dlGetLocation({ level: 3 }).filter(
+        (val) => val.name === point,
+      );
 
       const selectedPlace = selectedPlaceByZone.length === 0 ? selectedPlaceByState : selectedPlaceByZone;
 
