@@ -23,7 +23,7 @@
 <script>
 import moment from 'moment';
 import VueCookies from 'vue-cookies';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
@@ -57,6 +57,8 @@ export default {
       },
       showClearDataModal: false,
       loading: false,
+      longitude: '',
+      latitude: '',
     };
   },
   methods: {
@@ -143,6 +145,28 @@ export default {
     // }
   },
   async mounted() {
+    console.log('checking for a change');
+    // saving the data of the users location while using select dashboards
+
+    await navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+
+    console.log('longitude', this.longitude);
+
+    const data = {
+      dashboard: this.$route.params.name,
+      longitude: this.longitude,
+      latitude: this.latitude,
+    };
+    console.log('location data', data);
+
     this.clearData();
     if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
       // this sets skilled attendance at birth indicator on mounted
