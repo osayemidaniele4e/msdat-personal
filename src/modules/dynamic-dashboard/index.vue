@@ -59,6 +59,8 @@ export default {
       loading: false,
       longitude: '',
       latitude: '',
+      userLocation: null,
+      error: null
     };
   },
   methods: {
@@ -134,6 +136,27 @@ export default {
         await this.SAVE_USER_DASHBOARD(payload);
       }
     },
+
+      getUserLocation() {
+      if ("geolocation" in navigator) {
+        // Get the user's location
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.userLocation = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+          },
+          (error) => {
+            this.error = error.message;
+          }
+        );
+      } else {
+        this.error = "Geolocation is not supported in your browser.";
+      }
+
+      console.log('user l;ocation', this.userLocation)
+    },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', 7);
     // },
@@ -145,38 +168,38 @@ export default {
     // }
   },
   async mounted() {
-    console.log('checking for a change');
-    // saving the data of the users location while using select dashboards
+  console.log('checking for a change');
+  // saving the data of the users location while using select dashboards
+  this.getUserLocation();
 
-    await navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+  await navigator.geolocation.getCurrentPosition(
+    (position) => {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
 
-    console.log('longitude', this.longitude);
+      // Now that you have the geolocation data, you can use it here
+      const data = {
+        dashboard: this.$route.params.name,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        time: Date.now()
+      };
 
-    const data = {
-      dashboard: this.$route.params.name,
-      longitude: this.longitude,
-      latitude: this.latitude,
-    };
-    console.log('location data', data);
-
-    this.clearData();
-    if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-      // this sets skilled attendance at birth indicator on mounted
-      this.SET_SELECTED_CONFIG(defaultData);
-    } else if (this.$route.params.name === 'Disease_Surveillance') {
-      // this sets covid 19 confirmed cases indicator on mounted
-      this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
-      this.SET_SELECTED_CONFIG(defaultDSyear);
+      this.clearData();
+      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+        // this sets skilled attendance at birth indicator on mounted
+        this.SET_SELECTED_CONFIG(defaultData);
+      } else if (this.$route.params.name === 'Disease_Surveillance') {
+        // this sets covid 19 confirmed cases indicator on mounted
+        this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+        this.SET_SELECTED_CONFIG(defaultDSyear);
+      }
+    },
+    (error) => {
+      console.log(error);
     }
-  },
+  );
+},
   async created() {
     // this.saveIndicatorToStorage();
     // this.saveDataSourceToStorage();

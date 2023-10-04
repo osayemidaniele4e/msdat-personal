@@ -11,6 +11,7 @@ import moment from 'moment';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import controlSetup from '../../mixins/control-panel-setup';
+import { time } from 'highcharts';
 
 export default {
   name: 'ControlPanelConfiguration',
@@ -18,6 +19,9 @@ export default {
   data() {
     return {
       interactions: [],
+      previous_time: null,
+      after_time: null,
+      previous_indicator: null
     };
   },
   props: {
@@ -49,6 +53,12 @@ export default {
     // }
   },
   mounted() {
+    const now = new Date();
+    const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+
+    // Set the total time in minutes for the component data.
+    this.previous_time = totalTimeInMinutes;
+    this.previous_indicator = this.payload.indicator
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
     });
@@ -97,6 +107,7 @@ export default {
         location: this.payload.location.id,
         viewed_at: moment().format(),
       };
+
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
         const uniqueArr = this.removeDuplicates(this.interactions);
@@ -117,6 +128,30 @@ export default {
     // get latest available years when indicator , datasource or location are changed
     'payload.indicator': {
       async handler() {
+        // new ones
+
+        const now = new Date();
+    const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+
+    // Set the total time in minutes for the component data.
+    this.after_time = totalTimeInMinutes;
+
+    const diff =  this.after_time - this.previous_time;
+
+    // sending to the api
+
+   const timespent = {
+    indicator: this.previous_indicator,
+    time: diff,
+    user: this.getUser
+   }
+
+   console.log('timespent', timespent)
+
+this.previous_time = this.after_time;
+
+this.previous_indicator = this.payload.indicator
+
         if (this.controlIndex !== 2) {
           const availableYears = await this.getAvailableYears();
           this.SETUP_CONTROL_OPTIONS1({
