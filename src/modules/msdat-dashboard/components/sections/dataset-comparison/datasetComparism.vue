@@ -158,16 +158,30 @@ export default {
     computeDiffValues(indicatorOne, indicatorTwo) {
       const olderIndicator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
       let denominator;
+      let left = 0;
+      let right = 0;
       if (olderIndicator === this.indicatorOne) {
         denominator = indicatorOne.y;
+        left = indicatorTwo.y;
+        right = indicatorOne.y;
       } else if (olderIndicator === this.indicatorTwo) {
         denominator = indicatorTwo.y;
+        right = indicatorTwo.y;
+        left = indicatorOne.y;
       } else {
         denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
+        left = indicatorTwo.y;
+        right = indicatorOne.y;
       }
-      const diff = Math.abs(indicatorOne.y - indicatorTwo.y);
-      const value = Math.round((diff / denominator) * 100);
+      const diff = left - right;
+      const value = this.customRound((diff / denominator) * 10);
       return value;
+    },
+    customRound(number) {
+      if (number < 1 && number % 1 !== 0) {
+        return parseFloat(number.toFixed(1));
+      }
+      return Math.round(number);
     },
     async setUpDataSourceNYearDropdown() {
       const multiSelectGroup = [];
@@ -392,6 +406,7 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s;
 }
@@ -438,23 +453,26 @@ export default {
 }
 .comparison p {
   color: #000;
-  font-size: 14px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  font-family: 'Inter', sans-serif;
 }
 
 .noComparison p {
   color: #e85d58;
-  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
 
 .comparison h6 {
+  font-family: 'Inter', sans-serif;
   color: #000;
-  font-size: 30px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
