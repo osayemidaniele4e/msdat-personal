@@ -102,6 +102,17 @@
           >
             <b-icon class="mx-3" style="color: #55acee" font-scale="3" icon="linkedin" />
           </ShareNetwork>
+
+          <ShareNetwork
+            network="whatsapp"
+            :url="shareURL"
+            :title="shareText"
+            :description="shareDesc"
+            :quote="shareDesc"
+            :hashtags="hashtags"
+          >
+            <b-icon class="mx-3" style="color: #25d366" font-scale="3" icon="whatsapp" />
+          </ShareNetwork>
         </div>
       </div>
     </div>
@@ -123,6 +134,7 @@ export default {
         'HealthTech,HealthData,DataAnalytics,HealthDataAnalytics,BigData,DataSources,Data,DataScientist,DataAnalyst,HealthIndicators',
     };
   },
+
   methods: {
     copy() {
       this.$refs.linkInput.select();

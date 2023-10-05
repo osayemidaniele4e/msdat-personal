@@ -1,11 +1,14 @@
 <template>
-  <highcharts :options="options" ref="lineCharts"></highcharts>
+  <div>
+    <highcharts :options="options" ref="lineCharts"></highcharts>
+  </div>
 </template>
 
 <script>
 /**
  * highchart package imports
  */
+
 import Highcharts from 'highcharts';
 import loadHighchartsMore from 'highcharts/highcharts-more';
 import loadMap from 'highcharts/modules/map';
@@ -77,6 +80,32 @@ export default {
   },
   components: {
     highcharts: genComponent('Highcharts', Highcharts),
+  },
+
+  methods: {
+    async shareChart() {
+      // Get a reference to the Highchart component
+      const chartComponent = this.$refs.lineCharts;
+
+      // Wait for the next Vue tick to ensure that the Highchart component is fully rendered
+      this.$nextTick(async () => {
+        // Generate a screenshot of the chart using vue-html2canvas
+        const chartCanvas = await this.$html2canvas(chartComponent.$el, {
+          useCORS: true, // Ensure CORS is used for external images
+        });
+
+        // Convert the chart canvas to a data URL
+        const chartDataURL = chartCanvas.toDataURL('image/png');
+
+        // Create a WhatsApp share link with the chart image
+        const whatsappURL = `https://api.whatsapp.com/send?text=Check out this chart!&amp;data=${encodeURIComponent(
+          chartDataURL,
+        )}`;
+
+        // Open WhatsApp in a new tab
+        window.open(whatsappURL, '_blank');
+      });
+    },
   },
 
   mounted() {
