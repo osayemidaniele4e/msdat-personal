@@ -72,6 +72,7 @@ export default {
       allAreas: false,
       joinBy: ['name', 'hc-key'],
       dataLabels: {
+        allowOverlap: true,
         enabled: true,
         formatter() {
           if (this.point.value) {

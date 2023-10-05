@@ -278,11 +278,17 @@ export default {
         series: ChartSeriesObject,
         plotOptions: {
           series: {
-            grouping: true,
-            pointWidth: 10,
-            connectNulls: false,
-            pointPlacement: 'between',
+            // grouping: true,
+            // pointWidth: 10,
+            // connectNulls: false,
+            // pointPlacement: 'between',
             // borderWidth: 0,
+          },
+          column: {
+            borderRadius: 0,
+            pointPadding: 0.5,
+            groupPadding: 0.05,
+            borderWidth: 5,
           },
           line: {
             tooltip: {
