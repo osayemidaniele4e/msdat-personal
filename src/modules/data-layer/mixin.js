@@ -1,6 +1,6 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, omit, matches, isObject, has,
+  filter, omit, matches, isObject,
 } from 'lodash';
 import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
