@@ -181,7 +181,7 @@ export default {
              */
             for (let i = 0; i < chartSeries.length; i += 1) {
               if (chartSeries[i].data.length === 0) {
-                this.showNoAvailableData = true;
+                // this.showNoAvailableData = true;
               } else {
                 this.showNoAvailableData = false;
               }

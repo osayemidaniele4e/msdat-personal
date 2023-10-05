@@ -30,25 +30,14 @@ loadHighchartsMore(Highcharts);
 export default {
   data() {
     return {
-      /**
-       * so we have a copy of the default option
-       * This sets a copy of the default option
-       */
       options: { ...defaultOptions },
     };
   },
   props: {
-    /**
-     * This prop of the chart Options
-     * is what to use to passHighChart options to the component
-     *
-     */
-
     chartOptions: {
       type: Object,
       default: () => ({}),
     },
-
     title: {
       type: String,
       default: '',
@@ -58,18 +47,17 @@ export default {
       default: () => ({}),
     },
   },
-
   watch: {
-    /**
-     * when to chartOptions changes
-     * and when the component is rendered
-     */
     chartOptions: {
       handler(passedObj) {
-        // eslint-disable-next-line prefer-object-spread
-        this.options = cloneDeep(Object.assign({}, this.options, passedObj));
-
-        this.options.exporting.chartOptions.title.text = this.title;
+        this.options = cloneDeep({ ...this.options, ...passedObj });
+        // Update the exporting title without modifying the default options
+        if (this.options.exporting && this.options.exporting.chartOptions) {
+          this.options.exporting.chartOptions.title = {
+            text: this.title,
+          };
+        }
+        console.log('title was set');
       },
       deep: true,
       immediate: true,
@@ -78,10 +66,15 @@ export default {
   components: {
     highcharts: genComponent('Highcharts', Highcharts),
   },
-
   mounted() {
-    // changing the title of the text when downloaded
-    this.options.exporting.chartOptions.title.text = this.title;
+    if (this.title) {
+      // Set the title in the exporting object if a custom title is provided
+      if (this.options.exporting && this.options.exporting.chartOptions) {
+        this.options.exporting.chartOptions.title = {
+          text: this.title,
+        };
+      }
+    }
   },
 };
 </script>
