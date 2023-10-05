@@ -10,7 +10,29 @@
               <b>{{ values.indicator.short_name }}</b>
               and related indicators (with year of latest values) across available data sources.
             </p>
-            <button @click="toggleShowShareModal()" class="share-btn">share</button>
+
+            <div class="share-wrapper">
+              <div v-if="isTooltipVisible" class="tooltip-wrap">share.</div>
+              <div
+                @mouseover="showTooltip"
+                @mouseout="hideTooltip"
+                @click="toggleShowShareModal()"
+                class="share-btn"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-code-slash"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294l4-13zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0zm6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0z"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         </template>
         <TableComponent
@@ -88,6 +110,7 @@ export default {
       updateData: 0,
       showShareCodeModal: false,
       tableObj: null,
+      isTooltipVisible: false,
       bootstrapCDN:
         '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">',
     };
@@ -287,6 +310,12 @@ export default {
         this.loading = false;
       }
     },
+    showTooltip() {
+      this.isTooltipVisible = true;
+    },
+    hideTooltip() {
+      this.isTooltipVisible = false;
+    },
   },
   mounted() {
     this.updateData += 1;
@@ -307,10 +336,28 @@ export default {
 .share-btn {
   height: auto;
   padding: 0;
-  margin: 0;
-  padding: 0 10px;
+  margin: 0 5px;
+  padding: 0 5px;
   margin-right: 20px;
   margin-top: 2px;
   padding-bottom: 2px;
+  border: 1px solid #b3b3b3;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.share-wrapper {
+  display: flex;
+}
+
+.share-btn:hover {
+  border: 1px solid #61a229;
+}
+
+.tooltip-wrap {
+  background-color: #333;
+  color: #fff;
+  padding: 0 5px;
+  border-radius: 5px;
 }
 </style>
