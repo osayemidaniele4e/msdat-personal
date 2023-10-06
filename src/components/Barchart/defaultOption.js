@@ -133,16 +133,16 @@ export default {
       borderWidth: 0,
       groupPadding: 0,
       shadow: false,
-      // pointPlacement: 'between',
-      // borderWidth: 0,
+      pointPlacement: 'on',
+      borderWidth: 0,
     },
     series: {
       grouping: false,
       pointWidth: 10,
       connectNulls: true,
-      pointPlacement: 'on',
+      pointPlacement: 'between',
       dataLabels: {},
-      // borderWidth: 0,
+      borderWidth: 0,
     },
     bar: {
       dataLabels: {
