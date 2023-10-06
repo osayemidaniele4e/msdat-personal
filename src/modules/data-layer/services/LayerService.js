@@ -401,5 +401,14 @@ export default class DataLayer {
       allowOutsideClick: false,
       showLoading: true,
     });
+
+    // Return a Promise that resolves when data synchronization is complete
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     // Close the alert
+    //     Vue.swal.close();
+    //     resolve(); // Resolve the Promise to signal completion
+    //   }, 15000); // Modify the timeout value as needed
+    // });
   }
 }

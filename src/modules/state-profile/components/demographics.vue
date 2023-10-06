@@ -193,7 +193,8 @@ export default {
         } else {
           container.change = null; // Set change to null when there is no previous year
         }
-
+        // console.log('container', container)
+        // console.log('datacontainer', this.dataContainer)
         return container;
       });
     },
@@ -442,6 +443,7 @@ export default {
     this.locations = locate.data.results;
     this.prepareDemographicData();
     this.setLandAreaData();
+    // console.log('state demo',this.stateDemographics)
   },
 };
 </script>

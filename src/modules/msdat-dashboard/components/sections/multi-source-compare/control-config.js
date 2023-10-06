@@ -133,7 +133,7 @@ const payload = {
 };
 
 export default {
-  label: 'Multi-Source comparison',
+  label: 'Multi-Source Comparison',
   grouped: true,
   setup: [[...indicatorSetConfig], [...indicatorSetConfig2], [...indicatorSetConfig3]],
   payload: [{ ...payload }, { ...payload }, { ...payload }],

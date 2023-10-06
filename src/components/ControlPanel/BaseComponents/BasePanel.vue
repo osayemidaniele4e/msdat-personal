@@ -97,7 +97,7 @@ export default {
           key: 'period',
           value: this.getSelectedConfig().period,
         });
-        console.log(this.getSelectedConfig(), 'CONFIG');
+        // console.log(this.getSelectedConfig(), 'CONFIG');
       }
       this.$emit('showSection', index);
     },
@@ -133,6 +133,7 @@ export default {
     },
 
     selectedIndex(newValue) {
+      // console.log('selected', this.$store.getters);
       this.changeControl(newValue);
       if (newValue === 0) {
         this.title = 'Indicator Overview';
@@ -163,7 +164,8 @@ export default {
     },
   },
   mounted() {
-    this.selectControl(0);
+    const index = parseInt(this.$route.query.index, 10) || 0;
+    this.selectControl(index);
   },
   created() {
     this.controls = this.$children;

@@ -16,6 +16,9 @@ export default {
   getprogramArea(state) {
     return state.masterData;
   },
+  getVisibility(state) {
+    return state.visibility;
+  },
   notesArea(state) {
     // console.log(state.isNotExistYear);
     return state.notes;
@@ -77,5 +80,8 @@ export default {
   },
   Yearsloading(state) {
     return state.loader.years;
+  },
+  editMode(state) {
+    return state.editMode;
   },
 };

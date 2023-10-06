@@ -21,20 +21,38 @@
           <span class="font-weight-bold">states</span>
         </p>
       </template>
+      <transition name="fade">
       <div class="datasetComparison" v-show="showNationalComparison">
         <div class="noComparison" v-if="comparisonUnavailable">
           <span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z" stroke="#E85D58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z"
+                stroke="#E85D58"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </span>
           <p>Comparison not allowed</p>
         </div>
         <div class="comparison" v-else>
-          <p>Overall comparison ratio between <strong>{{indicatorOne}}</strong> and <strong>{{indicatorTwo}}</strong>:</p>
-          <h6>{{this.value}}%</h6>
+          <p>
+            Overall comparison ratio between <strong>{{ indicatorOne }}</strong> and
+            <strong>{{ indicatorTwo }}</strong
+            > for  <strong>{{ comparisonLocation }}</strong>:
+          </p>
+          <h6>{{ this.value }}%</h6>
         </div>
       </div>
+      </transition>
       <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
     </base-sub-card>
   </base-overlay>
@@ -61,6 +79,7 @@ export default {
       comparisonUnavailable: true,
       chartConfig: {},
       indicatorOne: null,
+      comparisonLocation: null,
       indicatorTwo: null,
       value: null,
       // DataSetConfig: cloneDeep(DataSetConfig),
@@ -71,22 +90,84 @@ export default {
     ...mapMutations('MSDAT_STORE', [
       'SETUP_CONTROL_OPTIONS1', // -> this.foo()
     ]),
-    configureDifferenceIndicator() {
+    getOlderYear(year1, year2) {
+      // eslint-disable-next-line radix
+      const extractYear = (str) => parseInt(str.match(/\d{4}/)?.[0] || 0);
+      const yearValue1 = extractYear(year1);
+      const yearValue2 = extractYear(year2);
+
+      if (yearValue1 < yearValue2) {
+        return year1;
+      } if (yearValue1 > yearValue2) {
+        return year2;
+      }
+      return 'equal';
+    },
+    configureDifferenceForAllLocations() {
       const series = this.chartConfig.series;
       if (series.length === 2) {
         this.comparisonUnavailable = false;
-        const seriesOne = series[0]?.data[0];
-        const seriesTwo = series[1]?.data[0];
-        if (seriesOne.length && seriesTwo.length) {
+        const obj1Data = series[0].data;
+        const obj2Data = series[1].data;
+        if (obj1Data.length && obj2Data.length) {
           this.indicatorOne = series[0].name;
           this.indicatorTwo = series[1].name;
-          const diff = seriesOne[1] - seriesTwo[1];
-          this.value = Math.round(Math.abs(diff));
+
+          const updatedObj1 = obj1Data.map((item1) => {
+            const matchingItem2 = obj2Data.find((item2) => item1.name === item2.name);
+            if (matchingItem2) {
+              return { ...item1, extraData: this.computeDiffValues(item1, matchingItem2) };
+            }
+            return item1;
+          });
+          const updatedObj2 = obj2Data.map((item1) => {
+            const matchingItem1 = updatedObj1.find((item2) => item1.name === item2.name);
+            if (matchingItem1) {
+              return { ...item1, extraData: matchingItem1.extraData };
+            }
+            return item1;
+          });
+          this.chartConfig.series[0].data = updatedObj1;
+          this.chartConfig.series[1].data = updatedObj2;
+          this.chartConfig.tooltip.pointFormat = '{point.name}: <b>{point.y:.1f}</b><br>Comparison:{point.extraData}%';
         }
       } else {
         this.comparisonUnavailable = true;
       }
       return null;
+    },
+    handleMouseOut(data) {
+      if (data.comparisonData) {
+        this.comparisonLocation = 'Nigeria';
+        this.value = data.comparisonData;
+      }
+    },
+    handlePointMouseOver(data) {
+      if (data.comparisonData) {
+        this.showNationalComparison = true;
+        if (data.location === 'Nigeria') {
+          this.comparisonLocation = data.location;
+        } else {
+          this.comparisonLocation = `${data.location} state`;
+        }
+        this.value = data.comparisonData;
+      } else {
+        this.showNationalComparison = false;
+      }
+    },
+    computeDiffValues(indicatorOne, indicatorTwo) {
+      const olderIndicator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
+      let denominator;
+      if (olderIndicator === this.indicatorOne) {
+        denominator = indicatorOne.y;
+      } else if (olderIndicator === this.indicatorTwo) {
+        denominator = indicatorTwo.y;
+      } else {
+        denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
+      }
+      const diff = Math.abs(indicatorOne.y - indicatorTwo.y);
+      const value = Math.round((diff / denominator) * 100);
+      return value;
     },
     async setUpDataSourceNYearDropdown() {
       const multiSelectGroup = [];
@@ -140,6 +221,8 @@ export default {
     },
   },
   async mounted() {
+    this.$on('pointMouseOver', this.handlePointMouseOver);
+    this.$on('mouseOut', this.handleMouseOut);
     this.title = ` Comparison of ${this.values.indicator.full_name} ${this.values.datasource.full_name}} across different sources by states`;
     this.loading = true;
     const dropDown = await this.setUpDataSourceNYearDropdown();
@@ -180,10 +263,11 @@ export default {
         const orderResult = [];
         for (let index = 0; index < queryObject.length; index += 1) {
           const response = result[index];
-          const dataValues = response.map((element) => [
-            this.dlGetLocation(element.location).name,
-            parseFloat(element.value),
-          ]);
+          const dataValues = response.map((element) => ({
+            name: this.dlGetLocation(element.location).name,
+            y: parseFloat(element.value),
+            extraData: '',
+          }));
 
           // This adds national to the top;
           // eslint-disable-next-line no-await-in-loop
@@ -195,10 +279,11 @@ export default {
             location: 1,
           });
 
-          const nationValueSeries = [
-            this.dlGetLocation(query[0]?.location)?.name,
-            parseFloat(query[0]?.value),
-          ];
+          const nationValueSeries = {
+            name: this.dlGetLocation(query[0]?.location)?.name,
+            y: parseFloat(query[0]?.value),
+            extraData: '',
+          };
 
           // add it ot the top of the series
           dataValues.unshift(nationValueSeries);
@@ -255,10 +340,34 @@ export default {
         };
         const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
         this.chartConfig.yAxis.title.text = displayFactor;
+        this.chartConfig.tooltip = {};
+        this.chartConfig.plotOptions.series = {};
+        this.chartConfig.plotOptions.series.point = {};
+        this.chartConfig.plotOptions.series.point.events = {};
         this.chartConfig.series = orderResult;
-        if (this.chartConfig.series.length > 1) {
-          this.showNationalComparison = true;
-          this.configureDifferenceIndicator();
+        if (this.chartConfig.series.length === 2) {
+          this.comparisonUnavailable = false;
+          // Only add the event listeners if the series length is 2
+          this.configureDifferenceForAllLocations();
+          this.chartConfig.plotOptions.series.point.events.mouseOver = (event) => {
+            this.$emit('pointMouseOver', {
+              seriesName: event.target.series.name,
+              comparisonData: event.target.extraData,
+              location: event.target.name,
+              value: event.target.y,
+            });
+          };
+
+          this.chartConfig.plotOptions.series.point.events.mouseOut = (event) => {
+            this.$emit('pointMouseOut', {
+              seriesName: event.target.series.name,
+              comparisonData: event.target.extraData,
+              location: event.target.name,
+              value: event.target.y,
+            });
+          };
+        } else if (this.chartConfig.series.length > 2) {
+          this.comparisonUnavailable = true;
         } else {
           this.showNationalComparison = false;
         }
@@ -283,6 +392,12 @@ export default {
 </script>
 
 <style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+}
 .datasetComparison {
   height: 100px;
   display: flex;
@@ -293,55 +408,55 @@ export default {
 
 .comparison {
   border-radius: 10px;
-  border: 1px solid #C1C1C1;
+  border: 1px solid #c1c1c1;
   width: auto;
   padding-left: 10em;
   padding-right: 10em;
-height: 83px;
-text-align: center;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-gap: 20px
+  height: 83px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
-.noComparison{
+.noComparison {
   border-radius: 10px;
-  border: 1px solid #E85D58;
+  border: 1px solid #e85d58;
   width: auto;
-height: 83px;
-text-align: center;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-align-items: baseline;
-gap: 20px;
-padding-top: 25px;
-padding-left: 5em;
+  height: 83px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-items: baseline;
+  gap: 20px;
+  padding-top: 25px;
+  padding-left: 5em;
   padding-right: 5em;
 }
 .comparison p {
   color: #000;
-font-size: 14px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .noComparison p {
-  color: #E85D58;
-font-size: 14px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
+  color: #e85d58;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .comparison h6 {
   color: #000;
-font-size: 30px;
-font-style: normal;
-font-weight: 600;
-line-height: normal;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
 </style>

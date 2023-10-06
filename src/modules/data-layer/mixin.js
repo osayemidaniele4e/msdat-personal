@@ -115,21 +115,32 @@ export default {
       // i could do this in individual component when making request with the
       // function by after this it will after all at once
       const query = queryObject;
-      if (query.datasource === 25) {
-        query.value_type = 1;
-      } else if (!has(query, 'value_type')) {
-        const datasource = await this.dlGetDataSource(query.datasource);
-        // if (this.valueType?.length <= 0) {
-        //   this.valueType = await this.getDexieTableValues('valuetypes');
-        //   return false;
-        // }
+      // if (query.datasource === 25) {
+      //   query.value_type = 1;
+      // } else if (!has(query, 'value_type')) {
+      //   const datasource = await this.dlGetDataSource(query.datasource);
+      //   // if (this.valueType?.length <= 0) {
+      //   //   this.valueType = await this.getDexieTableValues('valuetypes');
+      //   //   return false;
+      //   // }
 
-        // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
-        const valuetype = this.valueType?.filter(
-          (item) => item.value_type === datasource?.classification
-        );
-        query.value_type = valuetype[0]?.id;
-      }
+      //   // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+      //   const valuetype = this.valueType?.filter(
+      //     (item) => item.value_type === datasource?.classification
+      //   );
+      //   query.value_type = valuetype[0]?.id;
+      // }
+      const datasource = await this.dlGetDataSource(query.datasource);
+      // if (this.valueType?.length <= 0) {
+      //   this.valueType = await this.getDexieTableValues('valuetypes');
+      //   return false;
+      // }
+
+      // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+      const valuetype = this.valueType?.filter(
+        (item) => item.value_type === datasource?.classification
+      );
+      query.value_type = valuetype[0]?.id;
 
       if (isObject(query.location)) {
         const { location } = query;
@@ -250,6 +261,7 @@ export default {
      */
     async getNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
+      // console.log('new result', result)
       return result[result.length - 1];
     },
     async getDexieTableValues(query) {

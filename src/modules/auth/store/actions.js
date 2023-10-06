@@ -25,8 +25,8 @@ export default {
     }
   },
 
-   // eslint-disable-next-line consistent-return, no-unused-vars
-   async SAVE_DASHBOARDS({ commit }, payload) {
+  // eslint-disable-next-line consistent-return, no-unused-vars
+  async SAVE_DASHBOARDS({ commit }, payload) {
     try {
       const response = await axiosInstance.get('/dashboards/');
       commit('setDashboards', response);
@@ -35,7 +35,6 @@ export default {
       // console.log(err);
     }
   },
-
 
   // eslint-disable-next-line consistent-return
   async LOGIN_USER({ commit }, payload) {

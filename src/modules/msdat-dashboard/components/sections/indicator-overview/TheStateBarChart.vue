@@ -16,9 +16,17 @@
         "
       >
         <template #title>
-          <p class="work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height" v-if="level === 1">
             Distribution Of
-            <b>{{ values.indicator.short_name }}</b> Across The Country. Source:<b>
+
+            <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
+            <b>{{ values.indicator.short_name }}</b> Across The {{setAcrossRegion}}. Source:<b>
+              {{ values.datasource.datasource }} {{ values.year }}</b
+            >
+          </p>
+          <p class="work-sans mb-0 line-height" v-if="level !== 1">
+            Distribution Of
+            <b>{{ values.indicator.short_name }}</b> Across The States. Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b
             >
           </p>
@@ -47,6 +55,7 @@
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import { eventBus } from '@/main';
+import { mapState } from 'vuex';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
 
@@ -65,6 +74,7 @@ export default {
       level: 1,
       updateData: 0,
       desirable_slope: '',
+      acrossRegion: 'Country',
     };
   },
   props: {
@@ -79,6 +89,15 @@ export default {
       type: Boolean,
     },
   },
+  computed: {
+    ...mapState('MSDAT_STORE', [
+      'selectedState',
+      'datasetComperision',
+    ]),
+    setAcrossRegion() {
+      return this.acrossRegion;
+    },
+  },
   watch: {
     // Watch closeOverlay
     closeOverlay: {
@@ -88,7 +107,20 @@ export default {
           this.$refs.SubCard.close();
         }
       },
+      acrossRegion(oldValue, newValue) {
+        console.log(newValue, 'I can nerver lie');
+        console.log(oldValue, 'I can nerver lie');
+      },
       deep: true,
+    },
+
+    // Watches selected state in store for if it is nigeria it changes title if it nots it displays accross country
+    selectedState(newValue) {
+      if (newValue.name !== 'Nigeria') {
+        this.acrossRegion = 'State';
+      } else {
+        this.acrossRegion = 'Country';
+      }
     },
     values: {
       async handler() {

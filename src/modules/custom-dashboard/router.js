@@ -66,6 +66,12 @@ export default [
         name: 'sections',
         component: () => import('./views/ArrangeSections.vue'),
       },
+           // Page 4
+           {
+            path: 'visibility',
+            name: 'visibility',
+            component: () => import('./views/ChooseVisibility.vue'),
+          },
     ],
   },
   {

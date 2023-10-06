@@ -26,25 +26,40 @@
               class="mob-img"
               variant="primary"
             />
-            <div class="mobile-flex-col">
+            <div class="mobile-flex-col"
+              v-if="this.$store.getters.customDashboard === true">
+              <small class="mobile-flex-col-text1">{{ this.$store.getters.dashboardDetails.name }}</small>
+              <div class="mobile-flex-col-text2">
+                {{ this.$store.getters.dashboardDetails.description }}
+                  <small v-if="isAuthenticated && isAuthor"
+                    class="text-warning ml-2 tools">
+                    <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                    <b-icon font-scale="2" icon="dot"></b-icon>
+                    <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')">Create New</span>
+                    <b-icon font-scale="2" icon="dot"></b-icon>
+                    <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                  </small>
+              </div>
+            </div>
+            <div class="mobile-flex-col" v-else>
               <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
               <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
             </div>
 
             <div v-if="$route.path !== '/account'">
               <b-dropdown
-                text="Select"
+                text="Select Dashboard"
                 toggle-class="select-dropdown"
                 variant="none"
                 text-variant="none"
                 right
               >
                 <b-dropdown-item
-                  href="#"
                   id="dropdownMenuButton"
                   class="select-dropdown-item"
                   v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                   :key="index"
+                  :href="$route.path == '/advanced_analytics' ? `/dashboard/Advanced_Analytics?index=${index}` : '#'"
                   @click="emitIndex(index)"
                   >{{ control.label }}
                 </b-dropdown-item>
@@ -58,12 +73,21 @@
 
           <div
             class="main-text"
-            v-if="this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true"
+            v-if="this.$store.getters.customDashboard === true"
           >
             <h2 class="main-text">
-              <small>{{ this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name }}</small>
-              <br />
-              {{ this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.description }}
+              <small>{{ this.$store.getters.dashboardDetails.name }}</small>
+            <div>
+              {{ this.$store.getters.dashboardDetails.description }}
+              <small v-if="isAuthenticated && isAuthor"
+                class="text-warning ml-2 tools">
+                <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                <b-icon font-scale="2" icon="dot"></b-icon>
+                <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')">Create New</span>
+                <b-icon font-scale="2" icon="dot"></b-icon>
+                <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+              </small>
+            </div>
             </h2>
           </div>
           <div class="main-text" v-else>
@@ -95,7 +119,7 @@
             <b-nav class="h-100 align-items-center main d-flex">
               <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
               <a
-                href="https://fmohconnect.gov.ng/"
+                href="https://msdat.fmohconnect.gov.ng/"
                 target="_blank"
                 class="nav-link"
                 v-if="isAuthenticated === false"
@@ -119,10 +143,9 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               >
-              <div>
-</div>
+              <div></div>
               <a
-                href="https://msdat.fmohconnect.gov.ng/"
+                href="https://msdat.old.fmohconnect.gov.ng"
                 class="nav-link"
                 v-if="isAuthenticated === false"
                 >Go back to MSDAT 1.5</a
@@ -145,6 +168,14 @@
                   :class="{ dropcard: showExpandedDropdown }"
                 />
               </div>
+              <!-- button to view the list of plugins -->
+              <!-- <button
+                v-b-modal.modal-apps
+                class="btn btn-outline-primary border-light rounded-0 ml-3"
+                style="font-size: 13px !important"
+              >
+                Plugins
+              </button> -->
               <!-- <b-nav-item>
                 <b-dropdown text="Other Dashboards" class="border-0">
                   <div class="drop-container" v-for="(item, index) in headerDropdown" :key="index">
@@ -250,6 +281,7 @@
         </b-col>
       </b-row>
     </b-container>
+
     <!-- <DropCard v-show="showExpandedDropdown" /> -->
     <div v-if="isAuthenticated === true">
       <div class="container card shadow dropCard work-sans" v-if="showCard">
@@ -282,6 +314,45 @@
         </div>
       </div>
     </div>
+
+    <!-- plugin modal -->
+    <b-modal id="modal-apps" title="MSDAT Apps Plugins" hide-footer>
+      <b-collapse id="collapse-1" class="mt-2">
+        <b-card>
+          This enables you to comment on any section in the MSDAT dashboard just by clicking the
+          headings
+        </b-card>
+      </b-collapse>
+      <!-- Example plugin section -->
+      <div class="plugin-row">
+        <h5>
+          <span v-b-toggle.collapse-2>
+            Context Plugin
+            <b-icon-info-circle></b-icon-info-circle>
+          </span>
+        </h5>
+
+        <div>
+          <button
+            class="enable-btn"
+            @click="contextPluginActive('true')"
+            v-if="isContextPluginActive === 'false'"
+          >
+            Enable
+          </button>
+          <button
+            class="enable-btn"
+            @click="contextPluginActive('false')"
+            v-if="isContextPluginActive === 'true'"
+          >
+            Disable
+          </button>
+        </div>
+      </div>
+      <b-collapse id="collapse-2" class="mt-2">
+        <b-card> This is an example plugin for demonstration purposes </b-card>
+      </b-collapse>
+    </b-modal>
   </header>
 </template>
 
@@ -309,6 +380,7 @@ export default {
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
+      isContextPluginActive: 'false',
       contactBtn: false,
       aboutPage: false,
       headerDropdown: [
@@ -330,14 +402,34 @@ export default {
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
+
+    // check if current user is author of displayed custom dashboard
+    isAuthor() {
+      // retrieve all saved dashboards
+      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      // retrieve dashboards belonging to current user
+      const list = customDashboardsList[this.getUser.username];
+      // find currently loaded dashboard in list
+      const { name, description } = this.$store.getters.dashboardDetails;
+      return list?.find((dashb) => (dashb.config.dashboardDetails.name === name)
+        && (dashb.config.dashboardDetails.description === description));
+    },
   },
   created() {
     this.controls = this.$children;
     this.screenWidth = window.innerWidth;
     // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
+
+    // boolean to store project context availability
+    this.isContextPluginActive = localStorage.getItem('contextPlugin');
   },
 
   methods: {
+    contextPluginActive(data) {
+      this.isContextPluginActive = localStorage.getItem('contextPlugin');
+      localStorage.setItem('contextPlugin', data);
+      this.$router.go();
+    },
     showRegForm() {
       // eslint-disable-next-line no-unused-expressions
       this.show = true;
@@ -372,6 +464,10 @@ export default {
     showC() {
       this.showCard = true;
     },
+    editDashboard() {
+      this.$store.commit('startEdit');
+      this.$router.push('/my-dashboard/details');
+    },
   },
   watch: {
     $route: {
@@ -401,6 +497,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/scss/abstracts/_variables.scss';
+
+.tools {
+  display: inline-flex;
+  align-items: center;
+}
+.tools span:hover {
+  text-decoration: underline;
+}
 .custom-header {
   color: #ffffff;
   padding: 10px;
@@ -434,21 +538,20 @@ button {
   display: none;
 }
 
-.external{
-     text-decoration: none;
-      color: white;
-      font: normal normal 600 12px/20px Muli;
-      &-link{
-        text-decoration: none;
-        color: black;
-      };
-      .active{
-color: white;
-      };
-      .hover{
-        color: white;
-      }
-
+.external {
+  text-decoration: none;
+  color: white;
+  font: normal normal 600 12px/20px Muli;
+  &-link {
+    text-decoration: none;
+    color: black;
+  }
+  .active {
+    color: white;
+  }
+  .hover {
+    color: white;
+  }
 }
 
 header#the-header {
@@ -1029,6 +1132,18 @@ div {
 }
 .btn:hover {
   color: #fff;
+}
+.enable-btn:hover {
+  background-color: #fff;
+  color: #000000;
+  border: 1px solid black;
+}
+.plugin-row {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
+  justify-content: space-between;
 }
 
 @media print {

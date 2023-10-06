@@ -1,16 +1,26 @@
 <template>
-  <b-container fluid>
+  <div>
+    <b-container fluid>
     <div class='mt-0'>
-      <div v-if='!isAuthenticated'>
-        <b-nav align="right" class='nav'>
-          <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
+      <div v-if='!isAuthenticated' class="mb-4">
+        <b-nav  class='nav align-self-center justify-content-between'>
+          <div class="flex-grow-1 d-flex justify-content-center">
+            <h1 class="text-center" style="width:fit-content; margin-left: 14%;">The Custom Dashboard</h1>
+          </div>
+          <div class="d-flex">
+            <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
           <b-nav-item @click="$router.push('/custom/login')">Login</b-nav-item>
+          </div>
         </b-nav>
       </div>
-      <div class="header-text text-center mb-5">
-        <h1>The Custom Dashboard</h1>
+      <div class="container">
+        <div class="header-text text-center mb-5">
         <h2>Design your dashboard, customize your data</h2>
         <h3>No coding skills required!</h3>
+      </div>
+
+      <saved-dashboard-list v-if="isAuthenticated" />
+
       </div>
       <b-row align="center" class='m-5 p-5 hero'>
         <b-col md="auto" lg="auto" sm="12" class="svg">
@@ -27,10 +37,12 @@
         <b-col md="auto" lg="auto" sm="12" align-self="center" class="svg-arrow">
           <customDashboardSvg :name="79"></customDashboardSvg>
         </b-col>
-        <b-col md="auto" lg="auto" sm="12" class="svg">
+        <div class="mxw-400">
+          <b-col md="auto" lg="auto" sm="12" class="svg">
           <customDashboardSvg :name="77"></customDashboardSvg>
           <p style="font-size: 24px !important;">Visualize Dashboard</p>
         </b-col>
+        </div>
       </b-row>
       <div class="text-center">
         <b-button id="get-started" @click="$router.push('/custom/login')"  class="px-5 py-3">Get Started Here</b-button>
@@ -78,7 +90,7 @@
         <b-row class="features">
           <b-col>
             <h4 style="font-size: 24px !important;">Available health data</h4>
-            <p class="d-flex" style="font-size: 14px !important;">
+            <p class="d-flex text-justify" style="font-size: 14px !important;">
               Our platform helps you to set up your custom dashboard to suit
               your needs. The dashboard comes with cleaned data on the certain
               key health indicators in Nigeria. This data can be made available
@@ -93,7 +105,7 @@
         <b-row class="features">
           <b-col>
             <h4 style="font-size: 24px !important;">Customizable Data</h4>
-            <p style="font-size: 14px !important;">
+            <p class="text-justify" style="font-size: 14px !important;">
               GOODNEWS! This platform is not just limited to the available data,
               you can also upload the data you are tracking in your team. You
               will be able to input your data and choose any visualization of
@@ -116,13 +128,15 @@
         </div>
       </b-col>
     </b-row>
-    <CdFooter />
   </b-container>
+  <CdFooter />
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import CdFooter from '../components/footer.vue';
+import SavedDashboardList from '../components/SavedDashboardList.vue';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
 export default {
@@ -130,6 +144,7 @@ export default {
   components: {
     CdFooter,
     customDashboardSvg,
+    SavedDashboardList,
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['isAuthenticated']),

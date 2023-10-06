@@ -1,14 +1,22 @@
 <template>
   <div>
-    <MSDAT v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false" />
-    <AdvanceMSDAT v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
-      :indicators="configObject.indicators" :dataSources="configObject.dataSources"
-      :defaultIndicators="configObject.defaultIndicators" :initialIndicator="configObject.initialIndicator"
-      :initialDataSource="configObject.initialDataSource" :initialLocation="configObject.initialLocation"
-      :showTableRelatedIndicator="configObject.showTableRelatedIndicator != undefined
-        ? configObject.showTableRelatedIndicator
-        : true
-        " />
+    <MSDAT
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
+    />
+    <AdvanceMSDAT
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
+      :indicators="configObject.indicators"
+      :dataSources="configObject.dataSources"
+      :defaultIndicators="configObject.defaultIndicators"
+      :initialIndicator="configObject.initialIndicator"
+      :initialDataSource="configObject.initialDataSource"
+      :initialLocation="configObject.initialLocation"
+      :showTableRelatedIndicator="
+        configObject.showTableRelatedIndicator != undefined
+          ? configObject.showTableRelatedIndicator
+          : true
+      "
+    />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
   </div>
 </template>
@@ -89,24 +97,50 @@ export default {
       return Promise.resolve(false);
     },
     async saveDashboard(indicators, sources, dashboardTitle) {
-      const sections = this.fieldsArray
-        .filter((item) => item.isShow === true)
-        .map((item) => item.name);
-      const payload = {
-        title: dashboardTitle,
-        showTableRelatedIndicator: false,
-        visibility: 'private',
-        user: this.getUser.id,
-        initial_indicator: indicators[0],
-        initial_datasource: sources[0],
-        indicators,
-        dataSources: sources,
-        initial_location: 1,
-        default_indicators: [indicators[0]],
-        sections,
-      };
-      await this.SAVE_USER_DASHBOARD(payload);
+      const sections = this.fieldsArray.filter((item) => item.isShow === true).map((item) => item.name);
+      if (this.$store.getters.getVisibility === 'private') {
+        const payload = {
+          title: dashboardTitle,
+          showTableRelatedIndicator: false,
+          visibility: 'private',
+          user: this.getUser.id,
+          initial_indicator: indicators[0],
+          initial_datasource: sources[0],
+          indicators,
+          dataSources: sources,
+          initial_location: 1,
+          default_indictors: [indicators[0]],
+          sections,
+        };
+        await this.SAVE_USER_DASHBOARD(payload);
+      }
+
+      if (this.$store.getters.getVisibility === 'public') {
+        const payload = {
+          title: dashboardTitle,
+          showTableRelatedIndicator: false,
+          visibility: 'pending',
+          user: this.getUser.id,
+          initial_indicator: indicators[0],
+          initial_datasource: sources[0],
+          indicators,
+          dataSources: sources,
+          initial_location: 1,
+          default_indictors: [indicators[0]],
+          sections,
+        };
+        await this.SAVE_USER_DASHBOARD(payload);
+      }
     },
+    // saveIndicatorToStorage(item) {
+    //   localStorage.setItem('indicatorId', 7);
+    // },
+    // saveDataSourceToStorage(item) {
+    //   localStorage.setItem('datasourceId', 6);
+    // },
+    // getIndicator(id){
+
+    // }
   },
   async mounted() {
     this.clearData();
@@ -119,13 +153,9 @@ export default {
       this.SET_SELECTED_CONFIG(defaultDSyear);
     }
   },
-  computed: {
-    ...mapGetters('AUTH_STORE', ['getUser']),
-    fieldsArray() {
-      return this.$store.getters.arrangedSections;
-    },
-  },
   async created() {
+    // this.saveIndicatorToStorage();
+    // this.saveDataSourceToStorage();
     // const formData = {
     //   username: 'ummi',
     //   password: 'ummi',
@@ -135,6 +165,11 @@ export default {
     // console.log(response);
 
     const { name } = this.$route.params;
+
+    if (this.$store.getters.customDashboard && name === 'Health_Outcomes_and_Service_Coverage') {
+      this.$store.dispatch('customDashboard', false);
+      await this.$store.dispatch('DL/CLEAR_DB');
+    }
     /**
      * @description CUSTOM-DASHBOARD
      * @description reformat selected data into msdat config structure
@@ -145,7 +180,6 @@ export default {
       sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
-
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
@@ -173,6 +207,15 @@ export default {
         });
         return element;
       });
+      // try {
+      //   const response = await apiServices.getDashboard();
+      //   const results = response.data;
+      //   console.log({ results })
+      //   // const dashboard = results.find((item) => item?.name === name);
+      // } catch (e) {
+      //   console.log({ e });
+      // }
+
       // * create the config object
       const formattedConfig = {
         name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
@@ -182,6 +225,7 @@ export default {
           .replace(/\s+/g, '_')
           .toLowerCase(),
         indicators: ids,
+        // sections: dashboard.sections,
         defaultIndicators: ids.slice(0, 3),
         dataSources: sourcesID,
         initialIndicator: ids[0],
