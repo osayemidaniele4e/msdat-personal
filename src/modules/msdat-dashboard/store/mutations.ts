@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex';
-import { State, ControlPanelConfig } from '../types/index';
 import { clone, cloneDeep } from 'lodash';
+import { State, ControlPanelConfig } from '../types/index';
 
 type setOptionsPayload = {
   panelIndex: number;
@@ -20,6 +20,9 @@ const mutations: MutationTree<State> = {
     state.default.indicator = payload.indicator;
     state.default.datasource = payload.datasource;
     state.default.location = payload.location;
+  },
+  setSelectedState(state, payload) {
+    state.selectedState = payload;
   },
   /**
    * This just set the Option on the state for all the defaults
@@ -41,7 +44,7 @@ const mutations: MutationTree<State> = {
       state.controlConfig[obj.panelIndex].setup[obj.groupIndex][keyIndex].options = obj.values;
     } else {
       const keyIndex = state.controlConfig[obj.panelIndex].setup.findIndex(
-        (item) => item.key === obj.key
+        (item) => item.key === obj.key,
       );
       if (state.controlConfig[obj.panelIndex].setup[keyIndex] !== undefined) {
         state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj?.values;
@@ -60,7 +63,9 @@ const mutations: MutationTree<State> = {
    */
   setControlOptions: (
     state,
-    { panelIndex, controlIndex, controlIndex2, values, multipleSetup }
+    {
+      panelIndex, controlIndex, controlIndex2, values, multipleSetup,
+    },
   ) => {
     if (multipleSetup) {
       state.controlConfig[panelIndex].setup[controlIndex][controlIndex2].options = values;
@@ -173,9 +178,9 @@ const mutations: MutationTree<State> = {
   UPDATE_ALL_YEARS: (state, payload) => {
     state.controlConfig.forEach((item) => {
       if (
-        item.label !== 'Multi-Source Comparison' &&
-        item.label !== 'Disaggregation' &&
-        item.label !== 'Dataset Comparison'
+        item.label !== 'Multi-Source Comparison'
+        && item.label !== 'Disaggregation'
+        && item.label !== 'Dataset Comparison'
       ) {
         item.setup.forEach((source) => {
           if (source.key === 'year') {
@@ -186,7 +191,7 @@ const mutations: MutationTree<State> = {
     });
   },
   UPDATE_MULTI_YEARS: (state, payload) => {
-    //console.log(payload, 'Henry');
+    // console.log(payload, 'Henry');
 
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Comparison') {

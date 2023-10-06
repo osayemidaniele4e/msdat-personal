@@ -8,25 +8,28 @@
         <div class="d-flex justify-content-center">
           <b-icon-info-circle-fill
             @click="$emit('indicator-info:clicked', rowData.indicator)"
-            class="info-circle"
+            class="info-circle text-success"
           />
         </div>
       </td>
       <td class="align-middle p-2 table-indicators-1" id="table-indicators-1">
         <!-- Use this slot to set the related indicator multiselect and it options -->
-        <div class="d-flex flex-column indicator-container" v-if="dashboardName === 'Health_Facility'">
-    <slot :name="`indicator`" :indicator="rowData.indicator.id">
-      <div class="indicator-name">{{ rowData.indicator.full_name }}</div>
-    </slot>
-    <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
-  </div>
+        <div
+          class="d-flex flex-column indicator-container"
+          v-if="dashboardName === 'Health_Facility'"
+        >
+          <slot :name="`indicator`" :indicator="rowData.indicator.id">
+            <div class="indicator-name">{{ rowData.indicator.full_name }}</div>
+          </slot>
+          <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
+        </div>
 
-  <div class="d-flex flex-column" v-else>
-    <slot :name="`indicator`" :indicator="rowData.indicator.id">
-      <div class="">{{ rowData.indicator.full_name }}</div>
-    </slot>
-    <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
-  </div>
+        <div class="d-flex flex-column" v-else>
+          <slot :name="`indicator`" :indicator="rowData.indicator.id">
+            <div class="">{{ rowData.indicator.full_name }}</div>
+          </slot>
+          <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
+        </div>
       </td>
       <!-- the default slot for the system -->
       <slot></slot>
@@ -36,10 +39,10 @@
 
 <script>
 export default {
-  data(){
-    return{
-      dashboardName: ''
-    }
+  data() {
+    return {
+      dashboardName: '',
+    };
   },
   props: {
     rowData: {
@@ -53,11 +56,11 @@ export default {
     },
   },
 
-  mounted(){
+  mounted() {
     const { name } = this.$route.params;
     this.dashboardName = name;
-    console.log('zonal map', this.dashboardName)
-  }
+    console.log('zonal map', this.dashboardName);
+  },
 };
 </script>
 
@@ -78,7 +81,7 @@ tr {
   }
 }
 
-.info-circle{
+.info-circle {
   font-size: 16px;
 }
 

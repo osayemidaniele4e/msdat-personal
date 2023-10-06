@@ -20,6 +20,7 @@ const state: State = {
   // ***** Auther: Ghufran Ahmed
   indicatorComparision: false,
   zonalAnalysis: false,
+  selectedState: '',
   indicatorComparsionByPeriod: false,
   multisourceComparison: false,
   datasetComperision: false,

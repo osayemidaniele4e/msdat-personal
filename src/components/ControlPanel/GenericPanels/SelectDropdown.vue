@@ -130,6 +130,7 @@ export default {
       }
       return null;
     },
+
   },
   props: {
     options: {
@@ -154,6 +155,7 @@ export default {
     options: {
       async handler(newValue) {
         // this.addQueryParamToUrl();
+        console.log('tag it', newValue);
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
@@ -221,6 +223,11 @@ export default {
         this.loading = false;
       },
     },
+    selected(newValue) {
+      if (newValue.parent !== undefined) {
+        this.setSelectedState(newValue);
+      }
+    },
     deep: true,
     immediate: false,
   },
@@ -230,6 +237,7 @@ export default {
       'UPDATE_ALL_DATASOURCES',
       'UPDATE_ALL_YEARS',
       'UPDATE_MULTI_YEARS',
+      'setSelectedState',
     ]),
 
     modifyDataSourceChildLabel(tag) {

@@ -5,6 +5,7 @@ export interface State {
   multisourceComparison: boolean;
   datasetComperision: boolean;
   dynamicDashboard: boolean;
+  selectedState: any,
   default: Defaults;
   controlConfig: ControlPanelConfig[];
   selectedConfigurations: {
