@@ -23,7 +23,7 @@
 <script>
 import moment from 'moment';
 import VueCookies from 'vue-cookies';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';

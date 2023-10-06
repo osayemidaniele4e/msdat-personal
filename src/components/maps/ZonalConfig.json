@@ -111,7 +111,11 @@
       ],
       "states": { "hover": { "color": "#BADA55" } },
       "joinBy": "hc-key",
-      "dataLabels": { "enabled": true, "color": "#FFFFFF" },
+      "dataLabels": {
+        "enabled": true,
+        "color": "#FFFFFF",
+        "allowOverlap": true
+      },
       "tooltip": {
         "headerFormat": "<b>{point.name}</b><br>",
         "pointFormat": "{point.name}: <b>{point.value}</b>"

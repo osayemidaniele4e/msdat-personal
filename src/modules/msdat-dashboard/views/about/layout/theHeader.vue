@@ -365,6 +365,7 @@ import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
 
 export default {
+  name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,

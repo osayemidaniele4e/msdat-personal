@@ -20,8 +20,8 @@
       <span class="mb-3">Select a dashboard to start</span>
       <b-row cols="2" cols-md="3" cols-lg="5" class="w-100">
         <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center">
-          <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`"><img class="section" :src="imgsrc(section)" :alt="section"></router-link>
-          <small style="font-size: 0.6rem; font-weight: 600" class="py-2">{{ section }}</small>
+          <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`" :id="section.id"><img class="section" :src="imgsrc(section.title)" :alt="section.title"></router-link>
+          <small style="font-size: 0.6rem; font-weight: 600" class="py-2">{{ section.title }}</small>
         </b-col>
       </b-row>
     </b-container>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-// import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
 import Header from '../about/layout/theHeader.vue';
 import tour from '../onboarding/tour';
@@ -49,17 +49,35 @@ export default {
   data() {
     return {
       sections: [
-        'Correlation Analysis',
-        'Descriptive Analysis',
-        // 'Indicator Comparison',
-        'Predictive Analysis',
-        'Scatter Plot Analysis',
-        'Multi-source Indicator Comparison',
+        {
+          title: 'Correlation Analysis',
+          id: 'CorrelationAnalysis',
+        },
+        {
+          title: 'Descriptive Analysis',
+          id: 'DescriptiveAnalysis',
+        },
+        {
+          title: 'Indicator Comparison',
+          id: 'IndicatorComparison',
+        },
+        {
+          title: 'Predictive Analysis',
+          id: 'PredictiveAnalysis',
+        },
+        // {
+        //   title: 'Scatter Plot Analysis',
+        //   id: 'ScatterPlotAnalysis',
+        // },
+        {
+          title: 'Multi-source Indicator Comparison',
+          id: 'Multi-source Indicator Comparison',
+        },
       ],
     };
   },
   methods: {
-    // ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
     imgsrc(sec) {
       // eslint-disable-next-line global-require, import/no-dynamic-require
