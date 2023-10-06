@@ -55,13 +55,13 @@ localVue.use({
 });
 
 describe('Advanced Analytics.vue', () => {
-  const links = [
-    { text: 'CorreapiCalld/Advanced_Analytics?index=0' },
-    { text: 'Descriptive Analysis', route: '/dashboard/Advanced_Analytics?index=1' },
-    { text: 'Predictive Analysis', route: '/dashboard/Advanced_Analytics?index=2' },
-    { text: 'Multi-source Indicator Comparison', route: '/dashboard/Advanced_Analytics?index=3' },
-    // Add other links as needed
-  ];
+  // const links = [
+  //   { text: 'CorreapiCalld/Advanced_Analytics?index=0' },
+  //   { text: 'Descriptive Analysis', route: '/dashboard/Advanced_Analytics?index=1' },
+  //   { text: 'Predictive Analysis', route: '/dashboard/Advanced_Analytics?index=2' },
+  //   { text: 'Multi-source Indicator Comparison', route: '/dashboard/Advanced_Analytics?index=3' },
+  //   // Add other links as needed
+  // ];
 
   const wrapper = mount(landing);
 
