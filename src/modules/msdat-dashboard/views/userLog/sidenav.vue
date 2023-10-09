@@ -17,8 +17,8 @@
             ><b-icon-card-heading></b-icon-card-heading>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Saved Dashboards</span></a
           >
-          <a href="#/createPlugin" class="mt-4 item"
-            ><b-icon-card-heading></b-icon-card-heading>&nbsp;&nbsp;
+          <a href="#/createPlugin" class="mt-4 item blue"
+            ><b-icon-cloud-upload></b-icon-cloud-upload>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Create a plugin</span></a
           >
          
@@ -94,5 +94,9 @@ h3 {
 }
 a {
   color: #000 !important;
+}
+
+.blue{
+  color: blue;
 }
 </style>
