@@ -108,7 +108,7 @@
 <script>
 import { mapState } from 'vuex';
 import DataSourceMetaDataModal from '@/modules/msdat-dashboard/components/sections/indicator-overview/info_modal/DataSourceMetaDataModal.vue';
-import StateBaseMap from '@/components/maps/StateProfieBaseMap.vue';
+import StateBaseMap from '@/components/maps/StateProfileBaseMap.vue';
 import dataMixins from '../../data-layer/mixin';
 import * as requests from '../requests';
 import landAreaData from './landData';
@@ -167,7 +167,7 @@ export default {
             container.previousYear = null; // Set previousYear to null as there is no previous year
           } else {
             const fullYears = this.data[i].data.results.filter(
-              (value) => value.period.length === 4,
+              (value) => value.period.length === 4
             );
 
             if (fullYears.length > 0) {
@@ -241,8 +241,9 @@ export default {
       }
       // console.log('Pointer:', val.pointer);
 
-      const change = ((parseFloat(val.value) - parseFloat(val.previousValue)) / parseFloat(val.previousValue))
-        * 100;
+      const change =
+        ((parseFloat(val.value) - parseFloat(val.previousValue)) / parseFloat(val.previousValue)) *
+        100;
       // console.log("Change:",change)
 
       if (change > 0) {

@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import StateBaseMap from '@/components/maps/StateProfieBaseMap.vue';
+import StateBaseMap from '@/components/maps/StateProfileBaseMap.vue';
 
 export default {
   name: 'intro',
