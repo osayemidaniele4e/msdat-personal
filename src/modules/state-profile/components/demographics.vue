@@ -29,15 +29,18 @@
               <p v-else-if="d.sourceId === 19" class="value">
                 <!-- <b>{{ Math.round(d.value) | commaValue }}</b> -->
                 <b>{{ d.value | commaValue }}</b>
-
               </p>
               <p v-else class="value">
                 <b>{{ d.value | commaValue }}</b>
               </p>
               <p class="source">
                 Source: {{ d.source }} {{ d.year }}
-                <span><b-icon-info-circle-fill variant="primary" @click="showSrcModal(d.sourceId)"
-                    class="data-source-info" /></span>
+                <span
+                  ><b-icon-info-circle-fill
+                    variant="primary"
+                    @click="showSrcModal(d.sourceId)"
+                    class="data-source-info"
+                /></span>
               </p>
             </b-col>
           </b-row>
@@ -63,9 +66,14 @@
         <div class="vl"></div>
       </b-col>
       <b-col md="5">
-        <BaseMap v-if="state != 'National'" :level="3" :lgaState="selectedState" :mapObject="this.mapOptions" />
+        <StateBaseMap
+          v-if="state != 'National'"
+          :level="3"
+          :lgaState="selectedState"
+          :mapObject="this.mapOptions"
+        />
 
-        <BaseMap v-else :level="1" :mapObject="mapOptionsNational" />
+        <StateBaseMap v-else :level="1" :mapObject="mapOptionsNational" />
         <p v-if="state == 'National'" class="text-center map-text">
           Select a state on the map to view state profile
         </p>
@@ -99,15 +107,15 @@
 
 <script>
 import { mapState } from 'vuex';
-import BaseMap from '@/components/maps/BaseMap.vue';
 import DataSourceMetaDataModal from '@/modules/msdat-dashboard/components/sections/indicator-overview/info_modal/DataSourceMetaDataModal.vue';
+import StateBaseMap from '@/components/maps/StateProfieBaseMap.vue';
 import dataMixins from '../../data-layer/mixin';
 import * as requests from '../requests';
 import landAreaData from './landData';
 
 export default {
   name: 'demographics',
-  components: { BaseMap, DataSourceMetaDataModal },
+  components: { DataSourceMetaDataModal, StateBaseMap },
   props: {
     state: String,
     stateDemographics: Array,
@@ -129,7 +137,6 @@ export default {
     },
   },
   methods: {
-
     getChangeIcon(d) {
       // console.log("poiner" this.pointer)
       if (d === 'success') {
@@ -234,11 +241,16 @@ export default {
       }
       // console.log('Pointer:', val.pointer);
 
-      const change = ((parseFloat(val.value) - parseFloat(val.previousValue)) / parseFloat(val.previousValue)) * 100;
+      const change = ((parseFloat(val.value) - parseFloat(val.previousValue)) / parseFloat(val.previousValue))
+        * 100;
       // console.log("Change:",change)
 
-      if (change > 0) { val.pointer = 'success'; }
-      if (change <= 0) { val.pointer = 'danger'; }
+      if (change > 0) {
+        val.pointer = 'success';
+      }
+      if (change <= 0) {
+        val.pointer = 'danger';
+      }
 
       return Number(change.toFixed(2)); // Return the absolute value of change rounded to 2 decimal places
     },
@@ -486,6 +498,6 @@ hr {
 }
 
 .compare .text-right {
-  transform:translateY(-4px)
+  transform: translateY(-4px);
 }
 </style>
