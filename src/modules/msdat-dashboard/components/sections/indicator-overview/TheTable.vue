@@ -221,7 +221,6 @@ export default {
       const routeTitle = this.$route.path;
       const filteredIndicator = await this.dlQuery(queryObject);
       if (routeTitle.endsWith('Demographics')) {
-        console.log('title is demographics');
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
           return filteredIndicator.reduce((max, currentValues) => {
@@ -231,16 +230,13 @@ export default {
             return max;
           });
         }
-      } else {
-        console.log('title not demographics');
-        if (filteredIndicator.length > 0) {
-          return filteredIndicator.reduce((max, currentValues) => {
-            if (currentValues.period > max.period) {
-              return currentValues;
-            }
-            return max;
-          });
-        }
+      } else if (filteredIndicator.length > 0) {
+        return filteredIndicator.reduce((max, currentValues) => {
+          if (currentValues.period > max.period) {
+            return currentValues;
+          }
+          return max;
+        });
       }
       return null;
     },
