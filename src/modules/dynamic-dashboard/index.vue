@@ -264,6 +264,7 @@ export default {
       this.isAdvanced = true;
       this.configObject = '';
       this.configObject = dashboard;
+      this.SET_CONFIGURATIONS(dashboard);
       return;
     }
     // =======================
