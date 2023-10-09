@@ -32,7 +32,7 @@
 <script>
 import { defineComponent } from 'vue';
 
-export default defineComponent({
+export default {
   name: 'ShareCodeModal',
   props: {
     tableContent: String,
@@ -75,7 +75,7 @@ export default defineComponent({
       // alert('Content copied to clipboard!');
     },
   },
-});
+};
 </script>
 
 <style scoped>
