@@ -1,9 +1,10 @@
 <template>
         <div class="container">
-        <!-- <h1>MSDAT Apps Plugins: Simplifying Plugin Development</h1> -->
+        <h2>Creating an Application Plugin for MSDAT:</h2>
+        <br>
         <h4>Introduction:</h4>
-        <span>The MSDAT (Multi-Source Data Analytic and Triangulation) Apps Plugins offer a streamlined approach to extending the functionality of various applications within the MSDAT ecosystem. These plugins empower developers to enhance and customize the capabilities of MSDAT tailoring them to specific needs.</span>
-        <br><br>
+        <span>The MSDAT (Multi-Source Data Analytic and Triangulation) Apps Plugins offers a streamlined approach to extending the functionality of various applications within the MSDAT ecosystem. These plugins empower developers to enhance and customize the capabilities of MSDAT tailoring them to specific needs.</span>
+        <br><br><br>
         <h4>Step 1: Cloning the Boilerplate</h4>
         <ol>
             <li>Visit the GitHub Repository: Navigate to the official MSDAT repository on GitHub 
@@ -12,20 +13,25 @@
             <li>Clone the Boilerplate: Clone the boilerplate code repository to your local development environment. This boilerplate serves as a pre-configured template, saving you time and effort in setting up the initial structure for your plugin.</li>
         </ol>
         <p>For detailed instructions on using the MSDAT boilerplate, refer to the comprehensive documentation provided below. This documentation walks you through the process of utilizing the MSDAT boilerplate effectively, ensuring you understand how to harness its capabilities to craft robust app plugins.</p>
+
+        <br> <br>
         <h4>Step 2: Plugin Development and Packaging</h4>
         <ol>
             <li>Develop Your Plugin: Leverage the bioilerplate as a starting point. Implement your desired features, integrations, or improvements within the plugin's codebase.</li>
             <li>Create a Zip Folder: Once your plugin development is complete, organize the plugin files and resources into a structured directory. Then, create a compressed zip folder containing these files. This packaged zip folder will be used for submission and review.</li>
         </ol>
+
+        <br> <br>
         <h4>Step 3: Submission and Explanation</h4>
         <ol>
-            <li>Upload the Zip File: Access the designated submission portal provided by MSDAT. Use the portal to upload the zip folder containing your plugin's codebase and resources.</li>
+            <li>Upload the Zip File: Access the designated submission portal provided by MSDAT. Use this <span class="green" v-b-modal.upload-plugin>form modal</span> to upload the zip folder containing your plugin's codebase and resources.</li>
             <li>Explain Your Plugin: Accompany the submission with a clear and concise explanation of your plugin's purpose, functionalities, and any notable features. Provide insights into how your plugin enhances the user experience or extends the application's capabilities.</li>
         </ol>
-        <div class="d-flex justify-content-center m-10">
-      <b-button v-b-toggle.collapse-3 class="m-1" variant="primary">Submit plugin</b-button>
-    </div>  <b-collapse visible id="collapse-3">
-    <b-card>
+
+        <br> <br>
+
+<b-modal id="upload-plugin" title="Submit a Plugin" hide-footer>
+  <b-card>
         <b-form @submit="onSubmit" @reset="onReset" v-if="show">
           <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
         <b-form-input
@@ -112,14 +118,15 @@
 </b-modal>
     </b-form>
     </b-card>
-  </b-collapse>
-  <br> 
+</b-modal>
+
         <h4>Step 4: Review Process</h4>
         <ol>
             <li>Technical Review: The MSDAT team will assess your plugin's technical aspects, ensuring it adheres to coding standards, security practices, and compatibility requirements.</li>
             <li>Functionality Review: The functionality of your plugin will be evaluated against the expectations and objectives outlined during the submission.</li>
         </ol>
         <p>Upon completion of the review, you'll receive notification of whether your plugin meets the specified requirements.</p>
+        <br> <br>
         <h4>Step 5: Plugin Deployment</h4>
         <ol>
             <li>Confirmation: Upon meeting the requirements, you'll receive confirmation that your plugin has been approved for deployment.</li>
@@ -148,6 +155,10 @@ h4 {
 }
 p {
     color: #777;
+}
+
+.green {
+  color: green;
 }
 </style>
 
