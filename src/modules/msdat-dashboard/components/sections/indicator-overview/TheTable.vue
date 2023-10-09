@@ -218,17 +218,9 @@ export default {
       this.tableObj = this.bootstrapCDN + tableObjTemp;
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
+      const routeTitle = this.$route.path;
       const filteredIndicator = await this.dlQuery(queryObject);
-      if (this.$route.meta.title !== 'Demographics') {
-        if (filteredIndicator.length > 0) {
-          return filteredIndicator.reduce((max, currentValues) => {
-            if (currentValues.period > max.period) {
-              return currentValues;
-            }
-            return max;
-          });
-        }
-      } else if (this.$route.meta.title === 'Demographics') {
+      if (routeTitle.endsWith('Demographics')) {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
           return filteredIndicator.reduce((max, currentValues) => {
@@ -238,6 +230,13 @@ export default {
             return max;
           });
         }
+      } else if (filteredIndicator.length > 0) {
+        return filteredIndicator.reduce((max, currentValues) => {
+          if (currentValues.period > max.period) {
+            return currentValues;
+          }
+          return max;
+        });
       }
       return null;
     },
