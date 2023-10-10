@@ -345,9 +345,11 @@ export default class DataLayer {
    * check available datasources
    * @author davebenard
    */
-
   async initDataWithYears(indicator, limit = 0) {
+    const unavailableIndicators = [64, 78, 329, 382, 64, 78, 37];
     for (let i = 0; i < indicator.length; i++) {
+      // eslint-disable-next-line no-continue
+      if (unavailableIndicators.includes(indicator[i])) continue;
       try {
         const indicatorID = indicator[i];
         const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
@@ -365,7 +367,8 @@ export default class DataLayer {
           this.updatedStoreAvailableIndicator(indicatorID);
         }
       } catch (e) {
-        console.log(e);
+        unavailableIndicators.push(indicator[i]);
+        console.log('unavailableIndicators', unavailableIndicators);
       }
     }
   }
