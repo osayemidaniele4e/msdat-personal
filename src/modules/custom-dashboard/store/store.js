@@ -58,6 +58,12 @@ const store = {
         active: false,
         isShow: false,
       },
+      {
+        id: 6,
+        name: 'Policy Simulator',
+        active: false,
+        isShow: true,
+      },
     ],
     dashboardRequest: {},
   },
