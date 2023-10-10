@@ -266,6 +266,7 @@ export default {
         organization: '',
         Reason: '',
         name_of_dashboard: '',
+        dashboard_details: null
       },
       form: {
         email: '',
@@ -312,7 +313,9 @@ export default {
 
     async createPublicDashboard() {
       // send the request to create a public dashboard
+      this.public_creator.dashboard_details = await this.$store.getters.dashboardDetails;
       await this.$store.dispatch('setDashboardRequest', this.public_creator);
+      console.log('public creator', this.public_creator)
       // hide the 'modal-public-dashboard'
       await this.$bvModal.hide('modal-public-dashboard');
       // show the 'modal-in-review'
