@@ -1,6 +1,6 @@
 <template>
   <Layout :index="3">
-    <div class="p-2">
+    <div class="p-2 mb-5">
       <section class="d-flex align-items-center justify-content-center justify-content-sm-start">
         <b-icon icon="bar-chart-fill"></b-icon>
         <h4 style="font-size: 15px;" class="pl-2 m-0">Dashboard History</h4>
@@ -40,7 +40,7 @@ import moment from 'moment';
 import Layout from './layout.vue';
 
 export default {
-  name: 'Profile',
+  name: 'ActivityHistory',
   components: {
     Layout,
   },
