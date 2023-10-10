@@ -1,5 +1,5 @@
 export default {
-  label: 'Predictive Analysis',
+  label: 'Policy Simulator',
   setup: [
     {
       type: 'dropdown',
@@ -15,16 +15,6 @@ export default {
       options: [],
     },
     {
-      class: ['col-lg col-md-2 col-4 step-datasource'],
-      type: 'dropdown',
-      label: 'data Source',
-      key: 'datasource',
-      dropdownProps: {
-        label: 'datasource',
-      },
-      options: [],
-    },
-    {
       class: ['col-lg col-md-2 col-4 step-location'],
       type: 'dropdown',
       label: 'location',
@@ -34,15 +24,31 @@ export default {
       },
       options: [],
     },
+
+    // year ??
+    // {
+    //   class: ['col-lg col-md-2 col-4'],
+    //   type: 'dropdown',
+    //   label: 'Year',
+    //   key: 'year',
+    //   options: [],
+    //   dropdownProps: {
+    //     'preselect-first': true,
+    //   },
+    // },
     {
-      class: ['col-lg col-md-2 col-4'],
-      type: 'dropdown',
-      label: 'Target',
-      key: 'year',
+      class: ['col-lg col-md-2 col-4 mt-4'],
+      type: 'generate',
+      label: '',
+      key: 'Generate',
       options: [],
-      dropdownProps: {
-        'preselect-first': true,
-      },
+    },
+    {
+      class: ['col-lg col-md-2 col-4 mt-4'],
+      type: 'history',
+      label: '',
+      key: 'History',
+      options: [],
     },
   ],
   payload: {

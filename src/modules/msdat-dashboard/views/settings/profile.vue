@@ -18,36 +18,36 @@
           <b-button disabled class="mr-3 py-2 px-4 bg-white text-primary"><strong>Upload</strong></b-button>
           <b-button disabled class="py-2 px-4 bg-white text-dark"><strong>Remove</strong></b-button>
         </div>
-        <b-form>
+        <b-form @submit.prevent="updateProfile">
           <b-row>
             <b-col cols="6">
               <b-form-group id="input-group-1" label="First Name" label-for="fname" label-size="sm">
-                <b-form-input id="fname" v-model="form.fname" type="text" placeholder="First Name" required class="m-0"></b-form-input>
+                <b-form-input id="fname" v-model="user.first_name" type="text" required ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col cols="6">
               <b-form-group id="input-group-2" label="Last Name" label-for="lname" label-size="sm">
-                <b-form-input id="lname" v-model="form.lname" type="text" placeholder="Last Name" required ></b-form-input>
+                <b-form-input id="lname" v-model="user.last_name" type="text" required ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col cols="6">
               <b-form-group id="input-group-3" label="Email Address" label-for="email" label-size="sm">
-                <b-form-input id="email" v-model="form.email" type="email" placeholder="Email Address" required ></b-form-input>
+                <b-form-input id="email" v-model="user.email" type="email" required ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col cols="6">
               <b-form-group id="input-group-4" label="Organization" label-for="organization" label-size="sm">
-                <b-form-input id="organization" v-model="form.organization" type="text" placeholder="Organization" required ></b-form-input>
+                <b-form-input id="organization" v-model="user.organization" type="text" required ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col cols="6">
               <b-form-group id="input-group-5" label="Job Title" label-for="jobTitle" label-size="sm">
-                <b-form-input id="jobTitle" v-model="form.jobTitle" type="text" placeholder="Job Title" required ></b-form-input>
+                <b-form-input id="jobTitle" v-model="user.profession" type="text" required ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col cols="6">
               <b-form-group id="input-group-6" label="Location" label-for="location" label-size="sm">
-                <b-form-input id="location" v-model="form.location" type="text" placeholder="Location" required ></b-form-input>
+                <b-form-input id="location" v-model="user.location" type="text" ></b-form-input>
               </b-form-group>
             </b-col>
           </b-row>
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import axios from 'axios';
 import Layout from './layout.vue';
 
 export default {
@@ -79,17 +81,16 @@ export default {
   },
   data() {
     return {
-      form: {
-        fname: '',
-        lname: '',
-        email: '',
-        organization: '',
-        jobTitle: '',
-        location: '',
-      },
+      user: { },
       password: '',
-      imgsrc: 'https://msdat-api.fmohconnect.gov.ng/media/user/profile_picture/default.jpeg',
+      defaultImg: 'https://msdat-api.fmohconnect.gov.ng/media/user/profile_picture/default.jpeg',
     };
+  },
+  computed: {
+    ...mapGetters('AUTH_STORE', ['getUser', 'isAuthenticated']),
+    imgsrc() {
+      return (this.user.picture || this.defaultImg);
+    },
   },
   methods: {
     previewThumbnail: function getPreview(event) {
@@ -97,9 +98,48 @@ export default {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
         // eslint-disable-next-line no-return-assign
-        reader.onload = (e) => (this.imgsrc = e.target.result);
+        reader.onload = (e) => (this.user.picture = e.target.result);
         reader.readAsDataURL(input.files[0]);
       }
+    },
+    async getProfile() {
+      const url = `http://172.93.52.240:3001/api/users/${this.getUser.id}/`;
+      await axios.get(url).then((response) => {
+        this.user = response.data;
+      }).catch((error) => console.log(error));
+    },
+    async updateProfile() {
+      const url = `http://172.93.52.240:3001/api/users/${this.getUser.id}/`;
+      this.$swal.fire({
+        title: 'Enter your password',
+        html: '<input type="password" id="password" class="form-input">',
+        confirmButtonText: 'Update',
+        focusConfirm: false,
+        preConfirm: () => {
+          const password = this.$swal.getPopup().querySelector('#password').value;
+          if (!password) {
+            this.$swal.showValidationMessage('Please enter your password');
+          }
+          return { password };
+        },
+      }).then(async (result) => {
+        await axios.put(url, { ...this.user, password: result.value.password, picture: undefined })
+          .then((response) => {
+            console.log(response.data);
+          }).catch((error) => console.log(error));
+      });
+    },
+  },
+  watch: {
+    isAuthenticated: {
+      async handler(auth) {
+        if (auth) {
+          await this.getProfile();
+        } else {
+          this.$swal('Kindly login to view your profile.');
+        }
+      },
+      immediate: true,
     },
   },
 };

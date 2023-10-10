@@ -560,6 +560,7 @@ export default {
       });
     } catch (error) {
       // This means it a dexies error
+      console.log('error', error);
       if (!error.isAxiosError) {
         this.showTroubleShootingModal = true;
       }

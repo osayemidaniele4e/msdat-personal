@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
-import { groupIndicator, isDataYearly } from '@/util/helper';
 import { sortBy, uniq } from 'lodash';
+import { groupIndicator, isDataYearly } from '@/util/helper';
 
 export default {
   data() {
@@ -21,6 +21,7 @@ export default {
     // The is the updated the control panels dropdown as indicator are gotten from the API
     // in the background (async)
     dlGetAvailableIndicators(newValue) {
+      console.log('new indicators', newValue);
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'indicator',
         payload: groupIndicator(newValue, 'program_area'),

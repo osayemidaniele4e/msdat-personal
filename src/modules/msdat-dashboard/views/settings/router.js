@@ -8,6 +8,14 @@ export default [
     },
   },
   {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('./notifications.vue'),
+    meta: {
+      title: 'Multisource Data Analytics and Triangulation',
+    },
+  },
+  {
     path: '/activity-history',
     name: 'ActivityHistory',
     component: () => import('./activityHistory.vue'),
