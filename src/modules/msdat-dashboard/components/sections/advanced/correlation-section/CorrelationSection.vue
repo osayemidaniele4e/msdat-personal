@@ -9,7 +9,7 @@
 <script>
 
 export default {
-  name: 'Correlation Section',
+  name: 'CorrelationSection',
   data() {
     return {
       title: '',

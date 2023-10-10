@@ -318,6 +318,8 @@ export default class DataLayer {
   async setAvailableDashboardIndicator() {
     const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
 
+    console.log('list1', this.indicatorList);
+    console.log('list2', this.dataSourceList);
     const dashboardIndicators = indicatorsInDB.filter((item) => this.indicatorList.includes(item));
 
     const dashboardDataSource = this.dataSourceList;
@@ -346,20 +348,24 @@ export default class DataLayer {
 
   async initDataWithYears(indicator, limit = 0) {
     for (let i = 0; i < indicator.length; i++) {
-      const indicatorID = indicator[i];
-      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
-      // take only the at least 8 years
-      if (yearsNotAvailableInDB.length > 0) {
-        const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
-        const theYears = take(yearsNotAvailableInDB, yearsToTake);
-        const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
-        const results = await Promise.all(arrayOfPromises);
-        for (let j = 0; j < results.length; j++) {
-          const requestResult = results[j].data.results;
-          // check if empty
-          await this.DB.storeDataInDB(requestResult);
+      try {
+        const indicatorID = indicator[i];
+        const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+        // take only the at least 8 years
+        if (yearsNotAvailableInDB.length > 0) {
+          const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+          const theYears = take(yearsNotAvailableInDB, yearsToTake);
+          const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
+          const results = await Promise.all(arrayOfPromises);
+          for (let j = 0; j < results.length; j++) {
+            const requestResult = results[j].data.results;
+            // check if empty
+            await this.DB.storeDataInDB(requestResult);
+          }
+          this.updatedStoreAvailableIndicator(indicatorID);
         }
-        this.updatedStoreAvailableIndicator(indicatorID);
+      } catch (e) {
+        console.log(e);
       }
     }
   }

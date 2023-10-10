@@ -7,9 +7,9 @@
         <div @click="$router.push('profile')" :class="`tab ${index == 1 ? 'active':''}`">
           <b-icon style="color: #DFF3F3; background: #232323;" class="icon" icon="person-fill"></b-icon>
           <small>Profile</small>
-          <span>&gt;</span>
+          <span style="transform:rotateY(50deg)">&gt;</span>
         </div>
-        <div @click="$router.push('#')" :class="`tab ${index == 2 ? 'active':''}`">
+        <div @click="$router.push('notifications')" :class="`tab ${index == 2 ? 'active':''}`">
           <b-icon class="icon" icon="bell-fill"></b-icon>
           <small>Notifications</small>
         </div>
