@@ -169,13 +169,13 @@
                 />
               </div>
               <!-- button to view the list of plugins -->
-              <!-- <button
+              <button
                 v-b-modal.modal-apps
                 class="btn btn-outline-primary border-light rounded-0 ml-3"
                 style="font-size: 13px !important"
               >
                 Plugins
-              </button> -->
+              </button>
               <!-- <b-nav-item>
                 <b-dropdown text="Other Dashboards" class="border-0">
                   <div class="drop-container" v-for="(item, index) in headerDropdown" :key="index">
@@ -365,6 +365,7 @@ import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
 
 export default {
+  name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,

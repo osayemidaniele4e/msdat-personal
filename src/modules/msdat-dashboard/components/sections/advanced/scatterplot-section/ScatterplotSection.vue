@@ -4,8 +4,8 @@
       <div class="coming-soon-text">This section is coming soon....</div>
       <img src="../../../../../../assets/svg/chart2.svg" alt="" class="svg1">
     </div>
-    <div v-if="title === 'Demographics'">
-      <b-embed type="iframe" aspect="21by9" :src="url" :width="width" :height="height"></b-embed>
+    <div>
+      <b-embed type="iframe" :src="url" :width="width" :height="height"></b-embed>
     </div>
   </div>
 </template>
@@ -17,10 +17,9 @@ export default {
   data() {
     return {
       title: '',
-      // url: 'https://public.tableau.com/views/UpdatedDemographicDashboardVersion2_16472527584120/Dashboard3?:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url: 'https://public.tableau.com/app/profile/data.team8402/viz/CrossAnalysischartAdvancedAnalytics/Dashboard12?:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url: 'https://public.tableau.com/views/CrossAnalysischartAdvancedAnalytics/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
-      height: '400',
+      height: 'auto',
       showComing: false,
     };
   },

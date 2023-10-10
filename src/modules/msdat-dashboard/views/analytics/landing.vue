@@ -18,10 +18,10 @@
     </b-row>
     <b-container class="d-flex flex-column align-items-center mb-3">
       <span class="mb-3">Select a dashboard to start</span>
-      <b-row cols="2" cols-md="4" cols-lg="4" class="w-100">
+      <b-row cols="2" cols-md="3" cols-lg="6">
         <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center">
-          <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`"><img class="section" :src="imgsrc(section)" :alt="section"></router-link>
-          <small style="font-size: 0.6rem; font-weight: 600" class="py-2">{{ section }}</small>
+          <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`" :id="section.id"><img class="section" :src="imgsrc(section.title)" :alt="section.title"></router-link>
+          <small style="font-size: 0.6rem; font-weight: 600" class="py-2">{{ section.title }}</small>
         </b-col>
       </b-row>
     </b-container>
@@ -36,6 +36,7 @@ import tour from '../onboarding/tour';
 
 import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
 import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
+import IndicatorComparisonConfig from '../../components/sections/advanced/indicator-comparison-section/indicator-comparison-section-config';
 import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
 import ScatterplotConfig from '../../components/sections/advanced/scatterplot-section/scatterplot-section-config';
@@ -49,12 +50,30 @@ export default {
   data() {
     return {
       sections: [
-        'Correlation Analysis',
-        'Descriptive Analysis',
-        // 'Indicator Comparison',
-        'Predictive Analysis',
-        'Multi-source Indicator Comparison',
-        // 'Scatter Plot Analysis',
+        {
+          title: 'Correlation Analysis',
+          id: 'CorrelationAnalysis',
+        },
+        {
+          title: 'Descriptive Analysis',
+          id: 'DescriptiveAnalysis',
+        },
+        {
+          title: 'Indicator Comparison',
+          id: 'IndicatorComparison',
+        },
+        {
+          title: 'Predictive Analysis',
+          id: 'PredictiveAnalysis',
+        },
+        {
+          title: 'Multi-source Indicator Comparison',
+          id: 'Multi-source Indicator Comparison',
+        },
+        {
+          title: 'Scatter Plot Analysis',
+          id: 'ScatterPlotAnalysis',
+        },
       ],
     };
   },
@@ -65,15 +84,16 @@ export default {
       // eslint-disable-next-line global-require, import/no-dynamic-require
       return require(`@/assets/img/analytics/${sec}.png`);
     },
-    async created() {
-      await this.CLEAR_CONTROL_PANEL();
+  },
+  async created() {
+    await this.CLEAR_CONTROL_PANEL();
 
-      this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
-      this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
-      this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
-      this.ADD_CONTROL_PANEL(ScatterplotConfig);
-    },
+    this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
+    this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
+    this.ADD_CONTROL_PANEL(IndicatorComparisonConfig);
+    this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
+    this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
+    this.ADD_CONTROL_PANEL(ScatterplotConfig);
   },
 };
 </script>
@@ -109,12 +129,12 @@ export default {
     width: 61vw
   }
   .section {
-    width: 10rem;
+    width: 9rem;
     box-shadow: 0.1px 0.1px 1px #888888;
   }
   .section:hover {
     transition: transform 0.2s ease;
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
   @media (max-width: 575.98px) {
     h1 {

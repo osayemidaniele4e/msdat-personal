@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Maps from '@/components/maps/BaseMap.vue';
+import Maps from '@/components/maps/ZonalBaseMap.vue';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import chartDownload from '../../../mixins/chart_download';
 import NoAvailableData from '../../NoData2.vue';

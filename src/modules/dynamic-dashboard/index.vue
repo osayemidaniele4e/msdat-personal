@@ -1,21 +1,29 @@
 <template>
   <div>
-    <MSDAT v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false" />
-    <AdvanceMSDAT v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
-      :indicators="configObject.indicators" :dataSources="configObject.dataSources"
-      :defaultIndicators="configObject.defaultIndicators" :initialIndicator="configObject.initialIndicator"
-      :initialDataSource="configObject.initialDataSource" :initialLocation="configObject.initialLocation"
-      :showTableRelatedIndicator="configObject.showTableRelatedIndicator != undefined
-        ? configObject.showTableRelatedIndicator
-        : true
-        " />
+    <MSDAT
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
+    />
+    <AdvanceMSDAT
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
+      :indicators="configObject.indicators"
+      :dataSources="configObject.dataSources"
+      :defaultIndicators="configObject.defaultIndicators"
+      :initialIndicator="configObject.initialIndicator"
+      :initialDataSource="configObject.initialDataSource"
+      :initialLocation="configObject.initialLocation"
+      :showTableRelatedIndicator="
+        configObject.showTableRelatedIndicator != undefined
+          ? configObject.showTableRelatedIndicator
+          : true
+      "
+    />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
   </div>
 </template>
 <script>
 import moment from 'moment';
 import VueCookies from 'vue-cookies';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
@@ -124,6 +132,15 @@ export default {
         await this.SAVE_USER_DASHBOARD(payload);
       }
     },
+    // saveIndicatorToStorage(item) {
+    //   localStorage.setItem('indicatorId', 7);
+    // },
+    // saveDataSourceToStorage(item) {
+    //   localStorage.setItem('datasourceId', 6);
+    // },
+    // getIndicator(id){
+
+    // }
   },
   async mounted() {
     this.clearData();
@@ -135,8 +152,13 @@ export default {
       this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
       this.SET_SELECTED_CONFIG(defaultDSyear);
     }
+    setTimeout(() => {
+      console.log('config', this.$store.state.MSDAT_STORE.configObject);
+    }, 5000);
   },
   async created() {
+    // this.saveIndicatorToStorage();
+    // this.saveDataSourceToStorage();
     // const formData = {
     //   username: 'ummi',
     //   password: 'ummi',
@@ -245,6 +267,7 @@ export default {
       this.isAdvanced = true;
       this.configObject = '';
       this.configObject = dashboard;
+      this.SET_CONFIGURATIONS(dashboard);
       return;
     }
     // =======================

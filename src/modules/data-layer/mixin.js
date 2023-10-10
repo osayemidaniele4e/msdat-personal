@@ -1,6 +1,6 @@
 import { createNamespacedHelpers } from 'vuex';
 import {
-  filter, omit, matches, isObject, has,
+  filter, omit, matches, isObject,
 } from 'lodash';
 import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
@@ -261,7 +261,7 @@ export default {
      */
     async getNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
-      console.log('new result', result)
+      // console.log('new result', result)
       return result[result.length - 1];
     },
     async getDexieTableValues(query) {
