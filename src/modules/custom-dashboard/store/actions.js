@@ -341,7 +341,7 @@ export default {
     console.log('payload 1', payload)
     try {
       // Send the payload to the API using Axios
-      const response = await axios.post('http://172.93.52.240:3001/api/request_dashboard/', payload);
+      const response = await axios.post('https://msdat-api.fmohconnect.gov.ng/api/request_dashboard/', payload);
       console.log('response', response)
       // Handle the response or commit mutations as needed
       // For example, you can commit a mutation to update the state
