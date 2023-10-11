@@ -13,7 +13,7 @@
       </span>
       <b-icon-info-circle-fill
         @click="$emit('source-info:click', source)"
-        class="data-source-info mx-2 text-success"
+        class="data-source-info mx-2"
       />
     </div>
   </th>
