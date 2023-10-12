@@ -61,7 +61,7 @@
       <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
-      <div class="disabled_alt">
+      <div>
         <toggle
           v-if="values.type === 'toggle' && hasNHMIS"
           @change="updatePayload($event, values.key)"

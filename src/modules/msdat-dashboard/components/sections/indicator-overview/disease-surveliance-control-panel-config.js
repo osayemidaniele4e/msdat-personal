@@ -51,7 +51,7 @@ export default {
       key: 'target',
     },
     {
-      class: ['col mx-sm-3'],
+      class: ['col mx-sm-3 disabled_alt'],
       type: 'toggle',
       label: 'Num/Denom',
       key: 'numdenum',
