@@ -69,7 +69,7 @@
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <IndicatorComparisonSection :controlPanelProps="payload" />
+                  <IndicatorComparisonSection :controlIndex="controlIndex" :values="payload" :controlPanelProps="controlIndex" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
@@ -155,7 +155,8 @@ import DescriptiveAnalysisSection from '../../components/sections/advanced/descr
 import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
 import CorrelationAnalysisSection from '../../components/sections/advanced/correlation-section/CorrelationSection.vue';
 import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
-import IndicatorComparisonSection from '../../components/sections/advanced/indicator-comparison-section/IndicatorComparisonSection.vue';
+// import IndicatorComparisonSection from '../../components/sections/advanced/indicator-comparison-section/IndicatorComparisonSection.vue';
+import IndicatorComparisonSection from '../../components/sections/advanced/indicator-comparison-section/ICSAdvanced.vue';
 import IndicatorComparisonConfig from '../../components/sections/advanced/indicator-comparison-section/indicator-comparison-section-config';
 import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import PredictiveAnalysisSection from '../../components/sections/advanced/predictive-section/PredictiveSection.vue';
