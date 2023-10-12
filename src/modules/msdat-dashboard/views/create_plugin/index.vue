@@ -28,7 +28,9 @@
               . Here, you'll find the boilerplate code that serves as the foundation for creating plugins.</li>
             <li>Clone the Boilerplate: Clone the boilerplate code repository to your local development environment. This boilerplate serves as a pre-configured template, saving you time and effort in setting up the initial structure for your plugin.</li>
         </ol>
-        <p>For detailed instructions on using the MSDAT boilerplate, refer to the comprehensive documentation provided below. This documentation walks you through the process of utilizing the MSDAT boilerplate effectively, ensuring you understand how to harness its capabilities to craft robust app plugins.</p>
+        <p>For detailed instructions on using the MSDAT boilerplate, refer to the comprehensive documentation provided 
+          <a href="http://208.87.128.190:7072/" target=”_blank”>here</a>
+          . This documentation walks you through the process of utilizing the MSDAT boilerplate effectively, ensuring you understand how to harness its capabilities to craft robust app plugins.</p>
 
         <br> <br>
         <h4>Step 2: Plugin Development and Packaging</h4>
