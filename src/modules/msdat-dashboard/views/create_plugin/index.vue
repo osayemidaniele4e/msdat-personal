@@ -3,7 +3,20 @@
     <the-header ref="theHeader" />
     <div class="container">
       <br>
-        <h2>Creating an Application Plugin for MSDAT:</h2>
+      <div class="top-header">
+        <h2 class="top-header-text">
+          <span><img
+              src="@/assets/img/Logo-mob.svg"
+              alt="FMOH Logo"
+              class="mob-img"
+              variant="primary"
+            /> </span>
+            &nbsp; &nbsp; 
+          Creating an Application Plugin for
+          <span>MSDAT:</span></h2>
+
+      </div>
+     
         <br>
         <h4>Introduction:</h4>
         <span>The MSDAT (Multi-Source Data Analytic and Triangulation) Apps Plugins offers a streamlined approach to extending the functionality of various applications within the MSDAT ecosystem. These plugins empower developers to enhance and customize the capabilities of MSDAT tailoring them to specific needs.</span>
@@ -220,6 +233,24 @@ export default {
     border-radius: 5px;
     max-height: 90vh;
     overflow-x: scroll;
+}
+
+.top-header{
+  background-color: #027d53;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 10px;
+}
+
+.top-header-text{
+  font-size: 20px;
+  color: white;
+}
+
+.mob-img{
+  width: 50px;
 }
 h1 {
     color: #333;
