@@ -8,7 +8,7 @@
         <div class="d-flex justify-content-center">
           <b-icon-info-circle-fill
             @click="$emit('indicator-info:clicked', rowData.indicator)"
-            class="info-circle text-success"
+            class="info-circle"
           />
         </div>
       </td>

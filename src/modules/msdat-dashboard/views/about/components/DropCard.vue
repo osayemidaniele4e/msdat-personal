@@ -5,14 +5,14 @@
         <b-list-group>
           <h5 class="text-underline">Population</h5>
           <router-link to="/dashboard/Demographics" target="_blank"
-            ><b-list-group-item>Demographics</b-list-group-item></router-link
+            ><b-list-group-item>Demographics and Socio-economics </b-list-group-item></router-link
           >
           <router-link to="/coming-soon/gis_mapping" target="_blank"
             ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
           >
         </b-list-group>
       </div>
-         <div class="col mb-3">
+      <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Input</h5>
           <router-link to="/dashboard/Health_Facility" target="_blank"
@@ -22,11 +22,9 @@
             ><b-list-group-item>Health Finance</b-list-group-item></router-link
           >
           <router-link to="/dashboard/Health_Workforce" target="_blank"
-            ><b-list-group-item
-              >Health Workforce</b-list-group-item
-            ></router-link
+            ><b-list-group-item>Health Workforce</b-list-group-item></router-link
           >
-                     <!-- <router-link to="/external-ndr1" target="_blank"
+          <!-- <router-link to="/external-ndr1" target="_blank"
             ><b-list-group-item
               >National Data Repository Dashboard 1</b-list-group-item
             ></router-link
@@ -42,31 +40,24 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outputs</h5>
-            <router-link to="/dashboard/Health_Service_Access" target="_blank">
-              <b-list-group-item>Health Service Access</b-list-group-item>
-            </router-link>
-            <a
-              href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
-              target="_blank"
-            >
-              <b-list-group-item>Health Service Uptake</b-list-group-item>
-            </a>
-            <a
-              href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/"
-              target="_blank"
-            >
-              <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
-            >
-            <router-link to="/dashboard/Disease_Surveillance" target="_blank"
-              ><b-list-group-item
-                >Disease Surveillance</b-list-group-item
-              ></router-link
-            >
-               <router-link to="/external-ncdc" target="_blank"
-              ><b-list-group-item
-                >Disease Surveillance (NCDC)</b-list-group-item
-              ></router-link
-            >
+          <router-link to="/dashboard/Health_Service_Access" target="_blank">
+            <b-list-group-item>Health Service Access</b-list-group-item>
+          </router-link>
+          <a
+            href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
+            target="_blank"
+          >
+            <b-list-group-item>Health Service Uptake</b-list-group-item>
+          </a>
+          <a href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/" target="_blank">
+            <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
+          >
+          <router-link to="/dashboard/Disease_Surveillance" target="_blank"
+            ><b-list-group-item>Disease Surveillance</b-list-group-item></router-link
+          >
+          <router-link to="/external-ncdc" target="_blank"
+            ><b-list-group-item>Disease Surveillance (NCDC)</b-list-group-item></router-link
+          >
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -83,9 +74,7 @@
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
           <router-link to="/custom" target="_blank"
-            ><b-list-group-item
-              > Create Your Dashboard</b-list-group-item
-            ></router-link
+            ><b-list-group-item> Create Your Dashboard</b-list-group-item></router-link
           >
           <router-link to="/health-profiles" target="_blank"
             ><b-list-group-item>Health Profiles</b-list-group-item></router-link
@@ -95,9 +84,7 @@
           >
           <!-- <router-link to="/coming-soon/advanced_analytics" -->
           <router-link to="/advanced_analytics"
-            ><b-list-group-item
-              >Advanced Analytics</b-list-group-item
-            ></router-link
+            ><b-list-group-item>Advanced Analytics</b-list-group-item></router-link
           >
         </b-list-group>
       </div>
@@ -130,8 +117,8 @@ div {
       color: inherit;
     }
   }
-  div.list-group{
-    h5.text-underline{
+  div.list-group {
+    h5.text-underline {
       font-size: 1rem !important;
     }
   }
