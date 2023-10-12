@@ -69,7 +69,7 @@
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <IndicatorComparisonSection :controlIndex="controlIndex" :values="payload" :controlPanelProps="controlIndex" />
+                  <IndicatorComparisonSection :controlIndex="controlIndex" :values="payload" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
