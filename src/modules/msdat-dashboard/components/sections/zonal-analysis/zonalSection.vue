@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
@@ -76,6 +77,16 @@ export default {
         chart: {
           type: 'column',
           zoomType: 'xy',
+        },
+        plotOptions: {
+          column: {
+            dataLabels: {
+              enabled: true,
+              formatter() {
+                return Highcharts.numberFormat(this.y, 0, '', ',');
+              },
+            },
+          },
         },
         yAxis: {
           gridLineWidth: 0,
