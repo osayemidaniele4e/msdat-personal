@@ -22,36 +22,36 @@
         </p>
       </template>
       <transition name="fade">
-      <div class="datasetComparison" v-show="showNationalComparison">
-        <div class="noComparison" v-if="comparisonUnavailable">
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z"
-                stroke="#E85D58"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <p>Comparison not allowed</p>
+        <div class="datasetComparison" v-show="showNationalComparison">
+          <div class="noComparison" v-if="comparisonUnavailable">
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z"
+                  stroke="#E85D58"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <p>Comparison not allowed</p>
+          </div>
+          <div class="comparison" v-else>
+            <p>
+              Overall comparison ratio between <strong>{{ indicatorOne }}</strong> and
+              <strong>{{ indicatorTwo }}</strong> for <strong>{{ comparisonLocation }}</strong
+              >:
+            </p>
+            <h6>{{ this.value }}%</h6>
+          </div>
         </div>
-        <div class="comparison" v-else>
-          <p>
-            Overall comparison ratio between <strong>{{ indicatorOne }}</strong> and
-            <strong>{{ indicatorTwo }}</strong
-            > for  <strong>{{ comparisonLocation }}</strong>:
-          </p>
-          <h6>{{ this.value }}%</h6>
-        </div>
-      </div>
       </transition>
       <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
     </base-sub-card>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import Highcharts from 'highcharts';
 import { mapMutations } from 'vuex';
 import { uniq } from 'lodash';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
@@ -98,7 +99,8 @@ export default {
 
       if (yearValue1 < yearValue2) {
         return year1;
-      } if (yearValue1 > yearValue2) {
+      }
+      if (yearValue1 > yearValue2) {
         return year2;
       }
       return 'equal';
@@ -321,6 +323,9 @@ export default {
             column: {
               dataLabels: {
                 enabled: true,
+                formatter() {
+                  return Highcharts.numberFormat(this.y, 0, '', ',');
+                },
               },
             },
           },
@@ -392,7 +397,8 @@ export default {
 </script>
 
 <style>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {

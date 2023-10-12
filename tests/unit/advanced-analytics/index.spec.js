@@ -1,7 +1,43 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-
+import { mount, createLocalVue } from '@vue/test-utils';
 import landing from '../../../src/modules/msdat-dashboard/views/analytics/landing.vue';
+
+// Mock theHeader component
+jest.mock('../../../src/modules/msdat-dashboard/views/about/layout/theHeader.vue', () => ({
+  name: 'MockedHeader',
+  render: (h) => h('div', 'Mocked Header Component'),
+}));
+
+// Mock tour module
+jest.mock('../../../src/modules/msdat-dashboard/views/onboarding/tour', () => ({
+  someMethodOrProperty: jest.fn().mockReturnValue('Mocked Value'),
+}));
+
+// Mock DescriptiveAnalysisConfig module
+jest.mock('../../../src/modules/msdat-dashboard/components/sections/advanced/descriptive-section/descriptive-section-config', () => ({
+  someExportedFunction: jest.fn().mockReturnValue('Mocked Value'),
+}));
+
+// Mock CorrelationAnalysisConfig module
+jest.mock('../../../src/modules/msdat-dashboard/components/sections/advanced/correlation-section/correlation-section-config', () => ({
+  anotherExportedFunction: jest.fn().mockReturnValue('Mocked Value'),
+}));
+
+// Mock PredictiveAnalysisConfig module
+jest.mock('../../../src/modules/msdat-dashboard/components/sections/advanced/predictive-section/predictive-section-config', () => ({
+  someExportedFunction: jest.fn().mockReturnValue('Mocked Value'),
+}));
+
+// Mock AdvancedMultiSourceConfig module
+jest.mock('../../../src/modules/msdat-dashboard/components/sections/advanced/multisource-section/Multisource-section-config', () => ({
+  someExportedFunction: jest.fn().mockReturnValue('Mocked Value'),
+}));
+
+// Mock ScatterplotConfig module
+jest.mock('../../../src/modules/msdat-dashboard/components/sections/advanced/scatterplot-section/scatterplot-section-config', () => ({
+  someExportedFunction: jest.fn().mockReturnValue('Mocked Value'),
+}));
 
 // Create a local Vue instance
 const localVue = createLocalVue();
@@ -27,32 +63,36 @@ describe('Advanced Analytics.vue', () => {
   //   // Add other links as needed
   // ];
 
-  const wrapper = shallowMount(landing);
+  const wrapper = mount(landing);
 
   it('Test Component is a vue instance', () => {
-    // expect(wrapper.isVueInstance()).toBeTruthy();
-    console.log(wrapper);
+    expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
-  //   it('renders correctly', () => {
-  //     expect(wrapper.element).toMatchSnapshot();
-  //   });
+  it('renders correctly', () => {
+    expect(wrapper.element).toMatchSnapshot();
+  });
 
-  //   it('Can Navigate to Correlation Analysis', async () => {
-  //     // Set the component's links data property
-  //     wrapper.setData({ links });
-  //     const routerLink = wrapper.find('a:contains("Correlation Analysis")');
-  //     await routerLink.trigger('click');
-  //     expect(wrapper.vm.$route.path).toBe('/dashboard/Advanced_Analytics?index=0');
-  //   });
-  //   it('Can Navigate to Descriptive Analysis', () => {
-  //     const wrapper = mount(Landing);
-  //     expect(wrapper.isVueInstance()).toBeTruthy();
-  //     console.log(wrapper);
-  //   });
-  //   it('Can Navigate to Predictive Analysis', () => {
-  //     const wrapper = mount(Landing);
-  //     expect(wrapper.isVueInstance()).toBeTruthy();
-  //     console.log(wrapper);
-  //   });
+  it('Test Correlation Analysis link exists', async () => {
+    // Set the component's links data property
+    const routerLink = wrapper.find('#CorrelationAnalysis');
+    // Assert that the element exists
+    expect(routerLink.exists()).toBe(true);
+  });
+  it('Test Descriptive Analysis link exists', () => {
+    const routerLink = wrapper.find('#DescriptiveAnalysis');
+    // Assert that the element exists
+    expect(routerLink.exists()).toBe(true);
+  });
+  it('Test Predictive Analysis link exists', () => {
+    const routerLink = wrapper.find('#PredictiveAnalysis');
+    // Assert that the element exists
+    expect(routerLink.exists()).toBe(true);
+  });
+
+  it('Test Indicator Comparison link exists', () => {
+    const routerLink = wrapper.find('#IndicatorComparison');
+    // Assert that the element exists
+    expect(routerLink.exists()).toBe(true);
+  });
 });

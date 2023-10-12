@@ -152,6 +152,9 @@ export default {
       this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
       this.SET_SELECTED_CONFIG(defaultDSyear);
     }
+    setTimeout(() => {
+      console.log('config', this.$store.state.MSDAT_STORE.configObject);
+    }, 5000);
   },
   async created() {
     // this.saveIndicatorToStorage();
@@ -264,6 +267,7 @@ export default {
       this.isAdvanced = true;
       this.configObject = '';
       this.configObject = dashboard;
+      this.SET_CONFIGURATIONS(dashboard);
       return;
     }
     // =======================

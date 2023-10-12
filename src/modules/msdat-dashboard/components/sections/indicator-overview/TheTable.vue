@@ -24,11 +24,11 @@
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-code-slash"
+                  class="bi bi-share-fill"
                   viewBox="0 0 16 16"
                 >
                   <path
-                    d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294l4-13zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0zm6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0z"
+                    d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"
                   />
                 </svg>
               </div>
@@ -218,17 +218,9 @@ export default {
       this.tableObj = this.bootstrapCDN + tableObjTemp;
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
+      const routeTitle = this.$route.path;
       const filteredIndicator = await this.dlQuery(queryObject);
-      if (this.$route.meta.title !== 'Demographics') {
-        if (filteredIndicator.length > 0) {
-          return filteredIndicator.reduce((max, currentValues) => {
-            if (currentValues.period > max.period) {
-              return currentValues;
-            }
-            return max;
-          });
-        }
-      } else if (this.$route.meta.title === 'Demographics') {
+      if (routeTitle.endsWith('Demographics')) {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
           return filteredIndicator.reduce((max, currentValues) => {
@@ -238,6 +230,13 @@ export default {
             return max;
           });
         }
+      } else if (filteredIndicator.length > 0) {
+        return filteredIndicator.reduce((max, currentValues) => {
+          if (currentValues.period > max.period) {
+            return currentValues;
+          }
+          return max;
+        });
       }
       return null;
     },
@@ -337,13 +336,18 @@ export default {
   height: auto;
   padding: 0;
   margin: 0 5px;
-  padding: 0 5px;
-  margin-right: 20px;
+  padding: 0 6px;
+  margin-right: 5px;
   margin-top: 2px;
   padding-bottom: 2px;
   border: 1px solid #b3b3b3;
   border-radius: 50px;
   cursor: pointer;
+}
+
+.share-btn svg {
+  width: 12px;
+  margin-right: 2px;
 }
 
 .share-wrapper {

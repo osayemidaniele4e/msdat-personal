@@ -28,9 +28,7 @@
         >
           <base-sub-card class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Indicator Overview
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Indicator Overview</h5>
             </template>
             <template>
               <ControlPanelConfiguration :controlIndex="controlIndex">
@@ -59,9 +57,7 @@
         >
           <base-sub-card class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Zonal Analysis
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Zonal Analysis</h5>
             </template>
             <template>
               <LazyLoading>
@@ -102,24 +98,23 @@
       </template>
 
       <template v-slot:section-3="{ payload, controlIndex }">
-        <div class="col-md-12"  v-if="
+        <div
+          class="col-md-12"
+          v-if="
             $store.state.MSDAT_STORE.datasetComperision == true &&
-            fields.map(element => {
-              element.name == 'Dataset Comparison'})
-          ">
+            fields.map((element) => {
+              element.name == 'Dataset Comparison';
+            })
+          "
+        >
           <base-sub-card class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Dataset Comparison
-              </h5>
+              <h5 class="font-weight-bold work-sans text-white">Dataset Comparison</h5>
             </template>
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <DataSetComparison
-                    :values="payload"
-                    :controlIndex="controlIndex"
-                  />
+                  <DataSetComparison :values="payload" :controlIndex="controlIndex" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
@@ -128,15 +123,19 @@
       </template>
 
       <template v-slot:section-4="{ payload, controlIndex }">
-        <div class="col-md-12" v-if="
+        <div
+          class="col-md-12"
+          v-if="
             $store.state.MSDAT_STORE.multisourceComparison == true &&
-            fields.map(element => {
-              element.name == 'Multi-source Comparison'})
-          ">
+            fields.map((element) => {
+              element.name == 'Multi-source Comparison';
+            })
+          "
+        >
           <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
-                Multi-Source Indicator Comparison
+                Multi-Source Indicator Comparisonnn
               </h5>
             </template>
             <template>
@@ -145,14 +144,8 @@
                 <template v-for="n in 3">
                   <div :key="n" class="col-md-4">
                     <LazyLoading>
-                      <ControlPanelConfiguration
-                        :groupIndex="n - 1"
-                        :controlIndex="controlIndex"
-                      >
-                        <MultiSourceComponent
-                          :key="n"
-                          :values="payload[n - 1]"
-                        />
+                      <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
+                        <MultiSourceComponent :key="n" :values="payload[n - 1]" />
                       </ControlPanelConfiguration>
                     </LazyLoading>
                   </div>
@@ -236,10 +229,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', [
-      'ADD_CONTROL_PANEL',
-      'CLEAR_CONTROL_PANEL',
-    ]),
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
 
     getValue(value) {
       this.updateValue = value;
