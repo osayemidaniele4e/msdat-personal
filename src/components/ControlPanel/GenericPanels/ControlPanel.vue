@@ -8,7 +8,7 @@
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
       <label
-        class="text-uppercase work-sans label-text"
+        class="text-uppercase work-sans label-text "
         v-if="!hasNHMIS && values.label == 'Num/Denom'"
       >
         {{ '' }}
@@ -61,7 +61,7 @@
       <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
-      <div>
+      <div class="disabled_alt">
         <toggle
           v-if="values.type === 'toggle' && hasNHMIS"
           @change="updatePayload($event, values.key)"
