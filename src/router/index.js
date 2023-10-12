@@ -4,6 +4,7 @@ import createPersistedState from 'vuex-persistedstate';
 import store from '@/store/index';
 import USER_ROUTE from '@/modules/msdat-dashboard/views/userLog/router';
 import MSDAT_ABOUT_ROUTE from '@/modules/msdat-dashboard/views/about/router';
+import CREATE_PLUGIN_ROUTE from '@/modules/msdat-dashboard/views/create_plugin/router';
 import MSDAT_SETTINGS_ROUTE from '@/modules/msdat-dashboard/views/settings/router';
 import MSDAT_EXTERNAL_ROUTE from '@/modules/msdat-dashboard/views/external/router';
 import MSDAT_FAQ_ROUTE from '@/modules/msdat-dashboard/views/faq/router';
@@ -35,6 +36,7 @@ const routes = [
   ...AUTH_ROUTE,
   ...USER_ROUTE,
   ...DATA_ENTRY,
+  ...CREATE_PLUGIN_ROUTE,
   {
     path: '*',
     name: 'NotFound',
