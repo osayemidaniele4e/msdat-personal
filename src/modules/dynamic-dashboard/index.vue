@@ -155,7 +155,7 @@ export default {
         this.error = "Geolocation is not supported in your browser.";
       }
 
-      console.log('user l;ocation', this.userLocation)
+      console.log('user location', this.userLocation)
     },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', 7);
@@ -184,6 +184,8 @@ export default {
         latitude: this.latitude,
         time: Date.now()
       };
+
+      console.log('location data', data)
 
       this.clearData();
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {

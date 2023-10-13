@@ -146,7 +146,7 @@ export default {
     user: this.getUser
    }
 
-   console.log('timespent', timespent)
+   console.log('timespent in indicator', timespent)
 
 this.previous_time = this.after_time;
 
