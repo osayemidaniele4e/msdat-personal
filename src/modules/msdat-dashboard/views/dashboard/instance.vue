@@ -326,8 +326,6 @@ export default {
      * and so on and fort for the other sections
      */
     const DiseaseSurveillanceConfig = this.$route.path === '/dashboard/Disease_Surveillance' ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
-
-    console.log('texting', this.$route.path);
     const configs = [
       DiseaseSurveillanceConfig,
       ZonalAnalysisConfig,

@@ -63,7 +63,7 @@
       <!-- <div class="disabled_alt"> -->
       <div>
         <toggle
-          v-if="values.type === 'toggle' && hasNHMIS"
+          v-if="values.type === 'toggle'"
           @change="updatePayload($event, values.key)"
         />
       </div>
@@ -179,6 +179,7 @@ export default {
       //   numdenum: false,
       // },
       hasNHMIS: false,
+
     };
   },
   components: {
