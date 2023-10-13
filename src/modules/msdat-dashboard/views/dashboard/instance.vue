@@ -167,6 +167,7 @@ import { mapGetters, mapMutations } from 'vuex';
 import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
+import IndicatorOverviewConfig2 from '../../components/sections/indicator-overview/disease-surveliance-control-panel-config';
 import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
 import ICSConfig from '../../components/sections/indicator-comparism/indicator-comparism-config';
 import ICS from '../../components/sections/indicator-comparism/ICS.vue';
@@ -324,8 +325,9 @@ export default {
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
+    const DiseaseSurveillanceConfig = this.$route.path === '/dashboard/Disease_Surveillance' ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
     const configs = [
-      IndicatorOverviewConfig,
+      DiseaseSurveillanceConfig,
       ZonalAnalysisConfig,
       ICSConfig,
       DataSetComparisonConfig,
