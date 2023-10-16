@@ -135,7 +135,7 @@
           <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">
-                Multi-Source Indicator Comparisonnn
+                Multi-Source Indicator Comparison
               </h5>
             </template>
             <template>
