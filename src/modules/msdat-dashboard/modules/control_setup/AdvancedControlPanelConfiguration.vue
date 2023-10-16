@@ -1,0 +1,186 @@
+<template>
+    <div>
+      <slot> </slot>
+    </div>
+  </template>
+
+<script>
+import { mapMutations, mapActions, mapGetters } from 'vuex';
+import VueCookies from 'vue-cookies';
+import moment from 'moment';
+import { eventBus } from '@/main';
+import apiServices from '@/modules/data-layer/services/ApiServices';
+import controlSetup from '../../mixins/control-panel-setup';
+
+export default {
+  name: 'ControlPanelConfiguration',
+  mixins: [controlSetup],
+  data() {
+    return {
+      interactions: [],
+    };
+  },
+  props: {
+    controlIndex: {
+      type: Number,
+      required: true,
+    },
+    groupIndex: {
+      type: Number,
+      default: () => null,
+    },
+  },
+  computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser']),
+    ...mapGetters(['getInternetStatus']),
+    payload() {
+      if (this.groupIndex != null) {
+        return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
+          this.groupIndex
+        ];
+      }
+      return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
+    },
+  },
+  created() {
+    const interactions = JSON.parse(VueCookies.get('user_interactions'));
+    // if (interactions.length <= 10) {
+    this.interactions = interactions || [];
+    // }
+  },
+  mounted() {
+    eventBus.$on('handleClick', (data) => {
+      this.payload.location = data;
+    });
+  },
+  methods: {
+    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
+    ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS']),
+    async getAvailableYears() {
+      const available = await this.setYearDropdown(
+          this.payload?.indicator?.id,
+          this.payload?.datasource?.id,
+          this.payload?.location?.id,
+      );
+
+      return available;
+    },
+    async getAvailableDataSources() {
+      return this.setDataSourcesDropdown(this.payload?.indicator?.id);
+    },
+    async getAvailableDataIndicators() {
+      return this.setIndicatorDropdown(this.payload?.datasource?.id);
+    },
+    removeDuplicates(arr) {
+      const seen = {};
+      return arr.filter((item) => {
+        const key = JSON.stringify(item);
+        // eslint-disable-next-line no-return-assign, no-prototype-builtins
+        return seen.hasOwnProperty(key) ? false : (seen[key] = true);
+      });
+    },
+    async setInteractions() {
+      const getFormattedConfig = VueCookies.get('customDashboardConfig');
+      if (this.getInternetStatus === true) {
+        const data = await apiServices.getDashboard();
+        this.dashboard = data.data.find((item) => item.title === this.$route.meta.title);
+      }
+      const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
+
+      const interaction = {
+        year: this.payload.year,
+        user: this.getUser.id,
+        dashboard: dashboardName,
+        section: this.controlIndex + 1,
+        indicator: this.payload.indicator.id,
+        datasource: this.payload.datasource.id,
+        location: this.payload.location.id,
+        viewed_at: moment().format(),
+      };
+      this.interactions.push(interaction);
+      if (this.isAuthenticated === true) {
+        const uniqueArr = this.removeDuplicates(this.interactions);
+        localStorage.setItem('user_interactions', JSON.stringify(uniqueArr));
+        const interactions = localStorage.getItem('user_interactions');
+        const parsedInteraction = JSON.parse(interactions);
+        //  if (parsedInteraction.length > 9 && this.getInternetStatus === true)
+        if (this.getInternetStatus === true) {
+          parsedInteraction.forEach(async (el) => {
+            await this.SET_INTERACTIONS(el);
+          });
+          this.interactions = [];
+        }
+      }
+    },
+  },
+  watch: {
+    // get latest available years when indicator , datasource or location are changed
+    'payload.indicator': {
+      async handler() {
+        if (this.controlIndex !== 2) {
+          const availableYears = await this.getAvailableYears();
+          this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'year',
+            values: availableYears,
+          });
+          const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
+          await this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'datasource',
+            values: availableDS,
+          });
+        }
+      },
+    },
+    'payload.datasource': {
+      async handler() {
+        let availableYears;
+        if (this.controlIndex === 2) {
+          availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+        } else {
+          availableYears = await this.getAvailableYears();
+        }
+        await this.SETUP_CONTROL_OPTIONS1({
+          groupIndex: this.groupIndex,
+          panelIndex: this.controlIndex,
+          key: 'year',
+          values: availableYears,
+        });
+        // ============
+        if (this.controlIndex === 2) {
+          const availableIndicator = await this.getAvailableDataIndicators();
+          await this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'indicator',
+            values: availableIndicator,
+          });
+        }
+        this.setInteractions();
+      },
+    },
+    'payload.location': {
+      async handler() {
+        this.setInteractions();
+        const availableYears = await this.getAvailableYears();
+        await this.SETUP_CONTROL_OPTIONS1({
+          groupIndex: this.groupIndex,
+          panelIndex: this.controlIndex,
+          key: 'year',
+          values: availableYears,
+        });
+      },
+    },
+    // 'payload.year': {
+    //   async handler() {
+    //     this.setInteractions();
+    //   },
+    // },
+  },
+};
+</script>
+
+  <style lang="scss" scoped></style>

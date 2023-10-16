@@ -53,14 +53,14 @@
 <script>
 import { mapMutations, mapActions } from 'vuex';
 import moment from 'moment';
-import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
+import AdvancedControlPanelSetup from '@/modules/msdat-dashboard/mixins/advanced-control-panel-setup';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import chartDownload from '../mixins/chart_download';
 
 export default {
   name: 'ICS',
-  mixins: [chartDownload, ControlPanelSetup],
+  mixins: [chartDownload, AdvancedControlPanelSetup],
   components: {
     BarChart,
   },
