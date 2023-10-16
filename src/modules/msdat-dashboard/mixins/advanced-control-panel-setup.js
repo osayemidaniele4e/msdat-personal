@@ -68,8 +68,14 @@ export default {
       this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
       this.defaultDataSource = this.dlGetDataSource(
         this.$store.state.MSDAT_STORE.default.datasource,
-      );
+        );
       this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
+      
+      console.log('default indicator:', this.defaultIndicator)
+      console.log('default datasource:', this.defaultDataSource)
+      console.log('default location:', this.defaultLocation)
+
+
     },
 
     async setYearDropdown(

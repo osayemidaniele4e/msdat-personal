@@ -72,7 +72,6 @@
                   <AdvancedControlPanelConfiguration :controlIndex="controlIndex">
                     <IndicatorComparisonSection :controlIndex="controlIndex" :values="payload" />
                   </AdvancedControlPanelConfiguration>
-
                 <!-- </ControlPanelConfiguration> -->
               </LazyLoading>
             </template>
