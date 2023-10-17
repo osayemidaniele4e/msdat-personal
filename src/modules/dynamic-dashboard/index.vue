@@ -17,6 +17,20 @@
           : true
       "
     />
+    <GisMSDAT
+      v-if="Object.entries(configObject).length > 0 && isGIS === true && loading === false"
+      :indicators="configObject.indicators"
+      :dataSources="configObject.dataSources"
+      :defaultIndicators="configObject.defaultIndicators"
+      :initialIndicator="configObject.initialIndicator"
+      :initialDataSource="configObject.initialDataSource"
+      :initialLocation="configObject.initialLocation"
+      :showTableRelatedIndicator="
+        configObject.showTableRelatedIndicator != undefined
+          ? configObject.showTableRelatedIndicator
+          : true
+      "
+    />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
   </div>
 </template>
@@ -26,6 +40,7 @@ import VueCookies from 'vue-cookies';
 import { mapActions, mapMutations } from 'vuex';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
+import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instance-gis.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
@@ -38,11 +53,13 @@ export default {
   components: {
     MSDAT: instance,
     AdvanceMSDAT: advanceInstance,
+    GisMSDAT: gisInstance,
     ClearDBModal,
   },
   data() {
     return {
       isAdvanced: false,
+      isGIS: false,
       dashboardConfig: config,
       configObject: {
         name: '',
@@ -265,6 +282,22 @@ export default {
         return;
       }
       this.isAdvanced = true;
+      this.configObject = '';
+      this.configObject = dashboard;
+      this.SET_CONFIGURATIONS(dashboard);
+      return;
+    }
+
+    if (name === 'Gis_Mapping') {
+      this.$store.dispatch('customDashboard', false);
+      this.$store.dispatch('resetState');
+      localStorage.removeItem('vuex');
+      const dashboard = config.find((el) => el.name === 'Gis_Mapping');
+      if (dashboard === undefined) {
+        this.$router.push('/*');
+        return;
+      }
+      this.isGIS = true;
       this.configObject = '';
       this.configObject = dashboard;
       this.SET_CONFIGURATIONS(dashboard);
