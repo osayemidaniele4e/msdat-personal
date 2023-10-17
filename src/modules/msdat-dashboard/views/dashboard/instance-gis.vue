@@ -13,9 +13,9 @@
         @swipe="changeSwipe"
 
     >
-      <template v-slot:section-before-0>
+      <!-- <template v-slot:section-before-0>
         <slot name="top-section"></slot>
-      </template>
+      </template> -->
 
       <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">

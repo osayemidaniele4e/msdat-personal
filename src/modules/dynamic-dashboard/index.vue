@@ -1,10 +1,10 @@
 <template>
   <div>
     <MSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && isGIS === false && loading === false"
     />
     <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && isGIS === false && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -18,7 +18,7 @@
       "
     />
     <GisMSDAT
-      v-if="Object.entries(configObject).length > 0 && isGIS === true && loading === false"
+      v-if="Object.entries(configObject).length > 0 && isGIS === true && isAdvanced === false && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -288,11 +288,11 @@ export default {
       return;
     }
 
-    if (name === 'Gis_Mapping') {
+    if (name === 'GIS_Mapping') {
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
-      const dashboard = config.find((el) => el.name === 'Gis_Mapping');
+      const dashboard = config.find((el) => el.name === 'GIS_Mapping');
       if (dashboard === undefined) {
         this.$router.push('/*');
         return;
@@ -339,6 +339,7 @@ export default {
         };
         this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;
+        this.isGIS = false;
       } catch (err) {
         console.log(
           err,
