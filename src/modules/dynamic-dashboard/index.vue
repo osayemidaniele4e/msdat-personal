@@ -3,7 +3,6 @@
     <MSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
     />
-    <pre>{{ isAdvanced }}</pre>
     <AdvanceMSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
       :indicators="configObject.indicators"
