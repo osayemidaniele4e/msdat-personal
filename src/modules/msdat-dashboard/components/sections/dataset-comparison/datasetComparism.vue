@@ -45,9 +45,9 @@
         </div>
         <div class="comparison" v-else>
           <p>
-            Overall comparison ratio between <strong>{{ indicatorOne }}</strong> and
+            The value of <strong>{{ indicatorOne }}</strong> in <strong>{{ comparisonLocation }}</strong> is higher than
             <strong>{{ indicatorTwo }}</strong
-            > for  <strong>{{ comparisonLocation }}</strong>:
+            > by:
           </p>
           <h6>{{ this.value }}%</h6>
         </div>
@@ -129,7 +129,7 @@ export default {
           });
           this.chartConfig.series[0].data = updatedObj1;
           this.chartConfig.series[1].data = updatedObj2;
-          this.chartConfig.tooltip.pointFormat = '{point.name}: <b>{point.y:.1f}</b><br>Comparison:{point.extraData}%';
+          this.chartConfig.tooltip.pointFormat = '{point.name}: <b>{point.y:.1f}</b><br>Difference:{point.extraData}%';
         }
       } else {
         this.comparisonUnavailable = true;
@@ -156,25 +156,25 @@ export default {
       }
     },
     computeDiffValues(indicatorOne, indicatorTwo) {
-      const olderIndicator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
-      let denominator;
+      // const olderIndi cator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
+      // const denominator;
       let left = 0;
       let right = 0;
-      if (olderIndicator === this.indicatorOne) {
-        denominator = indicatorOne.y;
-        left = indicatorTwo.y;
-        right = indicatorOne.y;
-      } else if (olderIndicator === this.indicatorTwo) {
-        denominator = indicatorTwo.y;
-        right = indicatorTwo.y;
-        left = indicatorOne.y;
-      } else {
-        denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
-        left = indicatorTwo.y;
-        right = indicatorOne.y;
-      }
+      // if (olderIndicator === this.indicatorOne) {
+      //   denominator = indicatorOne.y;
+      //   left = indicatorTwo.y;
+      //   right = indicatorOne.y;
+      // } else if (olderIndicator === this.indicatorTwo) {
+      const denominator = indicatorTwo.y;
+      right = indicatorTwo.y;
+      left = indicatorOne.y;
+      // } else {
+      // const denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
+      // left = indicatorTwo.y;
+      // right = indicatorOne.y;
+      // }
       const diff = left - right;
-      const value = this.customRound((diff / denominator) * 10);
+      const value = this.customRound((diff / denominator) * 100);
       return value;
     },
     customRound(number) {
@@ -305,6 +305,10 @@ export default {
           orderResult.push({
             name: dataSourcesNYear[index].item,
             data: dataValues,
+            dataSorting: {
+              enabled: true,
+              sortKey: 'extraData',
+            },
           });
         }
 
@@ -439,7 +443,7 @@ export default {
   border-radius: 10px;
   border: 1px solid #e85d58;
   width: auto;
-  height: 83px;
+  height: 70px;
   text-align: center;
   display: flex;
   flex-direction: row;
