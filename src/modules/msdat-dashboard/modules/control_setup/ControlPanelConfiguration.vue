@@ -21,7 +21,10 @@ export default {
       interactions: [],
       previous_time: null,
       after_time: null,
-      previous_indicator: null
+      previous_indicator: null,
+      previous_time_datasource: null,
+      after_time_datasource: null,
+      previous_datasource: null
     };
   },
   props: {
@@ -131,26 +134,26 @@ export default {
         // new ones
 
         const now = new Date();
-    const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+        const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
-    // Set the total time in minutes for the component data.
-    this.after_time = totalTimeInMinutes;
+        // Set the total time in minutes for the component data.
+        this.after_time = totalTimeInMinutes;
 
-    const diff =  this.after_time - this.previous_time;
+        const diff = this.after_time - this.previous_time;
 
-    // sending to the api
+        // sending to the api
 
-   const timespent = {
-    indicator: this.previous_indicator,
-    time: diff,
-    user: this.getUser
-   }
+        const timespent = {
+          indicator: this.previous_indicator,
+          time: diff,
+          user: this.getUser
+        }
 
-   console.log('timespent in indicator', timespent)
+        console.log('timespent in indicator', timespent)
 
-this.previous_time = this.after_time;
+        this.previous_time = this.after_time;
 
-this.previous_indicator = this.payload.indicator
+        this.previous_indicator = this.payload.indicator
 
         if (this.controlIndex !== 2) {
           const availableYears = await this.getAvailableYears();
@@ -172,6 +175,31 @@ this.previous_indicator = this.payload.indicator
     },
     'payload.datasource': {
       async handler() {
+
+        // new ones
+
+        const now = new Date();
+        const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+
+        // Set the total time in minutes for the component data.
+        this.after_time_datasource = totalTimeInMinutes;
+
+        const diff = this.after_time_datasource - this.previous_time_datasource;
+
+        // sending to the api
+
+        const timespent = {
+          datasource: this.previous_datasource,
+          time: diff,
+          user: this.getUser
+        }
+
+        console.log('timespent in datasource', timespent)
+
+        this.previous_time_datasource = this.after_time_datasource;
+
+        this.previous_datasource = this.payload.datasource
+
         let availableYears;
         if (this.controlIndex === 2) {
           availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);

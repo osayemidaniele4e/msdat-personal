@@ -185,7 +185,7 @@ export default {
         time: Date.now()
       };
 
-      console.log('location data', data)
+      console.log('location of user (per dashboard)', data)
 
       this.clearData();
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
