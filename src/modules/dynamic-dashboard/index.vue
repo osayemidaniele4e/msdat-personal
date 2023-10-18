@@ -213,7 +213,7 @@ export default {
       // try {
       //   const response = await apiServices.getDashboard();
       //   const results = response.data;
-      //   console.log({ results })
+      //   console.log({ results }, 'dashboard results')
       //   // const dashboard = results.find((item) => item?.name === name);
       // } catch (e) {
       //   console.log({ e });
@@ -259,16 +259,30 @@ export default {
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
-      const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
-      if (dashboard === undefined) {
-        this.$router.push('/*');
-        return;
+      // const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
+      // if (dashboard === undefined) {
+      //   this.$router.push('/*');
+      //   return;
+      // }
+
+      try {
+        const response = await apiServices.getDashboard();
+        const results = response.data;
+        console.log({ results }, 'dashboard results');
+        const dashboard = results.find((item) => item?.name === 'Advanced_Analytics');
+        console.log(dashboard, 'new dashboard');
+        console.log(dashboard, 'advanced dashboard');
+        this.isAdvanced = true;
+        this.configObject = '';
+        this.configObject = dashboard;
+        this.SET_CONFIGURATIONS(dashboard);
+        if (dashboard === undefined) {
+          this.$router.push('/*');
+          return;
+        }
+      } catch (e) {
+        console.log({ e });
       }
-      this.isAdvanced = true;
-      this.configObject = '';
-      this.configObject = dashboard;
-      this.SET_CONFIGURATIONS(dashboard);
-      return;
     }
     // =======================
     /**
