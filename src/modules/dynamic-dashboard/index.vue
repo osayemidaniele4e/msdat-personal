@@ -3,6 +3,7 @@
     <MSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
     />
+    <pre>{{ isAdvanced }}</pre>
     <AdvanceMSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
       :indicators="configObject.indicators"
@@ -139,7 +140,6 @@ export default {
     //   localStorage.setItem('datasourceId', 6);
     // },
     // getIndicator(id){
-
     // }
   },
   async mounted() {
@@ -264,25 +264,10 @@ export default {
       //   this.$router.push('/*');
       //   return;
       // }
-
-      try {
-        const response = await apiServices.getDashboard();
-        const results = response.data;
-        console.log({ results }, 'dashboard results');
-        const dashboard = results.find((item) => item?.name === 'Advanced_Analytics');
-        console.log(dashboard, 'new dashboard');
-        console.log(dashboard, 'advanced dashboard');
-        this.isAdvanced = true;
-        this.configObject = '';
-        this.configObject = dashboard;
-        this.SET_CONFIGURATIONS(dashboard);
-        if (dashboard === undefined) {
-          this.$router.push('/*');
-          return;
-        }
-      } catch (e) {
-        console.log({ e });
-      }
+      // this.isAdvanced = true;
+      //   this.configObject = '';
+      //   this.configObject = dashboard;
+      //   this.SET_CONFIGURATIONS(dashboard);
     }
     // =======================
     /**
@@ -319,7 +304,12 @@ export default {
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
         this.SET_CONFIGURATIONS(this.configObject);
-        this.isAdvanced = false;
+
+        if (name === 'Advanced_Analytics') {
+          this.isAdvanced = true;
+        } else {
+          this.isAdvanced = false;
+        }
       } catch (err) {
         console.log(
           err,
