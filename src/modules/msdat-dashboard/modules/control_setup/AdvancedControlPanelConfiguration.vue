@@ -4,7 +4,6 @@
       <slot> </slot>
     </div>
   </template>
-
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import VueCookies from 'vue-cookies';
@@ -48,6 +47,13 @@ export default {
     // if (interactions.length <= 10) {
     this.interactions = interactions || [];
     // }
+  },
+  async mounted() {
+    eventBus.$on('handleClick', (data) => {
+      this.payload.location = data;
+    });
+    /* eslint-disable */console.log(...oo_oo(`3131165519_0`,'control index,', this.controlIndex))
+
     const availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
     await this.SETUP_CONTROL_OPTIONS1({
       groupIndex: this.groupIndex,
@@ -55,12 +61,19 @@ export default {
       key: 'year',
       values: availableYears,
     });
-  },
-  async mounted() {
-    eventBus.$on('handleClick', (data) => {
-      this.payload.location = data;
-    });
-    /* eslint-disable */console.log(...oo_oo(`3131165519_0`,'control index,', this.controlIndex))
+    // const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
+    console.log('heyyy')
+
+    const availableDS = await this.getAllDataSources()
+    debugger;
+    console.log('available ds',availableDS)
+    await this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'datasource',
+            values: availableDS,
+          });
+
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
@@ -136,13 +149,13 @@ export default {
             key: 'year',
             values: availableYears,
           });
-          const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
-          await this.SETUP_CONTROL_OPTIONS1({
-            groupIndex: this.groupIndex,
-            panelIndex: this.controlIndex,
-            key: 'datasource',
-            values: availableDS,
-          });
+        //   const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
+        //   await this.SETUP_CONTROL_OPTIONS1({
+        //     groupIndex: this.groupIndex,
+        //     panelIndex: this.controlIndex,
+        //     key: 'datasource',
+        //     values: availableDS,
+        //   });
         }
       },
     },

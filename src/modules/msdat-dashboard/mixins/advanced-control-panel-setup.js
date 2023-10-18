@@ -125,5 +125,9 @@ export default {
       const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
+    async getAllDatasources () {
+      const datasources = await this.getEveryDatasource();
+      return datasources;
+    }
   },
 };
