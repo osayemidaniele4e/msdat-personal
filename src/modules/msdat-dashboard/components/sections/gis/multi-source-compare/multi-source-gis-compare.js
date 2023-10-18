@@ -1,5 +1,5 @@
 export default {
-  label: 'GIS multi-source-section',
+  label: 'GIS Multi Source Comparison',
   setup: [
   ],
   payload: {

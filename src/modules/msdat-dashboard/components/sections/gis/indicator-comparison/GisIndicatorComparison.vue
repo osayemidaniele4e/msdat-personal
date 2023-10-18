@@ -14,7 +14,7 @@ export default {
 
   data() {
     return {
-      url: 'https://public.tableau.com/views/Demographicsmulti-source/Dashboard12?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url: 'https://public.tableau.com/views/GISIndicatorComparison/Dashboard2?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       height: '400',
       showComing: true,
     };
