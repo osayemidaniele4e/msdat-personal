@@ -21,7 +21,6 @@
         </p>
       </template>
       <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
-      <pre>{{ chart }}</pre>
     </base-sub-card>
   </base-overlay>
 </template>
