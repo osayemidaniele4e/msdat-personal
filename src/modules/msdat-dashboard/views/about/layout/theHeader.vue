@@ -168,21 +168,6 @@
                   :class="{ dropcard: showExpandedDropdown }"
                 />
               </div>
-              <!-- button to view the list of plugins -->
-              <!-- <button
-                v-b-modal.modal-apps
-                class="btn btn-outline-primary border-light rounded-0 ml-3"
-                style="font-size: 13px !important"
-              >
-                Plugins
-              </button> -->
-              <!-- <b-nav-item>
-                <b-dropdown text="Other Dashboards" class="border-0">
-                  <div class="drop-container" v-for="(item, index) in headerDropdown" :key="index">
-                    <router-link class="links" :to="item.link">{{ item.title }}</router-link>
-                  </div>
-                </b-dropdown>
-              </b-nav-item> -->
               <div
                 v-b-toggle.sidebar-2
                 v-if="isAuthenticated === false"
