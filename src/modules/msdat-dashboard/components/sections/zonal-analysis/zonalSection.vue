@@ -21,6 +21,7 @@
         </p>
       </template>
       <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
+      <pre>{{ chart }}</pre>
     </base-sub-card>
   </base-overlay>
 </template>
@@ -190,6 +191,7 @@ export default {
             // already know the zonal levels/parent of all the value
             // index starts at one to skip region data for the series
             const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
+            console.log(chartSeries);
             const zonalSeries = this.getZonalDataInHighChartFormat(data);
             // console.log(zonalSeries);
             // add national to top of the zonal series series
@@ -217,9 +219,23 @@ export default {
             });
             newChart.unshift();
             // add zonal series to top of main the series
-            chartSeries.unshift(zonalZee);
-            // chartSeries.unshift(zonalZee); //  removed this part
-            this.formatToHighChart(chartSeries);
+            // chartSeries.unshift(zonalZee);
+            // eslint-disable-next-line no-constant-condition
+            const nationalObject = zonalZee.data[0];
+            if (val.indicator.id === 30 && val.datasource.id === 2 && (val.year === '2003' || val.year === '2008')) {
+              // this.formatToHighChart(zonalZee.data);
+              this.formatToHighChart([{
+                color: nationalObject.color,
+                name: nationalObject.name,
+                data: [
+                  { name: nationalObject.name, y: nationalObject.y, color: nationalObject.color },
+                ],
+              }, ...chartSeries,
+              ]);
+            } else {
+              chartSeries.unshift(zonalZee); //  removed this part
+              this.formatToHighChart(chartSeries);
+            }
           }
         }
         // Plot for LGAs
