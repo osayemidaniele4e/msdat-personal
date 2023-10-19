@@ -41,15 +41,22 @@
               />
             </svg>
           </span>
-          <p>Comparison not allowed</p>
+          <div>
+            <p>Selected Comparison Not Available</p>
+          </div>
         </div>
         <div class="comparison" v-else>
-          <p>
-            The value of <strong>{{ indicatorOne }}</strong> in <strong>{{ comparisonLocation }}</strong> is higher than
-            <strong>{{ indicatorTwo }}</strong
-            > by:
-          </p>
-          <h6>{{ this.value }}%</h6>
+          <div>
+            <p>
+              The value of <strong>{{ indicatorOne }}</strong> in <strong>{{ comparisonLocation }}</strong> is higher than
+              <strong>{{ indicatorTwo }}</strong
+              > by:
+            </p>
+          </div>
+<div>
+  <h6>{{ this.value }}%</h6>
+
+</div>
         </div>
       </div>
       </transition>
@@ -428,11 +435,8 @@ export default {
 .comparison {
   border-radius: 10px;
   border: 1px solid #c1c1c1;
-  width: auto;
-  padding-left: 10em;
-  padding-right: 10em;
-  height: 83px;
-  text-align: center;
+  width: 45%;
+  height: 63px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -442,32 +446,27 @@ export default {
 .noComparison {
   border-radius: 10px;
   border: 1px solid #e85d58;
-  width: auto;
-  height: 70px;
-  text-align: center;
+  width: 25%;
+  height: 53px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  align-items: baseline;
   gap: 20px;
-  padding-top: 25px;
-  padding-left: 5em;
-  padding-right: 5em;
 }
 .comparison p {
   color: #000;
-  font-size: 16px;
-  font-style: normal;
+  font-size: 13px;
   font-weight: 400;
-  line-height: normal;
+  padding-top: 10px;
   font-family: 'Inter', sans-serif;
 }
 
 .noComparison p {
   color: #e85d58;
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
+  padding-top: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -476,9 +475,14 @@ export default {
 .comparison h6 {
   font-family: 'Inter', sans-serif;
   color: #000;
-  font-size: 32px;
+  font-size: 24px;
   font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+  .comparison, .noComparison {
+    width: auto;
+  }
 }
 </style>
