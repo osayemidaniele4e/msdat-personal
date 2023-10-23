@@ -31,6 +31,7 @@
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
       <!-- BASE SUBCARD FOR INDICATORS WITHOUT CONFIDENCE RANGE -->
+      seee
       <base-sub-card
         ref="SubCard"
         buttonToggle

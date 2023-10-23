@@ -52,12 +52,6 @@
         :NoDataLabel="values.label"
       />
 
-      <!-- Policy Simulator -->
-      <Generate v-if="values.type === 'generate'" :options="values.options" :value="payload[values.key]">Generate</Generate>
-
-      <!-- history -->
-      <History  v-if="values.type === 'history'">Policy History</History>
-
       <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
@@ -151,8 +145,6 @@ import { mapMutations, mapGetters } from 'vuex';
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
-import Generate from '../components/generate.vue';
-import History from '../components/history.vue';
 
 export default {
   // mixins: [ControlMixins],
@@ -185,8 +177,6 @@ export default {
     selectWrapper,
     BaseCheckbox,
     toggle,
-    Generate,
-    History,
   },
   props: {
     setup: {
@@ -399,16 +389,15 @@ export default {
     const date = new Date();
     const getYear = date.getFullYear + 1;
     // pick one of the available years as the default years as opposed to the static 2016 year
-    // console.log('setup', this.setup);
     const defaultYears = this.setup[3].options;
     // console.log(defaultYears);
-    // console.log(defaultYears, 'defaultyears');
     const newArr = [];
+
     defaultYears.map((el) => {
       if (el < getYear) {
         newArr.push(el);
         this.defaultYearDropdown = newArr;
-        // console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
+        console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
       }
       return el;
     });

@@ -232,6 +232,11 @@ export default {
       const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
       return sourceObjects;
     },
+    async getAllDatasources() {
+      const datasources = await DB.getEveryDatasource();
+      return datasources;
+    },
+
     /**
      *
      * @param {value} Chosen indicator ID |
