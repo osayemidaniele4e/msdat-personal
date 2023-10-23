@@ -4,103 +4,50 @@
     <main @click="$refs.theHeader.close()">
       <!-- about MSDAT dashboard -->
 
-
-      <div class="about-sec-1 mt-5 d-flex flex-column align-items-center">
-
-        <h1>ABOUT THE MSDAT DASHBOARD</h1>
-
-        <div>
-          The Federal Ministry of Health (FMOH) Nigeria multi source data analysis resource provides a single transparent
-          view of key health indicators against multiple data sources. It offers a view against key metrics using sources
-          that range from routine data, surveys to global estimates recognizing that data quality, trends and
-          interpretation depend on the type of source and methodology behind the data.
-
-          By transparently showing data trends against multiple sources, we intend to improve the debate and focus on data
-          quality and use with the aim of reducing variances between different sources over time and improve our over all
-          understanding of key trends and progress within the health sector.
-        </div>
-      </div>
-
-      <br><br><br>
-
-
       <section class="mt-5">
         <b-container fluid>
           <b-row>
             <b-col cols lg="5">
               <div>
-                <img src="@/assets/logo-full.png" alt="FMOH Logo" class="img-fluid" />
+                <img :src="macBookImg" alt="Macbook" />
               </div>
             </b-col>
             <b-col cols lg="7">
-           <div>
-            These resources will be developed and expanded in phases and build on connections with existing FMOH agencies
-          and partners. As this resource evolves, DHPRS hopes that it will contribute to improved performance management
-          within the Health sector. The first phase starts by exploring analysis using a selected metrics at federal and
-          state levels. Subsequent phases will gradually increase the number of metrics available for analysis to LGA and
-          facility level.
-
-          The DHPRS team welcomes feedback o this resources and welcomes stakeholders to upload relevant data using the
-          upload data button.
-           </div>
+              <div>
+                <p>
+                  The Federal Ministry of Health (FMOH) Nigeria multi source
+                  data analysis resource provides a single transparent view of
+                  key health indicators against multiple data sources. It offers
+                  a view against key metrics using sources that range from
+                  routine data, surveys to global estimates recognizing that
+                  data quality, trends and interpretation depend on the type of
+                  source and methology behind the data. By transparently showing
+                  data trends against multiple sources, we intend to improve the
+                  debate and focus on data quality and use with the aim of
+                  reducing variances between different sources over time and
+                  improve our over all understanding of key trends and progress
+                  within the health sector.
+                </p>
+                <p>
+                  This resources will be developed and expanded in phases and
+                  build on connections with existing FMOH agencies and partners.
+                  As this resource evolves, DHPRS hopes that it will contribute
+                  to improved performance management within the Health sector.
+                  The first phase starts by exploring analysis using a selected
+                  metrics at federal and state levels. Subsequent phases will
+                  gradually increase the number of metrics available for
+                  analysis to LGA and facility level.
+                </p>
+                <p>
+                  The DHPRS team welcomes feedback o this resources and welcomes
+                  stakeholders to upload relevant data using the upload data
+                  button.
+                </p>
+              </div>
             </b-col>
           </b-row>
         </b-container>
       </section>
-
-
-      <!-- program area section -->
-
-
-      <section class="sec-program-areas">
-        <div class="mt-5 d-flex flex-column align-items-center">
-          <h3>PROGRAM AREAS</h3>
-        <span>
-          The indicators provided by the Central Analytic Dashboard can be selected on the dashboard by clicking on the
-Indicator. The list of indicators on the dashboard can be found below:
-        </span>
-        </div>
-      
-
-
-        <div class="program-areas">
-          <!-- left section -->
-
-          <div class="program-area-sec"> 
-<div v-for="(indicator, index) in indicators" :key="index">
-{{ indicator.program_area }}
-</div>
-
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-          </div>
-
-
-          <!-- right section -->
-
-          <div class="program-area-des"> 
-
-            description for the section to be built on
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
       <!-- indicators -->
       <section>
         <h5>Indicators</h5>
@@ -147,7 +94,6 @@ import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
 import IndicatorPageFunc from './components/AboutPageIndicator.vue';
 import AvailableDataPageFunc from './components/AboutPageAvailableData.vue';
-import { groupIndicator } from '@/util/helper';
 
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
@@ -274,10 +220,6 @@ export default {
       ],
     };
   },
-
-  mounted(){
-    this.indicators = groupIndicator(this.dlIndicator, 'program_area');
-  }
 };
 </script>
 
@@ -291,41 +233,6 @@ $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
 
-
-.about-sec-1 {
-  padding: 100px;
-}
-
-.sec-program-areas{
-background-color: #80D3AF;
-
-}
-
-.program-areas{
-  display: grid;
-  grid-template-columns: 60% 40%;
-}
-
-.program-area-sec{
-  display: grid;
-  grid-template-columns: 33% 33% 33%;
-}
-
-.program-area-card{
-  border: 1px solid black;
-  margin: 30px;
-  width: 100px;
-  background-color: white;
-
-}
-
-.program-area-des{
- border: 1px solid black;
- width: 500px;
- background-color: white;
- height: 200px;
-}
-
 div.modal {
   div.modal-content {
     width: 75%;
@@ -336,19 +243,16 @@ div.modal {
 #about-wrap {
   scroll-behavior: smooth;
   font-family: 'Work Sans', sans-serif;
-
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-
   a {
     color: #fbfbfb;
   }
-
   main {
-    &>section {
+    & > section {
       padding: 3% 9% 3.5%;
       // border: 5px solid pink;
 
@@ -357,22 +261,18 @@ div.modal {
       p {
         text-align: start;
       }
-
       h5,
       h6 {
         font-weight: bolder;
       }
-
       h5 {
         font-size: 18px;
         margin-bottom: 1.5%;
       }
-
       p {
         font-size: 14px;
         margin-bottom: 2.8%;
       }
-
       select {
         width: 32%;
         height: 40px;
@@ -390,12 +290,10 @@ div.modal {
           p:last-child {
             margin-bottom: 0;
           }
-
-          &>div:first-child {
+          & > div:first-child {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-
             img {
               width: 400px;
               height: 300px;
@@ -403,24 +301,20 @@ div.modal {
           }
         }
       }
-
       // available data
       &:nth-child(3) {
         ::-webkit-scrollbar {
           height: 10px;
         }
-
         ::-webkit-scrollbar-thumb {
           background-color: $msdat-darkgrey;
           border-radius: 8px;
         }
-
         ::-webkit-scrollbar-track {
           background-color: $msdat-lightgrey;
         }
 
-        &>div {
-
+        & > div {
           table,
           th,
           td {
@@ -432,8 +326,7 @@ div.modal {
             width: 100%;
             margin: auto;
             text-align: center;
-
-            &> :first-child {
+            & > :first-child {
               th {
                 // width: auto;
                 height: 50px;
@@ -447,8 +340,7 @@ div.modal {
                 text-align: start;
               }
             }
-
-            &> :last-child {
+            & > :last-child {
               font-size: 13px;
               color: #515151;
 
@@ -459,7 +351,6 @@ div.modal {
                 &:nth-child(2) {
                   text-align: start;
                 }
-
                 svg {
                   // background-color: orange !important;
                   font-size: 15px;
@@ -490,7 +381,6 @@ div.modal {
           }
         }
       }
-
       // indicators and data sources
       &:nth-child(2),
       &:nth-child(4) {
@@ -503,25 +393,24 @@ div.modal {
 // MEDIA QUERY
 
 /* EXTRA EXTRA SMALL */
-@media (max-width: 300px) {}
+@media (max-width: 300px) {
+}
 
 /* EXTRA SMALL */
 @media (max-width: 576px) {
   #about-wrap {
     main {
-      &>section {
+      & > section {
         padding: 4% 3%;
 
         h5 {
           font-size: 16px;
           margin-bottom: 1.5%;
         }
-
         p {
           font-size: 13px;
           margin-bottom: 3%;
         }
-
         select {
           width: 85%;
           height: 40px;
@@ -535,7 +424,7 @@ div.modal {
         // about MSDAT dashboard
         &:nth-child(1) {
           .row {
-            &>div:first-child {
+            & > div:first-child {
               justify-content: center;
 
               img {
@@ -546,18 +435,17 @@ div.modal {
             }
           }
         }
-
         // available data
         &:nth-child(3) {
           ::-webkit-scrollbar {
             height: 7px;
           }
 
-          &>div {
+          & > div {
             table {
               width: 900px;
 
-              &> :first-child {
+              & > :first-child {
                 th {
                   height: 40px;
                   padding: 1.5% 1%;
@@ -569,8 +457,7 @@ div.modal {
                   text-align: start;
                 }
               }
-
-              &> :last-child {
+              & > :last-child {
                 font-size: 12px;
 
                 td {
@@ -583,7 +470,6 @@ div.modal {
               }
             }
           }
-
           button {
             height: 35px;
             margin-top: 7%;
@@ -598,14 +484,14 @@ div.modal {
 @media (min-width: 576px) and (max-width: 768px) {
   #about-wrap {
     header {
-      &>.container-fluid {
-        &>.row {
+      & > .container-fluid {
+        & > .row {
           height: 80px;
           padding: 10px 0;
 
           // first row
           &:first-child {
-            &>div {
+            & > div {
               &:first-child {
                 img {
                   float: left;
@@ -622,7 +508,7 @@ div.modal {
                   font: normal normal 600 16px/20px Work Sans;
 
                   // 3-dots icon
-                  &~div {
+                  & ~ div {
                     font-size: 13px;
                   }
                 }
@@ -633,15 +519,14 @@ div.modal {
           // second row
           &:last-child {
             height: 70px;
-
-            &> :first-child {
+            & > :first-child {
               .back-icn {
                 padding: 8px;
                 font-size: 37px;
               }
             }
 
-            &> :last-child {
+            & > :last-child {
               padding: 0 5% !important;
               line-height: 15px;
 
@@ -656,19 +541,17 @@ div.modal {
     }
 
     main {
-      &>section {
+      & > section {
         padding: 4% 3%;
 
         h5 {
           font-size: 16.5px;
           // margin-bottom: 1.5%;
         }
-
         p {
           font-size: 13px;
           margin-bottom: 3%;
         }
-
         select {
           width: 80%;
           height: 40px;
@@ -682,7 +565,7 @@ div.modal {
         // about MSDAT dashboard
         &:nth-child(1) {
           .row {
-            &>div:first-child {
+            & > div:first-child {
               justify-content: center;
 
               img {
@@ -693,18 +576,17 @@ div.modal {
             }
           }
         }
-
         // available data
         &:nth-child(3) {
           ::-webkit-scrollbar {
             height: 7px;
           }
 
-          &>div {
+          & > div {
             table {
               width: 1000px;
 
-              &> :first-child {
+              & > :first-child {
                 th {
                   height: 40px;
                   padding: 1.5% 1%;
@@ -716,8 +598,7 @@ div.modal {
                   text-align: start;
                 }
               }
-
-              &> :last-child {
+              & > :last-child {
                 font-size: 12px;
 
                 td {
@@ -730,7 +611,6 @@ div.modal {
               }
             }
           }
-
           button {
             height: 35px;
             margin-top: 7%;
@@ -745,14 +625,14 @@ div.modal {
 @media (min-width: 768px) and (max-width: 992px) {
   #about-wrap {
     header {
-      &>.container-fluid {
-        &>.row {
+      & > .container-fluid {
+        & > .row {
           height: 65px;
           padding: 10px;
 
           // first row
           &:first-child {
-            &>div {
+            & > div {
               &:first-child {
                 img {
                   float: left;
@@ -767,7 +647,7 @@ div.modal {
                   font: normal normal 600 17px/20px Work Sans;
 
                   // 3-dots icon
-                  &~div {
+                  & ~ div {
                     font-size: 13px;
                   }
                 }
@@ -777,14 +657,14 @@ div.modal {
 
           // second row
           &:last-child {
-            &> :first-child {
+            & > :first-child {
               .back-icn {
                 padding: 8px;
                 font-size: 38px;
               }
             }
 
-            &> :last-child {
+            & > :last-child {
               padding: 0 5% !important;
               line-height: 16px;
 
@@ -799,18 +679,16 @@ div.modal {
     }
 
     main {
-      &>section {
+      & > section {
         padding: 4% 3%;
 
         h5 {
           font-size: 17px;
         }
-
         p {
           font-size: 14px;
           margin-bottom: 3%;
         }
-
         select {
           width: 47%;
           height: 42px;
@@ -820,7 +698,7 @@ div.modal {
         // about MSDAT dashboard
         &:nth-child(1) {
           .row {
-            &>div:first-child {
+            & > div:first-child {
               justify-content: center;
 
               img {
@@ -831,18 +709,17 @@ div.modal {
             }
           }
         }
-
         // available data
         &:nth-child(3) {
           ::-webkit-scrollbar {
             height: 7px;
           }
 
-          &>div {
+          & > div {
             table {
               width: 1000px;
 
-              &> :first-child {
+              & > :first-child {
                 th {
                   height: 40px;
                   padding: 1.5% 1%;
@@ -854,8 +731,7 @@ div.modal {
                   text-align: start;
                 }
               }
-
-              &> :last-child {
+              & > :last-child {
                 font-size: 13px;
 
                 td {
@@ -868,7 +744,6 @@ div.modal {
               }
             }
           }
-
           button {
             height: 40px;
             margin-top: 7%;
@@ -882,12 +757,11 @@ div.modal {
 /* LARGE */
 @media (min-width: 992px) and (max-width: 1200px) {
   main {
-    &>section {
-
+    & > section {
       // about MSDAT dashboard
       &:nth-child(1) {
         .row {
-          &>div:first-child {
+          & > div:first-child {
             img {
               width: 320px !important;
               height: 230px;
@@ -901,4 +775,6 @@ div.modal {
 }
 
 /* EXTRA LARGE */
-@media (min-width: 1200px) {}</style>
+@media (min-width: 1200px) {
+}
+</style>
