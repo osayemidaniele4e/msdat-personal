@@ -293,7 +293,7 @@ $msdat-darkgrey: #dedede;
 }
 
 .sec-program-areas{
-background-color: #80D3AF;
+background-color: #DFF3F3;
 
 }
 
@@ -312,6 +312,10 @@ background-color: #80D3AF;
   margin: 30px;
   width: 100px;
   background-color: white;
+  border: 1px solid #80D3AF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 }
 
