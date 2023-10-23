@@ -1,6 +1,5 @@
 <template>
     <div>
-        advanced one
       <slot> </slot>
     </div>
   </template>
@@ -61,6 +60,9 @@ export default {
       key: 'year',
       values: availableYears,
     });
+
+
+
     // const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
     console.log('heyyy')
 
