@@ -4,7 +4,6 @@
     <main @click="$refs.theHeader.close()">
       <!-- about MSDAT dashboard -->
 
-
       <div class="about-sec-1 mt-5 d-flex flex-column align-items-center">
 
         <h1>ABOUT THE MSDAT DASHBOARD</h1>
@@ -22,7 +21,6 @@
       </div>
 
       <br><br><br>
-
 
       <section class="mt-5">
         <b-container fluid>
@@ -48,9 +46,7 @@
         </b-container>
       </section>
 
-
       <!-- program area section -->
-
 
       <section class="sec-program-areas">
         <div class="mt-5 d-flex flex-column align-items-center">
@@ -60,13 +56,11 @@
 Indicator. The list of indicators on the dashboard can be found below:
         </span>
         </div>
-      
-
 
         <div class="program-areas">
           <!-- left section -->
 
-          <div class="program-area-sec"> 
+          <div class="program-area-sec">
 <div v-for="(indicator, index) in indicators" :key="index">
 {{ indicator.program_area }}
 </div>
@@ -85,21 +79,17 @@ Indicator. The list of indicators on the dashboard can be found below:
             <div class="program-area-card" >Maternal</div>
           </div>
 
-
           <!-- right section -->
 
-          <div class="program-area-des"> 
+          <div class="program-area-des">
 
             description for the section to be built on
 
           </div>
 
-
         </div>
 
-
       </section>
-
 
       <!-- indicators -->
       <section>
@@ -142,12 +132,12 @@ Indicator. The list of indicators on the dashboard can be found below:
 </template>
 
 <script>
+import { groupIndicator } from '@/util/helper';
 import theHeader from './layout/theHeader.vue';
 import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
 import IndicatorPageFunc from './components/AboutPageIndicator.vue';
 import AvailableDataPageFunc from './components/AboutPageAvailableData.vue';
-import { groupIndicator } from '@/util/helper';
 
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
@@ -275,9 +265,9 @@ export default {
     };
   },
 
-  mounted(){
+  mounted() {
     this.indicators = groupIndicator(this.dlIndicator, 'program_area');
-  }
+  },
 };
 </script>
 
@@ -291,9 +281,15 @@ $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
 
-
 .about-sec-1 {
   padding: 100px;
+  background-image: url("./assets/background-1.png");
+  color: white;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .sec-program-areas{
