@@ -81,6 +81,7 @@ export default {
       }
 
       if (index === 4) {
+        console.log(this.getSelectedConfig(), 'this.getSelectedConfig()');
         this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
           controlIndex: index,
           key: 'indicator',

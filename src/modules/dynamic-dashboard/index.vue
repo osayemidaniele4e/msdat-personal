@@ -32,6 +32,7 @@ import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
 import defaultDSyear from './defaultDSYear.json';
+import defaultAdvancedYear from './defaultAdvancedYear.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -143,6 +144,7 @@ export default {
   },
   async mounted() {
     this.clearData();
+    console.log(defaultData, 'defaultData');
     if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
       // this sets skilled attendance at birth indicator on mounted
       this.SET_SELECTED_CONFIG(defaultData);
@@ -150,6 +152,9 @@ export default {
       // this sets covid 19 confirmed cases indicator on mounted
       this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
       this.SET_SELECTED_CONFIG(defaultDSyear);
+    } else if (this.$route.params.name === 'Advanced_Analytics') {
+      this.SET_SELECTED_CONFIG(defaultData);
+      this.SET_SELECTED_CONFIG(defaultAdvancedYear);
     }
     setTimeout(() => {
       console.log('config', this.$store.state.MSDAT_STORE.configObject);

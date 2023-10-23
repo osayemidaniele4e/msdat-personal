@@ -52,7 +52,7 @@
         :NoDataLabel="values.label"
       />
 
-      <!-- {{ showItem(values.options) }} -->
+      {{ showItem(values.options) }}
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
       <div>
@@ -298,9 +298,10 @@ export default {
       }
     },
     showItem(item) {
-      if (item !== null && item.length === 2) {
-        // console.log(JSON.stringify(item), 'item');
-      }
+      console.log(item, 'DDDOOO');
+      // if (item !== null && item.length === 2) {
+      //   console.log(JSON.stringify(item), 'item');
+      // }
       // if (item !== null && item.length === 38) {
       //   console.log(item, 'UUU');
       //   const main = item.filter((s) => s.name === 'Nigeria');
@@ -392,12 +393,12 @@ export default {
     const defaultYears = this.setup[3].options;
     // console.log(defaultYears);
     const newArr = [];
-
+    console.log(this.setup, 'this.defaultYearDropdown');
     defaultYears.map((el) => {
       if (el < getYear) {
         newArr.push(el);
         this.defaultYearDropdown = newArr;
-        console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
+        // console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
       }
       return el;
     });

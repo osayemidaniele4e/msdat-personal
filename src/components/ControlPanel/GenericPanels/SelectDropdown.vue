@@ -59,7 +59,10 @@
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
     THAT HAVE GROUPED OPTIONS
     -->
+
+    <!-- {{ showItems(options) }} -->
   </multiselect>
+
 </template>
 <script>
 import { has } from 'lodash';
@@ -239,6 +242,10 @@ export default {
       'UPDATE_MULTI_YEARS',
       'setSelectedState',
     ]),
+
+    // showItems(item) {
+    //   console.log(item, 'DDDOOO');
+    // },
 
     modifyDataSourceChildLabel(tag) {
       const tempArray = tag.split(' ');

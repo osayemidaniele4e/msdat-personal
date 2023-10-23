@@ -160,6 +160,7 @@ const mutations: MutationTree<State> = {
   },
   SET_SELECTED_CONFIG: (state, payload) => {
     state.selectedConfigurations[`${payload.entity}`] = payload.payload;
+    console.log(payload, '@@HH@@');
   },
   UPDATE_ALL_DATASOURCES: (state, payload) => {
     state.controlConfig.forEach((item) => {
