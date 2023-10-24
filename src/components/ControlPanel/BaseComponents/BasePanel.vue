@@ -11,7 +11,7 @@
         :id="`panel-${i}`"
         @click="changeControl(i)"
       >
-        {{ el.title }}
+        {{ el.title.replace('-', '_') }}
       </li>
     </ul>
 
