@@ -2,21 +2,38 @@
   <div id="about-wrap">
     <the-header ref="theHeader" />
     <main @click="$refs.theHeader.close()">
+
+      <!-- navigation sections  -->
+
+      <nav class="nav-links d-flex justify-content-center align-items-center">
+        <span class="mx-3 nav-link-item" @click="scrollTo('program-areas')">Program Areas</span>
+        <span class="mx-3 nav-link-item" @click="scrollTo('logical-framework')">Logical Framework</span>
+        <span class="mx-3 nav-link-item">Available Data</span>
+        <span class="mx-3 nav-link-item">Data Sources</span>
+      </nav>
+
+
       <!-- about MSDAT dashboard -->
 
-      <div class="about-sec-1 mt-5 d-flex flex-column align-items-center">
+      <div class="about-sec-1 d-flex flex-column align-items-center">
 
         <h1>ABOUT THE MSDAT DASHBOARD</h1>
+        
+        <div class="about-sec-text2">
 
-        <div>
+
           The Federal Ministry of Health (FMOH) Nigeria multi source data analysis resource provides a single transparent
           view of key health indicators against multiple data sources. It offers a view against key metrics using sources
           that range from routine data, surveys to global estimates recognizing that data quality, trends and
           interpretation depend on the type of source and methodology behind the data.
 
+
+          <br> <br>
+
           By transparently showing data trends against multiple sources, we intend to improve the debate and focus on data
           quality and use with the aim of reducing variances between different sources over time and improve our over all
           understanding of key trends and progress within the health sector.
+
         </div>
       </div>
 
@@ -31,16 +48,21 @@
               </div>
             </b-col>
             <b-col cols lg="7">
-           <div>
-            These resources will be developed and expanded in phases and build on connections with existing FMOH agencies
-          and partners. As this resource evolves, DHPRS hopes that it will contribute to improved performance management
-          within the Health sector. The first phase starts by exploring analysis using a selected metrics at federal and
-          state levels. Subsequent phases will gradually increase the number of metrics available for analysis to LGA and
-          facility level.
+              <div class="p-10">
+                These resources will be developed and expanded in phases and build on connections with existing FMOH
+                agencies
+                and partners. As this resource evolves, DHPRS hopes that it will contribute to improved performance
+                management
+                within the Health sector. The first phase starts by exploring analysis using a selected metrics at federal
+                and
+                state levels. Subsequent phases will gradually increase the number of metrics available for analysis to
+                LGA and
+                facility level.
 
-          The DHPRS team welcomes feedback o this resources and welcomes stakeholders to upload relevant data using the
-          upload data button.
-           </div>
+                The DHPRS team welcomes feedback o this resources and welcomes stakeholders to upload relevant data using
+                the
+                upload data button.
+              </div>
             </b-col>
           </b-row>
         </b-container>
@@ -48,46 +70,76 @@
 
       <!-- program area section -->
 
-      <section class="sec-program-areas">
+      <section class="sec-program-areas" id="program-areas">
         <div class="mt-5 d-flex flex-column align-items-center">
           <h3>PROGRAM AREAS</h3>
-        <span>
-          The indicators provided by the Central Analytic Dashboard can be selected on the dashboard by clicking on the
-Indicator. The list of indicators on the dashboard can be found below:
-        </span>
+          <span>
+            The indicators provided by the Central Analytic Dashboard can be selected on the dashboard by clicking on the
+            Indicator. The list of indicators on the dashboard can be found below:
+          </span>
         </div>
+
+        <br>
 
         <div class="program-areas">
           <!-- left section -->
 
           <div class="program-area-sec">
-<div v-for="(indicator, index) in indicators" :key="index">
-{{ indicator.program_area }}
-</div>
+            <div v-for="(indicator, index) in indicators" :key="index">
+              {{ indicator.program_area }}
+            </div>
 
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
-            <div class="program-area-card" >Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
+            <div class="program-area-card">Maternal</div>
           </div>
 
           <!-- right section -->
 
           <div class="program-area-des">
 
-            description for the section to be built on
+           <h4>REPRODUCTIVE MATERNAL NEWBORN CHILD HEALTH</h4>
+
+           <ul>
+            <li>PostNatal care efefefef</li>
+            <li>PostNatal care efefefef</li>
+            <li>PostNatal care efefefef</li>
+            <li>PostNatal care efefefef</li>
+            <li>PostNatal care efefefef</li>
+            <li>PostNatal care efefefef</li>
+           </ul>
 
           </div>
 
         </div>
+
+      </section>
+
+      <!-- logical framework -->
+
+      <section id="logical-framework" class="logical-framework">
 
       </section>
 
@@ -265,6 +317,15 @@ export default {
     };
   },
 
+  methods: {
+    scrollTo(id) {
+      const programAreasSection = document.getElementById(id);
+      if (programAreasSection) {
+        programAreasSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+  },
+
   mounted() {
     this.indicators = groupIndicator(this.dlIndicator, 'program_area');
   },
@@ -281,6 +342,19 @@ $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
 
+
+.nav-links {
+  height: 50px;
+}
+
+.nav-link-item {
+  cursor: pointer;
+}
+
+.nav-link-item:hover {
+  color: green;
+}
+
 .about-sec-1 {
   padding: 100px;
   background-image: url("./assets/background-1.png");
@@ -289,28 +363,36 @@ $msdat-darkgrey: #dedede;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.about-sec-text2 {
+  width: 800px;
+  font-size: 16px;
+}
+
+.sec-program-areas {
+  background-color: #DFF3F3;
 
 }
 
-.sec-program-areas{
-background-color: #DFF3F3;
-
-}
-
-.program-areas{
+.program-areas {
+  height: 500px;
   display: grid;
   grid-template-columns: 60% 40%;
 }
 
-.program-area-sec{
+.program-area-sec {
+  height: 200px;
   display: grid;
   grid-template-columns: 33% 33% 33%;
+  overflow: scroll;
 }
 
-.program-area-card{
+.program-area-card {
   border: 1px solid black;
-  margin: 30px;
-  width: 100px;
+  margin: 100px;
+  width: 200px;
+  height: 30px;
   background-color: white;
   border: 1px solid #80D3AF;
   display: flex;
@@ -319,11 +401,17 @@ background-color: #DFF3F3;
 
 }
 
-.program-area-des{
- border: 1px solid black;
- width: 500px;
- background-color: white;
- height: 200px;
+.program-area-des {
+  border: 1px solid black;
+  width: 500px;
+  background-color: white;
+  height: 400px;
+  padding: 60px;
+}
+
+.logical-framework {
+  background-image: url("./assets/logical-group.png");
+  height: 700px;
 }
 
 div.modal {
