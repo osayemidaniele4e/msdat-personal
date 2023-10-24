@@ -2,6 +2,11 @@
   <div>
     <div class="col p-3">
       <div class="col mb-3">
+        <a class="sub-item" href="https://msdat.fmohconnect.gov.ng/"><b>Home</b></a>
+        <router-link class="sub-item" to="/faq"><b>Help & FAQ</b></router-link>
+        <a class="sub-item" href="https://msdat.old.fmohconnect.gov.ng/" target="_blank"><b>Go back to MSDAT 1.5</b></a>
+      </div>
+      <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline main-item">Population</h5>
           <router-link to="/dashboard/Demographics"
@@ -56,18 +61,14 @@
             >
           </div>
           <div class="mb-2">
-              <b class="sub-item-bold">Surveillance Dashboards</b>
-            <router-link to="/coming-soon/health_surveillance"
-             class="sub-item"
-              >
-                Health Surveillance
-              </router-link
+              <b class="sub-item-bold">Disease Surveillance</b>
+              <a href="/dashboard/Disease_Surveillance" target="_blank" class="sub-item">
+                Disease Surveillance
+              </a
             >
-            <router-link to="#"
-             class="sub-item"
-              >
-                RTA Surveillance
-              </router-link
+              <a href="/external-ncdc" target="_blank" class="sub-item">
+                Disease Surveillance (NCDC)
+              </a
             >
           </div>
         </b-list-group>
@@ -89,7 +90,7 @@
               Create New Dashboard
             </router-link
           >
-          <router-link to="#"
+          <router-link to="/health-profiles"
            class="sub-item"
             >Health Profiles</router-link
           >

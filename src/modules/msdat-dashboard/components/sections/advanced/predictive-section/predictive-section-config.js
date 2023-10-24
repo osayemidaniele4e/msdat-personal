@@ -37,7 +37,7 @@ export default {
     {
       class: ['col-lg col-md-2 col-4'],
       type: 'dropdown',
-      label: 'Target',
+      label: 'Year',
       key: 'year',
       options: [],
       dropdownProps: {

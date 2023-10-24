@@ -267,7 +267,8 @@ export default {
     async getNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
       // console.log('new result', result)
-      return result[result.length - 1];
+      return result.reverse()[0];
+      // return result[result.length - 1];
     },
     async getDexieTableValues(query) {
       if (query === '') {
