@@ -221,15 +221,18 @@ export default {
             // chartSeries.unshift(zonalZee);
             // eslint-disable-next-line no-constant-condition
             const nationalObject = zonalZee.data[0];
-            if (val.indicator.id === 30 && val.datasource.id === 2 && (val.year === '2003' || val.year === '2008')) {
+            if (data.length > 0) {
+              // val.indicator.id === 30 && val.datasource.id === 2 && (val.year === '2003' || val.year === '2008')
               // this.formatToHighChart(zonalZee.data);
-              this.formatToHighChart([{
-                color: nationalObject.color,
-                name: nationalObject.name,
-                data: [
-                  { name: nationalObject.name, y: nationalObject.y, color: nationalObject.color },
-                ],
-              }, ...chartSeries,
+              this.formatToHighChart([
+                {
+                  color: nationalObject.color,
+                  name: nationalObject.name,
+                  data: [
+                    { name: nationalObject.name, y: nationalObject.y, color: nationalObject.color },
+                  ],
+                },
+                ...chartSeries,
               ]);
             } else {
               chartSeries.unshift(zonalZee); //  removed this part
