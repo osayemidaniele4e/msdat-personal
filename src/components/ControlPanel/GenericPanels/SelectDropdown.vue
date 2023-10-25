@@ -158,7 +158,6 @@ export default {
     options: {
       async handler(newValue) {
         // this.addQueryParamToUrl();
-        console.log('tag it', newValue);
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {

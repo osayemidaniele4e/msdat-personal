@@ -144,7 +144,7 @@ export default {
   },
   async mounted() {
     this.clearData();
-    console.log(defaultData, 'defaultData');
+    // console.log(defaultData, 'defaultData');
     if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
       // this sets skilled attendance at birth indicator on mounted
       this.SET_SELECTED_CONFIG(defaultData);

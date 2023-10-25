@@ -51,8 +51,6 @@
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       />
-
-      {{ showItem(values.options) }}
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
       <div>
@@ -297,19 +295,6 @@ export default {
         localStorage.setItem('lastActivity', (JSON.stringify(activityObject)));
       }
     },
-    showItem(item) {
-      console.log(item, 'DDDOOO');
-      // if (item !== null && item.length === 2) {
-      //   console.log(JSON.stringify(item), 'item');
-      // }
-      // if (item !== null && item.length === 38) {
-      //   console.log(item, 'UUU');
-      //   const main = item.filter((s) => s.name === 'Nigeria');
-      //   console.log(this.$route.params.name, 'Nigeria');
-      //   console.log(main, 'Nigeria');
-      // }
-    },
-
     locationCheck(options) {
       // console.log(options, 'options');
       if (
@@ -340,6 +325,13 @@ export default {
       // if (name === 'Advanced_Analytics') {
       //   return data?.filter((item) => item.program_area === this.indicatorList);
       // }
+
+      console.log(this.$store.getters.getSectionTitle, 'XXXXX');
+
+      const { name } = this.$route.params;
+      if (name === 'Advanced_Analytics' && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison') {
+        return data?.filter((item) => item.program_area === this.indicatorList);
+      }
 
       return data;
 
@@ -393,7 +385,7 @@ export default {
     const defaultYears = this.setup[3].options;
     // console.log(defaultYears);
     const newArr = [];
-    console.log(this.setup, 'this.defaultYearDropdown');
+    // console.log(this.setup, 'this.defaultYearDropdown');
     defaultYears.map((el) => {
       if (el < getYear) {
         newArr.push(el);
