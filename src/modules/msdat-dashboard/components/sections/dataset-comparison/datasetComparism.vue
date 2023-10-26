@@ -172,9 +172,9 @@ export default {
       //   left = indicatorTwo.y;
       //   right = indicatorOne.y;
       // } else if (olderIndicator === this.indicatorTwo) {
-      const denominator = indicatorTwo.y;
-      right = indicatorTwo.y;
-      left = indicatorOne.y;
+      const denominator = indicatorOne.y;
+      left = indicatorTwo.y;
+      right = indicatorOne.y;
       // } else {
       // const denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
       // left = indicatorTwo.y;
