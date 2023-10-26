@@ -224,7 +224,7 @@ export default {
       },
     },
     selected(newValue) {
-      if (newValue.parent !== undefined) {
+      if (newValue && newValue.parent !== undefined) {
         this.setSelectedState(newValue);
       }
     },
