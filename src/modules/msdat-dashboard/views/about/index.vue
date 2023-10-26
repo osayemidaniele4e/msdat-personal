@@ -70,72 +70,8 @@
 
       <!-- program area section -->
 
-      <section class="sec-program-areas" id="program-areas">
-        <div class="mt-5 d-flex flex-column align-items-center">
-          <h3>PROGRAM AREAS</h3>
-          <span>
-            The indicators provided by the Central Analytic Dashboard can be selected on the dashboard by clicking on the
-            Indicator. The list of indicators on the dashboard can be found below:
-          </span>
-        </div>
 
-        <br>
-
-        <div class="program-areas">
-          <!-- left section -->
-
-          <div class="program-area-sec">
-            <div v-for="(indicator, index) in indicators" :key="index">
-              {{ indicator.program_area }}
-            </div>
-
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-            <div class="program-area-card">Maternal</div>
-          </div>
-
-          <!-- right section -->
-
-          <div class="program-area-des">
-
-           <h4>REPRODUCTIVE MATERNAL NEWBORN CHILD HEALTH</h4>
-
-           <ul>
-            <li>PostNatal care efefefef</li>
-            <li>PostNatal care efefefef</li>
-            <li>PostNatal care efefefef</li>
-            <li>PostNatal care efefefef</li>
-            <li>PostNatal care efefefef</li>
-            <li>PostNatal care efefefef</li>
-           </ul>
-
-          </div>
-
-        </div>
-
-      </section>
+      <IndicatorPageFunc />
 
       <!-- logical framework -->
 
@@ -152,7 +88,7 @@
           Drop-down, we've circled it red on the image to your left. The list of
           indicators on the dashboard can be found below:
         </p>
-        <IndicatorPageFunc />
+     
       </section>
       <!-- available data -->
       <section>
