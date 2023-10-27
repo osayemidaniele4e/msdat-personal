@@ -1,9 +1,6 @@
 export default {
   label: 'Scatterplot Analysis',
   setup: [
-    {
-      options: [],
-    },
   ],
   payload: {
     indicator: '',

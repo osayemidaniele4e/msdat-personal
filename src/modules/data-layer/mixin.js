@@ -232,6 +232,11 @@ export default {
       const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
       return sourceObjects;
     },
+    async getAllDatasources() {
+      const datasources = await DB.getEveryDatasource();
+      return datasources;
+    },
+
     /**
      *
      * @param {value} Chosen indicator ID |
@@ -262,7 +267,8 @@ export default {
     async getNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
       // console.log('new result', result)
-      return result[result.length - 1];
+      return result.reverse()[0];
+      // return result[result.length - 1];
     },
     async getDexieTableValues(query) {
       if (query === '') {

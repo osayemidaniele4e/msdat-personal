@@ -38,6 +38,7 @@ export default {
       dropdownProps: {
         'preselect-first': true,
       },
+      options: [],
     },
     {
       visibility: true,
