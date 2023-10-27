@@ -8,7 +8,7 @@
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
       <label
-        class="text-uppercase work-sans label-text"
+        class="text-uppercase work-sans label-text "
         v-if="!hasNHMIS && values.label == 'Num/Denom'"
       >
         {{ '' }}
@@ -57,7 +57,7 @@
       <!-- <div class="disabled_alt"> -->
       <div>
         <toggle
-          v-if="values.type === 'toggle' && hasNHMIS"
+          v-if="values.type === 'toggle'"
           @change="updatePayload($event, values.key)"
         />
       </div>
@@ -171,6 +171,7 @@ export default {
       //   numdenum: false,
       // },
       hasNHMIS: false,
+
     };
   },
   components: {
