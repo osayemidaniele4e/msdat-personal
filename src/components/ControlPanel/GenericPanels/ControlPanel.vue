@@ -19,7 +19,7 @@
       >
       {{ values.label }}
       </label>
-      <label class="text-uppercase work-sans label-text" v-else> {{ values.label }} </label>
+      <label :class=" values.label==='Num/Denom'? 'text-uppercase work-sans label-text d-flex justify-content-center':'text-uppercase work-sans label-text d-flex'" v-else> {{ values.label }} </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -55,7 +55,7 @@
       <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
-      <div class="disabled_alt">
+      <div class="disabled_alt d-flex justify-content-center">
         <toggle
           v-if="values.type === 'toggle' && hasNHMIS"
           @change="updatePayload($event, values.key)"
