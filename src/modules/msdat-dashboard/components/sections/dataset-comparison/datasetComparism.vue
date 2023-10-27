@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import Highcharts from 'highcharts';
 import { mapMutations } from 'vuex';
 import { uniq } from 'lodash';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
@@ -105,7 +106,8 @@ export default {
 
       if (yearValue1 < yearValue2) {
         return year1;
-      } if (yearValue1 > yearValue2) {
+      }
+      if (yearValue1 > yearValue2) {
         return year2;
       }
       return 'equal';
@@ -172,9 +174,9 @@ export default {
       //   left = indicatorTwo.y;
       //   right = indicatorOne.y;
       // } else if (olderIndicator === this.indicatorTwo) {
-      const denominator = indicatorTwo.y;
-      right = indicatorTwo.y;
-      left = indicatorOne.y;
+      const denominator = indicatorOne.y;
+      left = indicatorTwo.y;
+      right = indicatorOne.y;
       // } else {
       // const denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
       // left = indicatorTwo.y;
@@ -346,6 +348,9 @@ export default {
             column: {
               dataLabels: {
                 enabled: true,
+                formatter() {
+                  return Highcharts.numberFormat(this.y, 0, '', ',');
+                },
               },
             },
           },

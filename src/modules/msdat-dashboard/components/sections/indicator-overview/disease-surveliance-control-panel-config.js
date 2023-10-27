@@ -1,5 +1,5 @@
 export default {
-  label: 'Policy Simulator',
+  label: 'Indicator Overview',
   setup: [
     {
       type: 'dropdown',
@@ -15,6 +15,16 @@ export default {
       options: [],
     },
     {
+      class: ['col-lg col-md-2 col-4 step-datasource'],
+      type: 'dropdown',
+      label: 'data Source',
+      key: 'datasource',
+      dropdownProps: {
+        label: 'datasource',
+      },
+      options: [],
+    },
+    {
       class: ['col-lg col-md-2 col-4 step-location'],
       type: 'dropdown',
       label: 'location',
@@ -24,31 +34,27 @@ export default {
       },
       options: [],
     },
-
-    // year ??
-    // {
-    //   class: ['col-lg col-md-2 col-4'],
-    //   type: 'dropdown',
-    //   label: 'Year',
-    //   key: 'year',
-    //   options: [],
-    //   dropdownProps: {
-    //     'preselect-first': true,
-    //   },
-    // },
     {
-      class: ['col-lg col-md-2 col-4 mt-4'],
-      type: 'generate',
-      label: '',
-      key: 'Generate',
+      class: ['col-lg col-md-2 col-4'],
+      type: 'dropdown',
+      label: 'Year',
+      key: 'year',
       options: [],
+      dropdownProps: {
+        'preselect-first': true,
+      },
     },
     {
-      class: ['col-lg col-md-2 col-4 mt-4'],
-      type: 'history',
-      label: '',
-      key: 'History',
-      options: [],
+      class: ['col'],
+      type: 'checkbox',
+      label: 'Target',
+      key: 'target',
+    },
+    {
+      class: ['col mx-sm-3 disabled_alt'],
+      type: 'toggle',
+      label: 'Num/Denom',
+      key: 'numdenum',
     },
   ],
   payload: {
