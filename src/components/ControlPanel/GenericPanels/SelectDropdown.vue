@@ -175,7 +175,7 @@ export default {
                 this.selected = await this.options[0];
               }
               this.UPDATE_ALL_YEARS(this.options);
-              this.UPDATE_MULTI_YEARS(this.options);
+              // this.UPDATE_MULTI_YEARS(this.options);
             } else {
               const { name } = this.$route.params;
               if (name === 'Demographics') {

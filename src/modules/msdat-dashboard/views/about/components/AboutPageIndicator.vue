@@ -15,7 +15,7 @@
 
         <div class="program-area-sec">
           <div v-for="(indicator, index) in indicators" :key="index">
-            <div class="program-area-card" :class="{ 'green-card': indicator.program_area === selectedProgram }"
+            <div class="program-area-card display: flex; justify-content: center; align-items: center;r" :class="{ 'green-card': indicator.program_area === selectedProgram }"
               @click="setSelected(indicator)">
               {{ indicator.program_area }}
             </div>
@@ -89,6 +89,7 @@ export default {
 
   mounted() {
     this.indicators = groupIndicator(this.dlIndicator, 'program_area');
+    this.selectedProgram = 'RMNCH'
   },
 };
 </script>
@@ -101,33 +102,36 @@ export default {
 
 .program-areas {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 55% 45%;
 
 }
 
 .program-area-sec {
   display: grid;
   grid-template-columns: 33% 33% 33%;
-  height: 600px;
+  height: 650px;
   overflow: scroll;
 }
 
 .program-area-card {
-  border: 1px solid black;
   margin: 5px;
-  width: 150px;
-  height: 70px;
+  width: 200px;
+  height: 50px;
   background-color: white;
   padding: 20px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 13px;
-  overflow: scroll;
-
+  overflow-x: scroll;
+  text-transform: uppercase;
+  border: 1px solid #80D3AF;
 }
 
 .program-area-des {
-  border: 1px solid black;
-  width: 700px;
+  border: 1px solid #007D53;
+  width: 600px;
   background-color: white;
   height: 650px;
   padding: 30px;

@@ -8,8 +8,8 @@
       <nav class="nav-links d-flex justify-content-center align-items-center">
         <span class="mx-3 nav-link-item" @click="scrollTo('program-areas')">Program Areas</span>
         <span class="mx-3 nav-link-item" @click="scrollTo('logical-framework')">Logical Framework</span>
-        <span class="mx-3 nav-link-item">Available Data</span>
-        <span class="mx-3 nav-link-item">Data Sources</span>
+        <span class="mx-3 nav-link-item" @click="scrollTo('available-data')">Available Data</span>
+        <span class="mx-3 nav-link-item" @click="scrollTo('data-sources')">Data Sources</span>
       </nav>
 
 
@@ -47,7 +47,8 @@
                 <img src="@/assets/logo-full.png" alt="FMOH Logo" class="img-fluid" />
               </div>
             </b-col>
-            <b-col cols lg="7">
+            &nbsp; &nbsp;&nbsp; &nbsp;
+            <b-col cols lg="6">
               <div class="p-10">
                 These resources will be developed and expanded in phases and build on connections with existing FMOH
                 agencies
@@ -71,7 +72,10 @@
       <!-- program area section -->
 
 
-      <IndicatorPageFunc />
+      <div id="program-areas" >
+        <IndicatorPageFunc />
+      </div>
+     
 
       <!-- logical framework -->
 
@@ -91,7 +95,7 @@
      
       </section>
       <!-- available data -->
-      <section>
+      <section id="available-data">
         <h5>Available Data</h5>
         <p>
           The Indicators provided by the Central Analytic Dashboard can be
@@ -110,7 +114,7 @@
           Drop-down, we've circled it red on the image to your left.The list of
           Indicators on the dashboard cab be found below:
         </p>
-        <div>
+        <div id="data-sources">
           <DataSourceFunc />
         </div>
       </section>
@@ -294,6 +298,7 @@ $msdat-darkgrey: #dedede;
 .about-sec-1 {
   padding: 100px;
   background-image: url("./assets/background-1.png");
+  background-size: 1440px 850px;
   color: white;
   height: 400px;
   display: flex;
@@ -347,9 +352,12 @@ $msdat-darkgrey: #dedede;
 
 .logical-framework {
   background-image: url("./assets/logical-group.png");
-  height: 700px;
+  width: 1350px;
+  height: 730px;
+  margin: 500px;
+  padding: 200px;
+  margin: 200px;
 }
-
 div.modal {
   div.modal-content {
     width: 75%;

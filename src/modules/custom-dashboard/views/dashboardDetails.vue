@@ -27,6 +27,23 @@
             ></b-form-input>
             <p v-if="!description.isValid">This must not be empty.</p>
           </div>
+          <br>
+          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !description.isValid }">
+            <p>Reason for making your dashboard public</p>
+            <b-form-input
+              type="text"
+              id="description"
+              v-model.trim="description.val"
+              @blur="clearValidity('description')"
+              placeholder="Hint: What us the major purpose of making your dashboard public"
+            ></b-form-input>
+            <p v-if="!description.isValid">This must not be empty.</p>
+          </div>
+          <br>
+          <span>
+  <input type="checkbox" v-model="isPublicDashboard"> <!-- Add v-model -->
+  Create a public dashboard
+</span>
         </b-col>
         <b-col class="image-file mb-5">
           <b-row class="text-left text-lg-center">
@@ -111,7 +128,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
 export default {
@@ -140,6 +157,7 @@ export default {
       user: {},
       username: '',
       endEdit: true,
+      isPublicDashboard: false, 
     };
   },
   mounted() {
@@ -158,6 +176,12 @@ export default {
   beforeDestroy() {
     if (this.endEdit) this.$store.commit('endEdit');
   },
+  watch: {
+  isPublicDashboard(newVal) {
+    // Call the Vuex action with the new value (true or false)
+    this.$store.dispatch('setIsPublicDashboard', newVal);
+  },
+},
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
   },
