@@ -21,7 +21,6 @@ export default {
     // The is the updated the control panels dropdown as indicator are gotten from the API
     // in the background (async)
     dlGetAvailableIndicators(newValue) {
-      console.log('new indicators', newValue);
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'indicator',
         payload: groupIndicator(newValue, 'program_area'),
@@ -68,14 +67,12 @@ export default {
       this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
       this.defaultDataSource = this.dlGetDataSource(
         this.$store.state.MSDAT_STORE.default.datasource,
-        );
+      );
       this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
-      
-      console.log('default indicator:', this.defaultIndicator)
-      console.log('default datasource:', this.defaultDataSource)
-      console.log('default location:', this.defaultLocation)
 
-
+      console.log('default indicator:', this.defaultIndicator);
+      console.log('default datasource:', this.defaultDataSource);
+      console.log('default location:', this.defaultLocation);
     },
 
     async setYearDropdown(
@@ -125,9 +122,9 @@ export default {
       const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
-    async getAllDatasources () {
+    async getAllDatasources() {
       const datasources = await this.getEveryDatasource();
       return datasources;
-    }
+    },
   },
 };
