@@ -4,7 +4,6 @@
 <template>
   <div>
     <Highmaps :options="defaultOptions" />
-    {{ showItem(defaultOptions) }}
   </div>
 </template>
 
@@ -133,9 +132,6 @@ export default {
     };
   },
   methods: {
-    showItem(item) {
-      console.log(item, 'MMM');
-    },
     plotMapLevel(level) {
       // check space is in string and add underscore
       let lgaState = '';
@@ -160,7 +156,7 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
       }
-      // this.defaultOptions = { ...this.defaultOptions };
+      this.defaultOptions = { ...this.defaultOptions };
     },
   },
   watch: {
