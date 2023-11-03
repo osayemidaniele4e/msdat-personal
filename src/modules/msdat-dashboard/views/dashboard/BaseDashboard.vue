@@ -597,6 +597,7 @@ export default {
 </script>
 
 <style lang="scss">
+/* Temporary fix for the font-sizes irregularities for the table data on the dashboard*/
 div.temp {
   a {
     font-size: 13px !important;
@@ -606,13 +607,13 @@ div.temp {
   h3,
   h4,
   h1 {
-    font-size: 1rem !important;
+    // font-size: 1rem !important;
   }
   li {
     font-size: 0.7rem !important;
   }
   table span {
-    font-size: 1rem !important;
+    // font-size: 1rem !important;
   }
   .sticky {
     position: sticky;
