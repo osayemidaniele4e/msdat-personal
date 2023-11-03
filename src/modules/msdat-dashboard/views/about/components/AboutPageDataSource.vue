@@ -51,15 +51,13 @@ export default {
             <!-- <pre>
               {{ classifications }}
             </pre>
+            -->
 
-            <pre>
-              {{ filteredIndicators('Survey') }}
-            </pre> -->
 
 <div>
   <div v-for="classi in classifications" :key="classi" class="classification-sec">
 
-<h1>{{ classi }}</h1>
+<h3>{{ classi }}</h3>
 
 <div class="program-area-sec"> 
 <div v-for="(indicator, index) in filteredIndicators(classi)[0].indicators" :key="index">
@@ -86,6 +84,19 @@ class="program-area-card"
               <!-- <pre>
                 {{ selectedIndicators }}
               </pre> -->
+              <span class="program-area-des-header">
+                <span class="program-area-des-header-t1">
+                  {{ selectedIndicators.classification }}
+                </span>
+               
+                <span class="program-area-des-header-t2">
+                  {{ selectedIndicators.datasource }}
+                </span>
+
+                
+              </span>
+
+              <hr>
 
               <h4>Fullname:</h4>
               <span>{{ selectedIndicators.full_name }}</span>
@@ -94,7 +105,7 @@ class="program-area-card"
               <span>{{ selectedIndicators.description }}</span>
               <br><br>
               <h4>Tears with available data:</h4>
-              <span>mdmmwdmwdmwdmkwd</span>
+              <span>{{ selectedIndicators.year_available }}</span>
               <br><br>
               <h4>Link:</h4>
               <span>{{ selectedIndicators.link }}</span>
@@ -125,6 +136,9 @@ class="program-area-card"
         ></b-form-select>
       </div>
     </div> -->
+
+
+ 
   
   
   </div>
@@ -180,6 +194,13 @@ class="program-area-card"
 
       this.indicators = await groupIndicator(this.dlIndicator, 'program_area');
 
+      if (this.dataSources.length > 0) {
+    // Set the selectedDatasource to the first datasource in the dataSources array
+    this.selectedDatasource = this.dataSources[0].indicators[0].datasource;
+    // Call the setSelected method with the first indicator as an argument
+    this.setSelected(this.dataSources[0].indicators[0]);
+  }
+
       this.filterClassifications();
 
       console.log('datasources', this.dataSources)
@@ -197,7 +218,7 @@ class="program-area-card"
   
   .program-areas {
   display: grid;
-  grid-template-columns: 45% 55%;
+  grid-template-columns: 50% 50%;
 
 }
   
@@ -226,18 +247,34 @@ class="program-area-card"
 
 .program-area-des {
   border: 1px solid #007D53;
-  width: 650px;
+  width: 700px;
   background-color: white;
-  height: 1050px;
+  height: 900px;
   padding: 30px;
   overflow: scroll;
+  margin-top: 40px;
+}
+
+.program-area-des-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.program-area-des-header-t1{
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.program-area-des-header-t2{
+  font-size: 23px;
+  color: #007D53;
 }
 
 .classification-sec{
   max-height: 550px;
   overflow: scroll;
   margin-bottom: 50px;
-
 }
   
   .green-card{

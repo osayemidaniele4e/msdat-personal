@@ -89,7 +89,12 @@ export default {
 
   mounted() {
     this.indicators = groupIndicator(this.dlIndicator, 'program_area');
-    this.selectedProgram = 'RMNCH'
+    if (this.indicators.length > 0) {
+    // Set the selectedProgram to the first program area in the indicators array
+    this.selectedProgram = this.indicators[0].program_area;
+    // Call the setSelected method with the first indicator as an argument
+    this.setSelected(this.indicators[0]);
+  }
   },
 };
 </script>

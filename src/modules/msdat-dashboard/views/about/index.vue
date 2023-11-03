@@ -110,6 +110,9 @@
           <DataSourceFunc />
         </div>
     </main>
+    <footer class="footer">
+      This dashboard is developed and managed by the Department of Health Planning Research and Statistics (DHPRS)
+    </footer>
     <the-footer />
   </div>
 </template>
@@ -522,6 +525,13 @@ div.modal {
       }
     }
   }
+}
+
+.footer{
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 // MEDIA QUERY
