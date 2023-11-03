@@ -32,12 +32,12 @@
             <p>Reason for making your dashboard public</p>
             <b-form-input
               type="text"
-              id="description"
-              v-model.trim="description.val"
-              @blur="clearValidity('description')"
+              id="reason"
+              v-model="publicReason"
+              @blur="clearValidity('reason')"
               placeholder="Hint: What us the major purpose of making your dashboard public"
             ></b-form-input>
-            <p v-if="!description.isValid">This must not be empty.</p>
+            <p v-if="!publicReason">This must not be empty.</p>
           </div>
           <br>
           <span>
@@ -148,6 +148,7 @@ export default {
           ? this.$store.getters.dashboardDetails.name : '',
         isValid: true,
       },
+      publicReason: '',
       description: {
         val: this.$store.getters.editMode
           ? this.$store.getters.dashboardDetails.description : '',
@@ -180,6 +181,10 @@ export default {
   isPublicDashboard(newVal) {
     // Call the Vuex action with the new value (true or false)
     this.$store.dispatch('setIsPublicDashboard', newVal);
+    if(newVal === true){
+      this.$store.dispatch('setVisibility', 'public');
+    }
+    
   },
 },
   computed: {
@@ -293,6 +298,7 @@ export default {
       const formData = {
         dashboardName: this.dName,
         description: this.description,
+        reason: this.publicReason,
         image: this.selectedImage.val,
       };
 
@@ -300,6 +306,7 @@ export default {
         name: this.dName.val,
         description: this.description.val,
         image: this.selectedImage.val,
+        reason: this.publicReason,
       });
       //
       this.$store.dispatch('allSelection', {
@@ -320,6 +327,7 @@ export default {
           name: this.dName.val,
           description: this.description.val,
           image: this.selectedImage.val,
+          reason: this.publicReason,
         });
         this.$store.dispatch('allSelection', {
           allselected: true,

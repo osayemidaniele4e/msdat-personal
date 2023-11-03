@@ -77,10 +77,10 @@
       </div>
      
 
-      <!-- logical framework -->
+      <!-- logical framework --> 
 
-      <section id="logical-framework" class="logical-framework">
-
+      <section id="logical-framework">
+        <img src="./assets/logical-group.png">
       </section>
 
       <!-- indicators -->
@@ -106,18 +106,9 @@
         <AvailableDataPageFunc />
       </section>
       <!-- data sources -->
-      <section>
-        <h5>Data Sources</h5>
-        <p>
-          The Indicators provided by the Central Analytic Dashboard can be
-          selected on the dashboard by clicking on the Select Indicator
-          Drop-down, we've circled it red on the image to your left.The list of
-          Indicators on the dashboard cab be found below:
-        </p>
-        <div id="data-sources">
+      <div id="data-sources">
           <DataSourceFunc />
         </div>
-      </section>
     </main>
     <the-footer />
   </div>
@@ -346,8 +337,9 @@ $msdat-darkgrey: #dedede;
   border: 1px solid black;
   width: 500px;
   background-color: white;
-  height: 400px;
+  height: 500px;
   padding: 60px;
+  margin: 100px;
 }
 
 .logical-framework {

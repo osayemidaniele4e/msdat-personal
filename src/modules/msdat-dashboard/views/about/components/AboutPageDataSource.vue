@@ -1,7 +1,7 @@
 <!-- <template>
   <div>
     <div v-for="(dataSource, index) in dataSources" :key="index">
-      <h6 class="mb-2">{{ dataSource.classification }}</h6>
+      <h4 class="mb-2">{{ dataSource.classification }}</h4>
       <div class="row d-flex justify-content-between align-items-center">
         <b-form-select
           :key="index"
@@ -48,34 +48,63 @@ export default {
           <br><br>
           <div class="program-areas">
             <!-- left section -->
-            <pre>
-              {{ dataSources }}
+            <!-- <pre>
+              {{ classifications }}
             </pre>
-            
-  
-            <div class="program-area-sec"> 
-  <div v-for="(indicator, index) in indicators" :key="index">
-    <div
-    class="program-area-card"
-    :class="{ 'green-card': indicator.program_area === selectedProgram }"
-    @click="setSelected(indicator)"
-  >
-    {{ indicator.program_area }}
-  </div>
-  
-  </div>
-  
-            </div>
-  
-  
+
+            <pre>
+              {{ filteredIndicators('Survey') }}
+            </pre> -->
+
+<div>
+  <div v-for="classi in classifications" :key="classi" class="classification-sec">
+
+<h1>{{ classi }}</h1>
+
+<div class="program-area-sec"> 
+<div v-for="(indicator, index) in filteredIndicators(classi)[0].indicators" :key="index">
+<div
+class="program-area-card"
+:class="{ 'green-card': indicator.datasource === selectedDatasource }"
+@click="setSelected(indicator)"
+>
+{{ indicator.datasource }}
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+
+        
+             
+          
             <!-- right section -->
   
             <div class="program-area-des"> 
-                <h3>{{ this.selectedProgram }}</h3>
-              <li v-for="name in filteredFullNames" :key="name.id">
-          {{ name.full_name }}
-        </li>
-    
+              <!-- <pre>
+                {{ selectedIndicators }}
+              </pre> -->
+
+              <h4>Fullname:</h4>
+              <span>{{ selectedIndicators.full_name }}</span>
+              <br><br>
+              <h4>Description:</h4>
+              <span>{{ selectedIndicators.description }}</span>
+              <br><br>
+              <h4>Tears with available data:</h4>
+              <span>mdmmwdmwdmwdmkwd</span>
+              <br><br>
+              <h4>Link:</h4>
+              <span>{{ selectedIndicators.link }}</span>
+              <br><br>
+              <h4>Methodology:</h4>
+              <span>{{ selectedIndicators.methodology }}</span>
+              <br><br>
+              <h4>Sub-national data:</h4>
+              <span>{{ selectedIndicators.subnational_data }}</span>
+          
             </div>
   
   
@@ -114,29 +143,48 @@ export default {
         indicators: [],
         selected: 1,
         selectedIndicators: [],
-        selectedProgram: ''
+        selectedDatasource: '',
+        classifications: []
       };
     },
   
     methods: {
       setSelected(indicator){
         console.log('[indicator]', indicator)
-        this.selectedIndicators = indicator.indicators,
-        this.selectedProgram = indicator.program_area
-  }
+        this.selectedIndicators = indicator,
+        this.selectedDatasource = indicator.datasource
+  },
+
+  filterClassifications() {
+      // Iterate through your data and extract classification names
+      this.classifications = this.dataSources.map(item => item.classification);
+    },
+
+    filteredIndicators(classification) {
+    return this.dataSources.filter(indicator => indicator.classification === classification);
+  },
     },
     computed: {
       filteredFullNames() {
         // Use the map function to extract the full_name field from each object
         return this.selectedIndicators.map(item => ({ id: item.id, full_name: item.full_name }));
-      }
+      },
+    //   filteredIndicators(classification) {
+    //   return this.dataSources.filter(indicator => indicator.classification === classification);
+    // },
     },
   
    
-    mounted() {
-      this.dataSources = groupIndicator(this.dlDatasource, 'classification');
+   async mounted() {
+      this.dataSources = await groupIndicator(this.dlDatasource, 'classification');
 
-      this.indicators = groupIndicator(this.dlIndicator, 'program_area');
+      this.indicators = await groupIndicator(this.dlIndicator, 'program_area');
+
+      this.filterClassifications();
+
+      console.log('datasources', this.dataSources)
+
+
     },
   };
   </script>
@@ -147,40 +195,50 @@ export default {
   
   }
   
-  .program-areas{
-    display: grid;
-    grid-template-columns: 50% 50%;
-  
-  }
+  .program-areas {
+  display: grid;
+  grid-template-columns: 45% 55%;
+
+}
   
   .program-area-sec{
     display: grid;
     grid-template-columns: 33% 33% 33%;
-    height: 600px;
+    max-height: 350px;
     overflow: scroll;
   }
   
-  .program-area-card{
-    border: 1px solid black;
-    margin: 5px;
-    width: 150px;
-    height: 70px;
-    background-color: white;
-    padding: 20px;
-    cursor: pointer;
-    font-size: 13px;
-    overflow: scroll;
-  
-  }
-  
-  .program-area-des{
-   border: 1px solid black;
-   width: 700px;
-   background-color: white;
-   height: 650px;
-   padding: 30px;
-   overflow: scroll;
-  }
+  .program-area-card {
+  margin: 5px;
+  width: 200px;
+  height: 50px;
+  background-color: white;
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  overflow-x: scroll;
+  text-transform: uppercase;
+  border: 1px solid #80D3AF;
+}
+
+.program-area-des {
+  border: 1px solid #007D53;
+  width: 650px;
+  background-color: white;
+  height: 1050px;
+  padding: 30px;
+  overflow: scroll;
+}
+
+.classification-sec{
+  max-height: 550px;
+  overflow: scroll;
+  margin-bottom: 50px;
+
+}
   
   .green-card{
     background-color: green;
