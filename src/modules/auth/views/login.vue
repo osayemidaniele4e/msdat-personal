@@ -47,13 +47,18 @@
                   <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
                 </button>
                 <h4 class="py-3" style="font-size: 15px">Social Authentication</h4>
-                <button
-                  type="button"
-                  class="btn btn-lg btn-primary px-3 py-2"
-                  @click="handleClickSignIn()"
-                >
-                  <b-icon-google class="mr-2"></b-icon-google>
-                </button>
+                <div class="d-flex gap-2 justify-content-center align-items-center">
+                  <button
+                    type="button"
+                    class="btn btn-lg btn-primary px-3 py-2"
+                    @click="handleClickSignIn()"
+                  >
+                    <b-icon-google class=""></b-icon-google>
+                  </button>
+                  <a :href="linkedlnUrl" class="m-0 ml-2 rounded overflow-hidden">
+                    <img width="48" height="36" src="/img/linkedln-logo.png" alt="linkedln logo">
+                  </a>
+                </div>
               </div>
             </form>
 
@@ -96,13 +101,17 @@ export default {
       formIsValid: true,
       isLoading: false,
       msg: 'Please enter Username and Password.',
+      linkedlnUrl: `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&redirect_uri=${window.location.origin}/custom/login&state=foobar&scope=openid%20profile%20email`,
     };
   },
   mounted() {
     VueCookies.remove('msdat-user-details');
+    if (this.$route.query.code) {
+      this.linkedlnSignin(this.$route.query.code);
+    }
   },
   methods: {
-    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE']),
+    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE', 'AUTHENTICATE_LINKEDIN']),
     async submitForm() {
       this.isLoading = true;
       this.formIsValid = true;
@@ -181,6 +190,42 @@ export default {
               icon: 'error',
               title: 'Something went wrong',
               text: 'Something went wrong signing you in with google',
+            });
+          });
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+      return 0;
+    },
+    async linkedlnSignin(code) {
+      try {
+        const data = { code };
+        await this.AUTHENTICATE_LINKEDIN(data)
+          .then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+            this.$router.push({ path: '/my-dashboard/details' });
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with linkedln',
             });
           });
       } catch (error) {
