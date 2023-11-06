@@ -33,7 +33,7 @@ const programAreaSetConfig = [
     type: 'dropdown',
     label: 'Year',
     key: 'year',
-    options: [],
+    options: ['2021', '2016', '2011', '2007', '1999'],
     dropdownProps: {
       'preselect-first': true,
     },

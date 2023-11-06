@@ -318,8 +318,8 @@ export default class DataLayer {
   async setAvailableDashboardIndicator() {
     const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
 
-    console.log('list1', this.indicatorList);
-    console.log('list2', this.dataSourceList);
+    // console.log('list1', this.indicatorList);
+    // console.log('list2', this.dataSourceList);
     const dashboardIndicators = indicatorsInDB.filter((item) => this.indicatorList.includes(item));
 
     const dashboardDataSource = this.dataSourceList;

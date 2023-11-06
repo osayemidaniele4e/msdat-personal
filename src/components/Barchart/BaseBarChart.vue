@@ -60,7 +60,6 @@ export default {
             text: this.title,
           };
         }
-        console.log('title was set');
       },
       deep: true,
       immediate: true,

@@ -9,7 +9,7 @@ export default {
       defaultIndicator: '',
       defaultDataSource: '',
       defaultLocation: '',
-      defaultYear: '2016',
+      defaultYear: '2022',
       defaultIndicatorDropdown: [],
       defaultDataSourceDropdown: [],
       defaultLocationDropdown: [],
@@ -69,6 +69,10 @@ export default {
         this.$store.state.MSDAT_STORE.default.datasource,
       );
       this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
+
+      console.log('default indicator:', this.defaultIndicator);
+      console.log('default datasource:', this.defaultDataSource);
+      console.log('default location:', this.defaultLocation);
     },
 
     async setYearDropdown(
@@ -117,6 +121,10 @@ export default {
       const data = await this.getIndicatorFromDexie(datasourceID);
       const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
+    },
+    async getAllDatasources() {
+      const datasources = await this.getEveryDatasource();
+      return datasources;
     },
   },
 };

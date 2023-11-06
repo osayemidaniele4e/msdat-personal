@@ -59,7 +59,10 @@
     THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
     THAT HAVE GROUPED OPTIONS
     -->
+
+    <!-- {{ showItems(options) }} -->
   </multiselect>
+
 </template>
 <script>
 import { has } from 'lodash';
@@ -155,7 +158,6 @@ export default {
     options: {
       async handler(newValue) {
         // this.addQueryParamToUrl();
-        console.log('tag it', newValue);
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
@@ -175,7 +177,8 @@ export default {
                 this.selected = await this.options[0];
               }
               this.UPDATE_ALL_YEARS(this.options);
-              this.UPDATE_MULTI_YEARS(this.options);
+              // this was commented out because it updates all the selected year across all section in the multi-source comparison section
+              // this.UPDATE_MULTI_YEARS(this.options);
             } else {
               const { name } = this.$route.params;
               if (name === 'Demographics') {
@@ -224,7 +227,7 @@ export default {
       },
     },
     selected(newValue) {
-      if (newValue.parent !== undefined) {
+      if (newValue && newValue.parent !== undefined) {
         this.setSelectedState(newValue);
       }
     },
@@ -239,6 +242,10 @@ export default {
       'UPDATE_MULTI_YEARS',
       'setSelectedState',
     ]),
+
+    // showItems(item) {
+    //   console.log(item, 'DDDOOO');
+    // },
 
     modifyDataSourceChildLabel(tag) {
       const tempArray = tag.split(' ');

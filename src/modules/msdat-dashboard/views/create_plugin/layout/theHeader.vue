@@ -48,7 +48,7 @@
 
             <div v-if="$route.path !== '/account'">
               <b-dropdown
-                text="Select Dashboard"
+                text="Select Section"
                 toggle-class="select-dropdown"
                 variant="none"
                 text-variant="none"

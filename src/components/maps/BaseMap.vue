@@ -244,7 +244,7 @@ export default {
 
   mounted() {
     // changing the title of the text when downloaded
-    this.defaultOptions.exporting.chartOptions.title.text = this.title;
+    // this.defaultOptions.exporting.chartOptions.title.text = this.title;
   },
 };
 </script>

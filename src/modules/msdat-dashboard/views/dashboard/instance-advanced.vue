@@ -21,7 +21,7 @@
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Correlation Analysis</h5>
+              <h5 class="font-weight-bold work-sans text-white">Correlative Analysis</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -68,9 +68,11 @@
                  since it will be mounted first -->
             <template>
               <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <IndicatorComparisonSection :controlPanelProps="payload" />
-                </ControlPanelConfiguration>
+                <!-- <ControlPanelConfiguration :controlIndex="controlIndex"> -->
+                  <AdvancedControlPanelConfiguration :controlIndex="controlIndex">
+                    <IndicatorComparisonSection :controlIndex="controlIndex" :values="payload" />
+                  </AdvancedControlPanelConfiguration>
+                <!-- </ControlPanelConfiguration> -->
               </LazyLoading>
             </template>
           </base-sub-card>
@@ -155,7 +157,8 @@ import DescriptiveAnalysisSection from '../../components/sections/advanced/descr
 import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
 import CorrelationAnalysisSection from '../../components/sections/advanced/correlation-section/CorrelationSection.vue';
 import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
-import IndicatorComparisonSection from '../../components/sections/advanced/indicator-comparison-section/IndicatorComparisonSection.vue';
+// import IndicatorComparisonSection from '../../components/sections/advanced/indicator-comparison-section/IndicatorComparisonSection.vue';
+import IndicatorComparisonSection from '../../components/sections/advanced/indicator-comparison-section/ICSAdvanced.vue';
 import IndicatorComparisonConfig from '../../components/sections/advanced/indicator-comparison-section/indicator-comparison-section-config';
 import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import PredictiveAnalysisSection from '../../components/sections/advanced/predictive-section/PredictiveSection.vue';
@@ -166,6 +169,8 @@ import ScatterplotConfig from '../../components/sections/advanced/scatterplot-se
 import ScatterplotSection from '../../components/sections/advanced/scatterplot-section/ScatterplotSection.vue';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
+import AdvancedControlPanelConfiguration from '../../modules/control_setup/AdvancedControlPanelConfiguration.vue';
+
 // import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 // import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
 // import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
@@ -190,6 +195,7 @@ export default {
   components: {
     BaseDashboard,
     ControlPanelConfiguration,
+    AdvancedControlPanelConfiguration,
     LazyLoading,
     PredictiveAnalysisSection,
     CorrelationAnalysisSection,

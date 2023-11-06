@@ -32,6 +32,7 @@ import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
 import defaultDSyear from './defaultDSYear.json';
+import defaultAdvancedYear from './defaultAdvancedYear.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -139,11 +140,11 @@ export default {
     //   localStorage.setItem('datasourceId', 6);
     // },
     // getIndicator(id){
-
     // }
   },
   async mounted() {
     this.clearData();
+    // console.log(defaultData, 'defaultData');
     if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
       // this sets skilled attendance at birth indicator on mounted
       this.SET_SELECTED_CONFIG(defaultData);
@@ -151,6 +152,9 @@ export default {
       // this sets covid 19 confirmed cases indicator on mounted
       this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
       this.SET_SELECTED_CONFIG(defaultDSyear);
+    } else if (this.$route.params.name === 'Advanced_Analytics') {
+      this.SET_SELECTED_CONFIG(defaultData);
+      this.SET_SELECTED_CONFIG(defaultAdvancedYear);
     }
     setTimeout(() => {
       console.log('config', this.$store.state.MSDAT_STORE.configObject);
@@ -213,7 +217,7 @@ export default {
       // try {
       //   const response = await apiServices.getDashboard();
       //   const results = response.data;
-      //   console.log({ results })
+      //   console.log({ results }, 'dashboard results')
       //   // const dashboard = results.find((item) => item?.name === name);
       // } catch (e) {
       //   console.log({ e });
@@ -259,16 +263,15 @@ export default {
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
-      const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
-      if (dashboard === undefined) {
-        this.$router.push('/*');
-        return;
-      }
-      this.isAdvanced = true;
-      this.configObject = '';
-      this.configObject = dashboard;
-      this.SET_CONFIGURATIONS(dashboard);
-      return;
+      // const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
+      // if (dashboard === undefined) {
+      //   this.$router.push('/*');
+      //   return;
+      // }
+      // this.isAdvanced = true;
+      //   this.configObject = '';
+      //   this.configObject = dashboard;
+      //   this.SET_CONFIGURATIONS(dashboard);
     }
     // =======================
     /**
@@ -305,7 +308,12 @@ export default {
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
         this.SET_CONFIGURATIONS(this.configObject);
-        this.isAdvanced = false;
+
+        if (name === 'Advanced_Analytics') {
+          this.isAdvanced = true;
+        } else {
+          this.isAdvanced = false;
+        }
       } catch (err) {
         console.log(
           err,
