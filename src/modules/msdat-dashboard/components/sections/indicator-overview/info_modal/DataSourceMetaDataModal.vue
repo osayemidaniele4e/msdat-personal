@@ -44,19 +44,19 @@
     </p>
   </div> -->
     <div>
-      <p>
-        <div class="text1">Full Name</div>
-        <div class="text2">{{ dataSourceDetails.full_name }}</div>
-      <p>
+      <p></p>
+      <div class="text1">Full Name</div>
+      <div class="text2">{{ dataSourceDetails.full_name }}</div>
+      <p></p>
 
+      <p></p>
+      <div class="text1">Description</div>
+      <div class="text2">
+        {{ dataSourceDetails.description }}
+      </div>
       <p>
-        <div class="text1">Description</div>
-        <div class="text2">
-          {{ dataSourceDetails.description }}
-        </div>
-      <p>
-
-      <!-- new grid -->
+        <!-- new grid -->
+      </p>
 
       <div class="grid1">
         <div>
@@ -68,19 +68,23 @@
 
         <div>
           <div class="grid1-right-text1">Classification</div>
-          <div class="grid1-right-text2">{{ dataSourceDetails.classification}}</div>
+          <div class="grid1-right-text2">{{ dataSourceDetails.classification }}</div>
         </div>
       </div>
 
-      <p>
-        <div class="text1">Link</div>
+      <p></p>
+      <!-- <div class="text1">Link</div>
+      <a :href="dataSourceDetails.link" class="text2">{{ dataSourceDetails.link }}</a>
+      <p></p> -->
+      <div class="text1">Link</div>
+      <div v-if="dataSourceDetails.link !== 'Not Available'">
         <a :href="dataSourceDetails.link" class="text2">{{ dataSourceDetails.link }}</a>
-      <p>
+      </div>
 
-      <p>
-        <div class="text1">Methodology</div>
-        <div class="text2">{{ dataSourceDetails.methodology }}</div>
-      <p>
+      <p></p>
+      <div class="text1">Methodology</div>
+      <div class="text2">{{ dataSourceDetails.methodology }}</div>
+      <p></p>
 
       <div>
         <div class="text1">Sub-national Data Available</div>
@@ -145,37 +149,36 @@ export default {
   display: grid;
   grid-template-columns: 50% 50%;
 
-&-left-text1 {
-  font-weight: 700;
-  border-bottom: 0.5px solid green;
-  color: black;
-  opacity: 1;
-  margin-left: 10px;
-  font-size: 14px;
-  border-right: 0.5px solid green;
-}
+  &-left-text1 {
+    font-weight: 700;
+    border-bottom: 0.5px solid green;
+    color: black;
+    opacity: 1;
+    margin-left: 10px;
+    font-size: 14px;
+    border-right: 0.5px solid green;
+  }
 
-&-left-text2 {
-  border-right: 0.5px solid green;
-  font-size: 13px;
-  margin-bottom: 20px;
-  margin-left: 10px;
-}
+  &-left-text2 {
+    border-right: 0.5px solid green;
+    font-size: 13px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+  }
 
-&-right-text1 {
-  font-weight: 700;
-  border-bottom: 0.5px solid green;
-  color: black;
-  opacity: 1;
-  font-size: 14px;
-  padding-left: 10px;
-}
+  &-right-text1 {
+    font-weight: 700;
+    border-bottom: 0.5px solid green;
+    color: black;
+    opacity: 1;
+    font-size: 14px;
+    padding-left: 10px;
+  }
 
-&-right-text2 {
-  font-size: 13px;
-  margin-bottom: 20px;
-  padding-left: 10px;
+  &-right-text2 {
+    font-size: 13px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+  }
 }
-}
-
 </style>
