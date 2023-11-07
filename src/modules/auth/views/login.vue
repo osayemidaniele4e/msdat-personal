@@ -107,7 +107,11 @@ export default {
   mounted() {
     VueCookies.remove('msdat-user-details');
     if (this.$route.query.code) {
-      this.linkedlnSignin(this.$route.query.code);
+      const data = {
+        code: this.$route.query.code,
+        redirect: `${window.location.origin}/custom/login`,
+      };
+      this.linkedlnSignin(data);
     }
   },
   methods: {
@@ -198,9 +202,8 @@ export default {
       }
       return 0;
     },
-    async linkedlnSignin(code) {
+    async linkedlnSignin(data) {
       try {
-        const data = { code };
         await this.AUTHENTICATE_LINKEDIN(data)
           .then((res) => {
             if (res.status === 200 || res.status === 201) {
