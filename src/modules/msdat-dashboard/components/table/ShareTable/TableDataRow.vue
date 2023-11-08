@@ -49,17 +49,27 @@ export default {
       type: [Object, String],
       required: false,
     },
+    factors: {
+      type: [Array],
+      required: true,
+    },
   },
   computed: {
     factor() {
-      return this.dlGetFactor(this.rowData.indicator.factor).display_factor;
+      const factorItem = this.factors.find((item) => item.id === this.rowData.indicator.factor);
+      console.log(factorItem, 'factorItem');
+      console.log(this.factors, 'factorItem 1');
+      return factorItem.display_factor;
     },
   },
 
   mounted() {
-    console.log(this.rowData, 'rowData');
-    const { name } = this.$route.params;
-    this.dashboardName = name;
+    console.log(this.rowData.indicator, 'rowData');
+    console.log(this.factors, 'factorItem');
+    // eslint-disable-next-line camelcase
+    const { dashboard_name } = this.$route.query;
+    // eslint-disable-next-line camelcase
+    this.dashboardName = dashboard_name;
     console.log('zonal map', this.dashboardName);
   },
 };

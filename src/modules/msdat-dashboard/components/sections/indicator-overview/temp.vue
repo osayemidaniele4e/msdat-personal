@@ -68,11 +68,6 @@
       />
       <!-- </template> -->
     </base-modal>
-    <ShareCodeModal
-      @toggleShowShareModal="toggleShowShareModal"
-      v-if="showShareCodeModal"
-      :tableContent="tableObj"
-    />
   </div>
 
   <!-- </base-overlay> -->
@@ -86,7 +81,6 @@ import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
-import ShareCodeModal from './shareTableModal.vue';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -95,7 +89,6 @@ export default {
     IndicatorMetaDataModal,
     DataSourceMetaDataModal,
     TableLoader,
-    ShareCodeModal,
   },
   data() {
     return {
@@ -213,13 +206,9 @@ export default {
      */
 
     toggleShowShareModal() {
-      const routeTitle = this.$route.params.name;
-      localStorage.setItem('dashboardName', routeTitle);
-      console.log(this.$route);
-      this.$router.push(`/indicator-table?dashboard_name=${routeTitle}`);
-      // this.showShareCodeModal = !this.showShareCodeModal;
-      // const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
-      // this.tableObj = this.bootstrapCDN + tableObjTemp;
+      this.showShareCodeModal = !this.showShareCodeModal;
+      const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
+      this.tableObj = this.bootstrapCDN + tableObjTemp;
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;

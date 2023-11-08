@@ -29,6 +29,7 @@
                 @reset="getReset"
               />
             </ControlPanelConfiguration>
+            {{ showItems(payload) }}
           </template>
         </base-sub-card>
       </div>
@@ -207,6 +208,10 @@ export default {
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+
+    showItems(item) {
+      console.log(item, '@@@');
+    },
     // Function to handle Multi-Source mobile view
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -301,6 +306,7 @@ export default {
      * and so on and fort for the other sections
      */
     const DiseaseSurveillanceConfig = this.$route.path === '/dashboard/Disease_Surveillance' ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
+    console.log(DiseaseSurveillanceConfig, 'DiseaseSurveillanceConfig');
     const configs = [
       DiseaseSurveillanceConfig,
       ZonalAnalysisConfig,
