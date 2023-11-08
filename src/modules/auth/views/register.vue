@@ -32,7 +32,7 @@
               :rules="{ required: true, min: 3 }"
               v-slot="validationContext"
             >
-              <b-form-group id="user-name-group" label="User name" label-for="user-name">
+              <b-form-group id="user-name-group" label="Username" label-for="user-name">
                 <b-form-input
                   id="username"
                   v-model="form.username"

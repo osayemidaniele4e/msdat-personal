@@ -9,7 +9,7 @@
       interested in.
     </p>
     <div class="d-flex align-items-center justify-content-between">
-      <p id="link-to-about" style="font-size: 13px; font-family: Work Sans">
+      <p @click="viewAllData" id="link-to-about" style="font-size: 13px; font-family: Work Sans; cursor: pointer">
         <b>View datasheet</b>- see all available data in database
       </p>
        <span class="mb-5"
@@ -122,6 +122,7 @@ export default {
       showNotes: false,
       showList: false,
       destroyPage: false,
+      showAll: false,
     };
   },
   beforeDestroy() {
@@ -232,6 +233,13 @@ export default {
     },
   },
   methods: {
+    async viewAllData() {
+      this.showAll = !this.showAll;
+      this.$store.dispatch('allSelection', { allselected: this.showAll });
+      this.$store.dispatch('clearAllData', []);
+      await this.$store.dispatch('loadIndicators');
+      await this.$store.dispatch('loadDataSource');
+    },
     // The below function is called when approve button is clicked at Table maker page.
     approveData() {
       if (
