@@ -7,12 +7,15 @@
       v-show="values.visibility === undefined ? true : values.visibility"
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-      <label
+
+        <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
+      <!-- <label
         class="text-uppercase work-sans label-text "
         v-if="!hasNHMIS && values.label == 'Num/Denom'"
       >
         {{ '' }}
-      </label>
+      </label> -->
+      <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
       <label
         class="text-uppercase work-sans label-text disabled_alt"
         v-if="values.label == 'Target'"
