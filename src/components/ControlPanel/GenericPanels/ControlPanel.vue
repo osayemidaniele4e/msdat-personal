@@ -7,19 +7,21 @@
       v-show="values.visibility === undefined ? true : values.visibility"
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-      <label
+
+        <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
+      <!-- <label
         class="text-uppercase work-sans label-text "
         v-if="!hasNHMIS && values.label == 'Num/Denom'"
       >
         {{ '' }}
-      </label>
+      </label> -->
       <label
         class="text-uppercase work-sans label-text disabled_alt"
         v-if="values.label == 'Target'"
       >
       {{ values.label }}
       </label>
-      <label :class=" values.label==='Num/Denom'? 'text-uppercase work-sans disabled_alt label-text d-flex justify-content-center':'text-uppercase work-sans label-text d-flex'" v-else> {{ values.label }} </label>
+      <label :class=" values.label==='Num/Denom'? 'text-uppercase work-sans label-text d-flex justify-content-center':'text-uppercase work-sans label-text d-flex'" v-else> {{ values.label }} </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -53,7 +55,7 @@
       />
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
-      <div class="disabled_alt d-flex justify-content-center">
+      <div class="d-flex justify-content-center">
         <toggle
           v-if="values.type === 'toggle'"
           @change="updatePayload($event, values.key)"
