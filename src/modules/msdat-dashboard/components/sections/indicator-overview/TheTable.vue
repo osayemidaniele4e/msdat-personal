@@ -71,7 +71,7 @@
     <ShareCodeModal
       @toggleShowShareModal="toggleShowShareModal"
       v-if="showShareCodeModal"
-      :tableContent="tableObj"
+      :tableContent="tableLink"
     />
   </div>
 
@@ -110,6 +110,7 @@ export default {
       updateData: 0,
       showShareCodeModal: false,
       tableObj: null,
+      tableLink: null,
       isTooltipVisible: false,
       bootstrapCDN:
         '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">',
@@ -140,6 +141,7 @@ export default {
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
+            console.log(dataSources, 'this.dataArray');
             const indicatorObject = this.dlGetIndicator(indicatorID);
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
@@ -153,6 +155,7 @@ export default {
             }
             formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
+          // console.log(formattedData, 'this.dataArray');
           this.TableData = formattedData;
           this.loading = false;
         }
@@ -216,7 +219,11 @@ export default {
       const routeTitle = this.$route.params.name;
       localStorage.setItem('dashboardName', routeTitle);
       console.log(this.$route);
-      this.$router.push(`/indicator-table?dashboard_name=${routeTitle}`);
+      const indicatorID = localStorage.getItem('indicatorID');
+      const indicatorFirstRelated = localStorage.getItem('indicatorFirstRelated');
+      const indicatorSecondRelated = localStorage.getItem('indicatorSecondRelated');
+      // this.tableLink = `http://localhost:8080/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&indicatorFirstRelated=${indicatorFirstRelated}&indicatorSecondRelated=${indicatorSecondRelated}`;
+      this.$router.push(`/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&indicatorFirstRelated=${indicatorFirstRelated}&indicatorSecondRelated=${indicatorSecondRelated}`);
       // this.showShareCodeModal = !this.showShareCodeModal;
       // const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
       // this.tableObj = this.bootstrapCDN + tableObjTemp;

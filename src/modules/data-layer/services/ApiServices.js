@@ -13,6 +13,7 @@ const getAllDataSources = async () => axiosInstance.get('datasources');
 const getSingleIndicatorObj = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}`);
 const getFactors = async () => axiosInstance.get('/factors/');
 const getSpecificIndicator = async () => axiosInstance.get('/datasource_specific_indicator/');
+const getDashboardDatasources = async (indicatorID) => axiosInstance.get(`/dashboards/${indicatorID}/datasources/`);
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -46,4 +47,5 @@ export default {
   getSingleIndicatorObj,
   getFactors,
   getSpecificIndicator,
+  getDashboardDatasources,
 };

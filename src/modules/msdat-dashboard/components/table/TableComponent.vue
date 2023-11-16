@@ -398,6 +398,7 @@ export default {
     getAvailableDataSources() {
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
+      // console.log(allAvailableSources, 'this.dataArray');
       // add this to use only datasource on the dropdown for the table component
       /**
        * order AvailableSources according to the OrderSourceBy Array;
@@ -563,7 +564,7 @@ export default {
   },
 
   async mounted() {
-    console.log(this.values, 'Na Wao');
+    console.log(this.dataArray, 'Na Wao');
     // Add a delay to get nhmis monthly data
     console.log(this.$route, 'this.$route');
     setTimeout(async () => {

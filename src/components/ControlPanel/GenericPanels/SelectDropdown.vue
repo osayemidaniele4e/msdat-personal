@@ -93,6 +93,13 @@ export default {
             payload: val,
             entity: 'indicator',
           };
+          console.log(val, 'HH@@HH');
+          const indicatorId = val.id;
+          const indicatorFirstRelated = val.first_related;
+          const indicatorSecondRelated = val.second_related;
+          localStorage.setItem('indicatorID', indicatorId);
+          localStorage.setItem('indicatorFirstRelated', indicatorFirstRelated);
+          localStorage.setItem('indicatorSecondRelated', indicatorSecondRelated);
           this.SET_SELECTED_CONFIG(item);
 
           // console.log(JSON.stringify(item), '@@@@');

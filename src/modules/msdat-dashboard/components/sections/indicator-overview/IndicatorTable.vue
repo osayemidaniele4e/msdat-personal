@@ -112,10 +112,12 @@ export default {
         console.log(newValues);
         this.loading = true;
         const formattedData = [];
+        const { indicatorId, indicatorFirstRelated, indicatorSecondRelated } = this.$route.query;
         // const indicators = [newValues.id, newValues.first_related, newValues.second_related];
-        const indicators = [7, 6, 5];
+        // const indicators = [indicatorId, indicatorFirstRelated, indicatorSecondRelated];
+        const indicators = [Number(indicatorId), Number(indicatorFirstRelated), Number(indicatorSecondRelated)];
 
-        console.log(indicators.length, 'length');
+        console.log(indicators, 'length HH 1');
 
         for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
           const indicatorID = indicators[indicatorIndex];
@@ -148,10 +150,10 @@ export default {
             // eslint-disable-next-line no-await-in-loop
             // this.tempData.push(newData);
             formattedData.unshift(newData);
-            console.log(formattedData, 'formattedData');
           }
+          // console.log(formattedData, 'this.dataArray');
           this.TableData = formattedData;
-          console.log(this.TableData, '&&&HH&&');
+          // console.log(this.TableData, '&&&HH&&');
           this.loading = false;
         }
       },
@@ -258,7 +260,11 @@ export default {
       const newValues = this.values.indicator;
       this.loading = true;
       const formattedData = [];
-      let indicators = [7, 5, 8];
+      const { indicatorId, indicatorFirstRelated, indicatorSecondRelated } = this.$route.query;
+      // const indicators = [newValues.id, newValues.first_related, newValues.second_related];
+      // let indicators = [indicatorId, indicatorFirstRelated, indicatorSecondRelated];
+      // let indicators = [3, 4, 1];
+      let indicators = [Number(indicatorId), Number(indicatorFirstRelated), Number(indicatorSecondRelated)];
 
       if (!this.getConfigObject.showTableRelatedIndicator) {
         indicators = [newValues.id];
@@ -269,11 +275,9 @@ export default {
         if (indicatorID) {
           const data = [];
           const dataSources = this.availableDataSources;
+          console.log(dataSources, 'this.dataArray');
           // eslint-disable-next-line no-await-in-loop
           const indicatorObject = await this.returnIndicatorObj(indicatorID);
-          console.log(dataSources, 'indicatorID 1');
-          console.log(indicatorObject, 'indicatorID 2');
-          console.log(dataSources.length, 'indicatorID 3');
           for (let index = 0; index < dataSources.length; index += 1) {
             const element = dataSources[index];
             // eslint-disable-next-line no-await-in-loop
@@ -386,10 +390,12 @@ export default {
     this.specificIndicators = specificIndicatorsData.data.results;
     const results = response.data;
     const dashboard = results.find((item) => item?.name === name);
+    const dashboardDataSource = await apiServices.getDashboardDatasources(dashboard.id);
     const dashboardDasourceIds = dashboard.dataSources;
     const dataSources = dataSourceResponse.data.results.filter((item) => dashboardDasourceIds.includes(item.id));
-    console.log(dataSources, 'dataSources');
+    console.log(dataSourceResponse.data.results, 'dataSources');
     console.log(factorsResponse, 'factorsResponse');
+    console.log(dashboardDataSource, 'Dashboard Response');
     this.factors = factorsResponse.data.results;
     this.availableDataSources = dataSources;
     console.log(this.availableDataSources, 'this.availableDataSources');
