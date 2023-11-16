@@ -7,19 +7,21 @@
       v-show="values.visibility === undefined ? true : values.visibility"
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-      <label
+
+        <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
+      <!-- <label
         class="text-uppercase work-sans label-text "
         v-if="!hasNHMIS && values.label == 'Num/Denom'"
       >
         {{ '' }}
-      </label>
+      </label> -->
       <label
         class="text-uppercase work-sans label-text disabled_alt"
         v-if="values.label == 'Target'"
       >
       {{ values.label }}
       </label>
-      <label class="text-uppercase work-sans label-text" v-else> {{ values.label }} </label>
+      <label :class=" values.label==='Num/Denom'? 'text-uppercase work-sans label-text d-flex justify-content-center':'text-uppercase work-sans label-text d-flex'" v-else> {{ values.label }} </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -51,10 +53,9 @@
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       />
-      <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
-      <div>
+      <div class="d-flex justify-content-center">
         <toggle
           v-if="values.type === 'toggle'"
           @change="updatePayload($event, values.key)"
@@ -297,18 +298,6 @@ export default {
         localStorage.setItem('lastActivity', (JSON.stringify(activityObject)));
       }
     },
-    showItem(item) {
-      if (item !== null && item.length === 2) {
-        // console.log(JSON.stringify(item), 'item');
-      }
-      // if (item !== null && item.length === 38) {
-      //   console.log(item, 'UUU');
-      //   const main = item.filter((s) => s.name === 'Nigeria');
-      //   console.log(this.$route.params.name, 'Nigeria');
-      //   console.log(main, 'Nigeria');
-      // }
-    },
-
     locationCheck(options) {
       // console.log(options, 'options');
       if (
@@ -339,6 +328,13 @@ export default {
       // if (name === 'Advanced_Analytics') {
       //   return data?.filter((item) => item.program_area === this.indicatorList);
       // }
+
+      console.log(this.$store.getters.getSectionTitle, 'XXXXX');
+
+      const { name } = this.$route.params;
+      if (name === 'Advanced_Analytics' && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison') {
+        return data?.filter((item) => item.program_area === this.indicatorList);
+      }
 
       return data;
 
@@ -389,11 +385,10 @@ export default {
     const date = new Date();
     const getYear = date.getFullYear + 1;
     // pick one of the available years as the default years as opposed to the static 2016 year
-    // console.log('setup', this.setup);
     const defaultYears = this.setup[3].options;
     // console.log(defaultYears);
-    // console.log(defaultYears, 'defaultyears');
     const newArr = [];
+    // console.log(this.setup, 'this.defaultYearDropdown');
     defaultYears.map((el) => {
       if (el < getYear) {
         newArr.push(el);

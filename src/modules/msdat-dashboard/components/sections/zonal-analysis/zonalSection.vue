@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
+// import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
@@ -82,8 +82,18 @@ export default {
           column: {
             dataLabels: {
               enabled: true,
+              style: {
+                fontSize: '9px', // Adjust the font size as needed
+              },
               formatter() {
-                return Highcharts.numberFormat(this.y, 0, '', ',');
+                // return this.y;
+                // return Highcharts.numberFormat(this.y, 0, '', ',');
+                if (Number.isInteger(this.y)) {
+                  // Check if the value is an integer, then format it with commas
+                  return this.y.toLocaleString();
+                }
+                // If not an integer, display the value as it is
+                return this.y;
               },
             },
           },
@@ -190,6 +200,7 @@ export default {
             // already know the zonal levels/parent of all the value
             // index starts at one to skip region data for the series
             const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
+            console.log(chartSeries);
             const zonalSeries = this.getZonalDataInHighChartFormat(data);
             // console.log(zonalSeries);
             // add national to top of the zonal series series
@@ -217,9 +228,26 @@ export default {
             });
             newChart.unshift();
             // add zonal series to top of main the series
-            chartSeries.unshift(zonalZee);
-            // chartSeries.unshift(zonalZee); //  removed this part
-            this.formatToHighChart(chartSeries);
+            // chartSeries.unshift(zonalZee);
+            // eslint-disable-next-line no-constant-condition
+            const nationalObject = zonalZee.data[0];
+            if (data.length > 0) {
+              // val.indicator.id === 30 && val.datasource.id === 2 && (val.year === '2003' || val.year === '2008')
+              // this.formatToHighChart(zonalZee.data);
+              this.formatToHighChart([
+                {
+                  color: nationalObject.color,
+                  name: nationalObject.name,
+                  data: [
+                    { name: nationalObject.name, y: nationalObject.y, color: nationalObject.color },
+                  ],
+                },
+                ...chartSeries,
+              ]);
+            } else {
+              chartSeries.unshift(zonalZee); //  removed this part
+              this.formatToHighChart(chartSeries);
+            }
           }
         }
         // Plot for LGAs

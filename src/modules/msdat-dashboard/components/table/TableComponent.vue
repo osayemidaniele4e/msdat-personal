@@ -8,7 +8,7 @@
             <th
               rowspan="2"
               scope="col"
-              class="align-middle text-center text-uppercase h6 font-weight-bold"
+              class="align-middle text-center text-uppercase h6 font-weight-bold "
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
@@ -599,6 +599,7 @@ export default {
   background: #bebebe;
   border-radius: 4px;
 }
+
 table.table {
   td.heading_alt {
     padding: 0.5rem;
@@ -671,6 +672,7 @@ table.table {
     }
   }
 }
+
 </style>
 
 <style scoped>
@@ -688,14 +690,14 @@ table.table {
 
 .nhmis-month-text1 {
   margin-top: 9px;
-  font-size: 0.7rem;
+  /* font-size: 0.7rem; */
   text-align: center;
   font-weight: 700;
 }
 
 .nhmis-month-text2 {
   margin-top: 5px;
-  font-size: 0.7rem;
+  /* font-size: 0.7rem; */
   text-align: center;
 }
 
@@ -705,7 +707,7 @@ table.table {
 
 .nhmis-rel-text2 {
   margin-top: 5px;
-  font-size: 0.7rem;
+  /* font-size: 0.7rem; */
   text-align: center;
   color: rgb(136, 136, 136);
 }

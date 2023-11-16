@@ -34,7 +34,7 @@
         <p>Stay Updated</p>
         <ul>
           <li>
-            Subscribe to the newsletter for updated on new features, discounts.
+            Subscribe to the newsletter for updates on new features and discounts.
           </li>
         </ul>
         <b-form-input

@@ -53,12 +53,12 @@ describe('ArrangeSections.vue', () => {
   });
 
   // test update store and calls router push on button click
-  it('navigates properly to dashboard view on button click', () => {
+  it('navigates properly to dashboard view on button click', async () => {
     const wrapper = mount(ArrangeSections, { localVue, mocks: { $router, $store } });
 
     // simulate next button click
     const nextButton = wrapper.find('.nextBtn');
-    nextButton.trigger('click');
+    await nextButton.trigger('click');
 
     expect(dispatch).toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalledWith('customDashboard', true);

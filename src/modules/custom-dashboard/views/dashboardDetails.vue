@@ -72,7 +72,7 @@
               <p class="text-left my-4 my-md-5">
                 Logo size should be 200px by 200px. <br />
                 Not bigger than 5 MB. <br />
-                Logo should be representative of your dashboard content
+                Logo should be representative of your dashboard content.
               </p>
             </b-col>
           </b-row>

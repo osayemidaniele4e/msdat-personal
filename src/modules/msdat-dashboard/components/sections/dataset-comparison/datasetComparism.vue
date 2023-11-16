@@ -22,36 +22,43 @@
         </p>
       </template>
       <transition name="fade">
-        <div class="datasetComparison" v-show="showNationalComparison">
-          <div class="noComparison" v-if="comparisonUnavailable">
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z"
-                  stroke="#E85D58"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-            <p>Comparison not allowed</p>
-          </div>
-          <div class="comparison" v-else>
-            <p>
-              Overall comparison ratio between <strong>{{ indicatorOne }}</strong> and
-              <strong>{{ indicatorTwo }}</strong> for <strong>{{ comparisonLocation }}</strong
-              >:
-            </p>
-            <h6>{{ this.value }}%</h6>
+      <div class="datasetComparison" v-show="showNationalComparison">
+        <div class="noComparison" v-if="comparisonUnavailable">
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M12 8.4502V12.4502M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 15.4502V15.5502L11.9502 15.5498V15.4502H12.0498Z"
+                stroke="#E85D58"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <div>
+            <p>Selected Comparison Not Available</p>
           </div>
         </div>
+        <div class="comparison" v-else>
+          <div>
+            <p>
+              The value of <strong>{{ indicatorOne }}</strong> in <strong>{{ comparisonLocation }}</strong> is higher than
+              <strong>{{ indicatorTwo }}</strong
+              > by:
+            </p>
+          </div>
+<div>
+  <h6>{{ this.value }}%</h6>
+
+</div>
+        </div>
+      </div>
       </transition>
       <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
     </base-sub-card>
@@ -131,7 +138,7 @@ export default {
           });
           this.chartConfig.series[0].data = updatedObj1;
           this.chartConfig.series[1].data = updatedObj2;
-          this.chartConfig.tooltip.pointFormat = '{point.name}: <b>{point.y:.1f}</b><br>Comparison:{point.extraData}%';
+          this.chartConfig.tooltip.pointFormat = '{point.name}: <b>{point.y:.1f}</b><br>Difference:{point.extraData}%';
         }
       } else {
         this.comparisonUnavailable = true;
@@ -158,25 +165,25 @@ export default {
       }
     },
     computeDiffValues(indicatorOne, indicatorTwo) {
-      const olderIndicator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
-      let denominator;
+      // const olderIndi cator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
+      // const denominator;
       let left = 0;
       let right = 0;
-      if (olderIndicator === this.indicatorOne) {
-        denominator = indicatorOne.y;
-        left = indicatorTwo.y;
-        right = indicatorOne.y;
-      } else if (olderIndicator === this.indicatorTwo) {
-        denominator = indicatorTwo.y;
-        right = indicatorTwo.y;
-        left = indicatorOne.y;
-      } else {
-        denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
-        left = indicatorTwo.y;
-        right = indicatorOne.y;
-      }
+      // if (olderIndicator === this.indicatorOne) {
+      //   denominator = indicatorOne.y;
+      //   left = indicatorTwo.y;
+      //   right = indicatorOne.y;
+      // } else if (olderIndicator === this.indicatorTwo) {
+      const denominator = indicatorOne.y;
+      left = indicatorTwo.y;
+      right = indicatorOne.y;
+      // } else {
+      // const denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
+      // left = indicatorTwo.y;
+      // right = indicatorOne.y;
+      // }
       const diff = left - right;
-      const value = this.customRound((diff / denominator) * 10);
+      const value = this.customRound((diff / denominator) * 100);
       return value;
     },
     customRound(number) {
@@ -307,6 +314,10 @@ export default {
           orderResult.push({
             name: dataSourcesNYear[index].item,
             data: dataValues,
+            dataSorting: {
+              enabled: true,
+              sortKey: 'extraData',
+            },
           });
         }
 
@@ -429,11 +440,8 @@ export default {
 .comparison {
   border-radius: 10px;
   border: 1px solid #c1c1c1;
-  width: auto;
-  padding-left: 10em;
-  padding-right: 10em;
-  height: 83px;
-  text-align: center;
+  width: 45%;
+  height: 63px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -443,32 +451,27 @@ export default {
 .noComparison {
   border-radius: 10px;
   border: 1px solid #e85d58;
-  width: auto;
-  height: 83px;
-  text-align: center;
+  width: 25%;
+  height: 53px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  align-items: baseline;
   gap: 20px;
-  padding-top: 25px;
-  padding-left: 5em;
-  padding-right: 5em;
 }
 .comparison p {
   color: #000;
-  font-size: 16px;
-  font-style: normal;
+  font-size: 13px;
   font-weight: 400;
-  line-height: normal;
+  padding-top: 10px;
   font-family: 'Inter', sans-serif;
 }
 
 .noComparison p {
   color: #e85d58;
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
+  padding-top: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -477,9 +480,14 @@ export default {
 .comparison h6 {
   font-family: 'Inter', sans-serif;
   color: #000;
-  font-size: 32px;
+  font-size: 24px;
   font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+  .comparison, .noComparison {
+    width: auto;
+  }
 }
 </style>
