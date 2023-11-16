@@ -191,6 +191,34 @@
       <b-collapse id="collapse-2" class="mt-2">
         <b-card> This is an example plugin for demonstration purposes </b-card>
       </b-collapse>
+      <div class="plugin-row">
+        <h5>
+          <span v-b-toggle.collapse-3>
+            Indicator Search
+            <b-icon-info-circle></b-icon-info-circle>
+          </span>
+        </h5>
+
+        <div>
+          <button
+            class="enable-btn"
+            @click="setIndicatorPluginStatus('true')"
+            v-if="isIndicatorPlugin === 'false'"
+          >
+            Enable
+          </button>
+          <button
+            class="enable-btn"
+            @click="setIndicatorPluginStatus('false')"
+            v-if="isIndicatorPlugin === 'true'"
+          >
+            Disable
+          </button>
+        </div>
+      </div>
+      <b-collapse id="collapse-3" class="mt-2">
+        <b-card> This Enables User to search Indicators Smartly </b-card>
+      </b-collapse>
     </b-modal>
   </div>
 </template>
@@ -207,11 +235,14 @@ export default {
       modal: false,
       submit: false,
       socialModal: false,
+      isIndicatorPlugin: 'false',
+      isContextPluginActive: 'false',
     };
   },
   created() {
     // boolean to store project context availability
     this.isContextPluginActive = localStorage.getItem('contextPlugin');
+    this.isIndicatorPlugin = localStorage.getItem('indicatorPlugin');
   },
   methods: {
     togglemodal() {
@@ -224,6 +255,12 @@ export default {
       this.isContextPluginActive = localStorage.getItem('contextPlugin');
       localStorage.setItem('contextPlugin', data);
       this.$router.go();
+    },
+    setIndicatorPluginStatus(data) {
+      this.isContextPluginActive = localStorage.getItem('indicatorPlugin');
+      localStorage.setItem('indicatorPlugin', data);
+      this.$router.go();
+      console.log('indicator plugin was set');
     },
 
     submitContactForm() {

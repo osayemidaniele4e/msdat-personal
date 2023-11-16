@@ -327,7 +327,6 @@ export default {
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
-      isContextPluginActive: 'false',
       contactBtn: false,
       aboutPage: false,
       headerDropdown: [
