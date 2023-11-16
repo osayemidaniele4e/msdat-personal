@@ -27,6 +27,12 @@
           <span>Create a Plugin</span>
         </router-link>
       </li>
+      <li>
+         <b-button class="external-dashboards-btn mb-2 d-flex" block @click="showPluginModal" >
+          <img src="@/assets/img/icons/ic_info.svg" alt="" class="align-self-center" style="height: 15px; margin-left: 0.2rem;" />
+          <span class="ml-2" style="font-size: small;">View Plugins</span>
+        </b-button>
+      </li>
          <li>
         <!-- <router-link to="/external-dashboards">
           <img src="@/assets/img/icons/ic_info.svg" alt="" />
@@ -148,6 +154,44 @@
       <Socials />
     </base-modal>
     <NewsLetter />
+    <!-- plugin modal -->
+    <b-modal id="plugin-modal" title="MSDAT Apps Plugins" hide-footer>
+      <b-collapse id="collapse-1" class="mt-2">
+        <b-card>
+          This enables you to comment on any section in the MSDAT dashboard just by clicking the
+          headings
+        </b-card>
+      </b-collapse>
+      <!-- Example plugin section -->
+      <div class="plugin-row">
+        <h5>
+          <span v-b-toggle.collapse-2>
+            Context Plugin
+            <b-icon-info-circle></b-icon-info-circle>
+          </span>
+        </h5>
+
+        <div>
+          <button
+            class="enable-btn"
+            @click="contextPluginActive('true')"
+            v-if="isContextPluginActive === 'false'"
+          >
+            Enable
+          </button>
+          <button
+            class="enable-btn"
+            @click="contextPluginActive('false')"
+            v-if="isContextPluginActive === 'true'"
+          >
+            Disable
+          </button>
+        </div>
+      </div>
+      <b-collapse id="collapse-2" class="mt-2">
+        <b-card> This is an example plugin for demonstration purposes </b-card>
+      </b-collapse>
+    </b-modal>
   </div>
 </template>
 
@@ -165,9 +209,21 @@ export default {
       socialModal: false,
     };
   },
+  created() {
+    // boolean to store project context availability
+    this.isContextPluginActive = localStorage.getItem('contextPlugin');
+  },
   methods: {
     togglemodal() {
       this.modal = !this.modal;
+    },
+    showPluginModal() {
+      this.$bvModal.show('plugin-modal');
+    },
+    contextPluginActive(data) {
+      this.isContextPluginActive = localStorage.getItem('contextPlugin');
+      localStorage.setItem('contextPlugin', data);
+      this.$router.go();
     },
 
     submitContactForm() {
