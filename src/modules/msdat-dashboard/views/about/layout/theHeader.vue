@@ -257,13 +257,7 @@
           <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
           <!-- </a> -->
         </b-col>
-        <b-col class="main">
-          <h4 class="mt-4">About the MSDAT Dashboard</h4>
-          <p>
-            This dashboard is developed and managed by the Department of Health Planning Research
-            and Statistics (DHPRS)
-          </p>
-        </b-col>
+
       </b-row>
     </b-container>
 

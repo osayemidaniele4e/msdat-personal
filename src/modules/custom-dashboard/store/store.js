@@ -60,6 +60,7 @@ const store = {
       },
     ],
     dashboardRequest: {},
+    publicDashboard: false
   },
 
   mutations,
