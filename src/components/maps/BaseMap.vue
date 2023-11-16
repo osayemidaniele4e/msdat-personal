@@ -25,7 +25,10 @@ import NigerianMap from './ng-all.geo.json';
 import defaultOptions from './defaultOptions';
 
 // map data
-import regionsMap from './mapData/regions';
+// import regionsMap from './mapData/regions';
+// map data
+import newRegionsMap from './mapData/newRegions';
+// import regionsMapSerries from './mapData/regionSerries';
 
 import {
   // eslint-disable-next-line camelcase
@@ -148,7 +151,8 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
         case 2:
-          this.defaultOptions.plotOptions.map.mapData = regionsMap;
+          this.defaultOptions.plotOptions.map.mapData = newRegionsMap;
+          // this.defaultOptions.series = regionsMapSerries;
           break;
         case 3:
           this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[lgaState].data;
