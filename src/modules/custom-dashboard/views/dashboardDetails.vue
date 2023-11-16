@@ -27,6 +27,23 @@
             ></b-form-input>
             <p v-if="!description.isValid">This must not be empty.</p>
           </div>
+          <br>
+          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !description.isValid }">
+            <p>Reason for making your dashboard public</p>
+            <b-form-input
+              type="text"
+              id="reason"
+              v-model="publicReason"
+              @blur="clearValidity('reason')"
+              placeholder="Hint: What us the major purpose of making your dashboard public"
+            ></b-form-input>
+            <p v-if="!publicReason">This must not be empty.</p>
+          </div>
+          <br>
+          <span>
+  <input type="checkbox" v-model="isPublicDashboard"> <!-- Add v-model -->
+  Create a public dashboard
+</span>
         </b-col>
         <b-col class="image-file mb-5">
           <b-row class="text-left text-lg-center">
@@ -111,7 +128,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
 export default {
@@ -131,6 +148,7 @@ export default {
           ? this.$store.getters.dashboardDetails.name : '',
         isValid: true,
       },
+      publicReason: '',
       description: {
         val: this.$store.getters.editMode
           ? this.$store.getters.dashboardDetails.description : '',
@@ -140,6 +158,7 @@ export default {
       user: {},
       username: '',
       endEdit: true,
+      isPublicDashboard: false, 
     };
   },
   mounted() {
@@ -158,6 +177,16 @@ export default {
   beforeDestroy() {
     if (this.endEdit) this.$store.commit('endEdit');
   },
+  watch: {
+  isPublicDashboard(newVal) {
+    // Call the Vuex action with the new value (true or false)
+    this.$store.dispatch('setIsPublicDashboard', newVal);
+    if(newVal === true){
+      this.$store.dispatch('setVisibility', 'public');
+    }
+    
+  },
+},
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
   },
@@ -269,6 +298,7 @@ export default {
       const formData = {
         dashboardName: this.dName,
         description: this.description,
+        reason: this.publicReason,
         image: this.selectedImage.val,
       };
 
@@ -276,6 +306,7 @@ export default {
         name: this.dName.val,
         description: this.description.val,
         image: this.selectedImage.val,
+        reason: this.publicReason,
       });
       //
       this.$store.dispatch('allSelection', {
@@ -296,6 +327,7 @@ export default {
           name: this.dName.val,
           description: this.description.val,
           image: this.selectedImage.val,
+          reason: this.publicReason,
         });
         this.$store.dispatch('allSelection', {
           allselected: true,
