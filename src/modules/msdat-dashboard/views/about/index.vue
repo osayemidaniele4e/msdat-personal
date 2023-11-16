@@ -12,7 +12,6 @@
         <span class="mx-3 nav-link-item" @click="scrollTo('data-sources')">Data Sources</span>
       </nav>
 
-
       <!-- about MSDAT dashboard -->
 
       <div class="about-sec-1 d-flex flex-column align-items-center">
@@ -20,8 +19,6 @@
         <h1>ABOUT THE MSDAT DASHBOARD</h1>
         
         <div class="about-sec-text2">
-
-
           The Federal Ministry of Health (FMOH) Nigeria multi source data analysis resource provides a single transparent
           view of key health indicators against multiple data sources. It offers a view against key metrics using sources
           that range from routine data, surveys to global estimates recognizing that data quality, trends and
@@ -83,17 +80,6 @@
         <img src="./assets/logical-group.png">
       </section>
 
-      <!-- indicators -->
-      <section>
-        <h5>Indicators</h5>
-        <p>
-          The indicators provided by the Central Analytic Dashboard can be
-          selected on the dashboard by clicking on the Select Indicator
-          Drop-down, we've circled it red on the image to your left. The list of
-          indicators on the dashboard can be found below:
-        </p>
-     
-      </section>
       <!-- available data -->
       <section id="available-data">
         <h5>Available Data</h5>
