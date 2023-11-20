@@ -139,6 +139,7 @@ export default {
                 indicator: indicatorID,
                 datasource: element.id,
                 location: 1,
+                value_type: 2,
               });
               data.push(ab);
             }
@@ -152,7 +153,7 @@ export default {
             formattedData.unshift(newData);
           }
           // console.log(formattedData, 'this.dataArray');
-          this.TableData = formattedData;
+          this.TableData = formattedData.reverse();
           // console.log(this.TableData, '&&&HH&&');
           this.loading = false;
         }
@@ -196,9 +197,10 @@ export default {
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;
-      console.log(queryObject, 'queryObject');
-      const filteredIndicator = await this.getLocalDlQuery(queryObject);
-      //  console.log(filteredIndicator, 'queryObject');
+      console.log(queryObject, 'queryHHHH');
+      const filteredIndicator = await this.dlQuery(queryObject);
+      // const filteredIndicator = await this.getLocalDlQuery(queryObject);
+      console.log(filteredIndicator, 'Ben');
       if (routeTitle.endsWith('Demographics')) {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
@@ -285,6 +287,7 @@ export default {
               indicator: indicatorID,
               datasource: element.id,
               location: 1,
+              value_type: 2,
             });
             console.log(ab, 'dataSources');
             data.push(ab);
@@ -331,7 +334,7 @@ export default {
 
     // eslint-disable-next-line consistent-return
     async getLocalDlQuery(queryObject) {
-      console.log(queryObject);
+      // console.log(queryObject);
       const datasourceItem = this.availableDataSources.filter((datasource) => datasource.id === queryObject.datasource);
       console.log(datasourceItem);
 
@@ -390,12 +393,12 @@ export default {
     this.specificIndicators = specificIndicatorsData.data.results;
     const results = response.data;
     const dashboard = results.find((item) => item?.name === name);
-    const dashboardDataSource = await apiServices.getDashboardDatasources(dashboard.id);
+    // const dashboardDataSource = await apiServices.getDashboardDatasources(dashboard.id);
     const dashboardDasourceIds = dashboard.dataSources;
     const dataSources = dataSourceResponse.data.results.filter((item) => dashboardDasourceIds.includes(item.id));
     console.log(dataSourceResponse.data.results, 'dataSources');
     console.log(factorsResponse, 'factorsResponse');
-    console.log(dashboardDataSource, 'Dashboard Response');
+    //  console.log(dashboardDataSource, 'Dashboard Response');
     this.factors = factorsResponse.data.results;
     this.availableDataSources = dataSources;
     console.log(this.availableDataSources, 'this.availableDataSources');
