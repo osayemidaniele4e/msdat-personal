@@ -346,7 +346,7 @@ export default class DataLayer {
    * @author davebenard
    */
   async initDataWithYears(indicator, limit = 0) {
-    const unavailableIndicators = [64, 78, 329, 382, 64, 78, 37];
+    const unavailableIndicators = [64, 78, 329, 382, 64, 78, 37, 81, 70, 395, 117, 192, 90, 548, 62, 477, 507, 508, 628];
     for (let i = 0; i < indicator.length; i++) {
       // eslint-disable-next-line no-continue
       if (unavailableIndicators.includes(indicator[i])) continue;
