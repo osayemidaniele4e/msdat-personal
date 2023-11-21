@@ -25,12 +25,22 @@
         </template>
         <div id="zonalMapComponent" class="col-12 position-relative">
           <button
+            title="Back to National"
             @click="returnToNational"
-            v-show="level !== 1"
-            class="bg-transparent font-weight-bold"
+            v-if="level === 4"
+            class="bg-primary font-weight-bold"
           >
             <b-icon icon="chevron-left" />
             &nbsp;Back to National
+          </button>
+          <button
+            title="Back to Zonal "
+            @click="returnToZonal"
+            v-if="level === 3"
+            class="bg-primary font-weight-bold"
+          >
+            <b-icon icon="chevron-left" />
+            &nbsp;Back to Zonal
           </button>
           <BaseMap
             ref="BaseMap"
@@ -39,9 +49,9 @@
             :level="level"
             :lgaState="stateName"
           />
-          <!-- only show when data is not available for both the LGA's and the map -->
+
           <NoAvailableData
-            v-if="showNoAvailableData && chart.length === 0"
+            v-if="showNoAvailableData"
             class="position-absolute"
             style="top: 9%; width: 50%; left: 25%"
           />
@@ -79,6 +89,7 @@ export default {
       chart: {},
       loader: false,
       level: 1,
+      zone: 2,
       stateName: 'Nigeria',
       showNoAvailableData: false,
     };
@@ -88,6 +99,16 @@ export default {
       const selectedPlace = this.dlGetLocation({ level: 1 });
       if (selectedPlace.length !== 0) {
         eventBus.$emit('handleClick', selectedPlace[0]);
+      }
+    },
+    returnToZonal() {
+      const selectedPlace = this.dlGetLocation({ level: 2 });
+      // check if the selectedPlace is an array, if it is filter it by this.zone and then emit the first item
+      if (Array.isArray(selectedPlace)) {
+        const selectedPlace2 = selectedPlace.filter((item) => item.id === this.zone);
+        if (selectedPlace2.length !== 0) {
+          eventBus.$emit('handleClick', selectedPlace2[0]);
+        }
       }
     },
   },
@@ -101,12 +122,181 @@ export default {
           datasource: val.datasource.id,
           period: val.year,
         });
+        // console.log(val, 'kkkkkkc');
         const stateObject = this.dlGetLocation(val.location.id);
-        // plot for LGA Data
-        if (val.location.id !== 1) {
-          const filteredLGADataForState = data.filter(
-            (item) => this.dlGetLocation(item.location).parent === val.location.id,
+        // console.log(stateObject, 'kkkkkkc2');
+
+        // PLOT 1ST MAP AS ZOANL
+        if (stateObject.level === 1) {
+          // console.log(stateObject, 'kkkkkkcc');
+          const formatToHighChart = (dataValues) => dataValues.map((item) => [
+            this.dlGetLocation(item.location).name,
+            parseFloat(item.value),
+          ]);
+
+          // console.log(formatToHighChart, 'kkkkkkcc');
+
+          const chartSeries = [];
+
+          for (let index = 0; index < this.colors.length; index += 1) {
+            const group = data?.filter(
+              (item) => this.dlGetLocation(item.location).parent === this.colors[index].id
+            );
+
+            const { color } = this.colors.find((item) => item.id === this.colors[index].id);
+            const formattedData = formatToHighChart(group);
+            const sortedData = formattedData.sort(sortHighChartDataFormat);
+            const series = this.dlGetLocation(this.colors[index].id);
+
+            chartSeries.push({
+              color,
+              name: series.name,
+              data: sortedData,
+            });
+
+            /**
+             * Function no fully functional
+             * ! Need to fix the issue
+             */
+            for (let i = 0; i < chartSeries.length; i += 1) {
+              if (chartSeries[i].data.length === 0) {
+                // this.showNoAvailableData = true;
+              } else {
+                this.showNoAvailableData = false;
+              }
+            }
+          }
+
+          console.log(chartSeries, 'kkkkkkc');
+          const filteredSeries = chartSeries.filter((item) => item.data.length > 0);
+          console.log(filteredSeries, 'kkkkkkc');
+
+          if (filteredSeries.length === 1) {
+            // const groupP = filteredSeries[0].data;
+            // console.log(groupP, 'chartSeries1');
+            // this.stateName = stateObject.name; // Please always change the state name before
+            // // changing the level else you would get an error
+            // this.level = 2;
+            // console.log(chartSeries, 'chartSeries1');
+            // this.chart = {
+            //   series: chartSeries,
+            // };
+            // this.showNoAvailableData = false;
+            // const zData = groupP.map((item) => ({
+            //   color: this.colors.find((item2) => item2.id === item.location).color,
+            //   name: this.dlGetLocation(item.location).name,
+            //   data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
+            // }));
+            // console.log(zData, 'chartSeries1');
+
+            // this.chart = {
+            //   series: zData,
+            // };
+            // this.title = `Distribution of ${val.indicator.full_name} Across the Zones in the Country`;
+            // this.level = 2;
+            // this.stateName = 'Nigeria';
+            const groupP = data.filter((item) => this.dlGetLocation(item.location).parent === 1);
+            if (groupP.length === 0) {
+              this.showNoAvailableData = true;
+              this.chart = {
+                series: [],
+              };
+              this.loader = false;
+              return;
+            }
+
+            this.showNoAvailableData = false;
+            const zData = groupP.map((item) => ({
+              color: this.colors.find((item2) => item2.id === item.location).color,
+              name: this.dlGetLocation(item.location).name,
+              data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
+            }));
+
+            this.chart = {
+              series: zData,
+            };
+            this.title = `Distribution of ${val.indicator.full_name} Across the Zones in the Country`;
+            this.level = 2;
+            this.stateName = 'Nigeria';
+          } else {
+            this.stateName = stateObject.name; // Please always change the state name before
+            // changing the level else you would get an error
+            this.level = 1;
+            console.log(chartSeries, 'chartSeries2');
+            this.chart = {
+              series: chartSeries,
+            };
+          }
+
+          // this.stateName = stateObject.name; // Please always change the state name before
+          // // changing the level else you would get an error
+          // this.level = 1;
+          // console.log(chartSeries, 'chartSeries');
+          // this.chart = {
+          //   series: chartSeries,
+          // };
+
+          // const groupP = data.filter((item) => this.dlGetLocation(item.location).parent === 1);
+          // if (groupP.length === 0) {
+          //   this.showNoAvailableData = true;
+          //   this.chart = {
+          //     series: [],
+          //   };
+          //   this.loader = false;
+          //   return;
+          // }
+
+          // this.showNoAvailableData = false;
+          // const zData = groupP.map((item) => ({
+          //   color: this.colors.find((item2) => item2.id === item.location).color,
+          //   name: this.dlGetLocation(item.location).name,
+          //   data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
+          // }));
+
+          // this.chart = {
+          //   series: zData,
+          // };
+          // this.title = `Distribution of ${val.indicator.full_name} Across the Zones in the Country`;
+          // this.level = 2;
+          // this.stateName = 'Nigeria';
+        }
+        // PLOT 2ND MAP AS STATE
+        if (stateObject.level === 2) {
+          this.zone = stateObject.id;
+          const filteredStateDataForZone = data.filter(
+            (item) => this.dlGetLocation(item.location).parent === stateObject.id,
           );
+          if (filteredStateDataForZone.length === 0) {
+            this.showNoAvailableData = true;
+          } else {
+            this.showNoAvailableData = false;
+          }
+
+          const sData = filteredStateDataForZone.map((item) => ({
+            color: this.colors.find((item2) => item2.id === stateObject.id).color,
+            name: this.dlGetLocation(item.location).name,
+            data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
+          }));
+
+          const stateData = data.find((item) => item.location === val.location.id);
+
+          sData.unshift({
+            name: stateObject.name,
+            y: parseFloat(stateData?.value),
+            color: this.colors.find((item) => item.id === stateObject.id).color,
+          });
+          this.stateName = stateObject?.name;
+          this.level = 4; // for tracking purposes
+          this.chart = {
+            series: sData,
+          };
+        }
+        // PLOT 3RD MAP AS LGA
+        if (stateObject.level === 3) {
+          const filteredLGADataForState = data.filter(
+            (item) => this.dlGetLocation(item.location).parent === stateObject.id,
+          );
+          console.log('filteredLGADataForState', filteredLGADataForState);
           if (filteredLGADataForState.length === 0) {
             this.showNoAvailableData = true;
           } else {
@@ -131,7 +321,7 @@ export default {
 
           sortedData.unshift({
             name: stateObject.name,
-            y: parseFloat(stateData.value),
+            y: parseFloat(stateData?.value),
             color: this.colors[0].color,
           });
           chartSeries.push({
@@ -145,55 +335,56 @@ export default {
           this.chart = {
             series: chartSeries,
           };
-        } else {
-          const formatToHighChart = (dataValues) => dataValues.map((item) => [
-            this.dlGetLocation(item.location).name,
-            parseFloat(item.value),
-          ]);
-
-          const chartSeries = [];
-
-          for (let index = 0; index < this.colors.length; index += 1) {
-            // console.log(data, 'DATA');
-            const group = data?.filter(
-              (item) => this.dlGetLocation(item.location).parent === this.colors[index].id
-            );
-
-            // if(group.length > 0 && group.length < 8){
-            //   // i am assuming that the zonal level data is all that exist so switch zonal level
-            //     this.level = 2;
-            // }else{
-            //   this.level = 3;
-            // }
-            const { color } = this.colors.find((item) => item.id === this.colors[index].id);
-            const formattedData = formatToHighChart(group);
-            const sortedData = formattedData.sort(sortHighChartDataFormat);
-            const series = this.dlGetLocation(this.colors[index].id);
-
-            chartSeries.push({
-              color,
-              name: series.name,
-              data: sortedData,
-            });
-            /**
-             * Function no fully functional
-             * ! Need to fix the issue
-             */
-            for (let i = 0; i < chartSeries.length; i += 1) {
-              if (chartSeries[i].data.length === 0) {
-                // this.showNoAvailableData = true;
-              } else {
-                this.showNoAvailableData = false;
-              }
-            }
-          }
-          this.stateName = stateObject.name; // Please always change the state name before
-          // changing the level else you would get an error
-          this.level = 1;
-          this.chart = {
-            series: chartSeries,
-          };
         }
+        // if (stateObject.level === 2) {
+        //   const formatToHighChart = (dataValues) => dataValues.map((item) => [
+        //     this.dlGetLocation(item.location).name,
+        //     parseFloat(item.value),
+        //   ]);
+
+        //   const chartSeries = [];
+
+        //   for (let index = 0; index < this.colors.length; index += 1) {
+        //     const group = data.filter(
+        //       (item) => this.dlGetLocation(item.location).parent === this.colors[index].id,
+        //     );
+
+        //     // if(group.length > 0 && group.length < 8){
+        //     //   // i am assuming that the zonal level data is all that exist so switch zonal level
+        //     //     this.level = 2;
+        //     // }else{
+        //     //   this.level = 3;
+        //     // }
+        //     const { color } = this.colors.find((item) => item.id === this.colors[index].id);
+        //     const formattedData = formatToHighChart(group);
+        //     const sortedData = formattedData.sort(sortHighChartDataFormat);
+        //     const series = this.dlGetLocation(this.colors[index].id);
+
+        //     chartSeries.push({
+        //       color,
+        //       name: series.name,
+        //       data: sortedData,
+        //     });
+        //     /**
+        //      * Function no fully functional
+        //      * ! Need to fix the issue
+        //      */
+        //     for (let i = 0; i < chartSeries.length; i += 1) {
+        //       if (chartSeries[i].data.length === 0) {
+        //         this.showNoAvailableData = true;
+        //       } else {
+        //         this.showNoAvailableData = false;
+        //       }
+        //     }
+        //   }
+        //   this.stateName = stateObject.name; // Please always change the state name before
+        //   // changing the level else you would get an error
+        //   this.level = 2;
+        //   this.chart = {
+        //     series: chartSeries,
+        //   };
+        // }
+
         this.loader = false;
       },
       deep: true,
