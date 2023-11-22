@@ -4,7 +4,6 @@
 <template>
   <div>
     <Highmaps :options="defaultOptions" />
-    {{ showItems(defaultOptions) }}
   </div>
 </template>
 
@@ -133,12 +132,8 @@ export default {
     };
   },
   methods: {
-    showItems(item) {
-      console.log(item, 'PPPPP');
-    },
 
     plotMapLevel(level) {
-      console.log(level, 'HHHHHH');
       // check space is in string and add underscore
       let lgaState = '';
       if (this.lgaState) {
@@ -181,7 +176,6 @@ export default {
     },
   },
   created() {
-    console.log(this.level);
     this.plotMapLevel(this.level);
   },
 

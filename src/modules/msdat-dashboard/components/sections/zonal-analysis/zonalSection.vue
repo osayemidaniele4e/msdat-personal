@@ -211,8 +211,6 @@ export default {
             newChart.unshift();
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
-
-            console.log(chartSeries, 'Another1');
             // chartSeries.unshift(zonalZee); //  removed this part
             this.formatToHighChart(chartSeries);
           }
