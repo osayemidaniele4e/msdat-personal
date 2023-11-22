@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
-    ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS']),
+    ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS', 'SET_INDICATOR_TIME_SPENT', 'SET_DATASOURCE_TIME_SPENT']),
     async getAvailableYears() {
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
@@ -149,6 +149,8 @@ export default {
           user: this.getUser
         }
 
+        this.SET_INDICATOR_TIME_SPENT(timespent)
+
         console.log('timespent in indicator', timespent)
 
         this.previous_time = this.after_time;
@@ -194,7 +196,9 @@ export default {
           user: this.getUser
         }
 
-        console.log('timespent in datasource', timespent)
+        this.SET_DATASOURCE_TIME_SPENT(timespent)
+
+        console.log('timespent in   datasource', timespent)
 
         this.previous_time_datasource = this.after_time_datasource;
 

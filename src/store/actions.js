@@ -1,9 +1,26 @@
 import axiosInstance from '@/config/axios';
+import axios from 'axios'
 
 export default {
   async SET_INTERACTIONS({ commit }, payload) {
     try {
       const { data } = await axiosInstance.post('/user_interactions/', payload);
+      commit('setInteraction', data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async SET_INDICATOR_TIME_SPENT({ commit }, payload) {
+    try {
+      const { data } = await axios.post('http://172.93.52.240:3001/api/indicator_timespent/', payload);
+      commit('setInteraction', data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async SET_DATASOURCE_TIME_SPENT({ commit }, payload) {
+    try {
+      const { data } = await axios.post('/user_interactions/', payload);
       commit('setInteraction', data);
     } catch (error) {
       console.log(error);
