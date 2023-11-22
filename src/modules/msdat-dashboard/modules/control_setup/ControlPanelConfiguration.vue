@@ -11,6 +11,7 @@ import moment from 'moment';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import controlSetup from '../../mixins/control-panel-setup';
+import { time } from 'highcharts';
 
 export default {
   name: 'ControlPanelConfiguration',
@@ -18,6 +19,12 @@ export default {
   data() {
     return {
       interactions: [],
+      previous_time: null,
+      after_time: null,
+      previous_indicator: null,
+      previous_time_datasource: null,
+      after_time_datasource: null,
+      previous_datasource: null
     };
   },
   props: {
@@ -49,13 +56,19 @@ export default {
     // }
   },
   mounted() {
+    const now = new Date();
+    const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+
+    // Set the total time in minutes for the component data.
+    this.previous_time = totalTimeInMinutes;
+    this.previous_indicator = this.payload.indicator
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
     });
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
-    ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS']),
+    ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS', 'SET_INDICATOR_TIME_SPENT', 'SET_DATASOURCE_TIME_SPENT']),
     async getAvailableYears() {
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
@@ -97,6 +110,7 @@ export default {
         location: this.payload.location.id,
         viewed_at: moment().format(),
       };
+
       this.interactions.push(interaction);
       if (this.isAuthenticated === true) {
         const uniqueArr = this.removeDuplicates(this.interactions);
@@ -117,6 +131,32 @@ export default {
     // get latest available years when indicator , datasource or location are changed
     'payload.indicator': {
       async handler() {
+        // new ones
+
+        const now = new Date();
+        const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+
+        // Set the total time in minutes for the component data.
+        this.after_time = totalTimeInMinutes;
+
+        const diff = this.after_time - this.previous_time;
+
+        // sending to the api
+
+        const timespent = {
+          indicator: this.previous_indicator,
+          time: diff,
+          user: this.getUser
+        }
+
+        this.SET_INDICATOR_TIME_SPENT(timespent)
+
+        console.log('timespent in indicator', timespent)
+
+        this.previous_time = this.after_time;
+
+        this.previous_indicator = this.payload.indicator
+
         if (this.controlIndex !== 2) {
           const availableYears = await this.getAvailableYears();
           this.SETUP_CONTROL_OPTIONS1({
@@ -137,6 +177,33 @@ export default {
     },
     'payload.datasource': {
       async handler() {
+
+        // new ones
+
+        const now = new Date();
+        const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+
+        // Set the total time in minutes for the component data.
+        this.after_time_datasource = totalTimeInMinutes;
+
+        const diff = this.after_time_datasource - this.previous_time_datasource;
+
+        // sending to the api
+
+        const timespent = {
+          datasource: this.previous_datasource,
+          time: diff,
+          user: this.getUser
+        }
+
+        this.SET_DATASOURCE_TIME_SPENT(timespent)
+
+        console.log('timespent in   datasource', timespent)
+
+        this.previous_time_datasource = this.after_time_datasource;
+
+        this.previous_datasource = this.payload.datasource
+
         let availableYears;
         if (this.controlIndex === 2) {
           availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);

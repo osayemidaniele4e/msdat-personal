@@ -58,6 +58,10 @@ export default {
       },
       showClearDataModal: false,
       loading: false,
+      longitude: '',
+      latitude: '',
+      userLocation: null,
+      error: null
     };
   },
   methods: {
@@ -133,6 +137,27 @@ export default {
         await this.SAVE_USER_DASHBOARD(payload);
       }
     },
+
+      getUserLocation() {
+      if ("geolocation" in navigator) {
+        // Get the user's location
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.userLocation = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+          },
+          (error) => {
+            this.error = error.message;
+          }
+        );
+      } else {
+        this.error = "Geolocation is not supported in your browser.";
+      }
+
+      console.log('user location', this.userLocation)
+    },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', 7);
     // },
@@ -142,8 +167,25 @@ export default {
     // getIndicator(id){
     // }
   },
-  async mounted() {
-    this.clearData();
+  async mounted() { 
+  // saving the data of the users location while using select dashboards
+  this.getUserLocation();
+
+  await navigator.geolocation.getCurrentPosition(
+    (position) => {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+
+      // Now that you have the geolocation data, you can use it here
+      const data = {
+        dashboard: this.$route.params.name,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        time: Date.now()
+      };
+
+
+      this.clearData();
     // console.log(defaultData, 'defaultData');
     if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
       // this sets skilled attendance at birth indicator on mounted
@@ -159,7 +201,8 @@ export default {
     setTimeout(() => {
       console.log('config', this.$store.state.MSDAT_STORE.configObject);
     }, 5000);
-  },
+  }},
+
   async created() {
     // this.saveIndicatorToStorage();
     // this.saveDataSourceToStorage();
@@ -329,6 +372,7 @@ export default {
     if (this.$store.state.MSDAT_STORE.configObject.title) {
       this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
     }
+  
   },
   watch: {
     $route(to, from) {
