@@ -1,11 +1,14 @@
 <template>
-  <highcharts :options="options" ref="lineCharts"></highcharts>
+  <div>
+    <highcharts :options="options" ref="lineCharts"></highcharts>
+  </div>
 </template>
 
 <script>
 /**
  * highchart package imports
  */
+
 import Highcharts from 'highcharts';
 import loadHighchartsMore from 'highcharts/highcharts-more';
 import loadMap from 'highcharts/modules/map';
@@ -57,7 +60,6 @@ export default {
             text: this.title,
           };
         }
-        console.log('title was set');
       },
       deep: true,
       immediate: true,

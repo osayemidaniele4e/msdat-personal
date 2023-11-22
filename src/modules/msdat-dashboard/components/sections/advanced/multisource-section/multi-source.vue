@@ -32,7 +32,7 @@
 
 <script>
 // import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
-import Maps from '@/components/maps/BaseMap.vue';
+import Maps from '@/components/maps/ZonalBaseMap.vue';
 // import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortHighChartDataFormat } from '../../../../mixins/util';

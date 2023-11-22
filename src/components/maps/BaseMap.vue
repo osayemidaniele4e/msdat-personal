@@ -21,7 +21,7 @@ import { genComponent } from 'vue-highcharts';
 import NigerianMap from './ng-all.geo.json';
 
 // test config
-import TestConfig from './tenp.json';
+import ZonalConfig from './ZonalConfig.json';
 
 // default map options
 import defaultOptions from './defaultOptions';
@@ -153,7 +153,7 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
         case 2:
-          this.defaultOptions = { ...TestConfig };
+          this.defaultOptions = { ...ZonalConfig };
           break;
         case 3:
           this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[lgaState].data;
@@ -198,7 +198,7 @@ export default {
           const missingZones = this.findMissingZones(zones, availableZone);
 
           filteredData.forEach(([state, value]) => {
-            const foundItem = TestConfig.series.find((item) => item.name === state);
+            const foundItem = ZonalConfig.series.find((item) => item.name === state);
             const foundZone = zonesAndColor.find((item) => item.zone === state);
             if (foundItem) {
               foundItem.data[0][1] = value;
@@ -206,12 +206,12 @@ export default {
             }
           });
           filteredData.forEach(([state, value]) => {
-            const foundItem = TestConfig.series.find((item) => item.name === state);
+            const foundItem = ZonalConfig.series.find((item) => item.name === state);
             if (foundItem) {
               foundItem.data[0][1] = value;
             }
             missingZones.forEach((zone) => {
-              const foundZone = TestConfig.series.find((item) => item.name === zone);
+              const foundZone = ZonalConfig.series.find((item) => item.name === zone);
               if (foundZone) {
                 foundZone.color = '#f1f1f1';
                 foundZone.data[0][1] = '-';
@@ -219,7 +219,7 @@ export default {
             });
           });
 
-          Object.assign(this.defaultOptions, TestConfig);
+          Object.assign(this.defaultOptions, ZonalConfig);
           this.level = 2;
         } else {
           Object.assign(this.defaultOptions, newVal);
@@ -244,7 +244,7 @@ export default {
 
   mounted() {
     // changing the title of the text when downloaded
-    this.defaultOptions.exporting.chartOptions.title.text = this.title;
+    // this.defaultOptions.exporting.chartOptions.title.text = this.title;
   },
 };
 </script>

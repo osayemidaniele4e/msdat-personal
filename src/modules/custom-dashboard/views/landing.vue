@@ -89,15 +89,14 @@
       <b-col md="7" sm="12" class="p-0 text-left">
         <b-row class="features">
           <b-col>
-            <h4 style="font-size: 24px !important;">Available health data</h4>
+            <h4 style="font-size: 24px !important;">Available Health Data</h4>
             <p class="d-flex text-justify" style="font-size: 14px !important;">
-              Our platform helps you to set up your custom dashboard to suit
-              your needs. The dashboard comes with cleaned data on the certain
-              key health indicators in Nigeria. This data can be made available
-              for your use. The platform allows for sectioning of your charts.
-              So you can section your visualizations into any section of your
-              choice, giving you control over your data and making it easier to
-              analyse
+              Our platform helps you set up a custom dashboard to suit your needs.
+              The dashboard includes cleaned data on specific key health indicators in Nigeria.
+              This data is available for your use.
+              The platform allows for the segmentation of your charts,
+              enabling you to organize your visualizations into any section of your choice,
+              giving you control over your data and making it easier to analyze.
             </p>
             <b-button>Design your dashboard</b-button>
           </b-col>
@@ -106,13 +105,13 @@
           <b-col>
             <h4 style="font-size: 24px !important;">Customizable Data</h4>
             <p class="text-justify" style="font-size: 14px !important;">
-              GOODNEWS! This platform is not just limited to the available data,
-              you can also upload the data you are tracking in your team. You
-              will be able to input your data and choose any visualization of
-              your choice. This feature is being developed and we are eager to
-              capture your requirements into the design. If you are interested
-              in contributing to the development of this feature, please
-              indicate your interest below.
+              Good news! This platform is not limited to the available data;
+              you can also upload the data you're tracking within your team.
+              You'll have the ability to input your data and select your preferred visualization.
+              This feature is currently in development,
+              and we're eager to incorporate your requirements into the design.
+              If you're interested in contributing to the development of this feature,
+              please express your interest below.
             </p>
             <b-button>INDICATE INTEREST HERE</b-button>
           </b-col>

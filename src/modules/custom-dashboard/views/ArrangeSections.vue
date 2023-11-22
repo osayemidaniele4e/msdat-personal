@@ -49,7 +49,9 @@
 
         <!-- v-b-modal.modal-visibility -->
 
-        <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button>
+        <!-- <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button> -->
+        <button @click="approveData">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button>
+
 
         <b-popover ref="popover" target="popover-button-event" triggers="hover" title="Choose visibility">
      <span @click="createPrivateDashboard()" class="choose-visibility-option">
@@ -266,6 +268,7 @@ export default {
         organization: '',
         Reason: '',
         name_of_dashboard: '',
+        dashboard_details: null
       },
       form: {
         email: '',
@@ -282,6 +285,7 @@ export default {
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
+    ...mapGetters('CUSTOM_DASHBOARD_STORE', ['dashboardDetails', 'getVisibility']),
     dashboardDetails() {
       return this.$store.getters.dashboardDetails;
     },
@@ -312,7 +316,9 @@ export default {
 
     async createPublicDashboard() {
       // send the request to create a public dashboard
+      this.public_creator.dashboard_details = await this.$store.getters.dashboardDetails;
       await this.$store.dispatch('setDashboardRequest', this.public_creator);
+      console.log('public creator', this.public_creator)
       // hide the 'modal-public-dashboard'
       await this.$bvModal.hide('modal-public-dashboard');
       // show the 'modal-in-review'
@@ -336,12 +342,34 @@ export default {
 
     // Below function is excuted when approve data button is clicked
 
-    approveData() {
+   async  approveData() {
+      
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
         this.$swal('Dashboard name not provided');
         return;
       }
+
+
+      // if the dashboard is public, run these functions
+      if(this.getVisibility === 'public'){
+        this.public_creator.name = this.getUser.name;
+      this.public_creator.email = this.getUser.email;
+      this.public_creator.description = this.dashboardDetails.description,
+      // this.public_creator.organization = '';
+      this.public_creator.Reason = this.dashboardDetails.reason;
+      this.public_creator.name_of_dashboard = this.dashboardDetails.name;
+      }
+
+      console.log('dashboard-details', this.dashboardDetails);
+      console.log('user details', this.getUser)
+      console.log('public-creator', this.public_creator)
+
+      await this.$store.dispatch('setDashboardRequest', this.public_creator);
+      // hide the 'modal-public-dashboard'
+      await this.$bvModal.hide('modal-public-dashboard');
+      // show the 'modal-in-review'
+      await this.$bvModal.show('modal-in-review');
 
       //
       // SAVE DASHBOARD LOCALLY

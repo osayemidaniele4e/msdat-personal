@@ -26,7 +26,7 @@
               >Health Workforce</b-list-group-item
             ></router-link
           >
-                     <!-- <router-link to="/external-ndr1" target="_blank"
+                     <router-link to="/external-ndr1" target="_blank"
             ><b-list-group-item
               >National Data Repository Dashboard 1</b-list-group-item
             ></router-link
@@ -36,7 +36,7 @@
             ><b-list-group-item
               >National Data Repository Dashboard 2</b-list-group-item
             ></router-link
-          > -->
+          >
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -49,7 +49,7 @@
               href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
             >
-              <b-list-group-item>Health Service Uptake</b-list-group-item>
+              <b-list-group-item>HSU Dashboard</b-list-group-item>
             </a>
             <a
               href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/"
@@ -82,7 +82,8 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link to="/custom" target="_blank"
+          <router-link 
+          to="/custom" target="_blank"
             ><b-list-group-item
               > Create Your Dashboard</b-list-group-item
             ></router-link
@@ -93,12 +94,28 @@
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
             ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
           >
-          <!-- <router-link to="/coming-soon/advanced_analytics" -->
-          <router-link to="/advanced_analytics"
+          <router-link to="/coming-soon/advanced_analytics" target="_blank"
             ><b-list-group-item
               >Advanced Analytics</b-list-group-item
             ></router-link
           >
+        </b-list-group>
+      </div>
+      <div class="col mb-3"
+      v-if="isAuthenticated"
+      >
+        <b-list-group>
+          <h5 class="text-underline">Custom Dashboards</h5>
+          <div
+          v-for="dashboard in userDashboards"
+          :key="dashboard.id">
+            <router-link :to="'/dashboard/' + dashboard.name" target="_blank"
+       
+            ><b-list-group-item
+              >  {{ dashboard.title }}</b-list-group-item
+            ></router-link
+          >
+          </div>
         </b-list-group>
       </div>
     </div>
@@ -106,13 +123,60 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations, mapWatch } from 'vuex';
+
 export default {
   data() {
-    return {};
+    return {
+      loading: true,
+      userDashboards: {},
+    };
   },
-  methods: {},
+
+  computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser', 'getDashboards']),
+  },
+
+  methods: {
+    ...mapActions('AUTH_STORE', ['SAVE_DASHBOARDS']),
+    ...mapMutations('AUTH_STORE', ['UPDATE_USER_DASHBOARDS']),
+
+    filterArray(obj, arr) {
+      const userId = obj.id;
+      const filteredArr = arr.filter((item) => item.user === userId);
+      return filteredArr;
+    },
+
+    refreshUserData() {
+      this.loading = true;
+
+      // Update user dashboards
+      this.userDashboards = this.filterArray(this.getUser, this.getDashboards.data);
+
+      // Perform any other necessary actions for newly authenticated users
+
+      this.loading = false;
+    },
+  },
+
+  async mounted() {
+    this.loading = true;
+    await this.SAVE_DASHBOARDS();
+    this.userDashboards = await this.filterArray(this.getUser, this.getDashboards.data);
+    this.loading = false;
+  },
+
+  watch: {
+    isAuthenticated(newValue, oldValue) {
+      if (newValue && !oldValue) {
+        // User is newly authenticated
+        this.refreshUserData();
+      }
+    },
+  },
 };
 </script>
+
 
 <style lang="scss">
 div {

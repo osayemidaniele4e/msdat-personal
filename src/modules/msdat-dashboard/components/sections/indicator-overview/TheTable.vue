@@ -5,10 +5,35 @@
     <div v-if="!loading">
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
-          <p class="work-sans mb-0 line-height">
-            <b>{{ values.indicator.short_name }}</b>
-            and related indicators (with year of latest values) across available data sources x.
-          </p>
+          <div class="w-100 d-flex justify-content-between">
+            <p class="work-sans mb-0 line-height">
+              <b>{{ values.indicator.short_name }}</b>
+              and related indicators (with year of latest values) across available data sources.
+            </p>
+
+            <div class="share-wrapper">
+              <div v-if="isTooltipVisible" class="tooltip-wrap">share.</div>
+              <div
+                @mouseover="showTooltip"
+                @mouseout="hideTooltip"
+                @click="toggleShowShareModal()"
+                class="share-btn"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-share-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
         </template>
         <TableComponent
           class="work-sans"
@@ -22,6 +47,7 @@
           @clickedDatasource="getValue"
           @key="getKey"
           @clickedReset="getReset"
+          id="indicatorTable"
         />
       </base-sub-card>
     </div>
@@ -42,7 +68,13 @@
       />
       <!-- </template> -->
     </base-modal>
+    <ShareCodeModal
+      @toggleShowShareModal="toggleShowShareModal"
+      v-if="showShareCodeModal"
+      :tableContent="tableObj"
+    />
   </div>
+
   <!-- </base-overlay> -->
 </template>
 
@@ -54,6 +86,7 @@ import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
+import ShareCodeModal from './shareTableModal.vue';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -62,6 +95,7 @@ export default {
     IndicatorMetaDataModal,
     DataSourceMetaDataModal,
     TableLoader,
+    ShareCodeModal,
   },
   data() {
     return {
@@ -74,6 +108,11 @@ export default {
       modalTitle: '',
       DisplayType: '',
       updateData: 0,
+      showShareCodeModal: false,
+      tableObj: null,
+      isTooltipVisible: false,
+      bootstrapCDN:
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">',
     };
   },
   props: {
@@ -172,18 +211,16 @@ export default {
      * @param {number} queryObject.datasource The id of the datasource
      * @returns {dataObjectType}
      */
+
+    toggleShowShareModal() {
+      this.showShareCodeModal = !this.showShareCodeModal;
+      const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
+      this.tableObj = this.bootstrapCDN + tableObjTemp;
+    },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
+      const routeTitle = this.$route.path;
       const filteredIndicator = await this.dlQuery(queryObject);
-      if (this.$route.meta.title !== 'Demographics') {
-        if (filteredIndicator.length > 0) {
-          return filteredIndicator.reduce((max, currentValues) => {
-            if (currentValues.period > max.period) {
-              return currentValues;
-            }
-            return max;
-          });
-        }
-      } else if (this.$route.meta.title === 'Demographics') {
+      if (routeTitle.endsWith('Demographics')) {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
           return filteredIndicator.reduce((max, currentValues) => {
@@ -193,6 +230,13 @@ export default {
             return max;
           });
         }
+      } else if (filteredIndicator.length > 0) {
+        return filteredIndicator.reduce((max, currentValues) => {
+          if (currentValues.period > max.period) {
+            return currentValues;
+          }
+          return max;
+        });
       }
       return null;
     },
@@ -265,6 +309,12 @@ export default {
         this.loading = false;
       }
     },
+    showTooltip() {
+      this.isTooltipVisible = true;
+    },
+    hideTooltip() {
+      this.isTooltipVisible = false;
+    },
   },
   mounted() {
     this.updateData += 1;
@@ -280,5 +330,38 @@ export default {
   opacity: 1;
   margin-left: 10px;
   font-size: 14px;
+}
+
+.share-btn {
+  height: auto;
+  padding: 0;
+  margin: 0 5px;
+  padding: 0 6px;
+  margin-right: 5px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  border: 1px solid #b3b3b3;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.share-btn svg {
+  width: 12px;
+  margin-right: 2px;
+}
+
+.share-wrapper {
+  display: flex;
+}
+
+.share-btn:hover {
+  border: 1px solid #61a229;
+}
+
+.tooltip-wrap {
+  background-color: #333;
+  color: #fff;
+  padding: 0 5px;
+  border-radius: 5px;
 }
 </style>

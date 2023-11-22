@@ -11,7 +11,7 @@
         :id="`panel-${i}`"
         @click="changeControl(i)"
       >
-        {{ el.title }}
+        {{ el.title.replace('-', '_') }}
       </li>
     </ul>
 
@@ -81,6 +81,7 @@ export default {
       }
 
       if (index === 4) {
+        // console.log(this.getSelectedConfig(), 'this.getSelectedConfig()');
         this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
           controlIndex: index,
           key: 'indicator',
@@ -135,23 +136,49 @@ export default {
     selectedIndex(newValue) {
       // console.log('selected', this.$store.getters);
       this.changeControl(newValue);
-      if (newValue === 0) {
-        this.title = 'Indicator Overview';
+
+      const { name } = this.$route.params;
+      if (name === 'Advanced_Analytics') {
+        if (newValue === 0) {
+          this.title = 'Correlation Analysis';
+          this.$store.dispatch('setSectionTitle', 'Correlation Analysis');
+        }
+        if (newValue === 1) {
+          this.title = 'Descriptive Analysis';
+          this.$store.dispatch('setSectionTitle', 'Descriptive Analysis');
+        }
+        if (newValue === 2) {
+          this.title = 'Indicator Comparison';
+          this.$store.dispatch('setSectionTitle', 'Indicator Comparison');
+        }
+        if (newValue === 3) {
+          this.title = 'Predictive Analysis';
+          this.$store.dispatch('setSectionTitle', 'Predictive Analysis');
+        }
+        if (newValue === 4) {
+          this.title = 'Multisource Inidcator Comparison';
+          this.$store.dispatch('setSectionTitle', 'Multisource Inidcator Comparison');
+        }
       }
-      if (newValue === 1) {
-        this.title = 'Zonal Analysis';
-      }
-      if (newValue === 2) {
-        this.title = 'Indicator Comparison';
-      }
-      if (newValue === 3) {
-        this.title = 'Dataset Comparison';
-      }
-      if (newValue === 4) {
-        this.title = 'Multi-Source Overview';
-      }
-      if (newValue === 5) {
-        this.title = 'Disaggregation';
+      if (name !== 'Advanced_Analytics') {
+        if (newValue === 0) {
+          this.title = 'Indicator Overview';
+        }
+        if (newValue === 1) {
+          this.title = 'Zonal Analysis';
+        }
+        if (newValue === 2) {
+          this.title = 'Indicator Comparison';
+        }
+        if (newValue === 3) {
+          this.title = 'Dataset Comparison';
+        }
+        if (newValue === 4) {
+          this.title = 'Multi-Source Overview';
+        }
+        if (newValue === 5) {
+          this.title = 'Disaggregation';
+        }
       }
     },
   },

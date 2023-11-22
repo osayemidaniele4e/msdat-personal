@@ -39,9 +39,9 @@
             :level="level"
             :lgaState="stateName"
           />
-
+          <!-- only show when data is not available for both the LGA's and the map -->
           <NoAvailableData
-            v-if="showNoAvailableData"
+            v-if="showNoAvailableData && chart.length === 0"
             class="position-absolute"
             style="top: 9%; width: 50%; left: 25%"
           />

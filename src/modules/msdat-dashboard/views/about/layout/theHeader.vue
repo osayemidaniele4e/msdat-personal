@@ -48,7 +48,7 @@
 
             <div v-if="$route.path !== '/account'">
               <b-dropdown
-                text="Select Dashboard"
+                text="Select Section"
                 toggle-class="select-dropdown"
                 variant="none"
                 text-variant="none"
@@ -168,21 +168,6 @@
                   :class="{ dropcard: showExpandedDropdown }"
                 />
               </div>
-              <!-- button to view the list of plugins -->
-              <!-- <button
-                v-b-modal.modal-apps
-                class="btn btn-outline-primary border-light rounded-0 ml-3"
-                style="font-size: 13px !important"
-              >
-                Plugins
-              </button> -->
-              <!-- <b-nav-item>
-                <b-dropdown text="Other Dashboards" class="border-0">
-                  <div class="drop-container" v-for="(item, index) in headerDropdown" :key="index">
-                    <router-link class="links" :to="item.link">{{ item.title }}</router-link>
-                  </div>
-                </b-dropdown>
-              </b-nav-item> -->
               <div
                 v-b-toggle.sidebar-2
                 v-if="isAuthenticated === false"
@@ -272,13 +257,7 @@
           <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
           <!-- </a> -->
         </b-col>
-        <b-col class="main">
-          <h4 class="mt-4">About the MSDAT Dashboard</h4>
-          <p>
-            This dashboard is developed and managed by the Department of Health Planning Research
-            and Statistics (DHPRS)
-          </p>
-        </b-col>
+
       </b-row>
     </b-container>
 
@@ -365,6 +344,7 @@ import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
 
 export default {
+  name: 'theHeader',
   components: {
     HeaderOption,
     DropCard,

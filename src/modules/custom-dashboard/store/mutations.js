@@ -361,6 +361,10 @@ export default {
   setVisibility(state, payload) {
     state.visibility = payload;
   },
+
+  setIsPublicDashboard(state, payload) {
+    state.isPublicDashboard = payload;
+  },
   // setshowLoader(state) {
   //   const loader = state.loader;
   //   if (loader.levels === true || loader.indicator === true || loader.datasource === true || loader.years === true) {

@@ -336,6 +336,10 @@ export default {
     commit('setVisibility', payload);
   },
 
+  setIsPublicDashboard({ commit }, payload) {
+    commit('setIsPublicDashboard', payload);
+  },
+
   // making requests to make new public dashboards
   async setDashboardRequest({ commit }, payload) {
     console.log('payload 1', payload)

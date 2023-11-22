@@ -14,8 +14,7 @@
         <span aria-hidden="true" class="mb-4 mt-4 pt-4 pr-4">&times;</span>
       </button>
       <h4 class="mt-4 pl-2">
-        <img src="@/assets/img/browser.png" /><strong class="alertBold"
-          >Unsupported Browser!
+        <img src="@/assets/img/browser.png" /><strong class="alertBold">Unsupported Browser!
         </strong>
       </h4>
 
@@ -56,6 +55,7 @@
                 :changeIndex="changeIndex"
                 :position="position"
                 :selectedPanel="selectedPanel"
+                v-if="cpIsLoading"
                 v-on:showSection="sectionFocus($event)"
               >
                 <template v-slot:default>
@@ -77,53 +77,95 @@
                       />
                     </template>
                     <!-- MULTI SELECT SECTION -->
-                    <template v-else>
-                      <div>
-                        <!-- mobile view direction buttons -->
-                        <div class="swipe-btn-flex">
-                          <button @click="swipeLeft" class="swipe-btn">
-                            <b-icon icon="chevron-left" />
-                          </button>
-                          <button @click="swipeRight" class="swipe-btn">
-                            <b-icon icon="chevron-right" />
-                          </button>
+                    <div v-else>
+                      <div class="icon-row">
+                        <div v-b-toggle.collapse-1>
+                          <b-icon-search v-b-tooltip.hover title="Search Program Areas" />
                         </div>
-                        <div class="row dummy-row">
-                          <div
-                            class="col-md-4"
-                            v-for="(item, index2) in control.setup"
-                            :key="index2"
-                          >
-                            <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
-                            <!-- ADVANCED ANALYTICS PROGRAM-AREA -->
-                            <div v-if="isAdvanced">
-                              <label class="text-uppercase work-sans label-text"
-                                >program areas</label
-                              >
-                              <SelectDropdown
-                                v-model="$data[indexModel(index2)]"
-                                :value="null"
-                                :options="options"
-                              />
-                            </div>
-                            <ControlPanel
-                              :label="modifyLabel(control.label, index2)"
-                              :setup="item"
-                              :groupIndex="index2"
-                              :controlIndex="index"
-                              :defaultIndicator="defaultIndicator"
-                              :defaultDataSource="defaultDataSource"
-                              :defaultLocation="defaultLocation"
-                              :defaultYear="defaultYear"
-                              :updateValue="updateValue"
-                              :updateKey="updateKey"
-                              :resetData="resetData"
-                              :indicatorList="$data[indexModel(index2)]"
-                            />
-                          </div>
+                        <div v-b-toggle.panel mt-1>
+                          <b-icon-caret-down-fill />
                         </div>
                       </div>
-                    </template>
+
+                      <b-collapse id="panel" visible>
+                        <template>
+                          <div>
+                            <!-- mobile view direction buttons -->
+                            <div class="swipe-btn-flex">
+                              <button @click="swipeLeft" class="swipe-btn">
+                                <b-icon icon="chevron-left" />
+                              </button>
+                              <button @click="swipeRight" class="swipe-btn">
+                                <b-icon icon="chevron-right" />
+                              </button>
+                            </div>
+                            <!-- Getting information about a program area -->
+                            <b-collapse id="collapse-1" class="mt-2">
+                              <b-card>
+                                <label class="text-uppercase work-sans label-text">Search for Program Area</label>
+                                <SelectDropdown
+                                  v-model="program_option"
+                                  :value="null"
+                                  :options="mappedProgramAreas(control.setup[0][0].options)"
+                                />
+                                <!-- <b-button v-b-toggle.collapse-1-inner size="sm">Toggle Inner Collapse</b-button> -->
+                                <b-collapse id="collapse-1-inner" visible class="mt-2">
+                                  <div v-if="program_selected.length > 0">
+                                    <b-card>
+                                      <div class="program-area">
+                                        <span>
+                                          <strong> Program area </strong> :
+                                          {{ program_selected[0].program_area }}
+                                        </span>
+                                      </div>
+                                    </b-card>
+                                  </div>
+                                </b-collapse>
+                              </b-card>
+                            </b-collapse>
+
+                            <div class="row dummy-row">
+                              <div
+                                class="col-md-4"
+                                v-for="(item, index2) in control.setup"
+                                :key="index2"
+                              >
+                                <h3 class="control-header">Control ({{ index2 + 1 }})</h3>
+                                <!-- ADVANCED ANALYTICS PROGRAM-AREA -->
+                                <!-- <pre>{{  item[0].options }}</pre> -->
+                                <div v-if="isAdvanced">
+                                  <label class="text-uppercase work-sans label-text"
+                                    >program areas</label
+                                  >
+                                  <SelectDropdown
+                                    v-model="$data[indexModel(index2)]"
+                                    :value="null"
+                                    v-if="item[0].options"
+                                    :options="getProgramArea(item[0].options)"
+                                  />
+                                  {{ showItem(item) }}
+                                </div>
+                                <ControlPanel
+                                  :label="modifyLabel(control.label, index2)"
+                                  :setup="item"
+                                  :groupIndex="index2"
+                                  :controlIndex="index"
+                                  :defaultIndicator="defaultIndicator"
+                                  :defaultDataSource="defaultDataSource"
+                                  :defaultLocation="defaultLocation"
+                                  :defaultYear="defaultYear"
+                                  :updateValue="updateValue"
+                                  :updateKey="updateKey"
+                                  :resetData="resetData"
+                                  :indicatorList="$data[indexModel(index2)]"
+                                />
+
+                              </div>
+                            </div>
+                          </div>
+                        </template>
+                      </b-collapse>
+                    </div>
                   </ControlBase>
                 </template>
               </BasePanel>
@@ -176,12 +218,12 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex';
-import Vue from 'vue';
 import {
   BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
-import apiServices from '@/modules/data-layer/services/ApiServices';
-import config from '@/modules/dynamic-dashboard/config/dashboard_config';
+// import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
+// import apiServices from '@/modules/DataLayer/services/ApiServices';
+import config from '@/modules/dynamic_dashboard/config/dashboard_config';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -204,11 +246,13 @@ export default {
     SelectDropdown,
     Header,
     Footer,
+    // BaseUpdate,
   },
   data() {
     const index = parseInt(this.$route.query.index, 10) || 0;
     return {
       isAdvanced: false,
+      showPanel: false,
       showTroubleShootingModal: false,
       position: 3,
       selectedPanel: index,
@@ -225,34 +269,16 @@ export default {
       scrollPos: '',
       sectionKey: 0,
       popUp: true,
-      program_areas: [
-        { name: 'Buy', value: 'buy' },
-        { name: 'Shortlets', value: 'shortlet' },
-        { name: 'Rent', value: 'rent' },
-      ],
       value: null,
       detect: false,
       value0: null,
       value1: null,
       value2: null,
-      options: [
-        'Demographics',
-        'Financing',
-        'Health Financing',
-        'Facility service delivery',
-        'RMNCH',
-        'Mortality',
-        'Dental Therapy Practice',
-        'HIV',
-        'Nutrition',
-        'Service delivery',
-        'Optometry Practice',
-        'Medical Doctors',
-        'HR Guidelines and Workforce',
-        'Climate',
-        'Education',
-      ],
       program_option: '',
+      selected: {},
+      program_areas: [],
+      testt: [],
+      program_selected: {},
       indicators: [],
       dataSources: [],
       defaultIndicators: [],
@@ -260,6 +286,9 @@ export default {
       initialDataSource: null,
       initialLocation: null,
     };
+  },
+  computed: {
+    ...mapGetters(['getSectionTitle']),
   },
   props: {
     updateValue: {
@@ -291,57 +320,69 @@ export default {
     this.initialLocation = this.getConfigObject().initialLocation;
     window.addEventListener('resize', this.onResize);
 
+    const { name } = this.$route.params;
+    if (name === 'Advanced_Analytics') {
+      this.isAdvanced = true;
+    }
+    // try {
+    //   const response = await apiServices.getDashboard();
+    //   const { results } = response.data;
+    //   this.configObject = results.find((item) => item.name === name);
+    // } catch {
+    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
+    // }
+    // this.configObject = this.dashboardConfig.find((item) => item.name === name);
+
     // checking if in Mobile view
     if (window.innerWidth < 769) {
       this.isMobile = true;
     } else {
       this.isMobile = false;
     }
-    // this.getConnectionStatus();
+
     window.addEventListener('wheel', this.handleScroll);
   },
 
   destroyed() {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('wheel', this.handleScroll);
-    window.removeEventListener('online', this.getConnectionStatus);
-    window.removeEventListener('offline', this.getConnectionStatus);
   },
+
   methods: {
-    getConnectionStatus(e) {
-      const { type } = e;
-      if (type === 'online') {
-        this.$store.dispatch('setInternetStatus', true);
-        Vue.swal({
-          toast: true,
-          position: 'bottom',
-          showConfirmButton: false,
-          timer: 5000,
-          icon: 'success',
-          title: 'Connection Restored',
-        });
-      } else {
-        this.$store.dispatch('setInternetStatus', false);
-        Vue.swal({
-          toast: true,
-          position: 'bottom',
-          showConfirmButton: false,
-          timer: 5000,
-          icon: 'error',
-          title: ' Offline',
-          text: 'Check Your Internet Connection',
-        });
-      }
-    },
     ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
     },
+
+    showItem(item) {
+      console.log(item, '@@HH@@');
+    },
+    // function to get program areas
+    getProgramArea(data) {
+      return data.map((el) => el.program_area);
+    },
+    mappedProgramAreas(data) {
+      this.program_areas = data;
+      const indicators = data.map((p) => p.indicators);
+      const singleArr = indicators.flat();
+      const indicatorArr = [];
+      singleArr.forEach((el) => {
+        const indicatorName = el.full_name;
+        indicatorArr.push(indicatorName);
+      });
+      return indicatorArr;
+    },
+    /**
+     * Function to handle show welcome modal
+     */
     handleClosePopUp() {
       this.popUp = false;
     },
+    // log(event, index, index2) {
+    //   console.log('log function =>', event, index, index2);
+    // },
 
     changeKey(n) {
       this.sectionKey = n;
@@ -486,33 +527,20 @@ export default {
       }
     },
   },
+
   watch: {
     async program_option(newVal) {
-      if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
-        try {
-          const response = await apiServices.getDashboard();
-          const results = response.data;
-          const dashboard = results.find((item) => item.name === newVal);
-          if (dashboard === undefined) {
-            this.$router.push('/*');
-            return;
-          }
-          this.configObject = dashboard;
-          this.SET_CONFIGURATIONS(this.configObject);
-        } catch (err) {
-          console.log(
-            err,
-            '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Base Dashboard Component, \n\n \r\r',
-            'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
-          );
-        }
-      }
+      const indicators = this.program_areas.map((p) => p.indicators);
+      console.log(indicators, 'indicators');
+      const singleArr = indicators.flat();
+      this.program_selected = singleArr.filter((item) => item.full_name === newVal);
     },
   },
+
   async mounted() {
-    window.addEventListener('online', this.getConnectionStatus);
-    window.addEventListener('offline', this.getConnectionStatus);
     this.loading = false;
+    // initializing data for dashboard
+    // console.trace(this.$route.query);
     let urlRequestedIndicator = [];
     if (this.$route.query.indicator) {
       urlRequestedIndicator = this.getRouteIndicatorRelatedIndicators();
@@ -569,6 +597,7 @@ export default {
 </script>
 
 <style lang="scss">
+/* Temporary fix for the font-sizes irregularities for the table data on the dashboard*/
 div.temp {
   a {
     font-size: 13px !important;
@@ -578,13 +607,13 @@ div.temp {
   h3,
   h4,
   h1 {
-    font-size: 0.7rem ;
+    // font-size: 1rem !important;
   }
   li {
-    font-size: 0.9rem !important;
+    font-size: 0.7rem !important;
   }
   table span {
-    font-size: 0.7rem !important;
+    // font-size: 1rem !important;
   }
   .sticky {
     position: sticky;
@@ -629,7 +658,7 @@ div#browserSupport img {
   display: none;
 }
 .label-text {
-  font-size: 13px;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -658,5 +687,18 @@ div#browserSupport img {
     overflow: scroll;
     flex-wrap: nowrap;
   }
+}
+// .togglePanel {
+//   margin-left: 84vw;
+// }
+
+.program-area {
+  font-size: 12px;
+}
+
+.icon-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 </style>

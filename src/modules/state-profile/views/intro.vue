@@ -10,8 +10,8 @@
         <p class="text-left msg">
           This dashboard provides a single transparent view of health data across the country. It
           presents health data across seven (7) program areas: RMNCH, Nutrition, Malaria,
-          Immunization, HIV/AIDS, Mortality and Health Services. It also provides insight on health facility service
-          availability and readiness for each state.
+          Immunization, HIV/AIDS, Mortality and Health Services. It also provides insight on health
+          facility service availability and readiness for each state.
         </p>
         <b-row align-h="start">
           <b-col cols="auto">
@@ -68,7 +68,7 @@
         </b-row>
       </b-col>
       <b-col sm="12" md="5" class="mt-5">
-        <BaseMap :level="1" :mapObject="mapOptions" />
+        <StateBaseMap :level="1" :mapObject="mapOptions" />
         <p class="mt-2 text-center map-text">Select a state on the map to view state profile</p>
         <div class="row justify-content-center">
           <button class="btn bottom-btn px-4 mt-3" @click="viewNationalProfile">
@@ -81,12 +81,12 @@
 </template>
 
 <script>
-import BaseMap from '@/components/maps/BaseMap.vue';
+import StateBaseMap from '@/components/maps/StateProfileBaseMap.vue';
 
 export default {
   name: 'intro',
   components: {
-    BaseMap,
+    StateBaseMap,
   },
 
   data() {

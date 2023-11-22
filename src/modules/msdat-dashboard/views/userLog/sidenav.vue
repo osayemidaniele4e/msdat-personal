@@ -17,6 +17,11 @@
             ><b-icon-card-heading></b-icon-card-heading>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Saved Dashboards</span></a
           >
+          <a href="#/createPlugin" class="mt-4 item blue"
+            ><b-icon-cloud-upload></b-icon-cloud-upload>&nbsp;&nbsp;
+            <span class="d-none d-lg-inline">Create a plugin</span></a
+          >
+         
         </div>
         <div class="col-lg-10 col-11">
           <savedDashboards :is="currentView" />
@@ -34,6 +39,7 @@ import Profile from './profile.vue';
 import Notification from './notifications.vue';
 import userActivity from './userActivity.vue';
 import savedDashboards from './savedDashboards.vue';
+import createPlugin from './createPlugin.vue';
 
 const routes = {
   '/': savedDashboards,
@@ -41,6 +47,7 @@ const routes = {
   '/notification': Notification,
   '/userActivity': userActivity,
   '/savedDashboards': savedDashboards,
+  '/createPlugin': createPlugin,
 };
 
 export default {
@@ -87,5 +94,9 @@ h3 {
 }
 a {
   color: #000 !important;
+}
+
+.blue{
+  color: blue;
 }
 </style>

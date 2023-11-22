@@ -69,7 +69,7 @@
     <div class="col-12 pt-3 pb-3">
       <h6 class="font-weight-bold work-sans">Share on social media</h6>
       <div class="row no-gutters">
-        <div class="col">
+        <div class="col" style="align-items: center; display: flex;">
           <ShareNetwork
             network="facebook"
             :url="shareURL"
@@ -90,7 +90,7 @@
             :hashtags="hashtags"
             :twitterUser="twitterUser"
           >
-            <b-icon class="mx-3" style="color: #55acee" font-scale="3" icon="twitter" />
+            <svg xmlns="http://www.w3.org/2000/svg" height="3em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
           </ShareNetwork>
 
           <ShareNetwork
@@ -101,6 +101,17 @@
             :quote="shareDesc"
           >
             <b-icon class="mx-3" style="color: #55acee" font-scale="3" icon="linkedin" />
+          </ShareNetwork>
+
+          <ShareNetwork
+            network="whatsapp"
+            :url="shareURL"
+            :title="shareText"
+            :description="shareDesc"
+            :quote="shareDesc"
+            :hashtags="hashtags"
+          >
+            <b-icon class="mx-3" style="color: #25d366" font-scale="3" icon="whatsapp" />
           </ShareNetwork>
         </div>
       </div>
@@ -123,6 +134,7 @@ export default {
         'HealthTech,HealthData,DataAnalytics,HealthDataAnalytics,BigData,DataSources,Data,DataScientist,DataAnalyst,HealthIndicators',
     };
   },
+
   methods: {
     copy() {
       this.$refs.linkInput.select();
