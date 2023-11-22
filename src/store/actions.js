@@ -13,15 +13,23 @@ export default {
   async SET_INDICATOR_TIME_SPENT({ commit }, payload) {
     try {
       const { data } = await axios.post('http://172.93.52.240:3001/api/indicator_timespent/', payload);
-      commit('setInteraction', data);
+      // commit('setInteraction', data);
     } catch (error) {
       console.log(error);
     }
   },
   async SET_DATASOURCE_TIME_SPENT({ commit }, payload) {
     try {
-      const { data } = await axios.post('/user_interactions/', payload);
-      commit('setInteraction', data);
+      const { data } = await axios.post('http://172.93.52.240:3001/api/datasource_timespent/', payload);
+      // commit('setInteraction', data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async SET_DATASOURCE_DASHBOARD_LOCATION({ commit }, payload) {
+    try {
+      const { data } = await axios.post('http://172.93.52.240:3001/api/user_dashboard_location/', payload);  
+      // commit('setInteraction', data);
     } catch (error) {
       console.log(error);
     }

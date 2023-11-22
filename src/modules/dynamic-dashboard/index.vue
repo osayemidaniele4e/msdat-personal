@@ -72,6 +72,8 @@ export default {
       'SET_SELECTED_CONFIG',
     ]),
     ...mapActions('AUTH_STORE', ['LOGIN_USER', 'SAVE_USER_DASHBOARD']),
+    ...mapActions(['SET_DASHBOARD_LOCATION']),
+
     /**
      * @function clearData
      * @author davebenard
@@ -183,6 +185,8 @@ export default {
         latitude: this.latitude,
         time: Date.now()
       };
+
+      this.SET_DASHBOARD_LOCATION(data)
 
 
       this.clearData();
