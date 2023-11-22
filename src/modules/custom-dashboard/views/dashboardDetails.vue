@@ -40,9 +40,15 @@
             <p v-if="!publicReason">This must not be empty.</p>
           </div>
           <br>
+          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !description.isValid }">
+            <p>Dashboard Category</p>
+            <b-form-select v-model="category" :options="categoryOptions"></b-form-select>
+          </div>
+          <br>
           <span>
   <input type="checkbox" v-model="isPublicDashboard"> <!-- Add v-model -->
   Create a public dashboard
+  {{ isPublicDashboard }}
 </span>
         </b-col>
         <b-col class="image-file mb-5">
@@ -156,9 +162,15 @@ export default {
       },
       formIsValid: true,
       user: {},
+      category: '',
       username: '',
       endEdit: true,
-      isPublicDashboard: false, 
+      isPublicDashboard: '', 
+      categoryOptions: [
+          { value: 'health_outcomes', text: 'Health Outcomes' },
+          { value: 'health_input', text: 'Health Input' },
+          { value: 'health_output', text: 'Health Output' },
+        ]
     };
   },
   mounted() {
@@ -178,17 +190,28 @@ export default {
     if (this.endEdit) this.$store.commit('endEdit');
   },
   watch: {
-  isPublicDashboard(newVal) {
+  async isPublicDashboard(newVal) {
+    console.log('cehking')
     // Call the Vuex action with the new value (true or false)
     this.$store.dispatch('setIsPublicDashboard', newVal);
     if(newVal === true){
+      console.log('new val', newVal)
       this.$store.dispatch('setVisibility', 'public');
     }
+    if(newVal === false){
+      console.log('new val', newVal)
+
+      this.$store.dispatch('setVisibility', 'private');
+    }
+    // consologing the visibilty
+    console.log('visibilty', this.$store.getters.getVisibility)
     
   },
 },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
+    ...mapGetters('CUSTOM_DASHBOARD_STORE', ['getVisibility']),
+
   },
   methods: {
     // INITIALIZE CURRENT DASHBOARD TO LOCAL
@@ -300,6 +323,7 @@ export default {
         description: this.description,
         reason: this.publicReason,
         image: this.selectedImage.val,
+        category: this.category
       };
 
       this.$store.dispatch('dashboardConfiguration', {
@@ -307,6 +331,7 @@ export default {
         description: this.description.val,
         image: this.selectedImage.val,
         reason: this.publicReason,
+        category: this.category
       });
       //
       this.$store.dispatch('allSelection', {
@@ -315,6 +340,7 @@ export default {
       // this.$store.state.CUSTOM_DASHBOARD_STORE.masterData = [];
       // this.$store.state.CUSTOM_DASHBOARD_STORE.SurveyArray = [];
       this.endEdit = false;
+
 
       this.$emit('save-data', formData);
       this.$router.push('preference-table');
@@ -328,6 +354,7 @@ export default {
           description: this.description.val,
           image: this.selectedImage.val,
           reason: this.publicReason,
+          category: this.category
         });
         this.$store.dispatch('allSelection', {
           allselected: true,

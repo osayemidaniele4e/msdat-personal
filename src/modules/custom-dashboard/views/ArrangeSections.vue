@@ -350,20 +350,23 @@ export default {
         return;
       }
 
+      
 
       // if the dashboard is public, run these functions
       if(this.getVisibility === 'public'){
-        this.public_creator.name = this.getUser.name;
-      this.public_creator.email = this.getUser.email;
-      this.public_creator.description = this.dashboardDetails.description,
-      // this.public_creator.organization = '';
-      this.public_creator.Reason = this.dashboardDetails.reason;
-      this.public_creator.name_of_dashboard = this.dashboardDetails.name;
-      }
+      //   this.public_creator.name = this.$store.getters.getUser.name;
+      // this.public_creator.email = this.$store.getters.getUser.email;
+      // this.public_creator.description = this.$store.getters.dashboardDetails.description,
+      // // this.public_creator.organization = '';
+      // this.public_creator.Reason = this.$store.getters.dashboardDetails.reason;
+      // this.public_creator.name_of_dashboard = this.$store.getters.dashboardDetails.name;
+      // this.public_creator.category = this.$store.getters.dashboardDetails.category;
 
-      console.log('dashboard-details', this.dashboardDetails);
+
+      console.log('dashboard-details', await this.dashboardDetails);
       console.log('user details', this.getUser)
-      console.log('public-creator', this.public_creator)
+      // console.log('getters get user', this.$store.getters.getUser)
+      console.log('public-creator', await this.public_creator)
 
       await this.$store.dispatch('setDashboardRequest', this.public_creator);
       // hide the 'modal-public-dashboard'
@@ -371,12 +374,12 @@ export default {
       // show the 'modal-in-review'
       await this.$bvModal.show('modal-in-review');
 
-      //
+        //
       // SAVE DASHBOARD LOCALLY
       //
       // retrieve initial currentDashboard value (consisting only id & userId)
       const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
-      // retrieve all saved dashboards
+      // retrieve all saved dashboard
       const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
       // retrieve dashboards belonging to current user
       let list = customDashboardsList[this.getUser.username];
@@ -387,6 +390,8 @@ export default {
         surveyArray: this.$store.getters.getDataSource,
         sectionsArray: this.$store.getters.arrangedSections,
       };
+
+        
       // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
       const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
       if (dashboard) {
@@ -413,6 +418,59 @@ export default {
         path: `/dashboard/${t}`,
         component: () => import('../../dynamic-dashboard/index.vue'),
       });
+      }
+
+
+      // if the dashboard is public, run these functions
+      if(this.getVisibility === 'private'){
+      // SAVE DASHBOARD LOCALLY
+      //
+      // retrieve initial currentDashboard value (consisting only id & userId)
+      const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
+      // retrieve all saved dashboard
+      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      // retrieve dashboards belonging to current user
+      let list = customDashboardsList[this.getUser.username];
+      // create the dashboard config to be saved
+      const config = {
+        dashboardDetails: this.$store.getters.dashboardDetails,
+        composedData: this.$store.getters.getprogramArea,
+        surveyArray: this.$store.getters.getDataSource,
+        sectionsArray: this.$store.getters.arrangedSections,
+      };
+
+        
+      // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
+      const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
+      if (dashboard) {
+        dashboard.lastEdited = Date.now();
+        dashboard.config = config;
+        localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
+        this.$store.commit('endEdit');
+      } else {
+        // (new dashboard) -> add 'config' and 'created' properties to currentDashboard and insert to start of list
+        if (!list) {
+          customDashboardsList[this.getUser.username] = [];
+          list = customDashboardsList[this.getUser.username];
+        }
+        currentCustomDashboard.created = Date.now();
+        currentCustomDashboard.config = config;
+        list.unshift(currentCustomDashboard);
+        localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
+      }
+      console.log(customDashboardsList);
+
+      this.$store.dispatch('customDashboard', true);
+      const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
+      this.$router.push({
+        path: `/dashboard/${t}`,
+        component: () => import('../../dynamic-dashboard/index.vue'),
+      });
+      }
+
+     
+
+  
     },
 
     // PRESELECTION OF Dashboard widgets
