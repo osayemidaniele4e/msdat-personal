@@ -145,8 +145,8 @@ export default {
 
         const timespent = {
           indicator: this.previous_indicator,
-          time: diff,
-          user: this.getUser
+          timeSpent: diff,
+          user: this.getUser.id
         }
 
         this.SET_INDICATOR_TIME_SPENT(timespent)
@@ -192,8 +192,8 @@ export default {
 
         const timespent = {
           datasource: this.previous_datasource,
-          time: diff,
-          user: this.getUser
+          timeSpent: diff,
+          user: this.getUser.id
         }
 
         this.SET_DATASOURCE_TIME_SPENT(timespent)

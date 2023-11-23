@@ -183,7 +183,7 @@ export default {
         dashboard: this.$route.params.name,
         longitude: this.longitude,
         latitude: this.latitude,
-        time: Date.now()
+        timeSpent: Date.now()
       };
 
       this.SET_DASHBOARD_LOCATION(data)
