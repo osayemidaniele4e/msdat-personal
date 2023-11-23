@@ -10,26 +10,29 @@ export default {
       console.log(error);
     }
   },
-  async SET_INDICATOR_TIME_SPENT({ commit }, payload) {
+  async SET_INDICATOR_TIME_SPENT(payload) {
     try {
       const { data } = await axios.post('http://172.93.52.240:3001/api/indicator_timespent/', payload);
       // commit('setInteraction', data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
   },
-  async SET_DATASOURCE_TIME_SPENT({ commit }, payload) {
+  async SET_DATASOURCE_TIME_SPENT(payload) {
     try {
       const { data } = await axios.post('http://172.93.52.240:3001/api/datasource_timespent/', payload);
       // commit('setInteraction', data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
   },
-  async SET_DATASOURCE_DASHBOARD_LOCATION({ commit }, payload) {
+  async SET_DATASOURCE_DASHBOARD_LOCATION(payload) {
     try {
-      const { data } = await axios.post('http://172.93.52.240:3001/api/user_dashboard_location/', payload);  
+      const { data } = await axios.post('http://172.93.52.240:3001/api/user_dashboard_location/', payload);
       // commit('setInteraction', data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -56,9 +59,20 @@ export default {
   },
 
   // submitting a plugin
-  async SUBMIT_PLUGIN({ commit }, payload) {
+  async SUBMIT_PLUGIN(payload) {
     try {
       const { data } = await axios.post('http://172.93.52.240:3001/api/submit_plugins/', payload);
+      // commit('setInteraction', data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async SET_DASHBOARD_LOCATION(payload) {
+    try {
+      const { data } = await axios.post('http://172.93.52.240:3001/api/user_dashboard_location/', payload);
+      console.log(data);
       // commit('setInteraction', data);
     } catch (error) {
       console.log(error);
