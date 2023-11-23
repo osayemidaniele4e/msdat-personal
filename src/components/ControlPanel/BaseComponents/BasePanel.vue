@@ -116,7 +116,7 @@ export default {
       // loop over all the tabs
       this.controls.forEach((control, index) => {
         // eslint-disable-next-line no-param-reassign
-        control.active = index === controlIndex;
+        control.active = index === controlIndex + 1;
       });
     },
     // selectControll(controlIndex) {
