@@ -72,6 +72,7 @@ export default {
       'SET_SELECTED_CONFIG',
     ]),
     ...mapActions('AUTH_STORE', ['LOGIN_USER', 'SAVE_USER_DASHBOARD']),
+    ...mapActions(['SET_DASHBOARD_LOCATION']),
     /**
      * @function clearData
      * @author davebenard
@@ -175,12 +176,14 @@ export default {
       this.longitude = position.coords.longitude;
 
       // Now that you have the geolocation data, you can use it here
-      // const data = {
-      //   dashboard: this.$route.params.name,
-      //   longitude: this.longitude,
-      //   latitude: this.latitude,
-      //   time: Date.now(),
-      // };
+      const data = {
+        dashboard: this.$route.params.name,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        time: Date.now(),
+      };
+
+      this.SET_DASHBOARD_LOCATION(data);
 
       this.clearData();
 
