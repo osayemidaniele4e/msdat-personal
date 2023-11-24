@@ -14,7 +14,7 @@
     >
       <template #title>
         <h6 class="work-sans">
-          Comparison Of <b>{{ values.indicator.short_name }}</b> Across
+          Comparison of <b>{{ values.indicator.short_name }}</b> Across
           Different Data Source
         </h6>
       </template>

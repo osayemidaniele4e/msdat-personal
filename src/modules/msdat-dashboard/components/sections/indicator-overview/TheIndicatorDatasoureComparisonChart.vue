@@ -23,7 +23,7 @@
       >
         <template #title>
           <p class="work-sans mb-0 line-height">
-            Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
+            Comparison of <b>{{ values.indicator.short_name }}</b> and related indicators
             (Time-series comparison of {{ values.indicator.short_name }}) across different data
             sources.
           </p>
@@ -52,7 +52,7 @@
       >
         <template #title>
           <p class="work-sans mb-0 line-height">
-            Comparison Of <b>{{ values.indicator.short_name }}</b> and related indicators
+            Comparison of <b>{{ values.indicator.short_name }}</b> and related indicators
             (Time-series comparison of {{ values.indicator.short_name }}) across different data
             sources.
           </p>
