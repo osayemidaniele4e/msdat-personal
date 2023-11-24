@@ -10,29 +10,25 @@ export default {
       console.log(error);
     }
   },
-  async SET_INDICATOR_TIME_SPENT(payload) {
+  // eslint-disable-next-line no-unused-vars
+  async SET_INDICATOR_TIME_SPENT({ commit }, payload) {
     try {
-      const { data } = await axios.post('http://172.93.52.240:3001/api/indicator_timespent/', payload);
-      // commit('setInteraction', data);
-      console.log(data);
+      await axios.post('http://172.93.52.240:3001/api/indicator_timespent/', payload);
     } catch (error) {
       console.log(error);
     }
   },
-  async SET_DATASOURCE_TIME_SPENT(payload) {
+  // eslint-disable-next-line no-unused-vars
+  async SET_DATASOURCE_TIME_SPENT({ commit }, payload) {
     try {
-      const { data } = await axios.post('http://172.93.52.240:3001/api/datasource_timespent/', payload);
-      // commit('setInteraction', data);
-      console.log(data);
+      await axios.post('http://172.93.52.240:3001/api/datasource_timespent/', payload);
     } catch (error) {
       console.log(error);
     }
   },
   async SET_DATASOURCE_DASHBOARD_LOCATION(payload) {
     try {
-      const { data } = await axios.post('http://172.93.52.240:3001/api/user_dashboard_location/', payload);
-      // commit('setInteraction', data);
-      console.log(data);
+      await axios.post('http://172.93.52.240:3001/api/user_dashboard_location/', payload);
     } catch (error) {
       console.log(error);
     }
