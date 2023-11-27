@@ -329,7 +329,7 @@ export default {
       //   return data?.filter((item) => item.program_area === this.indicatorList);
       // }
 
-      console.log(this.$store.getters.getSectionTitle, 'XXXXX');
+      // console.log(this.$store.getters.getSectionTitle, 'XXXXX');
 
       const { name } = this.$route.params;
       if (name === 'Advanced_Analytics' && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison') {
