@@ -28,7 +28,7 @@
             <p v-if="!description.isValid">This must not be empty.</p>
           </div>
           <br>
-          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !description.isValid }">
+          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !publicReason.isValid }">
             <p>Reason for making your dashboard public</p>
             <b-form-input
               type="text"
@@ -37,12 +37,15 @@
               @blur="clearValidity('reason')"
               placeholder="Hint: What us the major purpose of making your dashboard public"
             ></b-form-input>
-            <p v-if="!publicReason">This must not be empty.</p>
+            <p v-if="!publicReason.isValid">This must not be empty.</p>
           </div>
           <br>
-          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !description.isValid }">
+          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !category.isValid }">
             <p>Dashboard Category</p>
-            <b-form-select v-model="category" :options="categoryOptions"></b-form-select>
+            <b-form-select
+            class="form-control"
+             v-model="category" :options="categoryOptions"></b-form-select>
+             <p v-if="!category.isValid">This must not be empty.</p>
           </div>
           <br>
           <span>
@@ -162,14 +165,16 @@ export default {
       },
       formIsValid: true,
       user: {},
-      category: '',
+      category: 'health_outcomes',
       username: '',
       endEdit: true,
       isPublicDashboard: '', 
       categoryOptions: [
+          { value: 'population', text: 'Population' },
           { value: 'health_outcomes', text: 'Health Outcomes' },
           { value: 'health_input', text: 'Health Input' },
-          { value: 'health_output', text: 'Health Output' },
+          { value: 'health_outputs', text: 'Health Outpust' },
+          { value: 'other', text: 'Other' },
         ]
     };
   },
@@ -280,13 +285,21 @@ export default {
       }
       if (this.description.val === '') {
         this.description.isValid = false;
+        this.formIsValid = false; 
+      }
+      if (this.publicReason === '') {
+        this.publicReason.isValid = false;
+        this.formIsValid = false;
+      }
+      if (this.category === '') {
+        this.category.isValid = false;
         this.formIsValid = false;
       }
       // if (this.selectedImage.val === '') {
-      //   // this.selectedImage.isValid = false;
-      //   // this.formIsValid = false;
-      //   // this.selectedImage.isValid = false;
-      //   // this.formIsValid = true;
+      //   this.selectedImage.isValid = false;
+      //   this.formIsValid = false;
+      //   this.selectedImage.isValid = false;
+      //   this.formIsValid = true;
       // }
     },
 
@@ -318,7 +331,10 @@ export default {
         return;
       }
 
-      const formData = {
+      let formData = {};
+
+      if(this.isPublicDashboard){
+       formData = {
         dashboardName: this.dName,
         description: this.description,
         reason: this.publicReason,
@@ -333,6 +349,27 @@ export default {
         reason: this.publicReason,
         category: this.category
       });
+      } else {
+
+        formData = {
+        dashboardName: this.dName,
+        description: this.description,
+        reason: this.publicReason,
+        image: this.selectedImage.val,
+        category: this.category
+      };
+
+      this.$store.dispatch('dashboardConfiguration', {
+        name: this.dName.val,
+        description: this.description.val,
+        image: this.selectedImage.val,
+        reason: this.publicReason,
+        category: this.category
+      });
+
+      }
+
+ 
       //
       this.$store.dispatch('allSelection', {
         allselected: false,
