@@ -152,6 +152,8 @@ export default {
               (item) => this.dlGetLocation(item.location).parent === val.location.id,
             );
 
+            console.log(filteredLGADataForState, 'ANOTHER');
+
             const formatToHighChart = (dataValues) => dataValues.map((item) => [
               this.dlGetLocation(item.location).name,
               parseFloat(item.value),
@@ -180,6 +182,7 @@ export default {
             // index starts at one to skip region data for the series
             const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
             const zonalSeries = this.getZonalDataInHighChartFormat(data);
+
             // console.log(zonalSeries);
             // add national to top of the zonal series series
             const national = data.find((item) => item.location === 1);
@@ -204,6 +207,7 @@ export default {
                 newChart.push(item);
               }
             });
+
             newChart.unshift();
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);

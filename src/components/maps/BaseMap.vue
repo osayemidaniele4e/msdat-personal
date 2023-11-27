@@ -4,7 +4,6 @@
 <template>
   <div>
     <Highmaps :options="defaultOptions" />
-    {{ showItem(defaultOptions) }}
   </div>
 </template>
 
@@ -25,10 +24,7 @@ import NigerianMap from './ng-all.geo.json';
 import defaultOptions from './defaultOptions';
 
 // map data
-// import regionsMap from './mapData/regions';
-// map data
-import newRegionsMap from './mapData/newRegions';
-// import regionsMapSerries from './mapData/regionSerries';
+import regionsMap from './mapData/regions';
 
 import {
   // eslint-disable-next-line camelcase
@@ -136,9 +132,7 @@ export default {
     };
   },
   methods: {
-    showItem(item) {
-      console.log(item, 'MMM');
-    },
+
     plotMapLevel(level) {
       // check space is in string and add underscore
       let lgaState = '';
@@ -151,8 +145,7 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
         case 2:
-          this.defaultOptions.plotOptions.map.mapData = newRegionsMap;
-          // this.defaultOptions.series = regionsMapSerries;
+          this.defaultOptions.plotOptions.map.mapData = regionsMap;
           break;
         case 3:
           this.defaultOptions.plotOptions.map.mapData = this.lgaMapData[lgaState].data;
@@ -164,22 +157,13 @@ export default {
           this.defaultOptions.plotOptions.map.mapData = NigerianMap;
           break;
       }
-      // this.defaultOptions = { ...this.defaultOptions };
+      this.defaultOptions = { ...this.defaultOptions };
     },
   },
   watch: {
     mapObject: {
       handler(newVal) {
-        const filteredSeries = newVal.series && newVal.series.filter((item) => item.data.length > 0);
-
-        if (filteredSeries.length === 1) {
-          this.defaultOptions = Object.assign(this.defaultOptions, newVal);
-          this.level = 2;
-        } else {
-          this.defaultOptions = Object.assign(this.defaultOptions, newVal);
-          this.level = 1;
-        }
-        // this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+        this.defaultOptions = Object.assign(this.defaultOptions, newVal);
       },
       immediate: true,
       deep: true,
