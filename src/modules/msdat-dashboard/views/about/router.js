@@ -5,5 +5,8 @@ export default [
     path: '/about',
     name: 'About',
     component: index,
+    meta: {
+      title: 'MSDAT Platform | About',
+    },
   },
 ];
