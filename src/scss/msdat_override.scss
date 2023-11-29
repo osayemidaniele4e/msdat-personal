@@ -6,11 +6,18 @@ span.multiselect__single {
   font-family: 'Work Sans', sans-serif !important;
   font-weight: 500;
   height: 1.5rem;
-  max-width: 40ch;
+  // max-width: 40ch;
+  // overflow: hidden;
+  // text-decoration: none;
+  // text-overflow: ellipsis;
+  // white-space: nowrap;
+  max-width: none;
   overflow: hidden;
   text-decoration: none;
-  text-overflow: ellipsis;
+  text-overflow: unset;
   white-space: nowrap;
+  overflow-x: scroll;
+  display: inline-block;
 }
 
 span.multiselect__tag {
