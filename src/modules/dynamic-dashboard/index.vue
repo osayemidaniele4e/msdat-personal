@@ -310,6 +310,9 @@ export default {
       this.SET_CONFIGURATIONS(getFormattedConfig || this.configObject); // make use of the new state implementation to avoid prop drilling
       localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
       localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
+
+      window.document.title = 'Custom Dashboard';
+
       return;
     }
     // if it is not custom dashboard for safety reasons set it to false
@@ -388,6 +391,7 @@ export default {
     // set the title from the config as the route title
     if (this.$store.state.MSDAT_STORE.configObject.title) {
       this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
+      window.document.title = this.$store.state.MSDAT_STORE.configObject.title;
     }
   },
   watch: {
