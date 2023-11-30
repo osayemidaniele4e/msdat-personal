@@ -354,24 +354,17 @@ export default {
         return;
       }
 
-      console.log('checking visibility', this.getVisibility)
-
 
       // if the dashboard is public, run these functions
       if(this.getVisibility === 'public'){
         this.public_creator.name = this.getUser.username;
       this.public_creator.email = this.getUser.email;
       this.public_creator.description = await this.dashboardDetails.description,
-      // this.public_creator.organization = '';
       this.public_creator.Reason = await this.dashboardDetails.reason;
       this.public_creator.category = await this.dashboardDetails.category;
       this.public_creator.name_of_dashboard = await this.dashboardDetails.name;
-      console.log('i am in the public domain')
+      this.public_creator.link = `https://msdat.fmohconnect.gov.ng/dashboards/${this.dashboardDetails.name}`
       }
-
-      console.log('dashboard-details', this.dashboardDetails);
-      console.log('dashboard-visibility', this.getVisibility);
-      console.log('user details', this.getUser)
       console.log('public-creator', this.public_creator)
 
       await this.$store.dispatch('setDashboardRequest', await this.public_creator);
