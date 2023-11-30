@@ -84,4 +84,7 @@ export default {
   editMode(state) {
     return state.editMode;
   },
+  isPublicDashboard(state) {
+    return state.publicDashboard;
+  },
 };

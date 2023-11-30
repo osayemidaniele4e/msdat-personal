@@ -82,7 +82,7 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
-          <router-link 
+          <router-link
           to="/custom" target="_blank"
             ><b-list-group-item
               > Create Your Dashboard</b-list-group-item
@@ -94,7 +94,7 @@
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
             ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
           >
-          <router-link to="/coming-soon/advanced_analytics" target="_blank"
+          <router-link to="/advanced_analytics" target="_blank"
             ><b-list-group-item
               >Advanced Analytics</b-list-group-item
             ></router-link
@@ -110,7 +110,7 @@
           v-for="dashboard in userDashboards"
           :key="dashboard.id">
             <router-link :to="'/dashboard/' + dashboard.name" target="_blank"
-       
+
             ><b-list-group-item
               >  {{ dashboard.title }}</b-list-group-item
             ></router-link
@@ -123,7 +123,10 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapWatch } from 'vuex';
+import {
+  // eslint-disable-next-line no-unused-vars
+  mapActions, mapGetters, mapMutations, mapWatch,
+} from 'vuex';
 
 export default {
   data() {
@@ -176,7 +179,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss">
 div {

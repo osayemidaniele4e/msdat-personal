@@ -85,6 +85,8 @@ export default {
           fontFamily: '"Work Sans", sans-serif',
           fontWeight: 'normal',
         },
+        allowOverlap: true,
+        // allowOverlap: false
       },
     },
     // series: {

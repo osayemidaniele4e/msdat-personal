@@ -132,7 +132,6 @@ export default {
     };
   },
   methods: {
-
     plotMapLevel(level) {
       // check space is in string and add underscore
       let lgaState = '';
@@ -163,7 +162,16 @@ export default {
   watch: {
     mapObject: {
       handler(newVal) {
-        this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+        const filteredSeries = newVal.series && newVal.series.filter((item) => item.data.length > 0);
+
+        if (filteredSeries.length === 1) {
+          this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+          this.level = 2;
+        } else {
+          this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+          this.level = 1;
+        }
+        // this.defaultOptions = Object.assign(this.defaultOptions, newVal);
       },
       immediate: true,
       deep: true,

@@ -1,18 +1,22 @@
 <template>
   <div class="">
     <ul
-      class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-5 mx-3 cursor-pointer main tabs-sec"
     >
-      <li
-        class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
-        :class="[i === selectedIndex ? 'active font-weight-bold' : '']"
-        v-for="(el, i) in controls"
-        :key="i"
-        :id="`panel-${i}`"
-        @click="changeControl(i)"
+    <draggable v-model="modifiedControls">
+      <transition-group  class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-5 mx-3 cursor-pointer main tabs-sec"
       >
-        {{ el.title.replace('-', '_') }}
-      </li>
+        <li
+        class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+        :class="[el.index === selectedIndex ? 'active font-weight-bold' : '']"
+        v-for="(el,i) in modifiedControls"
+        :key="i"
+        :id="`panel-${el.index}`"
+        @click="changeControl(el.index)"
+      >
+      {{ el.title.replace('-', '_') }}
+    </li>
+      </transition-group>
+  </draggable>
     </ul>
 
     <div class="control-title">{{ title }}</div>
@@ -25,12 +29,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'BasePanel',
+  components: {
+    draggable,
+  },
   data() {
     return {
       controls: [],
+      modifiedControls: [],
       selectedIndex: 0,
       title: 'Indicator Overview',
       checkIndex: 0,
@@ -62,6 +71,7 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
 
     changeControl(index) {
+      // console.log(this.modifiedControls, { index });
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
@@ -81,7 +91,6 @@ export default {
       }
 
       if (index === 4) {
-        // console.log(this.getSelectedConfig(), 'this.getSelectedConfig()');
         this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
           controlIndex: index,
           key: 'indicator',
@@ -107,7 +116,7 @@ export default {
       // loop over all the tabs
       this.controls.forEach((control, index) => {
         // eslint-disable-next-line no-param-reassign
-        control.active = index === controlIndex;
+        control.active = index === controlIndex + 1;
       });
     },
     // selectControll(controlIndex) {
@@ -122,6 +131,17 @@ export default {
   },
 
   watch: {
+    controls(value) {
+      for (let i = 0; i < value.length; i++) {
+        if (value[i].title) {
+          if (!this.modifiedControls.includes(value[i])) {
+            const data = value[i];
+            data.index = i - 1;
+            this.modifiedControls.push(data);
+          }
+        }
+      }
+    },
     position(newValue) {
       this.selectedIndex = newValue;
       this.selectControl(this.selectedIndex);
