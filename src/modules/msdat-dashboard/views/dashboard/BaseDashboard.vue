@@ -14,7 +14,8 @@
         <span aria-hidden="true" class="mb-4 mt-4 pt-4 pr-4">&times;</span>
       </button>
       <h4 class="mt-4 pl-2">
-        <img src="@/assets/img/browser.png" /><strong class="alertBold">Unsupported Browser!
+        <img src="@/assets/img/browser.png" /><strong class="alertBold"
+          >Unsupported Browser!
         </strong>
       </h4>
 
@@ -31,9 +32,9 @@
     <template v-if="!showTroubleShootingModal">
       <Loading v-if="!loading" :noBackdrop="true" :showBackground="false" class="over">
         <div class="text-center">
-          <img :src="loadingImg" alt="first_img" width="250px" />
-          <div class="mr-4">
-            <h3>Initializing{{ loadingTitle }}</h3>
+          <img :src="loadingImg" alt="first_img" width="450px" />
+          <div class="mr-4 loading-text">
+            <h4>Initializing{{ loadingTitle }}</h4>
             <p>{{ loadingContent }}</p>
           </div>
         </div>
@@ -102,7 +103,9 @@
                             <!-- Getting information about a program area -->
                             <b-collapse id="collapse-1" class="mt-2">
                               <b-card>
-                                <label class="text-uppercase work-sans label-text">Search for Program Area</label>
+                                <label class="text-uppercase work-sans label-text"
+                                  >Search for Program Area</label
+                                >
                                 <SelectDropdown
                                   v-model="program_option"
                                   :value="null"
@@ -159,7 +162,6 @@
                                   :resetData="resetData"
                                   :indicatorList="$data[indexModel(index2)]"
                                 />
-
                               </div>
                             </div>
                           </div>
@@ -607,7 +609,7 @@ div.temp {
   h3,
   h4,
   h1 {
-    // font-size: 1rem !important;
+    // font-size: 3rem !important;
   }
   li {
     font-size: 0.7rem !important;
@@ -700,5 +702,13 @@ div#browserSupport img {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.loading-text h4 {
+  font-size: 40px;
+}
+
+.loading-text p {
+  font-size: 20px;
 }
 </style>
