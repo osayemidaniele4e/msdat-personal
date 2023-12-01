@@ -278,17 +278,21 @@ export default {
       },
       foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
       show: true,
-    };
+    };``
   },
   mounted() {
     this.$store.commit('updateStep', 4);
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
-    ...mapGetters('CUSTOM_DASHBOARD_STORE', ['dashboardDetails', 'getVisibility']),
+    // ...mapGetters('CUSTOM_DASHBOARD_STORE', ['dashboardDetails', 'getVisibility']),
     dashboardDetails() {
       return this.$store.getters.dashboardDetails;
     },
+    getVisibility(){
+      return this.$store.getters.getVisibility;
+
+    }
   },
   methods: {
     async onSubmit(event) {
@@ -353,19 +357,17 @@ export default {
 
       // if the dashboard is public, run these functions
       if(this.getVisibility === 'public'){
-        this.public_creator.name = this.getUser.name;
+        this.public_creator.name = this.getUser.username;
       this.public_creator.email = this.getUser.email;
-      this.public_creator.description = this.dashboardDetails.description,
-      // this.public_creator.organization = '';
-      this.public_creator.Reason = this.dashboardDetails.reason;
-      this.public_creator.name_of_dashboard = this.dashboardDetails.name;
+      this.public_creator.description = await this.dashboardDetails.description,
+      this.public_creator.Reason = await this.dashboardDetails.reason;
+      this.public_creator.category = await this.dashboardDetails.category;
+      this.public_creator.name_of_dashboard = await this.dashboardDetails.name;
+      this.public_creator.link = `https://msdat.fmohconnect.gov.ng/dashboards/${this.dashboardDetails.name}`
       }
-
-      console.log('dashboard-details', this.dashboardDetails);
-      console.log('user details', this.getUser)
       console.log('public-creator', this.public_creator)
 
-      await this.$store.dispatch('setDashboardRequest', this.public_creator);
+      await this.$store.dispatch('setDashboardRequest', await this.public_creator);
       // hide the 'modal-public-dashboard'
       await this.$bvModal.hide('modal-public-dashboard');
       // show the 'modal-in-review'
