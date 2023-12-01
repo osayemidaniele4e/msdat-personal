@@ -237,7 +237,7 @@ export default class DataLayer {
     // return true;
 
     const serverDateResponse = await apiServices.getLatestDate();
-    const serverDate = new Date(serverDateResponse.data[0].updated_at);
+    const serverDate = new Date(serverDateResponse.data.results[0].updated_at);
 
     const localDate = localStorage.getItem(this.LOCAL_STORAGE_KEY);
     const oldDateObject = new Date(localDate);
@@ -318,8 +318,6 @@ export default class DataLayer {
   async setAvailableDashboardIndicator() {
     const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
 
-    // console.log('list1', this.indicatorList);
-    // console.log('list2', this.dataSourceList);
     const dashboardIndicators = indicatorsInDB.filter((item) => this.indicatorList.includes(item));
 
     const dashboardDataSource = this.dataSourceList;
@@ -345,30 +343,23 @@ export default class DataLayer {
    * check available datasources
    * @author davebenard
    */
+
   async initDataWithYears(indicator, limit = 0) {
-    const unavailableIndicators = [64, 78, 329, 382, 64, 78, 37, 81, 70, 395, 117, 192, 90, 548, 62, 477, 507, 508, 628];
     for (let i = 0; i < indicator.length; i++) {
-      // eslint-disable-next-line no-continue
-      if (unavailableIndicators.includes(indicator[i])) continue;
-      try {
-        const indicatorID = indicator[i];
-        const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
-        // take only the at least 8 years
-        if (yearsNotAvailableInDB.length > 0) {
-          const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
-          const theYears = take(yearsNotAvailableInDB, yearsToTake);
-          const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
-          const results = await Promise.all(arrayOfPromises);
-          for (let j = 0; j < results.length; j++) {
-            const requestResult = results[j].data.results;
-            // check if empty
-            await this.DB.storeDataInDB(requestResult);
-          }
-          this.updatedStoreAvailableIndicator(indicatorID);
+      const indicatorID = indicator[i];
+      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+      // take only the at least 8 years
+      if (yearsNotAvailableInDB.length > 0) {
+        const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        const theYears = take(yearsNotAvailableInDB, yearsToTake);
+        const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
+        const results = await Promise.all(arrayOfPromises);
+        for (let j = 0; j < results.length; j++) {
+          const requestResult = results[j].data.results;
+          // check if empty
+          await this.DB.storeDataInDB(requestResult);
         }
-      } catch (e) {
-        unavailableIndicators.push(indicator[i]);
-        console.log('unavailableIndicators', unavailableIndicators);
+        this.updatedStoreAvailableIndicator(indicatorID);
       }
     }
   }
