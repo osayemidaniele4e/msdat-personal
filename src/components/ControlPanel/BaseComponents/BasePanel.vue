@@ -13,7 +13,7 @@
             :id="`panel-${el.index}`"
             @click="changeControl(el.index)"
           >
-            {{ el.title.replace('-', '_') }}
+            {{ el.title }}
           </li>
         </transition-group>
       </draggable>
