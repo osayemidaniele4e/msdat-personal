@@ -389,26 +389,51 @@ export default class DataLayer {
 
   //  static sweetAlert(title, text, type) {
   // eslint-disable-next-line class-methods-use-this
+  // sweetAlert() {
+  //   return Vue.swal({
+  //     toast: true,
+  //     position: 'bottom-end',
+  //     // icon: 'info',
+  //     imageUrl: "https://my.vsu.edu.ph/assets/img/green_spinner.gif",
+  //     imageWidth: 100,
+  //   imageHeight: 100,
+  //     title: 'Data Synchronizing',
+  //     text: 'Updating dashboard with more data',
+  //     showConfirmButton: false,
+  //     timerProgressBar: false,
+  //     allowOutsideClick: false,
+  //     showLoading: true,
+  //     customClass: {
+  //       image: 'custom-swal-image',
+  //     },
+  //   });
+
+  //   // Return a Promise that resolves when data synchronization is complete
+  //   // return new Promise((resolve) => {
+  //   //   setTimeout(() => {
+  //   //     // Close the alert
+  //   //     Vue.swal.close();
+  //   //     resolve(); // Resolve the Promise to signal completion
+  //   //   }, 15000); // Modify the timeout value as needed
+  //   // });
+  // }
+
+  // eslint-disable-next-line class-methods-use-this
   sweetAlert() {
     return Vue.swal({
       toast: true,
       position: 'bottom-end',
-      icon: 'info',
-      title: 'Data Synchronization in progress',
-      text: 'Updating dashboard with more data',
+      imageWidth: 100,
+      imageHeight: 100,
+      title: '<div style="display: flex; align-items: center; margin-left: 66px;">Data Synchronizing</div>',
+      html: '<div style="margin-top: -14px; margin-bottom: -10px;;"> <img src="https://my.vsu.edu.ph/assets/img/green_spinner.gif" style="width: 55px; height: 55px; margin-right: 13px; margin-top: -21px" alt="Loading"/>Updating dashboard with more data</div>',
       showConfirmButton: false,
       timerProgressBar: false,
       allowOutsideClick: false,
       showLoading: true,
+      customClass: {
+        image: 'custom-swal-image',
+      },
     });
-
-    // Return a Promise that resolves when data synchronization is complete
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     // Close the alert
-    //     Vue.swal.close();
-    //     resolve(); // Resolve the Promise to signal completion
-    //   }, 15000); // Modify the timeout value as needed
-    // });
   }
 }

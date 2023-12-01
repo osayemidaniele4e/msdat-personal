@@ -1,22 +1,22 @@
 <template>
   <div class="">
-    <ul
-    >
-    <draggable v-model="modifiedControls">
-      <transition-group  class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-5 mx-3 cursor-pointer main tabs-sec"
-      >
-        <li
-        class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
-        :class="[el.index === selectedIndex ? 'active font-weight-bold' : '']"
-        v-for="(el,i) in modifiedControls"
-        :key="i"
-        :id="`panel-${el.index}`"
-        @click="changeControl(el.index)"
-      >
-      {{ el.title.replace('-', '_') }}
-    </li>
-      </transition-group>
-  </draggable>
+    <ul>
+      <draggable v-model="modifiedControls">
+        <transition-group
+          class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-3 mx-3 cursor-pointer main tabs-sec"
+        >
+          <li
+            class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+            :class="[el.index === selectedIndex ? 'active font-weight-bold' : '']"
+            v-for="(el, i) in modifiedControls"
+            :key="i"
+            :id="`panel-${el.index}`"
+            @click="changeControl(el.index)"
+          >
+            {{ el.title.replace('-', '_') }}
+          </li>
+        </transition-group>
+      </draggable>
     </ul>
 
     <div class="control-title">{{ title }}</div>
