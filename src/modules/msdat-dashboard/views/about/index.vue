@@ -77,7 +77,7 @@
       <!-- logical framework --> 
 
       <section id="logical-framework">
-        <img src="./assets/logical-group.png">
+        <img src="./assets/logical-group.png" class="logical-framework-img">
       </section>
 
       <!-- available data -->
@@ -332,13 +332,17 @@ $msdat-darkgrey: #dedede;
 }
 
 .logical-framework {
-  background-image: url("./assets/logical-group.png");
-  width: 1350px;
-  height: 730px;
-  margin: 500px;
-  padding: 200px;
-  margin: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+
+.logical-framework-img{
+  width: 1266px;
+  height: 730px;
+}
+
 div.modal {
   div.modal-content {
     width: 75%;
