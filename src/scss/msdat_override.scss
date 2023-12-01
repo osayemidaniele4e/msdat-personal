@@ -16,9 +16,31 @@ span.multiselect__single {
   text-decoration: none;
   text-overflow: unset;
   white-space: nowrap;
-  overflow-x: scroll;
+  overflow-x: auto;
   display: inline-block;
+
+    /* Adjust the height of the scrollbar */
+    &::-webkit-scrollbar {
+      height: 2px; /* Adjust the height as needed */
+    }
+  
+    /* Handle for the scrollbar */
+    &::-webkit-scrollbar-thumb {
+      background-color: #888; /* Adjust the color as needed */
+    }  
+
+    /* Add smooth scrolling effect */
+  scroll-behavior: smooth;
+
+  /* For Firefox */
+  scrollbar-width: thin; /* or auto */
+  scrollbar-color: #888 #f4f4f4; /* Adjust the colors as needed */
+
+  /* Adjust the height of the horizontal scrollbar in Firefox */
+  overflow-y: hidden;
+  scrollbar-width: thin;
 }
+
 
 span.multiselect__tag {
   max-width: 45%;
