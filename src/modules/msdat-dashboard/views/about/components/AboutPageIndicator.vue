@@ -3,7 +3,7 @@
 
     <section class="sec-program-areas">
       <div class="mt-5 d-flex flex-column align-items-center">
-        <h4>PROGRAM AREAS</h4>
+        <h3>PROGRAM AREAS</h3>
         <span>
           The indicators provided by the Central Analytic Dashboard can be selected on the dashboard by clicking on the
           Indicator. The list of indicators on the dashboard can be found below:

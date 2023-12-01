@@ -75,11 +75,11 @@
      
 
       <!-- logical framework --> 
-
-      <section id="logical-framework">
+      <br><br>
+      <div id="logical-framework">
         <img src="./assets/logical-group.png" class="logical-framework-img">
-      </section>
-
+      </div>
+      <br><br>
       <!-- available data -->
       <section id="available-data">
         <h5>Available Data</h5>
@@ -330,8 +330,9 @@ $msdat-darkgrey: #dedede;
   padding: 60px;
   margin: 100px;
 }
-
-.logical-framework {
+#logical-framework {
+  margin: 50px;
+  padding: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
