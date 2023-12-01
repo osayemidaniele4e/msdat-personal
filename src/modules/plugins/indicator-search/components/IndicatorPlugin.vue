@@ -6,9 +6,33 @@
         </div>
         <p @click="toggleComponent" class="close-icon">x</p>
       </div>
-      <div>
+      <div class="d-flex gap-2 justify-content-center p-2">
         <!-- Search client is running, show search functionality -->
+        <input type="text" class="form-control search-input" v-model="query" id="indicator-search-text-input" placeholder="Search For...">
+
+        <button type="button " class="btn search-icon p-2" @click="SearchIndicator"><i class="fa fa-search"></i></button>
       </div>
+
+      <div class="table-responsive">
+        <!-- <b-table
+      id="my-table"
+      :items="items"
+      :per-page="perPage"
+      :current-page="currentPage"
+      small
+    ></b-table> -->
+      </div>
+
+      <div>
+      <!-- <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination> -->
+
+    <p class="mt-3">Current Page: {{ currentPage }}</p>
+    </div>
       <footer>Powered by eHealth4everyone</footer>
     </div>
   </template>
@@ -21,43 +45,18 @@ export default {
   components: {
   },
   data() {
-    // return {
-    //   searchClient: instantMeiliSearch(
-    //     'http://172.93.48.72:7700/',
-    //     'E4E_ADMIN',
-    //   ),
-    //   isSearchClientRunning: false,
-    //   itemData: null,
-    //   items: [
-
-    //   ],
-    // };
-  },
-
-  async mounted() {
-    await this.checkSearchClientStatus();
+    return {
+      RequestModel: 'http://172.93.52.240:8123/query/covid/',
+      items: [],
+      query: '',
+    };
   },
 
   methods: {
-    toggleVisibility() {
-      localStorage.setItem('indicatorPlugin', 'false');
-    },
-    toggleComponent() {
-      this.$emit('setActiveComponent', 'main');
-    },
-    async checkSearchClientStatus() {
-      try {
-        // Check if the search client is running by making a test search request
-        const results = await this.searchClient.search('');
-        if (results) {
-          this.isSearchClientRunning = true;
-        }
-      } catch (error) {
-        console.error('Error occurred:', error);
-      }
-    },
-    loadMore() {
-      this.$refs.infiniteHits.loadMore();
+    async SearchIndicator() {
+      this.query.replace(/\s/g, '%20');
+      const response = await this.$axios.get(this.RequestModel);
+      console.log(response);
     },
 
   },
@@ -101,6 +100,11 @@ export default {
     background-color: white;
     border: none;
     padding-inline: 1.8em;
+    box-shadow: none;
+  }
+  .search-input::placeholder
+  {
+    color: lightgrey;
   }
 
   .search-input:focus {
@@ -108,15 +112,16 @@ export default {
 
   }
 
-  .search-icon {
+  .search-icon, .search-icon:focus, .search-icon:hover {
     height: 2.2em;
-    width: 2.2em;
+    width: fit-content;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: white;
     color: green;
-
+    font-size: medium;
+    box-shadow: none;
   }
 
   .init {
