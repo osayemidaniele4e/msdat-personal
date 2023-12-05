@@ -61,7 +61,7 @@ export default {
     async SearchIndicator() {
       this.query.replace(/\s/g, '%20');
       try {
-        const response = await fetch(`${this.RequestModel + this.query}`);
+        const response = await this.$axios.get(`${this.RequestModel + this.query}`);
         console.log('NLM', response);
       } catch (error) {
         console.log(error);
