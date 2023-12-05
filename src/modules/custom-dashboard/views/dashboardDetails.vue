@@ -287,7 +287,9 @@ export default {
         this.description.isValid = false;
         this.formIsValid = false; 
       }
-      if (this.publicReason === '') {
+
+      if(this.isPublicDashboard){
+        if (this.publicReason === '') {
         this.publicReason.isValid = false;
         this.formIsValid = false;
       }
@@ -295,6 +297,8 @@ export default {
         this.category.isValid = false;
         this.formIsValid = false;
       }
+      }
+  
       // if (this.selectedImage.val === '') {
       //   this.selectedImage.isValid = false;
       //   this.formIsValid = false;
