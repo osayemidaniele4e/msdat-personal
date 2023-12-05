@@ -28,8 +28,12 @@ export default {
     }
 
   },
-
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.custom-swal-image {
+  margin: 0px !important; /* Adjust the margin as needed */
+  float: left; /* Align the image to the left of the text */
+}
+</style>
