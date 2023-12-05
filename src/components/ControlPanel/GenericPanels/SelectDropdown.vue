@@ -383,6 +383,7 @@ export default {
   transition: all 0.25s ease-in;
   cursor: pointer;
 }
+
 .open-caret {
   transform: rotate(360deg);
   transition: all 0.25s ease-out;

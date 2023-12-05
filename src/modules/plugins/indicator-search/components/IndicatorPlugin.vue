@@ -13,7 +13,8 @@
         <button type="button " class="btn search-icon p-2" @click="SearchIndicator"><i class="fa fa-search"></i></button>
       </div>
 
-      <div class="table-responsive">
+      <div class="container">
+        <div class="table-responsive">
         <!-- <b-table
       id="my-table"
       :items="items"
@@ -26,13 +27,15 @@
       <div>
       <!-- <b-pagination
       v-model="currentPage"
-      :total-rows="rows"
+      :total-rows="tablerows"
       :per-page="perPage"
       aria-controls="my-table"
     ></b-pagination> -->
 
     <p class="mt-3">Current Page: {{ currentPage }}</p>
     </div>
+      </div>
+
       <footer>Powered by eHealth4everyone</footer>
     </div>
   </template>
@@ -46,8 +49,10 @@ export default {
   },
   data() {
     return {
-      RequestModel: 'http://172.93.52.240:8123/query/covid/',
-      items: [],
+      RequestModel: 'http://172.93.52.240:8123/query/',
+      items: [{ id: 0, name: 'kl', la: 'dkl' }, { id: 2, name: 'kl', la: 'dkl' }],
+      perPage: 10,
+      currentPage: 1,
       query: '',
     };
   },
@@ -55,8 +60,17 @@ export default {
   methods: {
     async SearchIndicator() {
       this.query.replace(/\s/g, '%20');
-      const response = await this.$axios.get(this.RequestModel);
-      console.log(response);
+      try {
+        const response = await fetch(`${this.RequestModel + this.query}`);
+        console.log('NLM', response);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    computed: {
+      tablerows() {
+        return this.items.length;
+      },
     },
 
   },
