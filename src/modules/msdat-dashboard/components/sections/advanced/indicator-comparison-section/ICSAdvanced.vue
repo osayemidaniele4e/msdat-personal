@@ -533,6 +533,13 @@ export default {
   },
 
   async mounted() {
+    if (!this.values?.datasource) {
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: 2,
+        key: 'datasource',
+        value: this.dlDatasource.find((dat) => dat.id === 8),
+      });
+    }
     if (!Array.isArray(this.values.indicator.length)) {
       this.title = ` Comparison Of ${this.values.indicator.short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}`;
     } else {
