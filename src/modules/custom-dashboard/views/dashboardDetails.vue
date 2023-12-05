@@ -28,30 +28,29 @@
             <p v-if="!description.isValid">This must not be empty.</p>
           </div>
           <br>
-          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !publicReason.isValid }">
+          <div class="field-detail" v-if="isPublicDashboard" >
             <p>Reason for making your dashboard public</p>
             <b-form-input
               type="text"
               id="reason"
               v-model="publicReason"
-              @blur="clearValidity('reason')"
+              @blur="clearValidity('publicReason')"
               placeholder="Hint: What us the major purpose of making your dashboard public"
             ></b-form-input>
-            <p v-if="!publicReason.isValid">This must not be empty.</p>
+            <!-- <p v-if="!publicReason.isValid">This must not be empty.</p> -->
           </div>
           <br>
-          <div class="field-detail" v-if="isPublicDashboard" :class="{ invalid: !category.isValid }">
+          <div class="field-detail" v-if="isPublicDashboard" >
             <p>Dashboard Category</p>
             <b-form-select
             class="form-control"
              v-model="category" :options="categoryOptions"></b-form-select>
-             <p v-if="!category.isValid">This must not be empty.</p>
+             <!-- <p v-if="!category.isValid">This must not be empty.</p> -->
           </div>
           <br>
           <span>
   <input type="checkbox" v-model="isPublicDashboard"> <!-- Add v-model -->
   Create a public dashboard
-  {{ isPublicDashboard }}
 </span>
         </b-col>
         <b-col class="image-file mb-5">
