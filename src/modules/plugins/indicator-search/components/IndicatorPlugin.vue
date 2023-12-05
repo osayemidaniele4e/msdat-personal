@@ -13,26 +13,21 @@
         <button type="button " class="btn search-icon p-2" @click="SearchIndicator"><i class="fa fa-search"></i></button>
       </div>
 
-      <div class="container">
+      <pre>{{loading}}</pre>
+
+      <div class="d-flex justify-content-center" v-if="loading">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+      <div class="container" v-else>
         <div class="table-responsive">
-        <!-- <b-table
-      id="my-table"
-      :items="items"
-      :per-page="perPage"
-      :current-page="currentPage"
-      small
-    ></b-table> -->
+          <b-table striped hover :items="items"></b-table>
       </div>
 
       <div>
-      <!-- <b-pagination
-      v-model="currentPage"
-      :total-rows="tablerows"
-      :per-page="perPage"
-      aria-controls="my-table"
-    ></b-pagination> -->
 
-    <p class="mt-3">Current Page: {{ currentPage }}</p>
+    <!-- <p class="mt-3">Current Page: {{ currentPage }}</p> -->
     </div>
       </div>
 
@@ -45,15 +40,14 @@
 
 export default {
   name: 'IndicatorPluginView',
-  components: {
-  },
   data() {
     return {
       RequestModel: 'http://172.93.52.240:8123/query/',
-      items: [{ id: 0, name: 'kl', la: 'dkl' }, { id: 2, name: 'kl', la: 'dkl' }],
+      items: [],
       perPage: 10,
       currentPage: 1,
       query: '',
+      loading: true,
     };
   },
 
@@ -62,17 +56,35 @@ export default {
       this.query.replace(/\s/g, '%20');
       try {
         const response = await this.$axios.get(`${this.RequestModel + this.query}`);
-        console.log('NLM', response);
+        const { result } = response.data;
+        this.loading = false;
+        console.log('loader', this.loading);
+        if (result) {
+          this.items = result;
+          console.log('nlm', this.items);
+        }
       } catch (error) {
+        this.loading = false;
+        console.log('loader', this.loading);
         console.log(error);
       }
     },
-    computed: {
-      tablerows() {
-        return this.items.length;
-      },
+    toggleComponent() {
+      this.$emit('setActiveComponent', 'main');
     },
 
+  },
+  computed: {
+    tablerows() {
+      return this.items.length;
+    },
+  },
+  watch:
+  {
+    loading(newVal) {
+      this.loading = newVal;
+      console.log('loading new val', newVal);
+    },
   },
 };
 </script>

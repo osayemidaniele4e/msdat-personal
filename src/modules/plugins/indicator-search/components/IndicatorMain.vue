@@ -16,11 +16,8 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$emit('setActiveComponent', 'context');
+      this.$emit('setActiveComponent', 'indicator-search');
     },
-  },
-  mounted() {
-    console.log('okay yours has mounted');
   },
 };
 </script>
