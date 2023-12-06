@@ -689,7 +689,7 @@ table.table {
 }
 
 .nhmis-month-text1 {
-  margin-top: 9px;
+  margin-top: 0px;
   /* font-size: 0.7rem; */
   text-align: center;
   font-weight: 700;
