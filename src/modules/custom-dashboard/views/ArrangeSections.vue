@@ -17,28 +17,24 @@
       </h2>
       <br />
       <b-col md="8" sm="12">
-        <draggable v-model="values" @update="handleListUpdate">
-          <transition-group
-          >
-          <div v-for="(value, index) in values" :key="index" :id="index">
-            <div class="">
-              <input
-                type="checkbox"
-                :name="`dashboard${index}`"
-                :id="`dashboard${index}`"
-                :checked="isSelected(value)"
-                @click="selectedComponent($event, value.fieldName)"
-              />
-              <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
-            </div>
-            <p style="width: 100%; font-family: Work Sans; font-size: 14px">
-              This section shows an overview of your dashboard. This is a brief
-              description...
-            </p>
-            <img :src="value.fieldImage" class="layout" />
+        <div v-for="(value, index) in values" :key="index">
+          <div class="">
+            <input
+              type="checkbox"
+              :name="`dashboard${index}`"
+              :id="`dashboard${index}`"
+              :checked="isSelected(value)"
+              @click="selectedComponent($event, value.fieldName)"
+            />
+            <!-- //:checked="isSelected(value)"/> -->
+            <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
           </div>
-        </transition-group>
-      </draggable>
+          <p style="width: 100%; font-family: Work Sans; font-size: 14px">
+            This section shows an overview of your dashboard. This is a brief
+            description...
+          </p>
+          <img :src="value.fieldImage" class="layout" />
+        </div>
       </b-col>
       <b-col md="12" lg='12' sm="12">
         <div class="d-flex mb-5">
@@ -55,6 +51,7 @@
 
         <!-- <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button> -->
         <button @click="approveData">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button>
+
 
         <b-popover ref="popover" target="popover-button-event" triggers="hover" title="Choose visibility">
      <span @click="createPrivateDashboard()" class="choose-visibility-option">
@@ -223,16 +220,15 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import draggable from 'vuedraggable';
+import DragableList from '../components/Custom-dashboard-sections/Dragable-List.vue';
 
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    draggable,
+    DragableList,
   },
   data() {
     return {
-      orderModified: false,
       values: [
         {
           fieldName: 'Indicator Overview',
@@ -272,7 +268,7 @@ export default {
         organization: '',
         Reason: '',
         name_of_dashboard: '',
-        dashboard_details: null,
+        dashboard_details: null
       },
       form: {
         email: '',
@@ -282,7 +278,7 @@ export default {
       },
       foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
       show: true,
-    };
+    };``
   },
   mounted() {
     this.$store.commit('updateStep', 4);
@@ -293,9 +289,10 @@ export default {
     dashboardDetails() {
       return this.$store.getters.dashboardDetails;
     },
-    getVisibility() {
+    getVisibility(){
       return this.$store.getters.getVisibility;
-    },
+
+    }
   },
   methods: {
     async onSubmit(event) {
@@ -325,7 +322,7 @@ export default {
       // send the request to create a public dashboard
       this.public_creator.dashboard_details = await this.$store.getters.dashboardDetails;
       await this.$store.dispatch('setDashboardRequest', this.public_creator);
-      console.log('public creator', this.public_creator);
+      console.log('public creator', this.public_creator)
       // hide the 'modal-public-dashboard'
       await this.$bvModal.hide('modal-public-dashboard');
       // show the 'modal-in-review'
@@ -337,18 +334,7 @@ export default {
         this.approveData();
       }, 5000); // 10000 milliseconds = 10 seconds
     },
-    handleListUpdate() {
-      this.orderModified = true;
-    },
-    reorderStoreConfig() {
-      const mapping = {};
-      this.values.forEach((item, index) => {
-        mapping[item.fieldName] = index;
-      });
-      const storeArray = this.$store.getters.arrangedSections;
-      storeArray.sort((a, b) => mapping[a.name] - mapping[b.name]);
-      return storeArray;
-    },
+
     async createPrivateDashboard() {
       // send the request to create a public daashboard
 
@@ -360,25 +346,26 @@ export default {
 
     // Below function is excuted when approve data button is clicked
 
-    async  approveData() {
+   async  approveData() {
+      
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
         this.$swal('Dashboard name not provided');
         return;
       }
 
+
       // if the dashboard is public, run these functions
-      if (this.getVisibility === 'public') {
+      if(this.getVisibility === 'public'){
         this.public_creator.name = this.getUser.username;
-        this.public_creator.email = this.getUser.email;
-        // eslint-disable-next-line no-unused-expressions
-        this.public_creator.description = await this.dashboardDetails.description;
-        this.public_creator.Reason = await this.dashboardDetails.reason;
-        this.public_creator.category = await this.dashboardDetails.category;
-        this.public_creator.name_of_dashboard = await this.dashboardDetails.name;
-        this.public_creator.link = `https://msdat.fmohconnect.gov.ng/dashboards/${this.dashboardDetails.name}`;
+      this.public_creator.email = this.getUser.email;
+      this.public_creator.description = await this.dashboardDetails.description,
+      this.public_creator.Reason = await this.dashboardDetails.reason;
+      this.public_creator.category = await this.dashboardDetails.category;
+      this.public_creator.name_of_dashboard = await this.dashboardDetails.name;
+      this.public_creator.link = `https://msdat.fmohconnect.gov.ng/dashboards/${this.dashboardDetails.name}`
       }
-      console.log('public-creator', this.public_creator);
+      console.log('public-creator', this.public_creator)
 
       await this.$store.dispatch('setDashboardRequest', await this.public_creator);
       // hide the 'modal-public-dashboard'
@@ -396,15 +383,11 @@ export default {
       // retrieve dashboards belonging to current user
       let list = customDashboardsList[this.getUser.username];
       // create the dashboard config to be saved
-      let arrangedSections = this.$store.getters.arrangedSections;
-      if (this.orderModified) {
-        arrangedSections = this.reorderStoreConfig();
-      }
       const config = {
         dashboardDetails: this.$store.getters.dashboardDetails,
         composedData: this.$store.getters.getprogramArea,
         surveyArray: this.$store.getters.getDataSource,
-        sectionsArray: arrangedSections,
+        sectionsArray: this.$store.getters.arrangedSections,
       };
       // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
       const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
