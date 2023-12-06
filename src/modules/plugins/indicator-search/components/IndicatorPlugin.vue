@@ -6,29 +6,48 @@
         </div>
         <p @click="toggleComponent" class="close-icon">x</p>
       </div>
-      <div class="d-flex gap-2 justify-content-center p-2">
+
         <!-- Search client is running, show search functionality -->
-        <input type="text" class="form-control search-input" v-model="query" id="indicator-search-text-input" placeholder="Search For...">
+        <form @submit.prevent="SearchIndicator">
+          <div class="d-flex gap-2 justify-content-center p-2">
+          <input type="text" class="form-control search-input" v-model="query" id="indicator-search-text-input" placeholder="Search For...">
 
-        <button type="button " class="btn search-icon p-2" @click="SearchIndicator"><i class="fa fa-search"></i></button>
-      </div>
-
-      <pre>{{loading}}</pre>
-
-      <div class="d-flex justify-content-center" v-if="loading">
-  <div class="spinner-border" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
+<button type="submit" class="btn search-icon p-2"><i class="fa fa-search"></i></button>
 </div>
-      <div class="container" v-else>
-        <div class="table-responsive">
-          <b-table striped hover :items="items"></b-table>
+        </form>
+
+        <!-- <div>
+          {{}}
+        </div> -->
+    <div class="text-center mt-5" v-if="loader">
+      <b-spinner variant="primary" label="Loading..."></b-spinner>
+    </div>
+      <div class="container mt-5 overflow-auto" v-if="displayTable" style="height: 90%">
+          <b-table
+          responsive
+      id="my-table"
+      :items="items"
+      :per-page="perPage"
+      :current-page="currentPage"
+      small
+      :fields="fields"
+      style="height: 50%"
+    ></b-table>
+
+    <div class="mt-3">
+      <b-pagination
+      v-model="currentPage"
+      :total-rows="tablerows"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination>
+
+<p class="mt-3">Current Page: {{ currentPage }}</p>
+</div>
       </div>
 
-      <div>
-
-    <!-- <p class="mt-3">Current Page: {{ currentPage }}</p> -->
-    </div>
+      <div v-if="noResult" class="mt-5 text-center text-primary">
+        No Results Found
       </div>
 
       <footer>Powered by eHealth4everyone</footer>
@@ -44,29 +63,44 @@ export default {
     return {
       RequestModel: 'http://172.93.52.240:8123/query/',
       items: [],
-      perPage: 10,
+      fields: [
+        { key: 'short_name', label: 'Indicator Name' },
+        { key: 'full_name', label: 'Indicator Full Name' },
+        { key: 'indicator_type', label: 'Indicator Type' },
+        { key: 'indicator_type', label: 'Indicator Type' },
+        { key: 'program_area', label: 'Program Area' },
+        { key: 'datasources', label: 'DataSources' },
+        // Add other fields as needed
+      ],
+      perPage: 5,
       currentPage: 1,
       query: '',
-      loading: true,
+      loading: false,
+      displayTable: false,
+      noResult: false,
     };
   },
 
   methods: {
     async SearchIndicator() {
       this.query.replace(/\s/g, '%20');
+      this.displayTable = false;
+      this.noResult = false;
+      this.loading = true;
       try {
         const response = await this.$axios.get(`${this.RequestModel + this.query}`);
         const { result } = response.data;
-        this.loading = false;
-        console.log('loader', this.loading);
         if (result) {
           this.items = result;
-          console.log('nlm', this.items);
+          this.loading = false;
+          this.displayTable = true;
+        } else {
+          this.loading = false;
+          this.noResult = true;
         }
       } catch (error) {
         this.loading = false;
-        console.log('loader', this.loading);
-        console.log(error);
+        this.noResult = true;
       }
     },
     toggleComponent() {
@@ -77,6 +111,9 @@ export default {
   computed: {
     tablerows() {
       return this.items.length;
+    },
+    loader() {
+      return this.loading;
     },
   },
   watch:
