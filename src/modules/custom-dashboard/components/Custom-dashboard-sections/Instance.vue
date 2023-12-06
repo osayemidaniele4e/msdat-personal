@@ -26,7 +26,7 @@
             })
           "
         >
-          <base-sub-card class="my-2 shadow-sm">
+                  <base-sub-card class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Indicator Overview</h5>
             </template>
