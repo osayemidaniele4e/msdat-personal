@@ -98,6 +98,15 @@ export default {
       type: Boolean,
     },
   },
+  mounted() {
+    if (!this.values?.datasource) {
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: 3,
+        key: 'datasource',
+        value: this.dlDatasource.find((dat) => dat.id === 8),
+      });
+    }
+  },
   watch: {
     // Watch closeOverlay
     closeOverlay: {
@@ -120,6 +129,7 @@ export default {
     'values.datasource': {
       async handler(selectedDataSource) {
         // debugger;
+        this.loading = true;
         let dataSourceSelected = [];
         if (!Array.isArray(selectedDataSource)) {
           dataSourceSelected = [selectedDataSource];
@@ -129,7 +139,7 @@ export default {
 
         this.selectDataSource = dataSourceSelected;
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
-        this.setUpHighChartConfig(seriesArray, years);
+        await this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
       deep: false,
@@ -142,7 +152,7 @@ export default {
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-          this.setUpHighChartConfig(seriesArray, years);
+          await this.setUpHighChartConfig(seriesArray, years);
         }
 
         this.loading = false;
