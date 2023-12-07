@@ -42,7 +42,7 @@
         v-if="Object.keys(values).length"
       >
         <template #title>
-          <p class="work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height title-text">
             Prediction Of <b>{{ values.indicator.short_name }}</b> and related indicators
             (Time-series comparison of {{ values.indicator.short_name }}) across different data
             sources.
@@ -405,6 +405,12 @@ div.iddc_wrapper {
   }
 }
 .desc-text{
-  font-size: 0.7rem !important;
+  font-size: 0.9rem !important;
+}
+
+.title-text{
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+
 }
 </style>
