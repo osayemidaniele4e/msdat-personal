@@ -84,7 +84,7 @@
         <button
           type="button"
           @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
         >
           Zones Map
@@ -101,7 +101,7 @@
         <button
           type="button"
           @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'state_map' ? 'active' : '']"
         >
           State Map
@@ -121,7 +121,7 @@
         <button
           type="button"
           @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'line' ? 'active' : '']"
         >
           Line <b-icon icon="graph-up"></b-icon>
@@ -129,7 +129,7 @@
         <button
           type="button"
           @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'column' ? 'active' : '']"
         >
           Column <b-icon icon="bar-chart-fill"></b-icon>
@@ -408,7 +408,12 @@ export default {
 
 <style lang="scss" scoped>
 .label-text {
+  padding-top: 6px;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
+}
+button{
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>
