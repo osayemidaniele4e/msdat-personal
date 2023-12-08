@@ -17,13 +17,12 @@
       <div class="about-sec-1 d-flex flex-column align-items-center">
 
         <h1>ABOUT THE MSDAT DASHBOARD</h1>
-        
+
         <div class="about-sec-text2">
           The Federal Ministry of Health (FMOH) Nigeria multi source data analysis resource provides a single transparent
           view of key health indicators against multiple data sources. It offers a view against key metrics using sources
           that range from routine data, surveys to global estimates recognizing that data quality, trends and
           interpretation depend on the type of source and methodology behind the data.
-
 
           <br> <br>
 
@@ -68,13 +67,11 @@
 
       <!-- program area section -->
 
-
       <div id="program-areas" >
         <IndicatorPageFunc />
       </div>
-     
 
-      <!-- logical framework --> 
+      <!-- logical framework -->
       <br><br>
       <div id="logical-framework">
         <img src="./assets/logical-group.png" class="logical-framework-img">
@@ -268,7 +265,6 @@ $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
 
-
 .nav-links {
   height: 50px;
 }
@@ -343,7 +339,6 @@ $msdat-darkgrey: #dedede;
   justify-content: center;
   align-items: center;
 }
-
 
 .logical-framework-img{
   width: 1266px;
