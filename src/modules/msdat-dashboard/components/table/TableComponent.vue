@@ -75,7 +75,7 @@
                 <!-- static data (only for overview table) for NHMIS data -->
 
                 <span v-if="nhmisMonthData[0].value === null"> - </span>
-                <span v-else> {{ nhmisMonthData[0].value }}%</span>
+                <span v-else> {{ nhmisMonthData[0].value }}%x</span>
               </div>
               <div class="nhmis-month-text1" v-else>
                 <!-- static data (only for overview table) for NHMIS data -->
@@ -83,7 +83,7 @@
               </div>
               <div class="nhmis-month-text2" v-if="nhmisMonthData[0]">
                 <span v-if="nhmisMonthData[0].value === null"> - </span>
-                <span v-else> {{ nhmisMonthData[0].period }}</span>
+                <span v-else> {{ nhmisMonthData[0].period }}y</span>
               </div>
               <div class="nhmis-month-text2" v-else>-</div>
 
@@ -696,7 +696,7 @@ table.table {
 }
 
 .nhmis-month-text2 {
-  margin-top: 5px;
+  margin-top: 0px;
   /* font-size: 0.7rem; */
   text-align: center;
 }
