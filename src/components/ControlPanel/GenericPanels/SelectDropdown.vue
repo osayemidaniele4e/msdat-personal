@@ -393,6 +393,18 @@ ul li.multiselect__element {
   transition: all 1.5s ease-in-out;
   cursor: pointer;
 }
+span.multiselect__single::-webkit-scrollbar
+{
+  border-radius: 30px;
+  height: 0.23rem;
+  background: transparent;
+  border: 1px solid gainsboro;
+
+}
+span.multiselect__single::-webkit-scrollbar-thumb
+{
+  background-color: #b3b3b3 ;
+}
 .overflow-text {
   // text-overflow: ellipsis;
   // overflow: hidden;
