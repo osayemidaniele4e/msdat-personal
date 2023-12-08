@@ -88,7 +88,14 @@ export default {
       this.noResult = false;
       this.loading = true;
       try {
-        const response = await this.$axios.get(`${this.RequestModel + this.query}`);
+        const username = process.env.VUE_APP_INDICATOR_SEARCH_USERNAME;
+        const password = process.env.VUE_APP_INDICATOR_SEARCH_PASSWORD;
+        const response = await this.$axios.get(`${this.RequestModel + this.query}`, {
+          auth: {
+            username,
+            password,
+          },
+        });
         const { result } = response.data;
         if (result) {
           this.items = result;
