@@ -230,7 +230,7 @@ class="program-area-card"
   }
   
   .program-area-card {
-  margin: 5px;
+    margin: 5px;
   width: 200px;
   height: 50px;
   background-color: white;
@@ -239,19 +239,21 @@ class="program-area-card"
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  overflow-x: scroll;
+  font-size: 10px;
+  /* overflow-x: scroll; */
   text-transform: uppercase;
   border: 1px solid #80D3AF;
 }
 
 .program-area-des {
-  border: 1px solid #007D53;
-  width: 700px;
+  border: 1px solid #80D3AF;
+  width: 600px;
   background-color: white;
-  height: 900px;
+  height: 890px;
   padding: 30px;
+  font-size: 13px;
   overflow: scroll;
+  margin: 20px;
   margin-top: 40px;
 }
 

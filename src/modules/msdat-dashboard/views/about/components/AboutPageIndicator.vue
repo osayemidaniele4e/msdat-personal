@@ -128,18 +128,19 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  overflow-x: scroll;
+  font-size: 10px;
+  /* overflow-x: scroll; */
   text-transform: uppercase;
   border: 1px solid #80D3AF;
 }
 
 .program-area-des {
-  border: 1px solid #007D53;
+  border: 1px solid #80D3AF;
   width: 600px;
   background-color: white;
   height: 650px;
   padding: 30px;
+  font-size: 13px;
   overflow: scroll;
 }
 

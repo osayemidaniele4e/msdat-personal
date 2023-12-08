@@ -234,22 +234,11 @@ export default {
         window.requestAnimationFrame(this.scroll);
       }
     },
-    reorderFields(fieldsArray, configs) {
-      const tempArray = [];
-      fieldsArray.map((item) => {
-        if (item.isShow) {
-          const tempItem = configs.find((el) => el.label.toLowerCase() === item.name.toLowerCase());
-          tempArray.push(tempItem);
-        }
-        return null;
-      });
-      return tempArray;
-    },
     setPresetSections(arg, configs) {
-      const reorderedConfigs = this.reorderFields(this.fieldsArray, configs);
-      console.log({ reorderedConfigs });
-      reorderedConfigs.forEach((field) => {
-        this.ADD_CONTROL_PANEL(field);
+      arg.forEach((field, i) => {
+        if (field.isShow) {
+          this.ADD_CONTROL_PANEL(configs[i]);
+        }
       });
     },
     setAllSections(configs) {

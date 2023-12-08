@@ -17,7 +17,7 @@
       </div>
     </b-row>
     <div class="d-flex flex-column align-items-center mb-3 px-3">
-      <span class="mb-3">Select a dashboard to start</span>
+      <span class="mb-3 font-weight-bold">Select a dashboard to start</span>
       <b-row cols="2" cols-md="3" cols-xl="6">
         <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center mb-3">
           <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`" :id="section.id">
