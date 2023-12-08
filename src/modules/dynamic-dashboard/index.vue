@@ -311,7 +311,7 @@ export default {
       localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
       localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
 
-      window.document.title = 'Custom Dashboard';
+      window.document.title = 'MSDAT Nigeria | Custom Dashboard';
 
       return;
     }
@@ -391,7 +391,7 @@ export default {
     // set the title from the config as the route title
     if (this.$store.state.MSDAT_STORE.configObject.title) {
       this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
-      window.document.title = this.$store.state.MSDAT_STORE.configObject.title;
+      window.document.title = `MSDAT Nigeria | ${this.$store.state.MSDAT_STORE.configObject.title}`;
     }
   },
   watch: {
