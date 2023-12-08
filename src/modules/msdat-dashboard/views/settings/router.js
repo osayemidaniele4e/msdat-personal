@@ -4,7 +4,7 @@ export default [
     name: 'Profile',
     component: () => import('./profile.vue'),
     meta: {
-      title: 'MSDAT Platform | Settings',
+      title: 'Settings',
     },
   },
   {
@@ -12,7 +12,7 @@ export default [
     name: 'Notifications',
     component: () => import('./notifications.vue'),
     meta: {
-      title: 'MSDAT Platform | Settings',
+      title: 'Settings',
     },
   },
   {
@@ -20,7 +20,7 @@ export default [
     name: 'ActivityHistory',
     component: () => import('./activityHistory.vue'),
     meta: {
-      title: 'MSDAT Platform | Settings',
+      title: 'Settings',
     },
   },
   {
@@ -28,7 +28,7 @@ export default [
     name: 'PasswordRecovery',
     component: () => import('./passwordRecovery.vue'),
     meta: {
-      title: 'MSDAT Platform | Settings',
+      title: 'Settings',
     },
   },
 ];

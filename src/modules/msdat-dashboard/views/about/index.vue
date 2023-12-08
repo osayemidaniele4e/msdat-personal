@@ -93,8 +93,11 @@
       </section>
       <!-- data sources -->
       <div id="data-sources">
-          <DataSourceFunc />
-        </div>
+        <DataSourceFunc />
+      </div>
+      <!-- <section>
+        <Testimonials />
+      </section> -->
     </main>
     <footer class="footer">
       This dashboard is developed and managed by the Department of Health Planning Research and Statistics (DHPRS)
@@ -110,6 +113,7 @@ import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
 import IndicatorPageFunc from './components/AboutPageIndicator.vue';
 import AvailableDataPageFunc from './components/AboutPageAvailableData.vue';
+import Testimonials from './components/Testimonials.vue';
 
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
@@ -120,6 +124,7 @@ export default {
     DataSourceFunc,
     IndicatorPageFunc,
     AvailableDataPageFunc,
+    Testimonials,
   },
   data() {
     return {
@@ -248,6 +253,7 @@ export default {
 
   mounted() {
     this.indicators = groupIndicator(this.dlIndicator, 'program_area');
+    this.scrollTo(window.location.hash.slice(1));
   },
 };
 </script>

@@ -55,7 +55,7 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = store.getters['AUTH_STORE/isAuthenticated'];
   const requireAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-  window.document.title = to.meta && to.meta.title ? to.meta.title : 'MSDAT Platform';
+  window.document.title = to.meta && to.meta.title ? `MSDAT Nigeria | ${to.meta.title.trim()}` : 'MSDAT Platform';
 
   if (!isAuthenticated && requireAuth) {
     // eslint-disable-next-line no-alert
