@@ -7,6 +7,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import ContextPlugin from './modules/plugins/context-plugin';
+import IndicatorSearch from './modules/plugins/indicator-search';
 
 // export default Vue.extend({});
 
@@ -19,6 +20,13 @@ export default {
     if (localStorage.getItem('contextPlugin') === 'true') {
       Vue.use(ContextPlugin);
     }
+    if (!localStorage.getItem('indicatorPlugin')) {
+      localStorage.setItem('indicatorPlugin', 'false');
+    }
+    if (localStorage.getItem('indicatorPlugin') === 'true') {
+      Vue.use(IndicatorSearch);
+    }
+
   },
 };
 </script>
