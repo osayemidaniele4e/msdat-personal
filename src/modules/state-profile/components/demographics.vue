@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */ /* eslint-disable eqeqeq */ /* eslint-disable eqeqeq */
 <template>
   <b-container fluid>
-    <b-row class="mb-3">
+    <b-row class="mb-3 ">
       <div class="program-icon shadow">
         <img src="@/assets/state-profile/svg/location.svg" alt="location" />
       </div>
-      <h2 class="ml-3 my-auto"><b>DEMOGRAPHICS</b></h2>
+      <h2 class="ml-3 my-auto pt-2"><b>DEMOGRAPHICS</b></h2>
     </b-row>
     <b-row align-h="between">
       <b-col md="6">
@@ -78,7 +78,7 @@
           Select a state on the map to view state profile
         </p>
         <br />
-        <b-row>
+        <b-row >
           <b-col cols="auto">
             <p>Land Area</p>
             <p>
@@ -167,7 +167,7 @@ export default {
             container.previousYear = null; // Set previousYear to null as there is no previous year
           } else {
             const fullYears = this.data[i].data.results.filter(
-              (value) => value.period.length === 4
+              (value) => value.period.length === 4,
             );
 
             if (fullYears.length > 0) {
@@ -236,20 +236,22 @@ export default {
 
       if (val.previousValue === null || val.previousValue === 0) {
         console.log('no previous data');
+        // eslint-disable-next-line no-param-reassign
         val.pointer = 'danger'; // Set to 'success' for increase
         return null; // Return null when there is no previous year
       }
       // console.log('Pointer:', val.pointer);
 
-      const change =
-        ((parseFloat(val.value) - parseFloat(val.previousValue)) / parseFloat(val.previousValue)) *
-        100;
+      const change = ((parseFloat(val.value) - parseFloat(val.previousValue)) / parseFloat(val.previousValue))
+        * 100;
       // console.log("Change:",change)
 
       if (change > 0) {
+        // eslint-disable-next-line no-param-reassign
         val.pointer = 'success';
       }
       if (change <= 0) {
+        // eslint-disable-next-line no-param-reassign
         val.pointer = 'danger';
       }
 
@@ -500,5 +502,11 @@ hr {
 
 .compare .text-right {
   transform: translateY(-4px);
+}
+.program-icon img{
+  width: 2rem;
+  height:2rem;
+  margin: auto;
+
 }
 </style>

@@ -63,7 +63,7 @@
       </div>
     </genericModal>
     <div ref="printMe" id="printMe">
-      <b-row class="mt-4">
+      <b-row  class="sticky-header" >
         <b-col cols="auto">
           <h1>Health Profile</h1>
           <div>
@@ -102,8 +102,16 @@
               </template>
             </b-dropdown>
           </div>
+              <!-- bread crumb to health profile home -->
+              <b-breadcrumb class="breadcrumb">
+                <b-breadcrumb-item to="/health-profiles">Health Profiles</b-breadcrumb-item>
+                <b-breadcrumb-item active>{{ state }} {{ `${state === 'National' ? '' : 'State'}` }}</b-breadcrumb-item>
+              </b-breadcrumb>
+
         </b-col>
-        <b-col cols="12" class="my-auto">
+           </b-row>
+      <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
+      <b-col cols="12" class="my-auto">
           <b-row align-h="end" class="mx-auto align-items-center">
             <p class="mr-3">Last Updated: {{ this.regularDateFormat }}</p>
             <b-button class="mr-4 share-button d-flex align-items-center" @click="toggleShareModal">
@@ -124,8 +132,6 @@
             </b-button>
           </b-row>
         </b-col>
-      </b-row>
-      <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
       <demographics
         :state="state"
         @changeState="stateClicked"
@@ -617,6 +623,21 @@ export default {
         this.overviewLoading = false;
       }
     },
+
+    // Handling sticky header scroll
+    handleScroll() {
+      const scrollY = window.scrollY || window.pageYOffset;
+
+      // Adjust the scroll threshold as needed
+      const scrollThreshold = 100;
+
+      const stickyHeader = this.$refs.printMe.querySelector('.sticky-header');
+      if (scrollY > scrollThreshold) {
+        stickyHeader.classList.add('scrolled');
+      } else {
+        stickyHeader.classList.remove('scrolled');
+      }
+    },
   },
   watch: {
     state() {
@@ -636,11 +657,31 @@ export default {
     // Get specific datasource
     const { data } = await requests.datasourceSpecific();
     this.indicatorDefinitions = data.results;
+    // Event listener to detect scroll and toggle the "scrolled" class
+    window.addEventListener('scroll', this.handleScroll);
   },
+  // Remove the scroll event listener when the component is destroyed
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
+
 };
 </script>
 
 <style lang="scss">
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 999;
+  padding: 10px 0;
+  border-bottom: 0.4px solid transparent;
+  transition: border-bottom 0.3s ease;
+}
+
+.sticky-header.scrolled {
+  border-bottom: 0.4px solid #007d53;
+}
 .modal-body {
   padding: 0;
 
@@ -685,16 +726,24 @@ export default {
 
 .print-button {
   background-color: #f2f2f2;
-  border: 1px solid #cccccc;
+  border: 1px solid #007d53;
   height: 38.250103125px;
-  color: #3a3a3a;
+  color: #007d53;
+  font-weight: 600;
 }
 
 .share-button {
   background-color: #f2f2f2;
-  border: 1px solid #cccccc;
+  border: 1px solid #007d53;
   height: 38.250103125px;
-  color: #3a3a3a;
+  color: #007d53;
+  font-weight: 600;
+}
+
+.share-button:hover,
+.print-button:hover {
+  background-color: #007d53 !important;
+  color: #ffffff !important;
 }
 
 p.final-text {
@@ -746,5 +795,14 @@ ul.dropdown-menu.show {
 
 .fetching {
   font-size: 28px;
+}
+
+.breadcrumb {
+  margin-top: 10px;
+  margin-left: -15px;
+  margin-bottom: -10px;
+  background-color: transparent;
+  text-decoration: none;
+  font-weight: 600;
 }
 </style>

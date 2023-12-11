@@ -23,11 +23,11 @@ no-param-reassign */
         <p class="mb-4 sources">Sources: {{ this.programArea.sources }}</p>
         <b-button @click="toggleDefinition" v-show="!isDefinitionVisible" class="toggle mt-auto">
           Show indicator definitions
-          <b-icon icon="caret-down-fill"></b-icon>
+          <b-icon icon="caret-down-fill" style="width: 2rem;"></b-icon>
         </b-button>
         <b-button @click="toggleDefinition" v-show="isDefinitionVisible" class="toggle mt-auto">
           Hide indicator definitions
-          <b-icon icon="caret-up-fill"></b-icon>
+          <b-icon icon="caret-up-fill" style="width: 2rem;"></b-icon>
         </b-button>
       </b-col>
       <b-col sm="12" :md="this.programArea.name == 'Health Services' ? 'auto' : '8'">
@@ -59,14 +59,14 @@ no-param-reassign */
         />
         <b-row
           style="color: #ffffff; font-size: 12px"
-          class="pl-5 mt-4"
+          class="pl-4 mt-4"
           v-show="this.programArea.name == 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH'"
         >
           <b-col
             class="d-flex align-items-center justify-content-center"
             style="background-color: #054a80; border: 1px solid white; height: 40px"
           >
-            <p>Pre-pregnancy</p>
+            <p>Pre-Pregnancy</p>
           </b-col>
           <b-col
             class="d-flex align-items-center justify-content-center"
@@ -699,14 +699,15 @@ ul {
 
 .toggle {
   background-color: #f2f2f2;
-  border: 1px solid #cccccc;
-  color: #232323;
+  border: 1px solid #007d53;
+  color: #007d53;
+  font-weight: 600;
 }
 
 .btn-secondary:hover {
-  background-color: #f2f2f2 !important;
-  border: 1px solid #cccccc !important;
-  color: #232323 !important;
+  background-color: #007d53 !important;
+  border: 1px solid #007d53 !important;
+  color: #ffffff !important;
 }
 
 .vl {
