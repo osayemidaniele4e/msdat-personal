@@ -29,7 +29,7 @@
             :clear-on-select="false"
             :preserve-search="true"
             placeholder="Pick some"
-            label="name"
+            label="name"e
             track-by="name"
             :preselect-first="true"
           >
