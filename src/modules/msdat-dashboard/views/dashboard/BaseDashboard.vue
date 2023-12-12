@@ -343,6 +343,24 @@ export default {
     }
 
     window.addEventListener('wheel', this.handleScroll);
+
+    const pageTitle = `MSDAT Nigeria | ${this.$route.meta?.title}`;
+
+    const titleEl = document.querySelector('head meta[property="og:title"]');
+    const titleEl2 = document.querySelector('head meta[name="twitter:title"]');
+    titleEl.setAttribute('content', pageTitle);
+    titleEl2.setAttribute('content', pageTitle);
+
+    // eslint-disable-next-line camelcase
+    const indicator = this.getSelectedConfig().indicator?.full_name
+      // eslint-disable-next-line camelcase
+      || this.dlIndicator.find((ind) => ind.id === this.initialIndicator?.full_name) || 'important Health indicators';
+    const pageDesc = `Take a look at ${indicator} on the Multi-Source Data and Triangulation (MSDAT) platform`;
+
+    const descEl = document.querySelector('head meta[property="og:description"]');
+    const descEl2 = document.querySelector('head meta[name="twitter:description"]');
+    descEl.setAttribute('content', pageDesc);
+    descEl2.setAttribute('content', pageDesc);
   },
 
   destroyed() {
