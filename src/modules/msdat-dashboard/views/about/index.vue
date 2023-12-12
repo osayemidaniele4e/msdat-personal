@@ -17,13 +17,12 @@
       <div class="about-sec-1 d-flex flex-column align-items-center">
 
         <h1>ABOUT THE MSDAT DASHBOARD</h1>
-        
+
         <div class="about-sec-text2">
           The Federal Ministry of Health (FMOH) Nigeria multi source data analysis resource provides a single transparent
           view of key health indicators against multiple data sources. It offers a view against key metrics using sources
           that range from routine data, surveys to global estimates recognizing that data quality, trends and
           interpretation depend on the type of source and methodology behind the data.
-
 
           <br> <br>
 
@@ -68,18 +67,16 @@
 
       <!-- program area section -->
 
-
       <div id="program-areas" >
         <IndicatorPageFunc />
       </div>
-     
 
-      <!-- logical framework --> 
-
-      <section id="logical-framework">
-        <img src="./assets/logical-group.png">
-      </section>
-
+      <!-- logical framework -->
+      <br><br>
+      <div id="logical-framework">
+        <img src="./assets/logical-group.png" class="logical-framework-img">
+      </div>
+      <br><br>
       <!-- available data -->
       <section id="available-data">
         <h5>Available Data</h5>
@@ -93,8 +90,11 @@
       </section>
       <!-- data sources -->
       <div id="data-sources">
-          <DataSourceFunc />
-        </div>
+        <DataSourceFunc />
+      </div>
+      <!-- <section>
+        <Testimonials />
+      </section> -->
     </main>
     <footer class="footer">
       This dashboard is developed and managed by the Department of Health Planning Research and Statistics (DHPRS)
@@ -110,6 +110,7 @@ import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
 import IndicatorPageFunc from './components/AboutPageIndicator.vue';
 import AvailableDataPageFunc from './components/AboutPageAvailableData.vue';
+import Testimonials from './components/Testimonials.vue';
 
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
@@ -120,6 +121,7 @@ export default {
     DataSourceFunc,
     IndicatorPageFunc,
     AvailableDataPageFunc,
+    Testimonials,
   },
   data() {
     return {
@@ -248,6 +250,7 @@ export default {
 
   mounted() {
     this.indicators = groupIndicator(this.dlIndicator, 'program_area');
+    this.scrollTo(window.location.hash.slice(1));
   },
 };
 </script>
@@ -261,7 +264,6 @@ export default {
 $msdat-green: #007d53;
 $msdat-lightgrey: #fbfbfb;
 $msdat-darkgrey: #dedede;
-
 
 .nav-links {
   height: 50px;
@@ -330,15 +332,19 @@ $msdat-darkgrey: #dedede;
   padding: 60px;
   margin: 100px;
 }
-
-.logical-framework {
-  background-image: url("./assets/logical-group.png");
-  width: 1350px;
-  height: 730px;
-  margin: 500px;
-  padding: 200px;
-  margin: 200px;
+#logical-framework {
+  margin: 50px;
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.logical-framework-img{
+  width: 1266px;
+  height: 730px;
+}
+
 div.modal {
   div.modal-content {
     width: 75%;

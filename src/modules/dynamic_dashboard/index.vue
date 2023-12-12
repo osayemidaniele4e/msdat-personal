@@ -184,7 +184,7 @@ export default {
     // }
     if (this.configObject.title) {
       this.$route.meta.title = this.configObject.title;
-      window.document.title = this.configObject.title;
+      window.document.title = `MSDAT Nigeria | ${this.configObject.title}`;
     }
     if (this.configObject.name === 'Advanced_Analytics') {
       this.isAdvanced = true;

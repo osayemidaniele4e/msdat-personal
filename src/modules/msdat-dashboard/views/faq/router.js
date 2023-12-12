@@ -6,7 +6,7 @@ export default [
     name: 'Faq',
     component: index,
     meta: {
-      title: 'MSDAT Platform | Faq',
+      title: 'Faq',
     },
   },
 ];
