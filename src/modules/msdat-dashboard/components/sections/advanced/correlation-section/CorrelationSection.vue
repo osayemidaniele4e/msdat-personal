@@ -16,7 +16,7 @@ export default {
       //   dashboardConfig: config,
       //   configObject: {}, // This should be an Object initially
       // url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url: 'http://135.181.212.168:5006/viz',
+      url: 'https://correlation.e4eweb.space/viz',
       width: '100%',
       height: '400',
     };
@@ -26,3 +26,4 @@ export default {
 <style scoped>
 
 </style>
+ 
