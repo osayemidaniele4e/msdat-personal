@@ -24,7 +24,6 @@
     "commitizen": "^4.2.2",
     "core-js": "^3.6.5",
     "dexie": "^3.0.3",
-    "element-ui": "^2.15.14",
     "highcharts": "^8.2.2",
     "intro.js": "^4.2.2",
     "jest-mock-axios": "^4.7.0-beta4",
