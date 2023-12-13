@@ -255,9 +255,9 @@ export default {
   border: 1px solid $primary;
   background-color: white;
   color: black !important;
-  padding:1rem;
+  padding:1rem 2rem;
   height: 1rem;
-  width: 600px;
+  max-width: 600px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -81,9 +81,9 @@ export default {
           return this.point.name;
         },
         style: {
-          fontSize: '20px',
+          fontSize: '10px',
           fontFamily: '"Work Sans", sans-serif',
-          fontWeight: 'bold',
+          fontWeight: 'normal',
         },
         // allowOverlap: false
       },

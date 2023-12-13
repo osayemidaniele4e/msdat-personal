@@ -189,7 +189,7 @@
         </div>
       </div>
       <b-collapse id="collapse-2" class="mt-2">
-        <b-card> This is an example plugin for demonstration purposes </b-card>
+        <b-card> This is Enables Users to Search for Keywords</b-card>
       </b-collapse>
       <div class="plugin-row">
         <h5>

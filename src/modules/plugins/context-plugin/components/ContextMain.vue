@@ -1,6 +1,6 @@
 <template>
     <div @mouseover="showText = true" @mouseleave="showText = false" class="mainWrapper">
-      <div class="detail" v-if="showText === true">Hello, I am Context</div>
+      <div class="detail" v-if="showText === true">Click me to use Context Search</div>
       <div @click="handleClick" class="wrapper">
         <b-icon icon="chat-square-dots"></b-icon>
       </div>
