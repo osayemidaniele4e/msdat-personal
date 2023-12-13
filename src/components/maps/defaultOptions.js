@@ -81,11 +81,10 @@ export default {
           return this.point.name;
         },
         style: {
-          fontSize: '10px',
+          fontSize: '20px',
           fontFamily: '"Work Sans", sans-serif',
-          fontWeight: 'normal',
+          fontWeight: 'bold',
         },
-        allowOverlap: true,
         // allowOverlap: false
       },
     },
