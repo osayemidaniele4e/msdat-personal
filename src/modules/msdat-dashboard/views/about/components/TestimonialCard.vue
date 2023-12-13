@@ -1,9 +1,7 @@
 <template>
   <b-card class="shadow-sm ratio ratio-1x1" :class="current ? 'bg-lightblue' : 'bg-light'">
     <b-card-body>
-      <div class="py-5 my-5 card-text">
-        "{{ testimonial.text }}"
-      </div>
+      <div class="py-5 my-5 card-text">"{{ testimonial.text }}"</div>
       <el-divider class="mb-3"></el-divider>
       <div class="mb-3 username">{{ testimonial.username }}</div>
       <Ratings :value="testimonial.rating" :size="2" :spacing="5" disabled />
@@ -16,9 +14,7 @@ import Ratings from '@/components/Ratings.vue';
 
 export default {
   data() {
-    return {
-
-    };
+    return {};
   },
   components: {
     Ratings,
@@ -38,7 +34,7 @@ export default {
 
 <style>
 .card {
-  font-size: 140%;
+  /* font-size: 140%; */
   font-weight: 400;
 }
 .card-text {
@@ -49,6 +45,6 @@ export default {
   font-weight: 500;
 }
 .bg-lightblue {
-  background-color: #DFF3F3;
+  background-color: #dff3f3;
 }
 </style>
