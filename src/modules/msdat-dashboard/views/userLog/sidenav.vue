@@ -2,8 +2,17 @@
   <div>
     <Header ref="theHeader" />
     <div @click="$refs.theHeader.close()">
-      <div class="title text-center border-0">
+      <!-- <div class="title text-center border-0">
+        <button class="btn btn-primary px-2" @click="$router.go(-1)">
+          &larr;&nbsp;Back to Home
+        </button>
         <h3 class="mt-2">Account Settings</h3>
+      </div> -->
+      <div class="title border-0 d-flex justify-content-between align-items-center">
+        <button class="btn btn-primary px-3 ml-4" @click="$router.go(-1)">&larr;&nbsp;Back</button>
+        <h3 class="mt-2 text-center">Account Settings</h3>
+        <div></div>
+        <!-- Add an empty div for spacing or other content if needed -->
       </div>
       <div class="d-flex">
         <div class="col-lg-2 col-1 d-flex flex-column mt-3 px-2 py-5 border-right">
@@ -21,7 +30,6 @@
             ><b-icon-cloud-upload></b-icon-cloud-upload>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Create a plugin</span></a
           >
-         
         </div>
         <div class="col-lg-10 col-11">
           <savedDashboards :is="currentView" />
@@ -42,7 +50,7 @@ import savedDashboards from './savedDashboards.vue';
 import createPlugin from './createPlugin.vue';
 
 const routes = {
-  '/': savedDashboards,
+  '/': userActivity,
   '/profile': Profile,
   '/notification': Notification,
   '/userActivity': userActivity,
@@ -96,7 +104,7 @@ a {
   color: #000 !important;
 }
 
-.blue{
+.blue {
   color: blue;
 }
 </style>
