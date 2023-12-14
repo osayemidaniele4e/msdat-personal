@@ -17,7 +17,7 @@
       >
         <template #title>
           <p class="work-sans mb-0 line-height" v-if="level === 1">
-            Distribution Of
+            Distribution of
 
             <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
             <b>{{ values.indicator.short_name }}</b> Across The {{setAcrossRegion}}. Source:<b>
@@ -25,7 +25,7 @@
             >
           </p>
           <p class="work-sans mb-0 line-height" v-if="level !== 1">
-            Distribution Of
+            Distribution of
             <b>{{ values.indicator.short_name }}</b> Across The States. Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b
             >

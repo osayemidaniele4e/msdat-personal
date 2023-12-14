@@ -9,14 +9,14 @@
 <script>
 
 export default {
-  name: 'CorrelationSection',
+  name: 'Correlation Section',
   data() {
     return {
       title: '',
       //   dashboardConfig: config,
       //   configObject: {}, // This should be an Object initially
       // url: 'https://public.tableau.com/views/UpdatedDemographic1/Story?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url: 'https://predictive.e4eweb.space/', // 'http://208.87.128.190:8077/',
+      url: 'https://correlation.e4eweb.space/viz',
       width: '100%',
       height: '400',
     };

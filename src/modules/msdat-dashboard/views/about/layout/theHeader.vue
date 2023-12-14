@@ -257,13 +257,7 @@
           <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
           <!-- </a> -->
         </b-col>
-        <b-col class="main">
-          <h4 class="mt-4">About the MSDAT Dashboard</h4>
-          <p>
-            This dashboard is developed and managed by the Department of Health Planning Research
-            and Statistics (DHPRS)
-          </p>
-        </b-col>
+
       </b-row>
     </b-container>
 
@@ -299,45 +293,6 @@
         </div>
       </div>
     </div>
-
-    <!-- plugin modal -->
-    <b-modal id="modal-apps" title="MSDAT Apps Plugins" hide-footer>
-      <b-collapse id="collapse-1" class="mt-2">
-        <b-card>
-          This enables you to comment on any section in the MSDAT dashboard just by clicking the
-          headings
-        </b-card>
-      </b-collapse>
-      <!-- Example plugin section -->
-      <div class="plugin-row">
-        <h5>
-          <span v-b-toggle.collapse-2>
-            Context Plugin
-            <b-icon-info-circle></b-icon-info-circle>
-          </span>
-        </h5>
-
-        <div>
-          <button
-            class="enable-btn"
-            @click="contextPluginActive('true')"
-            v-if="isContextPluginActive === 'false'"
-          >
-            Enable
-          </button>
-          <button
-            class="enable-btn"
-            @click="contextPluginActive('false')"
-            v-if="isContextPluginActive === 'true'"
-          >
-            Disable
-          </button>
-        </div>
-      </div>
-      <b-collapse id="collapse-2" class="mt-2">
-        <b-card> This is an example plugin for demonstration purposes </b-card>
-      </b-collapse>
-    </b-modal>
   </header>
 </template>
 
@@ -366,7 +321,6 @@ export default {
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
-      isContextPluginActive: 'false',
       contactBtn: false,
       aboutPage: false,
       headerDropdown: [
@@ -405,17 +359,9 @@ export default {
     this.controls = this.$children;
     this.screenWidth = window.innerWidth;
     // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
-
-    // boolean to store project context availability
-    this.isContextPluginActive = localStorage.getItem('contextPlugin');
   },
 
   methods: {
-    contextPluginActive(data) {
-      this.isContextPluginActive = localStorage.getItem('contextPlugin');
-      localStorage.setItem('contextPlugin', data);
-      this.$router.go();
-    },
     showRegForm() {
       // eslint-disable-next-line no-unused-expressions
       this.show = true;

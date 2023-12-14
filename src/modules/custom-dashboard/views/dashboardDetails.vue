@@ -27,6 +27,31 @@
             ></b-form-input>
             <p v-if="!description.isValid">This must not be empty.</p>
           </div>
+          <br>
+          <div class="field-detail" v-if="isPublicDashboard" >
+            <p>Reason for making your dashboard public</p>
+            <b-form-input
+              type="text"
+              id="reason"
+              v-model="publicReason"
+              @blur="clearValidity('publicReason')"
+              placeholder="Hint: What us the major purpose of making your dashboard public"
+            ></b-form-input>
+            <!-- <p v-if="!publicReason.isValid">This must not be empty.</p> -->
+          </div>
+          <br>
+          <div class="field-detail" v-if="isPublicDashboard" >
+            <p>Dashboard Category</p>
+            <b-form-select
+            class="form-control"
+             v-model="category" :options="categoryOptions"></b-form-select>
+             <!-- <p v-if="!category.isValid">This must not be empty.</p> -->
+          </div>
+          <br>
+          <span>
+  <input type="checkbox" v-model="isPublicDashboard"> <!-- Add v-model -->
+  Create a public dashboard
+</span>
         </b-col>
         <b-col class="image-file mb-5">
           <b-row class="text-left text-lg-center">
@@ -131,6 +156,7 @@ export default {
           ? this.$store.getters.dashboardDetails.name : '',
         isValid: true,
       },
+      publicReason: '',
       description: {
         val: this.$store.getters.editMode
           ? this.$store.getters.dashboardDetails.description : '',
@@ -138,8 +164,17 @@ export default {
       },
       formIsValid: true,
       user: {},
+      category: 'health_outcomes',
       username: '',
       endEdit: true,
+      isPublicDashboard: '',
+      categoryOptions: [
+        { value: 'population', text: 'Population' },
+        { value: 'health_outcomes', text: 'Health Outcomes' },
+        { value: 'health_input', text: 'Health Input' },
+        { value: 'health_outputs', text: 'Health Outpust' },
+        { value: 'other', text: 'Other' },
+      ],
     };
   },
   mounted() {
@@ -158,8 +193,28 @@ export default {
   beforeDestroy() {
     if (this.endEdit) this.$store.commit('endEdit');
   },
+  watch: {
+    async isPublicDashboard(newVal) {
+      console.log('cehking');
+      // Call the Vuex action with the new value (true or false)
+      this.$store.dispatch('setIsPublicDashboard', newVal);
+      if (newVal === true) {
+        console.log('new val', newVal);
+        this.$store.dispatch('setVisibility', 'public');
+      }
+      if (newVal === false) {
+        console.log('new val', newVal);
+
+        this.$store.dispatch('setVisibility', 'private');
+      }
+      // consologing the visibilty
+      console.log('visibilty', this.$store.getters.getVisibility);
+    },
+  },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
+    ...mapGetters('CUSTOM_DASHBOARD_STORE', ['getVisibility']),
+
   },
   methods: {
     // INITIALIZE CURRENT DASHBOARD TO LOCAL
@@ -230,11 +285,23 @@ export default {
         this.description.isValid = false;
         this.formIsValid = false;
       }
+
+      if (this.isPublicDashboard) {
+        if (this.publicReason === '') {
+          this.publicReason.isValid = false;
+          this.formIsValid = false;
+        }
+        if (this.category === '') {
+          this.category.isValid = false;
+          this.formIsValid = false;
+        }
+      }
+
       // if (this.selectedImage.val === '') {
-      //   // this.selectedImage.isValid = false;
-      //   // this.formIsValid = false;
-      //   // this.selectedImage.isValid = false;
-      //   // this.formIsValid = true;
+      //   this.selectedImage.isValid = false;
+      //   this.formIsValid = false;
+      //   this.selectedImage.isValid = false;
+      //   this.formIsValid = true;
       // }
     },
 
@@ -266,17 +333,42 @@ export default {
         return;
       }
 
-      const formData = {
-        dashboardName: this.dName,
-        description: this.description,
-        image: this.selectedImage.val,
-      };
+      let formData = {};
 
-      this.$store.dispatch('dashboardConfiguration', {
-        name: this.dName.val,
-        description: this.description.val,
-        image: this.selectedImage.val,
-      });
+      if (this.isPublicDashboard) {
+        formData = {
+          dashboardName: this.dName,
+          description: this.description,
+          reason: this.publicReason,
+          image: this.selectedImage.val,
+          category: this.category,
+        };
+
+        this.$store.dispatch('dashboardConfiguration', {
+          name: this.dName.val,
+          description: this.description.val,
+          image: this.selectedImage.val,
+          reason: this.publicReason,
+          category: this.category,
+        });
+      } else {
+        formData = {
+          dashboardName: this.dName,
+          description: this.description,
+          reason: this.publicReason,
+          image: this.selectedImage.val,
+          category: this.category,
+        };
+
+        this.$store.dispatch('dashboardConfiguration', {
+          name: this.dName.val,
+          description: this.description.val,
+          image: this.selectedImage.val,
+          reason: this.publicReason,
+          category: this.category,
+        });
+      }
+
       //
       this.$store.dispatch('allSelection', {
         allselected: false,
@@ -296,6 +388,8 @@ export default {
           name: this.dName.val,
           description: this.description.val,
           image: this.selectedImage.val,
+          reason: this.publicReason,
+          category: this.category,
         });
         this.$store.dispatch('allSelection', {
           allselected: true,

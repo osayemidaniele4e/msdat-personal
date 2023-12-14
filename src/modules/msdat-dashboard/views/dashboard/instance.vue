@@ -204,6 +204,18 @@ export default {
     fieldsArray() {
       return this.$store.getters.arrangedSections;
     },
+    // Applies the config that disables the num/denum if the route is on these dashboards
+    noNHMIS() {
+      if (
+        this.$route.path === '/dashboard/Disease_Surveillance'
+    || this.$route.path === '/dashboard/Health_Workforce'
+    || this.$route.path === '/dashboard/Health_Facility'
+    || this.$route.path === '/dashboard/Health_Service_Access'
+      ) {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
@@ -305,8 +317,8 @@ export default {
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
-    const DiseaseSurveillanceConfig = this.$route.path === '/dashboard/Disease_Surveillance' ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
-    console.log(DiseaseSurveillanceConfig, 'DiseaseSurveillanceConfig');
+
+    const DiseaseSurveillanceConfig = this.noNHMIS ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
     const configs = [
       DiseaseSurveillanceConfig,
       ZonalAnalysisConfig,
@@ -315,6 +327,8 @@ export default {
       BaseMultiSourceConfig,
     ];
 
+    console.log('noHMIS', this.noNHMIS);
+    console.log('current route', this.$route.path);
     // Updated flow
     const { name: queryParameter } = this.$route.params;
     if (this.customDashboard) {

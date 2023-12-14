@@ -331,21 +331,25 @@ export default {
     commit('selectAll', payload.allselected);
   },
 
-
   setVisibility({ commit }, payload) {
     commit('setVisibility', payload);
   },
 
+  setIsPublicDashboard({ commit }, payload) {
+    commit('setIsPublicDashboard', payload);
+  },
+
   // making requests to make new public dashboards
+  // eslint-disable-next-line no-unused-vars
   async setDashboardRequest({ commit }, payload) {
-    console.log('payload 1', payload)
+    console.log('payload 1', payload);
     try {
       // Send the payload to the API using Axios
-      const response = await axios.post('https://msdat-api.fmohconnect.gov.ng/api/request_dashboard/', payload);
-      console.log('response', response)
+      const response = await axios.post('http://172.93.52.240:3001/api/request_dashboard/', payload);
+      console.log('response', response);
       // Handle the response or commit mutations as needed
       // For example, you can commit a mutation to update the state
-1
+      1;
     } catch (error) {
       // Handle errors here, such as showing error messages or logging
       console.error('Error sending data to API:', error);

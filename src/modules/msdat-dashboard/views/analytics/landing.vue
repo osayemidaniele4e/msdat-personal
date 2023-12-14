@@ -16,15 +16,19 @@
         </small>
       </div>
     </b-row>
-    <b-container class="d-flex flex-column align-items-center mb-3">
-      <span class="mb-3">Select a dashboard to start</span>
-      <b-row cols="2" cols-md="3" cols-lg="6">
-        <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center">
-          <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`" :id="section.id"><img class="section" :src="imgsrc(section.title)" :alt="section.title"></router-link>
-          <small style="font-size: 0.6rem; font-weight: 600" class="py-2">{{ section.title }}</small>
+    <div class="d-flex flex-column align-items-center mb-3 px-3">
+      <span class="mb-3 font-weight-bold">Select a dashboard to start</span>
+      <b-row cols="2" cols-md="3" cols-xl="6">
+        <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center mb-3">
+          <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`" :id="section.id">
+            <img class="section" :src="imgsrc(section.title)" :alt="section.title">
+          </router-link>
+          <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`">
+            <small style="font-size: 0.8rem; font-weight: 600" class="py-2">{{ section.title }}</small>
+          </router-link>
         </b-col>
       </b-row>
-    </b-container>
+    </div>
   </section>
 </template>
 
@@ -123,13 +127,15 @@ export default {
     text-align: center;
     padding: 0 8.5%;
     user-select: none;
+    font-size: 1.1rem;
   }
   .bg {
     height: 59vh;
     width: 61vw
   }
   .section {
-    width: 9rem;
+    width: 12rem;
+    height: 7rem;
     box-shadow: 0.1px 0.1px 1px #888888;
   }
   .section:hover {

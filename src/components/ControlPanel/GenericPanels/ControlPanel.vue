@@ -7,19 +7,21 @@
       v-show="values.visibility === undefined ? true : values.visibility"
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
-      <label
+
+        <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
+      <!-- <label
         class="text-uppercase work-sans label-text "
         v-if="!hasNHMIS && values.label == 'Num/Denom'"
       >
         {{ '' }}
-      </label>
+      </label> -->
       <label
         class="text-uppercase work-sans label-text disabled_alt"
         v-if="values.label == 'Target'"
       >
       {{ values.label }}
       </label>
-      <label :class=" values.label==='Num/Denom'? 'text-uppercase work-sans disabled_alt label-text d-flex justify-content-center':'text-uppercase work-sans label-text d-flex'" v-else> {{ values.label }} </label>
+      <label :class=" values.label==='Num/Denom'? 'text-uppercase work-sans label-text d-flex justify-content-center':'text-uppercase work-sans label-text d-flex'" v-else> {{ values.label }} </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -53,7 +55,7 @@
       />
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
-      <div class="disabled_alt d-flex justify-content-center">
+      <div class="d-flex justify-content-center">
         <toggle
           v-if="values.type === 'toggle'"
           @change="updatePayload($event, values.key)"
@@ -82,7 +84,7 @@
         <button
           type="button"
           @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
         >
           Zones Map
@@ -99,7 +101,7 @@
         <button
           type="button"
           @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'state_map' ? 'active' : '']"
         >
           State Map
@@ -119,7 +121,7 @@
         <button
           type="button"
           @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'line' ? 'active' : '']"
         >
           Line <b-icon icon="graph-up"></b-icon>
@@ -127,7 +129,7 @@
         <button
           type="button"
           @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'column' ? 'active' : '']"
         >
           Column <b-icon icon="bar-chart-fill"></b-icon>
@@ -327,7 +329,7 @@ export default {
       //   return data?.filter((item) => item.program_area === this.indicatorList);
       // }
 
-      console.log(this.$store.getters.getSectionTitle, 'XXXXX');
+      // console.log(this.$store.getters.getSectionTitle, 'XXXXX');
 
       const { name } = this.$route.params;
       if (name === 'Advanced_Analytics' && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison') {
@@ -406,7 +408,12 @@ export default {
 
 <style lang="scss" scoped>
 .label-text {
+  padding-top: 6px;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
+}
+button{
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>

@@ -33,15 +33,6 @@ export default class DataBase {
 
   /**
    *
-   * @returns {array} a unique array of all the Datasources
-   * objects available in iDB.
-   */
-  async getEveryDatasource() {
-    return this.datasources.orderBy('id').uniqueKeys();
-  }
-
-  /**
-   *
    * @returns {array} a unique array of all the LOCATION
    * objects available in iDB.
    */

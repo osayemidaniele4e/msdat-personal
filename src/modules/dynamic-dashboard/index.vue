@@ -58,6 +58,10 @@ export default {
       },
       showClearDataModal: false,
       loading: false,
+      longitude: '',
+      latitude: '',
+      userLocation: null,
+      error: null,
     };
   },
   methods: {
@@ -68,6 +72,7 @@ export default {
       'SET_SELECTED_CONFIG',
     ]),
     ...mapActions('AUTH_STORE', ['LOGIN_USER', 'SAVE_USER_DASHBOARD']),
+    ...mapActions(['SET_DASHBOARD_LOCATION']),
     /**
      * @function clearData
      * @author davebenard
@@ -133,6 +138,27 @@ export default {
         await this.SAVE_USER_DASHBOARD(payload);
       }
     },
+
+    getUserLocation() {
+      if ('geolocation' in navigator) {
+        // Get the user's location
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.userLocation = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+          },
+          (error) => {
+            this.error = error.message;
+          },
+        );
+      } else {
+        this.error = 'Geolocation is not supported in your browser.';
+      }
+
+      console.log('user location', this.userLocation);
+    },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', 7);
     // },
@@ -143,22 +169,56 @@ export default {
     // }
   },
   async mounted() {
-    this.clearData();
-    // console.log(defaultData, 'defaultData');
-    if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-      // this sets skilled attendance at birth indicator on mounted
-      this.SET_SELECTED_CONFIG(defaultData);
-    } else if (this.$route.params.name === 'Disease_Surveillance') {
-      // this sets covid 19 confirmed cases indicator on mounted
-      this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
-      this.SET_SELECTED_CONFIG(defaultDSyear);
-    } else if (this.$route.params.name === 'Advanced_Analytics') {
-      this.SET_SELECTED_CONFIG(defaultData);
-      this.SET_SELECTED_CONFIG(defaultAdvancedYear);
-    }
-    setTimeout(() => {
-      console.log('config', this.$store.state.MSDAT_STORE.configObject);
-    }, 5000);
+    this.getUserLocation();
+
+    await navigator.geolocation.getCurrentPosition((position) => {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+
+      // Now that you have the geolocation data, you can use it here
+      const data = {
+        dashboard: this.$route.params.name,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        time: Date.now(),
+      };
+
+      this.SET_DASHBOARD_LOCATION(data);
+
+      this.clearData();
+
+      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+        // this sets skilled attendance at birth indicator on mounted
+        this.SET_SELECTED_CONFIG(defaultData);
+      } else if (this.$route.params.name === 'Disease_Surveillance') {
+        // this sets covid 19 confirmed cases indicator on mounted
+        this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+        this.SET_SELECTED_CONFIG(defaultDSyear);
+      } else if (this.$route.params.name === 'Advanced_Analytics') {
+        this.SET_SELECTED_CONFIG(defaultData);
+        this.SET_SELECTED_CONFIG(defaultAdvancedYear);
+      }
+
+      setTimeout(() => {
+        console.log('config', this.$store.state.MSDAT_STORE.configObject);
+      }, 5000);
+    });
+
+    // // console.log(defaultData, 'defaultData');
+    // if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+    //   // this sets skilled attendance at birth indicator on mounted
+    //   this.SET_SELECTED_CONFIG(defaultData);
+    // } else if (this.$route.params.name === 'Disease_Surveillance') {
+    //   // this sets covid 19 confirmed cases indicator on mounted
+    //   this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+    //   this.SET_SELECTED_CONFIG(defaultDSyear);
+    // } else if (this.$route.params.name === 'Advanced_Analytics') {
+    //   this.SET_SELECTED_CONFIG(defaultData);
+    //   this.SET_SELECTED_CONFIG(defaultAdvancedYear);
+    // }
+    // setTimeout(() => {
+    //   console.log('config', this.$store.state.MSDAT_STORE.configObject);
+    // }, 5000);
   },
   async created() {
     // this.saveIndicatorToStorage();
@@ -250,6 +310,9 @@ export default {
       this.SET_CONFIGURATIONS(getFormattedConfig || this.configObject); // make use of the new state implementation to avoid prop drilling
       localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
       localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
+
+      window.document.title = 'MSDAT Nigeria | Custom Dashboard';
+
       return;
     }
     // if it is not custom dashboard for safety reasons set it to false
@@ -328,6 +391,7 @@ export default {
     // set the title from the config as the route title
     if (this.$store.state.MSDAT_STORE.configObject.title) {
       this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
+      window.document.title = `MSDAT Nigeria | ${this.$store.state.MSDAT_STORE.configObject.title}`;
     }
   },
   watch: {

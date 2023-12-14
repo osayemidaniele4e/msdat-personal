@@ -1,3 +1,4 @@
+<!-- eslint-disable no-sequences -->
 <!-- eslint-disable vue/no-parsing-error -->
   <!-- Auther: Ghufran Ahmed -->
 
@@ -49,7 +50,8 @@
 
         <!-- v-b-modal.modal-visibility -->
 
-        <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button>
+        <!-- <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button> -->
+        <button @click="approveData">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button>
 
         <b-popover ref="popover" target="popover-button-event" triggers="hover" title="Choose visibility">
      <span @click="createPrivateDashboard()" class="choose-visibility-option">
@@ -266,7 +268,7 @@ export default {
         organization: '',
         Reason: '',
         name_of_dashboard: '',
-        dashboard_details: null
+        dashboard_details: null,
       },
       form: {
         email: '',
@@ -283,8 +285,12 @@ export default {
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
+    // ...mapGetters('CUSTOM_DASHBOARD_STORE', ['dashboardDetails', 'getVisibility']),
     dashboardDetails() {
       return this.$store.getters.dashboardDetails;
+    },
+    getVisibility() {
+      return this.$store.getters.getVisibility;
     },
   },
   methods: {
@@ -315,7 +321,7 @@ export default {
       // send the request to create a public dashboard
       this.public_creator.dashboard_details = await this.$store.getters.dashboardDetails;
       await this.$store.dispatch('setDashboardRequest', this.public_creator);
-      console.log('public creator', this.public_creator)
+      console.log('public creator', this.public_creator);
       // hide the 'modal-public-dashboard'
       await this.$bvModal.hide('modal-public-dashboard');
       // show the 'modal-in-review'
@@ -339,12 +345,30 @@ export default {
 
     // Below function is excuted when approve data button is clicked
 
-    approveData() {
+    async  approveData() {
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
         this.$swal('Dashboard name not provided');
         return;
       }
+
+      // if the dashboard is public, run these functions
+      if (this.getVisibility === 'public') {
+        this.public_creator.name = this.getUser.username;
+        this.public_creator.email = this.getUser.email;
+        this.public_creator.description = await this.dashboardDetails.description;
+        this.public_creator.Reason = await this.dashboardDetails.reason;
+        this.public_creator.category = await this.dashboardDetails.category;
+        this.public_creator.name_of_dashboard = await this.dashboardDetails.name;
+        this.public_creator.link = `https://msdat.fmohconnect.gov.ng/dashboards/${this.dashboardDetails.name}`;
+      }
+      console.log('public-creator', this.public_creator);
+
+      await this.$store.dispatch('setDashboardRequest', await this.public_creator);
+      // hide the 'modal-public-dashboard'
+      await this.$bvModal.hide('modal-public-dashboard');
+      // show the 'modal-in-review'
+      await this.$bvModal.show('modal-in-review');
 
       //
       // SAVE DASHBOARD LOCALLY
