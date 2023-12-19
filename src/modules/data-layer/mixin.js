@@ -187,7 +187,7 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      console.log(this.dlLocation, 'this.dlLocation');
+      // console.log(this.dlLocation, 'this.dlLocation');
       if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }
