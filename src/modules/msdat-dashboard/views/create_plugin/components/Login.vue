@@ -2,13 +2,13 @@
 <!-- eslint-disable no-alert -->
 <template>
   <div class="">
-    <section class="container-fluid">
+    <section class="container-fluid login-section">
       <div class="container">
-        <h2 class="w-100 text-center mx-auto">Log in to your account</h2>
+        <h3 class="w-100 text-center mx-auto">Log in to your account</h3>
         <!-- <div class="loader" v-if="isLoading">
           <the-loader />
         </div> -->
-        <h2 class="w-100 text-center mx-auto mt-3">Signin with</h2>
+        <h3 class="w-100 text-center mx-auto mt-3">Signin with</h3>
 
         <div class="d-flex w-100 justify-content-center">
           <button
@@ -432,5 +432,8 @@ h4::after {
   min-width: 225px;
   padding: 0 15px 0px 46px;
   background-image: linear-gradient(#4c69ba, #3b55a0);
+}
+.login-section {
+  font-family: 'Work sans';
 }
 </style>
