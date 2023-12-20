@@ -1,18 +1,22 @@
 <template>
   <div class="">
-    <ul
-    class="d-flex justify-content-between mr-3 list-unstyled step-sections py-2 mb-0 border-b cursor-pointer main tabs-sec"
-    >
-      <li
-        class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
-        :class="[i === selectedIndex ? 'active font-weight-bold' : '']"
-        v-for="(el, i) in controls"
-        :key="i"
-        :id="`panel-${i}`"
-        @click="changeControl(i)"
-      >
-      {{ el.title }}
-    </li>
+    <ul>
+      <draggable v-model="modifiedControls">
+        <transition-group
+          class="d-flex justify-content-between mr-3 list-unstyled step-sections py-2 mb-0 border-b cursor-pointer main tabs-sec"
+        >
+          <li
+            class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+            :class="[el.index === selectedIndex ? 'active font-weight-bold' : '']"
+            v-for="(el, i) in modifiedControls"
+            :key="i"
+            :id="`panel-${el.index}`"
+            @click="changeControl(el.index)"
+          >
+            {{ el.title }}
+          </li>
+        </transition-group>
+      </draggable>
     </ul>
 
     <div class="control-title">{{ title }}</div>
@@ -25,9 +29,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'BasePanel',
+  components: {
+    draggable,
+  },
   data() {
     return {
       controls: [],
@@ -225,6 +233,10 @@ export default {
 }
 .bg-tab-color {
   color: #515151;
+}
+
+.tabs-sec {
+  // max-width: 1200px;
 }
 
 .tab-link.active {
