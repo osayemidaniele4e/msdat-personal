@@ -61,7 +61,7 @@ export default {
   name: 'IndicatorPluginView',
   data() {
     return {
-      RequestModel: 'http://172.93.52.240:8123/query/',
+      RequestModel: 'https://query.e4eweb.space/query/',
       items: [],
       fields: [
         { key: 'short_name', label: 'Indicator Name' },
