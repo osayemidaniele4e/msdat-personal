@@ -11,6 +11,7 @@ export default {
   getFactors: 'factors/?size=1500',
   getDSI: 'datasource_specific_indicator/?size=1500',
   getData: 'data/?size=1500&',
+  getTableData: 'data/?size=1&',
   getUpdatedDataDate: 'after_datetime/?size=1500',
   getNhmisMonthly: `data/?datasource=${30}&page=1&size=1500`, // 30, nhmisMonthly ID
 };

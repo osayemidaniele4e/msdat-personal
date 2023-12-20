@@ -1,8 +1,8 @@
 <template>
-  <div class="m-5 border">
-    <h1>Hello, its me</h1>
-  </div>
-</template>
+    <div class="m-5 border">
+      <h1>Hello, its me</h1>
+    </div>
+  </template>
 
 <script>
 import apiServices from '@/modules/data-layer/services/ApiServices';
@@ -48,14 +48,9 @@ export default {
     async getValue(datasource, indicator, location) {
       const valueType = datasource.value_type;
       const datasourceId = datasource.id;
-      const response = await apiServices.getIndicatorTableData(
-        indicator,
-        datasourceId,
-        valueType,
-        location,
-      );
+      const response = await apiServices.getIndicatorTableData(indicator, datasourceId, valueType, location);
       console.log(response, 'datasources main 1');
-      return response.data;
+      return response;
     },
   },
 
@@ -91,18 +86,11 @@ export default {
         return item; // Handle the case where no matching classification is found
       });
 
-      // const indicators = [7, 6, 5];
-
-      const tableDataPromises = updatedDataSources.map(async (item) => this.getValue(item, indicatorId, location));
-
-      try {
-        const tableData = await Promise.all(tableDataPromises);
-        console.log(tableData, 'datasources main 2');
-        // Continue with the rest of your logic using tableData
-      } catch (error) {
-        console.error('Error fetching table data:', error);
-        // Handle the error as needed
-      }
+      const tableData = updatedDataSources.map(async (item) => {
+        const response = await this.getValue(item, indicatorId, location);
+        return response;
+      });
+      console.log(tableData, 'datasources main 2');
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -110,4 +98,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+  <style lang="scss" scoped></style>

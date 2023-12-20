@@ -220,10 +220,9 @@ export default {
       localStorage.setItem('dashboardName', routeTitle);
       console.log(this.$route);
       const indicatorID = localStorage.getItem('indicatorID');
-      const indicatorFirstRelated = localStorage.getItem('indicatorFirstRelated');
-      const indicatorSecondRelated = localStorage.getItem('indicatorSecondRelated');
+      const location = 1;
       // this.tableLink = `http://localhost:8080/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&indicatorFirstRelated=${indicatorFirstRelated}&indicatorSecondRelated=${indicatorSecondRelated}`;
-      this.$router.push(`/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&indicatorFirstRelated=${indicatorFirstRelated}&indicatorSecondRelated=${indicatorSecondRelated}`);
+      this.$router.push(`/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`);
       // this.showShareCodeModal = !this.showShareCodeModal;
       // const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
       // this.tableObj = this.bootstrapCDN + tableObjTemp;

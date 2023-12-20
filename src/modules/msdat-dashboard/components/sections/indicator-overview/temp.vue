@@ -1,98 +1,50 @@
-/* eslint-disable no-await-in-loop */
 <template>
-  <!-- <base-overlay :show="loading"> -->
-  <div>
-    <div v-if="!loading">
-      <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
-        <template #title>
-          <div class="w-100 d-flex justify-content-between">
-            <p class="work-sans mb-0 line-height">
-              <b>{{ values.indicator.short_name }}</b>
-              and related indicators (with year of latest values) across available data sources.
-            </p>
-
-            <div class="share-wrapper">
-              <div v-if="isTooltipVisible" class="tooltip-wrap">share.</div>
-              <div
-                @mouseover="showTooltip"
-                @mouseout="hideTooltip"
-                @click="toggleShowShareModal()"
-                class="share-btn"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-share-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </template>
-        <TableComponent
-          class="work-sans"
-          v-if="TableData.length > 0"
-          :dataArray="TableData"
-          :values="values"
-          :setSelectedSource="setTableSelected"
-          @selected:source="updateControlPanel($event)"
-          @selected:source-info="dataSourceModalFunc($event)"
-          @selected:indicator-info="indicatorModalFunc($event)"
-          @clickedDatasource="getValue"
-          @key="getKey"
-          @clickedReset="getReset"
-          id="indicatorTable"
-        />
-      </base-sub-card>
-    </div>
-    <TableLoader v-if="loading" />
-    <base-modal :showModal="showModal" size="lg">
-      <!-- <template v-if="DisplayType === 'indicator'"> -->
-      <template #title>
-        <div class="modal-title">{{ modalTitle }}</div>
-      </template>
-      <IndicatorMetaDataModal
-        v-if="showModal && DisplayType === 'indicator'"
-        :indicatorSelectedID="indicatorSelectedID"
-      />
-
-      <DataSourceMetaDataModal
-        v-if="showModal && DisplayType === 'datasource'"
-        :dataSourceID="dataSourceID"
-      />
-      <!-- </template> -->
-    </base-modal>
+  <div class="m-5 border" v-if="this.availableDataSources !== null">
+    <TableComponent
+      class="work-sans"
+      v-if="TableData.length > 0"
+      :dataArray="TableData"
+      :values="values"
+      :setSelectedSource="setTableSelected"
+      @selected:source="updateControlPanel($event)"
+      @selected:source-info="dataSourceModalFunc($event)"
+      @selected:indicator-info="indicatorModalFunc($event)"
+      @clickedDatasource="getValue"
+      @key="getKey"
+      @clickedReset="getReset"
+      id="indicatorTable"
+      :availableDataSources="availableDataSources"
+      :specificIndicators="specificIndicators"
+      :factors="factors"
+    />
   </div>
-
-  <!-- </base-overlay> -->
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import TableComponent from '@/modules/msdat-dashboard/components/table/TableComponent.vue';
+import { mapGetters, mapMutations } from 'vuex';
+import TableComponent from '@/modules/msdat-dashboard/components/table/ShareTable/TableComponent.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
-import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
+import apiServices from '@/modules/data-layer/services/ApiServices';
+import { formatFactor } from '@/util/helper';
+import defaultConfig from './defaultConfig.json';
+// import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
 import chartDownload from '../../../mixins/chart_download';
-import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
-import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
+// import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
+// import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
+import DB from '../../../../data-layer/services/database.worker';
 
 export default {
   mixins: [chartDownload, formatter],
   components: {
     TableComponent,
-    IndicatorMetaDataModal,
-    DataSourceMetaDataModal,
-    TableLoader,
   },
   data() {
     return {
-      TableData: '',
+      values: {
+        indicator: null,
+        datasource: null,
+      },
+      TableData: [],
       loading: true,
       showModal: false,
       setTableSelected: {},
@@ -104,49 +56,105 @@ export default {
       showShareCodeModal: false,
       tableObj: null,
       isTooltipVisible: false,
-      bootstrapCDN:
-        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">',
+      availableDataSources: [],
+      specificIndicators: [],
+      valueType: [
+        {
+          id: 1,
+          value_type: 'Estimate',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 2,
+          value_type: 'Survey',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 3,
+          value_type: 'Lower bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 4,
+          value_type: 'Upper bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 5,
+          value_type: 'Routine',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 6,
+          value_type: 'Numerator',
+          created_at: '2021-07-02T08:45:20.707139Z',
+          updated_at: '2021-07-02T08:45:20.707348Z',
+        },
+        {
+          id: 7,
+          value_type: 'Denominator',
+          created_at: '2021-07-02T08:56:10.401735Z',
+          updated_at: '2021-07-02T08:56:10.401798Z',
+        },
+      ],
+      factors: [],
+      tempData: [],
     };
-  },
-  props: {
-    /**
-     * input values
-     */
-    values: {
-      type: [Object, String, Array],
-      required: true,
-    },
   },
   watch: {
     'values.indicator': {
       async handler(newValues) {
+        console.log(newValues);
         this.loading = true;
         const formattedData = [];
-        let indicators = [newValues.id, newValues.first_related, newValues.second_related];
+        const { indicatorId, indicatorFirstRelated, indicatorSecondRelated } = this.$route.query;
+        // const indicators = [newValues.id, newValues.first_related, newValues.second_related];
+        // const indicators = [indicatorId, indicatorFirstRelated, indicatorSecondRelated];
+        const indicators = [Number(indicatorId), Number(indicatorFirstRelated), Number(indicatorSecondRelated)];
 
-        if (!this.getConfigObject.showTableRelatedIndicator) {
-          indicators = [newValues.id];
-        }
+        console.log(indicators, 'length HH 1');
 
         for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
           const indicatorID = indicators[indicatorIndex];
+          console.log(indicatorID, 'indicatorID');
           if (indicatorID) {
             const data = [];
-            const dataSources = this.dlGetDashboardDataSource();
-            const indicatorObject = this.dlGetIndicator(indicatorID);
+            this.returnIndicatorObj(indicatorID);
+            const dataSources = this.availableDataSources;
+            // eslint-disable-next-line no-await-in-loop
+            const indicatorObject = await this.returnIndicatorObj(indicatorID);
+            console.log(dataSources, 'indicatorID 1');
+            console.log(indicatorObject, 'indicatorID 2');
+            console.log(dataSources.length, 'indicatorID 3');
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
+              console.log(element, 'indicatorID 3');
               // eslint-disable-next-line no-await-in-loop
               const ab = await this.dlGetLatestSourceAndIndicatorData({
                 indicator: indicatorID,
                 datasource: element.id,
                 location: 1,
+                value_type: 2,
               });
               data.push(ab);
             }
-            formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
+
+            // eslint-disable-next-line no-await-in-loop
+            const newData = await this.tableComponentDataFormat(indicatorObject, data);
+            // console.log(newData, 'newData');
+            // console.log(formattedData, '&&&HH');
+            // eslint-disable-next-line no-await-in-loop
+            // this.tempData.push(newData);
+            formattedData.unshift(newData);
           }
-          this.TableData = formattedData;
+          // console.log(formattedData, 'this.dataArray');
+          this.TableData = formattedData.reverse();
+          // console.log(this.TableData, '&&&HH&&');
           this.loading = false;
         }
       },
@@ -156,48 +164,22 @@ export default {
         this.setTableSelected = newValue;
       },
     },
-    updateData: {
-      async handler() {
-        // this.loading = true;
-        // const formattedData = [];
-        // let indicators = [
-        //   this.values.indicator.id,
-        //   this.values.indicator.first_related,
-        //   this.values.indicator.second_related,
-        // ];
-        // if (!this.getConfigObject.showTableRelatedIndicator) {
-        //   indicators = [this.values.indicator.id];
-        // }
-        // for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
-        //   const indicatorID = indicators[indicatorIndex];
-        //   if (indicatorID) {
-        //     const data = [];
-        //     const dataSources = this.dlGetDashboardDataSource();
-        //     const indicatorObject = this.dlGetIndicator(indicatorID);
-        //     for (let index = 0; index < dataSources.length; index += 1) {
-        //       const element = dataSources[index];
-        //       // eslint-disable-next-line no-await-in-loop
-        //       const ab = await this.dlGetLatestSourceAndIndicatorData({
-        //         indicator: indicatorID,
-        //         datasource: element.id,
-        //         location: 1,
-        //       });
-        //       data.push(ab);
-        //     }
-        //     formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
-        //   }
-        //   this.TableData = formattedData;
-        //   this.loading = false;
-        // }
-      },
-      deep: true,
-      immediate: false,
-    },
+    // updateData: {
+    //   async handler() {},
+    //   deep: true,
+    //   immediate: false,
+    // },
   },
   computed: {
-    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+    ...mapGetters('MSDAT_STORE', ['getControlConfig', 'getConfigObject']),
   },
   methods: {
+    ...mapMutations('MSDAT_STORE', [
+      'ADD_CONTROL_PANEL',
+      'CLEAR_CONTROL_PANEL',
+      'SET_CONFIGURATIONS',
+      'SET_SELECTED_CONFIG',
+    ]),
     /**
      * @param {Object} queryObject  The query Object
      * @param {number} queryObject.indicator The id of the indicator
@@ -206,13 +188,19 @@ export default {
      */
 
     toggleShowShareModal() {
-      this.showShareCodeModal = !this.showShareCodeModal;
-      const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
-      this.tableObj = this.bootstrapCDN + tableObjTemp;
+      const routeTitle = this.$route.path;
+      console.log(routeTitle);
+      this.$router.push('/indicator-table');
+      // this.showShareCodeModal = !this.showShareCodeModal;
+      // const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
+      // this.tableObj = this.bootstrapCDN + tableObjTemp;
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;
+      console.log(queryObject, 'queryHHHH');
       const filteredIndicator = await this.dlQuery(queryObject);
+      // const filteredIndicator = await this.getLocalDlQuery(queryObject);
+      console.log(filteredIndicator, 'Ben');
       if (routeTitle.endsWith('Demographics')) {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
@@ -274,7 +262,11 @@ export default {
       const newValues = this.values.indicator;
       this.loading = true;
       const formattedData = [];
-      let indicators = [newValues.id, newValues.first_related, newValues.second_related];
+      const { indicatorId, indicatorFirstRelated, indicatorSecondRelated } = this.$route.query;
+      // const indicators = [newValues.id, newValues.first_related, newValues.second_related];
+      // let indicators = [indicatorId, indicatorFirstRelated, indicatorSecondRelated];
+      // let indicators = [3, 4, 1];
+      let indicators = [Number(indicatorId), Number(indicatorFirstRelated), Number(indicatorSecondRelated)];
 
       if (!this.getConfigObject.showTableRelatedIndicator) {
         indicators = [newValues.id];
@@ -284,8 +276,10 @@ export default {
         const indicatorID = indicators[indicatorIndex];
         if (indicatorID) {
           const data = [];
-          const dataSources = this.dlGetDashboardDataSource();
-          const indicatorObject = this.dlGetIndicator(indicatorID);
+          const dataSources = this.availableDataSources;
+          console.log(dataSources, 'this.dataArray');
+          // eslint-disable-next-line no-await-in-loop
+          const indicatorObject = await this.returnIndicatorObj(indicatorID);
           for (let index = 0; index < dataSources.length; index += 1) {
             const element = dataSources[index];
             // eslint-disable-next-line no-await-in-loop
@@ -293,12 +287,16 @@ export default {
               indicator: indicatorID,
               datasource: element.id,
               location: 1,
+              value_type: 2,
             });
+            console.log(ab, 'dataSources');
             data.push(ab);
           }
-          formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
+          // eslint-disable-next-line no-await-in-loop
+          formattedData.push(await this.tableComponentDataFormat(indicatorObject, data));
         }
         this.TableData = formattedData;
+        console.log(this.TableData, '@@&&');
         this.loading = false;
       }
     },
@@ -308,53 +306,112 @@ export default {
     hideTooltip() {
       this.isTooltipVisible = false;
     },
+
+    async returnIndicatorObj(id) {
+      const response = await apiServices.getSingleIndicatorObj(id);
+      console.log(response);
+      return response.data;
+    },
+    async getDatasources() {
+      try {
+        const name = this.$route.query.dashboard_name;
+        const [dashboardResponse, dataSourceResponse] = await Promise.all([
+          apiServices.getDashboard(),
+          apiServices.getAllDataSources(),
+        ]);
+
+        const results = dashboardResponse.data;
+        const dashboard = results.find((item) => item?.name === name);
+        const dashboardDasourceIds = dashboard.dataSources;
+        const dataSources = dataSourceResponse.data.results.filter((item) => dashboardDasourceIds.includes(item.id));
+        return dataSources;
+      } catch (error) {
+        // Handle any errors, e.g., log the error or return a default value
+        console.error('Error in getDatasources:', error);
+        return [];
+      }
+    },
+
+    // eslint-disable-next-line consistent-return
+    async getLocalDlQuery(queryObject) {
+      // console.log(queryObject);
+      const datasourceItem = this.availableDataSources.filter((datasource) => datasource.id === queryObject.datasource);
+      console.log(datasourceItem);
+
+      // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+      const valuetype = this.valueType?.filter(
+        (item) => item.value_type === datasourceItem[0]?.classification
+      );
+      // eslint-disable-next-line no-param-reassign
+      queryObject.value_type = valuetype[0]?.id;
+
+      console.log(queryObject, 'valuetype');
+
+      // check for undefined
+      function hasUndefinedOrNullValues(obj) {
+        return Object.values(obj).some((val) => val === undefined || val === null);
+      }
+      if (hasUndefinedOrNullValues(queryObject) === false) {
+        const result = await DB.queryDB(queryObject);
+        return result;
+      }
+    },
+
+    async tableComponentDataFormat(indicatorObject, dataObjectArray) {
+      const data = {};
+      data.indicator = indicatorObject;
+      data.values = [];
+      console.log(indicatorObject, dataObjectArray, 'HHHH');
+
+      dataObjectArray.forEach((e) => {
+        if (e) {
+          // const datasourceTemp = this.availableDataSources.filter((datasource) => datasource.id === e.datasource);
+          const factor = this.factors.find((item) => item.id === indicatorObject.factor);
+          const datasource = this.availableDataSources.find((item) => item.id === e.datasource);
+          console.log(datasource, factor, 'datasourceTemp');
+          data.values.push({
+            dataSources: datasource,
+            // change 2 decimal place to 1 decimal place
+            value: new Intl.NumberFormat().format(Number(e.value).toFixed(1)),
+            factor: formatFactor(factor.display_factor),
+            year: e.period,
+            classification: datasource.classification,
+          });
+
+          // console.log(data, '&&&');
+        }
+      });
+      return data;
+    },
+  },
+  async created() {
+    const name = this.$route.query.dashboard_name;
+    const response = await apiServices.getDashboard();
+    const factorsResponse = await apiServices.getFactors();
+    const dataSourceResponse = await apiServices.getAllDataSources();
+    const specificIndicatorsData = await apiServices.getSpecificIndicator();
+    this.specificIndicators = specificIndicatorsData.data.results;
+    const results = response.data;
+    const dashboard = results.find((item) => item?.name === name);
+    // const dashboardDataSource = await apiServices.getDashboardDatasources(dashboard.id);
+    const dashboardDasourceIds = dashboard.dataSources;
+    const dataSources = dataSourceResponse.data.results.filter((item) => dashboardDasourceIds.includes(item.id));
+    console.log(dataSourceResponse.data.results, 'dataSources');
+    console.log(factorsResponse, 'factorsResponse');
+    //  console.log(dashboardDataSource, 'Dashboard Response');
+    this.factors = factorsResponse.data.results;
+    this.availableDataSources = dataSources;
+    console.log(this.availableDataSources, 'this.availableDataSources');
   },
   mounted() {
-    this.updateData += 1;
-    this.populateTableData();
+    setTimeout(() => {
+      console.log(defaultConfig);
+      this.values = defaultConfig[0].payload;
+      this.updateData += 1;
+      this.populateTableData();
+    }, 5000);
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.modal-title {
-  font-weight: 700;
-  color: black;
-  opacity: 1;
-  margin-left: 10px;
-  font-size: 14px;
-}
-
-.share-btn {
-  height: auto;
-  padding: 0;
-  margin: 0 5px;
-  padding: 0 6px;
-  margin-right: 5px;
-  margin-top: 2px;
-  padding-bottom: 2px;
-  border: 1px solid #b3b3b3;
-  border-radius: 50px;
-  cursor: pointer;
-}
-
-.share-btn svg {
-  width: 12px;
-  margin-right: 2px;
-}
-
-.share-wrapper {
-  display: flex;
-}
-
-.share-btn:hover {
-  border: 1px solid #61a229;
-}
-
-.tooltip-wrap {
-  background-color: #333;
-  color: #fff;
-  padding: 0 5px;
-  border-radius: 5px;
-}
-</style>
+<style lang="scss" scoped></style>
