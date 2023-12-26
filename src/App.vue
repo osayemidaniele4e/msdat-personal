@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div id="app" data-server-redendered="true">
     <router-view />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import ContextPlugin from './modules/plugins/context-plugin';
 import IndicatorSearch from './modules/plugins/indicator-search';
 
@@ -26,7 +27,9 @@ export default {
     if (localStorage.getItem('indicatorPlugin') === 'true') {
       Vue.use(IndicatorSearch);
     }
-
+  },
+  methods: {
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
   },
 };
 </script>

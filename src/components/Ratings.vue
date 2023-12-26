@@ -6,14 +6,14 @@
         icon="star-fill"
         :font-scale="size"
         class="star-icon"
-        :style="{margin: `0 ${spacing}px`}"
+        :style="{marginRight: `${n == 5 ? 0 :spacing * 2}px`}"
       ></b-icon>
       <b-icon
         v-else
         icon="star"
         :font-scale="size"
         class="star-icon"
-        :style="{margin: `0 ${spacing}px`}"
+        :style="{marginRight: `${n == 5 ? 0 :spacing * 2}px`}"
       ></b-icon>
     </span>
   </div>
@@ -38,6 +38,10 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  model: {
+    prop: 'value',
+    event: 'change',
   },
   data() {
     return {
