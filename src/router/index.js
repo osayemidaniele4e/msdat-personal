@@ -60,6 +60,9 @@ router.beforeEach((to, from, next) => {
   if (window.document.location.pathname.startsWith('/dashboard/')) {
     const pageTitle = `MSDAT Nigeria | ${window.document.location.pathname.split('/')[2].replaceAll('_', ' ')}`;
 
+    /**
+     * Update OG Tags for crawlers
+     */
     const titleEl = document.querySelector('head meta[property="og:title"]');
     const titleEl2 = document.querySelector('head meta[name="twitter:title"]');
     titleEl.setAttribute('content', pageTitle);

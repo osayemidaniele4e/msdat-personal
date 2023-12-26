@@ -354,13 +354,9 @@ export default {
 
     window.addEventListener('wheel', this.handleScroll);
 
-    // const pageTitle = `MSDAT Nigeria | ${this.$route.meta?.title}`;
-
-    // const titleEl = document.querySelector('head meta[property="og:title"]');
-    // const titleEl2 = document.querySelector('head meta[name="twitter:title"]');
-    // titleEl.setAttribute('content', pageTitle);
-    // titleEl2.setAttribute('content', pageTitle);
-
+    /**
+     * Update Site-Wide OG tags for crawlers
+     */
     // eslint-disable-next-line camelcase
     const indicator = this.getSelectedConfig().indicator?.full_name
       // eslint-disable-next-line camelcase
@@ -621,6 +617,9 @@ export default {
         this.showTroubleShootingModal = true;
       }
     }
+    // Hide Modal For Prerendered Pages
+    const bvModal = document.querySelector('#__BVID__13___BV_modal_outer_');
+    if (bvModal) bvModal.style.display = 'none';
   },
 };
 </script>
