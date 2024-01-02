@@ -134,7 +134,7 @@ export default {
       });
 
       const dataSourcesObjs = await Promise.all(dataSourcesObjsPromises);
-      // console.log(dataSourcesObjs, 'ABCDEF');
+      // console.log(dataSourcesObjs, 'datasource');
       this.datasourcesObj = this.reorderedTableHead(dataSourcesObjs);
       // console.log(this.datasourcesOb, 'ABCDEF 22');
 
@@ -145,7 +145,7 @@ export default {
 
       this.availableClassification = [...temp];
 
-      console.log(dataSourcesObjs, 'data sources object');
+      // console.log(dataSourcesObjs, 'data sources object');
 
       const updatedDataSources = dataSourcesObjs.map((item) => {
         const valueTypeItem = this.valueType.find((v) => v.value_type === item.classification);
@@ -158,9 +158,9 @@ export default {
         return item; // Handle the case where no matching classification is found
       });
 
-      console.log(dataSourcesObjs, 'ABCDEF y');
+      // console.log(dataSourcesObjs, 'ABCDEF y');
 
-      console.log(updatedDataSources, 'ABCDEF x');
+      // console.log(updatedDataSources, 'ABCDEF x');
 
       this.updatedDataSourcesObject = updatedDataSources;
 
@@ -171,14 +171,14 @@ export default {
       try {
         const tableData = await Promise.all(tableDataPromises);
         const tableBodyData = tableData.map((item) => (item.results.length ? item.results[0] : null));
-        console.log(tableBodyData, 'ABCDEF 1');
+        // console.log(tableBodyData, 'ABCDEF 1');
 
         // console.log(tableBodyData, 'datasources main 2xx 1');
         if (tableBodyData !== null) {
           this.bodyValue = tableBodyData;
         }
 
-        console.log(this.bodyValue, 'ABCDEF');
+        // console.log(this.bodyValue, 'ABCDEF');
 
         // Continue with the rest of your logic using tableData
       } catch (error) {
