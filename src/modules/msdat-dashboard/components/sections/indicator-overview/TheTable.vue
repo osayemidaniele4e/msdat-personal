@@ -222,8 +222,10 @@ export default {
       const indicatorID = localStorage.getItem('indicatorID');
       const location = 1;
       // this.tableLink = `http://localhost:8080/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&indicatorFirstRelated=${indicatorFirstRelated}&indicatorSecondRelated=${indicatorSecondRelated}`;
-      this.$router.push(`/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`);
-      // this.showShareCodeModal = !this.showShareCodeModal;
+      // this.$router.push(`/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`);
+      const url = `/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`;
+      window.open(url, '_blank');
+      // // this.showShareCodeModal = !this.showShareCodeModal;
       // const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
       // this.tableObj = this.bootstrapCDN + tableObjTemp;
     },
