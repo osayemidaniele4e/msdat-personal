@@ -238,6 +238,16 @@ import Onboarding from '../onboarding/onboarding';
 import TroubleShootingModal from '../../modules/troubleshooting/modal.vue';
 
 export default {
+  // head() {
+  //   return {
+  //     meta: [
+  //       {
+  //         name: 'twitter:description',
+  //         content: 'Your Page Description',
+  //       },
+  //     ],
+  //   };
+  // },
   name: 'BaseDashboard',
   mixins: [Loading, formatter, controlPanelSetup, Onboarding, tour, scroll, SharingDashboardState],
   components: {
@@ -344,18 +354,14 @@ export default {
 
     window.addEventListener('wheel', this.handleScroll);
 
-    const pageTitle = `MSDAT Nigeria | ${this.$route.meta?.title}`;
-
-    const titleEl = document.querySelector('head meta[property="og:title"]');
-    const titleEl2 = document.querySelector('head meta[name="twitter:title"]');
-    titleEl.setAttribute('content', pageTitle);
-    titleEl2.setAttribute('content', pageTitle);
-
+    /**
+     * Update Site-Wide OG tags for crawlers
+     */
     // eslint-disable-next-line camelcase
     const indicator = this.getSelectedConfig().indicator?.full_name
       // eslint-disable-next-line camelcase
-      || this.dlIndicator.find((ind) => ind.id === this.initialIndicator?.full_name) || 'important Health indicators';
-    const pageDesc = `Take a look at ${indicator} on the Multi-Source Data and Triangulation (MSDAT) platform`;
+      || this.dlIndicator.find((ind) => ind.id === this.initialIndicator?.full_name) || 'Skilled attendance at delivery or birth';
+    const pageDesc = `Take a look at '${indicator}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
 
     const descEl = document.querySelector('head meta[property="og:description"]');
     const descEl2 = document.querySelector('head meta[name="twitter:description"]');
@@ -367,7 +373,6 @@ export default {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('wheel', this.handleScroll);
   },
-
   methods: {
     ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
@@ -612,6 +617,9 @@ export default {
         this.showTroubleShootingModal = true;
       }
     }
+    // Hide Modal For Prerendered Pages
+    const bvModal = document.querySelector('#__BVID__13___BV_modal_outer_');
+    if (bvModal) bvModal.style.display = 'none';
   },
 };
 </script>
