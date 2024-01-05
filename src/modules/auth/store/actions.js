@@ -83,7 +83,7 @@ export default {
   async AUTHENTICATE_LINKEDIN({ commit }, payload) {
     try {
       const response = await axios.post('http://172.93.52.240:3001/api/social/auth/register/linkedin/', payload);
-
+      console.log('linkedln login', response);
       const user = response.data.data;
 
       VueCookies.set('msdat-user-details', user);

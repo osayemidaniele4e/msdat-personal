@@ -64,7 +64,7 @@
             id="reset"
             @click="getReset()"
             class="pointer_click mx-1 font-weight-bold"
-            font-scale="1"
+            font-scale="0.5"
           ></b-icon-arrow-clockwise>
         </template>
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
@@ -247,8 +247,8 @@ export default {
       const currentYear = new Date().getFullYear();
       const { name } = this.$route.params;
 
-  const beforeCurrentYearColor = 'rgba(173, 216, 230, 0.3)'; // Change this color as needed
-  const afterCurrentYearColor = 'rgba(144, 238, 144, 0.3)'; // Change this color as needed
+      const beforeCurrentYearColor = 'rgba(173, 216, 230, 0.3)'; // Change this color as needed
+      const afterCurrentYearColor = 'rgba(144, 238, 144, 0.3)'; // Change this color as needed
 
       this.ChartOptions = {
         tooltip: {
@@ -273,14 +273,14 @@ export default {
           },
           categories: sortedYear,
           plotLines: [
-        // Plot line for the current year
-        {
-          value: currentYear,
-          color: 'gray', // Change this color as needed
-          width: 2,
-          zIndex: 2,
-        },
-      ],
+            // Plot line for the current year
+            {
+              value: currentYear,
+              color: 'gray', // Change this color as needed
+              width: 2,
+              zIndex: 2,
+            },
+          ],
         },
         chart: {
           ...defaultOptions.chart,
@@ -290,33 +290,32 @@ export default {
         title: {
           ...defaultOptions.title,
         },
-        series: ChartSeriesObject.map(series => {
-      // Divide the series data into two based on the current year only if the condition is met
-      if (name === 'Demographics') {
-        const dataBeforeCurrentYear = series.data.filter(([year]) => year < currentYear);
-        const dataAfterCurrentYear = series.data.filter(([year]) => year >= currentYear);
+        series: ChartSeriesObject.map((series) => {
+          // Divide the series data into two based on the current year only if the condition is met
+          if (name === 'Demographics') {
+            const dataBeforeCurrentYear = series.data.filter(([year]) => year < currentYear);
+            const dataAfterCurrentYear = series.data.filter(([year]) => year >= currentYear);
 
-        // Assign different line styles for data before and after the current year
-        return [
-          {
-            // name: series.name + ' (Before ' + currentYear + ')',
-            name: series.name + ' (Before Projection)',
-            data: dataBeforeCurrentYear,
-            lineDashStyle: 'Solid', // Change this to 'Dash' for a dashed line
-          },
-          {
-            name: series.name + ' (After ' + currentYear + ')',
-            name: series.name + ' (After Projection)',
-            data: dataAfterCurrentYear,
-            lineDashStyle: 'Dash', // Change this to 'Solid' for a solid line
-          },
-        ];
-      } else {
-        // If the condition is not met, use the original series data
-        return series;
-      }
-    }).flat(),   
-     plotOptions: {
+            // Assign different line styles for data before and after the current year
+            return [
+              {
+                // name: series.name + ' (Before ' + currentYear + ')',
+                name: `${series.name} (Before Projection)`,
+                data: dataBeforeCurrentYear,
+                lineDashStyle: 'Solid', // Change this to 'Dash' for a dashed line
+              },
+              {
+                name: `${series.name} (After ${currentYear})`,
+                name: `${series.name} (After Projection)`,
+                data: dataAfterCurrentYear,
+                lineDashStyle: 'Dash', // Change this to 'Solid' for a solid line
+              },
+            ];
+          }
+          // If the condition is not met, use the original series data
+          return series;
+        }).flat(),
+        plotOptions: {
           series: {
             // grouping: true,
             // pointWidth: 10,
