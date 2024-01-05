@@ -12,7 +12,6 @@
             </p>
 
             <div class="share-wrapper">
-              <div v-if="isTooltipVisible" class="tooltip-wrap">share.</div>
               <div
                 @mouseover="showTooltip"
                 @mouseout="hideTooltip"
