@@ -27,6 +27,23 @@ export default [
       title: 'Custom Dashboard',
     },
   },
+  {
+    path: '/custom/approval',
+    name: 'custom-dashboard-login',
+    beforeEnter: (to, from, next) => {
+      const { tokens } = VueCookies.get('msdat-user-details');
+      if (!tokens) {
+        next('/custom/login');
+      } else {
+        return next();
+      }
+      return null;
+    },
+    component: () => import('./views/Approval.vue'),
+    meta: {
+      title: 'Custom Dashboard',
+    },
+  },
   // {
   //   path: '/custom/details',
   //   name: 'dashboard-details',
