@@ -122,7 +122,7 @@ export default {
     navigateToCentralAnalytics() {
       this.isLoading = true;
       setTimeout(() => {
-        this.$router.push('dashboard/Health_Outcomes');
+        this.$router.push('dashboard/Health_Outcomes_and_Service_Coverage');
       }, 500);
     },
   },

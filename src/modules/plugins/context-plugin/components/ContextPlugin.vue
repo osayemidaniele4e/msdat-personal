@@ -1,358 +1,426 @@
 <template>
   <div class="position-fixed zIndex">
-    <!-- Header Section -->
-    <div class="header d-flex position-relative">
-      <div>
-        <h1>Project Context Search</h1>
-        <span>Get context data right away</span>
+    <div class="header d-flex justify-content-between position-relative">
+      <div class="left-content">
+        <h1>Data Insights</h1>
+        <span>Look up qualitative data now</span>
       </div>
-      <p @click="toggleComponent" class="close-icon">x</p>
-    </div>
-    <div class="intro">
-      <p>Search for keywords to get suggestions, articles and videos</p>
-    </div>
-    <!-- Search Form -->
-    <form @submit.prevent="searchKeywords">
-      <div class="search-container">
-        <input type="text" class="form-control search-input" v-model="query" placeholder="Search For Keywords...">
-        <button type="submit" class="btn search-icon p-2"><i class="fa fa-search"></i></button>
+      <div class="profile">
+        <div class="img">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj1y_ODSdX2err5lXo0YN1TsQD9OyZqOwU7Q&usqp=CAU"
+            alt=""
+            class="img"
+          />
+        </div>
+        <div class="icon">
+          <b-icon font-scale="" icon="bell-fill"></b-icon>
+        </div>
       </div>
-    </form>
-
-    <!-- Loading Spinner -->
-    <div class="text-center mt-5" v-if="loading">
-      <b-spinner variant="primary" label="Loading..."></b-spinner>
+      <p @click="toggleComponent" class="close-icon">X</p>
     </div>
+     <!-- Search Form -->
+     <form @submit.prevent="searchKeywords" class="proj-main">
+        <div class="d-flex-row gap-2 justify-content-center px-4 pt-2">
+          <label class="">Get Contextual Data Right Away</label>
+          <div class="form-control search-input">
+            <input type="text" class="" v-model="query" placeholder="Enter Keywords or Url">
+            <button type="submit" class="btn search-icon p-2"><i class="fa fa-search"></i></button>
 
-    <!-- Display Results Section -->
-    <div v-if="displayResults" class="mt-5 search-results">
-      <!-- Tabs Section -->
-      <b-tabs v-model="activeTab" pills card>
-        <!-- Suggestions Tab -->
-        <b-tab title="Suggestions" active>
-          <div v-if="paginatedSuggestions.length > 0" class="suggestion">
-            <h3>Suggestions:</h3>
-            <ul>
-              <li v-for="suggestion in paginatedSuggestions" :key="suggestion.id">{{ suggestion.name }}</li>
-            </ul>
-            <!-- Pagination Section -->
-            <b-pagination
-              v-model="currentSuggestionsPage"
-              :total-rows="totalSuggestions"
-              :per-page="perPage"
-              aria-controls="suggestions-list"
-              class="mt-3"
-              align="center"
-              size="md"
-              @change="loadSuggestionsPage"
-            ></b-pagination>
           </div>
-          <div v-else>
-            <p>No suggestions available.</p>
           </div>
-        </b-tab>
+          <div class="mt-2 ml-4">
+            <p>Or search by</p>
+          </div>
+          <div class="content mx-auto">
+              <!-- <div v-if="feeds.length > 0" class="navigation my-3 border-bottom d-flex">
+                <div class="mx-2" v-for="(item, index) in navigationList" :key="index">
+                  <h5
+                    @click="setSelectedItem(item.name)"
+                    :class="[item.name === selectedItem ? 'activeItem' : 'item']"
+                  >
+                    {{ item.name }}
+                  </h5>
+                </div>
+              </div> -->
+              <div  class="mt-0">
+                <div class="">
+                  <label class="typo__label">Indicator</label>
+                  <Multiselect
+                    v-model="selectedIndicator"
+                    deselect-label="Can't remove this value"
+                    track-by="name"
+                    label="name"
+                    placeholder="Select Indicator"
+                    :options="indicators"
+                    :searchable="false"
+                    :allow-empty="false"
+                  >
+                  </Multiselect>
+                </div>
+                  <div class="mt-2">
+                  <label class="typo__label">Data Source</label>
+                  <Multiselect
+                    v-model="selectedIndicator"
+                    deselect-label="Can't remove this value"
+                    track-by="name"
+                    label="name"
+                    placeholder="Select Data Source"
+                    :options="indicators"
+                    :searchable="false"
+                    :allow-empty="false"
+                    class="multiselect"
+                  >
+                  </Multiselect>
+                </div>
+                  <div class="row">
+                  <div class="col-7">
+                    <div class="mt-2">
+                      <label class="typo__label">Location</label>
+                      <Multiselect
+                        v-model="selectedIndicator"
+                        deselect-label="Can't remove this value"
+                        track-by="name"
+                        label="name"
+                        placeholder="Select Location"
+                        :options="indicators"
+                        :searchable="false"
+                        :allow-empty="false"
+                      >
+                      </Multiselect>
+                    </div>
+                  </div>
+                    <div class="col-5">
+                    <div class="mt-2">
+                      <label class="typo__label">Year</label>
+                      <Multiselect
+                        v-model="selectedIndicator"
+                        deselect-label="Can't remove this value"
+                        track-by="name"
+                        label="name"
+                        placeholder="Select Year"
+                        :options="indicators"
+                        :searchable="false"
+                        :allow-empty="false"
+                      >
+                      </Multiselect>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex mt-4 ">
+                <button type="button" class="btn btn-secondary btn-lg btn-block search-btn">SEARCH</button>
+                </div>
 
-        <!-- Articles Tab -->
-        <b-tab title="Articles">
-          <div v-if="paginatedArticles.length > 0">
-            <div class="result-header">
-              <h2>Articles</h2>
-              <!-- Pagination Section -->
-              <b-pagination
-                v-model="currentPage"
-                :total-rows="totalResults"
-                :per-page="perPage"
-                aria-controls="article-list"
-                class="mt-3"
-                align="center"
-                size="md"
-                @change="loadArticlesPage"
-              ></b-pagination>
             </div>
-            <div id="article-list" class="result-list">
-              <div v-for="article in paginatedArticles" :key="article.id">{{ article.name }}</div>
+                </div>
+      </form>
+      <div v-if="feeds.length > 0" class="feeds">
+        <div
+          @mouseover="setLink(feed.link)"
+          @mouseleave="setLink(null)"
+          v-for="(feed, index) in feeds"
+          :key="index"
+          class=""
+        >
+          <!-- <div class="feedItem">
+            <h1>{{ feed.title }}</h1>
+            <h2>{{ formatBody(feed.body) }}</h2>
+          </div> -->
+          </div>
+          <span class="img-search">images for conceptual search</span>
+              </div>
+              <h1 class="link my-3">{{ hoveredLink }}</h1>
+              <div class="mt-1 d-flex align-items-center justify-content-between toggle-btn footer">
+                <div class="d-flex align-items-center">
+                  <b-form-checkbox
+                    switch
+                    name="confidence range"
+                    size="lg"
+                    value="ON"
+                    unchecked-value="OFF"
+                  ></b-form-checkbox>
+                  <p class="mb-0">View contextual data on hover</p>
+                </div>
+                  <button
+                  @click="reset"
+                  type="button"
+                  class="btn btn-outline-primary btn-sm rounded text-right"
+                >
+                  reset
+                </button>
+              </div>
             </div>
-          </div>
-          <div v-else>
-            <p>No articles available.</p>
-          </div>
-        </b-tab>
-
-        <!-- Videos Tab -->
-        <b-tab title="Videos">
-          <div v-if="videos.length > 0">
-            <h2>Videos</h2>
-            <div v-for="video in videos" :key="video.id">{{ video.name }}</div>
-          </div>
-          <div v-else>
-            <p>No videos available.</p>
-          </div>
-        </b-tab>
-      </b-tabs>
-
-    </div>
-    <!-- No Results Message -->
-<div v-if="noResults || (displayResults && suggestions.length === 0 && articles.length === 0)">
-  <p class="p-3 text-center">
-    No Results Found!
-  </p>
-</div>
-
-     <!-- Footer Section -->
-<footer>
-  Powered by eHealth4everyone
-</footer>
-  </div>
-</template>
+  </template>
 
 <script>
+import Multiselect from 'vue-multiselect';
+
 export default {
-  name: 'ContextSearchPlugin',
+  name: 'ContextPluginView',
+  components: {
+    Multiselect,
+  },
   data() {
     return {
-      // api url
-      requestModel: 'https://dedaapi.e4eweb.space/keywords/',
-      articles: [],
-      suggestions: [],
-      videos: [],
-      query: '',
-      loading: false,
-      displayResults: false,
-      noResults: false,
-      currentPage: 1,
-      currentSuggestionsPage: 1,
-      perPage: 6,
-      totalResults: 0,
-      totalSuggestions: 0,
-      activeTab: 'Suggestions',
+      value: [],
+      options: [
+        { name: 'Vue.js', language: 'JavaScript' },
+        { name: 'Adonis', language: 'JavaScript' },
+        { name: 'Rails', language: 'Ruby' },
+        { name: 'Sinatra', language: 'Ruby' },
+        { name: 'Laravel', language: 'PHP' },
+        { name: 'Phoenix', language: 'Elixir' },
+      ],
+      navigationList: [
+        { name: 'All' },
+        { name: 'infographics' },
+        { name: 'news' },
+        { name: 'images' },
+        { name: 'video' },
+      ],
+      selectedItem: 'All',
+      selectedIndicator: null,
+      feeds: [],
+      indicators: [
+        { name: 'Vue.js', language: 'JavaScript' },
+        { name: 'Rails', language: 'Ruby' },
+        { name: 'Sinatra', language: 'Ruby' },
+        { name: 'Laravel', language: 'PHP', $isDisabled: true },
+        { name: 'Phoenix', language: 'Elixir' },
+      ],
+      hoveredLink: null,
     };
   },
-  computed: {
-    paginatedArticles() {
-      const start = (this.currentPage - 1) * this.perPage;
-      const end = start + this.perPage;
-      return this.articles.slice(start, end);
-    },
-    paginatedSuggestions() {
-      const start = (this.currentSuggestionsPage - 1) * this.perPage;
-      const end = start + this.perPage;
-      return this.suggestions.slice(start, end);
-    },
-  },
   methods: {
-    async searchKeywords() {
-      this.articles = [];
-      this.suggestions = [];
-      this.videos = [];
-      this.noResults = false;
-      this.loading = true;
+    searchKeywords() {
+      this.$emit('searchKeywords', this.query);
+    },
 
-      try {
-        // initiate api call
-        const response = await this.$axios.get(`${this.requestModel}?page=1&name=${this.query}`);
-        const { count, results } = response.data;
-
-        if (results.length > 0) {
-          this.suggestions = results.filter((item) => item.name === this.query);
-          this.articles = results.filter((item) => item.name !== this.query && item.type === 'article');
-          this.videos = results.filter((item) => item.name !== this.query && item.type === 'video');
-          this.loading = false;
-          this.displayResults = true;
-          this.totalResults = count;
-          this.totalSuggestions = this.suggestions.length;
-        } else {
-          this.loading = false;
-          this.noResults = true;
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.loading = false;
-      }
+    toggleVisibility() {
+      localStorage.setItem('contextPlugin', 'false');
+    },
+    setSelectedItem(name) {
+      this.selectedItem = name;
+    },
+    setLink(link) {
+      this.hoveredLink = link;
+    },
+    formatBody(str) {
+      return `${str.substring(0, 100)} .... ....`;
+    },
+    reset() {
+      this.feeds = [];
     },
     toggleComponent() {
       this.$emit('setActiveComponent', 'main');
     },
-    loadArticlesPage(page) {
-      this.currentPage = page;
-    },
-    loadSuggestionsPage(page) {
-      this.currentSuggestionsPage = page;
-    },
   },
 };
 </script>
+  <style scoped>
 
- <style scoped>
-    .header {
-      background-color: #007d53;
-      height: 77px;
-      padding: 20px;
-      padding-right: 40px;
-      display: flex;
-      align-items: center;
-      }
+  .proj-main{
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding:0 20px;
+  }
+  .proj-main p{
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .header {
+    background-color: #1c6d90;
+    height: 77px;
+    padding: 20px;
+    padding-right: 40px;
+  }
+  .header h1 {
+    font-size: 1px;
+    text-align: left;
+    font: normal normal bold 22px/14px Work Sans;
+    letter-spacing: 0px;
+    color: #ffffff;
+    opacity: 1;
+    margin: 0;
+  }
+  .header span {
+    font: normal normal normal 15px/18px Work Sans;
+    letter-spacing: 0px;
+    color: #ffffff;
+    opacity: 1;
+    margin: 0;
+    margin-top: -4px;
+  }
+  .header p {
+    background-color: whitesmoke;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    right: -5px;
+    top: -5px;
+  }
+  .header p:hover {
+    background-color: rgb(239, 100, 100);
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .zIndex {
+    position: fixed;
+    z-index: 9999;
+    right: 20px;
+    top: 70px;
+    background-color: whitesmoke;
+    width: 500px;
+    height: 777px;
+    border: 1px groove #1c6d90;
+    border-radius: 8px;
+  }
+  .profile {
+    position: relative;
+  }
+  .profile .img {
+    height: 39px;
+    width: 39px;
+    background-color: whitesmoke;
+    border-radius: 50%;
+  }
+  .profile .icon {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background-color: white;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }
+  .profile .icon svg {
+    color: #1c6d90;
+    font-size: 14px;
+  }
+.search-btn{
+  background-color: #1c6d90;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 50px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.search-btn:hover{
+  background-color: #1c6d90;
+}
 
-    .header span {
-      font: normal normal normal 15px/18px Work Sans;
-      letter-spacing: 0px;
-      color: #ffffff;
-      opacity: 1;
-      margin: 0;
-      margin-top: -4px;
-    }
+  .search-btn:active{
+    background-color: #1c6d90;
+    outline: none;
+    border: none;
+  }
 
-    .header h1 {
-      font-size: 1px;
-      text-align: center;
-      font: normal normal bold 22px/14px Work Sans;
-      letter-spacing: 0px;
-      color: var(--white);
-      opacity: 1;
-      margin: 0;
-    }
+  .search-btn:focus{
+    background-color: #1c6d90;
+    outline: none;
+    border: none;
+  }
+  .search-input{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #1c6d90;
 
-    .intro{
-      padding:20px;
-      color: #007d53;
-    }
+  }
 
-    .intro p{
-      font: normal normal normal 15px/18px Work Sans;
-      letter-spacing: 0px;
-      color: #007d53;
-      opacity: 1;
-          }
+  .search-input input{
+    border: none;
+    outline: none;
+    width: 100%;
+  }
 
-    .search-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5em;
-      margin-top: -15px;
-    }
+  .search-icon{
+    height: 2.2em;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: medium;
+    box-shadow: none;
+  }
+  .search-icon:hover{
+    color: #000;
+  }
+  .search-icon:focus{
+    color: #000;
+    box-shadow: none;
+    border: none;
 
-    .search-input {
-      height: 2.2em;
-      width: 26em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: white;
-      border: none;
-      padding-inline: 1.8em;
-      box-shadow: none;
-    }
-    .search-input::placeholder
-    {
-      color: lightgrey;
-    }
+  }
 
-    .search-input:focus {
-      outline: 2px solid #5cb85c;
+  .typo__label {
+    font: bold 14px/17px Work Sans;
+    letter-spacing: 0px;
+    color: #222222;
+    opacity: 1;
+    margin: 0;
+  }
 
-    }
+  .multiselect{
+    color: #1c6d90;
+  }
+  .content {
+    width: 90%;
+    margin-top: 10px;
+  }
 
-    .search-icon{
-      height: 2.2em;
-      width: fit-content;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: white;
-      color: green;
-      font-size: medium;
-      box-shadow: none;
-    }
-
-    .search-icon:focus, .search-icon:hover {
-      outline: 2px solid #5cb85c;
-      color: green;
-
-    }
-
-    .init {
-      top: 15%;
-    }
-
-    .search-results {
-      max-height: 450px;
-      /* Adjust the height as needed */
-      overflow-y: scroll;
-      background-color: white;
-
-    }
-
-   
-
-    .zIndex {
-      position: fixed;
-      z-index: 9999;
-      right: 0px;
-      top: 70px;
-      background-color: whitesmoke;
-      width: 500px;
-      height: 777px;
-      border: 1px groove #1c6d90;
-      border-radius: 8px;
-      bottom: 50px;
-    }
-
-    .content {
-      width: 90%;
-      margin-top: 10px;
-    }
-
-    footer {
-      width: 100%;
-      border-top: 1px solid;
-      position: fixed;
-      bottom: 0px;
-      font-size: 0.75em;
-      padding: 0.5em;
-      background-color: white;
-    }
-
-    .header p {
-      background-color: whitesmoke;
-      height: 25px;
-      width: 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      cursor: pointer;
-      position: absolute;
-      right: -5px;
-      top: -5px;
-    }
-
-    .result-header {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-inline: 1em;
-    }
-
-    .suggestion{
-      padding-inline: 1em;
-    }
-
-    .suggestion ul{
-      list-style-type: none;
-      padding-inline: 0;
-    }
-
-    .suggestion ul li{
-      padding: 0.5em;
-      border-bottom: 1px solid lightgrey;
-    }
-
-    p{
-      font: normal normal normal 15px/18px Work Sans;
-      letter-spacing: 0px;
-      color: #007d53;
-      opacity: 1;
-    }
-    </style>
+  .feeds {
+    height: 50vh;
+    overflow-y: auto;
+  }
+  .navigation .item {
+    font-size: 18px !important;
+    cursor: pointer;
+    font-weight: normal;
+  }
+  .navigation .activeItem {
+    font-size: 18px !important;
+    cursor: pointer;
+  }
+  .toggle-btn p {
+    font-size: 18px !important;
+  }
+  .link {
+    font-size: 14px !important;
+    height: 20px;
+  }
+  .feedItem {
+    cursor: pointer;
+  }
+  .feedItem h1 {
+    font-size: 23px !important;
+  }
+  .feedItem h2 {
+    font: normal normal normal 18px/19px Work Sans;
+  }
+  .img-search {
+    font-size: 18px !important;
+    font: normal normal normal 18px/19px Work Sans;
+    letter-spacing: 0px;
+    color: #222222;
+  }
+  .footer {
+    position: absolute;
+    bottom: 5px;
+    width: 90%;
+  }
+  </style>
