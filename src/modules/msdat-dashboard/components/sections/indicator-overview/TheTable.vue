@@ -69,9 +69,9 @@
       <!-- </template> -->
     </base-modal>
     <ShareCodeModal
-      @toggleShowShareModal="toggleShowShareModal"
+      @toggleShowShareModal="closeShareModal"
       v-if="showShareCodeModal"
-      :tableContent="tableLink"
+      :tableContent="shareUrl"
     />
   </div>
 
@@ -112,8 +112,7 @@ export default {
       tableObj: null,
       tableLink: null,
       isTooltipVisible: false,
-      bootstrapCDN:
-        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">',
+      shareUrl: null,
     };
   },
   props: {
@@ -141,7 +140,7 @@ export default {
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
-            console.log(dataSources, 'this.dataArray');
+            // console.log(dataSources, 'this.dataArray');
             const indicatorObject = this.dlGetIndicator(indicatorID);
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
@@ -155,7 +154,7 @@ export default {
             }
             formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
-          // console.log(formattedData, 'this.dataArray');
+          console.log(formattedData, 'this.dataArray');
           this.TableData = formattedData;
           this.loading = false;
         }
@@ -219,15 +218,25 @@ export default {
       const routeTitle = this.$route.params.name;
       localStorage.setItem('dashboardName', routeTitle);
       console.log(this.$route);
-      const indicatorID = localStorage.getItem('indicatorID');
-      const location = 1;
+      const storedIndicatorID = localStorage.getItem('indicatorID');
+      const indicatorID = storedIndicatorID === null ? 7 : storedIndicatorID;
+      const storedLocationId = localStorage.getItem('locationId');
+      const locationId = storedLocationId === null ? 1 : storedLocationId;
+      const url = `${window.location.origin}/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${locationId}`;
+      console.log(url);
+      this.shareUrl = url;
+      this.showShareCodeModal = true;
       // this.tableLink = `http://localhost:8080/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&indicatorFirstRelated=${indicatorFirstRelated}&indicatorSecondRelated=${indicatorSecondRelated}`;
       // this.$router.push(`/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`);
-      const url = `/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`;
-      window.open(url, '_blank');
+      // const url = `/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`;
+      // window.open(url, '_blank');
       // // this.showShareCodeModal = !this.showShareCodeModal;
       // const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
       // this.tableObj = this.bootstrapCDN + tableObjTemp;
+    },
+
+    closeShareModal() {
+      this.showShareCodeModal = false;
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;

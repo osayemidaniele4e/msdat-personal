@@ -396,6 +396,7 @@ export default {
      * this filter thorough the array of data parse and et all available  Parsed
      */
     getAvailableDataSources() {
+      console.log(this.dataArray, 'sortedSource -2');
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
       // console.log(allAvailableSources, 'this.dataArray');
@@ -406,6 +407,7 @@ export default {
       const sortedSource = allAvailableSources.sort(
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
       );
+      console.log(sortedSource, 'sortedSource');
       this.source = sortedSource;
 
       // checking if it has NHMIS as a datasource

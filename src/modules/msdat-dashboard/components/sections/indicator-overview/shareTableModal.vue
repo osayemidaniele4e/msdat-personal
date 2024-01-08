@@ -9,10 +9,6 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div id="iframeItem" class="d-flex flex-column  input-item">
-            <!-- <textarea v-model="tableContent" name="" id="" cols="20" rows="5"></textarea> -->
-            <iframe style="padding: 5px" width="1000" height="400"  :src="tableContent"></iframe>
-          </div>
         </div>
 
         <div v-if="urlContent !== null" class="btn-wrapper mt-3">
@@ -71,8 +67,7 @@ export default {
     },
   },
   async mounted() {
-    const tableObjTemp = await document.getElementById('iframeItem').innerHTML;
-    this.urlContent = tableObjTemp;
+    this.urlContent = this.tableContent;
     console.log(this.urlContent, 'tableObjTemp');
   },
 };

@@ -127,6 +127,9 @@ export default {
           this.SET_SELECTED_CONFIG(item);
           // console.log(JSON.stringify(item), '@@@@');
           // this.addQueryParamToUrl();
+        } else if (val.parent !== undefined) {
+          console.log(val, '@@@Val@@@');
+          localStorage.setItem('locationId', val.id);
         }
         this.$emit('input', val);
       },
