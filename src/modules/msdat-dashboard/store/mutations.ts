@@ -172,6 +172,20 @@ const mutations: MutationTree<State> = {
       }
     });
   },
+
+  UPDATE_PROGRAM_AREAS: (state, payload) => {
+    state.controlConfig.forEach((item) => {
+      if (item.label === 'Multi-Source Indicator Comparison') {
+
+        item.payload.forEach((source, index) => {
+          if (index === payload.index) {
+            // eslint-disable-next-line no-param-reassign
+            source.indicator = payload.content.indicators[0];
+          }
+        });
+      }
+    });
+  },
   UPDATE_LOADING_STATUS: (state) => {
     state.loading = false;
   },
