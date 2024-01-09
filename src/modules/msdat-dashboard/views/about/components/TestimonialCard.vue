@@ -2,9 +2,9 @@
   <b-card class="shadow-sm ratio ratio-1x1" :class="current ? 'bg-lightblue' : 'bg-light'">
     <b-card-body>
       <div class="py-5 my-5 card-text">"{{ testimonial.text }}"</div>
-      <el-divider class="mb-3"></el-divider>
-      <div class="mb-3 username">{{ testimonial.username }}</div>
-      <Ratings :value="testimonial.rating" :size="2" :spacing="5" disabled />
+      <hr class="mb-3" />
+      <div class="mb-3 username text-left">{{ testimonial.username }}</div>
+      <Ratings :value="testimonial.rating" :size="1.3" :spacing="5" disabled class=" text-left" />
     </b-card-body>
   </b-card>
 </template>
@@ -34,7 +34,7 @@ export default {
 
 <style>
 .card {
-  /* font-size: 140%; */
+  font-size: 140%;
   font-weight: 400;
 }
 .card-text {

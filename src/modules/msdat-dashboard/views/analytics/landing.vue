@@ -10,7 +10,7 @@
         </div>
         <small>
           The essence of health data is to ensure that decision-makers have the means to make informed decisions
-          and policies for healthcare. Take advantage of the advance analytic tools to gain valuable insights and
+          and policies for healthcare. Take advantage of the advanced analytic tools to gain valuable insights and
           shape the future of healthcare. Explore key health indicators, analyze trends, and harness the power of
           predictive modeling to anticipate future health trends.
         </small>

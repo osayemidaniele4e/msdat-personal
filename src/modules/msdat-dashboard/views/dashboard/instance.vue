@@ -124,8 +124,8 @@
     <template
       v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
     >
-      <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+      <div class="col-md-12 overflow-auto">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm disaggregation">
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
           </template>
@@ -356,6 +356,9 @@ export default {
 
 <style scoped>
 /* test css */
+/* .disaggregation {
+  min-width: 800px;
+} */
 .row_alt {
   display: flex;
   flex-direction: row;

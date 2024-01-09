@@ -21,9 +21,9 @@
             class="work-sans mb-0 line-height"
             v-if="!Array.isArray(values.indicator.length)"
           >
-           Comparison of <b>{{ values.indicator.short_name }}</b> according to
-            the <b> {{ values.datasource.datasource }} </b> across
-            {{ values.compareBy.name }}
+           Comparison of <b>{{ values.indicator.short_name }}</b> across
+             <b> {{ values.datasource.datasource }}</b>
+            <!-- </b> across {{ values.compareBy.name }} -->
           </p>
           <p class="text-dark work-sans mb-0 line-height" v-else>
            Comparison of <b>{{ values.indicator[0].short_name }}</b> and

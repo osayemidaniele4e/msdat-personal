@@ -15,7 +15,7 @@
         <p class="work-sans mb-0 line-height">
           Distribution of
           <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>Across
-          the <span class="font-weight-bold"> zones in the Country.</span> Source:
+         <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
           <span class="font-weight-bold"> {{ controlPanelProps.datasource.datasource }}</span>
           {{ controlPanelProps.year }}
         </p>

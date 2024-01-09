@@ -98,7 +98,7 @@ class="program-area-card"
               <h4>Description:</h4>
               <span>{{ selectedIndicators.description }}</span>
               <br><br>
-              <h4>Tears with available data:</h4>
+              <h4>Years with available data:</h4>
               <span>{{ selectedIndicators.year_available }}</span>
               <br><br>
               <h4>Link:</h4>

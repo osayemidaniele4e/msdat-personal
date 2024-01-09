@@ -3,7 +3,7 @@
     <theHeader />
     <div class="d-flex flex-column align-items-center justify-content-center">
       <h3 class="mb-4">404 | Page not found</h3>
-      <button class="btn btn-primary px-2" @click="$router.go(-1)">&larr;&nbsp;Back to Home</button>
+      <button class="btn btn-primary px-2" @click="$router.push('dashboard/Health_Outcomes_and_Service_Coverage') ">&larr;&nbsp;Back to Home</button>
     </div>
     <theFooter class="footer" />
   </div>

@@ -40,7 +40,7 @@
           <b-row>
             <b-col cols lg="5">
               <div>
-                <img src="@/assets/logo-full.png" alt="FMOH Logo" class="img-fluid" />
+                <img src="@/assets/logo-old-black.png" alt="FMOH Logo" class="img-fluid" />
               </div>
             </b-col>
             &nbsp; &nbsp;&nbsp; &nbsp;
