@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-3 index-app">
     <MSDAT
       v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
     />
@@ -103,7 +103,9 @@ export default {
       return Promise.resolve(false);
     },
     async saveDashboard(indicators, sources, dashboardTitle) {
-      const sections = this.fieldsArray.filter((item) => item.isShow === true).map((item) => item.name);
+      const sections = this.fieldsArray
+        .filter((item) => item.isShow === true)
+        .map((item) => item.name);
       if (this.$store.getters.getVisibility === 'private') {
         const payload = {
           title: dashboardTitle,
