@@ -11,11 +11,11 @@
       :updateKey="updateKey"
       :resetData="resetData"
         @swipe="changeSwipe"
-
     >
-      <!-- <template v-slot:section-before-0>
+
+      <template v-slot:section-before-0>
         <slot name="top-section"></slot>
-      </template> -->
+      </template>
 
       <template v-slot:section-0="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">
@@ -41,7 +41,7 @@
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Multisource Comparison</h5>
+              <h5 class="font-weight-bold work-sans text-white">Indicator Comparison</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -57,6 +57,28 @@
         </div>
       </template>
 
+      <template v-slot:section-2="{ payload, controlIndex }">
+        <div class="col-md-12" style="margin-bottom: 4rem">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Indicator Comparison</h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <IndicatorComparisonSection :controlPanelProps="payload" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
+
+
 
 
     </BaseDashboard>
@@ -68,7 +90,7 @@ import { mapMutations } from 'vuex';
 // import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import IndicatorComparisonSection from '../../components/sections/gis/indicator-comparison/GisIndicatorComparison.vue';
 import IndicatorComparisonConfig from '../../components/sections/gis/indicator-comparison/indicator-compare-gis-config.js';
-import MultiSourceComponent from '../../components/sections/gis/multi-source-compare/GisMultiSource.vue';
+import MultiSourceComponent from '../../components/sections/gis/multi-source-compare/BaseMultiSourceSection.vue';
 import MultiSourceConfig from '../../components/sections/gis/multi-source-compare/multi-source-gis-compare.js';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
