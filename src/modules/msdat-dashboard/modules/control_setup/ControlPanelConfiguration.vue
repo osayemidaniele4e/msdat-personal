@@ -72,7 +72,7 @@ export default {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
     ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS', 'SET_INDICATOR_TIME_SPENT', 'SET_DATASOURCE_TIME_SPENT']),
     async getAvailableYears() {
-      debugger;
+      // debugger;
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
         this.payload?.datasource?.id,

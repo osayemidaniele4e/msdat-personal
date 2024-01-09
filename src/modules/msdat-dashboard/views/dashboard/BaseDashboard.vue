@@ -321,7 +321,6 @@ export default {
     this.initialDataSource = this.getConfigObject().initialDataSource;
     this.initialLocation = this.getConfigObject().initialLocation;
     window.addEventListener('resize', this.onResize);
-
     const { name } = this.$route.params;
     if (name === 'Advanced_Analytics') {
       this.isAdvanced = true;
@@ -558,6 +557,8 @@ export default {
       }
     }, 60000);
     try {
+      // The initializing the control panel
+
       await this.$DL.init({
         dashboardIndicators: this.indicators,
         defaultIndicators:
@@ -577,6 +578,7 @@ export default {
       // The initializing the control panel
       await this.setDefaults();
       await this.setUpControlPanelDropDown();
+      debugger;
 
       // pick one of the available years as the default years as opposed to the static 2016 year
       this.defaultYearDropdown = await this.setYearDropdown();

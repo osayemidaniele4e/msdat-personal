@@ -70,6 +70,7 @@ export default class DataLayer {
   setAllIndicators() {
     const allIndicators = this.DB.listAllIndicators();
     this.indicatorList = allIndicators;
+    console.log(this.indicatorList);
     this.defaultIndicators = allIndicators.slice(0, 3);
   }
 
@@ -132,18 +133,28 @@ export default class DataLayer {
       }
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
-      const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray); // A more conclusive check can be done
+      // Filter out undefined and NaN values from indicatorIDArray
+      const filteredIndicatorIDArray = indicatorIDArray.filter((value) => value !== undefined && !Number.isNaN(value));
 
-      // if (indicatorsNotOnIdb.length !== 0) {
-      //   this.storeTimestampInLocal();
-      //   debugger;
-      //   // await this.initDataWithYearsWithYearlyChecks([7, 6, 1], 8);
-      //   await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
-      //   debugger;
-      //   await this.setAvailableDashboardIndicator();
-      //   await this.initDataWithYears(this.defaultIndicators);
-      // }
+      // Filter out undefined and NaN values from this.defaultIndicators
+      const filteredDefaultIndicators = this.defaultIndicators.filter((value) => value !== undefined && !Number.isNaN(value));
+
+      // Find the difference after filtering
+      const indicatorsNotOnIdb = difference(filteredDefaultIndicators, filteredIndicatorIDArray);
+      // const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray); // A more conclusive check can be done
+      const defaultInd = this.defaultIndicators;
+      console.log(defaultInd);
+      if (indicatorsNotOnIdb.length !== 0) {
+        debugger;
+        this.storeTimestampInLocal();
+        // await this.initDataWithYearsWithYearlyChecks([7, 6, 1], 8);
+        await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
+        debugger;
+        await this.setAvailableDashboardIndicator();
+        await this.initDataWithYears(this.defaultIndicators);
+      }
       // await this.initOtherTablesFromDB();
+      debugger;
       setTimeout(async () => {
         // await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators);
         const lateIndicators = await this.DB.checkIndicatorsInIdb();
@@ -349,8 +360,10 @@ export default class DataLayer {
    */
 
   async initDataWithYears(indicator, limit = 0) {
-    for (let i = 0; i < indicator.length; i++) {
-      const indicatorID = indicator[i];
+    const validIndicators = indicator.filter((value) => !Number.isNaN(value));
+    for (let i = 0; i < validIndicators.length; i++) {
+      const indicatorID = validIndicators[i];
+      console.log('indicatorId', indicatorID);
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
