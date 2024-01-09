@@ -63,12 +63,44 @@ export default {
         payload: this.defaultLocationDropdown,
       });
     },
+    // setDefaults() {
+    //   this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
+    //   this.defaultDataSource = this.dlGetDataSource(
+    //     this.$store.state.MSDAT_STORE.default.datasource,
+    //   );
+    //   this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
+    // },
     setDefaults() {
-      this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
-      this.defaultDataSource = this.dlGetDataSource(
-        this.$store.state.MSDAT_STORE.default.datasource,
-      );
-      this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
+      const { query } = this.$route;
+      const {
+        indicator: queryIndicator,
+        datasource: queryDatasource,
+        location: queryLocation,
+        year: queryYear,
+      } = query;
+
+      console.log('query', query);
+
+      // Check if query parameters for indicator, datasource, location, and year are present
+      const hasQueryParams = queryIndicator !== undefined
+        || queryDatasource !== undefined
+        || queryLocation !== undefined
+        || queryYear !== undefined;
+
+      const indi = this.dlGetIndicator(Number(queryIndicator));
+      console.log('indi', indi);
+
+      this.defaultIndicator = hasQueryParams
+        ? this.dlGetIndicator(Number(queryIndicator))
+        : this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
+
+      this.defaultDataSource = hasQueryParams
+        ? this.dlGetDataSource(Number(queryDatasource))
+        : this.dlGetDataSource(this.$store.state.MSDAT_STORE.default.datasource);
+
+      this.defaultLocation = hasQueryParams
+        ? this.dlGetLocation(Number(queryLocation))
+        : this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
     },
 
     async setYearDropdown(

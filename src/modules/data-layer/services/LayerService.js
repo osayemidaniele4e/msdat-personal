@@ -134,12 +134,15 @@ export default class DataLayer {
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
       const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray); // A more conclusive check can be done
 
-      if (indicatorsNotOnIdb.length !== 0) {
-        this.storeTimestampInLocal();
-        await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
-        await this.setAvailableDashboardIndicator();
-        await this.initDataWithYears(this.defaultIndicators);
-      }
+      // if (indicatorsNotOnIdb.length !== 0) {
+      //   this.storeTimestampInLocal();
+      //   debugger;
+      //   // await this.initDataWithYearsWithYearlyChecks([7, 6, 1], 8);
+      //   await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
+      //   debugger;
+      //   await this.setAvailableDashboardIndicator();
+      //   await this.initDataWithYears(this.defaultIndicators);
+      // }
       // await this.initOtherTablesFromDB();
       setTimeout(async () => {
         // await this.initDataWithYearsWithYearlyChecks(this.defaultIndicators);
@@ -327,6 +330,7 @@ export default class DataLayer {
 
   async checkAllYearsExistInDB(indicatorID) {
     const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
+    // const dataResult = await apiServices.getIndicatorsWithAvailable(7);
     const dataValue = dataResult.data.years;
     const yearsNotAvailable = [];
     for (let i = 0; i < dataValue.length; i++) {

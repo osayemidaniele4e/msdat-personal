@@ -11,11 +11,13 @@ import moment from 'moment';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import controlSetup from '../../mixins/control-panel-setup';
-import { time } from 'highcharts';
+import updateQueryParams from './paramsMixin';
 
 export default {
   name: 'ControlPanelConfiguration',
-  mixins: [controlSetup],
+  mixins: [updateQueryParams,
+    controlSetup,
+  ],
   data() {
     return {
       interactions: [],
@@ -24,7 +26,7 @@ export default {
       previous_indicator: null,
       previous_time_datasource: null,
       after_time_datasource: null,
-      previous_datasource: null
+      previous_datasource: null,
     };
   },
   props: {
@@ -61,7 +63,7 @@ export default {
 
     // Set the total time in minutes for the component data.
     this.previous_time = totalTimeInMinutes;
-    this.previous_indicator = this.payload.indicator
+    this.previous_indicator = this.payload.indicator;
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
     });
@@ -70,6 +72,7 @@ export default {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
     ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS', 'SET_INDICATOR_TIME_SPENT', 'SET_DATASOURCE_TIME_SPENT']),
     async getAvailableYears() {
+      debugger;
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
         this.payload?.datasource?.id,
@@ -132,52 +135,52 @@ export default {
     'payload.indicator': {
       async handler() {
         // new ones
+        if (this.payload.indicator) {
+          const now = new Date();
+          const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
-        const now = new Date();
-        const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+          // Set the total time in minutes for the component data.
+          this.after_time = totalTimeInMinutes;
 
-        // Set the total time in minutes for the component data.
-        this.after_time = totalTimeInMinutes;
+          const diff = this.after_time - this.previous_time;
 
-        const diff = this.after_time - this.previous_time;
+          // sending to the api
 
-        // sending to the api
+          const timespent = {
+            indicator: this.previous_indicator,
+            timeSpent: diff,
+            user: this.getUser.id,
+          };
 
-        const timespent = {
-          indicator: this.previous_indicator,
-          timeSpent: diff,
-          user: this.getUser.id
-        }
+          this.SET_INDICATOR_TIME_SPENT(timespent);
 
-        this.SET_INDICATOR_TIME_SPENT(timespent)
+          console.log('timespent in indicator', timespent);
 
-        console.log('timespent in indicator', timespent)
+          this.previous_time = this.after_time;
 
-        this.previous_time = this.after_time;
+          this.previous_indicator = this.payload.indicator;
 
-        this.previous_indicator = this.payload.indicator
-
-        if (this.controlIndex !== 2) {
-          const availableYears = await this.getAvailableYears();
-          this.SETUP_CONTROL_OPTIONS1({
-            groupIndex: this.groupIndex,
-            panelIndex: this.controlIndex,
-            key: 'year',
-            values: availableYears,
-          });
-          const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
-          await this.SETUP_CONTROL_OPTIONS1({
-            groupIndex: this.groupIndex,
-            panelIndex: this.controlIndex,
-            key: 'datasource',
-            values: availableDS,
-          });
+          if (this.controlIndex !== 2) {
+            const availableYears = await this.getAvailableYears();
+            this.SETUP_CONTROL_OPTIONS1({
+              groupIndex: this.groupIndex,
+              panelIndex: this.controlIndex,
+              key: 'year',
+              values: availableYears,
+            });
+            const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
+            await this.SETUP_CONTROL_OPTIONS1({
+              groupIndex: this.groupIndex,
+              panelIndex: this.controlIndex,
+              key: 'datasource',
+              values: availableDS,
+            });
+          }
         }
       },
     },
     'payload.datasource': {
       async handler() {
-
         // new ones
 
         const now = new Date();
@@ -193,52 +196,55 @@ export default {
         const timespent = {
           datasource: this.previous_datasource,
           timeSpent: diff,
-          user: this.getUser.id
-        }
+          user: this.getUser.id,
+        };
 
-        this.SET_DATASOURCE_TIME_SPENT(timespent)
+        this.SET_DATASOURCE_TIME_SPENT(timespent);
 
-        console.log('timespent in   datasource', timespent)
+        console.log('timespent in   datasource', timespent);
 
         this.previous_time_datasource = this.after_time_datasource;
 
-        this.previous_datasource = this.payload.datasource
-
+        this.previous_datasource = this.payload.datasource;
         let availableYears;
-        if (this.controlIndex === 2) {
-          availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-        } else {
-          availableYears = await this.getAvailableYears();
-        }
-        await this.SETUP_CONTROL_OPTIONS1({
-          groupIndex: this.groupIndex,
-          panelIndex: this.controlIndex,
-          key: 'year',
-          values: availableYears,
-        });
-        // ============
-        if (this.controlIndex === 2) {
-          const availableIndicator = await this.getAvailableDataIndicators();
+        if (this.payload.indicator) {
+          if (this.controlIndex === 2) {
+            availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+          } else {
+            availableYears = await this.getAvailableYears();
+          }
           await this.SETUP_CONTROL_OPTIONS1({
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
-            key: 'indicator',
-            values: availableIndicator,
+            key: 'year',
+            values: availableYears,
           });
+          // ============
+          if (this.controlIndex === 2) {
+            const availableIndicator = await this.getAvailableDataIndicators();
+            await this.SETUP_CONTROL_OPTIONS1({
+              groupIndex: this.groupIndex,
+              panelIndex: this.controlIndex,
+              key: 'indicator',
+              values: availableIndicator,
+            });
+          }
+          this.setInteractions();
         }
-        this.setInteractions();
       },
     },
     'payload.location': {
       async handler() {
         this.setInteractions();
-        const availableYears = await this.getAvailableYears();
-        await this.SETUP_CONTROL_OPTIONS1({
-          groupIndex: this.groupIndex,
-          panelIndex: this.controlIndex,
-          key: 'year',
-          values: availableYears,
-        });
+        if (this.payload.indicator) {
+          const availableYears = await this.getAvailableYears();
+          await this.SETUP_CONTROL_OPTIONS1({
+            groupIndex: this.groupIndex,
+            panelIndex: this.controlIndex,
+            key: 'year',
+            values: availableYears,
+          });
+        }
       },
     },
     // 'payload.year': {
