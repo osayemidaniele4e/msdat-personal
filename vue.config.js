@@ -16,7 +16,7 @@ const plugins = [
     ],
     // (OPTIONAL) Compatible options from v2.
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -25,7 +25,7 @@ const plugins = [
       '/dashboard',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -34,7 +34,7 @@ const plugins = [
       '/dashboard/Health_Outcomes_and_Service_Coverage',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -43,7 +43,7 @@ const plugins = [
       '/dashboard/Advanced_Analytics',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -52,7 +52,7 @@ const plugins = [
       '/dashboard/Health_Facility',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -61,7 +61,7 @@ const plugins = [
       '/dashboard/Health_Financing',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -70,7 +70,7 @@ const plugins = [
       '/dashboard/Demographics',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -79,7 +79,7 @@ const plugins = [
       '/dashboard/Health_Workforce',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -88,7 +88,7 @@ const plugins = [
       '/dashboard/Health_Service_Access',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   new PrerenderSPAPlugin(
@@ -97,7 +97,7 @@ const plugins = [
       '/dashboard/Disease_Surveillance',
     ],
     {
-      captureAfterTime: 5000,
+      captureAfterTime: 10000,
     },
   ),
   // new PrerenderSPAPlugin({
