@@ -22,12 +22,16 @@
               :colspan="value[1]"
               class="classification-row text-uppercase text-center align-middle p-0"
             >
-              {{ value[0] }}
+              {{ value[1] }}
             </td>
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
-          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis">
+          <tr
+            v-if="
+              $route.query.dashboard_name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis
+            "
+          >
             <div class="nhmis_month_head">NHMIS-DHIS2 (monthly)</div>
             <TableDataSourceCell
               v-for="(dt, i) in source"
@@ -61,20 +65,34 @@
             class="base_subCard_header text-white"
             :rowData="dataArray[0]"
             @indicator-info:clicked="$emit('selected:indicator-info', $event)"
+            :factors="factors"
           >
             <template v-slot:indicator="props">
               <slot name="indicator-0" :indicator="props"></slot>
             </template>
             <template
               #default
-              v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
+              v-if="
+                $route.query.dashboard_name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis
+              "
             >
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
-              <div v-if="nhmisMonthData[0]" class="nhmis-monthly">
-                <span class="value-nhmis">{{ nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].value}%` }}</span>
-                <span class="period-nhmis">{{ nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].period}` }}</span>
+              <div class="nhmis-month-text1" v-if="nhmisMonthData[0]">
+                <!-- static data (only for overview table) for NHMIS data -->
+
+                <span v-if="nhmisMonthData[0].value === null"> - </span>
+                <span v-else> {{ nhmisMonthData[0].value }}%x</span>
               </div>
+              <div class="nhmis-month-text1" v-else>
+                <!-- static data (only for overview table) for NHMIS data -->
+                -
+              </div>
+              <div class="nhmis-month-text2" v-if="nhmisMonthData[0]">
+                <span v-if="nhmisMonthData[0].value === null"> - </span>
+                <span v-else> {{ nhmisMonthData[0].period }}</span>
+              </div>
+              <div class="nhmis-month-text2" v-else>-</div>
 
               <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <TableDataCell
@@ -134,6 +152,7 @@
               v-if="index > 0"
               :rowData="indicatorData"
               @indicator-info:clicked="$emit('selected:indicator-info', $event)"
+              :factors="factors"
             >
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
@@ -201,11 +220,15 @@
 </template>
 
 <script>
-import { flatten, uniq, countBy } from 'lodash';
+import {
+  flatten, uniq, countBy, filter, matches,
+} from 'lodash';
 import mixin from '@/modules/data-layer/mixin';
+
 import TableDataCell from './TableDataCell.vue';
 import TableDataSourceCell from './TableDataSourceCell.vue';
 import TableDataRow from './TableDataRow.vue';
+import DB from '../../../../data-layer/services/database.worker';
 
 export default {
   name: 'TableComponent',
@@ -228,6 +251,18 @@ export default {
      * data
      */
     dataArray: {
+      type: [Array],
+      required: true,
+    },
+    availableDataSources: {
+      type: [Array],
+      required: true,
+    },
+    specificIndicators: {
+      type: [Array],
+      required: true,
+    },
+    factors: {
       type: [Array],
       required: true,
     },
@@ -318,6 +353,50 @@ export default {
       numerator: null,
       numDenum: false,
       hasNhmis: false,
+      valueType: [
+        {
+          id: 1,
+          value_type: 'Estimate',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 2,
+          value_type: 'Survey',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 3,
+          value_type: 'Lower bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 4,
+          value_type: 'Upper bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 5,
+          value_type: 'Routine',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 6,
+          value_type: 'Numerator',
+          created_at: '2021-07-02T08:45:20.707139Z',
+          updated_at: '2021-07-02T08:45:20.707348Z',
+        },
+        {
+          id: 7,
+          value_type: 'Denominator',
+          created_at: '2021-07-02T08:56:10.401735Z',
+          updated_at: '2021-07-02T08:56:10.401798Z',
+        },
+      ],
     };
   },
   methods: {
@@ -336,6 +415,7 @@ export default {
      *
      */
     getValueForColumn(valueArray, column) {
+      console.log(valueArray, column, 'valueArray, column');
       const valueObj = valueArray.find((e) => e.dataSources === column);
       // console.log('🚀valueObj', valueObj);
       if (valueObj) {
@@ -372,7 +452,7 @@ export default {
       const resultSorted = result.sort(
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
-      // console.log(resultSorted, 'resultsorted');
+      console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
@@ -385,7 +465,6 @@ export default {
      * this filter thorough the array of data parse and et all available  Parsed
      */
     getAvailableDataSources() {
-      console.log(this.dataArray, 'sortedSource -2');
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
       // console.log(allAvailableSources, 'this.dataArray');
@@ -396,8 +475,8 @@ export default {
       const sortedSource = allAvailableSources.sort(
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
       );
-      console.log(sortedSource, 'sortedSource');
       this.source = sortedSource;
+      console.log(this.source, 'this.source');
 
       // checking if it has NHMIS as a datasource
       if (this.source.some((item) => item.id === 6)) {
@@ -425,6 +504,7 @@ export default {
     getKey(key) {
       this.$emit('key', key);
     },
+
     /**
      * This fetches numerator denominator data from
      * dexie using the control panel props
@@ -435,34 +515,42 @@ export default {
           indicator, year, location, datasource,
         } = this.values;
 
-        const numeratorData = await this.dlQuery({
+        const numeratorData = await this.getLocalDlQuery({
           datasource: datasource.id,
           indicator: indicator.id,
           period: year,
           location: location.id,
           value_type: 6,
         });
-        const denominatorData = await this.dlQuery({
+        // console.log(numeratorData, 'numeratorData 222 1');
+        const denominatorData = await this.getLocalDlQuery({
           datasource: datasource.id,
           indicator: indicator.id,
           period: year,
           location: location.id,
           value_type: 7,
         });
+
         if (numeratorData.length > 0 || denominatorData.length > 0) {
           this.numDenum = true;
+          console.log(numeratorData, 'numeratorData 222 1');
           if (numeratorData.length > 0) {
-            const numeratorName = this.dlGetDataSourceSpecificIndicator({
+            // const numeratorName = this.getDataSourceSpecificIndicator({
+            //   indicator: indicator.id,
+            //   datasource: datasource.id,
+            // })[0].measurement_numerator;
+            const numeratorName = this.getDataSourceSpecificIndicator({
               indicator: indicator.id,
               datasource: datasource.id,
-            })[0].measurement_numerator;
+            });
+            console.log(numeratorName, 'numeratorData 222');
             const numerator = numeratorData[0];
             this.numerator = `${numeratorName} - ${Number(numerator.value).toLocaleString()}`;
           } else {
             this.numerator = 'N/a';
           }
           if (denominatorData.length > 0) {
-            const denominatorName = this.dlGetDataSourceSpecificIndicator({
+            const denominatorName = this.getDataSourceSpecificIndicator({
               indicator: indicator.id,
               datasource: datasource.id,
             })[0].measurement_denominator;
@@ -477,6 +565,15 @@ export default {
       }
     },
 
+    getDataSourceSpecificIndicator(values) {
+      console.log(values, 'numeratorData 221a');
+      console.log(this.specificIndicators, 'numeratorData 221a');
+      if (typeof values === 'object') {
+        return filter(this.specificIndicators, matches(values));
+      }
+      return this.specificIndicators.find((item) => item.id === values);
+    },
+
     // getting NHMIS monthly for the 1st realted indicator
     // get the data Arrays
     // use the function similar
@@ -484,7 +581,7 @@ export default {
     async getNhmisMonthly() {
       this.indicators = [];
       this.nhmisMonthData = [];
-      console.log(this.dataArray, 'Na T Wao');
+
       this.dataArray.map(async (element) => {
         await this.indicators.push({
           datasource: 30, // nhmis monthly id
@@ -492,10 +589,11 @@ export default {
           location: this.values.location.id,
         });
       });
+
       // Step 2: get the data for the selected indicator and the related indicator
       Promise.all(
         this.indicators.map(async (el) => {
-          const data = await this.getNhmisData(el);
+          const data = await this.fetchNhmisData(el);
           if (data === undefined) {
             const updatedData = { ...data, value: null };
             this.nhmisMonthData.push(updatedData);
@@ -506,6 +604,37 @@ export default {
         }),
       );
     },
+
+    // eslint-disable-next-line consistent-return
+    async getLocalDlQuery(queryObject) {
+      const datasourceItem = this.availableDataSources.find(
+        (datasource) => datasource.id === queryObject.datasource,
+      );
+
+      // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
+      const valuetype = this.valueType?.find(
+        (item) => item.value_type === datasourceItem?.classification
+      );
+      // eslint-disable-next-line no-param-reassign
+      queryObject.value_type = valuetype?.id;
+
+      console.log(queryObject, 'valuetype');
+
+      // check for undefined
+      function hasUndefinedOrNullValues(obj) {
+        return Object.values(obj).some((val) => val === undefined || val === null);
+      }
+      if (hasUndefinedOrNullValues(queryObject) === false) {
+        const result = await DB.queryDB(queryObject);
+        return result;
+      }
+    },
+    async fetchNhmisData(query) {
+      const result = await DB.queryDBForNhmisMonthly(query);
+      // console.log('new result', result)
+      return result.reverse()[0];
+      // return result[result.length - 1];
+    },
   },
   watch: {
     dataArray: {
@@ -513,7 +642,8 @@ export default {
         this.getAvailableDataSources();
         this.getDataSourcesClassification();
         if (
-          this.$route.params.name === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage'
+          this.$route.query.dashboard_name
+          === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage'
         ) {
           await this.getNhmisMonthly();
         }
@@ -528,7 +658,10 @@ export default {
     // eslint-disable-next-line func-names
     'values.location': async function () {
       this.getNumDenumData();
-      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage') {
+      if (
+        this.$route.query.dashboard_name
+        === 'Health_Outcomes_and_Service_Coverage_and_Service_Coverage'
+      ) {
         await this.getNhmisMonthly();
       }
     },
@@ -554,15 +687,32 @@ export default {
     },
   },
 
+  // async created() {
+  //   const name = this.$route.query.dashboard_name;
+  //   const response = await apiServices.getDashboard();
+  //   const factorsResponse = await apiServices.getFactors();
+  //   const dataSourceResponse = await apiServices.getAllDataSources();
+  //   const results = response.data;
+  //   const dashboard = results.find((item) => item?.name === name);
+  //   const dashboardDasourceIds = dashboard.dataSources;
+  //   this.availableDataSources = dataSourceResponse.data.results.filter((item) => dashboardDasourceIds.includes(item.id));
+  //   // console.log(dataSources, 'numeratorData 13');
+  //   // console.log(dataSources, 'dataSources');
+  //   console.log(factorsResponse, 'factorsResponse');
+  //   this.factors = factorsResponse.data.results;
+  //   console.log(this.availableDataSources, 'this.availableDataSources');
+  // },
+
   async mounted() {
-    console.log(this.dataArray, 'Na Wao');
+    console.log(this.dataArray, 'dataArray');
     // Add a delay to get nhmis monthly data
+    console.log(this.availableDataSources, 'this.numeratorData 15');
     console.log(this.$route, 'this.$route');
     setTimeout(async () => {
-      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+      if (this.$route.query.dashboard_name === 'Health_Outcomes_and_Service_Coverage') {
         await this.getNhmisMonthly();
       }
-    }, 500);
+    }, 1000);
     await this.getNumDenumData();
 
     // checking if it has NHMIS as a datasource
@@ -594,7 +744,6 @@ export default {
   background: #bebebe;
   border-radius: 4px;
 }
-
 table.table {
   td.heading_alt {
     padding: 0.5rem;
@@ -683,15 +832,15 @@ table.table {
 }
 
 .nhmis-month-text1 {
-  margin-top: 0px;
-  /* font-size: 0.7rem; */
+  margin-top: 9px;
+  font-size: 0.7rem;
   text-align: center;
   font-weight: 700;
 }
 
 .nhmis-month-text2 {
-  margin-top: 0px;
-  /* font-size: 0.7rem; */
+  margin-top: 5px;
+  font-size: 0.7rem;
   text-align: center;
 }
 
@@ -701,7 +850,7 @@ table.table {
 
 .nhmis-rel-text2 {
   margin-top: 5px;
-  /* font-size: 0.7rem; */
+  font-size: 0.7rem;
   text-align: center;
   color: rgb(136, 136, 136);
 }
@@ -722,20 +871,5 @@ table.table {
   font-size: 15.5px;
   margin-left: 10px;
   margin-top: 2px;
-}
-.nhmis-monthly {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 8px;
-}
-.value-nhmis {
-  font-size: 12px;
-  font-weight: bold;
-}
-.period-nhmis {
-  margin-top: 6px;
-  font-size: 12px;
-  font-weight: 600;
 }
 </style>

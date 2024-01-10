@@ -1,3 +1,4 @@
+<!-- eslint-disable no-sequences -->
 <!-- eslint-disable vue/no-parsing-error -->
   <!-- Auther: Ghufran Ahmed -->
 

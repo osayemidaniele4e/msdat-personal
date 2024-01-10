@@ -340,6 +340,7 @@ export default {
   },
 
   // making requests to make new public dashboards
+  // eslint-disable-next-line no-unused-vars
   async setDashboardRequest({ commit }, payload) {
     console.log('payload 1', payload);
     try {

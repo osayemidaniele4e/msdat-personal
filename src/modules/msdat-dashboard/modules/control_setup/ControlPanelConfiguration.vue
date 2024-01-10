@@ -10,8 +10,8 @@ import VueCookies from 'vue-cookies';
 import moment from 'moment';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/data-layer/services/ApiServices';
+// import { time } from 'highcharts';
 import controlSetup from '../../mixins/control-panel-setup';
-import { time } from 'highcharts';
 
 export default {
   name: 'ControlPanelConfiguration',
@@ -24,7 +24,7 @@ export default {
       previous_indicator: null,
       previous_time_datasource: null,
       after_time_datasource: null,
-      previous_datasource: null
+      previous_datasource: null,
     };
   },
   props: {
@@ -61,7 +61,7 @@ export default {
 
     // Set the total time in minutes for the component data.
     this.previous_time = totalTimeInMinutes;
-    this.previous_indicator = this.payload.indicator
+    this.previous_indicator = this.payload.indicator;
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
     });
@@ -146,16 +146,16 @@ export default {
         const timespent = {
           indicator: this.previous_indicator,
           timeSpent: diff,
-          user: this.getUser.id
-        }
+          user: this.getUser.id,
+        };
 
-        this.SET_INDICATOR_TIME_SPENT(timespent)
+        this.SET_INDICATOR_TIME_SPENT(timespent);
 
-        console.log('timespent in indicator', timespent)
+        console.log('timespent in indicator', timespent);
 
         this.previous_time = this.after_time;
 
-        this.previous_indicator = this.payload.indicator
+        this.previous_indicator = this.payload.indicator;
 
         if (this.controlIndex !== 2) {
           const availableYears = await this.getAvailableYears();
@@ -177,7 +177,6 @@ export default {
     },
     'payload.datasource': {
       async handler() {
-
         // new ones
 
         const now = new Date();
@@ -193,16 +192,16 @@ export default {
         const timespent = {
           datasource: this.previous_datasource,
           timeSpent: diff,
-          user: this.getUser.id
-        }
+          user: this.getUser.id,
+        };
 
-        this.SET_DATASOURCE_TIME_SPENT(timespent)
+        this.SET_DATASOURCE_TIME_SPENT(timespent);
 
-        console.log('timespent in   datasource', timespent)
+        console.log('timespent in   datasource', timespent);
 
         this.previous_time_datasource = this.after_time_datasource;
 
-        this.previous_datasource = this.payload.datasource
+        this.previous_datasource = this.payload.datasource;
 
         let availableYears;
         if (this.controlIndex === 2) {

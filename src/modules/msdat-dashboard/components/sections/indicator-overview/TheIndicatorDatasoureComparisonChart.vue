@@ -247,8 +247,8 @@ export default {
       const currentYear = new Date().getFullYear();
       const { name } = this.$route.params;
 
-      const beforeCurrentYearColor = 'rgba(173, 216, 230, 0.3)'; // Change this color as needed
-      const afterCurrentYearColor = 'rgba(144, 238, 144, 0.3)'; // Change this color as needed
+      // const beforeCurrentYearColor = 'rgba(173, 216, 230, 0.3)'; // Change this color as needed
+      // const afterCurrentYearColor = 'rgba(144, 238, 144, 0.3)'; // Change this color as needed
 
       this.ChartOptions = {
         tooltip: {
@@ -306,7 +306,7 @@ export default {
               },
               {
                 name: `${series.name} (After ${currentYear})`,
-                name: `${series.name} (After Projection)`,
+                //  name: `${series.name} (After Projection)`,
                 data: dataAfterCurrentYear,
                 lineDashStyle: 'Dash', // Change this to 'Solid' for a solid line
               },

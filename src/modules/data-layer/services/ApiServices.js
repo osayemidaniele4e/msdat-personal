@@ -9,6 +9,14 @@ const getRequiredEndpoint = async (apiEndpoint) => axiosInstance.get(`/${apiEndp
 const getLatestDate = async () => axiosInstance.get('data/?ordering=-updated_at&size=1');
 const getIndicatorsWithAvailable = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}/years_available`);
 const getIndicatorsWithPeriod = async (indicatorID, period) => axiosInstance.get(`${apiEndpoints.getData}indicator=${indicatorID}&period=${period}`);
+const getAllDataSources = async () => axiosInstance.get('datasources');
+const getSingleIndicatorObj = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}`);
+const getSingleDataSourceObj = async (datasourcesID) => axiosInstance.get(`datasources/${datasourcesID}`);
+const getFactors = async () => axiosInstance.get('/factors/');
+const getSpecificIndicator = async () => axiosInstance.get('/datasource_specific_indicator/');
+const getDashboardDatasources = async (indicatorID) => axiosInstance.get(`/dashboards/${indicatorID}/datasources/`);
+const getIndicatorTableData = async (indicatorID, datasourceId, valueType, location) => axiosInstance.get(`${apiEndpoints.getTableData}indicator=${indicatorID}&location=${location}&datasource=${datasourceId}&ordering=-created_at&value_type=${valueType}`);
+const getSpecificDashboard = async (dashboardName) => axiosInstance.get(`/dashboards/?name=${dashboardName}`);
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -38,4 +46,12 @@ export default {
   getIndicatorsWithAvailable,
   getIndicatorsWithPeriod,
   getDashboardById,
+  getAllDataSources,
+  getSingleIndicatorObj,
+  getFactors,
+  getSpecificIndicator,
+  getDashboardDatasources,
+  getSingleDataSourceObj,
+  getIndicatorTableData,
+  getSpecificDashboard,
 };

@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
 
 export default {
@@ -167,14 +167,14 @@ export default {
       category: 'health_outcomes',
       username: '',
       endEdit: true,
-      isPublicDashboard: '', 
+      isPublicDashboard: '',
       categoryOptions: [
-          { value: 'population', text: 'Population' },
-          { value: 'health_outcomes', text: 'Health Outcomes' },
-          { value: 'health_input', text: 'Health Input' },
-          { value: 'health_outputs', text: 'Health Outpust' },
-          { value: 'other', text: 'Other' },
-        ]
+        { value: 'population', text: 'Population' },
+        { value: 'health_outcomes', text: 'Health Outcomes' },
+        { value: 'health_input', text: 'Health Input' },
+        { value: 'health_outputs', text: 'Health Outpust' },
+        { value: 'other', text: 'Other' },
+      ],
     };
   },
   mounted() {
@@ -194,24 +194,23 @@ export default {
     if (this.endEdit) this.$store.commit('endEdit');
   },
   watch: {
-  async isPublicDashboard(newVal) {
-    console.log('cehking')
-    // Call the Vuex action with the new value (true or false)
-    this.$store.dispatch('setIsPublicDashboard', newVal);
-    if(newVal === true){
-      console.log('new val', newVal)
-      this.$store.dispatch('setVisibility', 'public');
-    }
-    if(newVal === false){
-      console.log('new val', newVal)
+    async isPublicDashboard(newVal) {
+      console.log('cehking');
+      // Call the Vuex action with the new value (true or false)
+      this.$store.dispatch('setIsPublicDashboard', newVal);
+      if (newVal === true) {
+        console.log('new val', newVal);
+        this.$store.dispatch('setVisibility', 'public');
+      }
+      if (newVal === false) {
+        console.log('new val', newVal);
 
-      this.$store.dispatch('setVisibility', 'private');
-    }
-    // consologing the visibilty
-    console.log('visibilty', this.$store.getters.getVisibility)
-    
+        this.$store.dispatch('setVisibility', 'private');
+      }
+      // consologing the visibilty
+      console.log('visibilty', this.$store.getters.getVisibility);
+    },
   },
-},
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
     ...mapGetters('CUSTOM_DASHBOARD_STORE', ['getVisibility']),
@@ -284,20 +283,20 @@ export default {
       }
       if (this.description.val === '') {
         this.description.isValid = false;
-        this.formIsValid = false; 
+        this.formIsValid = false;
       }
 
-      if(this.isPublicDashboard){
+      if (this.isPublicDashboard) {
         if (this.publicReason === '') {
-        this.publicReason.isValid = false;
-        this.formIsValid = false;
+          this.publicReason.isValid = false;
+          this.formIsValid = false;
+        }
+        if (this.category === '') {
+          this.category.isValid = false;
+          this.formIsValid = false;
+        }
       }
-      if (this.category === '') {
-        this.category.isValid = false;
-        this.formIsValid = false;
-      }
-      }
-  
+
       // if (this.selectedImage.val === '') {
       //   this.selectedImage.isValid = false;
       //   this.formIsValid = false;
@@ -336,43 +335,40 @@ export default {
 
       let formData = {};
 
-      if(this.isPublicDashboard){
-       formData = {
-        dashboardName: this.dName,
-        description: this.description,
-        reason: this.publicReason,
-        image: this.selectedImage.val,
-        category: this.category
-      };
-
-      this.$store.dispatch('dashboardConfiguration', {
-        name: this.dName.val,
-        description: this.description.val,
-        image: this.selectedImage.val,
-        reason: this.publicReason,
-        category: this.category
-      });
-      } else {
-
+      if (this.isPublicDashboard) {
         formData = {
-        dashboardName: this.dName,
-        description: this.description,
-        reason: this.publicReason,
-        image: this.selectedImage.val,
-        category: this.category
-      };
+          dashboardName: this.dName,
+          description: this.description,
+          reason: this.publicReason,
+          image: this.selectedImage.val,
+          category: this.category,
+        };
 
-      this.$store.dispatch('dashboardConfiguration', {
-        name: this.dName.val,
-        description: this.description.val,
-        image: this.selectedImage.val,
-        reason: this.publicReason,
-        category: this.category
-      });
+        this.$store.dispatch('dashboardConfiguration', {
+          name: this.dName.val,
+          description: this.description.val,
+          image: this.selectedImage.val,
+          reason: this.publicReason,
+          category: this.category,
+        });
+      } else {
+        formData = {
+          dashboardName: this.dName,
+          description: this.description,
+          reason: this.publicReason,
+          image: this.selectedImage.val,
+          category: this.category,
+        };
 
+        this.$store.dispatch('dashboardConfiguration', {
+          name: this.dName.val,
+          description: this.description.val,
+          image: this.selectedImage.val,
+          reason: this.publicReason,
+          category: this.category,
+        });
       }
 
- 
       //
       this.$store.dispatch('allSelection', {
         allselected: false,
@@ -380,7 +376,6 @@ export default {
       // this.$store.state.CUSTOM_DASHBOARD_STORE.masterData = [];
       // this.$store.state.CUSTOM_DASHBOARD_STORE.SurveyArray = [];
       this.endEdit = false;
-
 
       this.$emit('save-data', formData);
       this.$router.push('preference-table');
@@ -394,7 +389,7 @@ export default {
           description: this.description.val,
           image: this.selectedImage.val,
           reason: this.publicReason,
-          category: this.category
+          category: this.category,
         });
         this.$store.dispatch('allSelection', {
           allselected: true,

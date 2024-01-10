@@ -29,6 +29,7 @@
                 @reset="getReset"
               />
             </ControlPanelConfiguration>
+            {{ showItems(payload) }}
           </template>
         </base-sub-card>
       </div>
@@ -219,6 +220,10 @@ export default {
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+
+    showItems(item) {
+      console.log(item, '@@@');
+    },
     // Function to handle Multi-Source mobile view
     scroll(timestamp) {
       // Calculate the timeelapsed
