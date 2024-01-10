@@ -120,6 +120,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
@@ -133,6 +135,12 @@ export default {
       hashtags:
         'HealthTech,HealthData,DataAnalytics,HealthDataAnalytics,BigData,DataSources,Data,DataScientist,DataAnalyst,HealthIndicators',
     };
+  },
+  computed: {
+    ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
+  },
+  mounted() {
+    this.shareDesc = `Take a look at '${this.getSelectedConfig.indicator.full_name}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
   },
 
   methods: {

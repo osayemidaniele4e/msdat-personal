@@ -26,19 +26,21 @@
               class="mob-img"
               variant="primary"
             />
-            <div class="mobile-flex-col"
-              v-if="this.$store.getters.customDashboard === true">
-              <small class="mobile-flex-col-text1">{{ this.$store.getters.dashboardDetails.name }}</small>
+            <div class="mobile-flex-col" v-if="this.$store.getters.customDashboard === true">
+              <small class="mobile-flex-col-text1">{{
+                this.$store.getters.dashboardDetails.name
+              }}</small>
               <div class="mobile-flex-col-text2">
                 {{ this.$store.getters.dashboardDetails.description }}
-                  <small v-if="isAuthenticated && isAuthor"
-                    class="text-warning ml-2 tools">
-                    <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
-                    <b-icon font-scale="2" icon="dot"></b-icon>
-                    <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')">Create New</span>
-                    <b-icon font-scale="2" icon="dot"></b-icon>
-                    <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
-                  </small>
+                <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools">
+                  <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                  <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
+                    >Create New</span
+                  >
+                  <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                </small>
               </div>
             </div>
             <div class="mobile-flex-col" v-else>
@@ -48,7 +50,7 @@
 
             <div v-if="$route.path !== '/account'">
               <b-dropdown
-                text="Select Dashboard"
+                text="Select Section"
                 toggle-class="select-dropdown"
                 variant="none"
                 text-variant="none"
@@ -59,7 +61,11 @@
                   class="select-dropdown-item"
                   v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                   :key="index"
-                  :href="$route.path == '/advanced_analytics' ? `/dashboard/Advanced_Analytics?index=${index}` : '#'"
+                  :href="
+                    $route.path == '/advanced_analytics'
+                      ? `/dashboard/Advanced_Analytics?index=${index}`
+                      : '#'
+                  "
                   @click="emitIndex(index)"
                   >{{ control.label }}
                 </b-dropdown-item>
@@ -71,23 +77,21 @@
             </b-sidebar>
           </div>
 
-          <div
-            class="main-text"
-            v-if="this.$store.getters.customDashboard === true"
-          >
+          <div class="main-text" v-if="this.$store.getters.customDashboard === true">
             <h2 class="main-text">
               <small>{{ this.$store.getters.dashboardDetails.name }}</small>
-            <div>
-              {{ this.$store.getters.dashboardDetails.description }}
-              <small v-if="isAuthenticated && isAuthor"
-                class="text-warning ml-2 tools">
-                <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
-                <b-icon font-scale="2" icon="dot"></b-icon>
-                <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')">Create New</span>
-                <b-icon font-scale="2" icon="dot"></b-icon>
-                <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
-              </small>
-            </div>
+              <div>
+                {{ this.$store.getters.dashboardDetails.description }}
+                <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools">
+                  <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                  <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
+                    >Create New</span
+                  >
+                  <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                </small>
+              </div>
             </h2>
           </div>
           <div class="main-text" v-else>
@@ -407,13 +411,17 @@ export default {
     // check if current user is author of displayed custom dashboard
     isAuthor() {
       // retrieve all saved dashboards
-      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      const customDashboardsList = JSON.parse(
+        localStorage.getItem('customDashboardsList') || JSON.stringify({}),
+      );
       // retrieve dashboards belonging to current user
       const list = customDashboardsList[this.getUser.username];
       // find currently loaded dashboard in list
       const { name, description } = this.$store.getters.dashboardDetails;
-      return list?.find((dashb) => (dashb.config.dashboardDetails.name === name)
-        && (dashb.config.dashboardDetails.description === description));
+      return list?.find(
+        (dashb) => dashb.config.dashboardDetails.name === name
+          && dashb.config.dashboardDetails.description === description
+      );
     },
   },
   created() {

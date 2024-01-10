@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       title: '',
-      url: 'https://public.tableau.com/views/CrossAnalysischartAdvancedAnalytics/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url: 'https://public.tableau.com/views/CrossAnalysischartAdvancedAnalytics/Dashboard12?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: 'auto',
       showComing: false,

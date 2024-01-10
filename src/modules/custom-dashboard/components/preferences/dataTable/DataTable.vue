@@ -62,7 +62,7 @@
               font-size: 13px;
               font-family: Work Sans;
               font-weight: normal;
-              padding-left: 30px;
+              /* padding-left: 30px; */
             "
           >
             DATA SOURCES
@@ -75,7 +75,7 @@
               font-size: 13px;
               font-family: Work Sans;
               font-weight: normal;
-              padding-left: 30px;
+              /* padding-left: 30px; */
             "
           >
             LEVELS
@@ -88,7 +88,7 @@
               font-size: 13px;
               font-family: Work Sans;
               font-weight: normal;
-              padding-left: 30px;
+              /* padding-left: 30px; */
             "
           >
             YEARS
@@ -132,7 +132,6 @@
               <template v-for="items in dataSources" class="">
                 <template v-for="item in items.children">
                   <div
-                    class="col-6 pt-0 pb-0 pl-1 pr-0 col-md-4"
                     style="
                       display: inline-block;
                       font-size: 11px;
@@ -141,7 +140,7 @@
                     v-if="item.selected"
                     :key="item.id"
                   >
-                    {{ item.datasource }}</div
+                    {{ item.datasource }},&nbsp;</div
                   >
                 </template>
               </template>

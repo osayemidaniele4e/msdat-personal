@@ -38,7 +38,7 @@ export default {
           break;
         case 2:
           this.loadingTitle = '...';
-          this.loadingContent = 'Importing datasource across states...';
+          this.loadingContent = 'Importing datasources across states...';
           break;
         case 3:
           this.loadingTitle = '....';

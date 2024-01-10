@@ -32,6 +32,9 @@
       "
     />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
+    <div class="preview" v-if="$route.query.prev">
+      <b-button @click="$router.push('/custom/requests')" size="lg" variant="info" style="font-size: 1.5rem;">Back to Requests</b-button>
+    </div>
   </div>
 </template>
 <script>
@@ -47,6 +50,7 @@ import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
 import defaultDSyear from './defaultDSYear.json';
+import defaultAdvancedYear from './defaultAdvancedYear.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -74,6 +78,10 @@ export default {
       },
       showClearDataModal: false,
       loading: false,
+      longitude: '',
+      latitude: '',
+      userLocation: null,
+      error: null,
     };
   },
   methods: {
@@ -84,6 +92,7 @@ export default {
       'SET_SELECTED_CONFIG',
     ]),
     ...mapActions('AUTH_STORE', ['LOGIN_USER', 'SAVE_USER_DASHBOARD']),
+    ...mapActions(['SET_DASHBOARD_LOCATION']),
     /**
      * @function clearData
      * @author davebenard
@@ -149,6 +158,27 @@ export default {
         await this.SAVE_USER_DASHBOARD(payload);
       }
     },
+
+    getUserLocation() {
+      if ('geolocation' in navigator) {
+        // Get the user's location
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.userLocation = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+          },
+          (error) => {
+            this.error = error.message;
+          },
+        );
+      } else {
+        this.error = 'Geolocation is not supported in your browser.';
+      }
+
+      console.log('user location', this.userLocation);
+    },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', 7);
     // },
@@ -156,22 +186,59 @@ export default {
     //   localStorage.setItem('datasourceId', 6);
     // },
     // getIndicator(id){
-
     // }
   },
   async mounted() {
-    this.clearData();
-    if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-      // this sets skilled attendance at birth indicator on mounted
-      this.SET_SELECTED_CONFIG(defaultData);
-    } else if (this.$route.params.name === 'Disease_Surveillance') {
-      // this sets covid 19 confirmed cases indicator on mounted
-      this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
-      this.SET_SELECTED_CONFIG(defaultDSyear);
-    }
-    setTimeout(() => {
-      console.log('config', this.$store.state.MSDAT_STORE.configObject);
-    }, 5000);
+    this.getUserLocation();
+
+    await navigator.geolocation.getCurrentPosition((position) => {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+
+      // Now that you have the geolocation data, you can use it here
+      const data = {
+        dashboard: this.$route.params.name,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        time: Date.now(),
+      };
+
+      this.SET_DASHBOARD_LOCATION(data);
+
+      this.clearData();
+
+      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+        // this sets skilled attendance at birth indicator on mounted
+        this.SET_SELECTED_CONFIG(defaultData);
+      } else if (this.$route.params.name === 'Disease_Surveillance') {
+        // this sets covid 19 confirmed cases indicator on mounted
+        this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+        this.SET_SELECTED_CONFIG(defaultDSyear);
+      } else if (this.$route.params.name === 'Advanced_Analytics') {
+        this.SET_SELECTED_CONFIG(defaultData);
+        this.SET_SELECTED_CONFIG(defaultAdvancedYear);
+      }
+
+      setTimeout(() => {
+        console.log('config', this.$store.state.MSDAT_STORE.configObject);
+      }, 5000);
+    });
+
+    // // console.log(defaultData, 'defaultData');
+    // if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+    //   // this sets skilled attendance at birth indicator on mounted
+    //   this.SET_SELECTED_CONFIG(defaultData);
+    // } else if (this.$route.params.name === 'Disease_Surveillance') {
+    //   // this sets covid 19 confirmed cases indicator on mounted
+    //   this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+    //   this.SET_SELECTED_CONFIG(defaultDSyear);
+    // } else if (this.$route.params.name === 'Advanced_Analytics') {
+    //   this.SET_SELECTED_CONFIG(defaultData);
+    //   this.SET_SELECTED_CONFIG(defaultAdvancedYear);
+    // }
+    // setTimeout(() => {
+    //   console.log('config', this.$store.state.MSDAT_STORE.configObject);
+    // }, 5000);
   },
   async created() {
     // this.saveIndicatorToStorage();
@@ -230,7 +297,7 @@ export default {
       // try {
       //   const response = await apiServices.getDashboard();
       //   const results = response.data;
-      //   console.log({ results })
+      //   console.log({ results }, 'dashboard results')
       //   // const dashboard = results.find((item) => item?.name === name);
       // } catch (e) {
       //   console.log({ e });
@@ -263,6 +330,9 @@ export default {
       this.SET_CONFIGURATIONS(getFormattedConfig || this.configObject); // make use of the new state implementation to avoid prop drilling
       localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
       localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
+
+      window.document.title = 'MSDAT Nigeria | Custom Dashboard';
+
       return;
     }
     // if it is not custom dashboard for safety reasons set it to false
@@ -276,16 +346,15 @@ export default {
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
-      const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
-      if (dashboard === undefined) {
-        this.$router.push('/*');
-        return;
-      }
-      this.isAdvanced = true;
-      this.configObject = '';
-      this.configObject = dashboard;
-      this.SET_CONFIGURATIONS(dashboard);
-      return;
+      // const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
+      // if (dashboard === undefined) {
+      //   this.$router.push('/*');
+      //   return;
+      // }
+      // this.isAdvanced = true;
+      //   this.configObject = '';
+      //   this.configObject = dashboard;
+      //   this.SET_CONFIGURATIONS(dashboard);
     }
 
     if (name === 'GIS_Mapping') {
@@ -340,6 +409,12 @@ export default {
         this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;
         this.isGIS = false;
+
+        if (name === 'Advanced_Analytics') {
+          this.isAdvanced = true;
+        } else {
+          this.isAdvanced = false;
+        }
       } catch (err) {
         console.log(
           err,
@@ -354,6 +429,7 @@ export default {
     // set the title from the config as the route title
     if (this.$store.state.MSDAT_STORE.configObject.title) {
       this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
+      window.document.title = `MSDAT Nigeria | ${this.$store.state.MSDAT_STORE.configObject.title}`;
     }
   },
   watch: {
@@ -385,5 +461,12 @@ iframe {
 .iframe_container {
   max-height: 450px;
   overflow-y: auto;
+}
+.preview {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1500;
 }
 </style>

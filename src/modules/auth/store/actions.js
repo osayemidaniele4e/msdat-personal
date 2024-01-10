@@ -1,4 +1,5 @@
 import VueCookies from 'vue-cookies';
+import axios from 'axios';
 import axiosInstance from '../config/axios';
 import authInstance from '../config/axiosAuth';
 
@@ -81,10 +82,8 @@ export default {
 
   async AUTHENTICATE_LINKEDIN({ commit }, payload) {
     try {
-      const response = await authInstance.post('/api/auth/register/linkedin/user/', {
-        code: payload.code,
-      });
-
+      const response = await axios.post('http://172.93.52.240:3001/api/social/auth/register/linkedin/', payload);
+      console.log('linkedln login', response);
       const user = response.data.data;
 
       VueCookies.set('msdat-user-details', user);

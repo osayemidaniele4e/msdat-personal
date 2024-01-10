@@ -5,14 +5,13 @@
     <div v-if="!loading">
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
-          <div class="w-100 d-flex justify-content-between">
+          <div class="w-100 d-flex justify-content-between align-items-center p-1">
             <p class="work-sans mb-0 line-height">
               <b>{{ values.indicator.short_name }}</b>
               and related indicators (with year of latest values) across available data sources.
             </p>
 
             <div class="share-wrapper">
-              <div v-if="isTooltipVisible" class="tooltip-wrap">share.</div>
               <div
                 @mouseover="showTooltip"
                 @mouseout="hideTooltip"
@@ -333,13 +332,18 @@ export default {
 }
 
 .share-btn {
-  height: auto;
-  padding: 0;
+  // height: auto;
+  // padding: 0;
   margin: 0 5px;
-  padding: 0 6px;
-  margin-right: 5px;
-  margin-top: 2px;
-  padding-bottom: 2px;
+  // padding: 0 6px;
+  // margin-right: 5px;
+  // margin-top: 2px;
+  // padding-bottom: 2px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #b3b3b3;
   border-radius: 50px;
   cursor: pointer;
@@ -361,7 +365,8 @@ export default {
 .tooltip-wrap {
   background-color: #333;
   color: #fff;
-  padding: 0 5px;
+  padding: 2px 5px;
   border-radius: 5px;
+  font-size: 1rem;
 }
 </style>

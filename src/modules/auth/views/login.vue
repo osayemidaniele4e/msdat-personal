@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <header class="header sticky-top"></header>
-    <section class="container-fluid">
+    <section class="container-fluid login-section">
       <div class="container mt-5">
         <h3 class="w-100 text-center mx-auto">Log in to your account</h3>
         <div class="loader" v-if="isLoading">
@@ -47,19 +47,26 @@
                   <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
                 </button>
                 <h4 class="py-3" style="font-size: 15px">Social Authentication</h4>
-                <button
-                  type="button"
-                  class="btn btn-lg btn-primary px-3 py-2"
-                  @click="handleClickSignIn()"
-                >
-                  <b-icon-google class="mr-2"></b-icon-google>
-                </button>
+                <div class="d-flex gap-2 justify-content-center align-items-center">
+                  <button
+                    type="button"
+                    class="btn btn-lg btn-primary px-3 py-2"
+                    @click="handleClickSignIn()"
+                  >
+                    <b-icon-google class=""></b-icon-google>
+                  </button>
+                  <a :href="linkedlnUrl" class="m-0 ml-2 rounded overflow-hidden">
+                    <img width="48" height="36" src="/img/linkedln-logo.png" alt="linkedln logo" />
+                  </a>
+                </div>
               </div>
             </form>
 
             <div class="row">
               <div class="col-12 text-center">
-                <h4 class="py-3" style="font-size: 15px">Don't have an account?</h4>
+                <h4 class="py-3" style="font-size: 15px; font-family: Work sans">
+                  Don't have an account?
+                </h4>
                 <button
                   class="btn btn-lg btn-light btn-outline-dark"
                   style="font-size: 15px"
@@ -96,13 +103,21 @@ export default {
       formIsValid: true,
       isLoading: false,
       msg: 'Please enter Username and Password.',
+      linkedlnUrl: `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&redirect_uri=${window.location.origin}/custom/login&state=foobar&scope=openid%20profile%20email`,
     };
   },
   mounted() {
     VueCookies.remove('msdat-user-details');
+    if (this.$route.query.code) {
+      const data = {
+        code: this.$route.query.code,
+        redirect: `${window.location.origin}/custom/login`,
+      };
+      this.linkedlnSignin(data);
+    }
   },
   methods: {
-    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE']),
+    ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE', 'AUTHENTICATE_LINKEDIN']),
     async submitForm() {
       this.isLoading = true;
       this.formIsValid = true;
@@ -122,7 +137,7 @@ export default {
 
               if (res.status === 200) {
                 // VueCookies.set('msdat-access-token', res.data.token);
-                this.$swal(`Hi ${formData.username} 👋, Welcome to your Dashboard`);
+                this.$swal(`Hi ${formData.username} 👋, \n\nWelcome to your Dashboard`);
                 this.$router.push({ path: '/my-dashboard/details' });
               } else {
                 this.$swal('something went wrong, confirm username and password');
@@ -181,6 +196,41 @@ export default {
               icon: 'error',
               title: 'Something went wrong',
               text: 'Something went wrong signing you in with google',
+            });
+          });
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+      return 0;
+    },
+    async linkedlnSignin(data) {
+      try {
+        await this.AUTHENTICATE_LINKEDIN(data)
+          .then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+            this.$router.push({ path: '/my-dashboard/details' });
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with linkedln',
             });
           });
       } catch (error) {
@@ -281,6 +331,10 @@ h4::after {
   letter-spacing: 1px;
   color: #ffffff;
   opacity: 1;
+}
+
+.login-section {
+  font-family: 'Work sans';
 }
 @media (max-width: 680px) {
   h4::before,

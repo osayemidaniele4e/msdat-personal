@@ -6,10 +6,12 @@ import VueCookies from 'vue-cookies';
 import VueHtml2Canvas from 'vue-html2canvas';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import VueSweetalert2 from 'vue-sweetalert2';
+import VueSocialSharing from 'vue-social-sharing';
 import DataLayer from '@/modules/data-layer';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';
+import './plugins/element-ui';
 import './plugins/highchart';
 import './plugins/multiselect';
 import './plugins/vue-sweetalert/sweetalert';
@@ -18,8 +20,6 @@ import store from './store';
 import 'regenerator-runtime';
 import './plugins/veevalidate';
 import './assets/styles/fonts.css';
-
-import VueSocialSharing from 'vue-social-sharing';
 
 const gauthOption = {
   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
@@ -50,4 +50,4 @@ new Vue({
   router,
   store,
   render: (h) => h(App),
-}).$mount('#app');
+}).$mount('#app', true);

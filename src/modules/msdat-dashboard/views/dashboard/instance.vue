@@ -123,8 +123,8 @@
     <template
       v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
     >
-      <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+      <div class="col-md-12 overflow-auto">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm disaggregation">
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
           </template>
@@ -202,6 +202,18 @@ export default {
     },
     fieldsArray() {
       return this.$store.getters.arrangedSections;
+    },
+    // Applies the config that disables the num/denum if the route is on these dashboards
+    noNHMIS() {
+      if (
+        this.$route.path === '/dashboard/Disease_Surveillance'
+    || this.$route.path === '/dashboard/Health_Workforce'
+    || this.$route.path === '/dashboard/Health_Facility'
+    || this.$route.path === '/dashboard/Health_Service_Access'
+      ) {
+        return true;
+      }
+      return false;
     },
   },
   methods: {
@@ -300,7 +312,8 @@ export default {
      * in the control Panel config Array
      * and so on and fort for the other sections
      */
-    const DiseaseSurveillanceConfig = this.$route.path === '/dashboard/Disease_Surveillance' ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
+
+    const DiseaseSurveillanceConfig = this.noNHMIS ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
     const configs = [
       DiseaseSurveillanceConfig,
       ZonalAnalysisConfig,
@@ -309,6 +322,8 @@ export default {
       BaseMultiSourceConfig,
     ];
 
+    console.log('noHMIS', this.noNHMIS);
+    console.log('current route', this.$route.path);
     // Updated flow
     const { name: queryParameter } = this.$route.params;
     if (this.customDashboard) {
@@ -336,6 +351,9 @@ export default {
 
 <style scoped>
 /* test css */
+/* .disaggregation {
+  min-width: 800px;
+} */
 .row_alt {
   display: flex;
   flex-direction: row;

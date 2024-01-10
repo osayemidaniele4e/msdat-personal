@@ -14,6 +14,7 @@
       <b-icon-info-circle-fill
         @click="$emit('source-info:click', source)"
         class="data-source-info mx-2"
+        font-scale="0.5"
       />
     </div>
   </th>

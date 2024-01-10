@@ -32,7 +32,7 @@
 
 <script>
 // import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
-import Maps from '@/components/maps/BaseMap.vue';
+import Maps from '@/components/maps/ZonalBaseMap.vue';
 // import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import { sortHighChartDataFormat } from '../../../../mixins/util';
@@ -233,6 +233,7 @@ export default {
   },
 
   async mounted() {
+    console.log('@@@@@');
     this.title = ` Distribution of ${this.values.indicator.short_name} Across the Geopolitical zones in
           the Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
     const data = await this.dlQuery({
@@ -240,6 +241,12 @@ export default {
       datasource: this.values.datasource.id,
       location: this.values.location.id,
     });
+
+    console.log(data, '@@@@@data');
+
+    data.sort((a, b) => a.period.localeCompare(b.period));
+
+    console.log(data, '@@@@@data');
     this.chartObject = {};
     const formattedData = this.formatDataToSeriesLineFormat(data);
     this.chartObject = this.formatToHighChartOptionForLine(

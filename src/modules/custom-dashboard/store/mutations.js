@@ -359,7 +359,12 @@ export default {
   },
 
   setVisibility(state, payload) {
+    console.log('state visibility', payload)
     state.visibility = payload;
+  },
+
+  setIsPublicDashboard(state, payload) {
+    state.isPublicDashboard = payload;
   },
   // setshowLoader(state) {
   //   const loader = state.loader;

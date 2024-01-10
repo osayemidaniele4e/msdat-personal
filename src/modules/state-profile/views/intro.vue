@@ -1,10 +1,11 @@
 <template>
   <b-container class="overflow-hidden xxl-max-width">
-    <b-row align-h="between">
+      <b-row align-h="between">
       <b-col sm="12" md="5" lg="5" class="mt-5">
         <h4 class="mt-3 mb-4 tittle">
-          National and State Health <br />
-          Profile Dashboard
+          National and State Health
+          Profile<br />
+           Dashboard
         </h4>
 
         <p class="text-left msg">
@@ -13,62 +14,62 @@
           Immunization, HIV/AIDS, Mortality and Health Services. It also provides insight on health
           facility service availability and readiness for each state.
         </p>
-        <b-row align-h="start">
-          <b-col cols="auto">
-            <div class="program-areas text-center pt-3 shadow">
+        <b-row align-h="start" wrap>
+          <b-col cols="auto" class="text-center px-3 py-2">
+            <div class="program-areas pt-3 shadow">
               <img src="@/assets/state-profile/svg/pregnant.svg" class="img-fluid" alt="rmnch" />
             </div>
-            <p class="text-center program-areas-text">RMNCH</p>
+            <p class="program-areas-text">RMNCH</p>
           </b-col>
-          <b-col cols="auto">
-            <div class="program-areas text-center pt-3 shadow">
+          <b-col cols="auto" class="text-center px-3 py-2">
+            <div class="program-areas pt-3 shadow">
               <img src="@/assets/state-profile/svg/salad.svg" class="img-fluid" alt="nutrition" />
             </div>
-            <p class="text-center program-areas-text">Nutrition</p>
+            <p class="program-areas-text">Nutrition</p>
           </b-col>
-          <b-col cols="auto">
-            <div class="program-areas text-center pt-3 shadow">
+          <b-col cols="auto" class="text-center px-3 py-2">
+            <div class="program-areas pt-3 shadow">
               <img
                 src="@/assets/state-profile/svg/injection.svg"
                 class="img-fluid"
                 alt="immunization"
               />
             </div>
-            <p class="text-center program-areas-text">Immunization</p>
+            <p class="program-areas-text">Immunization</p>
           </b-col>
-          <b-col cols="auto">
-            <div class="program-areas text-center pt-3 shadow">
+          <b-col cols="auto" class="text-center px-3 py-2">
+            <div class="program-areas pt-3 shadow">
               <img src="@/assets/state-profile/svg/mosquito.svg" class="img-fluid" alt="malaria" />
             </div>
-            <p class="text-center program-areas-text">Malaria</p>
+            <p class="program-areas-text">Malaria</p>
           </b-col>
 
-          <b-col cols="auto">
-            <div class="program-areas text-center pt-3 shadow">
+          <b-col cols="auto" class="text-center px-3 py-2">
+            <div class="program-areas pt-3 shadow">
               <img src="@/assets/state-profile/svg/ribbon.svg" class="img-fluid" alt="hiv/aids" />
             </div>
-            <p class="text-center program-areas-text">HIV/AIDS</p>
+            <p class="program-areas-text">HIV/AIDS</p>
           </b-col>
-          <b-col cols="auto">
-            <div class="program-areas text-center pt-3 shadow">
+          <b-col cols="auto" class="text-center px-3 py-2">
+            <div class="program-areas pt-3 shadow">
               <img src="@/assets/state-profile/svg/patient.svg" class="img-fluid" alt="mortality" />
             </div>
-            <p class="text-center program-areas-text">Mortality</p>
+            <p class="program-areas-text">Mortality</p>
           </b-col>
-          <b-col cols="auto" class="">
-            <div class="program-areas text-center pt-3 shadow">
+          <b-col cols="auto" class="text-center px-3 py-2">
+            <div class="program-areas pt-3 shadow">
               <img
                 src="@/assets/state-profile/svg/hospital.svg"
                 class="img-fluid"
                 alt="health services"
               />
             </div>
-            <p class="text-center program-areas-text">Health Services</p>
+            <p class="program-areas-text">Health Services</p>
           </b-col>
         </b-row>
       </b-col>
       <b-col sm="12" md="5" class="mt-5">
-        <StateBaseMap :level="1" :mapObject="mapOptions" />
+        <StateBaseMap :level="1" :mapObject="mapOptions"/>
         <p class="mt-2 text-center map-text">Select a state on the map to view state profile</p>
         <div class="row justify-content-center">
           <button class="btn bottom-btn px-4 mt-3" @click="viewNationalProfile">
@@ -218,17 +219,17 @@ export default {
 }
 button.bottom-btn {
   background-color: #f2f2f2;
-  border: 1px solid #cccccc;
+  border: 1px solid #007d53;
   height: 38.250103125px;
   font-size: 14px;
   font-weight: 750;
   font-family: 'Muli', sans-serif;
   border-radius: 5px;
-  color: #3a3a3a;
+  color: #000000;
 }
 button.bottom-btn:hover,
 button.bottom-btn:active {
-  color: #3f6040;
+  color: #007d53;
   text-decoration: underline;
 }
 </style>

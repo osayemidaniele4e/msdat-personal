@@ -1,23 +1,27 @@
 <template>
   <div class="">
-    <ul
-      class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-5 mx-3 cursor-pointer main tabs-sec"
-    >
-      <li
-        class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
-        :class="[i === selectedIndex ? 'active font-weight-bold' : '']"
-        v-for="(el, i) in controls"
-        :key="i"
-        :id="`panel-${i}`"
-        @click="changeControl(i)"
-      >
-        {{ el.title }}
-      </li>
+    <ul>
+      <draggable v-model="modifiedControls">
+        <transition-group
+          class="d-flex justify-content-between mr-3 list-unstyled step-sections py-2 mb-0 border-b cursor-pointer main tabs-sec"
+        >
+          <li
+            class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+            :class="[el.index === selectedIndex ? 'active font-weight-bold' : '']"
+            v-for="(el, i) in modifiedControls"
+            :key="i"
+            :id="`panel-${el.index}`"
+            @click="changeControl(el.index)"
+          >
+            {{ el.title }}
+          </li>
+        </transition-group>
+      </draggable>
     </ul>
 
     <div class="control-title">{{ title }}</div>
     <!-- Multi-select dropdown here -->
-    <div class="mx-lg-5 px-2 mx-auto pb-3 pt-1 step-controls styles">
+    <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
@@ -25,12 +29,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'BasePanel',
+  components: {
+    draggable,
+  },
   data() {
     return {
       controls: [],
+      modifiedControls: [],
       selectedIndex: 0,
       title: 'Indicator Overview',
       checkIndex: 0,
@@ -62,6 +71,7 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
 
     changeControl(index) {
+      // console.log(this.modifiedControls, { index });
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
@@ -106,7 +116,7 @@ export default {
       // loop over all the tabs
       this.controls.forEach((control, index) => {
         // eslint-disable-next-line no-param-reassign
-        control.active = index === controlIndex;
+        control.active = index === controlIndex + 1;
       });
     },
     // selectControll(controlIndex) {
@@ -121,6 +131,17 @@ export default {
   },
 
   watch: {
+    controls(value) {
+      for (let i = 0; i < value.length; i++) {
+        if (value[i].title) {
+          if (!this.modifiedControls.includes(value[i])) {
+            const data = value[i];
+            data.index = i - 1;
+            this.modifiedControls.push(data);
+          }
+        }
+      }
+    },
     position(newValue) {
       this.selectedIndex = newValue;
       this.selectControl(this.selectedIndex);
@@ -135,23 +156,49 @@ export default {
     selectedIndex(newValue) {
       // console.log('selected', this.$store.getters);
       this.changeControl(newValue);
-      if (newValue === 0) {
-        this.title = 'Indicator Overview';
+
+      const { name } = this.$route.params;
+      if (name === 'Advanced_Analytics') {
+        if (newValue === 0) {
+          this.title = 'Correlation Analysis';
+          this.$store.dispatch('setSectionTitle', 'Correlation Analysis');
+        }
+        if (newValue === 1) {
+          this.title = 'Descriptive Analysis';
+          this.$store.dispatch('setSectionTitle', 'Descriptive Analysis');
+        }
+        if (newValue === 2) {
+          this.title = 'Indicator Comparison';
+          this.$store.dispatch('setSectionTitle', 'Indicator Comparison');
+        }
+        if (newValue === 3) {
+          this.title = 'Predictive Analysis';
+          this.$store.dispatch('setSectionTitle', 'Predictive Analysis');
+        }
+        if (newValue === 4) {
+          this.title = 'Multisource Inidcator Comparison';
+          this.$store.dispatch('setSectionTitle', 'Multisource Inidcator Comparison');
+        }
       }
-      if (newValue === 1) {
-        this.title = 'Zonal Analysis';
-      }
-      if (newValue === 2) {
-        this.title = 'Indicator Comparison';
-      }
-      if (newValue === 3) {
-        this.title = 'Dataset Comparison';
-      }
-      if (newValue === 4) {
-        this.title = 'Multi-Source Overview';
-      }
-      if (newValue === 5) {
-        this.title = 'Disaggregation';
+      if (name !== 'Advanced_Analytics') {
+        if (newValue === 0) {
+          this.title = 'Indicator Overview';
+        }
+        if (newValue === 1) {
+          this.title = 'Zonal Analysis';
+        }
+        if (newValue === 2) {
+          this.title = 'Indicator Comparison';
+        }
+        if (newValue === 3) {
+          this.title = 'Dataset Comparison';
+        }
+        if (newValue === 4) {
+          this.title = 'Multi-Source Overview';
+        }
+        if (newValue === 5) {
+          this.title = 'Disaggregation';
+        }
       }
     },
   },
@@ -208,13 +255,13 @@ export default {
   border: 1px solid $primary;
   background-color: white;
   color: black !important;
-  padding: 1rem;
+  padding:1rem 2rem;
   height: 1rem;
-  max-width: 400px;
+  max-width: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 5px;
+  margin: 10px ;
   font-weight: 200;
   font-size: 1rem;
   &:first-child {
@@ -230,7 +277,7 @@ export default {
   display: none;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 876px) {
   .main {
     display: none;
   }

@@ -15,7 +15,7 @@
         <p class="work-sans mb-0 line-height">
           Distribution of
           <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>Across
-          the <span class="font-weight-bold"> zones in the Country.</span> Source:
+         <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
           <span class="font-weight-bold"> {{ controlPanelProps.datasource.datasource }}</span>
           {{ controlPanelProps.year }}
         </p>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
@@ -77,16 +76,6 @@ export default {
         chart: {
           type: 'column',
           zoomType: 'xy',
-        },
-        plotOptions: {
-          column: {
-            dataLabels: {
-              enabled: true,
-              formatter() {
-                return Highcharts.numberFormat(this.y, 0, '', ',');
-              },
-            },
-          },
         },
         yAxis: {
           gridLineWidth: 0,
@@ -163,6 +152,8 @@ export default {
               (item) => this.dlGetLocation(item.location).parent === val.location.id,
             );
 
+            console.log(filteredLGADataForState, 'ANOTHER');
+
             const formatToHighChart = (dataValues) => dataValues.map((item) => [
               this.dlGetLocation(item.location).name,
               parseFloat(item.value),
@@ -191,6 +182,7 @@ export default {
             // index starts at one to skip region data for the series
             const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
             const zonalSeries = this.getZonalDataInHighChartFormat(data);
+
             // console.log(zonalSeries);
             // add national to top of the zonal series series
             const national = data.find((item) => item.location === 1);
@@ -215,6 +207,7 @@ export default {
                 newChart.push(item);
               }
             });
+
             newChart.unshift();
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
