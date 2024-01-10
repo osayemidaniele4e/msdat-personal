@@ -144,7 +144,7 @@ export default {
         // sending to the api
 
         const timespent = {
-          indicator: this.previous_indicator,
+          indicator: this.previous_indicator.id,
           timeSpent: diff,
           user: this.getUser.id
         }
@@ -191,7 +191,7 @@ export default {
         // sending to the api
 
         const timespent = {
-          datasource: this.previous_datasource,
+          datasource: this.previous_datasource.id,
           timeSpent: diff,
           user: this.getUser.id
         }

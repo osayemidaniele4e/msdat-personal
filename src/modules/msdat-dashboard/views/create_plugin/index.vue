@@ -112,7 +112,9 @@
           <b-input-group-prepend is-text>
             <b-icon icon="image-fill"></b-icon>
           </b-input-group-prepend>
-          <b-form-file id="form-image" :disabled="busy" accept="image/*"></b-form-file>
+          <b-form-file
+          v-model="form.file"
+          id="form-image" :disabled="busy" accept="image/*"></b-form-file>
         </b-input-group>
       </b-form-group>
 
@@ -138,7 +140,7 @@
 
       <!-- <input type="file"> -->
       
-
+<button @click="mockSubmit()">Mock Submit</button>
       <!-- <b-button @click="onSubmit()" type="submit" variant="primary">Submit</b-button> -->
       
       <b-button type="submit" variant="primary">Submit</b-button>
@@ -204,7 +206,18 @@ export default {
 
   // Define a method for form submission
   onSubmit() {
-    this.SUBMIT_PLUGIN(this.form)
+    // Create a new FormData object
+    const formData = new FormData();
+
+    // Append form data to the FormData object
+    formData.append('email', this.form.email);
+    formData.append('name', this.form.name);
+    formData.append('phone', this.form.phone);
+    formData.append('purpose', this.form.purpose);
+    formData.append('description', this.form.description);
+    formData.append('plugin_file', this.form.plugin_file);
+
+    this.SUBMIT_PLUGIN(formData)
       .then(() => {
         // Handle success
         this.$bvModal.show('upload_plugin_success');
@@ -221,6 +234,10 @@ export default {
     event.preventDefault();
     // Reset your form values here
     // ...
+  },
+
+  mockSubmit(){
+    this.SUBMIT_PLUGIN(this.form)
   }
 }
 };

@@ -7,15 +7,20 @@
     </div>
     <div>
       <b-row>
-        <template v-for="dashboard in userDashboards">
-          <b-col cols="4" :key="dashboard.id">
-            <b-card :title="dashboard.name" header-tag="header" footer-tag="footer">
-              <b-card-text>{{ dashboard.title }}</b-card-text>
-              <router-link target="_blank" :to="'/dashboard/' + dashboard.name">
+        <template v-for="plugin in getSubmittedPlugins">
+          <b-col cols="4" :key="plugin.id">
+            <b-card :title="plugin.name" header-tag="header" footer-tag="footer">
+              <b-card-text>{{ plugin.title }}</b-card-text>
+              <router-link target="_blank" :to="'/dashboard/' + plugin.name">
                 <b-button variant="primary">Approve Pluigin</b-button>
               </router-link>
+              <router-link target="_blank" :to="plugin.file">
+                <b-button variant="primary">Download Pluigin</b-button>
+              </router-link>
+
+              <a :href="plugin.file">frfr</a>
               <template #footer>
-                <em>{{ dashboard.visibility }}</em>
+                <!-- <em>{{ dashboard.visibility }}</em> -->
               </template>
             </b-card>
           </b-col>
@@ -37,11 +42,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser', 'getDashboards']),
+    ...mapGetters(['getSubmittedPlugins']),
   },
 
   methods: {
-    ...mapActions('AUTH_STORE', ['SAVE_DASHBOARDS']),
+    ...mapActions(['GET_PLUGINS']),
 
     filterArray(obj, arr) {
       const userId = obj.id;
@@ -52,8 +57,8 @@ export default {
 
   async mounted() {
     this.loading = true;
-    await this.SAVE_DASHBOARDS();
-    this.userDashboards = this.filterArray(this.getUser, this.getDashboards.data);
+    await this.GET_PLUGINS();
+    console.log('plugins', this.getSubmittedPlugins)
     this.loading = false;
   },
 };
