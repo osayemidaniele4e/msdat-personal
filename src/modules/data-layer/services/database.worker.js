@@ -31,6 +31,10 @@ export default class DataBase {
     this.nhmisMonthly = this.db.table(NHMIS_MONTHLY);
   }
 
+  async getEveryDatasource() {
+    return this.datasources.orderBy('id').uniqueKeys();
+  }
+
   /**
    *
    * @returns {array} a unique array of all the LOCATION
