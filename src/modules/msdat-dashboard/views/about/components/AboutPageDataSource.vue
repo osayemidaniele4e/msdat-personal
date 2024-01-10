@@ -33,10 +33,9 @@ export default {
 <style scoped>
 </style> -->
 
-
 <template>
   <div>
-  
+
     <section class="sec-program-areas">
           <div class="mt-5 d-flex flex-column align-items-center">
             <h3>DATA SOURCES</h3>
@@ -53,13 +52,12 @@ export default {
             </pre>
             -->
 
-
 <div>
   <div v-for="classi in classifications" :key="classi" class="classification-sec">
 
 <h3>{{ classi }}</h3>
 
-<div class="program-area-sec"> 
+<div class="program-area-sec">
 <div v-for="(indicator, index) in filteredIndicators(classi)[0].indicators" :key="index">
 <div
 class="program-area-card"
@@ -75,12 +73,9 @@ class="program-area-card"
 </div>
 </div>
 
-        
-             
-          
             <!-- right section -->
-  
-            <div class="program-area-des"> 
+
+            <div class="program-area-des">
               <!-- <pre>
                 {{ selectedIndicators }}
               </pre> -->
@@ -88,12 +83,11 @@ class="program-area-card"
                 <span class="program-area-des-header-t1">
                   {{ selectedIndicators.classification }}
                 </span>
-               
+
                 <span class="program-area-des-header-t2">
                   {{ selectedIndicators.datasource }}
                 </span>
 
-                
               </span>
 
               <hr>
@@ -115,15 +109,13 @@ class="program-area-card"
               <br><br>
               <h4>Sub-national data:</h4>
               <span>{{ selectedIndicators.subnational_data }}</span>
-          
+
             </div>
-  
-  
+
           </div>
-  
-  
+
         </section>
-  
+
         <!-- <div class="row d-flex justify-content-between align-items-center">
       <div class="col-3" v-for="(indicator, index) in indicators" :key="index">
         <label for="">{{ indicator.program_area }}</label>
@@ -137,98 +129,89 @@ class="program-area-card"
       </div>
     </div> -->
 
-
- 
-  
-  
   </div>
-  
-  
-  
+
   </template>
-  
-  <script>
-  import { groupIndicator } from '@/util/helper';
-  
-  export default {
-    data() {
-      return {
-        dataSources: [],
-        indicators: [],
-        selected: 1,
-        selectedIndicators: [],
-        selectedDatasource: '',
-        classifications: []
-      };
-    },
-  
-    methods: {
-      setSelected(indicator){
-        console.log('[indicator]', indicator)
-        this.selectedIndicators = indicator,
-        this.selectedDatasource = indicator.datasource
+
+<script>
+import { groupIndicator } from '@/util/helper';
+
+export default {
+  data() {
+    return {
+      dataSources: [],
+      indicators: [],
+      selected: 1,
+      selectedIndicators: [],
+      selectedDatasource: '',
+      classifications: [],
+    };
   },
 
-  filterClassifications() {
+  methods: {
+    setSelected(indicator) {
+      console.log('[indicator]', indicator);
+      this.selectedIndicators = indicator;
+      this.selectedDatasource = indicator.datasource;
+    },
+
+    filterClassifications() {
       // Iterate through your data and extract classification names
-      this.classifications = this.dataSources.map(item => item.classification);
+      this.classifications = this.dataSources.map((item) => item.classification);
     },
 
     filteredIndicators(classification) {
-    return this.dataSources.filter(indicator => indicator.classification === classification);
-  },
+      return this.dataSources.filter((indicator) => indicator.classification === classification);
     },
-    computed: {
-      filteredFullNames() {
-        // Use the map function to extract the full_name field from each object
-        return this.selectedIndicators.map(item => ({ id: item.id, full_name: item.full_name }));
-      },
+  },
+  computed: {
+    filteredFullNames() {
+      // Use the map function to extract the full_name field from each object
+      return this.selectedIndicators.map((item) => ({ id: item.id, full_name: item.full_name }));
+    },
     //   filteredIndicators(classification) {
     //   return this.dataSources.filter(indicator => indicator.classification === classification);
     // },
-    },
-  
-   
-   async mounted() {
-      this.dataSources = await groupIndicator(this.dlDatasource, 'classification');
+  },
 
-      this.indicators = await groupIndicator(this.dlIndicator, 'program_area');
+  async mounted() {
+    this.dataSources = await groupIndicator(this.dlDatasource, 'classification');
 
-      if (this.dataSources.length > 0) {
+    this.indicators = await groupIndicator(this.dlIndicator, 'program_area');
+
+    if (this.dataSources.length > 0) {
     // Set the selectedDatasource to the first datasource in the dataSources array
-    this.selectedDatasource = this.dataSources[0].indicators[0].datasource;
-    // Call the setSelected method with the first indicator as an argument
-    this.setSelected(this.dataSources[0].indicators[0]);
-  }
+      this.selectedDatasource = this.dataSources[0].indicators[0].datasource;
+      // Call the setSelected method with the first indicator as an argument
+      this.setSelected(this.dataSources[0].indicators[0]);
+    }
 
-      this.filterClassifications();
+    this.filterClassifications();
 
-      console.log('datasources', this.dataSources)
-
-
-    },
-  };
-  </script>
+    console.log('datasources', this.dataSources);
+  },
+};
+</script>
   <style scoped>
   .sec-program-areas {
     background-color: #DFF3F3;
     padding: 100px;
-  
+
   }
-  
+
   .program-areas {
   display: grid;
   grid-template-columns: 50% 50%;
 
 }
-  
+
   .program-area-sec{
     display: grid;
     grid-template-columns: 33% 33% 33%;
     max-height: 350px;
     overflow: scroll;
   }
-  
+
   .program-area-card {
     margin: 5px;
   width: 200px;
@@ -278,10 +261,9 @@ class="program-area-card"
   overflow: scroll;
   margin-bottom: 50px;
 }
-  
+
   .green-card{
     background-color: green;
     color: white;
   }
   </style>
-  
