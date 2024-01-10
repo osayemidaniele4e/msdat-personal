@@ -578,7 +578,6 @@ export default {
       // The initializing the control panel
       await this.setDefaults();
       await this.setUpControlPanelDropDown();
-      debugger;
 
       // pick one of the available years as the default years as opposed to the static 2016 year
       this.defaultYearDropdown = await this.setYearDropdown();
