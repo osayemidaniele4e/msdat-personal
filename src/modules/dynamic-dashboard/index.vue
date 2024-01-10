@@ -18,6 +18,9 @@
       "
     />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
+    <div class="preview" v-if="$route.query.prev">
+      <b-button @click="$router.push('/custom/requests')" size="lg" variant="info" style="font-size: 1.5rem;">Back to Requests</b-button>
+    </div>
   </div>
 </template>
 <script>
@@ -423,5 +426,12 @@ iframe {
 .iframe_container {
   max-height: 450px;
   overflow-y: auto;
+}
+.preview {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1500;
 }
 </style>
