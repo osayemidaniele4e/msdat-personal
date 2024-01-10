@@ -20,7 +20,7 @@ export default {
 
       const newUrl = `${window.location.pathname}?${queryString}`;
 
-      // Use pushState to update the URL without triggering a full page refresh
+      // Use pushState to update the URL
       window.history.pushState({
         indicator, datasource, location, year,
       }, '', newUrl);
@@ -49,6 +49,17 @@ export default {
       }
     },
 
+    removeQuery() {
+      // Remove the specified parameters from the URL
+      const urlWithoutParams = new URL(window.location.href);
+      urlWithoutParams.searchParams.delete('indicator');
+      urlWithoutParams.searchParams.delete('datasource');
+      urlWithoutParams.searchParams.delete('location');
+      urlWithoutParams.searchParams.delete('year');
+
+      window.history.pushState({}, '', urlWithoutParams.toString());
+    },
+
     // Handle popstate events (back/forward navigation)
     handlePopstate(event) {
       const { state } = event;
@@ -67,5 +78,14 @@ export default {
     'payload.datasource': 'updateParams',
     'payload.location': 'updateParams',
     // 'payload.year': 'updateParams',
+    controlIndex: {
+      async handler(newValue) {
+        console.log('cindex3 changed');
+        if (newValue !== 0 && newValue !== 1) { this.removeQuery(); } else this.updateParams();
+      },
+      immediate: true,
+      deep: true,
+    },
+
   },
 };

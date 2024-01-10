@@ -58,6 +58,7 @@ export default {
     // }
   },
   mounted() {
+    console.log('control index', this.controlIndex);
     const now = new Date();
     const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
