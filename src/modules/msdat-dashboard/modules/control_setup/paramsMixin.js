@@ -1,29 +1,36 @@
 export default {
+  data() {
+    return {
+      index: null,
+    };
+  },
   methods: {
     // Method to update route parameters
     updateParams() {
-      const {
-        indicator, datasource, location, year,
-      } = this.payload;
+      if (this.index === 0 || this.index === 1) {
+        const {
+          indicator, datasource, location, year,
+        } = this.payload;
 
-      const params = {
-        indicator: indicator?.id,
-        datasource: datasource?.id,
-        location: location?.id,
+        const params = {
+          indicator: indicator?.id,
+          datasource: datasource?.id,
+          location: location?.id,
         // year,
-      };
+        };
 
-      const queryString = Object.keys(params)
-        .filter((key) => params[key] !== undefined)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
+        const queryString = Object.keys(params)
+          .filter((key) => params[key] !== undefined)
+          .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+          .join('&');
 
-      const newUrl = `${window.location.pathname}?${queryString}`;
+        const newUrl = `${window.location.pathname}?${queryString}`;
 
-      // Use pushState to update the URL
-      window.history.pushState({
-        indicator, datasource, location, year,
-      }, '', newUrl);
+        // Use pushState to update the URL
+        window.history.pushState({
+          indicator, datasource, location, year,
+        }, '', newUrl);
+      }
     },
     initializeFromParams() {
       const { query } = this.$route;
@@ -80,7 +87,7 @@ export default {
     // 'payload.year': 'updateParams',
     controlIndex: {
       async handler(newValue) {
-        console.log('cindex3 changed');
+        this.index = newValue;
         if (newValue !== 0 && newValue !== 1) { this.removeQuery(); } else this.updateParams();
       },
       immediate: true,
