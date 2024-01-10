@@ -7,7 +7,7 @@
           <router-link to="/dashboard/Demographics" target="_blank"
             ><b-list-group-item>Demographics</b-list-group-item></router-link
           >
-          <router-link to="/coming-soon/gis_mapping" target="_blank"
+          <router-link to="/dashboard/GIS_Mapping" target="_blank"
             ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
           >
         </b-list-group>
