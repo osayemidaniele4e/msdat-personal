@@ -345,14 +345,16 @@ export default {
     console.log('payload 1', payload);
     try {
       // Send the payload to the API using Axios
-      const response = await axios.post('http://172.93.52.240:3001/api/request_dashboard/', payload);
+      const response = await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`, payload);
+      // const response = await axios.post('http://172.93.52.240:3001/api/request_dashboard/', payload);
       console.log('response', response);
       // Handle the response or commit mutations as needed
       // For example, you can commit a mutation to update the state
-      1;
+      return true;
     } catch (error) {
       // Handle errors here, such as showing error messages or logging
       console.error('Error sending data to API:', error);
+      return false;
     }
   },
 };

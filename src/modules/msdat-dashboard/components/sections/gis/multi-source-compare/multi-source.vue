@@ -6,7 +6,6 @@
       @dropdownTypeSelected="mapDownload($event)"
     >
       <template #title>
-
         <p class="work-sans mb-0 line-height">
           Distribution of <b>{{ values.indicator.short_name }}</b> Across the Geopolitical zones in
           the Country. Source: <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
@@ -18,9 +17,14 @@
         :chartOptions="chartObject"
         ref="BaseChart"
       />
-      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName"
+      <BaseMap
+        ref="BaseMap"
+        v-else
+        :mapObject="mapObject"
+        :level="level"
+        :lgaState="stateName"
         :title="title"
-       />
+      />
     </base-sub-card>
     <NoAvailableData
       v-if="showNoAvailableData"
@@ -31,17 +35,13 @@
 </template>
 
 <script>
-// import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import Maps from '@/components/maps/ZonalBaseMap.vue';
-// import { mapActions } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
-import { sortHighChartDataFormat } from '../../../../mixins/util';
-import chartDownload from '../../../../mixins/chart_download';
+// import chartDownload from '../../../../mixins/chart_download';
 import NoAvailableData from '../../../NoData2.vue';
 
 export default {
   name: 'MultiSource',
-  mixins: [chartDownload],
   components: { BaseMap: Maps, BarChart, NoAvailableData },
   props: {
     values: {
@@ -93,14 +93,24 @@ export default {
     },
 
     formatDataToSeriesMapFormat(data) {
-      return data.map((item) => [
+      return data?.map((item) => [
         this.dlGetLocation(item.location).name,
         Number.parseFloat(item.value),
       ]);
     },
     formatDataToSeriesLineFormat(data) {
-      const dataValues = data.map((item) => [item.period, Number.parseFloat(item.value)]);
-      return dataValues.sort(sortHighChartDataFormat);
+      // this function returns data for the highchart. It was remodified to sort the chart data by year
+      const result = [];
+      // eslint-disable-next-line array-callback-return
+      if (!data || !Array.isArray(data)) {
+        return;
+      }
+      // eslint-disable-next-line array-callback-return
+      data.map((item) => {
+        result.push([item.period, Number.parseFloat(item.value)]);
+      });
+      // eslint-disable-next-line consistent-return
+      return result.sort((a, b) => a[0] - b[0]);
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
       return {
@@ -204,7 +214,7 @@ export default {
             },
           });
           // condition to check if data is available
-          if (data.length === 0) {
+          if (data?.length === 0) {
             this.showNoAvailableData = true;
           } else {
             this.showNoAvailableData = false;
@@ -217,6 +227,12 @@ export default {
             datasource: value.datasource.id,
             location: value.location.id,
           });
+          // condition to check if data is available
+          if (data?.length === 0) {
+            this.showNoAvailableData = true;
+          } else {
+            this.showNoAvailableData = false;
+          }
           this.chartObject = {};
           const formattedData = this.formatDataToSeriesLineFormat(data);
           this.chartObject = this.formatToHighChartOptionForLine(
@@ -233,7 +249,6 @@ export default {
   },
 
   async mounted() {
-    console.log('@@@@@');
     this.title = ` Distribution of ${this.values.indicator.short_name} Across the Geopolitical zones in
           the Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
     const data = await this.dlQuery({
@@ -241,12 +256,6 @@ export default {
       datasource: this.values.datasource.id,
       location: this.values.location.id,
     });
-
-    console.log(data, '@@@@@data');
-
-    data.sort((a, b) => a.period.localeCompare(b.period));
-
-    console.log(data, '@@@@@data');
     this.chartObject = {};
     const formattedData = this.formatDataToSeriesLineFormat(data);
     this.chartObject = this.formatToHighChartOptionForLine(

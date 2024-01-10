@@ -1,10 +1,24 @@
 <template>
   <div>
     <MSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && loading === false"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && isGIS === false && loading === false"
     />
     <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && loading === false"
+      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && isGIS === false && loading === false"
+      :indicators="configObject.indicators"
+      :dataSources="configObject.dataSources"
+      :defaultIndicators="configObject.defaultIndicators"
+      :initialIndicator="configObject.initialIndicator"
+      :initialDataSource="configObject.initialDataSource"
+      :initialLocation="configObject.initialLocation"
+      :showTableRelatedIndicator="
+        configObject.showTableRelatedIndicator != undefined
+          ? configObject.showTableRelatedIndicator
+          : true
+      "
+    />
+    <GisMSDAT
+      v-if="Object.entries(configObject).length > 0 && isGIS === true && isAdvanced === false && loading === false"
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -18,6 +32,9 @@
       "
     />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
+    <div class="preview" v-if="$route.query.prev">
+      <b-button @click="$router.push('/custom/requests')" size="lg" variant="info" style="font-size: 1.5rem;">Back to Requests</b-button>
+    </div>
   </div>
 </template>
 <script>
@@ -26,6 +43,7 @@ import VueCookies from 'vue-cookies';
 import { mapActions, mapMutations } from 'vuex';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
+import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instance-gis.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
@@ -39,11 +57,13 @@ export default {
   components: {
     MSDAT: instance,
     AdvanceMSDAT: advanceInstance,
+    GisMSDAT: gisInstance,
     ClearDBModal,
   },
   data() {
     return {
       isAdvanced: false,
+      isGIS: false,
       dashboardConfig: config,
       configObject: {
         name: '',
@@ -336,6 +356,22 @@ export default {
       //   this.configObject = dashboard;
       //   this.SET_CONFIGURATIONS(dashboard);
     }
+
+    if (name === 'GIS_Mapping') {
+      this.$store.dispatch('customDashboard', false);
+      this.$store.dispatch('resetState');
+      localStorage.removeItem('vuex');
+      const dashboard = config.find((el) => el.name === 'GIS_Mapping');
+      if (dashboard === undefined) {
+        this.$router.push('/*');
+        return;
+      }
+      this.isGIS = true;
+      this.configObject = '';
+      this.configObject = dashboard;
+      this.SET_CONFIGURATIONS(dashboard);
+      return;
+    }
     // =======================
     /**
      * @description Msdat Api-Config for Dashboard
@@ -371,6 +407,8 @@ export default {
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
         this.SET_CONFIGURATIONS(this.configObject);
+        this.isAdvanced = false;
+        this.isGIS = false;
 
         if (name === 'Advanced_Analytics') {
           this.isAdvanced = true;
@@ -423,5 +461,12 @@ iframe {
 .iframe_container {
   max-height: 450px;
   overflow-y: auto;
+}
+.preview {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1500;
 }
 </style>

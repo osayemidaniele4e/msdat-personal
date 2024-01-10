@@ -352,23 +352,54 @@ export default {
         return;
       }
 
+      // create the dashboard config to be saved
+      const config = {
+        dashboardDetails: this.$store.getters.dashboardDetails,
+        composedData: this.$store.getters.getprogramArea,
+        surveyArray: this.$store.getters.getDataSource,
+        sectionsArray: this.$store.getters.arrangedSections,
+      };
+
       // if the dashboard is public, run these functions
       if (this.getVisibility === 'public') {
+        const id = `${Date.now()}${this.getUser.id}`;
+        this.public_creator.id = id;
         this.public_creator.name = this.getUser.username;
         this.public_creator.email = this.getUser.email;
-        this.public_creator.description = await this.dashboardDetails.description;
-        this.public_creator.Reason = await this.dashboardDetails.reason;
-        this.public_creator.category = await this.dashboardDetails.category;
-        this.public_creator.name_of_dashboard = await this.dashboardDetails.name;
-        this.public_creator.link = `https://msdat.fmohconnect.gov.ng/dashboards/${this.dashboardDetails.name}`;
-      }
-      console.log('public-creator', this.public_creator);
+        this.public_creator.description = this.dashboardDetails.description;
+        this.public_creator.Reason = this.dashboardDetails.reason;
+        this.public_creator.category = this.dashboardDetails.category;
+        this.public_creator.config = JSON.stringify(config);
+        this.public_creator.name_of_dashboard = this.dashboardDetails.name;
+        this.public_creator.link = `${window.location.origin}/custom/public/${id}`;
+        // this.public_creator.link = `https://msdat.fmohconnect.gov.ng/dashboards/${this.dashboardDetails.name}`;
 
-      await this.$store.dispatch('setDashboardRequest', await this.public_creator);
-      // hide the 'modal-public-dashboard'
-      await this.$bvModal.hide('modal-public-dashboard');
-      // show the 'modal-in-review'
-      await this.$bvModal.show('modal-in-review');
+        console.log('public-creator', this.public_creator);
+
+        const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
+        // hide the 'modal-public-dashboard'
+        await this.$bvModal.hide('modal-public-dashboard');
+        // show the 'modal-in-review'
+        // await this.$bvModal.show('modal-in-review');
+        if (res) {
+          await this.$swal.fire({
+            title: 'Dashboard in Review',
+            text: `Your Public Dashboard will be approved within the next 48hrs.\n\n URL: "${this.public_creator.link}"`,
+            icon: 'success',
+            confirmButtonText: 'Copy URL',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigator.clipboard.writeText(this.public_creator.link);
+              this.$swal.fire('URL copied to clipboard!');
+            }
+          });
+        } else {
+          await this.$swal.fire({
+            title: 'An Error Occured',
+            text: 'Your request for a Public Dashboard could not be granted. Please try again later.',
+          });
+        }
+      }
 
       //
       // SAVE DASHBOARD LOCALLY
@@ -379,13 +410,6 @@ export default {
       const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
       // retrieve dashboards belonging to current user
       let list = customDashboardsList[this.getUser.username];
-      // create the dashboard config to be saved
-      const config = {
-        dashboardDetails: this.$store.getters.dashboardDetails,
-        composedData: this.$store.getters.getprogramArea,
-        surveyArray: this.$store.getters.getDataSource,
-        sectionsArray: this.$store.getters.arrangedSections,
-      };
       // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
       const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
       if (dashboard) {

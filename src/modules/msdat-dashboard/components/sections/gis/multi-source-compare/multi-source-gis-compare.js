@@ -1,45 +1,4 @@
-const programAreaSetConfig = [
-  {
-    type: 'dropdown',
-    class: ['col-md-12'],
-    dropdownProps: {
-      // multiple: true,
-      'group-values': 'indicators',
-      'group-label': 'program_area',
-      label: 'full_name',
-    },
-    label: 'indicator(s)',
-    key: 'indicator',
-    options: [],
-  },
-  {
-    class: ['col-md-12'],
-    type: 'visualization',
-    label: 'select visualizations',
-    key: 'visualization',
-  },
-  {
-    class: ['col-md-4'],
-    type: 'dropdown',
-    label: 'data Source',
-    key: 'datasource',
-    dropdownProps: {
-      label: 'datasource',
-    },
-    options: [],
-  },
-  {
-    class: ['col-md-4'],
-    type: 'dropdown',
-    label: 'Year',
-    key: 'year',
-    options: ['2021', '2016', '2011', '2007', '1999'],
-    dropdownProps: {
-      'preselect-first': true,
-    },
-  },
-];
-const programAreaSetConfig2 = [
+const indicatorSetConfig = [
   {
     type: 'dropdown',
     class: ['col-md-12'],
@@ -79,7 +38,47 @@ const programAreaSetConfig2 = [
     },
   },
 ];
-const programAreaSetConfig3 = [
+const indicatorSetConfig2 = [
+  {
+    type: 'dropdown',
+    class: ['col-md-12'],
+    dropdownProps: {
+      'group-values': 'indicators',
+      'group-label': 'program_area',
+      label: 'full_name',
+    },
+    label: 'indicator(s)',
+    key: 'indicator',
+    options: [],
+  },
+  {
+    class: ['col-md-12'],
+    type: 'visualization',
+    label: 'select visualizations',
+    key: 'visualization',
+  },
+  {
+    class: ['col-md-4'],
+    type: 'dropdown',
+    label: 'data Source',
+    key: 'datasource',
+    dropdownProps: {
+      label: 'datasource',
+    },
+    options: [],
+  },
+  {
+    class: ['col-md-4'],
+    type: 'dropdown',
+    label: 'Year',
+    key: 'year',
+    options: [],
+    dropdownProps: {
+      'preselect-first': true,
+    },
+  },
+];
+const indicatorSetConfig3 = [
   {
     type: 'dropdown',
     class: ['col-md-12'],
@@ -120,21 +119,22 @@ const programAreaSetConfig3 = [
   },
 ];
 const payload = {
-  indicator: '',
+  indicator: 'indicator 2',
   location: '',
-  datasource: '',
+  datasource: 'NHMIS 1',
   year: '',
   compareBy: '',
-  visualization: '',
+  visualization: 'line',
   target: {
     national: false,
     sdg: false,
   },
   numdenum: false,
 };
+
 export default {
-  label: 'Multi-Source Indicator Comparison',
+  label: 'Multi-Source Comparison',
   grouped: true,
-  setup: [[...programAreaSetConfig], [...programAreaSetConfig2], [...programAreaSetConfig3]],
+  setup: [[...indicatorSetConfig], [...indicatorSetConfig2], [...indicatorSetConfig3]],
   payload: [{ ...payload }, { ...payload }, { ...payload }],
 };
