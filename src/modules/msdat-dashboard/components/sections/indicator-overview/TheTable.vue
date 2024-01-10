@@ -223,7 +223,8 @@ export default {
       const locationId = storedLocationId === null ? 1 : storedLocationId;
       const url = `${window.location.origin}/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${locationId}`;
       console.log(url);
-      this.shareUrl = url;
+      const iframeUrl = `<iframe style="padding: 5px" width="1000" height="400"  :src="${url}"></iframe>`;
+      this.shareUrl = iframeUrl;
       this.showShareCodeModal = true;
       // this.tableLink = `http://localhost:8080/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&indicatorFirstRelated=${indicatorFirstRelated}&indicatorSecondRelated=${indicatorSecondRelated}`;
       // this.$router.push(`/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`);
