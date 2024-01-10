@@ -41,7 +41,7 @@
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Indicator Comparison</h5>
+              <h5 class="font-weight-bold work-sans text-white">Dataset Comparison</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -49,37 +49,13 @@
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <MultiSourceComponent :controlPanelProps="payload" />
+                  <DatasetComparisonSection :controlPanelProps="payload" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
           </base-sub-card>
         </div>
       </template>
-
-      <template v-slot:section-2="{ payload, controlIndex }">
-        <div class="col-md-12" style="margin-bottom: 4rem">
-          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-            <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Indicator Comparison</h5>
-            </template>
-            <!-- lazy loading for each section starts here -->
-            <!-- the first section doesn't need the component
-                 since it will be mounted first -->
-            <template>
-              <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <IndicatorComparisonSection :controlPanelProps="payload" />
-                </ControlPanelConfiguration>
-              </LazyLoading>
-            </template>
-          </base-sub-card>
-        </div>
-      </template>
-
-
-
-
 
     </BaseDashboard>
   </div>
@@ -89,9 +65,11 @@
 import { mapMutations } from 'vuex';
 // import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import IndicatorComparisonSection from '../../components/sections/gis/indicator-comparison/GisIndicatorComparison.vue';
-import IndicatorComparisonConfig from '../../components/sections/gis/indicator-comparison/indicator-compare-gis-config.js';
-import MultiSourceComponent from '../../components/sections/gis/multi-source-compare/BaseMultiSourceSection.vue';
-import MultiSourceConfig from '../../components/sections/gis/multi-source-compare/multi-source-gis-compare.js';
+import IndicatorComparisonConfig from '../../components/sections/gis/indicator-comparison/indicator-compare-gis-config';
+import DatasetComparisonSection from '../../components/sections/gis/dataset-comparison/GisDatasetComparison.vue';
+import DatasetComparisonConfig from '../../components/sections/gis/dataset-comparison/dataset-compare-gis-config';
+// import MultiSourceComponent from '../../components/sections/gis/multi-source-compare/BaseMultiSourceSection.vue';
+// import MultiSourceConfig from '../../components/sections/gis/multi-source-compare/multi-source-gis-compare.js';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
@@ -109,8 +87,9 @@ export default {
     BaseDashboard,
     ControlPanelConfiguration,
     LazyLoading,
-    MultiSourceComponent,
-    IndicatorComparisonSection
+    // MultiSourceComponent,
+    IndicatorComparisonSection,
+    DatasetComparisonSection,
 
   },
   props: {
@@ -242,8 +221,8 @@ export default {
     //   this.ADD_CONTROL_PANEL(DynamicSectionConfig);
     // }
     this.ADD_CONTROL_PANEL(IndicatorComparisonConfig);
-    this.ADD_CONTROL_PANEL(MultiSourceConfig);
-
+    this.ADD_CONTROL_PANEL(DatasetComparisonConfig);
+    // this.ADD_CONTROL_PANEL(MultiSourceConfig);
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'

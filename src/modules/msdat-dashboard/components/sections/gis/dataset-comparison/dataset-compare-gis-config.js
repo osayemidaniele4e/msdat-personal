@@ -1,5 +1,5 @@
 export default {
-  label: 'GIS Multi Source Comparison',
+  label: 'Dataset Comparison',
   setup: [
   ],
   payload: {

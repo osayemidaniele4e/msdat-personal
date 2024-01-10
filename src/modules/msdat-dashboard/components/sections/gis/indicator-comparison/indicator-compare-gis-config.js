@@ -1,5 +1,5 @@
 export default {
-  label: 'GIS Indicator Comparison',
+  label: 'Indicator Comparison',
   setup: [
   ],
   payload: {
