@@ -50,7 +50,7 @@
 
 <b-modal id="upload-plugin" title="Submit a Plugin" hide-footer>
   <b-card>
-        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+    <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="show">
           <b-form-group id="input-group-2" label="Full Name:" label-for="input-2">
         <b-form-input
           id="input-2"
@@ -139,6 +139,8 @@
     ></b-form-textarea> -->
 
       <!-- <input type="file"> -->
+
+      <button>none</button>
       
 <button @click="mockSubmit()">Mock Submit</button>
       <!-- <b-button @click="onSubmit()" type="submit" variant="primary">Submit</b-button> -->
@@ -208,14 +210,16 @@ export default {
   onSubmit() {
     // Create a new FormData object
     const formData = new FormData();
-
+    const mockPk = 9384202;
     // Append form data to the FormData object
-    formData.append('email', this.form.email);
+    formData.append('owner', mockPk);
     formData.append('name', this.form.name);
     formData.append('phone', this.form.phone);
     formData.append('purpose', this.form.purpose);
     formData.append('description', this.form.description);
-    formData.append('plugin_file', this.form.plugin_file);
+    formData.append('file', this.form.file);
+
+    console.log('form', this.form)
 
     this.SUBMIT_PLUGIN(formData)
       .then(() => {

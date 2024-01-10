@@ -55,7 +55,8 @@ export default {
   },
 
   // submitting a plugin
-  async SUBMIT_PLUGIN(payload) {
+  async SUBMIT_PLUGIN({ commit }, payload) {
+    console.log('submit payload', payload)
     try {
       const { data } = await axios.post('http://172.93.52.240:3001/api/plugins/', 
       payload,
