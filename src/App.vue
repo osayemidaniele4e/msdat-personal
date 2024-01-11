@@ -8,41 +8,41 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
-import ContextPlugin from './modules/plugins/ContextPlugin';
-import IndicatorPlugin from './modules/plugins/IndicatorPlugin';
-import TestPlugin from './modules/plugins/TestPlugin';
+import contextPlugin from './modules/plugins/contextPlugin';
+import indicatorPlugin from './modules/plugins/indicatorPlugin';
+import testPlugin from './modules/plugins/testPlugin';
 
 export default {
   async mounted() {
     let plugins_imported = [];
     
-if (!localStorage.getItem('ContextPlugin')) {
-  localStorage.setItem('ContextPlugin', 'false');
-  plugins_imported.push('ContextPlugin')
+if (!localStorage.getItem('contextPlugin')) {
+  localStorage.setItem('contextPlugin', 'false');
+  plugins_imported.push('contextPlugin')
 }
 
-if (localStorage.getItem('ContextPlugin') === 'true') {
-  Vue.use(ContextPlugin);
-}
-
-
-if (!localStorage.getItem('IndicatorPlugin')) {
-  localStorage.setItem('IndicatorPlugin', 'false');
-  plugins_imported.push('IndicatorPlugin')
-}
-
-if (localStorage.getItem('IndicatorPlugin') === 'true') {
-  Vue.use(IndicatorPlugin);
+if (localStorage.getItem('contextPlugin') === 'true') {
+  Vue.use(contextPlugin);
 }
 
 
-if (!localStorage.getItem('TestPlugin')) {
-  localStorage.setItem('TestPlugin', 'false');
-  plugins_imported.push('TestPlugin')
+if (!localStorage.getItem('indicatorPlugin')) {
+  localStorage.setItem('indicatorPlugin', 'false');
+  plugins_imported.push('indicatorPlugin')
 }
 
-if (localStorage.getItem('TestPlugin') === 'true') {
-  Vue.use(TestPlugin);
+if (localStorage.getItem('indicatorPlugin') === 'true') {
+  Vue.use(indicatorPlugin);
+}
+
+
+if (!localStorage.getItem('testPlugin')) {
+  localStorage.setItem('testPlugin', 'false');
+  plugins_imported.push('testPlugin')
+}
+
+if (localStorage.getItem('testPlugin') === 'true') {
+  Vue.use(testPlugin);
 }
 
     await this.SET_PLUGINS_IMPORTED(plugins_imported)
