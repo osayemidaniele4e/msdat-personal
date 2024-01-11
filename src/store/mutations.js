@@ -15,4 +15,7 @@ export default {
     state.success = '';
     state.success = success;
   },
+  setSubmittedPlugins(state, payload) {
+    state.submittedPlugins = payload;
+  },
 };

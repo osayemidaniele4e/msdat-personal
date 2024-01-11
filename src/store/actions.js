@@ -55,11 +55,45 @@ export default {
   },
 
   // submitting a plugin
-  async SUBMIT_PLUGIN(payload) {
+  async SUBMIT_PLUGIN({ commit }, payload) {
+    console.log('submit payload', payload)
     try {
-      const { data } = await axios.post('http://172.93.52.240:3001/api/submit_plugins/', payload);
+      const { data } = await axios.post('http://172.93.52.240:3001/api/plugin-submissions/', 
+      payload,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      );
       // commit('setInteraction', data);
       console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+
+    // approving a plugin
+    async APPROVE_PLUGIN({ commit }, payload) {
+      try {
+        const { data } = await axios.post('http://172.93.52.240:3001/api/plugin-submissions/approve', 
+        payload
+        );
+        // commit();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+
+  // getting all submitted plugins 
+
+  async GET_PLUGINS({ commit }, payload) {
+    try {
+      const response = await axiosInstance.get(`http://172.93.52.240:3001/api/plugin-submissions/`);
+      const { results } = response.data;
+      commit('setSubmittedPlugins', results);
     } catch (error) {
       console.log(error);
     }
