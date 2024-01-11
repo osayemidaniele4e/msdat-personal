@@ -202,15 +202,15 @@
         <div>
           <button
             class="enable-btn"
-            @click="setIndicatorPluginStatus('true')"
-            v-if="isIndicatorPlugin === 'false'"
+            @click="indicatorPluginActive('true')"
+            v-if="isIndicatorPluginActive === 'false'"
           >
             Enable
           </button>
           <button
             class="enable-btn"
-            @click="setIndicatorPluginStatus('false')"
-            v-if="isIndicatorPlugin === 'true'"
+            @click="indicatorPluginActive('false')"
+            v-if="isIndicatorPluginActive === 'true'"
           >
             Disable
           </button>
@@ -231,18 +231,35 @@ import contact from '../../../../../components/contact/contact.vue';
 export default {
   components: { contact, Socials, NewsLetter },
   data() {
-    return {
+    const dataObj = {
       modal: false,
       submit: false,
       socialModal: false,
-      isIndicatorPlugin: 'false',
-      isContextPluginActive: 'false',
     };
+
+    // Fetch the list of available plugins from the store
+    const pluginsImported = ['contextPlugin', 'indicatorPlugin'];
+    // const pluginsImported = this.$store.state.pluginsImported || [];
+
+
+    // Dynamically generate data properties based on the available plugins
+    pluginsImported.forEach(plugin => {
+      const capitalizedPlugin = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+      this.$set(dataObj, `is${capitalizedPlugin}Active`, localStorage.getItem(plugin));
+    });
+
+    return dataObj;
   },
   created() {
-    // boolean to store project context availability
-    this.isContextPluginActive = localStorage.getItem('contextPlugin');
-    this.isIndicatorPlugin = localStorage.getItem('indicatorPlugin');
+    // Fetch the list of available plugins from the store
+    // const pluginsImported = this.$store.state.pluginsImported || [];
+    const pluginsImported = ['contextPlugin', 'indicatorPlugin'];
+
+      // Dynamically generate data properties and methods based on the available plugins
+      pluginsImported.forEach(plugin => {
+      const capitalizedPlugin = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+      this.$set(this, `is${capitalizedPlugin}Active`, localStorage.getItem(plugin));
+    });
   },
   methods: {
     togglemodal() {
@@ -251,17 +268,14 @@ export default {
     showPluginModal() {
       this.$bvModal.show('plugin-modal');
     },
-    contextPluginActive(data) {
-      this.isContextPluginActive = localStorage.getItem('contextPlugin');
-      localStorage.setItem('contextPlugin', data);
+  // Dynamically generated methods for plugin activation
+  pluginActive(plugin, data) {
+      const isActive = localStorage.getItem(plugin);
+      this.$set(this, `${isActive}PluginActive`, isActive);
+      localStorage.setItem(plugin, data);
       this.$router.go();
     },
-    setIndicatorPluginStatus(data) {
-      this.isContextPluginActive = localStorage.getItem('indicatorPlugin');
-      localStorage.setItem('indicatorPlugin', data);
-      this.$router.go();
-      console.log('indicator plugin was set');
-    },
+    // 
 
     submitContactForm() {
       this.submit = !this.submit;
