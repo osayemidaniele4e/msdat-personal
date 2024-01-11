@@ -74,7 +74,7 @@ export default {
     indicatorChanged(indicator) {
       console.log(indicator);
     },
-  }, 
+  },
 };
 </script>
 

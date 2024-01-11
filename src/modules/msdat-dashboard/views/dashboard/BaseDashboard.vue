@@ -145,6 +145,7 @@
                                     :value="null"
                                     v-if="item[0].options"
                                     :options="getProgramArea(item[0].options)"
+                                    @input="updateProgram($event, item[0].options, index2)"
                                   />
                                   {{ showItem(item) }}
                                 </div>
@@ -374,7 +375,7 @@ export default {
     window.removeEventListener('wheel', this.handleScroll);
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
+    ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS', 'UPDATE_PROGRAM_AREAS']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
@@ -550,6 +551,16 @@ export default {
       } else {
         this.isMobile = false;
       }
+    },
+    updateProgram(item, indicators, index2) {
+      const filteredIndicator = indicators.filter((indicator) => indicator.program_area === item);
+      console.log(filteredIndicator, '@@item@@');
+      const data = {
+        content: filteredIndicator[0],
+        index: index2,
+      };
+
+      this.UPDATE_PROGRAM_AREAS(data);
     },
   },
 

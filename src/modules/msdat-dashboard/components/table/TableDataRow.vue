@@ -57,6 +57,7 @@ export default {
   },
 
   mounted() {
+    console.log(this.rowData, 'rowData');
     const { name } = this.$route.params;
     this.dashboardName = name;
     console.log('zonal map', this.dashboardName);

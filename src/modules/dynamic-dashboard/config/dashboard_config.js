@@ -114,4 +114,16 @@ export default [
     initialDataSource: 9,
     initialLocation: 1,
   },
+  {
+    name: 'GIS_Mapping',
+    title: 'GIS Mapping',
+    indicators: [
+      39, 40, 41, 42, 44, 53, 62, 293, 294, 295, 296, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 362, 363, 364,
+    ],
+    defaultIndicators: [39, 48], // an indicator ID and related indicators,
+    dataSources: [17],
+    initialIndicator: 39,
+    initialDataSource: 17,
+    initialLocation: 1,
+  },
 ];

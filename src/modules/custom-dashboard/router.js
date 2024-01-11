@@ -28,20 +28,19 @@ export default [
     },
   },
   {
-    path: '/custom/approval',
-    name: 'custom-dashboard-login',
-    beforeEnter: (to, from, next) => {
-      const { tokens } = VueCookies.get('msdat-user-details');
-      if (!tokens) {
-        next('/custom/login');
-      } else {
-        return next();
-      }
-      return null;
-    },
-    component: () => import('./views/Approval.vue'),
+    path: '/custom/public/:id',
+    name: 'custom-dashboard-public',
+    component: () => import('./views/Public.vue'),
     meta: {
       title: 'Custom Dashboard',
+    },
+  },
+  {
+    path: '/custom/requests',
+    name: 'custom-dashboard-request',
+    component: () => import('./views/DashboardRequests.vue'),
+    meta: {
+      title: 'Dashboard Requests',
     },
   },
   // {

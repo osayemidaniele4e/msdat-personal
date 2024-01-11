@@ -39,9 +39,9 @@
 import { mapMutations } from 'vuex';
 import moment from 'moment';
 // eslint-disable-next-line import/extensions, import/no-unresolved
-import apiServices from '@/modules/DataLayer/services/ApiServices';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import config from './config/dashboard_config';
 // eslint-disable-next-line import/no-unresolved
 import ClearDBModal from './ClearDBModal.vue';

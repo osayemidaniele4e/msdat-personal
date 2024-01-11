@@ -1,19 +1,20 @@
 import Vue from 'vue';
-import IndicatorPlugin from './components';
+import TestPlugin from './components/index.vue';
 
 export default {
   install(vue) {
     // Create plugin's root Vue instance
     const root = new Vue({
       // data: { targets: options.data.targets },
-      render: (createElement) => createElement(IndicatorPlugin),
+      render: (createElement) => createElement(TestPlugin),
     });
-    vue.component('indicator-plugin', IndicatorPlugin);
+    vue.component('test-plugin', TestPlugin);
 
     // Mount root Vue instance on new div element added to body
     root.$mount(document.body.appendChild(document.createElement('div')));
 
     // Make the root instance available in all components
-    vue.prototype.$indicatorplugin = root;
+    // eslint-disable-next-line no-param-reassign
+    vue.prototype.$testplugin = root;
   },
 };

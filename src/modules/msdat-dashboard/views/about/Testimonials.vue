@@ -131,9 +131,9 @@
 </template>
 
 <script>
+import Ratings from '@/components/Ratings.vue';
 import theHeader from './layout/theHeader.vue';
 import theFooter from './layout/theFooter.vue';
-import Ratings from '@/components/Ratings.vue';
 import TestimonialCard from './components/TestimonialCard.vue';
 
 export default {
