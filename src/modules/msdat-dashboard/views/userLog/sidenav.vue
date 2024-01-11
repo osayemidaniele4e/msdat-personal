@@ -30,6 +30,10 @@
             ><b-icon-cloud-upload></b-icon-cloud-upload>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Create a plugin</span></a
           >
+          <a href="#/approvePlugin" class="mt-4 item blue"
+            ><b-icon-check2-square></b-icon-check2-square>&nbsp;&nbsp;
+            <span class="d-none d-lg-inline">Approve Plugins</span></a
+          >
         </div>
         <div class="col-lg-10 col-11">
           <savedDashboards :is="currentView" />
@@ -48,6 +52,7 @@ import Notification from './notifications.vue';
 import userActivity from './userActivity.vue';
 import savedDashboards from './savedDashboards.vue';
 import createPlugin from './createPlugin.vue';
+import approvePlugin from './approvePlugin.vue';
 
 const routes = {
   '/': userActivity,
@@ -56,6 +61,7 @@ const routes = {
   '/userActivity': userActivity,
   '/savedDashboards': savedDashboards,
   '/createPlugin': createPlugin,
+  '/approvePlugin': approvePlugin,
 };
 
 export default {

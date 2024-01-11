@@ -69,6 +69,12 @@ export default {
         denyButtonText: 'Cancel',
       }).then((result) => {
         if (result.isConfirmed) {
+          this.$swal.fire({
+            title: '<h4>Updating...</h4>',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            showLoading: true,
+          });
           const url = `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${this.request.id}.json`;
           axios.patch(url, {
             isConfirmed: true,
@@ -89,6 +95,12 @@ export default {
         denyButtonText: 'Cancel',
       }).then((result) => {
         if (result.isConfirmed) {
+          this.$swal.fire({
+            title: '<h4>Updating...</h4>',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            showLoading: true,
+          });
           const url = `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${this.request.id}.json`;
           axios.patch(url, {
             disapproved: true,
