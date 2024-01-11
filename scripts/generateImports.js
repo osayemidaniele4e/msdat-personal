@@ -37,11 +37,12 @@ const pluginImports = jsFiles.map((filePath) => {
 const pluginInstalls = jsFiles.map((filePath) => {
   const folderName = path.basename(path.dirname(filePath));
   return `
-if (!localStorage.getItem('${folderName}Plugin')) {
-  localStorage.setItem('${folderName}Plugin', 'false');
+if (!localStorage.getItem('${folderName}')) {
+  localStorage.setItem('${folderName}', 'false');
+  plugins_imported.push('${folderName}')
 }
 
-if (localStorage.getItem('${folderName}Plugin') === 'true') {
+if (localStorage.getItem('${folderName}') === 'true') {
   Vue.use(${folderName});
 }
 `;
@@ -57,15 +58,18 @@ const appVueCode = `
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 ${pluginImports.join('\n')}
 
 export default {
-  mounted() {
+  async mounted() {
+    let plugins_imported = [];
     ${pluginInstalls.join('\n')}
+    await this.SET_PLUGINS_IMPORTED(plugins_imported)
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+    ...mapActions(['SET_PLUGINS_IMPORTED'])
   },
 };
 </script>

@@ -108,4 +108,13 @@ export default {
       console.log(error);
     }
   },
+
+  // set plugins imported
+  async SET_PLUGINS_IMPORTED({ commit }, payload) {
+    try {
+      commit('setPluginsImported', payload);
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
