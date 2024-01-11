@@ -80,8 +80,9 @@ export default {
 
   .response {
     padding-inline: 150px;
-    padding-block: 40px;
+    padding-block: 10px;
     background-color: #d9d9d9;
+    font-size: 14px;
     div {
       padding-inline: 50px;
       border-left: 1px solid black;

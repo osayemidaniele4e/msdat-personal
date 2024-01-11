@@ -51,7 +51,7 @@ div {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 80px;
+    padding-block: 10px;
     padding-inline: 40px;
 
     .dropdown {

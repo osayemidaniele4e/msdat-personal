@@ -2,10 +2,10 @@
   <div class="crate">
     <Header></Header>
     <Body></Body>
-    <div class="promptPolicyContainer" >
+    <div class="promptPolicyContainer">
       <Prompt></Prompt>
     </div>
-    <!-- <PolicySidebar></PolicySidebar> -->
+    <PolicySidebar></PolicySidebar>
   </div>
 </template>
 
