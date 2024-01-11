@@ -27,6 +27,25 @@
           <p class="m-0 p-0">{{ dashboard.config.dashboardDetails.description }}</p>
         </b-list-group-item>
       </b-list-group>
+      <b-list-group v-if="publicDashboards.length">
+        <h4 class="text-center m-2" style="text-decoration: underline;">Public Dashboards</h4>
+        <b-list-group-item v-for="dashboard in publicDashboards"
+          :key="dashboard.id" href="#"
+          :class="`flex-column align-items-start py-2 border-bottom`"
+          @click="open(dashboard.link)"
+        >
+          <div class="d-flex w-100 justify-content-between">
+            <div class="mb-1">
+              <strong class="text-primary mr-2">{{ dashboard.name_of_dashboard }}</strong>
+              <b-button-group size="xs">
+                <b-button @click="copy(dashboard.link, $event)" class="py-1" variant="info">Copy Link</b-button>
+              </b-button-group>
+            </div>
+            <small>{{ dashboard.isConfirmed ? 'Approved' : dashboard.disapproved ? 'Disapproved' : 'Awaiting Approval' }}</small>
+          </div>
+          <p class="m-0 p-0">{{ dashboard.description }}</p>
+        </b-list-group-item>
+      </b-list-group>
       <div class="px-3 pt-2">
         <b-button @click="$router.push('/my-dashboard/details')" variant="primary" class="w-100">Add New</b-button>
       </div>
@@ -40,11 +59,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       customDashboardsList: JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({})),
+      publicDashboards: [],
     };
   },
   computed: {
@@ -55,6 +76,13 @@ export default {
   },
   methods: {
     moment,
+    open(url) {
+      window.open(url);
+    },
+    copy(url, e) {
+      e.stopPropagation();
+      navigator.clipboard.writeText(url);
+    },
     load(dashboard) {
       const {
         dashboardDetails, composedData, surveyArray, sectionsArray,
@@ -97,6 +125,19 @@ export default {
         }
       });
     },
+  },
+  mounted() {
+    const url = 'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json';
+    axios.get(url).then(({ data }) => {
+      this.publicDashboards = Object.values(data)
+        .filter((req) => req.email === this.getUser.email)
+        .map((req) => ({
+          ...req, config: { ...JSON.parse(req.config) },
+        }));
+    }).catch((err) => {
+      console.log(err);
+      this.$swal.fire('Could not retrieve your public dashboards');
+    });
   },
 };
 </script>
