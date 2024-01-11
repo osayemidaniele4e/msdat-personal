@@ -37,12 +37,12 @@ const pluginImports = jsFiles.map((filePath) => {
 const pluginInstalls = jsFiles.map((filePath) => {
   const folderName = path.basename(path.dirname(filePath));
   return `
-if (!localStorage.getItem('${folderName}Plugin')) {
-  localStorage.setItem('${folderName}Plugin', 'false');
+if (!localStorage.getItem('${folderName}')) {
+  localStorage.setItem('${folderName}', 'false');
   plugins_imported.push('${folderName}')
 }
 
-if (localStorage.getItem('${folderName}Plugin') === 'true') {
+if (localStorage.getItem('${folderName}') === 'true') {
   Vue.use(${folderName});
 }
 `;

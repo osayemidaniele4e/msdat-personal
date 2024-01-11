@@ -16,32 +16,32 @@ export default {
   async mounted() {
     let plugins_imported = [];
     
-if (!localStorage.getItem('ContextPluginPlugin')) {
-  localStorage.setItem('ContextPluginPlugin', 'false');
+if (!localStorage.getItem('ContextPlugin')) {
+  localStorage.setItem('ContextPlugin', 'false');
   plugins_imported.push('ContextPlugin')
 }
 
-if (localStorage.getItem('ContextPluginPlugin') === 'true') {
+if (localStorage.getItem('ContextPlugin') === 'true') {
   Vue.use(ContextPlugin);
 }
 
 
-if (!localStorage.getItem('IndicatorPluginPlugin')) {
-  localStorage.setItem('IndicatorPluginPlugin', 'false');
+if (!localStorage.getItem('IndicatorPlugin')) {
+  localStorage.setItem('IndicatorPlugin', 'false');
   plugins_imported.push('IndicatorPlugin')
 }
 
-if (localStorage.getItem('IndicatorPluginPlugin') === 'true') {
+if (localStorage.getItem('IndicatorPlugin') === 'true') {
   Vue.use(IndicatorPlugin);
 }
 
 
-if (!localStorage.getItem('TestPluginPlugin')) {
-  localStorage.setItem('TestPluginPlugin', 'false');
+if (!localStorage.getItem('TestPlugin')) {
+  localStorage.setItem('TestPlugin', 'false');
   plugins_imported.push('TestPlugin')
 }
 
-if (localStorage.getItem('TestPluginPlugin') === 'true') {
+if (localStorage.getItem('TestPlugin') === 'true') {
   Vue.use(TestPlugin);
 }
 
