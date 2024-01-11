@@ -30,21 +30,19 @@ const jsFiles = findJSFiles(basePath);
 
 // Generate plugin import statements and conditions
 const pluginImports = jsFiles.map((filePath) => {
-  const componentName = path.basename(filePath, '.js');
-  return `import ${componentName} from './${path.relative(basePath, filePath)}';`;
+  const folderName = path.basename(path.dirname(filePath));
+  return `import ${folderName} from './modules/plugins/${folderName}';`;
 });
 
 const pluginInstalls = jsFiles.map((filePath) => {
-  const componentName = path.basename(filePath, '.js');
-  const subdirectoryName = path.basename(path.dirname(filePath));
-
+  const folderName = path.basename(path.dirname(filePath));
   return `
-if (!localStorage.getItem('${subdirectoryName}Plugin')) {
-  localStorage.setItem('${subdirectoryName}Plugin', 'false');
+if (!localStorage.getItem('${folderName}Plugin')) {
+  localStorage.setItem('${folderName}Plugin', 'false');
 }
 
-if (localStorage.getItem('${subdirectoryName}Plugin') === 'true') {
-  Vue.use(${componentName});
+if (localStorage.getItem('${folderName}Plugin') === 'true') {
+  Vue.use(${folderName});
 }
 `;
 });
