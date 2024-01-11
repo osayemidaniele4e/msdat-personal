@@ -39,6 +39,7 @@ const pluginInstalls = jsFiles.map((filePath) => {
   return `
 if (!localStorage.getItem('${folderName}Plugin')) {
   localStorage.setItem('${folderName}Plugin', 'false');
+  plugins_imported.push('${folderName}')
 }
 
 if (localStorage.getItem('${folderName}Plugin') === 'true') {
@@ -57,15 +58,18 @@ const appVueCode = `
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 ${pluginImports.join('\n')}
 
 export default {
-  mounted() {
+  async mounted() {
+    let plugins_imported = [];
     ${pluginInstalls.join('\n')}
+    await this.SET_PLUGINS_IMPORTED(plugins_imported)
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+    ...mapActions(['SET_PLUGINS_IMPORTED'])
   },
 };
 </script>

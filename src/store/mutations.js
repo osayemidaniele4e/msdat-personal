@@ -18,4 +18,7 @@ export default {
   setSubmittedPlugins(state, payload) {
     state.submittedPlugins = payload;
   },
+  setPluginsImported(state, payload) {
+    state.pluginsImportted = payload;
+  },
 };
