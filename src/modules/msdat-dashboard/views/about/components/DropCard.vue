@@ -72,11 +72,19 @@
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outcomes</h5>
-          <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank"
-            ><b-list-group-item
-              >Health Outcomes and Service Coverage</b-list-group-item
-            ></router-link
-          >
+          <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
+            <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
+          </router-link>
+          <router-link
+              target="_blank"
+              v-for="dashboard in publicDashboards.filter((dash) => dash.category === 'health_outcomes')"
+              :to="dashboard.link"
+              :key="dashboard.id"
+            >
+            <b-list-group-item>
+              {{ dashboard.name_of_dashboard }}
+            </b-list-group-item>
+          </router-link>
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -127,12 +135,14 @@ import {
   // eslint-disable-next-line no-unused-vars
   mapActions, mapGetters, mapMutations, mapWatch,
 } from 'vuex';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       loading: true,
       userDashboards: {},
+      publicDashboards: [],
     };
   },
 
@@ -167,6 +177,19 @@ export default {
     await this.SAVE_DASHBOARDS();
     this.userDashboards = await this.filterArray(this.getUser, this.getDashboards.data);
     this.loading = false;
+    if (this.isAuthenticated) {
+      const url = 'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json';
+      axios.get(url).then(({ data }) => {
+        this.publicDashboards = Object.values(data)
+          .filter((req) => req.email === this.getUser.email)
+          .map((req) => ({
+            ...req, config: { ...JSON.parse(req.config) },
+          }));
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
   },
 
   watch: {
