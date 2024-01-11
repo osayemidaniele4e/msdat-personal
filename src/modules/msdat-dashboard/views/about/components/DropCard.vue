@@ -75,16 +75,18 @@
           <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
             <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
           </router-link>
-          <router-link
+          <a
               target="_blank"
-              v-for="dashboard in publicDashboards.filter((dash) => dash.category === 'health_outcomes')"
-              :to="dashboard.link"
+              v-for="dashboard in publicDashboards.filter((dash) => {
+                return (dash.category === 'health_outcomes' && dash.isConfirmed)
+              })"
+              :href="dashboard.link"
               :key="dashboard.id"
             >
             <b-list-group-item>
               {{ dashboard.name_of_dashboard }}
             </b-list-group-item>
-          </router-link>
+          </a>
         </b-list-group>
       </div>
       <div class="col mb-3">
