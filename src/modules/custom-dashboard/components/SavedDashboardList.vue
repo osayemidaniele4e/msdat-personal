@@ -4,7 +4,10 @@
       <h4>View your dashboards</h4>
     </b-button>
 
-    <b-modal id="dashboard-list" title="Your Dashboards" centered scrollable>
+    <b-modal id="dashboard-list" centered scrollable>
+      <template slot="modal-header">
+        <h4 class="text-center w-100">Your Dashboards</h4>
+      </template>
       <div v-if="!list.length" class="border border-primary rounded mx-3 mb-1 pb-1 text-center">
         <small>You have no existing dashboards. Click button below to create one!</small>
       </div>
@@ -27,8 +30,9 @@
           <p class="m-0 p-0">{{ dashboard.config.dashboardDetails.description }}</p>
         </b-list-group-item>
       </b-list-group>
+      <strong class="m-2 w-100 text-center" v-if="loading">loading your public dashboards...</strong>
       <b-list-group v-if="publicDashboards.length">
-        <h4 class="text-center m-2" style="text-decoration: underline;">Public Dashboards</h4>
+        <h4 class="text-center m-2">Public Dashboards</h4>
         <b-list-group-item v-for="dashboard in publicDashboards"
           :key="dashboard.id" href="#"
           :class="`flex-column align-items-start py-2 border-bottom`"
@@ -66,6 +70,7 @@ export default {
     return {
       customDashboardsList: JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({})),
       publicDashboards: [],
+      loading: true,
     };
   },
   computed: {
@@ -134,8 +139,10 @@ export default {
         .map((req) => ({
           ...req, config: { ...JSON.parse(req.config) },
         }));
+      this.loading = false;
     }).catch((err) => {
       console.log(err);
+      this.loading = false;
       this.$swal.fire('Could not retrieve your public dashboards');
     });
   },
