@@ -16,7 +16,8 @@
           <p class="work-sans mb-0 line-height">
             Distribution of
             <span class="font-weight-bold"> {{ controlPanelProps.indicator.full_name }} </span
-            >Across  <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
+            >Across
+            <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
             <span class="font-weight-bold">
               {{ controlPanelProps.datasource.datasource }}
               {{ controlPanelProps.year }}</span
@@ -192,8 +193,15 @@ export default {
             this.stateName = stateObject.name; // Please always change the state name before
             // changing the level else you would get an error
             this.level = 1;
+            // this.chart = {
+            //   series: chartSeries,
+            // };
+
+            // Modify the chartSeries to exclude "Nigeria" if it exists
+            const chartSeriesWithoutNigeria = chartSeries.filter((item) => item.name !== 'Nigeria');
+
             this.chart = {
-              series: chartSeries,
+              series: chartSeriesWithoutNigeria,
             };
           }
         }

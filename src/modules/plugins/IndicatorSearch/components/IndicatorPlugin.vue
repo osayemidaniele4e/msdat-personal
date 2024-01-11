@@ -68,6 +68,7 @@ export default {
         { key: 'full_name', label: 'Indicator Full Name' },
         { key: 'indicator_type', label: 'Indicator Type' },
         { key: 'indicator_type', label: 'Indicator Type' },
+        { key: 'dashboard', label: 'Dashboard' },
         { key: 'program_area', label: 'Program Area' },
         { key: 'datasources', label: 'DataSources' },
         // Add other fields as needed

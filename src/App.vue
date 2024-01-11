@@ -1,5 +1,5 @@
 <template>
-  <div id="app" >
+  <div id="app">
     <router-view />
   </div>
 </template>
@@ -7,24 +7,24 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import ContextPlugin from './modules/plugins/context-plugin';
-import IndicatorSearch from './modules/plugins/indicator-search';
-
-// export default Vue.extend({});
+import ContextPlugin from './modules/plugins/ContextPlugin';
+import IndicatorSearch from './modules/plugins/IndicatorSearch';
 
 export default {
   mounted() {
-    if (!localStorage.getItem('contextPlugin')) {
-      localStorage.setItem('contextPlugin', 'false');
+    if (!localStorage.getItem('ContextPluginPlugin')) {
+      localStorage.setItem('ContextPluginPlugin', 'false');
     }
 
-    if (localStorage.getItem('contextPlugin') === 'true') {
+    if (localStorage.getItem('ContextPluginPlugin') === 'true') {
       Vue.use(ContextPlugin);
     }
-    if (!localStorage.getItem('indicatorPlugin')) {
-      localStorage.setItem('indicatorPlugin', 'false');
+
+    if (!localStorage.getItem('IndicatorSearchPlugin')) {
+      localStorage.setItem('IndicatorSearchPlugin', 'false');
     }
-    if (localStorage.getItem('indicatorPlugin') === 'true') {
+
+    if (localStorage.getItem('IndicatorSearchPlugin') === 'true') {
       Vue.use(IndicatorSearch);
     }
   },

@@ -241,8 +241,8 @@ export default {
   },
   created() {
     // boolean to store project context availability
-    this.isContextPluginActive = localStorage.getItem('contextPlugin');
-    this.isIndicatorPlugin = localStorage.getItem('indicatorPlugin');
+    this.isContextPluginActive = localStorage.getItem('ContextPluginPlugin');
+    this.isIndicatorPlugin = localStorage.getItem('IndicatorSearchPlugin');
   },
   methods: {
     togglemodal() {
@@ -252,13 +252,13 @@ export default {
       this.$bvModal.show('plugin-modal');
     },
     contextPluginActive(data) {
-      this.isContextPluginActive = localStorage.getItem('contextPlugin');
-      localStorage.setItem('contextPlugin', data);
+      this.isContextPluginActive = localStorage.getItem('ContextPluginPlugin');
+      localStorage.setItem('ContextPluginPlugin', data);
       this.$router.go();
     },
     setIndicatorPluginStatus(data) {
-      this.isContextPluginActive = localStorage.getItem('indicatorPlugin');
-      localStorage.setItem('indicatorPlugin', data);
+      this.isContextPluginActive = localStorage.getItem('IndicatorSearchPlugin');
+      localStorage.setItem('IndicatorSearchPlugin', data);
       this.$router.go();
       console.log('indicator plugin was set');
     },

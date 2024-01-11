@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import ContextPlugin from './components';
+import ContextPlugin from './components/index.vue';
 
 export default {
   install(vue) {
@@ -14,6 +14,7 @@ export default {
     root.$mount(document.body.appendChild(document.createElement('div')));
 
     // Make the root instance available in all components
+    // eslint-disable-next-line no-param-reassign
     vue.prototype.$contextplugin = root;
   },
 };
