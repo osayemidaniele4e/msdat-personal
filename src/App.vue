@@ -1,4 +1,3 @@
-
 <template>
   <div id="app">
     <router-view />
@@ -13,24 +12,21 @@ import IndicatorSearch from './modules/plugins/IndicatorSearch';
 
 export default {
   mounted() {
-    
-if (!localStorage.getItem('ContextPluginPlugin')) {
-  localStorage.setItem('ContextPluginPlugin', 'false');
-}
+    if (!localStorage.getItem('ContextPluginPlugin')) {
+      localStorage.setItem('ContextPluginPlugin', 'false');
+    }
 
-if (localStorage.getItem('ContextPluginPlugin') === 'true') {
-  Vue.use(ContextPlugin);
-}
+    if (localStorage.getItem('ContextPluginPlugin') === 'true') {
+      Vue.use(ContextPlugin);
+    }
 
+    if (!localStorage.getItem('IndicatorSearchPlugin')) {
+      localStorage.setItem('IndicatorSearchPlugin', 'false');
+    }
 
-if (!localStorage.getItem('IndicatorSearchPlugin')) {
-  localStorage.setItem('IndicatorSearchPlugin', 'false');
-}
-
-if (localStorage.getItem('IndicatorSearchPlugin') === 'true') {
-  Vue.use(IndicatorSearch);
-}
-
+    if (localStorage.getItem('IndicatorSearchPlugin') === 'true') {
+      Vue.use(IndicatorSearch);
+    }
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
