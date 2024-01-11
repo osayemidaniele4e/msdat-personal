@@ -106,6 +106,7 @@
       
 
       <!-- <b-button @click="onSubmit()" type="submit" variant="primary">Submit</b-button> -->
+      <button @click="mockSubmit()">ikjnuh</button>
       
       <b-button type="submit" variant="primary">Submit</b-button>
 
@@ -199,11 +200,15 @@ import { mapActions } from 'vuex';
       });
   },
 
-  onReset(event) {
-    event.preventDefault();
-    // Reset your form values here
-    // ...
+  mockSubmit(){
+    this.SUBMIT_PLUGIN(this.form)
   }
+
+  // onReset(event) {
+  //   event.preventDefault();
+  //   // Reset your form values here
+  //   // ...
+  // }
 }
   }
 </script>
