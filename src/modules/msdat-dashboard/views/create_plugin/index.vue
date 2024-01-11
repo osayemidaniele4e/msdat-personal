@@ -78,7 +78,7 @@
       <b-form-group id="input-group-2" label="Description" label-for="input-2">
         <b-form-textarea
       id="textarea"
-      v-model="text"
+      v-model="form.description"
       placeholder="Describe your plugin..."
       rows="3"
       max-rows="6"
@@ -139,10 +139,6 @@
     ></b-form-textarea> -->
 
       <!-- <input type="file"> -->
-
-      <button>none</button>
-      
-<button @click="mockSubmit()">Mock Submit</button>
       <!-- <b-button @click="onSubmit()" type="submit" variant="primary">Submit</b-button> -->
       
       <b-button type="submit" variant="primary">Submit</b-button>
@@ -199,7 +195,6 @@ export default {
           description: '',
           plugin_file: ''
         },
-        foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
         show: true
       }
     },
@@ -207,28 +202,32 @@ export default {
   ...mapActions(['SUBMIT_PLUGIN']), // Assuming SUBMIT_PLUGIN is an action provided by Vuex
 
   // Define a method for form submission
-  onSubmit() {
+  async onSubmit() {
     // Create a new FormData object
     const formData = new FormData();
     const mockPk = 9384202;
     // Append form data to the FormData object
-    formData.append('owner', mockPk);
+    formData.append('email', this.form.email);
     formData.append('name', this.form.name);
     formData.append('phone', this.form.phone);
-    formData.append('purpose', this.form.purpose);
+    formData.append('purpose', this.form.description);
     formData.append('description', this.form.description);
-    formData.append('file', this.form.file);
+    formData.append('plugin', this.form.file);
 
     console.log('form', this.form)
 
-    this.SUBMIT_PLUGIN(formData)
+    await this.SUBMIT_PLUGIN(formData)
       .then(() => {
         // Handle success
+        this.$bvModal.close('upload-plugin');
         this.$bvModal.show('upload_plugin_success');
+
+
       })
       .catch(error => {
         // Handle error
         console.error(error);
+        this.$bvModal.close('upload-plugin');
         this.$bvModal.show('upload_plugin_error');
         // You can show a different modal or handle errors in an appropriate way here
       });

@@ -11,14 +11,17 @@
           <b-col cols="4" :key="plugin.id">
             <b-card :title="plugin.name" header-tag="header" footer-tag="footer">
               <b-card-text>{{ plugin.title }}</b-card-text>
-              <router-link target="_blank" :to="'/dashboard/' + plugin.name">
-                <b-button variant="primary">Approve Pluigin</b-button>
-              </router-link>
-              <router-link target="_blank" :to="plugin.file">
-                <b-button variant="primary">Download Pluigin</b-button>
-              </router-link>
+              <b-card-text>
+                <strong>Description:</strong>
+                {{ plugin.description }}    </b-card-text>
 
-              <a :href="plugin.file">frfr</a>
+                <a :href="plugin.plugin">
+                  <b-button variant="warning">Download Plugin</b-button>
+                </a>
+                &nbsp;
+                <b-button @click="approvePlugin(plugin.plugin)" variant="primary">Approve Plugin</b-button>
+
+              
               <template #footer>
                 <!-- <em>{{ dashboard.visibility }}</em> -->
               </template>
@@ -27,6 +30,12 @@
         </template>
       </b-row>
     </div>
+    <b-modal id="modal-1" title="BootstrapVue" centered hide-header no-close-on-backdrop hide-footer>
+      <div>
+      Selected plugin is being approved on the server ...
+      <b-spinner label="Spinning"></b-spinner>
+    </div>
+  </b-modal>
   </div>
 </template>
 
@@ -46,13 +55,18 @@ export default {
   },
 
   methods: {
-    ...mapActions(['GET_PLUGINS']),
+    ...mapActions(['GET_PLUGINS', 'APPROVE_PLUGIN']),
 
     filterArray(obj, arr) {
       const userId = obj.id;
       const filteredArr = arr.filter((item) => item.user === userId);
       return filteredArr;
     },
+
+    async approvePlugin(file){
+      await this.APPROVE_PLUGIN(file)
+      await this.$bvModal.show('modal-1')
+    }
   },
 
   async mounted() {

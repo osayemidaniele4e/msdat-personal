@@ -31,7 +31,7 @@
             <span class="d-none d-lg-inline">Create a plugin</span></a
           >
           <a href="#/approvePlugin" class="mt-4 item blue"
-            ><b-icon-cloud-upload></b-icon-cloud-upload>&nbsp;&nbsp;
+            ><b-icon-check2-square></b-icon-check2-square>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Approve Plugins</span></a
           >
         </div>
