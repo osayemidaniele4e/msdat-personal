@@ -223,16 +223,9 @@ export default {
       const locationId = storedLocationId === null ? 1 : storedLocationId;
       const url = `${window.location.origin}/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${locationId}`;
       console.log(url);
-      const iframeUrl = `<iframe style="padding: 5px" width="1000" height="400"  :src="${url}"></iframe>`;
+      const iframeUrl = `<iframe style="padding: 5px; width: 95%; padding: 10px; height: 500px; margin: 40px;" src="${url}" />`;
       this.shareUrl = iframeUrl;
       this.showShareCodeModal = true;
-      // this.tableLink = `http://localhost:8080/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&indicatorFirstRelated=${indicatorFirstRelated}&indicatorSecondRelated=${indicatorSecondRelated}`;
-      // this.$router.push(`/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`);
-      // const url = `/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${location}`;
-      // window.open(url, '_blank');
-      // // this.showShareCodeModal = !this.showShareCodeModal;
-      // const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
-      // this.tableObj = this.bootstrapCDN + tableObjTemp;
     },
 
     closeShareModal() {
