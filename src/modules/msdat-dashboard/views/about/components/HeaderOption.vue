@@ -1,3 +1,5 @@
+
+
 <template>
   <div id="header-option" class="work-sans">
     <base-modal
@@ -224,6 +226,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import NewsLetter from '@/modules/msdat-dashboard/modules/newsletter/index.vue';
 import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import contact from '../../../../../components/contact/contact.vue';
@@ -239,6 +242,8 @@ export default {
 
     // Fetch the list of available plugins from the store
     const pluginsImported = ['contextPlugin', 'indicatorPlugin'];
+    console.log('plugin imports in created', this.getPluginsImported)
+    // let pluginsImported = this.getPluginsImported;
     // const pluginsImported = this.$store.state.pluginsImported || [];
 
 
@@ -246,26 +251,33 @@ export default {
     pluginsImported.forEach(plugin => {
       const capitalizedPlugin = plugin.charAt(0).toUpperCase() + plugin.slice(1);
       this.$set(dataObj, `is${capitalizedPlugin}Active`, localStorage.getItem(plugin));
+
+      console.log(`is${capitalizedPlugin}Active`)
+
     });
 
     return dataObj;
   },
-  created() {
-<<<<<<< HEAD
+  computed: {
+    ...mapGetters(['getPluginsImported']),
+  },
+
+  async created() {
     // Fetch the list of available plugins from the store
     // const pluginsImported = this.$store.state.pluginsImported || [];
-    const pluginsImported = ['contextPlugin', 'indicatorPlugin'];
+    const pluginsImported = await this.getPluginsImported;
+    // const pluginsImported = ['contextPlugin', 'indicatorPlugin'];
+
+    console.log('plugins imported', this.getPluginsImported)
 
       // Dynamically generate data properties and methods based on the available plugins
       pluginsImported.forEach(plugin => {
       const capitalizedPlugin = plugin.charAt(0).toUpperCase() + plugin.slice(1);
       this.$set(this, `is${capitalizedPlugin}Active`, localStorage.getItem(plugin));
+
+      console.log(`is${capitalizedPlugin}Active`)
+
     });
-=======
-    // boolean to store project context availability
-    this.isContextPluginActive = localStorage.getItem('ContextPluginPlugin');
-    this.isIndicatorPlugin = localStorage.getItem('IndicatorSearchPlugin');
->>>>>>> develop
   },
   methods: {
     togglemodal() {
@@ -274,7 +286,6 @@ export default {
     showPluginModal() {
       this.$bvModal.show('plugin-modal');
     },
-<<<<<<< HEAD
   // Dynamically generated methods for plugin activation
   pluginActive(plugin, data) {
       const isActive = localStorage.getItem(plugin);
@@ -283,19 +294,6 @@ export default {
       this.$router.go();
     },
     // 
-=======
-    contextPluginActive(data) {
-      this.isContextPluginActive = localStorage.getItem('ContextPluginPlugin');
-      localStorage.setItem('ContextPluginPlugin', data);
-      this.$router.go();
-    },
-    setIndicatorPluginStatus(data) {
-      this.isContextPluginActive = localStorage.getItem('IndicatorSearchPlugin');
-      localStorage.setItem('IndicatorSearchPlugin', data);
-      this.$router.go();
-      console.log('indicator plugin was set');
-    },
->>>>>>> develop
 
     submitContactForm() {
       this.submit = !this.submit;
@@ -514,3 +512,4 @@ export default {
 @media (min-width: 992px) and (max-width: 1200px) {
 }
 </style>
+
