@@ -17,13 +17,13 @@ export default {
 <style scoped lang="scss">
 .prompt {
   width: 100%;
-  border: 1px solid #9d9d9d;
+  border: 1px solid #d9d9d9;
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  background-color: #d9d9d9;
+  background-color: white;
   border-radius: 10px;
 }
 .prompt::placeholder {

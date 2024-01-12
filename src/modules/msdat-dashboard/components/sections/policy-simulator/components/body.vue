@@ -88,8 +88,7 @@ export default {
 .body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  height: calc(100vh - 460px);
+  height: calc(100vh - 320px);
 
   .response {
     padding-inline: 150px;
@@ -112,11 +111,14 @@ export default {
 }
 
 .intro {
-  padding: 100px;
+  background: #dff3f3;
+  // padding: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  height: calc(100vh - 320px);
+
   p {
     font-size: 24px;
     margin-top: 10px;

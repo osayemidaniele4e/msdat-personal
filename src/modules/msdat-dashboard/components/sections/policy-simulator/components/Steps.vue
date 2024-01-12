@@ -41,7 +41,7 @@ export default {
       top: -12px;
     }
     .hero {
-      background-color: #d9d9d9;
+      background-color: white;
       width: 180px;
       height: 80px;
       text-align: start;

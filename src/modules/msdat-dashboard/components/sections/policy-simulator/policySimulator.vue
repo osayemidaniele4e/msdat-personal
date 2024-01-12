@@ -1,5 +1,5 @@
 <template>
-  <div class="crate">
+  <div class="chatarea">
     <Header></Header>
     <Body></Body>
     <div class="promptPolicyContainer">
@@ -30,7 +30,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.promptPolicyContainer {
-  margin-inline: 200px;
+.chatarea {
+  position: relative;
+  width: 100%;
+  .promptPolicyContainer {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 20px;
+    padding-inline: 200px;
+    width: 100%;
+  }
 }
 </style>
