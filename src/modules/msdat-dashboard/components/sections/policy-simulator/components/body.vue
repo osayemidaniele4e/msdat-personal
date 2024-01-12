@@ -1,5 +1,5 @@
 <template>
-  <div class="body">
+  <div v-if="false" class="body">
     <div class="response" v-if="response">
       <div>
         {{ response }}
@@ -13,13 +13,26 @@
       </div>
     </div>
   </div>
+  <div v-else class="intro">
+    <img class="robot" src="../assets/Robot.svg" alt="" />
+    <p>What Policies can I help you with today?</p>
+    <Steps :steps="steps" />
+  </div>
 </template>
 
 <script>
+import Steps from './Steps.vue';
+
 export default {
   name: 'Body',
+  components: { Steps },
   data() {
     return {
+      steps: [
+        { desc: 'Select Indicator and necessary filters' },
+        { desc: 'Click on “Generate" button' },
+        { desc: 'View and Interact with the Simulator' },
+      ],
       response:
         'As of my last knowledge update in September 2021, I can provide you with some general information about health policies related to childbirth in Nigeria. Please note that policies might have changed since then, so I recommend checking with official sources or recent publications for the most up-to-date information.',
       policies: [
@@ -95,6 +108,21 @@ export default {
     overflow-y: auto;
     padding-inline: 200px;
     width: 100%;
+  }
+}
+
+.intro {
+  padding: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  p {
+    font-size: 24px;
+    margin-top: 10px;
+  }
+  .robot {
+    margin-top: -30px;
   }
 }
 </style>

@@ -38,10 +38,15 @@
       />
 
       <!-- Policy Simulator -->
-      <Generate v-if="values.type === 'generate'" :options="values.options" :value="payload[values.key]">Generate</Generate>
+      <Generate
+        v-if="values.type === 'generate'"
+        :options="values.options"
+        :value="payload[values.key]"
+        >Generate</Generate
+      >
 
       <!-- history -->
-      <History  v-if="values.type === 'history'">Policy History</History>
+      <History v-if="values.type === 'history'">Policy History</History>
 
       <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
@@ -133,7 +138,9 @@
 <script>
 // import ControlMixins from '@/components/ControlPanel/ControlMixins';
 import { mapMutations } from 'vuex';
+// eslint-disable-next-line import/no-unresolved
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
+// eslint-disable-next-line import/no-unresolved
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
 import Generate from '../components/generate.vue';
