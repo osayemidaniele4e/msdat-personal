@@ -147,29 +147,12 @@ import Generate from '../components/generate.vue';
 import History from '../components/history.vue';
 
 export default {
-  // mixins: [ControlMixins],
   name: 'ControlPanel',
   data() {
     return {
       activeToggleButton: '',
-
-      // using component data with 'Sub' addition to prevent prop mutations
-      // (controlIndex & groupIndex)
       controlIndexSub: this.controlIndex,
       groupIndexSub: this.groupIndex,
-      // payload: {
-      //   indicator: 'indicator 2',
-      //   location: '',
-      //   datasource: 'NHMIS 1',
-      //   year: '',
-      //   compareBy: '',
-      //   visualization: 'state_map',
-      //   target: {
-      //     national: false,
-      //     sdg: false,
-      //   },
-      //   numdenum: false,
-      // },
       hasNHMIS: false,
     };
   },

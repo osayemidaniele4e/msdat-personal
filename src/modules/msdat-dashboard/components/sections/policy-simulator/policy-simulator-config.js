@@ -24,18 +24,26 @@ export default {
       },
       options: [],
     },
-
-    // year ??
-    // {
-    //   class: ['col-lg col-md-2 col-4'],
-    //   type: 'dropdown',
-    //   label: 'Year',
-    //   key: 'year',
-    //   options: [],
-    //   dropdownProps: {
-    //     'preselect-first': true,
-    //   },
-    // },
+    {
+      class: ['col'],
+      type: 'dropdown',
+      label: 'data Source ',
+      key: 'datasource',
+      options: [],
+      dropdownProps: {
+        label: 'datasource',
+      },
+    },
+    {
+      class: ['col-lg col-md-2 col-4'],
+      type: 'dropdown',
+      label: 'Year',
+      key: 'year',
+      options: [],
+      dropdownProps: {
+        'preselect-first': true,
+      },
+    },
     {
       class: ['col-lg col-md-2 col-4 mt-4'],
       type: 'generate',
@@ -43,13 +51,13 @@ export default {
       key: 'Generate',
       options: [],
     },
-    {
-      class: ['col-lg col-md-2 col-4 mt-4'],
-      type: 'history',
-      label: '',
-      key: 'History',
-      options: [],
-    },
+    // {
+    //   class: ['col-lg col-md-2 col-4 mt-4'],
+    //   type: 'history',
+    //   label: '',
+    //   key: 'History',
+    //   options: [],
+    // },
   ],
   payload: {
     indicator: 'indicator 2',
