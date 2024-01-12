@@ -1,5 +1,5 @@
 <template>
-  <div v-if="true" class="body">
+  <div v-if="false" class="body">
     <div class="policy">
       <div class="simulatorId">
         <div class="icon">P</div>
@@ -12,6 +12,7 @@
       </div>
     </div>
   </div>
+  <!-- if no response render the intro -->
   <div v-else class="intro">
     <img class="robot" src="../assets/Robot.svg" alt="" />
     <p>What Policies can I help you with today?</p>

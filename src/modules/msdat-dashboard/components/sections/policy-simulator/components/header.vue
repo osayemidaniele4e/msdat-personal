@@ -1,5 +1,5 @@
 <template>
-  <div v-if="true">
+  <div v-if="false">
     <div class="top">
       <h1>National Policy on Reproductive Health and Rights</h1>
       <button @click="toggleOverlay" class="dropdown">
