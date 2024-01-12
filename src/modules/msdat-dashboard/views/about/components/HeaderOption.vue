@@ -1,3 +1,5 @@
+
+
 <template>
   <div id="header-option" class="work-sans">
     <base-modal
@@ -202,15 +204,15 @@
         <div>
           <button
             class="enable-btn"
-            @click="setIndicatorPluginStatus('true')"
-            v-if="isIndicatorPlugin === 'false'"
+            @click="indicatorPluginActive('true')"
+            v-if="isIndicatorPluginActive === 'false'"
           >
             Enable
           </button>
           <button
             class="enable-btn"
-            @click="setIndicatorPluginStatus('false')"
-            v-if="isIndicatorPlugin === 'true'"
+            @click="indicatorPluginActive('false')"
+            v-if="isIndicatorPluginActive === 'true'"
           >
             Disable
           </button>
@@ -224,6 +226,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import NewsLetter from '@/modules/msdat-dashboard/modules/newsletter/index.vue';
 import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import contact from '../../../../../components/contact/contact.vue';
@@ -231,18 +234,50 @@ import contact from '../../../../../components/contact/contact.vue';
 export default {
   components: { contact, Socials, NewsLetter },
   data() {
-    return {
+    const dataObj = {
       modal: false,
       submit: false,
       socialModal: false,
-      isIndicatorPlugin: 'false',
-      isContextPluginActive: 'false',
     };
+
+    // Fetch the list of available plugins from the store
+    const pluginsImported = ['contextPlugin', 'indicatorPlugin'];
+    console.log('plugin imports in created', this.getPluginsImported)
+    // let pluginsImported = this.getPluginsImported;
+    // const pluginsImported = this.$store.state.pluginsImported || [];
+
+
+    // Dynamically generate data properties based on the available plugins
+    pluginsImported.forEach(plugin => {
+      const capitalizedPlugin = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+      this.$set(dataObj, `is${capitalizedPlugin}Active`, localStorage.getItem(plugin));
+
+      console.log(`is${capitalizedPlugin}Active`)
+
+    });
+
+    return dataObj;
   },
-  created() {
-    // boolean to store project context availability
-    this.isContextPluginActive = localStorage.getItem('ContextPluginPlugin');
-    this.isIndicatorPlugin = localStorage.getItem('IndicatorSearchPlugin');
+  computed: {
+    ...mapGetters(['getPluginsImported']),
+  },
+
+  async created() {
+    // Fetch the list of available plugins from the store
+    // const pluginsImported = this.$store.state.pluginsImported || [];
+    const pluginsImported = await this.getPluginsImported;
+    // const pluginsImported = ['contextPlugin', 'indicatorPlugin'];
+
+    console.log('plugins imported', this.getPluginsImported)
+
+      // Dynamically generate data properties and methods based on the available plugins
+      pluginsImported.forEach(plugin => {
+      const capitalizedPlugin = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+      this.$set(this, `is${capitalizedPlugin}Active`, localStorage.getItem(plugin));
+
+      console.log(`is${capitalizedPlugin}Active`)
+
+    });
   },
   methods: {
     togglemodal() {
@@ -251,17 +286,14 @@ export default {
     showPluginModal() {
       this.$bvModal.show('plugin-modal');
     },
-    contextPluginActive(data) {
-      this.isContextPluginActive = localStorage.getItem('ContextPluginPlugin');
-      localStorage.setItem('ContextPluginPlugin', data);
+  // Dynamically generated methods for plugin activation
+  pluginActive(plugin, data) {
+      const isActive = localStorage.getItem(plugin);
+      this.$set(this, `${isActive}PluginActive`, isActive);
+      localStorage.setItem(plugin, data);
       this.$router.go();
     },
-    setIndicatorPluginStatus(data) {
-      this.isContextPluginActive = localStorage.getItem('IndicatorSearchPlugin');
-      localStorage.setItem('IndicatorSearchPlugin', data);
-      this.$router.go();
-      console.log('indicator plugin was set');
-    },
+    // 
 
     submitContactForm() {
       this.submit = !this.submit;
@@ -480,3 +512,4 @@ export default {
 @media (min-width: 992px) and (max-width: 1200px) {
 }
 </style>
+

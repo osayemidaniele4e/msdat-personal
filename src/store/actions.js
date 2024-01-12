@@ -77,7 +77,7 @@ export default {
     // approving a plugin
     async APPROVE_PLUGIN({ commit }, payload) {
       try {
-        const { data } = await axios.post('http://172.93.52.240:3001/api/plugin-submissions/approve', 
+        const { data } = await axios.post('http://172.93.52.240:3001/api/plugin-submissions/approval/', 
         payload
         );
         // commit();
