@@ -1,5 +1,5 @@
 <template>
-  <div v-if="false" >
+  <div v-if="true">
     <div class="top">
       <h1>National Policy on Reproductive Health and Rights</h1>
       <button @click="toggleOverlay" class="dropdown">
@@ -9,7 +9,7 @@
     </div>
     <transition name="overlay-fade">
       <div v-if="overlayOpen" class="overlay">
-        <div  v-for="(policy, index) in options"  :key="index" class="policy">
+        <div v-for="(policy, index) in options" :key="index" class="policy">
           {{ policy }}
         </div>
       </div>
