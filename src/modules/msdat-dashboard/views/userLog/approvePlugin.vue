@@ -16,12 +16,15 @@
                 {{ plugin.description }}    </b-card-text>
 
                 <a :href="plugin.plugin">
-                  <b-button variant="warning">Download Plugin</b-button>
+                  <b-button variant="warning">
+                    <b-icon icon="download"></b-icon>
+                    Download</b-button>
                 </a>
                 &nbsp;
-                <b-button @click="approvePlugin(plugin.plugin)" variant="primary">Approve Plugin</b-button>
+                <b-button @click="approvePlugin(plugin.plugin)" variant="primary">
+                  <b-icon icon="download"></b-icon>
+                  Approve</b-button>
 
-              
               <template #footer>
                 <!-- <em>{{ dashboard.visibility }}</em> -->
               </template>
@@ -63,16 +66,16 @@ export default {
       return filteredArr;
     },
 
-    async approvePlugin(file){
-      await this.APPROVE_PLUGIN(file)
-      await this.$bvModal.show('modal-1')
-    }
+    async approvePlugin(file) {
+      await this.APPROVE_PLUGIN(file);
+      await this.$bvModal.show('modal-1');
+    },
   },
 
   async mounted() {
     this.loading = true;
     await this.GET_PLUGINS();
-    console.log('plugins', this.getSubmittedPlugins)
+    console.log('plugins', this.getSubmittedPlugins);
     this.loading = false;
   },
 };

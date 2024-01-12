@@ -19,18 +19,21 @@
           <!-- <a href="#/profile" class="item"><b-icon-person-circle></b-icon-person-circle>&nbsp;&nbsp; <span class="d-none d-lg-inline">Profile</span></a>
         <a href="#/notification" class="mt-4 item"><b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp; <span class="d-none d-lg-inline">Notification</span></a> -->
           <a href="#/userActivity" class="mt-4 item"
+          :class="{ active: isCurrentRoute('/userActivity') }"
             ><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">User Activity</span></a
           >
           <a href="#/savedDashboards" class="mt-4 item"
+          :class="{ active: isCurrentRoute('/savedDashboards') }"
             ><b-icon-card-heading></b-icon-card-heading>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Saved Dashboards</span></a
           >
-          <a href="#/createPlugin" class="mt-4 item blue"
+          <!-- <a href="#/createPlugin" class="mt-4 item blue"
             ><b-icon-cloud-upload></b-icon-cloud-upload>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Create a plugin</span></a
-          >
+          > -->
           <a href="#/approvePlugin" class="mt-4 item blue"
+          :class="{ active: isCurrentRoute('/approvePlugin') }"
             ><b-icon-check2-square></b-icon-check2-square>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Approve Plugins</span></a
           >
@@ -79,6 +82,11 @@ export default {
       return routes[this.currentPath.slice(1) || '/'];
     },
   },
+  methods: {
+    isCurrentRoute(route) {
+      return this.currentPath === `#${route}`;
+    },
+  },
   mounted() {
     window.addEventListener('hashchange', () => {
       this.currentPath = window.location.hash;
@@ -106,6 +114,11 @@ h3 {
 .item:hover {
   text-decoration: none;
 }
+
+.active {
+  color: green !important;
+}
+
 a {
   color: #000 !important;
 }
