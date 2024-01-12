@@ -62,8 +62,10 @@ export default {
       payload,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': 'https://msdat2-staging.e4eweb.space',
+          // Add other headers if needed
+        },
       }
       );
       // commit('setInteraction', data);
