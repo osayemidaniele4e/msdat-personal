@@ -51,7 +51,7 @@ export default {
       );
       const message = await PolicySimulatorInstance.createSimulatedResponse(response);
       await this.PUSH_CONVERSATION(message);
-      await this.SET_LOADING_POLICY(false);
+      await this.SET_ISGENERATING(false);
     },
   },
 };

@@ -10,6 +10,13 @@ const GPTinstance = axios.create({
 
 class PolicyService {
  // eslint-disable-next-line consistent-return
+ static config = {
+   temperature: 1,
+   max_new_tokens: 1500,
+   min_new_tokens: -1,
+ }
+
+ // eslint-disable-next-line consistent-return
  getDataByQuery = async (indicatorId, dataSourceId, period, location) => {
    try {
      const { data } = await axiosInstance.get(
@@ -28,9 +35,7 @@ class PolicyService {
      const prompt = `generate policies based on the Indicator: ${healthIndicator} (${value}%) in ${location}`;
      const { data } = await GPTinstance.post('e4e/ask/', {
        text: prompt,
-       temperature: 1,
-       max_new_tokens: 1500,
-       min_new_tokens: -1,
+       ...PolicyService.config,
        system_prompt: systemPrompt,
      });
 
