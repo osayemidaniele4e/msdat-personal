@@ -82,7 +82,7 @@ export default {
     async setInteractions() {
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       if (this.getInternetStatus === true) {
-        const data  = await apiServices.getDashboard();
+        const data = await apiServices.getDashboard();
         this.dashboard = data.data.find((item) => item.title === this.$route.meta.title);
       }
       const dashboardName = this.dashboard?.id || getFormattedConfig?.name;

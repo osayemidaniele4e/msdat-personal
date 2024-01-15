@@ -1,13 +1,16 @@
 <template>
-  <div v-if="false" class="body">
-    <div class="policy">
-      <div class="simulatorId">
+  <div v-if="conversation.length != 0" class="body">
+    <div class="policy" v-for="(message, index) in conversation" :key="index">
+      <div class="simulatorId" v-if="message.user">
+        <div class="icon">Y</div>
+        <p>You</p>
+      </div>
+      <div class="simulatorId" v-else>
         <div class="icon">P</div>
         <p>Policy Simulator</p>
       </div>
-      <div v-for="(policy, index) in policies" :key="index">
-        <strong class="title">{{ policy.title }}</strong>
-        <div>{{ policy.description }}</div>
+      <div>
+        <div>{{ message.message }}</div>
         <br />
       </div>
     </div>
@@ -30,7 +33,7 @@ export default {
       type: Array,
       required: true,
     },
-    policies: {
+    conversation: {
       type: Array,
       required: true,
     },
@@ -64,6 +67,15 @@ export default {
     overflow-y: auto;
     padding-inline: 200px;
     width: 100%;
+    .typing {
+      overflow: hidden;
+      white-space: nowrap;
+
+      div {
+        width: 0;
+        animation: typingAnimation 2s steps(40, end) infinite;
+      }
+    }
     .simulatorId {
       display: flex;
       gap: 5px;

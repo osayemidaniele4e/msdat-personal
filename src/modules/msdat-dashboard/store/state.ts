@@ -40,6 +40,8 @@ const state: State = {
   },
   configObject: {},
   loading: true,
+  isGenerating: false,
+  conversationHistory: [],
 };
 
 export default state;

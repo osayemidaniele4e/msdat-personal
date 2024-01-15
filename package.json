@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
@@ -13,7 +13,7 @@
     "test:unit:watch": "vue-cli-service test:unit --watch",
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "dev": "vue-cli-service serve  --https true "
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve  --https true "
   },
   "dependencies": {
     "@highcharts/map-collection": "^1.1.3",

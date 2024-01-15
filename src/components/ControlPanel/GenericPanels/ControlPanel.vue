@@ -42,8 +42,7 @@
         v-if="values.type === 'generate'"
         :options="values.options"
         :value="payload[values.key]"
-        >Generate</Generate
-      >
+      ></Generate>
 
       <!-- history -->
       <History v-if="values.type === 'history'">Policy History</History>
@@ -267,9 +266,11 @@ export default {
     locationCheck(options) {
       console.log(options, 'options');
       if (
-        this.$route.params.name === 'Disease_Surveillance'
-        && options !== null
-        && options.length === 38
+        // eslint-disable-next-line operator-linebreak
+        this.$route.params.name === 'Disease_Surveillance' &&
+        // eslint-disable-next-line operator-linebreak
+        options !== null &&
+        options.length === 38
       ) {
         const main = options.filter((s) => s.name === 'Nigeria');
         console.log(main, 'Nigeria');
