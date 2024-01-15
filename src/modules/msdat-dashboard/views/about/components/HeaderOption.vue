@@ -156,17 +156,11 @@
     <NewsLetter />
     <!-- plugin modal -->
     <b-modal id="plugin-modal" title="MSDAT Apps Plugins" hide-footer>
-      <b-collapse id="collapse-1" class="mt-2">
-        <b-card>
-          This enables you to comment on any section in the MSDAT dashboard just by clicking the
-          headings
-        </b-card>
-      </b-collapse>
-      <!-- Example plugin section -->
+      <div v-for="plugin in getPluginsImported" :key="plugin">
       <div class="plugin-row">
         <h5>
-          <span v-b-toggle.collapse-2>
-            Context Plugin
+          <span>
+            {{ plugin }}
             <b-icon-info-circle></b-icon-info-circle>
           </span>
         </h5>
@@ -174,56 +168,29 @@
         <div>
           <button
             class="enable-btn"
-            @click="contextPluginActive('true')"
-            v-if="isContextPluginActive === 'false'"
+            @click="pluginActive(plugin, 'true')"
+          v-if="getDynamicProperty(plugin) === 'false'"
           >
             Enable
           </button>
           <button
             class="enable-btn"
-            @click="contextPluginActive('false')"
-            v-if="isContextPluginActive === 'true'"
+            @click="pluginActive(plugin, 'false')"
+            v-if="getDynamicProperty(plugin) === 'true'"
           >
             Disable
           </button>
         </div>
       </div>
-      <b-collapse id="collapse-2" class="mt-2">
-        <b-card> This is Enables Users to Search for Keywords</b-card>
-      </b-collapse>
-      <div class="plugin-row">
-        <h5>
-          <span v-b-toggle.collapse-3>
-            Indicator Search
-            <b-icon-info-circle></b-icon-info-circle>
-          </span>
-        </h5>
+    </div>
 
-        <div>
-          <button
-            class="enable-btn"
-            @click="setIndicatorPluginStatus('true')"
-            v-if="isIndicatorPlugin === 'false'"
-          >
-            Enable
-          </button>
-          <button
-            class="enable-btn"
-            @click="setIndicatorPluginStatus('false')"
-            v-if="isIndicatorPlugin === 'true'"
-          >
-            Disable
-          </button>
-        </div>
-      </div>
-      <b-collapse id="collapse-3" class="mt-2">
-        <b-card> This Enables User to search Indicators Smartly </b-card>
-      </b-collapse>
     </b-modal>
+
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import NewsLetter from '@/modules/msdat-dashboard/modules/newsletter/index.vue';
 import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import contact from '../../../../../components/contact/contact.vue';
@@ -231,37 +198,74 @@ import contact from '../../../../../components/contact/contact.vue';
 export default {
   components: { contact, Socials, NewsLetter },
   data() {
-    return {
+    const dataObj = {
       modal: false,
       submit: false,
       socialModal: false,
-      isIndicatorPlugin: 'false',
-      isContextPluginActive: 'false',
     };
+
+    // Fetch the list of available plugins from the store
+    const pluginsImported = this.$store.getters.getPluginsImported;
+    console.log('plugin imports in created', this.$store.getters.getPluginsImported);
+    // let pluginsImported = this.getPluginsImported;
+    // const pluginsImported = this.$store.state.pluginsImported || [];
+
+    // Dynamically generate data properties based on the available plugins
+    pluginsImported.forEach((plugin) => {
+      const capitalizedPlugin = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+      this.$set(dataObj, `is${capitalizedPlugin}Active`, localStorage.getItem(plugin));
+
+      console.log(`is${capitalizedPlugin}Active`);
+    });
+
+    return dataObj;
   },
-  created() {
-    // boolean to store project context availability
-    this.isContextPluginActive = localStorage.getItem('ContextPluginPlugin');
-    this.isIndicatorPlugin = localStorage.getItem('IndicatorSearchPlugin');
+
+  computed: {
+    ...mapGetters(['getPluginsImported']),
+    getDynamicProperty() {
+      return (propertyName) => this[`is${this.capitalizeFirstLetter(propertyName)}Active`];
+    },
+  },
+
+  async created() {
+    // Fetch the list of available plugins from the store
+    // const pluginsImported = this.$store.state.pluginsImported || [];
+    const pluginsImported = await this.getPluginsImported;
+    // const pluginsImported = ['contextPlugin', 'indicatorPlugin'];
+
+    console.log('plugins imported', this.getPluginsImported);
+
+    // Dynamically generate data properties and methods based on the available plugins
+    pluginsImported.forEach((plugin) => {
+      const capitalizedPlugin = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+      this.$set(this, `is${capitalizedPlugin}Active`, localStorage.getItem(plugin));
+
+      console.log(`is${capitalizedPlugin}Active`);
+    });
   },
   methods: {
+    isPluginActive(pluginName) {
+      // Assuming you have a method to check if the plugin is active
+      return this[`is${this.capitalizeFirstLetter(pluginName)}Active`] === true;
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    },
     togglemodal() {
       this.modal = !this.modal;
     },
     showPluginModal() {
       this.$bvModal.show('plugin-modal');
     },
-    contextPluginActive(data) {
-      this.isContextPluginActive = localStorage.getItem('ContextPluginPlugin');
-      localStorage.setItem('ContextPluginPlugin', data);
+    // Dynamically generated methods for plugin activation
+    pluginActive(plugin, data) {
+      const isActive = localStorage.getItem(plugin);
+      this.$set(this, `${isActive}PluginActive`, isActive);
+      localStorage.setItem(plugin, data);
       this.$router.go();
     },
-    setIndicatorPluginStatus(data) {
-      this.isContextPluginActive = localStorage.getItem('IndicatorSearchPlugin');
-      localStorage.setItem('IndicatorSearchPlugin', data);
-      this.$router.go();
-      console.log('indicator plugin was set');
-    },
+    //
 
     submitContactForm() {
       this.submit = !this.submit;

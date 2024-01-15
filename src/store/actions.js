@@ -58,12 +58,14 @@ export default {
   async SUBMIT_PLUGIN({ commit }, payload) {
     console.log('submit payload', payload)
     try {
-      const { data } = await axios.post('http://172.93.52.240:3001/api/plugin-submissions/', 
+      const { data } = await axios.post('https://msdat2api.e4eweb.space/api/plugin-submissions/', 
       payload,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': 'https://msdat2-staging.e4eweb.space',
+          // Add other headers if needed
+        },
       }
       );
       // commit('setInteraction', data);
@@ -77,7 +79,7 @@ export default {
     // approving a plugin
     async APPROVE_PLUGIN({ commit }, payload) {
       try {
-        const { data } = await axios.post('http://172.93.52.240:3001/api/plugin-submissions/approve', 
+        const { data } = await axios.post('https://msdat2api.e4eweb.space/api/plugin-submissions/approval/', 
         payload
         );
         // commit();
@@ -91,7 +93,7 @@ export default {
 
   async GET_PLUGINS({ commit }, payload) {
     try {
-      const response = await axiosInstance.get(`http://172.93.52.240:3001/api/plugin-submissions/`);
+      const response = await axiosInstance.get(`https://msdat2api.e4eweb.space/api/plugin-submissions/`);
       const { results } = response.data;
       commit('setSubmittedPlugins', results);
     } catch (error) {
@@ -101,7 +103,7 @@ export default {
 
   async SET_DASHBOARD_LOCATION(payload) {
     try {
-      const { data } = await axios.post('http://172.93.52.240:3001/api/user_dashboard_location/', payload);
+      const { data } = await axios.post('https://msdat2api.e4eweb.space/api/user_dashboard_location/', payload);
       console.log(data);
       // commit('setInteraction', data);
     } catch (error) {

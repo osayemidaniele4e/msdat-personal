@@ -5,20 +5,24 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
-import testPlugin from './modules/plugins/testPlugin';
 
 export default {
+  data() {
+    return {
+      pluginsImported: [] // Explicitly specify the type as an array of strings
+    };
+  },
   async mounted() {
     let plugins_imported = [];
     
+  this.pluginsImported.push('contextPlugin')
 if (!localStorage.getItem('contextPlugin')) {
   localStorage.setItem('contextPlugin', 'false');
-  plugins_imported.push('contextPlugin')
 }
 
 if (localStorage.getItem('contextPlugin') === 'true') {
@@ -26,26 +30,17 @@ if (localStorage.getItem('contextPlugin') === 'true') {
 }
 
 
+  this.pluginsImported.push('indicatorPlugin')
 if (!localStorage.getItem('indicatorPlugin')) {
   localStorage.setItem('indicatorPlugin', 'false');
-  plugins_imported.push('indicatorPlugin')
 }
 
 if (localStorage.getItem('indicatorPlugin') === 'true') {
   Vue.use(indicatorPlugin);
 }
 
-
-if (!localStorage.getItem('testPlugin')) {
-  localStorage.setItem('testPlugin', 'false');
-  plugins_imported.push('testPlugin')
-}
-
-if (localStorage.getItem('testPlugin') === 'true') {
-  Vue.use(testPlugin);
-}
-
-    await this.SET_PLUGINS_IMPORTED(plugins_imported)
+    console.log('pluginsImported', this.pluginsImported)
+    await this.SET_PLUGINS_IMPORTED(this.pluginsImported)
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
