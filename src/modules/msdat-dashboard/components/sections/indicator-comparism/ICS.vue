@@ -16,7 +16,7 @@
           })
         "
       >
-        <template #title>
+        <!-- <template #title>
           <p
             class="work-sans mb-0 line-height"
             v-if="!Array.isArray(values.indicator.length)"
@@ -31,6 +31,16 @@
             according to the
             <b> {{ values.datasource.datasource }} </b> across
             {{ values.compareBy.name }}s
+          </p>
+        </template> -->
+
+        <template #title>
+          <p
+            class="work-sans mb-0 line-height"
+          >
+           Comparison of <b>selected indicators</b> according to
+            the <b> {{ values.datasource.datasource }} </b> across
+            {{ values.compareBy.name }}
           </p>
         </template>
         <BarChart ref="BaseChart"
