@@ -18,12 +18,22 @@
   <!-- if no response render the intro -->
   <div v-else class="intro">
     <img class="robot" src="../assets/Robot.svg" alt="" />
-    <p>What Policies can I help you with today?</p>
-    <Steps :steps="steps" />
+    <div class="hero" v-if="getIsGenerating">
+      <div class="myloader">
+        <TheLoader text="Please Wait" />
+      </div>
+      <p class="hero-text">Generating</p>
+    </div>
+    <div class="hero" v-else>
+      <p class="hero-text">What Policies can I help you with today?</p>
+      <Steps :steps="steps" />
+    </div>
   </div>
 </template>
 
 <script>
+import TheLoader from '@/modules/custom-dashboard/components/Loading/TheLoader.vue';
+import { mapGetters } from 'vuex';
 import Steps from './Steps.vue';
 
 export default {
@@ -38,9 +48,12 @@ export default {
       required: true,
     },
   },
-  components: { Steps },
+  components: { Steps, TheLoader },
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters('MSDAT_STORE', ['getIsGenerating']),
   },
 };
 </script>
@@ -67,15 +80,6 @@ export default {
     overflow-y: auto;
     padding-inline: 200px;
     width: 100%;
-    .typing {
-      overflow: hidden;
-      white-space: nowrap;
-
-      div {
-        width: 0;
-        animation: typingAnimation 2s steps(40, end) infinite;
-      }
-    }
     .simulatorId {
       display: flex;
       gap: 5px;
@@ -90,7 +94,7 @@ export default {
         font-size: 24px;
         color: white;
       }
-      p {
+      .hero-text {
         font-size: 20px;
         font-weight: 600;
       }
@@ -106,10 +110,18 @@ export default {
   flex-direction: column;
   height: calc(100vh - 320px);
 
-  p {
-    font-size: 24px;
-    margin-top: 10px;
+  .hero {
+    width: 100%;
+    p {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 20px;
+    }
+    .myloader {
+      text-align: center;
+    }
   }
+
   .robot {
     margin-top: -30px;
   }
