@@ -29,7 +29,8 @@ export default {
         indicatorId,
         datasourceId,
         period,
-        locationId,
+        // eslint-disable-next-line comma-dangle
+        locationId
       );
 
       const value = data[0].value;
@@ -40,7 +41,8 @@ export default {
       const { response } = await PolicySimulatorInstance.generateResponse(
         healthIndicator,
         location,
-        value,
+        // eslint-disable-next-line comma-dangle
+        value
       );
 
       // get message from gpt
@@ -52,4 +54,8 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+button {
+  border-radius: 5px;
+}
+</style>

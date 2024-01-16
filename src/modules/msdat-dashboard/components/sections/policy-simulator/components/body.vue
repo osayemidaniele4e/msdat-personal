@@ -11,12 +11,12 @@
           <p class="name">Policy Simulator</p>
         </div>
         <div v-if="message.user">
-          <div>{{ message.message }}</div>
+          <p class="message">{{ message.message }}</p>
           <br />
         </div>
         <div v-else>
           <!-- <TyperVue :text="message.message" /> -->
-          <div>{{ message.message }}</div>
+          <p class="message">{{ message.message }}</p>
           <br />
         </div>
       </div>
@@ -77,6 +77,7 @@ div {
     flex-direction: column;
     height: calc(100vh - 320px);
     overflow-y: auto;
+    padding-bottom: 150px;
     .response {
       padding-inline: 150px;
       padding-block: 10px;
@@ -93,6 +94,11 @@ div {
       flex: 1;
       padding-inline: 200px;
       width: 100%;
+
+      .message {
+        white-space: pre-line;
+        font-size: 18px;
+      }
       .simulatorId {
         display: flex;
         gap: 5px;

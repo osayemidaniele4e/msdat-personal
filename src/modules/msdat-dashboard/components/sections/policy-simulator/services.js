@@ -43,7 +43,7 @@ class PolicyService {
      return (data);
    } catch (err) {
      console.log(err);
-     return (err);
+     return { response: 'An error Occured' };
    }
  }
 
@@ -68,7 +68,7 @@ class PolicyService {
      return data;
    } catch (err) {
      console.error(err);
-     return err;
+     return { response: 'An error Occured' };
    }
  };
 
@@ -79,12 +79,17 @@ class PolicyService {
 
  createLoadingResponse = () => ({
    user: false,
-   isLoading: true,
+   message: 'Analyzing...',
  })
 
  createUserResponse = (response) => ({
    user: true,
    message: response,
+ })
+
+ createErrorResponse = (response) => ({
+   message: response,
+   error: true,
  })
 }
 
