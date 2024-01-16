@@ -122,7 +122,7 @@ const programAreaSetConfig3 = [
 const payload = {
   indicator: '',
   location: '',
-  datasource: '',
+  datasource: 'NHMIS 1',
   year: '',
   compareBy: '',
   visualization: '',

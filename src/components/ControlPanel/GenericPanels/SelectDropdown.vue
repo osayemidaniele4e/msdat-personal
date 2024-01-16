@@ -101,8 +101,6 @@ export default {
           localStorage.setItem('indicatorFirstRelated', indicatorFirstRelated);
           localStorage.setItem('indicatorSecondRelated', indicatorSecondRelated);
           this.SET_SELECTED_CONFIG(item);
-
-          // console.log(JSON.stringify(item), '@@@@');
         } else if (
           typeof val === 'object'
           && val.id !== undefined
@@ -113,6 +111,7 @@ export default {
             payload: val,
             entity: 'dataSource',
           };
+          console.log(JSON.stringify(val));
           this.SET_SELECTED_CONFIG(item);
         } else if (
           typeof val !== 'object'
@@ -125,7 +124,6 @@ export default {
           };
 
           this.SET_SELECTED_CONFIG(item);
-          // console.log(JSON.stringify(item), '@@@@');
           // this.addQueryParamToUrl();
         } else if (val.parent !== undefined) {
           console.log(val, '@@@Val@@@');
