@@ -1,35 +1,48 @@
 <template>
-  <div id="app" >
+  <div id="app">
     <router-view />
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
-import ContextPlugin from './modules/plugins/context-plugin';
-import IndicatorSearch from './modules/plugins/indicator-search';
-
-// export default Vue.extend({});
+import { mapActions, mapGetters } from 'vuex';
+import contextPlugin from './modules/plugins/contextPlugin';
+import indicatorPlugin from './modules/plugins/indicatorPlugin';
 
 export default {
-  mounted() {
+  data() {
+    return {
+      pluginsImported: [], // Explicitly specify the type as an array of strings
+    };
+  },
+  async mounted() {
+    // const plugins_imported = [];
+
+    this.pluginsImported.push('contextPlugin');
     if (!localStorage.getItem('contextPlugin')) {
       localStorage.setItem('contextPlugin', 'false');
     }
 
     if (localStorage.getItem('contextPlugin') === 'true') {
-      Vue.use(ContextPlugin);
+      Vue.use(contextPlugin);
     }
+
+    this.pluginsImported.push('indicatorPlugin');
     if (!localStorage.getItem('indicatorPlugin')) {
       localStorage.setItem('indicatorPlugin', 'false');
     }
+
     if (localStorage.getItem('indicatorPlugin') === 'true') {
-      Vue.use(IndicatorSearch);
+      Vue.use(indicatorPlugin);
     }
+
+    console.log('pluginsImported', this.pluginsImported);
+    await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+    ...mapActions(['SET_PLUGINS_IMPORTED']),
   },
 };
 </script>
