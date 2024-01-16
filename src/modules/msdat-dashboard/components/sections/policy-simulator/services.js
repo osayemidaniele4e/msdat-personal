@@ -47,9 +47,39 @@ class PolicyService {
    }
  }
 
+ generateReply = async (conversationHistory, question) => {
+   try {
+     const systemPrompt = 'You are MSDAT policy simulator, an AI-powered system designed to assist Nigerian public health policymakers in developing effective and targeted interventions. You have access to a vast database of health indicators, demographic data, and socioeconomic factors, along with a location-specific interface to pinpoint areas of concern. Given the Input: output Health Indicator and location, propose 2 potential interventions to address the identified causes, tailoring them to the specific context of the location. Outline the Advantages and disadvantages of these interventions in the form of JSON key-value pairs';
+
+     const formattedMessages = conversationHistory
+       .map((item) => (item.user ? `My Reply: ${item.message}` : `Generated Response: ${item.message}`))
+       .join('\n');
+     console.log('formatted', formattedMessages);
+
+     const conversationPrompt = formattedMessages ? `Conversation History:\n${formattedMessages}` : '';
+     const prompt = `You have generated a policy based on my initial prompt. This is the conversation history:\n${conversationPrompt}\nThis is my follow-up question: ${question}`;
+
+     const { data } = await GPTinstance.post('e4e/ask/', {
+       text: `${prompt}\n${conversationPrompt}`,
+       ...PolicyService.config,
+       system_prompt: systemPrompt,
+     });
+
+     return data;
+   } catch (err) {
+     console.error(err);
+     return err;
+   }
+ };
+
  createSimulatedResponse = (response) => ({
    user: false,
    message: response,
+ })
+
+ createLoadingResponse = () => ({
+   user: false,
+   isLoading: true,
  })
 
  createUserResponse = (response) => ({

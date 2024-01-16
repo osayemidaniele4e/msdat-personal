@@ -6,7 +6,6 @@
 
 <script>
 export default {
-  name: 'Typer',
   props: {
     text: {
       type: String,
@@ -14,28 +13,32 @@ export default {
     },
     typingSpeed: {
       type: Number,
-      default: 8, // Adjust the speed as needed (milliseconds per character)
+      default: 0.0008, // Adjust the speed as needed (milliseconds per character)
     },
   },
   data() {
     return {
       typedText: '',
+      hasTyped: false,
     };
   },
   methods: {
     simulateTyping() {
-      let currentIndex = 0;
-      const textLength = this.text.length;
+      if (!this.hasTyped) {
+        let currentIndex = 0;
+        const textLength = this.text.length;
 
-      const typingInterval = setInterval(() => {
-        this.typedText += this.text[currentIndex];
+        const typingInterval = setInterval(() => {
+          this.typedText += this.text[currentIndex];
 
-        currentIndex++;
+          currentIndex++;
 
-        if (currentIndex === textLength) {
-          clearInterval(typingInterval);
-        }
-      }, this.typingSpeed);
+          if (currentIndex === textLength) {
+            clearInterval(typingInterval);
+            this.hasTyped = true;
+          }
+        }, this.typingSpeed);
+      }
     },
   },
   mounted() {

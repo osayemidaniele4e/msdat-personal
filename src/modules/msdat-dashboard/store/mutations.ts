@@ -24,6 +24,9 @@ const mutations: MutationTree<State> = {
   SET_ISGENERATING: (state, payload) => {
     state.isGenerating = payload;
   },
+  SET_ISRESPONDING: (state, payload) => {
+    state.isResponding = payload;
+  },
   PUSH_CONVERSATION: (state, payload: Conversation) => {
     state.conversationHistory = [...state.conversationHistory, payload];
   },

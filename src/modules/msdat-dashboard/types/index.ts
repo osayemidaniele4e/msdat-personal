@@ -17,6 +17,7 @@ export interface State {
   configObject: {};
   loading: boolean;
   isGenerating: boolean;
+  isResponding: boolean;
   conversationHistory: Conversation[]
 }
 

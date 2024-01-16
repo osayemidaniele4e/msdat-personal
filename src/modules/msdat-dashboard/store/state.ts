@@ -41,6 +41,7 @@ const state: State = {
   configObject: {},
   loading: true,
   isGenerating: false,
+  isResponding: false,
   conversationHistory: [],
 };
 
