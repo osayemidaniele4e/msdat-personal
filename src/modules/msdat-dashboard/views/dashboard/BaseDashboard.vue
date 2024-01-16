@@ -51,7 +51,6 @@
             ]"
           >
             <!-- Moses changed from this -->
-            {{ showItem($store.state.MSDAT_STORE.controlConfig) }}
             <b-overlay :show="!cpIsLoading">
               <BasePanel
                 :changeIndex="changeIndex"
@@ -382,9 +381,6 @@ export default {
       return `value${index}`;
     },
 
-    showItem(item) {
-      console.log(item, 'Config @@');
-    },
     // function to get program areas
     getProgramArea(data) {
       return data.map((el) => el.program_area);

@@ -323,8 +323,6 @@ export default {
       BaseMultiSourceConfig,
     ];
 
-    console.log('noHMIS', this.noNHMIS);
-    console.log('current route', this.$route.path);
     // Updated flow
     const { name: queryParameter } = this.$route.params;
     if (this.customDashboard) {

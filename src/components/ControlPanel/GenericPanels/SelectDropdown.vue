@@ -111,7 +111,6 @@ export default {
             payload: val,
             entity: 'dataSource',
           };
-          console.log(JSON.stringify(val));
           this.SET_SELECTED_CONFIG(item);
         } else if (
           typeof val !== 'object'
