@@ -3,14 +3,18 @@
     <div class="policy" v-for="(message, index) in conversation" :key="index">
       <div class="simulatorId" v-if="message.user">
         <div class="icon">Y</div>
-        <p>You</p>
+        <p class="name">You</p>
       </div>
       <div class="simulatorId" v-else>
         <div class="icon">P</div>
-        <p>Policy Simulator</p>
+        <p class="name">Policy Simulator</p>
       </div>
-      <div>
+      <div v-if="message.user">
         <div>{{ message.message }}</div>
+        <br />
+      </div>
+      <div v-else>
+        <TyperVue :text="message.message" />
         <br />
       </div>
     </div>
@@ -35,6 +39,7 @@
 import TheLoader from '@/modules/custom-dashboard/components/Loading/TheLoader.vue';
 import { mapGetters } from 'vuex';
 import Steps from './Steps.vue';
+import TyperVue from './Typer.vue';
 
 export default {
   name: 'Body',
@@ -48,7 +53,7 @@ export default {
       required: true,
     },
   },
-  components: { Steps, TheLoader },
+  components: { Steps, TheLoader, TyperVue },
   data() {
     return {};
   },
@@ -83,6 +88,11 @@ export default {
     .simulatorId {
       display: flex;
       gap: 5px;
+
+      .name {
+        font-size: 20px;
+        font-weight: 600;
+      }
       .icon {
         display: flex;
         align-items: center;
