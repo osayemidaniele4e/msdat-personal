@@ -30,6 +30,9 @@ const mutations: MutationTree<State> = {
   PUSH_CONVERSATION: (state, payload: Conversation) => {
     state.conversationHistory = [...state.conversationHistory, payload];
   },
+  CLEAR_CONVERSATION: (state) => {
+    state.conversationHistory = [];
+  },
   SET_INITIAL: (state, payload) => {
     state.default.indicator = payload.indicator;
     state.default.datasource = payload.datasource;

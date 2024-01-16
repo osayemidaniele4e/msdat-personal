@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="conversation.length != 0" class="body">
+    <div v-if="conversation.length !== 0" class="body">
       <div class="policy" v-for="(message, index) in conversation" :key="index">
         <div class="simulatorId" v-if="message.user">
           <div class="icon">Y</div>

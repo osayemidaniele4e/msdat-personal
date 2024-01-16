@@ -8,7 +8,7 @@ import PolicyService from '@/modules/msdat-dashboard/components/sections/policy-
 export default {
   name: 'Generate',
   computed: {
-    ...mapGetters('MSDAT_STORE', ['getIsGenerating']),
+    ...mapGetters('MSDAT_STORE', ['getIsGenerating', 'getConversation']),
     payload() {
       if (this.groupIndex != null) {
         return this.$store.state.MSDAT_STORE.controlConfig[5].payload[this.groupIndex];
@@ -17,8 +17,11 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_ISGENERATING', 'PUSH_CONVERSATION']),
+    ...mapMutations('MSDAT_STORE', ['SET_ISGENERATING', 'PUSH_CONVERSATION', 'CLEAR_CONVERSATION']),
     async generate() {
+      if (this.getConversation.length !== 0) {
+        this.CLEAR_CONVERSATION();
+      }
       await this.SET_ISGENERATING(true);
       const datasourceId = this.payload.datasource.id;
       const period = this.payload.year;
