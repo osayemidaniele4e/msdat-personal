@@ -8,12 +8,7 @@ import PolicyService from '@/modules/msdat-dashboard/components/sections/policy-
 export default {
   name: 'Generate',
   computed: {
-    ...mapGetters('MSDAT_STORE', [
-      'getConfigObject',
-      'getSelectedConfig',
-      'getLoadingStatus',
-      'getIsGenerating',
-    ]),
+    ...mapGetters('MSDAT_STORE', ['getIsGenerating']),
     payload() {
       if (this.groupIndex != null) {
         return this.$store.state.MSDAT_STORE.controlConfig[5].payload[this.groupIndex];
@@ -34,8 +29,7 @@ export default {
         indicatorId,
         datasourceId,
         period,
-        // eslint-disable-next-line comma-dangle
-        locationId
+        locationId,
       );
 
       const value = data[0].value;
@@ -46,11 +40,13 @@ export default {
       const { response } = await PolicySimulatorInstance.generateResponse(
         healthIndicator,
         location,
-        // eslint-disable-next-line comma-dangle
-        value
+        value,
       );
+
+      // get message from gpt
       const message = await PolicySimulatorInstance.createSimulatedResponse(response);
       await this.PUSH_CONVERSATION(message);
+      // push message coversation state
       await this.SET_ISGENERATING(false);
     },
   },

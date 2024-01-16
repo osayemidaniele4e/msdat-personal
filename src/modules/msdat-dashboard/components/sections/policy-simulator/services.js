@@ -25,6 +25,7 @@ class PolicyService {
      return data.results;
    } catch (err) {
      console.log(err);
+     return (err);
    }
  };
 
@@ -42,6 +43,7 @@ class PolicyService {
      return (data);
    } catch (err) {
      console.log(err);
+     return (err);
    }
  }
 
