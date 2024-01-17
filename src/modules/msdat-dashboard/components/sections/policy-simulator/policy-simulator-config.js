@@ -45,7 +45,7 @@ export default {
       },
     },
     {
-      class: ['col-lg col-md-2 col-4 mt-4'],
+      class: ['col-lg col-md-2 col-4 mt-3'],
       type: 'generate',
       label: '',
       key: 'Generate',
