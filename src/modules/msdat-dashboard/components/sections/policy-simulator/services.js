@@ -78,6 +78,7 @@ class PolicyService {
  createLoadingResponse = () => ({
    user: false,
    message: 'Analyzing...',
+   loading: true,
  })
 
  createUserResponse = (response) => ({
