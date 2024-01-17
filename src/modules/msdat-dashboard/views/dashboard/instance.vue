@@ -1,17 +1,10 @@
 <template>
-  <BaseDashboard
-    :updateValue="updateValue"
-    :updateKey="updateKey"
-    :resetData="resetData"
-    @swipe="changeSwipe"
-  >
+  <BaseDashboard :updateValue="updateValue" :updateKey="updateKey" :resetData="resetData" @swipe="changeSwipe">
     <template v-slot:section-before-0>
       <slot name="top-section"></slot>
     </template>
 
-    <template
-      v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }"
-    >
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -22,21 +15,14 @@
                  since it will be mounted first -->
           <template>
             <ControlPanelConfiguration :controlIndex="controlIndex">
-              <BaseIndicatorOverview
-                :controlPanelProps="payload"
-                @value="getValue"
-                @key="getKey"
-                @reset="getReset"
-              />
+              <BaseIndicatorOverview :controlPanelProps="payload" @value="getValue" @key="getKey" @reset="getReset" />
             </ControlPanelConfiguration>
           </template>
         </base-sub-card>
       </div>
     </template>
 
-    <template
-      v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }"
-    >
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }">
       <div class="col-md-12" style="margin-bottom: 4rem">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -56,9 +42,7 @@
       </div>
     </template>
 
-    <template
-      v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }"
-    >
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'">
           <template #title>
@@ -77,9 +61,7 @@
       </div>
     </template>
 
-    <template
-      v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }"
-    >
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -96,9 +78,7 @@
       </div>
     </template>
 
-    <template
-      v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }"
-    >
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -120,9 +100,7 @@
       </div>
     </template>
 
-    <template
-      v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
-    >
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
       <div class="col-md-12 overflow-auto">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm disaggregation">
           <template #title>
@@ -132,6 +110,25 @@
             <LazyLoading>
               <ControlPanelConfiguration :controlIndex="controlIndex">
                 <DynamicSection :values="payload" :controlIndex="controlIndex" />
+              </ControlPanelConfiguration>
+            </LazyLoading>
+          </template>
+        </base-sub-card>
+      </div>
+    </template>
+
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
+      <div class="col-md-12">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">Policy Simulator</h5>
+          </template>
+
+          <template>
+            <LazyLoading>
+              <ControlPanelConfiguration :controlIndex="controlIndex">
+                <!-- <DynamicSection :values="payload" :controlIndex="controlIndex" /> -->
+                <PolicySimulator />
               </ControlPanelConfiguration>
             </LazyLoading>
           </template>
@@ -160,6 +157,9 @@ import DynamicSection from '../../components/sections/dynamic-section/DynamicSec
 import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
+// eslint-disable-next-line import/extensions
+import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config.js';
+import PolicySimulator from '../../components/sections/policy-simulator/policySimulator.vue';
 
 export default {
   data() {
@@ -176,6 +176,7 @@ export default {
         'Dataset Comparison',
         'Multi-Source Comparison',
         'Disaggregation',
+        'Policy Simulator',
       ],
     };
   },
@@ -189,6 +190,7 @@ export default {
     DataSetComparison,
     MultiSourceComponent,
     DynamicSection,
+    PolicySimulator,
   },
   props: {
     showTableRelatedIndicator: {
@@ -206,10 +208,14 @@ export default {
     // Applies the config that disables the num/denum if the route is on these dashboards
     noNHMIS() {
       if (
-        this.$route.path === '/dashboard/Disease_Surveillance'
-    || this.$route.path === '/dashboard/Health_Workforce'
-    || this.$route.path === '/dashboard/Health_Facility'
-    || this.$route.path === '/dashboard/Health_Service_Access'
+        // eslint-disable-next-line operator-linebreak
+        this.$route.path === '/dashboard/Disease_Surveillance' ||
+        // eslint-disable-next-line operator-linebreak
+        this.$route.path === '/dashboard/Health_Workforce' ||
+        // eslint-disable-next-line operator-linebreak
+        this.$route.path === '/dashboard/Health_Facility' ||
+        // eslint-disable-next-line operator-linebreak
+        this.$route.path === '/dashboard/Health_Service_Access'
       ) {
         return true;
       }
@@ -323,20 +329,23 @@ export default {
      * and so on and fort for the other sections
      */
 
-    const DiseaseSurveillanceConfig = this.noNHMIS ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
+    const DiseaseSurveillanceConfig = this.noNHMIS
+      ? IndicatorOverviewConfig2
+      : IndicatorOverviewConfig;
     const configs = [
       DiseaseSurveillanceConfig,
       ZonalAnalysisConfig,
       ICSConfig,
       DataSetComparisonConfig,
       BaseMultiSourceConfig,
+      PolicySimulatorConfiguration,
     ];
 
     // Updated flow
     const { name: queryParameter } = this.$route.params;
     if (this.customDashboard) {
       if (queryParameter) {
-      // const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
+        // const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
         const retrievedSections = this.getConfigObject()?.sections;
         if (retrievedSections && retrievedSections.length > 0) {
           this.filterSectionArray(configs, retrievedSections);
