@@ -14,8 +14,8 @@
       <template #title>
         <p class="work-sans mb-0 line-height">
           Distribution of
-          <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>Across
-         <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
+          <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>across
+          <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
           <span class="font-weight-bold"> {{ controlPanelProps.datasource.datasource }}</span>
           {{ controlPanelProps.year }}
         </p>
@@ -225,7 +225,7 @@ export default {
   },
 
   mounted() {
-    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} Across the zones in the Country. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
+    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} ccross the zones in the country. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
   },
 };
 </script>

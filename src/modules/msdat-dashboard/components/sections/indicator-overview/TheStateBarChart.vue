@@ -20,13 +20,13 @@
             Distribution of
 
             <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
-            <b>{{ values.indicator.short_name }}</b> Across The {{setAcrossRegion}}. Source:<b>
+            <b>{{ values.indicator.short_name }}</b> across the {{ setAcrossRegion }}. Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b
             >
           </p>
           <p class="work-sans mb-0 line-height" v-if="level !== 1">
             Distribution of
-            <b>{{ values.indicator.short_name }}</b> Across The States. Source:<b>
+            <b>{{ values.indicator.short_name }}</b> across the states. Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b
             >
           </p>
@@ -90,10 +90,7 @@ export default {
     },
   },
   computed: {
-    ...mapState('MSDAT_STORE', [
-      'selectedState',
-      'datasetComperision',
-    ]),
+    ...mapState('MSDAT_STORE', ['selectedState', 'datasetComperision']),
     setAcrossRegion() {
       return this.acrossRegion;
     },
@@ -125,7 +122,7 @@ export default {
     values: {
       async handler() {
         await this.updateValue();
-        this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+        this.title = `Distribution Of ${this.values.indicator.short_name} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
       },
       deep: true,
       immediate: true,
@@ -385,7 +382,7 @@ export default {
   },
   mounted() {
     this.updateData = +1;
-    this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+    this.title = `Distribution Of ${this.values.indicator.short_name} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>
