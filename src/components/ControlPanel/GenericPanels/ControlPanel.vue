@@ -1,11 +1,7 @@
 <template>
   <div class="row">
-    <div
-      v-for="(values, index) in setup"
-      :class="values.class"
-      :key="index"
-      v-show="values.visibility === undefined ? true : values.visibility"
-    >
+    <div v-for="(values, index) in setup" :class="values.class" :key="index"
+      v-show="values.visibility === undefined ? true : values.visibility">
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
 
       <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
@@ -15,33 +11,21 @@
       >
         {{ '' }}
       </label> -->
-      <label
-        class="text-uppercase work-sans label-text disabled_alt"
-        v-if="values.label == 'Target'"
-      >
+      <label class="text-uppercase work-sans label-text disabled_alt" v-if="values.label == 'Target'">
         {{ values.label }}
       </label>
-      <label
-        :class="
-          values.label === 'Num/Denom'
-            ? 'text-uppercase work-sans label-text d-flex justify-content-center'
-            : 'text-uppercase work-sans label-text d-flex'
-        "
-        v-else
-      >
+      <label :class="values.label === 'Num/Denom'
+        ? 'text-uppercase work-sans label-text d-flex justify-content-center'
+        : 'text-uppercase work-sans label-text d-flex'
+        " v-else>
         {{ values.label }}
       </label>
 
       <!-- ADVANCED ANALYTICS -->
-      <selectWrapper
-        v-if="values.type === 'dropdown' && values.key === 'indicator'"
-        :id="label"
-        :value="payload[values.key]"
-        @input="updatePayload($event, values.key)"
-        :options="getIndicatorList(values.options)"
-        :multiSelectProps="values.dropdownProps"
-        :NoDataLabel="values.label"
-      />
+      <selectWrapper v-if="values.type === 'dropdown' && values.key === 'indicator'" :id="label"
+        :value="payload[values.key]" @input="updatePayload($event, values.key)"
+        :options="getIndicatorList(values.options)" :multiSelectProps="values.dropdownProps"
+        :NoDataLabel="values.label" />
       {{ checkNHMISDHIS2() }}
       <!-- MSDAT SUB-DASHBOARDS -->
       <!-- <selectWrapper
@@ -53,22 +37,12 @@
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       /> -->
-      <selectWrapper
-        v-if="values.type === 'dropdown' && values.key !== 'indicator'"
-        :id="label"
-        :value="payload[values.key]"
-        @input="updatePayload($event, values.key)"
-        :options="locationCheck(values.options)"
-        :multiSelectProps="values.dropdownProps"
-        :NoDataLabel="values.label"
-      />
+      <selectWrapper v-if="values.type === 'dropdown' && values.key !== 'indicator'" :id="label"
+        :value="payload[values.key]" @input="updatePayload($event, values.key)" :options="locationCheck(values.options)"
+        :multiSelectProps="values.dropdownProps" :NoDataLabel="values.label" />
 
       <!-- Policy Simulator -->
-      <Generate
-        v-if="values.type === 'generate'"
-        :options="values.options"
-        :value="payload[values.key]"
-      ></Generate>
+      <Generate v-if="values.type === 'generate'" :options="values.options" :value="payload[values.key]"></Generate>
 
       <!-- history -->
       <History v-if="values.type === 'history'">Policy History</History>
@@ -83,73 +57,40 @@
       <div class="d-flex" v-if="values.type === 'checkbox'">
         <!-- National Target here -->
         <div class="d-flex disabled_alt">
-          <BaseCheckbox
-            :currentValue="payload.target.national"
-            @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')"
-          />
+          <BaseCheckbox :currentValue="payload.target.national"
+            @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')" />
           <p class="check-label ml-1">National</p>
         </div>
         <!-- SDG Target here -->
         <div class="d-flex ml-3 disabled_alt">
-          <BaseCheckbox
-            :currentValue="payload.target.sdg"
-            @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')"
-          />
+          <BaseCheckbox :currentValue="payload.target.sdg"
+            @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')" />
           <p class="check-label ml-1">SDG</p>
         </div>
       </div>
       <div v-if="values.type === 'visualization'" class="btn-group d-flex work-sans" role="group">
-        <button
-          type="button"
-          @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
-          class="btn btn-lg btn-outline-primary"
-          :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
-        >
+        <button type="button" @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
+          class="btn btn-lg btn-outline-primary" :class="[activeToggleButton === 'zonal_map' ? 'active' : '']">
           Zones Map
-          <img
-            :src="
-              require(`../svg/${
-                activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map'
-              }.svg`)
-            "
-            alt=""
-            srcset=""
-          />
+          <img :src="require(`../svg/${activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map'
+            }.svg`)
+            " alt="" srcset="" />
         </button>
-        <button
-          type="button"
-          @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
-          class="btn btn-lg btn-outline-primary"
-          :class="[activeToggleButton === 'state_map' ? 'active' : '']"
-        >
+        <button type="button" @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
+          class="btn btn-lg btn-outline-primary" :class="[activeToggleButton === 'state_map' ? 'active' : '']">
           State Map
-          <img
-            class="text-danger"
-            :src="
-              require(`../svg/${
-                activeToggleButton === 'state_map' ? 'state_map_white' : 'state_map'
-              }.svg`)
-            "
-            alt=""
-            srcset=""
-          />
+          <img class="text-danger" :src="require(`../svg/${activeToggleButton === 'state_map' ? 'state_map_white' : 'state_map'
+            }.svg`)
+            " alt="" srcset="" />
 
           <!-- - {{ activeToggleButton === 'zonal_map' ? 'state_map_white' : 'zonal_map' }} -->
         </button>
-        <button
-          type="button"
-          @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
-          class="btn btn-lg btn-outline-primary"
-          :class="[activeToggleButton === 'line' ? 'active' : '']"
-        >
+        <button type="button" @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
+          class="btn btn-lg btn-outline-primary" :class="[activeToggleButton === 'line' ? 'active' : '']">
           Line <b-icon icon="graph-up"></b-icon>
         </button>
-        <button
-          type="button"
-          @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
-          class="btn btn-lg btn-outline-primary"
-          :class="[activeToggleButton === 'column' ? 'active' : '']"
-        >
+        <button type="button" @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
+          class="btn btn-lg btn-outline-primary" :class="[activeToggleButton === 'column' ? 'active' : '']">
           Column <b-icon icon="bar-chart-fill"></b-icon>
         </button>
       </div>
@@ -159,12 +100,13 @@
 
 <script>
 // import ControlMixins from '@/components/ControlPanel/ControlMixins';
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex';
 // eslint-disable-next-line import/no-unresolved
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 // eslint-disable-next-line import/no-unresolved
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
+import Generate from '../components/generate.vue';
 
 export default {
   name: 'ControlPanel',
@@ -183,6 +125,7 @@ export default {
     selectWrapper,
     BaseCheckbox,
     toggle,
+    Generate,
   },
   props: {
     setup: {
@@ -279,7 +222,9 @@ export default {
       } = newValue;
       // eslint-disable-next-line camelcase
       const ind = Array.isArray(indicator)
+        // eslint-disable-next-line camelcase
         ? indicator[indicator.length - 1]?.short_name
+        // eslint-disable-next-line camelcase
         : indicator?.short_name;
       // eslint-disable-next-line no-nested-ternary
       const dat = Array.isArray(datasource)
@@ -427,6 +372,7 @@ export default {
   font-weight: bold;
   font-size: 14px;
 }
+
 button {
   font-size: 12px;
   font-weight: bold;
