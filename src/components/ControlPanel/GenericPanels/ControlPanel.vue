@@ -16,7 +16,7 @@
         {{ '' }}
       </label> -->
       <label
-        class="text-uppercase work-sans label-text disabled_alt"
+        :class=" disableTarget ? 'text-uppercase work-sans label-text':'text-uppercase work-sans label-text disabled_alt'"
         v-if="values.label == 'Target'"
       >
       {{ values.label }}
@@ -64,7 +64,7 @@
 
       <div class="d-flex" v-if="values.type === 'checkbox'">
         <!-- National Target here -->
-        <div class="d-flex disabled_alt">
+        <div :class="disableTarget ? 'd-flex ' : 'd-flex disabled_alt'">
           <BaseCheckbox
             :currentValue="payload.target.national"
             @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')"
@@ -72,7 +72,7 @@
           <p class="check-label ml-1">National</p>
         </div>
         <!-- SDG Target here -->
-        <div class="d-flex ml-3 disabled_alt">
+        <div :class="disableTarget ? 'd-flex ml-3':'d-flex ml-3 disabled_alt'">
           <BaseCheckbox
             :currentValue="payload.target.sdg"
             @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')"
@@ -377,10 +377,17 @@ export default {
       }
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
+    disableTarget() {
+      if (this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage' || this.$route.path === '/dashboard/Health_Service_Access') {
+        return true;
+      }
+      return false;
+    },
   },
 
   mounted() {
     const { name } = this.$route.params;
+    console.log('disabletarget', this.$route.path);
     this.dashboardName = name;
     const date = new Date();
     const getYear = date.getFullYear + 1;
