@@ -476,7 +476,6 @@ export default {
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
       );
       this.source = sortedSource;
-      console.log(this.source, 'this.source');
 
       // checking if it has NHMIS as a datasource
       if (this.source.some((item) => item.id === 6)) {
@@ -704,7 +703,6 @@ export default {
   // },
 
   async mounted() {
-    console.log(this.dataArray, 'dataArray');
     // Add a delay to get nhmis monthly data
     console.log(this.availableDataSources, 'this.numeratorData 15');
     console.log(this.$route, 'this.$route');

@@ -29,7 +29,6 @@
                 @reset="getReset"
               />
             </ControlPanelConfiguration>
-            {{ showItems(payload) }}
           </template>
         </base-sub-card>
       </div>
@@ -221,9 +220,6 @@ export default {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
 
-    showItems(item) {
-      console.log(item, '@@@');
-    },
     // Function to handle Multi-Source mobile view
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -327,8 +323,6 @@ export default {
       BaseMultiSourceConfig,
     ];
 
-    console.log('noHMIS', this.noNHMIS);
-    console.log('current route', this.$route.path);
     // Updated flow
     const { name: queryParameter } = this.$route.params;
     if (this.customDashboard) {
