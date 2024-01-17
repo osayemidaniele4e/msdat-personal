@@ -233,7 +233,6 @@ export default {
   },
 
   async mounted() {
-    console.log('@@@@@');
     this.title = ` Distribution of ${this.values.indicator.short_name} Across the Geopolitical zones in
           the Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
     const data = await this.dlQuery({
@@ -242,11 +241,7 @@ export default {
       location: this.values.location.id,
     });
 
-    console.log(data, '@@@@@data');
-
     data.sort((a, b) => a.period.localeCompare(b.period));
-
-    console.log(data, '@@@@@data');
     this.chartObject = {};
     const formattedData = this.formatDataToSeriesLineFormat(data);
     this.chartObject = this.formatToHighChartOptionForLine(

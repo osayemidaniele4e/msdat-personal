@@ -107,7 +107,6 @@ export default {
           key: 'period',
           value: this.getSelectedConfig().period,
         });
-        // console.log(this.getSelectedConfig(), 'CONFIG');
       }
       this.$emit('showSection', index);
     },

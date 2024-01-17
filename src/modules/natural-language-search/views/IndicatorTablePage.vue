@@ -139,7 +139,6 @@ export default {
                   // eslint-disable-next-line no-sequences
                   const dataArray = await uniqBy(newSourceArray, 'indicatorId');
                   this.dataArray = await dataArray;
-                  console.log(this.dataArray, 'newArray');
                 }),
               );
             }),
