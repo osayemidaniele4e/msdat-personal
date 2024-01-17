@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
   props: {
     text: {
@@ -13,18 +15,24 @@ export default {
     },
     typingSpeed: {
       type: Number,
-      default: 0.0008, // Adjust the speed as needed (milliseconds per character)
+      default: 0.002, // Adjust the speed as needed (milliseconds per character)
     },
   },
   data() {
     return {
       typedText: '',
       hasTyped: false,
+      isDestroyed: false,
     };
   },
+  computed: {
+    ...mapGetters('MSDAT_STORE', ['getIsTypingEffect']),
+  },
   methods: {
+    ...mapMutations('MSDAT_STORE', ['SET_ISTYPINGEFFECT']),
     simulateTyping() {
-      if (!this.hasTyped) {
+      if (!this.hasTyped && !this.isDestroyed) {
+        this.SET_ISTYPINGEFFECT(true);
         let currentIndex = 0;
         const textLength = this.text.length;
 
@@ -36,6 +44,7 @@ export default {
           if (currentIndex === textLength) {
             clearInterval(typingInterval);
             this.hasTyped = true;
+            this.SET_ISTYPINGEFFECT(false);
           }
         }, this.typingSpeed);
       }
@@ -43,6 +52,9 @@ export default {
   },
   mounted() {
     this.simulateTyping();
+  },
+  beforeDestroy() {
+    this.isDestroyed = true;
   },
   watch: {
     text: 'simulateTyping',
@@ -52,4 +64,8 @@ export default {
 
 <style scoped>
 /* Add your styles here if needed */
+span {
+  white-space: pre-line;
+  font-size: 18px;
+}
 </style>

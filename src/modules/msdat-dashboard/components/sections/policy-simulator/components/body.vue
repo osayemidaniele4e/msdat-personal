@@ -15,8 +15,8 @@
           <br />
         </div>
         <div v-else>
-          <!-- <TyperVue :text="message.message" /> -->
-          <p class="message">{{ message.message }}</p>
+          <TyperVue :text="message.message" />
+          <!-- <p class="message">{{ message.message }}</p> -->
           <br />
         </div>
       </div>
@@ -42,7 +42,7 @@
 import TheLoader from '@/modules/custom-dashboard/components/Loading/TheLoader.vue';
 import { mapGetters } from 'vuex';
 import Steps from './Steps.vue';
-// import TyperVue from './Typer.vue';
+import TyperVue from './Typer.vue';
 
 export default {
   name: 'Body',
@@ -59,7 +59,7 @@ export default {
   components: {
     Steps,
     TheLoader,
-    // TyperVue
+    TyperVue,
   },
   data() {
     return {};

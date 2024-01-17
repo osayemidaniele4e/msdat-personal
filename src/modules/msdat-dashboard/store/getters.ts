@@ -4,6 +4,7 @@ const getters = {
   getLoadingStatus: (state) => state.loading,
   getIsGenerating: (state) => state.isGenerating,
   getIsResponding: (state) => state.isResponding,
+  getIsTypingEffect: (state) => state.isTypingEffect,
   getConversation: (state) => state.conversationHistory,
 };
 

@@ -7,7 +7,7 @@
 "
       v-model="text"
     />
-    <button :disabled="getIsResponding">
+    <button :disabled="getIsResponding && !getIsTypingEffect">
       <svg
         version="1.1"
         id="Layer_1"
@@ -51,7 +51,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('MSDAT_STORE', ['getIsResponding', 'getConversation']),
+    ...mapGetters('MSDAT_STORE', ['getIsResponding', 'getConversation', 'getIsTypingEffect']),
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SET_ISRESPONDING', 'PUSH_CONVERSATION']),
@@ -59,9 +59,8 @@ export default {
     async sendFollowUp() {
       const PolicySimulatorInstance = new PolicyService();
       if (this.text === '') return;
-      if (this.getIsResponding) {
-        return;
-      }
+      if (this.getIsResponding) return;
+      if (this.getIsTypingEffect) return;
       try {
         const reply = PolicySimulatorInstance.createUserResponse(this.text);
         this.text = '';

@@ -1,11 +1,9 @@
 import axiosInstance from '@/plugins/axios';
 import axios from 'axios';
 
-const corsProxyUrl = 'https://corsproxy.io/?';
-
 // temporal cors proxy to bypass cors error
 const GPTinstance = axios.create({
-  baseURL: corsProxyUrl + encodeURIComponent(process.env.VUE_APP_API_GPT_URL),
+  baseURL: process.env.VUE_APP_API_GPT_URL,
 });
 
 class PolicyService {
