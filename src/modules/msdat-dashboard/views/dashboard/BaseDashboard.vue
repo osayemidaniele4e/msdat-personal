@@ -147,7 +147,6 @@
                                     :options="getProgramArea(item[0].options)"
                                     @input="updateProgram($event, item[0].options, index2)"
                                   />
-                                  {{ showItem(item) }}
                                 </div>
                                 <ControlPanel
                                   :label="modifyLabel(control.label, index2)"
@@ -382,9 +381,6 @@ export default {
       return `value${index}`;
     },
 
-    showItem(item) {
-      console.log(item, '@@HH@@');
-    },
     // function to get program areas
     getProgramArea(data) {
       return data.map((el) => el.program_area);

@@ -64,13 +64,10 @@ export default {
   },
 
   mounted() {
-    console.log(this.rowData.indicator, 'rowData');
-    console.log(this.factors, 'factorItem');
     // eslint-disable-next-line camelcase
     const { dashboard_name } = this.$route.query;
     // eslint-disable-next-line camelcase
     this.dashboardName = dashboard_name;
-    console.log('zonal map', this.dashboardName);
   },
 };
 </script>

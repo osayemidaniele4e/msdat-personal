@@ -153,7 +153,6 @@ export default {
             }
             formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
-          console.log(formattedData, 'this.dataArray');
           this.TableData = formattedData;
           this.loading = false;
         }

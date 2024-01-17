@@ -16,8 +16,7 @@ no-param-reassign */
         </p>
         <p class="mb-4 note">
           <b
-            >NOTE: Sources for each of the indicators in the graph were selected based on most
-            recent and most reliable estimates.
+            >NOTE: The indicators in the graph were chosen based on the latest and most reliable estimates from relevant sources.
           </b>
         </p>
         <p class="mb-4 sources">Sources: {{ this.programArea.sources }}</p>

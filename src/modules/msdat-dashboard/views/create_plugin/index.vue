@@ -202,6 +202,7 @@ export default {
     async onSubmit() {
     // Create a new FormData object
       const formData = new FormData();
+      // eslint-disable-next-line no-unused-vars
       const mockPk = 9384202;
       // Append form data to the FormData object
       formData.append('email', this.form.email);

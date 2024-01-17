@@ -178,8 +178,6 @@ export default {
       } else {
         this.error = 'Geolocation is not supported in your browser.';
       }
-
-      console.log('user location', this.userLocation);
     },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', 7);
@@ -220,10 +218,6 @@ export default {
         this.SET_SELECTED_CONFIG(defaultData);
         this.SET_SELECTED_CONFIG(defaultAdvancedYear);
       }
-
-      setTimeout(() => {
-        console.log('config', this.$store.state.MSDAT_STORE.configObject);
-      }, 5000);
     });
 
     // // console.log(defaultData, 'defaultData');
