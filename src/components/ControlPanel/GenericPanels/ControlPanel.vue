@@ -337,10 +337,17 @@ export default {
       }
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
+    disableTarget() {
+      if (this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage' || this.$route.path === '/dashboard/Health_Service_Access') {
+        return true;
+      }
+      return false;
+    },
   },
 
   mounted() {
     const { name } = this.$route.params;
+    console.log('disabletarget', this.$route.path);
     this.dashboardName = name;
     const date = new Date();
     const getYear = date.getFullYear + 1;
