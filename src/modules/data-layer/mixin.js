@@ -141,7 +141,6 @@ export default {
         (item) => item.value_type === datasource?.classification
       );
       query.value_type = valuetype[0]?.id ?? 2;
-      console.log(queryObject, query, 'XXHHXX', valuetype);
 
       if (isObject(query.location)) {
         const { location } = query;

@@ -4,5 +4,5 @@ export default {
   interactions: [],
   status: true,
   submittedPlugins: [],
-  pluginsImported: []
+  pluginsImported: [],
 };

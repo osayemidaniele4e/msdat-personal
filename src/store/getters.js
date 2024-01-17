@@ -5,5 +5,5 @@ export default {
   getInternetStatus: (state) => state.status,
   getSubmittedPlugins: (state) => state.submittedPlugins,
   getSuccessMessage: (state) => state.success !== '' && state.success,
-  getPluginsImported: (state) => state.pluginsImported 
+  getPluginsImported: (state) => state.pluginsImported,
 };

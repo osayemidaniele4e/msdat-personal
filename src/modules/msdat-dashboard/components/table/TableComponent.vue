@@ -385,7 +385,6 @@ export default {
      * this filter thorough the array of data parse and et all available  Parsed
      */
     getAvailableDataSources() {
-      console.log(this.dataArray, 'sortedSource -2');
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
       // console.log(allAvailableSources, 'this.dataArray');
@@ -396,7 +395,6 @@ export default {
       const sortedSource = allAvailableSources.sort(
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
       );
-      console.log(sortedSource, 'sortedSource');
       this.source = sortedSource;
 
       // checking if it has NHMIS as a datasource
@@ -484,7 +482,6 @@ export default {
     async getNhmisMonthly() {
       this.indicators = [];
       this.nhmisMonthData = [];
-      console.log(this.dataArray, 'Na T Wao');
       this.dataArray.map(async (element) => {
         await this.indicators.push({
           datasource: 30, // nhmis monthly id
@@ -555,9 +552,7 @@ export default {
   },
 
   async mounted() {
-    console.log(this.dataArray, 'Na Wao');
     // Add a delay to get nhmis monthly data
-    console.log(this.$route, 'this.$route');
     setTimeout(async () => {
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
         await this.getNhmisMonthly();

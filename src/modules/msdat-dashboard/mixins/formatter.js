@@ -37,7 +37,6 @@ export default {
       }
     },
     tableComponentDataFormatter(indicatorObject, dataObjectArray) {
-      console.log(indicatorObject, dataObjectArray, 'HHHH');
       const data = {};
       data.indicator = indicatorObject;
       data.values = [];
@@ -45,7 +44,6 @@ export default {
         if (e) {
           const datasource = this.dlGetDataSource(e.datasource);
           const factor = this.dlGetFactor(indicatorObject.factor);
-          console.log(datasource, factor, 'KKKKTT');
           data.values.push({
             dataSources: datasource,
             // change 2 decimal place to 1 decimal place

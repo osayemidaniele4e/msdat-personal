@@ -1,3 +1,4 @@
+/* eslint no-use-before-define: 0 */
 import axiosInstance from '@/config/axios';
 import axios from 'axios';
 
@@ -55,18 +56,20 @@ export default {
   },
 
   // submitting a plugin
+  // eslint-disable-next-line no-unused-vars
   async SUBMIT_PLUGIN({ commit }, payload) {
-    console.log('submit payload', payload)
+    console.log('submit payload', payload);
     try {
-      const { data } = await axios.post('https://msdat2api.e4eweb.space/api/plugin-submissions/', 
-      payload,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Access-Control-Allow-Origin': 'https://msdat2-staging.e4eweb.space',
-          // Add other headers if needed
+      const { data } = await axios.post(
+        'https://msdat2api.e4eweb.space/api/plugin-submissions/',
+        payload,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': 'https://msdat2-staging.e4eweb.space',
+            // Add other headers if needed
+          },
         },
-      }
       );
       // commit('setInteraction', data);
       console.log(data);
@@ -75,25 +78,28 @@ export default {
     }
   },
 
+  // approving a plugin
+  // eslint-disable-next-line no-unused-vars
+  async APPROVE_PLUGIN({ commit }, payload) {
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const { data } = await axios.post(
+        'https://msdat2api.e4eweb.space/api/plugin-submissions/approval/',
+        payload,
+      );
+      // commit();
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
-    // approving a plugin
-    async APPROVE_PLUGIN({ commit }, payload) {
-      try {
-        const { data } = await axios.post('https://msdat2api.e4eweb.space/api/plugin-submissions/approval/', 
-        payload
-        );
-        // commit();
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-
-  // getting all submitted plugins 
-
+  // getting all submitted plugins
+  // eslint-disable-next-line no-unused-vars
   async GET_PLUGINS({ commit }, payload) {
     try {
-      const response = await axiosInstance.get(`https://msdat2api.e4eweb.space/api/plugin-submissions/`);
+      const response = await axiosInstance.get(
+        'https://msdat2api.e4eweb.space/api/plugin-submissions/',
+      );
       const { results } = response.data;
       commit('setSubmittedPlugins', results);
     } catch (error) {
@@ -103,7 +109,10 @@ export default {
 
   async SET_DASHBOARD_LOCATION(payload) {
     try {
-      const { data } = await axios.post('https://msdat2api.e4eweb.space/api/user_dashboard_location/', payload);
+      const { data } = await axios.post(
+        'https://msdat2api.e4eweb.space/api/user_dashboard_location/',
+        payload,
+      );
       console.log(data);
       // commit('setInteraction', data);
     } catch (error) {

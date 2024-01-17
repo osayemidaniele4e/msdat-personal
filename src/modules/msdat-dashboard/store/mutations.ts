@@ -173,10 +173,20 @@ const mutations: MutationTree<State> = {
     });
   },
 
+  SET_ADVANCED_MULTISOURCE_DEFAULT_DATASOURCES: (state, payload) => {
+    state.selectedConfigurations.dataSource = payload;
+    state.controlConfig.forEach((item) => {
+      if (item.label === 'Multi-Source Indicator Comparison') {
+        item.payload.forEach((source) => {
+          source.datasource = payload;
+        });
+      }
+    });
+  },
+
   UPDATE_PROGRAM_AREAS: (state, payload) => {
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Indicator Comparison') {
-
         item.payload.forEach((source, index) => {
           if (index === payload.index) {
             // eslint-disable-next-line no-param-reassign
