@@ -8,7 +8,7 @@
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
 
-        <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
+      <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
       <!-- <label
         class="text-uppercase work-sans label-text "
         v-if="!hasNHMIS && values.label == 'Num/Denom'"
@@ -19,9 +19,18 @@
         class="text-uppercase work-sans label-text disabled_alt"
         v-if="values.label == 'Target'"
       >
-      {{ values.label }}
+        {{ values.label }}
       </label>
-      <label :class=" values.label==='Num/Denom'? 'text-uppercase work-sans label-text d-flex justify-content-center':'text-uppercase work-sans label-text d-flex'" v-else> {{ values.label }} </label>
+      <label
+        :class="
+          values.label === 'Num/Denom'
+            ? 'text-uppercase work-sans label-text d-flex justify-content-center'
+            : 'text-uppercase work-sans label-text d-flex'
+        "
+        v-else
+      >
+        {{ values.label }}
+      </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -53,13 +62,22 @@
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       />
+
+      <!-- Policy Simulator -->
+      <Generate
+        v-if="values.type === 'generate'"
+        :options="values.options"
+        :value="payload[values.key]"
+      ></Generate>
+
+      <!-- history -->
+      <History v-if="values.type === 'history'">Policy History</History>
+
+      <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
       <div class="d-flex justify-content-center">
-        <toggle
-          v-if="values.type === 'toggle'"
-          @change="updatePayload($event, values.key)"
-        />
+        <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
       </div>
 
       <div class="d-flex" v-if="values.type === 'checkbox'">
@@ -141,13 +159,14 @@
 
 <script>
 // import ControlMixins from '@/components/ControlPanel/ControlMixins';
-import { mapMutations, mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
+// eslint-disable-next-line import/no-unresolved
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
+// eslint-disable-next-line import/no-unresolved
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
 
 export default {
-  // mixins: [ControlMixins],
   name: 'ControlPanel',
   data() {
     return {
@@ -157,21 +176,7 @@ export default {
       // (controlIndex & groupIndex)
       controlIndexSub: this.controlIndex,
       groupIndexSub: this.groupIndex,
-      // payload: {
-      //   indicator: 'indicator 2',
-      //   location: '',
-      //   datasource: 'NHMIS 1',
-      //   year: '',
-      //   compareBy: '',
-      //   visualization: 'state_map',
-      //   target: {
-      //     national: false,
-      //     sdg: false,
-      //   },
-      //   numdenum: false,
-      // },
       hasNHMIS: false,
-
     };
   },
   components: {
@@ -273,10 +278,15 @@ export default {
         indicator, datasource, location, year,
       } = newValue;
       // eslint-disable-next-line camelcase
-      const ind = Array.isArray(indicator) ? indicator[indicator.length - 1]?.short_name : indicator?.short_name;
+      const ind = Array.isArray(indicator)
+        ? indicator[indicator.length - 1]?.short_name
+        : indicator?.short_name;
       // eslint-disable-next-line no-nested-ternary
-      const dat = Array.isArray(datasource) ? datasource[datasource.length - 1]?.item : datasource.datasource
-        ? datasource.datasource : datasource?.item;
+      const dat = Array.isArray(datasource)
+        ? datasource[datasource.length - 1]?.item
+        : datasource.datasource
+          ? datasource.datasource
+          : datasource?.item;
       const loc = location?.name === 'Nigeria' ? 'National' : location?.name;
       if (ind && dat && this.getUser.id) {
         const activityObject = {
@@ -288,22 +298,24 @@ export default {
         };
         const lastActivity = JSON.parse(localStorage.getItem('lastActivity') || '{}');
         const hold = (Date.now() - lastActivity.datetime || 0) >= 5000;
-        const diff = (lastActivity.page !== activityObject.page)
-          || (lastActivity.section !== activityObject.section)
-          || (lastActivity.parameters !== activityObject.parameters);
+        const diff = lastActivity.page !== activityObject.page
+          || lastActivity.section !== activityObject.section
+          || lastActivity.parameters !== activityObject.parameters;
         if (hold && diff) {
           // send activity post request to backend
           console.log('activity', activityObject);
         }
-        localStorage.setItem('lastActivity', (JSON.stringify(activityObject)));
+        localStorage.setItem('lastActivity', JSON.stringify(activityObject));
       }
     },
     locationCheck(options) {
       // console.log(options, 'options');
       if (
-        this.$route.params.name === 'Disease_Surveillance'
-        && options !== null
-        && options.length === 38
+        // eslint-disable-next-line operator-linebreak
+        this.$route.params.name === 'Disease_Surveillance' &&
+        // eslint-disable-next-line operator-linebreak
+        options !== null &&
+        options.length === 38
       ) {
         // const main = options.filter((s) => s.name === 'Nigeria');
         // console.log(main, 'Nigeria');
@@ -332,7 +344,10 @@ export default {
       // console.log(this.$store.getters.getSectionTitle, 'XXXXX');
 
       const { name } = this.$route.params;
-      if (name === 'Advanced_Analytics' && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison') {
+      if (
+        name === 'Advanced_Analytics'
+        && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison'
+      ) {
         return data?.filter((item) => item.program_area === this.indicatorList);
       }
 
@@ -412,7 +427,7 @@ export default {
   font-weight: bold;
   font-size: 14px;
 }
-button{
+button {
   font-size: 12px;
   font-weight: bold;
 }

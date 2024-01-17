@@ -17,6 +17,15 @@ export interface State {
   };
   configObject: {};
   loading: boolean;
+  isGenerating: boolean;
+  isTypingEffect: boolean;
+  isResponding: boolean;
+  conversationHistory: Conversation[]
+}
+
+export type Conversation = {
+  user: boolean;
+  message: string
 }
 
 export interface SetupObject {
