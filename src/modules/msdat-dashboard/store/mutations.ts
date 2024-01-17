@@ -30,6 +30,12 @@ const mutations: MutationTree<State> = {
   SET_ISTYPINGEFFECT: (state, payload) => {
     state.isTypingEffect = payload;
   },
+  SET_CONVERSATION: (state, payload) => {
+    state.conversationHistory = [payload];
+  },
+  POP_LAST: (state) => {
+    state.conversationHistory = [...state.conversationHistory.slice(0, -1)];
+  },
   PUSH_CONVERSATION: (state, payload: Conversation) => {
     state.conversationHistory = [...state.conversationHistory, payload];
   },

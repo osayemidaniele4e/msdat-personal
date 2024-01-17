@@ -15,8 +15,8 @@
           <br />
         </div>
         <div v-else>
-          <TyperVue :text="message.message" />
-          <!-- <p class="message">{{ message.message }}</p> -->
+          <TyperVue v-if="!message.loading" :text="message.message" />
+          <p v-else class="message">{{ message.message }}</p>
           <br />
         </div>
       </div>

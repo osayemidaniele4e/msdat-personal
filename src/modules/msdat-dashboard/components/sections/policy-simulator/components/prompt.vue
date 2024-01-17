@@ -54,42 +54,96 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getIsResponding', 'getConversation', 'getIsTypingEffect']),
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_ISRESPONDING', 'PUSH_CONVERSATION']),
+    ...mapMutations('MSDAT_STORE', [
+      'SET_ISRESPONDING',
+      'PUSH_CONVERSATION',
+      'SET_CONVERSATION',
+      'POP_LAST',
+    ]),
+
+    // async sendFollowUp() {
+    //   const PolicySimulatorInstance = new PolicyService();
+    //   if (this.text === '') return;
+    //   if (this.getIsResponding) return;
+    //   if (this.getIsTypingEffect) return;
+    //   try {
+    //     const reply = PolicySimulatorInstance.createUserResponse(this.text);
+    //     this.text = '';
+    //     await this.PUSH_CONVERSATION(reply);
+    //     // set is responding to true
+    //     await this.SET_ISRESPONDING(true);
+    //     // generate response from gpt
+
+    //     // todo: simulate is typing message
+
+    //     const { response } = await PolicySimulatorInstance.generateReply(
+    //       this.getConversation,
+    //       // eslint-disable-next-line comma-dangle
+    //       reply.message
+    //     );
+    //     // create and push user reply
+
+    //     // create and push gpt reply
+    //     const message = PolicySimulatorInstance.createSimulatedResponse(response);
+    //     // set is respondinf to false as message has been generated
+    //     await this.SET_ISRESPONDING(false);
+    //     await this.PUSH_CONVERSATION(message);
+    //   } catch (error) {
+    //     await this.SET_ISRESPONDING(false);
+    //     const message = PolicySimulatorInstance.createErrorResponse(
+    //       // eslint-disable-next-line comma-dangle
+    //       'An error occured, Please, try again'
+    //     );
+    //     await this.PUSH_CONVERSATION(message);
+    //   }
+    // },
 
     async sendFollowUp() {
       const PolicySimulatorInstance = new PolicyService();
-      if (this.text === '') return;
-      if (this.getIsResponding) return;
-      if (this.getIsTypingEffect) return;
+
       try {
+        if (this.text === '') return;
+        if (this.getIsResponding || this.getIsTypingEffect) return;
+
         const reply = PolicySimulatorInstance.createUserResponse(this.text);
         this.text = '';
-        await this.PUSH_CONVERSATION(reply);
-        // set is responding to true
-        await this.SET_ISRESPONDING(true);
-        // generate response from gpt
 
+        await this.SET_ISRESPONDING(true);
+
+        // Simulate is typing message
         // todo: simulate is typing message
+
+        // Create and push user reply
+        const userReply = PolicySimulatorInstance.createUserResponse(reply.message);
+        await this.PUSH_CONVERSATION(userReply);
+
+        // Add a loading message to the conversation
+        const loadingMessage = PolicySimulatorInstance.createLoadingResponse();
+        await this.PUSH_CONVERSATION(loadingMessage);
 
         const { response } = await PolicySimulatorInstance.generateReply(
           this.getConversation,
           // eslint-disable-next-line comma-dangle
           reply.message
         );
-        // create and push user reply
 
-        // create and push gpt reply
-        const message = PolicySimulatorInstance.createSimulatedResponse(response);
-        // set is respondinf to false as message has been generated
+        // Create and push GPT reply
+        const gptReply = PolicySimulatorInstance.createSimulatedResponse(response);
+        // pop last
+        await this.POP_LAST();
+        await this.PUSH_CONVERSATION(gptReply);
+
+        // Set is responding to false as the message has been generated
         await this.SET_ISRESPONDING(false);
-        await this.PUSH_CONVERSATION(message);
       } catch (error) {
         await this.SET_ISRESPONDING(false);
-        const message = PolicySimulatorInstance.createErrorResponse(
+
+        // Handle errors and display an error message in the conversation
+        const errorMessage = PolicySimulatorInstance.createErrorResponse(
           // eslint-disable-next-line comma-dangle
-          'An error occured, Please, try again'
+          'An error occurred. Please try again.'
         );
-        await this.PUSH_CONVERSATION(message);
+        this.PUSH_CONVERSATION(errorMessage);
       }
     },
   },
