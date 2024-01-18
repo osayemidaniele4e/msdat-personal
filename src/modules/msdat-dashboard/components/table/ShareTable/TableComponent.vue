@@ -859,9 +859,10 @@ table.table {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 10px;
+  /* padding-top: 10px;
   padding-left: 10px;
-  padding-right: 10px;
+  padding-right: 10px; */
+  padding: 0.75rem;
 }
 
 .meta_icon {
