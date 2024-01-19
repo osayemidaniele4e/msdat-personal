@@ -111,7 +111,7 @@ export default {
     if (this.$route.query.code) {
       const data = {
         code: this.$route.query.code,
-        redirect: `${window.location.origin}/custom/login`,
+        redirect_uri: `${window.location.origin}/custom/login`,
       };
       this.linkedlnSignin(data);
     }

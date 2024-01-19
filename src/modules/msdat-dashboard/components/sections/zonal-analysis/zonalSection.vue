@@ -77,6 +77,11 @@ export default {
           type: 'column',
           zoomType: 'xy',
         },
+        xAxis: {
+          type: 'category',
+          min: -0.3,
+          max: dataSeries.reduce((total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length, 0) - 0.7,
+        },
         yAxis: {
           gridLineWidth: 0,
           plotLines: [...this.computeChartPlotLines(this.controlPanelProps)],
