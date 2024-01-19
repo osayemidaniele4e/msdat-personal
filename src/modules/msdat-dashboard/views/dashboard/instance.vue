@@ -78,7 +78,7 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }">
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -100,7 +100,7 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
+    <template v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }">
       <div class="col-md-12 overflow-auto">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm disaggregation">
           <template #title>
@@ -168,7 +168,7 @@ export default {
       updateValue: {},
       updateKey: '',
       resetData: 1,
-      sectionArray: [0, 1, 2, 3, 4, 5],
+      sectionArray: [0, 1, 2, 3, 4, 5, 6],
       allSections: [
         'Indicator Overview',
         'Zonal Analysis',
