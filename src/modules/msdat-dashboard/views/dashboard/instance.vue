@@ -117,7 +117,7 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
+    <!-- <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -127,14 +127,13 @@
           <template>
             <LazyLoading>
               <ControlPanelConfiguration :controlIndex="controlIndex">
-                <!-- <DynamicSection :values="payload" :controlIndex="controlIndex" /> -->
                 <PolicySimulator />
               </ControlPanelConfiguration>
             </LazyLoading>
           </template>
         </base-sub-card>
       </div>
-    </template>
+    </template> -->
   </BaseDashboard>
 </template>
 
@@ -176,7 +175,7 @@ export default {
         'Dataset Comparison',
         'Multi-Source Comparison',
         'Disaggregation',
-        'Policy Simulator',
+        // 'Policy Simulator',
       ],
     };
   },
@@ -190,7 +189,7 @@ export default {
     DataSetComparison,
     MultiSourceComponent,
     DynamicSection,
-    PolicySimulator,
+    // PolicySimulator,
   },
   props: {
     showTableRelatedIndicator: {
@@ -338,7 +337,7 @@ export default {
       ICSConfig,
       DataSetComparisonConfig,
       BaseMultiSourceConfig,
-      PolicySimulatorConfiguration,
+      // PolicySimulatorConfiguration,
     ];
 
     // Updated flow

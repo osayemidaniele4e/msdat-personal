@@ -1,4 +1,6 @@
 <!-- eslint-disable no-unused-vars -->
+<!-- eslint-disable camelcase -->
+<!-- eslint-disable no-unused-vars -->
 <template>
   <div id="app">
     <router-view />
@@ -9,7 +11,7 @@
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import contextPlugin from './modules/plugins/contextPlugin';
-// import indicatorPlugin from './modules/plugins/indicatorPlugin';
+import indicatorPlugin from './modules/plugins/indicatorPlugin';
 
 export default {
   data() {
@@ -19,7 +21,7 @@ export default {
     };
   },
   async mounted() {
-    // eslint-disable-next-line no-unused-vars, camelcase
+    // eslint-disable-next-line camelcase, no-unused-vars
     const plugins_imported = [];
 
     this.pluginsImported.push('contextPlugin');
@@ -31,26 +33,20 @@ export default {
       Vue.use(contextPlugin);
     }
 
-    // this.pluginsImported.push('indicatorPlugin');
-    // if (!localStorage.getItem('indicatorPlugin')) {
-    //   localStorage.setItem('indicatorPlugin', 'false');
-    // }
+    this.pluginsImported.push('indicatorPlugin');
+    if (!localStorage.getItem('indicatorPlugin')) {
+      localStorage.setItem('indicatorPlugin', 'false');
+    }
 
-    // if (localStorage.getItem('indicatorPlugin') === 'true') {
-    //   Vue.use(indicatorPlugin);
-    // }
-    // if (localStorage.getItem('indicatorPlugin') === 'true') {
-    //   Vue.use(indicatorPlugin);
-    // }
+    if (localStorage.getItem('indicatorPlugin') === 'true') {
+      Vue.use(indicatorPlugin);
+    }
 
-    console.log('pluginsImported', this.pluginsImported);
-    await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
     console.log('pluginsImported', this.pluginsImported);
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
-    ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
   },
 };
