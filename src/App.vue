@@ -9,13 +9,13 @@
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import contextPlugin from './modules/plugins/contextPlugin';
-import indicatorPlugin from './modules/plugins/indicatorPlugin';
+// import indicatorPlugin from './modules/plugins/indicatorPlugin';
 
 export default {
   data() {
     return {
       pluginsImported: [], // Explicitly specify the type as an array of strings
-      pluginsImported: [], // Explicitly specify the type as an array of strings
+      // pluginsImported: [], // Explicitly specify the type as an array of strings
     };
   },
   async mounted() {
@@ -31,21 +31,17 @@ export default {
       Vue.use(contextPlugin);
     }
 
-    this.pluginsImported.push('indicatorPlugin');
-    if (!localStorage.getItem('indicatorPlugin')) {
-      localStorage.setItem('indicatorPlugin', 'false');
-    }
-    this.pluginsImported.push('indicatorPlugin');
-    if (!localStorage.getItem('indicatorPlugin')) {
-      localStorage.setItem('indicatorPlugin', 'false');
-    }
+    // this.pluginsImported.push('indicatorPlugin');
+    // if (!localStorage.getItem('indicatorPlugin')) {
+    //   localStorage.setItem('indicatorPlugin', 'false');
+    // }
 
-    if (localStorage.getItem('indicatorPlugin') === 'true') {
-      Vue.use(indicatorPlugin);
-    }
-    if (localStorage.getItem('indicatorPlugin') === 'true') {
-      Vue.use(indicatorPlugin);
-    }
+    // if (localStorage.getItem('indicatorPlugin') === 'true') {
+    //   Vue.use(indicatorPlugin);
+    // }
+    // if (localStorage.getItem('indicatorPlugin') === 'true') {
+    //   Vue.use(indicatorPlugin);
+    // }
 
     console.log('pluginsImported', this.pluginsImported);
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
