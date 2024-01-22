@@ -37,6 +37,18 @@
               >National Data Repository Dashboard 2</b-list-group-item
             ></router-link
           >
+          <a
+              target="_blank"
+              v-for="dashboard in publicDashboards.filter((dash) => {
+                return (dash.category === 'health_input' && dash.isConfirmed)
+              })"
+              :href="dashboard.link"
+              :key="dashboard.id"
+            >
+            <b-list-group-item>
+              {{ dashboard.name_of_dashboard }}
+            </b-list-group-item>
+          </a>
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -67,6 +79,18 @@
                 >Disease Surveillance (NCDC)</b-list-group-item
               ></router-link
             >
+            <a
+                target="_blank"
+                v-for="dashboard in publicDashboards.filter((dash) => {
+                  return (dash.category === 'health_outputs' && dash.isConfirmed)
+                })"
+                :href="dashboard.link"
+                :key="dashboard.id"
+              >
+              <b-list-group-item>
+                {{ dashboard.name_of_dashboard }}
+              </b-list-group-item>
+            </a>
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -172,19 +196,19 @@ export default {
       this.loading = false;
     },
     getUserDashboards() {
-      if (this.isAuthenticated) {
-        this.$store.dispatch('getDashboards').then(({ data }) => {
-          this.publicDashboards = Object.values(data)
-            .filter((req) => req.email === this.getUser.email)
-            .map((req) => ({
-              ...req, config: { ...JSON.parse(req.config) },
-            }));
-        }).catch((err) => {
-          console.log(err);
-        });
-      } else {
-        this.publicDashboards = [];
-      }
+      // if (this.isAuthenticated) {
+      this.$store.dispatch('getDashboards').then(({ data }) => {
+        this.publicDashboards = Object.values(data)
+        // .filter((req) => req.email === this.getUser.email)
+          .map((req) => ({
+            ...req, config: { ...JSON.parse(req.config) },
+          }));
+      }).catch((err) => {
+        console.log(err);
+      });
+      // } else {
+      // this.publicDashboards = [];
+      // }
     },
   },
 
@@ -202,7 +226,7 @@ export default {
         // User is newly authenticated
         this.refreshUserData();
       }
-      this.getUserDashboards();
+      // this.getUserDashboards();
     },
   },
 };
