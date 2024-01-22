@@ -21,7 +21,7 @@
                     Download</b-button>
                 </a>
                 &nbsp;
-                <b-button @click="approvePlugin(plugin.plugin)" variant="primary">
+                <b-button @click="approvePlugin(plugin.plugin, plugin.id)" variant="primary">
                   <b-icon icon="download"></b-icon>
                   Approve</b-button>
 
@@ -66,8 +66,12 @@ export default {
       return filteredArr;
     },
 
-    async approvePlugin(file) {
-      await this.APPROVE_PLUGIN(file);
+    async approvePlugin(file, id) {
+      const fileObject = {
+        id: id,
+        file: file
+      }
+      await this.APPROVE_PLUGIN(fileObject);
       await this.$bvModal.show('modal-1');
     },
   },
