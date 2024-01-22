@@ -11,7 +11,7 @@
       >
         {{ '' }}
       </label> -->
-      <label class="text-uppercase work-sans label-text disabled_alt" v-if="values.label == 'Target'">
+      <label :class=" disableTarget ? 'text-uppercase work-sans label-text':'text-uppercase work-sans label-text disabled_alt'" v-if="values.label == 'Target'">
         {{ values.label }}
       </label>
       <label :class="values.label === 'Num/Denom'
@@ -56,13 +56,13 @@
 
       <div class="d-flex" v-if="values.type === 'checkbox'">
         <!-- National Target here -->
-        <div class="d-flex disabled_alt">
+        <div :class="disableTarget ? 'd-flex ' : 'd-flex disabled_alt'">
           <BaseCheckbox :currentValue="payload.target.national"
             @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')" />
           <p class="check-label ml-1">National</p>
         </div>
         <!-- SDG Target here -->
-        <div class="d-flex ml-3 disabled_alt">
+        <div :class="disableTarget ? 'd-flex ml-3':'d-flex ml-3 disabled_alt'">
           <BaseCheckbox :currentValue="payload.target.sdg"
             @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')" />
           <p class="check-label ml-1">SDG</p>
@@ -347,7 +347,7 @@ export default {
 
   mounted() {
     const { name } = this.$route.params;
-    console.log('disabletarget', this.$route.path);
+    // console.log('disabletarget', this.$route.path);
     this.dashboardName = name;
     const date = new Date();
     const getYear = date.getFullYear + 1;
