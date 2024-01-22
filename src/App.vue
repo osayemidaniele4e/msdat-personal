@@ -1,4 +1,3 @@
-<!-- eslint-disable no-unused-vars -->
 <template>
   <div id="app">
     <router-view />
@@ -19,7 +18,7 @@ export default {
     };
   },
   async mounted() {
-    // eslint-disable-next-line no-unused-vars, camelcase
+    // eslint-disable-next-line camelcase, no-unused-vars
     const plugins_imported = [];
 
     this.pluginsImported.push('contextPlugin');
@@ -42,12 +41,9 @@ export default {
 
     console.log('pluginsImported', this.pluginsImported);
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
-    console.log('pluginsImported', this.pluginsImported);
-    await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
-    ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
   },
 };
