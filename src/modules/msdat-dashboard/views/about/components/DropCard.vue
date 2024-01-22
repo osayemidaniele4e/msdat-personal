@@ -37,6 +37,18 @@
               >National Data Repository Dashboard 2</b-list-group-item
             ></router-link
           >
+          <a
+              target="_blank"
+              v-for="dashboard in publicDashboards.filter((dash) => {
+                return (dash.category === 'health_input' && dash.isConfirmed)
+              })"
+              :href="dashboard.link"
+              :key="dashboard.id"
+            >
+            <b-list-group-item>
+              {{ dashboard.name_of_dashboard }}
+            </b-list-group-item>
+          </a>
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -67,6 +79,18 @@
                 >Disease Surveillance (NCDC)</b-list-group-item
               ></router-link
             >
+            <a
+                target="_blank"
+                v-for="dashboard in publicDashboards.filter((dash) => {
+                  return (dash.category === 'health_outputs' && dash.isConfirmed)
+                })"
+                :href="dashboard.link"
+                :key="dashboard.id"
+              >
+              <b-list-group-item>
+                {{ dashboard.name_of_dashboard }}
+              </b-list-group-item>
+            </a>
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -137,7 +161,6 @@ import {
   // eslint-disable-next-line no-unused-vars
   mapActions, mapGetters, mapMutations, mapWatch,
 } from 'vuex';
-import axios from 'axios';
 
 export default {
   data() {
@@ -172,6 +195,21 @@ export default {
 
       this.loading = false;
     },
+    getUserDashboards() {
+      // if (this.isAuthenticated) {
+      this.$store.dispatch('getDashboards').then(({ data }) => {
+        this.publicDashboards = Object.values(data)
+        // .filter((req) => req.email === this.getUser.email)
+          .map((req) => ({
+            ...req, config: { ...JSON.parse(req.config) },
+          }));
+      }).catch((err) => {
+        console.log(err);
+      });
+      // } else {
+      // this.publicDashboards = [];
+      // }
+    },
   },
 
   async mounted() {
@@ -179,18 +217,7 @@ export default {
     await this.SAVE_DASHBOARDS();
     this.userDashboards = await this.filterArray(this.getUser, this.getDashboards.data);
     this.loading = false;
-    if (this.isAuthenticated) {
-      const url = 'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json';
-      axios.get(url).then(({ data }) => {
-        this.publicDashboards = Object.values(data)
-          .filter((req) => req.email === this.getUser.email)
-          .map((req) => ({
-            ...req, config: { ...JSON.parse(req.config) },
-          }));
-      }).catch((err) => {
-        console.log(err);
-      });
-    }
+    this.getUserDashboards();
   },
 
   watch: {
@@ -199,6 +226,7 @@ export default {
         // User is newly authenticated
         this.refreshUserData();
       }
+      // this.getUserDashboards();
     },
   },
 };

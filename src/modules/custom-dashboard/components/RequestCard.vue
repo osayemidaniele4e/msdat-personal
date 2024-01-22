@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   props: {
@@ -75,8 +74,9 @@ export default {
             allowOutsideClick: false,
             showLoading: true,
           });
-          const url = `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${this.request.id}.json`;
-          axios.patch(url, {
+          // Update Dashboard Confirmation status
+          this.$store.dispatch('updateDashboard', {
+            id: this.request.id,
             isConfirmed: true,
           }).then(() => {
             this.$swal.fire('Dashboard approved successfully!');
@@ -101,8 +101,9 @@ export default {
             allowOutsideClick: false,
             showLoading: true,
           });
-          const url = `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${this.request.id}.json`;
-          axios.patch(url, {
+          // Update Dashboard Confirmation status
+          this.$store.dispatch('updateDashboard', {
+            id: this.request.id,
             disapproved: true,
           }).then(() => {
             this.$swal.fire('Dashboard disapproved!');
