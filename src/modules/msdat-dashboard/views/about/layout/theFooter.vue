@@ -1,6 +1,6 @@
 <template>
   <footer id="the-footer" class="work-sans hide-footer" data-html2canvas-ignore>
-    <button @click="captureAndShare">Share as Image</button>
+    <!-- <button @click="captureAndShare">Share as Image</button> -->
     <div>Built with <b-icon-heart-fill /> by eHealth4everyone</div>
     <div>
       <span v-if="checkIfDashboard"
@@ -21,7 +21,7 @@
 import { mapMutations } from 'vuex';
 import moment from 'moment';
 import apiServices from '@/modules/data-layer/services/ApiServices';
-import html2canvas from 'html2canvas';
+// import html2canvas from 'html2canvas';
 
 export default {
   name: 'theFooter',
@@ -61,71 +61,71 @@ export default {
       this.indicatorCount = this.dashboard?.indicators.length || localStorage.getItem('lsIndicatorCount');
       this.dataSourceCount = this.dashboard?.dataSources.length || localStorage.getItem('lsDataSourceCount');
     },
-    async captureAndShare() {
-      // Capture the content of the index.vue component
-      const contentElement = document.querySelector('.index-app'); // Use the appropriate selector for your app container
+    // async captureAndShare() {
+    //   // Capture the content of the index.vue component
+    //   const contentElement = document.querySelector('.index-app'); // Use the appropriate selector for your app container
 
-      const originalCanvas = await html2canvas(contentElement);
+    //   const originalCanvas = await html2canvas(contentElement);
 
-      // Create a new canvas with the desired width and height, including padding
-      const canvas = document.createElement('canvas');
-      const padding = 40; // Adjust the padding as needed
-      const canvasWidth = originalCanvas.width + 2 * padding;
-      const canvasHeight = originalCanvas.height - 60 + 2 * padding + 100; // Add space for the description text
-      canvas.width = canvasWidth;
-      canvas.height = canvasHeight;
+    //   // Create a new canvas with the desired width and height, including padding
+    //   const canvas = document.createElement('canvas');
+    //   const padding = 40; // Adjust the padding as needed
+    //   const canvasWidth = originalCanvas.width + 2 * padding;
+    //   const canvasHeight = originalCanvas.height - 60 + 2 * padding + 100; // Add space for the description text
+    //   canvas.width = canvasWidth;
+    //   canvas.height = canvasHeight;
 
-      const ctx = canvas.getContext('2d');
+    //   const ctx = canvas.getContext('2d');
 
-      // Fill the entire canvas with a white background
-      ctx.fillStyle = '#007d53';
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    //   // Fill the entire canvas with a white background
+    //   ctx.fillStyle = '#007d53';
+    //   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-      // Define the text properties for the header (making it bold)
-      ctx.font = 'bold 40px Work Sans'; // Set the font style and size, and make it bold
-      ctx.fillStyle = 'white'; // Set the text color
-      ctx.textAlign = 'center'; // Center the text horizontally
+    //   // Define the text properties for the header (making it bold)
+    //   ctx.font = 'bold 40px Work Sans'; // Set the font style and size, and make it bold
+    //   ctx.fillStyle = 'white'; // Set the text color
+    //   ctx.textAlign = 'center'; // Center the text horizontally
 
-      // Draw the header text in the center of the canvas
-      const headerText = 'MSDAT DASHBOARD INFO'; // Replace with your desired header text
-      const textX = canvasWidth / 2;
-      const textY = padding + 20; // Adjust the Y position and padding as needed
-      ctx.fillText(headerText, textX, textY);
+    //   // Draw the header text in the center of the canvas
+    //   const headerText = 'MSDAT DASHBOARD INFO'; // Replace with your desired header text
+    //   const textX = canvasWidth / 2;
+    //   const textY = padding + 20; // Adjust the Y position and padding as needed
+    //   ctx.fillText(headerText, textX, textY);
 
-      // Draw the original image on the canvas with padding
-      const imageX = padding;
-      const imageY = 60 + padding; // Adjust for header and padding
-      ctx.drawImage(
-        originalCanvas,
-        imageX,
-        imageY,
-        originalCanvas.width,
-        originalCanvas.height - 60,
-      );
+    //   // Draw the original image on the canvas with padding
+    //   const imageX = padding;
+    //   const imageY = 60 + padding; // Adjust for header and padding
+    //   ctx.drawImage(
+    //     originalCanvas,
+    //     imageX,
+    //     imageY,
+    //     originalCanvas.width,
+    //     originalCanvas.height - 60,
+    //   );
 
-      // Define the text properties for the description
-      ctx.font = '20px Work Sans'; // Set the font style and size for the description text
-      ctx.fillStyle = 'white'; // Set the text color
-      ctx.textAlign = 'center'; // Center the text horizontally
+    //   // Define the text properties for the description
+    //   ctx.font = '20px Work Sans'; // Set the font style and size for the description text
+    //   ctx.fillStyle = 'white'; // Set the text color
+    //   ctx.textAlign = 'center'; // Center the text horizontally
 
-      // Draw the description text below the image
-      const routerLink = this.$route.path; // Resolve the route to get the full URL
-      const descriptionText = `To get more information about the MSDAT platform, visit: ${routerLink}`; // Replace with your desired description text
-      const descriptionX = canvasWidth / 2;
-      const descriptionY = imageY + originalCanvas.height - 60 + 40; // Place it below the image with padding
-      ctx.fillText(descriptionText, descriptionX, descriptionY);
+    //   // Draw the description text below the image
+    //   const routerLink = this.$route.path; // Resolve the route to get the full URL
+    //   const descriptionText = `To get more information about the MSDAT platform, visit: ${routerLink}`; // Replace with your desired description text
+    //   const descriptionX = canvasWidth / 2;
+    //   const descriptionY = imageY + originalCanvas.height - 60 + 40; // Place it below the image with padding
+    //   ctx.fillText(descriptionText, descriptionX, descriptionY);
 
-      // Convert the canvas to a data URL
-      const dataURL = canvas.toDataURL('image/png');
+    //   // Convert the canvas to a data URL
+    //   const dataURL = canvas.toDataURL('image/png');
 
-      // Create a temporary anchor element to trigger the download
-      const a = document.createElement('a');
-      a.href = dataURL;
-      a.download = 'shared_image.png';
+    //   // Create a temporary anchor element to trigger the download
+    //   const a = document.createElement('a');
+    //   a.href = dataURL;
+    //   a.download = 'shared_image.png';
 
-      // Trigger a click event on the anchor to open the save dialog
-      a.click();
-    },
+    //   // Trigger a click event on the anchor to open the save dialog
+    //   a.click();
+    // },
   },
   async mounted() {
     await this.getLatestDate();
