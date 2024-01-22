@@ -69,7 +69,7 @@ export default {
     async approvePlugin(file, id) {
       const fileObject = {
         id: id,
-        file: file
+        name: file
       }
       await this.APPROVE_PLUGIN(fileObject);
       await this.$bvModal.show('modal-1');
