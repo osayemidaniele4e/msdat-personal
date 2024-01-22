@@ -16,7 +16,7 @@
           <p class="work-sans mb-0 line-height">
             Distribution of
             <span class="font-weight-bold"> {{ controlPanelProps.indicator.full_name }} </span
-            >Across
+            >across
             <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
             <span class="font-weight-bold">
               {{ controlPanelProps.datasource.datasource }}
@@ -288,7 +288,7 @@ export default {
   },
 
   mounted() {
-    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} Across ${this.controlPanelProps.location.name}. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
+    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} across ${this.controlPanelProps.location.name}. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
   },
 };
 </script>

@@ -187,7 +187,6 @@ export default {
           .map((req) => ({
             ...req, config: { ...JSON.parse(req.config) },
           }));
-        this.loading = false;
       }).catch((err) => {
         console.log(err);
       });

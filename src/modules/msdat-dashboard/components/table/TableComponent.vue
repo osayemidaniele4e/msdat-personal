@@ -72,8 +72,12 @@
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
               <div v-if="nhmisMonthData[0]" class="nhmis-monthly">
-                <span class="value-nhmis">{{ nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].value}%` }}</span>
-                <span class="period-nhmis">{{ nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].period}` }}</span>
+                <span class="value-nhmis">{{
+                  nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].value}%`
+                }}</span>
+                <span class="period-nhmis">{{
+                  nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].period}`
+                }}</span>
               </div>
 
               <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
@@ -707,9 +711,10 @@ table.table {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 10px;
+  /* padding-top: 10px;
   padding-left: 10px;
-  padding-right: 10px;
+  padding-right: 10px; */
+  padding: 0.75rem;
 }
 
 .meta_icon {
