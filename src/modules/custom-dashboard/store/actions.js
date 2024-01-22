@@ -352,8 +352,11 @@ export default {
       return false;
     }
   },
-  getDashboards() {
-    return axios.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json');
+  getDashboards({ commit }) {
+    return axios.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json').then(({ data }) => {
+      commit('setAllPublicDashboards', Object.values(data));
+      return { data };
+    });
   },
   getDashboard(_, id) {
     return axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);

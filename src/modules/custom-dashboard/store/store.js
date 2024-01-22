@@ -61,6 +61,7 @@ const store = {
     ],
     dashboardRequest: {},
     publicDashboard: false,
+    allPublicDashboards: [],
   },
 
   mutations,
