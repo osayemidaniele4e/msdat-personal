@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 import theHeader from '@/modules/msdat-dashboard/views/about/layout/theHeader.vue';
 import theFooter from '@/modules/msdat-dashboard/views/about/layout/theFooter.vue';
 
@@ -38,8 +36,10 @@ export default {
   },
   mounted() {
     const id = this.$route.params.id;
-    const url = `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`;
-    axios.get(url).then(({ data }) => {
+    // GET A DASHBOARD BY ID
+    // Check confirmation status
+    // Route to Dashboard if approved, otherwise display unapproved status.
+    this.$store.dispatch('getDashboard', id).then(({ data }) => {
       if (data) {
         const isConfirmed = data.isConfirmed;
         if (isConfirmed) {

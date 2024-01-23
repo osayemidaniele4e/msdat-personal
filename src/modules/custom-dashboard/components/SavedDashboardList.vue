@@ -63,7 +63,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
-import axios from 'axios';
 
 export default {
   data() {
@@ -132,8 +131,7 @@ export default {
     },
   },
   mounted() {
-    const url = 'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json';
-    axios.get(url).then(({ data }) => {
+    this.$store.dispatch('getDashboards').then(({ data }) => {
       this.publicDashboards = Object.values(data)
         .filter((req) => req.email === this.getUser.email)
         .map((req) => ({

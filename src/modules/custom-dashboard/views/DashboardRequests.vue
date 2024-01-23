@@ -19,8 +19,6 @@
 </template>
 
 <script>
-
-import axios from 'axios';
 import { mapGetters } from 'vuex';
 
 import theHeader from '@/modules/msdat-dashboard/views/about/layout/theHeader.vue';
@@ -51,14 +49,15 @@ export default {
     this.$store.dispatch('customDashboard', false);
   },
   mounted() {
+    // Check currently logged-in user is Authorized
     const mail = this.getUser()?.email;
     if (!authorize(mail)) {
       this.unauthorized = true;
       return;
     }
-    const id = this.$route.query.id;
-    const url = `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public${id ? `/${id}` : ''}.json`;
-    axios.get(url).then(({ data }) => {
+    // GET ALL DASHBOARDS
+    // Set Dashboards to Requests
+    this.$store.dispatch('getDashboards').then(({ data }) => {
       if (data) {
         this.requests = Object.values(data).filter((request) => (!request.isConfirmed && !request.disapproved));
       }
