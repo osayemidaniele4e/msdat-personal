@@ -14,12 +14,10 @@ export default {
   data() {
     return {
       pluginsImported: [], // Explicitly specify the type as an array of strings
-      // pluginsImported: [], // Explicitly specify the type as an array of strings
     };
   },
   async mounted() {
-    // eslint-disable-next-line camelcase, no-unused-vars
-    const plugins_imported = [];
+    // const plugins_imported = [];
 
     this.pluginsImported.push('contextPlugin');
     if (!localStorage.getItem('contextPlugin')) {
