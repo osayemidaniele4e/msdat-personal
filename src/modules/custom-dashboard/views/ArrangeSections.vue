@@ -382,10 +382,11 @@ export default {
         this.public_creator.id = id;
         this.public_creator.name = this.getUser.username;
         this.public_creator.email = this.getUser.email;
-        this.public_creator.description = await this.dashboardDetails.description;
-        this.public_creator.Reason = await this.dashboardDetails.reason;
-        this.public_creator.category = await this.dashboardDetails.category;
-        this.public_creator.name_of_dashboard = await this.dashboardDetails.name;
+        this.public_creator.description = this.dashboardDetails.description;
+        this.public_creator.Reason = this.dashboardDetails.reason;
+        this.public_creator.category = this.dashboardDetails.category;
+        this.public_creator.config = JSON.stringify(config);
+        this.public_creator.name_of_dashboard = this.dashboardDetails.name;
         this.public_creator.link = `${window.location.origin}/custom/public/${id}`;
         const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
         // hide the 'modal-public-dashboard'

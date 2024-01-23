@@ -366,6 +366,9 @@ export default {
   setIsPublicDashboard(state, payload) {
     state.isPublicDashboard = payload;
   },
+  setAllPublicDashboards(state, payload) {
+    state.allPublicDashboards = payload;
+  },
   // setshowLoader(state) {
   //   const loader = state.loader;
   //   if (loader.levels === true || loader.indicator === true || loader.datasource === true || loader.years === true) {

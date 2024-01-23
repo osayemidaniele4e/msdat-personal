@@ -219,6 +219,12 @@ export default {
         // Handle success
           this.$bvModal.close('upload-plugin');
           this.$bvModal.show('upload_plugin_success');
+          this.$swal({
+              toast: true,
+              type: 'success',
+              timer: 5000,
+              text: 'Plugin has been submitted successfully, awaiting approval',
+            });
         })
         .catch((error) => {
         // Handle error

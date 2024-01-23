@@ -167,12 +167,15 @@ export default {
     return {
       loading: true,
       userDashboards: {},
-      publicDashboards: [],
+      // publicDashboards: [],
     };
   },
 
   computed: {
     ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser', 'getDashboards']),
+    publicDashboards() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.allPublicDashboards;
+    },
   },
 
   methods: {
@@ -197,15 +200,13 @@ export default {
     },
     getUserDashboards() {
       // if (this.isAuthenticated) {
-      this.$store.dispatch('getDashboards').then(({ data }) => {
-        this.publicDashboards = Object.values(data)
-        // .filter((req) => req.email === this.getUser.email)
-          .map((req) => ({
-            ...req, config: { ...JSON.parse(req.config) },
-          }));
-      }).catch((err) => {
-        console.log(err);
-      });
+      this.$store.dispatch('getDashboards');
+      // .then(({ data }) => {
+      //   this.publicDashboards = Object.values(data);
+      //   console.log('all dashboards', this.publicDashboards);
+      // }).catch((err) => {
+      //   console.log(err);
+      // });
       // } else {
       // this.publicDashboards = [];
       // }
