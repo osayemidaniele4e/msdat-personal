@@ -17,14 +17,12 @@
         "
       >
         <template #title>
+          <!-- Display comparison text when the selected indicator is not an array -->
           <p
             class="work-sans mb-0 line-height"
             v-if="!Array.isArray(values.indicator.length)"
           >
           Comparison of selected indicators across {{ values.compareBy.name}}s <b>({{ values.datasource.datasource }})</b>
-           <!-- Comparison of <b>{{ values.indicator.short_name }}</b> according to
-            the <b> {{ values.datasource.datasource }} </b> across
-            {{ values.compareBy.name }} -->
           </p>
           <!-- <p class="text-dark work-sans mb-0 line-height" v-else>
            Comparison of <b>{{ values.indicator[0].short_name }}</b> and
@@ -39,6 +37,7 @@
         :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
+    <!-- Display 'no_data' block when data is not loading and checkData() returns false -->
     <div v-if="!loading && !checkData() " class="no_data">
       <img
         :src="require('@/assets/no-data/No_Available_Data.svg')"
