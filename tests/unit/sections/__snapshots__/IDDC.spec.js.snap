@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mounted IDDC Component  renders correctly 1`] = `
+<base-overlay
+  show="true"
+>
+  <!---->
+</base-overlay>
+`;

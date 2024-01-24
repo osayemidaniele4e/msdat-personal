@@ -1,246 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DragableList.vue renders correctly 1`] = `
-<div
-  class="text-justify px-5 pb-5 container"
->
-  <h4
-    class="welcome"
-  >
-    Welcome ,
-  </h4>
-   
-  <form>
-    <div
-      class="row"
-    >
-      <div
-        class="forms col-lg-6 col-12"
-      >
-        <div
-          class="field-detail"
-        >
-          <p>
-            Give your dashboard a name
-          </p>
-           
-          <input
-            class="form-control"
-            id="d-Name"
-            placeholder="Hint: It should be easy to understand"
-            type="text"
-          />
-           
-          <!---->
-        </div>
-         
-        <div
-          class="field-detail"
-        >
-          <p>
-            Description of your dashboard
-          </p>
-           
-          <input
-            class="form-control"
-            id="description"
-            placeholder="Hint: Use easy to understand terms"
-            type="text"
-          />
-           
-          <!---->
-        </div>
-      </div>
-       
-      <div
-        class="image-file mb-5 col"
-      >
-        <div
-          class="row text-left text-lg-center"
-        >
-          <div
-            class="col-auto"
-          >
-            <div>
-              <input
-                accept="image/*"
-                hidden="hidden"
-                id="file-input"
-                type="file"
-              />
-               
-              <label
-                class="file-input-label"
-                for="file-input"
-              >
-                <div>
-                  <!---->
-                   
-                  <!---->
-                   
-                  <!---->
-                   
-                  <!---->
-                   
-                  <!---->
-                   
-                  <svg
-                    height="301"
-                    viewBox="0 0 273 301"
-                    width="273"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g
-                      data-name="Group 2586"
-                      id="Group_2586"
-                      transform="translate(-1012 -363)"
-                    >
-                      <g
-                        data-name="Group 2431"
-                        id="Group_2431"
-                        transform="translate(0 12)"
-                      >
-                        <g
-                          data-name="Group 2429"
-                          id="Group_2429"
-                          transform="translate(20 -12)"
-                        >
-                          <circle
-                            cx="82.5"
-                            cy="82.5"
-                            data-name="Ellipse 179"
-                            fill="#eaeaea"
-                            id="Ellipse_179"
-                            r="82.5"
-                            transform="translate(1046 413)"
-                          />
-                           
-                          <g
-                            id="Upload"
-                            transform="translate(1106 470)"
-                          >
-                            <path
-                              d="M13.778,24.165h8.54V52.633h5.694V24.165h8.54L25.165,12.778Z"
-                              fill="#a7a7a7"
-                              id="ic_vertical_align_top_24px"
-                              transform="translate(-2.261 -12.778)"
-                            />
-                             
-                            <path
-                              d="M43.855,9V20.387H9.694V9H4V26.081H49.548V9Z"
-                              fill="#a7a7a7"
-                              id="ic_space_bar_24px"
-                              transform="translate(-4 25.808)"
-                            />
-                          </g>
-                        </g>
-                         
-                        <text
-                          data-name="Upload Dashboard Logo"
-                          fill="#a7a7a7"
-                          font-family="DMSans-Bold, DM Sans"
-                          font-size="15"
-                          font-weight="700"
-                          id="Upload_Dashboard_Logo"
-                          transform="translate(1066 597)"
-                        >
-                          <tspan
-                            x="0"
-                            y="0"
-                          >
-                            Upload Dashboard Logo
-                          </tspan>
-                        </text>
-                      </g>
-                       
-                      <g
-                        data-name="Rectangle 2918"
-                        fill="none"
-                        id="Rectangle_2918"
-                        stroke="#d3d3d3"
-                        stroke-width="1"
-                        transform="translate(1012 363)"
-                      >
-                        <rect
-                          height="301"
-                          stroke="none"
-                          width="273"
-                        />
-                         
-                        <rect
-                          fill="none"
-                          height="300"
-                          width="272"
-                          x="0.5"
-                          y="0.5"
-                        />
-                      </g>
-                    </g>
-                  </svg>
-                </div>
-              </label>
-            </div>
-             
-            <!---->
-          </div>
-           
-          <div
-            class="col-lg-5 col-12"
-          >
-            <p
-              class="text-left my-4 my-md-5"
-            >
-              
-              Logo size should be 200px by 200px. 
-              <br />
-              
-              Not bigger than 5 MB. 
-              <br />
-              
-              Logo should be representative of your dashboard content
-            
-            </p>
-          </div>
-        </div>
-         
-        <div
-          class=""
-        >
-          <!---->
-        </div>
-      </div>
-    </div>
-     
-    <p>
-      <b>
-        Select dashboard data
-      </b>
-    </p>
-     
-    <p
-      style="margin-top: -10px;"
-    >
-      
-      Go through our database and select the data that is relevant to your
-      dashboard.
-      <br />
-      
-      Select your indicators, your preferred data source, the years and the
-      coverage area (National or subnational).
-    
-    </p>
-     
-    <button
-      class="btn w-100 button btn-secondary"
-      id="individual"
-      type="submit"
-    >
-      PROCEED TO SELECT DATA
-    </button>
-  </form>
-</div>
-`;
-
 exports[`dashboardDetails.vue renders correctly 1`] = `
 <div
   class="text-justify px-5 pb-5 container"
@@ -291,247 +50,25 @@ exports[`dashboardDetails.vue renders correctly 1`] = `
            
           <!---->
         </div>
-      </div>
-       
-      <div
-        class="image-file mb-5 col"
-      >
-        <div
-          class="row text-left text-lg-center"
-        >
-          <div
-            class="col-auto"
-          >
-            <div>
-              <input
-                accept="image/*"
-                hidden="hidden"
-                id="file-input"
-                type="file"
-              />
-               
-              <label
-                class="file-input-label"
-                for="file-input"
-              >
-                <div>
-                  <!---->
-                   
-                  <!---->
-                   
-                  <!---->
-                   
-                  <!---->
-                   
-                  <!---->
-                   
-                  <svg
-                    height="301"
-                    viewBox="0 0 273 301"
-                    width="273"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g
-                      data-name="Group 2586"
-                      id="Group_2586"
-                      transform="translate(-1012 -363)"
-                    >
-                      <g
-                        data-name="Group 2431"
-                        id="Group_2431"
-                        transform="translate(0 12)"
-                      >
-                        <g
-                          data-name="Group 2429"
-                          id="Group_2429"
-                          transform="translate(20 -12)"
-                        >
-                          <circle
-                            cx="82.5"
-                            cy="82.5"
-                            data-name="Ellipse 179"
-                            fill="#eaeaea"
-                            id="Ellipse_179"
-                            r="82.5"
-                            transform="translate(1046 413)"
-                          />
-                           
-                          <g
-                            id="Upload"
-                            transform="translate(1106 470)"
-                          >
-                            <path
-                              d="M13.778,24.165h8.54V52.633h5.694V24.165h8.54L25.165,12.778Z"
-                              fill="#a7a7a7"
-                              id="ic_vertical_align_top_24px"
-                              transform="translate(-2.261 -12.778)"
-                            />
-                             
-                            <path
-                              d="M43.855,9V20.387H9.694V9H4V26.081H49.548V9Z"
-                              fill="#a7a7a7"
-                              id="ic_space_bar_24px"
-                              transform="translate(-4 25.808)"
-                            />
-                          </g>
-                        </g>
-                         
-                        <text
-                          data-name="Upload Dashboard Logo"
-                          fill="#a7a7a7"
-                          font-family="DMSans-Bold, DM Sans"
-                          font-size="15"
-                          font-weight="700"
-                          id="Upload_Dashboard_Logo"
-                          transform="translate(1066 597)"
-                        >
-                          <tspan
-                            x="0"
-                            y="0"
-                          >
-                            Upload Dashboard Logo
-                          </tspan>
-                        </text>
-                      </g>
-                       
-                      <g
-                        data-name="Rectangle 2918"
-                        fill="none"
-                        id="Rectangle_2918"
-                        stroke="#d3d3d3"
-                        stroke-width="1"
-                        transform="translate(1012 363)"
-                      >
-                        <rect
-                          height="301"
-                          stroke="none"
-                          width="273"
-                        />
-                         
-                        <rect
-                          fill="none"
-                          height="300"
-                          width="272"
-                          x="0.5"
-                          y="0.5"
-                        />
-                      </g>
-                    </g>
-                  </svg>
-                </div>
-              </label>
-            </div>
-             
-            <!---->
-          </div>
-           
-          <div
-            class="col-lg-5 col-12"
-          >
-            <p
-              class="text-left my-4 my-md-5"
-            >
-              
-              Logo size should be 200px by 200px. 
-              <br />
-              
-              Not bigger than 5 MB. 
-              <br />
-              
-              Logo should be representative of your dashboard content
-            
-            </p>
-          </div>
-        </div>
          
-        <div
-          class=""
-        >
-          <!---->
-        </div>
-      </div>
-    </div>
-     
-    <p>
-      <b>
-        Select dashboard data
-      </b>
-    </p>
-     
-    <p
-      style="margin-top: -10px;"
-    >
-      
-      Go through our database and select the data that is relevant to your
-      dashboard.
-      <br />
-      
-      Select your indicators, your preferred data source, the years and the
-      coverage area (National or subnational).
-    
-    </p>
-     
-    <button
-      class="btn w-100 button btn-secondary"
-      id="individual"
-      type="submit"
-    >
-      PROCEED TO SELECT DATA
-    </button>
-  </form>
-</div>
-`;
+        <br />
+         
+        <!---->
+         
+        <br />
+         
+        <!---->
+         
+        <br />
+         
+        <span>
+          <input
+            type="checkbox"
+          />
+           
+  Create a public dashboard
 
-exports[`dashboardDetails.vue validates user data when form is submitted 1`] = `
-<div
-  class="text-justify px-5 pb-5 container"
->
-  <h4
-    class="welcome"
-  >
-    Welcome ,
-  </h4>
-   
-  <form>
-    <div
-      class="row"
-    >
-      <div
-        class="forms col-lg-6 col-12"
-      >
-        <div
-          class="field-detail"
-        >
-          <p>
-            Give your dashboard a name
-          </p>
-           
-          <input
-            class="form-control"
-            id="d-Name"
-            placeholder="Hint: It should be easy to understand"
-            type="text"
-          />
-           
-          <!---->
-        </div>
-         
-        <div
-          class="field-detail"
-        >
-          <p>
-            Description of your dashboard
-          </p>
-           
-          <input
-            class="form-control"
-            id="description"
-            placeholder="Hint: Use easy to understand terms"
-            type="text"
-          />
-           
-          <!---->
-        </div>
+        </span>
       </div>
        
       <div
@@ -673,14 +210,14 @@ exports[`dashboardDetails.vue validates user data when form is submitted 1`] = `
               class="text-left my-4 my-md-5"
             >
               
-              Logo size should be 200px by 200px. 
+                Logo size should be 200px by 200px. 
               <br />
               
-              Not bigger than 5 MB. 
+                Not bigger than 5 MB. 
               <br />
               
-              Logo should be representative of your dashboard content
-            
+                Logo should be representative of your dashboard content.
+              
             </p>
           </div>
         </div>
@@ -703,13 +240,13 @@ exports[`dashboardDetails.vue validates user data when form is submitted 1`] = `
       style="margin-top: -10px;"
     >
       
-      Go through our database and select the data that is relevant to your
-      dashboard.
+        Go through our database and select the data that is relevant to your
+        dashboard.
       <br />
       
-      Select your indicators, your preferred data source, the years and the
-      coverage area (National or subnational).
-    
+        Select your indicators, your preferred data source, the years and the
+        coverage area (National or subnational).
+      
     </p>
      
     <button
