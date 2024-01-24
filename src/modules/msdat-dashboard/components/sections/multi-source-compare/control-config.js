@@ -18,7 +18,7 @@ const indicatorSetConfig = [
     key: 'visualization',
   },
   {
-    class: ['col-md-4'],
+    class: ['col-sm-6 col-md-6 col-lg-5'],
     type: 'dropdown',
     label: 'data Source',
     key: 'datasource',
@@ -28,7 +28,7 @@ const indicatorSetConfig = [
     options: [],
   },
   {
-    class: ['col-md-4'],
+    class: ['col-sm-6 col-md-6 col-lg-4'],
     type: 'dropdown',
     label: 'Year',
     key: 'year',
@@ -58,7 +58,7 @@ const indicatorSetConfig2 = [
     key: 'visualization',
   },
   {
-    class: ['col-md-4'],
+    class: ['col-sm-6 col-md-6 col-lg-5'],
     type: 'dropdown',
     label: 'data Source',
     key: 'datasource',
@@ -68,7 +68,7 @@ const indicatorSetConfig2 = [
     options: [],
   },
   {
-    class: ['col-md-4'],
+    class: ['col-sm-6 col-md-6 col-lg-4'],
     type: 'dropdown',
     label: 'Year',
     key: 'year',
@@ -98,7 +98,7 @@ const indicatorSetConfig3 = [
     key: 'visualization',
   },
   {
-    class: ['col-md-4'],
+    class: ['col-sm-6 col-md-6 col-lg-5'],
     type: 'dropdown',
     label: 'data Source',
     key: 'datasource',
@@ -108,7 +108,7 @@ const indicatorSetConfig3 = [
     options: [],
   },
   {
-    class: ['col-md-4'],
+    class: ['col-sm-6 col-md-6 col-lg-4'],
     type: 'dropdown',
     label: 'Year',
     key: 'year',
