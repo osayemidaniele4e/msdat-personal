@@ -3,7 +3,7 @@
     <ul>
       <draggable v-model="modifiedControls">
         <transition-group
-          class="d-flex justify-content-between mr-3 list-unstyled step-sections py-2 mb-0 border-b cursor-pointer main tabs-sec"
+          class="d-flex mr-2 list-unstyled step-sections pt-2 mb-0 border-b cursor-pointer main tabs-sec"
         >
           <li
             class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
