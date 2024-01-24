@@ -21,7 +21,7 @@
             class="work-sans mb-0 line-height"
             v-if="!Array.isArray(values.indicator.length)"
           >
-          Comparison of selected indicators across states/period <b>({{ values.datasource.datasource }})</b>
+          Comparison of selected indicators across {{ values.compareBy.name}}s <b>({{ values.datasource.datasource }})</b>
            <!-- Comparison of <b>{{ values.indicator.short_name }}</b> according to
             the <b> {{ values.datasource.datasource }} </b> across
             {{ values.compareBy.name }} -->
@@ -39,7 +39,7 @@
         :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
-    <div v-if="checkData() === false" class="no_data">
+    <div v-if="!loading && !checkData() " class="no_data">
       <img
         :src="require('@/assets/no-data/No_Available_Data.svg')"
         alt="no data"
