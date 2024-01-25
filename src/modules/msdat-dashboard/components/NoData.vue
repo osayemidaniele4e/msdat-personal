@@ -14,7 +14,7 @@
       There is no sub-national data available for the indicator, data source and
       period you have selected. Try selecting another data source or period
     </p> -->
-    <img src="@/assets/no-data/No_Sub-national_Data.svg" alt="no data" class="img-fluid" />
+    <!-- <img src="@/assets/no-data/No_Sub-national_Data.svg" alt="no data" class="img-fluid" /> -->
   </div>
 </template>
 
