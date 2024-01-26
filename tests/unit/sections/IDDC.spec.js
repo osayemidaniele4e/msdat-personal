@@ -1,8 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
-import IDDC from '../../../src/modules/msdat-dashboard/components/sections/indicator-overview/TheIndicatorDatasourceComparisonChart.vue';
+import IDDC from '@/modules/msdat-dashboard/components/sections/TheIndicatorDatasoureComparisonChart.vue';
 
-describe('Mounted StateBarChart Component ', () => {
-  length.vue;
+describe('Mounted IDDC Component ', () => {
   const wrapper = shallowMount(IDDC);
 
   it('is a Vue instance', () => {

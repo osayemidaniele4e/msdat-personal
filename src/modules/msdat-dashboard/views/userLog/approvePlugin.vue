@@ -21,7 +21,7 @@
                     Download</b-button>
                 </a>
                 &nbsp;
-                <b-button @click="approvePlugin(plugin.plugin)" variant="primary">
+                <b-button @click="approvePlugin(plugin.plugin, plugin.id)" variant="primary">
                   <b-icon icon="download"></b-icon>
                   Approve</b-button>
 
@@ -35,7 +35,8 @@
     </div>
     <b-modal id="modal-1" title="BootstrapVue" centered hide-header no-close-on-backdrop hide-footer>
       <div>
-      Selected plugin is being approved on the server ...
+      Selected plugin has been approved, CI/CD integration will take 20 - 25 mins
+      <br>
       <b-spinner label="Spinning"></b-spinner>
     </div>
   </b-modal>
@@ -66,8 +67,14 @@ export default {
       return filteredArr;
     },
 
-    async approvePlugin(file) {
-      await this.APPROVE_PLUGIN(file);
+    async approvePlugin(file, id) {
+      const urlParts = file.split('/');
+      const fileName = urlParts[urlParts.length - 1];
+      const fileObject = {
+        id: id,
+        name: fileName
+      }
+      await this.APPROVE_PLUGIN(fileObject);
       await this.$bvModal.show('modal-1');
     },
   },

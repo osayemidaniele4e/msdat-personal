@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mounted zonalSection Component  renders correctly 1`] = `
+<base-overlay
+  class="main"
+  show="true"
+>
+  <base-sub-card
+    showcontrols=""
+  >
+     
+    <barchart-stub
+      chart="[object Object]"
+      chartoptions="[object Object]"
+      class="barchart"
+      title=" Distribution of Example Indicator ccross the zones in the country. Source: undefined 2022"
+    />
+  </base-sub-card>
+</base-overlay>
+`;

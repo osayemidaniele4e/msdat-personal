@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Mounted BarChart Component  renders correctly 1`] = `
-<highcharts-stub
-  options="[object Object]"
-/>
+<div>
+  <highcharts-stub
+    options="[object Object]"
+  />
+</div>
 `;

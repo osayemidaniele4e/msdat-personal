@@ -33,7 +33,7 @@ exports[`Advanced Analytics.vue renders correctly 1`] = `
       <small>
         
         The essence of health data is to ensure that decision-makers have the means to make informed decisions
-        and policies for healthcare. Take advantage of the advance analytic tools to gain valuable insights and
+        and policies for healthcare. Take advantage of the advanced analytic tools to gain valuable insights and
         shape the future of healthcare. Explore key health indicators, analyze trends, and harness the power of
         predictive modeling to anticipate future health trends.
       
@@ -41,23 +41,22 @@ exports[`Advanced Analytics.vue renders correctly 1`] = `
     </div>
   </b-row>
    
-  <b-container
-    class="d-flex flex-column align-items-center mb-3"
+  <div
+    class="d-flex flex-column align-items-center mb-3 px-3"
   >
     <span
-      class="mb-3"
+      class="mb-3 font-weight-bold"
     >
       Select a dashboard to start
     </span>
      
     <b-row
-      class="w-100"
       cols="2"
-      cols-lg="5"
       cols-md="3"
+      cols-xl="6"
     >
       <b-col
-        class="d-flex flex-column align-items-center"
+        class="d-flex flex-column align-items-center mb-3"
       >
         <router-link
           id="CorrelationAnalysis"
@@ -70,15 +69,19 @@ exports[`Advanced Analytics.vue renders correctly 1`] = `
           />
         </router-link>
          
-        <small
-          class="py-2"
-          style="font-size: 0.6rem; font-weight: 600;"
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=0"
         >
-          Correlation Analysis
-        </small>
+          <small
+            class="py-2"
+            style="font-size: 0.8rem; font-weight: 600;"
+          >
+            Correlation Analysis
+          </small>
+        </router-link>
       </b-col>
       <b-col
-        class="d-flex flex-column align-items-center"
+        class="d-flex flex-column align-items-center mb-3"
       >
         <router-link
           id="DescriptiveAnalysis"
@@ -91,15 +94,19 @@ exports[`Advanced Analytics.vue renders correctly 1`] = `
           />
         </router-link>
          
-        <small
-          class="py-2"
-          style="font-size: 0.6rem; font-weight: 600;"
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=1"
         >
-          Descriptive Analysis
-        </small>
+          <small
+            class="py-2"
+            style="font-size: 0.8rem; font-weight: 600;"
+          >
+            Descriptive Analysis
+          </small>
+        </router-link>
       </b-col>
       <b-col
-        class="d-flex flex-column align-items-center"
+        class="d-flex flex-column align-items-center mb-3"
       >
         <router-link
           id="IndicatorComparison"
@@ -112,15 +119,19 @@ exports[`Advanced Analytics.vue renders correctly 1`] = `
           />
         </router-link>
          
-        <small
-          class="py-2"
-          style="font-size: 0.6rem; font-weight: 600;"
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=2"
         >
-          Indicator Comparison
-        </small>
+          <small
+            class="py-2"
+            style="font-size: 0.8rem; font-weight: 600;"
+          >
+            Indicator Comparison
+          </small>
+        </router-link>
       </b-col>
       <b-col
-        class="d-flex flex-column align-items-center"
+        class="d-flex flex-column align-items-center mb-3"
       >
         <router-link
           id="PredictiveAnalysis"
@@ -133,15 +144,19 @@ exports[`Advanced Analytics.vue renders correctly 1`] = `
           />
         </router-link>
          
-        <small
-          class="py-2"
-          style="font-size: 0.6rem; font-weight: 600;"
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=3"
         >
-          Predictive Analysis
-        </small>
+          <small
+            class="py-2"
+            style="font-size: 0.8rem; font-weight: 600;"
+          >
+            Predictive Analysis
+          </small>
+        </router-link>
       </b-col>
       <b-col
-        class="d-flex flex-column align-items-center"
+        class="d-flex flex-column align-items-center mb-3"
       >
         <router-link
           id="Multi-source Indicator Comparison"
@@ -154,14 +169,43 @@ exports[`Advanced Analytics.vue renders correctly 1`] = `
           />
         </router-link>
          
-        <small
-          class="py-2"
-          style="font-size: 0.6rem; font-weight: 600;"
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=4"
         >
-          Multi-source Indicator Comparison
-        </small>
+          <small
+            class="py-2"
+            style="font-size: 0.8rem; font-weight: 600;"
+          >
+            Multi-source Indicator Comparison
+          </small>
+        </router-link>
+      </b-col>
+      <b-col
+        class="d-flex flex-column align-items-center mb-3"
+      >
+        <router-link
+          id="ScatterPlotAnalysis"
+          to="/dashboard/Advanced_Analytics?index=5"
+        >
+          <img
+            alt="Scatter Plot Analysis"
+            class="section"
+            src=""
+          />
+        </router-link>
+         
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=5"
+        >
+          <small
+            class="py-2"
+            style="font-size: 0.8rem; font-weight: 600;"
+          >
+            Scatter Plot Analysis
+          </small>
+        </router-link>
       </b-col>
     </b-row>
-  </b-container>
+  </div>
 </section>
 `;

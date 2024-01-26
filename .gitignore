@@ -45,3 +45,6 @@ echo '.cache' >> .gitignore
 
 #router
 .router
+
+src/modules/plugins/*.zip
+__MACOSX/
