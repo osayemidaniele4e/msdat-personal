@@ -21,12 +21,7 @@
           <span>About Dashboard</span>
         </router-link>
       </li>
-      <li>
-        <router-link to="/create-plugin">
-          <img src="@/assets/img/icons/ic_info.svg" alt="" />
-          <span>Create a Plugin</span>
-        </router-link>
-      </li>
+
          <li>
         <!-- <router-link to="/external-dashboards">
           <img src="@/assets/img/icons/ic_info.svg" alt="" />
