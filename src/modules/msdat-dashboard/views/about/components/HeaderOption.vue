@@ -22,12 +22,6 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/create-plugin">
-          <img src="@/assets/img/icons/ic_info.svg" alt="" />
-          <span>Create a Plugin</span>
-        </router-link>
-      </li>
-      <li>
          <b-button class="external-dashboards-btn mb-2 d-flex" block @click="showPluginModal" >
           <img src="@/assets/img/icons/ic_info.svg" alt="" class="align-self-center" style="height: 15px; margin-left: 0.2rem;" />
           <span class="ml-2" style="font-size: small;">View Plugins</span>

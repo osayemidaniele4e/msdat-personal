@@ -28,10 +28,11 @@
             ><b-icon-card-heading></b-icon-card-heading>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Saved Dashboards</span></a
           >
-          <!-- <a href="#/createPlugin" class="mt-4 item blue"
+          <a href="#/createPlugin" class="mt-4 item blue"
+          :class="{ active: isCurrentRoute('/createPlugin') }"
             ><b-icon-cloud-upload></b-icon-cloud-upload>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Create a plugin</span></a
-          > -->
+          >
           <a href="#/approvePlugin" class="mt-4 item blue"
           :class="{ active: isCurrentRoute('/approvePlugin') }"
             ><b-icon-check2-square></b-icon-check2-square>&nbsp;&nbsp;
