@@ -38,6 +38,15 @@
             ><b-icon-check2-square></b-icon-check2-square>&nbsp;&nbsp;
             <span class="d-none d-lg-inline">Approve Plugins</span></a
           >
+
+          <router-link to="/data-entry" class="mt-4 item blue"
+          :class="{ active: isCurrentRoute('/data-entry') }"
+            >
+            <img src="@/assets/img/icons/ic_upload.svg" alt="" />
+
+            &nbsp;&nbsp;
+            <span class="d-none d-lg-inline">Data Entry</span></router-link
+          >
         </div>
         <div class="col-lg-10 col-11">
           <savedDashboards :is="currentView" />
