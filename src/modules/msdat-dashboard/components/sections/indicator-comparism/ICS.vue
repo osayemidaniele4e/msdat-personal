@@ -49,7 +49,7 @@
       </base-sub-card>
     </base-overlay>
     <!-- Display 'no_data' block when data is not loading and checkData() returns false -->
-    <div v-if="!loading && checkData() === false" class="no_data">
+  <div v-if="!loading && checkData() === false" class="no_data">
   <img
     :src="require('@/assets/no-data/No_Available_Data.svg')"
     alt="no data"
@@ -57,9 +57,8 @@
     height="auto"
     width="240px"
   />
-</div>
-
   </div>
+</div>
 </template>
 
 <script>
