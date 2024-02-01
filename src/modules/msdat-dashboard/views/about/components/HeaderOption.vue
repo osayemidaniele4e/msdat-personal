@@ -22,12 +22,6 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/create-plugin">
-          <img src="@/assets/img/icons/ic_info.svg" alt="" />
-          <span>Create a Plugin</span>
-        </router-link>
-      </li>
-      <li>
          <b-button class="external-dashboards-btn mb-2 d-flex" block @click="showPluginModal" >
           <img src="@/assets/img/icons/ic_info.svg" alt="" class="align-self-center" style="height: 15px; margin-left: 0.2rem;" />
           <span class="ml-2" style="font-size: small;">View Plugins</span>
@@ -134,12 +128,12 @@
           <span>Help and FAQs</span>
         </router-link>
       </li>
-       <li>
+       <!-- <li>
         <router-link to="/data-entry">
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
           <span>Data Entry</span>
         </router-link>
-      </li>
+      </li> -->
       <li>
         <a href="#" @click.prevent="showModal" ref="btnShow">
           <img src="@/assets/img/icons/ic_email.svg" alt="" />
