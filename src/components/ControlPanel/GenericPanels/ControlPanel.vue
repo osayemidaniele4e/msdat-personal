@@ -338,7 +338,7 @@ export default {
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
     },
     disableTarget() {
-      if (this.$route.path === '/dashboard/Demographics' || this.$route.path === '/dashboard/Health_Financing' || this.$route.path === '/dashboard/Health_Financing' || this.$route.path === '/dashboard/Health_Service_Access') {
+      if (this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage' || this.$route.path === '/dashboard/Health_Financing' || this.$route.path === '/dashboard/Health_Service_Access') {
         return true;
       }
       return false;
