@@ -19,7 +19,9 @@ export default {
   // eslint-disable-next-line consistent-return, no-unused-vars
   async SAVE_USER_DASHBOARD({ commit }, payload) {
     try {
-      const response = await axiosInstance.post('/dashboards/', payload);
+      // const response = await axiosInstance.post('/dashboards/', payload);
+      const response = await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private/${payload.id}.json`, payload);
+      this.SAVE_DASHBOARDS();
       return response;
     } catch (err) {
       // console.log(err);
@@ -29,8 +31,8 @@ export default {
   // eslint-disable-next-line consistent-return, no-unused-vars
   async SAVE_DASHBOARDS({ commit }, payload) {
     try {
-      const response = await axiosInstance.get('/dashboards/');
-      commit('setDashboards', response);
+      const response = await axiosInstance.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private.json');
+      commit('setDashboards', Object.values(response.data));
       return response;
     } catch (err) {
       // console.log(err);
