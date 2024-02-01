@@ -222,7 +222,7 @@
   </b-container>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import draggable from 'vuedraggable';
 
 export default {
@@ -298,6 +298,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('AUTH_STORE', ['SAVE_USER_DASHBOARD']),
     async onSubmit(event) {
       await event.preventDefault();
       await this.createPublicDashboard();
@@ -411,6 +412,18 @@ export default {
             text: 'Your request for a Public Dashboard could not be granted. Please try again later.',
           });
         }
+      } else {
+        // Save Private Dashboard
+        const id = `${Date.now()}${this.getUser.id}`;
+        this.SAVE_USER_DASHBOARD({
+          id,
+          username: this.getUser.username,
+          email: this.getUser.email,
+          user: this.getUser.id,
+          config: JSON.stringify(config),
+          title: this.dashboardDetails.name,
+          link: `${window.location.origin}/custom/private/${id}`,
+        });
       }
 
       //

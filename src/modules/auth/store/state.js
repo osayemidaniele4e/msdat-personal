@@ -4,5 +4,5 @@ const userDetails = VueCookies.get('msdat-user-details');
 export default {
   isAuthenticated: false,
   user: userDetails || {},
-  dashboards: {},
+  dashboards: [],
 };

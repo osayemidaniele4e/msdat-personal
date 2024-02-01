@@ -143,7 +143,8 @@
           <div
           v-for="dashboard in userDashboards"
           :key="dashboard.id">
-            <router-link :to="'/dashboard/' + dashboard.name" target="_blank"
+            <!-- <router-link :to="'/dashboard/' + dashboard.name" target="_blank" -->
+            <router-link :to="'/custom/private/' + dashboard.id" target="_blank"
 
             ><b-list-group-item
               >  {{ dashboard.title }}</b-list-group-item
@@ -166,7 +167,7 @@ export default {
   data() {
     return {
       loading: true,
-      userDashboards: {},
+      userDashboards: [],
       // publicDashboards: [],
     };
   },
@@ -192,31 +193,21 @@ export default {
       this.loading = true;
 
       // Update user dashboards
-      this.userDashboards = this.filterArray(this.getUser, this.getDashboards.data);
+      this.userDashboards = this.filterArray(this.getUser, this.getDashboards);
 
       // Perform any other necessary actions for newly authenticated users
 
       this.loading = false;
     },
     getUserDashboards() {
-      // if (this.isAuthenticated) {
       this.$store.dispatch('getDashboards');
-      // .then(({ data }) => {
-      //   this.publicDashboards = Object.values(data);
-      //   console.log('all dashboards', this.publicDashboards);
-      // }).catch((err) => {
-      //   console.log(err);
-      // });
-      // } else {
-      // this.publicDashboards = [];
-      // }
     },
   },
 
   async mounted() {
     this.loading = true;
     await this.SAVE_DASHBOARDS();
-    this.userDashboards = await this.filterArray(this.getUser, this.getDashboards.data);
+    this.userDashboards = await this.filterArray(this.getUser, this.getDashboards);
     this.loading = false;
     this.getUserDashboards();
   },
@@ -228,6 +219,9 @@ export default {
         this.refreshUserData();
       }
       // this.getUserDashboards();
+    },
+    getDashboards(newValue) {
+      this.userDashboards = this.filterArray(this.getUser, newValue);
     },
   },
 };

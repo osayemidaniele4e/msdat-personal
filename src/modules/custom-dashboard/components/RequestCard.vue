@@ -79,6 +79,7 @@ export default {
             id: this.request.id,
             isConfirmed: true,
           }).then(() => {
+            this.$store.dispatch('getDashboards');
             this.$swal.fire('Dashboard approved successfully!');
             this.$emit('remove', this.request.id);
           }).catch(() => {

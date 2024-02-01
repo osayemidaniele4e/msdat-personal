@@ -70,6 +70,10 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+  text-align: center;
+  padding: 0 15px;
+}
 .requests {
   display: flex;
   align-items: center;
