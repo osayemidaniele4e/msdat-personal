@@ -1,0 +1,19 @@
+div#modal-newsLetter #modal-center___BV_modal_content_,
+div#modal-newsLetter #modal-content,
+div#modal-newsLetter .modal-content {
+  width: 60% !important;
+  margin: auto !important;
+}
+
+div#modal-newsLetter header.modal-header {
+  display: none;
+}
+
+div#modal-newsLetter footer.modal-footer {
+  display: none;
+}
+
+div#modal-newsLetter div.modal-body {
+  padding: 0;
+}
+/*# sourceMappingURL=style.css.map */

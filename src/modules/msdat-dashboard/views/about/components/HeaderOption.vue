@@ -8,9 +8,7 @@
     >
       <strong slot="title"> Contact Us</strong>
       <div slot="footer-btn">
-        <button class="btn work-sans send" @click="submitContactForm">
-          SEND
-        </button>
+        <button class="btn work-sans send" @click="submitContactForm">SEND</button>
       </div>
       <contact :submitForm="submit"> </contact>
     </base-modal>
@@ -22,12 +20,17 @@
         </router-link>
       </li>
       <li>
-         <b-button class="external-dashboards-btn mb-2 d-flex" block @click="showPluginModal" >
-          <img src="@/assets/img/icons/ic_info.svg" alt="" class="align-self-center" style="height: 15px; margin-left: 0.2rem;" />
-          <span class="ml-2" style="font-size: small;">View Plugins</span>
+        <b-button class="external-dashboards-btn mb-2 d-flex" block @click="showPluginModal">
+          <img
+            src="@/assets/img/icons/ic_info.svg"
+            alt=""
+            class="align-self-center"
+            style="height: 15px; margin-left: 0.2rem"
+          />
+          <span class="ml-2" style="font-size: small">View Plugins</span>
         </b-button>
       </li>
-         <li>
+      <li>
         <!-- <router-link to="/external-dashboards">
           <img src="@/assets/img/icons/ic_info.svg" alt="" />
           <span>External Dashboards</span>
@@ -40,7 +43,7 @@
       </li> -->
         <!-- <b-button class="external-dashboards-btn mb-2" block >
         </b-button> -->
-      <!-- </b-card-header>
+        <!-- </b-card-header>
       <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
         <div class="my-2 mx-3">
           <router-link to="/external-ndr1">
@@ -89,10 +92,7 @@
       </li>
       <div class="divider"></div>
       <li>
-        <a
-          href="https://mapping.fmohconnect.gov.ng/"
-          target="_blank"
-        >
+        <a href="https://mapping.fmohconnect.gov.ng/" target="_blank">
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
           <span>Submit New Data Source</span>
         </a>
@@ -128,7 +128,7 @@
           <span>Help and FAQs</span>
         </router-link>
       </li>
-       <!-- <li>
+      <!-- <li>
         <router-link to="/data-entry">
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
           <span>Data Entry</span>
@@ -142,50 +142,46 @@
       </li>
     </ul>
     <base-modal :showModal="socialModal" :size="'md'">
-      <template #title
-        ><h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
-      </template>
+      <template #title><h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6> </template>
       <Socials />
     </base-modal>
     <NewsLetter />
     <!-- plugin modal -->
     <b-modal id="plugin-modal" title="MSDAT Apps Plugins" hide-footer>
       <div v-for="plugin in getPluginsImported" :key="plugin">
-      <div class="plugin-row">
-        <h5>
-          <span>
-            {{ plugin }}
-            <b-icon-info-circle></b-icon-info-circle>
-          </span>
-        </h5>
+        <div class="plugin-row">
+          <h5>
+            <span>
+              {{ plugin }}
+              <b-icon-info-circle></b-icon-info-circle>
+            </span>
+          </h5>
 
-        <div>
-          <button
-            class="enable-btn"
-            @click="pluginActive(plugin, 'true')"
-          v-if="getDynamicProperty(plugin) === 'false'"
-          >
-            Enable
-          </button>
-          <button
-            class="enable-btn"
-            @click="pluginActive(plugin, 'false')"
-            v-if="getDynamicProperty(plugin) === 'true'"
-          >
-            Disable
-          </button>
+          <div>
+            <button
+              class="enable-btn"
+              @click="pluginActive(plugin, 'true')"
+              v-if="getDynamicProperty(plugin) === 'false'"
+            >
+              Enable
+            </button>
+            <button
+              class="enable-btn"
+              @click="pluginActive(plugin, 'false')"
+              v-if="getDynamicProperty(plugin) === 'true'"
+            >
+              Disable
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-
     </b-modal>
-
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import NewsLetter from '@/modules/msdat-dashboard/modules/newsletter/index.vue';
+import NewsLetter from '@/modules/msdat-dashboard/modules/newsletters/index.vue';
 import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import contact from '../../../../../components/contact/contact.vue';
 
@@ -284,15 +280,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.external-dashboards-btn, .external-dropdown
-{
+.external-dashboards-btn,
+.external-dropdown {
   border: none !important;
   background-color: transparent;
   box-shadow: none;
   color: black;
 }
-.external-dashboards-btn:hover
-{
+.external-dashboards-btn:hover {
   color: black;
 }
 

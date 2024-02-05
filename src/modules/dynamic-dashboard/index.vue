@@ -1,10 +1,21 @@
 <template>
   <div class="mb-3 index-app">
+    <!-- <h1>HELLOOOOO</h1> -->
     <MSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && isGIS === false && loading === false"
+      v-if="
+        Object.entries(configObject).length > 0 &&
+        isAdvanced === false &&
+        isGIS === false &&
+        loading === false
+      "
     />
     <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && isGIS === false && loading === false"
+      v-if="
+        Object.entries(configObject).length > 0 &&
+        isAdvanced === true &&
+        isGIS === false &&
+        loading === false
+      "
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -18,7 +29,12 @@
       "
     />
     <GisMSDAT
-      v-if="Object.entries(configObject).length > 0 && isGIS === true && isAdvanced === false && loading === false"
+      v-if="
+        Object.entries(configObject).length > 0 &&
+        isGIS === true &&
+        isAdvanced === false &&
+        loading === false
+      "
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -33,8 +49,18 @@
     />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
     <div class="preview" v-if="$route.query.prev">
-      <b-button @click="$router.push('/custom/requests')" size="lg" variant="info" style="font-size: 1.5rem;">Back to Requests</b-button>
+      <b-button
+        @click="$router.push('/custom/requests')"
+        size="lg"
+        variant="info"
+        style="font-size: 1.5rem"
+        >Back to Requests</b-button
+      >
     </div>
+
+    <!-- <NewsLetter v-if="!loading" /> -->
+
+    <NewsLetter />
   </div>
 </template>
 <script>
@@ -51,6 +77,7 @@ import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
 import defaultDSyear from './defaultDSYear.json';
 import defaultAdvancedYear from './defaultAdvancedYear.json';
+import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
 
 export default {
   name: 'DynamicDashboard',
@@ -59,6 +86,7 @@ export default {
     AdvanceMSDAT: advanceInstance,
     GisMSDAT: gisInstance,
     ClearDBModal,
+    NewsLetter,
   },
   data() {
     return {
@@ -82,6 +110,7 @@ export default {
       latitude: '',
       userLocation: null,
       error: null,
+      showModal: false,
     };
   },
   methods: {
@@ -427,6 +456,11 @@ export default {
       this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
       window.document.title = `MSDAT Nigeria | ${this.$store.state.MSDAT_STORE.configObject.title}`;
     }
+
+    this.$nextTick(() => {
+      this.showModal = true;
+      this.$root.$emit('bv::show::modal', 'modal-newsLetter');
+    });
   },
   watch: {
     $route(to, from) {
