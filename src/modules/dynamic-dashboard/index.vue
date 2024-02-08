@@ -110,8 +110,12 @@ export default {
       latitude: '',
       userLocation: null,
       error: null,
-      showModal: false,
     };
+  },
+  computed: {
+    modalShown() {
+      return localStorage.getItem('modalShown') === 'true';
+    },
   },
   methods: {
     ...mapMutations('MSDAT_STORE', [
@@ -202,7 +206,8 @@ export default {
           },
           (error) => {
             this.error = error.message;
-          },
+            // eslint-disable-next-line comma-dangle
+          }
         );
       } else {
         this.error = 'Geolocation is not supported in your browser.';
@@ -219,6 +224,7 @@ export default {
   },
   async mounted() {
     this.getUserLocation();
+    console.log('modal', this.modalShown);
 
     await navigator.geolocation.getCurrentPosition((position) => {
       this.latitude = position.coords.latitude;
@@ -347,7 +353,8 @@ export default {
       this.saveDashboard(
         ids,
         sourcesID,
-        this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name,
+        // eslint-disable-next-line comma-dangle
+        this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
       );
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
@@ -444,7 +451,8 @@ export default {
         console.log(
           err,
           '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
-          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
+          // eslint-disable-next-line comma-dangle
+          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem'
         );
       } finally {
         this.loading = false;
@@ -458,8 +466,9 @@ export default {
     }
 
     this.$nextTick(() => {
-      this.showModal = true;
-      this.$root.$emit('bv::show::modal', 'modal-newsLetter');
+      if (this.modalShown !== true) {
+        this.$root.$emit('bv::show::modal', 'modal-newsLetter');
+      }
     });
   },
   watch: {
