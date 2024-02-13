@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 <template>
   <!-- <base-overlay :show="loading"> -->
-  <div>
+  <div id="the-table">
     <div v-if="!loading">
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
