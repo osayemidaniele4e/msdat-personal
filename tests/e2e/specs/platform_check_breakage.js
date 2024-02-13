@@ -4,7 +4,7 @@
 
 describe('Test if Platform is broken', () => {
   it('Test if Navbar is Visible', () => {
-    cy.visit('http://localhost:8080/dashboard/Health_Outcomes_and_Service_Coverage');
+    cy.visit('https://msdat2-staging.e4eweb.space/dashboard/Health_Outcomes_and_Service_Coverage');
     cy.wait(3 * 60 * 1000);
     cy.get('#the-header').should('be.visible');
   });
