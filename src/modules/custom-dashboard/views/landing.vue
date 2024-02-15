@@ -1,28 +1,19 @@
 <template>
   <div>
-    <b-container fluid>
+    <Header  ref="theHeader"></Header>
+    <b-row style="position: relative" class="my-0 py-0">
+      <img style="height: 62vh; width: 63vw;" src="@/assets/img/analytics/bkg.png" alt="path background">
+      <div style="position: absolute; left: 0; top: 0; padding: 6%; display: flex; flex-direction: column; align-items: center; justify-content: space-around; height: 100%; width: 100vw;">
+        <div class="d-flex flex-column align-items-center">
+          <h1 style="color: #348481; font-weight: 650; font-size: 2.5rem; text-align: center; letter-spacing: 2px; margin-bottom: 20px;">The Custom Dashboard</h1>
+          <h3>Design your dashboard, customize data</h3>
+          <h3>No coding skills required!</h3>
+        </div>
+      </div>
+    </b-row>
+    <b-container fluid class="pt-0 mt-0">
     <div class='mt-0'>
-      <div v-if='!isAuthenticated' class="mb-4">
-        <b-nav  class='nav align-self-center justify-content-between'>
-          <div class="flex-grow-1 d-flex justify-content-center">
-            <h1 class="text-center" style="width:fit-content; margin-left: 14%;">The Custom Dashboard</h1>
-          </div>
-          <div class="d-flex">
-            <b-nav-item @click="$router.push('/custom/register')">Register</b-nav-item>
-          <b-nav-item @click="$router.push('/custom/login')">Login</b-nav-item>
-          </div>
-        </b-nav>
-      </div>
-      <div class="container">
-        <div class="header-text text-center mb-5">
-        <h2>Design your dashboard, customize your data</h2>
-        <h3>No coding skills required!</h3>
-      </div>
-
-      <saved-dashboard-list v-if="isAuthenticated" />
-
-      </div>
-      <b-row align="center" class='m-5 p-5 hero'>
+      <b-row align="center" class='mx-5 px-5 hero'>
         <b-col md="auto" lg="auto" sm="12" class="svg">
           <customDashboardSvg :name="61"></customDashboardSvg>
           <p style="font-size: 24px !important;">Select Data</p>
@@ -45,32 +36,33 @@
         </div>
       </b-row>
       <div class="text-center">
-        <b-button id="get-started" @click="$router.push('/custom/login')"  class="px-5 py-3">Get Started Here</b-button>
-      <p id="samples">View samples here</p>
+        <b-button id="get-started" @click="$router.push('/custom/login')"  class="px-4 py-3">Get Started Here</b-button>
       </div>
-
     </div>
     <div class="image-scroll">
-      <b-list-group horizontal class="overflow-auto">
-        <b-list-group-item
-          ><img src="@/assets/img/Image 3.png" alt=""
-        /></b-list-group-item>
-        <b-list-group-item
-          ><img
+      <p id="samples" class="mt-5">View Dashboard Samples</p>
+      <div horizontal class="mt-0 mb-5 d-flex" style="width: 100%; overflow: hidden;">
+        <img
+            src="@/assets/img/Image 3.png"
+            alt=""
+            class="d-flex"
+        />
+        <img
             src="@/assets/img/(per 1000 live births).png"
             alt=""
-        /></b-list-group-item>
-        <b-list-group-item
-          ><img
+            class="d-flex"
+        />
+        <img
             src="@/assets/img/(per 1000 live births) (NHMIS - 2019).png"
             alt=""
-        /></b-list-group-item>
-        <b-list-group-item
-          ><img
+            class="d-flex"
+        />
+        <img
             src="@/assets/img/(per 1000 live births) NDHS_2018.png"
             alt=""
-        /></b-list-group-item>
-        <b-list-group-item
+            class="d-flex"
+        />
+        <!-- <b-list-group-item
           ><img
             src="@/assets/img/(per 1000 live births) (NHMIS - 2019) (1).png"
             alt=""
@@ -79,18 +71,18 @@
           ><img
             src="@/assets/img/(per 1000 live births) 2.png"
             alt=""
-        /></b-list-group-item>
-      </b-list-group>
+        /></b-list-group-item> -->
+      </div>
     </div>
 
     <b-row
       style="padding-left: 70.000000026px; padding-right: 70.000000026px"
     >
-      <b-col md="7" sm="12" class="p-0 text-left">
+      <b-col lg="8" sm="12" class="p-0 text-left">
         <b-row class="features">
           <b-col>
-            <h4 style="font-size: 24px !important;">Available Health Data</h4>
-            <p class="d-flex text-justify" style="font-size: 14px !important;">
+            <h4 style="font-size: 24px; font-weight: 500;">Available Health Data</h4>
+            <p class="d-flex text-justify mb-4" style="font-size: 15px !important;">
               Our platform helps you set up a custom dashboard to suit your needs.
               The dashboard includes cleaned data on specific key health indicators in Nigeria.
               This data is available for your use.
@@ -98,13 +90,13 @@
               enabling you to organize your visualizations into any section of your choice,
               giving you control over your data and making it easier to analyze.
             </p>
-            <b-button>Design your dashboard</b-button>
+            <b-button style="font-size: 1rem; border-radius: 8px;">Design your dashboard</b-button>
           </b-col>
         </b-row>
         <b-row class="features">
           <b-col>
-            <h4 style="font-size: 24px !important;">Customizable Data</h4>
-            <p class="text-justify" style="font-size: 14px !important;">
+            <h4 style="font-size: 24px; font-weight: 500;">Customizable Data</h4>
+            <p class="text-justify mb-4" style="font-size: 15px !important;">
               Good news! This platform is not limited to the available data;
               you can also upload the data you're tracking within your team.
               You'll have the ability to input your data and select your preferred visualization.
@@ -113,14 +105,14 @@
               If you're interested in contributing to the development of this feature,
               please express your interest below.
             </p>
-            <b-button>INDICATE INTEREST HERE</b-button>
+            <b-button style="font-size: 1rem; border-radius: 8px;">INDICATE INTEREST HERE</b-button>
           </b-col>
         </b-row>
       </b-col>
-      <b-col md="5" sm="12">
+      <b-col lg="4" sm="12">
         <div>
           <img
-            class="img-fluid d-block mx-auto"
+            class="img-fluid d-block mx-auto pb-5 mb-5"
             src="@/assets/img/Group 81.png"
             alt=""
           />
@@ -128,22 +120,26 @@
       </b-col>
     </b-row>
   </b-container>
-  <CdFooter />
+  <Footer />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import CdFooter from '../components/footer.vue';
-import SavedDashboardList from '../components/SavedDashboardList.vue';
+// import CdFooter from '../components/footer.vue';
+// import SavedDashboardList from '../components/SavedDashboardList.vue';
 import customDashboardSvg from '../svg/customDashboardSvgs.vue';
+import Header from '../../msdat-dashboard/views/about/layout/theHeader.vue';
+import Footer from '../../msdat-dashboard/views/about/layout/theFooter.vue';
 
 export default {
   name: 'landing',
   components: {
-    CdFooter,
+    // CdFooter,
     customDashboardSvg,
-    SavedDashboardList,
+    // SavedDashboardList,
+    Header,
+    Footer,
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['isAuthenticated']),
@@ -169,15 +165,15 @@ export default {
   color: #ffffff;
   max-width: 306.000000077px;
   font-weight: bold;
-  font-size: 30.000000008px;
+  font-size: 20px;
   border-radius: 7.500000002px;
   text-transform: none;
 }
 #samples {
-  text-decoration: underline;
   color: #202020;
-  font-size: 22.5px;
-  font-weight: normal;
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
 }
 .btn {
   background-color: #3f8994;
