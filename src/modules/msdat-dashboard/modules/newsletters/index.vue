@@ -54,14 +54,12 @@
 <script>
 import './style.scss';
 import axios from 'axios';
-import moment from 'moment';
 
 export default {
-  name: 'Modal',
+  name: 'NewsLetterModal',
   components: {},
   data() {
     return {
-      fullname: '',
       email: '',
       loading: false,
     };
@@ -75,18 +73,16 @@ export default {
     },
 
     async newsLetter() {
-      // TODO: error with the subscribers endpoint.
       this.loading = true;
-      const url = `${process.env.VUE_APP_API_BASE_URL1}crud/subscriber/`;
-      const now = moment().format('LLLL');
-      const subscription = {
-        email: this.email,
-        name: this.fullname,
-        created: now,
+      const url = `${process.env.VUE_APP_API_BASE_URL1}/mailchimp`;
+      // TODO: check url
+      const data = {
+        email_address: this.email,
       };
       try {
-        const response = await axios.post(url, subscription);
+        const response = await axios.post(url, data);
         if (response.data) {
+          this.email = '';
           this.$swal({
             toast: true,
             position: 'top-right',
@@ -97,8 +93,6 @@ export default {
             text: 'You have successfully subscribed to our newsletter.',
           });
           this.hideModal();
-          this.fullname = '';
-          this.email = '';
         }
       } catch (error) {
         this.$swal({
