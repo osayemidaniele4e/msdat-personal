@@ -66,12 +66,18 @@ export default {
       loading: false,
     };
   },
+  computed: {
+    modalShown() {
+      return localStorage.getItem('modalShown') === 'true'; // Convert to boolean
+    },
+  },
   methods: {
     showModal() {
       this.$root.$emit('bv::show::modal', 'modal-newsLetter', '#btnShow');
     },
     hideModal() {
       this.$root.$emit('bv::hide::modal', 'modal-newsLetter', '#btnShow');
+      localStorage.setItem('modalShown', 'true');
     },
 
     async newsLetter() {
