@@ -20,6 +20,8 @@ export default {
     };
   },
   async mounted() {
+  /* eslint-disable no-unused-vars, camelcase */
+    const plugins_imported = [];
     this.pluginsImported.push('contextPlugin');
     if (!localStorage.getItem('contextPlugin')) {
       localStorage.setItem('contextPlugin', 'false');
