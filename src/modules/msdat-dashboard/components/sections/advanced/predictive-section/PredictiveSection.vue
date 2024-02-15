@@ -201,7 +201,7 @@ export default {
       const yearArray = [];
       if (this.getPredictedData.prediction !== undefined) {
         this.getPredictedData.prediction.forEach((item) => {
-          const arr = item[1];
+          const arr = item[0];
           yearArray.push(arr);
         });
       }
