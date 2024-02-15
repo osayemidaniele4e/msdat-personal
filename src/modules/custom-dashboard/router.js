@@ -36,6 +36,14 @@ export default [
     },
   },
   {
+    path: '/custom/private/:id',
+    name: 'custom-dashboard-public',
+    component: () => import('./views/Private.vue'),
+    meta: {
+      title: 'Custom Dashboard',
+    },
+  },
+  {
     path: '/custom/requests',
     name: 'custom-dashboard-request',
     component: () => import('./views/DashboardRequests.vue'),

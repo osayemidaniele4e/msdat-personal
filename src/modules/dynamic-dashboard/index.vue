@@ -1,10 +1,21 @@
 <template>
   <div class="mb-3 index-app">
+    <!-- <h1>HELLOOOOO</h1> -->
     <MSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === false && isGIS === false && loading === false"
+      v-if="
+        Object.entries(configObject).length > 0 &&
+        isAdvanced === false &&
+        isGIS === false &&
+        loading === false
+      "
     />
     <AdvanceMSDAT
-      v-if="Object.entries(configObject).length > 0 && isAdvanced === true && isGIS === false && loading === false"
+      v-if="
+        Object.entries(configObject).length > 0 &&
+        isAdvanced === true &&
+        isGIS === false &&
+        loading === false
+      "
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -18,7 +29,12 @@
       "
     />
     <GisMSDAT
-      v-if="Object.entries(configObject).length > 0 && isGIS === true && isAdvanced === false && loading === false"
+      v-if="
+        Object.entries(configObject).length > 0 &&
+        isGIS === true &&
+        isAdvanced === false &&
+        loading === false
+      "
       :indicators="configObject.indicators"
       :dataSources="configObject.dataSources"
       :defaultIndicators="configObject.defaultIndicators"
@@ -33,8 +49,18 @@
     />
     <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
     <div class="preview" v-if="$route.query.prev">
-      <b-button @click="$router.push('/custom/requests')" size="lg" variant="info" style="font-size: 1.5rem;">Back to Requests</b-button>
+      <b-button
+        @click="$router.push('/custom/requests')"
+        size="lg"
+        variant="info"
+        style="font-size: 1.5rem"
+        >Back to Requests</b-button
+      >
     </div>
+
+    <!-- <NewsLetter v-if="!loading" /> -->
+
+    <NewsLetter />
   </div>
 </template>
 <script>
@@ -51,6 +77,7 @@ import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
 import defaultDSyear from './defaultDSYear.json';
 import defaultAdvancedYear from './defaultAdvancedYear.json';
+import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
 
 export default {
   name: 'DynamicDashboard',
@@ -59,6 +86,7 @@ export default {
     AdvanceMSDAT: advanceInstance,
     GisMSDAT: gisInstance,
     ClearDBModal,
+    NewsLetter,
   },
   data() {
     return {
@@ -83,6 +111,11 @@ export default {
       userLocation: null,
       error: null,
     };
+  },
+  computed: {
+    modalShown() {
+      return localStorage.getItem('modalShown') === 'true';
+    },
   },
   methods: {
     ...mapMutations('MSDAT_STORE', [
@@ -173,7 +206,8 @@ export default {
           },
           (error) => {
             this.error = error.message;
-          },
+            // eslint-disable-next-line comma-dangle
+          }
         );
       } else {
         this.error = 'Geolocation is not supported in your browser.';
@@ -190,6 +224,7 @@ export default {
   },
   async mounted() {
     this.getUserLocation();
+    console.log('modal', this.modalShown);
 
     await navigator.geolocation.getCurrentPosition((position) => {
       this.latitude = position.coords.latitude;
@@ -318,7 +353,8 @@ export default {
       this.saveDashboard(
         ids,
         sourcesID,
-        this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name,
+        // eslint-disable-next-line comma-dangle
+        this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
       );
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
@@ -415,7 +451,8 @@ export default {
         console.log(
           err,
           '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
-          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
+          // eslint-disable-next-line comma-dangle
+          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem'
         );
       } finally {
         this.loading = false;
@@ -427,6 +464,12 @@ export default {
       this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
       window.document.title = `MSDAT Nigeria | ${this.$store.state.MSDAT_STORE.configObject.title}`;
     }
+
+    this.$nextTick(() => {
+      if (this.modalShown !== true) {
+        this.$root.$emit('bv::show::modal', 'modal-newsLetter');
+      }
+    });
   },
   watch: {
     $route(to, from) {

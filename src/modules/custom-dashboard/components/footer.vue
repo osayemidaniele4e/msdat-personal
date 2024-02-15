@@ -47,7 +47,7 @@
     <b-row class="text-left">
       <b-col>
         <p class="copy-right">
-          Copyright © 2020 Custom Dashboard. All rights reserved.
+          Copyright © {{ (new Date()).getFullYear() }} Custom Dashboard. All rights reserved.
         </p>
       </b-col>
     </b-row>
