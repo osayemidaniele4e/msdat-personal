@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" id="control-panel">
     <div v-for="(values, index) in setup" :class="values.class" :key="index"
       v-show="values.visibility === undefined ? true : values.visibility">
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
