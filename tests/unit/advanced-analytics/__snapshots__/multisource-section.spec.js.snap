@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mounted multisourceSection Component renders correctly with data 1`] = `
+<base-overlay
+  show="true"
+>
+  <base-sub-card
+    showcontrols=""
+  >
+     
+    <barchart-stub
+      chart="[object Object]"
+      chartoptions="[object Object]"
+      title=" Distribution of Mock Indicator across the geopolitical zones in
+          the Country. Source: Mock Datasource 2022"
+    />
+  </base-sub-card>
+   
+  <!---->
+</base-overlay>
+`;
