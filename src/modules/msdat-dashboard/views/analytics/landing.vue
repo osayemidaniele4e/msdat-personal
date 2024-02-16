@@ -9,14 +9,15 @@
           <span>MultiSource Data Analytics & Triangulation Platform</span>
         </div>
         <small>
-          The essence of health data is to ensure that decision-makers have the means to make informed decisions
+          <!-- The essence of health data is to ensure that decision-makers have the means to make informed decisions
           and policies for healthcare. Take advantage of the advanced analytic tools to gain valuable insights and
-          shape the future of healthcare. Explore key health indicators, analyze trends, and harness the power of
+          shape the future of healthcare. -->
+           Explore key health indicators, analyze trends, and harness the power of
           predictive modeling to anticipate future health trends.
         </small>
       </div>
     </b-row>
-    <div class="d-flex flex-column align-items-center mb-3 px-3">
+    <div class="btm-section d-flex flex-column align-items-center mb-3 px-3">
       <span class="mb-3 font-weight-bold">Select a dashboard to start</span>
       <b-row cols="2" cols-md="3" cols-xl="6">
         <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center mb-3">
@@ -24,7 +25,7 @@
             <img class="section" :src="imgsrc(section.title)" :alt="section.title">
           </router-link>
           <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`">
-            <small style="font-size: 0.8rem; font-weight: 600" class="py-2">{{ section.title }}</small>
+            <small style="font-size: 1.15rem; font-weight: 700" class="py-2">{{ section.title }}</small>
           </router-link>
         </b-col>
       </b-row>
@@ -120,14 +121,19 @@ export default {
   }
   .top-section span {
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     text-align: center;
+  }
+
+  .btm-section span{
+    font-weight: 700;
+    font-size: 1.1rem;
   }
   .top-section small {
     text-align: center;
     padding: 0 8.5%;
     user-select: none;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   .bg {
     height: 59vh;
