@@ -59,15 +59,6 @@
       />
       {{ checkNHMISDHIS2() }}
       <!-- MSDAT SUB-DASHBOARDS -->
-      <!-- <selectWrapper
-        v-if="values.type === 'dropdown' && values.key !== 'indicator'"
-        :id="label"
-        :value="payload[values.key]"
-        @input="updatePayload($event, values.key)"
-        :options="locationCheck(values.options)"
-        :multiSelectProps="values.dropdownProps"
-        :NoDataLabel="values.label"
-      /> -->
       <selectWrapper
         v-if="values.type === 'dropdown' && values.key === 'compareBy'"
         :id="label"
