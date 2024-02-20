@@ -2104,7 +2104,7 @@ exports[`Landing.vue renders correctly 1`] = `
             class="copy-right"
           >
             
-        Copyright © 2024 Custom Dashboard. All rights reserved.
+        Copyright © 2020 Custom Dashboard. All rights reserved.
       
           </p>
         </div>
