@@ -594,6 +594,7 @@ div.ics_wrapper {
   div.no_data {
     position: absolute;
     top: 0;
+
     display: flex;
     justify-content: center;
     align-items: center;

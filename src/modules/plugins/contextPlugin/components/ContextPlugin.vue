@@ -1,12 +1,9 @@
 <template>
   <div class="position-fixed zIndex">
     <div class="header d-flex justify-content-between position-relative">
-      <div class="left-content d-flex">
-      <img :src="require('../../assets/Group_3126.svg')" alt="" />
-      <div class="d-flex flex-column ml-3">
+      <div class="left-content">
         <h1>Data Insights</h1>
         <span>Look up qualitative data now</span>
-        </div>
       </div>
       <div class="profile">
         <div class="img">
@@ -254,7 +251,7 @@ export default {
     color: #ffffff;
     opacity: 1;
     margin: 0;
-    margin-top: 0px;
+    margin-top: -4px;
   }
   .header p {
     background-color: whitesmoke;
