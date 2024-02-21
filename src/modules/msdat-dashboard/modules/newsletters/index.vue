@@ -74,10 +74,9 @@ export default {
 
     async newsLetter() {
       this.loading = true;
-      const url = `${process.env.VUE_APP_API_BASE_URL1}/mailchimp`;
-      // TODO: check url
+      const url = `${process.env.VUE_APP_API_STAGING_BASE_URL}/mailchimp/`;
       const data = {
-        email_address: this.email,
+        email: this.email,
       };
       try {
         const response = await axios.post(url, data);
@@ -102,7 +101,7 @@ export default {
           timer: 5000,
           icon: 'info',
           title: 'Attention',
-          text: 'Name/Email address provided already exist, please try again' || `${error.message}`,
+          text: 'An Error Occured, Please try again' || `${error.message}`,
         });
       } finally {
         this.loading = false;
