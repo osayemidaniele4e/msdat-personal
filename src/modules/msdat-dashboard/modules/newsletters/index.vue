@@ -92,6 +92,7 @@ export default {
             text: 'You have successfully subscribed to our newsletter.',
           });
           this.hideModal();
+          this.modalShown();
         }
       } catch (error) {
         this.$swal({
@@ -106,6 +107,10 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    modalShown() {
+      // eslint-disable-next-line no-unused-expressions
+      localStorage.setItem('modalShown') === 'true';
     },
   },
 };
