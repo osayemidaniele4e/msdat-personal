@@ -80,6 +80,10 @@ export default {
     };
   },
   methods: {
+    sortData(data) {
+      const sortedData = data.slice().sort((a, b) => a[0] - b[0]);
+      return sortedData;
+    },
     mapDownload(e) {
       if (this.visualization === 'line' || this.visualization === 'column') {
         this.downLoadType(e, {
@@ -141,6 +145,9 @@ export default {
       };
     },
     formatToHighChartOptionForLine(data, chartType, controlPanelObject) {
+      // const sortedData = this.sortedData(data);
+      const tempData = this.sortData(data);
+      // console.log(data, 'Crash-data');
       const chartOptions = {
         chart: {
           type: chartType,
@@ -163,7 +170,7 @@ export default {
         series: [
           {
             name: 'Nigeria',
-            data,
+            data: tempData,
             // color: 'red',
           },
         ],
