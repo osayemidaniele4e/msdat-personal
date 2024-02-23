@@ -42,7 +42,7 @@
             </svg>
           </span>
           <div>
-            <p>Selected Comparison Not Available</p>
+            <p>Comparison can only be done for 2 data sources</p>
           </div>
         </div>
         <div class="comparison" v-else>
@@ -451,7 +451,7 @@ export default {
 .noComparison {
   border-radius: 10px;
   border: 1px solid #e85d58;
-  width: 25%;
+  width: 35%;
   height: 53px;
   display: flex;
   flex-direction: row;
