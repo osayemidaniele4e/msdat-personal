@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header ref="theHeader"></Header>
-    <b-row style="position: relative" class="my-0 py-0">
+    <b-row style="position: relative" class="py-0 mt-sm-3 justify-content-center">
       <!-- <img
         style="height: 62vh; width: 63vw"
         src="@/assets/img/analytics/bkg.png"
@@ -18,14 +18,14 @@
           align-items: center;
           justify-content: space-around;
           height: 100%;
-          width: 100vw;
+
           margin-bottom: -35px;
         "
       >
-        <div class="d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-center custom-Header">
           <h1 class="header-subText">Create your custom dashboard</h1>
-          <h2>Design your dashboard, customize data</h2>
-          <h2>No coding skills required!</h2>
+          <h2 class="text-center">Design your dashboard, customize data</h2>
+          <h2 class="text-center">No coding skills required!</h2>
         </div>
       </div>
     </b-row>
@@ -72,7 +72,9 @@
                 includes cleaned data on specific key health indicators in Nigeria. This data is
                 available for your use.
               </p>
-              <a href="#" class="btn btn-primary">Design your dashboard</a>
+              <b-button id="get-started" @click="$router.push('/custom/login')" class="px-3 py-2"
+                >Get Started Here</b-button
+              >
             </div>
           </div>
           <div class="card custom-card" style="width: 25rem">
@@ -84,7 +86,8 @@
                 the data you're tracking within your team. You'll have the ability to input your
                 data and select your preferred visualization.
               </p>
-              <a href="#" class="btn btn-primary">Indicate interest here</a>
+              <b-button id="get-started" class="px-3 py-2">Indicate interest here</b-button>
+              <!-- <a href="#" class="btn btn-primary">Indicate interest here</a> -->
             </div>
           </div>
         </div>
@@ -232,16 +235,20 @@ export default {
   justify-content: center !important;
 }
 #get-started {
-  margin-top: 30px;
-  margin-bottom: 30px;
+  // margin-top: 20px;
+  // margin-bottom: 20px;
   // height: 67.500000017px;
   background-color: #3f8994;
   color: #ffffff;
   max-width: 306.000000077px;
   font-weight: bold;
-  font-size: 20px;
-  border-radius: 7.500000002px;
+  font-size: 13px;
+  border-radius: 7.000000002px;
   text-transform: none;
+  transition: background-color 0.3s ease;
+}
+#get-started:hover {
+  background-color: #103f47 !important; /* Change background color on hover */
 }
 #samples {
   color: #202020;
@@ -415,6 +422,12 @@ a {
   .header-text h3 {
     font-size: 20px;
     margin-top: 20px;
+  }
+  .header-subText {
+    font-size: 1rem;
+  }
+  .custom-Header h2 {
+    font-size: 28px;
   }
 }
 </style>
