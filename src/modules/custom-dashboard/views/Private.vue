@@ -45,6 +45,9 @@ export default {
     }, 10000);
   },
   watch: {
+    // When Dashboards list is updated in store
+    // Get currently selected dashboard and load
+    // If not found or exceeds delay, display error message
     getDashboards(dashboards) {
       clearTimeout(this.timeout);
       const id = this.$route.params.id;

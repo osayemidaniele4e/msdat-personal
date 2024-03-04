@@ -465,11 +465,11 @@ export default {
       window.document.title = `MSDAT Nigeria | ${this.$store.state.MSDAT_STORE.configObject.title}`;
     }
 
-    this.$nextTick(() => {
-      if (this.modalShown !== true) {
-        this.$root.$emit('bv::show::modal', 'modal-newsLetter');
-      }
-    });
+    // this.$nextTick(() => {
+    //   if (this.modalShown !== true) {
+    //     this.$root.$emit('bv::show::modal', 'modal-newsLetter');
+    //   }
+    // });
   },
   watch: {
     $route(to, from) {

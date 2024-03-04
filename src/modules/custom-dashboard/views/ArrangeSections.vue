@@ -26,7 +26,7 @@
                 type="checkbox"
                 :name="`dashboard${index}`"
                 :id="`dashboard${index}`"
-                :checked="isSelected(value)"
+                v-model="value.selected"
                 @click="selectedComponent($event, value.fieldName)"
               />
               <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
