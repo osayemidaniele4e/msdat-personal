@@ -64,7 +64,11 @@
       <div class="container d-flex justify-content-center align-items-center">
         <div class="row">
           <div class="card mr-3 custom-card" style="width: 25rem">
-            <img src="@/assets/img/Group 81.png" class="card-img-top p-2" />
+            <img
+              src="@/assets/img/Group 81.png"
+              class="card-img-top p-2"
+              style="visibility: hidden"
+            />
             <div class="card-body">
               <h4 class="card-title">Available Health Data</h4>
               <p class="card-text">
@@ -78,7 +82,15 @@
             </div>
           </div>
           <div class="card custom-card" style="width: 25rem">
-            <img src="@/assets/img/Group 81.png" class="card-img-top p-2" />
+            <div style="position: absolute; top: 0; right: 0; margin-top: 10px; margin-right: 10px">
+              <b-button
+                class="px-3 py-2"
+                disabled
+                style="background-color: #141414 !important; border-radius: 22px; font-size: 11px"
+                >Currently in development</b-button
+              >
+            </div>
+            <img src="" class="card-img-top p-2" style="visibility: hidden" />
             <div class="card-body">
               <h4 class="card-title">Customizable Data</h4>
               <p class="card-text">
@@ -86,7 +98,9 @@
                 the data you're tracking within your team. You'll have the ability to input your
                 data and select your preferred visualization.
               </p>
-              <b-button id="get-started" class="px-3 py-2">Indicate interest here</b-button>
+              <b-button id="inactive-button" disabled class="px-3 py-2 inactive-button-style"
+                >Indicate interest here</b-button
+              >
               <!-- <a href="#" class="btn btn-primary">Indicate interest here</a> -->
             </div>
           </div>
@@ -235,13 +249,10 @@ export default {
   justify-content: center !important;
 }
 #get-started {
-  // margin-top: 20px;
-  // margin-bottom: 20px;
-  // height: 67.500000017px;
   background-color: #3f8994;
   color: #ffffff;
   max-width: 306.000000077px;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 13px;
   border-radius: 7.000000002px;
   text-transform: none;
@@ -372,12 +383,8 @@ a {
   border: none;
 }
 
-.custom-card .btn:hover {
-  background-color: #103f47; /* Change background color on hover */
-}
-
 .scrolling-container {
-  animation: scroll 10s linear infinite; /* Adjust duration and timing function as needed */
+  animation: scroll 25s linear infinite; /* Adjust duration and timing function as needed */
 }
 
 .image-scroll {
@@ -387,6 +394,16 @@ a {
 .image-scroll img {
   max-width: 100%;
   height: auto;
+}
+
+.inactive-button-style {
+  background-color: #6c757d; /* Grey background color */
+  color: #fff; /* Grey text color */
+  cursor: not-allowed; /* Change cursor to not-allowed */
+  border-radius: 7.000000002px;
+  max-width: 306.000000077px;
+  font-weight: 500;
+  font-size: 13px;
 }
 
 @keyframes scroll {
