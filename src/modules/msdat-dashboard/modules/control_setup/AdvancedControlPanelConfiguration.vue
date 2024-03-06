@@ -67,7 +67,7 @@ export default {
     console.log('heyyy')
 
     const availableDS = await this.getAllDataSources()
-    debugger;
+    // debugger;
     console.log('available ds',availableDS)
     await this.SETUP_CONTROL_OPTIONS1({
             groupIndex: this.groupIndex,

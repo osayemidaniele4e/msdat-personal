@@ -1,10 +1,17 @@
 <template>
-  <BaseDashboard :updateValue="updateValue" :updateKey="updateKey" :resetData="resetData" @swipe="changeSwipe">
+  <BaseDashboard
+    :updateValue="updateValue"
+    :updateKey="updateKey"
+    :resetData="resetData"
+    @swipe="changeSwipe"
+  >
     <template v-slot:section-before-0>
       <slot name="top-section"></slot>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[0])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -15,14 +22,21 @@
                  since it will be mounted first -->
           <template>
             <ControlPanelConfiguration :controlIndex="controlIndex">
-              <BaseIndicatorOverview :controlPanelProps="payload" @value="getValue" @key="getKey" @reset="getReset" />
+              <BaseIndicatorOverview
+                :controlPanelProps="payload"
+                @value="getValue"
+                @key="getKey"
+                @reset="getReset"
+              />
             </ControlPanelConfiguration>
           </template>
         </base-sub-card>
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[1])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12" style="margin-bottom: 4rem">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -42,7 +56,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'">
           <template #title>
@@ -61,7 +77,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[3])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -78,7 +96,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[4])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
@@ -100,7 +120,9 @@
       </div>
     </template>
 
-    <template v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }">
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
+    >
       <div class="col-md-12 overflow-auto">
         <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm disaggregation">
           <template #title>
@@ -157,8 +179,8 @@ import DynamicSectionConfig from '../../components/sections/dynamic-section/dyna
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 // eslint-disable-next-line import/extensions
-import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config.js';
-import PolicySimulator from '../../components/sections/policy-simulator/policySimulator.vue';
+// import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config.js';
+// import PolicySimulator from '../../components/sections/policy-simulator/policySimulator.vue';
 
 export default {
   data() {

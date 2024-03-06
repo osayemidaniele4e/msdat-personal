@@ -1,8 +1,8 @@
 <template>
-    <div class="m-5 border">
-      <h1>Hello, its me</h1>
-    </div>
-  </template>
+  <div class="m-5 border">
+    <h1>Hello, its me</h1>
+  </div>
+</template>
 
 <script>
 import apiServices from '@/modules/data-layer/services/ApiServices';
@@ -48,7 +48,12 @@ export default {
     async getValue(datasource, indicator, location) {
       const valueType = datasource.value_type;
       const datasourceId = datasource.id;
-      const response = await apiServices.getIndicatorTableData(indicator, datasourceId, valueType, location);
+      const response = await apiServices.getIndicatorTableData(
+        indicator,
+        datasourceId,
+        valueType,
+        location,
+      );
       console.log(response, 'datasources main 1');
       return response;
     },
@@ -66,7 +71,8 @@ export default {
         apiServices.getSingleIndicatorObj(indicatorMetaData.data.second_related),
       ];
 
-      const [first_related, second_related] = await Promise.all(relatedIndicatorsPromises);
+      // const [first_related] = await Promise.all(relatedIndicatorsPromises);
+      await Promise.all(relatedIndicatorsPromises);
 
       const dataSourcesObjsPromises = datasources.map(async (dataSourceId) => {
         const dataObj = await apiServices.getSingleDataSourceObj(dataSourceId);
@@ -98,4 +104,4 @@ export default {
 };
 </script>
 
-  <style lang="scss" scoped></style>
+<style lang="scss" scoped></style>
