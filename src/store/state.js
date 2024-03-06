@@ -3,4 +3,6 @@ export default {
   interaction: {},
   interactions: [],
   status: true,
+  submittedPlugins: [],
+  pluginsImported: [],
 };

@@ -1,3 +1,5 @@
+<!-- <script>
+// import { Sortable } from '@shopify/draggable';
 <script>
 // import { Sortable } from '@shopify/draggable';
 
@@ -33,18 +35,18 @@ export default {
 
     });
   },
-  mounted() {
-    new Sortable(this.$el, {
-      draggable: `.${this.itemClass}`,
-      handle: `.${this.handleClass}`,
-      mirror: {
-        constrainDimensions: true,
-      },
-    }).on('sortable:stop', ({ oldIndex, newIndex }) => {
-      const moveData = move(this.value, oldIndex, newIndex);
-      this.$emit('input', moveData);
-      this.$store.dispatch('arrangedSection', moveData);
-    });
-  },
+  // mounted() {
+  //   new Sortable(this.$el, {
+  //     draggable: `.${this.itemClass}`,
+  //     handle: `.${this.handleClass}`,
+  //     mirror: {
+  //       constrainDimensions: true,
+  //     },
+  //   }).on('sortable:stop', ({ oldIndex, newIndex }) => {
+  //     const moveData = move(this.value, oldIndex, newIndex);
+  //     this.$emit('input', moveData);
+  //     this.$store.dispatch('arrangedSection', moveData);
+  //   });
+  // },
 };
-</script>
+</script> -->

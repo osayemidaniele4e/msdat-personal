@@ -15,7 +15,33 @@ type setPayload = {
   value: [] | string | number;
 };
 
+export type Conversation = {
+  user: boolean;
+  message: string
+}
+
 const mutations: MutationTree<State> = {
+  SET_ISGENERATING: (state, payload) => {
+    state.isGenerating = payload;
+  },
+  SET_ISRESPONDING: (state, payload) => {
+    state.isResponding = payload;
+  },
+  SET_ISTYPINGEFFECT: (state, payload) => {
+    state.isTypingEffect = payload;
+  },
+  SET_CONVERSATION: (state, payload) => {
+    state.conversationHistory = [payload];
+  },
+  POP_LAST: (state) => {
+    state.conversationHistory = [...state.conversationHistory.slice(0, -1)];
+  },
+  PUSH_CONVERSATION: (state, payload: Conversation) => {
+    state.conversationHistory = [...state.conversationHistory, payload];
+  },
+  CLEAR_CONVERSATION: (state) => {
+    state.conversationHistory = [];
+  },
   SET_INITIAL: (state, payload) => {
     state.default.indicator = payload.indicator;
     state.default.datasource = payload.datasource;
@@ -96,17 +122,20 @@ const mutations: MutationTree<State> = {
 
   SET_MULTI_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[4].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
       state.controlConfig[4].payload.forEach((item) => (item.indicator = obj.value));
     }
   },
 
   SET_MULTI_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[4].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
       state.controlConfig[4].payload.forEach((item) => (item.datasource = obj.value));
     }
   },
   SET_MULTI_YEAR_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[4].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
       state.controlConfig[4].payload.forEach((item) => (item.year = obj.value));
     }
   },
@@ -166,7 +195,32 @@ const mutations: MutationTree<State> = {
       if (item.label !== 'Multi-Source Comparison' && item.label !== 'Disaggregation') {
         item.setup.forEach((source) => {
           if (source.key === 'datasource') {
+            // eslint-disable-next-line no-param-reassign
             source.options = payload;
+          }
+        });
+      }
+    });
+  },
+
+  SET_ADVANCED_MULTISOURCE_DEFAULT_DATASOURCES: (state, payload) => {
+    state.selectedConfigurations.dataSource = payload;
+    state.controlConfig.forEach((item) => {
+      if (item.label === 'Multi-Source Indicator Comparison') {
+        item.payload.forEach((source) => {
+          source.datasource = payload;
+        });
+      }
+    });
+  },
+
+  UPDATE_PROGRAM_AREAS: (state, payload) => {
+    state.controlConfig.forEach((item) => {
+      if (item.label === 'Multi-Source Indicator Comparison') {
+        item.payload.forEach((source, index) => {
+          if (index === payload.index) {
+            // eslint-disable-next-line no-param-reassign
+            source.indicator = payload.content.indicators[0];
           }
         });
       }
@@ -184,6 +238,7 @@ const mutations: MutationTree<State> = {
       ) {
         item.setup.forEach((source) => {
           if (source.key === 'year') {
+            // eslint-disable-next-line no-param-reassign
             source.options = payload;
           }
         });
@@ -196,8 +251,10 @@ const mutations: MutationTree<State> = {
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Comparison') {
         item.setup.forEach((source) => {
-          source.forEach((item) => {
+          // eslint-disable-next-line no-shadow
+          source.forEach((item: { key: string; options: any; }) => {
             if (item.key === 'year') {
+              // eslint-disable-next-line no-param-reassign
               item.options = payload;
             }
           });

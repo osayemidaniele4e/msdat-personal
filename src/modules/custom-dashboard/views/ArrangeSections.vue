@@ -1,5 +1,5 @@
 <!-- eslint-disable vue/no-parsing-error -->
-  <!-- Auther: Ghufran Ahmed -->
+<!-- Auther: Ghufran Ahmed -->
 
 <template>
   <b-container>
@@ -17,24 +17,28 @@
       </h2>
       <br />
       <b-col md="8" sm="12">
-        <div v-for="(value, index) in values" :key="index">
-          <div class="">
-            <input
-              type="checkbox"
-              :name="`dashboard${index}`"
-              :id="`dashboard${index}`"
-              :checked="isSelected(value)"
-              @click="selectedComponent($event, value.fieldName)"
-            />
-            <!-- //:checked="isSelected(value)"/> -->
-            <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
+        <draggable v-model="values" @update="handleListUpdate">
+          <transition-group
+          >
+          <div v-for="(value, index) in values" :key="index" :id="index">
+            <div class="">
+              <input
+                type="checkbox"
+                :name="`dashboard${index}`"
+                :id="`dashboard${index}`"
+                v-model="value.selected"
+                @click="selectedComponent($event, value.fieldName)"
+              />
+              <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
+            </div>
+            <p style="width: 100%; font-family: Work Sans; font-size: 14px">
+              This section shows an overview of your dashboard. This is a brief
+              description...
+            </p>
+            <img :src="value.fieldImage" class="layout" />
           </div>
-          <p style="width: 100%; font-family: Work Sans; font-size: 14px">
-            This section shows an overview of your dashboard. This is a brief
-            description...
-          </p>
-          <img :src="value.fieldImage" class="layout" />
-        </div>
+        </transition-group>
+      </draggable>
       </b-col>
       <b-col md="12" lg='12' sm="12">
         <div class="d-flex mb-5">
@@ -52,17 +56,16 @@
         <!-- <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button> -->
         <button @click="approveData">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button>
 
-
         <b-popover ref="popover" target="popover-button-event" triggers="hover" title="Choose visibility">
-     <span @click="createPrivateDashboard()" class="choose-visibility-option">
+      <span @click="createPrivateDashboard()" class="choose-visibility-option">
       <b-icon icon="person-fill" style="color: #7952b3;"></b-icon>
       Private dashboard</span>
-     <br>
-     <span
-     class="choose-visibility-option"
-     v-b-modal.modal-public-dashboard>
-     <b-icon icon="globe" style="color: #7952b3;"></b-icon>
-     Public dashboard</span>
+      <br>
+      <span
+      class="choose-visibility-option"
+      v-b-modal.modal-public-dashboard>
+      <b-icon icon="globe" style="color: #7952b3;"></b-icon>
+      Public dashboard</span>
     </b-popover>
 
     <b-modal id="modal-in-review" title="BootstrapVue" size="lg" hide-footer hide-header>
@@ -219,16 +222,17 @@
   </b-container>
 </template>
 <script>
-import { mapGetters } from 'vuex';
-import DragableList from '../components/Custom-dashboard-sections/Dragable-List.vue';
+import { mapGetters, mapActions } from 'vuex';
+import draggable from 'vuedraggable';
 
 export default {
   components: {
-    // eslint-disable-next-line vue/no-unused-components
-    DragableList,
+  // eslint-disable-next-line vue/no-unused-components
+    draggable,
   },
   data() {
     return {
+      orderModified: false,
       values: [
         {
           fieldName: 'Indicator Overview',
@@ -268,7 +272,7 @@ export default {
         organization: '',
         Reason: '',
         name_of_dashboard: '',
-        dashboard_details: null
+        dashboard_details: null,
       },
       form: {
         email: '',
@@ -278,7 +282,7 @@ export default {
       },
       foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
       show: true,
-    };``
+    };
   },
   mounted() {
     this.$store.commit('updateStep', 4);
@@ -289,12 +293,12 @@ export default {
     dashboardDetails() {
       return this.$store.getters.dashboardDetails;
     },
-    getVisibility(){
+    getVisibility() {
       return this.$store.getters.getVisibility;
-
-    }
+    },
   },
   methods: {
+    ...mapActions('AUTH_STORE', ['SAVE_USER_DASHBOARD']),
     async onSubmit(event) {
       await event.preventDefault();
       await this.createPublicDashboard();
@@ -319,10 +323,9 @@ export default {
     },
 
     async createPublicDashboard() {
-      // send the request to create a public dashboard
+    // send the request to create a public dashboard
       this.public_creator.dashboard_details = await this.$store.getters.dashboardDetails;
       await this.$store.dispatch('setDashboardRequest', this.public_creator);
-      console.log('public creator', this.public_creator)
       // hide the 'modal-public-dashboard'
       await this.$bvModal.hide('modal-public-dashboard');
       // show the 'modal-in-review'
@@ -330,13 +333,24 @@ export default {
 
       // Wait for 10 seconds using setTimeout
       setTimeout(() => {
-        // After waiting for 10 seconds, call the approveData() function
+      // After waiting for 10 seconds, call the approveData() function
         this.approveData();
       }, 5000); // 10000 milliseconds = 10 seconds
     },
-
+    handleListUpdate() {
+      this.orderModified = true;
+    },
+    reorderStoreConfig() {
+      const mapping = {};
+      this.values.forEach((item, index) => {
+        mapping[item.fieldName] = index;
+      });
+      const storeArray = this.$store.getters.arrangedSections;
+      storeArray.sort((a, b) => mapping[a.name] - mapping[b.name]);
+      return storeArray;
+    },
     async createPrivateDashboard() {
-      // send the request to create a public daashboard
+    // send the request to create a public daashboard
 
       // change the visibility
       await this.changeVisibility('private');
@@ -346,36 +360,74 @@ export default {
 
     // Below function is excuted when approve data button is clicked
 
-   async  approveData() {
-      
+    async  approveData() {
       if (!this.dashboardDetails.name) {
-        // eslint-disable-next-line no-alert
+      // eslint-disable-next-line no-alert
         this.$swal('Dashboard name not provided');
         return;
       }
-
+      let arrangedSections = this.$store.getters.arrangedSections;
+      if (this.orderModified) {
+        arrangedSections = this.reorderStoreConfig();
+      }
+      const config = {
+        dashboardDetails: this.$store.getters.dashboardDetails,
+        composedData: this.$store.getters.getprogramArea,
+        surveyArray: this.$store.getters.getDataSource,
+        sectionsArray: arrangedSections,
+      };
 
       // if the dashboard is public, run these functions
-      if(this.getVisibility === 'public'){
+      if (this.getVisibility === 'public') {
+        const id = `${Date.now()}${this.getUser.id}`;
+        this.public_creator.id = id;
         this.public_creator.name = this.getUser.username;
-      this.public_creator.email = this.getUser.email;
-      this.public_creator.description = await this.dashboardDetails.description,
-      this.public_creator.Reason = await this.dashboardDetails.reason;
-      this.public_creator.category = await this.dashboardDetails.category;
-      this.public_creator.name_of_dashboard = await this.dashboardDetails.name;
-      this.public_creator.link = `https://msdat.fmohconnect.gov.ng/dashboards/${this.dashboardDetails.name}`
+        this.public_creator.email = this.getUser.email;
+        this.public_creator.description = this.dashboardDetails.description;
+        this.public_creator.Reason = this.dashboardDetails.reason;
+        this.public_creator.category = this.dashboardDetails.category;
+        this.public_creator.config = JSON.stringify(config);
+        this.public_creator.name_of_dashboard = this.dashboardDetails.name;
+        this.public_creator.link = `${window.location.origin}/custom/public/${id}`;
+        const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
+        // hide the 'modal-public-dashboard'
+        await this.$bvModal.hide('modal-public-dashboard');
+        // show the 'modal-in-review'
+        // await this.$bvModal.show('modal-in-review');
+        if (res) {
+          await this.$swal.fire({
+            title: 'Dashboard in Review',
+            text: `Your Public Dashboard will be approved within the next 48hrs.\n\n URL: "${this.public_creator.link}"`,
+            icon: 'success',
+            confirmButtonText: 'Copy URL',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigator.clipboard.writeText(this.public_creator.link);
+              this.$swal.fire('URL copied to clipboard!');
+            }
+          });
+        } else {
+          await this.$swal.fire({
+            title: 'An Error Occured',
+            text: 'Your request for a Public Dashboard could not be granted. Please try again later.',
+          });
+        }
+      } else {
+        // Save Private Dashboard
+        const id = `${Date.now()}${this.getUser.id}`;
+        this.SAVE_USER_DASHBOARD({
+          id,
+          username: this.getUser.username,
+          email: this.getUser.email,
+          user: this.getUser.id,
+          config: JSON.stringify(config),
+          title: this.dashboardDetails.name,
+          link: `${window.location.origin}/custom/private/${id}`,
+        });
       }
-      console.log('public-creator', this.public_creator)
-
-      await this.$store.dispatch('setDashboardRequest', await this.public_creator);
-      // hide the 'modal-public-dashboard'
-      await this.$bvModal.hide('modal-public-dashboard');
-      // show the 'modal-in-review'
-      await this.$bvModal.show('modal-in-review');
 
       //
       // SAVE DASHBOARD LOCALLY
-      //
       // retrieve initial currentDashboard value (consisting only id & userId)
       const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
       // retrieve all saved dashboards
@@ -383,12 +435,7 @@ export default {
       // retrieve dashboards belonging to current user
       let list = customDashboardsList[this.getUser.username];
       // create the dashboard config to be saved
-      const config = {
-        dashboardDetails: this.$store.getters.dashboardDetails,
-        composedData: this.$store.getters.getprogramArea,
-        surveyArray: this.$store.getters.getDataSource,
-        sectionsArray: this.$store.getters.arrangedSections,
-      };
+
       // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
       const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
       if (dashboard) {
@@ -397,7 +444,7 @@ export default {
         localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
         this.$store.commit('endEdit');
       } else {
-        // (new dashboard) -> add 'config' and 'created' properties to currentDashboard and insert to start of list
+      // (new dashboard) -> add 'config' and 'created' properties to currentDashboard and insert to start of list
         if (!list) {
           customDashboardsList[this.getUser.username] = [];
           list = customDashboardsList[this.getUser.username];
@@ -407,7 +454,6 @@ export default {
         list.unshift(currentCustomDashboard);
         localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
       }
-      console.log(customDashboardsList);
 
       this.$store.dispatch('customDashboard', true);
       const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
@@ -500,13 +546,13 @@ export default {
 
 .modalHeader1{
   font: var(--unnamed-font-style-normal) normal bold 35px/47px var(--unnamed-font-family-dm-sans);
-letter-spacing: var(--unnamed-character-spacing-0);
-color: var(--unnamed-color-202020);
-text-align: left;
-font: normal normal bold 35px/47px DM Sans;
-letter-spacing: 0px;
-color: #202020;
-opacity: 1;
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--unnamed-color-202020);
+  text-align: left;
+  font: normal normal bold 35px/47px DM Sans;
+  letter-spacing: 0px;
+  color: #202020;
+  opacity: 1;
 }
 
 .modal-form-div{
@@ -515,20 +561,20 @@ opacity: 1;
 
 .input{
   /* UI Properties */
-background: #EAEAEA 0% 0% no-repeat padding-box;
-opacity: 1;
-border: none;
-padding: 20px;
+  background: #EAEAEA 0% 0% no-repeat padding-box;
+  opacity: 1;
+  border: none;
+  padding: 20px;
 }
 
 .create_dashboard_btn{
   background: #3F8994 0% 0% no-repeat padding-box;
-box-shadow: 0px 3px 6px #00000029;
-border-radius: 10px;
-opacity: 1;
-width: 188px;
-height: 43px;
-font-size: 15px;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 10px;
+  opacity: 1;
+  width: 188px;
+  height: 43px;
+  font-size: 15px;
 }
 
 .in-review{

@@ -11,24 +11,24 @@
               class="mob-img"
               variant="primary"
             /> </span>
-            &nbsp; &nbsp; 
+            &nbsp; &nbsp;
           Creating an Application Plugin for
           <span>MSDAT:</span></h2>
 
       </div>
-     
+
         <br>
         <h4>Introduction:</h4>
         <span>The MSDAT (Multi-Source Data Analytic and Triangulation) Apps Plugins offers a streamlined approach to extending the functionality of various applications within the MSDAT ecosystem. These plugins empower developers to enhance and customize the capabilities of MSDAT tailoring them to specific needs.</span>
         <br><br><br>
         <h4>Step 1: Cloning the Boilerplate</h4>
         <ol>
-            <li>Visit the GitHub Repository: Navigate to the official MSDAT repository on GitHub 
+            <li>Visit the GitHub Repository: Navigate to the official MSDAT repository on GitHub
       <a href="https://github.com/e4edevops/msdat-plugin-project-context.git" target=”_blank”>MSDAT Plugins repository</a>
               . Here, you'll find the boilerplate code that serves as the foundation for creating plugins.</li>
             <li>Clone the Boilerplate: Clone the boilerplate code repository to your local development environment. This boilerplate serves as a pre-configured template, saving you time and effort in setting up the initial structure for your plugin.</li>
         </ol>
-        <p>For detailed instructions on using the MSDAT boilerplate, refer to the comprehensive documentation provided 
+        <p>For detailed instructions on using the MSDAT boilerplate, refer to the comprehensive documentation provided
           <a href="http://208.87.128.190:7072/" target=”_blank”>here</a>
           . This documentation walks you through the process of utilizing the MSDAT boilerplate effectively, ensuring you understand how to harness its capabilities to craft robust app plugins.</p>
 
@@ -50,7 +50,7 @@
 
 <b-modal id="upload-plugin" title="Submit a Plugin" hide-footer>
   <b-card>
-        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+    <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="show">
           <b-form-group id="input-group-2" label="Full Name:" label-for="input-2">
         <b-form-input
           id="input-2"
@@ -59,7 +59,7 @@
           required
         ></b-form-input>
       </b-form-group>
-    
+
           <b-form-group
         id="input-group-1"
         label="Email address:"
@@ -78,14 +78,12 @@
       <b-form-group id="input-group-2" label="Description" label-for="input-2">
         <b-form-textarea
       id="textarea"
-      v-model="text"
+      v-model="form.description"
       placeholder="Describe your plugin..."
       rows="3"
       max-rows="6"
     ></b-form-textarea>
       </b-form-group>
-
- 
 
       <!-- <b-form-group id="input-group-2" label="Purpose" label-for="input-2">
         <b-form-input
@@ -107,12 +105,14 @@
 
       <br/>
 
-      <b-form-group label="Upload" label-for="form-image" label-cols-lg="2">
+      <b-form-group label="Zip File" label-for="form-image" label-cols-lg="2">
         <b-input-group>
           <b-input-group-prepend is-text>
             <b-icon icon="image-fill"></b-icon>
           </b-input-group-prepend>
-          <b-form-file id="form-image" :disabled="busy" accept="image/*"></b-form-file>
+          <b-form-file
+          v-model="form.file"
+          id="form-image" :disabled="busy"    accept=".zip"></b-form-file>
         </b-input-group>
       </b-form-group>
 
@@ -127,7 +127,7 @@
         ></b-form-input>
         <b-icon v-b-tooltip.hover title="Upload link to a remote drive where you uploaded the zip file." icon="exclamation-circle-fill" variant="success"></b-icon>
       </b-form-group> -->
- 
+
       <!-- <b-form-textarea
       id="textarea"
       v-model="text"
@@ -137,10 +137,8 @@
     ></b-form-textarea> -->
 
       <!-- <input type="file"> -->
-      
-
       <!-- <b-button @click="onSubmit()" type="submit" variant="primary">Submit</b-button> -->
-      
+
       <b-button type="submit" variant="primary">Submit</b-button>
 
 <b-modal id="upload_plugin_success" title="Success" hide-footer>
@@ -174,10 +172,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import theHeader from './layout/theHeader.vue';
 import theFooter from './layout/theFooter.vue';
-import { mapActions } from 'vuex';
-
 
 export default {
   components: {
@@ -186,43 +183,68 @@ export default {
 
   },
   data() {
-      return {
-        form: {
-          email: '',
-          name: '',
-          phone: null,
-          purpose: '',
-          description: '',
-          plugin_file: ''
-        },
-        foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-        show: true
-      }
-    },
-    methods: {
-  ...mapActions(['SUBMIT_PLUGIN']), // Assuming SUBMIT_PLUGIN is an action provided by Vuex
-
-  // Define a method for form submission
-  onSubmit() {
-    this.SUBMIT_PLUGIN(this.form)
-      .then(() => {
-        // Handle success
-        this.$bvModal.show('upload_plugin_success');
-      })
-      .catch(error => {
-        // Handle error
-        console.error(error);
-        this.$bvModal.show('upload_plugin_error');
-        // You can show a different modal or handle errors in an appropriate way here
-      });
+    return {
+      form: {
+        email: '',
+        name: '',
+        phone: null,
+        purpose: '',
+        description: '',
+        plugin_file: '',
+      },
+      show: true,
+    };
   },
+  methods: {
+    ...mapActions(['SUBMIT_PLUGIN']), // Assuming SUBMIT_PLUGIN is an action provided by Vuex
 
-  onReset(event) {
-    event.preventDefault();
+    // Define a method for form submission
+    async onSubmit() {
+    // Create a new FormData object
+      const formData = new FormData();
+      // eslint-disable-next-line no-unused-vars
+      const mockPk = 9384202;
+      // Append form data to the FormData object
+      formData.append('email', this.form.email);
+      formData.append('name', this.form.name);
+      formData.append('phone', this.form.phone);
+      formData.append('purpose', this.form.description);
+      formData.append('description', this.form.description);
+      formData.append('plugin', this.form.file);
+
+      console.log('form', this.form);
+
+      await this.SUBMIT_PLUGIN(formData)
+        .then(() => {
+        // Handle success
+          this.$bvModal.close('upload-plugin');
+          this.$bvModal.show('upload_plugin_success');
+          this.$swal({
+            toast: true,
+            type: 'success',
+            timer: 5000,
+            text: 'Plugin has been submitted successfully, awaiting approval',
+          });
+        })
+        .catch((error) => {
+        // Handle error
+          console.error(error);
+          this.$bvModal.close('upload-plugin');
+          this.$bvModal.show('upload_plugin_error');
+        // You can show a different modal or handle errors in an appropriate way here
+        });
+    },
+
+    onReset(event) {
+      event.preventDefault();
     // Reset your form values here
     // ...
-  }
-}
+    },
+
+    mockSubmit() {
+      this.SUBMIT_PLUGIN(this.form);
+    },
+  },
 };
 </script>
 

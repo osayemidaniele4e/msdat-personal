@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mounted policySimulator Component  renders correctly 1`] = `
+<div
+  class="chatarea"
+>
+  <body-stub
+    conversation=""
+    steps="[object Object],[object Object],[object Object]"
+  />
+   
+  <!---->
+</div>
+`;

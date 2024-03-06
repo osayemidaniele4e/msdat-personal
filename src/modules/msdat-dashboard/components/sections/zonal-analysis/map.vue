@@ -16,7 +16,8 @@
           <p class="work-sans mb-0 line-height">
             Distribution of
             <span class="font-weight-bold"> {{ controlPanelProps.indicator.full_name }} </span
-            >Across the <span class="font-weight-bold"> zones in the Country.</span> Source:
+            >across
+            <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
             <span class="font-weight-bold">
               {{ controlPanelProps.datasource.datasource }}
               {{ controlPanelProps.year }}</span
@@ -185,15 +186,22 @@ export default {
             this.chart = {
               series: zData,
             };
-            this.title = `Distribution of ${val.indicator.full_name} Across the Zones in the Country`;
+            this.title = `Distribution of ${val.indicator.full_name} Across ${this.controlPanelProps.location.name}`;
             this.level = 2;
             this.stateName = 'Nigeria';
           } else {
             this.stateName = stateObject.name; // Please always change the state name before
             // changing the level else you would get an error
             this.level = 1;
+            // this.chart = {
+            //   series: chartSeries,
+            // };
+
+            // Modify the chartSeries to exclude "Nigeria" if it exists
+            const chartSeriesWithoutNigeria = chartSeries.filter((item) => item.name !== 'Nigeria');
+
             this.chart = {
-              series: chartSeries,
+              series: chartSeriesWithoutNigeria,
             };
           }
         }
@@ -280,7 +288,7 @@ export default {
   },
 
   mounted() {
-    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} Across the zones in the Country. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
+    this.title = ` Distribution of ${this.controlPanelProps.indicator.full_name} across ${this.controlPanelProps.location.name}. Source: ${this.controlPanelProps.datasource.datasource} ${this.controlPanelProps.year}`;
   },
 };
 </script>

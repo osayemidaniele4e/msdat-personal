@@ -1,18 +1,17 @@
 /* eslint-disable no-await-in-loop */
 <template>
   <!-- <base-overlay :show="loading"> -->
-  <div>
+  <div id="the-table">
     <div v-if="!loading">
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
-          <div class="w-100 d-flex justify-content-between">
+          <div class="w-100 d-flex justify-content-between align-items-center p-1">
             <p class="work-sans mb-0 line-height">
               <b>{{ values.indicator.short_name }}</b>
               and related indicators (with year of latest values) across available data sources.
             </p>
 
             <div class="share-wrapper">
-              <div v-if="isTooltipVisible" class="tooltip-wrap">share.</div>
               <div
                 @mouseover="showTooltip"
                 @mouseout="hideTooltip"
@@ -69,9 +68,9 @@
       <!-- </template> -->
     </base-modal>
     <ShareCodeModal
-      @toggleShowShareModal="toggleShowShareModal"
+      @toggleShowShareModal="closeShareModal"
       v-if="showShareCodeModal"
-      :tableContent="tableObj"
+      :tableContent="shareUrl"
     />
   </div>
 
@@ -110,9 +109,9 @@ export default {
       updateData: 0,
       showShareCodeModal: false,
       tableObj: null,
+      tableLink: null,
       isTooltipVisible: false,
-      bootstrapCDN:
-        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">',
+      shareUrl: null,
     };
   },
   props: {
@@ -140,6 +139,7 @@ export default {
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
+            // console.log(dataSources, 'this.dataArray');
             const indicatorObject = this.dlGetIndicator(indicatorID);
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
@@ -213,9 +213,22 @@ export default {
      */
 
     toggleShowShareModal() {
-      this.showShareCodeModal = !this.showShareCodeModal;
-      const tableObjTemp = document.getElementById('indicatorTable').innerHTML;
-      this.tableObj = this.bootstrapCDN + tableObjTemp;
+      const routeTitle = this.$route.params.name;
+      localStorage.setItem('dashboardName', routeTitle);
+      console.log(this.$route);
+      const storedIndicatorID = localStorage.getItem('indicatorID');
+      const indicatorID = storedIndicatorID === null ? 7 : storedIndicatorID;
+      const storedLocationId = localStorage.getItem('locationId');
+      const locationId = storedLocationId === null ? 1 : storedLocationId;
+      const url = `${window.location.origin}/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${locationId}`;
+      console.log(url);
+      const iframeUrl = `<iframe style="padding: 5px; width: 95%; padding: 10px; height: 500px; margin: 40px;" src="${url}" />`;
+      this.shareUrl = iframeUrl;
+      this.showShareCodeModal = true;
+    },
+
+    closeShareModal() {
+      this.showShareCodeModal = false;
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;
@@ -333,13 +346,18 @@ export default {
 }
 
 .share-btn {
-  height: auto;
-  padding: 0;
+  // height: auto;
+  // padding: 0;
   margin: 0 5px;
-  padding: 0 6px;
-  margin-right: 5px;
-  margin-top: 2px;
-  padding-bottom: 2px;
+  // padding: 0 6px;
+  // margin-right: 5px;
+  // margin-top: 2px;
+  // padding-bottom: 2px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #b3b3b3;
   border-radius: 50px;
   cursor: pointer;
@@ -361,7 +379,8 @@ export default {
 .tooltip-wrap {
   background-color: #333;
   color: #fff;
-  padding: 0 5px;
+  padding: 2px 5px;
   border-radius: 5px;
+  font-size: 1rem;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
-  <header id="the-header" class="position-relative">
+  <header id="the-header" class="position-relative" data-testid="header">
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
@@ -26,19 +26,21 @@
               class="mob-img"
               variant="primary"
             />
-            <div class="mobile-flex-col"
-              v-if="this.$store.getters.customDashboard === true">
-              <small class="mobile-flex-col-text1">{{ this.$store.getters.dashboardDetails.name }}</small>
+            <div class="mobile-flex-col" v-if="this.$store.getters.customDashboard === true">
+              <small class="mobile-flex-col-text1">{{
+                this.$store.getters.dashboardDetails.name
+              }}</small>
               <div class="mobile-flex-col-text2">
                 {{ this.$store.getters.dashboardDetails.description }}
-                  <small v-if="isAuthenticated && isAuthor"
-                    class="text-warning ml-2 tools">
-                    <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
-                    <b-icon font-scale="2" icon="dot"></b-icon>
-                    <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')">Create New</span>
-                    <b-icon font-scale="2" icon="dot"></b-icon>
-                    <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
-                  </small>
+                <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools">
+                  <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                  <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
+                    >Create New</span
+                  >
+                  <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                </small>
               </div>
             </div>
             <div class="mobile-flex-col" v-else>
@@ -59,7 +61,11 @@
                   class="select-dropdown-item"
                   v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
                   :key="index"
-                  :href="$route.path == '/advanced_analytics' ? `/dashboard/Advanced_Analytics?index=${index}` : '#'"
+                  :href="
+                    $route.path == '/advanced_analytics'
+                      ? `/dashboard/Advanced_Analytics?index=${index}`
+                      : '#'
+                  "
                   @click="emitIndex(index)"
                   >{{ control.label }}
                 </b-dropdown-item>
@@ -71,23 +77,21 @@
             </b-sidebar>
           </div>
 
-          <div
-            class="main-text"
-            v-if="this.$store.getters.customDashboard === true"
-          >
+          <div class="main-text" v-if="this.$store.getters.customDashboard === true">
             <h2 class="main-text">
               <small>{{ this.$store.getters.dashboardDetails.name }}</small>
-            <div>
-              {{ this.$store.getters.dashboardDetails.description }}
-              <small v-if="isAuthenticated && isAuthor"
-                class="text-warning ml-2 tools">
-                <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
-                <b-icon font-scale="2" icon="dot"></b-icon>
-                <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')">Create New</span>
-                <b-icon font-scale="2" icon="dot"></b-icon>
-                <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
-              </small>
-            </div>
+              <div>
+                {{ this.$store.getters.dashboardDetails.description }}
+                <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools">
+                  <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                  <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
+                    >Create New</span
+                  >
+                  <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                </small>
+              </div>
             </h2>
           </div>
           <div class="main-text" v-else>
@@ -203,10 +207,17 @@
                 <SignUp v-else />
                 <div class="row" v-if="show">
                   <div class="col-12 text-center">
-                    <h4 class="py-3" style="font-size: 15px">Don't have an account?</h4>
+                    <h4 class="py-3" style="font-size: 15px; font-family: Work sans">
+                      Don't have an account?
+                    </h4>
                     <button
                       class="btn btn-lg btn-light btn-outline-dark text-dark"
-                      style="font-size: 15px; background: #f7f7f7; border: 1px solid #707070"
+                      style="
+                        font-size: 15px;
+                        background: #f7f7f7;
+                        border: 1px solid #707070;
+                        font-family: Work sans;
+                      "
                       @click.prevent="showLoginForm"
                     >
                       CREATE AN ACCOUNT
@@ -257,7 +268,6 @@
           <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
           <!-- </a> -->
         </b-col>
-
       </b-row>
     </b-container>
 
@@ -293,45 +303,6 @@
         </div>
       </div>
     </div>
-
-    <!-- plugin modal -->
-    <b-modal id="modal-apps" title="MSDAT Apps Plugins" hide-footer>
-      <b-collapse id="collapse-1" class="mt-2">
-        <b-card>
-          This enables you to comment on any section in the MSDAT dashboard just by clicking the
-          headings
-        </b-card>
-      </b-collapse>
-      <!-- Example plugin section -->
-      <div class="plugin-row">
-        <h5>
-          <span v-b-toggle.collapse-2>
-            Context Plugin
-            <b-icon-info-circle></b-icon-info-circle>
-          </span>
-        </h5>
-
-        <div>
-          <button
-            class="enable-btn"
-            @click="contextPluginActive('true')"
-            v-if="isContextPluginActive === 'false'"
-          >
-            Enable
-          </button>
-          <button
-            class="enable-btn"
-            @click="contextPluginActive('false')"
-            v-if="isContextPluginActive === 'true'"
-          >
-            Disable
-          </button>
-        </div>
-      </div>
-      <b-collapse id="collapse-2" class="mt-2">
-        <b-card> This is an example plugin for demonstration purposes </b-card>
-      </b-collapse>
-    </b-modal>
   </header>
 </template>
 
@@ -360,7 +331,6 @@ export default {
       showExpandedDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
-      isContextPluginActive: 'false',
       contactBtn: false,
       aboutPage: false,
       headerDropdown: [
@@ -386,30 +356,26 @@ export default {
     // check if current user is author of displayed custom dashboard
     isAuthor() {
       // retrieve all saved dashboards
-      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      const customDashboardsList = JSON.parse(
+        localStorage.getItem('customDashboardsList') || JSON.stringify({}),
+      );
       // retrieve dashboards belonging to current user
       const list = customDashboardsList[this.getUser.username];
       // find currently loaded dashboard in list
       const { name, description } = this.$store.getters.dashboardDetails;
-      return list?.find((dashb) => (dashb.config.dashboardDetails.name === name)
-        && (dashb.config.dashboardDetails.description === description));
+      return list?.find(
+        (dashb) => dashb.config.dashboardDetails.name === name
+          && dashb.config.dashboardDetails.description === description
+      );
     },
   },
   created() {
     this.controls = this.$children;
     this.screenWidth = window.innerWidth;
     // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
-
-    // boolean to store project context availability
-    this.isContextPluginActive = localStorage.getItem('contextPlugin');
   },
 
   methods: {
-    contextPluginActive(data) {
-      this.isContextPluginActive = localStorage.getItem('contextPlugin');
-      localStorage.setItem('contextPlugin', data);
-      this.$router.go();
-    },
     showRegForm() {
       // eslint-disable-next-line no-unused-expressions
       this.show = true;

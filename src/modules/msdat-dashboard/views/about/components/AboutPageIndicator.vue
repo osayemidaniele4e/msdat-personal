@@ -24,7 +24,6 @@
 
         </div>
 
-
         <!-- right section -->
 
         <div class="program-area-des">
@@ -36,9 +35,7 @@
 
         </div>
 
-
       </div>
-
 
     </section>
 
@@ -55,7 +52,6 @@
     </div>
   </div> -->
 
-
   </div>
 </template>
 
@@ -68,33 +64,32 @@ export default {
       indicators: [],
       selected: 1,
       selectedIndicators: [],
-      selectedProgram: ''
+      selectedProgram: '',
     };
   },
 
   methods: {
     setSelected(indicator) {
-      console.log('[indicator]', indicator)
-      this.selectedIndicators = indicator.indicators,
-        this.selectedProgram = indicator.program_area
-    }
+      console.log('[indicator]', indicator);
+      this.selectedIndicators = indicator.indicators;
+      this.selectedProgram = indicator.program_area;
+    },
   },
   computed: {
     filteredFullNames() {
       // Use the map function to extract the full_name field from each object
-      return this.selectedIndicators.map(item => ({ id: item.id, full_name: item.full_name }));
-    }
+      return this.selectedIndicators.map((item) => ({ id: item.id, full_name: item.full_name }));
+    },
   },
-
 
   mounted() {
     this.indicators = groupIndicator(this.dlIndicator, 'program_area');
     if (this.indicators.length > 0) {
     // Set the selectedProgram to the first program area in the indicators array
-    this.selectedProgram = this.indicators[0].program_area;
-    // Call the setSelected method with the first indicator as an argument
-    this.setSelected(this.indicators[0]);
-  }
+      this.selectedProgram = this.indicators[0].program_area;
+      // Call the setSelected method with the first indicator as an argument
+      this.setSelected(this.indicators[0]);
+    }
   },
 };
 </script>
@@ -128,18 +123,19 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  overflow-x: scroll;
+  font-size: 10px;
+  /* overflow-x: scroll; */
   text-transform: uppercase;
   border: 1px solid #80D3AF;
 }
 
 .program-area-des {
-  border: 1px solid #007D53;
+  border: 1px solid #80D3AF;
   width: 600px;
   background-color: white;
   height: 650px;
   padding: 30px;
+  font-size: 13px;
   overflow: scroll;
 }
 

@@ -16,7 +16,7 @@
           })
         "
       >
-        <template #title>
+        <!-- <template #title>
           <p
             class="work-sans mb-0 line-height"
             v-if="!Array.isArray(values.indicator.length)"
@@ -32,22 +32,33 @@
             <b> {{ values.datasource.datasource }} </b> across
             {{ values.compareBy.name }}s
           </p>
+        </template> -->
+
+        <template #title>
+          <p
+            class="work-sans mb-0 line-height"
+          >
+           Comparison of <b>selected indicators</b> according to
+            the <b> {{ values.datasource.datasource }} </b> across
+            {{ values.compareBy.name }}
+          </p>
         </template>
         <BarChart ref="BaseChart"
         :title="title"
         :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
-    <div v-if="checkData() === false" class="no_data">
-      <img
-        :src="require('@/assets/no-data/No_Available_Data.svg')"
-        alt="no data"
-        class="img-fluid"
-        height="auto"
-        width="240px"
-      />
-    </div>
+    <!-- Display 'no_data' block when data is not loading and checkData() returns false -->
+  <div v-if="!loading && checkData() === false" class="no_data">
+  <img
+    :src="require('@/assets/no-data/No_Available_Data.svg')"
+    alt="no data"
+    class="img-fluid"
+    height="auto"
+    width="240px"
+  />
   </div>
+</div>
 </template>
 
 <script>
@@ -118,6 +129,9 @@ export default {
         case 'in percentage':
           sign = '%';
           break;
+        case 'per 1000':
+          sign = '/1000';
+          break;
         default:
           sign = '';
       }
@@ -156,6 +170,15 @@ export default {
       }));
 
       const results = await Promise.all(dataPromises);
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor);
+        yTitles.push(displayFactor.display_factor);
+      }
 
       for (let i = 0; i < results.length; i += 1) {
         // formate result to HighChart Format
@@ -186,7 +209,8 @@ export default {
           ],
           title: {
             ...defaultOptions.yAxis.title,
-            text: displayFactor.display_factor,
+            // text: displayFactor.display_factor,
+            text: [...new Set(yTitles)].join(' | '),
           },
           opposite: !!i, // this will become either true of false as 0 or 1
         };
@@ -203,10 +227,11 @@ export default {
               fontSize: '10px',
             },
           },
-          name: indicator.full_name,
+          // name: indicator.full_name,
+          name: `${indicator.full_name} (${displayFactor.display_factor})`,
           data: toHighChartFormat,
         };
-        highChartOptions.yAxis.push(yAxis);
+        if (i === 0) highChartOptions.yAxis.push(yAxis);
         highChartOptions.series.push(obj);
       }
       return highChartOptions;
@@ -352,6 +377,16 @@ export default {
 
       const results = await Promise.all(dataPromises);
       // debugger;
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor);
+        yTitles.push(displayFactor.display_factor);
+      }
+
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];
@@ -363,34 +398,38 @@ export default {
         const sortTheYear = formatToHighChartFormat.sort((a, b) => a[0] - b[0]);
 
         const displayFactor = this.dlGetFactor(indicator.factor);
-        highChartOptions.yAxis.push({
-          yAxis: [
-            {
-              plotLines: [],
-              labels: {
-                style: {
-                  fontFamily: 'Work Sans, sans-serif',
-                  fontSize: '11px',
+        if (i === 0) {
+          highChartOptions.yAxis.push({
+            yAxis: [
+              {
+                plotLines: [],
+                labels: {
+                  style: {
+                    fontFamily: 'Work Sans, sans-serif',
+                    fontSize: '11px',
+                  },
+                },
+                title: {
+                  style: {
+                    ...defaultOptions.yAxis.title.style,
+                    fontSize: '10px',
+                  },
                 },
               },
-              title: {
-                style: {
-                  ...defaultOptions.yAxis.title.style,
-                  fontSize: '10px',
-                },
-              },
+            ],
+            title: {
+              ...defaultOptions.yAxis.title,
+              // text: displayFactor.display_factor,
+              text: [...new Set(yTitles)].join(' | '),
             },
-          ],
-          title: {
-            ...defaultOptions.yAxis.title,
-            text: displayFactor.display_factor,
-          },
-          opposite: !!i, // this will become either true of false as 0 or 1
-        });
+            opposite: !!i, // this will become either true of false as 0 or 1
+          });
+        }
         const obj = {
           color: this.color[i],
           lineWidth: 3,
-          name: indicator.full_name,
+          // name: indicator.full_name,
+          name: `${indicator.full_name} (${displayFactor.display_factor})`,
           data: sortTheYear,
         };
         highChartOptions.series.push(obj);

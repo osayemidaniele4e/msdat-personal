@@ -3,7 +3,7 @@
     <ul>
       <draggable v-model="modifiedControls">
         <transition-group
-          class="d-flex list-unstyled step-sections mb-0 border-b mx-lg-3 mx-3 cursor-pointer main tabs-sec"
+          class="d-flex mr-2 list-unstyled step-sections pt-2 mb-0 border-b cursor-pointer main tabs-sec"
         >
           <li
             class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
@@ -21,7 +21,7 @@
 
     <div class="control-title">{{ title }}</div>
     <!-- Multi-select dropdown here -->
-    <div class="mx-lg-5 px-2 mx-auto pb-3 pt-1 step-controls styles">
+    <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
   </div>
@@ -107,7 +107,6 @@ export default {
           key: 'period',
           value: this.getSelectedConfig().period,
         });
-        // console.log(this.getSelectedConfig(), 'CONFIG');
       }
       this.$emit('showSection', index);
     },
@@ -255,13 +254,13 @@ export default {
   border: 1px solid $primary;
   background-color: white;
   color: black !important;
-  padding: 1rem;
+  padding:1rem 2rem;
   height: 1rem;
-  max-width: 400px;
+  max-width: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 5px;
+  margin: 10px ;
   font-weight: 200;
   font-size: 1rem;
   &:first-child {
@@ -277,7 +276,7 @@ export default {
   display: none;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 876px) {
   .main {
     display: none;
   }

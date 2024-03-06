@@ -9,14 +9,14 @@
         <slot name="title"> slot title fallback </slot>
       </div>
       <div class="action-icon d-flex justify-content-around align-items-center" v-if="showControls">
-         <div>
-        <slot name="refresh">  </slot>
-      </div>
+         <div class="d-flex align-items-center">
+           <slot name="refresh">  </slot>
+        </div>
         <b-icon
           icon="arrows-fullscreen"
           @click="showModal = !showModal"
           class="pointer_click mx-1 font-weight-bold"
-          font-scale="1"
+          font-scale="0.5"
         ></b-icon>
           <!-- icon="three-dots-vertical" -->
         <b-icon
@@ -24,7 +24,7 @@
           icon="download"
           @click="showMenu = !showMenu"
           class="pointer_click mx-1 font-weight-bold"
-          font-scale="1"
+          font-scale="0.5"
         ></b-icon>
       </div>
     </div>

@@ -1,5 +1,5 @@
 export default {
-  label: 'Correlative Analysis',
+  label: 'Correlation Analysis',
   setup: [
   ],
   payload: {

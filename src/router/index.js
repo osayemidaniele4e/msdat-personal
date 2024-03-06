@@ -55,7 +55,19 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = store.getters['AUTH_STORE/isAuthenticated'];
   const requireAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-  window.document.title = to.meta && to.meta.title ? to.meta.title : 'MSDAT Platform';
+  window.document.title = to.meta && to.meta.title ? `MSDAT Nigeria | ${to.meta.title.trim()}` : 'MSDAT Nigeria';
+
+  if (window.document.location.pathname.startsWith('/dashboard/')) {
+    const pageTitle = `MSDAT Nigeria | ${window.document.location.pathname.split('/')[2].replaceAll('_', ' ')}`;
+
+    /**
+     * Update OG Tags for crawlers
+     */
+    const titleEl = document.querySelector('head meta[property="og:title"]');
+    const titleEl2 = document.querySelector('head meta[name="twitter:title"]');
+    titleEl.setAttribute('content', pageTitle);
+    titleEl2.setAttribute('content', pageTitle);
+  }
 
   if (!isAuthenticated && requireAuth) {
     // eslint-disable-next-line no-alert

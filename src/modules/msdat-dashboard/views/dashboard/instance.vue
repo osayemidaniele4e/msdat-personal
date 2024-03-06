@@ -123,8 +123,8 @@
     <template
       v-slot:[`section-${sectionArray[setIndex(allSections[5])]}`]="{ payload, controlIndex }"
     >
-      <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+      <div class="col-md-12 overflow-auto">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm disaggregation">
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">Disaggregation Section</h5>
           </template>
@@ -138,6 +138,24 @@
         </base-sub-card>
       </div>
     </template>
+
+    <!-- <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
+      <div class="col-md-12">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">Policy Simulator</h5>
+          </template>
+
+          <template>
+            <LazyLoading>
+              <ControlPanelConfiguration :controlIndex="controlIndex">
+                <PolicySimulator />
+              </ControlPanelConfiguration>
+            </LazyLoading>
+          </template>
+        </base-sub-card>
+      </div>
+    </template> -->
   </BaseDashboard>
 </template>
 
@@ -160,6 +178,9 @@ import DynamicSection from '../../components/sections/dynamic-section/DynamicSec
 import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
+// eslint-disable-next-line import/extensions
+// import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config.js';
+// import PolicySimulator from '../../components/sections/policy-simulator/policySimulator.vue';
 
 export default {
   data() {
@@ -168,7 +189,7 @@ export default {
       updateValue: {},
       updateKey: '',
       resetData: 1,
-      sectionArray: [0, 1, 2, 3, 4, 5],
+      sectionArray: [0, 1, 2, 3, 4, 5, 6],
       allSections: [
         'Indicator Overview',
         'Zonal Analysis',
@@ -176,6 +197,7 @@ export default {
         'Dataset Comparison',
         'Multi-Source Comparison',
         'Disaggregation',
+        // 'Policy Simulator',
       ],
     };
   },
@@ -189,6 +211,7 @@ export default {
     DataSetComparison,
     MultiSourceComponent,
     DynamicSection,
+    // PolicySimulator,
   },
   props: {
     showTableRelatedIndicator: {
@@ -206,10 +229,14 @@ export default {
     // Applies the config that disables the num/denum if the route is on these dashboards
     noNHMIS() {
       if (
-        this.$route.path === '/dashboard/Disease_Surveillance'
-    || this.$route.path === '/dashboard/Health_Workforce'
-    || this.$route.path === '/dashboard/Health_Facility'
-    || this.$route.path === '/dashboard/Health_Service_Access'
+        // eslint-disable-next-line operator-linebreak
+        this.$route.path === '/dashboard/Disease_Surveillance' ||
+        // eslint-disable-next-line operator-linebreak
+        this.$route.path === '/dashboard/Health_Workforce' ||
+        // eslint-disable-next-line operator-linebreak
+        this.$route.path === '/dashboard/Health_Facility' ||
+        // eslint-disable-next-line operator-linebreak
+        this.$route.path === '/dashboard/Health_Service_Access'
       ) {
         return true;
       }
@@ -234,11 +261,21 @@ export default {
         window.requestAnimationFrame(this.scroll);
       }
     },
-    setPresetSections(arg, configs) {
-      arg.forEach((field, i) => {
-        if (field.isShow) {
-          this.ADD_CONTROL_PANEL(configs[i]);
+    reorderFields(fieldsArray, configs) {
+      const tempArray = [];
+      fieldsArray.map((item) => {
+        if (item.isShow) {
+          const tempItem = configs.find((el) => el.label.toLowerCase() === item.name.toLowerCase());
+          tempArray.push(tempItem);
         }
+        return null;
+      });
+      return tempArray;
+    },
+    setPresetSections(arg, configs) {
+      const reorderedConfigs = this.reorderFields(this.fieldsArray, configs);
+      reorderedConfigs.forEach((field) => {
+        this.ADD_CONTROL_PANEL(field);
       });
     },
     setAllSections(configs) {
@@ -313,22 +350,23 @@ export default {
      * and so on and fort for the other sections
      */
 
-    const DiseaseSurveillanceConfig = this.noNHMIS ? IndicatorOverviewConfig2 : IndicatorOverviewConfig;
+    const DiseaseSurveillanceConfig = this.noNHMIS
+      ? IndicatorOverviewConfig2
+      : IndicatorOverviewConfig;
     const configs = [
       DiseaseSurveillanceConfig,
       ZonalAnalysisConfig,
       ICSConfig,
       DataSetComparisonConfig,
       BaseMultiSourceConfig,
+      // PolicySimulatorConfiguration,
     ];
 
-    console.log('noHMIS', this.noNHMIS);
-    console.log('current route', this.$route.path);
     // Updated flow
     const { name: queryParameter } = this.$route.params;
     if (this.customDashboard) {
       if (queryParameter) {
-      // const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
+        // const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
         const retrievedSections = this.getConfigObject()?.sections;
         if (retrievedSections && retrievedSections.length > 0) {
           this.filterSectionArray(configs, retrievedSections);

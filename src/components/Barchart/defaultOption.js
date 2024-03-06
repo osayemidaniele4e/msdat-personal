@@ -36,7 +36,28 @@ export default {
                 height: '25',
               })
               .add();
+            const xPercentage = 90; // Adjust as needed
+            const yPercentage = 120; // Adjust as needed
+
+            const chartWidth = this.plotWidth;
+            const chartHeight = this.plotHeight;
+
+            const x = (xPercentage / 100) * chartWidth;
+            const y = (yPercentage / 100) * chartHeight;
+
+            // Add watermark text at the specified percentage positions
+            this.renderer
+              .text('Source: MSDAT', x, y)
+              .css({
+                color: 'rgba(0, 0, 0, 0.3)', // Adjust the color and opacity of the watermark
+                fontSize: '16px', // Adjust the font size
+                fontFamily: '"Work Sans", sans-serif',
+                fontWeight: 'normal',
+                textAlign: 'right',
+              })
+              .add();
           },
+
         },
       },
     },
@@ -134,7 +155,6 @@ export default {
       groupPadding: 0,
       shadow: false,
       pointPlacement: 'on',
-      borderWidth: 0,
     },
     series: {
       grouping: false,

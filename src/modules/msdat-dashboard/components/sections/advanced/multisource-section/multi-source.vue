@@ -6,9 +6,8 @@
       @dropdownTypeSelected="mapDownload($event)"
     >
       <template #title>
-
         <p class="work-sans mb-0 line-height">
-          Distribution of <b>{{ values.indicator.short_name }}</b> Across the Geopolitical zones in
+          Distribution of <b>{{ values.indicator.short_name }}</b> across the geopolitical zones in
           the Country. Source: <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
         </p>
       </template>
@@ -18,9 +17,14 @@
         :chartOptions="chartObject"
         ref="BaseChart"
       />
-      <BaseMap ref="BaseMap" v-else :mapObject="mapObject" :level="level" :lgaState="stateName"
+      <BaseMap
+        ref="BaseMap"
+        v-else
+        :mapObject="mapObject"
+        :level="level"
+        :lgaState="stateName"
         :title="title"
-       />
+      />
     </base-sub-card>
     <NoAvailableData
       v-if="showNoAvailableData"
@@ -76,6 +80,10 @@ export default {
     };
   },
   methods: {
+    sortData(data) {
+      const sortedData = data.slice().sort((a, b) => a[0] - b[0]);
+      return sortedData;
+    },
     mapDownload(e) {
       if (this.visualization === 'line' || this.visualization === 'column') {
         this.downLoadType(e, {
@@ -137,6 +145,9 @@ export default {
       };
     },
     formatToHighChartOptionForLine(data, chartType, controlPanelObject) {
+      // const sortedData = this.sortedData(data);
+      const tempData = this.sortData(data);
+      // console.log(data, 'Crash-data');
       const chartOptions = {
         chart: {
           type: chartType,
@@ -159,7 +170,7 @@ export default {
         series: [
           {
             name: 'Nigeria',
-            data,
+            data: tempData,
             // color: 'red',
           },
         ],
@@ -233,13 +244,15 @@ export default {
   },
 
   async mounted() {
-    this.title = ` Distribution of ${this.values.indicator.short_name} Across the Geopolitical zones in
+    this.title = ` Distribution of ${this.values.indicator.short_name} across the geopolitical zones in
           the Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
     const data = await this.dlQuery({
       indicator: this.values.indicator.id,
       datasource: this.values.datasource.id,
       location: this.values.location.id,
     });
+
+    data.sort((a, b) => a.period.localeCompare(b.period));
     this.chartObject = {};
     const formattedData = this.formatDataToSeriesLineFormat(data);
     this.chartObject = this.formatToHighChartOptionForLine(

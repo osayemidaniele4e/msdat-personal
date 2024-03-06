@@ -167,6 +167,7 @@ export default class DataLayer {
           const alert1 = this.sweetAlert();
           await this.updateData();
           alert1.close();
+          this.handleShowLoaded();
         } else {
           await this.setAvailableDashboardIndicator();
         }
@@ -353,6 +354,43 @@ export default class DataLayer {
   }
 
   /**
+   * this was reverted back because the implementation was interrupting the update of the indicator count on the footer
+   * and also the total population on demographics dashboard
+   *reverted by henry
+   */
+  // /**
+  //  * check available datasources
+  //  * @author davebenard
+  //  */
+  // async initDataWithYears(indicator, limit = 0) {
+  //   const unavailableIndicators = [64, 78, 329, 382, 64, 78, 37, 81, 70, 395, 117, 192, 90, 548, 62, 477, 507, 508, 628];
+  //   for (let i = 0; i < indicator.length; i++) {
+  //     // eslint-disable-next-line no-continue
+  //     if (unavailableIndicators.includes(indicator[i])) continue;
+  //     try {
+  //       const indicatorID = indicator[i];
+  //       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+  //       // take only the at least 8 years
+  //       if (yearsNotAvailableInDB.length > 0) {
+  //         const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+  //         const theYears = take(yearsNotAvailableInDB, yearsToTake);
+  //         const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
+  //         const results = await Promise.all(arrayOfPromises);
+  //         for (let j = 0; j < results.length; j++) {
+  //           const requestResult = results[j].data.results;
+  //           // check if empty
+  //           await this.DB.storeDataInDB(requestResult);
+  //         }
+  //         this.updatedStoreAvailableIndicator(indicatorID);
+  //       }
+  //     } catch (e) {
+  //       unavailableIndicators.push(indicator[i]);
+  //       console.log('unavailableIndicators', unavailableIndicators);
+  //     }
+  //   }
+  // }
+
+  /**
    * check available datasources
    * @author davebenard
    */
@@ -377,6 +415,13 @@ export default class DataLayer {
         this.updatedStoreAvailableIndicator(indicatorID);
       }
     }
+  }
+
+  handleShowLoaded() {
+    const loadedAlert = this.sweetAlert2();
+    setTimeout(async () => {
+      loadedAlert.close();
+    }, 10000);
   }
 
   /**
@@ -440,8 +485,29 @@ export default class DataLayer {
       position: 'bottom-end',
       imageWidth: 100,
       imageHeight: 100,
-      title: '<div style="display: flex; align-items: center; margin-left: 66px;">Data Synchronizing</div>',
+      title:
+        '<div style="display: flex; align-items: center; margin-left: 66px;">Data Synchronizing</div>',
       html: '<div style="margin-top: -14px; margin-bottom: -10px;;"> <img src="https://my.vsu.edu.ph/assets/img/green_spinner.gif" style="width: 55px; height: 55px; margin-right: 13px; margin-top: -21px" alt="Loading"/>Updating dashboard with more data</div>',
+      showConfirmButton: false,
+      timerProgressBar: false,
+      allowOutsideClick: false,
+      showLoading: true,
+      customClass: {
+        image: 'custom-swal-image',
+      },
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  sweetAlert2() {
+    return Vue.swal({
+      toast: true,
+      position: 'bottom-end',
+      imageWidth: 100,
+      imageHeight: 100,
+      title:
+        '<div style="display: flex; align-items: center; margin-left: 66px; font-weight: 600 ">Number of loaded indicators and</div>',
+      html: '<div style="margin-top: -18px; margin-bottom: -10px; font-size:15px; font-weight:600"> <img src="/img/loader.gif" style="width: 55px; height: 55px; margin-right: 13px; margin-top: -21px; background-color: #DFF3F3; border-radius: 50px" alt="Loading"/>datasources</div>',
       showConfirmButton: false,
       timerProgressBar: false,
       allowOutsideClick: false,

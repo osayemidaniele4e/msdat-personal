@@ -7,7 +7,7 @@
           <router-link to="/dashboard/Demographics" target="_blank"
             ><b-list-group-item>Demographics</b-list-group-item></router-link
           >
-          <router-link to="/coming-soon/gis_mapping" target="_blank"
+          <router-link to="/dashboard/GIS_Mapping" target="_blank"
             ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
           >
         </b-list-group>
@@ -37,6 +37,18 @@
               >National Data Repository Dashboard 2</b-list-group-item
             ></router-link
           >
+          <a
+              target="_blank"
+              v-for="dashboard in publicDashboards.filter((dash) => {
+                return (dash.category === 'health_input' && dash.isConfirmed)
+              })"
+              :href="dashboard.link"
+              :key="dashboard.id"
+            >
+            <b-list-group-item>
+              {{ dashboard.name_of_dashboard }}
+            </b-list-group-item>
+          </a>
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -67,16 +79,38 @@
                 >Disease Surveillance (NCDC)</b-list-group-item
               ></router-link
             >
+            <a
+                target="_blank"
+                v-for="dashboard in publicDashboards.filter((dash) => {
+                  return (dash.category === 'health_outputs' && dash.isConfirmed)
+                })"
+                :href="dashboard.link"
+                :key="dashboard.id"
+              >
+              <b-list-group-item>
+                {{ dashboard.name_of_dashboard }}
+              </b-list-group-item>
+            </a>
         </b-list-group>
       </div>
       <div class="col mb-3">
         <b-list-group>
           <h5 class="text-underline">Health Outcomes</h5>
-          <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank"
-            ><b-list-group-item
-              >Health Outcomes and Service Coverage</b-list-group-item
-            ></router-link
-          >
+          <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
+            <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
+          </router-link>
+          <a
+              target="_blank"
+              v-for="dashboard in publicDashboards.filter((dash) => {
+                return (dash.category === 'health_outcomes' && dash.isConfirmed)
+              })"
+              :href="dashboard.link"
+              :key="dashboard.id"
+            >
+            <b-list-group-item>
+              {{ dashboard.name_of_dashboard }}
+            </b-list-group-item>
+          </a>
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -109,7 +143,8 @@
           <div
           v-for="dashboard in userDashboards"
           :key="dashboard.id">
-            <router-link :to="'/dashboard/' + dashboard.name" target="_blank"
+            <!-- <router-link :to="'/dashboard/' + dashboard.name" target="_blank" -->
+            <router-link :to="'/custom/private/' + dashboard.id" target="_blank"
 
             ><b-list-group-item
               >  {{ dashboard.title }}</b-list-group-item
@@ -132,12 +167,16 @@ export default {
   data() {
     return {
       loading: true,
-      userDashboards: {},
+      userDashboards: [],
+      // publicDashboards: [],
     };
   },
 
   computed: {
     ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser', 'getDashboards']),
+    publicDashboards() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.allPublicDashboards;
+    },
   },
 
   methods: {
@@ -154,19 +193,23 @@ export default {
       this.loading = true;
 
       // Update user dashboards
-      this.userDashboards = this.filterArray(this.getUser, this.getDashboards.data);
+      this.userDashboards = this.filterArray(this.getUser, this.getDashboards);
 
       // Perform any other necessary actions for newly authenticated users
 
       this.loading = false;
+    },
+    getUserDashboards() {
+      this.$store.dispatch('getDashboards');
     },
   },
 
   async mounted() {
     this.loading = true;
     await this.SAVE_DASHBOARDS();
-    this.userDashboards = await this.filterArray(this.getUser, this.getDashboards.data);
+    this.userDashboards = await this.filterArray(this.getUser, this.getDashboards);
     this.loading = false;
+    this.getUserDashboards();
   },
 
   watch: {
@@ -175,6 +218,10 @@ export default {
         // User is newly authenticated
         this.refreshUserData();
       }
+      // this.getUserDashboards();
+    },
+    getDashboards(newValue) {
+      this.userDashboards = this.filterArray(this.getUser, newValue);
     },
   },
 };

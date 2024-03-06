@@ -359,12 +359,15 @@ export default {
   },
 
   setVisibility(state, payload) {
-    console.log('state visibility', payload)
+    console.log('state visibility', payload);
     state.visibility = payload;
   },
 
   setIsPublicDashboard(state, payload) {
     state.isPublicDashboard = payload;
+  },
+  setAllPublicDashboards(state, payload) {
+    state.allPublicDashboards = payload;
   },
   // setshowLoader(state) {
   //   const loader = state.loader;
@@ -374,6 +377,9 @@ export default {
   //     loader.show = false;
   //   }
   // }
+
+  // *************** TRACK DASHBOARD EDIT *************** //
+
   startEdit(state) {
     state.editMode = true;
   },

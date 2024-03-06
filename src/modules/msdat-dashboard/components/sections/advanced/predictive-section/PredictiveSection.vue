@@ -23,11 +23,11 @@
         </svg>
       </div>
       <div class="desc-text p-2">
-        Predictive analysis is a form of advanced analytics that uses current and historical data
-        to forecast activity, behavior and trends. It involves applying statistical analysis
+        Predictive analysis is a form of advanced analytics that uses current and historical data to
+        forecast activity, behavior and trends. It involves applying statistical analysis
         techniques, data queries and machine learning algorithms to data sets to create predictive
-        models that place a numerical value or score on the likelihood of a particular action
-        or event happening.
+        models that place a numerical value or score on the likelihood of a particular action or
+        event happening.
       </div>
     </div>
     <base-overlay :show="loading || notShow">
@@ -42,7 +42,7 @@
         v-if="Object.keys(values).length"
       >
         <template #title>
-          <p class="work-sans mb-0 line-height">
+          <p class="work-sans mb-0 line-height title-text">
             Prediction Of <b>{{ values.indicator.short_name }}</b> and related indicators
             (Time-series comparison of {{ values.indicator.short_name }}) across different data
             sources.
@@ -98,6 +98,15 @@ export default {
       type: Boolean,
     },
   },
+  mounted() {
+    if (!this.values?.datasource) {
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex: 3,
+        key: 'datasource',
+        value: this.dlDatasource.find((dat) => dat.id === 8),
+      });
+    }
+  },
   watch: {
     // Watch closeOverlay
     closeOverlay: {
@@ -120,6 +129,7 @@ export default {
     'values.datasource': {
       async handler(selectedDataSource) {
         // debugger;
+        this.loading = true;
         let dataSourceSelected = [];
         if (!Array.isArray(selectedDataSource)) {
           dataSourceSelected = [selectedDataSource];
@@ -129,7 +139,7 @@ export default {
 
         this.selectDataSource = dataSourceSelected;
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
-        this.setUpHighChartConfig(seriesArray, years);
+        await this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
       deep: false,
@@ -142,7 +152,7 @@ export default {
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-          this.setUpHighChartConfig(seriesArray, years);
+          await this.setUpHighChartConfig(seriesArray, years);
         }
 
         this.loading = false;
@@ -191,7 +201,7 @@ export default {
       const yearArray = [];
       if (this.getPredictedData.prediction !== undefined) {
         this.getPredictedData.prediction.forEach((item) => {
-          const arr = item[1];
+          const arr = item[0];
           yearArray.push(arr);
         });
       }
@@ -199,7 +209,7 @@ export default {
       // eslint-disable-next-line camelcase
       const sorted_year = year.sort();
       if (this.getPredictedData.prediction !== undefined) {
-        const switchPrediction = this.getPredictedData.prediction.map((val) => [val[1], val[0]]);
+        const switchPrediction = this.getPredictedData.prediction.map((val) => [val[0], val[1]]);
         this.ChartOptions = {
           tooltip: {
             shared: true,
@@ -281,7 +291,8 @@ export default {
       parameterObject = {
         indicator: this.values.indicator.id,
         location: this.values.location.id,
-      },
+        // eslint-disable-next-line comma-dangle
+      }
     ) {
       // debugger;
       const chartSeriesArray = [];
@@ -338,8 +349,8 @@ export default {
       mappedResponse.forEach((item, index) => {
         const data = item.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
         sortedData = data.sort(
-          // eslint-disable-next-line radix
-          (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
+          // eslint-disable-next-line radix, comma-dangle
+          (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0])
         );
         const datasource = this.dlGetDataSource(queryArray[index].datasource);
         let seriesObject = {};
@@ -394,7 +405,12 @@ div.iddc_wrapper {
     background: #fff;
   }
 }
-.desc-text{
-  font-size: 0.7rem !important;
+.desc-text {
+  font-size: 0.9rem !important;
+}
+
+.title-text {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
 }
 </style>

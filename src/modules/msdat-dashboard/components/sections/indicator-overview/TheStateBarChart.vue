@@ -1,41 +1,31 @@
 <!-- eslint-disable camelcase -->
 <!-- eslint-disable camelcase -->
 <template>
-  <div class="position-relative" id="stateBarChartComponent">
+  <div class="position-relative" id="stateBarChartComponent"
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center">
     <base-overlay :show="loading">
-      <base-sub-card
-        ref="SubCard"
-        showControls
-        v-if="Object.keys(values).length"
-        @dropdownTypeSelected="
-          downLoadType($event, {
-            indicator: values.indicator.short_name,
-            datasource: values.datasource.datatsource,
-            year: values.year,
-          })
-        "
-      >
+      <base-sub-card ref="SubCard" showControls v-if="Object.keys(values).length" @dropdownTypeSelected="
+        downLoadType($event, {
+          indicator: values.indicator.short_name,
+          datasource: values.datasource.datatsource,
+          year: values.year,
+        })
+        ">
         <template #title>
           <p class="work-sans mb-0 line-height" v-if="level === 1">
             Distribution of
 
             <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
-            <b>{{ values.indicator.short_name }}</b> Across The {{setAcrossRegion}}. Source:<b>
-              {{ values.datasource.datasource }} {{ values.year }}</b
-            >
+            <b>{{ values.indicator.short_name }}</b> across the {{ setAcrossRegion }}. Source:<b>
+              {{ values.datasource.datasource }} {{ values.year }}</b>
           </p>
           <p class="work-sans mb-0 line-height" v-if="level !== 1">
             Distribution of
-            <b>{{ values.indicator.short_name }}</b> Across The States. Source:<b>
-              {{ values.datasource.datasource }} {{ values.year }}</b
-            >
+            <b>{{ values.indicator.short_name }}</b> across the states. Source:<b>
+              {{ values.datasource.datasource }} {{ values.year }}</b>
           </p>
         </template>
-        <button
-          @click="returnToNational"
-          v-show="level !== 1"
-          class="bg-transparent text-dark font-weight-bold"
-        >
+        <button @click="returnToNational" v-show="level !== 1" class="bg-transparent text-dark font-weight-bold">
           <b-icon icon="chevron-left" />
           &nbsp;Back to National
         </button>
@@ -44,11 +34,7 @@
         </div>
       </base-sub-card>
     </base-overlay>
-    <NoSubNationalData
-      v-if="showNoSubNationalData"
-      class="position-absolute"
-      style="top: 15%; width: 80%; left: 20%"
-    />
+    <NoSubNationalData v-if="showNoSubNationalData" class="position-absolute" style="top: 15%; width: 80%" />
   </div>
 </template>
 <script>
@@ -90,10 +76,7 @@ export default {
     },
   },
   computed: {
-    ...mapState('MSDAT_STORE', [
-      'selectedState',
-      'datasetComperision',
-    ]),
+    ...mapState('MSDAT_STORE', ['selectedState', 'datasetComperision']),
     setAcrossRegion() {
       return this.acrossRegion;
     },
@@ -125,7 +108,7 @@ export default {
     values: {
       async handler() {
         await this.updateValue();
-        this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+        this.title = `Distribution Of ${this.values.indicator.short_name} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
       },
       deep: true,
       immediate: true,
@@ -293,11 +276,11 @@ export default {
       if (this.values.numdenum === true) {
         chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
         chartOptions.tooltip.outside = true;
-        chartOptions.tooltip.pointFormat = `${
-          '<span style="font-size:10px; color:black;font-weight:bold;">'
-            + '{series.name}:'
-            + ' {point.y:.2f}'
-        }<br>`
+        chartOptions.tooltip.pointFormat = `${'<span style="font-size:10px; color:black;font-weight:bold;">'
+          + '{series.name}:'
+          + ' {point.y:.2f}'
+          // eslint-disable-next-line indent
+          }<br>`
           + '<span style="font-size:10px; color:black;">'
           + '('
           + '{point.nd} '
@@ -385,7 +368,7 @@ export default {
   },
   mounted() {
     this.updateData = +1;
-    this.title = `Distribution Of ${this.values.indicator.short_name} Across The Country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+    this.title = `Distribution Of ${this.values.indicator.short_name} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>

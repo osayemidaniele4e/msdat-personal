@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "node scripts/generateImports.js && vue-cli-service serve",
+    "build": "node scripts/generateImports.js && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
@@ -13,7 +13,7 @@
     "test:unit:watch": "vue-cli-service test:unit --watch",
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "dev": "vue-cli-service serve  --https true "
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve  --https true "
   },
   "dependencies": {
     "@highcharts/map-collection": "^1.1.3",
@@ -33,6 +33,7 @@
     "regenerator-runtime": "^0.13.11",
     "register-service-worker": "^1.7.1",
     "sweetalert2": "^11.4.35",
+    "unplugin-vue-components": "^0.26.0",
     "vee-validate": "^3.4.14",
     "vue": "^2.6.11",
     "vue-authenticate": "^1.5.0",

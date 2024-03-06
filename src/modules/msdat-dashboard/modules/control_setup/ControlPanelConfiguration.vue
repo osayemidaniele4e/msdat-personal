@@ -10,14 +10,13 @@ import VueCookies from 'vue-cookies';
 import moment from 'moment';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/data-layer/services/ApiServices';
+// import { time } from 'highcharts';
 import controlSetup from '../../mixins/control-panel-setup';
 import updateQueryParams from './paramsMixin';
 
 export default {
   name: 'ControlPanelConfiguration',
-  mixins: [updateQueryParams,
-    controlSetup,
-  ],
+  mixins: [updateQueryParams, controlSetup],
   data() {
     return {
       interactions: [],
@@ -71,7 +70,12 @@ export default {
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
-    ...mapActions(['SET_INTERACTIONS', 'GET_INTERACTIONS', 'SET_INDICATOR_TIME_SPENT', 'SET_DATASOURCE_TIME_SPENT']),
+    ...mapActions([
+      'SET_INTERACTIONS',
+      'GET_INTERACTIONS',
+      'SET_INDICATOR_TIME_SPENT',
+      'SET_DATASOURCE_TIME_SPENT',
+    ]),
     async getAvailableYears() {
       // debugger;
       const available = await this.setYearDropdown(

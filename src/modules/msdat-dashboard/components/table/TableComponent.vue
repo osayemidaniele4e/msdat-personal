@@ -8,7 +8,7 @@
             <th
               rowspan="2"
               scope="col"
-              class="align-middle text-center text-uppercase h6 font-weight-bold "
+              class="align-middle text-center text-uppercase h6 font-weight-bold"
             >
               <div class="d-flex justify-content-between align-items-center">
                 <span>Indicators</span>
@@ -71,21 +71,14 @@
             >
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
-              <div class="nhmis-month-text1" v-if="nhmisMonthData[0]">
-                <!-- static data (only for overview table) for NHMIS data -->
-
-                <span v-if="nhmisMonthData[0].value === null"> - </span>
-                <span v-else> {{ nhmisMonthData[0].value }}%</span>
+              <div v-if="nhmisMonthData[0]" class="nhmis-monthly">
+                <span class="value-nhmis">{{
+                  nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].value}%`
+                }}</span>
+                <span class="period-nhmis">{{
+                  nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].period}`
+                }}</span>
               </div>
-              <div class="nhmis-month-text1" v-else>
-                <!-- static data (only for overview table) for NHMIS data -->
-                -
-              </div>
-              <div class="nhmis-month-text2" v-if="nhmisMonthData[0]">
-                <span v-if="nhmisMonthData[0].value === null"> - </span>
-                <span v-else> {{ nhmisMonthData[0].period }}</span>
-              </div>
-              <div class="nhmis-month-text2" v-else>-</div>
 
               <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <TableDataCell
@@ -398,6 +391,7 @@ export default {
     getAvailableDataSources() {
       const arraySource = this.dataArray.map((e) => e.values.map((et) => et.dataSources));
       const allAvailableSources = uniq(flatten(arraySource));
+      // console.log(allAvailableSources, 'this.dataArray');
       // add this to use only datasource on the dropdown for the table component
       /**
        * order AvailableSources according to the OrderSourceBy Array;
@@ -672,7 +666,6 @@ table.table {
     }
   }
 }
-
 </style>
 
 <style scoped>
@@ -689,14 +682,14 @@ table.table {
 }
 
 .nhmis-month-text1 {
-  margin-top: 9px;
+  margin-top: 0px;
   /* font-size: 0.7rem; */
   text-align: center;
   font-weight: 700;
 }
 
 .nhmis-month-text2 {
-  margin-top: 5px;
+  margin-top: 0px;
   /* font-size: 0.7rem; */
   text-align: center;
 }
@@ -718,9 +711,10 @@ table.table {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 10px;
+  /* padding-top: 10px;
   padding-left: 10px;
-  padding-right: 10px;
+  padding-right: 10px; */
+  padding: 0.75rem;
 }
 
 .meta_icon {
@@ -728,5 +722,20 @@ table.table {
   font-size: 15.5px;
   margin-left: 10px;
   margin-top: 2px;
+}
+.nhmis-monthly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+}
+.value-nhmis {
+  font-size: 12px;
+  font-weight: bold;
+}
+.period-nhmis {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
 }
 </style>

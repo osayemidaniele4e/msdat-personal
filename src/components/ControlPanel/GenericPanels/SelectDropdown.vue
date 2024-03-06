@@ -93,9 +93,14 @@ export default {
             payload: val,
             entity: 'indicator',
           };
+          console.log(val, 'HH@@HH');
+          const indicatorId = val.id;
+          const indicatorFirstRelated = val.first_related;
+          const indicatorSecondRelated = val.second_related;
+          localStorage.setItem('indicatorID', indicatorId);
+          localStorage.setItem('indicatorFirstRelated', indicatorFirstRelated);
+          localStorage.setItem('indicatorSecondRelated', indicatorSecondRelated);
           this.SET_SELECTED_CONFIG(item);
-
-          // console.log(JSON.stringify(item), '@@@@');
         } else if (
           typeof val === 'object'
           && val.id !== undefined
@@ -118,8 +123,9 @@ export default {
           };
 
           this.SET_SELECTED_CONFIG(item);
-          // console.log(JSON.stringify(item), '@@@@');
           // this.addQueryParamToUrl();
+        } else if (val.parent !== undefined) {
+          localStorage.setItem('locationId', val.id);
         }
         this.$emit('input', val);
       },
@@ -383,6 +389,7 @@ export default {
   transition: all 0.25s ease-in;
   cursor: pointer;
 }
+
 .open-caret {
   transform: rotate(360deg);
   transition: all 0.25s ease-out;
@@ -392,6 +399,18 @@ ul li.multiselect__element {
   // border-bottom: 1px solid #0000;
   transition: all 1.5s ease-in-out;
   cursor: pointer;
+}
+span.multiselect__single::-webkit-scrollbar
+{
+  border-radius: 30px;
+  height: 0.23rem;
+  background: transparent;
+  border: 1px solid gainsboro;
+
+}
+span.multiselect__single::-webkit-scrollbar-thumb
+{
+  background-color: #b3b3b3 ;
 }
 .overflow-text {
   // text-overflow: ellipsis;

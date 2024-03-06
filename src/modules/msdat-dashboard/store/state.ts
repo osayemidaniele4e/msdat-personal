@@ -41,6 +41,10 @@ const state: State = {
   },
   configObject: {},
   loading: true,
+  isGenerating: false,
+  isTypingEffect: false,
+  isResponding: false,
+  conversationHistory: [],
 };
 
 export default state;

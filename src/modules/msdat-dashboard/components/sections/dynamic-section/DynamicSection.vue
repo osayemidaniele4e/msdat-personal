@@ -65,7 +65,7 @@ export default {
       // url: 'https://public.tableau.com/app/profile/data.team8402/viz/UpdatedDemographicDashboardVersion2_16472527584120/Dashboard3:language=en-GB&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url: 'https://public.tableau.com/views/Demographicsmulti-source/Dashboard12?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       // url: 'https://public.tableau.com/views/UpdatedDemographicDashboardVersion2_16472527584120/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url2: 'https://public.tableau.com/views/HealthworkforcedisaggregationDashboard/Dashboard2?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url2: 'https://public.tableau.com/views/HealthworkforcedisaggregationDashboard/Dashboard3?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url3: 'https://public.tableau.com/views/Financedashboard_16472462810160/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url4: 'https://public.tableau.com/views/Health_Outcomesdisaggregation/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url5: 'https://public.tableau.com/views/HealthFacilitymulti-source/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',

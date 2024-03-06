@@ -28,7 +28,7 @@ exports[`preferenceTable.vue renders properly 1`] = `
   >
     <p
       id="link-to-about"
-      style="font-size: 13px; font-family: Work Sans;"
+      style="font-size: 13px; font-family: Work Sans; cursor: pointer;"
     >
       <b>
         View datasheet

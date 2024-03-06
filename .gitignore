@@ -6,7 +6,9 @@ node_modules
 /tests/e2e/videos/
 /tests/e2e/screenshots/
 
-
+.firebaserc
+.firebase
+firebase.json
 
 
 # local env files
@@ -43,3 +45,6 @@ echo '.cache' >> .gitignore
 
 #router
 .router
+
+src/modules/plugins/*.zip
+__MACOSX/

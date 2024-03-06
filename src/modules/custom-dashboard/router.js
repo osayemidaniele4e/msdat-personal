@@ -27,6 +27,30 @@ export default [
       title: 'Custom Dashboard',
     },
   },
+  {
+    path: '/custom/public/:id',
+    name: 'custom-dashboard-public',
+    component: () => import('./views/Public.vue'),
+    meta: {
+      title: 'Custom Dashboard',
+    },
+  },
+  {
+    path: '/custom/private/:id',
+    name: 'custom-dashboard-public',
+    component: () => import('./views/Private.vue'),
+    meta: {
+      title: 'Custom Dashboard',
+    },
+  },
+  {
+    path: '/custom/requests',
+    name: 'custom-dashboard-request',
+    component: () => import('./views/DashboardRequests.vue'),
+    meta: {
+      title: 'Dashboard Requests',
+    },
+  },
   // {
   //   path: '/custom/details',
   //   name: 'dashboard-details',

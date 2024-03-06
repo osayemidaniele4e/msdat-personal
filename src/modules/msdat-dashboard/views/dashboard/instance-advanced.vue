@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div>
     <BaseDashboard
       :indicators="indicators"
@@ -21,7 +21,7 @@
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Correlative Analysis</h5>
+              <h5 class="font-weight-bold work-sans text-white">Correlation Analysis</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
@@ -242,7 +242,7 @@ export default {
 
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL', 'SET_ADVANCED_MULTISOURCE_DEFAULT_DATASOURCES']),
 
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -348,6 +348,24 @@ export default {
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
     this.$route.meta.title = 'Advanced Analytics';
+
+    const defaultData = {
+      id: 6,
+      datasource: 'NHMIS-DHIS2',
+      full_name: 'National Health Management Information System (DHIS2)',
+      description: 'National Health Management Information System: Nigeria has adopted the DHIS2 as the National tool for the reporting of routine health-related data. This data is reported and aggregated monthly using this platform.',
+      year_available: '2013 - 2021',
+      period_available: '2022',
+      methodology: "Facility level aggregate data that is reported by health facilities routinely on a monthly basis using DHIS2. Health facilities are expected to report by the month's data by the 15th of the next month. Due to incomplete reporting by the health facilities, poor reporting by private facilities, the data may be biased.",
+      subnational_data: 'Yes',
+      classification: 'Routine',
+      link: 'https://dhis2nigeria.org.ng',
+      created_at: '2022-10-20T08:13:15.757413Z',
+      updated_at: '2022-10-20T08:13:15.757421Z',
+      group: [],
+    };
+
+    this.SET_ADVANCED_MULTISOURCE_DEFAULT_DATASOURCES(defaultData);
   },
 
   destroyed() {

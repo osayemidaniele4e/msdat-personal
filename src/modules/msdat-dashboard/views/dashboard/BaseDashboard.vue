@@ -145,8 +145,8 @@
                                     :value="null"
                                     v-if="item[0].options"
                                     :options="getProgramArea(item[0].options)"
+                                    @input="updateProgram($event, item[0].options, index2)"
                                   />
-                                  {{ showItem(item) }}
                                 </div>
                                 <ControlPanel
                                   :label="modifyLabel(control.label, index2)"
@@ -238,6 +238,16 @@ import Onboarding from '../onboarding/onboarding';
 import TroubleShootingModal from '../../modules/troubleshooting/modal.vue';
 
 export default {
+  // head() {
+  //   return {
+  //     meta: [
+  //       {
+  //         name: 'twitter:description',
+  //         content: 'Your Page Description',
+  //       },
+  //     ],
+  //   };
+  // },
   name: 'BaseDashboard',
   mixins: [Loading, formatter, controlPanelSetup, Onboarding, tour, scroll, SharingDashboardState],
   components: {
@@ -342,24 +352,34 @@ export default {
     }
 
     window.addEventListener('wheel', this.handleScroll);
+
+    /**
+     * Update Site-Wide OG tags for crawlers
+     */
+    // eslint-disable-next-line camelcase
+    const indicator = this.getSelectedConfig().indicator?.full_name
+      // eslint-disable-next-line camelcase
+      || this.dlIndicator.find((ind) => ind.id === this.initialIndicator?.full_name) || 'Skilled attendance at delivery or birth';
+    const pageDesc = `Take a look at '${indicator}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
+
+    const descEl = document.querySelector('head meta[property="og:description"]');
+    const descEl2 = document.querySelector('head meta[name="twitter:description"]');
+    descEl.setAttribute('content', pageDesc);
+    descEl2.setAttribute('content', pageDesc);
   },
 
   destroyed() {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('wheel', this.handleScroll);
   },
-
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS']),
+    ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS', 'UPDATE_PROGRAM_AREAS']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
       return `value${index}`;
     },
 
-    showItem(item) {
-      console.log(item, '@@HH@@');
-    },
     // function to get program areas
     getProgramArea(data) {
       return data.map((el) => el.program_area);
@@ -527,6 +547,16 @@ export default {
         this.isMobile = false;
       }
     },
+    updateProgram(item, indicators, index2) {
+      const filteredIndicator = indicators.filter((indicator) => indicator.program_area === item);
+      console.log(filteredIndicator, '@@item@@');
+      const data = {
+        content: filteredIndicator[0],
+        index: index2,
+      };
+
+      this.UPDATE_PROGRAM_AREAS(data);
+    },
   },
 
   watch: {
@@ -595,6 +625,9 @@ export default {
         this.showTroubleShootingModal = true;
       }
     }
+    // Hide Modal For Prerendered Pages
+    const bvModal = document.querySelector('#__BVID__13___BV_modal_outer_');
+    if (bvModal) bvModal.style.display = 'none';
   },
 };
 </script>

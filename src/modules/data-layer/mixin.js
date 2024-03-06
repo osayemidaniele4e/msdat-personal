@@ -140,7 +140,7 @@ export default {
       const valuetype = this.valueType?.filter(
         (item) => item.value_type === datasource?.classification
       );
-      query.value_type = valuetype[0]?.id;
+      query.value_type = valuetype[0]?.id ?? 2;
 
       if (isObject(query.location)) {
         const { location } = query;
@@ -186,6 +186,7 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
+      // console.log(this.dlLocation, 'this.dlLocation');
       if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }

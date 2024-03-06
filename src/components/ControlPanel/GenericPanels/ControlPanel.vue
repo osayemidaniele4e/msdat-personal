@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" id="control-panel">
     <div
       v-for="(values, index) in setup"
       :class="values.class"
@@ -8,7 +8,7 @@
     >
       <!-- <div v-if="values.visibility === undefined ? true : values.visibility"> -->
 
-        <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
+      <!-- THIS IS NOT CURRENTLY NEEDED AS IF THERE IS NO NHMIS THE NUM/DENOM IS BLURRED OUT ALREADY -->
       <!-- <label
         class="text-uppercase work-sans label-text "
         v-if="!hasNHMIS && values.label == 'Num/Denom'"
@@ -16,12 +16,36 @@
         {{ '' }}
       </label> -->
       <label
-        class="text-uppercase work-sans label-text disabled_alt"
+        :class="
+          disableTarget
+            ? 'text-uppercase work-sans label-text'
+            : 'text-uppercase work-sans label-text disabled_alt'
+        "
         v-if="values.label == 'Target'"
+      >
+        {{ values.label }}
+      </label>
+      <label
+        :class="
+          values.label === 'Num/Denom'
+            ? 'text-uppercase work-sans label-text d-flex justify-content-center'
+            : 'text-uppercase work-sans label-text d-flex'
+        "
+        v-if="values.label !== 'Target' &&  values.label !== 'Year' "
+      >
+      {{ values.label }}
+
+      </label>
+      <label
+        :class="
+          values.label === 'Num/Denom'
+            ? 'text-uppercase work-sans label-text d-flex justify-content-center'
+            : 'text-uppercase work-sans label-text d-flex'
+        "
+        v-if="values.label === 'Year' &&  $store.getters.getSectionTitle !== 'Predictive Analysis' "
       >
       {{ values.label }}
       </label>
-      <label :class=" values.label==='Num/Denom'? 'text-uppercase work-sans label-text d-flex justify-content-center':'text-uppercase work-sans label-text d-flex'" v-else> {{ values.label }} </label>
 
       <!-- ADVANCED ANALYTICS -->
       <selectWrapper
@@ -35,17 +59,8 @@
       />
       {{ checkNHMISDHIS2() }}
       <!-- MSDAT SUB-DASHBOARDS -->
-      <!-- <selectWrapper
-        v-if="values.type === 'dropdown' && values.key !== 'indicator'"
-        :id="label"
-        :value="payload[values.key]"
-        @input="updatePayload($event, values.key)"
-        :options="locationCheck(values.options)"
-        :multiSelectProps="values.dropdownProps"
-        :NoDataLabel="values.label"
-      /> -->
       <selectWrapper
-        v-if="values.type === 'dropdown' && values.key !== 'indicator'"
+        v-if="values.type === 'dropdown' && values.key === 'compareBy'"
         :id="label"
         :value="payload[values.key]"
         @input="updatePayload($event, values.key)"
@@ -53,18 +68,70 @@
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
       />
+      <selectWrapper
+        v-if="values.type === 'dropdown' && values.key === 'datasource'"
+        :id="label"
+        :value="payload[values.key]"
+        @input="updatePayload($event, values.key)"
+        :options="locationCheck(values.options)"
+        :multiSelectProps="values.dropdownProps"
+        :NoDataLabel="values.label"
+      />
+
+      <selectWrapper
+        v-if="values.type === 'dropdown' && values.key === 'location'"
+        :id="label"
+        :value="payload[values.key]"
+        @input="updatePayload($event, values.key)"
+        :options="locationCheck(values.options)"
+        :multiSelectProps="values.dropdownProps"
+        :NoDataLabel="values.label"
+      />
+
+      <selectWrapper
+        v-if="
+          values.type === 'dropdown' &&
+          values.key === 'year' &&
+          $store.getters.getSectionTitle !== 'Predictive Analysis'
+        "
+        :id="label"
+        :value="payload[values.key]"
+        @input="updatePayload($event, values.key)"
+        :options="locationCheck(values.options)"
+        :multiSelectProps="values.dropdownProps"
+        :NoDataLabel="values.label"
+      />
+
+      <selectWrapper
+        v-if="values.type === 'dropdown' && values.key === 'visualization'"
+        :id="label"
+        :value="payload[values.key]"
+        @input="updatePayload($event, values.key)"
+        :options="locationCheck(values.options)"
+        :multiSelectProps="values.dropdownProps"
+        :NoDataLabel="values.label"
+      />
+
+      <!-- Policy Simulator -->
+      <Generate
+        v-if="values.type === 'generate'"
+        :options="values.options"
+        :value="payload[values.key]"
+      ></Generate>
+
+      <!-- history -->
+      <History v-if="values.type === 'history'">Policy History</History>
+
+      <!-- {{ showItem(values.options) }} -->
       <!-- </div> -->
       <!-- <div class="disabled_alt"> -->
       <div class="d-flex justify-content-center">
-        <toggle
-          v-if="values.type === 'toggle'"
-          @change="updatePayload($event, values.key)"
-        />
+        <toggle v-if="values.type === 'toggle'" @change="updatePayload($event, values.key)" />
       </div>
 
       <div class="d-flex" v-if="values.type === 'checkbox'">
         <!-- National Target here -->
-        <div class="d-flex disabled_alt">
+        <div :class="disableTarget ? 'd-flex ' : 'd-flex disabled_alt'">
           <BaseCheckbox
             :currentValue="payload.target.national"
             @input="updatePayload({ sdg: payload.target.sdg, national: $event }, 'target')"
@@ -72,7 +139,7 @@
           <p class="check-label ml-1">National</p>
         </div>
         <!-- SDG Target here -->
-        <div class="d-flex ml-3 disabled_alt">
+        <div :class="disableTarget ? 'd-flex ml-3' : 'd-flex ml-3 disabled_alt'">
           <BaseCheckbox
             :currentValue="payload.target.sdg"
             @input="updatePayload({ sdg: $event, national: payload.target.national }, 'target')"
@@ -84,7 +151,7 @@
         <button
           type="button"
           @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'zonal_map' ? 'active' : '']"
         >
           Zones Map
@@ -101,7 +168,7 @@
         <button
           type="button"
           @click="updatePayload('state_map', values.key), (activeToggleButton = 'state_map')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'state_map' ? 'active' : '']"
         >
           State Map
@@ -121,7 +188,7 @@
         <button
           type="button"
           @click="updatePayload('line', values.key), (activeToggleButton = 'line')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'line' ? 'active' : '']"
         >
           Line <b-icon icon="graph-up"></b-icon>
@@ -129,7 +196,7 @@
         <button
           type="button"
           @click="updatePayload('column', values.key), (activeToggleButton = 'column')"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-lg btn-outline-primary"
           :class="[activeToggleButton === 'column' ? 'active' : '']"
         >
           Column <b-icon icon="bar-chart-fill"></b-icon>
@@ -142,12 +209,14 @@
 <script>
 // import ControlMixins from '@/components/ControlPanel/ControlMixins';
 import { mapMutations, mapGetters } from 'vuex';
+// eslint-disable-next-line import/no-unresolved
 import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
+// eslint-disable-next-line import/no-unresolved
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
+import Generate from '../components/generate.vue';
 
 export default {
-  // mixins: [ControlMixins],
   name: 'ControlPanel',
   data() {
     return {
@@ -157,27 +226,15 @@ export default {
       // (controlIndex & groupIndex)
       controlIndexSub: this.controlIndex,
       groupIndexSub: this.groupIndex,
-      // payload: {
-      //   indicator: 'indicator 2',
-      //   location: '',
-      //   datasource: 'NHMIS 1',
-      //   year: '',
-      //   compareBy: '',
-      //   visualization: 'state_map',
-      //   target: {
-      //     national: false,
-      //     sdg: false,
-      //   },
-      //   numdenum: false,
-      // },
       hasNHMIS: false,
-
+      selectedSection: '',
     };
   },
   components: {
     selectWrapper,
     BaseCheckbox,
     toggle,
+    Generate,
   },
   props: {
     setup: {
@@ -260,7 +317,7 @@ export default {
     },
   },
   methods: {
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
 
     ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
     /**
@@ -273,10 +330,19 @@ export default {
         indicator, datasource, location, year,
       } = newValue;
       // eslint-disable-next-line camelcase
-      const ind = Array.isArray(indicator) ? indicator[indicator.length - 1]?.short_name : indicator?.short_name;
+      const ind = Array.isArray(indicator)
+        // eslint-disable-next-line operator-linebreak
+        ? // eslint-disable-next-line camelcase
+          indicator[indicator.length - 1]?.short_name
+        // eslint-disable-next-line operator-linebreak
+        : // eslint-disable-next-line camelcase
+          indicator?.short_name;
       // eslint-disable-next-line no-nested-ternary
-      const dat = Array.isArray(datasource) ? datasource[datasource.length - 1]?.item : datasource.datasource
-        ? datasource.datasource : datasource?.item;
+      const dat = Array.isArray(datasource)
+        ? datasource[datasource.length - 1]?.item
+        : datasource.datasource
+          ? datasource.datasource
+          : datasource?.item;
       const loc = location?.name === 'Nigeria' ? 'National' : location?.name;
       if (ind && dat && this.getUser.id) {
         const activityObject = {
@@ -288,25 +354,27 @@ export default {
         };
         const lastActivity = JSON.parse(localStorage.getItem('lastActivity') || '{}');
         const hold = (Date.now() - lastActivity.datetime || 0) >= 5000;
-        const diff = (lastActivity.page !== activityObject.page)
-          || (lastActivity.section !== activityObject.section)
-          || (lastActivity.parameters !== activityObject.parameters);
+        const diff = lastActivity.page !== activityObject.page
+          || lastActivity.section !== activityObject.section
+          || lastActivity.parameters !== activityObject.parameters;
         if (hold && diff) {
-          // send activity post request to backend
+        // send activity post request to backend
           console.log('activity', activityObject);
         }
-        localStorage.setItem('lastActivity', (JSON.stringify(activityObject)));
+        localStorage.setItem('lastActivity', JSON.stringify(activityObject));
       }
     },
     locationCheck(options) {
-      // console.log(options, 'options');
+    // console.log(options, 'options');
       if (
-        this.$route.params.name === 'Disease_Surveillance'
-        && options !== null
-        && options.length === 38
+      // eslint-disable-next-line operator-linebreak
+        this.$route.params.name === 'Disease_Surveillance' &&
+        // eslint-disable-next-line operator-linebreak
+        options !== null &&
+        options.length === 38
       ) {
-        // const main = options.filter((s) => s.name === 'Nigeria');
-        // console.log(main, 'Nigeria');
+      // const main = options.filter((s) => s.name === 'Nigeria');
+      // console.log(main, 'Nigeria');
         return options.filter((s) => s.name === 'Nigeria');
       }
       return options;
@@ -324,29 +392,32 @@ export default {
       });
     },
     getIndicatorList(data) {
-      // const { name } = this.$route.params;
-      // if (name === 'Advanced_Analytics') {
-      //   return data?.filter((item) => item.program_area === this.indicatorList);
-      // }
+    // const { name } = this.$route.params;
+    // if (name === 'Advanced_Analytics') {
+    //   return data?.filter((item) => item.program_area === this.indicatorList);
+    // }
 
       // console.log(this.$store.getters.getSectionTitle, 'XXXXX');
 
       const { name } = this.$route.params;
-      if (name === 'Advanced_Analytics' && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison') {
+      if (
+        name === 'Advanced_Analytics'
+        && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison'
+      ) {
         return data?.filter((item) => item.program_area === this.indicatorList);
       }
 
       return data;
 
-      // if (this.indicatorList !== '' || this.indicatorList !== null) {
-      //   return data?.filter((item) => item.program_area === this.indicatorList);
-      // }
+    // if (this.indicatorList !== '' || this.indicatorList !== null) {
+    //   return data?.filter((item) => item.program_area === this.indicatorList);
+    // }
     },
     updatePayload(value, key) {
       if (this.groupIndexSub != null) {
-        // this is to take into consideration control panel that
-        // are grouped example is Multi-source comparison section
-        // debugger;
+      // this is to take into consideration control panel that
+      // are grouped example is Multi-source comparison section
+      // debugger;
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: this.controlIndexSub,
           groupIndex: this.groupIndexSub,
@@ -369,13 +440,23 @@ export default {
     ...mapGetters('AUTH_STORE', ['getUser']),
     payload() {
       if (this.groupIndex != null) {
-        // this is to take into consideration control panel that
-        // are grouped example is Multi-source comparison section
+      // this is to take into consideration control panel that
+      // are grouped example is Multi-source comparison section
         return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
           this.groupIndex
         ];
       }
       return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload;
+    },
+    disableTarget() {
+      if (
+        this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage'
+        || this.$route.path === '/dashboard/Health_Financing'
+        || this.$route.path === '/dashboard/Health_Service_Access'
+      ) {
+        return true;
+      }
+      return false;
     },
   },
 
@@ -393,7 +474,7 @@ export default {
       if (el < getYear) {
         newArr.push(el);
         this.defaultYearDropdown = newArr;
-        // console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
+      // console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
       }
       return el;
     });
@@ -408,7 +489,13 @@ export default {
 
 <style lang="scss" scoped>
 .label-text {
+  padding-top: 6px;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
+}
+
+button {
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>

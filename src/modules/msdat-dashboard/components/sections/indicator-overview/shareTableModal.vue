@@ -9,14 +9,10 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="d-flex flex-column input-item">
-            <!-- <textarea v-model="tableContent" name="" id="" cols="20" rows="5"></textarea> -->
-            <iframe style="padding: 5px" width="1000" height="400" :srcdoc="tableContent"></iframe>
-          </div>
         </div>
 
-        <div class="btn-wrapper mt-3">
-          <input v-model="tableContent" type="text" />
+        <div v-if="urlContent !== null" class="btn-wrapper mt-3">
+          <input v-model="urlContent" type="text" />
           <button @click="copyContent" class="delete">
             <div v-if="showLoader" class="spinner-border text-light mx-3" role="status">
               <span class="sr-only">Loading...</span>
@@ -30,7 +26,6 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
 
 export default {
   name: 'ShareCodeModal',
@@ -43,12 +38,8 @@ export default {
       name: null,
       short_name: null,
       showLoader: false,
+      urlContent: null,
     };
-  },
-  computed: {
-    contentDiv() {
-      return this.tableContent.innerHTML;
-    },
   },
   methods: {
     close() {
@@ -74,6 +65,10 @@ export default {
       });
       // alert('Content copied to clipboard!');
     },
+  },
+  async mounted() {
+    this.urlContent = this.tableContent;
+    console.log(this.urlContent, 'tableObjTemp');
   },
 };
 </script>

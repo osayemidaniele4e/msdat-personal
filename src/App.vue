@@ -1,24 +1,78 @@
 <template>
-  <div>
+  <div id="app">
     <router-view />
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
-import ContextPlugin from './modules/plugins/context-plugin';
-
-// export default Vue.extend({});
+import { mapActions, mapGetters } from 'vuex';
+import contextPlugin from './modules/plugins/contextPlugin';
+import indicatorPlugin from './modules/plugins/indicatorPlugin';
+import reviewPlugin from './modules/plugins/reviewPlugin';
+import testPlugin from './modules/plugins/testPlugin';
+import testonePlugin from './modules/plugins/testonePlugin';
 
 export default {
-  mounted() {
+  data() {
+    return {
+      pluginsImported: [], // Explicitly specify the type as an array of strings
+    };
+  },
+  async mounted() {
+    // const plugins_imported = [];
+
+    this.pluginsImported.push('contextPlugin');
     if (!localStorage.getItem('contextPlugin')) {
       localStorage.setItem('contextPlugin', 'false');
     }
 
     if (localStorage.getItem('contextPlugin') === 'true') {
-      Vue.use(ContextPlugin);
+      Vue.use(contextPlugin);
     }
+
+    this.pluginsImported.push('indicatorPlugin');
+    if (!localStorage.getItem('indicatorPlugin')) {
+      localStorage.setItem('indicatorPlugin', 'false');
+    }
+
+    if (localStorage.getItem('indicatorPlugin') === 'true') {
+      Vue.use(indicatorPlugin);
+    }
+
+    this.pluginsImported.push('reviewPlugin');
+    if (!localStorage.getItem('reviewPlugin')) {
+      localStorage.setItem('reviewPlugin', 'false');
+    }
+
+    if (localStorage.getItem('reviewPlugin') === 'true') {
+      Vue.use(reviewPlugin);
+    }
+
+    this.pluginsImported.push('testPlugin');
+    if (!localStorage.getItem('testPlugin')) {
+      localStorage.setItem('testPlugin', 'false');
+    }
+
+    if (localStorage.getItem('testPlugin') === 'true') {
+      Vue.use(testPlugin);
+    }
+
+    this.pluginsImported.push('testonePlugin');
+    if (!localStorage.getItem('testonePlugin')) {
+      localStorage.setItem('testonePlugin', 'false');
+    }
+
+    if (localStorage.getItem('testonePlugin') === 'true') {
+      Vue.use(testonePlugin);
+    }
+
+    console.log('pluginsImported', this.pluginsImported);
+    await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
+  },
+  methods: {
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+    ...mapActions(['SET_PLUGINS_IMPORTED']),
   },
 };
 </script>
