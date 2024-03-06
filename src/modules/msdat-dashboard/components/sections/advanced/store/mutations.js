@@ -5,4 +5,8 @@ export default {
   setSectionTitle(state, payload) {
     state.sectionTitle = payload;
   },
+
+  setDataSource(state, payload) {
+    state.dataSource = payload;
+  },
 };

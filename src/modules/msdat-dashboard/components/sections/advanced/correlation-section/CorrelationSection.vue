@@ -1,7 +1,11 @@
 <template>
   <div class="parent">
     <div class="loader" v-if="isLoading">
-      <the-loader />
+      <!-- <the-loader /> -->
+      <!-- <img class="loader-img" src="../../../../../../assets/Loading.gif" alt=""> -->
+      <div class="spinner-border spinner-height text-success mx-3" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
     <b-embed
       type="iframe"
@@ -15,11 +19,13 @@
 </template>
 
 <script>
-import TheLoader from '@/modules/custom-dashboard/components/Loading/TheLoader.vue';
+// import TheLoader from '@/modules/custom-dashboard/components/Loading/TheLoader.vue';
 
 export default {
   name: 'CorrelationSection',
-  components: { TheLoader },
+  components: {
+    // TheLoader
+  },
   data() {
     return {
       isLoading: true,
@@ -56,5 +62,15 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.loader-img {
+  height: 300px;
+  width: 300px;
+}
+
+.spinner-height {
+  height: 10rem;
+  width: 10rem;
+  margin: 3rem 0;
 }
 </style>
