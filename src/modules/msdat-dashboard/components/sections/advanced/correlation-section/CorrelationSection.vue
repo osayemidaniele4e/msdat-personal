@@ -2,7 +2,6 @@
   <div class="parent">
     <div class="loader" v-if="isLoading">
       <!-- <the-loader /> -->
-      <!-- <img class="loader-img" src="../../../../../../assets/Loading.gif" alt=""> -->
       <div class="spinner-border spinner-height text-success mx-3" role="status">
         <span class="sr-only">Loading...</span>
       </div>
