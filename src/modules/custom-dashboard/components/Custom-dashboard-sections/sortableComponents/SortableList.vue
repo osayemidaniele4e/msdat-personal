@@ -1,5 +1,7 @@
 <!-- <script>
 // import { Sortable } from '@shopify/draggable';
+<script>
+// import { Sortable } from '@shopify/draggable';
 
 function move(items, oldIndex, newIndex) {
   const itemRemovedArray = [
