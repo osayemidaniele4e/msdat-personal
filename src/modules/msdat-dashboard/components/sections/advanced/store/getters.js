@@ -6,4 +6,5 @@ export default {
     return state.sectionTitle;
   },
 
+  getSelectedDataSourceID: (state) => state.dataSource,
 };
