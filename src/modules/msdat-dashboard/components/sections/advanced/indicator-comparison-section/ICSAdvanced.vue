@@ -246,7 +246,7 @@ export default {
           data: toHighChartFormat,
         };
         highChartOptions.yAxis.push(yAxis);
-        highChartOptions.series.push(obj);
+        if (toHighChartFormat.length) highChartOptions.series.push(obj);
       }
       return highChartOptions;
     },
