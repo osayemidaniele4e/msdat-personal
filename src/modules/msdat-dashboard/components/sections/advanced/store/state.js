@@ -7,4 +7,5 @@ export default {
     location: 1,
     year: null,
   },
+  dataSource: 'NHMIS-DHIS2',
 };

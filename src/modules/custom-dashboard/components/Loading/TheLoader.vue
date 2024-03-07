@@ -33,8 +33,8 @@ export default {
 }
 .ldio-7hsu63xud14 > div {
   position: absolute;
-  width: 42px;
-  height: 42px;
+  width: 220px;
+  height: 220px;
   top: 29px;
   left: 29px;
   border-radius: 50%;

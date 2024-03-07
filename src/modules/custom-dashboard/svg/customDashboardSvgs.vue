@@ -11,6 +11,7 @@ eslint-disable max-len */
       width="342.093"
       height="169.159"
       viewBox="0 0 342.093 169.159"
+      style="width: 200px"
     >
       <g id="Group_17" data-name="Group 17" transform="translate(0 23.227)">
         <g id="Group_16" data-name="Group 16">
@@ -826,6 +827,7 @@ eslint-disable max-len */
       width="270"
       height="169"
       viewBox="0 0 270 169"
+      style="width: 200px"
     >
       <g id="Group_62" data-name="Group 62" transform="translate(-0.311 -0.308)">
         <g
@@ -937,6 +939,7 @@ eslint-disable max-len */
       width="250.593"
       height="169.159"
       viewBox="0 0 250.593 169.159"
+      style="width: 200px"
     >
       <g id="Group_69" data-name="Group 69" transform="translate(0 0)">
         <g id="Group_65" data-name="Group 65">
