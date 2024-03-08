@@ -13,7 +13,7 @@
       </div>
     </b-row>
     <div class="btm-section d-flex flex-column align-items-center mb-3 px-5">
-      <span class="mb-3">Select a Section to Start</span>
+      <span class="mb-5">Select a Section to Start</span>
       <b-row cols="1" cols-md="2" cols-xl="3">
         <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center mb-4">
           <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`" :id="section.id">
@@ -122,7 +122,7 @@ export default {
   }
 .btm-section {
     position: absolute;
-    top: 50%;
+    top: 48%;
     /* bottom: 0;
     left: 0; */
     padding: 0 10%;
@@ -130,7 +130,9 @@ export default {
   }
   .btm-section span{
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+  letter-spacing: 1px;
+  text-align: center;
   }
 .btm-section small{
   color: black;
@@ -157,9 +159,10 @@ export default {
     transition: transform 0.5s ease;
     transform: scale(1.05);
   }
-  @media (max-width: 991.98px) {
-    .top-section {
-      padding: 3% 10%;
+  @media (max-width: 1300px) {
+
+    .btm-section{
+      top: 40%;
     }
 
     .bg {
@@ -173,6 +176,13 @@ export default {
   }
 
   @media (max-width: 575.98px) {
+    .btm-section{
+      top: 65%;
+    }
+
+    .btm-section span{
+      text-align: center;
+    }
     .top-section h1 {
       font-size: 2rem;
     }
