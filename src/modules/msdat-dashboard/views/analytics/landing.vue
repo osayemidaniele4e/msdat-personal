@@ -130,7 +130,7 @@ export default {
   }
   .btm-section span{
     font-weight: 500;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 .btm-section small{
   color: black;
