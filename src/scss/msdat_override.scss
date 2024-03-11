@@ -18,27 +18,39 @@ span.multiselect__single {
   white-space: nowrap;
   overflow-x: auto;
   display: inline-block;
-
-    /* Adjust the height of the scrollbar */
-    &::-webkit-scrollbar {
-      height: 2px; /* Adjust the height as needed */
-    }
-  
-    /* Handle for the scrollbar */
-    &::-webkit-scrollbar-thumb {
-      background-color: #888; /* Adjust the color as needed */
-    }  
-
-    /* Add smooth scrolling effect */
   scroll-behavior: smooth;
 
-  /* For Firefox */
-  scrollbar-width: thin; /* or auto */
-  scrollbar-color: #888 #f4f4f4; /* Adjust the colors as needed */
+ /* Adjust the height of the scrollbar */
+ &::-webkit-scrollbar {
+  height: 0.4rem !important; /* Adjust the height as needed */
+  background-color: transparent;
+  visibility: hidden; /* Initially hide scrollbar */
+  transition: visibility 0.3s ease; /* Add transition for smooth visibility change */
+}
 
-  /* Adjust the height of the horizontal scrollbar in Firefox */
-  overflow-y: hidden;
-  scrollbar-width: thin;
+/* Hide scrollbar thumb by default */
+&::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+/* Show scrollbar thumb when hovering over the container */
+&:hover::-webkit-scrollbar-thumb {
+  display: block;
+  background-color: #888;
+  border-radius: 10px;
+}
+
+/* Show scrollbar and scrollbar thumb when container is being scrolled */
+&:hover::-webkit-scrollbar {
+  visibility: visible; /* Show scrollbar */
+}
+  /* For Firefox */
+  // scrollbar-width: thin; /* or auto */
+  // scrollbar-color: #888 #f4f4f4; /* Adjust the colors as needed */
+
+  // /* Adjust the height of the horizontal scrollbar in Firefox */
+  // overflow-y: hidden;
+  //  scrollbar-width: thin; /* or auto */
 }
 
 
