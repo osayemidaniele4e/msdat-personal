@@ -1,7 +1,7 @@
 /* eslint-disable radix */
 <template>
   <div class="iddc_wrapper">
-    <div class="desc d-flex">
+    <!-- <div class="desc d-flex">
       <div class="desc-icon p-2">
         <svg
           data-v-21137bd3=""
@@ -29,7 +29,7 @@
         models that place a numerical value or score on the likelihood of a particular action or
         event happening.
       </div>
-    </div>
+    </div> -->
     <base-overlay :show="loading || notShow">
       <base-sub-card
         @dropdownTypeSelected="
@@ -204,7 +204,10 @@ export default {
           // eslint-disable-next-line camelcase
           const sorted_year = year.sort();
           if (this.getPredictedData.prediction !== undefined) {
-            const switchPrediction = this.getPredictedData.prediction.map((val) => [val[0], val[1]]);
+            const switchPrediction = this.getPredictedData.prediction.map((val) => [
+              val[0],
+              val[1],
+            ]);
             this.ChartOptions = {
               tooltip: {
                 shared: true,
