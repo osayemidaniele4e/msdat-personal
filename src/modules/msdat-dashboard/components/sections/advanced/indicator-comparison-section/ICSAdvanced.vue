@@ -132,8 +132,9 @@ export default {
         }
         // Find the series corresponding to the indicator
         const indicatorSeries = this.chartOptions.series.find(
-          (series) => series.name.toLowerCase() === indicator.short_name.toLowerCase(),
+          (series) => series.name.toLowerCase().includes(indicator.full_name.toLowerCase()),
         );
+
         // Check if the indicatorSeries has data points
         return indicatorSeries?.data && indicatorSeries.data.length > 0;
       }
