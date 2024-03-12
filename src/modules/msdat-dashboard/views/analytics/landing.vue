@@ -6,26 +6,21 @@
       <div class="top-section">
         <div class="d-flex flex-column align-items-center">
           <h1>The Advanced Analytics Dashboard</h1>
-          <span>MultiSource Data Analytics & Triangulation Platform</span>
         </div>
         <small>
-          <!-- The essence of health data is to ensure that decision-makers have the means to make informed decisions
-          and policies for healthcare. Take advantage of the advanced analytic tools to gain valuable insights and
-          shape the future of healthcare. -->
-           Explore key health indicators, analyze trends, and harness the power of
-          predictive modeling to anticipate future health trends.
+          Explore Key Health Indicators, Analyse Trends and Harness the Power of Predictive Modeling to Anticipate Future Health Trends
         </small>
       </div>
     </b-row>
-    <div class="btm-section d-flex flex-column align-items-center mb-3 px-3">
-      <span class="mb-3 font-weight-bold">Select a dashboard to start</span>
-      <b-row cols="2" cols-md="3" cols-xl="6">
-        <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center mb-3">
+    <div class="btm-section d-flex flex-column align-items-center mb-3 px-5">
+      <span class="mb-5">Select a Section to Start</span>
+      <b-row cols="1" cols-md="2" cols-xl="3">
+        <b-col v-for="(section, index) in sections" :key="index" class="d-flex flex-column align-items-center mb-4">
           <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`" :id="section.id">
             <img class="section" :src="imgsrc(section.title)" :alt="section.title">
           </router-link>
           <router-link :to="`/dashboard/Advanced_Analytics?index=${index}`">
-            <small style="font-size: 1.15rem; font-weight: 700" class="py-2">{{ section.title }}</small>
+            <small style="font-size: 1.1rem; font-weight: 500" class="py-2">{{ section.title }}</small>
           </router-link>
         </b-col>
       </b-row>
@@ -104,57 +99,97 @@ export default {
 </script>
 
 <style scoped>
+  section {
+    height: 100%;
+    width: 100vw;
+    overflow: hidden;
+
+  }
   .top-section {
     position: absolute;
     left: 0; top: 0;
-    padding: 6%;
+    padding:4% 18%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    height: 100%; width: 100vw;
+    margin-bottom: 20px;
   }
   .top-section h1 {
     color: #348481;
     font-weight: bold;
     text-align: center;
+    font-size: 37px;
   }
-  .top-section span {
-    font-weight: 700;
-    font-size: 1.3rem;
-    text-align: center;
+.btm-section {
+    position: absolute;
+    top: 48%;
+    /* bottom: 0;
+    left: 0; */
+    padding: 0 10%;
+    width: 100%;
   }
-
   .btm-section span{
-    font-weight: 700;
-    font-size: 1.1rem;
+    font-weight: 500;
+    font-size: 1.8rem;
+  letter-spacing: 1px;
+  text-align: center;
   }
+.btm-section small{
+  color: black;
+}
+
   .top-section small {
     text-align: center;
-    padding: 0 8.5%;
+    padding-top: 10px;
     user-select: none;
-    font-size: 1.2rem;
+    font-size: 22px;
+    font-weight: 400;
   }
   .bg {
     height: 59vh;
-    width: 61vw
+    width: 56vw
   }
   .section {
-    width: 12rem;
-    height: 7rem;
+    width: 20rem;
+    height: 9rem;
     box-shadow: 0.1px 0.1px 1px #888888;
+    border-radius: 8px;
   }
   .section:hover {
-    transition: transform 0.2s ease;
-    transform: scale(1.03);
+    transition: transform 0.5s ease;
+    transform: scale(1.05);
   }
-  @media (max-width: 575.98px) {
-    h1 {
-      font-size: 2rem
+  @media (max-width: 1300px) {
+
+    .btm-section{
+      top: 40%;
     }
+
     .bg {
       height: 70vh;
-      width: 63vw
+      width: 63vw;
+    }
+
+    .section {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .btm-section{
+      top: 65%;
+    }
+
+    .btm-section span{
+      text-align: center;
+    }
+    .top-section h1 {
+      font-size: 2rem;
+    }
+
+    .bg {
+      height: 80vh;
+      width: 80vw;
     }
   }
 </style>

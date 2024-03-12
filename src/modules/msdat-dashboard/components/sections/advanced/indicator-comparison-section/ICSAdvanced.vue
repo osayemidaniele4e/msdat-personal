@@ -246,7 +246,7 @@ export default {
           data: toHighChartFormat,
         };
         highChartOptions.yAxis.push(yAxis);
-        highChartOptions.series.push(obj);
+        if (toHighChartFormat.length) highChartOptions.series.push(obj);
       }
       return highChartOptions;
     },
@@ -432,7 +432,7 @@ export default {
           name: indicator.full_name,
           data: sortTheYear,
         };
-        highChartOptions.series.push(obj);
+        if (sortTheYear.length) highChartOptions.series.push(obj);
       }
       // this functions checks to make years apear from smallest to highest when the first selected indicator
       // year have higher values than that of the second selected indicator
