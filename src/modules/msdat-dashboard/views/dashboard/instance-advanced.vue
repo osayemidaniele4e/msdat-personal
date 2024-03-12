@@ -1,4 +1,4 @@
- <template>
+<template>
   <div>
     <BaseDashboard
       :indicators="indicators"
@@ -10,8 +10,7 @@
       :updateValue="updateValue"
       :updateKey="updateKey"
       :resetData="resetData"
-        @swipe="changeSwipe"
-
+      @swipe="changeSwipe"
     >
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
@@ -69,9 +68,9 @@
             <template>
               <LazyLoading>
                 <!-- <ControlPanelConfiguration :controlIndex="controlIndex"> -->
-                  <AdvancedControlPanelConfiguration :controlIndex="controlIndex">
-                    <IndicatorComparisonSection :controlIndex="controlIndex" :values="payload" />
-                  </AdvancedControlPanelConfiguration>
+                <AdvancedControlPanelConfiguration :controlIndex="controlIndex">
+                  <IndicatorComparisonSection :controlIndex="controlIndex" :values="payload" />
+                </AdvancedControlPanelConfiguration>
                 <!-- </ControlPanelConfiguration> -->
               </LazyLoading>
             </template>
@@ -83,9 +82,43 @@
         <div class="col-md-12">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">
-                Predictive Analysis
-              </h5>
+              <div class="icon-container">
+                <h5 class="font-weight-bold work-sans text-white">Predictive Analysis</h5>
+                <!-- <p class="work-sans mb-0 title-text">
+              Prediction Of <b>{{ values.indicator.short_name }}</b> and related indicators
+              (Time-series comparison of {{ values.indicator.short_name }}) across different data
+              sources.
+            </p> -->
+                <div class="desc-icon">
+                  <svg
+                    data-v-21137bd3=""
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    height="1em"
+                    focusable="false"
+                    role="img"
+                    aria-label="info circle fill"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#fff"
+                    class="bi-info-circle-fill data-source-info b-icon bi text-primary"
+                  >
+                    <g data-v-21137bd3="">
+                      <path
+                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                      ></path>
+                    </g>
+                  </svg>
+                </div>
+                <div class="desc-text p-2">
+                  <p>
+                    Predictive analysis is a form of advanced analytics that uses current and
+                    historical data to forecast activity, behavior and trends. It involves applying
+                    statistical analysis techniques, data queries and machine learning algorithms to
+                    data sets to create predictive models that place a numerical value or score on
+                    the likelihood of a particular action or event happening.
+                  </p>
+                </div>
+              </div>
             </template>
             <template>
               <LazyLoading>
@@ -145,7 +178,6 @@
           </base-sub-card>
         </div>
       </template>
-
     </BaseDashboard>
   </div>
 </template>
@@ -239,10 +271,13 @@ export default {
       type: Boolean,
       default: true,
     },
-
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL', 'SET_ADVANCED_MULTISOURCE_DEFAULT_DATASOURCES']),
+    ...mapMutations('MSDAT_STORE', [
+      'ADD_CONTROL_PANEL',
+      'CLEAR_CONTROL_PANEL',
+      'SET_ADVANCED_MULTISOURCE_DEFAULT_DATASOURCES',
+    ]),
 
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -353,10 +388,12 @@ export default {
       id: 6,
       datasource: 'NHMIS-DHIS2',
       full_name: 'National Health Management Information System (DHIS2)',
-      description: 'National Health Management Information System: Nigeria has adopted the DHIS2 as the National tool for the reporting of routine health-related data. This data is reported and aggregated monthly using this platform.',
+      description:
+        'National Health Management Information System: Nigeria has adopted the DHIS2 as the National tool for the reporting of routine health-related data. This data is reported and aggregated monthly using this platform.',
       year_available: '2013 - 2021',
       period_available: '2022',
-      methodology: "Facility level aggregate data that is reported by health facilities routinely on a monthly basis using DHIS2. Health facilities are expected to report by the month's data by the 15th of the next month. Due to incomplete reporting by the health facilities, poor reporting by private facilities, the data may be biased.",
+      methodology:
+        "Facility level aggregate data that is reported by health facilities routinely on a monthly basis using DHIS2. Health facilities are expected to report by the month's data by the 15th of the next month. Due to incomplete reporting by the health facilities, poor reporting by private facilities, the data may be biased.",
       subnational_data: 'Yes',
       classification: 'Routine',
       link: 'https://dhis2nigeria.org.ng',
@@ -387,16 +424,52 @@ export default {
 }
 
 .comparison-header {
- display: none;
+  display: none;
+}
+
+.icon-container {
+  display: flex;
+}
+
+.icon-container h5 {
+  margin-right: 5px;
+}
+
+.desc-icon {
+  font-size: 13px;
+  margin-top: -3px;
+}
+
+.desc-text {
+  display: none;
+  position: absolute;
+  left: 8%;
+  transform: translateX(30px);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 25px;
+  z-index: 1;
+  width: 50%;
+}
+
+.desc-text p {
+  font-size: 13px !important;
+  margin-bottom: 0px;
+}
+
+.icon-container .desc-icon:hover + .desc-text {
+  display: block;
 }
 
 @media (max-width: 800px) {
-.comparison-header {
-  display: inherit;
-  margin: 0 auto;
-  text-align: center;
-  font-weight: bold;
-  margin: 5px;
-}
+  .comparison-header {
+    display: inherit;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    margin: 5px;
+  }
 }
 </style>
