@@ -170,6 +170,13 @@ export default {
         },
         series: [],
         yAxis: [],
+        xAxis: {
+          type: 'category',
+          min: 0,
+          labels: {
+            x: 30,
+          },
+        },
         plotOptions: {
           series: {
             grouping: true,
