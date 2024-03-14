@@ -35,30 +35,26 @@
         </template> -->
 
         <template #title>
-          <p
-            class="work-sans mb-0 line-height"
-          >
-           Comparison of <b>selected indicators</b> according to
-            the <b> {{ values.datasource.datasource }} </b> across
-            {{ values.compareBy.name }}
+          <p class="work-sans mb-0 line-height">
+            Comparison of <b>selected indicators</b> according to the
+            <b> {{ values.datasource.datasource }} </b> across {{ values.compareBy.name }} in
+            <b> {{ values.location.name }} </b>
           </p>
         </template>
-        <BarChart ref="BaseChart"
-        :title="title"
-        :chartOptions="chartOptions" />
+        <BarChart ref="BaseChart" :title="title" :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>
     <!-- Display 'no_data' block when data is not loading and checkData() returns false -->
-  <div v-if="!loading && checkData() === false" class="no_data">
-  <img
-    :src="require('@/assets/no-data/No_Available_Data.svg')"
-    alt="no data"
-    class="img-fluid"
-    height="auto"
-    width="240px"
-  />
+    <div v-if="!loading && checkData() === false" class="no_data">
+      <img
+        :src="require('@/assets/no-data/No_Available_Data.svg')"
+        alt="no data"
+        class="img-fluid"
+        height="auto"
+        width="240px"
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -109,9 +105,7 @@ export default {
   // },
   methods: {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
-    ...mapMutations('MSDAT_STORE', [
-      'TOGGLE_VISIBILITY', 'SETUP_CONTROL_OPTIONS1',
-    ]),
+    ...mapMutations('MSDAT_STORE', ['TOGGLE_VISIBILITY', 'SETUP_CONTROL_OPTIONS1']),
     checkData() {
       const datar = this.chartOptions?.series?.map((el, i) => el.data[i]);
       if (datar !== undefined) {
@@ -167,7 +161,8 @@ export default {
         location: {
           level: 3,
         },
-      }));
+      })
+      );
 
       const results = await Promise.all(dataPromises);
       /**
@@ -219,9 +214,7 @@ export default {
           color: this.color[i],
           dataLabels: {
             enabled: true,
-            format: `{y}${this.displayFactorSign(
-              displayFactor.display_factor,
-            )}`,
+            format: `{y}${this.displayFactorSign(displayFactor.display_factor)}`,
             style: {
               ...defaultOptions.yAxis.title.style,
               fontSize: '10px',
@@ -373,7 +366,8 @@ export default {
         indicator: item.id,
         datasource: values.datasource.id,
         location: values.location.id,
-      }));
+      })
+      );
 
       const results = await Promise.all(dataPromises);
       // debugger;
@@ -436,7 +430,10 @@ export default {
       }
       // this functions checks to make years apear from smallest to highest when the first selected indicator
       // year have higher values than that of the second selected indicator
-      if (highChartOptions.series.length > 1 && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]) {
+      if (
+        highChartOptions.series.length > 1
+        && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
+      ) {
         const temporary = highChartOptions.series[1];
         highChartOptions.series[1] = highChartOptions.series[0];
         highChartOptions.series[0] = temporary;
