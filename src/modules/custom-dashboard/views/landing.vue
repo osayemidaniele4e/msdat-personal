@@ -34,14 +34,14 @@
         <h4 class="text-center header-subText">How to create your custom dashboard</h4>
         <b-row align="center" class="mx-5 px-5 hero">
           <b-col md="auto" lg="auto" sm="12" class="svg">
-            <customDashboardSvg :name="61"></customDashboardSvg>
+            <customDashboardSvg :name="61" class="svg-1"></customDashboardSvg>
             <p style="font-size: 16px !important">Select Data</p>
           </b-col>
           <b-col md="auto" lg="auto" sm="12" align-self="center" class="svg-arrow">
             <customDashboardSvg :name="78"></customDashboardSvg>
           </b-col>
           <b-col md="auto" lg="auto" sm="12" class="svg">
-            <customDashboardSvg :name="62"></customDashboardSvg>
+            <customDashboardSvg :name="62" class="svg-2"></customDashboardSvg>
             <p style="font-size: 16px !important">Arrange Widgets</p>
           </b-col>
           <b-col md="auto" lg="auto" sm="12" align-self="center" class="svg-arrow">
@@ -63,7 +63,7 @@
 
       <div class="container d-flex justify-content-center align-items-center">
         <div class="row">
-          <div class="card mr-3 custom-card" style="width: 25rem">
+          <div class="card mr-3 custom-card m-3 justify-content-center align-items-center">
             <img
               src="@/assets/img/Group 81.png"
               class="card-img-top p-2"
@@ -81,7 +81,7 @@
               >
             </div>
           </div>
-          <div class="card custom-card" style="width: 25rem">
+          <div class="card custom-card m-3 justify-content-center align-items-center">
             <div style="position: absolute; top: 0; right: 0; margin-top: 10px; margin-right: 10px">
               <b-button
                 class="px-3 py-2"
@@ -357,6 +357,7 @@ a {
 }
 
 .custom-card {
+  width: 400px;
   height: 400px; /* Adjust height as needed */
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2); /* Add box shadow */
   transition: 0.3s; /* Add transition effect */
@@ -442,9 +443,20 @@ a {
   }
   .header-subText {
     font-size: 1rem;
+    margin-bottom: 12px;
   }
   .custom-Header h2 {
     font-size: 28px;
+    line-height: 43px;
+  }
+  .svg-1 {
+    margin-left: -35px;
+  }
+  .svg-2 {
+    margin-left: -30px;
+  }
+  .custom-card {
+    width: 100%;
   }
 }
 </style>
