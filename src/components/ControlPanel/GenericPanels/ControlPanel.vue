@@ -31,10 +31,9 @@
             ? 'text-uppercase work-sans label-text d-flex justify-content-center'
             : 'text-uppercase work-sans label-text d-flex'
         "
-        v-if="values.label !== 'Target' &&  values.label !== 'Year' "
+        v-if="values.label !== 'Target' && values.label !== 'Year'"
       >
-      {{ values.label }}
-
+        {{ values.label }}
       </label>
       <label
         :class="
@@ -42,9 +41,9 @@
             ? 'text-uppercase work-sans label-text d-flex justify-content-center'
             : 'text-uppercase work-sans label-text d-flex'
         "
-        v-if="values.label === 'Year' &&  $store.getters.getSectionTitle !== 'Predictive Analysis' "
+        v-if="values.label === 'Year' && $store.getters.getSectionTitle !== 'Predictive Analysis'"
       >
-      {{ values.label }}
+        {{ values.label }}
       </label>
 
       <!-- ADVANCED ANALYTICS -->
@@ -56,6 +55,7 @@
         :options="getIndicatorList(values.options)"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
+        :placeholder="'Select indicator'"
       />
       {{ checkNHMISDHIS2() }}
       <!-- MSDAT SUB-DASHBOARDS -->
@@ -67,6 +67,7 @@
         :options="locationCheck(values.options)"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
+        :placeholder="'Select a value'"
       />
       <selectWrapper
         v-if="values.type === 'dropdown' && values.key === 'datasource'"
@@ -76,6 +77,7 @@
         :options="locationCheck(values.options)"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
+        :placeholder="'Select datasource'"
       />
 
       <selectWrapper
@@ -86,6 +88,7 @@
         :options="locationCheck(values.options)"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
+        :placeholder="'Select location'"
       />
 
       <selectWrapper
@@ -100,6 +103,7 @@
         :options="locationCheck(values.options)"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
+        :placeholder="'Select year'"
       />
 
       <selectWrapper
@@ -317,7 +321,9 @@ export default {
     },
   },
   methods: {
-  // eslint-disable-next-line consistent-return
+    // eslint-disable-next-line consistent-return
+    // eslint-disable-next-line operator-linebreak
+    // eslint-disable-next-line camelcase
 
     ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
     /**
@@ -331,12 +337,13 @@ export default {
       } = newValue;
       // eslint-disable-next-line camelcase
       const ind = Array.isArray(indicator)
-        // eslint-disable-next-line operator-linebreak
-        ? // eslint-disable-next-line camelcase
+        ? // eslint-disable-next-line operator-linebreak
+          // eslint-disable-next-line camelcase
           indicator[indicator.length - 1]?.short_name
-        // eslint-disable-next-line operator-linebreak
-        : // eslint-disable-next-line camelcase
+        : // eslint-disable-next-line operator-linebreak
+          // eslint-disable-next-line camelcase
           indicator?.short_name;
+
       // eslint-disable-next-line no-nested-ternary
       const dat = Array.isArray(datasource)
         ? datasource[datasource.length - 1]?.item
@@ -358,23 +365,23 @@ export default {
           || lastActivity.section !== activityObject.section
           || lastActivity.parameters !== activityObject.parameters;
         if (hold && diff) {
-        // send activity post request to backend
+          // send activity post request to backend
           console.log('activity', activityObject);
         }
         localStorage.setItem('lastActivity', JSON.stringify(activityObject));
       }
     },
     locationCheck(options) {
-    // console.log(options, 'options');
+      // console.log(options, 'options');
       if (
-      // eslint-disable-next-line operator-linebreak
+        // eslint-disable-next-line operator-linebreak
         this.$route.params.name === 'Disease_Surveillance' &&
         // eslint-disable-next-line operator-linebreak
         options !== null &&
         options.length === 38
       ) {
-      // const main = options.filter((s) => s.name === 'Nigeria');
-      // console.log(main, 'Nigeria');
+        // const main = options.filter((s) => s.name === 'Nigeria');
+        // console.log(main, 'Nigeria');
         return options.filter((s) => s.name === 'Nigeria');
       }
       return options;
@@ -392,10 +399,10 @@ export default {
       });
     },
     getIndicatorList(data) {
-    // const { name } = this.$route.params;
-    // if (name === 'Advanced_Analytics') {
-    //   return data?.filter((item) => item.program_area === this.indicatorList);
-    // }
+      // const { name } = this.$route.params;
+      // if (name === 'Advanced_Analytics') {
+      //   return data?.filter((item) => item.program_area === this.indicatorList);
+      // }
 
       // console.log(this.$store.getters.getSectionTitle, 'XXXXX');
 
@@ -409,15 +416,15 @@ export default {
 
       return data;
 
-    // if (this.indicatorList !== '' || this.indicatorList !== null) {
-    //   return data?.filter((item) => item.program_area === this.indicatorList);
-    // }
+      // if (this.indicatorList !== '' || this.indicatorList !== null) {
+      //   return data?.filter((item) => item.program_area === this.indicatorList);
+      // }
     },
     updatePayload(value, key) {
       if (this.groupIndexSub != null) {
-      // this is to take into consideration control panel that
-      // are grouped example is Multi-source comparison section
-      // debugger;
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        // debugger;
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: this.controlIndexSub,
           groupIndex: this.groupIndexSub,
@@ -440,8 +447,8 @@ export default {
     ...mapGetters('AUTH_STORE', ['getUser']),
     payload() {
       if (this.groupIndex != null) {
-      // this is to take into consideration control panel that
-      // are grouped example is Multi-source comparison section
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
         return this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload[
           this.groupIndex
         ];
@@ -474,7 +481,7 @@ export default {
       if (el < getYear) {
         newArr.push(el);
         this.defaultYearDropdown = newArr;
-      // console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
+        // console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
       }
       return el;
     });

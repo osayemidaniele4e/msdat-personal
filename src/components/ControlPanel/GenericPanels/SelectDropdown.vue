@@ -8,12 +8,13 @@
     searchable
     close-on-select
     :allow-empty="allowEmpty"
-    placeholder="Pick a value"
+    :placeholder="placeholder"
     v-bind="multiSelectProps"
     selectLabel=""
     data-visted="notVisited"
     deselectLabel=""
     autocomplete="off"
+    class="custom-placeholder"
   >
     <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
@@ -62,7 +63,6 @@
 
     <!-- {{ showItems(options) }} -->
   </multiselect>
-
 </template>
 <script>
 import { has } from 'lodash';
@@ -139,7 +139,6 @@ export default {
       }
       return null;
     },
-
   },
   props: {
     options: {
@@ -158,6 +157,11 @@ export default {
     NoDataLabel: {
       type: String,
       default: () => 'List is empty',
+    },
+    placeholder: {
+      // New prop for placeholder
+      type: String,
+      default: '',
     },
   },
   watch: {
@@ -400,22 +404,23 @@ ul li.multiselect__element {
   transition: all 1.5s ease-in-out;
   cursor: pointer;
 }
-span.multiselect__single::-webkit-scrollbar
-{
+span.multiselect__single::-webkit-scrollbar {
   border-radius: 30px;
   height: 0.23rem;
   background: transparent;
   border: 1px solid gainsboro;
-
 }
-span.multiselect__single::-webkit-scrollbar-thumb
-{
-  background-color: #b3b3b3 ;
+span.multiselect__single::-webkit-scrollbar-thumb {
+  background-color: #b3b3b3;
 }
 .overflow-text {
   // text-overflow: ellipsis;
   // overflow: hidden;
   // white-space: nowrap;
   cursor: pointer;
+}
+multiselect,
+input::placeholder {
+  font-size: 11.5px !important; /* Adjust the font size as needed */
 }
 </style>
