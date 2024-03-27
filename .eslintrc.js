@@ -25,6 +25,7 @@ module.exports = {
     'max-len': 'off',
     'linebreak-style': 0,
     'import/no-extraneous-dependencies': 'off',
+    'operator-linebreak': ['error', 'before', { overrides: { '?': 'ignore', ':': 'ignore' } }],
   },
 
   overrides: [
