@@ -48,9 +48,8 @@
         <div class="comparison" v-else>
           <div>
             <p>
-              The value of <strong>{{ indicatorOne }}</strong> in <strong>{{ comparisonLocation }}</strong> is higher than
-              <strong>{{ indicatorTwo }}</strong
-              > by:
+              The value of <strong>{{ indicatorOne }}</strong
+                > is {{ this.positiveDifference === true ? 'HIGHER' : 'LOWER' }} than <strong>{{ indicatorTwo }}</strong> by:
             </p>
           </div>
 <div>
@@ -90,6 +89,7 @@ export default {
       comparisonLocation: null,
       indicatorTwo: null,
       value: null,
+      positiveDifference: false,
       // DataSetConfig: cloneDeep(DataSetConfig),
       loading: true,
     };
@@ -125,14 +125,14 @@ export default {
           const updatedObj1 = obj1Data.map((item1) => {
             const matchingItem2 = obj2Data.find((item2) => item1.name === item2.name);
             if (matchingItem2) {
-              return { ...item1, extraData: this.computeDiffValues(item1, matchingItem2) };
+              return { ...item1, extraData: this.computeDiffValues(item1, matchingItem2).value, isPositive: this.computeDiffValues(item1, matchingItem2).isPositive };
             }
             return item1;
           });
           const updatedObj2 = obj2Data.map((item1) => {
             const matchingItem1 = updatedObj1.find((item2) => item1.name === item2.name);
             if (matchingItem1) {
-              return { ...item1, extraData: matchingItem1.extraData };
+              return { ...item1, extraData: matchingItem1.extraData, isPositive: matchingItem1.isPositive };
             }
             return item1;
           });
@@ -160,6 +160,7 @@ export default {
           this.comparisonLocation = `${data.location} state`;
         }
         this.value = data.comparisonData;
+        this.positiveDifference = data.isPositive;
       } else {
         this.showNationalComparison = false;
       }
@@ -177,6 +178,7 @@ export default {
       const denominator = indicatorOne.y;
       left = indicatorTwo.y;
       right = indicatorOne.y;
+      const isPositive = right >= left;
       // } else {
       // const denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
       // left = indicatorTwo.y;
@@ -184,7 +186,7 @@ export default {
       // }
       const diff = left - right;
       const value = this.customRound((diff / denominator) * 100);
-      return value;
+      return { value, isPositive };
     },
     customRound(number) {
       if (number < 1 && number % 1 !== 0) {
@@ -290,6 +292,7 @@ export default {
             name: this.dlGetLocation(element.location).name,
             y: parseFloat(element.value),
             extraData: '',
+            isPositive: false,
           }));
 
           // This adds national to the top;
@@ -306,6 +309,7 @@ export default {
             name: this.dlGetLocation(query[0]?.location)?.name,
             y: parseFloat(query[0]?.value),
             extraData: '',
+            isPositive: false,
           };
 
           // add it ot the top of the series
@@ -382,6 +386,7 @@ export default {
           this.chartConfig.plotOptions.series.point.events.mouseOver = (event) => {
             this.$emit('pointMouseOver', {
               seriesName: event.target.series.name,
+              isPositive: event.target.isPositive,
               comparisonData: event.target.extraData,
               location: event.target.name,
               value: event.target.y,
@@ -392,6 +397,7 @@ export default {
             this.$emit('pointMouseOut', {
               seriesName: event.target.series.name,
               comparisonData: event.target.extraData,
+              isPositive: event.target.isPositive,
               location: event.target.name,
               value: event.target.y,
             });
