@@ -125,7 +125,7 @@ export default {
   },
   watch: {
     values: {
-      async handler({ indicator, location }) {
+      async handler({ indicator, location, datasource }) {
         this.loading = true;
         const formattedData = [];
         let indicators = [indicator.id, indicator.first_related, indicator.second_related];
@@ -154,16 +154,17 @@ export default {
             formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
           this.TableData = formattedData;
+          this.setTableSelected = datasource;
           this.loading = false;
         }
       },
       deep: true,
     },
-    'values.datasource': {
-      handler(newValue) {
-        this.setTableSelected = newValue;
-      },
-    },
+    // 'values.datasource': {
+    //   handler(newValue) {
+    //     this.setTableSelected = newValue;
+    //   },
+    // },
     updateData: {
       async handler() {
         // this.loading = true;
