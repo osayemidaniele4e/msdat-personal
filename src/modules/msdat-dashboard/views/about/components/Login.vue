@@ -25,11 +25,9 @@
 
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
-          <button type="submit" class="btn btn-lg btn-primary px-3 py-2">
-            <b-icon-linkedin class="mr-2"></b-icon-linkedin>
-
-            <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
-          </button>
+          <a :href="linkedlnUrl" class="btn btn-lg btn-primary px-3 py-2">
+            <b-icon-linkedin class="px-1"></b-icon-linkedin>
+          </a>
         </div>
         <div class="row">
           <div class="col-12 mx-auto h-50px">
@@ -79,36 +77,36 @@
 
 <script>
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 // import {
 //   loadFbSdk, getFbLoginStatus, fbLogout, fbLogin,
 // } from '@/config/facebook';
 
 import VueAxios from 'vue-axios';
-import VueAuthenticate from 'vue-authenticate';
+// import VueAuthenticate from 'vue-authenticate';
 import axios from 'axios';
 
 Vue.use(VueAxios, axios);
-Vue.use(VueAuthenticate, {
-  baseUrl: 'http://135.181.212.168:8788/', // Your API domain
+// Vue.use(VueAuthenticate, {
+//   baseUrl: 'http://135.181.212.168:8788/', // Your API domain
 
-  providers: {
-    linkedin: {
-      clientId: process.env.VUE_APP_API_LINKEDIN_ID,
-      url: '',
-      name: 'linkedin',
-      authorizationEndpoint: 'https://www.linkedin.com/oauth/v2/authorization',
-      redirectUri: process.env.VUE_APP_LINKEDIN_REDIRECT_URI,
-      requiredUrlParams: ['display', 'scope'],
-      scope: ['r_emailaddress'],
-      scopeDelimiter: ' ',
-      state: 'STATE',
-      oauthType: '2.0',
-      popupOptions: { width: 600, height: 700 },
-      tokenPath: 'code',
-    },
-  },
-});
+//   providers: {
+//     linkedin: {
+//       clientId: process.env.VUE_APP_API_LINKEDIN_ID,
+//       url: '',
+//       name: 'linkedin',
+//       authorizationEndpoint: 'https://www.linkedin.com/oauth/v2/authorization',
+//       redirectUri: process.env.VUE_APP_LINKEDIN_REDIRECT_URI,
+//       requiredUrlParams: ['display', 'scope'],
+//       scope: ['r_emailaddress'],
+//       scopeDelimiter: ' ',
+//       state: 'STATE',
+//       oauthType: '2.0',
+//       popupOptions: { width: 600, height: 700 },
+//       tokenPath: 'code',
+//     },
+//   },
+// });
 
 export default {
   props: {
@@ -140,10 +138,12 @@ export default {
       clientId: process.env.VUE_APP_FACEBOOK_APP_ID,
       isWorking: false,
       isConnected: false,
+      linkedlnUrl: `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&redirect_uri=${encodeURIComponent(window.location.origin)}&scope=openid%20profile%20email`,
     };
   },
 
   computed: {
+    ...mapGetters('AUTH_STORE', ['isAuthenticated']),
     getButtonText() {
       switch (this.isConnected) {
         case true:
@@ -249,6 +249,40 @@ export default {
         return null;
       }
     },
+    async linkedlnSignin(data) {
+      try {
+        await this.AUTHENTICATE_LINKEDIN(data)
+          .then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with linkedln',
+            });
+          });
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+      return 0;
+    },
 
     // buttonClicked() {
     //   this.$emit('click');
@@ -302,44 +336,6 @@ export default {
     //   });
     // },
 
-    authenticate(provider) {
-      this.$auth
-        .authenticate(provider)
-        .then((response) => {
-          // make api call
-
-          this.AUTHENTICATE_LINKEDIN(response)
-            .then((res) => {
-              if (res !== null) {
-                this.$swal({
-                  toast: true,
-                  position: 'bottom',
-                  showConfirmButton: false,
-                  timer: 5000,
-                  icon: 'success',
-                  title: 'Success',
-                  text: 'Login successful',
-                });
-              }
-            })
-            .catch((err) => {
-              console.log('res', err);
-              this.$swal({
-                toast: true,
-                position: 'bottom',
-                showConfirmButton: false,
-                timer: 5000,
-                icon: 'error',
-                title: 'Something went wrong',
-                text: 'Something went wrong signing you in with linkedin',
-              });
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
     // logout() {
     //   this.isWorking = true;
     //   fbLogout().then((response) => {
@@ -351,6 +347,14 @@ export default {
   },
   async mounted() {
     this.isWorking = true;
+
+    const { code, state } = this.$route.query;
+    if (code && !this.isAuthenticated) {
+      const uri = `${window.location.origin}${state === 'CUSTOM' ? '/custom' : ''}`;
+      const data = { code, redirect_uri: uri };
+      await this.linkedlnSignin(data);
+    }
+
     // loadFbSdk(this.appId, this.version)
     //   .then(getFbLoginStatus)
     //   .then((response) => {

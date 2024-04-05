@@ -228,6 +228,20 @@ export default {
       deep: true,
       immediate: false,
     },
+    'values.location': {
+      async handler() {
+        this.loading = true;
+        if (this.values.indicator.id !== undefined) {
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          this.setUpHighChartConfig(seriesArray, years);
+        }
+
+        this.loading = false;
+      },
+      deep: true,
+      immediate: false,
+    },
   },
   methods: {
     /**

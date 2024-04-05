@@ -124,14 +124,14 @@ export default {
     },
   },
   watch: {
-    'values.indicator': {
-      async handler(newValues) {
+    values: {
+      async handler({ indicator, location }) {
         this.loading = true;
         const formattedData = [];
-        let indicators = [newValues.id, newValues.first_related, newValues.second_related];
+        let indicators = [indicator.id, indicator.first_related, indicator.second_related];
 
         if (!this.getConfigObject.showTableRelatedIndicator) {
-          indicators = [newValues.id];
+          indicators = [indicator.id];
         }
 
         for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
@@ -147,7 +147,7 @@ export default {
               const ab = await this.dlGetLatestSourceAndIndicatorData({
                 indicator: indicatorID,
                 datasource: element.id,
-                location: 1,
+                location: location.id,
               });
               data.push(ab);
             }
@@ -157,6 +157,7 @@ export default {
           this.loading = false;
         }
       },
+      deep: true,
     },
     'values.datasource': {
       handler(newValue) {
