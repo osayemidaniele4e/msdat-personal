@@ -7,9 +7,9 @@
         src="@/assets/img/analytics/bkg.png"
         alt="path background"
       /> -->
+      <!-- position: absolute; -->
       <div
         style="
-          <!-- position: absolute; -->
           left: 0;
           top: 0;
           padding: 5%;
