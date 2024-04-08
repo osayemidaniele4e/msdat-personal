@@ -1,6 +1,6 @@
 export default [
   {
-    name: 'Health_Outcomes',
+    name: 'Health_Outcomes_and_Service_Coverage',
     title: 'Health Outcomes and Service Coverage',
     indicators: [
       1, 2, 3, 4, 5, 6, 7, 8,

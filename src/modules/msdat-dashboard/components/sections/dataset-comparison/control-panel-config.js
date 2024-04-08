@@ -15,6 +15,7 @@ export default {
         'group-values': 'indicators',
         'group-label': 'program_area',
         label: 'full_name',
+        'preselect-first': true,
       },
       label: 'indicator(s)',
       key: 'indicator',
