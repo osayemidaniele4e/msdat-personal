@@ -12,7 +12,7 @@ export default {
   async PREDICTIVE_ANALYSIS({ commit }, payload) {
     console.log(payload, 'DATA@DATA');
     try {
-      const { data } = await axiosInstance.post('https://msdat2api.e4eweb.space/api/data/predictive_analysis/', payload);
+      const { data } = await axiosInstance.post('http://msdat-api.fmohconnect.gov.ng/api/data/predictive_analysis/', payload);
       commit('setPredictedData', data);
       console.log(data, 'DATA@');
       return data;
