@@ -32,7 +32,7 @@ export default [
     name: 'custom-dashboard-public',
     component: () => import('./views/Public.vue'),
     meta: {
-      title: 'Custom Dashboard',
+      title: 'Dashboards',
     },
   },
   {

@@ -60,13 +60,15 @@ export default {
   async SUBMIT_PLUGIN({ commit }, payload) {
     console.log('submit payload', payload);
     try {
-      const { data } = await axios.post('https://msdat2api.e4eweb.space/api/plugin-submissions/', 
-      payload,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'          // Add other headers if needed
+      const { data } = await axios.post(
+        'https://msdat2api.e4eweb.space/api/plugin-submissions/',
+        payload,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Add other headers if needed
+          },
         },
-      });
+      );
       // commit('setInteraction', data);
       console.log(data);
     } catch (error) {

@@ -132,8 +132,9 @@ export default {
         }
         // Find the series corresponding to the indicator
         const indicatorSeries = this.chartOptions.series.find(
-          (series) => series.name.toLowerCase() === indicator.short_name.toLowerCase(),
+          (series) => series.name.toLowerCase().includes(indicator.full_name.toLowerCase()),
         );
+
         // Check if the indicatorSeries has data points
         return indicatorSeries?.data && indicatorSeries.data.length > 0;
       }
@@ -169,6 +170,13 @@ export default {
         },
         series: [],
         yAxis: [],
+        xAxis: {
+          type: 'category',
+          min: 0,
+          labels: {
+            x: 30,
+          },
+        },
         plotOptions: {
           series: {
             grouping: true,
@@ -246,7 +254,7 @@ export default {
           data: toHighChartFormat,
         };
         highChartOptions.yAxis.push(yAxis);
-        highChartOptions.series.push(obj);
+        if (toHighChartFormat.length) highChartOptions.series.push(obj);
       }
       return highChartOptions;
     },
@@ -432,7 +440,7 @@ export default {
           name: indicator.full_name,
           data: sortTheYear,
         };
-        highChartOptions.series.push(obj);
+        if (sortTheYear.length) highChartOptions.series.push(obj);
       }
       // this functions checks to make years apear from smallest to highest when the first selected indicator
       // year have higher values than that of the second selected indicator

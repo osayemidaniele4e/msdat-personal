@@ -64,11 +64,31 @@ export default {
       });
     },
     setDefaults() {
-      this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
-      this.defaultDataSource = this.dlGetDataSource(
-        this.$store.state.MSDAT_STORE.default.datasource,
-      );
-      this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
+      const { query } = this.$route;
+      const {
+        indicator: queryIndicator,
+        datasource: queryDatasource,
+        location: queryLocation,
+        year: queryYear,
+      } = query;
+
+      // Check if query parameters for indicator, datasource, location, and year are present
+      const hasQueryParams = queryIndicator !== undefined
+        || queryDatasource !== undefined
+        || queryLocation !== undefined
+        || queryYear !== undefined;
+
+      this.defaultIndicator = hasQueryParams
+        ? this.dlGetIndicator(Number(queryIndicator))
+        : this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
+
+      this.defaultDataSource = hasQueryParams
+        ? this.dlGetDataSource(Number(queryDatasource))
+        : this.dlGetDataSource(this.$store.state.MSDAT_STORE.default.datasource);
+
+      this.defaultLocation = hasQueryParams
+        ? this.dlGetLocation(Number(queryLocation))
+        : this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
     },
 
     async setYearDropdown(
@@ -81,7 +101,6 @@ export default {
         datasource: dataSourceID,
         location: locationID,
       });
-      // debugger;
       // console.log(data);
       const onlyYearData = data?.filter((item) => {
         if (isDataYearly(item.period)) {

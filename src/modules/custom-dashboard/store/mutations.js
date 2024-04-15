@@ -377,6 +377,9 @@ export default {
   //     loader.show = false;
   //   }
   // }
+
+  // *************** TRACK DASHBOARD EDIT *************** //
+
   startEdit(state) {
     state.editMode = true;
   },

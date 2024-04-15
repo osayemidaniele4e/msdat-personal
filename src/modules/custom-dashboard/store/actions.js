@@ -339,28 +339,30 @@ export default {
     commit('setIsPublicDashboard', payload);
   },
 
-  // making requests to make new public dashboards
+  // *********For Dashboard Requests******************//
+  // CREATE A NEW DASHBOARD REQUEST
   // eslint-disable-next-line no-unused-vars
   async setDashboardRequest({ commit }, payload) {
     try {
-      const response = await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`, payload);
+      await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`, payload);
       // const response = await axios.post('http://172.93.52.240:3001/api/request_dashboard/', payload);
-      console.log('response', response);
       return true;
     } catch (error) {
       console.error('Error sending data to API:', error);
       return false;
     }
   },
-  getDashboards({ commit }) {
-    return axios.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json').then(({ data }) => {
-      commit('setAllPublicDashboards', Object.values(data));
-      return { data };
-    });
+  // RETRIEVE ALL DASHBOARD REQUESTS
+  async getDashboards({ commit }) {
+    const { data } = await axios.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json');
+    commit('setAllPublicDashboards', Object.values(data));
+    return { data };
   },
+  // RETRIEVE A SINGLE DASHBOARD BY ID
   getDashboard(_, id) {
     return axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);
   },
+  // UPDATE A DASHBOARD REQUEST (APPROVE/DISAPPROVE)
   updateDashboard(_, payload) {
     return axios.patch(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`, payload);
   },

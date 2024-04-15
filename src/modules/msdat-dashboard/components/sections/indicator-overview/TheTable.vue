@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 <template>
   <!-- <base-overlay :show="loading"> -->
-  <div>
+  <div id="the-table">
     <div v-if="!loading">
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
@@ -124,14 +124,14 @@ export default {
     },
   },
   watch: {
-    'values.indicator': {
-      async handler(newValues) {
+    values: {
+      async handler({ indicator, location, datasource }) {
         this.loading = true;
         const formattedData = [];
-        let indicators = [newValues.id, newValues.first_related, newValues.second_related];
+        let indicators = [indicator.id, indicator.first_related, indicator.second_related];
 
         if (!this.getConfigObject.showTableRelatedIndicator) {
-          indicators = [newValues.id];
+          indicators = [indicator.id];
         }
 
         for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
@@ -147,22 +147,24 @@ export default {
               const ab = await this.dlGetLatestSourceAndIndicatorData({
                 indicator: indicatorID,
                 datasource: element.id,
-                location: 1,
+                location: location.id,
               });
               data.push(ab);
             }
             formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
           this.TableData = formattedData;
+          this.setTableSelected = datasource;
           this.loading = false;
         }
       },
+      deep: true,
     },
-    'values.datasource': {
-      handler(newValue) {
-        this.setTableSelected = newValue;
-      },
-    },
+    // 'values.datasource': {
+    //   handler(newValue) {
+    //     this.setTableSelected = newValue;
+    //   },
+    // },
     updateData: {
       async handler() {
         // this.loading = true;

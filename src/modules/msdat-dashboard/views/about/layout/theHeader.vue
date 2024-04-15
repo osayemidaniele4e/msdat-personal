@@ -1,6 +1,6 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
-  <header id="the-header" class="position-relative">
+  <header id="the-header" class="position-relative" data-testid="header">
     <b-container fluid>
       <b-row class="d-flex justify-content-between align-items-center">
         <b-col cols md="1" lg="1" class="main">
@@ -32,9 +32,10 @@
               }}</small>
               <div class="mobile-flex-col-text2">
                 {{ this.$store.getters.dashboardDetails.description }}
-                <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools">
-                  <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
-                  <b-icon font-scale="2" icon="dot"></b-icon>
+                <!-- <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools"> -->
+                <small v-if="isAuthenticated" class="text-warning ml-2 tools">
+                  <!-- <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                  <b-icon font-scale="2" icon="dot"></b-icon> -->
                   <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
                     >Create New</span
                   >

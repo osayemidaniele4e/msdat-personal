@@ -11,8 +11,8 @@ import { mapActions, mapGetters } from 'vuex';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
 import reviewPlugin from './modules/plugins/reviewPlugin';
-import testPlugin from './modules/plugins/testPlugin';
 import testonePlugin from './modules/plugins/testonePlugin';
+import testPlugin from './modules/plugins/testPlugin';
 
 export default {
   data() {

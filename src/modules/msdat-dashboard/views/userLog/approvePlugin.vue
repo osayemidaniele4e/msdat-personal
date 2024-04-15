@@ -71,9 +71,9 @@ export default {
       const urlParts = file.split('/');
       const fileName = urlParts[urlParts.length - 1];
       const fileObject = {
-        id: id,
-        name: fileName
-      }
+        id,
+        name: fileName,
+      };
       await this.APPROVE_PLUGIN(fileObject);
       await this.$bvModal.show('modal-1');
     },

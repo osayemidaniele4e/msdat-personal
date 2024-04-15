@@ -26,7 +26,7 @@
                 type="checkbox"
                 :name="`dashboard${index}`"
                 :id="`dashboard${index}`"
-                :checked="isSelected(value)"
+                v-model="value.selected"
                 @click="selectedComponent($event, value.fieldName)"
               />
               <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
@@ -387,6 +387,7 @@ export default {
         this.public_creator.Reason = this.dashboardDetails.reason;
         this.public_creator.category = this.dashboardDetails.category;
         this.public_creator.config = JSON.stringify(config);
+        this.public_creator.created = new Date();
         this.public_creator.name_of_dashboard = this.dashboardDetails.name;
         this.public_creator.link = `${window.location.origin}/custom/public/${id}`;
         const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
@@ -421,6 +422,7 @@ export default {
           email: this.getUser.email,
           user: this.getUser.id,
           config: JSON.stringify(config),
+          created: new Date(),
           title: this.dashboardDetails.name,
           link: `${window.location.origin}/custom/private/${id}`,
         });

@@ -6,7 +6,7 @@
     <template #overlay>
       <div class="text-center">
         <div class="d-flex justify-content-center">
-          <b-spinner style="width: 4rem; height:4rem;" variant="primary" label="Large Spinner">
+          <b-spinner style="width: 4rem; height:4rem; margin-top: 25rem;" variant="primary" label="Large Spinner">
           </b-spinner>
         </div>
       </div>

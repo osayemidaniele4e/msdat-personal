@@ -78,7 +78,9 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 20px;
+  padding: 25px 0 50px;
   min-height: 100%;
 }
 </style>

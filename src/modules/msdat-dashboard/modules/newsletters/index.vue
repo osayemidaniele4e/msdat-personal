@@ -54,17 +54,20 @@
 <script>
 import './style.scss';
 import axios from 'axios';
-import moment from 'moment';
 
 export default {
-  name: 'Modal',
+  name: 'NewsLetterModal',
   components: {},
   data() {
     return {
-      fullname: '',
       email: '',
       loading: false,
     };
+  },
+  computed: {
+    modalShown() {
+      return localStorage.getItem('modalShown') === 'true'; // Convert to boolean
+    },
   },
   methods: {
     showModal() {
@@ -72,21 +75,19 @@ export default {
     },
     hideModal() {
       this.$root.$emit('bv::hide::modal', 'modal-newsLetter', '#btnShow');
+      localStorage.setItem('modalShown', 'true');
     },
 
     async newsLetter() {
-      // TODO: error with the subscribers endpoint.
       this.loading = true;
-      const url = `${process.env.VUE_APP_API_BASE_URL1}crud/subscriber/`;
-      const now = moment().format('LLLL');
-      const subscription = {
+      const url = `${process.env.VUE_APP_API_STAGING_BASE_URL}/mailchimp/`;
+      const data = {
         email: this.email,
-        name: this.fullname,
-        created: now,
       };
       try {
-        const response = await axios.post(url, subscription);
+        const response = await axios.post(url, data);
         if (response.data) {
+          this.email = '';
           this.$swal({
             toast: true,
             position: 'top-right',
@@ -97,8 +98,7 @@ export default {
             text: 'You have successfully subscribed to our newsletter.',
           });
           this.hideModal();
-          this.fullname = '';
-          this.email = '';
+          this.modalHasShown();
         }
       } catch (error) {
         this.$swal({
@@ -108,11 +108,15 @@ export default {
           timer: 5000,
           icon: 'info',
           title: 'Attention',
-          text: 'Name/Email address provided already exist, please try again' || `${error.message}`,
+          text: 'An Error Occured, Please try again' || `${error.message}`,
         });
       } finally {
         this.loading = false;
       }
+    },
+    modalhasShown() {
+      // eslint-disable-next-line no-unused-expressions
+      localStorage.setItem('modalShown', 'true');
     },
   },
 };

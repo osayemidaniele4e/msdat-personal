@@ -16,7 +16,7 @@
             Distribution of
 
             <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
-            <b>{{ values.indicator.short_name }}</b> across the {{ setAcrossRegion }}. Source:<b>
+            <b>{{ values.indicator.short_name }}</b> across <b>{{ values.location.name }}.</b> Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b>
           </p>
           <p class="work-sans mb-0 line-height" v-if="level !== 1">

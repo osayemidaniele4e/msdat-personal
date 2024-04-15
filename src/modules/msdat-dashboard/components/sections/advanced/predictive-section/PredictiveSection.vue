@@ -1,7 +1,7 @@
 /* eslint-disable radix */
 <template>
   <div class="iddc_wrapper">
-    <div class="desc d-flex">
+    <!-- <div class="desc d-flex">
       <div class="desc-icon p-2">
         <svg
           data-v-21137bd3=""
@@ -29,7 +29,7 @@
         models that place a numerical value or score on the likelihood of a particular action or
         event happening.
       </div>
-    </div>
+    </div> -->
     <base-overlay :show="loading || notShow">
       <base-sub-card
         @dropdownTypeSelected="
@@ -61,7 +61,7 @@
 
 <script>
 import { sortBy, uniq } from 'lodash';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
@@ -128,6 +128,8 @@ export default {
 
     'values.datasource': {
       async handler(selectedDataSource) {
+        // console.log(selectedDataSource, '@@GPPG@@');
+        this.setDataSource(selectedDataSource.datasource);
         // debugger;
         this.loading = true;
         let dataSourceSelected = [];
@@ -162,10 +164,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['getPredictedData']),
+    ...mapGetters(['getPredictedData', 'getSelectedDataSourceID']),
   },
   methods: {
     ...mapActions(['PREDICTIVE_ANALYSIS']),
+    ...mapMutations(['setDataSource']),
     /**
      * @typedef {Object} HighChartObject
      * @property {Array} seriesArray - the seriesArray for the HighChart Series Options
@@ -184,96 +187,93 @@ export default {
       // Calling enpoint to process data
       // Getting response of predictive data
       // Putting the respnse in the ChartSeriesObject
-      const newArray = [];
-      ChartSeriesObject[0].data.forEach((item) => {
-        const ArrStr = item.map(String);
-        newArray.push(ArrStr);
-      });
-      if (ChartSeriesObject[0].data.length >= 15) {
+      const newD = ChartSeriesObject.find((item) => item.name === this.getSelectedDataSourceID);
+      if (newD.data.length >= 15) {
         try {
           await this.PREDICTIVE_ANALYSIS({
-            data: newArray,
+            data: ChartSeriesObject[0].data,
           });
+          const yearArray = [];
+          if (this.getPredictedData.prediction !== undefined) {
+            this.getPredictedData.prediction.forEach((item) => {
+              const arr = item[0];
+              yearArray.push(arr);
+            });
+          }
+          const year = [...sortedYear, ...yearArray];
+          // eslint-disable-next-line camelcase
+          const sorted_year = year.sort();
+          if (this.getPredictedData.prediction !== undefined) {
+            const switchPrediction = this.getPredictedData.prediction.map((val) => [
+              val[0],
+              val[1],
+            ]);
+            this.ChartOptions = {
+              tooltip: {
+                shared: true,
+              },
+              yAxis: {
+                ...defaultOptions.yAxis,
+                title: {
+                  ...defaultOptions.yAxis.title,
+                },
+                gridLineWidth: 0,
+                labels: {
+                  ...defaultOptions.yAxis.labels,
+                },
+                plotLines: [...this.computeChartPlotLines(this.values)],
+              },
+              xAxis: {
+                ...defaultOptions.xAxis,
+                crosshair: {
+                  enabled: true,
+                },
+                categories: sorted_year,
+              },
+              chart: {
+                ...defaultOptions.chart,
+                type: 'line',
+                height: '300',
+              },
+              title: {
+                ...defaultOptions.title,
+              },
+              series: [
+                {
+                  name: 'Actual Data',
+                  data: ChartSeriesObject[0].data,
+                  color: 'red',
+                },
+                {
+                  name: 'Prediction',
+                  data: switchPrediction,
+                  color: 'blue',
+                },
+              ],
+              plotOptions: {
+                series: {
+                  grouping: true,
+                  pointWidth: 10,
+                  connectNulls: false,
+                  pointPlacement: 'between',
+                },
+                line: {
+                  tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
+                    shared: true,
+                  },
+                },
+              },
+            };
+          }
+          const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+          this.ChartOptions.yAxis.title.text = displayFactor;
+          this.showNoAvailablePrediction = false;
         } catch (error) {
           console.log(error);
         }
-      }
-      const yearArray = [];
-      if (this.getPredictedData.prediction !== undefined) {
-        this.getPredictedData.prediction.forEach((item) => {
-          const arr = item[1];
-          yearArray.push(arr);
-        });
-      }
-      const year = [...sortedYear, ...yearArray];
-      // eslint-disable-next-line camelcase
-      const sorted_year = year.sort();
-      if (this.getPredictedData.prediction !== undefined) {
-        const switchPrediction = this.getPredictedData.prediction.map((val) => [val[0], val[1]]);
-        this.ChartOptions = {
-          tooltip: {
-            shared: true,
-          },
-          yAxis: {
-            ...defaultOptions.yAxis,
-            title: {
-              ...defaultOptions.yAxis.title,
-            },
-            gridLineWidth: 0,
-            labels: {
-              ...defaultOptions.yAxis.labels,
-            },
-            plotLines: [...this.computeChartPlotLines(this.values)],
-          },
-          xAxis: {
-            ...defaultOptions.xAxis,
-            crosshair: {
-              enabled: true,
-            },
-            categories: sorted_year,
-          },
-          chart: {
-            ...defaultOptions.chart,
-            type: 'line',
-            height: '300',
-          },
-          title: {
-            ...defaultOptions.title,
-          },
-          series: [
-            {
-              name: 'Actual Data',
-              data: ChartSeriesObject[0].data,
-              color: 'red',
-            },
-            {
-              name: 'Prediction',
-              data: switchPrediction,
-              color: 'blue',
-            },
-          ],
-          plotOptions: {
-            series: {
-              grouping: true,
-              pointWidth: 10,
-              connectNulls: false,
-              pointPlacement: 'between',
-            },
-            line: {
-              tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
-                shared: true,
-              },
-            },
-          },
-        };
-      }
-      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
-      this.ChartOptions.yAxis.title.text = displayFactor;
-      if (ChartSeriesObject[0].data.length <= 15) {
-        this.showNoAvailablePrediction = true;
       } else {
-        this.showNoAvailablePrediction = false;
+        this.showNoAvailablePrediction = true;
       }
     },
     /**
@@ -343,11 +343,14 @@ export default {
       // sort and get only unique ears for the categories
       const sortedYear = sortBy(uniq(allYears));
 
+      // console.log(sortedYear, 'mappedResponsex');
+
       // cause we know the queryArray  array
       // follows the same index as the mappedResponse array
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
         const data = item.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
+        // console.log(data, 'mappedResponsex');
         sortedData = data.sort(
           // eslint-disable-next-line radix, comma-dangle
           (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0])

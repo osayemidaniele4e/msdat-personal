@@ -206,10 +206,15 @@ export default {
 
   async mounted() {
     this.loading = true;
-    await this.SAVE_DASHBOARDS();
-    this.userDashboards = await this.filterArray(this.getUser, this.getDashboards);
+
+    // prevent excess request in dev mode
+    const { origin } = window.location;
+    if (!origin.includes('//localhost') && !origin.includes('//192')) {
+      await this.SAVE_DASHBOARDS();
+      this.userDashboards = await this.filterArray(this.getUser, this.getDashboards);
+      this.getUserDashboards();
+    }
     this.loading = false;
-    this.getUserDashboards();
   },
 
   watch: {

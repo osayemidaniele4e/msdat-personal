@@ -103,18 +103,18 @@ export default {
       formIsValid: true,
       isLoading: false,
       msg: 'Please enter Username and Password.',
-      linkedlnUrl: `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&redirect_uri=${window.location.origin}/custom/login&state=foobar&scope=openid%20profile%20email`,
+      linkedlnUrl: `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&redirect_uri=${encodeURIComponent(`${window.location.origin}/custom`)}&state=CUSTOM&scope=openid%20profile%20email`,
     };
   },
   mounted() {
     VueCookies.remove('msdat-user-details');
-    if (this.$route.query.code) {
-      const data = {
-        code: this.$route.query.code,
-        redirect_uri: `${window.location.origin}/custom/login`,
-      };
-      this.linkedlnSignin(data);
-    }
+    // if (this.$route.query.code) {
+    //   const data = {
+    //     code: this.$route.query.code,
+    //     redirect_uri: `${window.location.origin}/custom/login`,
+    //   };
+    //   this.linkedlnSignin(data);
+    // }
   },
   methods: {
     ...mapActions('AUTH_STORE', ['LOGIN_USER', 'AUTHENTICATE', 'AUTHENTICATE_LINKEDIN']),
@@ -204,41 +204,41 @@ export default {
       }
       return 0;
     },
-    async linkedlnSignin(data) {
-      try {
-        await this.AUTHENTICATE_LINKEDIN(data)
-          .then((res) => {
-            if (res.status === 200 || res.status === 201) {
-              this.$swal({
-                toast: true,
-                position: 'bottom',
-                showConfirmButton: false,
-                timer: 5000,
-                icon: 'success',
-                title: 'Success',
-                text: 'Login successful',
-              });
-            }
-            this.$router.push({ path: '/my-dashboard/details' });
-          })
-          .catch((err) => {
-            console.log('res', err);
-            this.$swal({
-              toast: true,
-              position: 'bottom',
-              showConfirmButton: false,
-              timer: 5000,
-              icon: 'error',
-              title: 'Something went wrong',
-              text: 'Something went wrong signing you in with linkedln',
-            });
-          });
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-      return 0;
-    },
+    // async linkedlnSignin(data) {
+    //   try {
+    //     await this.AUTHENTICATE_LINKEDIN(data)
+    //       .then((res) => {
+    //         if (res.status === 200 || res.status === 201) {
+    //           this.$swal({
+    //             toast: true,
+    //             position: 'bottom',
+    //             showConfirmButton: false,
+    //             timer: 5000,
+    //             icon: 'success',
+    //             title: 'Success',
+    //             text: 'Login successful',
+    //           });
+    //         }
+    //         this.$router.push({ path: '/my-dashboard/details' });
+    //       })
+    //       .catch((err) => {
+    //         console.log('res', err);
+    //         this.$swal({
+    //           toast: true,
+    //           position: 'bottom',
+    //           showConfirmButton: false,
+    //           timer: 5000,
+    //           icon: 'error',
+    //           title: 'Something went wrong',
+    //           text: 'Something went wrong signing you in with linkedln',
+    //         });
+    //       });
+    //   } catch (error) {
+    //     console.error(error);
+    //     return null;
+    //   }
+    //   return 0;
+    // },
   },
 };
 </script>
