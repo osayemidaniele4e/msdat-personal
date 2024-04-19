@@ -134,10 +134,14 @@ export default class DataLayer {
 
       const indicatorIDArray = await this.DB.checkIndicatorsInIdb();
       // Filter out undefined and NaN values from indicatorIDArray
-      const filteredIndicatorIDArray = indicatorIDArray.filter((value) => value !== undefined && !Number.isNaN(value));
+      const filteredIndicatorIDArray = indicatorIDArray.filter(
+        (value) => value !== undefined && !Number.isNaN(value),
+      );
 
       // Filter out undefined and NaN values from this.defaultIndicators
-      const filteredDefaultIndicators = this.defaultIndicators.filter((value) => value !== undefined && !Number.isNaN(value));
+      const filteredDefaultIndicators = this.defaultIndicators.filter(
+        (value) => value !== undefined && !Number.isNaN(value),
+      );
 
       // Find the difference after filtering
       const indicatorsNotOnIdb = difference(filteredDefaultIndicators, filteredIndicatorIDArray);
@@ -505,9 +509,13 @@ export default class DataLayer {
       position: 'bottom-end',
       imageWidth: 100,
       imageHeight: 100,
-      title:
-        '<div style="display: flex; align-items: center; margin-left: 66px; font-weight: 600 ">Number of loaded indicators and</div>',
-      html: '<div style="margin-top: -18px; margin-bottom: -10px; font-size:15px; font-weight:600"> <img src="/img/loader.gif" style="width: 55px; height: 55px; margin-right: 13px; margin-top: -21px; background-color: #DFF3F3; border-radius: 50px" alt="Loading"/>datasources</div>',
+      // title:
+      //   '<div style="display: flex; align-items: center; margin-left: 66px; font-weight: 600 ">Number of loaded indicators and</div>',
+      html:
+        '<div style="display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500;">'
+        + '<div>Number of loaded indicators and datasources</div>'
+        + '<div style="margin-left: 20px;"><img src="/img/loader.gif" style="width: 55px; height: 55px; background-color: #DFF3F3; border-radius: 50px;" alt="Loading"/></div>'
+        + '</div>',
       showConfirmButton: false,
       timerProgressBar: false,
       allowOutsideClick: false,
