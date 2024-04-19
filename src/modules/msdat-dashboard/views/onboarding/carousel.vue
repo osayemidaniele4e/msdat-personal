@@ -20,7 +20,7 @@
         <div class="mx-5">
           <h3 class="mt-5">Sections</h3>
           <p class="mb-0">
-            This Platform contains <strong>five main sections.</strong>
+            This Platform contains <strong>six main sections.</strong>
           </p>
           <p>
             Each section allows you to carry out analysis with ease in relation
@@ -95,10 +95,19 @@
           </p>
         </div>
       </section>
+      <section class="ml-3 mr-3">
+        <div class="mt-4 mx-4">
+          <img :src="pic9" alt="eight image" height="250px" />
+        </div>
+        <div class="mx-3 mt-4">
+          <h3>Disaggregation Section</h3>
+          <p>This section gives a deeper insight into indicators and their values</p>
+        </div>
+      </section>
       <section>
         <img
           :src="pic8"
-          alt="eight image"
+          alt="ninth image"
           height="250px"
           width="200px"
           class="finalImg mt-2"
@@ -131,6 +140,7 @@ const pic5 = require('./assets/onboarding/section5.png');
 const pic6 = require('./assets/onboarding/section6.png');
 const pic7 = require('./assets/onboarding/section7.png');
 const pic8 = require('./assets/onboarding/section8.png');
+const pic9 = require('./assets/onboarding/section9.png');
 
 export default {
   components: {
@@ -146,6 +156,7 @@ export default {
       pic6,
       pic7,
       pic8,
+      pic9,
     };
   },
   methods: {

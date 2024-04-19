@@ -53,7 +53,7 @@
             </p>
           </div>
 <div>
-  <h6>{{ this.value }}%</h6>
+  <h6>{{ Math.abs(this.value) }}%</h6>
 
 </div>
         </div>
@@ -166,25 +166,13 @@ export default {
       }
     },
     computeDiffValues(indicatorOne, indicatorTwo) {
-      // const olderIndi cator = this.getOlderYear(this.indicatorOne, this.indicatorTwo);
-      // const denominator;
-      let left = 0;
-      let right = 0;
-      // if (olderIndicator === this.indicatorOne) {
-      //   denominator = indicatorOne.y;
-      //   left = indicatorTwo.y;
-      //   right = indicatorOne.y;
-      // } else if (olderIndicator === this.indicatorTwo) {
-      const denominator = indicatorOne.y;
-      left = indicatorTwo.y;
-      right = indicatorOne.y;
-      const isPositive = right >= left;
-      // } else {
-      // const denominator = indicatorOne.y >= indicatorTwo.y ? indicatorTwo.y : indicatorOne.y;
-      // left = indicatorTwo.y;
-      // right = indicatorOne.y;
-      // }
-      const diff = left - right;
+      let final = 0;
+      let initial = 0;
+      const denominator = indicatorTwo.y;
+      initial = indicatorTwo.y;
+      final = indicatorOne.y;
+      const isPositive = final >= initial;
+      const diff = final - initial;
       const value = this.customRound((diff / denominator) * 100);
       return { value, isPositive };
     },
