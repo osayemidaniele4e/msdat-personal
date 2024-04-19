@@ -4,12 +4,7 @@
 
     <!-- <p v-else>loading</p> -->
     <!-- loading screen starts here -->
-    <Loading
-      v-else
-      :noBackdrop="false"
-      :showBackground="false"
-      class="over"
-    >
+    <Loading v-else :noBackdrop="false" :showBackground="false" class="over">
       <div class="center">
         <img :src="img" alt="first_img" width="250px" />
         <div class="mr-4">
@@ -64,10 +59,14 @@ export default {
   },
   watch: {
     loadingData(newValue) {
+      const firstvisit = localStorage.getItem('visited');
       switch (newValue) {
         case 0:
           this.loadingTitle = '.';
-          this.loadingContent = 'Getting the dashboard ready for the first time';
+          this.loadingContent
+            = firstvisit === null
+              ? 'Getting the dashboard ready for the first time'
+              : 'Importing key health indicators...';
           break;
         case 1:
           this.loadingTitle = '..';
@@ -88,8 +87,11 @@ export default {
     },
   },
   async mounted() {
+    const firstvisit = localStorage.getItem('visited');
     this.changeLoadingData();
-    this.loadingContent = 'Getting the dashboard ready for the first time';
+    this.loadingContent = firstvisit === null
+      ? 'Getting the dashboard ready for the first time'
+      : 'Importing key health indicators...';
     this.loadingTitle = '';
     this.loading = false;
     await this.$DL.init({
@@ -98,7 +100,6 @@ export default {
       dashboardDataSources: MSDAT.dataSources,
     });
     this.loading = true;
-    const firstvisit = localStorage.getItem('visited');
     if (firstvisit == null) {
       this.firstTime = true;
       localStorage.setItem('visited', 1);
