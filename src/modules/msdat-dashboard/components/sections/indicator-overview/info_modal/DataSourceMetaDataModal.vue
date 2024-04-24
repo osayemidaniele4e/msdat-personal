@@ -78,7 +78,7 @@
       <p></p> -->
       <div class="text1">Link</div>
       <div v-if="dataSourceDetails.link !== 'Not Available'">
-        <a :href="dataSourceDetails.link" class="text2">{{ dataSourceDetails.link }}</a>
+        <a :href="dataSourceDetails.link" target="_blank" class="text2">{{ dataSourceDetails.link }}</a>
       </div>
 
       <p></p>
