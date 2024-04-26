@@ -16,7 +16,7 @@
       ></b-form-checkbox>
       <template v-if="options.length > 0">
         <div class="my-3">
-          <b-form-group v-slot="{ ariaDescribedby }">
+          <!-- <b-form-group v-slot="{ ariaDescribedby }">
             <b-form-radio-group
               v-model="selected"
               :options="bootstrapFormattedOptions"
@@ -25,19 +25,21 @@
               :disabled="switchValues === 'ON' ? false : true"
               @change="$emit('datasources-selected', $event)"
               class="text-uppercase"
-              button-variant="danger"
-            ></b-form-radio-group>
-             <!-- <input type="radio"
-             v-model="selected"
-              :options="bootstrapFormattedOptions"
-              :aria-describedby="ariaDescribedby"
-              stacked
-              :disabled="switchValues === 'ON' ? false : true"
-              @change="$emit('datasources-selected', $event)"
-              class="text-uppercase"
-              button-variant="danger"
-             > -->
-          </b-form-group>
+            ></b-form-radio-group> -->
+             <div
+              v-for="(option) in bootstrapFormattedOptions" :key="option.text"
+              class="d-flex align-items-baseline my-3"
+            >
+              <input
+                type='radio' :id='option.text' name='datasource'
+                @change="switchTo(option, $event)"
+                :disabled="switchValues !== 'ON'"
+                style="background-color: #007d53; scale: 1.2;"
+                :checked="selected.datasource == option.text"
+              />
+              <label :for='option.text' style="font-size: 13px; padding: 0 10px; transform: translateY(-3px);">{{ option.text }}</label>
+            </div>
+          <!-- </b-form-group> -->
         </div>
       </template>
     </div>
@@ -69,6 +71,14 @@ export default {
     selectedOptions: {
       type: Object,
       default: () => {},
+    },
+  },
+  methods: {
+    switchTo(option, e) {
+      if (e.target.value === 'on') {
+        this.$emit('datasources-selected', option.value);
+        this.selected = option.value;
+      }
     },
   },
   watch: {

@@ -95,7 +95,7 @@ export default {
         value,
         dashStyle: 'longdashdot',
         label: {
-          text: 'SDG',
+          text: `SDG: ${value}`,
           verticalAlign: 'top',
           rotation: 0,
           textAlign: 'right',
@@ -114,7 +114,7 @@ export default {
         color: '#222222',
         value,
         label: {
-          text: 'NT',
+          text: `NT: ${value}`,
           verticalAlign: 'top',
           rotation: 0,
           textAlign: 'left',
