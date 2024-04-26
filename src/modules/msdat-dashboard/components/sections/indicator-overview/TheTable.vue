@@ -8,7 +8,7 @@
           <div class="w-100 d-flex justify-content-between align-items-center p-1">
             <p class="work-sans mb-0 line-height">
               <b>{{ values.indicator.short_name }}</b>
-              and related indicators (with year of latest values) across available data sources.
+              and related indicators (with year of latest values) across {{ values.location.name }}.
             </p>
 
             <div class="share-wrapper">
