@@ -45,7 +45,17 @@
       </div>
       <b-embed type="iframe" aspect="21by9" :src="url5" :width="width" :height="height"></b-embed>
     </div>
+
+    <div v-if="title === 'Health_Service_Access'">
+      <div class="heading">
+        <!-- <div class="main-text">Health Finance in Nigeria</div>
+        <div class="sub-text">Source: NHA 2017</div> -->
+      </div>
+      <b-embed type="iframe" aspect="21by9" :src="url6" :width="width" :height="height"></b-embed>
+    </div>
   </div>
+
+  
 </template>
 
 <script>
@@ -69,6 +79,7 @@ export default {
       url3: 'https://public.tableau.com/views/Healthfinancingdisaggregationsection/Dashboard1?:language=en-GB&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url4: 'https://public.tableau.com/views/Health_Outcomesdisaggregation/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url5: 'https://public.tableau.com/views/Healthfacilitydisaggregationdashboard2_0/Dashboard1?:language=en-GB&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url6: 'https://public.tableau.com/views/Healthserviceaccessdisaggregationdashboard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       height: '400',
       showComing: true,
     };
@@ -85,6 +96,7 @@ export default {
       || this.title === 'Health_Financing'
       || this.title === 'Health_Outcomes_and_Service_Coverage'
       || this.title === 'Health_Facility'
+      || this.title === 'Health_Service_Access'
     ) {
       this.showComing = false;
     }
