@@ -49,12 +49,14 @@
           <div>
             <p>
               The value of <strong>{{ indicatorOne }}</strong
-                > is {{ this.positiveDifference === true ? 'HIGHER' : 'LOWER' }} than <strong>{{ indicatorTwo }}</strong> by:
+                > is {{ this.positiveDifference === true ? 'HIGHER' : 'LOWER' }} than <strong>{{ indicatorTwo }}</strong> by
             </p>
           </div>
-<div>
+<div style="display: flex; flex-direction:row; gap: 5px; align-items:center; padding-left:-10%;">
   <h6>{{ Math.abs(this.value) }}%</h6>
-
+  <p>
+    <span>in {{ this.comparisonLocation }}</span>
+  </p>
 </div>
         </div>
       </div>
@@ -440,7 +442,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 7px;
 }
 .noComparison {
   border-radius: 10px;
