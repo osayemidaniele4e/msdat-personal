@@ -35,7 +35,8 @@ const dashboardHelp = [
     title: 'How to check for more information on the indicator',
     steps: [
       'Select the indicator you want to see more information on.',
-      'On the table, click on the info icon <i data-v-862f69e2 class="fas fa icon fa-info-circle" style="color: #41918E; font-size: 15px;"></i> to the left of the indicator.',
+      // 'On the table, click on the info icon <i data-v-862f69e2 class="fas fa icon fa-info-circle" style="color: #41918E; font-size: 15px;"></i> to the left of the indicator.',
+      'On the table, click on the info icon 🛈 to the left of the indicator.',
       'Information on the indicator is given with respect to the data source, therefore, you can switch between the available data sources.',
       'You can also get more information on the indicator by going to the Information Page.',
     ],
@@ -44,7 +45,8 @@ const dashboardHelp = [
   {
     title: 'How to check information on the Data Source',
     steps: [
-      'On the table, click on the info icon <i data-v-862f69e2 class="fas fa icon fa-info-circle" style="color: #41918E; font-size: 15px;"></i> by the data source you are interested in.',
+      // 'On the table, click on the info icon <i data-v-862f69e2 class="fas fa icon fa-info-circle" style="color: #41918E; font-size: 15px;"></i> by the data source you are interested in.',
+      'On the table, click on the info icon 🛈 by the data source you are interested in.',
       'You can also get more information on the data sources by going to the information page.',
     ],
     show: false,

@@ -257,6 +257,7 @@ export default {
       datasource: this.values.datasource.id,
       location: this.values.location.id,
     });
+    console.log('this is the data', data);
     this.chartObject = {};
     const formattedData = this.formatDataToSeriesLineFormat(data);
     this.chartObject = this.formatToHighChartOptionForLine(

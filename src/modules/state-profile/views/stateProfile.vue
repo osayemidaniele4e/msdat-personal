@@ -278,7 +278,7 @@ export default {
           name: 'REPRODUCTIVE, MATERNAL, NEWBORN AND CHILD HEALTH',
           icon: 'pregnant',
           detail:
-            'This section includes a set of indicators along the continuum of care - from pre-pregnancy to childhood. The graph shows the percentage of the target population receiving coverage for selected interventions.',
+            'This section includes a set of indicators along the continuum of care - from pre-pregnancy to childhood. The matrix shows the percentage of the target population receiving coverage for selected interventions.',
           sources:
             'Multiple Indicator Cluster Survey (MICS) and National Nutrition and Health Survey (NNHS).',
 
@@ -349,7 +349,7 @@ export default {
           name: 'nutrition',
           icon: '/img/salad.svg',
           detail:
-            'This section includes a set of nutirion indicators. The graph shows the percentage of the target population receiving coverage for selected interventions.',
+            'This section includes a set of nutirion indicators. The matrix shows the percentage of the target population receiving coverage for selected interventions.',
           sources: 'Nigeria Demographic and Health Survey (NDHS).',
           chartTitle: 'Coverage for key interventions in Nutrition',
           colors: ['#F4F7EA', '#8FB438', '#8FB438', '#8FB438', '#8FB438', '#8FB438'],
@@ -384,7 +384,7 @@ export default {
           name: 'Immunization',
           icon: 'injection',
           detail:
-            'This section includes a set of immunization indicators. The graph shows the percentage of the target population receiving coverage for selected interventions.',
+            'This section includes a set of immunization indicators. The matrix shows the percentage of the target population receiving coverage for selected interventions.',
           sources: 'Multiple Indicator Cluster Survey (MICS).',
           chartTitle: 'Coverage for key interventions in Immunization',
           colors: ['#FBF0E4', '#EE9632', '#EE9632', '#EE9632', '#EE9632', '#EE9632'],
@@ -413,8 +413,9 @@ export default {
           name: 'Malaria',
           icon: 'mosquito',
           detail:
-            'This section includes a set of malaria indicators. The graph shows the percentage of the target population receiving coverage for selected interventions.',
-          sources: 'Nigeria Demographic and Health Survey (NDHS).',
+            'This section includes a set of malaria indicators. The matrix shows the percentage of the target population receiving coverage for selected interventions.',
+          sources:
+            'Nigeria Demographic and Health Survey (NDHS).',
 
           chartTitle: 'Coverage for key interventions in Malaria',
           colors: ['#ECF3EB', '#43893B', '#43893B', '#43893B', '#43893B', '#43893B'],
@@ -444,7 +445,7 @@ export default {
           name: 'HIV',
           icon: 'ribbon',
           detail:
-            'This section includes a set of HIV indicators. The graph shows the percentage of the target population receiving coverage for selected interventions.',
+            'This section includes a set of HIV indicators. The matrix shows the percentage of the target population receiving coverage for selected interventions.',
           sources:
             'Nigeria HIV /AIDS Indicator and Impact Survey (NAIIS), Multiple Indicator Cluster Survey (MICS), and National Nutrition and Health Survey (NNHS).',
           chartTitle: 'Coverage for key interventions in HIV',
@@ -474,7 +475,7 @@ export default {
           name: 'mortality',
           icon: 'patient',
           detail:
-            'This section includes a set of Mortality indicators. The graph shows the percentage of the target population receiving coverage for selected interventions.',
+            'This section includes a set of Mortality indicators. The matrix shows the percentage of the target population receiving coverage for selected interventions.',
           sources: 'National Health Management Information System (DHIS2).',
           chartTitle: 'Other Mortality Indicators',
           colors: ['#EAEAEA', '#313131'],
@@ -509,7 +510,7 @@ export default {
           name: 'Health Services',
           icon: 'hospital',
           detail:
-            'This section includes a set of Health Facility Survey indicators. The graph shows the percentage of the target population receiving coverage for selected interventions.',
+            'This section includes a set of Health Facility Survey indicators. The matrix shows the percentage of the target population receiving coverage for selected interventions.',
           sources: 'National Health Facility Survey (NHFS).',
           chartTitle: '',
           colors: ['rgba(5, 146, 189, 1)'],

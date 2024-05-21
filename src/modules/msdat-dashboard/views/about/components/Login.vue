@@ -13,20 +13,20 @@
         <div class="d-flex w-100 justify-content-center">
           <button
             type="submit"
-            class="btn btn-lg btn-primary px-3 py-2"
+            class="btn btn-lg btn-primary px-3 py-2 mr-2"
             @click="handleClickSignIn()"
           >
-            <b-icon-google class="mr-2"></b-icon-google>
+            <b-icon-google></b-icon-google>
 
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
-          <button type="submit" class="btn btn-lg btn-primary px-3 py-2">
-            <b-icon-facebook class="mr-2"></b-icon-facebook>
+          <button type="submit" class="btn btn-lg btn-primary px-3 py-2 mr-2">
+            <b-icon-facebook></b-icon-facebook>
 
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
           <a :href="linkedlnUrl" class="btn btn-lg btn-primary px-3 py-2">
-            <b-icon-linkedin class="px-1"></b-icon-linkedin>
+            <b-icon-linkedin></b-icon-linkedin>
           </a>
         </div>
         <div class="row">

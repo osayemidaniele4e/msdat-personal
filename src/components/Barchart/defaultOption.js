@@ -4,6 +4,9 @@ export default {
     zoomType: 'xy',
     height: 800,
   },
+  lang: {
+    noData: 'The data you have selected is not available, please select another',
+  },
   exporting: {
     enabled: true,
     chartOptions: {
