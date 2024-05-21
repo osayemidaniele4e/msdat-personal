@@ -45,6 +45,7 @@ const state: State = {
   isTypingEffect: false,
   isResponding: false,
   conversationHistory: [],
+  selectedSection: 'Indicator Overview',
 };
 
 export default state;

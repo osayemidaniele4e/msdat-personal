@@ -47,7 +47,12 @@
           </button>
           <button class="social">
             <a :href="`https://twitter.com/intent/tweet?url=${shareUrl}&text=`" target="_blank">
-              <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512">
+                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                  d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
+                />
+              </svg>
             </a>
           </button>
           <button class="social link btn btn-outline-secondary" @click="copyTheLink">
@@ -63,7 +68,7 @@
       </div>
     </genericModal>
     <div ref="printMe" id="printMe">
-      <b-row  class="sticky-header" >
+      <b-row class="sticky-header">
         <b-col cols="auto">
           <h1>Health Profile</h1>
           <div>
@@ -102,36 +107,37 @@
               </template>
             </b-dropdown>
           </div>
-              <!-- bread crumb to health profile home -->
-              <b-breadcrumb class="breadcrumb">
-                <b-breadcrumb-item to="/health-profiles">Health Profiles</b-breadcrumb-item>
-                <b-breadcrumb-item active>{{ state }} {{ `${state === 'National' ? '' : 'State'}` }}</b-breadcrumb-item>
-              </b-breadcrumb>
-
+          <!-- bread crumb to health profile home -->
+          <b-breadcrumb class="breadcrumb">
+            <b-breadcrumb-item to="/health-profiles">Health Profiles</b-breadcrumb-item>
+            <b-breadcrumb-item active
+              >{{ state }} {{ `${state === 'National' ? '' : 'State'}` }}</b-breadcrumb-item
+            >
+          </b-breadcrumb>
         </b-col>
-           </b-row>
+      </b-row>
       <hr style="border-top: 1px dashed #cccccc" class="mb-4" />
       <b-col cols="12" class="my-auto">
-          <b-row align-h="end" class="mx-auto align-items-center">
-            <p class="mr-3">Last Updated: {{ this.regularDateFormat }}</p>
-            <b-button class="mr-4 share-button d-flex align-items-center" @click="toggleShareModal">
-              <img
-                class="img-fluid pr-2"
-                src="@/assets/state-profile/svg/share.svg"
-                alt="share-icon"
-              />
-              Share
-            </b-button>
-            <b-button class="print-button d-flex align-items-center" @click="printing">
-              <img
-                class="img-fluid pr-2"
-                src="@/assets/state-profile/svg/printing.svg"
-                alt="print-icon"
-              />
-              Print Profile
-            </b-button>
-          </b-row>
-        </b-col>
+        <b-row align-h="end" class="mx-auto align-items-center">
+          <p class="mr-3">Last Updated: {{ this.regularDateFormat }}</p>
+          <b-button class="mr-4 share-button d-flex align-items-center" @click="toggleShareModal">
+            <img
+              class="img-fluid pr-2"
+              src="@/assets/state-profile/svg/share.svg"
+              alt="share-icon"
+            />
+            Share
+          </b-button>
+          <b-button class="print-button d-flex align-items-center" @click="printing">
+            <img
+              class="img-fluid pr-2"
+              src="@/assets/state-profile/svg/printing.svg"
+              alt="print-icon"
+            />
+            Print Profile
+          </b-button>
+        </b-row>
+      </b-col>
       <demographics
         :state="state"
         @changeState="stateClicked"
@@ -408,8 +414,7 @@ export default {
           icon: 'mosquito',
           detail:
             'This section includes a set of malaria indicators. The graph shows the percentage of the target population receiving coverage for selected interventions.',
-          sources:
-            'Nigeria Demographic and Health Survey (NDHS).',
+          sources: 'Nigeria Demographic and Health Survey (NDHS).',
 
           chartTitle: 'Coverage for key interventions in Malaria',
           colors: ['#ECF3EB', '#43893B', '#43893B', '#43893B', '#43893B', '#43893B'],
@@ -583,7 +588,7 @@ export default {
       const output = await this.$html2canvas(el, options);
       const temp = document.createElement('a');
       temp.href = output;
-      temp.download = 'StateProfile.png';
+      temp.download = 'HealthProfile.png';
       temp.click();
     },
     async copyTheLink() {
@@ -664,7 +669,6 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
   },
-
 };
 </script>
 

@@ -19,13 +19,13 @@
           font-scale="0.5"
         ></b-icon>
           <!-- icon="three-dots-vertical" -->
-        <b-icon
+        <!-- <b-icon
           v-if="showDownload === true"
           icon="download"
           @click="showMenu = !showMenu"
           class="pointer_click mx-1 font-weight-bold"
           font-scale="0.5"
-        ></b-icon>
+        ></b-icon> -->
       </div>
     </div>
     <div class="card-body work-sans p-0" style="position: relative">
