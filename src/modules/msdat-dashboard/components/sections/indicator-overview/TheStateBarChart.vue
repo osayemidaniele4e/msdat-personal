@@ -38,10 +38,10 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import { eventBus } from '@/main';
-import { mapState } from 'vuex';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
 
@@ -199,6 +199,7 @@ export default {
         await ndData,
         this.values.numdenum,
       );
+      console.log('chart options:', chartOptions.series.map((s) => s.data).flat().map((d) => ({ name: d.name, value: d.y })));
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup :cry: :worried: :rage:
       const parentValue = await this.dlQuery({
