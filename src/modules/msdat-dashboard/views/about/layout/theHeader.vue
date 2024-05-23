@@ -257,6 +257,7 @@
               v-on:showContact="contactBtn = true"
               v-on:tour="runIntro"
               v-on:print="print"
+              v-on:closeoptions="toggleOption = false"
             />
           </div>
         </b-col>

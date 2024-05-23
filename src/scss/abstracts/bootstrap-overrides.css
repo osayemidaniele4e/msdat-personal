@@ -2,7 +2,7 @@
   display: block;
   width: 1rem;
   height: 1rem;
-  content: '';
+  content: "";
   background: no-repeat 50%/50% 50%;
   background-color: #fff;
 }
@@ -26,5 +26,4 @@
   -webkit-print-color-adjust: exact;
   color-adjust: exact;
   margin-right: 0.4rem;
-}
-/*# sourceMappingURL=bootstrap-overrides.css.map */
+}/*# sourceMappingURL=bootstrap-overrides.css.map */
