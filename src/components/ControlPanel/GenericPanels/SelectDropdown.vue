@@ -15,8 +15,8 @@
     deselectLabel=""
     autocomplete="off"
     class="custom-placeholder"
+    @open="initialCSS"
   >
-    <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
     <!---
       START
@@ -309,39 +309,30 @@ export default {
      *  @var multiselectProps, its "group-value" property.
      *
      */
-    // async initialCSS(multiselectID) {
-    //   this.section = multiselectID;
-    //   if (
-    //     this.multiSelectProps['group-values'] !== 'indicators'
-    //     || multiselectID === 'Indicator-Comparison'
-    //   ) {
-    //     return;
-    //   }
-    //   this.loading = true;
-    //   if (this.multiSelectProps['group-values']) {
-    //     const specificPart = document.querySelector(`input#${multiselectID}`);
-    //     if (this.options?.length !== 0) {
-    //       const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
-    //       const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
-    //         .value;
-    //       // eslint-disable-next-line no-plusplus
-    //       for (let i = 0; i <= iterable.length; i++) {
-    //         if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
-    //           iterable[i].style.display = 'none';
-    //         } else if (tell === 'notVisited') {
-    //           if (iterable[i] === undefined) return;
-    //           iterable[i].addEventListener('click', (e) => {
-    //             e.preventDefault();
-    //             e.stopPropagation();
-    //             this.pickProgramArea(e);
-    //           });
-    //           specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
-    //         }
-    //       }
-    //     }
-    //   }
-    //   this.loading = false;
-    // },
+    async initialCSS(multiselectID) {
+      this.loading = true;
+      if (this.multiSelectProps['group-values']) {
+        const specificPart = document.querySelector(`input#${multiselectID}`);
+        if (this.options?.length !== 0) {
+          const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
+          const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
+            .value;
+          for (let i = 0; i <= iterable.length; i++) {
+            if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
+              iterable[i].style.display = 'none';
+            } else if (tell === 'notVisited') {
+              iterable[i].addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.pickProgramArea(e);
+              });
+              specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
+            }
+          }
+        }
+      }
+      this.loading = false;
+    },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', item);
     // },

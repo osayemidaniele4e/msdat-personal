@@ -149,12 +149,12 @@ export default {
           color: '#222222',
           value: national_target,
           label: {
-            text: 'NT',
+            text: `NT: ${parseFloat(national_target)}`,
             verticalAlign: 'top',
             rotation: 0,
             textAlign: 'left',
             y: 0,
-            x: -13,
+            x: 0,
             style: {
               fontSize: '10px',
               fontFamily: '"Open Sans", sans-serif',
@@ -170,7 +170,7 @@ export default {
           value: sdg_target,
           dashStyle: 'longdashdot',
           label: {
-            text: 'SDG',
+            text: `SDG: ${parseFloat(sdg_target)}`,
             verticalAlign: 'top',
             rotation: 0,
             textAlign: 'right',

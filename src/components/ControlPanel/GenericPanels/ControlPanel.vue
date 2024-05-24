@@ -460,6 +460,7 @@ export default {
         this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage'
         || this.$route.path === '/dashboard/Health_Financing'
         || this.$route.path === '/dashboard/Health_Service_Access'
+        || this.$route.path === '/dashboard/Demographics'
       ) {
         return true;
       }
