@@ -5,7 +5,7 @@ export default {
     height: 800,
   },
   lang: {
-    noData: 'No data available for the selected criteria', // "The data you have selected is not available, please select another"
+    noData: 'The data you have selected is not available, please select another',
   },
   exporting: {
     enabled: true,

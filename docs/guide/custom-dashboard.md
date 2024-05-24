@@ -6,7 +6,7 @@
 MSDAT custom dashboard helps you to set up your custom dashboard to suit your needs. The dashboard comes with cleaned data on the certain key health indicators in Nigeria. This data can be made available for your use. The platform allows for sectioning of your charts. So you can section your visualizations into any section of your choice, giving you control over your data and making it easier to analyse. [Link to the ui mockup ](https://xd.adobe.com/view/43ace9e3-1c9b-4cb2-9e8c-0c8228dd709d-16ff/specs/)
 
 ## Hierachy of folders
-![An image](./assets/module/custom-dashboard.drawio.png)
+![An image](./assets/module/hierachy.png)
 
 ### Some Key functions
 

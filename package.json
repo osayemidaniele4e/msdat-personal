@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "node scripts/generateImports.js && vue-cli-service serve",
+    "serve:dev": "vue-cli-service serve",
     "build": "node scripts/generateImports.js && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
@@ -47,6 +48,7 @@
     "vue-owl-carousel": "^2.0.3",
     "vue-pagination-2": "^3.1.0",
     "vue-router": "^3.2.0",
+    "vue-server-renderer": "2.7.16",
     "vue-social-sharing": "^3.0.9",
     "vue-sweetalert2": "^5.0.2",
     "vuedraggable": "^2.24.3",

@@ -11,7 +11,7 @@
             v-for="(el, i) in modifiedControls"
             :key="i"
             :id="`panel-${el.index}`"
-            @click="changeControl(el.index)"
+            @click="changeControl(el.index, el.title)"
           >
             {{ el.title }}
           </li>
@@ -70,8 +70,12 @@ export default {
   methods: {
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
 
-    changeControl(index) {
+    changeControl(index, title) {
       // console.log(this.modifiedControls, { index });
+
+      if (title !== undefined) {
+        this.$store.commit('MSDAT_STORE/SET_SECTION', title);
+      }
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
@@ -254,13 +258,13 @@ export default {
   border: 1px solid $primary;
   background-color: white;
   color: black !important;
-  padding:1rem 2rem;
+  padding: 1rem 2rem;
   height: 1rem;
   max-width: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px ;
+  margin: 10px;
   font-weight: 200;
   font-size: 1rem;
   &:first-child {

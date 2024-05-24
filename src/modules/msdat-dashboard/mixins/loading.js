@@ -27,10 +27,14 @@ export default {
   },
   watch: {
     loadingData(newValue) {
+      const firstvisit = localStorage.getItem('visited');
       switch (newValue) {
         case 0:
           this.loadingTitle = '.';
-          this.loadingContent = 'Getting the dashboard ready for the first time';
+          this.loadingContent
+            = firstvisit === null
+              ? 'Getting the dashboard ready for the first time'
+              : 'Importing key health indicators...';
           break;
         case 1:
           this.loadingTitle = '..';
@@ -51,8 +55,12 @@ export default {
     },
   },
   mounted() {
+    const firstvisit = localStorage.getItem('visited');
     this.changeLoadingData();
-    this.loadingContent = 'Getting the dashboard ready for the first time';
+    this.loadingContent
+      = firstvisit === null
+        ? 'Getting the dashboard ready for the first time'
+        : 'Importing key health indicators...';
     this.loadingTitle = '';
   },
 };
