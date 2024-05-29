@@ -1,67 +1,27 @@
 <template>
-  <!-- Label to show when there is no available data as requested -->
-  <!-- @open="initialCSS" -->
-  <multiselect
-    :id="formattedID"
-    v-model="selected"
-    :options="options"
-    searchable
-    close-on-select
-    :allow-empty="allowEmpty"
-    :placeholder="placeholder"
-    v-bind="multiSelectProps"
-    selectLabel=""
-    data-visted="notVisited"
-    deselectLabel=""
-    autocomplete="off"
-    class="custom-placeholder"
-    >
-    <!-- @open="initialCSS" -->
+  <multiselect :id="formattedID" v-model="selected" :options="options" searchable close-on-select :allow-empty="allowEmpty" :placeholder="placeholder" v-bind="multiSelectProps" selectLabel="" data-visted="notVisited" deselectLabel="" autocomplete="off" class="custom-placeholder" @open="initialCSS">
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
-    <!---
-      START
-      THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
-      THAT HAVE GROUPED OPTIONS
-    -->
+
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
-      <!-- {{ multiSelectProps['group-values'] }} {{ section }} {{ props }} -->
       <template v-if="props.option.$groupLabel">
         <span class="overflow-text" :data-parent="props.option.$groupLabel">
           {{ props.option.$groupLabel }}
-          <span
-            v-if="
-              multiSelectProps['group-values'] === 'indicators' &&
-              section !== 'Indicator-Comparison'
-            "
-          ></span>
+          <span class="newGrouplabel" :class="{ 'open-caret': groupLabelStates[props.option.$groupLabel] }" @click.stop="toggleGroupLabel(props.option.$groupLabel)">
+            {{ groupLabelStates[props.option.$groupLabel] ? 'Click to collapse group  ▲' : 'click to expand group ▼' }}
+          </span>
         </span>
       </template>
       <template v-if="props.option.item">
-        <div
-          v-if="!props.option.$groupLabel"
-          class="overflow-text"
-          :data-child="modifyDataSourceChildLabel(props.option.item)"
-        >
+        <div v-if="!props.option.$groupLabel" class="overflow-text" :data-child="modifyDataSourceChildLabel(props.option.item)">
           {{ props.option.item }}
         </div>
       </template>
       <template v-else-if="props.option.full_name">
-        <div
-          v-if="!props.option.$groupLabel"
-          class="overflow-text text-wrap"
-          :data-child="props.option.program_area"
-        >
+        <div v-if="!props.option.$groupLabel" class="overflow-text text-wrap" :data-child="props.option.program_area">
           {{ props.option.full_name }}
         </div>
       </template>
     </template>
-    <!---
-    END
-    THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
-    THAT HAVE GROUPED OPTIONS
-    -->
-
-    <!-- {{ showItems(options) }} -->
   </multiselect>
 </template>
 <script>
@@ -77,6 +37,7 @@ export default {
       section: '',
       indicatorId: 7,
       datasourceId: 6,
+      groupLabelStates: {},
     };
   },
   computed: {
@@ -245,6 +206,11 @@ export default {
     immediate: false,
   },
   methods: {
+
+    toggleGroupLabel(groupLabel) {
+      this.$set(this.groupLabelStates, groupLabel, !this.groupLabelStates[groupLabel]);
+    },
+
     ...mapMutations('MSDAT_STORE', [
       'SET_SELECTED_CONFIG',
       'UPDATE_ALL_DATASOURCES',
@@ -287,16 +253,21 @@ export default {
             if (element.style.display === 'none') {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'block';
+              this.$set(this.groupLabelStates, parent, true);
               // eslint-disable-next-line no-unused-expressions
               element?.children[0]?.children[0]?.classList.toggle('open-caret');
             } else {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'none';
+              this.$set(this.groupLabelStates, parent, false);
             }
           }
           if (parent === tempParent) {
             // eslint-disable-next-line no-unused-expressions
             element?.children[0]?.children[0]?.children[0]?.classList.toggle('open-caret');
+          }
+          if (parent && !this.groupLabels[parent]) {
+            this.$set(this.groupLabels, parent, true);
           }
         });
       }
@@ -309,30 +280,30 @@ export default {
      *  @var multiselectProps, its "group-value" property.
      *
      */
-    // async initialCSS(multiselectID) {
-    //   this.loading = true;
-    //   if (this.multiSelectProps['group-values']) {
-    //     const specificPart = document.querySelector(`input#${multiselectID}`);
-    //     if (this.options?.length !== 0) {
-    //       const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
-    //       const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
-    //         .value;
-    //       for (let i = 0; i <= iterable.length; i++) {
-    //         if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
-    //           iterable[i].style.display = 'none';
-    //         } else if (tell === 'notVisited') {
-    //           iterable[i].addEventListener('click', (e) => {
-    //             e.preventDefault();
-    //             e.stopPropagation();
-    //             this.pickProgramArea(e);
-    //           });
-    //           specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
-    //         }
-    //       }
-    //     }
-    //   }
-    //   this.loading = false;
-    // },
+    async initialCSS(multiselectID) {
+      this.loading = true;
+      if (this.multiSelectProps['group-values']) {
+        const specificPart = document.querySelector(`input#${multiselectID}`);
+        if (this.options?.length !== 0) {
+          const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
+          const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
+            .value;
+          for (let i = 0; i <= iterable.length; i++) {
+            if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
+              iterable[i].style.display = 'none';
+            } else if (tell === 'notVisited') {
+              iterable[i].addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.pickProgramArea(e);
+              });
+              specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
+            }
+          }
+        }
+      }
+      this.loading = false;
+    },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', item);
     // },
@@ -384,9 +355,18 @@ export default {
   transition: all 0.25s ease-in;
   cursor: pointer;
 }
+.newGrouplabel {
+  position: absolute;
+  right: 5%;
+  top: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  color: #a4fab7;
+  transition: all 1.25s ease-in;
+}
 
 .open-caret {
-  transform: rotate(360deg);
+  transform: rotate(0deg);
   transition: all 0.25s ease-out;
   cursor: pointer;
 }
