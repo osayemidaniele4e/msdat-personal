@@ -6,7 +6,14 @@ import apiServices from './ApiServices';
    */
 export const formatDate = (theDate) => {
   const theDateParts = theDate.split('T');
-  const theTime = theDateParts[1].split('.');
+  const theTime = theDateParts[1]?.split('.');
+  const date = theDateParts[0];
+  if (!theTime) {
+    return date;
+  // eslint-disable-next-line no-else-return
+  } else if (!date) {
+    return `${theTime[0]}`;
+  }
   const formatted = `${theDateParts[0]} ${theTime[0]}`;
   return formatted;
 };

@@ -459,7 +459,7 @@ export default {
               datasource: datasource.id,
             })[0].measurement_numerator;
             const numerator = numeratorData[0];
-            this.numerator = `${numeratorName} - ${Number(numerator.value).toLocaleString()}`;
+            this.numerator = `${numeratorName} : ${Number(numerator.value).toLocaleString()}`;
           } else {
             this.numerator = 'N/a';
           }
@@ -469,7 +469,7 @@ export default {
               datasource: datasource.id,
             })[0].measurement_denominator;
             const denominator = denominatorData[0];
-            this.denominator = `${denominatorName} - ${Number(denominator.value).toLocaleString()}`;
+            this.denominator = `${denominatorName} : ${Number(denominator.value).toLocaleString()}`;
           } else {
             this.denominator = 'N/a';
           }

@@ -110,8 +110,8 @@
           <span>See Updates</span>
         </router-link>
       </li>
-      <li>
-        <a href="javascript:Userback.open();">
+      <li  @click.prevent="activateUserHelp">
+        <a href="#">
           <img src="@/assets/img/icons/ic_feedback.svg" alt="" />
           <span>Feedback</span>
         </a>
@@ -235,6 +235,14 @@ export default {
     });
   },
   methods: {
+    activateUserHelp(event) {
+      event.preventDefault();
+      if (window.isUserHelpReady === true) {
+        window.openUserHelpButton();
+      }
+      // Close the header options
+      this.$emit('closeoptions');
+    },
     isPluginActive(pluginName) {
       // Assuming you have a method to check if the plugin is active
       return this[`is${this.capitalizeFirstLetter(pluginName)}Active`] === true;

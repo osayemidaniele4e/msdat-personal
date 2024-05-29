@@ -20,7 +20,8 @@ export interface State {
   isGenerating: boolean;
   isTypingEffect: boolean;
   isResponding: boolean;
-  conversationHistory: Conversation[]
+  conversationHistory: Conversation[];
+  selectedSection: string;
 }
 
 export type Conversation = {

@@ -140,7 +140,7 @@ export default {
       const valuetype = this.valueType?.filter(
         (item) => item.value_type === datasource?.classification
       );
-      query.value_type = valuetype[0]?.id ?? 2;
+      query.value_type = query.value_type || valuetype[0]?.id || 2;
 
       if (isObject(query.location)) {
         const { location } = query;

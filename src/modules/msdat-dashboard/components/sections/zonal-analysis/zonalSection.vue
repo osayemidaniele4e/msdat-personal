@@ -159,10 +159,21 @@ export default {
 
             console.log(filteredLGADataForState, 'ANOTHER');
 
-            const formatToHighChart = (dataValues) => dataValues.map((item) => [
-              this.dlGetLocation(item.location).name,
-              parseFloat(item.value),
-            ]);
+            const formatToHighChart = (dataValues) => dataValues.map((item) => {
+              let locationName = '';
+              let value = null;
+
+              if (item && item.location !== undefined) {
+                const location = this.dlGetLocation(item.location);
+                locationName = location ? location.name : '';
+              }
+
+              if (item && item.value !== undefined) {
+                value = parseFloat(item.value);
+              }
+
+              return [locationName, value];
+            });
 
             const chartSeries = [];
             const formattedData = formatToHighChart(filteredLGADataForState);

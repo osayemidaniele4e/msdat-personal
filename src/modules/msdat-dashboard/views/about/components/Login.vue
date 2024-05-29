@@ -25,7 +25,7 @@
 
             <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
           </button>
-          <a :href="linkedlnUrl" class="btn btn-lg btn-primary px-3 py-2">
+          <a :href="linkedlnUrl" class="btn btn-lg btn-primary px-3 py-2 d-inline-block">
             <b-icon-linkedin></b-icon-linkedin>
           </a>
         </div>
