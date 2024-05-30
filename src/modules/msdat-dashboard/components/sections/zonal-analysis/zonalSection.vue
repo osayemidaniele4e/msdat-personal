@@ -77,6 +77,22 @@ export default {
           type: 'column',
           zoomType: 'xy',
         },
+        plotOptions: {
+          series: {
+            pointWidth: 10,
+            dataLabels: {
+              enabled: true,
+              useHTML: true,
+              format: '{point.y}',
+              style: {
+                fontSize: '10px',
+              },
+            },
+          },
+        },
+        tooltip: {
+          enabled: false,
+        },
         xAxis: {
           type: 'category',
           min: -0.3,
