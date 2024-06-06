@@ -151,9 +151,9 @@ export default {
           label: {
             text: `NT: ${parseFloat(national_target)}`,
             verticalAlign: 'top',
-            rotation: 0,
+            rotation: -90,
             textAlign: 'left',
-            y: 0,
+            y: 15,
             x: 0,
             style: {
               fontSize: '10px',
@@ -172,9 +172,9 @@ export default {
           label: {
             text: `SDG: ${parseFloat(sdg_target)}`,
             verticalAlign: 'top',
-            rotation: 0,
+            rotation: -90,
             textAlign: 'right',
-            y: 0,
+            y: 20,
             x: 0,
             style: {
               fontSize: '10px',
