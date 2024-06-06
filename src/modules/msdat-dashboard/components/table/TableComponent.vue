@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div v-if="!loading" class="table-responsive">
-      <table class="table table-bordered align-middle text-nowrap">
+      <table class="table table-bordered align-middle">
         <tbody>
           <tr>
             <td rowspan="2" scope="col" class="text-center align-middle border-0"></td>
@@ -10,7 +10,7 @@
               scope="col"
               class="align-middle text-center text-uppercase h6 font-weight-bold"
             >
-              <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center px-5">
                 <span>Indicators</span>
                 <!-- <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span> -->
               </div>
@@ -27,8 +27,11 @@
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
-          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis">
-            <div class="nhmis_month_head">NHMIS-DHIS2 (monthly)</div>
+          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis" class='text-nowrap'>
+            <div class="nhmis_month_head">
+              <span>NHMIS-DHIS2</span>
+              <span>(monthly)</span>
+            </div>
             <TableDataSourceCell
               v-for="(dt, i) in source"
               :key="`${i}-row3`"
@@ -40,7 +43,7 @@
               @key="getKey"
             />
           </tr>
-          <tr v-else>
+          <tr v-else class='text-nowrap'>
             <TableDataSourceCell
               v-for="(dt, i) in source"
               :key="`${i}-row4`"
@@ -709,12 +712,14 @@ table.table {
   font-size: 0.7rem;
   font-weight: 700;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   /* padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px; */
   padding: 0.75rem;
+  text-align: center;
 }
 
 .meta_icon {
