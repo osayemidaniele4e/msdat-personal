@@ -7,7 +7,7 @@
         <span class="overflow-text" :data-parent="props.option.$groupLabel">
           {{ props.option.$groupLabel }}
           <span class="newGrouplabel" :class="{ 'open-caret': groupLabelStates[props.option.$groupLabel] }" @click.stop="toggleGroupLabel(props.option.$groupLabel)">
-            {{ groupLabelStates[props.option.$groupLabel] ? 'Click to collapse group  ▲' : 'click to expand group ▼' }}
+            {{ groupLabelStates[props.option.$groupLabel] ? 'Click to collapse ▲' : 'click to expand ▼' }}
           </span>
         </span>
       </template>
@@ -38,6 +38,7 @@ export default {
       indicatorId: 7,
       datasourceId: 6,
       groupLabelStates: {},
+
     };
   },
   computed: {
