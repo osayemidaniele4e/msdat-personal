@@ -200,7 +200,7 @@ export default {
     },
     dlGetFactor(id) {
       const factor = this.dlFactors.find((item) => item.id === id);
-      factor.display_factor = factor.display_factor === '1' ? 'x 1' : factor.display_factor;
+      if (factor.display_factor === '1') factor.display_factor = ' ';
       return factor;
     },
     dlGetDataSource(id) {
