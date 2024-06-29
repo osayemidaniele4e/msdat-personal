@@ -114,7 +114,7 @@ export default {
         return this.values.indicator.filter((indicator) => !this.hasDataForIndicator(indicator));
       }
       // Handle the case when this.values.indicator is not an array
-      console.error('Indicator is not an array:', this.values.indicator);
+      // console.error('Indicator is not an array:', this.values.indicator);
       return [];
     },
   },

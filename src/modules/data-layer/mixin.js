@@ -199,7 +199,9 @@ export default {
       return this.dlLocation.find((item) => item.name === values);
     },
     dlGetFactor(id) {
-      return this.dlFactors.find((item) => item.id === id);
+      const factor = this.dlFactors.find((item) => item.id === id);
+      if (factor.display_factor === '1') factor.display_factor = ' ';
+      return factor;
     },
     dlGetDataSource(id) {
       return this.dlDatasource.find((item) => item.id === id);
