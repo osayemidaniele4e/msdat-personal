@@ -27,7 +27,7 @@ export default {
       // state.loader.indicator = true;
       // await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
       await axios
-        .get('https://msdat-api.fmohconnect.gov.ng/api/indicators/')
+        .get('https://msdat-api.fmohconnect.gov.ng/api/indicators/?size=1500')
         .then((res) => {
           // const { data } = res;
           const data = res.data.results;
@@ -35,10 +35,22 @@ export default {
           const distinctArray = [...new Set(array)];
           const composedData = [];
 
+          const sortedData = data.sort((a, b) => a.id - b.id);
+          let filteredData = [];
+          // eslint-disable-next-line no-restricted-syntax
+          for (const pa of distinctArray) {
+            const paData = sortedData.filter((ind) => ind.program_area === pa);
+            if (pa === 'RMNCH') {
+              filteredData = filteredData.concat(paData.slice(0, 10));
+            } else {
+              filteredData = filteredData.concat(paData.slice(0, 2));
+            }
+          }
+
           distinctArray.forEach((distItem) => {
             if (state.allSelected === false) {
               composedData.push({
-                children: data.filter((x) => {
+                children: filteredData.filter((x) => {
                   if (x.program_area === distItem) {
                     x.selected = false;
                     x.sources = [];
@@ -56,7 +68,7 @@ export default {
               });
             } else {
               composedData.push({
-                children: data.filter((x) => {
+                children: filteredData.filter((x) => {
                   if (x.program_area === distItem) {
                     x.selected = true;
                     x.sources = [];
