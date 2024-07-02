@@ -1,6 +1,7 @@
 import ncdc from './dashboards/ncdc.vue';
 import ndr1 from './dashboards/ndr1.vue';
 import ndr2 from './dashboards/ndr2.vue';
+import quarterReview from './dashboards/quarter-review.vue';
 
 export default [
   {
@@ -17,5 +18,13 @@ export default [
     path: '/external-ndr2',
     name: 'ndr2',
     component: ndr2,
+  },
+  {
+    path: '/quarterly-review',
+    name: 'quarter-review',
+    component: quarterReview,
+    meta: {
+      title: 'Quarterly Performance Assessment',
+    },
   },
 ];

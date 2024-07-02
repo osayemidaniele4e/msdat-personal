@@ -99,6 +99,10 @@
           <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
             <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
           </router-link>
+          <router-link to="/quarterly-review" target="_blank"
+            ><b-list-group-item
+              >Quarterly Performance Assessment</b-list-group-item
+            ></router-link>
           <a
               target="_blank"
               v-for="dashboard in publicDashboards.filter((dash) => {
