@@ -20,7 +20,7 @@
         </div>
       </div>
       <br />
-      <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm base">
+      <base-sub-card :backgroundColor="'header'" class=" shadow-sm base">
         <template #title>
           <h5 class="font-weight-bold work-sans text-white">
             {{ currentTitle }}
@@ -96,9 +96,9 @@ export default {
 .base h5 {
   font-size: 14px;
 }
-.dashboard-link-container {
+/* .dashboard-link-container {
   margin: 30px 0px 20px 20px;
-}
+} */
 .base {
   height: 100%;
   width: 100%;
@@ -137,5 +137,6 @@ export default {
 
 .tab-content {
   width: 100%;
+  padding:7px;
 }
 </style>
