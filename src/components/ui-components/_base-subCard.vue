@@ -17,6 +17,7 @@
           @click="showModal = !showModal"
           class="pointer_click mx-1 font-weight-bold"
           font-scale="0.5"
+          v-b-tooltip.hover title="Tooltip directive content"
         ></b-icon>
           <!-- icon="three-dots-vertical" -->
         <!-- <b-icon

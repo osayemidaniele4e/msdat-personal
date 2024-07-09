@@ -37,7 +37,7 @@ export default [
   },
   {
     path: '/custom/private/:id',
-    name: 'custom-dashboard-public',
+    name: 'custom-dashboard-private',
     component: () => import('./views/Private.vue'),
     meta: {
       title: 'Custom Dashboard',

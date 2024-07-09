@@ -71,7 +71,7 @@ export default [
     ],
     // defaultIndicators: [63, 64, 65], // an indicator ID and related indicators,
     defaultIndicators: [63],
-    dataSources: [1, 2, 3, 4, 6, 7, 8, 9, 15, 18, 19, 20, 21, 22, 23, 26, 27, 28, 29, 33],
+    dataSources: [1, 2, 3, 4, 6, 7, 8, 9, 15, 18, 19, 20, 21, 22, 23, 26, 27, 28, 29, 33, 36],
     initialIndicator: 63,
     initialDataSource: 19,
     initialLocation: 1,

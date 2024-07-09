@@ -54,6 +54,7 @@ export default {
     this.loading = true;
     await this.SAVE_DASHBOARDS();
     this.userDashboards = this.filterArray(this.getUser, this.getDashboards.data);
+    console.log(this.userDashboards);
     this.loading = false;
   },
 };

@@ -8,7 +8,9 @@ export default {
   async CREATE_USER({ commit }, payload) {
     try {
       const response = await axiosInstance.post('/users/', payload);
+      console.log(response);
       commit('setUser', response);
+      commit('usersCount', response.data.count);
       return response;
     } catch ({ response }) {
       throw response.data;
