@@ -367,7 +367,7 @@ export default {
   // RETRIEVE ALL DASHBOARD REQUESTS
   async getDashboards({ commit }) {
     const { data } = await axios.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json');
-    commit('setAllPublicDashboards', Object.values(data));
+    if (data) commit('setAllPublicDashboards', Object.values(data));
     return { data };
   },
   // RETRIEVE A SINGLE DASHBOARD BY ID
