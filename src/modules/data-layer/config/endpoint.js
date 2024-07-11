@@ -4,7 +4,7 @@ export default {
   getDashboardById: 'dashboards/',
   getDataSource: 'datasources/?size=1500',
   getLocation: 'location/?size=1500',
-  getIndicator: 'indicators/?size=1500',
+  getIndicator: 'indicators/?size=3000',
   getLHL: 'location_hierarchy_level/?size=1500',
   getValueType: 'valuetypes/?size=1500',
   getLinks: 'links/?size=1500',

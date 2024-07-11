@@ -319,7 +319,7 @@ export default {
                 lineDashStyle: 'Solid', // Change this to 'Dash' for a dashed line
               },
               {
-                name: `${series.name} (After ${currentYear})`,
+                name: `${series.name} After ${currentYear}`,
                 //  name: `${series.name} (After Projection)`,
                 data: dataAfterCurrentYear,
                 lineDashStyle: 'Dash', // Change this to 'Solid' for a solid line
@@ -493,8 +493,6 @@ export default {
       if (e === 'ON') {
         const [firstObject] = this.dataSourcesOptions;
         this.selectedDS = firstObject;
-
-        console.log('calis');
 
         // trying to get the value type
         const datasource = this.dlGetDataSource(firstObject.id);

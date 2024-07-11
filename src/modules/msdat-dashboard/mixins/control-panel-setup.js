@@ -69,24 +69,24 @@ export default {
         indicator: queryIndicator,
         datasource: queryDatasource,
         location: queryLocation,
-        year: queryYear,
+        // year: queryYear,
       } = query;
 
       // Check if query parameters for indicator, datasource, location, and year are present
-      const hasQueryParams = queryIndicator !== undefined
-        || queryDatasource !== undefined
-        || queryLocation !== undefined
-        || queryYear !== undefined;
+      // const hasQueryParams = queryIndicator !== undefined
+      //   || queryDatasource !== undefined
+      //   || queryLocation !== undefined
+      //   || queryYear !== undefined;
 
-      this.defaultIndicator = hasQueryParams
+      this.defaultIndicator = queryIndicator
         ? this.dlGetIndicator(Number(queryIndicator))
         : this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
 
-      this.defaultDataSource = hasQueryParams
+      this.defaultDataSource = queryDatasource
         ? this.dlGetDataSource(Number(queryDatasource))
         : this.dlGetDataSource(this.$store.state.MSDAT_STORE.default.datasource);
 
-      this.defaultLocation = hasQueryParams
+      this.defaultLocation = queryLocation
         ? this.dlGetLocation(Number(queryLocation))
         : this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
     },
