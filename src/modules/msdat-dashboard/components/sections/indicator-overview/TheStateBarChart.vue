@@ -39,6 +39,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import { eventBus } from '@/main';
@@ -199,6 +200,25 @@ export default {
         await ndData,
         this.values.numdenum,
       );
+      chartOptions.plotOptions = {
+        series: {
+          dataLabels: {
+            enabled: true,
+            formatter() {
+              return Highcharts.numberFormat(this.y, 0, '.', ',');
+            },
+          },
+          pointWidth: 10, // Fixes the width of each point
+        },
+      };
+
+      // Adding tooltip formatter
+      chartOptions.tooltip = {
+        pointFormatter() {
+          return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${Highcharts.numberFormat(this.y, 0, '.', ',')}</b><br/>`;
+        },
+      };
+
       console.log('chart options:', chartOptions.series.map((s) => s.data).flat().map((d) => ({ name: d.name, value: d.y })));
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup :cry: :worried: :rage:
