@@ -17,8 +17,8 @@
           @click="showModal = !showModal"
           class="pointer_click mx-1 font-weight-bold"
           font-scale="0.5"
-          v-b-tooltip.hover title="Tooltip directive content"
-        ></b-icon>
+          ></b-icon>
+          <!-- v-b-tooltip.hover title="Tooltip directive content" -->
           <!-- icon="three-dots-vertical" -->
         <!-- <b-icon
           v-if="showDownload === true"
