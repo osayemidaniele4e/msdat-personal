@@ -221,7 +221,7 @@ export default {
             },
           },
           // name: indicator.full_name,
-          name: `${indicator.full_name} (${displayFactor.display_factor})`,
+          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
           data: toHighChartFormat,
         };
         if (i === 0) highChartOptions.yAxis.push(yAxis);
@@ -423,7 +423,7 @@ export default {
           color: this.color[i],
           lineWidth: 3,
           // name: indicator.full_name,
-          name: `${indicator.full_name} (${displayFactor.display_factor})`,
+          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
           data: sortTheYear,
         };
         highChartOptions.series.push(obj);

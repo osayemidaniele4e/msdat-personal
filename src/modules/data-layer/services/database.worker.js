@@ -167,6 +167,17 @@ export default class DataBase {
     return uniqueArray.map((item) => item.indicator);
   }
 
+  static async getAvailableLocationByIndNSource(sourceId, indId) {
+    const allDataPoints = await dexie.table(DATA)
+      .where('[datasource+indicator]')
+      .equals([sourceId, indId]).toArray();
+    if (allDataPoints.length <= 0) {
+      return [];
+    }
+    const uniqueArray = [...new Map(allDataPoints.map((item) => [item.location, item])).values()];
+    return uniqueArray.map((item) => item.location);
+  }
+
   static async getAvailableIndicatorByDataSource(id) {
     const allDataPoints = await dexie.table(DATA).where('datasource').equals(id).toArray();
     if (allDataPoints.length <= 0) {
