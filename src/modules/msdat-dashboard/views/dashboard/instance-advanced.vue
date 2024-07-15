@@ -122,9 +122,9 @@
             </template>
             <template>
               <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
+                <AdvancedControlPanelConfiguration :controlIndex="controlIndex">
                   <PredictiveAnalysisSection :values="payload" :controlIndex="controlIndex" />
-                </ControlPanelConfiguration>
+                </AdvancedControlPanelConfiguration>
               </LazyLoading>
             </template>
           </base-sub-card>

@@ -111,6 +111,45 @@ export default {
       const uniqueYears = uniq(years);
       return uniqueYears.sort((a, b) => b - a);
     },
+
+    async setLocationDropdown(
+      dataSourceID = this.defaultDataSource.id,
+      indicatorID = this.defaultIndicator.id,
+      controlIndex = 0,
+    ) {
+      if (!dataSourceID || !indicatorID) return;
+      let data = [];
+      if (Array.isArray(indicatorID)) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const ind of indicatorID) {
+          // eslint-disable-next-line no-await-in-loop
+          data = data.concat(await this.queryDBForAvailableLocation(dataSourceID, ind));
+        }
+      } else if (Array.isArray(dataSourceID)) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const dat of dataSourceID) {
+          // eslint-disable-next-line no-await-in-loop
+          data = data.concat(await this.queryDBForAvailableLocation(dat, indicatorID));
+        }
+      } else {
+        data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
+      }
+      let locations = this.dlGetLocation({ level: 3 });
+      locations.unshift(this.dlGetLocation(1));
+      locations = locations.filter(({ id }) => data.includes(id));
+
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'location',
+        payload: locations,
+      });
+
+      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        controlIndex,
+        key: 'location',
+        value: locations[0] || this.dlGetLocation(1),
+      });
+    },
+
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
       const data = await this.getDataSourcesFromDexie(indicatorID);
