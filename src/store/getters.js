@@ -6,4 +6,6 @@ export default {
   getSubmittedPlugins: (state) => state.submittedPlugins,
   getSuccessMessage: (state) => state.success !== '' && state.success,
   getPluginsImported: (state) => state.pluginsImported,
+  availablePluginsCount: (state) => state.pluginsImported.length,
+
 };
