@@ -18,7 +18,7 @@
                 @click="toggleShowShareModal()"
                 class="share-btn"
               >
-               <img src="@/assets/img/code.svg" alt="">
+                <img src="@/assets/img/code.svg" alt="" />
               </div>
             </div>
           </div>
