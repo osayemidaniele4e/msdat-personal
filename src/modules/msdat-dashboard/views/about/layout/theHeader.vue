@@ -152,6 +152,7 @@
               <a
                 href="https://msdat.old.fmohconnect.gov.ng"
                 class="nav-link"
+                target="_blank"
                 v-if="isAuthenticated === false"
                 >Go back to MSDAT 1.5</a
               >

@@ -8,7 +8,10 @@
     <!-- {{selectedSource.id}}
   {{source.id}} -->
     <div class="icon d-flex align-items-center justify-content-center">
-      <span class="data-source h6 mr-2 mb-0 font-weight-bold" @click="$emit('source:click', source)"
+      <span
+        v-tooltip="source.full_name"
+        class="data-source h6 mr-2 mb-0 font-weight-bold"
+        @click="$emit('source:click', source)"
         >{{ source.datasource }}
       </span>
       <b-icon-info-circle-fill
