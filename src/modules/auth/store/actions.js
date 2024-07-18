@@ -8,16 +8,25 @@ export default {
   async CREATE_USER({ commit }, payload) {
     try {
       const response = await axiosInstance.post('/users/', payload);
-      console.log(response);
       commit('setUser', response);
-      commit('usersCount', response.data.count);
       return response;
     } catch ({ response }) {
       throw response.data;
       // return err.username[0] || err.email[0] || err.password[0];
     }
   },
-
+  // get all users
+  // eslint-disable-next-line consistent-return
+  async GET_USERS({ commit }) {
+    try {
+      const response = await axiosInstance.get('/users/');
+      commit('setUsers', response.data.results);
+      console.log(response.data.results);
+      return response;
+    } catch (err) {
+      // console.log(err);
+    }
+  },
   // eslint-disable-next-line consistent-return, no-unused-vars
   async SAVE_USER_DASHBOARD({ commit }, payload) {
     try {

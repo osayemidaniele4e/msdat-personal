@@ -1,5 +1,5 @@
 <template>
-  <multiselect :id="formattedID" v-model="selected" :options="options" searchable close-on-select :allow-empty="allowEmpty" :placeholder="placeholder" v-bind="multiSelectProps" selectLabel="" data-visted="notVisited" deselectLabel="" autocomplete="off" class="custom-placeholder" @open="handleOpen" @search-change="handleSearchChange">
+  <multiselect :id="formattedID" v-model="selected" :options="options" searchable close-on-select :allow-empty="allowEmpty" :placeholder="placeholder" v-bind="multiSelectProps" selectLabel="" data-visted="notVisited" deselectLabel="" autocomplete="off" class="custom-placeholder" @open="handleOpen"  @close="handleClose" @search-change="handleSearchChange">
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
 
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
@@ -38,6 +38,7 @@ export default {
       indicatorId: 7,
       datasourceId: 6,
       groupLabelStates: {},
+      groupLabels: {},
       isCollapsibleActive: false,
     };
   },
@@ -209,6 +210,7 @@ export default {
     handleOpen() {
       this.isCollapsibleActive = true;
       this.initialCSS(this.formattedID);
+      console.log('opened');
     },
     // this function is called when the search input is activated thereby it makes the program areas open automaatically when search is active
     handleSearchChange() {
@@ -233,6 +235,16 @@ export default {
         });
       });
     },
+    resetState() {
+      this.isCollapsibleActive = false;
+      this.groupLabelStates = {};
+      this.groupLabels = {};
+    },
+    handleClose() {
+      this.resetState();
+      console.log('closed');
+    },
+
     openAllGroupLabels() {
       if (this.multiSelectProps['group-values']) {
         this.groupLabelStates = {};
@@ -303,7 +315,6 @@ export default {
     async dummy() {
       console.log('search Variable');
     },
-
     /**
    *  This methods acts only on multiselects having
    *  grouped options like the indicator multiselects.
@@ -322,7 +333,7 @@ export default {
           for (let i = 0; i < iterable.length; i++) { // Changed <= to < to avoid off-by-one error
             if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
               if (!this.isCollapsibleActive) {
-                iterable[i].style.display = 'block'; // Show all items when search-change is active
+                iterable[i].style.display = 'block';
               } else {
                 iterable[i].style.display = 'none';
               }
