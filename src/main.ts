@@ -8,6 +8,7 @@ import VueFriendlyIframe from 'vue-friendly-iframe';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueSocialSharing from 'vue-social-sharing';
 import DataLayer from '@/modules/data-layer';
+import VTooltip from 'v-tooltip';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';
@@ -20,6 +21,7 @@ import store from './store';
 import 'regenerator-runtime';
 import './plugins/veevalidate';
 import './assets/styles/fonts.css';
+
 
 const gauthOption = {
   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
@@ -44,6 +46,7 @@ Vue.use(DataLayer, {
 });
 Vue.use(VueHtml2Canvas);
 Vue.use(VueCookies);
+Vue.use(VTooltip);
 Vue.config.productionTip = false;
 
 new Vue({

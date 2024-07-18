@@ -143,7 +143,7 @@ export default {
               this.UPDATE_ALL_YEARS(this.options);
               // this was commented out because it updates all the selected year across all section in the multi-source comparison section
 
-              this.UPDATE_MULTI_YEARS(this.options);
+              // this.UPDATE_MULTI_YEARS(this.options);
             } else {
               const { name } = this.$route.params;
               if (name === 'Demographics') {
