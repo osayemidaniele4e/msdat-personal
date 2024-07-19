@@ -57,7 +57,7 @@ export default {
     // }
   },
   mounted() {
-    console.log('control index', this.controlIndex);
+    // console.log('control index', this.controlIndex);
     const now = new Date();
     const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -134,8 +134,26 @@ export default {
         }
       }
     },
+    setStatesDropdown() {
+      this.setLocationDropdown(
+        Array.isArray(this.payload?.datasource)
+          ? this.payload?.datasource.map((d) => d.id)
+          : this.payload?.datasource?.id,
+        Array.isArray(this.payload?.indicator)
+          ? this.payload?.indicator.map((i) => i.id)
+          : this.payload?.indicator?.id,
+        this.controlIndex,
+      );
+    },
   },
   watch: {
+    controlIndex: {
+      handler() {
+        this.setStatesDropdown();
+      },
+      // deep: true,
+      immediate: true,
+    },
     // get latest available years when indicator , datasource or location are changed
     'payload.indicator': {
       async handler() {
@@ -181,6 +199,7 @@ export default {
               values: availableDS,
             });
           }
+          this.setStatesDropdown();
         }
       },
     },
@@ -235,6 +254,7 @@ export default {
             });
           }
           this.setInteractions();
+          this.setStatesDropdown();
         }
       },
     },

@@ -166,6 +166,10 @@ export default {
       const result = await DB.queryDBForYearsByDs(query);
       return result;
     },
+    async queryDBForAvailableLocation(sourceId, indId) {
+      const result = await DB.getAvailableLocationByIndNSource(sourceId, indId);
+      return result;
+    },
     /**
      * @function dlGetDashboardDataSource
      * @description filter the config

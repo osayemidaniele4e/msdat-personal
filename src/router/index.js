@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import createPersistedState from 'vuex-persistedstate';
 import store from '@/store/index';
 import USER_ROUTE from '@/modules/msdat-dashboard/views/userLog/router';
+import ADMIN_ROUTE from '@/modules/msdat-dashboard/views/adminLog/router';
 import MSDAT_ABOUT_ROUTE from '@/modules/msdat-dashboard/views/about/router';
 import CREATE_PLUGIN_ROUTE from '@/modules/msdat-dashboard/views/create_plugin/router';
 import MSDAT_SETTINGS_ROUTE from '@/modules/msdat-dashboard/views/settings/router';
@@ -35,6 +36,7 @@ const routes = [
   ...NATURAL_LANGUAGE_SEARCH,
   ...AUTH_ROUTE,
   ...USER_ROUTE,
+  ...ADMIN_ROUTE,
   ...DATA_ENTRY,
   ...CREATE_PLUGIN_ROUTE,
   {

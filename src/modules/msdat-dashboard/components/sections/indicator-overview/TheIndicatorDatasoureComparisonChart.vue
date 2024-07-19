@@ -314,13 +314,13 @@ export default {
             return [
               {
                 // name: series.name + ' (Before ' + currentYear + ')',
-                name: `${series.name} (Before Projection)`,
+                name: `${series.name}`,
                 data: dataBeforeCurrentYear,
                 lineDashStyle: 'Solid', // Change this to 'Dash' for a dashed line
               },
               {
-                name: `${series.name} After ${currentYear}`,
-                //  name: `${series.name} (After Projection)`,
+                name: `${series.name} (Projection)`,
+                //  name: `${series.name} (Projection)`,
                 data: dataAfterCurrentYear,
                 lineDashStyle: 'Dash', // Change this to 'Solid' for a solid line
               },
