@@ -453,6 +453,9 @@ export default {
       type: File,
     },
   },
+  mounted() {
+    console.log('usserrrr', this.getUser.id);
+  },
 };
 </script>
 

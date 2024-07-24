@@ -151,4 +151,10 @@ export default [
     component: () => import('./views/CustomDashboard.vue'),
     // component: () => import('../dynamic-dashboard/index.vue'),
   },
+  {
+    path: '/saved-dashboard',
+    name: 'saved-dashboard',
+    props: true,
+    component: () => import('./components/SavedDashboardList.vue'),
+  },
 ];

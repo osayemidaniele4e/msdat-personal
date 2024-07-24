@@ -35,7 +35,7 @@ export default {
     this.$store.dispatch('customDashboard', false);
   },
   mounted() {
-    const id = this.$route.query.id || this.$route.params.id;
+    const id = this.$route.params.id || this.$route.query.id;
     // GET A DASHBOARD BY ID
     // Check confirmation status
     // Route to Dashboard if approved, otherwise display unapproved status.

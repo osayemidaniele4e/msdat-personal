@@ -40,6 +40,7 @@ export default {
       groupLabelStates: {},
       groupLabels: {},
       isCollapsibleActive: false,
+      isSearchActive: false,
     };
   },
   computed: {
@@ -208,7 +209,9 @@ export default {
     },
     // this function is called when the multiselect is opened thereby it checks if collapsible is active and calls the initialCSS function
     handleOpen() {
-      this.isCollapsibleActive = true;
+      if (!this.isSearchActive) {
+        this.isCollapsibleActive = true;
+      }
       this.initialCSS(this.formattedID);
       console.log('opened');
     },
@@ -234,6 +237,7 @@ export default {
           element.style.display = 'block';
         });
       });
+      this.isSearchActive = true;
     },
     resetState() {
       this.isCollapsibleActive = false;
@@ -242,6 +246,7 @@ export default {
     },
     handleClose() {
       this.resetState();
+      this.isSearchActive = false;
       console.log('closed');
     },
 
@@ -284,6 +289,7 @@ export default {
       event.stopPropagation();
       if (event.type === 'click') {
         const parent = event.target?.children[0]?.children[0]?.dataset?.parent;
+        console.log('Program Area Clicked:', parent);
         const all = Array.from(event.target?.parentNode?.children);
         all.forEach(async (element) => {
           const child = await element?.children[0]?.children[0]?.dataset?.child;
@@ -330,19 +336,16 @@ export default {
           const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;
           const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
 
-          for (let i = 0; i < iterable.length; i++) { // Changed <= to < to avoid off-by-one error
+          for (let i = 0; i < iterable.length; i++) {
             if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
               if (!this.isCollapsibleActive) {
                 iterable[i].style.display = 'block';
               } else {
                 iterable[i].style.display = 'none';
               }
-            } else if (tell === 'notVisited') {
-              iterable[i].addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.pickProgramArea(e);
-              });
+            } else if (tell === 'notVisited' || this.isSearchActive) { // Modified this condition
+              iterable[i].removeEventListener('click', this.pickProgramArea); // Remove existing listener
+              iterable[i].addEventListener('click', this.pickProgramArea); // Add new listener
               specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
             }
           }

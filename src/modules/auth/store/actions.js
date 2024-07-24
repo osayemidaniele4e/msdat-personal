@@ -82,7 +82,7 @@ export default {
         auth_token: payload.auth_token,
       });
       const user = response.data.data;
-      console.log(user);
+      console.log('this userrrr', user);
 
       VueCookies.set('msdat-user-details', user);
       commit('setUser', user);
