@@ -36,8 +36,8 @@
            </a>
            <a
              href="#/Plugins"
-             class="item blue"
-             :class="{ active: isCurrentRoute('/approvePlugin') }"
+             class="item"
+             :class="{ active: isCurrentRoute('/Plugins') }"
            >
              <b-icon-check2-square></b-icon-check2-square>&nbsp;&nbsp;
              <span class="d-none d-lg-inline">Plugins</span>
@@ -55,9 +55,9 @@
          <div class="my-5">
            <div class="border-top"></div>
            <a
-             href="#/settings"
+             href="#/adminsettings"
              class="item mt-2"
-             :class="{ active: isCurrentRoute('/settings') }"
+             :class="{ active: isCurrentRoute('/adminsettings') }"
            >
              <b-icon-gear></b-icon-gear>&nbsp;&nbsp;
              <span class="d-none d-lg-inline">Settings</span>
@@ -93,7 +93,7 @@ import Notification from './notifications.vue';
 import AdminDashboard from './adminDashboard.vue';
 import Users from './users.vue';
 import Plugins from './plugins.vue';
-import Settings from './settings.vue';
+import Settings from './adminsettings.vue';
 
 const routes = {
   '/': AdminDashboard,
@@ -101,7 +101,7 @@ const routes = {
   '/admindashboard': AdminDashboard,
   '/users': Users,
   '/Plugins': Plugins,
-  '/settings': Settings,
+  '/adminsettings': Settings,
 
 };
 
@@ -111,7 +111,7 @@ const titles = {
   '/admindashboard': 'Admin Dashboard',
   '/users': 'Users',
   '/Plugins': 'Plugins',
-  '/settings': 'Settings',
+  '/adminsettings': 'Admin Settings',
 
 };
 
