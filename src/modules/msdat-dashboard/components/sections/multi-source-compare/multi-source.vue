@@ -96,7 +96,7 @@ export default {
     formatDataToSeriesMapFormat(data) {
       return data?.map((item) => [
         this.dlGetLocation(item.location).name,
-        Number.parseFloat(item.value),
+        Number.parseFloat(item.value) || 0,
       ]);
     },
     formatDataToSeriesLineFormat(data) {
