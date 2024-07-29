@@ -370,6 +370,12 @@ export default {
     if (data) commit('setAllPublicDashboards', Object.values(data));
     return { data };
   },
+  // RETRIEVE DASHBOARD DETAILS
+  async getDashboardDetails(_, id) {
+    const { data } = await axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);
+    return { data };
+  },
+
   // RETRIEVE A SINGLE DASHBOARD BY ID
   getDashboard(_, id) {
     return axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);

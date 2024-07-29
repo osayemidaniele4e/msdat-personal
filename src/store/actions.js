@@ -126,4 +126,21 @@ export default {
       console.log(error);
     }
   },
+  async GET_USERS({ commit }) {
+    try {
+      const response = await axiosInstance.get('/users/?size=1000');
+      const { results } = response.data;
+      commit('setUsers', results);
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  async GET_ACTIVE_DASHBOARDS({ commit }) {
+    try {
+      const response = await axiosInstance.get('/dashboards');
+      commit('setActiveDashboards', response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };

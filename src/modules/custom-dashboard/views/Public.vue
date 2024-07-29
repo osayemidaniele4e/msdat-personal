@@ -35,7 +35,7 @@ export default {
     this.$store.dispatch('customDashboard', false);
   },
   mounted() {
-    const id = this.$route.params.id;
+    const id = this.$route.params.id || this.$route.query.id;
     // GET A DASHBOARD BY ID
     // Check confirmation status
     // Route to Dashboard if approved, otherwise display unapproved status.
@@ -58,7 +58,8 @@ export default {
 
           const t = config.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
           this.$router.push({
-            path: `/dashboard/${t}`,
+            path: `/dashboard/${t}/${id}/`,
+            query: { id },
             component: () => import('../../dynamic-dashboard/index.vue'),
           });
         } else if (data.disapproved) {
