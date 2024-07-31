@@ -91,6 +91,13 @@
                   >
                   <b-icon font-scale="2" icon="dot"></b-icon>
                   <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                  <!-- Modal for share Dashboard -->
+                 <b-icon font-scale="2" icon="dot"></b-icon>
+                  <span style="cursor: pointer" @click="shareDash">Share Dashboard</span>
+
+  <b-modal id="share-dashboard-modal" title="Share Dashboard" hide-footer>
+    <shareDashboard />
+  </b-modal>
                 </small>
               </div>
             </h2>
@@ -314,6 +321,7 @@ import { mapGetters } from 'vuex';
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
 import Sidebar from '../components/Sidebar.vue';
+import shareDashboard from '../components/shareDashboard.vue';
 import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
 
@@ -325,6 +333,7 @@ export default {
     SideBar: Sidebar,
     LoginSidebar,
     SignUp,
+    shareDashboard,
   },
   data() {
     return {
@@ -417,6 +426,9 @@ export default {
       this.$store.commit('startEdit');
       this.$router.push('/my-dashboard/details');
     },
+    shareDash() {
+      this.$bvModal.show('share-dashboard-modal');
+    },
   },
   watch: {
     $route: {
@@ -440,6 +452,9 @@ export default {
     dashboardImage: {
       type: File,
     },
+  },
+  mounted() {
+    console.log('usserrrr', this.getUser.id);
   },
 };
 </script>

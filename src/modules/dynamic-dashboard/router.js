@@ -20,6 +20,18 @@ export default [
   {
     path: '/dashboard/:name',
     component: () => import('./index.vue'),
+    props: (route) => ({ id: route.query.id }),
+    // meta: {
+    //   title: 'MSDAT PLATFORM', // The title of the page on the Header.This ia also changed dynamically
+    // },
+    meta: (route) => ({
+      title: route.params.name,
+    }),
+  },
+  {
+    path: '/dashboard/:name/:id',
+    component: () => import('./index.vue'),
+    props: (route) => ({ id: route.query.id }),
     // meta: {
     //   title: 'MSDAT PLATFORM', // The title of the page on the Header.This ia also changed dynamically
     // },

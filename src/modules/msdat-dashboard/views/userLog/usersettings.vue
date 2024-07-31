@@ -1,6 +1,6 @@
 <template>
   <b-col class="p-lg-5 p-3">
-    <b-col class="profilr-info" >
+    <b-col class="profile-info" >
       <h4>Profile Info</h4>
       <b-row class="p-3">
         <!-- Profile Info Form Fields -->
