@@ -55,7 +55,6 @@ export default {
             payload: val,
             entity: 'indicator',
           };
-          console.log(val, 'HH@@HH');
           const indicatorId = val.id;
           const indicatorFirstRelated = val.first_related;
           const indicatorSecondRelated = val.second_related;
