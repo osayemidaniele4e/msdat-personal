@@ -9,7 +9,7 @@ export default {
   getValueType: 'valuetypes/?size=1500',
   getLinks: 'links/?size=1500',
   getFactors: 'factors/?size=1500',
-  getDSI: 'datasource_specific_indicator/?size=1500',
+  getDSI: 'datasource_specific_indicator/?size=2000',
   getData: 'data/?size=1500&',
   getTableData: 'data/?size=1&',
   getUpdatedDataDate: 'after_datetime/?size=1500',
