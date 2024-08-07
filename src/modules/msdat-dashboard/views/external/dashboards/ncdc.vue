@@ -22,19 +22,21 @@
 <script>
 import theHeader from '../../about/layout/theHeader.vue';
 import theFooter from '../../about/layout/theFooter.vue';
+
 export default {
   name: 'NCDC',
   components: {
     theHeader,
     theFooter,
   },
+  // https://public.tableau.com/views/NationalDiseaseDashboardNCDC2022/Dashboard1?:language=en-US&:embed=y&:sid=&:redirect=auth&:embed_code_version=3&:loadOrderID=0&:display_count=y&publish=yes&:origin=viz_share_link
   data() {
     return {
       title: '',
       configObject: {}, // This should be an Object initially
-      url: 'https://public.tableau.com/views/NCDCHistoricalDashboard/Dashboard_1?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url: 'https://public.tableau.com/views/NationalDiseaseDashboardNCDC2022/Dashboard1?:language=en-US&:embed=y&:sid=&:redirect=auth&:embed_code_version=3&:loadOrderID=0&:display_count=y&publish=yes&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '70%',
-      height: '400',
+      height: '600',
       showComing: true,
     };
   },
