@@ -63,6 +63,12 @@ export default {
   },
 
   methods: {
+    cleanChart() {
+      // eslint-disable-next-line no-param-reassign
+      this.chart.series[0].data = this.chart.series[0].data.filter(
+        (item) => item.name === 'National',
+      );
+    },
     /**
      * @method computeChartPlotLines is from the
      * @mixin formatter
@@ -96,7 +102,11 @@ export default {
         xAxis: {
           type: 'category',
           min: -0.3,
-          max: dataSeries.reduce((total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length, 0) - 0.7,
+          max:
+            dataSeries.reduce(
+              (total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length,
+              0,
+            ) - 0.7,
         },
         yAxis: {
           gridLineWidth: 0,
@@ -112,6 +122,7 @@ export default {
         series: dataSeries,
       };
       this.chart.yAxis.title.text = displayFactor;
+      console.log(this.chart, 'this.chart @');
     },
 
     getZonalDataInHighChartFormat(data) {
@@ -209,6 +220,7 @@ export default {
               data: sortedData,
             });
             this.formatToHighChart(chartSeries);
+            this.cleanChart();
           } else {
             // already know the zonal levels/parent of all the value
             // index starts at one to skip region data for the series
@@ -245,6 +257,7 @@ export default {
             chartSeries.unshift(zonalZee);
             // chartSeries.unshift(zonalZee); //  removed this part
             this.formatToHighChart(chartSeries);
+            this.cleanChart();
           }
         }
         // Plot for LGAs
