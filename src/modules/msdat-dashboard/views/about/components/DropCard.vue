@@ -28,13 +28,13 @@
           >
                      <router-link to="/external-ndr1" target="_blank"
             ><b-list-group-item
-              >National Data Repository Dashboard 1</b-list-group-item
+              >HIV/AIDs National Repository Dashboard 1</b-list-group-item
             ></router-link
           >
 
              <router-link to="/external-ndr2" target="_blank"
             ><b-list-group-item
-              >National Data Repository Dashboard 2</b-list-group-item
+              >HIV/AIDs National Repository Dashboard 2</b-list-group-item
             ></router-link
           >
           <a

@@ -11,13 +11,13 @@
       <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm base">
         <template #title>
           <h5 class="font-weight-bold work-sans text-white">
-            National Data Repository Dashboard 2
+            HIV/AIDs National Repository Dashboard 2
           </h5>
         </template>
 
         <div class="dashboard-link-container">
           <p class="dashboard-link-description">
-            Click the link below to view the National Data Repository Dashboard 2
+            Click the link below to view the HIV/AIDs National Repository Dashboard 2
           </p>
           <button
             class="btn btn-primary dashboard-link-button mt-2"
