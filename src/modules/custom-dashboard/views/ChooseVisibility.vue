@@ -1,5 +1,4 @@
 <template>
-
     <div>
         choose visibility
     </div>

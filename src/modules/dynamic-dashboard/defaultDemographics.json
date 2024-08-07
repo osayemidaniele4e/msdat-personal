@@ -18,7 +18,7 @@
     "second_related": null,
     "third_related": null,
     "fourth_related": null,
-    "datasources": [6, 7, 8, 18, 19, 25, 27, 28, 36],
+    "datasources": [6, 7, 8, 18, 19, 25, 27, 28],
     "group": []
   },
   "entity": "indicator"

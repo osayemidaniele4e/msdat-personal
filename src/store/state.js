@@ -5,4 +5,6 @@ export default {
   status: true,
   submittedPlugins: [],
   pluginsImported: [],
+  users: [],
+  activeDashboards: [],
 };

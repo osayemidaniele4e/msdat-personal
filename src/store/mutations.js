@@ -21,4 +21,10 @@ export default {
   setPluginsImported(state, payload) {
     state.pluginsImported = payload;
   },
+  setUsers(state, users) {
+    state.users = users;
+  },
+  setActiveDashboards(state, dashboards) {
+    state.activeDashboards = dashboards;
+  },
 };

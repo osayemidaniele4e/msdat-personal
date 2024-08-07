@@ -205,7 +205,13 @@ export default {
           dataLabels: {
             enabled: true,
             formatter() {
-              return Highcharts.numberFormat(this.y, 0, '.', ',');
+              // Check if the value is an integer (no decimals)
+              if (Number.isInteger(this.y)) {
+                // If the value is over 1000, add a thousand separator
+                return this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y;
+              }
+              // Return the value as is for decimal numbers
+              return this.y;
             },
           },
           pointWidth: 10, // Fixes the width of each point
@@ -215,7 +221,13 @@ export default {
       // Adding tooltip formatter
       chartOptions.tooltip = {
         pointFormatter() {
-          return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${Highcharts.numberFormat(this.y, 0, '.', ',')}</b><br/>`;
+          // Check if the value is an integer (no decimals)
+          if (Number.isInteger(this.y)) {
+            // If the value is over 1000, add a thousand separator
+            return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y}</b><br/>`;
+          }
+          // Return the value as is for decimal numbers
+          return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y}</b><br/>`;
         },
       };
 
