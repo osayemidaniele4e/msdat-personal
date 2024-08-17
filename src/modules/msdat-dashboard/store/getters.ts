@@ -6,6 +6,8 @@ const getters = {
   getIsResponding: (state) => state.isResponding,
   getIsTypingEffect: (state) => state.isTypingEffect,
   getConversation: (state) => state.conversationHistory,
+  getIndicators: (state) => state.controlConfig[0].setup[0].options,
+  getControlConfig: (state) => state.controlConfig[0].payload,
 };
 
 export default getters;
