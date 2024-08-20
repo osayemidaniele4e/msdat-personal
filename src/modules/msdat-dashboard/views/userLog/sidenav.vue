@@ -100,7 +100,7 @@ import Footer from '@/modules/msdat-dashboard/views/about/layout/theFooter.vue';
 import Profile from './profile.vue';
 import Notification from './notifications.vue';
 import userActivity from './userActivity.vue';
-import savedDashboards from './savedDashboards.vue';
+import savedDashboards from './UpdatedSavedDashboard.vue';
 import createPlugin from './createPlugin.vue';
 import approvePlugin from './approvePlugin.vue';
 import userSettings from './usersettings.vue';
