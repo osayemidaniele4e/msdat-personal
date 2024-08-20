@@ -27,7 +27,10 @@
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
-          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis" class='text-nowrap'>
+          <tr
+            v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
+            class="text-nowrap"
+          >
             <div class="nhmis_month_head">
               <span>NHMIS-DHIS2</span>
               <span>(monthly)</span>
@@ -43,7 +46,7 @@
               @key="getKey"
             />
           </tr>
-          <tr v-else class='text-nowrap'>
+          <tr v-else class="text-nowrap">
             <TableDataSourceCell
               v-for="(dt, i) in source"
               :key="`${i}-row4`"
@@ -59,7 +62,7 @@
           <!-- The display the the first indicator of the array of indicator -->
           <!-- please note that the first indicator is assumed to be
           the main indicator and others, the related indicators -->
-
+          <!-- <pre>{{ dataArray  }}</pre> -->
           <TableDataRow
             class="base_subCard_header text-white"
             :rowData="dataArray[0]"
@@ -135,12 +138,15 @@
           </tr>
           <!-- This loops  the the other indicator of the array of indicators -->
           <!-- TODO: fix -->
+
           <template v-for="(indicatorData, index) in dataArray">
             <TableDataRow
               :key="indicatorData.indicator.id"
               v-if="index > 0"
               :rowData="indicatorData"
               @indicator-info:clicked="$emit('selected:indicator-info', $event)"
+              related="related"
+              @replaceContent="replaceContent"
             >
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
@@ -386,6 +392,10 @@ export default {
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
         this.classify_nm[0][1] += 1;
       }
+    },
+
+    replaceContent(item) {
+      this.$emit('replaceItem', item);
     },
 
     /**
