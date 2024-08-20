@@ -237,5 +237,6 @@ tr {
 .drop-width {
   width: 400px;
   height: 300px;
+  z-index: 1;
 }
 </style>
