@@ -187,12 +187,10 @@ export default {
       // Calling enpoint to process data
       // Getting response of predictive data
       // Putting the respnse in the ChartSeriesObject
-      const newD = ChartSeriesObject.find((item) => item.name === this.getSelectedDataSourceID);
-      if (newD.data.length >= 15) {
+      const { data } = ChartSeriesObject.find((item) => item.name === this.getSelectedDataSourceID);
+      if (data.length >= 7) {
         try {
-          await this.PREDICTIVE_ANALYSIS({
-            data: ChartSeriesObject[0].data,
-          });
+          await this.PREDICTIVE_ANALYSIS({ data });
           const yearArray = [];
           if (this.getPredictedData.prediction !== undefined) {
             this.getPredictedData.prediction.forEach((item) => {
