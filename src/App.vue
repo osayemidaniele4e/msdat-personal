@@ -1,20 +1,21 @@
 <template>
   <div id="app">
     <router-view />
-    <feedback/>
+     <feedback/>
+
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
+import feedback from './views/feedback.vue';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
 import reviewPlugin from './modules/plugins/reviewPlugin';
 import screenshotManager from './modules/plugins/screenshotManager';
 import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
-import feedback from './views/feedback.vue';
 
 export default {
   components: {
