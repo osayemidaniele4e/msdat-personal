@@ -1,17 +1,19 @@
 <template>
-  <div class="parent">
+  <div class="parent d-flex justify-content-center">
     <div class="loader" v-if="isLoading">
       <!-- <the-loader /> -->
       <div class="spinner-border spinner-height text-success mx-3" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <b-embed
-      type="iframe"
-      :src="url"
-      :width="width"
-      :height="height"
-    ></b-embed>
+    <div style="max-width: 1400px; width: 100%">
+      <b-embed
+        type="iframe"
+        :src="url"
+        :width="width"
+        :height="height"
+      ></b-embed>
+    </div>
   </div>
 </template>
 
@@ -28,7 +30,7 @@ export default {
       isLoading: true,
       url: 'https://public.tableau.com/views/Descriptiveanalytics_17060149555940/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
-      height: 'auto',
+      height: '400',
     };
   },
   methods: {
