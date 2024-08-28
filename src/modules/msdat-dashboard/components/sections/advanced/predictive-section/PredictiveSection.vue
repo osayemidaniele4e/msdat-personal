@@ -156,7 +156,7 @@ export default {
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const { seriesArray, years } = await this.toHighChartSeriesSetup(
-            this.values ? [this.values.datasource] : dataSources,
+            this.values?.datasource ? [this.values.datasource] : dataSources,
           );
           await this.setUpHighChartConfig(seriesArray, years);
         }
