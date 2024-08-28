@@ -166,6 +166,23 @@ export default {
       deep: true,
       immediate: true,
     },
+    'values.location': {
+      async handler() {
+        this.loading = true;
+        // change get datasource function to API matching indicator to dataSource
+        if (this.values.indicator.id !== undefined) {
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(
+            this.values ? [this.values.datasource] : dataSources,
+          );
+          await this.setUpHighChartConfig(seriesArray, years);
+        }
+
+        this.loading = false;
+      },
+      deep: true,
+      immediate: false,
+    },
   },
   computed: {
     ...mapGetters(['getPredictedData', 'getSelectedDataSourceID']),
