@@ -48,7 +48,9 @@
             sources.
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
+        <div class="bar-chart-container">
+          <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
+        </div>
         <div class="no_prediction" v-if="showNoAvailablePrediction">
           <span
             >No prediction is available for <b>{{ values.indicator.short_name }}</b></span
@@ -153,7 +155,9 @@ export default {
         // change get datasource function to API matching indicator to dataSource
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(
+            this.values ? [this.values.datasource] : dataSources,
+          );
           await this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -402,9 +406,15 @@ div.iddc_wrapper {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: 400px;
     background: #fff;
   }
+}
+.bar-chart-container {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .desc-text {
   font-size: 0.9rem !important;
