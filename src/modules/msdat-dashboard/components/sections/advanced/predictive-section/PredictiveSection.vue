@@ -48,6 +48,7 @@
             sources.
           </p>
         </template>
+        <!-- <pre>{{ ChartOptions }}</pre> -->
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
         <div class="no_prediction" v-if="showNoAvailablePrediction">
           <span
@@ -153,7 +154,10 @@ export default {
         // change get datasource function to API matching indicator to dataSource
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          console.log(this.values, 'seriesArray, years');
+          console.log(dataSources, 'seriesArray, years');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          console.log(seriesArray, years, 'seriesArray, years 1');
           await this.setUpHighChartConfig(seriesArray, years);
         }
 

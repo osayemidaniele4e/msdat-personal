@@ -22,6 +22,7 @@ export interface State {
   isResponding: boolean;
   conversationHistory: Conversation[];
   selectedSection: string;
+  location:string
 }
 
 export type Conversation = {
