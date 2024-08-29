@@ -15,6 +15,56 @@ export default {
       defaultLocationDropdown: [],
       defaultYearDropdown: [],
       cpIsLoading: false,
+      additionalLocation: [
+        {
+          id: 2,
+          name: 'North-Central',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.900629Z',
+          updated_at: '2022-10-20T09:08:41.900636Z',
+        },
+        {
+          id: 3,
+          name: 'North-East',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.901842Z',
+          updated_at: '2022-10-20T09:08:41.901848Z',
+        },
+        {
+          id: 4,
+          name: 'North-West',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.902790Z',
+          updated_at: '2022-10-20T09:08:41.902797Z',
+        },
+        {
+          id: 5,
+          name: 'South-East',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.903856Z',
+          updated_at: '2022-10-20T09:08:41.903866Z',
+        },
+        {
+          id: 6,
+          name: 'South-South',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.905143Z',
+          updated_at: '2022-10-20T09:08:41.905153Z',
+        },
+        {
+          id: 7,
+          name: 'South-West',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.906410Z',
+          updated_at: '2022-10-20T09:08:41.906420Z',
+        },
+      ],
     };
   },
   watch: {
@@ -152,10 +202,13 @@ export default {
       let locations = this.dlGetLocation({ level: 3 });
       locations.unshift(this.dlGetLocation(1));
       locations = locations.filter(({ id }) => data.includes(id));
+      locations.push(...this.additionalLocation);
+      const uniqueItems = Array.from(new Map(locations.map((obj) => [obj.id, obj])).values());
+      console.log(uniqueItems, 'UNIQUE HENRY');
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
-        payload: locations,
+        payload: uniqueItems,
       });
 
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {

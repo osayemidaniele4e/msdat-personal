@@ -39,7 +39,7 @@ import CorrelationAnalysisConfig from '../../components/sections/advanced/correl
 import IndicatorComparisonConfig from '../../components/sections/advanced/indicator-comparison-section/indicator-comparison-section-config';
 import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
 import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
-import ScatterplotConfig from '../../components/sections/advanced/scatterplot-section/scatterplot-section-config';
+import BubbleChartConfig from '../../components/sections/advanced/scatterplot-section/scatterplot-section-config';
 
 export default {
   name: 'Landing',
@@ -71,8 +71,8 @@ export default {
           id: 'Multi-source Indicator Comparison',
         },
         {
-          title: 'Scatter Plot Analysis',
-          id: 'ScatterPlotAnalysis',
+          title: 'Bubble Chart Analysis',
+          id: 'BubbleChartAnalysis',
         },
       ],
     };
@@ -93,7 +93,7 @@ export default {
     this.ADD_CONTROL_PANEL(IndicatorComparisonConfig);
     this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
     this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
-    this.ADD_CONTROL_PANEL(ScatterplotConfig);
+    this.ADD_CONTROL_PANEL(BubbleChartConfig);
   },
 };
 </script>

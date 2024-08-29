@@ -46,6 +46,7 @@ const state: State = {
   isResponding: false,
   conversationHistory: [],
   selectedSection: 'Indicator Overview',
+  location: 'Nigeria',
 };
 
 export default state;

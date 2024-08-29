@@ -70,7 +70,7 @@ const mutations: MutationTree<State> = {
       state.controlConfig[obj.panelIndex].setup[obj.groupIndex][keyIndex].options = obj.values;
     } else {
       const keyIndex = state.controlConfig[obj.panelIndex].setup.findIndex(
-        (item) => item.key === obj.key
+        (item) => item.key === obj.key,
       );
       if (state.controlConfig[obj.panelIndex].setup[keyIndex] !== undefined) {
         state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj?.values;
@@ -89,7 +89,9 @@ const mutations: MutationTree<State> = {
    */
   setControlOptions: (
     state,
-    { panelIndex, controlIndex, controlIndex2, values, multipleSetup }
+    {
+      panelIndex, controlIndex, controlIndex2, values, multipleSetup,
+    },
   ) => {
     if (multipleSetup) {
       state.controlConfig[panelIndex].setup[controlIndex][controlIndex2].options = values;
@@ -127,6 +129,10 @@ const mutations: MutationTree<State> = {
 
   SET_SECTION: (state, text) => {
     state.selectedSection = text;
+  },
+
+  SET_LOCATION: (state, text) => {
+    state.location = text;
   },
 
   SET_MULTI_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
@@ -234,9 +240,9 @@ const mutations: MutationTree<State> = {
   UPDATE_ALL_YEARS: (state, payload) => {
     state.controlConfig.forEach((item) => {
       if (
-        item.label !== 'Multi-Source Comparison' &&
-        item.label !== 'Disaggregation' &&
-        item.label !== 'Dataset Comparison'
+        item.label !== 'Multi-Source Comparison'
+        && item.label !== 'Disaggregation'
+        && item.label !== 'Dataset Comparison'
       ) {
         item.setup.forEach((source) => {
           if (source.key === 'year') {

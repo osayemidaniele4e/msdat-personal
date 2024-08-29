@@ -1,5 +1,5 @@
 export default {
-  label: 'Scatterplot Analysis',
+  label: 'Bubble Chart Analysis',
   setup: [
   ],
   payload: {

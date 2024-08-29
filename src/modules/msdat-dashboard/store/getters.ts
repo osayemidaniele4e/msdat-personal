@@ -8,6 +8,7 @@ const getters = {
   getConversation: (state) => state.conversationHistory,
   getIndicators: (state) => state.controlConfig[0].setup[0].options,
   getControlConfig: (state) => state.controlConfig[0].payload,
+  getSelectedSection: (state) => state.selectedSection,
 };
 
 export default getters;
