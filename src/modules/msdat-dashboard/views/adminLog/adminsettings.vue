@@ -1,122 +1,126 @@
 <template>
- <b-col class="p-lg-5 p-3">
-   <b-col class="admin-info" >
-     <h4>Admin Info</h4>
-     <b-row class="p-3">
-       <!-- Admin Info Form Fields -->
-       <b-col cols="6">
-         <b-form-group id="input-group-3" label="Username" label-for="username">
-           <b-form-input id="username" v-model="user.username" type="text" disabled></b-form-input>
-         </b-form-group>
-       </b-col>
-       <b-col cols="6">
-         <b-form-group id="input-group-4" label="Email Address" label-for="email">
-           <b-form-input id="email" v-model="user.email" type="email" disabled></b-form-input>
-         </b-form-group>
-       </b-col>
-     </b-row>
-   </b-col>
-   <b-col class="password-update">
-     <h4>Password Update</h4>
-     <b-form class="form-container" @submit.prevent="changePassword">
-       <div class="form-row">
-         <b-form-group id="input-group-7" class="form-group">
-           <div class="input-label">
-             <label for="new-password">New Password</label>
-             <i :class="passwordToggleIcon.newPassword" @click="togglePasswordVisibility('newPassword')" style="cursor: pointer;"></i>
-           </div>
-           <b-form-input id="new-password" :type="passwordFieldType.newPassword" v-model="newPassword" class="form-input" required></b-form-input>
-           <b-progress :max="100" class="progress mt-2" :value="passwordStrength">
-             <b-progress-bar :value="passwordStrength" class="progress-bar"></b-progress-bar>
-           </b-progress>
-           <span :class="passwordStrengthClass">{{ passwordStrengthText }}</span>
-         </b-form-group>
-         <b-form-group id="input-group-8" class="form-group">
-           <div class="input-label">
-             <label for="confirm-password">Confirm Password</label>
-             <i :class="passwordToggleIcon.confirmPassword" @click="togglePasswordVisibility('confirmPassword')" style="cursor: pointer;"></i>
-           </div>
-           <b-form-input id="confirm-password" :type="passwordFieldType.confirmPassword" v-model="confirmPassword" class="form-input" required></b-form-input>
-           <span class="strength-text" v-if="passwordsMatch">MATCH</span>
-           <span class="text-danger" v-else>DOES NOT MATCH</span>
-         </b-form-group>
-       </div>
-       <b-button type="submit" variant="primary" class="btn">CHANGE PASSWORD</b-button>
-     </b-form>
-   </b-col>
- <!-- Security section -->
- <b-col class="security-section mt-4">
-      <h4>Security</h4>
-      <b-form  @submit.prevent="saveSecuritySettings">
-        <b-form-group class="sec-box" label="Two-Factor Authentication">
-          <p>Select which two-factors authentication options are available to your users.</p>
-          <b-row  >
-            <b-col cols="3">
-              <b-form-checkbox v-model="securitySettings.sms" value="SMS/Phone Number">
-                SMS/Phone Number
-              </b-form-checkbox>
-            </b-col>
-            <b-col cols="3">
-              <b-form-checkbox v-model="securitySettings.email" value="Email">
-                Email
-              </b-form-checkbox>
-            </b-col>
-            <b-col cols="3">
-              <b-form-checkbox v-model="securitySettings.googleAuthenticator" value="Google Authenticator">
-                Google Authenticator
-              </b-form-checkbox>
-            </b-col>
-            <b-col cols="3">
-              <b-form-checkbox v-model="securitySettings.microsoftAuthenticator" value="Microsoft Authenticator">
-                Microsoft Authenticator
-              </b-form-checkbox>
-            </b-col>
-          </b-row>
-        </b-form-group>
-        <b-row class="mt-3 btn-double">
-            <b-button type="reset" class="btn-res">CANCEL</b-button>
-            <b-button type="submit" class="btn-green">SAVE</b-button>
-        </b-row>
+ <b-col>
+  <b-col  class="p-lg-5 p-3">
+    <b-col class="admin-info" >
+      <h4>Admin Info</h4>
+      <b-row class="p-3">
+        <!-- Admin Info Form Fields -->
+        <b-col cols="6">
+          <b-form-group id="input-group-3" label="Username" label-for="username">
+            <b-form-input id="username" v-model="user.username" type="text" disabled></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="6">
+          <b-form-group id="input-group-4" label="Email Address" label-for="email">
+            <b-form-input id="email" v-model="user.email" type="email" disabled></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row>
+    </b-col>
+    <b-col class="password-update">
+      <h4>Password Update</h4>
+      <b-form class="form-container" @submit.prevent="changePassword">
+        <div class="form-row">
+          <b-form-group id="input-group-7" class="form-group">
+            <div class="input-label">
+              <label for="new-password">New Password</label>
+              <i :class="passwordToggleIcon.newPassword" @click="togglePasswordVisibility('newPassword')" style="cursor: pointer;"></i>
+            </div>
+            <b-form-input id="new-password" :type="passwordFieldType.newPassword" v-model="newPassword" class="form-input" required></b-form-input>
+            <b-progress :max="100" class="progress mt-2" :value="passwordStrength">
+              <b-progress-bar :value="passwordStrength" class="progress-bar"></b-progress-bar>
+            </b-progress>
+            <span :class="passwordStrengthClass">{{ passwordStrengthText }}</span>
+          </b-form-group>
+          <b-form-group id="input-group-8" class="form-group">
+            <div class="input-label">
+              <label for="confirm-password">Confirm Password</label>
+              <i :class="passwordToggleIcon.confirmPassword" @click="togglePasswordVisibility('confirmPassword')" style="cursor: pointer;"></i>
+            </div>
+            <b-form-input id="confirm-password" :type="passwordFieldType.confirmPassword" v-model="confirmPassword" class="form-input" required></b-form-input>
+            <span class="strength-text" v-if="passwordsMatch">MATCH</span>
+            <span class="text-danger" v-else>DOES NOT MATCH</span>
+          </b-form-group>
+        </div>
+        <b-button type="submit" variant="primary" class="btn">CHANGE PASSWORD</b-button>
       </b-form>
     </b-col>
-   <b-col class="notifications">
-   <h4>Notifications</h4>
-   <p>Toggle on and off to determine what forms of notification you get in your email.</p>
-   <b-row class="item-box p-3">
-     <div v-for="(notification, index) in notifications" :key="index" class="notification-item">
-       <div>
-        <h3>{{ notification.title }}</h3>
-         <p>{{ notification.description }}</p>
-       </div>
-       <b-form-checkbox
-         v-model="notification.enabled"
-         switch
-         size="lg"
-         :name="'notification-' + index"
-       >
-       </b-form-checkbox>
-     </div>
-   </b-row>
- </b-col>
-   <b-col class="plugin-toggle">
-   <h4>Plug-ins</h4>
-   <p>Toggle on and off to determine which plug-ins you want to enable or disable.</p>
-   <b-row class="item-box p-3">
-     <div v-for="(plugin, index) in plugins" :key="index" class="plugin-item">
-       <div>
-         <h3>{{ plugin.title }}</h3>
-         <p>{{ plugin.description }}</p>
-       </div>
-       <b-form-checkbox
-         v-model="plugin.enabled"
-         switch
-         size="lg"
-         :name="'plugin-' + index"
-       >
-       </b-form-checkbox>
-     </div>
-   </b-row>
- </b-col>
+  <!-- Security section -->
+  <b-col class="security-section mt-4">
+       <h4>Security</h4>
+       <b-form  @submit.prevent="saveSecuritySettings">
+         <b-form-group class="sec-box" label="Two-Factor Authentication">
+           <p>Select which two-factors authentication options are available to your users.</p>
+           <b-row  >
+             <b-col cols="3">
+               <b-form-checkbox v-model="securitySettings.sms" value="SMS/Phone Number">
+                 SMS/Phone Number
+               </b-form-checkbox>
+             </b-col>
+             <b-col cols="3">
+               <b-form-checkbox v-model="securitySettings.email" value="Email">
+                 Email
+               </b-form-checkbox>
+             </b-col>
+             <b-col cols="3">
+               <b-form-checkbox v-model="securitySettings.googleAuthenticator" value="Google Authenticator">
+                 Google Authenticator
+               </b-form-checkbox>
+             </b-col>
+             <b-col cols="3">
+               <b-form-checkbox v-model="securitySettings.microsoftAuthenticator" value="Microsoft Authenticator">
+                 Microsoft Authenticator
+               </b-form-checkbox>
+             </b-col>
+           </b-row>
+         </b-form-group>
+       </b-form>
+     </b-col>
+    <b-col class="notifications">
+    <h4>Notifications</h4>
+    <p>Toggle on and off to determine what forms of notification you get in your email.</p>
+    <b-row class="item-box p-3">
+      <div v-for="(notification, index) in notifications" :key="index" class="notification-item">
+        <div>
+         <h3>{{ notification.title }}</h3>
+          <p>{{ notification.description }}</p>
+        </div>
+        <b-form-checkbox
+          v-model="notification.enabled"
+          switch
+          size="lg"
+          :name="'notification-' + index"
+        >
+        </b-form-checkbox>
+      </div>
+    </b-row>
+  </b-col>
+    <b-col class="plugin-toggle">
+    <h4>Plug-ins</h4>
+    <p>Toggle on and off to determine which plug-ins you want to enable or disable.</p>
+    <b-row class="item-box p-3">
+      <div v-for="(plugin, index) in plugins" :key="index" class="plugin-item">
+        <div>
+          <h3>{{ plugin.title }}</h3>
+          <p>{{ plugin.description }}</p>
+        </div>
+        <b-form-checkbox
+          v-model="plugin.enabled"
+          switch
+          size="lg"
+          :name="'plugin-' + index"
+        >
+        </b-form-checkbox>
+      </div>
+    </b-row>
+  </b-col>
+    </b-col>
+ <div class="mt-3 btn-double">
+  <div class="inner-box">
+    <b-button type="reset" class="btn-res">CANCEL</b-button>
+    <b-button type="submit" class="btn-green">SAVE</b-button>
+    </div>
+        </div>
  </b-col>
 </template>
 
@@ -147,9 +151,9 @@ export default {
       ],
       notifications: [
         { title: 'Updates', description: 'Receive notifications on updates made to the MSDAT Platform.', enabled: true },
-        { title: 'Dashboard View', description: 'Receive notifications when a user views your public custom dashboard(s).', enabled: true },
-        { title: 'Indicators', description: 'Receive notifications when a new indicator is available on the platform.', enabled: false },
-        { title: 'Data Sources', description: 'Receive notifications when a new data source is available on the platform.', enabled: true },
+        { title: 'New User', description: 'Receive notifications when a user views your public custom dashboard(s).', enabled: true },
+        { title: 'Custom Dashboard', description: 'Receive notifications when a custom dashboard is made public.', enabled: false },
+        { title: 'Admin Activities', description: 'Receive notifications to monitor login activities of users with admin access.', enabled: true },
         { title: 'Plug-Ins', description: 'Receive notifications when a new plug-in is available on the platform.', enabled: false },
       ],
       securitySettings: {
@@ -369,11 +373,25 @@ b-form-checkbox {
 }
 
 .btn-double{
+  background-color: #F2FAFA;
  display: flex;
+ z-index: 999;
+ position: fixed;
+ width: 100%;
+ bottom: 0;
  justify-content: center;
  align-items: center;
  gap: 1rem;
+ padding: 10px;
+ margin-bottom: 35px;
+ margin-left: -30px;
 
+}
+
+.inner-box{
+ display: flex;
+ gap: 1rem;
+ margin-left: -100px;
 }
 
 .btn-res{
