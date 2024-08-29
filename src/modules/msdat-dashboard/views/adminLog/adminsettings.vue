@@ -382,7 +382,7 @@ b-form-checkbox {
  justify-content: center;
  align-items: center;
  gap: 1rem;
- padding: 10px;
+ padding:10px 0;
  margin-bottom: 35px;
  margin-left: -30px;
 
@@ -390,8 +390,8 @@ b-form-checkbox {
 
 .inner-box{
  display: flex;
- gap: 1rem;
- margin-left: -100px;
+ gap: 2rem;
+ margin-left: -250px;
 }
 
 .btn-res{
@@ -499,6 +499,13 @@ b-form-checkbox {
 @media (max-width: 768px) {
  .password-update .btn {
  width: 100%;
+ }
+
+ .inner-box{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-left: -120px;
  }
 }
 </style>
