@@ -43,6 +43,7 @@ export default {
       selectedIndex: 0,
       title: 'Indicator Overview',
       checkIndex: 0,
+
     };
   },
 

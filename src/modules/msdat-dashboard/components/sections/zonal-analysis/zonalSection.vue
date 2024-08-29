@@ -20,6 +20,7 @@
           {{ controlPanelProps.year }}
         </p>
       </template>
+      <pre>{{ chart }}</pre>
       <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
     </base-sub-card>
   </base-overlay>
@@ -184,7 +185,7 @@ export default {
               (item) => this.dlGetLocation(item.location).parent === val.location.id,
             );
 
-            console.log(filteredLGADataForState, 'ANOTHER');
+            console.log(filteredLGADataForState, 'ANOTHER DATA');
 
             const formatToHighChart = (dataValues) => dataValues.map((item) => {
               let locationName = '';

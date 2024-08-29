@@ -81,6 +81,8 @@ export default {
           // this.addQueryParamToUrl();
         } else if (val && val.parent !== undefined) {
           localStorage.setItem('locationId', val.id);
+          console.log('LOCATION AREA', val);
+          // this.SET_LOCATION()
         }
         this.$emit('input', val);
       },
@@ -265,6 +267,7 @@ export default {
       'UPDATE_ALL_YEARS',
       'UPDATE_MULTI_YEARS',
       'setSelectedState',
+      'SET_LOCATION',
     ]),
     modifyDataSourceChildLabel(tag) {
       const tempArray = tag.split(' ');
