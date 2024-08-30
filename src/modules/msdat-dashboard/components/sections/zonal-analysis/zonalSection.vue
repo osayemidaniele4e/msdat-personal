@@ -20,7 +20,6 @@
           {{ controlPanelProps.year }}
         </p>
       </template>
-      <pre>{{ chart }}</pre>
       <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
     </base-sub-card>
   </base-overlay>
