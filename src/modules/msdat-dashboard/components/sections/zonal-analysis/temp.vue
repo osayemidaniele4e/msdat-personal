@@ -63,12 +63,17 @@ export default {
   },
 
   methods: {
+    cleanChart() {
+      // eslint-disable-next-line no-param-reassign
+      this.chart.series[0].data = this.chart.series[0].data.filter(
+        (item) => item.name === 'National',
+      );
+    },
     /**
      * @method computeChartPlotLines is from the
      * @mixin formatter
      */
     formatToHighChart(dataSeries) {
-      // console.log(dataSeries, 'dataSeries');
       const displayFactor = this.dlGetFactor(
         this.controlPanelProps.indicator.factor,
       ).display_factor;
@@ -78,10 +83,30 @@ export default {
           type: 'column',
           zoomType: 'xy',
         },
+        plotOptions: {
+          series: {
+            pointWidth: 10,
+            dataLabels: {
+              enabled: true,
+              useHTML: true,
+              format: '{point.y}',
+              style: {
+                fontSize: '10px',
+              },
+            },
+          },
+        },
+        tooltip: {
+          enabled: false,
+        },
         xAxis: {
           type: 'category',
           min: -0.3,
-          max: dataSeries.reduce((total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length, 0) - 0.7,
+          max:
+            dataSeries.reduce(
+              (total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length,
+              0,
+            ) - 0.7,
         },
         yAxis: {
           gridLineWidth: 0,
@@ -97,6 +122,7 @@ export default {
         series: dataSeries,
       };
       this.chart.yAxis.title.text = displayFactor;
+      console.log(this.chart, 'this.chart @');
     },
 
     getZonalDataInHighChartFormat(data) {
@@ -144,7 +170,6 @@ export default {
   watch: {
     controlPanelProps: {
       async handler(val) {
-        // console.log(val, 'dataSeries val');
         // debugger;
         this.chart = {};
         this.loader = true;
@@ -153,17 +178,29 @@ export default {
           datasource: val.datasource.id,
           period: val.year,
         });
-        // console.log(data, 'dataSeries data');
         if (data.length > 0) {
           if (val.location.id !== 1) {
             const filteredLGADataForState = data.filter(
               (item) => this.dlGetLocation(item.location).parent === val.location.id,
             );
 
-            const formatToHighChart = (dataValues) => dataValues.map((item) => [
-              this.dlGetLocation(item.location).name,
-              parseFloat(item.value),
-            ]);
+            console.log(filteredLGADataForState, 'ANOTHER DATA');
+
+            const formatToHighChart = (dataValues) => dataValues.map((item) => {
+              let locationName = '';
+              let value = null;
+
+              if (item && item.location !== undefined) {
+                const location = this.dlGetLocation(item.location);
+                locationName = location ? location.name : '';
+              }
+
+              if (item && item.value !== undefined) {
+                value = parseFloat(item.value);
+              }
+
+              return [locationName, value];
+            });
 
             const chartSeries = [];
             const formattedData = formatToHighChart(filteredLGADataForState);
@@ -183,6 +220,7 @@ export default {
               data: sortedData,
             });
             this.formatToHighChart(chartSeries);
+            this.cleanChart();
           } else {
             // already know the zonal levels/parent of all the value
             // index starts at one to skip region data for the series
@@ -219,6 +257,7 @@ export default {
             chartSeries.unshift(zonalZee);
             // chartSeries.unshift(zonalZee); //  removed this part
             this.formatToHighChart(chartSeries);
+            this.cleanChart();
           }
         }
         // Plot for LGAs

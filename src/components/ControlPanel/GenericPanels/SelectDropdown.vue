@@ -1,28 +1,64 @@
 <template>
-  <multiselect :id="formattedID" v-model="selected" :options="options" searchable close-on-select :allow-empty="allowEmpty" :placeholder="placeholder" v-bind="multiSelectProps" selectLabel="" data-visted="notVisited" deselectLabel="" autocomplete="off" class="custom-placeholder" @open="handleOpen"  @close="handleClose" @search-change="handleSearchChange">
+  <div class="">
+    <multiselect
+    :id="formattedID"
+    v-model="selected"
+    :options="options"
+    searchable
+    close-on-select
+    :allow-empty="allowEmpty"
+    :placeholder="placeholder"
+    v-bind="multiSelectProps"
+    selectLabel=""
+    data-visted="notVisited"
+    deselectLabel=""
+    autocomplete="off"
+    class="custom-placeholder"
+    @open="handleOpen"
+    @close="handleClose"
+    @search-change="handleSearchChange"
+  >
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
 
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
       <template v-if="props.option.$groupLabel">
         <span class="overflow-textg" :data-parent="props.option.$groupLabel">
           {{ props.option.$groupLabel }}
-          <span v-if="isCollapsibleActive" class="newGrouplabel" :class="{ 'open-caret': groupLabelStates[props.option.$groupLabel] }" @click.stop="toggleGroupLabel(props.option.$groupLabel)">
-            {{ groupLabelStates[props.option.$groupLabel] ? 'Click to collapse ▲' : 'Click to expand ▼' }}
+          <span
+            v-if="isCollapsibleActive"
+            class="newGrouplabel"
+            :class="{ 'open-caret': groupLabelStates[props.option.$groupLabel] }"
+            @click.stop="toggleGroupLabel(props.option.$groupLabel)"
+          >
+            {{
+              groupLabelStates[props.option.$groupLabel]
+                ? 'Click to collapse ▲'
+                : 'Click to expand ▼'
+            }}
           </span>
         </span>
       </template>
       <template v-if="props.option.item">
-        <div v-if="!props.option.$groupLabel" class="overflow-text" :data-child="modifyDataSourceChildLabel(props.option.item)">
+        <div
+          v-if="!props.option.$groupLabel"
+          class="overflow-text"
+          :data-child="modifyDataSourceChildLabel(props.option.item)"
+        >
           {{ props.option.item }}
         </div>
       </template>
       <template v-else-if="props.option.full_name">
-        <div v-if="!props.option.$groupLabel" class="overflow-text text-wrap" :data-child="props.option.program_area">
+        <div
+          v-if="!props.option.$groupLabel"
+          class="overflow-text text-wrap"
+          :data-child="props.option.program_area"
+        >
           {{ props.option.full_name }}
         </div>
       </template>
     </template>
   </multiselect>
+  </div>
 </template>
 <script>
 import { has } from 'lodash';
@@ -49,7 +85,12 @@ export default {
         return this.value;
       },
       set(val) {
-        if (val && typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
+        if (
+          val
+          && typeof val === 'object'
+          && val.id !== undefined
+          && val.program_area !== undefined
+        ) {
           this.selectedOption = val;
           // this.indicatorId = val.id;
           // this.saveIndicatorToStorage(val.id);
@@ -64,14 +105,24 @@ export default {
           localStorage.setItem('indicatorFirstRelated', indicatorFirstRelated);
           localStorage.setItem('indicatorSecondRelated', indicatorSecondRelated);
           this.SET_SELECTED_CONFIG(item);
-        } else if (val && typeof val === 'object' && val.id !== undefined && val.methodology !== undefined) {
+        } else if (
+          val
+          && typeof val === 'object'
+          && val.id !== undefined
+          && val.methodology !== undefined
+        ) {
           // this.saveDataSourceToStorage(val.id);
           const item = {
             payload: val,
             entity: 'dataSource',
           };
           this.SET_SELECTED_CONFIG(item);
-        } else if (val && typeof val !== 'object' && val.id === undefined && val.created_at === undefined) {
+        } else if (
+          val
+          && typeof val !== 'object'
+          && val.id === undefined
+          && val.created_at === undefined
+        ) {
           const item = {
             payload: val,
             entity: 'period',
@@ -81,7 +132,6 @@ export default {
           // this.addQueryParamToUrl();
         } else if (val && val.parent !== undefined) {
           localStorage.setItem('locationId', val.id);
-          console.log('LOCATION AREA', val);
           // this.SET_LOCATION()
         }
         this.$emit('input', val);
@@ -92,6 +142,7 @@ export default {
         if (this.multiSelectProps['group-label'] === 'datasource') {
           return 'groupedSources';
         }
+
         return this.id;
       }
       return null;
@@ -169,11 +220,11 @@ export default {
           }
 
           /**
-         * @description check if the update is for datasource
-         * if it is, check if the list is an array,
-         * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
-         * if its not an array, make the object the default selected
-         */
+           * @description check if the update is for datasource
+           * if it is, check if the list is an array,
+           * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
+           * if its not an array, make the object the default selected
+           */
 
           if (this.multiSelectProps?.label === 'datasource') {
             if (Array.isArray(newValue) && newValue?.length > 0) {
@@ -279,10 +330,10 @@ export default {
     },
 
     /**
-   * This method is called when a program area title
-   * is clicked, handles the show and hide of its
-   * child nodes and also the dropdown caret rotation
-   */
+     * This method is called when a program area title
+     * is clicked, handles the show and hide of its
+     * child nodes and also the dropdown caret rotation
+     */
     async pickProgramArea(event) {
       if (!this.isCollapsibleActive) return;
 
@@ -320,16 +371,13 @@ export default {
       }
       this.loading = false;
     },
-    async dummy() {
-      console.log('search Variable');
-    },
     /**
-   *  This methods acts only on multiselects having
-   *  grouped options like the indicator multiselects.
-   *  It makes this distinction based on the prop value
-   *  @var multiselectProps, its "group-value" property.
-   *
-   */
+     *  This methods acts only on multiselects having
+     *  grouped options like the indicator multiselects.
+     *  It makes this distinction based on the prop value
+     *  @var multiselectProps, its "group-value" property.
+     *
+     */
     initialCSS(multiselectID) {
       this.loading = true;
       if (this.multiSelectProps['group-values']) {
@@ -345,7 +393,8 @@ export default {
               } else {
                 iterable[i].style.display = 'none';
               }
-            } else if (tell === 'notVisited' || this.isSearchActive) { // Modified this condition
+            } else if (tell === 'notVisited' || this.isSearchActive) {
+              // Modified this condition
               iterable[i].removeEventListener('click', this.pickProgramArea); // Remove existing listener
               iterable[i].addEventListener('click', this.pickProgramArea); // Add new listener
               specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
@@ -435,7 +484,7 @@ span.multiselect__single::-webkit-scrollbar-thumb {
 }
 .overflow-text {
   cursor: pointer;
-   z-index: 999;
+  z-index: 999;
 }
 .overflow-textg {
   display: inline-block;
