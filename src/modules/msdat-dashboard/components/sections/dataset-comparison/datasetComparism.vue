@@ -342,10 +342,18 @@ export default {
             column: {
               dataLabels: {
                 enabled: true,
+                padding: 10,
+                style: {
+                  fontSize: '9px',
+                  fontFamily: '"Work Sans", sans-serif',
+                  backgroundColor: 'none',
+                },
                 formatter() {
                   return Highcharts.numberFormat(this.y, 0, '', ',');
                 },
               },
+              groupPadding: 0.08,
+              pointPadding: 0.16,
             },
           },
           chart: {
@@ -355,7 +363,7 @@ export default {
             title: {
               text: 'Values',
               style: {
-                fontSize: '13px',
+                fontSize: '11px',
                 fontFamily: '"Work Sans", sans-serif',
               },
             },
