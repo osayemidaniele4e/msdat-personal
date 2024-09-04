@@ -261,17 +261,17 @@ export default {
     },
     // this function is called when the multiselect is opened thereby it checks if collapsible is active and calls the initialCSS function
     handleOpen() {
-      if (!this.isSearchActive) {
-        this.isCollapsibleActive = true;
-      }
-      this.initialCSS(this.formattedID);
+      this.isCollapsibleActive = true;
+      this.resetState();
+      this.$nextTick(() => {
+        this.initialCSS(this.formattedID);
+      });
       console.log('opened');
     },
     // this function is called when the search input is activated thereby it makes the program areas open automaatically when search is active
     handleSearchChange() {
       this.isCollapsibleActive = false;
       this.openAllGroupLabels();
-      this.dummy();
 
       // Ensure all items with data-child attribute and role="option" are visible
       this.$nextTick(() => {
@@ -292,9 +292,17 @@ export default {
       this.isSearchActive = true;
     },
     resetState() {
-      this.isCollapsibleActive = false;
+      this.isCollapsibleActive = true;
+      this.isSearchActive = false;
       this.groupLabelStates = {};
       this.groupLabels = {};
+      this.$nextTick(() => {
+        const iterable = document.querySelectorAll('[data-child][role="option"]');
+        iterable.forEach((item) => {
+          // eslint-disable-next-line
+          item.style.display = 'none';
+        });
+      });
     },
     handleClose() {
       this.resetState();
@@ -382,24 +390,20 @@ export default {
       this.loading = true;
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
-        if (this.options?.length !== 0) {
+        if (this.options?.length !== 0 && specificPart) {
           const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;
-          const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
-
-          for (let i = 0; i < iterable.length; i++) {
-            if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
-              if (!this.isCollapsibleActive) {
-                iterable[i].style.display = 'block';
+          if (iterable) {
+            Array.from(iterable).forEach((element) => {
+              if (element.children[0]?.children[0]?.dataset.child) {
+                // eslint-disable-next-line
+                element.style.display = 'none';
               } else {
-                iterable[i].style.display = 'none';
+                element.removeEventListener('click', this.pickProgramArea);
+                element.addEventListener('click', this.pickProgramArea);
               }
-            } else if (tell === 'notVisited' || this.isSearchActive) {
-              // Modified this condition
-              iterable[i].removeEventListener('click', this.pickProgramArea); // Remove existing listener
-              iterable[i].addEventListener('click', this.pickProgramArea); // Add new listener
-              specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
-            }
+            });
           }
+          specificPart.parentElement.parentElement.setAttribute('data-visted', 'visited');
         }
       }
       this.loading = false;
