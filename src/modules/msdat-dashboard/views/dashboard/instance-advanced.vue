@@ -111,11 +111,7 @@
                 </div>
                 <div class="desc-text p-2">
                   <p>
-                    Predictive analysis is a form of advanced analytics that uses current and
-                    historical data to forecast activity, behavior and trends. It involves applying
-                    statistical analysis techniques, data queries and machine learning algorithms to
-                    data sets to create predictive models that place a numerical value or score on
-                    the likelihood of a particular action or event happening.
+                    The predictive Analysis section on MSDAT shows the current actual data and Projections for each indicator for a data source.
                   </p>
                 </div>
               </div>
