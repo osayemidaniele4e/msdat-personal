@@ -46,6 +46,7 @@ export default {
           id: 6,
           color: '#e1e164',
         },
+        { id: 8, color: '#7d8ade' },
       ],
     };
   },
@@ -62,11 +63,16 @@ export default {
   methods: {
     handleMapClick(e) {
       const point = e.point['hc-key'];
-      const selectedPlaceByZone = this.dlGetLocation({ level: 2 }).filter((val) => val.name === point);
+      const selectedPlaceByZone = this.dlGetLocation({ level: 2 }).filter(
+        (val) => val.name === point,
+      );
 
-      const selectedPlaceByState = this.dlGetLocation({ level: 3 }).filter((val) => val.name === point);
+      const selectedPlaceByState = this.dlGetLocation({ level: 3 }).filter(
+        (val) => val.name === point,
+      );
 
-      const selectedPlace = selectedPlaceByZone.length === 0 ? selectedPlaceByState : selectedPlaceByZone;
+      const selectedPlace
+        = selectedPlaceByZone.length === 0 ? selectedPlaceByState : selectedPlaceByZone;
 
       if (selectedPlace.length !== 0) {
         eventBus.$emit('handleClick', selectedPlace[0]);

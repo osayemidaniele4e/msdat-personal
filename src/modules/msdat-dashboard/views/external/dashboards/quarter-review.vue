@@ -2,25 +2,27 @@
   <div>
     <the-header ref="theHeader" />
     <div class="main d-flex flex-column">
-      <div class="py-3" style="display: flex;" >
-        <h4>Welcome To the  Quarterly Performance Assessment Dashboard</h4>
+      <div class="py-3" style="display: flex">
+        <h4>Welcome To the Quarterly Performance Assessment Dashboard</h4>
       </div>
       <div class="tab-container">
         <div
           class="tab"
           :class="{ active: currentTab === 'Dashboard' }"
-          @click="setTab('Dashboard')">
+          @click="setTab('Dashboard')"
+        >
           Dashboard
         </div>
         <div
           class="tab"
           :class="{ active: currentTab === 'Score Card' }"
-          @click="setTab('Score Card')">
+          @click="setTab('Score Card')"
+        >
           Score Card
         </div>
       </div>
       <br />
-      <base-sub-card :backgroundColor="'header'" class=" shadow-sm base">
+      <base-sub-card :backgroundColor="'header'" class="shadow-sm base">
         <template #title>
           <h5 class="font-weight-bold work-sans text-white">
             {{ currentTitle }}
@@ -66,7 +68,7 @@ export default {
   data() {
     return {
       currentTab: 'Dashboard',
-      url1: 'https://public.tableau.com/views/MSDATindicatorsforFMOH/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url1: 'https://docs.google.com/spreadsheets/d/108grHVQNjLYG-Rp33FVpxJUgmwekJoI9bSmnTGWkhr0/pubhtml?gid=839074134&amp;single=true&amp;widget=true&amp;headers=false',
       url2: 'https://public.tableau.com/views/MSDATindicatorsscorecard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
@@ -110,7 +112,7 @@ export default {
 .tab-container {
   display: flex;
   justify-content: flex-start;
-  margin:7px 0px;
+  margin: 7px 0px;
   width: 100%;
   padding-top: 5px;
   border-bottom: 0.5px solid #007d53;
@@ -137,6 +139,6 @@ export default {
 
 .tab-content {
   width: 100%;
-  padding:7px;
+  padding: 7px;
 }
 </style>

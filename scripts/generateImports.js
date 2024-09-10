@@ -53,15 +53,21 @@ const appVueCode = `
 <template>
   <div id="app">
     <router-view />
+     <feedback/>
+
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
+import feedback from './views/feedback.vue';
 ${pluginImports.join('\n')}
 
 export default {
+ components: {
+    feedback,
+  },
   data() {
     return {
       pluginsImported: [] // Explicitly specify the type as an array of strings

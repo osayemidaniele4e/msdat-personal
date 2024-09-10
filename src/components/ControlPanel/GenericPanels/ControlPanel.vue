@@ -1,5 +1,6 @@
 <template>
   <div class="row" id="control-panel">
+    <!-- <pre>{{ setup }}</pre> -->
     <div
       v-for="(values, index) in setup"
       :class="values.class"
@@ -87,7 +88,7 @@
         :id="label"
         :value="payload[values.key]"
         @input="updatePayload($event, values.key)"
-        :options="locationCheck(values.options)"
+        :options="locationCheck(values.options, 'location')"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
         :placeholder="'Select location'"
@@ -363,7 +364,8 @@ export default {
         };
         const lastActivity = JSON.parse(localStorage.getItem('lastActivity') || '{}');
         const hold = (Date.now() - lastActivity.datetime || 0) >= 5000;
-        const diff = lastActivity.page !== activityObject.page
+        const diff
+          = lastActivity.page !== activityObject.page
           || lastActivity.section !== activityObject.section
           || lastActivity.parameters !== activityObject.parameters;
         if (hold && diff) {
@@ -374,7 +376,6 @@ export default {
       }
     },
     locationCheck(options) {
-      // console.log(options, 'options');
       if (
         // eslint-disable-next-line operator-linebreak
         this.$route.params.name === 'Disease_Surveillance' &&
@@ -386,6 +387,7 @@ export default {
         // console.log(main, 'Nigeria');
         return options.filter((s) => s.name === 'Nigeria');
       }
+
       return options;
     },
     checkNHMISDHIS2() {
@@ -447,8 +449,12 @@ export default {
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
+    ...mapGetters('MSDAT_STORE', ['getSelectedSection']),
     payload() {
-      console.log(this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload, '@@@@@KKKK@@@@');
+      console.log(
+        this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload,
+        '@@@@@KKKK@@@@',
+      );
 
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that

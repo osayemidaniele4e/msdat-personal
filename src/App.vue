@@ -1,12 +1,15 @@
 <template>
   <div id="app">
     <router-view />
+     <feedback/>
+
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
+import feedback from './views/feedback.vue';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
 import reviewPlugin from './modules/plugins/reviewPlugin';
@@ -15,79 +18,78 @@ import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
 
 export default {
+  components: {
+    feedback,
+  },
   data() {
     return {
-      pluginsImported: [] // Explicitly specify the type as an array of strings
+      pluginsImported: [], // Explicitly specify the type as an array of strings
     };
   },
   async mounted() {
-    let plugins_imported = [];
-    
-  this.pluginsImported.push('contextPlugin')
-if (!localStorage.getItem('contextPlugin')) {
-  localStorage.setItem('contextPlugin', 'false');
-}
+    // eslint-disable-next-line
+    const plugins_imported = [];
 
-if (localStorage.getItem('contextPlugin') === 'true') {
-  Vue.use(contextPlugin);
-}
+    this.pluginsImported.push('contextPlugin');
+    if (!localStorage.getItem('contextPlugin')) {
+      localStorage.setItem('contextPlugin', 'false');
+    }
 
+    if (localStorage.getItem('contextPlugin') === 'true') {
+      Vue.use(contextPlugin);
+    }
 
-  this.pluginsImported.push('indicatorPlugin')
-if (!localStorage.getItem('indicatorPlugin')) {
-  localStorage.setItem('indicatorPlugin', 'false');
-}
+    this.pluginsImported.push('indicatorPlugin');
+    if (!localStorage.getItem('indicatorPlugin')) {
+      localStorage.setItem('indicatorPlugin', 'false');
+    }
 
-if (localStorage.getItem('indicatorPlugin') === 'true') {
-  Vue.use(indicatorPlugin);
-}
+    if (localStorage.getItem('indicatorPlugin') === 'true') {
+      Vue.use(indicatorPlugin);
+    }
 
+    this.pluginsImported.push('reviewPlugin');
+    if (!localStorage.getItem('reviewPlugin')) {
+      localStorage.setItem('reviewPlugin', 'false');
+    }
 
-  this.pluginsImported.push('reviewPlugin')
-if (!localStorage.getItem('reviewPlugin')) {
-  localStorage.setItem('reviewPlugin', 'false');
-}
+    if (localStorage.getItem('reviewPlugin') === 'true') {
+      Vue.use(reviewPlugin);
+    }
 
-if (localStorage.getItem('reviewPlugin') === 'true') {
-  Vue.use(reviewPlugin);
-}
+    this.pluginsImported.push('screenshotManager');
+    if (!localStorage.getItem('screenshotManager')) {
+      localStorage.setItem('screenshotManager', 'false');
+    }
 
+    if (localStorage.getItem('screenshotManager') === 'true') {
+      Vue.use(screenshotManager);
+    }
 
-  this.pluginsImported.push('screenshotManager')
-if (!localStorage.getItem('screenshotManager')) {
-  localStorage.setItem('screenshotManager', 'false');
-}
+    this.pluginsImported.push('testonePlugin');
+    if (!localStorage.getItem('testonePlugin')) {
+      localStorage.setItem('testonePlugin', 'false');
+    }
 
-if (localStorage.getItem('screenshotManager') === 'true') {
-  Vue.use(screenshotManager);
-}
+    if (localStorage.getItem('testonePlugin') === 'true') {
+      Vue.use(testonePlugin);
+    }
 
+    this.pluginsImported.push('testPlugin');
+    if (!localStorage.getItem('testPlugin')) {
+      localStorage.setItem('testPlugin', 'false');
+    }
 
-  this.pluginsImported.push('testonePlugin')
-if (!localStorage.getItem('testonePlugin')) {
-  localStorage.setItem('testonePlugin', 'false');
-}
+    if (localStorage.getItem('testPlugin') === 'true') {
+      Vue.use(testPlugin);
+    }
 
-if (localStorage.getItem('testonePlugin') === 'true') {
-  Vue.use(testonePlugin);
-}
-
-
-  this.pluginsImported.push('testPlugin')
-if (!localStorage.getItem('testPlugin')) {
-  localStorage.setItem('testPlugin', 'false');
-}
-
-if (localStorage.getItem('testPlugin') === 'true') {
-  Vue.use(testPlugin);
-}
-
-    console.log('pluginsImported', this.pluginsImported)
-    await this.SET_PLUGINS_IMPORTED(this.pluginsImported)
+    console.log('pluginsImported', this.pluginsImported);
+    await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
-    ...mapActions(['SET_PLUGINS_IMPORTED'])
+    ...mapActions(['SET_PLUGINS_IMPORTED']),
   },
 };
 </script>
