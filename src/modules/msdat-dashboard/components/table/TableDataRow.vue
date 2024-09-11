@@ -51,14 +51,14 @@
             v-if="showDropdown"
             :class="[isCollapsibleActive === true ? 'drop-height ' : '']"
           >
+          <!-- changed :options to now use getIndicators || options -->
             <multiselect
               v-model="rowData.indicator"
-              :options="getIndicators"
+              :options="getIndicators || options"
               :multiple="false"
               placeholder="Type to search"
               track-by="full_name"
               label="full_name"
-              :hide-selected="true"
               @select="handleSelect"
               v-bind="multiSelectProps"
               close-on-select
@@ -71,14 +71,16 @@
               @open="handleOpen"
               @close="handleClose"
               searchable
+               @search-change="handleSearchChange"
               :id="formattedID"
             >
               <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
-              <template slot="option" slot-scope="props">
+              <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
                 <template v-if="props.option.$groupLabel">
                   <span class="overflow-textg" :data-parent="props.option.$groupLabel">
                     {{ props.option.$groupLabel }}
                     <span
+        v-if="isCollapsibleActive"
                       class="newGrouplabel"
                       :class="{ 'open-caret': groupLabelStates[props.option.$groupLabel] }"
                       @click="toggleGroupLabel(props.option.$groupLabel)"
@@ -132,6 +134,7 @@ export default {
       dashboardName: '',
       showDropdown: false,
       groupIndex: null,
+      loading: false,
       dropdownProps: {
         'group-values': 'indicators',
         'group-label': 'program_area',
@@ -146,7 +149,6 @@ export default {
       groupLabels: {},
       isCollapsibleActive: false,
       isSearchActive: false,
-      formattedID: 'Indicator_Overview',
       isCollapsibleDropActive: false,
       NoDataLabel: 'indicator(s)',
     };
@@ -171,6 +173,11 @@ export default {
     factor() {
       return this.dlGetFactor(this.rowData.indicator.factor).display_factor;
     },
+    // initialized the formattedID with the indicator id so it is unique
+    formattedID() {
+      return `indicator-${this.rowData.indicator.id}`;
+    },
+
     payload() {
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
@@ -187,6 +194,7 @@ export default {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown;
     },
+    // this does not necessarily control the group label
     toggleGroupLabel(groupLabel) {
       console.log(groupLabel, 'groupLabel');
       // if (this.isCollapsibleActive) {
@@ -202,19 +210,19 @@ export default {
       }
       return tempArray.join(' ');
     },
-
-    async handleOpen() {
-      if (!this.isSearchActive) {
-        this.isCollapsibleActive = true;
-      }
-      await this.initialCSS(this.formattedID);
+    // revamped the handleOpen method to ensure that the collapsible is active when multiselect opens
+    handleOpen() {
+      this.isCollapsibleActive = true;
+      this.resetState();
+      this.$nextTick(() => {
+        this.initialCSS(this.formattedID);
+      });
       console.log('opened');
     },
-
+    // added the handleSearchChange method to ensure that the search disables collapsible when multiselect opens
     handleSearchChange() {
       this.isCollapsibleActive = false;
       this.openAllGroupLabels();
-      this.dummy();
 
       // Ensure all items with data-child attribute and role="option" are visible
       this.$nextTick(() => {
@@ -235,9 +243,17 @@ export default {
       this.isSearchActive = true;
     },
     resetState() {
-      this.isCollapsibleActive = false;
+      this.isCollapsibleActive = true;
+      this.isSearchActive = false;
       this.groupLabelStates = {};
       this.groupLabels = {};
+      this.$nextTick(() => {
+        const iterable = document.querySelectorAll('[data-child][role="option"]');
+        iterable.forEach((item) => {
+          // eslint-disable-next-line
+          item.style.display = 'none';
+        });
+      });
     },
     handleClose() {
       this.resetState();
@@ -248,7 +264,7 @@ export default {
     openAllGroupLabels() {
       if (this.multiSelectProps['group-values']) {
         this.groupLabelStates = {};
-        this.options
+        this.getIndicators
           .filter((option) => option.$groupLabel)
           .forEach((option) => {
             this.$set(this.groupLabelStates, option.$groupLabel, true);
@@ -309,6 +325,8 @@ export default {
     handleRemove(option) {
       console.log('Option removed:', option);
     },
+
+    // this method is used to toggle the collapsible drop down and it's content
     async pickProgramArea(event) {
       if (!this.isCollapsibleActive) return;
 
@@ -317,7 +335,6 @@ export default {
       event.stopPropagation();
       if (event.type === 'click') {
         const parent = event.target?.children[0]?.children[0]?.dataset?.parent;
-        console.log('Program Area Clicked:', parent);
         const all = Array.from(event.target?.parentNode?.children);
         all.forEach(async (element) => {
           const child = await element?.children[0]?.children[0]?.dataset?.child;
@@ -346,36 +363,28 @@ export default {
       }
       this.loading = false;
     },
-    async dummy() {
-      console.log('search Variable');
-    },
-    async initialCSS(multiselectID) {
+    // this method is used to set the initial css for the collapsible drop down and it was revamped to cater for the getIndicators value
+    initialCSS(multiselectID) {
       this.loading = true;
       if (this.multiSelectProps['group-values']) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
-
-        if (this.getIndicators?.length !== 0) {
+        if (this.getIndicators?.length !== 0 && specificPart) {
           const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;
-
-          const tell = specificPart.parentElement.parentElement.attributes['data-visted'].value;
-
-          for (let i = 0; i < iterable.length; i++) {
-            if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
-              if (this.isCollapsibleDropActive) {
-                iterable[i].style.display = 'block';
+          if (iterable) {
+            Array.from(iterable).forEach((element) => {
+              if (element.children[0]?.children[0]?.dataset.child) {
+                // eslint-disable-next-line
+                element.style.display = 'none';
               } else {
-                iterable[i].style.display = 'none';
+                element.removeEventListener('click', this.pickProgramArea);
+                element.addEventListener('click', this.pickProgramArea);
               }
-            } else if (tell === 'notVisited' || this.isSearchActive) {
-              // Modified this condition
-              iterable[i].removeEventListener('click', this.pickProgramArea); // Remove existing listener
-              iterable[i].addEventListener('click', this.pickProgramArea); // Add new listener
-              specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
-            }
+            });
           }
+          specificPart.parentElement.parentElement.setAttribute('data-visted', 'visited');
         }
       }
-      // this.loading = false;
+      this.loading = false;
     },
   },
   mounted() {
@@ -383,6 +392,7 @@ export default {
     this.dashboardName = name;
   },
 };
+
 </script>
 
 <style lang="scss" scoped>
@@ -475,6 +485,7 @@ span.multiselect__single::-webkit-scrollbar-thumb {
 .overflow-textg {
   display: inline-block;
   max-width: 200px;
+
   white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
