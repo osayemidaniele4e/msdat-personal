@@ -49,9 +49,9 @@
           <div
             class="drop-width"
             v-if="showDropdown"
-            :class="[isCollapsibleActive === true ? 'drop-height ' : '']"
+            :class="[isCollapsibleDropActive === true ? 'drop-height ' : '']"
           >
-          <!-- changed :options to now use getIndicators || options -->
+            <!-- changed :options to now use getIndicators || options -->
             <multiselect
               v-model="rowData.indicator"
               :options="getIndicators || options"
@@ -71,7 +71,7 @@
               @open="handleOpen"
               @close="handleClose"
               searchable
-               @search-change="handleSearchChange"
+              @search-change="handleSearchChange"
               :id="formattedID"
             >
               <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
@@ -80,7 +80,7 @@
                   <span class="overflow-textg" :data-parent="props.option.$groupLabel">
                     {{ props.option.$groupLabel }}
                     <span
-        v-if="isCollapsibleActive"
+                      v-if="isCollapsibleActive"
                       class="newGrouplabel"
                       :class="{ 'open-caret': groupLabelStates[props.option.$groupLabel] }"
                       @click="toggleGroupLabel(props.option.$groupLabel)"
@@ -213,6 +213,7 @@ export default {
     // revamped the handleOpen method to ensure that the collapsible is active when multiselect opens
     handleOpen() {
       this.isCollapsibleActive = true;
+      this.isCollapsibleDropActive = true;
       this.resetState();
       this.$nextTick(() => {
         this.initialCSS(this.formattedID);
@@ -259,6 +260,7 @@ export default {
       this.resetState();
       this.isSearchActive = false;
       console.log('closed');
+      this.isCollapsibleDropActive = false;
     },
 
     openAllGroupLabels() {
@@ -392,7 +394,6 @@ export default {
     this.dashboardName = name;
   },
 };
-
 </script>
 
 <style lang="scss" scoped>
