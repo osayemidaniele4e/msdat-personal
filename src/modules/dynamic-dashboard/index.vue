@@ -69,7 +69,7 @@ import VueCookies from 'vue-cookies';
 import { mapActions, mapMutations } from 'vuex';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
-import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instance-gis.vue';
+import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instanceGisMapping.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
@@ -78,6 +78,9 @@ import defaultDiseaseSurveillanceData from './defaultDS.json';
 import defaultDSyear from './defaultDSYear.json';
 import defaultAdvancedYear from './defaultAdvancedYear.json';
 import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
+import defaultGISDatasource from './gisDataSource.json';
+import defaultGISYear from './gisDefaultYear.json';
+import defaultGISIndicator from './gisIndicator.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -252,6 +255,10 @@ export default {
       } else if (this.$route.params.name === 'Advanced_Analytics') {
         this.SET_SELECTED_CONFIG(defaultData);
         this.SET_SELECTED_CONFIG(defaultAdvancedYear);
+      } else if (this.$route.params.name === 'GIS_Mapping') {
+        this.SET_SELECTED_CONFIG(defaultGISIndicator);
+        this.SET_SELECTED_CONFIG(defaultGISDatasource);
+        this.SET_SELECTED_CONFIG(defaultGISYear);
       }
     });
 
@@ -398,6 +405,8 @@ export default {
         this.$router.push('/*');
         return;
       }
+      console.log(dashboard, 'dashboard');
+
       this.isGIS = true;
       this.configObject = '';
       this.configObject = dashboard;

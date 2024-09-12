@@ -1,0 +1,25 @@
+{
+  "payload": {
+    "id": 8,
+    "full_name": "Postnatal care coverage (mother)",
+    "short_name": "Postnatal care coverage",
+    "desirable_slope": "Positive",
+    "indicator_type": "Outcome",
+    "program_area": "RMNCH",
+    "national_target": "80.00",
+    "national_source": "NRHP 2017",
+    "national_information": "Target obtained from the National Reproductive Health Policy (NRHP) 2017 to 2021",
+    "sdg_target": null,
+    "sdg_information": "Not available",
+    "created_at": "2022-10-20T08:42:09.560835Z",
+    "updated_at": "2023-03-16T15:29:08.616312Z",
+    "factor": 2,
+    "first_related": 6,
+    "second_related": 5,
+    "third_related": 7,
+    "fourth_related": null,
+    "datasources": [1, 2, 7, 3],
+    "group": []
+  },
+  "entity": "indicator"
+}

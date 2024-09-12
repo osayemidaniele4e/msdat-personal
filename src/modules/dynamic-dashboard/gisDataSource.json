@@ -1,0 +1,18 @@
+{
+  "payload": {
+    "id": 1,
+    "datasource": "MICS",
+    "full_name": "Multiple Indicator Cluster Survey",
+    "description": "The Multiple Indicator Cluster Survey is a nationwide household survey programme developed by the United Nations Children Fund (UNICEF) and designed to collect statistically sound and internationally comparable estimates of key indicators that are used to assess the situation of children and women in the areas of health, education, child protection and HIV/AIDS.",
+    "year_available": "1995, 1999, 2007, 2011, 2016-2017, 2021",
+    "period_available": "2026",
+    "methodology": "A household survey carried out every 4-5 years and conducted among a nationally representative sample of women and men aged 15 – 49 years, and children aged less than 5 years. Topics covered include child health and mortality, nutrition, sanitation, reproductive health, education, child protection, and HIV/AIDS. The survey provides estimated disaggregation of Nigeria by states, geo political zones, sex, age, residence (urban and rural), mother's education and wealth quintiles. The sample for the Nigeria MICS 2016-17 was designed to provide estimates for a large number of indicators on the situation of children and women at the national, rural/urban, states as well as the 6 geopolitical zones of Nigeria. To sample, the states within each zone were identified as the main sampling Strata while the Enumeration Areas (EAs) within each state were identified as the Primary Sampling Units (PSUs). The EAs for the survey are selected from the National Integrated Survey of Households round 2 (NISH2) master sample, based on a list of EAs prepared for the 2006 Population Census. Two stage sampling is conducted with the first stage being the selection of EAs within the strata while the second stage was the selection of households within each EAs.",
+    "subnational_data": "Yes",
+    "classification": "Survey",
+    "group": [],
+    "link": "https://mics.unicef.org/surveys",
+    "created_at": "2022-10-20T08:13:15.745372Z",
+    "updated_at": "2022-10-20T08:13:15.745380Z"
+  },
+  "entity": "dataSource"
+}
