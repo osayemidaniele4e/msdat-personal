@@ -115,7 +115,7 @@ export default [
     initialLocation: 1,
   },
   {
-    name: 'GIS_Mapping',
+    name: 'GIS_Mapping_Dashboard',
     title: 'GIS Mapping',
     indicators: [
       39, 40, 41, 42, 44, 53, 62, 293, 294, 295, 296, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 362, 363, 364,

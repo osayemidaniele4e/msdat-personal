@@ -107,6 +107,7 @@
           <template>
             <div class="dummy-row2 row">
               <div v-for="n in 3" :key="n" class="flex-item col-lg-4 col-12">
+                <!-- <pre>{{ payload }}</pre> -->
                 <div class="comparison-header">Comparison ({{ n }})</div>
                 <LazyLoading>
                   <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">

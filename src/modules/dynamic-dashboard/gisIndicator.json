@@ -1,0 +1,25 @@
+{
+  "payload": {
+    "id": 7,
+    "full_name": "Skilled attendance at delivery or birth",
+    "short_name": "Skilled birth attendance",
+    "desirable_slope": "Positive",
+    "indicator_type": "Outcome",
+    "program_area": "RMNCH",
+    "national_target": "57.00",
+    "national_source": "NSHDP II & NRHP 2017",
+    "national_information": "Target obtained from the National Reproductive Health Policy (NRHP) 2017 to 2021",
+    "sdg_target": null,
+    "sdg_information": "Not available",
+    "created_at": "2022-10-20T08:42:09.559170Z",
+    "updated_at": "2024-08-27T14:29:58.317095Z",
+    "factor": 2,
+    "first_related": 6,
+    "second_related": 5,
+    "third_related": 8,
+    "fourth_related": 29,
+    "datasources": [1, 2, 5, 7, 8, 9, 15, 30, 3, 6],
+    "group": []
+  },
+  "entity": "indicator"
+}

@@ -17,6 +17,11 @@ const getSpecificIndicator = async () => axiosInstance.get('/datasource_specific
 const getDashboardDatasources = async (indicatorID) => axiosInstance.get(`/dashboards/${indicatorID}/datasources/`);
 const getIndicatorTableData = async (indicatorID, datasourceId, valueType, location) => axiosInstance.get(`${apiEndpoints.getTableData}indicator=${indicatorID}&location=${location}&datasource=${datasourceId}&ordering=-created_at&value_type=${valueType}`);
 const getSpecificDashboard = async (dashboardName) => axiosInstance.get(`/dashboards/?name=${dashboardName}`);
+const getDashboardIndicator = async (dashboardID) => axiosInstance.get(`/dashboards/${dashboardID}/indicators/`);
+const getIndicatorDatasources = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}/datasources/`);
+const getDataObj = async (obj) => axiosInstance.get(`data/?size=2000&indicator=${obj.indicatorID}&datasource=${obj.datasourceID}`);
+
+const getAllDataObj = async (obj) => axiosInstance.get(`data/?size=2000&indicator=${obj.indicatorID}&datasource=${obj.datasourceID}&period=${obj.period}`);
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -54,4 +59,8 @@ export default {
   getSingleDataSourceObj,
   getIndicatorTableData,
   getSpecificDashboard,
+  getDashboardIndicator,
+  getIndicatorDatasources,
+  getDataObj,
+  getAllDataObj,
 };

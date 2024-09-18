@@ -127,6 +127,13 @@ const mutations: MutationTree<State> = {
     }
   },
 
+  SET_GIS_MULTI_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[2].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[2].payload.forEach((item) => (item.indicator = obj.value));
+    }
+  },
+
   SET_SECTION: (state, text) => {
     state.selectedSection = text;
   },
@@ -141,10 +148,24 @@ const mutations: MutationTree<State> = {
       state.controlConfig[4].payload.forEach((item) => (item.datasource = obj.value));
     }
   },
+
+  SET_GIS_MULTI_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[2].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[2].payload.forEach((item) => (item.datasource = obj.value));
+    }
+  },
   SET_MULTI_YEAR_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[4].payload !== null) {
       // eslint-disable-next-line no-return-assign, no-param-reassign
       state.controlConfig[4].payload.forEach((item) => (item.year = obj.value));
+    }
+  },
+
+  SET_GIS_MULTI_YEAR_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[2].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[2].payload.forEach((item) => (item.year = obj.value));
     }
   },
 
@@ -222,6 +243,17 @@ const mutations: MutationTree<State> = {
     });
   },
 
+  SET_GIS_MULTISOURCE_DEFAULT_DATASOURCES: (state, payload) => {
+    state.selectedConfigurations.dataSource = payload;
+    state.controlConfig.forEach((item) => {
+      if (item.label === 'Multi-Source Indicator Comparison') {
+        item.payload.forEach((source) => {
+          source.datasource = payload;
+        });
+      }
+    });
+  },
+
   UPDATE_PROGRAM_AREAS: (state, payload) => {
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Indicator Comparison') {
@@ -254,8 +286,6 @@ const mutations: MutationTree<State> = {
     });
   },
   UPDATE_MULTI_YEARS: (state, payload) => {
-    // console.log(payload, 'Henry');
-
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Comparison') {
         item.setup.forEach((source) => {
