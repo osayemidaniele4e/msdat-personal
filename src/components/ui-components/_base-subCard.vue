@@ -3,23 +3,27 @@
     <div
       class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
       :class="[backgroundColor === 'header' ? 'base_subCard_header' : 'base_subCard']"
+      v-if="removeTitle === undefined"
     >
       <!-- :style="{ backgroundColor }" -->
-      <div class="title w-100">
+      <div v-if="removeTitle === undefined" class="title w-100">
         <slot name="title"> slot title fallback </slot>
       </div>
-      <div class="action-icon d-flex justify-content-around align-items-center" v-if="showControls">
-         <div class="d-flex align-items-center">
-           <slot name="refresh">  </slot>
+      <div
+        class="action-icon d-flex justify-content-around align-items-center"
+        v-if="showControls && removeTitle === undefined"
+      >
+        <div class="d-flex align-items-center">
+          <slot name="refresh"> </slot>
         </div>
         <b-icon
           icon="arrows-fullscreen"
           @click="showModal = !showModal"
           class="pointer_click mx-1 font-weight-bold"
           font-scale="0.5"
-          ></b-icon>
-          <!-- v-b-tooltip.hover title="Tooltip directive content" -->
-          <!-- icon="three-dots-vertical" -->
+        ></b-icon>
+        <!-- v-b-tooltip.hover title="Tooltip directive content" -->
+        <!-- icon="three-dots-vertical" -->
         <!-- <b-icon
           v-if="showDownload === true"
           icon="download"
@@ -129,9 +133,12 @@ export default {
       type: Object,
       default: () => {},
     },
+    removeTitle: {
+      type: Boolean,
+      default: () => false,
+    },
   },
-  watch: {
-  },
+  watch: {},
   methods: {
     close() {
       if (this.showMenu !== false) {
@@ -139,8 +146,7 @@ export default {
       }
     },
   },
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 

@@ -21,7 +21,6 @@
           <!-- the first section doesn't need the component
                  since it will be mounted first -->
           <template>
-            <pre>{{ payload }}</pre>
             <ControlPanelConfiguration :controlIndex="controlIndex">
               <BaseIndicatorOverview
                 :controlPanelProps="payload"

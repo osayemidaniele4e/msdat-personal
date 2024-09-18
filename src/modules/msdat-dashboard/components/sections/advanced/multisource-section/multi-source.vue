@@ -220,6 +220,7 @@ export default {
           } else {
             this.showNoAvailableData = false;
           }
+          console.log(value, 'CHECKINGS');
           const formattedData = this.formatDataToSeriesMapFormat(data);
           this.mapObject = this.formatToHighChartOptionForMap(formattedData, value);
         } else {

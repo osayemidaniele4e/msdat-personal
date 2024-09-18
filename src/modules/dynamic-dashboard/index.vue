@@ -69,7 +69,7 @@ import VueCookies from 'vue-cookies';
 import { mapActions, mapMutations } from 'vuex';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
-import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instanceGisMapping.vue';
+import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instance-gis.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
@@ -255,7 +255,7 @@ export default {
       } else if (this.$route.params.name === 'Advanced_Analytics') {
         this.SET_SELECTED_CONFIG(defaultData);
         this.SET_SELECTED_CONFIG(defaultAdvancedYear);
-      } else if (this.$route.params.name === 'GIS_Mapping') {
+      } else if (this.$route.params.name === 'GIS_Mapping_Dashboard') {
         this.SET_SELECTED_CONFIG(defaultGISIndicator);
         this.SET_SELECTED_CONFIG(defaultGISDatasource);
         this.SET_SELECTED_CONFIG(defaultGISYear);
@@ -396,11 +396,11 @@ export default {
       //   this.SET_CONFIGURATIONS(dashboard);
     }
 
-    if (name === 'GIS_Mapping') {
+    if (name === 'GIS_Mapping_Dashboard') {
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
-      const dashboard = config.find((el) => el.name === 'GIS_Mapping');
+      const dashboard = config.find((el) => el.name === 'GIS_Mapping_Dashboard');
       if (dashboard === undefined) {
         this.$router.push('/*');
         return;
