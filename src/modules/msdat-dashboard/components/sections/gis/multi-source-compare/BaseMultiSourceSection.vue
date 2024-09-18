@@ -353,6 +353,7 @@ export default {
   data() {
     return {
       stateName: 'Delta',
+      level: 1,
       // column 1
       titleColumn1: '',
       selectedIndicatorColumn1: {
