@@ -50,6 +50,7 @@
       <!-- <pre>{{ values }}</pre> -->
 
       <!-- ADVANCED ANALYTICS -->
+       <!-- <pre>{{ values }}</pre> -->
       <selectWrapper
         v-if="values.type === 'dropdown' && values.key === 'indicator'"
         :id="label"

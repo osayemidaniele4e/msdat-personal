@@ -1,5 +1,6 @@
 <template>
   <div class="">
+  <!-- <pre>{{ groupLabelStates }}</pre> -->
     <multiselect
     :id="formattedID"
     v-model="selected"
@@ -139,6 +140,7 @@ export default {
       },
     },
     formattedID() {
+      console.log(this.id, 'DROPDOWN');
       if (this.multiSelectProps['group-values']) {
         if (this.multiSelectProps['group-label'] === 'datasource') {
           return 'groupedSources';
@@ -269,6 +271,7 @@ export default {
       });
       console.log('opened');
     },
+
     // this function is called when the search input is activated thereby it makes the program areas open automaatically when search is active
     handleSearchChange() {
       this.isCollapsibleActive = false;

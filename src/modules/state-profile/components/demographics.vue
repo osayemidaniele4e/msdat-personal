@@ -31,7 +31,8 @@
                 <b>{{ d.value | commaValue }}</b>
               </p>
               <p v-else class="value">
-                <b>{{ d.value | commaValue }}</b>
+                <b>{{ d.value | commaValue }} </b>
+                <span v-if=" d.name == 'Maternal Mortality Ratio'" class="small-text">(per 100,000)</span>
               </p>
               <p class="source">
                 Source: {{ d.source }} {{ d.year }}
@@ -494,6 +495,9 @@ hr {
   color: #232323;
   font-size: 22.50005625px;
   font-weight: 600;
+}
+.small-text {
+  font-size: 14px;
 }
 
 .capitalize {
