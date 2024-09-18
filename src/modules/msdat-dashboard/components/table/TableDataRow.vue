@@ -31,12 +31,12 @@
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
             <div class="d-flex justify-content-between">
               <div class="span">{{ rowData.indicator.full_name }}</div>
-              <b-icon-caret-up-fill
+              <b-icon-caret-down-fill
                 @click="toggleDropdown"
                 v-if="related === 'related' && showDropdown === false"
                 class="info-circle icon-up"
               />
-              <b-icon-caret-down-fill
+              <b-icon-caret-up-fill
                 @click="toggleDropdown"
                 v-if="related === 'related' && showDropdown === true"
                 class="info-circle icon-up"
