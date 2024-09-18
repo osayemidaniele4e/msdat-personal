@@ -243,11 +243,16 @@ export default {
           const filteredLGADataForState = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id,
           );
+          console.log(filteredLGADataForState, 'filteredLGADataForState');
+
           if (filteredLGADataForState.length === 0) {
             this.showNoAvailableData = true;
+            this.loader = false;
           } else {
             this.showNoAvailableData = false;
           }
+
+          console.log(filteredLGADataForState, 'filteredLGADataForState 2');
           const formatToHighChart = (dataValues) => dataValues.map((item) => [
             this.dlGetLocation(item.location).name,
             parseFloat(item.value),
