@@ -8,7 +8,7 @@
             ><b-list-group-item>Demographics</b-list-group-item></router-link
           >
           <router-link to="/dashboard/GIS_Mapping_Dashboard" target="_blank"
-            ><b-list-group-item>GIS MappingXX</b-list-group-item></router-link
+            ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
           >
         </b-list-group>
       </div>

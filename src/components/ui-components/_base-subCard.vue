@@ -3,15 +3,15 @@
     <div
       class="card-header d-flex justify-content-between border-bottom-0 align-items-center"
       :class="[backgroundColor === 'header' ? 'base_subCard_header' : 'base_subCard']"
-      v-if="removeTitle === undefined"
+      v-if="removeTitle === false"
     >
       <!-- :style="{ backgroundColor }" -->
-      <div v-if="removeTitle === undefined" class="title w-100">
+      <div v-if="removeTitle === false" class="title w-100">
         <slot name="title"> slot title fallback </slot>
       </div>
       <div
         class="action-icon d-flex justify-content-around align-items-center"
-        v-if="showControls && removeTitle === undefined"
+        v-if="showControls && removeTitle === false"
       >
         <div class="d-flex align-items-center">
           <slot name="refresh"> </slot>
@@ -133,10 +133,7 @@ export default {
       type: Object,
       default: () => {},
     },
-    removeTitle: {
-      type: Boolean,
-      default: () => false,
-    },
+    removeTitle: Boolean,
   },
   watch: {},
   methods: {
