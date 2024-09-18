@@ -452,11 +452,6 @@ export default {
     ...mapGetters('AUTH_STORE', ['getUser']),
     ...mapGetters('MSDAT_STORE', ['getSelectedSection']),
     payload() {
-      console.log(
-        this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex].payload,
-        '@@@@@KKKK@@@@',
-      );
-
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section

@@ -146,11 +146,9 @@ export default {
       if (isObject(query.location)) {
         const { location } = query;
         const newQueryObject = omit(query, ['location']);
-        console.log(newQueryObject, 'CHECKING');
         const locationValues = this.dlGetLocation(location);
         const locationID = locationValues.map((item) => item.id);
         const resultValue = await DB.queryDB(newQueryObject, locationID);
-        console.log(resultValue, 'CHECKING 2');
         return resultValue;
       }
 

@@ -204,7 +204,6 @@ export default {
       locations = locations.filter(({ id }) => data.includes(id));
       locations.push(...this.additionalLocation);
       const uniqueItems = Array.from(new Map(locations.map((obj) => [obj.id, obj])).values());
-      console.log(uniqueItems, 'UNIQUE HENRY');
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',

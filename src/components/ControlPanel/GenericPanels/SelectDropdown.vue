@@ -86,7 +86,6 @@ export default {
         return this.value;
       },
       set(val) {
-        console.log(val, 'Nago');
         if (
           val
           && typeof val === 'object'

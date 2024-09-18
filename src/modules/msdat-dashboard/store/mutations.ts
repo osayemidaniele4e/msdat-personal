@@ -286,8 +286,6 @@ const mutations: MutationTree<State> = {
     });
   },
   UPDATE_MULTI_YEARS: (state, payload) => {
-    // console.log(payload, 'Henry');
-
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Comparison') {
         item.setup.forEach((source) => {
