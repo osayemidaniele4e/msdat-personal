@@ -78,6 +78,9 @@ import defaultDiseaseSurveillanceData from './defaultDS.json';
 import defaultDSyear from './defaultDSYear.json';
 import defaultAdvancedYear from './defaultAdvancedYear.json';
 import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
+import defaultGISDatasource from './gisDataSource.json';
+import defaultGISYear from './gisDefaultYear.json';
+import defaultGISIndicator from './gisIndicator.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -252,6 +255,10 @@ export default {
       } else if (this.$route.params.name === 'Advanced_Analytics') {
         this.SET_SELECTED_CONFIG(defaultData);
         this.SET_SELECTED_CONFIG(defaultAdvancedYear);
+      } else if (this.$route.params.name === 'GIS_Mapping_Dashboard') {
+        this.SET_SELECTED_CONFIG(defaultGISIndicator);
+        this.SET_SELECTED_CONFIG(defaultGISDatasource);
+        this.SET_SELECTED_CONFIG(defaultGISYear);
       }
     });
 
@@ -389,15 +396,17 @@ export default {
       //   this.SET_CONFIGURATIONS(dashboard);
     }
 
-    if (name === 'GIS_Mapping') {
+    if (name === 'GIS_Mapping_Dashboard') {
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
-      const dashboard = config.find((el) => el.name === 'GIS_Mapping');
+      const dashboard = config.find((el) => el.name === 'GIS_Mapping_Dashboard');
       if (dashboard === undefined) {
         this.$router.push('/*');
         return;
       }
+      console.log(dashboard, 'dashboard');
+
       this.isGIS = true;
       this.configObject = '';
       this.configObject = dashboard;

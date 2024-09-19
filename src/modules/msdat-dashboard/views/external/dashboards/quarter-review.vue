@@ -2,10 +2,20 @@
   <div>
     <the-header ref="theHeader" />
     <div class="main d-flex flex-column">
-      <div class="py-3" style="display: flex">
+
+      <div class="quarter-embed">
+            <b-embed
+              type="iframe"
+              aspect="21by9"
+              :src="url1"
+              :width="width"
+              :height="height"
+            ></b-embed>
+          </div>
+      <!-- <div class="py-3" style="display: flex">
         <h4>Welcome To the Quarterly Performance Assessment Dashboard</h4>
-      </div>
-      <div class="tab-container">
+      </div> -->
+      <!-- <div class="tab-container">
         <div
           class="tab"
           :class="{ active: currentTab === 'Dashboard' }"
@@ -20,8 +30,8 @@
         >
           Score Card
         </div>
-      </div>
-      <br />
+      </div> -->
+      <!-- <br />
       <base-sub-card :backgroundColor="'header'" class="shadow-sm base">
         <template #title>
           <h5 class="font-weight-bold work-sans text-white">
@@ -49,7 +59,7 @@
             ></b-embed>
           </div>
         </div>
-      </base-sub-card>
+      </base-sub-card> -->
     </div>
     <the-footer />
   </div>
@@ -67,9 +77,9 @@ export default {
   },
   data() {
     return {
-      currentTab: 'Dashboard',
-      url1: 'https://docs.google.com/spreadsheets/d/108grHVQNjLYG-Rp33FVpxJUgmwekJoI9bSmnTGWkhr0/pubhtml?gid=839074134&amp;single=true&amp;widget=true&amp;headers=false',
-      url2: 'https://public.tableau.com/views/MSDATindicatorsscorecard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      // currentTab: 'Dashboard',
+      url1: 'https://public.tableau.com/views/FMOHImproved/Dashboard1?:language=en-US&:embed=y&:sid=&:redirect=auth&:origin=viz_share_link&publish=yes&:display_count=n&:showVizHome=no&:embed=true',
+      // url2: 'https://public.tableau.com/views/MSDATindicatorsscorecard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
       showComing: true,
@@ -77,10 +87,10 @@ export default {
     };
   },
   methods: {
-    setTab(tab) {
-      this.currentTab = tab;
-      this.currentTitle = tab;
-    },
+    // setTab(tab) {
+    //   this.currentTab = tab;
+    //   this.currentTitle = tab;
+    // },
   },
 };
 </script>
@@ -92,7 +102,8 @@ export default {
   align-items: center; */
   width: 100%;
   height: 100%;
-  padding: 0px 20px;
+  padding: 10px 40px;
+  margin-top: 20px;
   margin-bottom: 40px;
 }
 .base h5 {
@@ -118,6 +129,12 @@ export default {
   border-bottom: 0.5px solid #007d53;
 }
 
+.quarter-embed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0px;
+}
 .tab {
   /* flex: 1; */
   padding: 10px;

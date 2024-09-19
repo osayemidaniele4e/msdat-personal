@@ -115,6 +115,7 @@ export default {
       // i could do this in individual component when making request with the
       // function by after this it will after all at once
       const query = queryObject;
+
       // if (query.datasource === 25) {
       //   query.value_type = 1;
       // } else if (!has(query, 'value_type')) {

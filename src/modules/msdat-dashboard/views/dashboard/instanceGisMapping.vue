@@ -55,8 +55,46 @@
           </base-sub-card>
         </div>
       </template>
-
       <template v-slot:section-2="{ payload, controlIndex }">
+        <div class="col-md-12" style="margin-bottom: 4rem">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Dataset Comparison -1</h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <DatasetComparisonSection :controlPanelProps="payload" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+      <template v-slot:section-3="{ payload, controlIndex }">
+        <div class="col-md-12" style="margin-bottom: 4rem">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">Dataset Comparison-3</h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <DatasetComparisonSection :controlPanelProps="payload" />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
+
+      <template v-slot:section-4="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
@@ -70,10 +108,7 @@
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
-                  <MultiSourceComponent
-                    :controlPanelProps="payload"
-                    :dashboardIndicators="dashboardIndicators"
-                  />
+                  <MultiSourceComponent :controlPanelProps="payload" />
                 </ControlPanelConfiguration>
               </LazyLoading>
             </template>
@@ -86,7 +121,6 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import apiServices from '@/modules/data-layer/services/ApiServices';
 // import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import IndicatorComparisonSection from '../../components/sections/gis/indicator-comparison/GisIndicatorComparison.vue';
 import IndicatorComparisonConfig from '../../components/sections/gis/indicator-comparison/indicator-compare-gis-config';
@@ -98,6 +132,18 @@ import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 
+// import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
+// import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
+// import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
+// import ICSConfig from '../../components/sections/indicator-comparism/indicator-comparism-config';
+// import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
+// import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
+// import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
+// import ICS from '../../components/sections/indicator-comparism/ICS.vue';
+// import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
+// import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
+// import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
+
 export default {
   data() {
     return {
@@ -105,7 +151,6 @@ export default {
       updateValue: {},
       updateKey: '',
       resetData: 1,
-      dashboardIndicators: [],
     };
   },
   components: {
@@ -147,7 +192,11 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
+    ...mapMutations('MSDAT_STORE', [
+      'ADD_CONTROL_PANEL',
+      'CLEAR_CONTROL_PANEL',
+      'SET_GIS_MULTISOURCE_DEFAULT_DATASOURCES',
+    ]),
 
     scroll(timestamp) {
       // Calculate the timeelapsed
@@ -162,13 +211,6 @@ export default {
         // Request for animation
         window.requestAnimationFrame(this.scroll);
       }
-    },
-
-    async getGisDashboardIndicatorsAndDatasources() {
-      const indicatorResp = await apiServices.getDashboardIndicator('370');
-
-      this.dashboardIndicators = indicatorResp.data.filter((item) => item.datasources.length);
-      console.log(this.dashboardIndicators, 'dashboard indicators');
     },
 
     changeSwipe(cord) {
@@ -252,14 +294,33 @@ export default {
     // }
     this.ADD_CONTROL_PANEL(IndicatorComparisonConfig);
     this.ADD_CONTROL_PANEL(DatasetComparisonConfig);
+    this.ADD_CONTROL_PANEL(DatasetComparisonConfig);
+    this.ADD_CONTROL_PANEL(DatasetComparisonConfig);
     this.ADD_CONTROL_PANEL(MultiSourceConfig);
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
     this.$route.meta.title = 'GIS Mapping';
-  },
-  async mounted() {
-    await this.getGisDashboardIndicatorsAndDatasources();
+
+    const defaultData = {
+      id: 6,
+      datasource: 'NHMIS-DHIS2',
+      full_name: 'National Health Management Information System (DHIS2)',
+      description:
+        'National Health Management Information System: Nigeria has adopted the DHIS2 as the National tool for the reporting of routine health-related data. This data is reported and aggregated monthly using this platform.',
+      year_available: '2013 - 2021',
+      period_available: '2022',
+      methodology:
+        "Facility level aggregate data that is reported by health facilities routinely on a monthly basis using DHIS2. Health facilities are expected to report by the month's data by the 15th of the next month. Due to incomplete reporting by the health facilities, poor reporting by private facilities, the data may be biased.",
+      subnational_data: 'Yes',
+      classification: 'Routine',
+      link: 'https://dhis2nigeria.org.ng',
+      created_at: '2022-10-20T08:13:15.757413Z',
+      updated_at: '2022-10-20T08:13:15.757421Z',
+      group: [],
+    };
+
+    this.SET_GIS_MULTISOURCE_DEFAULT_DATASOURCES(defaultData);
   },
 
   destroyed() {
@@ -282,6 +343,42 @@ export default {
 
 .comparison-header {
   display: none;
+}
+
+.icon-container {
+  display: flex;
+}
+
+.icon-container h5 {
+  margin-right: 5px;
+}
+
+.desc-icon {
+  font-size: 13px;
+  margin-top: -3px;
+}
+
+.desc-text {
+  display: none;
+  position: absolute;
+  left: 8%;
+  transform: translateX(30px);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 25px;
+  z-index: 1;
+  width: 50%;
+}
+
+.desc-text p {
+  font-size: 13px !important;
+  margin-bottom: 0px;
+}
+
+.icon-container .desc-icon:hover + .desc-text {
+  display: block;
 }
 
 @media (max-width: 800px) {
