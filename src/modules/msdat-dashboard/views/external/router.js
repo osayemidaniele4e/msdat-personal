@@ -2,6 +2,7 @@ import ncdc from './dashboards/ncdc.vue';
 import ndr1 from './dashboards/ndr1.vue';
 import ndr2 from './dashboards/ndr2.vue';
 import quarterReview from './dashboards/quarter-review.vue';
+import HealthFacilityDashboard from './dashboards/health-facility.vue';
 
 export default [
   {
@@ -25,6 +26,14 @@ export default [
     component: quarterReview,
     meta: {
       title: 'Quarterly Performance Assessment',
+    },
+  },
+  {
+    path: '/state-health-facility',
+    name: 'state-health-facility',
+    component: HealthFacilityDashboard,
+    meta: {
+      title: 'State Health Facilities',
     },
   },
 ];
