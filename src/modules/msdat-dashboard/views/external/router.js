@@ -33,7 +33,7 @@ export default [
     name: 'state-health-facility',
     component: HealthFacilityDashboard,
     meta: {
-      title: 'State Health Facilities',
+      title: 'Health Facilities Profile',
     },
   },
 ];
