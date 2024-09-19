@@ -46,7 +46,7 @@ export default {
           id: 6,
           color: '#e1e164',
         },
-        { id: 8, color: '#7d8ade' },
+        // { id: 8, color: '#7d8ade' },
       ],
     };
   },
