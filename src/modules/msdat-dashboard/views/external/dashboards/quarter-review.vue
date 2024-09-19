@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       currentTab: 'Dashboard',
-      url1: 'https://docs.google.com/spreadsheets/d/108grHVQNjLYG-Rp33FVpxJUgmwekJoI9bSmnTGWkhr0/pubhtml?gid=839074134&amp;single=true&amp;widget=true&amp;headers=false',
+      url1: 'https://public.tableau.com/views/FMOHImproved/Dashboard1?:language=en-US&:embed=y&:sid=&:redirect=auth&:origin=viz_share_link&publish=yes&:display_count=n&:showVizHome=no&:embed=true',
       url2: 'https://public.tableau.com/views/MSDATindicatorsscorecard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
