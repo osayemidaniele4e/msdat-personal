@@ -2,99 +2,112 @@
   <div class="">
     <section class="container-fluid">
       <div class="container">
-        <h2 class="w-100 text-center mx-auto">Create an account</h2>
-        <!-- <div class="loader" v-if="isLoading">
-          <the-loader />
-        </div> -->
+        <h2 class="w-100 text-center mx-auto ">Create an account</h2>
+
+        <!-- Social Sign-in buttons -->
+        <div class="d-flex w-100 justify-content-center mt-4">
+          <button
+            type="submit"
+            class="soc-btn px-2 py-2 mr-2"
+            @click="handleClickSignIn()"
+          >
+            <b-icon-google  class="mr-4"></b-icon-google>
+            GOOGLE
+          </button>
+
+          <button type="submit" class="soc-btn px-2 py-2 mr-2">
+            <b-icon-facebook  class="mr-4"></b-icon-facebook> FACEBOOK
+          </button>
+
+          <a :href="linkedlnUrl" class="soc-btn px-2 py-2 d-inline-block">
+            <b-icon-linkedin class="mr-4" ></b-icon-linkedin> LINKEDIN
+          </a>
+        </div>
+        <p class="orp w-100 text-center mx-auto mt-4"> OR </p>
+
+        <!-- Form Inputs -->
         <div class="row">
           <div class="col-12 mx-auto h-50px">
             <form>
               <div class="mb-3 w-100 mx-auto mt-3">
-                <!-- <ul v-if="!formIsValid" class="mx-auto text-center">
-                  <li style="color: red; list-style: none">{{ msg }}</li>
-                </ul> -->
-
-                <label for="" class="form-label">Name</label>
                 <div class="d-flex">
                   <input
                     type="text"
                     v-model="first_name"
                     class="form-control"
-                    placeholder="First name"
+                    placeholder="First Name"
                   />
                   <input
                     type="text"
                     v-model="last_name"
                     class="form-control ml-2"
-                    placeholder="Last name"
+                    placeholder="Last Name"
                   />
                 </div>
               </div>
-              <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
-                <label for="" class="form-label">Email</label>
-                <input
-                  type="email"
-                  v-model="email"
-                  class="form-control"
-                  placeholder="mail@example.com"
-                />
-              </div>
-              <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
-                <label for="" class="form-label">Username</label>
-                <input
+
+              <!-- Other form fields -->
+              <div class="mb-3 w-100 mx-auto mt-3">
+                <div class="d-flex">
+                  <input
                   type="text"
                   v-model="username"
                   class="form-control"
                   placeholder="Username"
                 />
+                  <input
+                    type="email"
+                    v-model="email"
+                    class="form-control ml-2"
+                    placeholder="Email Address"
+                  />
+                </div>
               </div>
-              <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
-                <label for="" class="form-label">Organisation</label>
-                <input
+              <div class="mb-3 w-100 mx-auto mt-3">
+                <div class="d-flex">
+                  <input
+                    type="text"
+                    v-model="organisation"
+                    class="form-control"
+                    placeholder="Organisation"
+                  />
+                  <input
                   type="text"
-                  v-model="organisation"
-                  class="form-control"
-                  placeholder="Place of work"
-                />
+                  v-model="role"
+                  class="form-control ml-2"
+                  placeholder="Role"
+                  />
+                </div>
               </div>
-              <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
-                <label for="" class="form-label">Password</label>
-                <input
-                  type="password"
-                  v-model="password"
-                  class="form-control"
-                  placeholder="******************"
-                />
+              <div class="mb-3 w-100 mx-auto mt-3">
+                <div class="d-flex">
+                  <input
+                    type="password"
+                    v-model="password"
+                    class="form-control"
+                    placeholder="Password"
+                  />
+                  <input
+                    type="password"
+                    v-model="confirmPassword"
+                    class="form-control ml-2"
+                    placeholder="Confirm Password"
+                  />
+                  </div>
               </div>
-              <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
-                <label for="" class="form-label">Re-type Password</label>
-                <input
-                  type="password"
-                  v-model="confirmPassword"
-                  class="form-control"
-                  placeholder="******************"
-                />
-              </div>
+
               <input type="checkbox" class="mr-2" v-model="terms" />
-              <span style="font-size: 14px"
-                >I accept all Terms and Conditions</span
-              >
+              <span style="font-size: 14px">I accept all Terms and Conditions</span>
+
               <div class="text-center lg">
                 <button
                   type="submit"
                   @click.prevent="signUp"
-                  class="btn btn-lg btn-primary px-5 mt-3"
+                  class="submit-btnn mt-3"
                   style="font-size: 15px"
                 >
                   CREATE AN ACCOUNT
-                  <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
                 </button>
-                <div
-                  class="justify-content-center mt-3"
-                  style="margin-bottom: 17.25px"
-                >
-                  <span>Already have an account?</span>
-                </div>
               </div>
             </form>
           </div>
@@ -114,14 +127,18 @@ export default {
       last_name: '',
       username: '',
       organisation: '',
+      role: '',
       email: '',
       password: '',
       confirmPassword: '',
       terms: false,
+      linkedlnUrl: `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_API_LINKEDIN_ID}&redirect_uri=${encodeURIComponent(window.location.origin)}&scope=openid%20profile%20email`,
     };
   },
   methods: {
-    ...mapActions('AUTH_STORE', ['CREATE_USER']),
+    ...mapActions('AUTH_STORE', ['CREATE_USER', 'AUTHENTICATE', 'AUTHENTICATE_LINKEDIN']),
+
+    // Sign-up method
     async signUp() {
       try {
         await this.CREATE_USER({
@@ -131,7 +148,6 @@ export default {
           last_name: this.last_name,
           organization: this.organisation,
           password: this.password,
-          profession: 'kosi',
         });
         this.$swal('Congratulations, Successfully Registered, Please Login');
       } catch (err) {
@@ -141,6 +157,91 @@ export default {
           || (password ? `, Password: ${password[0]}` : '');
         this.$swal(errorMsg);
       }
+    },
+
+    // Google Sign-In method
+    // eslint-disable-next-line consistent-return
+    async handleClickSignIn() {
+      try {
+        const googleUser = await this.$gAuth.signIn();
+        if (!googleUser) {
+          return null;
+        }
+
+        const data = {
+          auth_token: googleUser.getAuthResponse().access_token,
+          provider: 'google',
+        };
+
+        // console.log(data);
+        await this.AUTHENTICATE(data)
+          .then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              this.$emit('login-success');
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with google',
+            });
+          });
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    },
+
+    // LinkedIn Sign-In method
+    async linkedlnSignin(data) {
+      try {
+        await this.AUTHENTICATE_LINKEDIN(data)
+          .then((res) => {
+            if (res.status === 200 || res.status === 201) {
+              this.$emit('login-success');
+              this.$swal({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'success',
+                title: 'Success',
+                text: 'Login successful',
+              });
+            }
+          })
+          .catch((err) => {
+            console.log('res', err);
+            this.$swal({
+              toast: true,
+              position: 'bottom',
+              showConfirmButton: false,
+              timer: 5000,
+              icon: 'error',
+              title: 'Something went wrong',
+              text: 'Something went wrong signing you in with linkedln',
+            });
+          });
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+      return 0;
     },
   },
 };
@@ -184,4 +285,45 @@ export default {
 //   cursor: default;
 //   font-size: 16.5px;
 // }
+.orp{
+  font-size: 16px;
+  color: #000000;
+}
+.submit-btnn{
+  width: 60%;
+  height: 40px;
+  background: #348481;
+  font-size: 15px;
+  border-radius: 4px;
+  opacity: 1;
+  text-align: center;
+  letter-spacing: 0px;
+  color: #fff;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.form-control::placeholder {
+  font-size: 16px !important;
+}
+
+.container {
+  padding: 0px 70px;
+}
+
+.soc-btn {
+  width: 100%;
+  height: 36px;
+  background: #fff;
+  font-size: 15px;
+  border: 1px solid #348481;
+  border-radius: 4px;
+  opacity: 1;
+  text-align: center;
+  letter-spacing: 0px;
+  color: #348481;
+  text-transform: uppercase;
+  opacity: 1;
+  text-decoration: none;
+}
 </style>

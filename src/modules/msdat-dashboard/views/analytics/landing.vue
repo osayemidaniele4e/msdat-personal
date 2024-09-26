@@ -162,7 +162,7 @@ export default {
   @media (max-width: 1300px) {
 
     .btm-section{
-      top: 40%;
+      top: 50%;
     }
 
     .bg {
