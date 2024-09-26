@@ -11,7 +11,7 @@
             ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
           >
           <router-link to="/state-health-facility" target="_blank"
-            ><b-list-group-item>Health Facilities Profile</b-list-group-item></router-link
+            ><b-list-group-item>Health Facilities Profile (GIS)</b-list-group-item></router-link
           >
         </b-list-group>
       </div>
