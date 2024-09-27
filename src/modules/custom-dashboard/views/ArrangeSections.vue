@@ -225,6 +225,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import draggable from 'vuedraggable';
 
+import resizeConfig from '../utils/resizeConfig';
+
 export default {
   components: {
   // eslint-disable-next-line vue/no-unused-components
@@ -370,12 +372,12 @@ export default {
       if (this.orderModified) {
         arrangedSections = this.reorderStoreConfig();
       }
-      const config = {
+      const config = resizeConfig({
         dashboardDetails: this.$store.getters.dashboardDetails,
         composedData: this.$store.getters.getprogramArea,
         surveyArray: this.$store.getters.getDataSource,
         sectionsArray: arrangedSections,
-      };
+      });
 
       // if the dashboard is public, run these functions
       if (this.getVisibility === 'public') {
@@ -429,33 +431,33 @@ export default {
       }
 
       //
-      // SAVE DASHBOARD LOCALLY
-      // retrieve initial currentDashboard value (consisting only id & userId)
-      const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
-      // retrieve all saved dashboards
-      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
-      // retrieve dashboards belonging to current user
-      let list = customDashboardsList[this.getUser.username];
-      // create the dashboard config to be saved
+      // // SAVE DASHBOARD LOCALLY
+      // // retrieve initial currentDashboard value (consisting only id & userId)
+      // const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
+      // // retrieve all saved dashboards
+      // const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      // // retrieve dashboards belonging to current user
+      // let list = customDashboardsList[this.getUser.username];
+      // // create the dashboard config to be saved
 
-      // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
-      const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
-      if (dashboard) {
-        dashboard.lastEdited = Date.now();
-        dashboard.config = config;
-        localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
-        this.$store.commit('endEdit');
-      } else {
-      // (new dashboard) -> add 'config' and 'created' properties to currentDashboard and insert to start of list
-        if (!list) {
-          customDashboardsList[this.getUser.username] = [];
-          list = customDashboardsList[this.getUser.username];
-        }
-        currentCustomDashboard.created = Date.now();
-        currentCustomDashboard.config = config;
-        list.unshift(currentCustomDashboard);
-        localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
-      }
+      // // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
+      // const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
+      // if (dashboard) {
+      //   dashboard.lastEdited = Date.now();
+      //   dashboard.config = config;
+      //   localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
+      //   this.$store.commit('endEdit');
+      // } else {
+      // // (new dashboard) -> add 'config' and 'created' properties to currentDashboard and insert to start of list
+      //   if (!list) {
+      //     customDashboardsList[this.getUser.username] = [];
+      //     list = customDashboardsList[this.getUser.username];
+      //   }
+      //   currentCustomDashboard.created = Date.now();
+      //   currentCustomDashboard.config = config;
+      //   list.unshift(currentCustomDashboard);
+      //   localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
+      // }
 
       this.$store.dispatch('customDashboard', true);
       const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
