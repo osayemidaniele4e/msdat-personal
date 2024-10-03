@@ -181,15 +181,49 @@
                   :class="{ dropcard: showExpandedDropdown }"
                 />
               </div>
-              <div
-                v-b-toggle.sidebar-2
-                v-if="isAuthenticated === false"
-                class="auth ml-2 d-flex align-items-center"
-              >
-                <b-icon-person-circle style="width: 18px; height: 18px"></b-icon-person-circle
-                >&nbsp;<span class="d-none d-md-inline">Login/Register</span>
-              </div>
-              <div v-else @click="showCard = true">
+              <!-- Modal for Sign In/Sign Up -->
+    <b-modal
+      id="auth-modal"
+      title=""
+      centered
+      size="lg"
+      hide-footer
+      @hide="hideAuthModal"
+    >
+      <div v-if="show">
+        <LoginSidebar  @login-success="hideAuthModal"  />
+      </div>
+      <div v-else>
+        <SignUp  @login-success="hideAuthModal"  />
+      </div>
+
+      <div class="signup-main text-center mt-4" v-if="show">
+        <h4 style="font-size: 15px; font-family: Work sans">Don't have an account?</h4>
+        <p
+          class="sign-uptxt"
+          @click.prevent="showLoginForm"
+        >
+          Create an Account
+        </p>
+      </div>
+
+      <div class="signup-main text-center mt-4" v-else>
+        <h4 style="font-size: 15px; font-family: Work sans">Already have an account?</h4>
+        <p
+          class="sign-uptxt"
+          @click="showRegForm"
+        >
+          Log In
+        </p>
+      </div>
+    </b-modal>
+
+    <!-- Trigger button for modal -->
+    <div v-if="!isAuthenticated" class="auth ml-2 d-flex align-items-center" @click="showAuthModal">
+      <b-icon-person-circle style="width: 18px; height: 18px"></b-icon-person-circle>
+      &nbsp;<span class="d-none d-md-inline">Login/Register</span>
+    </div>
+    <div v-else @click="showCard = true">
                 <div class="ml-2 profile d-flex align-items-center">
                   <img
                     :src="
@@ -204,48 +238,6 @@
                   Hi,&nbsp;{{ getUser.username !== undefined ? getUser.username : getUser.email }}
                 </div>
               </div>
-              <b-sidebar
-                id="sidebar-2"
-                title=""
-                right
-                shadow
-                style="background: #fff"
-                v-if="isAuthenticated === false"
-              >
-                <LoginSidebar v-if="show" />
-                <SignUp v-else />
-                <div class="row" v-if="show">
-                  <div class="col-12 text-center">
-                    <h4 class="py-3" style="font-size: 15px; font-family: Work sans">
-                      Don't have an account?
-                    </h4>
-                    <button
-                      class="btn btn-lg btn-light btn-outline-dark text-dark"
-                      style="
-                        font-size: 15px;
-                        background: #f7f7f7;
-                        border: 1px solid #707070;
-                        font-family: Work sans;
-                      "
-                      @click.prevent="showLoginForm"
-                    >
-                      CREATE AN ACCOUNT
-                    </button>
-                  </div>
-                </div>
-
-                <div v-else>
-                  <div class="justify-content-center text-center">
-                    <button
-                      class="btn btn-lg btn-light btn-outline-dark text-dark mb-3"
-                      style="background: #f7f7f7; border: 1px solid #707070"
-                      @click="showRegForm"
-                    >
-                      LOGIN
-                    </button>
-                  </div>
-                </div>
-              </b-sidebar>
             </b-nav>
             <b-icon
               @click="toggleOption = !toggleOption"
@@ -388,6 +380,12 @@ export default {
   },
 
   methods: {
+    showAuthModal() {
+      this.$bvModal.show('auth-modal');
+    },
+    hideAuthModal() {
+      this.$bvModal.hide('auth-modal');
+    },
     showRegForm() {
       // eslint-disable-next-line no-unused-expressions
       this.show = true;
@@ -469,6 +467,26 @@ export default {
 .tools span:hover {
   text-decoration: underline;
 }
+
+.signup-main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.sign-uptxt{
+  cursor: pointer;
+  color: #348481;
+  margin-top: 9px;
+  font-weight: 600;
+  font-size: 15px;
+
+}
+.sign-uptxt:hover {
+  text-decoration: underline;
+}
 .custom-header {
   color: #ffffff;
   padding: 10px;
@@ -485,7 +503,10 @@ button {
 .main {
   display: inherit;
 }
-
+.auth {
+  display: inherit;
+  cursor: pointer;
+}
 .mob {
   display: none;
 }

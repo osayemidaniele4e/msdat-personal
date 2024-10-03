@@ -27,7 +27,7 @@ export default {
       // state.loader.indicator = true;
       // await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
       await axios
-        .get('https://msdat-api.fmohconnect.gov.ng/api/indicators/?size=1500')
+        .get('https://msdat-api.fmohconnect.gov.ng/api/indicators/?size=3000')
         .then((res) => {
           // const { data } = res;
           const data = res.data.results;

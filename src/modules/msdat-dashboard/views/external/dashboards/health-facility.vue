@@ -35,7 +35,7 @@ export default {
       width: '100%',
       height: '400',
       showComing: true,
-      currentTitle: 'State Health Facility',
+      currentTitle: 'State Health Facility (GIS)',
     };
   },
   methods: {
