@@ -7,8 +7,15 @@
     >
       <template #title>
         <p class="work-sans mb-0 line-height">
-          Distribution of <b>{{ values.indicator.short_name }}</b> across the geopolitical zones in
-          the Country. Source: <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
+          Distribution of <b>{{ values.indicator.short_name }}</b>
+          {{
+            visualizationText === 'zonal map'
+              ? 'across the geopolitical zone in the country'
+              : visualizationText === 'state map'
+              ? 'across the states in the country'
+              : 'in the country'
+          }}
+          <b>{{ values.datasource.datasource }}</b> <b>{{ values.year }}</b>
         </p>
       </template>
       <BarChart
@@ -74,6 +81,7 @@ export default {
       },
       loading: true,
       showNoAvailableData: false,
+      visualizationText: 'line',
     };
   },
   methods: {
@@ -189,17 +197,21 @@ export default {
             this.mapDataLevel = 3;
             this.level = 1;
             this.visualization = 'map';
+            this.visualizationText = 'state map';
             break;
           case 'zonal_map':
             this.visualization = 'map';
+            this.visualizationText = 'zonal map';
             this.level = 2;
             this.mapDataLevel = 2;
             break;
           case 'line':
             this.visualization = 'line';
+            this.visualizationText = 'line';
             break;
           case 'column':
             this.visualization = 'column';
+            this.visualizationText = 'column';
             break;
           default:
             break;
