@@ -188,7 +188,7 @@
 
 <script>
 // eslint-disable-next-line import/extensions
-import TheLoader from '../../Loading/TheLoader.vue';
+import TheLoader from '../../Loading/TheLoader2.vue';
 
 export default {
   props: ['indicator', 'dataSource', 'level', 'years'],
