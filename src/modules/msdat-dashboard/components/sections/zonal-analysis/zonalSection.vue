@@ -153,7 +153,7 @@ export default {
           datasource: val.datasource.id,
           period: val.year,
         });
-        // console.log(data, 'dataSeries data');
+
         if (data.length > 0) {
           if (val.location.id !== 1) {
             const filteredLGADataForState = data.filter(
@@ -167,8 +167,11 @@ export default {
 
             const chartSeries = [];
             const formattedData = formatToHighChart(filteredLGADataForState);
+
             const sortedData = formattedData.sort(sortHighChartDataFormat);
+
             const stateObject = this.dlGetLocation(val.location.id);
+
             const stateData = data.find((item) => item.location === val.location.id);
 
             sortedData.unshift({
@@ -177,6 +180,7 @@ export default {
               // color: this.colors[0].color,
               color: this.colors.find((item2) => item2.id === stateObject.parent).color,
             });
+
             chartSeries.push({
               color: this.colors[stateObject.parent].color,
               name: stateObject.name,
@@ -187,6 +191,7 @@ export default {
             // already know the zonal levels/parent of all the value
             // index starts at one to skip region data for the series
             const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
+
             const zonalSeries = this.getZonalDataInHighChartFormat(data);
 
             // console.log(zonalSeries);

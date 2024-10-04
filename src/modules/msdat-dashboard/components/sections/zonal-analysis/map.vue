@@ -93,6 +93,8 @@ export default {
       zone: 2,
       stateName: 'Nigeria',
       showNoAvailableData: false,
+      stateData: [],
+      selectedState: null,
     };
   },
   methods: {
@@ -114,6 +116,17 @@ export default {
         }
       }
     },
+    updatedSeries() {
+      return this.stateData.map((region) => {
+        // Check if the region contains the selected state
+        const containsSelectedState = region.data.some(([state]) => state === this.selectedState);
+        return {
+          ...region,
+          // Change color to grey if region does not contain the selected state
+          color: containsSelectedState ? region.color : '#808080', // Grey color
+        };
+      });
+    },
   },
 
   watch: {
@@ -125,7 +138,17 @@ export default {
           datasource: val.datasource.id,
           period: val.year,
         });
+        const specificData = await this.dlQuery({
+          indicator: val.indicator.id,
+          datasource: val.datasource.id,
+          period: val.year,
+          location: val.location.id,
+        });
+        console.log(val, 'filteredLGADataForState kogi');
+        this.selectedState = val.location.name;
+
         const stateObject = this.dlGetLocation(val.location.id);
+        console.log(specificData, 'filteredLGADataForState 4');
 
         // PLOT 1ST MAP AS ZOANL
         if (stateObject.level === 1) {
@@ -166,6 +189,8 @@ export default {
           }
 
           const filteredSeries = chartSeries.filter((item) => item.data.length > 0);
+          console.log(filteredSeries, 'filteredLGADataForState 5');
+          this.stateData = filteredSeries;
 
           if (filteredSeries.length === 1) {
             const groupP = data.filter((item) => this.dlGetLocation(item.location).parent === 1);
@@ -185,6 +210,8 @@ export default {
               data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
             }));
 
+            console.log(zData, 'filteredLGADataForState XX');
+
             this.chart = {
               series: zData,
             };
@@ -201,6 +228,7 @@ export default {
 
             // Modify the chartSeries to exclude "Nigeria" if it exists
             const chartSeriesWithoutNigeria = chartSeries.filter((item) => item.name !== 'Nigeria');
+            console.log(chartSeriesWithoutNigeria, 'filteredLGADataForState XX');
 
             this.chart = {
               series: chartSeriesWithoutNigeria,
@@ -243,7 +271,10 @@ export default {
           const filteredLGADataForState = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id,
           );
-          console.log(filteredLGADataForState, 'filteredLGADataForState');
+          console.log(filteredLGADataForState, 'filteredLGADataForStatex');
+          const tempData = this.updatedSeries();
+          console.log(tempData, 'filteredLGADataForState 7');
+          console.log(filteredLGADataForState, 'filteredLGADataForState 8');
 
           if (filteredLGADataForState.length === 0) {
             this.showNoAvailableData = true;
@@ -252,40 +283,48 @@ export default {
             this.showNoAvailableData = false;
           }
 
-          console.log(filteredLGADataForState, 'filteredLGADataForState 2');
-          const formatToHighChart = (dataValues) => dataValues.map((item) => [
-            this.dlGetLocation(item.location).name,
-            parseFloat(item.value),
-          ]);
-          const chartSeries = [];
-          const formattedData = formatToHighChart(filteredLGADataForState);
-          const sortedData = formattedData.sort(sortHighChartDataFormat);
-          console.log('sorted', sortedData);
-          // remove LGAs sting from LGA name cause mapdata does not support the format
-          sortedData.forEach((item) => {
-            const newItem = item;
-            newItem[0] = newItem[0].split('LGA')[0].trim();
-            return newItem;
-          });
+          if (filteredLGADataForState.length === 0) {
+            this.showNoAvailableData = true;
+            this.loader = false;
+            this.chart = {
+              series: tempData,
+            };
+          } else {
+            console.log(filteredLGADataForState, 'filteredLGADataForState 2');
+            const formatToHighChart = (dataValues) => dataValues.map((item) => [
+              this.dlGetLocation(item.location).name,
+              parseFloat(item.value),
+            ]);
+            const chartSeries = [];
+            const formattedData = formatToHighChart(filteredLGADataForState);
+            const sortedData = formattedData.sort(sortHighChartDataFormat);
+            console.log('sorted', sortedData);
+            // remove LGAs sting from LGA name cause mapdata does not support the format
+            sortedData.forEach((item) => {
+              const newItem = item;
+              newItem[0] = newItem[0].split('LGA')[0].trim();
+              return newItem;
+            });
 
-          const stateData = data.find((item) => item.location === val.location.id);
+            const stateData = data.find((item) => item.location === val.location.id);
 
-          sortedData.unshift({
-            name: stateObject.name,
-            y: parseFloat(stateData?.value),
-            color: this.colors[0].color,
-          });
-          chartSeries.push({
-            color: this.colors.find((item) => item.id === stateObject.parent).color,
-            name: stateObject.name,
-            data: sortedData,
-          });
-          this.stateName = stateObject.name; // Please always change the state name before
-          // changing the level else you would get an error
-          this.level = 3;
-          this.chart = {
-            series: chartSeries,
-          };
+            sortedData.unshift({
+              name: stateObject.name,
+              y: parseFloat(stateData?.value),
+              color: this.colors[0].color,
+            });
+            chartSeries.push({
+              color: this.colors.find((item) => item.id === stateObject.parent).color,
+              name: stateObject.name,
+              data: sortedData,
+            });
+            this.stateName = stateObject.name; // Please always change the state name before
+            // changing the level else you would get an error
+            this.level = 3;
+            this.chart = {
+              series: chartSeries,
+            };
+          }
         }
         this.loader = false;
       },
