@@ -230,7 +230,7 @@ export default {
   // ********* For Years ******** //
   // Load Years based on indicators
   async loadYears({ commit, state }, payload) {
-    console.log('called 1');
+    // console.log('called 1');
     let dataObj = {};
     let loading = true;
     if (payload.checked === true || state.allSelected === true) {
@@ -241,9 +241,12 @@ export default {
         .get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
         .then((res) => {
           const { data } = res;
-          console.log(data, 'data');
+
+          const currentYear = (new Date()).getFullYear();
+          const years = data.years.filter((year) => Number(year) && Number(year) <= currentYear);
+          // console.log(data, 'data');
           if (state.allSelected === false) {
-            const yearsData = data.years.map((year) => ({ selected: false, value: year }));
+            const yearsData = years.map((year) => ({ selected: false, value: year }));
             dataObj = {
               id: payload.id,
               childName: payload.child,
@@ -252,7 +255,7 @@ export default {
               checked: payload.checked,
             };
           } else {
-            const yearsData = data.years.map((year) => ({ selected: true, value: year }));
+            const yearsData = years.map((year) => ({ selected: true, value: year }));
             dataObj = {
               id: payload.id,
               childName: payload.child,
