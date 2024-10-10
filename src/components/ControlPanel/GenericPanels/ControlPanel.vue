@@ -212,7 +212,7 @@
       </div>
       <div v-if="values.key === 'indicator' && getSelectedSection === 'Indicator Overview'" class="prog-label">
   <p class="first-text">
-    Program Area: {{ payload.indicator?.program_area }}
+    Program Area: {{ payload.indicator ? payload.indicator.program_area : '' }}
   </p>
   <!-- <p class="second-text">The program area will display for each indicator</p> -->
 </div>

@@ -122,7 +122,7 @@ export default {
     },
     selectedDS: {
       async handler() {
-        console.log('cali');
+        // console.log('cali');
       },
       deep: false,
       immediate: false,
@@ -173,7 +173,7 @@ export default {
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const { seriesArray, years } = await this.toHighChartSeriesSetup(
-            this.values ? [this.values.datasource] : dataSources,
+            this.values?.datasource ? [this.values.datasource] : dataSources,
           );
           await this.setUpHighChartConfig(seriesArray, years);
         }
@@ -260,13 +260,14 @@ export default {
               series: [
                 {
                   name: 'Actual Data',
-                  data: ChartSeriesObject[0].data,
+                  data: data || [],
                   color: 'red',
                 },
                 {
                   name: 'Prediction',
                   data: switchPrediction,
                   color: 'blue',
+                  dashStyle: 'dot',
                 },
               ],
               plotOptions: {
@@ -383,7 +384,7 @@ export default {
           seriesObject = { name: datasource?.datasource, data: sortedData };
         }
         chartSeriesArray.push(seriesObject);
-        if (chartSeriesArray[0].data.length < 12) {
+        if (chartSeriesArray[0].data.length < 7) {
           this.showNoAvailablePrediction = true;
         } else {
           this.showNoAvailablePrediction = false;
