@@ -10,9 +10,6 @@
           <router-link to="/dashboard/GIS_Mapping_Dashboard" target="_blank"
             ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
           >
-          <router-link to="/state-health-facility" target="_blank"
-            ><b-list-group-item>Health Facilities Profile (GIS)</b-list-group-item></router-link
-          >
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -50,6 +47,9 @@
               {{ dashboard.name_of_dashboard }}
             </b-list-group-item>
           </a>
+          <router-link to="/state-health-facility" target="_blank"
+            ><b-list-group-item>Health Facilities Profile (GIS)</b-list-group-item></router-link
+          >
         </b-list-group>
       </div>
       <div class="col mb-3">
