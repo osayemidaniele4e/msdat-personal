@@ -453,6 +453,9 @@ export default {
   },
   mounted() {
     console.log('usserrrr', this.getUser.id);
+    if (this.$route.query.code) {
+      this.showAuthModal();
+    }
   },
 };
 </script>
