@@ -25,7 +25,7 @@
               <li v-for="(item, index) in data.steps.First_Method" :key="index">{{ item }}</li>
             </ul>
             <ul v-if="data.steps.Second_Method" class="mt-2 border-top">
-              <li v-for="(item, index) in data.steps.Second_Method" :key="index">{{ item }}</li>
+              <li v-for="(item, index) in data.steps.Second_Method" :key="index" >{{ item }}</li>
             </ul>
           </b-card-body>
           <b-card-body v-else class="border-1 mb-1 shadow-sm">

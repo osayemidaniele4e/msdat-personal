@@ -214,7 +214,7 @@
   <p class="first-text">
     Program Area: {{ payload.indicator?.program_area }}
   </p>
-  <p class="second-text">The program area will display for each indicator</p>
+  <!-- <p class="second-text">The program area will display for each indicator</p> -->
 </div>
     </div>
   </div>
@@ -525,7 +525,7 @@ button {
   align-items: center;
   background-color: #DFF3F3;
   border:1px solid #D6D6D6;
-  margin-top: 15px;
+  margin-top: 12px;
   margin-left: -8px;
   left: 0;
   right: 0;
@@ -534,7 +534,7 @@ button {
   flex-direction: row;
   justify-content: space-between;
   z-index: 10;
-  padding: 3px 16px;
+  padding: 1px 16px;
 }
 
 .first-text {

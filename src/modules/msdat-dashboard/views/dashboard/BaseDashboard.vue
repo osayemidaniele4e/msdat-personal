@@ -90,7 +90,7 @@
 
                       <b-collapse id="panel" visible>
                         <template>
-                          <div>
+                          <div class="mb-2" >
                             <!-- mobile view direction buttons -->
                             <div class="swipe-btn-flex">
                               <button @click="swipeLeft" class="swipe-btn">
@@ -664,6 +664,7 @@ div.temp {
   }
   .lessVisible {
     z-index: -1;
+    margin-top: 15px;
   }
 }
 div#browserSupport {
@@ -697,7 +698,35 @@ div#browserSupport img {
   font-size: 10px;
   font-weight: bold;
 }
+.program{
+ display: flex;
+ flex-direction: row;
+ width: 100%;
+ gap: 18px;
+ margin: 10px;
+}
+.program label{
+ font-size: 12px;
+ font-weight: bold;
+}
+.prog-drop{
+ width:450px;
+}
+.prog-visual {
+ font-size: 12px;
+ font-weight: bold;
+ padding: 10px;
+ width: 400px;
+ border: 1px solid#007D53;
+ border-radius: 5px;
+ background-color: #ffffff;
+ color: #000;
 
+}
+
+.rotated {
+  transform: rotate(180deg);
+}
 @media (max-width: 800px) {
   .swipe-btn-flex {
     display: flex;
