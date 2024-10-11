@@ -210,12 +210,12 @@
           Column <b-icon icon="bar-chart-fill"></b-icon>
         </button>
       </div>
-      <div v-if="values.key === 'indicator' && getSelectedSection === 'Indicator Overview'" class="prog-label">
+      <!-- <div v-if="values.key === 'indicator' && getSelectedSection === 'Indicator Overview'" class="prog-label">
   <p class="first-text">
     Program Area: {{ payload.indicator ? payload.indicator.program_area : '' }}
   </p>
-  <!-- <p class="second-text">The program area will display for each indicator</p> -->
-</div>
+  <p class="second-text">The program area will display for each indicator</p>
+</div> -->
     </div>
   </div>
 </template>
@@ -519,37 +519,37 @@ button {
   font-weight: bold;
 }
 
-.prog-label {
-  display: flex;
-  position: absolute;
-  align-items: center;
-  background-color: #DFF3F3;
-  border:1px solid #D6D6D6;
-  margin-top: 12px;
-  margin-left: -8px;
-  left: 0;
-  right: 0;
-  font-weight: 400;
-  width: 100vw;
-  flex-direction: row;
-  justify-content: space-between;
-  z-index: 10;
-  padding: 1px 16px;
-}
+// .prog-label {
+//   display: flex;
+//   position: absolute;
+//   align-items: center;
+//   background-color: #DFF3F3;
+//   border:1px solid #D6D6D6;
+//   margin-top: 12px;
+//   margin-left: -8px;
+//   left: 0;
+//   right: 0;
+//   font-weight: 400;
+//   width: 100vw;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   z-index: 10;
+//   padding: 1px 16px;
+// }
 
-.first-text {
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 0;
-  color: #232323;
-}
+// .first-text {
+//   font-size: 14px;
+//   font-weight: 500;
+//   margin-bottom: 0;
+//   color: #232323;
+// }
 
-.second-text {
-  font-size: 13px;
-  margin-bottom: 0;
-  color: #656565;
-  padding-right: 32px;
-}
+// .second-text {
+//   font-size: 13px;
+//   margin-bottom: 0;
+//   color: #656565;
+//   padding-right: 32px;
+// }
 
 @media (max-width: 900px) {
   .prog-label{

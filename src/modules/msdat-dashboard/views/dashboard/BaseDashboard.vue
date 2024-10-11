@@ -90,7 +90,7 @@
 
                       <b-collapse id="panel" visible>
                         <template>
-                          <div class="mb-2" >
+                          <div >
                             <!-- mobile view direction buttons -->
                             <div class="swipe-btn-flex">
                               <button @click="swipeLeft" class="swipe-btn">
@@ -664,7 +664,7 @@ div.temp {
   }
   .lessVisible {
     z-index: -1;
-    margin-top: 15px;
+    margin-top: 1px;
   }
 }
 div#browserSupport {
