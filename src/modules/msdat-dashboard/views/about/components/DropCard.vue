@@ -96,7 +96,7 @@
           <router-link to="/quarterly-review" target="_blank"
             ><b-list-group-item>Quarterly Performance Assessment</b-list-group-item></router-link
           >
-          <a
+          <!-- <a
               target="_blank"
               v-for="dashboard in publicDashboards.filter((dash) => {
                 return (dash.category === 'health_outcomes' && dash.isConfirmed)
@@ -107,7 +107,7 @@
             <b-list-group-item>
               {{ dashboard.name_of_dashboard }}
             </b-list-group-item>
-          </a>
+          </a> -->
         </b-list-group>
       </div>
       <div class="col mb-3">
