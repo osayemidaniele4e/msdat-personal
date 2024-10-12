@@ -41,16 +41,55 @@
         </b-col>
       </b-row>
     </b-col>
-    <b-col class="plug-nots" >
+    <b-row class="plug-nots" >
       <b-row>
         <div  >
+          <b-col>
+            <h4>plug ins</h4>
+            <div class="plug-card ">
+              <div class="card-content">
+                <b-row class="plug-spaced">
+                  <b-col class="count-tile ">
+                    <div class="summary-number">{{ availablePluginsCount }}</div>
+                    <div class="summary-title">Available Plug-ins</div>
+                  </b-col>
+                  <span class="view-all"><a href="#">View all</a></span>
+                </b-row>
+              </div>
+            </div>
+          </b-col>
+        </div>
+        <div  >
+        </div>
+      </b-row>
+      <!-- notifications -->
+      <b-row>
+        <div  >
+          <b-col>
+            <h4>Notifications</h4>
+            <div class="plug-card ">
+              <div class="card-content">
+                <b-row class="plug-spaced">
+                  <b-col class="count-tile ">
+                    <div class="summary-number">14</div>
+                    <div class="summary-title">Pending Notifications</div>
+                  </b-col>
+                  <span class="view-all"><a href="#/notification">View all</a></span>
+                </b-row>
+
+              </div>
+
+            </div>
+
+          </b-col>
 
         </div>
+        </b-row>
         <div  >
 
         </div>
-      </b-row>
-    </b-col>
+    </b-row>
+
   </b-col>
 </template>
 
@@ -95,9 +134,13 @@ export default {
 </script>
 
 <style scoped>
+.summary{
+  margin-bottom: 50px;
+  padding: 0px 30px;
+}
 .summary-section {
  margin-top: 20px;
- gap: 60px;
+ gap: 40px;
  justify-content: center;
 }
 
@@ -111,7 +154,6 @@ export default {
 .card-content{
   padding: 10px;
   width: 100%;
-
 }
 
 .summary-number {
@@ -125,7 +167,7 @@ export default {
 }
 
 .summary-updated {
- font-size: 0.9em;
+ font-size: 0.8em;
  color: #888;
 }
 
@@ -138,5 +180,23 @@ export default {
 .view-all a {
  text-decoration: none;
  color: inherit;
+}
+.plug-nots{
+  margin-top: 40px;
+  gap: 80px;
+  margin-left: 30px;
+}
+
+.plug-card {
+  display: flex;
+  border: 0.5px solid #D4D4D4;
+  border-radius: 8px;
+  padding: 10px 20px 10px 10px;
+  margin-top: 20px;
+}
+
+.plug-spaced {
+  gap: 90px;
+  justify-content: center;
 }
 </style>
