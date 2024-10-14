@@ -36,7 +36,7 @@
           @key="getKey"
           @clickedReset="getReset"
           id="indicatorTable"
-          @replaceItem="replaceItem"
+          :replaceItem="replaceItem"
         />
       </base-sub-card>
     </div>
@@ -279,13 +279,8 @@ export default {
       this.$emit('key', key);
     },
     replaceItem(newItem) {
-      const index = this.TableData.findIndex(
-        (item) => item.indicator.id === newItem.oldData
-          .indicator.id,
-      );
-      if (index !== -1) {
-        this.TableData.splice(index, 1, newItem.formattedData[0]);
-      }
+      this.TableData.splice(newItem.index, 1, newItem.formattedData[0]);
+      console.log(newItem, '@@FX');
     },
 
     getReset() {

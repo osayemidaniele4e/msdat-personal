@@ -67,6 +67,7 @@
             class="base_subCard_header text-white"
             :rowData="dataArray[0]"
             @indicator-info:clicked="$emit('selected:indicator-info', $event)"
+            :replaceContent="replaceContent"
           >
             <template v-slot:indicator="props">
               <slot name="indicator-0" :indicator="props"></slot>
@@ -146,7 +147,8 @@
               :rowData="indicatorData"
               @indicator-info:clicked="$emit('selected:indicator-info', $event)"
               related="related"
-              @replaceContent="replaceContent"
+              :replaceContent="replaceContent"
+              :index="index"
             >
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
@@ -251,6 +253,10 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    replaceItem: {
+      type: Function,
+      required: true,
     },
     /**
      * To controls the order of the indicators
@@ -395,7 +401,9 @@ export default {
     },
 
     replaceContent(item) {
-      this.$emit('replaceItem', item);
+      // this.$emit('replaceItem', item);
+      this.replaceItem(item);
+      this.getNhmisMonthly();
     },
 
     /**
@@ -497,6 +505,7 @@ export default {
     // use the function similar
 
     async getNhmisMonthly() {
+      console.log('MMMMM');
       this.indicators = [];
       this.nhmisMonthData = [];
       this.dataArray.map(async (element) => {
