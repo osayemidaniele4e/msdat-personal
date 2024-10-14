@@ -308,10 +308,7 @@ export default {
     },
 
     async handleSelect(option) {
-      console.log('Option selected:', option);
       const dataSources = this.dlGetDashboardDataSource();
-      console.log('Option selected:', dataSources);
-      // console.log('Option selected 3:', this.getControlConfig);
       const data = [];
       const formattedData = [];
       for (let index = 0; index < dataSources.length; index += 1) {
@@ -324,15 +321,12 @@ export default {
         });
         data.push(ab);
       }
-      console.log('Option selected 3:', data);
       formattedData.push(this.tableComponentDataFormatter(option, data));
       const params = {
         formattedData,
         oldData: this.rowData,
         index: this.index,
       };
-      // console.log('Option selectedx 4:', formattedData);
-      // this.$emit('replaceContent', params);
       this.replaceContent(params);
     },
     handleRemove(option) {

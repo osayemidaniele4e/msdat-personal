@@ -505,7 +505,6 @@ export default {
     // use the function similar
 
     async getNhmisMonthly() {
-      console.log('MMMMM');
       this.indicators = [];
       this.nhmisMonthData = [];
       this.dataArray.map(async (element) => {
