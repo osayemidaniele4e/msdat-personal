@@ -290,6 +290,7 @@ h5.text-underline {
   bottom: 0;
   left: -10;
   cursor: pointer;
+  transform: translateY(-2px);
   transition: ease all 0.1s;
 }
 .advanced_sections {

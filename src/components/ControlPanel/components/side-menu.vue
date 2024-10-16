@@ -36,14 +36,15 @@
           />
           <span class="ml-25">Change/Select Datasets</span>
         </button>
-        <button
-          @click="$router.push('')"
+        <a
+          href="https://mapping.fmohconnect.gov.ng/inventory/submit-dataset"
+          target="_blank"
           type="button"
           class="dotted-btn menu-item d-flex align-items-center mb-3"
         >
           <img src="@/assets/img/Hamburger Icons/ic_upload.svg" alt="upload" />
-          <span class="ml-25">Submit New Data Source</span>
-        </button>
+          <span class="ml-25">Submit New Dataset</span>
+        </a>
         <button
           @click="$router.push('')"
           type="button"
