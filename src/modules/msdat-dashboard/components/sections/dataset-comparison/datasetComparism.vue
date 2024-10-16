@@ -194,6 +194,8 @@ export default {
           indicator: this.values.indicator.id,
           datasource: dataSourceObject.id,
         });
+
+        console.log(data, dataSourceObject, 'availableDS@ 3');
         if (data.length > 0) {
           const onlyYearlyData = data.filter((item) => {
             if (isDataYearly(item.period)) {

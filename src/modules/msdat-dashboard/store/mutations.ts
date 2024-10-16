@@ -63,6 +63,7 @@ const mutations: MutationTree<State> = {
   },
 
   SETUP_CONTROL_OPTIONS1: (state, obj: setOptionsPayload) => {
+    console.log(obj, 'availableDS@ 2');
     const checkTheObject = state.controlConfig[obj.panelIndex].setup[0];
     if (Array.isArray(checkTheObject)) {
       const setUpArrayOfObject = state.controlConfig[obj.panelIndex].setup[obj.groupIndex];
@@ -117,6 +118,16 @@ const mutations: MutationTree<State> = {
         // taking into consideration sections like multi-source comparison
         state.controlConfig[obj.controlIndex].payload[obj.groupIndex][obj.key] = obj.value;
       }
+    }
+  },
+
+  SET_INDICATOR_COMPARISON_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[2].payload !== null) {
+      state.controlConfig[2].payload[obj.key] = [];
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      const tempIndicator = [];
+      tempIndicator.push(obj.value);
+      state.controlConfig[2].payload[obj.key] = tempIndicator;
     }
   },
 
