@@ -85,11 +85,11 @@
       <div class="divider"></div>
       <li>
         <a
-          href="https://mapping.fmohconnect.gov.ng/"
+          href="https://mapping.fmohconnect.gov.ng/inventory/submit-dataset"
           target="_blank"
         >
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
-          <span>Submit New Data Source</span>
+          <span>Submit New Dataset</span>
         </a>
       </li>
       <!-- <li>
