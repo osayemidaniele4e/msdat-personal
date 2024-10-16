@@ -69,7 +69,7 @@ export default {
     });
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
+    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1', 'SET_INDICATOR_COMPARISON_PAYLOAD']),
     ...mapActions([
       'SET_INTERACTIONS',
       'GET_INTERACTIONS',
@@ -90,6 +90,7 @@ export default {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
     async getAvailableDataIndicators() {
+      console.log('Indicator4rmDB');
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
     removeDuplicates(arr) {
@@ -183,7 +184,10 @@ export default {
 
           this.previous_indicator = this.payload.indicator;
 
+          console.log(this.controlIndex, 'availableDSX');
+
           if (this.controlIndex !== 2) {
+            console.log(this.controlIndex, 'availableDSX 1');
             const availableYears = await this.getAvailableYears();
             this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
@@ -192,6 +196,7 @@ export default {
               values: availableYears,
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
+            console.log(availableDS, 'availableDS@ 1');
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
@@ -246,6 +251,12 @@ export default {
           // ============
           if (this.controlIndex === 2) {
             const availableIndicator = await this.getAvailableDataIndicators();
+            await this.SET_INDICATOR_COMPARISON_PAYLOAD({
+              groupIndex: this.groupIndex,
+              panelIndex: this.controlIndex,
+              key: 'indicator',
+              value: availableIndicator[0].indicators[0],
+            });
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
