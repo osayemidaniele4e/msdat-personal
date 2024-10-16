@@ -225,7 +225,17 @@ export default {
     // Get available Indicator
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorFromDexie(datasourceID);
-      const formattedData = groupIndicator(data, 'program_area');
+      const indicatorWithData = data.filter(async (indicatorItem) => {
+        const indicatorData = await this.dlQuery({
+          indicator: indicatorItem.id,
+          datasource: datasourceID,
+        });
+
+        // Keep only items where indicatorData is not an empty array
+        return indicatorData.length > 0;
+      });
+
+      const formattedData = groupIndicator(indicatorWithData, 'program_area');
       return formattedData;
     },
   },
