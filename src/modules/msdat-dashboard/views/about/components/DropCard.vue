@@ -35,7 +35,7 @@
               >HIV/AIDs National Repository Dashboard 2</b-list-group-item
             ></router-link
           >
-          <a
+          <!-- <a
             target="_blank"
             v-for="dashboard in publicDashboards.filter((dash) => {
               return dash.category === 'health_input' && dash.isConfirmed;
@@ -46,7 +46,7 @@
             <b-list-group-item>
               {{ dashboard.name_of_dashboard }}
             </b-list-group-item>
-          </a>
+          </a> -->
           <router-link to="/state-health-facility" target="_blank"
             ><b-list-group-item>Health Facilities Profile (GIS)</b-list-group-item></router-link
           >
@@ -73,7 +73,7 @@
           <router-link to="/external-ncdc" target="_blank"
             ><b-list-group-item>Disease Surveillance (NCDC)</b-list-group-item></router-link
           >
-          <a
+          <!-- <a
             target="_blank"
             v-for="dashboard in publicDashboards.filter((dash) => {
               return dash.category === 'health_outputs' && dash.isConfirmed;
@@ -84,7 +84,7 @@
             <b-list-group-item>
               {{ dashboard.name_of_dashboard }}
             </b-list-group-item>
-          </a>
+          </a> -->
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -122,9 +122,29 @@
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
             ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
           >
-          <router-link to="/advanced_analytics" target="_blank"
-            ><b-list-group-item>Advanced Analytics</b-list-group-item></router-link
-          >
+          <div class="position-relative">
+            <router-link to="/advanced_analytics" target="_blank"
+              ><b-list-group-item>Advanced Analytics</b-list-group-item></router-link
+            >
+            <span
+              class="advanced_arrow"
+              :class="{ advancedSectionsOpen }"
+              @click="advancedSectionsOpen = !advancedSectionsOpen"
+            >
+              <b-icon icon="caret-right-fill" style="height: 0.7em; width: 0.7em;"></b-icon>
+            </span>
+          </div>
+          <div class="advanced_sections pl-2" :class="{ advancedSectionsOpen }">
+            <router-link
+              v-for="(title, index) in advancedTitles"
+              :key="title"
+              :to="`/dashboard/Advanced_Analytics?index=${index}`"
+              target="_blank"
+              >
+                <b-list-group-item><em class="small">{{ title }}</em></b-list-group-item>
+              </router-link
+            >
+          </div>
         </b-list-group>
       </div>
       <div class="col mb-3" v-if="isAuthenticated">
@@ -150,11 +170,15 @@ import {
   mapMutations,
 } from 'vuex';
 
+import { advancedTitles } from '../../analytics/sections';
+
 export default {
   data() {
     return {
       loading: true,
       userDashboards: [],
+      advancedTitles,
+      advancedSectionsOpen: false,
       // publicDashboards: [],
     };
   },
@@ -260,5 +284,24 @@ h5.text-underline {
   font-size: 1.2rem;
   font-family: 'Work Sans';
   font-weight: 700;
+}
+.advanced_arrow {
+  position: absolute;
+  bottom: 0;
+  left: -10;
+  cursor: pointer;
+  transform: translateY(-2px);
+  transition: ease all 0.1s;
+}
+.advanced_sections {
+  height: 0px;
+  overflow: hidden;
+  transition: ease height 0.3s;
+}
+.advanced_arrow.advancedSectionsOpen {
+  transform: rotate(90deg);
+}
+.advanced_sections.advancedSectionsOpen {
+  height: fit-content;
 }
 </style>
