@@ -71,8 +71,7 @@ export default {
   data() {
     return {
       // currentTab: 'Dashboard',
-      url1: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbz74zFXQ7_Sfz06iktlteOv0vhCZMKg3CsOzO7CiZgBK_sxiSXVBU5vX6EHxnfbD8OdOxTV4jSUHg/pubhtml?widget=true&amp;headers=false',
-      // url1: 'https://public.tableau.com/views/FMOHImproved/Dashboard1?:language=en-US&:embed=y&:sid=&:redirect=auth&:origin=viz_share_link&publish=yes&:display_count=n&:showVizHome=no&:embed=true',
+      url1: 'https://public.tableau.com/views/FMOHImproved/Dashboard1?:language=en-US&:embed=y&:sid=&:redirect=auth&:origin=viz_share_link&publish=yes&:display_count=n&:showVizHome=no&:embed=true',
       // url2: 'https://public.tableau.com/views/MSDATindicatorsscorecard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
