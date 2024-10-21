@@ -117,11 +117,11 @@
               </td>
               <td colspan="20" class="num-denom-content">
                 <slot name="NHMIS-DETAILS">
-                  <div class="numDemValues text-center">
-                    <div>
+                  <div class="numDemValues px-3 py-1 w-100">
+                    <div class="text-left">
                       <p><span>Numerator: </span> {{ numerator }}</p>
                     </div>
-                    <div>
+                    <div class="text-left">
                       <p><span>Denominator: </span> {{ denominator }}</p>
                     </div>
                   </div>
@@ -656,25 +656,26 @@ table.table {
     td.num-denom {
       // background-color: #2b5d5b;
       background-color: $primary;
-      padding-top: 10px;
+      // padding-top: 10px;
       h5 {
         font-size: 15px !important;
         font-weight: 300;
       }
     }
     td.num-denom-content {
-      padding-top: 10px;
+      // padding-top: 2px;
       // background-color: #2b5d5b;
       background-color: $primary;
       div.numDemValues {
         background-color: #fff;
         color: rgb(15, 14, 14);
-        height: 34px;
+        // height: fit-content;
         display: flex;
+        flex-direction: column;
         border-radius: 4px;
-        padding: 7px 10px 0;
-        gap: 10px;
-        justify-content: space-evenly;
+        // padding: 2px;
+        // gap: 2px;
+        // justify-content: space-evenly;
         p {
           font-size: 13px !important;
           font-weight: 300;

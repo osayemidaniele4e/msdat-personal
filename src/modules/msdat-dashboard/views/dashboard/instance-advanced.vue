@@ -111,7 +111,7 @@
                 </div>
                 <div class="desc-text p-2">
                   <p>
-                    The predictive Analysis section on MSDAT shows the current actual data and Projections for each indicator for a data source.
+                    The Predictive Analysis section of MSDAT involves transforming raw data into a structured data frame for better analysis. An optimal ARIMA model is then applied to forecast future trends based on historical data. Once predictions are generated, the results are sent to the front end for real-time display, providing users with clear and actionable insights.
                   </p>
                 </div>
               </div>

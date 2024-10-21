@@ -33,13 +33,7 @@ import { mapMutations } from 'vuex';
 
 import Header from '../about/layout/theHeader.vue';
 import tour from '../onboarding/tour';
-
-import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
-import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
-import IndicatorComparisonConfig from '../../components/sections/advanced/indicator-comparison-section/indicator-comparison-section-config';
-import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
-import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
-import BubbleChartConfig from '../../components/sections/advanced/scatterplot-section/scatterplot-section-config';
+import { advancedSections, advancedTitles } from './sections';
 
 export default {
   name: 'Landing',
@@ -47,35 +41,13 @@ export default {
   components: {
     Header,
   },
-  data() {
-    return {
-      sections: [
-        {
-          title: 'Correlation Analysis',
-          id: 'CorrelationAnalysis',
-        },
-        {
-          title: 'Descriptive Analysis',
-          id: 'DescriptiveAnalysis',
-        },
-        {
-          title: 'Indicator Comparison',
-          id: 'IndicatorComparison',
-        },
-        {
-          title: 'Predictive Analysis',
-          id: 'PredictiveAnalysis',
-        },
-        {
-          title: 'Multi-source Indicator Comparison',
-          id: 'Multi-source Indicator Comparison',
-        },
-        {
-          title: 'Bubble Chart Analysis',
-          id: 'BubbleChartAnalysis',
-        },
-      ],
-    };
+  data() { },
+  computed: {
+    sections() {
+      return advancedTitles.map((title) => ({
+        title, id: title.replaceAll(' ', ''),
+      }));
+    },
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
@@ -85,15 +57,12 @@ export default {
       return require(`@/assets/img/analytics/${sec}.png`);
     },
   },
-  async created() {
+  async mounted() {
     await this.CLEAR_CONTROL_PANEL();
 
-    this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
-    this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
-    this.ADD_CONTROL_PANEL(IndicatorComparisonConfig);
-    this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
-    this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
-    this.ADD_CONTROL_PANEL(BubbleChartConfig);
+    advancedSections.forEach((section) => {
+      this.ADD_CONTROL_PANEL(section);
+    });
   },
 };
 </script>
