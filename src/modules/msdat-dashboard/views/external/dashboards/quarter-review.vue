@@ -2,16 +2,9 @@
   <div>
     <the-header ref="theHeader" />
     <div class="main d-flex flex-column">
-
       <div class="quarter-embed">
-            <b-embed
-              type="iframe"
-              aspect="21by9"
-              :src="url1"
-              :width="width"
-              :height="height"
-            ></b-embed>
-          </div>
+        <b-embed type="iframe" aspect="21by9" :src="url1" :width="width" :height="height"></b-embed>
+      </div>
       <!-- <div class="py-3" style="display: flex">
         <h4>Welcome To the Quarterly Performance Assessment Dashboard</h4>
       </div> -->
