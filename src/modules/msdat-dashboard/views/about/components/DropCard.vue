@@ -62,7 +62,7 @@
             href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
             target="_blank"
           >
-            <b-list-group-item>HSU Dashboard</b-list-group-item>
+            <b-list-group-item> Health Service Uptake (NHMIS)</b-list-group-item>
           </a>
           <a href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/" target="_blank">
             <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
