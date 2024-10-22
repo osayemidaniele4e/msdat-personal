@@ -79,13 +79,13 @@
                     type="radio"
                     id="heat_map"
                     name="visualization1"
-                    value="Heat Map"
+                    value="Pie Map"
                     v-model="selectedVisualizationColumn1"
                   />
-                  <label class="radio-label ml-1" for="heat_map">Heat Map</label>
+                  <label class="radio-label ml-1" for="Pie Map">Pie Map</label>
                 </div>
               </div>
-              <div class="bg-secondary p-3">
+              <div v-if="selectedVisualizationColumn1 === 'Chloropleth'" class="bg-secondary p-3">
                 <base-overlay :show="loadingColumn1">
                   <base-sub-card
                     showControls
@@ -99,6 +99,22 @@
                       :lgaState="stateName"
                       :title="titleColumn1"
                     />
+                  </base-sub-card>
+                  <NoAvailableData
+                    v-if="showNoAvailableDataColumn1"
+                    class="position-absolute"
+                    style="top: 16%; width: 50%; left: 25%"
+                  />
+                </base-overlay>
+              </div>
+              <div v-if="selectedVisualizationColumn1 === 'Pie Map'" class="bg-secondary p-3">
+                <base-overlay :show="loadingColumn1">
+                  <base-sub-card
+                    showControls
+                    @dropdownTypeSelected="mapDownload($event)"
+                    :removeTitle="true"
+                  >
+                    <PieMaps />
                   </base-sub-card>
                   <NoAvailableData
                     v-if="showNoAvailableDataColumn1"
@@ -338,6 +354,7 @@
 <script>
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import Maps from '@/components/maps/ZonalBaseMap.vue';
+import PieMaps from '@/components/maps/PieMap.vue';
 import { sortHighChartDataFormat } from '../../../../mixins/util';
 import chartDownload from '../../../../mixins/chart_download';
 import NoAvailableData from '../../../NoData2.vue';
@@ -345,7 +362,7 @@ import NoAvailableData from '../../../NoData2.vue';
 export default {
   name: 'Multi-Source Comparison',
   mixins: [chartDownload],
-  components: { BaseMap: Maps, NoAvailableData },
+  components: { BaseMap: Maps, NoAvailableData, PieMaps },
   props: {
     dashboardIndicators: Array,
   },
@@ -410,7 +427,6 @@ export default {
         title: {
           text: 'Indicator Name',
         },
-
       },
       loadingColumn1: true,
       showNoAvailableDataColumn1: false,
@@ -472,7 +488,6 @@ export default {
         title: {
           text: 'Indicator Name',
         },
-
       },
       loadingColumn2: true,
       showNoAvailableDataColumn2: false,
@@ -534,13 +549,11 @@ export default {
         title: {
           text: 'Indicator Name',
         },
-
       },
       loadingColumn3: true,
       showNoAvailableDataColumn3: false,
       selectedVisualizationColumn3: 'Chloropleth',
       // end
-
     };
   },
 
