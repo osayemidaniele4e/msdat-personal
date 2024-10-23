@@ -200,9 +200,10 @@ export default {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
       let locations = this.dlGetLocation({ level: 3 });
+
       locations.unshift(this.dlGetLocation(1));
       locations = locations.filter(({ id }) => data.includes(id));
-      locations.push(...this.additionalLocation);
+      // locations.push(...this.additionalLocation);
       const uniqueItems = Array.from(new Map(locations.map((obj) => [obj.id, obj])).values());
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
@@ -234,6 +235,27 @@ export default {
         // Keep only items where indicatorData is not an empty array
         return indicatorData.length > 0;
       });
+
+      const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      return formattedData;
+    },
+    async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorFromDexie(datasourceID);
+
+      const indicatorWithData = data.filter(async (indicatorItem) => {
+        const indicatorData = await this.dlQuery({
+          indicator: indicatorItem.id,
+          datasource: datasourceID,
+        });
+
+        // Keep only items where indicatorData is not an empty array
+        return indicatorData.length > 0;
+      });
+
+      // this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_PAYLOAD', {
+      //   key: 'indicator',
+      //   value: indicatorWithData[1],
+      // });
 
       const formattedData = groupIndicator(indicatorWithData, 'program_area');
       return formattedData;

@@ -30,9 +30,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import draggable from 'vuedraggable';
+import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 
 export default {
   name: 'BasePanel',
+  mixins: [controlSetup],
   components: {
     draggable,
   },
@@ -43,7 +45,6 @@ export default {
       selectedIndex: 0,
       title: 'Indicator Overview',
       checkIndex: 0,
-
     };
   },
 
@@ -69,52 +70,147 @@ export default {
     },
   },
   methods: {
-    ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
+    ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
-    changeControl(index, title) {
-      // console.log(this.modifiedControls, { index });
+    // async changeControl(index, title) {
+    //   // console.log(this.modifiedControls, { index });
 
-      if (title !== undefined) {
+    //   if (title !== undefined) {
+    //     this.$store.commit('MSDAT_STORE/SET_SECTION', title);
+    //   }
+    //   this.selectedIndex = index;
+    //   this.checkIndex = index;
+    //   this.selectControl(index);
+    //   if (index !== 4 && this.getSelectedConfig().indicator !== null) {
+    //     this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+    //       controlIndex: index,
+    //       key: 'indicator',
+    //       value: this.getSelectedConfig().indicator,
+    //     });
+    //   }
+    //   if (index !== 4) {
+    //     this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+    //       controlIndex: index,
+    //       key: 'datasource',
+    //       value: this.getSelectedConfig().dataSource,
+    //     });
+    //   }
+
+    //   // if (index === 2 && this.getConfigObject().name === 'Demographics') {
+    //   //   this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
+    //   //     controlIndex: index,
+    //   //     key: 'indicator',
+    //   //     value: this.getSelectedConfig().indicator,
+    //   //   });
+
+    //   //   this.$store.commit('MSDAT_STORE/SET_MULTI_DATASOURCE_PAYLOAD', {
+    //   //     controlIndex: index,
+    //   //     key: 'datasource',
+    //   //     value: this.getSelectedConfig().dataSource,
+    //   //   });
+    //   //   this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
+    //   //     controlIndex: index,
+    //   //     key: 'period',
+    //   //     value: this.getSelectedConfig().period,
+    //   //   });
+    //   // }
+
+    //   if (index === 4) {
+    //     this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
+    //       controlIndex: index,
+    //       key: 'indicator',
+    //       value: this.getSelectedConfig().indicator,
+    //     });
+
+    //     this.$store.commit('MSDAT_STORE/SET_MULTI_DATASOURCE_PAYLOAD', {
+    //       controlIndex: index,
+    //       key: 'datasource',
+    //       value: this.getSelectedConfig().dataSource,
+    //     });
+    //     this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
+    //       controlIndex: index,
+    //       key: 'period',
+    //       value: this.getSelectedConfig().period,
+    //     });
+    //   }
+
+    //   if (index === 2) {
+    //     const availableIndicator = await this.setIndicatorDropdown(this.getSelectedConfig().dataSource.id);
+    //     console.log(availableIndicator, 'availableIndicator@');
+    //   }
+
+    //   // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+    //   //   controlIndex: index,
+    //   //   key: 'datasource',
+    //   //   value: this.getSelectedConfig().dataSource,
+    //   // });
+    //   this.$emit('showSection', index);
+    // },
+    async changeControl(index, title) {
+      // Set section title if provided
+      if (title) {
         this.$store.commit('MSDAT_STORE/SET_SECTION', title);
       }
+
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
-      if (index !== 4 && this.getSelectedConfig().indicator !== null) {
-        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: index,
-          key: 'indicator',
-          value: this.getSelectedConfig().indicator,
-        });
-      }
+
+      const selectedConfig = this.getSelectedConfig();
+
       if (index !== 4) {
+        if (selectedConfig.indicator !== null) {
+          this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+            controlIndex: index,
+            key: 'indicator',
+            value: selectedConfig.indicator,
+          });
+        }
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: index,
           key: 'datasource',
-          value: this.getSelectedConfig().dataSource,
+          value: selectedConfig.dataSource,
         });
-      }
-
-      if (index === 4) {
+      } else {
         this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
           controlIndex: index,
           key: 'indicator',
-          value: this.getSelectedConfig().indicator,
+          value: selectedConfig.indicator,
         });
-
         this.$store.commit('MSDAT_STORE/SET_MULTI_DATASOURCE_PAYLOAD', {
           controlIndex: index,
           key: 'datasource',
-          value: this.getSelectedConfig().dataSource,
+          value: selectedConfig.dataSource,
         });
         this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
           controlIndex: index,
           key: 'period',
-          value: this.getSelectedConfig().period,
+          value: selectedConfig.period,
         });
       }
+
+      if (index === 2) {
+        const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
+
+        this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {
+          value: availableIndicator,
+        });
+
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'indicator',
+          value: selectedConfig.indicator,
+        });
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'datasource',
+          value: selectedConfig.dataSource,
+        });
+      }
+
       this.$emit('showSection', index);
     },
+
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
