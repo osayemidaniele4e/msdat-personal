@@ -67,25 +67,25 @@
                 <div class="mr-3">
                   <input
                     type="radio"
-                    id="Chloropleth"
+                    id="state_map"
                     name="visualization1"
-                    value="Chloropleth"
+                    value="state_map"
                     v-model="selectedVisualizationColumn1"
                   />
-                  <label class="radio-label ml-1" for="Chloropleth">Chloropleth</label>
+                  <label class="radio-label ml-1" for="state_map">State Map</label>
                 </div>
                 <div class="">
                   <input
                     type="radio"
                     id="heat_map"
                     name="visualization1"
-                    value="Pie Map"
+                    value="Zonal"
                     v-model="selectedVisualizationColumn1"
                   />
-                  <label class="radio-label ml-1" for="Pie Map">Pie Map</label>
+                  <label class="radio-label ml-1" for="Zonal">Zonal Map</label>
                 </div>
               </div>
-              <div v-if="selectedVisualizationColumn1 === 'Chloropleth'" class="bg-secondary p-3">
+              <div class="bg-secondary p-3">
                 <base-overlay :show="loadingColumn1">
                   <base-sub-card
                     showControls
@@ -93,9 +93,18 @@
                     :removeTitle="true"
                   >
                     <BaseMap
+                      v-if="selectedVisualizationColumn1 === 'state_map'"
                       ref="BaseMap"
                       :mapObject="mapObjectColumn1"
-                      :level="level"
+                      :level="columnLevel1"
+                      :lgaState="stateName"
+                      :title="titleColumn1"
+                    />
+                    <BaseMap
+                      v-if="selectedVisualizationColumn1 === 'Zonal'"
+                      ref="BaseMap"
+                      :mapObject="mapObjectColumn1"
+                      :level="columnLevel1"
                       :lgaState="stateName"
                       :title="titleColumn1"
                     />
@@ -107,22 +116,7 @@
                   />
                 </base-overlay>
               </div>
-              <div v-if="selectedVisualizationColumn1 === 'Pie Map'" class="bg-secondary p-3">
-                <base-overlay :show="loadingColumn1">
-                  <base-sub-card
-                    showControls
-                    @dropdownTypeSelected="mapDownload($event)"
-                    :removeTitle="true"
-                  >
-                    <PieMaps />
-                  </base-sub-card>
-                  <NoAvailableData
-                    v-if="showNoAvailableDataColumn1"
-                    class="position-absolute"
-                    style="top: 16%; width: 50%; left: 25%"
-                  />
-                </base-overlay>
-              </div>
+
             </div>
           </div>
         </div>
@@ -192,22 +186,22 @@
                   <div class="mr-3">
                     <input
                       type="radio"
-                      id="Chloropleth"
+                      id="state_map"
                       name="visualization"
-                      value="Chloropleth"
+                      value="state_map"
                       v-model="selectedVisualizationColumn2"
                     />
-                    <label class="radio-label ml-1" for="Chloropleth">Chloropleth</label>
+                    <label class="radio-label ml-1" for="state_map">State Map</label>
                   </div>
                   <div class="">
                     <input
                       type="radio"
                       id="heat_map"
                       name="visualization"
-                      value="Heat Map"
+                      value="Zonal"
                       v-model="selectedVisualizationColumn2"
                     />
-                    <label class="radio-label ml-1" for="heat_map">Heat Map</label>
+                    <label class="radio-label ml-1" for="Zonal">Zonal Map</label>
                   </div>
                 </div>
                 <div class="bg-secondary p-3">
@@ -218,12 +212,21 @@
                       :removeTitle="true"
                     >
                       <BaseMap
+                       v-if="selectedVisualizationColumn2 === 'state_map'"
                         ref="BaseMap"
                         :mapObject="mapObjectColumn2"
-                        :level="level"
+                        :level="columnLevel2"
                         :lgaState="stateName"
                         :title="titleColumn2"
                       />
+                      <BaseMap
+                      v-if="selectedVisualizationColumn2 === 'Zonal'"
+                      ref="BaseMap"
+                      :mapObject="mapObjectColumn2"
+                      :level="columnLevel2"
+                      :lgaState="stateName"
+                      :title="titleColumn2"
+                    />
                     </base-sub-card>
                     <NoAvailableData
                       v-if="showNoAvailableDataColumn2"
@@ -302,22 +305,22 @@
                   <div class="mr-3">
                     <input
                       type="radio"
-                      id="Chloropleth"
+                      id="state_map"
                       name="visualization3"
-                      value="Chloropleth"
+                      value="state_map"
                       v-model="selectedVisualizationColumn3"
                     />
-                    <label class="radio-label ml-1" for="Chloropleth">Chloropleth</label>
+                    <label class="radio-label ml-1" for="state_map">State Map</label>
                   </div>
                   <div class="">
                     <input
                       type="radio"
                       id="heat_map"
                       name="visualization3"
-                      value="Heat Map"
+                      value="Zonal"
                       v-model="selectedVisualizationColumn3"
                     />
-                    <label class="radio-label ml-1" for="heat_map">Heat Map</label>
+                    <label class="radio-label ml-1" for="Zonal">Zonal Map</label>
                   </div>
                 </div>
                 <div class="bg-secondary p-3">
@@ -328,12 +331,21 @@
                       :removeTitle="true"
                     >
                       <BaseMap
+                      v-if="selectedVisualizationColumn3 === 'state_map'"
                         ref="BaseMap"
                         :mapObject="mapObjectColumn3"
-                        :level="level"
+                        :level="columnLevel3"
                         :lgaState="stateName"
                         :title="titleColumn3"
                       />
+                      <BaseMap
+                      v-if="selectedVisualizationColumn3 === 'Zonal'"
+                      ref="BaseMap"
+                      :mapObject="mapObjectColumn3"
+                      :level="columnLevel3"
+                      :lgaState="stateName"
+                      :title="titleColumn3"
+                    />
                     </base-sub-card>
                     <NoAvailableData
                       v-if="showNoAvailableDataColumn3"
@@ -354,7 +366,7 @@
 <script>
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import Maps from '@/components/maps/ZonalBaseMap.vue';
-import PieMaps from '@/components/maps/PieMap.vue';
+// import PieMaps from '@/components/maps/PieMap.vue';
 import { sortHighChartDataFormat } from '../../../../mixins/util';
 import chartDownload from '../../../../mixins/chart_download';
 import NoAvailableData from '../../../NoData2.vue';
@@ -362,7 +374,7 @@ import NoAvailableData from '../../../NoData2.vue';
 export default {
   name: 'Multi-Source Comparison',
   mixins: [chartDownload],
-  components: { BaseMap: Maps, NoAvailableData, PieMaps },
+  components: { BaseMap: Maps, NoAvailableData },
   props: {
     dashboardIndicators: Array,
   },
@@ -430,9 +442,11 @@ export default {
       },
       loadingColumn1: true,
       showNoAvailableDataColumn1: false,
-      selectedVisualizationColumn1: 'Chloropleth',
+      selectedVisualizationColumn1: 'state_map',
+      columnLevel1: 1,
       // end Column 1
       // start Column 2
+      columnLevel2: 1,
       titleColumn2: '',
       selectedIndicatorColumn2: {
         id: 8,
@@ -491,9 +505,10 @@ export default {
       },
       loadingColumn2: true,
       showNoAvailableDataColumn2: false,
-      selectedVisualizationColumn2: 'Chloropleth',
+      selectedVisualizationColumn2: 'state_map',
 
       // end Column 3
+      columnLevel3: 1,
       titleColumn3: '',
       selectedIndicatorColumn3: {
         id: 8,
@@ -552,7 +567,7 @@ export default {
       },
       loadingColumn3: true,
       showNoAvailableDataColumn3: false,
-      selectedVisualizationColumn3: 'Chloropleth',
+      selectedVisualizationColumn3: 'state_map',
       // end
     };
   },
@@ -563,8 +578,8 @@ export default {
         this.loadingColumn1 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
         this.datasourcesColumn1 = data;
-        console.log(data, 'Indicator Datasource');
         this.selectedDatasourceColumn1 = data[0];
+        this.resetCol1Data();
       },
       immediate: true,
       deep: true,
@@ -572,18 +587,11 @@ export default {
     selectedDatasourceColumn1: {
       async handler(newDatasource) {
         await this.getAvailableYears(newDatasource);
+        this.resetCol1Data();
       },
     },
     selectedYearColumn1: {
       async handler(newYear) {
-        // const obj = {
-        //   period: newYear,
-        //   datasourceID: this.selectedDatasourceColumn1.id,
-        //   indicatorID: this.selectedIndicatorColumn1.id,
-        // };
-        // const { data } = await apiServices.getAllDataObj(obj);
-        // console.log(data, 'Dashboard');
-
         const data = await this.dlQuery({
           indicator: this.selectedIndicatorColumn1.id,
           datasource: this.selectedDatasourceColumn1.id,
@@ -607,8 +615,6 @@ export default {
 
         const formattedData = this.formatDataToSeriesMapFormat(data);
         this.mapObjectColumn1 = this.formatToHighChartOptionForMap(formattedData, configObj);
-
-        console.log(data, 'Dashboard-ALT');
         this.loadingColumn1 = false;
       },
     },
@@ -617,7 +623,6 @@ export default {
         this.loadingColumn2 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
         this.datasourcesColumn2 = data;
-        console.log(data, 'Indicator Datasource');
         this.selectedDatasourceColumn2 = data[0];
       },
       immediate: true,
@@ -630,14 +635,6 @@ export default {
     },
     selectedYearColumn2: {
       async handler(newYear) {
-        // const obj = {
-        //   period: newYear,
-        //   datasourceID: this.selectedDatasourceColumn1.id,
-        //   indicatorID: this.selectedIndicatorColumn1.id,
-        // };
-        // const { data } = await apiServices.getAllDataObj(obj);
-        // console.log(data, 'Dashboard');
-
         const data = await this.dlQuery({
           indicator: this.selectedIndicatorColumn2.id,
           datasource: this.selectedDatasourceColumn2.id,
@@ -661,8 +658,6 @@ export default {
 
         const formattedData = this.formatDataToSeriesMapFormat(data);
         this.mapObjectColumn2 = this.formatToHighChartOptionForMap(formattedData, configObj);
-
-        console.log(data, 'Dashboard-ALT 2');
         this.loadingColumn2 = false;
       },
     },
@@ -671,7 +666,6 @@ export default {
         this.loadingColumn3 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
         this.datasourcesColumn3 = data;
-        console.log(data, 'Indicator Datasource');
         this.selectedDatasourceColumn3 = data[0];
       },
       immediate: true,
@@ -679,20 +673,11 @@ export default {
     },
     selectedDatasourceColumn3: {
       async handler(newDatasource) {
-        console.log(newDatasource, 'Indicator Datasource');
         await this.getAvailableYears3(newDatasource);
       },
     },
     selectedYearColumn3: {
       async handler(newYear) {
-        // const obj = {
-        //   period: newYear,
-        //   datasourceID: this.selectedDatasourceColumn1.id,
-        //   indicatorID: this.selectedIndicatorColumn1.id,
-        // };
-        // const { data } = await apiServices.getAllDataObj(obj);
-        // console.log(data, 'Dashboard');
-
         const data = await this.dlQuery({
           indicator: this.selectedIndicatorColumn3.id,
           datasource: this.selectedDatasourceColumn3.id,
@@ -717,9 +702,83 @@ export default {
         const formattedData = this.formatDataToSeriesMapFormat(data);
         this.mapObjectColumn3 = this.formatToHighChartOptionForMap(formattedData, configObj);
 
-        console.log(this.mapObjectColumn3, 'Dashboard-ALT 3');
         this.loadingColumn3 = false;
       },
+    },
+    selectedVisualizationColumn1: {
+      async handler(value) {
+        this.loading = true;
+        switch (value) {
+          case 'state_map':
+            this.mapDataLevel = 3;
+            this.columnLevel1 = 1;
+            this.visualization = 'map';
+            this.visualizationText = 'state map';
+            break;
+          case 'Zonal':
+            this.visualization = 'map';
+            this.visualizationText = 'zonal map';
+            this.columnLevel1 = 2;
+            this.mapDataLevel = 2;
+            break;
+          default:
+            break;
+        }
+        this.resetCol1Data();
+        this.loadingColumn1 = false;
+      },
+      deep: true,
+      immediate: false,
+    },
+    selectedVisualizationColumn2: {
+      async handler(value) {
+        this.loading = true;
+        switch (value) {
+          case 'state_map':
+            this.mapDataLevel = 3;
+            this.columnLevel2 = 1;
+            this.visualization = 'map';
+            this.visualizationText = 'state map';
+            break;
+          case 'Zonal':
+            this.visualization = 'map';
+            this.visualizationText = 'zonal map';
+            this.columnLevel2 = 2;
+            this.mapDataLevel = 2;
+            break;
+          default:
+            break;
+        }
+        this.resetCol2Data();
+        this.loadingColumn2 = false;
+      },
+      deep: true,
+      immediate: false,
+    },
+    selectedVisualizationColumn3: {
+      async handler(value) {
+        this.loading = true;
+        switch (value) {
+          case 'state_map':
+            this.mapDataLevel = 3;
+            this.columnLevel3 = 1;
+            this.visualization = 'map';
+            this.visualizationText = 'state map';
+            break;
+          case 'Zonal':
+            this.visualization = 'map';
+            this.visualizationText = 'zonal map';
+            this.columnLevel3 = 2;
+            this.mapDataLevel = 2;
+            break;
+          default:
+            break;
+        }
+        this.resetCol3Data();
+        this.loadingColumn3 = false;
+      },
+      deep: true,
+      immediate: false,
     },
   },
   methods: {
@@ -729,9 +788,8 @@ export default {
         indicatorID: this.selectedIndicatorColumn1.id,
       };
       const { data } = await apiServices.getDataObj(obj);
-      console.log(data, 'Data @@');
       this.availableYearsColumn1 = this.getPeriodValues(data.results);
-      console.log(this.availableYearsColumn1, 'Data @@');
+
       this.selectedYearColumn1 = this.availableYearsColumn1[0];
     },
     async getAvailableYears2(datasource) {
@@ -740,9 +798,9 @@ export default {
         indicatorID: this.selectedIndicatorColumn2.id,
       };
       const { data } = await apiServices.getDataObj(obj);
-      console.log(data, 'Data @@');
+
       this.availableYearsColumn2 = this.getPeriodValues(data.results);
-      console.log(this.availableYearsColumn2, 'Data @@');
+
       this.selectedYearColumn2 = this.availableYearsColumn2[0];
     },
     async getAvailableYears3(datasource) {
@@ -751,9 +809,9 @@ export default {
         indicatorID: this.selectedIndicatorColumn3.id,
       };
       const { data } = await apiServices.getDataObj(obj);
-      console.log(data, 'Data @@ 3');
+
       this.availableYearsColumn3 = this.getPeriodValues(data.results);
-      console.log(this.availableYearsColumn3, 'Data @@ 3');
+
       this.selectedYearColumn3 = this.availableYearsColumn3[0];
     },
     getPeriodValues(temp) {
@@ -796,9 +854,8 @@ export default {
       };
     },
     formatToHighChartOptionForLine(data, chartType, controlPanelObject) {
-      // const sortedData = this.sortedData(data);
       const tempData = this.sortData(data);
-      // console.log(data, 'Crash-data');
+
       const chartOptions = {
         chart: {
           type: chartType,
@@ -829,6 +886,87 @@ export default {
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       chartOptions.yAxis.title.text = displayFactor;
       return chartOptions;
+    },
+    async resetCol1Data() {
+      const data = await this.dlQuery({
+        indicator: this.selectedIndicatorColumn1.id,
+        datasource: this.selectedDatasourceColumn1.id,
+        period: this.selectedYearColumn1,
+        // value_type: 5,
+        location: {
+          level: this.mapDataLevel,
+        },
+      });
+      const configObj = {
+        indicator: this.selectedIndicatorColumn1,
+        datasource: this.selectedDatasourceColumn1,
+        year: this.selectedYearColumn1,
+      };
+
+      if (data.length === 0) {
+        this.showNoAvailableDataColumn1 = true;
+      } else {
+        this.showNoAvailableDataColumn1 = false;
+      }
+
+      const formattedData = this.formatDataToSeriesMapFormat(data);
+      this.mapObjectColumn1 = this.formatToHighChartOptionForMap(formattedData, configObj);
+
+      this.loadingColumn1 = false;
+    },
+    async resetCol2Data() {
+      const data = await this.dlQuery({
+        indicator: this.selectedIndicatorColumn2.id,
+        datasource: this.selectedDatasourceColumn2.id,
+        period: this.selectedYearColumn2,
+        // value_type: 5,
+        location: {
+          level: this.mapDataLevel,
+        },
+      });
+      const configObj = {
+        indicator: this.selectedIndicatorColumn2,
+        datasource: this.selectedDatasourceColumn2,
+        year: this.selectedYearColumn2,
+      };
+
+      if (data.length === 0) {
+        this.showNoAvailableDataColumn2 = true;
+      } else {
+        this.showNoAvailableDataColumn2 = false;
+      }
+
+      const formattedData = this.formatDataToSeriesMapFormat(data);
+      this.mapObjectColumn2 = this.formatToHighChartOptionForMap(formattedData, configObj);
+
+      this.loadingColumn2 = false;
+    },
+    async resetCol3Data() {
+      const data = await this.dlQuery({
+        indicator: this.selectedIndicatorColumn3.id,
+        datasource: this.selectedDatasourceColumn3.id,
+        period: this.selectedYearColumn3,
+        // value_type: 5,
+        location: {
+          level: this.mapDataLevel,
+        },
+      });
+      const configObj = {
+        indicator: this.selectedIndicatorColumn3,
+        datasource: this.selectedDatasourceColumn3,
+        year: this.selectedYearColumn3,
+      };
+
+      if (data.length === 0) {
+        this.showNoAvailableDataColumn3 = true;
+      } else {
+        this.showNoAvailableDataColumn3 = false;
+      }
+
+      const formattedData = this.formatDataToSeriesMapFormat(data);
+      this.mapObjectColumn3 = this.formatToHighChartOptionForMap(formattedData, configObj);
+
+      this.loadingColumn3 = false;
     },
   },
 };
