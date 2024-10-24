@@ -59,6 +59,7 @@ export default {
       key: 'indicator',
       options: [],
       dropdownProps: {
+        'preselect-first': true,
         multiple: true,
         'track-by': 'id',
         max: 3,
