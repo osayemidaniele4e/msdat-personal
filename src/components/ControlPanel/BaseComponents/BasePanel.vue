@@ -189,7 +189,7 @@ export default {
         });
       }
 
-      if (index === 2) {
+      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard') {
         const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
 
         this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {
