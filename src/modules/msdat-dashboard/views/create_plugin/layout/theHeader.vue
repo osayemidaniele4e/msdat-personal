@@ -135,25 +135,6 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >About</router-link
               >
-              <router-link
-                to="/faq"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Help & FAQ</router-link
-              >
-              <router-link
-                to="/custom"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Create New Dashboard</router-link
-              >
-              <div></div>
-              <a
-                href="https://msdat.old.fmohconnect.gov.ng"
-                class="nav-link"
-                v-if="isAuthenticated === false"
-                >Go back to MSDAT 1.5</a
-              >
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
@@ -172,6 +153,25 @@
                   :class="{ dropcard: showExpandedDropdown }"
                 />
               </div>
+              <router-link
+                to="/faq"
+                class="nav-link"
+                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                >Help & FAQ</router-link
+              >
+              <!-- <router-link
+                to="/custom"
+                class="nav-link"
+                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                >Create New Dashboard</router-link
+              > -->
+              <div></div>
+              <a
+                href="https://msdat.old.fmohconnect.gov.ng"
+                class="nav-link"
+                v-if="isAuthenticated === false"
+                >MSDAT 1.5</a
+              >
               <!-- button to view the list of plugins -->
               <!-- <button
                 v-b-modal.modal-apps

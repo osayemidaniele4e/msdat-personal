@@ -231,7 +231,6 @@ export default {
         },
       };
 
-      console.log('chart options:', chartOptions.series.map((s) => s.data).flat().map((d) => ({ name: d.name, value: d.y })));
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup :cry: :worried: :rage:
       const parentValue = await this.dlQuery({
