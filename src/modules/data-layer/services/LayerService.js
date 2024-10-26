@@ -167,6 +167,7 @@ export default class DataLayer {
           const alert = this.sweetAlert();
           await this.initDataWithYears(indicatorsUnavailable);
           alert.close();
+          await this.initDataWithRemainingYears(indicatorsUnavailable);
           await this.setAvailableDashboardIndicator();
           const alert1 = this.sweetAlert();
           await this.updateData();
@@ -399,16 +400,28 @@ export default class DataLayer {
    * @author davebenard
    */
 
-  async initDataWithYears(indicator, limit = 0) {
+  async initDataWithYears(indicator) {
     const validIndicators = indicator.filter((value) => !Number.isNaN(value));
     for (let i = 0; i < validIndicators.length; i++) {
       const indicatorID = validIndicators[i];
-      console.log('indicatorId', indicatorID);
+      // console.log('indicatorId', indicatorID);
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+
+      const currentYear = new Date().getFullYear();
+      // Separate integer years and month names
+      // eslint-disable-next-line no-restricted-globals, radix
+      const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
+      // eslint-disable-next-line no-restricted-globals, radix
+
+      const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
+
+      // Combine top 5 past years, future years, and the remaining past years
+      const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
-        const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
-        const theYears = take(yearsNotAvailableInDB, yearsToTake);
+        // const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        const yearsToTake = 3;
+        const theYears = take(result, yearsToTake);
         const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
         for (let j = 0; j < results.length; j++) {
@@ -417,6 +430,42 @@ export default class DataLayer {
           await this.DB.storeDataInDB(requestResult);
         }
         this.updatedStoreAvailableIndicator(indicatorID);
+      }
+    }
+  }
+
+  async initDataWithRemainingYears(indicator) {
+    console.log('Phase 2 started');
+    const validIndicators = indicator.filter((value) => !Number.isNaN(value));
+    for (let i = 0; i < validIndicators.length; i++) {
+      const indicatorID = validIndicators[i];
+      console.log('indicatorId', indicatorID);
+      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+
+      const currentYear = new Date().getFullYear();
+      // Separate integer years and month names
+      // eslint-disable-next-line no-restricted-globals, radix
+      const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
+      // eslint-disable-next-line no-restricted-globals, radix
+
+      const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
+
+      // Combine top 5 past years, future years, and the remaining past years
+      const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
+      // take only the at least 8 years
+      if (yearsNotAvailableInDB.length > 0) {
+        // const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        // const yearsToTake = 3;
+        // const theYears = take(result, yearsToTake);
+        const RemainingResults = result.slice(3);
+        const arrayOfPromises = RemainingResults.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
+        const results = await Promise.all(arrayOfPromises);
+        for (let j = 0; j < results.length; j++) {
+          const requestResult = results[j].data.results;
+          // check if empty
+          await this.DB.storeDataInDB(requestResult);
+        }
+        // this.updatedStoreAvailableIndicator(indicatorID);
       }
     }
   }
