@@ -111,7 +111,11 @@
                 </div>
                 <div class="desc-text p-2">
                   <p>
-                    The Predictive Analysis section of MSDAT involves transforming raw data into a structured data frame for better analysis. An optimal ARIMA model is then applied to forecast future trends based on historical data. Once predictions are generated, the results are sent to the front end for real-time display, providing users with clear and actionable insights.
+                    Predictive analysis is a form of advanced analytics that uses current and
+                    historical data to forecast activity, behavior and trends. It involves applying
+                    statistical analysis techniques, data queries and machine learning algorithms to
+                    data sets to create predictive models that place a numerical value or score on
+                    the likelihood of a particular action or event happening.
                   </p>
                 </div>
               </div>
@@ -159,7 +163,7 @@
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Bubble Chart Analysis</h5>
+              <h5 class="font-weight-bold work-sans text-white">Scatterplot Analysis</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component
