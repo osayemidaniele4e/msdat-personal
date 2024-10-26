@@ -171,7 +171,6 @@ export default {
     },
     index: {
       type: integer,
-      required: true,
     },
   },
 

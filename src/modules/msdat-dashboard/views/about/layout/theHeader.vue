@@ -92,12 +92,12 @@
                   <b-icon font-scale="2" icon="dot"></b-icon>
                   <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
                   <!-- Modal for share Dashboard -->
-                 <b-icon font-scale="2" icon="dot"></b-icon>
+                  <b-icon font-scale="2" icon="dot"></b-icon>
                   <span style="cursor: pointer" @click="shareDash">Share Dashboard</span>
 
-  <b-modal id="share-dashboard-modal" title="Share Dashboard" hide-footer>
-    <shareDashboard />
-  </b-modal>
+                  <b-modal id="share-dashboard-modal" title="Share Dashboard" hide-footer>
+                    <shareDashboard />
+                  </b-modal>
                 </small>
               </div>
             </h2>
@@ -137,32 +137,6 @@
                 v-if="isAuthenticated === false"
                 >Home</a
               >
-              <router-link
-                to="/about"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >About</router-link
-              >
-              <router-link
-                to="/faq"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Help & FAQ</router-link
-              >
-              <router-link
-                to="/custom"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Create New Dashboard</router-link
-              >
-              <div></div>
-              <a
-                href="https://msdat.old.fmohconnect.gov.ng"
-                class="nav-link"
-                target="_blank"
-                v-if="isAuthenticated === false"
-                >Go back to MSDAT 1.5</a
-              >
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
@@ -181,49 +155,70 @@
                   :class="{ dropcard: showExpandedDropdown }"
                 />
               </div>
+              <router-link
+                to="/about"
+                class="nav-link"
+                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                >About</router-link
+              >
+              <router-link
+                to="/faq"
+                class="nav-link"
+                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                >Help & FAQ</router-link
+              >
+              <!-- <router-link
+                to="/custom"
+                class="nav-link"
+                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                >Create New Dashboard</router-link
+              > -->
+              <div></div>
+              <a
+                href="https://msdat.old.fmohconnect.gov.ng"
+                class="nav-link"
+                target="_blank"
+                v-if="isAuthenticated === false"
+                >MSDAT 1.5</a
+              >
+
               <!-- Modal for Sign In/Sign Up -->
-    <b-modal
-      id="auth-modal"
-      title=""
-      centered
-      size="lg"
-      hide-footer
-      @hide="hideAuthModal"
-    >
-      <div v-if="show">
-        <LoginSidebar  @login-success="hideAuthModal"  />
-      </div>
-      <div v-else>
-        <SignUp  @login-success="hideAuthModal"  />
-      </div>
+              <b-modal
+                id="auth-modal"
+                title=""
+                centered
+                size="lg"
+                hide-footer
+                @hide="hideAuthModal"
+              >
+                <div v-if="show">
+                  <LoginSidebar @login-success="hideAuthModal" />
+                </div>
+                <div v-else>
+                  <SignUp @login-success="hideAuthModal" />
+                </div>
 
-      <div class="signup-main text-center mt-4" v-if="show">
-        <h4 style="font-size: 15px; font-family: Work sans">Don't have an account?</h4>
-        <p
-          class="sign-uptxt"
-          @click.prevent="showLoginForm"
-        >
-          Create an Account
-        </p>
-      </div>
+                <div class="signup-main text-center mt-4" v-if="show">
+                  <h4 style="font-size: 15px; font-family: Work sans">Don't have an account?</h4>
+                  <p class="sign-uptxt" @click.prevent="showLoginForm">Create an Account</p>
+                </div>
 
-      <div class="signup-main text-center mt-4" v-else>
-        <h4 style="font-size: 15px; font-family: Work sans">Already have an account?</h4>
-        <p
-          class="sign-uptxt"
-          @click="showRegForm"
-        >
-          Log In
-        </p>
-      </div>
-    </b-modal>
+                <div class="signup-main text-center mt-4" v-else>
+                  <h4 style="font-size: 15px; font-family: Work sans">Already have an account?</h4>
+                  <p class="sign-uptxt" @click="showRegForm">Log In</p>
+                </div>
+              </b-modal>
 
-    <!-- Trigger button for modal -->
-    <div v-if="!isAuthenticated" class="auth ml-2 d-flex align-items-center" @click="showAuthModal">
-      <b-icon-person-circle style="width: 18px; height: 18px"></b-icon-person-circle>
-      &nbsp;<span class="d-none d-md-inline">Login/Register</span>
-    </div>
-    <div v-else @click="showCard = true">
+              <!-- Trigger button for modal -->
+              <div
+                v-if="!isAuthenticated"
+                class="auth ml-2 d-flex align-items-center"
+                @click="showAuthModal"
+              >
+                <b-icon-person-circle style="width: 18px; height: 18px"></b-icon-person-circle>
+                &nbsp;<span class="d-none d-md-inline">Login/Register</span>
+              </div>
+              <div v-else @click="showCard = true">
                 <div class="ml-2 profile d-flex align-items-center">
                   <img
                     :src="
@@ -471,7 +466,7 @@ export default {
   text-decoration: underline;
 }
 
-.signup-main{
+.signup-main {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -479,13 +474,12 @@ export default {
   gap: 2px;
 }
 
-.sign-uptxt{
+.sign-uptxt {
   cursor: pointer;
   color: #348481;
   margin-top: 9px;
   font-weight: 600;
   font-size: 15px;
-
 }
 .sign-uptxt:hover {
   text-decoration: underline;
@@ -501,6 +495,8 @@ button {
 
 .btn {
   color: white;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .main {

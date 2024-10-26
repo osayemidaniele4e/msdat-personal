@@ -178,16 +178,11 @@ export default {
 
           this.SET_INDICATOR_TIME_SPENT(timespent);
 
-          console.log('timespent in indicator', timespent);
-
           this.previous_time = this.after_time;
 
           this.previous_indicator = this.payload.indicator;
 
-          console.log(this.controlIndex, 'availableDSX');
-
           if (this.controlIndex !== 2) {
-            console.log(this.controlIndex, 'availableDSX 1');
             const availableYears = await this.getAvailableYears();
             this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
@@ -196,7 +191,7 @@ export default {
               values: availableYears,
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
-            console.log(availableDS, 'availableDS@ 1');
+
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
@@ -251,6 +246,7 @@ export default {
           // ============
           if (this.controlIndex === 2) {
             const availableIndicator = await this.getAvailableDataIndicators();
+
             await this.SET_INDICATOR_COMPARISON_PAYLOAD({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
