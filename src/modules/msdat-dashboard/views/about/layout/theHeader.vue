@@ -137,12 +137,6 @@
                 v-if="isAuthenticated === false"
                 >Home</a
               >
-              <router-link
-                to="/about"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >About</router-link
-              >
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
@@ -161,6 +155,12 @@
                   :class="{ dropcard: showExpandedDropdown }"
                 />
               </div>
+              <router-link
+                to="/about"
+                class="nav-link"
+                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                >About</router-link
+              >
               <router-link
                 to="/faq"
                 class="nav-link"
@@ -495,6 +495,8 @@ button {
 
 .btn {
   color: white;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .main {
