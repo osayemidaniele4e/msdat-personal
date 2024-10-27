@@ -8,10 +8,8 @@
     <template>
       <p class="mt-2 work-sans">Click on the button below to clear dashboard cache</p>
     </template>
-     <template #footer-btn>
-          <button class="btn btn-success mb-3 mt-2" @click="clearDB">
-        CLEAR
-      </button>
+    <template #footer-btn>
+      <button class="btn btn-success mb-3 mt-2" @click="clearDB">CLEAR</button>
     </template>
   </base-modal>
 </template>
@@ -19,16 +17,20 @@
 <script>
 export default {
   name: 'ClearDBModal',
+  props: {
+    showModal: Boolean,
+  },
   components: {},
   data() {
     return {
-      showModal: false,
+      // showModal: false,
     };
   },
   methods: {
     async clearDB() {
       await this.$store.dispatch('DL/CLEAR_DB');
       this.showModal = false;
+      this.$router.push({ path: '/' });
     },
   },
   async mounted() {
