@@ -110,7 +110,7 @@
           <span>See Updates</span>
         </router-link>
       </li>
-      <li  @click.prevent="activateUserHelp">
+      <li @click.prevent="activateUserHelp">
         <a href="#">
           <img src="@/assets/img/icons/ic_feedback.svg" alt="" />
           <span>Feedback</span>
@@ -140,6 +140,10 @@
           <span>Subscribe to our newsletter</span>
         </a>
       </li>
+
+      <div>
+        <button @click="clearDB" class="btn-2 btn-outline-primary bg-danger rounded-2">CLEAR CACHE</button>
+      </div>
     </ul>
     <base-modal :showModal="socialModal" :size="'md'">
       <template #title><h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6> </template>
@@ -176,6 +180,7 @@
         </div>
       </div>
     </b-modal>
+    <ClearDBCacheModal style="z-index: 1500" v-if="showClearDataModal"  :showModal="showClearDataModal" />
   </div>
 </template>
 
@@ -184,14 +189,18 @@ import { mapGetters } from 'vuex';
 import NewsLetter from '@/modules/msdat-dashboard/modules/newsletters/index.vue';
 import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import contact from '../../../../../components/contact/contact.vue';
+import ClearDBCacheModal from './ClearDBCache.vue';
 
 export default {
-  components: { contact, Socials, NewsLetter },
+  components: {
+    contact, Socials, NewsLetter, ClearDBCacheModal,
+  },
   data() {
     const dataObj = {
       modal: false,
       submit: false,
       socialModal: false,
+      showClearDataModal: false,
     };
 
     // Fetch the list of available plugins from the store
@@ -282,6 +291,10 @@ export default {
     // NewsLetter Modal
     showModal() {
       this.$root.$emit('bv::show::modal', 'modal-newsLetter', '#btnShow');
+    },
+
+    async clearDB() {
+      this.showClearDataModal = true;
     },
   },
 };
@@ -479,5 +492,13 @@ export default {
 
 /* LARGE */
 @media (min-width: 992px) and (max-width: 1200px) {
+}
+
+.btn-2 {
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  margin: 10px;
+  width: 200px;
 }
 </style>
