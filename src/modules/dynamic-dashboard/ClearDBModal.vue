@@ -30,7 +30,6 @@ export default {
     async clearDB() {
       await this.$store.dispatch('DL/CLEAR_DB');
       this.showModal = false;
-      this.$router.push({ path: '/' });
     },
   },
   async mounted() {
