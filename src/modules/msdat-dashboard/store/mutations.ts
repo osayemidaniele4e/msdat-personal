@@ -63,7 +63,6 @@ const mutations: MutationTree<State> = {
   },
 
   SETUP_CONTROL_OPTIONS1: (state, obj: setOptionsPayload) => {
-    console.log(obj, 'availableDS@ 2');
     const checkTheObject = state.controlConfig[obj.panelIndex].setup[0];
     if (Array.isArray(checkTheObject)) {
       const setUpArrayOfObject = state.controlConfig[obj.panelIndex].setup[obj.groupIndex];
@@ -160,6 +159,25 @@ const mutations: MutationTree<State> = {
     }
   },
 
+  SET_IDC_INDICATOR_OPTIONS: (state, obj: setPayload) => {
+    state.controlConfig[2].setup[4].options = obj.value;
+  },
+
+  // SET_IDC_INDICATOR_PAYLOAD: (state, obj: setPayload) => {
+  //   state.controlConfig[2].payload[obj.key].push(obj.value);
+  // },
+
+  SET_IDC_INDICATOR_PAYLOAD: (state, obj: setPayload) => {
+    console.log('REACHED HERE 2');
+    // Ensure payload[obj.key] is initialized as an array
+    if (!Array.isArray(state.controlConfig[2].payload[obj.key])) {
+      state.controlConfig[2].payload[obj.key] = [];
+    }
+
+    // Now it's safe to push the value
+    state.controlConfig[2].payload[obj.key].push(obj.value);
+  },
+
   SET_GIS_MULTI_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[2].payload !== null) {
       // eslint-disable-next-line no-return-assign, no-param-reassign
@@ -248,6 +266,7 @@ const mutations: MutationTree<State> = {
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Indicator Comparison') {
         item.payload.forEach((source) => {
+          // eslint-disable-next-line no-param-reassign
           source.datasource = payload;
         });
       }
@@ -259,6 +278,7 @@ const mutations: MutationTree<State> = {
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Indicator Comparison') {
         item.payload.forEach((source) => {
+          // eslint-disable-next-line no-param-reassign
           source.datasource = payload;
         });
       }
