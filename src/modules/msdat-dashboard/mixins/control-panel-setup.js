@@ -199,12 +199,16 @@ export default {
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
-      let locations = this.dlGetLocation({ level: 3 });
+      const locations = this.dlGetLocation({ level: 3 });
+      const zonalLocation = this.dlGetLocation({ level: 2 });
+      let allLocations = [...locations, ...zonalLocation];
+      console.log(allLocations, 'testLocation');
+      console.log(data, 'testLocation 2');
 
-      locations.unshift(this.dlGetLocation(1));
-      locations = locations.filter(({ id }) => data.includes(id));
+      allLocations.unshift(this.dlGetLocation(1));
+      allLocations = allLocations.filter(({ id }) => data.includes(id));
       // locations.push(...this.additionalLocation);
-      const uniqueItems = Array.from(new Map(locations.map((obj) => [obj.id, obj])).values());
+      const uniqueItems = Array.from(new Map(allLocations.map((obj) => [obj.id, obj])).values());
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
@@ -214,7 +218,7 @@ export default {
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
         controlIndex,
         key: 'location',
-        value: locations[0] || this.dlGetLocation(1),
+        value: this.dlGetLocation(1),
       });
     },
 
