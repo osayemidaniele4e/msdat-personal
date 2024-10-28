@@ -239,32 +239,32 @@ export default {
         {
           fieldName: 'Indicator Overview',
           // selected: this.$store.state.MSDAT_STORE.indicatorComparision,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Overview').isShow || false,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Overview').isShow,
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
         {
           fieldName: 'Zonal Analysis',
           // selected: this.$store.state.MSDAT_STORE.zonalAna,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Zonal Analysis').isShow || false,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Zonal analysis').isShow,
           fieldImage: '/img/dashboardPreviewImages/ZonalAnalysis.PNG',
         },
         {
           fieldName: 'Indicator Comparison',
           // selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Comparison').isShow || false,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Comparison').isShow,
           fieldImage:
             '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
         },
         {
           fieldName: 'Dataset Comparison',
           // selected: this.$store.state.MSDAT_STORE.datasetComperision,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Dataset Comparison').isShow || false,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Dataset Comparison').isShow,
           fieldImage: '/img/dashboardPreviewImages/DataSetComparison.PNG',
         },
         {
           fieldName: 'Multi-source Comparison',
           // selected: this.$store.state.MSDAT_STORE.multisourceComparison,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Multi-source Comparison').isShow || false,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Multi-source Comparison').isShow,
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
       ],
