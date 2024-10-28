@@ -239,31 +239,32 @@ export default {
         {
           fieldName: 'Indicator Overview',
           // selected: this.$store.state.MSDAT_STORE.indicatorComparision,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Overview'),
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Overview').isShow || false,
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
         {
           fieldName: 'Zonal Analysis',
           // selected: this.$store.state.MSDAT_STORE.zonalAna,
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Zonal Analysis').isShow || false,
           fieldImage: '/img/dashboardPreviewImages/ZonalAnalysis.PNG',
         },
         {
           fieldName: 'Indicator Comparison',
           // selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Comparison'),
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Comparison').isShow || false,
           fieldImage:
             '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
         },
         {
           fieldName: 'Dataset Comparison',
           // selected: this.$store.state.MSDAT_STORE.datasetComperision,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Dataset Comparison'),
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Dataset Comparison').isShow || false,
           fieldImage: '/img/dashboardPreviewImages/DataSetComparison.PNG',
         },
         {
           fieldName: 'Multi-source Comparison',
           // selected: this.$store.state.MSDAT_STORE.multisourceComparison,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Multi-source Comparison'),
+          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Multi-source Comparison').isShow || false,
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
       ],

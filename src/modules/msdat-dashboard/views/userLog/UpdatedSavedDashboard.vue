@@ -1,9 +1,9 @@
 <template>
  <div class="container-fluid">
-   <h4 class="text-center my-4">Your Dashboards</h4>
+   <h4 class="text-center my-4">Your Private Dashboards</h4>
 
    <div v-if="!list.length" class="border border-primary rounded mx-3 mb-1 pb-1 text-center">
-     <small>You have no existing dashboards. Click the button below to create one!</small>
+     <small>You have no existing private dashboards. Click the button below to create one!</small>
    </div>
 
    <b-list-group>
@@ -83,7 +83,9 @@ export default {
     },
     copy(url, e) {
       e.stopPropagation();
+      e.preventDefault();
       navigator.clipboard.writeText(url);
+      this.$swal.fire('URL copied to clipboard!');
     },
     load(dashboard) {
       const {
