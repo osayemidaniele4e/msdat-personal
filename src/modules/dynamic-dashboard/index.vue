@@ -389,7 +389,7 @@ export default {
       // if (dashboard === undefined) {
       //   this.$router.push('/*');
       //   return;
-      // }
+      // }s
       // this.isAdvanced = true;
       //   this.configObject = '';
       //   this.configObject = dashboard;
@@ -400,12 +400,18 @@ export default {
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
-      const dashboard = config.find((el) => el.name === 'GIS_Mapping_Dashboard');
+      // const dashboard = config.find((el) => el.name === 'GIS_Mapping_Dashboard');
+
+      const response = await apiServices.getDashboard();
+      const results = response.data;
+      const dashboard = results.find((item) => item?.name === name);
+
       if (dashboard === undefined) {
         this.$router.push('/*');
         return;
       }
-      console.log(dashboard, 'dashboard');
+
+      console.log(dashboard, 'dashboard@');
 
       this.isGIS = true;
       this.configObject = '';
@@ -434,6 +440,7 @@ export default {
           this.$router.push('/*');
           return;
         }
+        console.log(dashboard, 'dashboard@ 1');
         this.configObject = '';
         this.configObject = {
           name: dashboard.name,
