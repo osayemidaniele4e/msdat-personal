@@ -48,7 +48,7 @@
             </b-list-group-item>
           </a> -->
           <router-link to="/state-health-facility" target="_blank"
-            ><b-list-group-item>Health Facilities Profile (GIS)</b-list-group-item></router-link
+            ><b-list-group-item>Health Facilities Finder</b-list-group-item></router-link
           >
         </b-list-group>
       </div>
