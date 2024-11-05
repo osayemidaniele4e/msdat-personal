@@ -112,6 +112,19 @@
       </div>
       <div class="col mb-3">
         <b-list-group>
+          <h5 class="text-underline">Advanced Analytics</h5>
+          <router-link
+            v-for="(section, index) in advancedSections"
+            :key="section.label"
+            :to="`/dashboard/Advanced_Analytics?index=${index}`"
+            target="_blank"
+          >
+            <b-list-group-item> {{ section.label }}</b-list-group-item></router-link
+          >
+        </b-list-group>
+      </div>
+      <div class="col mb-3">
+        <b-list-group>
           <h5 class="text-underline">Other Dashboards</h5>
           <router-link to="/custom" target="_blank"
             ><b-list-group-item> Create Your Dashboard</b-list-group-item></router-link
@@ -122,9 +135,9 @@
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
             ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
           >
-          <router-link to="/advanced_analytics" target="_blank"
+          <!-- <router-link to="/advanced_analytics" target="_blank"
             ><b-list-group-item>Advanced Analytics</b-list-group-item></router-link
-          >
+          > -->
         </b-list-group>
       </div>
       <div class="col mb-3" v-if="isAuthenticated">
@@ -150,12 +163,15 @@ import {
   mapMutations,
 } from 'vuex';
 
+import { advancedSections } from '../../analytics/sections';
+
 export default {
   data() {
     return {
       loading: true,
       userDashboards: [],
       // publicDashboards: [],
+      advancedSections,
     };
   },
 
