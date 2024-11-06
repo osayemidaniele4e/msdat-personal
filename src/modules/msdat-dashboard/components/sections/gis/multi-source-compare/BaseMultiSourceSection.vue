@@ -613,7 +613,10 @@ export default {
           this.showNoAvailableDataColumn1 = false;
         }
 
+        console.log(data, 'chartOptions 3');
+
         const formattedData = this.formatDataToSeriesMapFormat(data);
+        console.log(formattedData, 'chartOptions 4');
         this.mapObjectColumn1 = this.formatToHighChartOptionForMap(formattedData, configObj);
         this.loadingColumn1 = false;
       },
@@ -855,6 +858,7 @@ export default {
     },
     formatToHighChartOptionForLine(data, chartType, controlPanelObject) {
       const tempData = this.sortData(data);
+      console.log(tempData, 'chartOptions 2');
 
       const chartOptions = {
         chart: {
@@ -885,6 +889,7 @@ export default {
       };
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       chartOptions.yAxis.title.text = displayFactor;
+      console.log(chartOptions, 'chartOptions 1');
       return chartOptions;
     },
     async resetCol1Data() {
