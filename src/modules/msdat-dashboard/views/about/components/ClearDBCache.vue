@@ -29,7 +29,8 @@ export default {
     async clearDB() {
       await this.$store.dispatch('DL/CLEAR_DB');
       this.showModal = false;
-      this.$router.push('/');
+      const dashboard = this.$route.params.name;
+      this.$router.push({ path: `/dashboard/${dashboard}` });
       window.location.reload();
     },
   },

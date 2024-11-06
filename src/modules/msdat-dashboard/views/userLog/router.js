@@ -6,7 +6,7 @@ export default [
     name: 'Account',
     component: sidenavVue,
     meta: {
-      // requiresAuth: true,
+      requiresAuth: true,
       title: 'Account',
     },
   },
