@@ -83,6 +83,20 @@
       </div>
       <div class="col mb-3">
         <b-list-group>
+          <h5 class="text-underline main-item">Advanced Analytics</h5>
+          <router-link
+            v-for="(section, index) in advancedSections"
+            :key="section.label"
+            :to="`/dashboard/Advanced_Analytics?index=${index}`"
+            class="sub-item"
+            >
+              {{ section.label }}
+            </router-link
+          >
+        </b-list-group>
+      </div>
+      <div class="col mb-3">
+        <b-list-group>
           <h5 class="text-underline main-item">Other Dashboards</h5>
           <router-link to="/custom"
            class="sub-item"
@@ -99,12 +113,12 @@
             >Governors' Dashboard</a
           >
           <!-- <router-link to="/coming-soon/advanced_analytics" -->
-          <router-link to="/advanced_analytics"
+          <!-- <router-link to="/advanced_analytics"
            class="sub-item"
             >
               Advanced Analytics
             </router-link
-          >
+          > -->
         </b-list-group>
       </div>
       <div class="col mb-3 d-md-none">
@@ -122,6 +136,8 @@
 <script>
 // import { mapGetters } from 'vuex';
 
+import { advancedSections } from '../../analytics/sections';
+
 export default {
   // props: {
   //   show: {
@@ -132,7 +148,9 @@ export default {
   // },
 
   data() {
-    return {};
+    return {
+      advancedSections,
+    };
   },
   methods: {},
 };

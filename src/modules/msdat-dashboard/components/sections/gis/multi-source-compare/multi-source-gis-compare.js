@@ -122,7 +122,7 @@
 // };
 
 export default {
-  label: 'Multi Comparison',
+  label: 'Multi-Source Comparison',
   setup: [
   ],
   payload: {
