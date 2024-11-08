@@ -642,7 +642,6 @@ export default {
     selectedIndicatorColumn1: {
       async handler(newIndicator) {
         this.loadingColumn1 = true;
-        console.log(newIndicator, 'firstLoad indicator');
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
         this.datasourcesColumn1 = data;
         this.selectedDatasourceColumn1 = data[0];
@@ -653,17 +652,12 @@ export default {
     },
     selectedDatasourceColumn1: {
       async handler(newDatasource) {
-        console.log(newDatasource, 'newDatasource');
         await this.getAvailableYears(newDatasource);
         this.resetCol1Data();
       },
     },
     selectedYearColumn1: {
       async handler(newYear) {
-        // console.log(this.selectedIndicatorColumn1, 'firstLoad 2');
-        // console.log(this.selectedDatasourceColumn1, 'firstLoad 2');
-        // console.log(newYear, 'firstLoad 2');
-
         const data = await this.dlQuery({
           indicator: this.selectedIndicatorColumn1.id,
           datasource: this.selectedDatasourceColumn1.id,
@@ -673,21 +667,11 @@ export default {
             level: this.mapDataLevel,
           },
         });
-        console.log(data, 'firstLoad 2');
         const configObj = {
           indicator: this.selectedIndicatorColumn1,
           datasource: this.selectedDatasourceColumn1,
           year: this.selectedYearColumn1,
         };
-
-        // if (data.length === 0) {
-        //   this.showNoAvailableDataColumn1 = true;
-        // } else {
-        //   this.showNoAvailableDataColumn1 = false;
-        // }
-
-        // console.log(data, 'chartOptions 3');
-        console.log(data, 'chartOptions data');
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn1 = true;
@@ -701,7 +685,6 @@ export default {
         }
 
         const formattedData = this.formatDataToSeriesMapFormat(data);
-        console.log(formattedData, 'chartOptions 4');
         this.mapObjectColumn1 = this.formatToHighChartOptionForMap(formattedData, configObj);
         this.loadingColumn1 = false;
       },
@@ -737,12 +720,6 @@ export default {
           datasource: this.selectedDatasourceColumn2,
           year: this.selectedYearColumn1,
         };
-
-        // if (data.length === 0) {
-        //   this.showNoAvailableDataColumn2 = true;
-        // } else {
-        //   this.showNoAvailableDataColumn2 = false;
-        // }
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn2 = true;
@@ -791,12 +768,6 @@ export default {
           datasource: this.selectedDatasourceColumn3,
           year: this.selectedYearColumn3,
         };
-
-        // if (data.length === 0) {
-        //   this.showNoAvailableDataColumn3 = true;
-        // } else {
-        //   this.showNoAvailableDataColumn3 = false;
-        // }
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn3 = true;
@@ -1001,10 +972,6 @@ export default {
       return chartOptions;
     },
     async resetCol1Data() {
-      console.log('chartOptions data');
-      console.log(this.selectedIndicatorColumn1, 'firstLoad');
-      console.log(this.selectedDatasourceColumn1, 'firstLoad');
-      console.log(this.selectedYearColumn1, 'firstLoad');
       const data = await this.dlQuery({
         indicator: this.selectedIndicatorColumn1.id,
         datasource: this.selectedDatasourceColumn1.id,
@@ -1014,14 +981,11 @@ export default {
           level: this.mapDataLevel,
         },
       });
-      console.log(data, 'firstLoad data');
       const configObj = {
         indicator: this.selectedIndicatorColumn1,
         datasource: this.selectedDatasourceColumn1,
         year: this.selectedYearColumn1,
       };
-
-      console.log(data, 'chartOptions data');
 
       if (data.length === 0) {
         this.showNoAvailableDataColumn1 = true;
@@ -1055,11 +1019,6 @@ export default {
         year: this.selectedYearColumn2,
       };
 
-      // if (data.length === 0) {
-      //   this.showNoAvailableDataColumn2 = true;
-      // } else {
-      //   this.showNoAvailableDataColumn2 = false;
-      // }
       if (data.length === 0) {
         this.showNoAvailableDataColumn2 = true;
         this.showSubNationalDataAvailableDataColumn2 = false;
@@ -1092,11 +1051,6 @@ export default {
         year: this.selectedYearColumn3,
       };
 
-      // if (data.length === 0) {
-      //   this.showNoAvailableDataColumn3 = true;
-      // } else {
-      //   this.showNoAvailableDataColumn3 = false;
-      // }
       if (data.length === 0) {
         this.showNoAvailableDataColumn3 = true;
         this.showSubNationalDataAvailableDataColumn3 = false;
