@@ -31,10 +31,6 @@ export default {
           color: '#8ab9bb',
         },
         {
-          id: 7,
-          color: '#7D8ADE',
-        },
-        {
           id: 4,
           color: '#5c3819',
         },
