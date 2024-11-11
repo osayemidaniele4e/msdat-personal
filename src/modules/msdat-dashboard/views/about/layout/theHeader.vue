@@ -139,8 +139,7 @@
                   >Home</a
                 >
                 <div
-                  @mouseover="showExpandedDropdown = true"
-                  @mouseleave="showExpandedDropdown = false"
+                  @click="showExpandedDropdown = !showExpandedDropdown"
                 >
                   <button class="btn btn-outline-primary border-light rounded-0">
                     Select&nbsp;Dashboard&nbsp;<b-icon
@@ -519,6 +518,11 @@ button {
   color: white;
   font-weight: 500;
   font-size: 14px;
+  border-radius: 5px !important;
+}
+.btn:hover {
+  background-color: white;
+  color: $primary
 }
 
 .main {
@@ -566,12 +570,12 @@ header#the-header {
     margin-left: 0.5rem;
   }
   .up {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.15s ease-in-out;
     transform: rotate(0deg);
   }
   .down {
     transform: rotate(180deg);
-    transition: all 0.5s ease-in-out;
+    transition: all 0.15s ease-in-out;
   }
   .drop-card {
     transition: all 1s ease-in-out;
