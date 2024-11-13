@@ -110,7 +110,7 @@ import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
 import IndicatorPageFunc from './components/AboutPageIndicator.vue';
 import AvailableDataPageFunc from './components/AboutPageAvailableData.vue';
-import Testimonials from './components/Testimonials.vue';
+// import Testimonials from './components/Testimonials.vue';
 
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
@@ -121,7 +121,7 @@ export default {
     DataSourceFunc,
     IndicatorPageFunc,
     AvailableDataPageFunc,
-    Testimonials,
+    // Testimonials,
   },
   data() {
     return {
