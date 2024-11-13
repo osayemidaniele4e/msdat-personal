@@ -92,9 +92,9 @@
       <div id="data-sources">
         <DataSourceFunc />
       </div>
-      <section>
+      <!-- <section>
         <Testimonials />
-      </section>
+      </section> -->
     </main>
     <footer class="footer">
       This dashboard is developed and managed by the Department of Health Planning Research and Statistics (DHPRS)
