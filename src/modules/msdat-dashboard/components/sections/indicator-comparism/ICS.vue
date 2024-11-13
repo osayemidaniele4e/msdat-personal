@@ -171,7 +171,7 @@ export default {
       const yTitles = [];
       for (let i = 0; i < results.length; i += 1) {
         const indicator = indicators[i];
-        const displayFactor = this.dlGetFactor(indicator.factor);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
         yTitles.push(displayFactor.display_factor);
       }
 
@@ -183,7 +183,7 @@ export default {
           this.dlGetLocation(item.location).name,
           parseFloat(item.value),
         ]);
-        const displayFactor = this.dlGetFactor(indicator.factor);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
         const yAxis = {
           yAxis: [
             {
@@ -211,7 +211,7 @@ export default {
         };
 
         const obj = {
-          color: this.color[i],
+          // color: this.color[i],
           dataLabels: {
             enabled: true,
             format: `{y}${this.displayFactorSign(displayFactor.display_factor)}`,
@@ -377,7 +377,7 @@ export default {
       const yTitles = [];
       for (let i = 0; i < results.length; i += 1) {
         const indicator = indicators[i];
-        const displayFactor = this.dlGetFactor(indicator.factor);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
         yTitles.push(displayFactor.display_factor);
       }
 
@@ -391,7 +391,7 @@ export default {
         ]);
         const sortTheYear = formatToHighChartFormat.sort((a, b) => a[0] - b[0]);
 
-        const displayFactor = this.dlGetFactor(indicator.factor);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
         if (i === 0) {
           highChartOptions.yAxis.push({
             yAxis: [
