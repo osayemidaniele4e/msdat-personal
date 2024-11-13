@@ -146,8 +146,8 @@ export default class DataLayer {
       // Find the difference after filtering
       const indicatorsNotOnIdb = difference(filteredDefaultIndicators, filteredIndicatorIDArray);
       // const indicatorsNotOnIdb = difference(this.defaultIndicators, indicatorIDArray); // A more conclusive check can be done
-      const defaultInd = this.defaultIndicators;
-      console.log(defaultInd);
+      // const defaultInd = this.defaultIndicators;
+      // console.log(defaultInd);
       if (indicatorsNotOnIdb.length !== 0) {
         // debugger;
         this.storeTimestampInLocal();
@@ -401,11 +401,12 @@ export default class DataLayer {
    */
 
   async initDataWithYears(indicator) {
+    console.log(indicator, 'validIndicators 1');
     const validIndicators = indicator.filter((value) => !Number.isNaN(value));
     console.log(validIndicators, 'validIndicators');
     for (let i = 0; i < validIndicators.length; i++) {
       const indicatorID = validIndicators[i];
-      console.log(indicatorID, 'validIndicators');
+      // console.log(indicatorID, 'validIndicators');
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
 
       const currentYear = new Date().getFullYear();
@@ -440,7 +441,7 @@ export default class DataLayer {
     const validIndicators = indicator.filter((value) => !Number.isNaN(value));
     for (let i = 0; i < validIndicators.length; i++) {
       const indicatorID = validIndicators[i];
-      console.log('indicatorId', indicatorID);
+      // console.log('indicatorId', indicatorID);
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
 
       const currentYear = new Date().getFullYear();
@@ -461,6 +462,7 @@ export default class DataLayer {
         const RemainingResults = result.slice(3);
         const arrayOfPromises = RemainingResults.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
+
         for (let j = 0; j < results.length; j++) {
           const requestResult = results[j].data.results;
           // check if empty

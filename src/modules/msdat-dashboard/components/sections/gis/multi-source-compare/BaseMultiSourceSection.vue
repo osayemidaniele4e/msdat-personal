@@ -643,8 +643,26 @@ export default {
       async handler(newIndicator) {
         this.loadingColumn1 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
-        this.datasourcesColumn1 = data;
-        this.selectedDatasourceColumn1 = data[0];
+
+        // Filter out items that return an empty array from the second API call
+        const filteredData = await Promise.all(
+          data.map(async (item) => {
+            const obj = {
+              datasourceID: item.id,
+              indicatorID: newIndicator.id,
+            };
+            const response = await apiServices.getDataObj(obj);
+
+            return response.data.results.length > 0 ? item : null;
+          }),
+        );
+
+        const indicatorWithData = filteredData.filter((item) => item !== null);
+
+        console.log(indicatorWithData, 'filteredIndicators');
+
+        this.datasourcesColumn1 = indicatorWithData;
+        this.selectedDatasourceColumn1 = indicatorWithData[0];
         this.resetCol1Data();
       },
       immediate: true,
@@ -693,8 +711,24 @@ export default {
       async handler(newIndicator) {
         this.loadingColumn2 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
-        this.datasourcesColumn2 = data;
-        this.selectedDatasourceColumn2 = data[0];
+
+        // Filter out items that return an empty array from the second API call
+        const filteredData = await Promise.all(
+          data.map(async (item) => {
+            const obj = {
+              datasourceID: item.id,
+              indicatorID: newIndicator.id,
+            };
+            const response = await apiServices.getDataObj(obj);
+
+            return response.data.results.length > 0 ? item : null;
+          }),
+        );
+
+        const indicatorWithData = filteredData.filter((item) => item !== null);
+
+        this.datasourcesColumn2 = indicatorWithData;
+        this.selectedDatasourceColumn2 = indicatorWithData[0];
       },
       immediate: true,
       deep: true,
@@ -741,8 +775,24 @@ export default {
       async handler(newIndicator) {
         this.loadingColumn3 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
-        this.datasourcesColumn3 = data;
-        this.selectedDatasourceColumn3 = data[0];
+
+        // Filter out items that return an empty array from the second API call
+        const filteredData = await Promise.all(
+          data.map(async (item) => {
+            const obj = {
+              datasourceID: item.id,
+              indicatorID: newIndicator.id,
+            };
+            const response = await apiServices.getDataObj(obj);
+
+            return response.data.results.length > 0 ? item : null;
+          }),
+        );
+
+        const indicatorWithData = filteredData.filter((item) => item !== null);
+
+        this.datasourcesColumn3 = indicatorWithData;
+        this.selectedDatasourceColumn3 = indicatorWithData[0];
       },
       immediate: true,
       deep: true,
@@ -869,8 +919,8 @@ export default {
         indicatorID: this.selectedIndicatorColumn1.id,
       };
       const { data } = await apiServices.getDataObj(obj);
-      const response = await apiServices.getDataObj(obj);
-      console.log(response, 'firstLoad World');
+      // const response = await apiServices.getDataObj(obj);
+      // console.log(response, 'firstLoad World');
       this.availableYearsColumn1 = this.getPeriodValues(data.results);
       this.selectedYearColumn1 = this.availableYearsColumn1[0];
     },
@@ -895,6 +945,22 @@ export default {
       this.availableYearsColumn3 = this.getPeriodValues(data.results);
 
       this.selectedYearColumn3 = this.availableYearsColumn3[0];
+    },
+    async fetchIndicatorData(datasource) {
+      try {
+        const obj = {
+          datasourceID: datasource.id,
+          indicatorID: this.selectedIndicatorColumn1.id,
+        };
+        const { data } = await apiServices.getDataObj(obj);
+        return Object.keys(data).length ? data : null; // Check if data is not empty
+      } catch (error) {
+        return null;
+      }
+    },
+    async filterIndicators(indicators) {
+      const results = await Promise.all(indicators.map(this.fetchIndicatorData));
+      return indicators.filter((_, index) => results[index]);
     },
     getPeriodValues(temp) {
       return [...new Set(temp.map((item) => item.period))].sort((a, b) => b - a);
