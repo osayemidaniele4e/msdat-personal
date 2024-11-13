@@ -154,7 +154,7 @@ export default class DataLayer {
         // await this.initDataWithYearsWithYearlyChecks([7, 6, 1], 8);
         await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
         await this.setAvailableDashboardIndicator();
-        await this.initDataWithYears(this.defaultIndicators);
+        // await this.initDataWithYears(this.defaultIndicators);
       }
       // await this.initOtherTablesFromDB();
       setTimeout(async () => {
