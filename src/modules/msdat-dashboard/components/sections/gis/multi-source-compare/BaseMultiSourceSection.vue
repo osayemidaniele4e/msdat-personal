@@ -401,26 +401,35 @@ export default {
       showSubNationalDataAvailableDataColumn3: false,
       titleColumn1: '',
       selectedIndicatorColumn1: {
-        id: 8,
-        full_name: 'Postnatal care coverage (mother)',
-        short_name: 'Postnatal care coverage',
-        desirable_slope: 'Positive',
-        indicator_type: 'Outcome',
+        id: 2,
+        full_name: 'Adolescent birth rate',
+        short_name: 'Adolescent birth rate',
+        desirable_slope: 'Negative',
+        indicator_type: 'Impact',
         program_area: 'RMNCH',
-        national_target: '80.00',
-        national_source: 'NRHP 2017',
-        national_information:
-          'Target obtained from the National Reproductive Health Policy (NRHP) 2017 to 2021',
+        national_target: '90.00',
+        national_source: 'NSHDP 2010 to 2015',
+        national_information: 'Target was obtained from the National Strategic and Health Development Plan (NSHDP) 2010 to 2015. It is the latest available target for this indicator.',
         sdg_target: null,
         sdg_information: 'Not available',
-        created_at: '2022-10-20T08:42:09.560835Z',
-        updated_at: '2023-03-16T15:29:08.616312Z',
-        factor: 2,
-        first_related: 6,
-        second_related: 5,
-        third_related: 7,
+        created_at: '2022-10-20T08:42:09.550494Z',
+        updated_at: '2024-10-23T09:29:04.425406Z',
+        factor: null,
+        first_related: 1,
+        second_related: 4,
+        third_related: 3,
         fourth_related: null,
-        datasources: [1, 2, 7, 3],
+        datasources: [
+          2,
+          4,
+          6,
+          7,
+          8,
+          9,
+          15,
+          18,
+          30,
+        ],
         group: [],
       },
       selectedDatasourceColumn1: {
@@ -472,26 +481,35 @@ export default {
       columnLevel2: 1,
       titleColumn2: '',
       selectedIndicatorColumn2: {
-        id: 8,
-        full_name: 'Postnatal care coverage (mother)',
-        short_name: 'Postnatal care coverage',
-        desirable_slope: 'Positive',
-        indicator_type: 'Outcome',
+        id: 2,
+        full_name: 'Adolescent birth rate',
+        short_name: 'Adolescent birth rate',
+        desirable_slope: 'Negative',
+        indicator_type: 'Impact',
         program_area: 'RMNCH',
-        national_target: '80.00',
-        national_source: 'NRHP 2017',
-        national_information:
-          'Target obtained from the National Reproductive Health Policy (NRHP) 2017 to 2021',
+        national_target: '90.00',
+        national_source: 'NSHDP 2010 to 2015',
+        national_information: 'Target was obtained from the National Strategic and Health Development Plan (NSHDP) 2010 to 2015. It is the latest available target for this indicator.',
         sdg_target: null,
         sdg_information: 'Not available',
-        created_at: '2022-10-20T08:42:09.560835Z',
-        updated_at: '2023-03-16T15:29:08.616312Z',
-        factor: 2,
-        first_related: 6,
-        second_related: 5,
-        third_related: 7,
+        created_at: '2022-10-20T08:42:09.550494Z',
+        updated_at: '2024-10-23T09:29:04.425406Z',
+        factor: null,
+        first_related: 1,
+        second_related: 4,
+        third_related: 3,
         fourth_related: null,
-        datasources: [1, 2, 7, 3],
+        datasources: [
+          2,
+          4,
+          6,
+          7,
+          8,
+          9,
+          15,
+          18,
+          30,
+        ],
         group: [],
       },
       selectedDatasourceColumn2: {
@@ -542,26 +560,35 @@ export default {
       columnLevel3: 1,
       titleColumn3: '',
       selectedIndicatorColumn3: {
-        id: 8,
-        full_name: 'Postnatal care coverage (mother)',
-        short_name: 'Postnatal care coverage',
-        desirable_slope: 'Positive',
-        indicator_type: 'Outcome',
+        id: 2,
+        full_name: 'Adolescent birth rate',
+        short_name: 'Adolescent birth rate',
+        desirable_slope: 'Negative',
+        indicator_type: 'Impact',
         program_area: 'RMNCH',
-        national_target: '80.00',
-        national_source: 'NRHP 2017',
-        national_information:
-          'Target obtained from the National Reproductive Health Policy (NRHP) 2017 to 2021',
+        national_target: '90.00',
+        national_source: 'NSHDP 2010 to 2015',
+        national_information: 'Target was obtained from the National Strategic and Health Development Plan (NSHDP) 2010 to 2015. It is the latest available target for this indicator.',
         sdg_target: null,
         sdg_information: 'Not available',
-        created_at: '2022-10-20T08:42:09.560835Z',
-        updated_at: '2023-03-16T15:29:08.616312Z',
-        factor: 2,
-        first_related: 6,
-        second_related: 5,
-        third_related: 7,
+        created_at: '2022-10-20T08:42:09.550494Z',
+        updated_at: '2024-10-23T09:29:04.425406Z',
+        factor: null,
+        first_related: 1,
+        second_related: 4,
+        third_related: 3,
         fourth_related: null,
-        datasources: [1, 2, 7, 3],
+        datasources: [
+          2,
+          4,
+          6,
+          7,
+          8,
+          9,
+          15,
+          18,
+          30,
+        ],
         group: [],
       },
       selectedDatasourceColumn3: {
@@ -625,17 +652,12 @@ export default {
     },
     selectedDatasourceColumn1: {
       async handler(newDatasource) {
-        console.log(newDatasource, 'newDatasource');
         await this.getAvailableYears(newDatasource);
         this.resetCol1Data();
       },
     },
     selectedYearColumn1: {
       async handler(newYear) {
-        // console.log(this.selectedIndicatorColumn1, 'firstLoad 2');
-        // console.log(this.selectedDatasourceColumn1, 'firstLoad 2');
-        // console.log(newYear, 'firstLoad 2');
-
         const data = await this.dlQuery({
           indicator: this.selectedIndicatorColumn1.id,
           datasource: this.selectedDatasourceColumn1.id,
@@ -645,21 +667,11 @@ export default {
             level: this.mapDataLevel,
           },
         });
-        console.log(data, 'firstLoad 2');
         const configObj = {
           indicator: this.selectedIndicatorColumn1,
           datasource: this.selectedDatasourceColumn1,
           year: this.selectedYearColumn1,
         };
-
-        // if (data.length === 0) {
-        //   this.showNoAvailableDataColumn1 = true;
-        // } else {
-        //   this.showNoAvailableDataColumn1 = false;
-        // }
-
-        // console.log(data, 'chartOptions 3');
-        console.log(data, 'chartOptions data');
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn1 = true;
@@ -673,7 +685,6 @@ export default {
         }
 
         const formattedData = this.formatDataToSeriesMapFormat(data);
-        console.log(formattedData, 'chartOptions 4');
         this.mapObjectColumn1 = this.formatToHighChartOptionForMap(formattedData, configObj);
         this.loadingColumn1 = false;
       },
@@ -709,12 +720,6 @@ export default {
           datasource: this.selectedDatasourceColumn2,
           year: this.selectedYearColumn1,
         };
-
-        // if (data.length === 0) {
-        //   this.showNoAvailableDataColumn2 = true;
-        // } else {
-        //   this.showNoAvailableDataColumn2 = false;
-        // }
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn2 = true;
@@ -763,12 +768,6 @@ export default {
           datasource: this.selectedDatasourceColumn3,
           year: this.selectedYearColumn3,
         };
-
-        // if (data.length === 0) {
-        //   this.showNoAvailableDataColumn3 = true;
-        // } else {
-        //   this.showNoAvailableDataColumn3 = false;
-        // }
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn3 = true;
@@ -870,8 +869,9 @@ export default {
         indicatorID: this.selectedIndicatorColumn1.id,
       };
       const { data } = await apiServices.getDataObj(obj);
+      const response = await apiServices.getDataObj(obj);
+      console.log(response, 'firstLoad World');
       this.availableYearsColumn1 = this.getPeriodValues(data.results);
-
       this.selectedYearColumn1 = this.availableYearsColumn1[0];
     },
     async getAvailableYears2(datasource) {
@@ -972,10 +972,6 @@ export default {
       return chartOptions;
     },
     async resetCol1Data() {
-      // console.log('chartOptions data');
-      // console.log(this.selectedIndicatorColumn1, 'firstLoad');
-      // console.log(this.selectedDatasourceColumn1, 'firstLoad');
-      // console.log(this.selectedYearColumn1, 'firstLoad');
       const data = await this.dlQuery({
         indicator: this.selectedIndicatorColumn1.id,
         datasource: this.selectedDatasourceColumn1.id,
@@ -990,8 +986,6 @@ export default {
         datasource: this.selectedDatasourceColumn1,
         year: this.selectedYearColumn1,
       };
-
-      console.log(data, 'chartOptions data');
 
       if (data.length === 0) {
         this.showNoAvailableDataColumn1 = true;
@@ -1025,11 +1019,6 @@ export default {
         year: this.selectedYearColumn2,
       };
 
-      // if (data.length === 0) {
-      //   this.showNoAvailableDataColumn2 = true;
-      // } else {
-      //   this.showNoAvailableDataColumn2 = false;
-      // }
       if (data.length === 0) {
         this.showNoAvailableDataColumn2 = true;
         this.showSubNationalDataAvailableDataColumn2 = false;
@@ -1062,11 +1051,6 @@ export default {
         year: this.selectedYearColumn3,
       };
 
-      // if (data.length === 0) {
-      //   this.showNoAvailableDataColumn3 = true;
-      // } else {
-      //   this.showNoAvailableDataColumn3 = false;
-      // }
       if (data.length === 0) {
         this.showNoAvailableDataColumn3 = true;
         this.showSubNationalDataAvailableDataColumn3 = false;

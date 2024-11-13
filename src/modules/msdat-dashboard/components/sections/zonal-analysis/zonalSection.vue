@@ -181,11 +181,14 @@ export default {
               color: this.colors.find((item2) => item2.id === stateObject.parent).color,
             });
 
+            const zoneColorObj = this.colors.find((item2) => item2.id === stateObject.parent);
+
             chartSeries.push({
-              color: this.colors[stateObject.parent].color,
+              color: zoneColorObj.color,
               name: stateObject.name,
               data: sortedData,
             });
+
             this.formatToHighChart(chartSeries);
           } else {
             // already know the zonal levels/parent of all the value
