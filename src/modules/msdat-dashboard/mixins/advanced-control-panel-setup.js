@@ -156,11 +156,50 @@ export default {
       return data;
     },
     // Get available Indicator
+    // async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
+    //   const data = await this.getIndicatorFromDexie(datasourceID);
+
+    //   console.log(data, 'indicator world');
+    //   console.log(datasourceID, 'indicator world');
+
+    //   const indicatorWithData = data.filter(async (indicatorItem) => {
+    //     const indicatorData = await this.dlQuery({
+    //       indicator: indicatorItem.id,
+    //       datasource: datasourceID,
+    //     });
+
+    //     // Keep only items where indicatorData is not an empty array
+    //     return indicatorData.length > 0;
+    //   });
+    //   const formattedData = groupIndicator(indicatorWithData, 'program_area');
+    //   console.log(formattedData, 'indicatorWithData');
+    //   return formattedData;
+    // },
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorFromDexie(datasourceID);
-      const formattedData = groupIndicator(data, 'program_area');
+
+      // console.log(data, 'indicator world');
+      // console.log(datasourceID, 'indicator world');
+
+      const indicatorWithDataPromises = data.map(async (indicatorItem) => {
+        const indicatorData = await this.dlQuery({
+          indicator: indicatorItem.id,
+          datasource: datasourceID,
+        });
+
+        // Return the item if indicatorData has content, else return null
+        return indicatorData.length > 0 ? indicatorItem : null;
+      });
+
+      // Await all promises and filter out any null values
+      const indicatorWithData = (await Promise.all(indicatorWithDataPromises)).filter(Boolean);
+
+      // console.log(indicatorWithData, 'indicator world');
+
+      const formattedData = groupIndicator(indicatorWithData, 'program_area');
       return formattedData;
     },
+
     async getAllDatasources() {
       const datasources = await this.getEveryDatasource();
       return datasources;
