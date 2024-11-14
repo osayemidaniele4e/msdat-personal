@@ -56,7 +56,7 @@ export default {
       dropdownProps: {
         multiple: true,
         'track-by': 'id',
-        max: 3,
+        max: 20,
         'group-values': 'indicators',
         'group-label': 'program_area',
         label: 'full_name',
