@@ -148,7 +148,7 @@
                   ></b-icon>
                 </button>
                 <DropCard
-                  v-show="showExpandedDropdown"
+                  v-if="showExpandedDropdown"
                   @click="showExpandedDropdown = false"
                   :class="{ dropcard: showExpandedDropdown }"
                 />
