@@ -579,8 +579,6 @@ export default {
     // use the function similar
 
     async getNhmisMonthly() {
-      console.log('OMO E REACH HERE');
-
       this.indicators = [];
       this.nhmisMonthData = [];
 
