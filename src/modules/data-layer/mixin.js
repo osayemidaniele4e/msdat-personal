@@ -273,9 +273,8 @@ export default {
      * rewrite to standard 'result[result.length - 1]' to get latest month data
      */
     async getNhmisData(query) {
-      const result = await DB.queryDBForNhmisMonthly(query);
-      // console.log('new result', result)
-      return result.reverse()[0];
+      const { data } = await apiServices.getNHMISDataObj(query);
+      return data.results.reverse()[0];
       // return result[result.length - 1];
     },
     async getDexieTableValues(query) {

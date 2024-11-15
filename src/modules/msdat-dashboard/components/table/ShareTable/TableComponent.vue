@@ -631,7 +631,7 @@ export default {
     },
     async fetchNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
-      // console.log('new result', result)
+      console.log('new result', result);
       return result.reverse()[0];
       // return result[result.length - 1];
     },
