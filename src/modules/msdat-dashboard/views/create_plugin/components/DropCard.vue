@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="d-none d-lg-inline-block">
     <div
       @click="showExpandedDropdown = false"
       class="backdrop">
@@ -233,6 +233,11 @@ div {
     padding: 0.5rem;
     border: 0;
     font-size: 0.85rem;
+  }
+  .list-group a:hover {
+    text-decoration: none !important;
+    color: $primary;
+    font-weight: 600;
   }
   .sub-nav {
     margin-top: 1rem;
