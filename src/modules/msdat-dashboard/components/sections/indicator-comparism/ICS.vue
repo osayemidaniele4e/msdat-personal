@@ -138,6 +138,9 @@ export default {
         },
         series: [],
         yAxis: [],
+        exporting: {
+          filename: `datasource-${values.datasource.datasource}`,
+        },
         plotOptions: {
           series: {
             grouping: true,
@@ -354,6 +357,9 @@ export default {
         },
         yAxis: [],
         series: [],
+        exporting: {
+          filename: `datasource-${values.datasource.datasource}`,
+        },
       };
       let indicators = '';
       if (!Array.isArray(values.indicator)) {

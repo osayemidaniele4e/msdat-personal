@@ -370,6 +370,9 @@ export default {
               },
             },
           },
+          exporting: {
+            filename: `indicator-${this.values.indicator.full_name}`,
+          },
           colors: ['#17606B', '#E85D58', '#58B74E'],
         };
         const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
