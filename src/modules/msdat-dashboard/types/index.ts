@@ -22,7 +22,8 @@ export interface State {
   isResponding: boolean;
   conversationHistory: Conversation[];
   selectedSection: string;
-  location:string
+  location:string;
+  showDataSourceList: boolean;
 }
 
 export type Conversation = {
