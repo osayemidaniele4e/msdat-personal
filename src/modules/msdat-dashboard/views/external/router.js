@@ -3,6 +3,7 @@ import ndr1 from './dashboards/ndr1.vue';
 import ndr2 from './dashboards/ndr2.vue';
 import quarterReview from './dashboards/quarter-review.vue';
 import HealthFacilityDashboard from './dashboards/health-facility.vue';
+import goggleForm from './dashboards/goggleForm.vue';
 
 export default [
   {
@@ -26,6 +27,14 @@ export default [
     component: quarterReview,
     meta: {
       title: 'Quarterly Performance Assessment',
+    },
+  },
+  {
+    path: '/data-partnership',
+    name: 'quarter-review',
+    component: goggleForm,
+    meta: {
+      title: 'MSDAT DATA PARTNERSHIP REQUEST FORM',
     },
   },
   {
