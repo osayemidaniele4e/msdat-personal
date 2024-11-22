@@ -4,6 +4,7 @@ import ndr2 from './dashboards/ndr2.vue';
 import quarterReview from './dashboards/quarter-review.vue';
 import HealthFacilityDashboard from './dashboards/health-facility.vue';
 import goggleForm from './dashboards/goggleForm.vue';
+import healthServiceUptake from './dashboards/health-service-uptake.vue';
 
 export default [
   {
@@ -27,6 +28,14 @@ export default [
     component: quarterReview,
     meta: {
       title: 'Quarterly Performance Assessment',
+    },
+  },
+  {
+    path: '/health-service-uptake',
+    name: 'quarter-review',
+    component: healthServiceUptake,
+    meta: {
+      title: 'Health Service Uptake (NHMIS-Quarterly)',
     },
   },
   {
