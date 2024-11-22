@@ -148,7 +148,9 @@ export default {
           last_name: this.last_name,
           organization: this.organisation,
           password: this.password,
+          profession: this.role,
         });
+
         this.$swal('Congratulations, Successfully Registered, Please Login');
       } catch (err) {
         const { username, email, password } = err;
