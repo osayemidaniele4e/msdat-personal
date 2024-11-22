@@ -1,30 +1,45 @@
  <!-- Auther: Ghufran Ahmed -->
 <template>
   <b-container class="text-justify px-5" fluid>
-    <p style="font-size: 14px; font-family: Work Sans">
-      <b>Select your preferences</b>
-    </p>
-    <p style="font-size: 14px; font-family: Work Sans; margin-top: -17px">
-      Select the Program Areas, Data Sources, Period and Coverage Levels you are
-      interested in.
-    </p>
-    <div class="d-flex align-items-center justify-content-between">
-      <p @click="viewAllData" id="link-to-about" style="font-size: 13px; font-family: Work Sans; cursor: pointer">
-        <b>View datasheet</b>- see all available data in database
+    <div class="top-cont" >
+      <p style="font-size: 28px; font-weight: 700; color: #035C6E; font-family: Work Sans">
+        <b>Select your preferences</b>
       </p>
-       <span class="mb-5"
-          ><b-button
-            @click="approveData"
-            style="font-size: 12.000004px; font-family: Work Sans; border-color:#3f8994; color: #3f8994; background-color: #ffffff;"
-            >approve Data</b-button
-          ></span>
+      <p style="font-size: 16px; font-family: Work Sans; margin-top: -17px">
+        Select the Program Areas, Data Sources, Period and Coverage Levels you are
+        interested in.
+      </p>
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+      <!-- <p @click="viewAllData" id="link-to-about" style="font-size: 13px; font-family: Work Sans; cursor: pointer">
+        <b>View datasheet</b>- see all available data in database
+      </p> -->
     </div>
     <b-card>
       <b-row>
         <!-- **** Preferences Selection *****  -->
 
-        <b-col sm="12" lg="3">
-          <indicators-selection />
+        <b-col sm="12" lg="4">
+          <div class="d-flex row justify-content-between preferences">
+            <p style="font-size: 18px; font-weight: 700; color: #035C6E; font-family: Work Sans; margin-top: 10px; align-items: center; margin: 0">Selection</p>
+            <!-- advanved search btn -->
+            <b-button
+             @click="showModal = true"
+            style="font-size: 12.000004px; font-family: Work Sans; border-color:#3f8994; color: #3f8994; background-color: #ffffff;"
+              >Advanced Search</b-button>
+
+    <!-- Advanced Search Modal -->
+    <AdvancedSearchModal
+      v-if="showModal"
+      @close="showModal = false"
+       @apply="updateSelections"
+    />
+            </div>
+
+          <indicators-selection
+           :selected-indicators.sync="selectedIndicators"
+      :selected-program-area.sync="selectedProgramArea"
+          />
           <br />
           <data-source />
           <br />
@@ -41,7 +56,17 @@
 
         <!-- ****** Selected Items Table ****** -->
 
-        <b-col sm="12" lg="9">
+        <b-col sm="12" lg="8">
+          <div style="display: flex; justify-content: space-between; padding: 0px 15px;">
+            <p style="font-size: 20px; font-weight: 700; color: #035C6E; font-family: Work Sans">Selected Preferences</p>
+            <span class="approve"
+            ><b-button
+              @click="approveData"
+              style="font-size: 12.000004px; font-family: Work Sans; background-color:#035C6E;
+  color:#ffffff;"
+              >approve Data</b-button
+            ></span>
+          </div>
           <data-table class="data-table" />
           <b-row align-h="end" class="text-right">
             <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
@@ -80,7 +105,7 @@
                 </p>
               </b-col>
             </b-row>
-            <b-row align-h="end" class="mt-5 text-right">
+            <!-- <b-row align-h="end" class="mt-5 text-right">
               <b-col cols="auto" class="approve"
                 ><b-button
                   @click="approveData"
@@ -88,7 +113,7 @@
                   >approve Data</b-button
                 ></b-col
               >
-            </b-row>
+            </b-row> -->
           </div>
         </b-col>
       </b-row>
@@ -97,6 +122,7 @@
 </template>
 
 <script>
+import AdvancedSearchModal from '../components/AdvancedSearch.vue';
 import IndicatorsSelection from '../components/preferences/selection/IndicatorsSelection.vue';
 import DataSource from '../components/preferences/selection/DataSourceSelection.vue';
 import YearsSelection from '../components/preferences/selection/YearsSelection.vue';
@@ -107,6 +133,7 @@ import Notes from '../components/preferences/notes/Notes.vue';
 export default {
   name: 'data-preferences',
   components: {
+    AdvancedSearchModal,
     IndicatorsSelection,
     DataSource,
     YearsSelection,
@@ -123,6 +150,11 @@ export default {
       showList: false,
       destroyPage: false,
       showAll: false,
+      showSearchComponent: false,
+      showModal: false,
+      selectedProgramArea: null,
+      selectedIndicators: [],
+
     };
   },
   beforeDestroy() {
@@ -233,6 +265,25 @@ export default {
     },
   },
   methods: {
+
+    // handleApply(selectedData) {
+    //   // Process the selected data
+    //   console.log("Selected Indicators:", selectedData);
+    //   this.showModal = false; // Close the modal
+    // },
+
+    updateSelections({ programArea, indicators }) {
+      this.selectedProgramArea = programArea;
+      this.selectedIndicators = indicators;
+      this.showModal = false;
+      // console log the selected indicators
+      console.log('Selected Indicators:', indicators);
+    },
+
+    // Toggle the Search Component
+    toggleSearchComponent() {
+      this.showSearchComponent = !this.showSearchComponent;
+    },
     async viewAllData() {
       this.showAll = !this.showAll;
       this.$store.dispatch('allSelection', { allselected: this.showAll });
@@ -269,6 +320,10 @@ export default {
   font-weight: normal;
   font-size: 12.000003px;
 }
+
+.preferences{
+  padding: 0 10px;
+}
 .indicators {
   max-height: 27.00000675px;
   color: #202020;
@@ -282,7 +337,12 @@ input {
 .baseline {
   margin-top: auto !important;
 }
-
+.top-cont{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
 div.scroll {
   // max-height: 110px;
   overflow-x: hidden;
@@ -322,7 +382,6 @@ thead {
     display: none;
   }
 }
-
 .btn {
   background-color: #3f8994;
   color: #ffffff;
