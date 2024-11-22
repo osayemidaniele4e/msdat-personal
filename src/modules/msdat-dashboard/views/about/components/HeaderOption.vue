@@ -97,6 +97,12 @@
           <span>Submit New Dataset</span>
         </a>
       </li>
+      <li>
+        <router-link to="/data-partnership">
+          <img src="@/assets/img/icons/ic_help.svg" alt="" />
+          <span>Request Data Partnership</span>
+        </router-link>
+      </li>
       <!-- <li>
         <router-link to="/">
           <img src="@/assets/img/icons/ic_recommendation.svg" alt="" />
@@ -142,7 +148,9 @@
       </li>
 
       <div>
-        <button @click="clearDB" class="btn-2 btn-outline-primary bg-danger rounded-2">CLEAR CACHE</button>
+        <button @click="clearDB" class="btn-2 btn-outline-primary bg-danger rounded-2">
+          CLEAR CACHE
+        </button>
       </div>
     </ul>
     <base-modal :showModal="socialModal" :size="'md'">
@@ -180,7 +188,11 @@
         </div>
       </div>
     </b-modal>
-    <ClearDBCacheModal style="z-index: 1500" v-if="showClearDataModal"  :showModal="showClearDataModal" />
+    <ClearDBCacheModal
+      style="z-index: 1500"
+      v-if="showClearDataModal"
+      :showModal="showClearDataModal"
+    />
   </div>
 </template>
 
@@ -193,7 +205,10 @@ import ClearDBCacheModal from './ClearDBCache.vue';
 
 export default {
   components: {
-    contact, Socials, NewsLetter, ClearDBCacheModal,
+    contact,
+    Socials,
+    NewsLetter,
+    ClearDBCacheModal,
   },
   data() {
     const dataObj = {
