@@ -112,8 +112,6 @@ export default {
      */
     // eslint-disable-next-line consistent-return
     async dlQuery(queryObject) {
-      console.log(queryObject, 'queryObject');
-
       if (queryObject.datasource !== undefined && queryObject.datasource === 30) {
         const { data } = await apiServices.getNHMISData(queryObject);
         return data.results;
