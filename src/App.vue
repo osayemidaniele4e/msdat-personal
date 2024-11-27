@@ -46,6 +46,7 @@ export default {
   watch: {
     '$store.state.MSDAT_STORE.showDataSourceList': {
       handler(newVal, oldVal) {
+        console.log('Investigations App Watch');
         console.log('myVariable changed:', oldVal, '->', newVal);
         this.showDataSourceListComponent = newVal;
       },
