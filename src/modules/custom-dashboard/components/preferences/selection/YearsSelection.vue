@@ -3,10 +3,13 @@
 /* eslint-disable no-unused-expressions */
 
 <template>
-  <div>
-    <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
-      >Period Selection</b
-    ><br />
+  <div class="year-card">
+    <div class="selection-header">
+
+      <b  style="font-size: 13px; font-family: Work Sans"
+        >YEARS</b
+      ><br />
+    </div>
     <small style="font-size: 13px; font-family: Work Sans"
       >Select available years under each source</small
     >
@@ -126,3 +129,18 @@ export default {
   },
 };
 </script>
+
+<style lang="css" scoped>
+.year-card{
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0px 20px 8px 8px;
+  font-family: Work Sans;
+}
+.selection-header{
+  background-color:#F1F2F7;
+  padding:10px;
+  margin: 0px -20px 5px -10px;
+}
+</style>

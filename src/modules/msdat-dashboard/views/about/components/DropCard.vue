@@ -46,6 +46,9 @@
             >
               <b-list-group-item> Health Service Uptake (NHMIS)</b-list-group-item>
             </a>
+            <router-link to="/health-service-uptake" target="_blank"
+              ><b-list-group-item>Health Service Uptake (NHMIS-Quarterly)</b-list-group-item></router-link
+            >
             <a href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/" target="_blank">
               <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
             >
