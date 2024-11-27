@@ -51,17 +51,21 @@ if (localStorage.getItem('${folderName}') === 'true') {
 // Additional code for App.vue
 const appVueCode = `
 <template>
-  <div id="app">
+ <div class="position-relative" id="app">
     <router-view />
-     <feedback/>
-
+    <feedback />
+    <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
+      <ShowDataSourcesList />
+    </div>
   </div>
+
 </template>
 
 <script>
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import feedback from './views/feedback.vue';
+import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 ${pluginImports.join('\n')}
 
 export default {
@@ -91,6 +95,14 @@ export default {
   margin: 0px !important; /* Adjust the margin as needed */
   float: left; /* Align the image to the left of the text */
 }
+.datasource-list {
+  position: fixed;
+  right: 10px;
+  z-index: 999999;
+  top: 10rem;
+  height: 48rem;
+}
+
 </style>
 `;
 
