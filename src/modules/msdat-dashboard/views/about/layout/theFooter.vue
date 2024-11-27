@@ -9,8 +9,9 @@
             ? indicatorCount
             : dlDashboardIndicator.length
         }}/{{ indicatorCount }}&ensp;Indicators,
-        <span @click="showDatasourceList" class="datasourec-action"
-          >{{ dlDashboardDataSource.length }}/{{ dataSourceCount }}</span
+        <span
+          >{{ dlDashboardDataSource.length }}/{{ dataSourceCount }}
+          <span @click="showDatasourceList" class="datasourec-action">( view more )</span></span
         >&ensp;Data&nbsp;sources</span
       >
       <span>Last Updated {{ latestDate }}</span>
@@ -155,7 +156,7 @@ export default {
   cursor: pointer;
 }
 .datasourec-action:hover {
-  color: #90EE90;
+  color: #90ee90;
 }
 
 footer#the-footer {
