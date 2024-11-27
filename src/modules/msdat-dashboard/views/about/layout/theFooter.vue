@@ -68,6 +68,7 @@ export default {
 
     showDatasourceList() {
       console.log('dataSources');
+      console.log('Investigations Footer');
       this.toggleShowDataSourceList();
     },
     // async captureAndShare() {
