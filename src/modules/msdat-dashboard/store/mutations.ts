@@ -216,7 +216,13 @@ const mutations: MutationTree<State> = {
 
   toggleShowDataSourceList: (state) => {
     console.log('Investigations Mutations');
-    state.showDataSourceList = !state.showDataSourceList;
+    console.log(state, 'before');
+    state.showDataSourceList = true;
+    console.log(state, 'After');
+  },
+
+  closeShowDataSourceList: (state) => {
+    state.showDataSourceList = false;
   },
 
   /**
