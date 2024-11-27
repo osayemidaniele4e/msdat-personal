@@ -214,6 +214,10 @@ const mutations: MutationTree<State> = {
     state.controlConfig = [];
   },
 
+  toggleShowDataSourceList: (state) => {
+    state.showDataSourceList = !state.showDataSourceList;
+  },
+
   /**
    * This function is used to set control options
    */
