@@ -278,7 +278,7 @@ export default {
      */
     async getNhmisData(query) {
       const { data } = await apiServices.getNHMISDataObj(query);
-      return data.results.reverse()[0];
+      return data.results[0];
       // return result[result.length - 1];
     },
     async getDexieTableValues(query) {
