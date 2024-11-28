@@ -159,6 +159,7 @@ export default {
       const selectedConfig = this.getSelectedConfig();
 
       if (index !== 4) {
+        console.log(selectedConfig, '@@@ 1');
         if (selectedConfig.indicator !== null) {
           this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
             controlIndex: index,
