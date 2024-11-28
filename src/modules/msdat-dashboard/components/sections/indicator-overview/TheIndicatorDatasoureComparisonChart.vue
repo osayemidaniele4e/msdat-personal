@@ -68,15 +68,6 @@
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
-    <!-- <div class="no_data">
-      <img
-        :src="require('@/assets/no-data/No_Available_Data.svg')"
-        alt="no data"
-        class="img-fluid"
-        height="auto"
-        width="250px"
-      />
-    </div> -->
   </div>
 </template>
 
@@ -420,7 +411,6 @@ export default {
             indicator: item.indicator,
           };
           const { data } = await ApiServices.getAllNHMISData(obj);
-          console.log(data.results, 'data.results');
           return data.results; // Collect results and return them
         });
 
@@ -429,9 +419,19 @@ export default {
 
         const filteredData = nhmisData.filter((item) => item.period.includes('2024'));
 
+        // Array of standardized 3-letter month abbreviations
+        const monthOrder = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        // Sort function using the first three letters of the period
+        const newSortedData = filteredData.sort((a, b) => {
+          const monthA = monthOrder.findIndex((month) => month === a.period.slice(0, 3));
+          const monthB = monthOrder.findIndex((month) => month === b.period.slice(0, 3));
+          return monthA - monthB;
+        });
+
         const allYears = [];
 
-        filteredData.forEach((item) => {
+        newSortedData.forEach((item) => {
           const years = item.period;
           allYears.push(years);
         });
@@ -447,29 +447,13 @@ export default {
         let seriesObject = {};
         const datasource = this.dlGetDataSource(queryArray[0].datasource);
 
-        filteredData.forEach((item) => {
+        newSortedData.forEach((item) => {
           const data = [item.period, Number.parseFloat(item.value)];
           sortedData.push(data);
         });
-        console.log(sortedData);
-        // Adjusted month order (works with both 3-letter and 4-letter prefixes)
-        // const monthOrder = [
-        //   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        //   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-        // ];
-
-        // const sortedNewData = sortedData.sort((a, b) => {
-        //   const monthA = a[0].slice(0, 3); // Extract first 3 letters of the month
-        //   const monthB = b[0].slice(0, 3); // Extract first 3 letters of the month
-        //   const indexA = monthOrder.indexOf(monthA); // Get the index in the monthOrder array
-        //   const indexB = monthOrder.indexOf(monthB); // Get the index in the monthOrder array
-        //   return indexA - indexB;
-        // });
-
-        // console.log(sortedNewData);
 
         seriesObject = { name: datasource?.datasource, data: sortedData };
-        console.log(seriesObject);
+
         chartSeriesArray.push(seriesObject);
         return {
           seriesArray: chartSeriesArray,
@@ -614,10 +598,7 @@ export default {
         this.setUpHighChartConfig(seriesArr, years);
       } else {
         this.selectedDS = {};
-        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        // const { seriesArray, years } = await this.toHighChartSeriesSetup(
-        //   dataSources,
-        // );
+
         // resetting back to initial state
         this.notShow = true;
         this.loading = true;
