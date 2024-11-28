@@ -211,7 +211,6 @@ export default {
     'payload.datasource': {
       async handler() {
         // new ones
-
         const now = new Date();
         const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
