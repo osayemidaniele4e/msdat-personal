@@ -10,9 +10,7 @@
             : dlDashboardIndicator.length
         }}/{{ indicatorCount }}&ensp;Indicators,
         <span
-          >{{ dlDashboardDataSource.length }}/{{ dataSourceCount }}
-          <span @click="showDatasourceList" class="datasourec-action">( view more )</span></span
-        >&ensp;Data&nbsp;sources</span
+          >{{ dlDashboardDataSource.length }}/{{ dataSourceCount }}</span>&ensp;Data&nbsp;sources <span @click="showDatasourceList" class="datasourec-action">( view all )</span></span
       >
       <span>Last Updated {{ latestDate }}</span>
     </div>
