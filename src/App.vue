@@ -45,9 +45,8 @@ export default {
 
   watch: {
     '$store.state.MSDAT_STORE.showDataSourceList': {
+      // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
-        console.log('Investigations App Watch');
-        console.log('myVariable changed:', oldVal, '->', newVal);
         this.showDataSourceListComponent = newVal;
       },
       deep: true, // If you want to watch nested changes
