@@ -1,12 +1,12 @@
 <template>
   <div class="datasource-container">
     <div @click="closeComponent" class="close-btn">
-      <img src="../../../assets/svg/close-circle.svg" alt="">
+      <img src="../../../assets/svg/close-circle.svg" alt="" />
     </div>
     <h1 @click="fetchDataSources">Availabe Datasources</h1>
 
     <div v-for="data in datasources" :key="data.id" class="">
-      <p> {{ data.datasource }}</p>
+      <p>{{ data.datasource }}</p>
     </div>
   </div>
 </template>
@@ -21,14 +21,14 @@ export default {
     };
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['toggleShowDataSourceList']),
+    ...mapMutations('MSDAT_STORE', ['toggleShowDataSourceList', 'closeShowDataSourceList']),
     async fetchDataSources() {
       const dataSources = this.dlGetDashboardDataSource();
       console.log(dataSources, 'dataSources');
       this.datasources = dataSources;
     },
     closeComponent() {
-      this.toggleShowDataSourceList();
+      this.closeShowDataSourceList();
     },
   },
   mounted() {
