@@ -112,6 +112,10 @@ export default {
      */
     // eslint-disable-next-line consistent-return
     async dlQuery(queryObject) {
+      if (queryObject.datasource !== undefined && queryObject.datasource === 30) {
+        const { data } = await apiServices.getNHMISData(queryObject);
+        return data.results;
+      }
       // i could do this in individual component when making request with the
       // function by after this it will after all at once
       const query = queryObject;

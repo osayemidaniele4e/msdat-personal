@@ -23,9 +23,8 @@
       >
         <template #title>
           <p class="work-sans mb-0 line-height">
-            Comparison of <b>{{ values.indicator.short_name }}</b>
-            (Time-series comparison of {{ values.indicator.short_name }}) across different data
-            sources.
+            Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
+            {{ values.indicator.short_name }}) across different data sources.
           </p>
         </template>
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
@@ -52,9 +51,8 @@
       >
         <template #title>
           <p class="work-sans mb-0 line-height">
-            Comparison of <b>{{ values.indicator.short_name }}</b>
-            (Time-series comparison of {{ values.indicator.short_name }}) across different data
-            sources.
+            Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
+            {{ values.indicator.short_name }}) across different data sources.
           </p>
         </template>
 
@@ -70,15 +68,6 @@
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
-    <!-- <div class="no_data">
-      <img
-        :src="require('@/assets/no-data/No_Available_Data.svg')"
-        alt="no data"
-        class="img-fluid"
-        height="auto"
-        width="250px"
-      />
-    </div> -->
   </div>
 </template>
 
@@ -88,6 +77,7 @@ import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import mixin from '@/modules/data-layer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
 
@@ -376,8 +366,104 @@ export default {
       },
     ) {
       // debugger;
+      if (dataSources[0].id === 30) {
+        const chartSeriesArray = [];
+        const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
+        const mappedValueTypes = valueTypeArray?.map((item) => this.dlGetValueTypes(item));
+        const queryArray = [];
+        // debugger;
+        /**
+         * ideas here
+         * is to try all map out all the the search parameters required for the
+         * visualization
+         *
+         * the visualization requires all the datasource for the dashboard against a single
+         * indicator so we make a loop for all visualization
+         *
+         * also take into consideration that sometimes the visualization may require a particular
+         * Value type
+         */
+        if (mappedDataSource !== undefined) {
+          mappedDataSource.forEach((datasource) => {
+            const searchDataSource = parameterObject;
+            searchDataSource.datasource = datasource?.id;
+            if (mappedValueTypes.length > 0) {
+              mappedValueTypes.forEach((valueType) => {
+                // The Object.assign help copy if Object before pushing it into the array
+                // else it tends to push the same values again and again
+                searchDataSource.value_type = valueType.id;
+                // eslint-disable-next-line prefer-object-spread
+                const queryCopy = Object.assign({}, searchDataSource);
+                queryArray.push(queryCopy);
+              });
+            } else {
+              // The Object.assign help copy if Object before pushing it into the array
+              // else it tends to push the same values again and again
+              queryArray.push({ ...searchDataSource });
+            }
+          });
+        }
+
+        const nhmisData = [];
+        // eslint-disable-next-line no-unused-vars
+        const mappedRequest = queryArray.map(async (item) => {
+          const obj = {
+            indicator: item.indicator,
+          };
+          const { data } = await ApiServices.getAllNHMISData(obj);
+          return data.results; // Collect results and return them
+        });
+
+        const results = await Promise.all(mappedRequest);
+        results.forEach((result) => nhmisData.push(...result)); // Flatten results into nhmisData
+
+        const filteredData = nhmisData.filter((item) => item.period.includes('2024'));
+
+        // Array of standardized 3-letter month abbreviations
+        const monthOrder = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        // Sort function using the first three letters of the period
+        const newSortedData = filteredData.sort((a, b) => {
+          const monthA = monthOrder.findIndex((month) => month === a.period.slice(0, 3));
+          const monthB = monthOrder.findIndex((month) => month === b.period.slice(0, 3));
+          return monthA - monthB;
+        });
+
+        const allYears = [];
+
+        newSortedData.forEach((item) => {
+          const years = item.period;
+          allYears.push(years);
+        });
+
+        // debugger;
+        // mapping out all the years
+        // sort and get only unique ears for the categories
+        // const sortedYear = sortBy(uniq(allYears));
+
+        // cause we know the queryArray  array
+        // follows the same index as the mappedResponse array
+        const sortedData = [];
+        let seriesObject = {};
+        const datasource = this.dlGetDataSource(queryArray[0].datasource);
+
+        newSortedData.forEach((item) => {
+          const data = [item.period, Number.parseFloat(item.value)];
+          sortedData.push(data);
+        });
+
+        seriesObject = { name: datasource?.datasource, data: sortedData };
+
+        chartSeriesArray.push(seriesObject);
+        return {
+          seriesArray: chartSeriesArray,
+          years: allYears,
+        };
+      }
+
       const chartSeriesArray = [];
       const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
+
       const mappedValueTypes = valueTypeArray?.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
       // debugger;
@@ -431,6 +517,7 @@ export default {
       let sortedData = [];
       mappedResponse.forEach((item, index) => {
         const data = item?.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
+
         sortedData = data.sort(
           // eslint-disable-next-line radix
           (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
@@ -511,10 +598,7 @@ export default {
         this.setUpHighChartConfig(seriesArr, years);
       } else {
         this.selectedDS = {};
-        // const dataSources = this.dlGetDashboardDataSource(); // get all dataSource for dashboard
-        // const { seriesArray, years } = await this.toHighChartSeriesSetup(
-        //   dataSources,
-        // );
+
         // resetting back to initial state
         this.notShow = true;
         this.loading = true;
