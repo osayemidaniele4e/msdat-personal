@@ -215,7 +215,11 @@ const mutations: MutationTree<State> = {
   },
 
   toggleShowDataSourceList: (state) => {
-    state.showDataSourceList = !state.showDataSourceList;
+    state.showDataSourceList = true;
+  },
+
+  closeShowDataSourceList: (state) => {
+    state.showDataSourceList = false;
   },
 
   /**

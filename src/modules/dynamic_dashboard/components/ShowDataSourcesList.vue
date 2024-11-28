@@ -24,7 +24,6 @@ export default {
     ...mapMutations('MSDAT_STORE', ['toggleShowDataSourceList', 'closeShowDataSourceList']),
     async fetchDataSources() {
       const dataSources = this.dlGetDashboardDataSource();
-      console.log(dataSources, 'dataSources');
       this.datasources = dataSources;
     },
     closeComponent() {
