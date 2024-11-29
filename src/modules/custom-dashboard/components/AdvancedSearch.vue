@@ -12,20 +12,33 @@
       <div class="m-content">
         <div v-if="!selectedProgramArea" class="program-areas">
           <div class="section-title">Program Areas</div>
+        <!-- New search input for program areas -->
+    <div class="program-area-search">
+      <input
+        type="text"
+        v-model="programAreaSearchTerm"
+        placeholder="Search Program Areas"
+        class="search-input"
+      />
+    </div>
           <TheLoader v-if="loading" />
           <div class="radio-container">
-            <div v-for="(area, index) in heading" :key="area.parent.value + '-' + index" class="radio-item">
-    <label style="cursor: pointer; display: flex; align-items: center;">
-      <input
-        type="radio"
-        :value="area.parent.value"
-        v-model="selectedProgramArea"
-        style="margin-right: 8px;"
-      />
-      {{ area.parent.value }}
-    </label>
-  </div>
-          </div>
+      <div
+        v-for="(area, index) in filteredProgramAreas"
+        :key="area.parent.value + '-' + index"
+        class="radio-item"
+      >
+        <label style="cursor: pointer; display: flex; align-items: center;">
+          <input
+            type="radio"
+            :value="area.parent.value"
+            v-model="selectedProgramArea"
+            style="margin-right: 8px;"
+          />
+          {{ area.parent.value }}
+        </label>
+      </div>
+    </div>
         </div>
 
         <div v-else>
@@ -99,6 +112,7 @@ export default {
       searchTerm: '',
       allIndicatorsSelected: false,
       selectedIndicators: [],
+      programAreaSearchTerm: '',
     };
   },
   created() {
@@ -121,6 +135,10 @@ export default {
 
       if (!this.searchTerm.trim()) return indicators;
       return indicators.filter((indicator) => indicator.short_name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    },
+    filteredProgramAreas() {
+      if (!this.programAreaSearchTerm.trim()) return this.heading;
+      return this.heading.filter((area) => area.parent.value.toLowerCase().includes(this.programAreaSearchTerm.toLowerCase()));
     },
   },
   methods: {
@@ -198,6 +216,17 @@ export default {
   flex-direction: column;
 }
 
+.program-area-search {
+  padding: 10px 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
 .modal-header {
   display: flex;
   justify-content: space-between;
