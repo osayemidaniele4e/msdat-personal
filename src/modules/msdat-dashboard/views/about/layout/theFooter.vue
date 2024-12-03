@@ -153,6 +153,8 @@ export default {
 
 .datasourec-action {
   cursor: pointer;
+  color: white;
+  text-decoration: underline;
 }
 .datasourec-action:hover {
   color: #90ee90;
