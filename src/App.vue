@@ -5,6 +5,9 @@
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
+    <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
+      <WhatsNew />
+    </div>
   </div>
 </template>
 
@@ -19,16 +22,19 @@ import screenshotManager from './modules/plugins/screenshotManager';
 import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
+import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
 
 export default {
   components: {
     feedback,
     ShowDataSourcesList,
+    WhatsNew,
   },
   data() {
     return {
       pluginsImported: [], // Explicitly specify the type as an array of strings
       showDataSourceListComponent: false, // Replace with your actual state variable
+      showWhatsNewComponent: true,
     };
   },
   computed: {
@@ -48,6 +54,13 @@ export default {
       // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
         this.showDataSourceListComponent = newVal;
+      },
+      deep: true, // If you want to watch nested changes
+    },
+    '$store.state.MSDAT_STORE.showWhatsNew': {
+      // eslint-disable-next-line no-unused-vars
+      handler(newVal, oldVal) {
+        this.showWhatsNewComponent = newVal;
       },
       deep: true, // If you want to watch nested changes
     },
@@ -133,5 +146,14 @@ export default {
   z-index: 999999;
   top: 10rem;
   height: 48rem;
+}
+
+.whats-new {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 999999;
+  top: 1px;
+  height: 100vh;
 }
 </style>
