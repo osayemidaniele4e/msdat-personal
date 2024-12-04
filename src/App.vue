@@ -1,14 +1,16 @@
 <template>
-  <div id="app">
+  <div class="position-relative" id="app">
     <router-view />
-     <feedback/>
-
+    <feedback />
+    <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
+      <ShowDataSourcesList />
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import feedback from './views/feedback.vue';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
@@ -16,16 +18,41 @@ import reviewPlugin from './modules/plugins/reviewPlugin';
 import screenshotManager from './modules/plugins/screenshotManager';
 import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
+import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 
 export default {
   components: {
     feedback,
+    ShowDataSourcesList,
   },
   data() {
     return {
       pluginsImported: [], // Explicitly specify the type as an array of strings
+      showDataSourceListComponent: false, // Replace with your actual state variable
     };
   },
+  computed: {
+    ...mapState({
+      showDataSourceListStatus: (state) => state.showDataSourceList, // Replace with your actual state variable
+    }),
+  },
+
+  // watch: {
+  //   showDataSourceListStatus(newVal, oldVal) {
+  //     console.log('myVariable changed:', oldVal, '->', newVal);
+  //   },
+  // },
+
+  watch: {
+    '$store.state.MSDAT_STORE.showDataSourceList': {
+      // eslint-disable-next-line no-unused-vars
+      handler(newVal, oldVal) {
+        this.showDataSourceListComponent = newVal;
+      },
+      deep: true, // If you want to watch nested changes
+    },
+  },
+
   async mounted() {
     // eslint-disable-next-line
     const plugins_imported = [];
@@ -98,5 +125,13 @@ export default {
 .custom-swal-image {
   margin: 0px !important; /* Adjust the margin as needed */
   float: left; /* Align the image to the left of the text */
+}
+
+.datasource-list {
+  position: fixed;
+  right: 10px;
+  z-index: 999999;
+  top: 10rem;
+  height: 48rem;
 }
 </style>

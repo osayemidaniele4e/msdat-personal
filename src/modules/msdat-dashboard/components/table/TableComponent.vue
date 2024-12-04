@@ -31,7 +31,7 @@
             v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
             class="text-nowrap"
           >
-            <div class="nhmis_month_head">
+            <div @click="handleNhmisMonthlyClicked" class="nhmis_month_head">
               <span>NHMIS-DHIS2</span>
               <span>(monthly)</span>
             </div>
@@ -216,6 +216,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import { flatten, uniq, countBy } from 'lodash';
 import mixin from '@/modules/data-layer/mixin';
 import TableDataCell from './TableDataCell.vue';
@@ -337,9 +338,31 @@ export default {
       numerator: null,
       numDenum: false,
       hasNhmis: false,
+      nhmisMonthly: {
+        id: 30,
+        datasource: 'NHMIS-DHIS2 (monthly)',
+        full_name: 'National Health Management Information System (Monthly) - DHIS2',
+        description:
+          'National Health Management Information System: Nigeria has adopted the DHIS2 as the National tool for the reporting of routine health-related data. This data is reported and aggregated monthly using this platform.',
+        year_available: 'Not Available',
+        period_available: 'Not Available',
+        methodology:
+          "Facility level aggregate data that is reported by health facilities routinely on a monthly basis using DHIS2. Health facilities are expected to report by the month's data by the 15th of the next month. Due to incomplete reporting by the health facilities, poor reporting by private facilities, the data may be biased.",
+        subnational_data: 'Not Available',
+        classification: 'Routine',
+        group: [],
+        link: 'https://dhis2nigeria.org.ng',
+        created_at: '2022-10-20T08:13:15.793993Z',
+        updated_at: '2022-10-20T08:13:15.794000Z',
+        indicators: [
+          5, 6, 18, 29, 19, 31, 20, 30, 21, 7, 32, 212, 4, 13, 17, 397, 10, 23, 410, 409, 2, 398,
+          22, 584, 585, 586, 587,
+        ],
+      },
     };
   },
   methods: {
+    ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
     /**
      * @param {array}  valueArray Array of values to be
      * @param {string} column The data source associated to the column
@@ -437,7 +460,21 @@ export default {
       }
       this.selectedSource = e;
       this.$emit('selected:source', e);
-      // this.rowShow = !this.rowShow;
+      this.rowShow = !this.rowShow;
+    },
+
+    handleNhmisMonthlyClicked() {
+      if (this.selectedSource === this.nhmisMonthly) {
+        this.selectedSource = '';
+        return;
+      }
+      this.$emit('clickedDatasource', this.nhmisMonthly);
+      this.$emit('key', 'datasource');
+      const item = {
+        payload: this.nhmisMonthly,
+        entity: 'dataSource',
+      };
+      this.SET_SELECTED_CONFIG(item);
     },
 
     // new emits
@@ -739,6 +776,7 @@ table.table {
   padding-right: 10px; */
   padding: 0.75rem;
   text-align: center;
+  cursor: pointer;
 }
 
 .meta_icon {

@@ -1,6 +1,6 @@
 # Data Layer Documentation
 
-This is an explanation of the layerservice.md file. The main function is the *init* function. The *init* function calls the *setup* function which assigns *defaultIndicators* and *dashboardIndicators* to the object class.
+This is an explanation of the layerservice.js file. The main function is the *init* function. The *init* function calls the *setup* function which assigns *defaultIndicators* and *dashboardIndicators* to the object class.
 
 
 

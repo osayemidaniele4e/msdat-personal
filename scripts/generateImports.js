@@ -38,40 +38,56 @@ const pluginInstalls = jsFiles.map((filePath) => {
   const folderName = path.basename(path.dirname(filePath));
   return `
   this.pluginsImported.push('${folderName}')
-if (!localStorage.getItem('${folderName}')) {
-  localStorage.setItem('${folderName}', 'false');
-}
+  if (!localStorage.getItem('${folderName}')) {
+    localStorage.setItem('${folderName}', 'false');
+  }
 
-if (localStorage.getItem('${folderName}') === 'true') {
-  Vue.use(${folderName});
-}
+  if (localStorage.getItem('${folderName}') === 'true') {
+    Vue.use(${folderName});
+  }
 `;
 });
 
 // Additional code for App.vue
 const appVueCode = `
 <template>
-  <div id="app">
+ <div class="position-relative" id="app">
     <router-view />
-     <feedback/>
-
+    <feedback />
+    <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
+      <ShowDataSourcesList />
+    </div>
   </div>
+
 </template>
 
 <script>
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import feedback from './views/feedback.vue';
+import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 ${pluginImports.join('\n')}
 
 export default {
  components: {
     feedback,
+    ShowDataSourcesList,
   },
   data() {
     return {
-      pluginsImported: [] // Explicitly specify the type as an array of strings
+      pluginsImported: [], // Explicitly specify the type as an array of strings
+      showDataSourceListComponent: false, // Replace with your actual state variable
     };
+  },
+  watch: {
+    '$store.state.MSDAT_STORE.showDataSourceList': {
+      handler(newVal, oldVal) {
+        console.log('Investigations App Watch');
+        console.log('myVariable changed:', oldVal, '->', newVal);
+        this.showDataSourceListComponent = newVal;
+      },
+      deep: true, // If you want to watch nested changes
+    },
   },
   async mounted() {
     let plugins_imported = [];
@@ -91,6 +107,14 @@ export default {
   margin: 0px !important; /* Adjust the margin as needed */
   float: left; /* Align the image to the left of the text */
 }
+.datasource-list {
+  position: fixed;
+  right: 10px;
+  z-index: 999999;
+  top: 10rem;
+  height: 48rem;
+}
+
 </style>
 `;
 

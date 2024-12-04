@@ -30,7 +30,7 @@
               ><b-list-group-item>Health Workforce</b-list-group-item></router-link
             >
             <router-link to="/state-health-facility" target="_blank"
-              ><b-list-group-item>Health Facilities Finder</b-list-group-item></router-link
+              ><b-list-group-item>Health Facilities Finder(GIS)- work in progress</b-list-group-item></router-link
             >
           </b-list-group>
         </div>

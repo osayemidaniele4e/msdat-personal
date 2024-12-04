@@ -1,9 +1,12 @@
 <!-- Auther: Ghufran Ahmed -->
 <template>
-  <div style="height: 89px">
-    <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
-      >Level Selection</b
-    ><br />
+  <div class="level-card" >
+    <div  class="selection-header">
+
+      <b style="font-size: 13px; font-family: Work Sans"
+        >LEVEL</b
+      ><br />
+    </div>
     <Card class="scroll" style="height: 89px">
       <TheLoader v-if="loading == true"/>
       <div v-else>
@@ -110,3 +113,17 @@ export default {
   },
 };
 </script>
+<style lang="css" scoped>
+.level-card{
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0px 20px 8px 8px;
+  font-family: Work Sans;
+}
+.selection-header{
+  background-color:#F1F2F7;
+  padding:10px;
+  margin: 0px -20px 5px -10px;
+}
+</style>

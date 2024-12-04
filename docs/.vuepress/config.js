@@ -88,7 +88,12 @@ module.exports = {
         {
           title: '2024 Edits',
           collapsable: false,
-          children: ['custom-dashboard'],
+          children: [
+            'custom-dashboard',
+            'quaterly-performance',
+            'health-facilities-finder',
+            'added-functionalities'
+          ],
         },
       ],
 

@@ -31,7 +31,6 @@
             ></b-avatar>
           </b-col>
           <b-col class="px-0">
-            <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
             <b-avatar
@@ -40,7 +39,6 @@
             ></b-avatar>
           </b-col>
           <b-col class="px-0">
-            <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
             <b-avatar
@@ -49,7 +47,6 @@
             ></b-avatar>
           </b-col>
           <b-col class="px-0">
-            <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
             <b-avatar
