@@ -82,7 +82,7 @@
       <!-- Right Side: Image -->
       <div class="image-section">
         <img
-          src="@/assets/img/Prof.Ali Minister of Health.jpg"
+          src="@/assets/img/Prof.Ali_Minister_of_Health.jpg"
           alt="Prof. Ali Minister of Health"
           class="minister-image"
         />
