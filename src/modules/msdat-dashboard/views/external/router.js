@@ -5,6 +5,7 @@ import quarterReview from './dashboards/quarter-review.vue';
 import HealthFacilityDashboard from './dashboards/health-facility.vue';
 import goggleForm from './dashboards/goggleForm.vue';
 import healthServiceUptake from './dashboards/health-service-uptake.vue';
+import IndicatorPreview from './dashboards/Minister of Health Dashboard/dashboard-landing-page.vue';0
 
 export default [
   {
@@ -52,6 +53,14 @@ export default [
     component: HealthFacilityDashboard,
     meta: {
       title: 'Health Facilities Finder',
+    },
+  },
+  {
+    path: '/dashboard-landing-page', 
+    name: 'state-health-facility',
+    component: IndicatorPreview,
+    meta: {
+      title: 'SECTOR WIDE APPROACH PLATFORM Minister of Health Dashboard',
     },
   },
 ];
