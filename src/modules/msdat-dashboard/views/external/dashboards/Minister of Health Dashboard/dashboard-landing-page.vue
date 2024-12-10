@@ -59,9 +59,9 @@
                   <div class="indicator-row">
                     <div class="indicator-info">
                       <i
-                        :class="[ 
-                          'status-icon', 
-                          `bi ${indicator.status === 'warning' ? 'bi-exclamation-circle text-danger' : 'bi-exclamation-circle text-secondary'}` 
+                        :class="[
+                          'status-icon',
+                          `bi ${indicator.status === 'warning' ? 'bi-exclamation-circle text-danger' : 'bi-exclamation-circle text-secondary'}`
                         ]"
                       ></i>
                       <span class="indicator-name">{{ indicator.name }}</span>
@@ -122,97 +122,97 @@ export default {
 
   methods: {
     async fetchIndicators(tab) {
-  this.activeTab = tab;
-  this.loading = true;
-  this.indicators = [];
-  
-  try {
-    const response = await axios.get(
-      "https://msdat-api.fmohconnect.gov.ng/api/dashboards/"
-    );
-    const dashboards = response.data;
-    const selectedDashboard = dashboards.find(
-      (dashboard) => dashboard.title === tab
-    );
+      this.activeTab = tab;
+      this.loading = true;
+      this.indicators = [];
 
-    if (selectedDashboard && selectedDashboard.defaultIndicators) {
-      // Fetch datasource details using initialDataSource from dashboard
-      const datasourceResponse = await axios.get(
-        `https://msdat-api.fmohconnect.gov.ng/api/datasources/${selectedDashboard.initialDataSource}/`
-      );
-      const datasource = datasourceResponse.data;
-      this.dataSourceName = datasource.datasource; // Set data source name
+      try {
+        const response = await axios.get(
+          'https://msdat-api.fmohconnect.gov.ng/api/dashboards/',
+        );
+        const dashboards = response.data;
+        const selectedDashboard = dashboards.find(
+          (dashboard) => dashboard.title === tab,
+        );
 
-      // Prepare to store indicator names and values
-      const indicatorNames = [];
-      const indicatorValues = [];
-
-      // Loop through each defaultIndicator
-      for (const indicatorId of selectedDashboard.defaultIndicators.slice(0, 3)) {
-        // Fetch indicator name
-        try {
-          const indicatorResponse = await axios.get(
-            `https://msdat-api.fmohconnect.gov.ng/api/indicators/${indicatorId}`
+        if (selectedDashboard && selectedDashboard.defaultIndicators) {
+          // Fetch datasource details using initialDataSource from dashboard
+          const datasourceResponse = await axios.get(
+            `https://msdat-api.fmohconnect.gov.ng/api/datasources/${selectedDashboard.initialDataSource}/`,
           );
-          indicatorNames.push(indicatorResponse.data.short_name);
-        } catch (error) {
-          console.error(`Error fetching details for indicator ${indicatorId}:`, error);
-          indicatorNames.push("Unknown Indicator"); // Fallback for name
-        }
+          const datasource = datasourceResponse.data;
+          this.dataSourceName = datasource.datasource; // Set data source name
 
-        // Fetch years available for the indicator
-        let period;
-        try {
-          const yearsResponse = await axios.get(
-            `https://msdat-api.fmohconnect.gov.ng/api/indicators/${indicatorId}/years_available/`
-          );
-          const years = yearsResponse.data.years;
+          // Prepare to store indicator names and values
+          const indicatorNames = [];
+          const indicatorValues = [];
 
-          // Extract valid numeric years, then find the latest year
-          const numericYears = years
-            .map((year) => parseInt(year.trim(), 10)) // Attempt to convert to a number
-            .filter((year) => !isNaN(year)); // Keep only valid numbers
-
-          period = numericYears.length ? Math.max(...numericYears) : "N/A"; // Get the latest year
-        } catch (error) {
-          console.error(`Error fetching years for indicator ${indicatorId}:`, error);
-          period = "N/A"; // Fallback for period
-        }
-
-        // Fetch indicator value
-        if (period !== "N/A") {
-          const url = `https://msdat-api.fmohconnect.gov.ng/api/data/?datasource=${datasource.id}&indicator=${indicatorId}&location=1&value_type=5&period=${period}`;
-          try {
-            const dataResponse = await axios.get(url, { timeout: 30000 });
-            const result = dataResponse.data.results[0];
-            if (result && result.value) {
-              // Format value with commas
-              indicatorValues.push(parseFloat(result.value).toLocaleString());
-            } else {
-              indicatorValues.push(null); // Handle case where no value is found
+          // Loop through each defaultIndicator
+          for (const indicatorId of selectedDashboard.defaultIndicators.slice(0, 3)) {
+            // Fetch indicator name
+            try {
+              const indicatorResponse = await axios.get(
+                `https://msdat-api.fmohconnect.gov.ng/api/indicators/${indicatorId}`,
+              );
+              indicatorNames.push(indicatorResponse.data.short_name);
+            } catch (error) {
+              console.error(`Error fetching details for indicator ${indicatorId}:`, error);
+              indicatorNames.push('Unknown Indicator'); // Fallback for name
             }
-          } catch (error) {
-            console.error(`Error fetching data for indicator ${indicatorId}:`, error);
-            indicatorValues.push(null); // Fallback for value
-          }
-        } else {
-          indicatorValues.push("N/A"); // No valid period found
-        }
-      }
 
-      // Update indicators with fetched names and values
-      this.indicators = indicatorNames.map((name, index) => ({
-        name,
-        value: indicatorValues[index] || "N/A", // Show "N/A" if no value is available
-        status: indicatorValues[index] ? "normal" : "warning",
-      }));
-    }
-  } catch (error) {
-    console.error("Error fetching indicators:", error);
-  } finally {
-    this.loading = false;
-  }
-},
+            // Fetch years available for the indicator
+            let period;
+            try {
+              const yearsResponse = await axios.get(
+                `https://msdat-api.fmohconnect.gov.ng/api/indicators/${indicatorId}/years_available/`,
+              );
+              const years = yearsResponse.data.years;
+
+              // Extract valid numeric years, then find the latest year
+              const numericYears = years
+                .map((year) => parseInt(year.trim(), 10)) // Attempt to convert to a number
+                .filter((year) => !isNaN(year)); // Keep only valid numbers
+
+              period = numericYears.length ? Math.max(...numericYears) : 'N/A'; // Get the latest year
+            } catch (error) {
+              console.error(`Error fetching years for indicator ${indicatorId}:`, error);
+              period = 'N/A'; // Fallback for period
+            }
+
+            // Fetch indicator value
+            if (period !== 'N/A') {
+              const url = `https://msdat-api.fmohconnect.gov.ng/api/data/?datasource=${datasource.id}&indicator=${indicatorId}&location=1&value_type=5&period=${period}`;
+              try {
+                const dataResponse = await axios.get(url, { timeout: 30000 });
+                const result = dataResponse.data.results[0];
+                if (result && result.value) {
+                  // Format value with commas
+                  indicatorValues.push(parseFloat(result.value).toLocaleString());
+                } else {
+                  indicatorValues.push(null); // Handle case where no value is found
+                }
+              } catch (error) {
+                console.error(`Error fetching data for indicator ${indicatorId}:`, error);
+                indicatorValues.push(null); // Fallback for value
+              }
+            } else {
+              indicatorValues.push('N/A'); // No valid period found
+            }
+          }
+
+          // Update indicators with fetched names and values
+          this.indicators = indicatorNames.map((name, index) => ({
+            name,
+            value: indicatorValues[index] || 'N/A', // Show "N/A" if no value is available
+            status: indicatorValues[index] ? 'normal' : 'warning',
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching indicators:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 
   mounted() {
@@ -298,10 +298,10 @@ export default {
 .preview-content {
   flex: 1;
   background-color: white;
-  margin: 0;  
+  margin: 0;
   border-radius: 0 0 0.8rem 0.8rem;
   padding: 1.5rem;
-  width: 100%; 
+  width: 100%;
 }
 
 .content-section {
@@ -506,11 +506,9 @@ export default {
   .image-section {
     width: 100%;
     height: 400px;
-    margin-bottom: 1rem; 
+    margin-bottom: 1rem;
   }
 }
 
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
 </style>
-
-

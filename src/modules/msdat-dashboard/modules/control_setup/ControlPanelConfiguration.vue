@@ -13,7 +13,7 @@ import apiServices from '@/modules/data-layer/services/ApiServices';
 // import { time } from 'highcharts';
 import controlSetup from '../../mixins/control-panel-setup';
 import updateQueryParams from './paramsMixin';
-import nhmisMonthlyPeriod from './nhmis-monthly-period.json';
+// import nhmisMonthlyPeriod from './nhmis-monthly-period.json';
 
 export default {
   name: 'ControlPanelConfiguration',
@@ -80,15 +80,15 @@ export default {
     async getAvailableYears() {
       // debugger;
 
-      if (this.payload?.datasource?.id === 30) {
-        return nhmisMonthlyPeriod;
-      }
+      // if (this.payload?.datasource?.id === 30) {
+      //   return nhmisMonthlyPeriod;
+      // }
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
         this.payload?.datasource?.id,
         this.payload?.location?.id,
       );
-
+      console.log(available, 'available@');
       return available;
     },
     async getAvailableDataSources() {
