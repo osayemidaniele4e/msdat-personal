@@ -70,7 +70,6 @@ export default class DataLayer {
   setAllIndicators() {
     const allIndicators = this.DB.listAllIndicators();
     this.indicatorList = allIndicators;
-    console.log(this.indicatorList);
     this.defaultIndicators = allIndicators.slice(0, 3);
   }
 
@@ -401,15 +400,11 @@ export default class DataLayer {
    */
 
   async initDataWithYears(indicator) {
-    console.log(indicator, 'validIndicators 1');
     const validIndicators = indicator.filter((value) => !Number.isNaN(value));
-    console.log(validIndicators, 'validIndicators');
     for (let i = 0; i < validIndicators.length; i++) {
       const indicatorID = validIndicators[i];
       // console.log(indicatorID, 'validIndicators');
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
-
-      console.log(yearsNotAvailableInDB, 'yearsNotAvailableInDB');
 
       // const currentYear = new Date().getFullYear();
       // Separate integer years and month names
@@ -447,7 +442,6 @@ export default class DataLayer {
       const indicatorID = validIndicators[i];
       // console.log('indicatorId', indicatorID);
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
-
       // const currentYear = new Date().getFullYear();
       // Separate integer years and month names
       // eslint-disable-next-line no-restricted-globals, radix

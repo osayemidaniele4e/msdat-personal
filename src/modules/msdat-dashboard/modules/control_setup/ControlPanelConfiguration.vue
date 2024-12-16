@@ -88,7 +88,6 @@ export default {
         this.payload?.datasource?.id,
         this.payload?.location?.id,
       );
-      console.log(available, 'available@');
       return available;
     },
     async getAvailableDataSources() {
