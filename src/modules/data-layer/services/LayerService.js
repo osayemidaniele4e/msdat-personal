@@ -70,7 +70,6 @@ export default class DataLayer {
   setAllIndicators() {
     const allIndicators = this.DB.listAllIndicators();
     this.indicatorList = allIndicators;
-    console.log(this.indicatorList);
     this.defaultIndicators = allIndicators.slice(0, 3);
   }
 
@@ -401,29 +400,29 @@ export default class DataLayer {
    */
 
   async initDataWithYears(indicator) {
-    console.log(indicator, 'validIndicators 1');
     const validIndicators = indicator.filter((value) => !Number.isNaN(value));
-    console.log(validIndicators, 'validIndicators');
     for (let i = 0; i < validIndicators.length; i++) {
       const indicatorID = validIndicators[i];
       // console.log(indicatorID, 'validIndicators');
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
 
-      const currentYear = new Date().getFullYear();
+      // const currentYear = new Date().getFullYear();
       // Separate integer years and month names
       // eslint-disable-next-line no-restricted-globals, radix
-      const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
+      // const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
       // eslint-disable-next-line no-restricted-globals, radix
 
-      const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
+      // console.log(pastYears, 'yearsNotAvailableInDB 2');
+
+      // const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
 
       // Combine top 5 past years, future years, and the remaining past years
-      const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
+      // const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
         // const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
         const yearsToTake = 3;
-        const theYears = take(result, yearsToTake);
+        const theYears = take(yearsNotAvailableInDB, yearsToTake);
         const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
         for (let j = 0; j < results.length; j++) {
@@ -443,23 +442,22 @@ export default class DataLayer {
       const indicatorID = validIndicators[i];
       // console.log('indicatorId', indicatorID);
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
-
-      const currentYear = new Date().getFullYear();
+      // const currentYear = new Date().getFullYear();
       // Separate integer years and month names
       // eslint-disable-next-line no-restricted-globals, radix
-      const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
+      // const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
       // eslint-disable-next-line no-restricted-globals, radix
 
-      const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
+      // const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
 
       // Combine top 5 past years, future years, and the remaining past years
-      const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
+      // const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
         // const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
         // const yearsToTake = 3;
         // const theYears = take(result, yearsToTake);
-        const RemainingResults = result.slice(3);
+        const RemainingResults = yearsNotAvailableInDB.slice(3);
         const arrayOfPromises = RemainingResults.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
 
