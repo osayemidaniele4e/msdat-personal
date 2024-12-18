@@ -152,15 +152,15 @@ export default {
         location: locationID,
       });
       // console.log(data);
-      const onlyYearData = data?.filter((item) => {
-        if (isDataYearly(item.period)) {
-          return item.period;
-        }
-        return false;
-      });
-      const years = onlyYearData?.map((item) => item.period);
+      // const onlyYearData = data?.filter((item) => {
+      //   if (isDataYearly(item.period)) {
+      //     return item.period;
+      //   }
+      //   return false;
+      // });
+      const years = data?.map((item) => item.period);
       const uniqueYears = uniq(years);
-      return uniqueYears.sort((a, b) => b - a);
+      return uniqueYears;
     },
     // get years by datasource
     async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {

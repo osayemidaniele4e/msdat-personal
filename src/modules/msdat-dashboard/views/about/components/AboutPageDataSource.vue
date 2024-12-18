@@ -35,88 +35,83 @@ export default {
 
 <template>
   <div>
-
     <section class="sec-program-areas">
-          <div class="mt-5 d-flex flex-column align-items-center">
-            <h3>DATA SOURCES</h3>
-          <span>
-            The indicators provided by the Central Analytic Dashboard can be selected on the dashboard by clicking on the
-  Indicator. The list of indicators on the dashboard can be found below:
-          </span>
-          </div>
-          <br><br>
-          <div class="program-areas">
-            <!-- left section -->
-            <!-- <pre>
+      <div class="mt-5 d-flex flex-column align-items-center">
+        <h3>DATA SOURCES</h3>
+        <span>
+          The indicators provided by the Central Analytic Dashboard can be selected on the dashboard
+          by clicking on the Indicator. The list of indicators on the dashboard can be found below:
+        </span>
+      </div>
+      <br /><br />
+      <div class="program-areas">
+        <!-- left section -->
+        <!-- <pre>
               {{ classifications }}
             </pre>
             -->
 
-<div>
-  <div v-for="classi in classifications" :key="classi" class="classification-sec">
+        <div>
+          <div v-for="classi in classifications" :key="classi" class="classification-sec">
+            <h3>{{ classi }}</h3>
 
-<h3>{{ classi }}</h3>
+            <div class="program-area-sec">
+              <div
+                v-for="(indicator, index) in filteredIndicators(classi)[0].indicators"
+                :key="index"
+              >
+                <div
+                  class="program-area-card"
+                  :class="{ 'green-card': indicator.datasource === selectedDatasource }"
+                  @click="setSelected(indicator)"
+                >
+                  {{ indicator.datasource }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<div class="program-area-sec">
-<div v-for="(indicator, index) in filteredIndicators(classi)[0].indicators" :key="index">
-<div
-class="program-area-card"
-:class="{ 'green-card': indicator.datasource === selectedDatasource }"
-@click="setSelected(indicator)"
->
-{{ indicator.datasource }}
-</div>
+        <!-- right section -->
 
-</div>
-
-</div>
-</div>
-</div>
-
-            <!-- right section -->
-
-            <div class="program-area-des">
-              <!-- <pre>
+        <div class="program-area-des">
+          <!-- <pre>
                 {{ selectedIndicators }}
               </pre> -->
-              <span class="program-area-des-header">
-                <span class="program-area-des-header-t1">
-                  {{ selectedIndicators.classification }}
-                </span>
+          <span class="program-area-des-header">
+            <span class="program-area-des-header-t1">
+              {{ selectedIndicators.classification }}
+            </span>
 
-                <span class="program-area-des-header-t2">
-                  {{ selectedIndicators.datasource }}
-                </span>
+            <span class="program-area-des-header-t2">
+              {{ selectedIndicators.datasource }}
+            </span>
+          </span>
 
-              </span>
+          <hr />
 
-              <hr>
+          <h4>Fullname:</h4>
+          <span>{{ selectedIndicators.full_name }}</span>
+          <br /><br />
+          <h4>Description:</h4>
+          <span>{{ selectedIndicators.description }}</span>
+          <br /><br />
+          <h4>Years with available data:</h4>
+          <span>{{ selectedIndicators.year_available }}</span>
+          <br /><br />
+          <h4>Link:</h4>
+          <span>{{ selectedIndicators.link }}</span>
+          <br /><br />
+          <h4>Methodology:</h4>
+          <span>{{ selectedIndicators.methodology }}</span>
+          <br /><br />
+          <h4>Sub-national data:</h4>
+          <span>{{ selectedIndicators.subnational_data }}</span>
+        </div>
+      </div>
+    </section>
 
-              <h4>Fullname:</h4>
-              <span>{{ selectedIndicators.full_name }}</span>
-              <br><br>
-              <h4>Description:</h4>
-              <span>{{ selectedIndicators.description }}</span>
-              <br><br>
-              <h4>Years with available data:</h4>
-              <span>{{ selectedIndicators.year_available }}</span>
-              <br><br>
-              <h4>Link:</h4>
-              <span>{{ selectedIndicators.link }}</span>
-              <br><br>
-              <h4>Methodology:</h4>
-              <span>{{ selectedIndicators.methodology }}</span>
-              <br><br>
-              <h4>Sub-national data:</h4>
-              <span>{{ selectedIndicators.subnational_data }}</span>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        <!-- <div class="row d-flex justify-content-between align-items-center">
+    <!-- <div class="row d-flex justify-content-between align-items-center">
       <div class="col-3" v-for="(indicator, index) in indicators" :key="index">
         <label for="">{{ indicator.program_area }}</label>
         <b-form-select
@@ -128,10 +123,8 @@ class="program-area-card"
         ></b-form-select>
       </div>
     </div> -->
-
   </div>
-
-  </template>
+</template>
 
 <script>
 import { groupIndicator } from '@/util/helper';
@@ -180,7 +173,7 @@ export default {
     this.indicators = await groupIndicator(this.dlIndicator, 'program_area');
 
     if (this.dataSources.length > 0) {
-    // Set the selectedDatasource to the first datasource in the dataSources array
+      // Set the selectedDatasource to the first datasource in the dataSources array
       this.selectedDatasource = this.dataSources[0].indicators[0].datasource;
       // Call the setSelected method with the first indicator as an argument
       this.setSelected(this.dataSources[0].indicators[0]);
@@ -192,28 +185,26 @@ export default {
   },
 };
 </script>
-  <style scoped>
-  .sec-program-areas {
-    background-color: #DFF3F3;
-    padding: 100px;
-
-  }
-
-  .program-areas {
-  display: grid;
-  grid-template-columns: 50% 50%;
-
+<style scoped>
+.sec-program-areas {
+  background-color: #dff3f3;
+  padding: 100px;
 }
 
-  .program-area-sec{
-    display: grid;
-    grid-template-columns: 33% 33% 33%;
-    max-height: 350px;
-    overflow: scroll;
-  }
+.program-areas {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
 
-  .program-area-card {
-    margin: 5px;
+.program-area-sec {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  max-height: 350px;
+  overflow: auto;
+}
+
+.program-area-card {
+  margin: 5px;
   width: 200px;
   height: 50px;
   background-color: white;
@@ -225,11 +216,11 @@ export default {
   font-size: 10px;
   /* overflow-x: scroll; */
   text-transform: uppercase;
-  border: 1px solid #80D3AF;
+  border: 1px solid #80d3af;
 }
 
 .program-area-des {
-  border: 1px solid #80D3AF;
+  border: 1px solid #80d3af;
   width: 600px;
   background-color: white;
   height: 890px;
@@ -240,30 +231,30 @@ export default {
   margin-top: 40px;
 }
 
-.program-area-des-header{
+.program-area-des-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.program-area-des-header-t1{
+.program-area-des-header-t1 {
   font-size: 23px;
   font-weight: 700;
 }
 
-.program-area-des-header-t2{
+.program-area-des-header-t2 {
   font-size: 23px;
-  color: #007D53;
+  color: #007d53;
 }
 
-.classification-sec{
+.classification-sec {
   max-height: 550px;
-  overflow: scroll;
+  overflow: auto;
   margin-bottom: 50px;
 }
 
-  .green-card{
-    background-color: green;
-    color: white;
-  }
-  </style>
+.green-card {
+  background-color: green;
+  color: white;
+}
+</style>

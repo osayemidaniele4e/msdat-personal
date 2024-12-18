@@ -177,7 +177,8 @@ export default {
           this.loading = false;
         } else {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          const filteredDataSources = dataSources.filter((dataSource) => dataSource.id !== 30);
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredDataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
       },
