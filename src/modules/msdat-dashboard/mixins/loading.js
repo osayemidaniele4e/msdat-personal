@@ -60,7 +60,7 @@ export default {
     this.loadingContent
       = firstvisit === null
         ? 'Getting the dashboard ready for the first time'
-        : 'Importing key health indicators...';
+        : 'Data Synchronizing ....';
     this.loadingTitle = '';
   },
 };
