@@ -7,16 +7,38 @@
       <div class="d-flex w-100 justify-content-center mt-2 title">
         <h1>What's New!</h1>
       </div>
-      <div class="w-100 new-item d-flex">
-        <div class="icon">
+      <div v-for="(items, category) in whatsNew" :key="category" class="w-100 new-item d-flex">
+        <div v-if="category === 'Dataset'" class="icon">
           <img src="../../../assets/new-dataset.png" alt="" />
         </div>
+        <div v-if="category === 'Dashboard'" class="icon">
+          <img src="../../../assets/dashboard.png" alt="" />
+        </div>
+        <div v-if="category === 'Feature'" class="icon">
+          <img src="../../../assets/feature.png" alt="" />
+        </div>
         <div class="info">
-          <h2>New Data Set</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit Voluptate accusantium sapiente
-            laboriosam repellat
-          </p>
+          <div v-if="category === 'Dashboard'" class="">
+            <h3>{{ category }}</h3>
+            <ul v-if="items && items.length > 0">
+              <li v-for="item in items.slice(0, 3)" :key="item.id">
+                <h3>{{ item.content }}</h3>
+                <div class="w-100 d-flex justify-content-end">
+                  <span @click="navigateToDashboard(item.title)" class="link">View Dashboard</span>
+                </div>
+              </li>
+            </ul>
+            <p v-else class="no-items-message">No New Dashboard available.</p>
+          </div>
+          <div v-else class="">
+            <h2>{{ category }}</h2>
+            <ul v-if="items && items.length > 0">
+              <li v-for="item in items.slice(0, 3)" :key="item.id">
+                <h3>{{ item.content }}</h3>
+              </li>
+            </ul>
+            <p v-else class="no-items-message">No items available in this category.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -25,21 +47,49 @@
 
 <script>
 import { mapMutations } from 'vuex';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   data() {
     return {
-      datasources: [],
+      whatsNew: [],
     };
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew', 'closeShowWhatsNew']),
 
     closeComponent() {
+      console.log('@@@@@');
       this.closeShowWhatsNew();
     },
+    async getWhatsNew() {
+      const { data } = await ApiServices.getWhatsNew();
+      const temp = this.groupByCategory(data.results);
+      console.log(temp, '@Response');
+      this.whatsNew = temp;
+    },
+    groupByCategory(data) {
+      return data.reduce((acc, item) => {
+        acc[item.category_name] = acc[item.category_name] || [];
+        acc[item.category_name].push(item);
+        return acc;
+      }, {});
+    },
+
+    navigateToDashboard(str) {
+      const link = str.split(' ').join('_');
+      console.log(link, '@Response');
+      const origin = window.location.origin;
+      const url = `/dashboard/${link}`;
+      // Construct the full URL
+      const fullUrl = origin + url;
+      // Open the full URL in a new tab
+      window.open(fullUrl, '_blank');
+    },
   },
-  mounted() {},
+  mounted() {
+    this.getWhatsNew();
+  },
 };
 </script>
 
@@ -77,9 +127,9 @@ export default {
   cursor: pointer;
 }
 .whats-new-content {
- position: relative;
-//   right: 20px;
-  height: 300px;
+  position: relative;
+  //   right: 20px;
+  min-height: 300px;
   width: 600px;
   // top: 5rem;
   background-color: white;
@@ -100,8 +150,8 @@ export default {
   display: flex;
 }
 .icon img {
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
 }
 .info {
   width: 100%;
@@ -115,11 +165,35 @@ export default {
   line-height: 18px;
   color: #202020;
 }
+
+.info h3 {
+  margin: 0;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  line-height: 18px;
+  color: #202020;
+}
 .info p {
   font-size: 14px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 400;
   line-height: 20px;
   color: #202020;
+}
+
+.link {
+  font-size: 14px;
+  color: #348461;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  color: #202020;
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+  color: #0e3a27;
+  cursor: pointer;
 }
 </style>
