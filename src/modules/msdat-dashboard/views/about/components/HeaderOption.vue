@@ -19,6 +19,13 @@
           <span>About Dashboard</span>
         </router-link>
       </li>
+      <li v-if="isAllowedEmail">
+  <router-link to="/admin">
+    <img src="@/assets/img/icons/ic_dashboard.svg" alt="" />
+    <span>Admin Dashboard</span>
+  </router-link>
+</li>
+
       <li>
         <b-button class="external-dashboards-btn mb-2 d-flex" block @click="showPluginModal">
           <img
@@ -236,10 +243,21 @@ export default {
   },
 
   computed: {
+    ...mapGetters('AUTH_STORE', ['getUser', 'isAuthenticated']),
+    isAllowedEmail() {
+    // Check if the email exists and ends with '@e4email.net'
+      return this.getUser?.email?.endsWith('@e4email.net') || false;
+    },
+
     ...mapGetters(['getPluginsImported']),
     getDynamicProperty() {
       return (propertyName) => this[`is${this.capitalizeFirstLetter(propertyName)}Active`];
     },
+  },
+
+  mounted() {
+    // cosole log user details
+    console.log('deets', this.getUser);
   },
 
   async created() {
