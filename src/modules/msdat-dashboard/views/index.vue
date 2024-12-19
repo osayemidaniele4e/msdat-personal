@@ -8,7 +8,7 @@
       <div class="center">
         <img :src="img" alt="first_img" width="250px" />
         <div class="mr-4">
-          <h3>Initializing{{ loadingTitle }}XXX</h3>
+          <h3>Initializing{{ loadingTitle }}</h3>
           <p>{{ loadingContent }}</p>
         </div>
       </div>

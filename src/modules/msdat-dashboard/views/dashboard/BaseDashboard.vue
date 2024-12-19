@@ -30,20 +30,12 @@
       </p>
     </div>
     <template v-if="!showTroubleShootingModal">
-      <Loading v-if="!loading && alreadyLoaded === false" :noBackdrop="true" :showBackground="false" class="over">
+      <Loading v-if="!loading" :noBackdrop="true" :showBackground="false" class="over">
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="450px" />
           <div class="mr-4 loading-text">
             <h4>Initializing{{ loadingTitle }}</h4>
             <p>{{ loadingContent }}</p>
-          </div>
-        </div>
-      </Loading>
-      <Loading v-if="!loading && alreadyLoaded === true" :noBackdrop="true" :showBackground="false" class="over">
-        <div class="text-center">
-          <img :src="loadingImg" alt="first_img" width="450px" />
-          <div class="mr-4 loading-text">
-            <h4>Data Synchronizing ...</h4>
           </div>
         </div>
       </Loading>
@@ -305,7 +297,6 @@ export default {
       initialIndicator: null,
       initialDataSource: null,
       initialLocation: null,
-      alreadyLoaded: false,
     };
   },
   computed: {
@@ -333,8 +324,6 @@ export default {
   },
 
   async created() {
-    this.alreadyLoaded = await localStorage.getItem('firstLoaded') === 'yes';
-    console.log(this.alreadyLoaded, 'alreadyLoaded');
     this.indicators = this.getConfigObject().indicators;
     this.dataSources = this.getConfigObject().dataSources;
     this.defaultIndicators = this.getConfigObject().defaultIndicators;

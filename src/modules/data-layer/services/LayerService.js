@@ -475,7 +475,6 @@ export default class DataLayer {
     const loadedAlert = this.sweetAlert2();
     setTimeout(async () => {
       loadedAlert.close();
-      localStorage.setItem('firstLoaded', 'yes');
     }, 10000);
   }
 
