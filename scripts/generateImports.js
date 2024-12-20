@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
-    ...mapActions(['SET_PLUGINS_IMPORTED'])
+    ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 
      executeTask() {
