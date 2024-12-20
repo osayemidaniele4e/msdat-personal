@@ -231,7 +231,6 @@ export default {
   height: 100vh;
 }
 .add-updates{
-  width: 160px;
   height: 44px;
   border-radius: 4px;
   background-color: #007D53;
@@ -239,5 +238,6 @@ export default {
   font-size: 20px;
   font-weight: 500;
   border: none;
+  line-height: 16px;
 }
 </style>
