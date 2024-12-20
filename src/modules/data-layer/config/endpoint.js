@@ -14,6 +14,7 @@ export default {
   getTableData: 'data/?size=1&',
   getUpdatedDataDate: 'after_datetime/?size=1500',
   getNhmisMonthly: `data/?datasource=${30}&page=1&size=1500`, // 30, nhmisMonthly ID
+  newsUpdate: 'news/updates/?size=1000',
 };
 
 // https://msdat-api.fmohconnect.gov.ng/api/datasources/?size=2000&datasource=NHMIS-DHIS2%20(monthly)

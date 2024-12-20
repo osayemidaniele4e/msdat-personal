@@ -24,6 +24,7 @@ export interface State {
   selectedSection: string;
   location:string;
   showDataSourceList: boolean;
+  showWhatsNew: boolean;
 }
 
 export type Conversation = {

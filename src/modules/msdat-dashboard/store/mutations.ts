@@ -222,6 +222,14 @@ const mutations: MutationTree<State> = {
     state.showDataSourceList = false;
   },
 
+  toggleShowWhatsNew: (state) => {
+    state.showWhatsNew = true;
+  },
+
+  closeShowWhatsNew: (state) => {
+    state.showWhatsNew = false;
+  },
+
   /**
    * This function is used to set control options
    */

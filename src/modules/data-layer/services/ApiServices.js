@@ -25,6 +25,8 @@ const getAllDataObj = async (obj) => axiosInstance.get(`data/?size=2000&indicato
 const getNHMISData = async (obj) => axiosInstance.get(`data/?size=2000&indicator=${obj.indicator}&datasource=30&value_type=5&period=${obj.period}`);
 const getAllNHMISData = async (obj) => axiosInstance.get(`data/?size=5000&indicator=${obj.indicator}&datasource=30&value_type=5&location=1`);
 const getNHMISDataObj = async (obj) => axiosInstance.get(`data/?size=2000&indicator=${obj.indicator}&datasource=${obj.datasource}&ordering=-created_at&location=1`);
+const getWhatsNew = async () => axiosInstance.get('news/updates/?size=1000');
+const saveWhatsNew = async (data) => axiosInstance.post('news/updates/', data);
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -69,4 +71,6 @@ export default {
   getNHMISDataObj,
   getNHMISData,
   getAllNHMISData,
+  getWhatsNew,
+  saveWhatsNew,
 };
