@@ -6,7 +6,7 @@ export default [
     name: 'Admin',
     component: adminsidenav,
     meta: {
-      // requiresAuth: true,
+      requiresAuth: true,
       title: 'Admin Page',
     },
   },
