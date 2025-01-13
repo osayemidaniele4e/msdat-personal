@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
@@ -81,7 +82,11 @@ export default {
         xAxis: {
           type: 'category',
           min: -0.3,
-          max: dataSeries.reduce((total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length, 0) - 0.7,
+          max:
+            dataSeries.reduce(
+              (total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length,
+              0,
+            ) - 0.7,
         },
         yAxis: {
           gridLineWidth: 0,
@@ -94,22 +99,40 @@ export default {
             },
           },
         },
+        plotOptions: {
+          series: {
+            pointPadding: 0.1,
+            groupPadding: 0.2,
+            dataLabels: {
+              enabled: true,
+              padding: 10,
+              format: '{y}',
+            },
+          },
+        },
         series: dataSeries,
       };
       this.chart.yAxis.title.text = displayFactor;
     },
 
     getZonalDataInHighChartFormat(data) {
+      const zonalColors = {
+        'North-West': '#5c3819',
+        'North-East': '#8ab9bb',
+        'North-Central': '#89d880',
+        'South-West': '#7d8ade',
+        'South-East': '#f872a0',
+        'South-South': '#e1e164',
+      };
       const zonesSeries = [];
       for (let index = 1; index < this.colors.length; index += 1) {
         const zonal = data.find((item) => item.location === this.colors[index].id);
         const series = this.dlGetLocation(this.colors[index].id);
-        const { color } = this.colors.find((item) => item.id === this.colors[index].id);
         if (zonal) {
           zonesSeries.push({
             name: series.name,
             y: parseFloat(zonal.value),
-            color,
+            color: Highcharts.color(zonalColors[series.name]).get(),
           });
         }
       }
