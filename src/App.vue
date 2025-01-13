@@ -158,7 +158,6 @@ export default {
 
     firstTimeExecution() {
       if (!localStorage.getItem('firstTimeExecution')) {
-        localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
         }, 2 * 60 * 1000); // 3 minutes delay in milliseconds

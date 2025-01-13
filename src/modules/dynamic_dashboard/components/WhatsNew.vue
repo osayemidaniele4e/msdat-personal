@@ -59,7 +59,7 @@ export default {
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew', 'closeShowWhatsNew']),
 
     closeComponent() {
-      console.log('@@@@@');
+      localStorage.setItem('firstTimeExecution', 'true');
       this.closeShowWhatsNew();
     },
     async getWhatsNew() {
