@@ -101,8 +101,8 @@ export default {
         },
         plotOptions: {
           series: {
-            pointPadding: 0.1, // Adjust spacing between bars
-            groupPadding: 0.2, // Adjust spacing between groups
+            pointPadding: 0.1,
+            groupPadding: 0.2,
             dataLabels: {
               enabled: true,
               padding: 10,
