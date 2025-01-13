@@ -43,7 +43,7 @@ export default {
           color: '#e1e164',
         },
         // this code introduces the numbers showing in the zonal barchart bug - it has been reverted a couple of times.
-        // { id: 7, color: '#7d8ade' },
+        { id: 7, color: '#7d8ade' },
       ],
     };
   },
