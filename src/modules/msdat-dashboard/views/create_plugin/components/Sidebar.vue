@@ -78,6 +78,9 @@
           <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank"  class="sub-item"
             >Health Outcomes and Service Coverage</router-link
           >
+          <router-link to="/ministers-dashboard" target="_blank"  class="sub-item"
+            >Minister of Health Dashboard</router-link
+          >
         </b-list-group>
       </div>
       <div class="col mb-3">
