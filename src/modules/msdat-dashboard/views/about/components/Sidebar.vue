@@ -112,6 +112,9 @@
            class="sub-item"
             >Governors' Dashboard</a
           >
+          <router-link to="/ministers-dashboard" target="_blank"  class="sub-item"
+            >SWAP Ministerial Dashboard</router-link
+          >
           <!-- <router-link to="/coming-soon/advanced_analytics" -->
           <!-- <router-link to="/advanced_analytics"
            class="sub-item"

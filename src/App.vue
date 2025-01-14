@@ -5,12 +5,15 @@
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
+    <!-- <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
+      <WhatsNew />
+    </div> -->
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
@@ -19,23 +22,27 @@ import screenshotManager from './modules/plugins/screenshotManager';
 import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
+// import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
 
 export default {
   components: {
     feedback,
     ShowDataSourcesList,
+    // WhatsNew,
   },
   data() {
     return {
       pluginsImported: [], // Explicitly specify the type as an array of strings
       showDataSourceListComponent: false, // Replace with your actual state variable
+      showWhatsNewComponent: false,
+      lastExecutionTime: null,
     };
   },
-  computed: {
-    ...mapState({
-      showDataSourceListStatus: (state) => state.showDataSourceList, // Replace with your actual state variable
-    }),
-  },
+  // computed: {
+  //   ...mapState({
+  //     showDataSourceListStatus: (state) => state.showDataSourceList, // Replace with your actual state variable
+  //   }),
+  // },
 
   // watch: {
   //   showDataSourceListStatus(newVal, oldVal) {
@@ -51,9 +58,19 @@ export default {
       },
       deep: true, // If you want to watch nested changes
     },
+    '$store.state.MSDAT_STORE.showWhatsNew': {
+      // eslint-disable-next-line no-unused-vars
+      handler(newVal, oldVal) {
+        this.showWhatsNewComponent = newVal;
+      },
+      deep: true, // If you want to watch nested changes
+    },
   },
 
   async mounted() {
+    window.addEventListener('unload', this.handleAppUnload);
+    this.startSixHourInterval();
+    this.firstTimeExecution();
     // eslint-disable-next-line
     const plugins_imported = [];
 
@@ -117,6 +134,47 @@ export default {
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
+    ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
+
+    executeTask() {
+      const now = new Date();
+      this.lastExecutionTime = now.toLocaleTimeString();
+      // Add your task logic here
+      this.toggleShowWhatsNew();
+    },
+
+    handleAppUnload() {
+      // Perform your cleanup or function call here
+      console.log('Application is being unloaded.');
+      // Example: Save data to local storage or call an API
+      localStorage.removeItem('firstTimeExecution');
+    },
+
+    startSixHourInterval() {
+      const checkAndExecute = () => {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        // Check if it's a 6-hour interval (00:00, 06:00, 12:00, 18:00)
+        if (hours % 6 === 0 && minutes === 0) {
+          this.executeTask();
+        }
+      };
+      // Check every minute
+      setInterval(checkAndExecute, 60 * 1000);
+    },
+
+    firstTimeExecution() {
+      if (!localStorage.getItem('firstTimeExecution')) {
+        setTimeout(() => {
+          this.toggleShowWhatsNew();
+        }, 2 * 60 * 1000); // 3 minutes delay in milliseconds
+      }
+    },
+  },
+  beforeDestroy() {
+    // Remove the event listener to avoid memory leaks
+    window.removeEventListener('unload', this.handleAppUnload);
   },
 };
 </script>
@@ -133,5 +191,14 @@ export default {
   z-index: 999999;
   top: 10rem;
   height: 48rem;
+}
+
+.whats-new {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 999999;
+  top: 1px;
+  height: 100vh;
 }
 </style>

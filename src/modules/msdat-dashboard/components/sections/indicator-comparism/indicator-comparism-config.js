@@ -29,7 +29,7 @@ export default {
       visibility: false,
       class: ['col'],
       type: 'dropdown',
-      label: 'Year',
+      label: 'Period',
       key: 'year',
       // options: [
       //   { id: 1, year: '2010' },

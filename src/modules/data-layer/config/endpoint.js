@@ -10,10 +10,11 @@ export default {
   getLinks: 'links/?size=1500',
   getFactors: 'factors/?size=1500',
   getDSI: 'datasource_specific_indicator/?size=2000',
-  getData: 'data/?size=1500&',
+  getData: 'data/?size=3000&',
   getTableData: 'data/?size=1&',
   getUpdatedDataDate: 'after_datetime/?size=1500',
   getNhmisMonthly: `data/?datasource=${30}&page=1&size=1500`, // 30, nhmisMonthly ID
+  newsUpdate: 'news/updates/?size=1000',
 };
 
 // https://msdat-api.fmohconnect.gov.ng/api/datasources/?size=2000&datasource=NHMIS-DHIS2%20(monthly)

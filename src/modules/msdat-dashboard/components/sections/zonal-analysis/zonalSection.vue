@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
@@ -81,7 +82,11 @@ export default {
         xAxis: {
           type: 'category',
           min: -0.3,
-          max: dataSeries.reduce((total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length, 0) - 0.7,
+          max:
+            dataSeries.reduce(
+              (total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length,
+              0,
+            ) - 0.7,
         },
         yAxis: {
           gridLineWidth: 0,
@@ -94,27 +99,49 @@ export default {
             },
           },
         },
+        plotOptions: {
+          series: {
+            dataLabels: {
+              enabled: true,
+              format: '{y}',
+            },
+          },
+        },
         series: dataSeries,
       };
       this.chart.yAxis.title.text = displayFactor;
     },
 
     getZonalDataInHighChartFormat(data) {
+      const zonalColors = {
+        'North-West': '#5c3819',
+        'North-East': '#8ab9bb',
+        'North-Central': '#89d880',
+        'South-West': '#7d8ade',
+        'South-East': '#f872a0',
+        'South-South': '#e1e164',
+      };
       const zonesSeries = [];
       for (let index = 1; index < this.colors.length; index += 1) {
         const zonal = data.find((item) => item.location === this.colors[index].id);
         const series = this.dlGetLocation(this.colors[index].id);
-        const { color } = this.colors.find((item) => item.id === this.colors[index].id);
         if (zonal) {
           zonesSeries.push({
             name: series.name,
             y: parseFloat(zonal.value),
-            color,
+            color: Highcharts.color(zonalColors[series.name]).get(),
           });
         }
       }
       // sort Zonal series data in ascending order
       return zonesSeries.sort((a, b) => b.y - a.y);
+    },
+
+    filterNonEmptyData(series) {
+      return series.filter((item) => {
+        console.log(item.name, item.data); // Debugging the `data` value
+        return item.data && item.data.length > 0;
+      });
     },
 
     getStateDataAccordingToRegionInHighChartFormat(data) {
@@ -201,14 +228,14 @@ export default {
             // add national to top of the zonal series series
             const national = data.find((item) => item.location === 1);
             zonalSeries.unshift({
-              name: 'National',
+              name: 'Nigeria',
               y: parseFloat(national.value),
-              color: this.colors[0].color,
+              color: Highcharts.color('#000000').get(),
             });
             const zonalZee = {
+              color: Highcharts.color('#000000').get(),
               name: 'Nigeria',
               data: zonalSeries,
-              color: this.colors[0].color,
             };
             // for the new chart, eact array of states has the zone included
             const newChart = [];
@@ -225,8 +252,9 @@ export default {
             newChart.unshift();
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
+            const filteredSeries = this.filterNonEmptyData(chartSeries);
             // chartSeries.unshift(zonalZee); //  removed this part
-            this.formatToHighChart(chartSeries);
+            this.formatToHighChart(filteredSeries);
           }
         }
         // Plot for LGAs

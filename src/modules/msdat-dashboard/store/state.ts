@@ -48,6 +48,7 @@ const state: State = {
   selectedSection: 'Indicator Overview',
   location: 'Nigeria',
   showDataSourceList: false,
+  showWhatsNew: false,
 };
 
 export default state;
