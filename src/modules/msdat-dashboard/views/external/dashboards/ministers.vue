@@ -42,8 +42,8 @@ const sections = [
     url: 'https://public.tableau.com/views/MINISTERSDASHBOARDINDICATORDETAILS/IndicatorDetails?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
   },
   {
-    title: 'Quaterly Performance Scorecard',
-    url: 'https://public.tableau.com/views/MSDATindicatorsscorecard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+    title: 'Quarterly Performance Scorecard',
+    url: 'https://public.tableau.com/views/QUARTERLYPERFORMANCEDASHBOARD/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
   },
 ];
 
@@ -119,6 +119,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding-left: 5px;
     padding-bottom: 40px;
   }
   </style>

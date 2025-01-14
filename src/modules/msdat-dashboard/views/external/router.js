@@ -29,7 +29,7 @@ export default [
     name: 'ministers-dashboard',
     component: ministers,
     meta: {
-      title: 'Minister of Health Dashboard',
+      title: 'SWAP Ministerial Dashboard',
     },
   },
   {
