@@ -252,9 +252,7 @@ export default {
             newChart.unshift();
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
-            console.log(chartSeries, 'chartSeriesX 1');
             const filteredSeries = this.filterNonEmptyData(chartSeries);
-            console.log(filteredSeries, 'chartSeriesX 2');
             // chartSeries.unshift(zonalZee); //  removed this part
             this.formatToHighChart(filteredSeries);
           }
