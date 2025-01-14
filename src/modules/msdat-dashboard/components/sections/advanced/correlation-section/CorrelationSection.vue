@@ -30,7 +30,7 @@ export default {
       isLoading: true,
       url: 'https://correlation.e4eweb.space/viz',
       width: '100%',
-      height: '400',
+      height: '300',
     };
   },
   methods: {

@@ -24,7 +24,7 @@ import { mapGetters } from 'vuex';
 import theHeader from '@/modules/msdat-dashboard/views/about/layout/theHeader.vue';
 import theFooter from '@/modules/msdat-dashboard/views/about/layout/theFooter.vue';
 import RequestCard from '../components/RequestCard.vue';
-import authorize from '../authorizer';
+import authorize from '../utils/authorizer';
 
 export default {
   data() {
