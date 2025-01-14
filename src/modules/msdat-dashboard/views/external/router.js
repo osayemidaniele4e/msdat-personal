@@ -1,11 +1,12 @@
 import ncdc from './dashboards/ncdc.vue';
 import ndr1 from './dashboards/ndr1.vue';
 import ndr2 from './dashboards/ndr2.vue';
+import ministers from './dashboards/ministers.vue';
 import quarterReview from './dashboards/quarter-review.vue';
 import HealthFacilityDashboard from './dashboards/health-facility.vue';
 import goggleForm from './dashboards/goggleForm.vue';
 import healthServiceUptake from './dashboards/health-service-uptake.vue';
-import IndicatorPreview from './dashboards/Minister of Health Dashboard/dashboard-landing-page.vue';0
+import IndicatorPreview from './dashboards/Minister of Health Dashboard/dashboard-landing-page.vue';
 
 export default [
   {
@@ -22,6 +23,14 @@ export default [
     path: '/external-ndr2',
     name: 'ndr2',
     component: ndr2,
+  },
+  {
+    path: '/ministers-dashboard',
+    name: 'ministers-dashboard',
+    component: ministers,
+    meta: {
+      title: 'Minister of Health Dashboard',
+    },
   },
   {
     path: '/quarterly-review',
@@ -56,7 +65,7 @@ export default [
     },
   },
   {
-    path: '/dashboard-landing-page', 
+    path: '/dashboard-landing-page',
     name: 'state-health-facility',
     component: IndicatorPreview,
     meta: {

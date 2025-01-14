@@ -129,6 +129,9 @@ export default {
     },
 
     'values.datasource': {
+      /**
+       * Update Highchart Config on Datasource change
+       */
       async handler(selectedDataSource) {
         // console.log(selectedDataSource, '@@GPPG@@');
         this.setDataSource(selectedDataSource.datasource);
@@ -150,6 +153,9 @@ export default {
       immediate: false,
     },
     'values.indicator': {
+      /**
+       * Update Highchart Config on Indicator change
+       */
       async handler() {
         this.loading = true;
         // change get datasource function to API matching indicator to dataSource
@@ -167,6 +173,9 @@ export default {
       immediate: true,
     },
     'values.location': {
+      /**
+       * Update Highchart Config on Location change
+       */
       async handler() {
         this.loading = true;
         // change get datasource function to API matching indicator to dataSource
