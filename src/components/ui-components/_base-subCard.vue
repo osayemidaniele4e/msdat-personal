@@ -16,12 +16,15 @@
         <div class="d-flex align-items-center">
           <slot name="refresh"> </slot>
         </div>
-        <b-icon
+        <div class="expand-icon">
+          <img  @click="showModal = !showModal" src="@/assets/Expand.png" alt="">
+        </div>
+        <!-- <b-icon
           icon="arrows-fullscreen"
           @click="showModal = !showModal"
           class="pointer_click mx-1 font-weight-bold"
           font-scale="0.5"
-        ></b-icon>
+        ></b-icon> -->
         <!-- v-b-tooltip.hover title="Tooltip directive content" -->
         <!-- icon="three-dots-vertical" -->
         <!-- <b-icon
@@ -150,6 +153,11 @@ export default {
 <style lang="scss" scoped>
 .title {
   color: black;
+}
+.expand-icon img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
 }
 </style>
 
