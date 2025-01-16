@@ -15,17 +15,17 @@
               <div
                 @mouseover="showTooltip"
                 @mouseout="hideTooltip"
-                @click="togglePopUp()"
+                @click="toggleShowShareModal"
                 class=""
               >
-                <img src="@/assets/Hamburger.png" alt="" />
+                <img src="@/assets/html.png" alt="" />
               </div>
 
             </div>
-            <div v-if="showPopUp" class="pop-up">
+            <!-- <div v-if="showPopUp" class="pop-up">
               <h3 @click="toggleShowShareModal" >Share as HTML Code</h3>
 
-            </div>
+            </div> -->
           </div>
         </template>
         <TableComponent

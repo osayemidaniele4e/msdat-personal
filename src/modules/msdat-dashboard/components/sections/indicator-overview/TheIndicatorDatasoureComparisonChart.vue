@@ -59,7 +59,7 @@
         <!-- refresh button to show all datasources in the chart -->
         <template #refresh>
           <div class="pop-wrapper">
-            <img src="@/assets/Hamburger.png"  @click="togglePopUp()" alt="" />
+            <img src="@/assets/refresh.png"  @click="getReset()" alt="" />
           </div>
           <!-- <b-icon-arrow-clockwise
             id="reset"
@@ -68,9 +68,9 @@
             font-scale="0.5"
           ></b-icon-arrow-clockwise> -->
         </template>
-        <div v-if="showPopUp" class="pop-up">
+        <!-- <div v-if="showPopUp" class="pop-up">
           <h3 @click="getReset()">Refresh Table</h3>
-        </div>
+        </div> -->
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
