@@ -27,11 +27,15 @@ export default {
       // console.log(err);
     }
   },
+
   // eslint-disable-next-line consistent-return, no-unused-vars
   async SAVE_USER_DASHBOARD({ commit }, payload) {
     try {
       // const response = await axiosInstance.post('/dashboards/', payload);
-      const response = await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private/${payload.id}.json`, payload);
+      const response = await axios.put(
+        `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private/${payload.id}.json`,
+        payload,
+      );
       this.SAVE_DASHBOARDS();
       return response;
     } catch (err) {
@@ -42,7 +46,9 @@ export default {
   // eslint-disable-next-line consistent-return, no-unused-vars
   async SAVE_DASHBOARDS({ commit }, payload) {
     try {
-      const response = await axiosInstance.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private.json');
+      const response = await axiosInstance.get(
+        'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private.json',
+      );
       commit('setDashboards', Object.values(response.data));
       return response;
     } catch (err) {
@@ -53,9 +59,14 @@ export default {
   // eslint-disable-next-line consistent-return
   async LOGIN_USER({ commit }, payload) {
     try {
-      const response = await axiosInstance.post('/login/', payload);
+      const response = await axios.post('https://msdat2api.e4eweb.space/api/login/', payload);
       const user = response.data;
       console.log(user);
+
+      const savedUser = VueCookies.get('msdat-user-details');
+      if (savedUser) {
+        commit('setUser', savedUser);
+      }
 
       const formattedUser = {
         avatar: user.avatar,
@@ -95,7 +106,10 @@ export default {
 
   async AUTHENTICATE_LINKEDIN({ commit }, payload) {
     try {
-      const response = await axios.post('https://msdat2api.e4eweb.space/api/social/auth/linkedin/', payload);
+      const response = await axios.post(
+        'https://msdat2api.e4eweb.space/api/social/auth/linkedin/',
+        payload,
+      );
       console.log('linkedln login', response);
       const user = response.data.data;
 
