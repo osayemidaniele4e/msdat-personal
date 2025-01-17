@@ -3,6 +3,7 @@ import ndr1 from './dashboards/ndr1.vue';
 import ndr2 from './dashboards/ndr2.vue';
 import quarterReview from './dashboards/quarter-review.vue';
 import HealthFacilityDashboard from './dashboards/health-facility.vue';
+import QuarterlyPerformanceScorecard from './dashboards/quarterly-performance-scorecard.vue';
 
 export default [
   {
@@ -36,4 +37,12 @@ export default [
       title: 'Health Facilities Profile (GIS)',
     },
   },
+  {
+    path: '/quartely-performance-scorecard',
+    name: 'state-health-facility',
+    component: QuarterlyPerformanceScorecard,
+    meta: {
+      title: 'Quarterly Performance Scorecard',
+    },
+  }
 ];
