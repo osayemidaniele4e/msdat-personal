@@ -192,7 +192,7 @@ export default {
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
               key: 'year',
-              values: availableYears,
+              values: availableYears.sort((a, b) => b - a),
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
 
@@ -237,14 +237,16 @@ export default {
         if (this.payload.indicator) {
           if (this.controlIndex === 2) {
             availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+            console.log(availableYears, 'availableYears');
           } else {
             availableYears = await this.getAvailableYears();
+            console.log(availableYears, 'availableYears');
           }
           await this.SETUP_CONTROL_OPTIONS1({
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears,
+            values: availableYears.sort((a, b) => b - a),
           });
           // ============
           if (this.controlIndex === 2) {
@@ -277,7 +279,7 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears,
+            values: availableYears.sort((a, b) => b - a),
           });
         }
       },
