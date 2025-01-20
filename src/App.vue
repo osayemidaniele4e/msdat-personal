@@ -5,9 +5,9 @@
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-    <!-- <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
+    <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
       <WhatsNew />
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -22,13 +22,13 @@ import screenshotManager from './modules/plugins/screenshotManager';
 import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
-// import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
+import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
 
 export default {
   components: {
     feedback,
     ShowDataSourcesList,
-    // WhatsNew,
+    WhatsNew,
   },
   data() {
     return {
