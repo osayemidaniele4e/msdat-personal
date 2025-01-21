@@ -188,6 +188,7 @@ export default {
 
           if (this.controlIndex !== 2) {
             const availableYears = await this.getAvailableYears();
+            console.log(availableYears, 'availableYears');
             this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,

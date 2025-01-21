@@ -168,7 +168,7 @@ export default {
       if (!localStorage.getItem('firstTimeExecution')) {
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 2 * 60 * 1000); // 3 minutes delay in milliseconds
+        }, 1 * 60 * 1000); // 3 minutes delay in milliseconds
       }
     },
   },

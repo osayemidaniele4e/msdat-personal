@@ -151,7 +151,7 @@ export default {
         datasource: dataSourceID,
         location: locationID,
       });
-      // console.log(data);
+      console.log(data, 'availableYears 2');
       // const onlyYearData = data?.filter((item) => {
       //   if (isDataYearly(item.period)) {
       //     return item.period;
