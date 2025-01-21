@@ -160,7 +160,7 @@ export default {
       // });
       const years = data?.map((item) => item.period);
       const uniqueYears = uniq(years);
-      return uniqueYears;
+      return uniqueYears.sort((a, b) => b - a);
     },
     // get years by datasource
     async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
