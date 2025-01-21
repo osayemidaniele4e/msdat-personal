@@ -130,6 +130,7 @@ export default {
       console.log('Application is being unloaded.');
       // Example: Save data to local storage or call an API
       localStorage.removeItem('firstTimeExecution');
+      localStorage.removeItem('firstLoaded');
     },
 
      startSixHourInterval() {
