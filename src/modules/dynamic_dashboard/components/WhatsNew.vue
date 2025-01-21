@@ -65,6 +65,7 @@ export default {
     async getWhatsNew() {
       const { data } = await ApiServices.getWhatsNew();
       const temp = this.groupByCategory(data.results);
+      console.log(temp, '@Response');
       this.whatsNew = temp;
     },
     groupByCategory(data) {
