@@ -151,7 +151,7 @@ export default {
         datasource: dataSourceID,
         location: locationID,
       });
-      // console.log(data);
+      console.log(data, 'availableYears 2');
       // const onlyYearData = data?.filter((item) => {
       //   if (isDataYearly(item.period)) {
       //     return item.period;
@@ -160,7 +160,7 @@ export default {
       // });
       const years = data?.map((item) => item.period);
       const uniqueYears = uniq(years);
-      return uniqueYears;
+      return uniqueYears.sort((a, b) => b - a);
     },
     // get years by datasource
     async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {

@@ -291,12 +291,12 @@
                 height="48"
               />
             </div>
-            <div class="col-8">
-              <div>{{ getUser.username }}</div>
-              <div>{{ getUser.email }}</div>
+            <div class="col-8 name">
+              <h3>{{ getUser.username }}</h3>
+              <h4>{{ getUser.email }}</h4>
             </div>
             <div class="close mr-2" @click.prevent="showCard = false">
-              <b-icon-x-circle></b-icon-x-circle>
+              <img src="@/assets/close.png" alt="">
             </div>
           </div>
           <div class="d-flex py-2">
@@ -1167,5 +1167,18 @@ div {
   body {
     -webkit-print-color-adjust: exact !important;
   }
+}
+.close img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.name h3 {
+  font-size: 30px;
+  text-transform: capitalize;
+}
+.name h4 {
+  font-size: 16px;
 }
 </style>

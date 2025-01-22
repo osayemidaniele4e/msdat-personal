@@ -6,7 +6,7 @@
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
           <div class="w-100 d-flex justify-content-between align-items-center position-relative  p-1">
-            <p class="work-sans mb-0 line-height">
+            <p class="work-sans mb-0 line-height sub-title">
               <b>{{ values.indicator.short_name }}</b>
               and related indicators (with year of latest values) across {{ values.location.name }}.
             </p>
@@ -406,5 +406,8 @@ export default {
 }
 .pop-up h3:hover {
   color: #00AC40;
+}
+.sub-title {
+  font-size: 14px;
 }
 </style>

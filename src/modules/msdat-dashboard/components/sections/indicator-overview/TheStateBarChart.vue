@@ -12,14 +12,14 @@
         })
         ">
         <template #title>
-          <p class="work-sans mb-0 line-height" v-if="level === 1">
+          <p class="work-sans mb-0 line-height sub-title" v-if="level === 1">
             Distribution of
 
             <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
             <b>{{ values.indicator.short_name }}</b> across <b>{{ values.location.name }}.</b> Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b>
           </p>
-          <p class="work-sans mb-0 line-height" v-if="level !== 1">
+          <p class="work-sans mb-0 line-height sub-title" v-if="level !== 1">
             Distribution of
             <b>{{ values.indicator.short_name }}</b> across the states. Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b>
@@ -404,4 +404,8 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.sub-title {
+  font-size: 14px !important;
+}
+</style>

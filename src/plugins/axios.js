@@ -5,6 +5,10 @@ const AxiosInstance = axios.create({
   baseURL: process.env.VUE_APP_API_BASE_URL,
 });
 
+const AxiosInstance1 = axios.create({
+  baseURL: process.env.VUE_APP_API_BASE_URL1,
+});
+
 // eslint-disable-next-line no-unused-expressions
 AxiosInstance.interceptors?.response.use(
   (response) => response,
@@ -22,5 +26,7 @@ AxiosInstance.interceptors?.response.use(
     return Promise.reject(error);
   },
 );
+
+export { AxiosInstance1 };
 
 export default AxiosInstance;

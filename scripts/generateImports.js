@@ -57,7 +57,9 @@ const appVueCode = `
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-     
+      <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
+      <WhatsNew />
+    </div>
   </div>
 
 </template>
@@ -67,14 +69,14 @@ import Vue from 'vue';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
-// import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
+import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
 ${pluginImports.join('\n')}
 
 export default {
  components: {
     feedback,
     ShowDataSourcesList,
-    // WhatsNew,
+    WhatsNew,
   },
   data() {
     return {
@@ -128,6 +130,7 @@ export default {
       console.log('Application is being unloaded.');
       // Example: Save data to local storage or call an API
       localStorage.removeItem('firstTimeExecution');
+      localStorage.removeItem('firstLoaded');
     },
 
      startSixHourInterval() {
@@ -145,12 +148,15 @@ export default {
     },
      firstTimeExecution() {
       if (!localStorage.getItem('firstTimeExecution')) {
+        localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 2 * 60 * 1000); // 3 minutes delay in milliseconds
+        }, 1 * 60 * 1000); // 3 minutes delay in milliseconds
       }
     },
 
+
+    
   },
    beforeDestroy() {
     // Remove the event listener to avoid memory leaks

@@ -6,7 +6,7 @@
       v-if="removeTitle === false"
     >
       <!-- :style="{ backgroundColor }" -->
-      <div v-if="removeTitle === false" class="title w-100">
+      <div v-if="removeTitle === false" class="title ">
         <slot name="title"> slot title fallback </slot>
       </div>
       <div
@@ -153,6 +153,7 @@ export default {
 <style lang="scss" scoped>
 .title {
   color: black;
+  width: 97%;
 }
 .expand-icon img {
   width: 32px;
