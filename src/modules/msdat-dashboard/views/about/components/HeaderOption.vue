@@ -15,24 +15,24 @@
     <ul class="list-unstyled">
       <li>
         <router-link to="/about">
-          <img src="@/assets/img/icons/ic_info.svg" alt="" />
+          <img src="@/assets/caution.png" alt="" />
           <span>About Dashboard</span>
         </router-link>
       </li>
       <li v-if="isAllowedEmail">
-  <router-link to="/admin">
-    <img src="@/assets/img/icons/ic_dashboard.svg" alt="" />
-    <span>Admin Dashboard</span>
-  </router-link>
-</li>
+        <router-link to="/admin">
+          <img src="@/assets/caution.png" alt="" />
+          <span>Admin Dashboard</span>
+        </router-link>
+      </li>
 
       <li>
         <b-button class="external-dashboards-btn mb-2 d-flex" block @click="showPluginModal">
           <img
-            src="@/assets/img/icons/ic_info.svg"
+            src="@/assets/plugin.png"
             alt=""
             class="align-self-center"
-            style="height: 15px; margin-left: 0.2rem"
+            style="height: 16px; margin-left: 0.2rem"
           />
           <span class="ml-2" style="font-size: small">View Plugins</span>
         </b-button>
@@ -67,20 +67,20 @@
       </li>
       <li @click="$emit('tour')">
         <router-link to="/">
-          <img src="@/assets/img/icons/ic_play.svg" alt="" />
+          <img src="@/assets/play.png" alt="" />
           <span>Play Tour Guide</span>
         </router-link>
       </li>
       <div class="divider"></div>
       <li>
         <a @click.prevent="socialModal = !socialModal" href="#">
-          <img src="@/assets/img/icons/ic_share.svg" alt="" />
+          <img src="@/assets/share.png" alt="" />
           <span>Share</span>
         </a>
       </li>
       <li>
         <a href="#" @click.prevent="$emit('print')">
-          <img src="@/assets/img/icons/ic_print.svg" alt="" />
+          <img src="@/assets/print.png" alt="" />
           <span>Print</span>
         </a>
       </li>
@@ -93,20 +93,20 @@
       <li>
         <!-- Don't forget to add the # so it does reload the page -->
         <a href="#" @click.prevent="toggleFullScreen()">
-          <img src="@/assets/img/icons/ic_zoom.svg" alt="" />
+          <img src="@/assets/full.png" alt="" />
           <span>View Fullscreen</span>
         </a>
       </li>
       <div class="divider"></div>
       <li>
         <a href="https://mapping.fmohconnect.gov.ng/inventory/submit-dataset" target="_blank">
-          <img src="@/assets/img/icons/ic_upload.svg" alt="" />
+          <img src="@/assets/submit.png" alt="" />
           <span>Submit New Dataset</span>
         </a>
       </li>
       <li>
         <router-link to="/data-partnership">
-          <img src="@/assets/img/icons/ic_help.svg" alt="" />
+          <img src="@/assets/request.png" alt="" />
           <span>Request Data Partnership</span>
         </router-link>
       </li>
@@ -125,19 +125,19 @@
       </li>
       <li @click.prevent="activateUserHelp">
         <a href="#">
-          <img src="@/assets/img/icons/ic_feedback.svg" alt="" />
+          <img src="@/assets/feedback.png" alt="" />
           <span>Feedback</span>
         </a>
       </li>
       <li @click="togglemodal">
         <a href="#">
-          <img src="@/assets/img/icons/ic_contact.svg" alt="" />
+          <img src="@/assets/contact.png" alt="" />
           <span>Contact Us</span>
         </a>
       </li>
       <li>
         <router-link to="/faq">
-          <img src="@/assets/img/icons/ic_help.svg" alt="" />
+          <img src="@/assets/faq.png" alt="" />
           <span>Help and FAQs</span>
         </router-link>
       </li>
@@ -149,7 +149,7 @@
       </li> -->
       <li>
         <a href="#" @click.prevent="showModal" ref="btnShow">
-          <img src="@/assets/img/icons/ic_email.svg" alt="" />
+          <img src="@/assets/subscribe.png" alt="" />
           <span>Subscribe to our newsletter</span>
         </a>
       </li>
@@ -245,7 +245,7 @@ export default {
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser', 'isAuthenticated']),
     isAllowedEmail() {
-    // Check if the email exists and ends with '@e4email.net'
+      // Check if the email exists and ends with '@e4email.net'
       return this.getUser?.email?.endsWith('@e4email.net') || false;
     },
 
