@@ -33,7 +33,12 @@
       <Loading v-if="!loading" :noBackdrop="true" :showBackground="false" class="over">
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="450px" />
-          <div v-if="alreadyLoaded === null && startDashboard === 'Health_Outcomes_and_Service_Coverage'" class="mr-4 loading-text">
+          <div
+            v-if="
+              alreadyLoaded === null && startDashboard === 'Health_Outcomes_and_Service_Coverage'
+            "
+            class="mr-4 loading-text"
+          >
             <h4>Initializing{{ loadingTitle }}</h4>
             <p>{{ loadingContent }}</p>
           </div>
@@ -93,7 +98,7 @@
 
                       <b-collapse id="panel" visible>
                         <template>
-                          <div >
+                          <div>
                             <!-- mobile view direction buttons -->
                             <div class="swipe-btn-flex">
                               <button @click="swipeLeft" class="swipe-btn">
@@ -327,11 +332,18 @@ export default {
   },
 
   async created() {
-    this.alreadyLoaded = localStorage.getItem('firstLoaded');
-    this.startDashboard = this.$route.params.name;
+    const { name } = this.$route.params || {};
+    // eslint-disable-next-line indent
+    if (name) {
+      console.error("Route parameter 'name' is missing");
+      this.alreadyLoaded = localStorage.getItem('firstLoaded');
+      this.startDashboard = name;
+    } else {
+      this.startDashboard = 'Health_Outcomes_and_Service_Coverage';
+      this.alreadyLoaded = localStorage.getItem('firstLoaded');
+    }
+
     // log route path Health_Outcomes_and_Service_Coverage
-    console.log(this.$route.params.name, 'alreadyLoaded');
-    console.log(this.alreadyLoaded, 'alreadyLoaded');
     this.indicators = this.getConfigObject().indicators;
     this.dataSources = this.getConfigObject().dataSources;
     this.defaultIndicators = this.getConfigObject().defaultIndicators;
@@ -339,7 +351,7 @@ export default {
     this.initialDataSource = this.getConfigObject().initialDataSource;
     this.initialLocation = this.getConfigObject().initialLocation;
     window.addEventListener('resize', this.onResize);
-    const { name } = this.$route.params;
+
     if (name === 'Advanced_Analytics') {
       this.isAdvanced = true;
     }
@@ -365,9 +377,12 @@ export default {
      * Update Site-Wide OG tags for crawlers
      */
     // eslint-disable-next-line camelcase
-    const indicator = this.getSelectedConfig().indicator?.full_name
+    const indicator
       // eslint-disable-next-line camelcase
-      || this.dlIndicator.find((ind) => ind.id === this.initialIndicator?.full_name) || 'Skilled attendance at delivery or birth';
+      = this.getSelectedConfig().indicator?.full_name
+      // eslint-disable-next-line camelcase
+      || this.dlIndicator.find((ind) => ind.id === this.initialIndicator?.full_name)
+      || 'Skilled attendance at delivery or birth';
     const pageDesc = `Take a look at '${indicator}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
 
     const descEl = document.querySelector('head meta[property="og:description"]');
@@ -706,30 +721,29 @@ div#browserSupport img {
   font-size: 10px;
   font-weight: bold;
 }
-.program{
- display: flex;
- flex-direction: row;
- width: 100%;
- gap: 18px;
- margin: 10px;
+.program {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 18px;
+  margin: 10px;
 }
-.program label{
- font-size: 12px;
- font-weight: bold;
+.program label {
+  font-size: 12px;
+  font-weight: bold;
 }
-.prog-drop{
- width:450px;
+.prog-drop {
+  width: 450px;
 }
 .prog-visual {
- font-size: 12px;
- font-weight: bold;
- padding: 10px;
- width: 400px;
- border: 1px solid#007D53;
- border-radius: 5px;
- background-color: #ffffff;
- color: #000;
-
+  font-size: 12px;
+  font-weight: bold;
+  padding: 10px;
+  width: 400px;
+  border: 1px solid#007D53;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #000;
 }
 
 .rotated {
