@@ -335,10 +335,11 @@ export default {
     const { name } = this.$route.params || {};
     // eslint-disable-next-line indent
     if (name) {
-      console.error("Route parameter 'name' is missing");
       this.alreadyLoaded = localStorage.getItem('firstLoaded');
       this.startDashboard = name;
+      console.log(this.alreadyLoaded, name, 'Health_Outcomes_and');
     } else {
+      console.error("Route parameter 'name' is missing");
       this.startDashboard = 'Health_Outcomes_and_Service_Coverage';
       this.alreadyLoaded = localStorage.getItem('firstLoaded');
     }
