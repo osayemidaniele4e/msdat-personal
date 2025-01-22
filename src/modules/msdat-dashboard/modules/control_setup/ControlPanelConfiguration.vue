@@ -188,7 +188,6 @@ export default {
 
           if (this.controlIndex !== 2) {
             const availableYears = await this.getAvailableYears();
-            console.log(availableYears, 'availableYears');
             this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
@@ -229,8 +228,6 @@ export default {
 
         this.SET_DATASOURCE_TIME_SPENT(timespent);
 
-        console.log('timespent in   datasource', timespent);
-
         this.previous_time_datasource = this.after_time_datasource;
 
         this.previous_datasource = this.payload.datasource;
@@ -238,10 +235,8 @@ export default {
         if (this.payload.indicator) {
           if (this.controlIndex === 2) {
             availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-            console.log(availableYears, 'availableYears');
           } else {
             availableYears = await this.getAvailableYears();
-            console.log(availableYears, 'availableYears');
           }
           await this.SETUP_CONTROL_OPTIONS1({
             groupIndex: this.groupIndex,

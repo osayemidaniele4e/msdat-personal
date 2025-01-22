@@ -136,10 +136,7 @@ export default {
       //   query.value_type = valuetype[0]?.id;
       // }
 
-      console.log(query, 'availableYears 3');
       const datasource = await this.dlGetDataSource(query.datasource);
-
-      console.log(datasource, 'availableYears 4');
       // if (this.valueType?.length <= 0) {
       //   this.valueType = await this.getDexieTableValues('valuetypes');
       //   return false;
@@ -151,13 +148,10 @@ export default {
       );
       query.value_type = query.value_type || valuetype[0]?.id || 2;
 
-      console.log(query, 'availableMain 4');
-
       if (isObject(query.location)) {
         const { location } = query;
         const newQueryObject = omit(query, ['location']);
         const locationValues = this.dlGetLocation(location);
-        console.log(locationValues, location, 'availableYears 5');
         const locationID = locationValues.map((item) => item.id);
         const resultValue = await DB.queryDB(newQueryObject, locationID);
         return resultValue;
@@ -202,7 +196,6 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      // console.log(this.dlLocation, 'this.dlLocation');
       if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }
