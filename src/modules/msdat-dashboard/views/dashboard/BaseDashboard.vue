@@ -33,17 +33,9 @@
       <Loading v-if="!loading" :noBackdrop="true" :showBackground="false" class="over">
         <div class="text-center">
           <img :src="loadingImg" alt="first_img" width="450px" />
-          <div
-            v-if="
-              alreadyLoaded === null && startDashboard === 'Health_Outcomes_and_Service_Coverage'
-            "
-            class="mr-4 loading-text"
-          >
+          <div class="mr-4 loading-text">
             <h4>Initializing{{ loadingTitle }}</h4>
             <p>{{ loadingContent }}</p>
-          </div>
-          <div v-else class="mr-4 loading-text">
-            <h4>Data Synchronizing ...</h4>
           </div>
         </div>
       </Loading>
@@ -332,18 +324,6 @@ export default {
   },
 
   async created() {
-    const { name } = this.$route.params || {};
-    // eslint-disable-next-line indent
-    if (name) {
-      this.alreadyLoaded = localStorage.getItem('firstLoaded');
-      this.startDashboard = name;
-      console.log(this.alreadyLoaded, name, 'Health_Outcomes_and');
-    } else {
-      console.error("Route parameter 'name' is missing");
-      this.startDashboard = 'Health_Outcomes_and_Service_Coverage';
-      this.alreadyLoaded = localStorage.getItem('firstLoaded');
-    }
-
     // log route path Health_Outcomes_and_Service_Coverage
     this.indicators = this.getConfigObject().indicators;
     this.dataSources = this.getConfigObject().dataSources;
@@ -353,6 +333,10 @@ export default {
     this.initialLocation = this.getConfigObject().initialLocation;
     window.addEventListener('resize', this.onResize);
 
+    const { name } = this.$route.params;
+    if (name === 'Advanced_Analytics') {
+      this.isAdvanced = true;
+    }
     if (name === 'Advanced_Analytics') {
       this.isAdvanced = true;
     }
