@@ -1,8 +1,8 @@
-import axiosInstance, { AxiosInstance1 } from '@/plugins/axios';
+import axiosInstance from '@/plugins/axios';
 import apiEndpoints from '../config/endpoint';
 
-const getDashboard = async () => AxiosInstance1.get(apiEndpoints.getDashboard);
-const getDashboardById = async (id) => AxiosInstance1.get(apiEndpoints.getDashboardById + id);
+const getDashboard = async () => axiosInstance.get(apiEndpoints.getDashboard);
+const getDashboardById = async (id) => axiosInstance.get(apiEndpoints.getDashboardById + id);
 const getUpdatedData = async (theDate) => axiosInstance.get(`${apiEndpoints.getUpdatedDataDate}?datetime=${theDate}`);
 const getSingleIndicator = async (indicator) => axiosInstance.get(`${apiEndpoints.getData}?indicator=${indicator}`);
 const getRequiredEndpoint = async (apiEndpoint) => axiosInstance.get(`/${apiEndpoint}`);
