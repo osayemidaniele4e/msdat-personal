@@ -33,7 +33,7 @@ export default [
     },
   },
   {
-    path: '/quarterly-review',
+    path: '/dashboard/Quarterly_Performance_Assessment_Dashboard',
     name: 'quarter-review',
     component: quarterReview,
     meta: {
