@@ -42,7 +42,7 @@
             </svg>
           </span>
           <div>
-            <p>Comparison can only be done for 2 data sources</p>
+            <p>Interpretation is only available when comparing two datasets</p>
           </div>
         </div>
         <div class="comparison" v-else>

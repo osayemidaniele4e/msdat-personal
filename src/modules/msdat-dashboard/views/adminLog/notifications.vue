@@ -239,5 +239,6 @@ export default {
   font-weight: 500;
   border: none;
   line-height: 16px;
+  padding: 0 20px;
 }
 </style>

@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 <template>
-  <div class="iddc_wrapper confidenceRange_Intro">
+  <div class="iddc_wrapper confidenceRange_Intro position-relative">
     <base-overlay :show="loading || notShow">
       <!-- BASE SUBCARD FOR INDICATORS WITH CONFIDENCE RANGE -->
       <base-sub-card
@@ -58,13 +58,19 @@
 
         <!-- refresh button to show all datasources in the chart -->
         <template #refresh>
-          <b-icon-arrow-clockwise
+          <div class="pop-wrapper">
+            <img src="@/assets/refresh.png"  @click="getReset()" alt="" />
+          </div>
+          <!-- <b-icon-arrow-clockwise
             id="reset"
             @click="getReset()"
             class="pointer_click mx-1 font-weight-bold"
             font-scale="0.5"
-          ></b-icon-arrow-clockwise>
+          ></b-icon-arrow-clockwise> -->
         </template>
+        <!-- <div v-if="showPopUp" class="pop-up">
+          <h3 @click="getReset()">Refresh Table</h3>
+        </div> -->
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
@@ -97,6 +103,7 @@ export default {
       seriesArray: {},
       years: {},
       selectDataSource: null,
+      showPopUp: false,
     };
   },
   props: {
@@ -349,6 +356,10 @@ export default {
       this.ChartOptions.chart.type = e;
     },
 
+    togglePopUp() {
+      this.showPopUp = !this.showPopUp;
+    },
+
     /**
      * To get series Data for the HighChart js series API
      * comparing datasource
@@ -421,7 +432,20 @@ export default {
         const filteredData = nhmisData.filter((item) => item.period.includes('2024'));
 
         // Array of standardized 3-letter month abbreviations
-        const monthOrder = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthOrder = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ];
 
         // Sort function using the first three letters of the period
         const newSortedData = filteredData.sort((a, b) => {
@@ -712,6 +736,7 @@ export default {
 
     getReset() {
       this.$emit('reset');
+      this.showPopUp = false;
     },
   },
 };
@@ -740,5 +765,29 @@ div.iddc_wrapper {
     width: 100%;
     height: 100%;
   }
+}
+.pop-wrapper {
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pop-up {
+  height: fit-content;
+  background-color: #fff;
+  z-index: 99999;
+  padding: 10px;
+  position: absolute;
+  width: 200px;
+  right: -200px;
+  top: 0px;
+  border-radius: 10px;
+  border: 1px solid #b3b3b3;
+}
+.pop-up h3 {
+  font-size: 12px;
+  cursor: pointer;
+}
+.pop-up h3:hover {
+  color: #00AC40;
 }
 </style>

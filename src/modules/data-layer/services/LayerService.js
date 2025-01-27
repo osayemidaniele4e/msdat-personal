@@ -401,9 +401,7 @@ export default class DataLayer {
    */
 
   async initDataWithYears(indicator) {
-    console.log(indicator, 'validIndicators 1');
     const validIndicators = indicator.filter((value) => !Number.isNaN(value));
-    console.log(validIndicators, 'validIndicators');
     for (let i = 0; i < validIndicators.length; i++) {
       const indicatorID = validIndicators[i];
       // console.log(indicatorID, 'validIndicators');

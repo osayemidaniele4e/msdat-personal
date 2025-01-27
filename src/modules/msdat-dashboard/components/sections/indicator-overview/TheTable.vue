@@ -5,8 +5,8 @@
     <div v-if="!loading">
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
-          <div class="w-100 d-flex justify-content-between align-items-center p-1">
-            <p class="work-sans mb-0 line-height">
+          <div class="w-100 d-flex justify-content-between align-items-center position-relative  p-1">
+            <p class="work-sans mb-0 line-height sub-title">
               <b>{{ values.indicator.short_name }}</b>
               and related indicators (with year of latest values) across {{ values.location.name }}.
             </p>
@@ -15,12 +15,17 @@
               <div
                 @mouseover="showTooltip"
                 @mouseout="hideTooltip"
-                @click="toggleShowShareModal()"
-                class="share-btn"
+                @click="toggleShowShareModal"
+                class=""
               >
-                <img src="@/assets/img/code.svg" alt="" />
+                <img src="@/assets/html.png" alt="" />
               </div>
+
             </div>
+            <!-- <div v-if="showPopUp" class="pop-up">
+              <h3 @click="toggleShowShareModal" >Share as HTML Code</h3>
+
+            </div> -->
           </div>
         </template>
         <TableComponent
@@ -102,6 +107,7 @@ export default {
       tableLink: null,
       isTooltipVisible: false,
       shareUrl: null,
+      showPopUp: false,
     };
   },
   props: {
@@ -205,6 +211,7 @@ export default {
      */
 
     toggleShowShareModal() {
+      this.showPopUp = false;
       const routeTitle = this.$route.params.name;
       localStorage.setItem('dashboardName', routeTitle);
       console.log(this.$route);
@@ -221,6 +228,9 @@ export default {
 
     closeShareModal() {
       this.showShareCodeModal = false;
+    },
+    togglePopUp() {
+      this.showPopUp = !this.showPopUp;
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;
@@ -360,16 +370,14 @@ export default {
 }
 
 .share-btn img {
-  width: 20px;
-  margin-right: 2px;
+  width: 32px;
+  height: 32px;
+
 }
 
 .share-wrapper {
   display: flex;
-}
-
-.share-btn:hover {
-  border: 1px solid #61a229;
+  cursor: pointer;
 }
 
 .tooltip-wrap {
@@ -378,5 +386,28 @@ export default {
   padding: 2px 5px;
   border-radius: 5px;
   font-size: 1rem;
+}
+
+.pop-up {
+  height: fit-content;
+  background-color: #fff;
+  z-index: 99999;
+  padding: 10px;
+  position: absolute;
+  width: 200px;
+  right: 0;
+  top: 50px;
+  border-radius: 10px;
+  border: 1px solid #b3b3b3;
+}
+.pop-up h3 {
+  font-size: 12px;
+  cursor: pointer;
+}
+.pop-up h3:hover {
+  color: #00AC40;
+}
+.sub-title {
+  font-size: 14px;
 }
 </style>

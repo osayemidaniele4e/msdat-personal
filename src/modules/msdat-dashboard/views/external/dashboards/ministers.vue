@@ -35,7 +35,7 @@ const sections = [
   {
     title: 'Indicator Preview',
     url: 'https://public.tableau.com/views/MINISTERSDASHBOARDLANDINGPAGES/Story1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-    width: '1100px',
+    width: '1050px',
   },
   {
     title: 'Indicator Details',
@@ -48,7 +48,7 @@ const sections = [
 ];
 
 export default {
-  name: 'QuarterReview',
+  name: 'MinistersDashboard',
   components: {
     theHeader,
     theFooter,
