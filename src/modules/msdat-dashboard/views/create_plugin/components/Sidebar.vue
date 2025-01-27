@@ -78,7 +78,7 @@
           <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank"  class="sub-item"
             >Health Outcomes and Service Coverage</router-link
           >
-          <router-link to="/quarterly-review" target="_blank"  class="sub-item"
+          <router-link to="/dashboard/Quarterly_Performance_Assessment_Dashboard" target="_blank"  class="sub-item"
             >Quarterly Performance Assessment</router-link
           >
         </b-list-group>
