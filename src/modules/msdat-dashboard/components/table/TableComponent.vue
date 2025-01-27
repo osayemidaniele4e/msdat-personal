@@ -31,10 +31,10 @@
             v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
             class="text-nowrap"
           >
-            <div @click="handleNhmisMonthlyClicked" class="nhmis_month_head">
+            <!-- <div @click="handleNhmisMonthlyClicked" class="nhmis_month_head">
               <span>NHMIS-DHIS2</span>
               <span>(monthly)</span>
-            </div>
+            </div> -->
             <TableDataSourceCell
               v-for="(dt, i) in source"
               :key="`${i}-row3`"
@@ -444,6 +444,7 @@ export default {
         (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
       );
       this.source = sortedSource;
+      console.log(this.source, 'this.dataArray');
 
       // checking if it has NHMIS as a datasource
       if (this.source.some((item) => item.id === 6)) {
