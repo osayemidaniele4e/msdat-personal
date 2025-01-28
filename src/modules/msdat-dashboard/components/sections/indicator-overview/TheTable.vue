@@ -5,7 +5,9 @@
     <div v-if="!loading">
       <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
-          <div class="w-100 d-flex justify-content-between align-items-center position-relative  p-1">
+          <div
+            class="w-100 d-flex justify-content-between align-items-center position-relative p-1"
+          >
             <p class="work-sans mb-0 line-height sub-title">
               <b>{{ values.indicator.short_name }}</b>
               and related indicators (with year of latest values) across {{ values.location.name }}.
@@ -20,7 +22,6 @@
               >
                 <img src="@/assets/html.png" alt="" />
               </div>
-
             </div>
             <!-- <div v-if="showPopUp" class="pop-up">
               <h3 @click="toggleShowShareModal" >Share as HTML Code</h3>
@@ -135,10 +136,10 @@ export default {
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
-            // console.log(dataSources, 'this.dataArray');
+            const temp = dataSources.filter((item) => item.id !== 30);
             const indicatorObject = this.dlGetIndicator(indicatorID);
-            for (let index = 0; index < dataSources.length; index += 1) {
-              const element = dataSources[index];
+            for (let index = 0; index < temp.length; index += 1) {
+              const element = temp[index];
               // eslint-disable-next-line no-await-in-loop
               const ab = await this.dlGetLatestSourceAndIndicatorData({
                 indicator: indicatorID,
@@ -372,7 +373,6 @@ export default {
 .share-btn img {
   width: 32px;
   height: 32px;
-
 }
 
 .share-wrapper {
@@ -405,7 +405,7 @@ export default {
   cursor: pointer;
 }
 .pop-up h3:hover {
-  color: #00AC40;
+  color: #00ac40;
 }
 .sub-title {
   font-size: 14px;
