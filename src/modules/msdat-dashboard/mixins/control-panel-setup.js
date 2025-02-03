@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
 import { sortBy, uniq } from 'lodash';
@@ -176,42 +178,60 @@ export default {
       return uniqueYears.sort((a, b) => b - a);
     },
 
+    /**
+     * Method to set the location dropdown based on the selected data source and indicator.
+     * It fetches available locations from the database and updates the store with the unique locations.
+     *
+     * @param {number} dataSourceID - The ID of the selected data source. Defaults to the default data source ID.
+     * @param {number} indicatorID - The ID of the selected indicator. Defaults to the default indicator ID.
+     * @param {number} controlIndex - The index of the control to update. Defaults to 0.
+     */
     async setLocationDropdown(
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
       controlIndex = 0,
     ) {
+      // Return if either dataSourceID or indicatorID is not provided
       if (!dataSourceID || !indicatorID) return;
+
       let data = [];
+
+      // Fetch available locations for each indicator if indicatorID is an array
       if (Array.isArray(indicatorID)) {
-        // eslint-disable-next-line no-restricted-syntax
         for (const ind of indicatorID) {
-          // eslint-disable-next-line no-await-in-loop
           data = data.concat(await this.queryDBForAvailableLocation(dataSourceID, ind));
         }
+      // Fetch available locations for each data source if dataSourceID is an array
       } else if (Array.isArray(dataSourceID)) {
-        // eslint-disable-next-line no-restricted-syntax
         for (const dat of dataSourceID) {
-          // eslint-disable-next-line no-await-in-loop
           data = data.concat(await this.queryDBForAvailableLocation(dat, indicatorID));
         }
+      // Fetch available locations for the given dataSourceID and indicatorID
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
+
+      // Get locations of level 3 and level 2
       const locations = this.dlGetLocation({ level: 3 });
       const zonalLocation = this.dlGetLocation({ level: 2 });
       let allLocations = [...locations, ...zonalLocation];
 
+      // Add Nigeria (level 1) to the top of the locations array
       allLocations.unshift(this.dlGetLocation(1));
+
+      // Filter locations to include only those present in the data array
       allLocations = allLocations.filter(({ id }) => data.includes(id));
-      // locations.push(...this.additionalLocation);
+
+      // Remove duplicate locations
       const uniqueItems = Array.from(new Map(allLocations.map((obj) => [obj.id, obj])).values());
 
+      // Commit the unique locations to the store
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
         payload: uniqueItems,
       });
 
+      // Set the default location (Nigeria) in the store
       this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
         controlIndex,
         key: 'location',

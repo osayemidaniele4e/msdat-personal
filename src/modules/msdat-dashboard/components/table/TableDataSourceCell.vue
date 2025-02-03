@@ -15,7 +15,7 @@
         >{{ source.datasource }}
       </span>
       <b-icon-info-circle-fill
-        @click="$emit('source-info:click', source)"
+        @click.stop="$emit('source-info:click', source)"
         class="data-source-info mx-0"
         font-scale="0.5"
       />
