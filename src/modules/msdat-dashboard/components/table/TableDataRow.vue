@@ -13,7 +13,14 @@
           />
         </div>
       </td>
-      <td class="align-middle p-2 table-indicators-1" id="table-indicators-1">
+      <td
+        :class="[
+          related === 'related'
+            ? 'align-middle p-2 table-indicators-1 '
+            : 'align-middle p-2 table-indicators-1 tableRowBg',
+        ]"
+        id="table-indicators-1"
+      >
         <!-- Use this slot to set the related indicator multiselect and it options -->
         <div
           class="d-flex flex-column indicator-container"
@@ -499,5 +506,10 @@ span.multiselect__single::-webkit-scrollbar-thumb {
 multiselect,
 input::placeholder {
   font-size: 11.5px !important; /* Adjust the font size as needed */
+}
+
+.tableRowBg {
+  background-color: #348481 !important;
+  color: white;
 }
 </style>
