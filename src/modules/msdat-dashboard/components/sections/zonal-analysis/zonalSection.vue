@@ -101,11 +101,8 @@ export default {
         },
         plotOptions: {
           series: {
-            pointPadding: 0.1,
-            groupPadding: 0.2,
             dataLabels: {
               enabled: true,
-              padding: 10,
               format: '{y}',
             },
           },
@@ -138,6 +135,13 @@ export default {
       }
       // sort Zonal series data in ascending order
       return zonesSeries.sort((a, b) => b.y - a.y);
+    },
+
+    filterNonEmptyData(series) {
+      return series.filter((item) => {
+        console.log(item.name, item.data); // Debugging the `data` value
+        return item.data && item.data.length > 0;
+      });
     },
 
     getStateDataAccordingToRegionInHighChartFormat(data) {
@@ -224,14 +228,14 @@ export default {
             // add national to top of the zonal series series
             const national = data.find((item) => item.location === 1);
             zonalSeries.unshift({
-              name: 'National',
+              name: 'Nigeria',
               y: parseFloat(national.value),
-              color: this.colors[0].color,
+              color: Highcharts.color('#000000').get(),
             });
             const zonalZee = {
+              color: Highcharts.color('#000000').get(),
               name: 'Nigeria',
               data: zonalSeries,
-              color: this.colors[0].color,
             };
             // for the new chart, eact array of states has the zone included
             const newChart = [];
@@ -248,8 +252,9 @@ export default {
             newChart.unshift();
             // add zonal series to top of main the series
             chartSeries.unshift(zonalZee);
+            const filteredSeries = this.filterNonEmptyData(chartSeries);
             // chartSeries.unshift(zonalZee); //  removed this part
-            this.formatToHighChart(chartSeries);
+            this.formatToHighChart(filteredSeries);
           }
         }
         // Plot for LGAs

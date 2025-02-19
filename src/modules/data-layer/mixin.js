@@ -135,6 +135,7 @@ export default {
       //   );
       //   query.value_type = valuetype[0]?.id;
       // }
+
       const datasource = await this.dlGetDataSource(query.datasource);
       // if (this.valueType?.length <= 0) {
       //   this.valueType = await this.getDexieTableValues('valuetypes');
@@ -195,7 +196,6 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      // console.log(this.dlLocation, 'this.dlLocation');
       if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }

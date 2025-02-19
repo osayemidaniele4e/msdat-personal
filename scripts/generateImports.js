@@ -104,6 +104,7 @@ export default {
     },
   },
   async mounted() {
+   window.addEventListener('unload', this.handleAppUnload);
    this.startSixHourInterval();
    this.firstTimeExecution();
 
@@ -124,6 +125,13 @@ export default {
       this.toggleShowWhatsNew();
     },
 
+     handleAppUnload() {
+      // Perform your cleanup or function call here
+      console.log('Application is being unloaded.');
+      // Example: Save data to local storage or call an API
+      localStorage.removeItem('firstTimeExecution');
+    },
+
      startSixHourInterval() {
       const checkAndExecute = () => {
         const now = new Date();
@@ -142,12 +150,16 @@ export default {
         localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 2 * 60 * 1000); // 3 minutes delay in milliseconds
+        }, 1 * 60 * 1000); // 3 minutes delay in milliseconds
       }
     },
 
 
     
+  },
+   beforeDestroy() {
+    // Remove the event listener to avoid memory leaks
+    window.removeEventListener('unload', this.handleAppUnload);
   },
 };
 </script>

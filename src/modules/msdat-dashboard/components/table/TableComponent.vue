@@ -64,7 +64,7 @@
           the main indicator and others, the related indicators -->
           <!-- <pre>{{ dataArray  }}</pre> -->
           <TableDataRow
-            class="base_subCard_header text-white"
+            class="tableRowBg"
             :rowData="dataArray[0]"
             @indicator-info:clicked="$emit('selected:indicator-info', $event)"
             :replaceContent="replaceContent"
@@ -75,10 +75,11 @@
             <template
               #default
               v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
+              class=""
             >
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
-              <div v-if="nhmisMonthData[0]" class="nhmis-monthly">
+              <div v-if="nhmisMonthData[0]" class="nhmis-monthly tableRowBg2 ">
                 <span class="value-nhmis">{{
                   nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].value}%`
                 }}</span>
@@ -87,7 +88,7 @@
                 }}</span>
               </div>
 
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+              <td class="text-center tableRowBg2 p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
                   :dataColors="' '"
@@ -95,7 +96,7 @@
               </td>
             </template>
             <template #default v-else>
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+              <td class="text-center tableRowBg p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <!-- percentage values and year -->
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
@@ -178,7 +179,7 @@
                   <div class="nhmis-rel-text2">-</div>
                 </td>
                 <td
-                  class="text-center p-2"
+                  class="text-center  p-2"
                   v-for="(dt, i) in source"
                   :key="`${i}-row9`"
                   scope="col"
@@ -379,7 +380,6 @@ export default {
      */
     getValueForColumn(valueArray, column) {
       const valueObj = valueArray.find((e) => e.dataSources === column);
-      // console.log('🚀valueObj', valueObj);
       if (valueObj) {
         return valueObj;
       }
@@ -557,10 +557,10 @@ export default {
           const data = await this.getNhmisData(el);
           if (data === undefined) {
             const updatedData = { ...data, value: null };
-            this.nhmisMonthData.push(updatedData);
+            this.nhmisMonthData.unshift(updatedData);
           } else {
             const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
-            this.nhmisMonthData.push(updatedData);
+            this.nhmisMonthData.unshift(updatedData);
           }
         }),
       );
@@ -800,4 +800,16 @@ table.table {
   font-size: 12px;
   font-weight: 600;
 }
+
+.tableRowBg {
+  background-color: #348481 !important;
+  color: white;
+}
+
+.tableRowBg2 {
+  background-color: #348481 !important;
+  color: white;
+  /* padding: 30px 0; */
+}
+
 </style>

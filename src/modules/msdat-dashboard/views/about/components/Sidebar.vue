@@ -79,6 +79,9 @@
           <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank"  class="sub-item"
             >Health Outcomes and Service Coverage</router-link
           >
+          <router-link to="/dashboard/Quarterly_Performance_Assessment_Dashboard" target="_blank"  class="sub-item"
+            >Quarterly Performance Assessment</router-link
+          >
         </b-list-group>
       </div>
       <div class="col mb-3">
@@ -111,6 +114,9 @@
           <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
            class="sub-item"
             >Governors' Dashboard</a
+          >
+          <router-link to="/ministers-dashboard" target="_blank"  class="sub-item"
+            >SWAP Ministerial Dashboard</router-link
           >
           <!-- <router-link to="/coming-soon/advanced_analytics" -->
           <!-- <router-link to="/advanced_analytics"

@@ -1,76 +1,76 @@
 <template>
-  <div>
-    <theHeader />
-    <div class="content-wrapper">
-      <!-- Indicator Selection Section -->
-      <div class="indicator-selection card">
-        <label for="indicatorDropdown">Select an Indicator:</label>
-        <b-form-select
-          id="indicatorDropdown"
-          v-model="selectedIndicatorId"
-          :options="indicatorOptions"
-          @change="onIndicatorChange"
-          class="mb-3 select-from"
-        >
-          <template #first>
-            <option value="" disabled>Select an indicator...</option>
-          </template>
-        </b-form-select>
-      </div>
+ <div>
+   <theHeader />
+   <div class="content-wrapper">
+     <!-- Indicator Selection Section -->
+     <div class="indicator-selection card">
+       <label for="indicatorDropdown">Select an Indicator:</label>
+       <b-form-select
+         id="indicatorDropdown"
+         v-model="selectedIndicatorId"
+         :options="indicatorOptions"
+         @change="onIndicatorChange"
+         class="mb-3 select-from"
+       >
+         <template #first>
+           <option value="" disabled>Select an indicator...</option>
+         </template>
+       </b-form-select>
+     </div>
 
-      <!-- Display Metadata -->
-      <div v-if="indicatorMetadata" class="card">
-        <h3>Indicator Metadata</h3>
-        <p><strong>Full Name:</strong> {{ indicatorMetadata.full_name }}</p>
-        <p><strong>Short Name:</strong> {{ indicatorMetadata.short_name }}</p>
-        <p><strong>Program Area:</strong> {{ indicatorMetadata.program_area }}</p>
-        <p><strong>Desirable Slope:</strong> {{ indicatorMetadata.desirable_slope }}</p>
-        <!-- <h4>Data Sources</h4>
-        <ul>
-          <li v-for="dataSource in dataSourceNames" :key="dataSource.id">
-            <strong>{{ dataSource.name }}</strong>
-          </li>
-        </ul>
-        <h4>Related Indicators</h4>
-        <ul>
-          <li v-for="indicator in relatedIndicatorNames" :key="indicator.id">{{ indicator.name }}</li>
-        </ul> -->
-      </div>
+     <!-- Display Metadata -->
+     <div v-if="indicatorMetadata" class="card">
+       <h3>Indicator Metadata</h3>
+       <p><strong>Full Name:</strong> {{ indicatorMetadata.full_name }}</p>
+       <p><strong>Short Name:</strong> {{ indicatorMetadata.short_name }}</p>
+       <p><strong>Program Area:</strong> {{ indicatorMetadata.program_area }}</p>
+       <p><strong>Desirable Slope:</strong> {{ indicatorMetadata.desirable_slope }}</p>
+       <!-- <h4>Data Sources</h4>
+       <ul>
+         <li v-for="dataSource in dataSourceNames" :key="dataSource.id">
+           <strong>{{ dataSource.name }}</strong>
+         </li>
+       </ul>
+       <h4>Related Indicators</h4>
+       <ul>
+         <li v-for="indicator in relatedIndicatorNames" :key="indicator.id">{{ indicator.name }}</li>
+       </ul> -->
+     </div>
 
-      <!-- AI Query Section -->
-      <div v-if="indicatorMetadata" class="card">
-        <h3>Ask a Question about the Metadata</h3>
-        <b-form-group label="Your Question">
-          <b-form-input
-            v-model="aiQuery"
-            placeholder="Type your question here..."
-          ></b-form-input>
-        </b-form-group>
-        <b-button
-          @click="queryAIModel"
-          :disabled="!aiQuery || loadingResponse"
-          variant="primary"
-        >
-          <span v-if="loadingResponse">
-            <b-spinner></b-spinner> Loading...
-          </span>
-          <span v-else>Ask</span>
-        </b-button>
+     <!-- AI Query Section -->
+     <div v-if="indicatorMetadata" class="card">
+       <h3>Ask a Question about the Metadata</h3>
+       <b-form-group label="Your Question">
+         <b-form-input
+           v-model="aiQuery"
+           placeholder="Type your question here..."
+         ></b-form-input>
+       </b-form-group>
+       <b-button
+         @click="queryAIModel"
+         :disabled="!aiQuery || loadingResponse"
+         variant="primary"
+       >
+         <span v-if="loadingResponse">
+           <b-spinner></b-spinner> Loading...
+         </span>
+         <span v-else>Ask</span>
+       </b-button>
 
-        <!-- AI Response Section -->
-        <div v-if="loadingResponse" class="ai-response">
-          <h4>AI Response:</h4>
-          <b-spinner class="spinner-large"></b-spinner>
-          <p>Fetching response...</p>
-        </div>
-        <div v-else-if="aiResponse" class="ai-response">
-          <h4>AI Response:</h4>
-          <div v-html="styledAiResponse"></div>
-        </div>
-      </div>
-    </div>
-    <theFooter />
-  </div>
+       <!-- AI Response Section -->
+       <div v-if="loadingResponse" class="ai-response">
+         <h4>AI Response:</h4>
+         <b-spinner class="spinner-large"></b-spinner>
+         <p>Fetching response...</p>
+       </div>
+       <div v-else-if="aiResponse" class="ai-response">
+         <h4>AI Response:</h4>
+         <div v-html="styledAiResponse"></div>
+       </div>
+     </div>
+   </div>
+   <theFooter />
+ </div>
 </template>
 
 <script>
@@ -193,17 +193,17 @@ These indicators may also relate to various program areas, policies, and histori
           {
             role: 'user',
             content: `Provide insights for the following indicator metadata:
-        - Full Name: ${this.indicatorMetadata.full_name}
-        - Short Name: ${this.indicatorMetadata.short_name}
-        - Program Area: ${this.indicatorMetadata.program_area}
-        - Desirable Slope: ${this.indicatorMetadata.desirable_slope}
-        - Related Indicators: ${additionalMetadata.relatedIndicators}
-        - Data Sources: ${additionalMetadata.dataSources}
-        - Data Source Methodology: ${additionalMetadata.datasource_methodology}
-        - Data Source Year Available: ${additionalMetadata.datasource_year_available}
-        - Descriptions: ${additionalMetadata.descriptions}
-        
-        Question: ${this.aiQuery}`,
+       - Full Name: ${this.indicatorMetadata.full_name}
+       - Short Name: ${this.indicatorMetadata.short_name}
+       - Program Area: ${this.indicatorMetadata.program_area}
+       - Desirable Slope: ${this.indicatorMetadata.desirable_slope}
+       - Related Indicators: ${additionalMetadata.relatedIndicators}
+       - Data Sources: ${additionalMetadata.dataSources}
+       - Data Source Methodology: ${additionalMetadata.datasource_methodology}
+       - Data Source Year Available: ${additionalMetadata.datasource_year_available}
+       - Descriptions: ${additionalMetadata.descriptions}
+       
+       Question: ${this.aiQuery}`,
           },
         ],
         temperature: 0.7,
@@ -280,92 +280,92 @@ These indicators may also relate to various program areas, policies, and histori
 <style scoped>
 
 .content-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  margin-bottom:40px;
-  animation: fadeIn 1s ease-in-out;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 20px;
+ margin-bottom:40px;
+ animation: fadeIn 1s ease-in-out;
 }
 
 .card {
-  max-width: 600px;
-  width: 100%;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: cardFadeIn 0.8s ease-out forwards;
+ max-width: 600px;
+ width: 100%;
+ padding: 20px;
+ background: #fff;
+ border-radius: 8px;
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ margin-top: 20px;
+ opacity: 0;
+ transform: translateY(20px);
+ animation: cardFadeIn 0.8s ease-out forwards;
 }
 
 .card h3, .card p {
-  animation: textPopIn 0.5s ease-in-out;
+ animation: textPopIn 0.5s ease-in-out;
 }
 
 .select-from {
-  width: 100%;
+ width: 100%;
 }
 
 .b-spinner {
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
-  border-radius: 50%;
-  width: 12px;
-  height: 12px;
-  animation: spin 0.8s linear infinite;
+ border: 2px solid #f3f3f3;
+ border-top: 2px solid #3498db;
+ border-radius: 50%;
+ width: 12px;
+ height: 12px;
+ animation: spin 0.8s linear infinite;
 }
 
 .spinner-large {
-  display: block;
-  margin: 10px auto;
-  width: 24px;
-  height: 24px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+ display: block;
+ margin: 10px auto;
+ width: 24px;
+ height: 24px;
+ border: 4px solid #f3f3f3;
+ border-top: 4px solid #3498db;
+ border-radius: 50%;
+ animation: spin 0.8s linear infinite;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+ from {
+   opacity: 0;
+ }
+ to {
+   opacity: 1;
+ }
 }
 
 @keyframes cardFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+ 0% {
+   opacity: 0;
+   transform: translateY(20px);
+ }
+ 100% {
+   opacity: 1;
+   transform: translateY(0);
+ }
 }
 
 @keyframes textPopIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+ 0% {
+   opacity: 0;
+   transform: scale(0.9);
+ }
+ 100% {
+   opacity: 1;
+   transform: scale(1);
+ }
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+ from {
+   transform: rotate(0deg);
+ }
+ to {
+   transform: rotate(360deg);
+ }
 }
 </style>

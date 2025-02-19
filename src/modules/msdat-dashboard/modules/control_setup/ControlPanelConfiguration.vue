@@ -192,7 +192,7 @@ export default {
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
               key: 'year',
-              values: availableYears,
+              values: availableYears.sort((a, b) => b - a),
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
 
@@ -228,8 +228,6 @@ export default {
 
         this.SET_DATASOURCE_TIME_SPENT(timespent);
 
-        console.log('timespent in   datasource', timespent);
-
         this.previous_time_datasource = this.after_time_datasource;
 
         this.previous_datasource = this.payload.datasource;
@@ -244,7 +242,7 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears,
+            values: availableYears.sort((a, b) => b - a),
           });
           // ============
           if (this.controlIndex === 2) {
@@ -277,7 +275,7 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears,
+            values: availableYears.sort((a, b) => b - a),
           });
         }
       },
