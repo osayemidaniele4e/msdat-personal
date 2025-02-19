@@ -378,7 +378,7 @@ export default {
         surveyArray: this.$store.getters.getDataSource,
         sectionsArray: arrangedSections,
       });
-
+      console.log('config @@', config);
       // if the dashboard is public, run these functions
       if (this.getVisibility === 'public') {
         const id = `${Date.now()}${this.getUser.id}`;
