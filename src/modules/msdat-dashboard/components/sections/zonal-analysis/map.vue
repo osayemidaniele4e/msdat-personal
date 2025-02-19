@@ -279,7 +279,6 @@ export default {
         // PLOT 3RD MAP AS LGA
         if (stateObject.level === 3) {
           this.showBackButton = false;
-          console.log('Henry @@@');
           const filteredLGADataForState = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id,
           );
@@ -296,7 +295,6 @@ export default {
           }
 
           if (filteredLGADataForState.length === 0) {
-            console.log('Henry @@@');
             this.showBackButton = true;
             this.showNoAvailableData = true;
             this.loader = false;
