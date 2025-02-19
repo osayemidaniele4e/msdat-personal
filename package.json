@@ -76,6 +76,7 @@
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "comlink-loader": "^2.0.0",
+    "cypress": "^14.0.3",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
@@ -103,5 +104,11 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "resolutions": {
+    "@achrinza/node-ipc": "9.2.2"
   }
 }
