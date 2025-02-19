@@ -22,7 +22,10 @@
         v-if="Object.keys(values).length && dataSourcesOptions.length === 0"
       >
         <template #title>
-          <p class="work-sans mb-0 line-height">
+          <p v-if="hasOneDatasource" class="work-sans mb-0 line-height">
+            Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
+          </p>
+          <p v-else class="work-sans mb-0 line-height">
             Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
             {{ values.indicator.short_name }}) across different data sources.
           </p>
@@ -50,7 +53,10 @@
         v-if="Object.keys(values).length && dataSourcesOptions.length !== 0"
       >
         <template #title>
-          <p class="work-sans mb-0 line-height">
+          <p v-if="hasOneDatasource" class="work-sans mb-0 line-height">
+            Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
+          </p>
+          <p v-else class="work-sans mb-0 line-height">
             Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
             {{ values.indicator.short_name }}) across different data sources.
           </p>
@@ -59,7 +65,7 @@
         <!-- refresh button to show all datasources in the chart -->
         <template #refresh>
           <div class="pop-wrapper">
-            <img src="@/assets/refresh.png"  @click="getReset()" alt="" />
+            <img src="@/assets/refresh.png" @click="getReset()" alt="" />
           </div>
           <!-- <b-icon-arrow-clockwise
             id="reset"
@@ -104,6 +110,7 @@ export default {
       years: {},
       selectDataSource: null,
       showPopUp: false,
+      hasOneDatasource: false,
     };
   },
   props: {
@@ -198,6 +205,11 @@ export default {
         // change get datasource function to API matching indicator to dataSource
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          if (dataSources.length === 1) {
+            this.hasOneDatasource = true;
+          } else {
+            this.hasOneDatasource = false;
+          }
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
           // added this so that the datasource list will update anytime an indicator is selected
@@ -410,8 +422,12 @@ export default {
 
             // If this series has confidence data, we need to split that too
             if (series.confidenceData) {
-              const confidenceBeforeYear = series.confidenceData.filter(([year]) => year < currentYear);
-              const confidenceAfterYear = series.confidenceData.filter(([year]) => year >= currentYear);
+              const confidenceBeforeYear = series.confidenceData.filter(
+                ([year]) => year < currentYear,
+              );
+              const confidenceAfterYear = series.confidenceData.filter(
+                ([year]) => year >= currentYear,
+              );
 
               return [
                 {
@@ -1007,6 +1023,6 @@ div.iddc_wrapper {
   cursor: pointer;
 }
 .pop-up h3:hover {
-  color: #00AC40;
+  color: #00ac40;
 }
 </style>
