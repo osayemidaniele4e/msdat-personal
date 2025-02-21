@@ -27,11 +27,92 @@
           v-if="dashboardName === 'Health_Facility'"
         >
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
-            <div class="indicator-name">{{ rowData.indicator.full_name }}</div>
+            <!-- <div class="indicator-name">{{ rowData.indicator.full_name }}</div> -->
+            <div class="d-flex justify-content-between">
+              <div class="span">{{ rowData.indicator.full_name }}</div>
+              <b-icon-caret-down-fill
+                @click="toggleDropdown"
+                v-if="related === 'related' && showDropdown === false"
+                class="info-circle icon-up"
+              />
+              <b-icon-caret-up-fill
+                @click="toggleDropdown"
+                v-if="related === 'related' && showDropdown === true"
+                class="info-circle icon-up"
+              />
+            </div>
           </slot>
           <span style="font-size: 10px; margin: 0 5px">
             {{ factor.trim() ? `(${factor})` : '' }}</span
           >
+          <div
+            class="facility-drop-width"
+            v-if="showDropdown"
+            :class="[isCollapsibleDropActive === true ? 'drop-height ' : '']"
+          >
+            <!-- changed :options to now use getIndicators || options -->
+            <multiselect
+              v-model="rowData.indicator"
+              :options="getIndicators || options"
+              :multiple="false"
+              placeholder="Type to search"
+              track-by="full_name"
+              label="full_name"
+              @select="handleSelect"
+              v-bind="multiSelectProps"
+              close-on-select
+              :allow-empty="true"
+              selectLabel=""
+              data-visted="notVisited"
+              deselectLabel=""
+              autocomplete="off"
+              class="custom-placeholder"
+              @open="handleOpen"
+              @close="handleClose"
+              searchable
+              @search-change="handleSearchChange"
+              :id="formattedID"
+            >
+              <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
+              <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
+                <template v-if="props.option.$groupLabel">
+                  <span class="overflow-textg" :data-parent="props.option.$groupLabel">
+                    {{ props.option.$groupLabel }}
+                    <span
+                      v-if="isCollapsibleActive"
+                      class="newGrouplabel"
+                      :class="{ 'open-caret': groupLabelStates[props.option.$groupLabel] }"
+                      @click="toggleGroupLabel(props.option.$groupLabel)"
+                    >
+                      {{
+                        groupLabelStates[props.option.$groupLabel]
+                          ? 'Click to collapse ▲'
+                          : 'Click to expand ▼'
+                      }}
+                    </span>
+                  </span>
+                </template>
+                <template v-if="props.option.item">
+                  <div
+                    v-if="!props.option.$groupLabel"
+                    class="overflow-text"
+                    :data-child="modifyDataSourceChildLabel(props.option.item)"
+                  >
+                    {{ props.option.item }}
+                  </div>
+                </template>
+                <template v-else-if="props.option.full_name">
+                  <div
+                    v-if="!props.option.$groupLabel"
+                    class="overflow-text text-wrap"
+                    :data-child="props.option.program_area"
+                  >
+                    {{ props.option.full_name }}
+                  </div>
+                </template>
+              </template>
+            </multiselect>
+          </div>
         </div>
 
         <div class="d-flex flex-column" v-else>
@@ -427,7 +508,7 @@ tr {
 }
 
 .indicator-container {
-  max-width: 100ch; /* Limit to 20 characters */
+  // max-width: 100ch; /* Limit to 20 characters */
   word-wrap: break-word; /* Force text to wrap within the cell */
   white-space: initial; /* Reset white-space property */
 }
@@ -442,6 +523,11 @@ tr {
 }
 .drop-width {
   width: 300px;
+  z-index: 1;
+}
+
+.facility-drop-width {
+  width: 500px;
   z-index: 1;
 }
 .drop-height {

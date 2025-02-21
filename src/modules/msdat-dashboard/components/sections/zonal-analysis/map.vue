@@ -35,6 +35,15 @@
             &nbsp;Back to National
           </button>
           <button
+            title="Back to National"
+            @click="returnToNational"
+            v-if="showBackButton"
+            class="bg-primary font-weight-bold"
+          >
+            <b-icon icon="chevron-left" />
+            &nbsp;Back to National
+          </button>
+          <button
             title="Back to Zonal "
             @click="returnToZonal"
             v-if="level === 3"
@@ -95,6 +104,7 @@ export default {
       showNoAvailableData: false,
       stateData: [],
       selectedState: null,
+      showBackButton: false,
     };
   },
   methods: {
@@ -144,7 +154,7 @@ export default {
           period: val.year,
           location: val.location.id,
         });
-        console.log(val, 'filteredLGADataForState kogi');
+        // console.log(val, 'filteredLGADataForState kogi');
         this.selectedState = val.location.name;
 
         const stateObject = this.dlGetLocation(val.location.id);
@@ -189,10 +199,10 @@ export default {
           }
 
           const filteredSeries = chartSeries.filter((item) => item.data.length > 0);
-          console.log(filteredSeries, 'filteredLGADataForState 5');
           this.stateData = filteredSeries;
 
           if (filteredSeries.length === 1) {
+            this.showBackButton = false;
             const groupP = data.filter((item) => this.dlGetLocation(item.location).parent === 1);
             if (groupP.length === 0) {
               this.showNoAvailableData = true;
@@ -210,8 +220,6 @@ export default {
               data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
             }));
 
-            console.log(zData, 'filteredLGADataForState XX');
-
             this.chart = {
               series: zData,
             };
@@ -219,6 +227,7 @@ export default {
             this.level = 2;
             this.stateName = 'Nigeria';
           } else {
+            this.showBackButton = false;
             this.stateName = stateObject.name; // Please always change the state name before
             // changing the level else you would get an error
             this.level = 1;
@@ -237,6 +246,7 @@ export default {
         }
         // PLOT 2ND MAP AS STATE
         if (stateObject.level === 2) {
+          this.showBackButton = false;
           this.zone = stateObject.id;
           const filteredStateDataForZone = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id,
@@ -268,6 +278,7 @@ export default {
         }
         // PLOT 3RD MAP AS LGA
         if (stateObject.level === 3) {
+          this.showBackButton = false;
           const filteredLGADataForState = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id,
           );
@@ -284,13 +295,14 @@ export default {
           }
 
           if (filteredLGADataForState.length === 0) {
+            this.showBackButton = true;
             this.showNoAvailableData = true;
             this.loader = false;
             this.chart = {
               series: tempData,
             };
           } else {
-            console.log(filteredLGADataForState, 'filteredLGADataForState 2');
+            this.showBackButton = false;
             const formatToHighChart = (dataValues) => dataValues.map((item) => [
               this.dlGetLocation(item.location).name,
               parseFloat(item.value),
