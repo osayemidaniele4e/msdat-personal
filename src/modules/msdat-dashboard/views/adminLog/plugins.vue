@@ -13,7 +13,7 @@
          <b-row v-for="(plugin) in availablePlugins" :key="plugin" class="plugin-card mb-3" :class="{'highlighted': plugin.highlighted}">
            <b-col cols="8">
              <h5>{{ plugin }}</h5>
-             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, alias, asperiores tenetur blanditiis velit iste possimus similique doloribus veritatis illo quaerat earum maiores unde impedit sapiente numquam iusto neque beatae.</p>
+             <p>This plugin is available</p>
            </b-col>
            <b-row  >
              <!-- Toggle Switch -->
@@ -21,20 +21,20 @@
                 <small>Last Updated: 10th April, 2024</small>
               <b-row class="check-form">
 
-                <b-form-checkbox
+                <!-- <b-form-checkbox
                   v-model="plugin.enabled"
                   switch
                   size="lg"
                   :value="true"
                   :unchecked-value="false"
-                ></b-form-checkbox>
+                ></b-form-checkbox> -->
                 <!-- Action Dropdown -->
                 <b-dropdown right variant="link" class="ml-2">
                   <template #button-content>
                     <b-icon-three-dots-vertical></b-icon-three-dots-vertical>
                   </template>
                   <b-dropdown-item @click="disablePlugin(plugin.id)">Disable Plug-In</b-dropdown-item>
-                  <b-dropdown-item @click="updatePlugin(plugin.id)">Update Plug-In</b-dropdown-item>
+                  <!-- <b-dropdown-item @click="updatePlugin(plugin.id)">Update Plug-In</b-dropdown-item> -->
                   <b-dropdown-item @click="deletePlugin(plugin.id)">Delete Plug-In</b-dropdown-item>
                 </b-dropdown>
               </b-row>
@@ -71,19 +71,17 @@ export default {
       console.log('Disable plugin:', pluginId);
       // Logic to disable the plugin
     },
-    updatePlugin(pluginId) {
-      console.log('Update plugin:', pluginId);
-      // Logic to update the plugin
-    },
     deletePlugin(pluginId) {
       console.log('Delete plugin:', pluginId);
       // Logic to delete the plugin
     },
-
   },
 
   mounted() {
     this.availablePlugins = this.getPluginsImported;
+    this.availablePlugins.forEach((plugin) => {
+      console.log('Plugin details:', plugin);
+    });
   },
 };
 </script>
@@ -108,7 +106,7 @@ justify-content: space-between;
   align-items: flex-end;
 }
 
-.plugin-card.highlighted {
+plugin-card.highlighted {
  background-color: #eaf7f4; /* For highlighted plugin (like the second one) */
 }
 

@@ -121,7 +121,7 @@
       </div>
     </b-row>
   </b-col>
-  <b-col class="saved-states">
+  <!-- <b-col class="saved-states">
     <h4>Saved States</h4>
 
     <div class="state-section">
@@ -156,14 +156,14 @@
     <a href="#" class="create-link">
       <b-icon icon="plus-circle"></b-icon> Create New State
     </a>
-  </b-col>
+  </b-col> -->
     <!-- Appearance Settings Component -->
     <appearance-settings></appearance-settings>
 
     <b-col class="deactivate-account">
       <h4>Deactivate Account</h4>
       <p>Your account will be permanently deleted and you will no longer have access to all your data.</p>
-      <a class="btn-dang">Deactivate Account</a>
+      <a class="btn-dang" @click="deactivateAccount">Deactivate Account</a>
       </b-col>
   </b-col>
  </template>
@@ -300,15 +300,16 @@ export default {
 
       try {
         const token = this.getUser.tokens.access_token;
-        console.log('Token:', token);
+        // console.log('Token:', token);
 
         if (!token) {
           this.$swal('Session expired', 'Please log in again', 'error');
           this.$store.dispatch('AUTH_STORE/logout'); // Optional: Log out user if token is missing
+          this.$router.go();
           return;
         }
 
-        console.log('Payload:', payload);
+        // console.log('Payload:', payload);
 
         const response = await axios.put(url, payload, {
           headers: {
@@ -342,6 +343,55 @@ export default {
       } else {
         this.passwordFieldType[field] = 'password';
         this.passwordToggleIcon[field] = 'fas fa-eye';
+      }
+    },
+
+    async deactivateAccount() {
+      const result = await this.$swal({
+        title: 'Are you sure?',
+        text: 'Do you really want to deactivate your account? This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, deactivate it!',
+        cancelButtonText: 'No, keep my account',
+      });
+
+      if (result.isConfirmed) {
+        const baseUrl = 'https://msdat2api.e4eweb.space/api/';
+        const url = `${baseUrl}users/${this.getUser.id}/`;
+
+        try {
+          const token = this.getUser.tokens.access_token;
+
+          if (!token) {
+            this.$swal('Session expired', 'Please log in again', 'error');
+            this.$store.dispatch('AUTH_STORE/logout');
+            this.$router.go(); // Optional: Log out user if token is missing
+            return;
+          }
+
+          await axios.delete(url, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          this.$swal('Account deactivated successfully!', '', 'success');
+          this.$store.dispatch('AUTH_STORE/logout'); // Log out the user after deactivation
+          this.$router.go();
+        } catch (error) {
+          console.error('Error deactivating account:', error.response?.data || error.message);
+          const errorMessage = error.response?.data?.message || 'An error occurred';
+
+          if (error.response?.data?.code === 'token_not_valid') {
+            this.$swal('Session expired', 'Please log in again', 'error');
+            this.$store.dispatch('AUTH_STORE/logout');
+            this.$router.go();
+          } else {
+            this.$swal('Failed to deactivate account', errorMessage, 'error');
+          }
+        }
       }
     },
   },
