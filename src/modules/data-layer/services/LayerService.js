@@ -407,21 +407,23 @@ export default class DataLayer {
       // console.log(indicatorID, 'validIndicators');
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
 
-      const currentYear = new Date().getFullYear();
+      const sortedYears = this.sortYearsDescending(yearsNotAvailableInDB);
+
+      // const currentYear = new Date().getFullYear();
       // Separate integer years and month names
       // eslint-disable-next-line no-restricted-globals, radix
-      const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
+      // const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
       // eslint-disable-next-line no-restricted-globals, radix
 
-      const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
+      // const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
 
       // Combine top 5 past years, future years, and the remaining past years
-      const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
+      // const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
         // const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
         const yearsToTake = 3;
-        const theYears = take(result, yearsToTake);
+        const theYears = take(sortedYears, yearsToTake);
         const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
         for (let j = 0; j < results.length; j++) {
@@ -471,6 +473,28 @@ export default class DataLayer {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  sortYearsDescending(years) {
+    // Filter valid years (numbers) and invalid ones (months or incorrect values)
+    const validYears = [];
+    const invalidEntries = [];
+
+    years.forEach((item) => {
+      const trimmed = item.trim();
+      if (/^\d{4}$/.test(trimmed)) {
+        validYears.push(Number(trimmed));
+      } else {
+        invalidEntries.push(trimmed);
+      }
+    });
+
+    // Sort valid years in descending order
+    validYears.sort((a, b) => b - a);
+
+    // Return sorted years with invalid entries at the bottom
+    return [...validYears, ...invalidEntries];
+  }
+
   handleShowLoaded() {
     const loadedAlert = this.sweetAlert2();
     setTimeout(async () => {
@@ -486,9 +510,9 @@ export default class DataLayer {
       const indicatorID = indicator[i];
       const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
       const dataValue = dataResult.data.years;
-      // take only the at least 8 years
+      const sortedYears = this.sortYearsDescending(dataValue);
       const yearsToTake = limit;
-      const theYears = take(dataValue, yearsToTake);
+      const theYears = take(sortedYears, yearsToTake);
 
       // STEP 2: Get dataPoint by indicator and yearsAvailable
       const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
