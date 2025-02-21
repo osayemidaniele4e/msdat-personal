@@ -1,5 +1,5 @@
 // src/custom_dashboard_data.js
-const data = [
+const datas = [
   {
     title: 'Fertility in Nigeria',
     description: 'Monitors the fertility rate of women in states in Nigeria.',
@@ -22,4 +22,4 @@ const data = [
   },
 ];
 
-export default data;
+export default datas;

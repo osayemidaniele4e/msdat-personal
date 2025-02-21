@@ -12,7 +12,9 @@
         </select>
       </div>
     </section>
-    <section>
+    <h4> No pending Notifications!!! </h4>
+
+    <!-- <section>
       <h5 v-if="newNot.length" style="font-size: 18px; margin-top: 30px;">Unread Notifications</h5>
       <article v-for="(not, index) in newNot" :key="index" class="notification-item mt-3 p-2 mx-2 border rounded d-flex justify-content-between align-items-center">
         <div class="not-title">
@@ -43,7 +45,7 @@
           <p class="mb-0 text-muted">{{ moment(not.datetime).format('h:mm A') }}</p>
         </div>
       </article>
-    </section>
+    </section> -->
   </div>
 </template>
 

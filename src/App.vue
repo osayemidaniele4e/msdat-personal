@@ -1,28 +1,29 @@
 <template>
-  <div class="position-relative" id="app">
+ <div class="position-relative" id="app">
     <router-view />
     <feedback />
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-    <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
+      <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
       <WhatsNew />
     </div>
   </div>
+
 </template>
 
 <script>
 import Vue from 'vue';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
+import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
+import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
 import reviewPlugin from './modules/plugins/reviewPlugin';
 import screenshotManager from './modules/plugins/screenshotManager';
 import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
-import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
-import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
 
 export default {
   components: {
@@ -38,22 +39,15 @@ export default {
       lastExecutionTime: null,
     };
   },
-  // computed: {
-  //   ...mapState({
-  //     showDataSourceListStatus: (state) => state.showDataSourceList, // Replace with your actual state variable
-  //   }),
-  // },
-
-  // watch: {
-  //   showDataSourceListStatus(newVal, oldVal) {
-  //     console.log('myVariable changed:', oldVal, '->', newVal);
-  //   },
-  // },
-
+  computed: {
+    ...mapGetters('appearance', ['viewMode', 'fontSize', 'theme']),
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+  },
   watch: {
     '$store.state.MSDAT_STORE.showDataSourceList': {
-      // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
+        console.log('Investigations App Watch');
+        console.log('myVariable changed:', oldVal, '->', newVal);
         this.showDataSourceListComponent = newVal;
       },
       deep: true, // If you want to watch nested changes
@@ -65,14 +59,22 @@ export default {
       },
       deep: true, // If you want to watch nested changes
     },
+    viewMode(newMode) {
+      document.body.className = newMode;
+    },
+    fontSize(newSize) {
+      document.documentElement.style.fontSize = newSize;
+    },
+    theme(newTheme) {
+      document.documentElement.setAttribute('data-theme', newTheme);
+    },
   },
-
   async mounted() {
     window.addEventListener('unload', this.handleAppUnload);
     this.startSixHourInterval();
     this.firstTimeExecution();
     // eslint-disable-next-line
-    const plugins_imported = [];
+    let plugins_imported = [];
 
     this.pluginsImported.push('contextPlugin');
     if (!localStorage.getItem('contextPlugin')) {
@@ -130,6 +132,9 @@ export default {
 
     console.log('pluginsImported', this.pluginsImported);
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
+    document.body.className = this.viewMode;
+    document.documentElement.style.fontSize = this.fontSize;
+    document.documentElement.setAttribute('data-theme', this.theme);
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
@@ -163,14 +168,15 @@ export default {
       // Check every minute
       setInterval(checkAndExecute, 60 * 1000);
     },
-
     firstTimeExecution() {
       if (!localStorage.getItem('firstTimeExecution')) {
+        localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
         }, 1 * 60 * 1000); // 3 minutes delay in milliseconds
       }
     },
+
   },
   beforeDestroy() {
     // Remove the event listener to avoid memory leaks
@@ -184,7 +190,6 @@ export default {
   margin: 0px !important; /* Adjust the margin as needed */
   float: left; /* Align the image to the left of the text */
 }
-
 .datasource-list {
   position: fixed;
   right: 10px;
@@ -201,4 +206,50 @@ export default {
   top: 1px;
   height: 100vh;
 }
+  .light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Define styles for different font sizes */
+html {
+  font-size: 16px; /* default */
+}
+
+html.small {
+  font-size: 14px;
+}
+
+html.medium {
+  font-size: 20px;
+}
+
+html.large {
+  font-size: 24px;
+}
+
+/* Define styles for different themes */
+[data-theme='default'] {
+  --primary-color: #28a745;
+  --secondary-color: #20c997;
+  --background-color: #e9ecef;
+}
+
+[data-theme='calm'] {
+  --primary-color: #007bff;
+  --secondary-color: #17a2b8;
+  --background-color: #e3f2fd;
+}
+
+[data-theme='neutral'] {
+  --primary-color: #EA4700;
+  --secondary-color: #EE6C33;
+  --background-color: #FBDACC;
+}
+
 </style>

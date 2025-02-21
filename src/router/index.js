@@ -20,6 +20,7 @@ import NATURAL_LANGUAGE_SEARCH from '@/modules/natural-language-search/router';
 import NotFound from '@/modules/msdat-dashboard/views/NotFound.vue';
 import AUTH_ROUTE from '@/modules/auth/router';
 import DATA_ENTRY from '@/modules/data-entry/router';
+import OLLAMA_AI from '@/modules/msdat-dashboard/views/llama_ai/router';
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,7 @@ const routes = [
   ...ADMIN_ROUTE,
   ...DATA_ENTRY,
   ...CREATE_PLUGIN_ROUTE,
+  ...OLLAMA_AI,
   {
     path: '*',
     name: 'NotFound',

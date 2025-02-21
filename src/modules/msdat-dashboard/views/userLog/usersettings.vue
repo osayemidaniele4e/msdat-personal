@@ -93,6 +93,7 @@
         </div>
         <b-form-checkbox
           v-model="plugin.enabled"
+          @change="togglePlugin(plugin)"
           switch
           size="lg"
           :name="'plugin-' + index"
@@ -120,7 +121,7 @@
       </div>
     </b-row>
   </b-col>
-  <b-col class="saved-states">
+  <!-- <b-col class="saved-states">
     <h4>Saved States</h4>
 
     <div class="state-section">
@@ -155,14 +156,14 @@
     <a href="#" class="create-link">
       <b-icon icon="plus-circle"></b-icon> Create New State
     </a>
-  </b-col>
+  </b-col> -->
     <!-- Appearance Settings Component -->
     <appearance-settings></appearance-settings>
 
     <b-col class="deactivate-account">
       <h4>Deactivate Account</h4>
       <p>Your account will be permanently deleted and you will no longer have access to all your data.</p>
-      <a class="btn-dang">Deactivate Account</a>
+      <a class="btn-dang" @click="deactivateAccount">Deactivate Account</a>
       </b-col>
   </b-col>
  </template>
@@ -191,11 +192,22 @@ export default {
         newPassword: 'fas fa-eye',
         confirmPassword: 'fas fa-eye',
       },
-      data, // Importing data from custom_dashboard_data.js
       plugins: [
-        { title: 'Project Context', description: 'plugin  for Context Search', enabled: false },
-        { title: 'Policy Generator', description: 'Generate Policy For specific Indicator', enabled: false },
+        {
+          title: 'Context Plugin',
+          description: 'Enable or disable context-based features',
+          key: 'contextPlugin',
+          enabled: localStorage.getItem('contextPlugin') === 'true',
+        },
+        {
+          title: 'Indicator Plugin',
+          description: 'Enable or disable indicator-related features',
+          key: 'indicatorPlugin',
+          enabled: localStorage.getItem('indicatorPlugin') === 'true',
+        },
       ],
+      data, // Importing data from custom_dashboard_data.js
+
       notifications: [
         { title: 'Updates', description: 'Receive notifications on updates made to the MSDAT Platform.', enabled: true },
         { title: 'Dashboard View', description: 'Receive notifications when a user views your public custom dashboard(s).', enabled: true },
@@ -249,23 +261,81 @@ export default {
   methods: {
     ...mapActions('AUTH_STORE', ['SAVE_DASHBOARDS']),
     async getProfile() {
-      const url = `http://172.93.52.240:3001/api/users/${this.getUser.id}/`;
-      await axios.get(url).then((response) => {
-        this.user = response.data;
-      }).catch((error) => console.log(error));
-      console.log(this.user);
-    },
-    async changePassword() {
-      if (this.passwordsMatch) {
-        const url = `http://172.93.52.240:3001/api/users/${this.getUser.id}/change-password`;
-        await axios.post(url, { newPassword: this.newPassword })
-          .then((response) => {
-            console.log(response.data);
-          }).catch((error) => console.log(error));
-      } else {
-        this.$swal('Passwords do not match');
+      const baseUrl = process.env.VUE_APP_API_BASE_URL;
+      const url = `${baseUrl}users/${this.getUser.id}/`;
+      console.log('getUser:', this.getUser);
+      try {
+        const response = await axios.get(url);
+        this.user = { ...this.user, ...response.data };
+        this.$store.commit('setUser', this.user);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
       }
     },
+
+    togglePlugin(plugin) {
+      // Convert boolean to string for localStorage
+      const pluginState = plugin.enabled.toString();
+
+      // Store the plugin state in localStorage
+      localStorage.setItem(plugin.key, pluginState);
+
+      // Optional: You might want to reload the page or emit an event
+      this.$router.go();
+    },
+    async changePassword() {
+      if (!this.passwordsMatch) {
+        this.$swal('Passwords do not match', '', 'error');
+        return;
+      }
+
+      if (this.passwordStrength < 60) {
+        this.$swal('Password strength is too weak', '', 'error');
+        return;
+      }
+
+      const baseUrl = 'https://msdat2api.e4eweb.space/api/';
+      const url = `${baseUrl}users/update_password/`;
+      const payload = { new_password: this.newPassword };
+
+      try {
+        const token = this.getUser.tokens.access_token;
+        // console.log('Token:', token);
+
+        if (!token) {
+          this.$swal('Session expired', 'Please log in again', 'error');
+          this.$store.dispatch('AUTH_STORE/logout'); // Optional: Log out user if token is missing
+          this.$router.go();
+          return;
+        }
+
+        // console.log('Payload:', payload);
+
+        const response = await axios.put(url, payload, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log('Response:', response);
+
+        this.$swal('Password updated successfully!', '', 'success');
+        this.newPassword = '';
+        this.confirmPassword = '';
+      } catch (error) {
+        console.error('Error updating password:', error.response?.data || error.message);
+        const errorMessage = error.response?.data?.message || 'An error occurred';
+
+        if (error.response?.data?.code === 'token_not_valid') {
+          this.$swal('Session expired', 'Please log in again', 'error');
+          this.$store.dispatch('logout'); // Optional: Handle token expiration
+        } else {
+          this.$swal('Failed to update password', errorMessage, 'error');
+        }
+      }
+    },
+
     togglePasswordVisibility(field) {
       if (this.passwordFieldType[field] === 'password') {
         this.passwordFieldType[field] = 'text';
@@ -273,6 +343,55 @@ export default {
       } else {
         this.passwordFieldType[field] = 'password';
         this.passwordToggleIcon[field] = 'fas fa-eye';
+      }
+    },
+
+    async deactivateAccount() {
+      const result = await this.$swal({
+        title: 'Are you sure?',
+        text: 'Do you really want to deactivate your account? This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, deactivate it!',
+        cancelButtonText: 'No, keep my account',
+      });
+
+      if (result.isConfirmed) {
+        const baseUrl = 'https://msdat2api.e4eweb.space/api/';
+        const url = `${baseUrl}users/${this.getUser.id}/`;
+
+        try {
+          const token = this.getUser.tokens.access_token;
+
+          if (!token) {
+            this.$swal('Session expired', 'Please log in again', 'error');
+            this.$store.dispatch('AUTH_STORE/logout');
+            this.$router.go(); // Optional: Log out user if token is missing
+            return;
+          }
+
+          await axios.delete(url, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          this.$swal('Account deactivated successfully!', '', 'success');
+          this.$store.dispatch('AUTH_STORE/logout'); // Log out the user after deactivation
+          this.$router.go();
+        } catch (error) {
+          console.error('Error deactivating account:', error.response?.data || error.message);
+          const errorMessage = error.response?.data?.message || 'An error occurred';
+
+          if (error.response?.data?.code === 'token_not_valid') {
+            this.$swal('Session expired', 'Please log in again', 'error');
+            this.$store.dispatch('AUTH_STORE/logout');
+            this.$router.go();
+          } else {
+            this.$swal('Failed to deactivate account', errorMessage, 'error');
+          }
+        }
       }
     },
   },
