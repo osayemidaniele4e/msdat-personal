@@ -21,7 +21,7 @@
               <b-col class="count-tile">
                 <div class="summary-number">{{ activeDashboardsCount }}</div>
               </b-col>
-              <span class="view-all"><a href="#">View all</a></span>
+              <span class="view-all"><a href="#/dashboard">View all</a></span>
             </b-row>
             <div class="summary-title">Active Dashboards</div>
             <span class="summary-updated">Last Updated: {{ formattedDate }}</span>
@@ -33,7 +33,7 @@
               <b-col class="count-tile">
                 <div class="summary-number">{{ availablePluginsCount }}</div>
               </b-col>
-              <span class="view-all"><a href="#">View all</a></span>
+              <span class="view-all"><a href="#/Plugins">View all</a></span>
             </b-row>
             <div class="summary-title">Available Plug-ins</div>
             <span class="summary-updated">Last Updated: {{ formattedDate }}</span>
@@ -53,7 +53,7 @@
                     <div class="summary-number">{{ availablePluginsCount }}</div>
                     <div class="summary-title">Available Plug-ins</div>
                   </b-col>
-                  <span class="view-all"><a href="#">View all</a></span>
+                  <span class="view-all"><a href="#Plugins">View all</a></span>
                 </b-row>
               </div>
             </div>
