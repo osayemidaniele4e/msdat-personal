@@ -21,21 +21,19 @@ export default {
   // Getting indicators
   async loadIndicators({ commit, state, dispatch }) {
     let loading = true;
-    if (state.masterData.length === 0) {
-      loading = true;
-      commit('setIndiLoading', loading);
-      // state.loader.indicator = true;
-      // await axios.get('http://135.181.212.168:9234/api/crud/indicators/')
-      await axios
-        .get('https://msdat-api.fmohconnect.gov.ng/api/indicators/?size=3000')
-        .then((res) => {
-          // const { data } = res;
-          const data = res.data.results;
-          const array = data.map((pArea) => pArea.program_area);
-          const distinctArray = [...new Set(array)];
-          const composedData = [];
 
+    if (!state.masterData || state.masterData.length === 0) {
+      try {
+        commit('setIndiLoading', loading);
+
+        const res = await axios.get('https://msdat2api.e4eweb.space/api/indicators/?size=3000');
+        if (res.data && res.data.results && Array.isArray(res.data.results)) {
+          const data = res.data.results;
+          const array = (data || []).map((pArea) => pArea.program_area || 'Unknown');
+          const distinctArray = [...new Set(array.filter(Boolean))];
+          const composedData = [];
           const sortedData = data.sort((a, b) => a.id - b.id);
+
           let filteredData = [];
           // eslint-disable-next-line no-restricted-syntax
           for (const pa of distinctArray) {
@@ -48,64 +46,52 @@ export default {
           }
 
           distinctArray.forEach((distItem) => {
-            if (state.allSelected === false) {
-              composedData.push({
-                children: filteredData.filter((x) => {
-                  if (x.program_area === distItem) {
-                    x.selected = false;
-                    x.sources = [];
-                    x.years = [];
-                    x.levels = [];
-                    return x;
-                  }
-                  if (state.allSelected === true) {
-                    x.selected = true;
-                  }
-                }),
-                parent: { selected: false, isChildSelected: false, value: distItem.toUpperCase() },
-                showList: false,
-                showNotes: false,
-              });
-            } else {
-              composedData.push({
-                children: filteredData.filter((x) => {
-                  if (x.program_area === distItem) {
-                    x.selected = true;
-                    x.sources = [];
-                    x.years = [];
-                    x.levels = [];
-                    return x;
-                  }
-                }),
-                parent: { selected: true, isChildSelected: true, value: distItem.toUpperCase() },
-                showList: true,
-                showNotes: true,
-              });
-            }
+            composedData.push({
+              children: filteredData.filter((x) => {
+                if (x.program_area === distItem) {
+                  x.selected = state.allSelected;
+                  x.sources = [];
+                  x.years = [];
+                  x.levels = [];
+                  return true;
+                }
+                return false;
+              }),
+              parent: {
+                selected: state.allSelected,
+                isChildSelected: state.allSelected,
+                value: distItem.toUpperCase(),
+              },
+              showList: state.allSelected,
+              showNotes: state.allSelected,
+            });
           });
-          // console.log('CD', composedData);
+
           loading = false;
           commit('setIndiLoading', loading);
           commit('setPArea', composedData);
-          if (state.allSelected === true) {
-            composedData.map((x) => {
+
+          if (state.allSelected) {
+            composedData.forEach((x) => {
               x.children.forEach((child) => {
-                const childs = {
-                  id: child.id,
-                };
-                dispatch('loadCoverageLevels', childs);
-                dispatch('loadYears', childs);
+                try {
+                  const childs = { id: child.id };
+                  dispatch('loadCoverageLevels', childs);
+                  dispatch('loadYears', childs);
+                } catch (err) {
+                  console.error('Error dispatching child data:', err, child);
+                }
               });
             });
           }
-
-          // dispatch('loadCoverageLevels', childs)
-        })
-        .catch((err) => {
-          console.log(err);
-          loading = true;
-          commit('setIndiLoading', loading);
-        });
+        } else {
+          throw new Error('Unexpected API response format');
+        }
+      } catch (err) {
+        console.error('Error loading indicators:', err);
+        loading = false;
+        commit('setIndiLoading', loading);
+      }
     }
   },
 
@@ -242,7 +228,7 @@ export default {
         .then((res) => {
           const { data } = res;
 
-          const currentYear = (new Date()).getFullYear();
+          const currentYear = new Date().getFullYear();
           const years = data.years.filter((year) => Number(year) && Number(year) <= currentYear);
           // console.log(data, 'data');
           if (state.allSelected === false) {
@@ -359,7 +345,10 @@ export default {
   // eslint-disable-next-line no-unused-vars
   async setDashboardRequest({ commit }, payload) {
     try {
-      await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`, payload);
+      await axios.put(
+        `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`,
+        payload,
+      );
       // const response = await axios.post('http://172.93.52.240:3001/api/request_dashboard/', payload);
       return true;
     } catch (error) {
@@ -369,13 +358,17 @@ export default {
   },
   // RETRIEVE ALL DASHBOARD REQUESTS
   async getDashboards({ commit }) {
-    const { data } = await axios.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json');
+    const { data } = await axios.get(
+      'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json',
+    );
     if (data) commit('setAllPublicDashboards', Object.values(data));
     return { data };
   },
   // RETRIEVE DASHBOARD DETAILS
   async getDashboardDetails(_, id) {
-    const { data } = await axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);
+    const { data } = await axios.get(
+      `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`,
+    );
     return { data };
   },
 
@@ -385,6 +378,9 @@ export default {
   },
   // UPDATE A DASHBOARD REQUEST (APPROVE/DISAPPROVE)
   updateDashboard(_, payload) {
-    return axios.patch(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`, payload);
+    return axios.patch(
+      `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`,
+      payload,
+    );
   },
 };

@@ -9,6 +9,7 @@ import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 import ADVANCED_STORE from '../modules/msdat-dashboard/components/sections/advanced/store';
+import appearance from './modules/appearance';
 
 Vue.use(Vuex);
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     CUSTOM_DASHBOARD_STORE,
     AUTH_STORE,
     ADVANCED_STORE,
+    appearance,
   },
   strict: process.env.NODE_ENV !== 'production',
 });

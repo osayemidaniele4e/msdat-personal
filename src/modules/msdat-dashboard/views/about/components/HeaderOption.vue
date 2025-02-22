@@ -257,7 +257,7 @@ export default {
 
   mounted() {
     // cosole log user details
-    console.log('deets', this.getUser);
+    // console.log('deets', this.getUser);
   },
 
   async created() {
