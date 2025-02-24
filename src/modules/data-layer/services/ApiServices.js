@@ -1,4 +1,4 @@
-import axiosInstance from '@/plugins/axios';
+import axiosInstance, { instance3 } from '@/plugins/axios';
 import apiEndpoints from '../config/endpoint';
 
 const getDashboard = async () => axiosInstance.get(apiEndpoints.getDashboard);
@@ -30,6 +30,19 @@ const saveWhatsNew = async (data) => axiosInstance.post('news/updates/', data);
 const fetchAllDataSources = async () => axiosInstance.get('datasources/?size=50');
 const fetchAllIndicators = async () => axiosInstance.get('indicators/?size=2000');
 const fetchAllLocation = async () => axiosInstance.get('location/?size=1000');
+const getTriangulation = async (obj) => {
+  const params = new URLSearchParams({
+    primary_datasource: obj.primary,
+    secondary_datasource: obj.secondary,
+  });
+
+  // Add optional parameters if they exist
+  if (obj.optional) params.append('third_datasource', obj.optional);
+  if (obj.selectedIndicator) params.append('indicator_id', obj.selectedIndicator);
+  if (obj.selectedLocation) params.append('location_id', obj.selectedLocation);
+
+  return instance3.get(`triangulation_dashboard/?${params.toString()}`);
+};
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -79,4 +92,5 @@ export default {
   fetchAllDataSources,
   fetchAllIndicators,
   fetchAllLocation,
+  getTriangulation,
 };

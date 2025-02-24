@@ -32,12 +32,13 @@
                 placeholder="Select one or Two"
                 :options="allDatasources"
                 :searchable="false"
-                :allow-empty="false"
+                :allow-empty="true"
                 selectLabel=""
                 data-visted="notVisited"
                 deselectLabel=""
                 autocomplete="off"
                 :multiple="true"
+                @select="limitSelection"
               >
               </multiselect>
             </div>
@@ -80,11 +81,19 @@
               </multiselect>
             </div>
             <div class="col-1 d-flex justify-content-center align-items-end">
-              <button class="triangulate-btn-2" @click="triangulate">Triangulate</button>
+              <button class="triangulate-btn-2" @click="triangulate">
+                <div
+              v-if="showLoader"
+              class="spinner-border text-light mx-3"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+                Triangulate</button>
             </div>
           </div>
         </div>
-        <div class="px-4 row d-flex py-3 justify-content-between">
+        <div class="px-4 row d-flex py-3 justify-content-between d_height">
           <div class="col-4">
             <div class="card-1">
               <div class="w-100 header py-2 d-flex justify-content-center">
@@ -94,40 +103,17 @@
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
-                  <div class="d-flex flex-column align-items-center">
-                    <h4 class="text-center title">Degree of Data Source Consistency</h4>
-                    <p class="text-center my-2 sub-title w-75">
-                      How well different data sources agree or match with each other.
-                    </p>
-                  </div>
-                  <div class="progress-container">
-                    <div class="circular-progress">
-                      <svg>
-                        <circle cx="75" cy="75" r="65"></circle>
-                        <!-- Increased cx, cy, and r -->
-                        <circle cx="75" cy="75" r="65" :style="circleStyle(progress)"></circle>
-                        <!-- Increased cx, cy, and r -->
-                      </svg>
-                      <div class="progress-value">{{ progress }}%</div>
-                    </div>
-                  </div>
-
                   <div class="d-flex justify-content-center pb-4">
                     <h5 class="text-center desc w-75">
-                      When compared with WHO, the extent to which NDHS + MICS provides matches is
-                      80%
+                      {{
+                        `When compared with ${headers[0]}, the extent to which ${headers[1]} ${
+                          headers[2] === undefined ? '' : `+ ${headers[2]} `
+                        } provides matches is
+                     ${consistencyScore}%`
+                      }}
                     </h5>
                   </div>
-                </div>
-                <div
-                  class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
-                >
-                  <div class="d-flex flex-column align-items-center">
-                    <h4 class="text-center title">Degree of Data Source Complimentary</h4>
-                    <p class="text-center sub-title my-2 w-75">
-                      How well different data sources agree or match with each other.
-                    </p>
-                  </div>
+
                   <div class="progress-container">
                     <div class="circular-progress">
                       <svg>
@@ -137,28 +123,123 @@
                           cx="75"
                           cy="75"
                           r="65"
-                          :style="circleStyle(complimentaryProgress)"
+                          :style="circleStyle(consistencyScore)"
                         ></circle>
                         <!-- Increased cx, cy, and r -->
                       </svg>
-                      <div class="progress-value">{{ complimentaryProgress }}%</div>
+                      <div class="progress-value">{{ consistencyScore }}</div>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column align-items-center mb-3">
+                    <h4 class="text-center title">Degree of Data Source Consistency</h4>
+                    <p class="text-center my-2 sub-title w-75">
+                      How well different data sources agree or match with each other.
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
+                >
+                  <div class="d-flex justify-content-center pb-4">
+                    <h5 class="text-center desc w-75">
+                      {{
+                        `When compared with ${headers[0]}, the extent to which ${headers[1]} ${
+                          headers[2] === undefined ? '' : `+ ${headers[2]} `
+                        }  provides matches is
+                      ${complementarityScore}%`
+                      }}
+                    </h5>
+                  </div>
+
+                  <div class="progress-container">
+                    <div class="circular-progress">
+                      <svg>
+                        <circle cx="75" cy="75" r="65"></circle>
+
+                        <circle
+                          cx="75"
+                          cy="75"
+                          r="65"
+                          :style="circleStyle(complementarityScore)"
+                        ></circle>
+                      </svg>
+                      <div class="progress-value">{{ complementarityScore }}</div>
                     </div>
                   </div>
 
-                  <div class="d-flex justify-content-center pb-4">
-                    <h5 class="text-center desc w-75">
-                      When compared with WHO, the extent to which NDHS + MICS provides matches is
-                      80%
-                    </h5>
+                  <div class="d-flex flex-column align-items-center mb-3">
+                    <h4 class="text-center title">Degree of Data Source Complimentary</h4>
+                    <p class="text-center sub-title my-2 w-75">
+                      How well different data sources agree or match with each other.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-8 d-flex border justify-content-center w-100 align-items-center">
-            <div class="d-flex flex-column align-items-center">
-              <h1>Coming Soon</h1>
-              <h3>Awaiting PYweb Team</h3>
+          <div class="col-8 d-flex px-0 results_height flex-column border">
+            <div
+              class="py-2 d-flex justify-content-center align-items-center header_bg w-100 border-bottom"
+            >
+              <h4>Breakdown Results</h4>
+            </div>
+
+            <div class="table-container">
+              <table>
+                <tr>
+                  <th>SCORING METRICS</th>
+                  <th v-for="(source, index) in sources" :key="'header-' + index">{{ source }}</th>
+                  <th>Score</th>
+                </tr>
+                <tr class="section-header">
+                  <td style="width: 25%">Degree of Data Source Consistency</td>
+                  <!-- <td class="score">{{ consistencyScore }}%</td> -->
+                  <td v-for="(source, index) in sources" :key="'consistency-header-' + index"></td>
+                  <td style="width: 8%">
+                    <div class="circle-progress" :style="`--percentage: ${consistencyScore};`">
+                      <span>{{ consistencyScore }} %</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-for="(grade, index) in gradedData.consistency" :key="'consistency-' + index">
+                  <td>{{ normalizeText(grade.metric) }}</td>
+                  <td
+                    v-for="(source, index) in sources"
+                    :key="'consistency-' + source + '-' + index"
+                  >
+                    {{ grade.values[source]?.score }} -
+                    {{ grade.values[source]?.scale || grade.values[source]?.description }}
+                  </td>
+                  <td></td>
+                </tr>
+                <tr class="section-header">
+                  <td>Degree of Data Source Complementarity</td>
+                  <!-- <td class="score">{{ complementarityScore }}%</td> -->
+                  <td
+                    v-for="(source, index) in sources"
+                    :key="'complementarity-header-' + index"
+                  ></td>
+                  <td>
+                    <div class="circle-progress" :style="`--percentage: ${complementarityScore};`">
+                      <span>{{ complementarityScore }} %</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  v-for="(grade, index) in gradedData.complementarity"
+                  :key="'complementarity-' + index"
+                >
+                  <td>{{ normalizeText(grade.metric) }}</td>
+                  <td
+                    v-for="(source, index) in sources"
+                    :key="'complementarity-' + source + '-' + index"
+                  >
+                    {{ grade.values[source]?.score }} -
+                    {{ grade.values[source]?.scale || grade.values[source]?.description }}
+                  </td>
+                  <td></td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -173,10 +254,10 @@
           accurate and complete picture.
         </p>
         <h2 class="info-action mt-5">
-          Select a ‘Primary Data Source’ and additional ‘Data Source(s) to be Compared’.
+          Select a 'Primary Data Source' and additional 'Data Source(s) to be Compared'.
         </h2>
         <p class="info-action-desc w-50">
-          Note: Selecting an ‘Indicator’ and a ‘Location’ is optional to filter down the results.
+          Note: Selecting an 'Indicator' and a 'Location' is optional to filter down the results.
         </p>
         <div class="mt-5 w-75">
           <div class="row d-flex">
@@ -207,12 +288,13 @@
                 placeholder="Select one"
                 :options="allDatasources"
                 :searchable="false"
-                :allow-empty="false"
+                :allow-empty="true"
                 selectLabel=""
                 data-visted="notVisited"
                 deselectLabel=""
                 autocomplete="off"
                 :multiple="true"
+                @select="limitSelection"
               >
               </multiselect>
             </div>
@@ -257,7 +339,15 @@
           </div>
         </div>
         <div class="col-1 d-flex justify-content-center align-items-end">
-          <button class="triangulate-btn" @click="triangulate">Triangulate</button>
+          <button class="triangulate-btn" @click="triangulate">
+            <div
+              v-if="showLoader"
+              class="spinner-border text-light mx-3"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+            Triangulate</button>
         </div>
       </div>
     </div>
@@ -289,10 +379,19 @@ export default {
       allIndicators: [],
       locations: [],
       showTriangulation: false,
-      progress: 100,
-      complimentaryProgress: 77,
+      sources: [], // Will be populated dynamically from API response
+      consistencyScore: 0,
+      complementarityScore: 0,
+      gradedData: {
+        consistency: [],
+        complementarity: [],
+      },
+      rawData: [], // Holds API response
+      headers: [],
+      showLoader: false,
     };
   },
+
   methods: {
     async getAllDataSource() {
       const { data } = await apiServices.fetchAllDataSources();
@@ -313,9 +412,151 @@ export default {
       this.locations = data.results;
     },
 
-    triangulate() {
-      this.showTriangulation = true;
+    limitSelection() {
+      console.log(this.dataSourcesCompare, 'limitSelection');
+      if (this.dataSourcesCompare.length > 2) {
+        // Set your limit here
+        this.dataSourcesCompare.pop(); // Remove the last selected item
+      }
+      // this.dataSourcesCompare = selected;
     },
+
+    triangulate() {
+      const {
+        primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation,
+      } = this;
+
+      // Construct object with possible undefined/null values
+      const obj = {
+        primary: primaryDataSource?.id,
+        secondary: dataSourcesCompare?.[0]?.id,
+        optional: dataSourcesCompare?.[1]?.id,
+        selectedIndicator: selectedIndicator?.id,
+        selectedLocation: selectedLocation?.id,
+      };
+
+      // Remove null and undefined values
+      const cleanObj = Object.fromEntries(
+        // eslint-disable-next-line no-unused-vars
+        Object.entries(obj).filter(([_, value]) => value != null), // Filters out null and undefined
+      );
+      if (cleanObj.primary === undefined || cleanObj.secondary === undefined) {
+        this.$swal({
+          toast: true,
+          position: 'bottom',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'error',
+          title: 'Empty Parameters',
+          text: 'Please select a primary and secondary data source',
+        });
+        return;
+      }
+
+      console.log(cleanObj);
+      this.showLoader = true; // Show loading spinner
+
+      apiServices
+        .getTriangulation(cleanObj)
+        .then(({ data }) => {
+          console.log(data);
+          this.showTriangulation = true;
+          this.rawData = data.data; // Store API response
+          this.processData(data.data);
+          this.headers = data.data
+            .filter((objItem) => !Object.keys(objItem).includes('aggregate')) // Exclude 'aggregate'
+            .flatMap((objItem) => Object.keys(objItem));
+          console.log(this.headers, 'keys@fa-inverse');
+          this.showLoader = false; // Show loading spinner
+        })
+        .catch((error) => {
+          this.$swal(`error : ${error}`);
+          this.showLoader = false; // Hide loading spinner
+        });
+    },
+
+    normalizeText(text) {
+      return text.replace(/_/g, ' ');
+    },
+
+    processData(data = []) {
+      if (!Array.isArray(data) || data.length === 0) {
+        return {
+          complementarityScore: 0,
+          consistencyScore: 0,
+          gradedData: {
+            consistency: [],
+            complementarity: [],
+          },
+        };
+      }
+
+      this.sources = data.map((entry) => Object.keys(entry)[0]);
+
+      const consistency = {};
+      const complementarity = {};
+      let consistencySum = 0;
+      let complementaritySum = 0;
+      let sourceCount = 0;
+
+      data.forEach((entry) => {
+        const source = Object.keys(entry)[0];
+        const sourceData = entry[source];
+
+        if (source === 'aggregate') {
+          // Only process the individual metrics, ignore `score`
+          Object.entries(sourceData.complementarity).forEach(([key, value]) => {
+            if (!complementarity[key]) {
+              complementarity[key] = { metric: key, values: {} };
+            }
+            complementarity[key].values[source] = value;
+          });
+
+          Object.entries(sourceData.consistency).forEach(([key, value]) => {
+            if (!consistency[key]) {
+              consistency[key] = { metric: key, values: {} };
+            }
+            consistency[key].values[source] = value;
+          });
+        } else if (sourceData?.complementarity?.score && sourceData?.consistency?.score) {
+          // Accumulate scores for non-aggregate sources
+          complementaritySum += Number(sourceData.complementarity.score) || 0;
+          consistencySum += Number(sourceData.consistency.score) || 0;
+          sourceCount++;
+
+          Object.entries(sourceData.complementarity.grades).forEach(([key, value]) => {
+            if (!complementarity[key]) {
+              complementarity[key] = { metric: key, values: {} };
+            }
+            complementarity[key].values[source] = value;
+          });
+
+          Object.entries(sourceData.consistency.grades).forEach(([key, value]) => {
+            if (!consistency[key]) {
+              consistency[key] = { metric: key, values: {} };
+            }
+            consistency[key].values[source] = value;
+          });
+        }
+      });
+
+      const result = {
+        complementarityScore: sourceCount ? (complementaritySum / sourceCount).toFixed(1) : '0',
+        consistencyScore: sourceCount ? (consistencySum / sourceCount).toFixed(1) : '0',
+        gradedData: {
+          consistency: Object.values(consistency),
+          complementarity: Object.values(complementarity),
+        },
+      };
+
+      this.complementarityScore = result.complementarityScore;
+      this.consistencyScore = result.consistencyScore;
+      this.gradedData = result.gradedData;
+
+      console.log(this.gradedData, 'this.gradedData');
+      return result;
+    },
+
     circleStyle(progress) {
       const radius = 65;
       const circumference = 2 * Math.PI * radius; // Adjusted for new radius
@@ -331,16 +572,6 @@ export default {
     this.getAllIndicators();
     this.getAllLocations();
   },
-  // computed: {
-  //   circleStyle() {
-  //     const circumference = 2 * Math.PI * 65; // Adjusted circumference for the new radius
-  //     const offset = circumference - (this.progress / 100) * circumference;
-  //     return {
-  //       strokeDasharray: `${circumference}px`,
-  //       strokeDashoffset: `${offset}px`,
-  //     };
-  //   },
-  // },
 };
 </script>
 
@@ -395,6 +626,9 @@ export default {
   background: #348481;
   color: white;
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .triangulate-btn-2 {
@@ -405,6 +639,9 @@ export default {
   background: #348481;
   color: white;
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .card-radius {
   border-radius: 1ch;
@@ -487,7 +724,7 @@ export default {
   top: 55%;
   left: 45%;
   transform: translate(-50%, -50%);
-  font-size: 32px; /* Adjust font size for larger circle */
+  font-size: 26px; /* Adjust font size for larger circle */
   font-weight: bold;
   color: #2b7a78;
   line-height: 1;
@@ -516,5 +753,75 @@ export default {
   line-height: 24px;
   text-align: center;
   color: #000000;
+}
+
+.header_bg {
+  background-color: #dff3f3;
+}
+.metrics_width {
+  width: 35%;
+  border-left: 1px solid #c4b7b7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.output_width {
+  width: 15%;
+  border-left: 1px solid #c4b7b7;
+  border-right: 1px solid #c4b7b7;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.analysis_width {
+  width: 50%;
+  border-right: 1px solid #c4b7b7;
+  display: flex;
+}
+
+.border_left {
+  border-left: 1px solid #c4b7b7;
+}
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-size: 14px;
+  line-height: 18px;
+  text-transform: capitalize;
+}
+th {
+  background-color: #dfe9eb;
+}
+.section-header {
+  background-color: #eef7f9;
+  font-weight: bold;
+}
+.score {
+  font-weight: bold;
+  color: #007b8f;
+}
+.legend {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.d_height {
+  height: 77vh;
+}
+
+.results_height {
+  height: 100%;
+  overflow-y: scroll;
 }
 </style>
