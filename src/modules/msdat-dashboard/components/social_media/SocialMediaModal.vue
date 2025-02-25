@@ -76,6 +76,7 @@
             style="border-bottom-right-radius: 0px; border-top-right-radius: 0"
             placeholder="Shareable Specific URL"
             ref="linkInput"
+            v-model="shareLink"
             readonly
           />
         </div>
@@ -165,6 +166,7 @@ export default {
       twitterUser: '@eHealth4every1',
       hashtags:
         'HealthTech,HealthData,DataAnalytics,HealthDataAnalytics,BigData,DataSources,Data,DataScientist,DataAnalyst,HealthIndicators',
+      shareLink: '',
     };
   },
   computed: {
@@ -172,13 +174,19 @@ export default {
   },
   mounted() {
     this.shareDesc = `Take a look at '${this.getSelectedConfig.indicator.full_name}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
-    console.log(this.$store.state.MSDAT_STORE.selectedSection, '@@H@@');
-    const url = new URL(window.location.href);
-    url.searchParams.set('section', this.$store.state.MSDAT_STORE.selectedSection);
-    console.log(url.toString());
+    console.log(this.$store.state.MSDAT_STORE.selectedSectionIndex, '@@H@@');
 
-    const paramValue = url.searchParams.get('section'); // Get the value of 'newParam'
-    console.log(paramValue);
+    const params = new URLSearchParams(window.location.search);
+    params.set('section', this.$store.state.MSDAT_STORE.selectedSectionIndex);
+    // const url = new URL(window.location.href);
+    // url.searchParams.set('section', this.$store.state.MSDAT_STORE.selectedSection);
+    // console.log(url.toString());
+    this.shareLink = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, '', this.shareLink);
+    // Update the shareable link with the new parameter
+
+    // const paramValue = url.searchParams.get('section'); // Get the value of 'newParam'
+    // console.log(paramValue);
   },
 
   methods: {

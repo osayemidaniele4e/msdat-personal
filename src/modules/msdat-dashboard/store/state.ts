@@ -46,6 +46,7 @@ const state: State = {
   isResponding: false,
   conversationHistory: [],
   selectedSection: 'Indicator Overview',
+  selectedSectionIndex: '0',
   location: 'Nigeria',
   showDataSourceList: false,
   showWhatsNew: false,

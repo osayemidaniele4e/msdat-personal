@@ -13,13 +13,13 @@
             :id="`panel-${el.index}`"
             @click="changeControl(el.index, el.title)"
           >
-            {{ el.title }}
+            {{ el.title }}xx
           </li>
         </transition-group>
       </draggable>
     </ul>
 
-    <div class="control-title">{{ title }}</div>
+    <div class="control-title">{{ title }}x2</div>
     <!-- Multi-select dropdown here -->
     <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
 import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 
@@ -70,7 +70,15 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX']),
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
+
+    filterModifiedControls() {
+      const section = this.modifiedControls.filter((item) => item?.index === Number(this.$store.state.MSDAT_STORE.selectedSectionIndex));
+
+      console.log('filtered modifiedControls YY:', section[0]);
+      this.changeControl(section[0].index, section[0].title);
+    },
 
     // async changeControl(index, title) {
     //   // console.log(this.modifiedControls, { index });
@@ -155,6 +163,7 @@ export default {
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
+      this.SET_SECTION_INDEX(index);
 
       const selectedConfig = this.getSelectedConfig();
 
@@ -307,6 +316,7 @@ export default {
         }
       }
     },
+
   },
   computed: {
     // abc() {
@@ -318,7 +328,29 @@ export default {
   },
   mounted() {
     const index = parseInt(this.$route.query.index, 10) || 0;
+    console.log('index@', index);
     this.selectControl(index);
+    console.log('filtered modifiedControls :TT', this.modifiedControls);
+
+    this.$nextTick(() => {
+      if (this.modifiedControls.length > 0) {
+        this.filterModifiedControls();
+      } else {
+        console.log('modifiedControls is still empty after nextTick');
+      }
+    });
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('section')) { // Check if 'section' exists in the URL
+      // const paramValue = url.searchParams.get('section');
+      // console.log('section modifiedControls:', paramValue);
+      // console.log(this.modifiedControls.length, 'modifiedControls');
+
+      // const section = this.modifiedControls.filter((item) => item?.title?.trim() === paramValue?.trim());
+      // console.log(section, 'filtered modifiedControls');
+    } else {
+      console.log('No section param found in the URL');
+    }
   },
   created() {
     this.controls = this.$children;

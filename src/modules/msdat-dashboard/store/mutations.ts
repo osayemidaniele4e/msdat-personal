@@ -33,6 +33,10 @@ const mutations: MutationTree<State> = {
   SET_CONVERSATION: (state, payload) => {
     state.conversationHistory = [payload];
   },
+  SET_SECTION_INDEX: (state, payload) => {
+    state.selectedSectionIndex = payload;
+  },
+
   POP_LAST: (state) => {
     state.conversationHistory = [...state.conversationHistory.slice(0, -1)];
   },

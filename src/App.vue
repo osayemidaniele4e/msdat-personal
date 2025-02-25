@@ -182,6 +182,19 @@ export default {
     // Remove the event listener to avoid memory leaks
     window.removeEventListener('unload', this.handleAppUnload);
   },
+  created() {
+    const url = new URL(window.location.href);
+    console.log(url, 'params@ 1');
+
+    // if (url.searchParams.has('section')) {
+    //   const paramValue = url.searchParams.get('section');
+    //   url.searchParams.delete('section');
+    //   window.history.pushState({}, '', url.toString());
+    //   console.log(url, 'params@ 2');
+    //   console.log(paramValue, 'params@ 2');
+    //   this.$store.dispatch('selectedSectionIndex', paramValue);
+    // }
+  },
 };
 </script>
 
