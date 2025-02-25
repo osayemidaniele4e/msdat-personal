@@ -172,6 +172,11 @@ export default {
           key: 'datasource',
           value: selectedConfig.dataSource,
         });
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'period',
+          value: '2020',
+        });
       } else {
         this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
           controlIndex: index,

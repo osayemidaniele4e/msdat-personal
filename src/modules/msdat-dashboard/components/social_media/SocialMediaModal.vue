@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="border-bottom col-12 pb-3">
-      <h6 class="font-weight-bold work-sans">Send by Email</h6>
+      <h6 class="font-weight-bold work-sans">Send by Emailx2</h6>
       <form class="row no-gutters" @submit.prevent="shareViaEmail">
         <div class="col-md-10">
           <input
@@ -62,6 +62,37 @@
           >
             {{ copy_text }}
             <b-icon class="" style="color: #007d53" icon="bookmarks" @click="copy" />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="border-bottom col-12 pt-3 pb-3">
+      <h6 class="font-weight-bold work-sans">Share Specific Link</h6>
+      <div class="row no-gutters">
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            style="border-bottom-right-radius: 0px; border-top-right-radius: 0"
+            placeholder="Shareable Specific URL"
+            ref="linkInput"
+            readonly
+          />
+        </div>
+        <div class="col-md-3">
+          <button
+            type="button"
+            class="btn btn-block btn-primary py-2 text-uppercase border"
+            style="
+              color: #007d53;
+              border-bottom-left-radius: 0px;
+              border-top-left-radius: 0;
+              background-color: #dff3f3;
+              border-color: #dff3f3;
+            "
+          >
+            {{ copy_text }}
+            <b-icon class="" style="color: #007d53" icon="bookmarks" />
           </button>
         </div>
       </div>
@@ -141,6 +172,13 @@ export default {
   },
   mounted() {
     this.shareDesc = `Take a look at '${this.getSelectedConfig.indicator.full_name}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
+    console.log(this.$store.state.MSDAT_STORE.selectedSection, '@@H@@');
+    const url = new URL(window.location.href);
+    url.searchParams.set('section', this.$store.state.MSDAT_STORE.selectedSection);
+    console.log(url.toString());
+
+    const paramValue = url.searchParams.get('section'); // Get the value of 'newParam'
+    console.log(paramValue);
   },
 
   methods: {

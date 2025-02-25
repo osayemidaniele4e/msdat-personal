@@ -578,6 +578,7 @@ export default {
 
   async mounted() {
     this.loading = false;
+    console.log(this.$route.query, '@@@@@@@@@');
     // initializing data for dashboard
     // console.trace(this.$route.query);
     let urlRequestedIndicator = [];

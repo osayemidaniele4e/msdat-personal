@@ -189,6 +189,7 @@ export default {
     async setLocationDropdown(
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
+      // eslint-disable-next-line no-unused-vars
       controlIndex = 0,
     ) {
       // Return if either dataSourceID or indicatorID is not provided
@@ -232,11 +233,11 @@ export default {
       });
 
       // Set the default location (Nigeria) in the store
-      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-        controlIndex,
-        key: 'location',
-        value: this.dlGetLocation(1),
-      });
+      // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+      //   controlIndex,
+      //   key: 'location',
+      //   value: this.dlGetLocation(1),
+      // });
     },
 
     // Get available DataSources

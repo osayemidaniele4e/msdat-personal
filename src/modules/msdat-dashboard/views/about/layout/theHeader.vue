@@ -112,7 +112,7 @@
                 <span
     class="share-button d-inline-block ml-3"
     v-b-tooltip.hover
-    title="Share Dashboard"
+    title="Share DashboardX "
     @click="toggleSocialModal"
   >
     <a href="#" @click.prevent>

@@ -110,6 +110,7 @@ const mutations: MutationTree<State> = {
   //     state.controlConfig[controlIndex].defaults[key] = value;
   //   },
   SET_PAYLOAD: (state, obj: setPayload) => {
+    console.log(obj, '@T@');
     if (state.controlConfig[obj.controlIndex].payload !== null) {
       if (!Array.isArray(state.controlConfig[obj.controlIndex].payload)) {
         state.controlConfig[obj.controlIndex].payload[obj.key] = obj.value;

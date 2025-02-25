@@ -432,6 +432,7 @@ export default {
       // }
     },
     updatePayload(value, key) {
+      console.log(key, value, '@@H@@');
       if (this.groupIndexSub != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
