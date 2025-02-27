@@ -19,7 +19,7 @@
           justify-content: space-around;
           height: 100%;
 
-          margin-bottom: -35px;
+          margin-bottom: -95px;
         "
       >
         <div class="d-flex flex-column align-items-center custom-Header">
@@ -29,7 +29,19 @@
         </div>
       </div>
     </b-row>
-    <b-container fluid class="pt-0 mt-0">
+    <b-container fluid class="pt-0 mt-0 mb-3">
+      <div class="image-scroll">
+        <p class="mt-2 header-subText">Here are a few dashboard samples</p>
+        <div ref="scrollContainer" class="mt-3 mb-5 d-flex scrolling-container">
+          <img
+            v-for="(image, index) in images"
+            :key="index"
+            :src="require(`@/assets/img/${image}`)"
+            alt=""
+            class="d-flex"
+          />
+        </div>
+      </div>
       <div class="mt-0 mb-3 p-5">
         <h4 class="text-center header-subText">How to create your custom dashboard</h4>
         <b-row align="center" class="mx-5 px-5 hero">
@@ -116,19 +128,6 @@
           <img src="@/assets/img/(per 1000 live births) NDHS_2018.png" alt="" class="d-flex" />
         </div>
       </div> -->
-
-      <div class="image-scroll">
-        <p class="mt-5 header-subText">Here are a few dashboard samples</p>
-        <div ref="scrollContainer" class="mt-3 mb-5 d-flex scrolling-container">
-          <img
-            v-for="(image, index) in images"
-            :key="index"
-            :src="require(`@/assets/img/${image}`)"
-            alt=""
-            class="d-flex"
-          />
-        </div>
-      </div>
 
       <!-- <b-row style="padding-left: 70.000000026px; padding-right: 70.000000026px">
         <b-col lg="8" sm="12" class="p-0 text-left">
