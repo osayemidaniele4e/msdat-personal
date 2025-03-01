@@ -1,6 +1,7 @@
 export default {
   getUser: (state) => state.user,
-  getToken: (state) => state.user?.token,
+  // eslint-disable-next-line camelcase
+  getToken: (state) => state.user?.tokens?.access_token,
   getDashboards: (state) => state.dashboards,
   getDashboardDetails: (state) => state.dashboardDetails,
   // eslint-disable-next-line camelcase

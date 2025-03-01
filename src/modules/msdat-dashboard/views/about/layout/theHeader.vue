@@ -104,11 +104,21 @@
               </h2>
             </div>
             <div class="main-text" v-else>
-              <h2 class="main-text">
+                <h2 class="main-text d-inline-block">
                 <small>MSDAT PLATFORM</small>
                 <br />
                 {{ $route.meta.title }}
-              </h2>
+                </h2>
+                <span
+    class="share-button d-inline-block ml-3"
+    v-b-tooltip.hover
+    title="Share Dashboard"
+    @click="toggleSocialModal"
+  >
+    <a href="#" @click.prevent>
+      <img src="@/assets/share.png" alt="share-btn" class="share-icon" />
+    </a>
+  </span>
             </div>
 
             <!-- <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
@@ -173,7 +183,6 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               > -->
-                <div></div>
                 <a
                   href="https://msdat.old.fmohconnect.gov.ng"
                   class="nav-link"
@@ -308,6 +317,16 @@
         </div>
       </div>
     </header>
+    <base-modal
+    :showModal="socialModal"
+    :size="'md'"
+    @hide="handleModalHide"
+  >
+    <template #title>
+      <h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
+    </template>
+    <Socials />
+  </base-modal>
     <ClearDBCacheModal
       style="z-index: 1500"
       v-if="showClearDataModal"
@@ -318,6 +337,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
 import Sidebar from '../components/Sidebar.vue';
@@ -336,6 +356,7 @@ export default {
     SignUp,
     shareDashboard,
     ClearDBCacheModal,
+    Socials,
   },
   data() {
     return {
@@ -363,6 +384,7 @@ export default {
       controls: [],
       screenWidth: 0,
       showClearDataModal: false,
+      socialModal: false,
     };
   },
   computed: {
@@ -398,6 +420,16 @@ export default {
     },
     hideAuthModal() {
       this.$bvModal.hide('auth-modal');
+    },
+    togglemodal() {
+      this.modal = !this.modal;
+    },
+    toggleSocialModal() {
+      this.socialModal = !this.socialModal;
+    },
+
+    handleModalHide() {
+      this.socialModal = false;
     },
     showRegForm() {
       // eslint-disable-next-line no-unused-expressions
@@ -482,6 +514,20 @@ export default {
 .tools {
   display: inline-flex;
   align-items: center;
+}
+
+.share-button {
+  cursor: pointer;
+}
+
+.share-icon {
+  width: 26px;
+  height: 24px;
+  margin-top:-5px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 6px;
+  padding: 4px;
 }
 .tools span:hover {
   text-decoration: underline;
