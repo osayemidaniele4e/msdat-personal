@@ -94,6 +94,7 @@ import AdminDashboard from './adminDashboard.vue';
 import Users from './users.vue';
 import Plugins from './plugins.vue';
 import Settings from './adminsettings.vue';
+import dashboardList from './dashboard/List.vue';
 
 const routes = {
   '/': AdminDashboard,
@@ -102,6 +103,7 @@ const routes = {
   '/users': Users,
   '/Plugins': Plugins,
   '/adminsettings': Settings,
+  '/dashboard': dashboardList,
 
 };
 
