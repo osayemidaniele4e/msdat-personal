@@ -346,10 +346,10 @@ export default {
   async setDashboardRequest({ commit }, payload) {
     try {
       // await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`, payload);
-      await axios.put(
-        `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`,
-        payload,
-      );
+      // await axios.put(
+      //   `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`,
+      //   payload,
+      // );
       // const response = await axios.post('http://172.93.52.240:3001/api/request_dashboard/', payload);
       console.log(payload, 'payload @@');
       return true;
