@@ -1,4 +1,4 @@
-import axiosInstance, { AxiosInstance3 } from '@/plugins/axios';
+import axiosInstance from '@/plugins/axios';
 import apiEndpoints from '../config/endpoint';
 
 const getDashboard = async () => axiosInstance.get(apiEndpoints.getDashboard);
@@ -27,7 +27,7 @@ const getAllNHMISData = async (obj) => axiosInstance.get(`data/?size=5000&indica
 const getNHMISDataObj = async (obj) => axiosInstance.get(`data/?size=2000&indicator=${obj.indicator}&datasource=${obj.datasource}&ordering=-created_at&location=1`);
 const getWhatsNew = async () => axiosInstance.get('news/updates/?size=1000');
 const saveWhatsNew = async (data) => axiosInstance.post('news/updates/', data);
-const saveCustomDashboard = async (data) => AxiosInstance3.post('custom-dashboard/', data);
+const saveCustomDashboard = async (data) => axiosInstance.post('custom-dashboard/', data);
 const getSingleCustomDashboard = async (id) => axiosInstance.get(`custom-dashboard/${id}`);
 const getCustomDashboard = async () => axiosInstance.get('custom-dashboard/');
 

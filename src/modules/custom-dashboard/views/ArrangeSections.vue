@@ -33,6 +33,21 @@
           </transition-group>
         </draggable>
       </b-col>
+      <b-col md="8" sm="12">
+        <div class="mb-3 embed">
+          <label>Enter URL:</label>
+          <input v-model="public_creator.embedded_url" type="text" placeholder="https://example.com" required />
+        </div>
+        <div class="embed">
+          <label>Paste Iframe Code:</label>
+          <textarea
+            :rows="5"
+            v-model="public_creator.embedded_iframe"
+            placeholder='<iframe src="https://example.com"></iframe>'
+            required
+          ></textarea>
+        </div>
+      </b-col>
       <b-col md="12" lg="12" sm="12">
         <div class="d-flex mb-5">
           <!-- <b-col cols="auto"
@@ -122,7 +137,7 @@
                   </b-col>
                 </b-row>
 
-                <b-form-group id="input-group-2" label="Organisation:" label-for="input-2">
+                <!-- <b-form-group id="input-group-2" label="Organisation:" label-for="input-2">
                   <b-form-input
                     id="input-2"
                     v-model="public_creator.organization"
@@ -130,7 +145,7 @@
                     class="input"
                     required
                   ></b-form-input>
-                </b-form-group>
+                </b-form-group> -->
 
                 <b-form-group id="input-group-2" label="Reason:" label-for="input-2">
                   <b-form-input
@@ -190,10 +205,10 @@
                   placeholder="Email address"
                 ></b-form-input>
                 <br />
-                <b-form-input
+                <!-- <b-form-input
                   v-model="public_creator.organization"
                   placeholder="Organisation"
-                ></b-form-input>
+                ></b-form-input> -->
                 <br />
                 <b-form-input v-model="public_creator.Reason" placeholder="Reason"></b-form-input>
                 <br />
@@ -252,7 +267,7 @@ import resizeConfig from '../utils/resizeConfig';
 
 export default {
   components: {
-  // eslint-disable-next-line vue/no-unused-components
+    // eslint-disable-next-line vue/no-unused-components
     draggable,
   },
   data() {
@@ -262,42 +277,53 @@ export default {
         {
           fieldName: 'Indicator Overview',
           // selected: this.$store.state.MSDAT_STORE.indicatorComparision,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Overview').isShow,
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Indicator Overview',
+          ).isShow,
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
         {
           fieldName: 'Zonal Analysis',
           // selected: this.$store.state.MSDAT_STORE.zonalAna,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Zonal analysis').isShow,
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Zonal analysis',
+          ).isShow,
           fieldImage: '/img/dashboardPreviewImages/ZonalAnalysis.PNG',
         },
         {
           fieldName: 'Indicator Comparison',
           // selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Comparison').isShow,
-          fieldImage:
-            '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Indicator Comparison',
+          ).isShow,
+          fieldImage: '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
         },
         {
           fieldName: 'Dataset Comparison',
           // selected: this.$store.state.MSDAT_STORE.datasetComperision,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Dataset Comparison').isShow,
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Dataset Comparison',
+          ).isShow,
           fieldImage: '/img/dashboardPreviewImages/DataSetComparison.PNG',
         },
         {
           fieldName: 'Multi-source Comparison',
           // selected: this.$store.state.MSDAT_STORE.multisourceComparison,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Multi-source Comparison').isShow,
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Multi-source Comparison',
+          ).isShow,
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
       ],
       public_creator: {
         name: '',
         email: '',
-        organization: '',
+        // organization: '',
         Reason: '',
         name_of_dashboard: '',
         dashboard_details: null,
+        embedded_url: null,
+        embedded_iframe: null,
       },
       form: {
         email: '',
@@ -333,7 +359,7 @@ export default {
       // Reset our form values
       this.public_creator.name = '';
       this.public_creator.email = '';
-      this.public_creator.organization = '';
+      // this.public_creator.organization = '';
       this.public_creator.Reason = '';
       this.public_creator.name_of_dashboard = '';
     },
@@ -352,7 +378,7 @@ export default {
     },
 
     async createPublicDashboard() {
-    // send the request to create a public dashboard
+      // send the request to create a public dashboard
       this.public_creator.dashboard_details = await this.$store.getters.dashboardDetails;
       await this.$store.dispatch('setDashboardRequest', this.public_creator);
       // hide the 'modal-public-dashboard'
@@ -362,7 +388,7 @@ export default {
 
       // Wait for 10 seconds using setTimeout
       setTimeout(() => {
-      // After waiting for 10 seconds, call the approveData() function
+        // After waiting for 10 seconds, call the approveData() function
         this.approveData();
       }, 5000); // 10000 milliseconds = 10 seconds
     },
@@ -379,7 +405,7 @@ export default {
       return storeArray;
     },
     async createPrivateDashboard() {
-    // send the request to create a public daashboard
+      // send the request to create a public daashboard
 
       // change the visibility
       await this.changeVisibility('private');
@@ -389,9 +415,9 @@ export default {
 
     // Below function is excuted when approve data button is clicked
 
-    async  approveData() {
+    async approveData() {
       if (!this.dashboardDetails.name) {
-      // eslint-disable-next-line no-alert
+        // eslint-disable-next-line no-alert
         this.$swal('Dashboard name not provided');
         return;
       }
@@ -435,17 +461,19 @@ export default {
           // show the 'modal-in-review'
           // await this.$bvModal.show('modal-in-review');
           if (res) {
-            await this.$swal.fire({
-              title: 'Dashboard in Review',
-              text: `Your Public Dashboard will be approved within the next 48hrs.\n\n URL: "${this.public_creator.link}"`,
-              icon: 'success',
-              confirmButtonText: 'Copy URL',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                navigator.clipboard.writeText(this.public_creator.link);
-                this.$swal.fire('URL copied to clipboard!');
-              }
-            });
+            await this.$swal
+              .fire({
+                title: 'Dashboard in Review',
+                text: `Your Public Dashboard will be approved within the next 48hrs.\n\n URL: "${this.public_creator.link}"`,
+                icon: 'success',
+                confirmButtonText: 'Copy URL',
+              })
+              .then((result) => {
+                if (result.isConfirmed) {
+                  navigator.clipboard.writeText(this.public_creator.link);
+                  this.$swal.fire('URL copied to clipboard!');
+                }
+              });
             this.$store.dispatch('customDashboard', true);
             const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
             this.$router.push({
@@ -638,5 +666,15 @@ export default {
 
 .choose-visibility-option:hover {
   opacity: 0.7;
+}
+
+.embed input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+}
+label {
+  margin-bottom: -20px;
 }
 </style>
