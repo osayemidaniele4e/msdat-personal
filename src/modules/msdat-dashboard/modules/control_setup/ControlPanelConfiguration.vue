@@ -163,6 +163,7 @@ export default {
     'payload.indicator': {
       async handler() {
         // new ones
+        console.log('@@@@@@@@@ NA WA 1');
         if (this.payload.indicator) {
           const now = new Date();
           const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
@@ -195,7 +196,7 @@ export default {
               values: availableYears.sort((a, b) => b - a),
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
-
+            console.log('@@@@@@@@@ NA WA');
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
