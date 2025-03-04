@@ -622,7 +622,6 @@ export default {
   padding: 10px 40px;
   gap: 0px;
   border-radius: 4px;
-  opacity: 0px;
   background: #348481;
   color: white;
   border: none;
@@ -635,7 +634,6 @@ export default {
   padding: 10px 30px;
   gap: 0px;
   border-radius: 4px;
-  opacity: 0px;
   background: #348481;
   color: white;
   border: none;
