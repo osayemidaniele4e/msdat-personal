@@ -75,7 +75,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
-import ApiServices from '@/modules/data-layer/services/ApiServices';
+// import ApiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   data() {
@@ -153,26 +153,26 @@ export default {
     },
   },
   async mounted() {
-    // this.$store.dispatch('getDashboards').then(({ data }) => {
-    //   this.publicDashboards = Object.values(data)
-    //     .filter((req) => req.email === this.getUser.email)
-    //     .map((req) => ({
-    //       ...req, config: { ...JSON.parse(req.config) },
-    //     }));
-    //   this.loading = false;
-    // }).catch((err) => {
-    //   console.log(err);
-    //   this.loading = false;
-    //   this.$swal.fire('Could not retrieve your public dashboards');
-    // });
-    const { data } = await ApiServices.getCustomDashboard();
-    console.log(data, 'Custom Dashboards');
-    this.publicDashboards = data.data.results
-      .filter((item) => item.email === this.getUser.email)
-      .map((item) => ({
-        ...item,
-        config: { ...JSON.parse(item.config) },
-      }));
+    this.$store.dispatch('getDashboards').then(({ data }) => {
+      this.publicDashboards = Object.values(data)
+        .filter((req) => req.email === this.getUser.email)
+        .map((req) => ({
+          ...req, config: { ...JSON.parse(req.config) },
+        }));
+      this.loading = false;
+    }).catch((err) => {
+      console.log(err);
+      this.loading = false;
+      this.$swal.fire('Could not retrieve your public dashboards');
+    });
+    // const { data } = await ApiServices.getCustomDashboard();
+    // console.log(data, 'Custom Dashboards');
+    // this.publicDashboards = data.data.results
+    //   .filter((item) => item.email === this.getUser.email)
+    //   .map((item) => ({
+    //     ...item,
+    //     config: { ...JSON.parse(item.config) },
+    //   }));
   },
 };
 </script>
