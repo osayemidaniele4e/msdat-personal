@@ -9,6 +9,7 @@ const getters = {
   getIndicators: (state) => state.controlConfig[0].setup[0].options,
   getControlConfig: (state) => state.controlConfig[0].payload,
   getSelectedSection: (state) => state.selectedSection,
+  getCustomDashboards: (state) => state.dashboards,
 };
 
 export default getters;

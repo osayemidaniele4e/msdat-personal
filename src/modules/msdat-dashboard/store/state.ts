@@ -49,6 +49,7 @@ const state: State = {
   location: 'Nigeria',
   showDataSourceList: false,
   showWhatsNew: false,
+  dashboards: [],
 };
 
 export default state;

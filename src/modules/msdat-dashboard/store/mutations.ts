@@ -148,6 +148,10 @@ const mutations: MutationTree<State> = {
     state.selectedSection = text;
   },
 
+  SET_DASHBOARD: (state, dashboards) => {
+    state.dashboards = dashboards;
+  },
+
   SET_LOCATION: (state, text) => {
     state.location = text;
   },
