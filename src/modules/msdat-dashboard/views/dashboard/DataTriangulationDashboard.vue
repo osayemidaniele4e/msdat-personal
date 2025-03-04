@@ -170,7 +170,7 @@
                   <div class="d-flex flex-column align-items-center mb-3">
                     <h4 class="text-center title">Degree of Data Source Complimentary</h4>
                     <p class="text-center sub-title my-2 w-75">
-                      How well different data sources agree or match with each other.
+                      How well different data sources work together to provide a complete picture.
                     </p>
                   </div>
                 </div>
@@ -824,4 +824,9 @@ th {
   height: 100%;
   overflow-y: scroll;
 }
+
+span.multiselect__single {
+  font-size: 24px !important;
+}
+
 </style>
