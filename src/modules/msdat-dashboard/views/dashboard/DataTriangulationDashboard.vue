@@ -411,6 +411,12 @@ export default {
       const { data } = await apiServices.fetchAllLocation();
       this.locations = data.results;
     },
+    removeUndefined(obj = {}) {
+      return Object.fromEntries(
+        // eslint-disable-next-line no-unused-vars
+        Object.entries(obj).filter(([_, value]) => value !== undefined),
+      );
+    },
 
     limitSelection() {
       console.log(this.dataSourcesCompare, 'limitSelection');
@@ -435,11 +441,13 @@ export default {
         selectedLocation: selectedLocation?.id,
       };
 
+      console.log(obj);
+      const cleanObj = this.removeUndefined(obj);
       // Remove null and undefined values
-      const cleanObj = Object.fromEntries(
-        // eslint-disable-next-line no-unused-vars
-        Object.entries(obj).filter(([_, value]) => value != null), // Filters out null and undefined
-      );
+      // const cleanObj = Object.fromEntries(
+      //   // eslint-disable-next-line no-unused-vars
+      //   Object.entries(obj).filter(([_, value]) => value != null), // Filters out null and undefined
+      // );
       if (cleanObj.primary === undefined || cleanObj.secondary === undefined) {
         this.$swal({
           toast: true,
