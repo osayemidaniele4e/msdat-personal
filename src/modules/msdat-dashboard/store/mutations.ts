@@ -141,6 +141,19 @@ const mutations: MutationTree<State> = {
       state.controlConfig[4].payload.forEach((item) => (item.indicator = obj.value));
     }
   },
+  // SET_MULTI_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
+  //   if (state.controlConfig[4].payload !== null) {
+  //     // eslint-disable-next-line no-return-assign, no-param-reassign
+  //     state.controlConfig[4].payload.forEach((item) => (item.datasource = obj.value));
+  //   }
+  // },
+  SET_DATASET_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[3].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[3].payload[obj.key] = [];
+      state.controlConfig[3].payload[obj.key].push(obj.value);
+    }
+  },
 
   SET_GIS_MULTI_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[2].payload !== null) {
@@ -153,6 +166,26 @@ const mutations: MutationTree<State> = {
     state.selectedSection = text;
   },
 
+  SET_SECTION_PAYLOAD: (state, obj) => {
+    if (state.controlConfig[obj.controlIndex].payload !== null) {
+      if (!Array.isArray(state.controlConfig[obj.controlIndex].payload)) {
+        state.controlConfig[obj.controlIndex].payload[obj.key] = obj.value;
+      } else {
+        // taking into consideration sections like multi-source comparison
+        state.controlConfig[obj.controlIndex].payload[obj.groupIndex][obj.key] = obj.value;
+      }
+    }
+  },
+  SET_URL_DATASOURCE: (state, text) => {
+    state.urlDatasource = text;
+  },
+  SET_URL_LOCATION: (state, text) => {
+    state.urlLocation = text;
+  },
+  SET_URL_PERIOD: (state, text) => {
+    state.urlPeriod = text;
+  },
+
   SET_LOCATION: (state, text) => {
     state.location = text;
   },
@@ -161,6 +194,13 @@ const mutations: MutationTree<State> = {
     if (state.controlConfig[4].payload !== null) {
       // eslint-disable-next-line no-return-assign, no-param-reassign
       state.controlConfig[4].payload.forEach((item) => (item.datasource = obj.value));
+    }
+  },
+
+  SET_MULTI_LOCATION_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[4].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[4].payload.forEach((item) => (item.location = obj.value));
     }
   },
 

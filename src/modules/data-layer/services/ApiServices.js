@@ -12,6 +12,7 @@ const getIndicatorsWithPeriod = async (indicatorID, period) => axiosInstance.get
 const getAllDataSources = async () => axiosInstance.get('datasources');
 const getSingleIndicatorObj = async (indicatorID) => axiosInstance.get(`indicators/${indicatorID}`);
 const getSingleDataSourceObj = async (datasourcesID) => axiosInstance.get(`datasources/${datasourcesID}`);
+const getSingleLocationObj = async (locationID) => axiosInstance.get(`location/${locationID}`);
 const getFactors = async () => axiosInstance.get('/factors/');
 const getSpecificIndicator = async () => axiosInstance.get('/datasource_specific_indicator/');
 const getDashboardDatasources = async (indicatorID) => axiosInstance.get(`/dashboards/${indicatorID}/datasources/`);
@@ -73,4 +74,5 @@ export default {
   getAllNHMISData,
   getWhatsNew,
   saveWhatsNew,
+  getSingleLocationObj,
 };

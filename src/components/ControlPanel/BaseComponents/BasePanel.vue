@@ -74,7 +74,9 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
     filterModifiedControls() {
-      const section = this.modifiedControls.filter((item) => item?.index === Number(this.$store.state.MSDAT_STORE.selectedSectionIndex));
+      console.log('filtered modifiedControls YY: 2', this.modifiedControls);
+      console.log('filtered modifiedControls YY: 3', this.$store.state.MSDAT_STORE.selectedSection);
+      const section = this.modifiedControls.filter((item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection);
 
       console.log('filtered modifiedControls YY:', section[0]);
       this.changeControl(section[0].index, section[0].title);
@@ -176,11 +178,11 @@ export default {
             value: selectedConfig.indicator,
           });
         }
-        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: index,
-          key: 'datasource',
-          value: selectedConfig.dataSource,
-        });
+        // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        //   controlIndex: index,
+        //   key: 'datasource',
+        //   value: selectedConfig.dataSource,
+        // });
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: index,
           key: 'period',

@@ -50,6 +50,9 @@ const state: State = {
   location: 'Nigeria',
   showDataSourceList: false,
   showWhatsNew: false,
+  urlDatasource: 1,
+  urlLocation: 1,
+  urlPeriod: '2021',
 };
 
 export default state;

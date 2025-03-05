@@ -26,6 +26,9 @@ export interface State {
   location:string;
   showDataSourceList: boolean;
   showWhatsNew: boolean;
+  urlDatasource: number;
+  urlLocation: number;
+  urlPeriod: string;
 }
 
 export type Conversation = {
