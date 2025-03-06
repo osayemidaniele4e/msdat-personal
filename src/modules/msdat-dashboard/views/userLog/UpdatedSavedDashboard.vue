@@ -47,7 +47,7 @@
           <div class="mb-1">
             <strong class="text-primary mr-2">{{ dashboard.name_of_dashboard }}</strong>
             <b-button-group size="xs">
-              <b-button @click="copy(dashboard.link, $event)" class="py-1" variant="info"
+              <b-button @click="copy(`${dashboard.link}${dashboard.id}`, $event)" class="py-1" variant="info"
                 >Copy Link</b-button
               >
             </b-button-group>
@@ -153,8 +153,9 @@ export default {
     },
   },
   async mounted() {
-    this.$store.dispatch('getDashboards').then(({ data }) => {
-      this.publicDashboards = Object.values(data)
+    this.$store.dispatch('getDashboards').then(({ result }) => {
+      console.log(result, '@@@@TY@@@@@ 2');
+      this.publicDashboards = result
         .filter((req) => req.email === this.getUser.email)
         .map((req) => ({
           ...req, config: { ...JSON.parse(req.config) },

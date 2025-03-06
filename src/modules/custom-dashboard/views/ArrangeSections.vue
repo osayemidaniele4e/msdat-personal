@@ -444,7 +444,7 @@ export default {
         this.public_creator.config = JSON.stringify(config);
         this.public_creator.created = new Date();
         this.public_creator.name_of_dashboard = this.dashboardDetails.name;
-        this.public_creator.link = `${window.location.origin}/custom/public/${id}`;
+        this.public_creator.link = `${window.location.origin}/custom/public/`;
         console.log(this.values);
 
         if (this.areAllSelectedFalse(this.values)) {
@@ -498,7 +498,9 @@ export default {
           config: JSON.stringify(config),
           created: new Date(),
           title: this.dashboardDetails.name,
-          link: `${window.location.origin}/custom/private/${id}`,
+          link: `${window.location.origin}/custom/private/`,
+          embedded_url: this.public_creator.embedded_url,
+          embedded_iframe: this.public_creator.embedded_iframe,
         });
 
         this.$store.dispatch('customDashboard', true);

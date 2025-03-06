@@ -40,10 +40,11 @@ export default {
     // Check confirmation status
     // Route to Dashboard if approved, otherwise display unapproved status.
     this.$store.dispatch('getDashboard', id).then(({ data }) => {
-      if (data) {
-        const isConfirmed = data.isConfirmed;
-        if (isConfirmed) {
-          const config = JSON.parse(data.config);
+      const result = data.data;
+      if (result) {
+        const isConfirmed = result.is_confirmed;
+        if (isConfirmed === false) {
+          const config = JSON.parse(result.config);
           const {
             dashboardDetails, composedData, surveyArray, sectionsArray,
           } = config;
@@ -55,6 +56,8 @@ export default {
           this.$store.commit('setPArea', composedData);
           this.$store.commit('setDArea', surveyArray);
           this.$store.commit('arrangedSections', sectionsArray);
+          this.$store.commit('setEmbedUrl', result.embedded_url);
+          this.$store.commit('setEmbedIframe', result.embedded_iframe);
 
           const t = config.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
           this.$router.push({
