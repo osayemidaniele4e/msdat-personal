@@ -324,6 +324,7 @@ export default {
         dashboard_details: null,
         embedded_url: null,
         embedded_iframe: null,
+        is_private: false,
       },
       form: {
         email: '',
@@ -501,6 +502,7 @@ export default {
           link: `${window.location.origin}/custom/private/`,
           embedded_url: this.public_creator.embedded_url,
           embedded_iframe: this.public_creator.embedded_iframe,
+          is_private: true,
         });
 
         this.$store.dispatch('customDashboard', true);

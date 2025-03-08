@@ -2,13 +2,13 @@
   <div class="container-fluid">
     <h4 class="text-center my-4">Your Private Dashboards</h4>
 
-    <div v-if="!list.length" class="border border-primary rounded mx-3 mb-1 pb-1 text-center">
+    <div v-if="privateDashboards.length === 0" class="border border-primary rounded mx-3 mb-1 pb-1 text-center">
       <small>You have no existing private dashboards. Click the button below to create one!</small>
     </div>
 
     <b-list-group>
       <b-list-group-item
-        v-for="dashboard in list"
+        v-for="dashboard in privateDashboards"
         :key="dashboard.id"
         href="#"
         :class="`flex-column align-items-start py-2 border-bottom`"
@@ -84,6 +84,7 @@ export default {
         localStorage.getItem('customDashboardsList') || JSON.stringify({}),
       ),
       publicDashboards: [],
+      privateDashboards: [],
       loading: true,
     };
   },
@@ -155,10 +156,17 @@ export default {
   async mounted() {
     this.$store.dispatch('getDashboards').then(({ result }) => {
       console.log(result, '@@@@TY@@@@@ 2');
-      this.publicDashboards = result
-        .filter((req) => req.email === this.getUser.email)
+      this.privateDashboards = result
+        .filter((req) => req.email === this.getUser.email && req.is_private === true)
         .map((req) => ({
-          ...req, config: { ...JSON.parse(req.config) },
+          ...req,
+          config: { ...JSON.parse(req.config) },
+        }));
+      this.publicDashboards = result
+        .filter((req) => req.email === this.getUser.email && req.is_private === false)
+        .map((req) => ({
+          ...req,
+          config: { ...JSON.parse(req.config) },
         }));
       this.loading = false;
     }).catch((err) => {
