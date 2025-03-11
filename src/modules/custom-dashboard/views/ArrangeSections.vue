@@ -36,7 +36,7 @@
       <b-col md="8" sm="12">
         <div class="mb-3 embed">
           <label>Enter URL:</label>
-          <input v-model="public_creator.embedded_url" type="text" placeholder="https://example.com" required />
+          <input v-model="url" type="text" placeholder="https://example.com" required />
         </div>
         <div class="embed">
           <label>Paste Iframe Code:</label>
@@ -283,7 +283,7 @@ export default {
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
         {
-          fieldName: 'Zonal Analysis',
+          fieldName: 'Zonal analysis',
           // selected: this.$store.state.MSDAT_STORE.zonalAna,
           selected: this.$store.getters.arrangedSections.find(
             (sec) => sec.name === 'Zonal analysis',
@@ -315,6 +315,7 @@ export default {
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
       ],
+      url: '',
       public_creator: {
         name: '',
         email: '',
@@ -413,6 +414,9 @@ export default {
       // create the dashboard using the approveData() function
       await this.approveData();
     },
+    modifyTableauUrl(url) {
+      return url.includes('public.tableau.com') ? `${url}:showVizHome=no&embed=true` : url;
+    },
 
     // Below function is excuted when approve data button is clicked
 
@@ -446,7 +450,8 @@ export default {
         this.public_creator.created = new Date();
         this.public_creator.name_of_dashboard = this.dashboardDetails.name;
         this.public_creator.link = `${window.location.origin}/custom/public/`;
-        console.log(this.values);
+        this.public_creator.embedded_url = this.modifyTableauUrl(this.url);
+        console.log(this.public_creator);
 
         if (this.areAllSelectedFalse(this.values)) {
           console.log(this.public_creator);
@@ -500,7 +505,7 @@ export default {
           created: new Date(),
           title: this.dashboardDetails.name,
           link: `${window.location.origin}/custom/private/`,
-          embedded_url: this.public_creator.embedded_url,
+          embedded_url: this.modifyTableauUrl(this.url),
           embedded_iframe: this.public_creator.embedded_iframe,
           is_private: true,
         });
@@ -549,6 +554,7 @@ export default {
         checked: e.target.checked,
         checkedField: fieldName,
       };
+      console.log(payload, '@');
       this.$store.dispatch('dynamicSection', payload);
       if (fieldName === 'Indicator Overview') {
         this.$store.state.MSDAT_STORE.indicatorComparision = e.target.checked;
