@@ -392,6 +392,7 @@ export default {
       'SET_URL_LOCATION',
       'SET_URL_PERIOD',
       'SET_MULTI_LOCATION_PAYLOAD',
+      'SET_MULTI_PERIOD_PAYLOAD',
     ]),
     ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
     //  passing the value of the v-model for program areas dynamically
@@ -589,13 +590,9 @@ export default {
 
   async mounted() {
     this.loading = false;
-    console.log(this.$route.query, '@@@@TY@@@@@');
-    console.log(this.initialDataSource, '@@@@TY@@@@@ 2');
     if (this.$route.query.datasource) {
       this.SET_URL_DATASOURCE(this.$route.query.datasource);
-      console.log(this.$route.query.datasource, '@@@@TY@@@@@ 4');
       const { data } = await apiServices.getSingleDataSourceObj(this.$route.query.datasource);
-      console.log(data, '@@@@TY@@@@@z 6');
 
       const arr = [0, 1, 2, 3, 4, 5];
 
@@ -618,9 +615,7 @@ export default {
 
     if (this.$route.query.location) {
       this.SET_URL_LOCATION(this.$route.query.location);
-      console.log(this.$route.query.location, '@@@@TY@@@@@ 4');
       const { data } = await apiServices.getSingleLocationObj(this.$route.query.location);
-      console.log(data, '@@@@TY@@@@@z 6');
 
       const arr = [0, 1, 2, 3, 4, 5];
 
@@ -635,6 +630,26 @@ export default {
           this.SET_SECTION_PAYLOAD(obj);
         } else if (index === 4) {
           this.SET_MULTI_LOCATION_PAYLOAD(obj);
+        }
+      });
+    }
+
+    if (this.$route.query.year) {
+      this.SET_URL_PERIOD(this.$route.query.year);
+      const year = this.$route.query.year;
+      const arr = [0, 1, 2, 3, 4, 5];
+
+      arr.forEach((index) => {
+        const obj = {
+          controlIndex: index,
+          key: 'year',
+          value: year,
+        };
+
+        if ([0, 1, 2, 3, 5].includes(index)) {
+          this.SET_SECTION_PAYLOAD(obj);
+        } else if (index === 4) {
+          this.SET_MULTI_PERIOD_PAYLOAD(obj);
         }
       });
     }

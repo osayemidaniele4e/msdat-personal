@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="border-bottom col-12 pb-3">
-      <h6 class="font-weight-bold work-sans">Send by Emailx2</h6>
+      <h6 class="font-weight-bold work-sans">Send by Email</h6>
       <form class="row no-gutters" @submit.prevent="shareViaEmail">
         <div class="col-md-10">
           <input
@@ -75,7 +75,7 @@
             class="form-control"
             style="border-bottom-right-radius: 0px; border-top-right-radius: 0"
             placeholder="Shareable Specific URL"
-            ref="linkInput"
+            ref="sharedInput"
             v-model="shareLink"
             readonly
           />
@@ -91,9 +91,10 @@
               background-color: #dff3f3;
               border-color: #dff3f3;
             "
+            @click="copy_shared_text"
           >
-            {{ copy_text }}
-            <b-icon class="" style="color: #007d53" icon="bookmarks" />
+            {{ copy_shared }}
+            <b-icon class="" style="color: #007d53" icon="bookmarks" @click="copy_shared_text" />
           </button>
         </div>
       </div>
@@ -167,6 +168,7 @@ export default {
       hashtags:
         'HealthTech,HealthData,DataAnalytics,HealthDataAnalytics,BigData,DataSources,Data,DataScientist,DataAnalyst,HealthIndicators',
       shareLink: '',
+      copy_shared: 'Copy',
     };
   },
   computed: {
@@ -174,19 +176,12 @@ export default {
   },
   mounted() {
     this.shareDesc = `Take a look at '${this.getSelectedConfig.indicator.full_name}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
-    console.log(this.$store.state.MSDAT_STORE.selectedSectionIndex, '@@H@@');
 
     const params = new URLSearchParams(window.location.search);
-    params.set('section', this.$store.state.MSDAT_STORE.selectedSectionIndex);
-    // const url = new URL(window.location.href);
-    // url.searchParams.set('section', this.$store.state.MSDAT_STORE.selectedSection);
-    // console.log(url.toString());
+    params.set('section', this.$store.state.MSDAT_STORE.selectedSection);
     this.shareLink = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', this.shareLink);
     // Update the shareable link with the new parameter
-
-    // const paramValue = url.searchParams.get('section'); // Get the value of 'newParam'
-    // console.log(paramValue);
   },
 
   methods: {
@@ -194,6 +189,12 @@ export default {
       this.$refs.linkInput.select();
       document.execCommand('copy');
       this.copy_text = 'Copied';
+    },
+
+    copy_shared_text() {
+      this.$refs.sharedInput.select();
+      document.execCommand('copy');
+      this.copy_shared = 'Copied';
     },
 
     shareViaEmail() {

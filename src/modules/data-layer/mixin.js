@@ -213,8 +213,6 @@ export default {
       return factor;
     },
     dlGetDataSource(id) {
-      console.log(id, '@@@@TY@@@@@ D');
-      console.log(this.dlDatasource, '@@@@TY@@@@@ D');
       return this.dlDatasource.find((item) => item.id === id);
     },
     dlGetValueTypes(values) {

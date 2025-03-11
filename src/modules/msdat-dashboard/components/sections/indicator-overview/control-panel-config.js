@@ -41,7 +41,7 @@ export default {
       key: 'year',
       options: [],
       dropdownProps: {
-        'preselect-first': true,
+        'preselect-first': false,
       },
     },
     {

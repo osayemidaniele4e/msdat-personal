@@ -432,7 +432,6 @@ export default {
       // }
     },
     updatePayload(value, key) {
-      console.log(key, value, '@@H@@');
       if (this.groupIndexSub != null) {
         // this is to take into consideration control panel that
         // are grouped example is Multi-source comparison section
@@ -502,7 +501,7 @@ export default {
     this.updatePayload(this.defaultIndicator, 'indicator');
     // this.updatePayload(this.defaultDataSource, 'datasource');
     this.updatePayload(this.defaultLocation, 'location');
-    this.updatePayload(this.defaultYear, 'year');
+    this.updatePayload(this.$store.state.MSDAT_STORE.urlPeriod, 'year');
     this.activeToggleButton = this.payload.visualization;
   },
 };

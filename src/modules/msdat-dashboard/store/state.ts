@@ -52,7 +52,7 @@ const state: State = {
   showWhatsNew: false,
   urlDatasource: 1,
   urlLocation: 1,
-  urlPeriod: '2021',
+  urlPeriod: '2023',
 };
 
 export default state;
