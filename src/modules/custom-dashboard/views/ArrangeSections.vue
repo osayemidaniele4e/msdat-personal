@@ -451,10 +451,8 @@ export default {
         this.public_creator.name_of_dashboard = this.dashboardDetails.name;
         this.public_creator.link = `${window.location.origin}/custom/public/`;
         this.public_creator.embedded_url = this.modifyTableauUrl(this.url);
-        console.log(this.public_creator);
 
         if (this.areAllSelectedFalse(this.values)) {
-          console.log(this.public_creator);
           await this.$swal.fire({
             title: 'No Section Selected',
             text: 'Warning: You need to select at least a section',
