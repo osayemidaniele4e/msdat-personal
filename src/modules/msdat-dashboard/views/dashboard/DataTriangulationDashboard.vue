@@ -692,6 +692,7 @@ export default {
           ],
         },
       ],
+      position: {},
     };
   },
 
@@ -703,16 +704,29 @@ export default {
     },
     async getAllIndicators() {
       const { data } = await apiServices.fetchAllIndicators();
+      const tempList = data.results;
+      const blankIndicator = {
+        id: undefined,
+        full_name: 'None',
+        program_area: 'RMNCH',
+      };
+      tempList.unshift(blankIndicator);
       // console.log(data.results, 'HENRY');
       //   this.allIndicators = this.setAllIndicatorDropdown(data.results);
-      const formattedData = groupIndicator(data.results, 'program_area');
+      const formattedData = groupIndicator(tempList, 'program_area');
       this.allIndicators = formattedData;
-      // console.log(this.allIndicators, 'HENRY 2');
+
+      console.log(this.allIndicators, 'HENRY 2');
       // this.allDatasources = data.results;
     },
     async getAllLocations() {
       const { data } = await apiServices.fetchAllLocation();
       this.locations = data.results;
+      const blankLocation = {
+        id: undefined,
+        name: 'None',
+      };
+      this.locations.unshift(blankLocation);
     },
     removeUndefined(obj = {}) {
       return Object.fromEntries(
@@ -730,75 +744,109 @@ export default {
       // this.dataSourcesCompare = selected;
     },
 
+    cleanObject(obj) {
+      return Object.fromEntries(
+        // eslint-disable-next-line no-unused-vars
+        Object.entries(obj).filter(([_, value]) => value != null),
+      );
+    },
+
     triangulate() {
-      this.processData(this.tempData);
-      this.headers = this.tempData
-        .flatMap((objItem) => {
-          if (objItem.aggregate) {
-            // Extract headers from all aggregate objects
-            return objItem.aggregate.flatMap((agg) => Object.keys(agg));
-          }
-          return Object.keys(objItem);
-        })
-        .filter(
-          (header, index, self) => header && header !== 'null' && header !== 'undefined' && self.indexOf(header) === index,
-        ); // Remove duplicates and invalid headers
-      console.log(this.headers, 'Triangulation');
-      this.showTriangulation = true;
+      // this.processData(this.tempData);
+      // this.headers = this.tempData
+      //   .flatMap((objItem) => {
+      //     if (objItem.aggregate) {
+      //       // Extract headers from all aggregate objects
+      //       return objItem.aggregate.flatMap((agg) => Object.keys(agg));
+      //     }
+      //     return Object.keys(objItem);
+      //   })
+      //   .filter(
+      //     (header, index, self) => header && header !== 'null' && header !== 'undefined' && self.indexOf(header) === index,
+      //   ); // Remove duplicates and invalid headers
+      // console.log(this.headers, 'Triangulation');
+      // this.showTriangulation = true;
 
-      // const {
-      //   primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation,
-      // } = this;
-
-      // // Construct object with possible undefined/null values
-      // const obj = {
-      //   primary: primaryDataSource?.id,
-      //   secondary: dataSourcesCompare?.[0]?.id,
-      //   optional: dataSourcesCompare?.[1]?.id,
-      //   selectedIndicator: selectedIndicator?.id,
-      //   selectedLocation: selectedLocation?.id,
+      // const positionTemp = {
+      //   primary: this.primaryDataSource.datasource,
+      //   secondary: this.dataSourcesCompare.datasource,
+      //   optional: this.dataSourcesCompare?.datasource,
       // };
 
-      // console.log(obj);
-      // const cleanObj = this.removeUndefined(obj);
-      // // Remove null and undefined values
-      // // const cleanObj = Object.fromEntries(
-      // //   // eslint-disable-next-line no-unused-vars
-      // //   Object.entries(obj).filter(([_, value]) => value != null), // Filters out null and undefined
-      // // );
-      // if (cleanObj.primary === undefined || cleanObj.secondary === undefined) {
-      //   this.$swal({
-      //     toast: true,
-      //     position: 'bottom',
-      //     showConfirmButton: false,
-      //     timer: 5000,
-      //     icon: 'error',
-      //     title: 'Empty Parameters',
-      //     text: 'Please select a primary and secondary data source',
-      //   });
-      //   return;
-      // }
+      // this.position = this.cleanObject(positionTemp);
 
-      // console.log(cleanObj);
-      // this.showLoader = true; // Show loading spinner
+      const {
+        primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation,
+      } = this;
 
-      // apiServices
-      //   .getTriangulation(cleanObj)
-      //   .then(({ data }) => {
-      //     console.log(data);
-      //     this.showTriangulation = true;
-      //     this.rawData = data.data; // Store API response
-      //     this.processData(data.data);
-      //     this.headers = data.data
-      //       .filter((objItem) => !Object.keys(objItem).includes('aggregate')) // Exclude 'aggregate'
-      //       .flatMap((objItem) => Object.keys(objItem));
-      //     console.log(this.headers, 'keys@fa-inverse');
-      //     this.showLoader = false; // Show loading spinner
-      //   })
-      //   .catch((error) => {
-      //     this.$swal(`error : ${error}`);
-      //     this.showLoader = false; // Hide loading spinner
-      //   });
+      // Construct object with possible undefined/null values
+      const obj = {
+        primary: primaryDataSource?.id,
+        secondary: dataSourcesCompare?.[0]?.id,
+        optional: dataSourcesCompare?.[1]?.id,
+        selectedIndicator: selectedIndicator?.id,
+        selectedLocation: selectedLocation?.id,
+      };
+
+      console.log(obj);
+      const cleanObj = this.removeUndefined(obj);
+      // Remove null and undefined values
+      // const cleanObj = Object.fromEntries(
+      //   // eslint-disable-next-line no-unused-vars
+      //   Object.entries(obj).filter(([_, value]) => value != null), // Filters out null and undefined
+      // );
+      if (cleanObj.primary === undefined || cleanObj.secondary === undefined) {
+        this.$swal({
+          toast: true,
+          position: 'bottom',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'error',
+          title: 'Empty Parameters',
+          text: 'Please select a primary and secondary data source',
+        });
+        return;
+      }
+
+      console.log(cleanObj);
+      this.showLoader = true; // Show loading spinner
+
+      apiServices
+        .getTriangulation(cleanObj)
+        .then(({ data }) => {
+          const positionTemp = {
+            primary: this.primaryDataSource.datasource,
+            secondary: this.dataSourcesCompare.datasource,
+            optional: this.dataSourcesCompare?.datasource,
+          };
+
+          this.position = this.cleanObject(positionTemp);
+          console.log(this.position);
+          console.log(data);
+          this.showTriangulation = true;
+          this.rawData = data.data; // Store API response
+          this.processData(data.data);
+          // this.headers = data.data
+          //   .filter((objItem) => !Object.keys(objItem).includes('aggregate')) // Exclude 'aggregate'
+          //   .flatMap((objItem) => Object.keys(objItem));
+          this.headers = data.data
+            .flatMap((objItem) => {
+              if (objItem.aggregate) {
+                // Extract headers from all aggregate objects
+                return objItem.aggregate.flatMap((agg) => Object.keys(agg));
+              }
+              return Object.keys(objItem);
+            })
+            .filter(
+              (header, index, self) => header && header !== 'null' && header !== 'undefined' && self.indexOf(header) === index,
+            ); // Remove duplicates and invalid headers
+          console.log(this.headers, 'keys@fa-inverse');
+          this.showLoader = false; // Show loading spinner
+        })
+        .catch((error) => {
+          this.$swal(`error : ${error}`);
+          this.showLoader = false; // Hide loading spinner
+        });
     },
 
     normalizeText(text) {
