@@ -1,40 +1,3 @@
-// import axios from 'axios';
-// import Vue from 'vue';
-
-// const AxiosInstance = axios.create({
-//   baseURL: process.env.VUE_APP_API_BASE_URL,
-// });
-
-// const AxiosInstance1 = axios.create({
-//   baseURL: process.env.VUE_APP_API_BASE_URL1,
-// });
-
-// const AxiosInstance3 = axios.create({
-//   baseURL: process.env.VUE_APP_API_BASE_URL3,
-// });
-
-// // eslint-disable-next-line no-unused-expressions
-// AxiosInstance.interceptors?.response.use(
-//   (response) => response,
-//   (error) => {
-//     // console.trace(error);
-//     Vue.swal({
-//       toast: true,
-//       position: 'bottom',
-//       showConfirmButton: false,
-//       timer: 5000,
-//       icon: 'error',
-//       title: 'Error Occurred',
-//       text: error.message,
-//     });
-//     return Promise.reject(error);
-//   },
-// );
-
-// export { AxiosInstance1 };
-
-// export default AxiosInstance;
-
 import axios from 'axios';
 import Vue from 'vue';
 
@@ -45,21 +8,44 @@ const apiConfigs = {
 };
 
 const createAxiosInstance = (baseURL) => {
-  const instance = axios.create({ baseURL });
+  const instance = axios.create({
+    baseURL,
+    timeout: 30000,
+    retries: 3,
+    retryDelay: 1000,
+  });
+
+  instance.interceptors.request.use(
+    (config) => {
+      const newConfig = { ...config, retryCount: config.retryCount || 0 };
+      return newConfig;
+    },
+    (error) => Promise.reject(error),
+  );
 
   instance.interceptors.response.use(
     (response) => response,
-    (error) => {
-      Vue.swal({
-        toast: true,
-        position: 'bottom',
-        showConfirmButton: false,
-        timer: 5000,
-        icon: 'error',
-        title: 'Error Occurred',
-        text: error.message,
-      });
-      return Promise.reject(error);
+    async (error) => {
+      const config = error.config;
+
+      if (config.retryCount >= config.retries) {
+        Vue.swal({
+          toast: true,
+          position: 'bottom',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'error',
+          title: 'Error Occurred',
+          text: error.message,
+        });
+        return Promise.reject(error);
+      }
+
+      config.retryCount += 1;
+
+      await new Promise((resolve) => setTimeout(resolve, config.retryDelay));
+
+      return instance(config);
     },
   );
 

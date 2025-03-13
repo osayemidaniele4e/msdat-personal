@@ -13,7 +13,6 @@
       </nav>
 
       <!-- about MSDAT dashboard -->
-
       <div class="about-sec-1 d-flex flex-column align-items-center">
 
         <h1>ABOUT THE MSDAT DASHBOARD</h1>
@@ -67,8 +66,11 @@
 
       <!-- program area section -->
 
-      <div id="program-areas" >
-        <IndicatorPageFunc />
+      <div id="program-areas">
+        <div v-if="isLoading" class="loading-container d-flex justify-content-center align-items-center">
+          <b-spinner variant="success" label="Loading..."></b-spinner>
+        </div>
+        <IndicatorPageFunc v-else />
       </div>
 
       <!-- logical framework -->
@@ -86,11 +88,17 @@
           Drop-down, we've circled it red on the image to your left. The list of
           Indicators on the dashboard cab be found below:
         </p>
-        <AvailableDataPageFunc />
+        <div v-if="isLoading" class="loading-container d-flex justify-content-center align-items-center">
+          <b-spinner variant="success" label="Loading..."></b-spinner>
+        </div>
+        <AvailableDataPageFunc v-else />
       </section>
       <!-- data sources -->
       <div id="data-sources">
-        <DataSourceFunc />
+        <div v-if="isLoading" class="loading-container d-flex justify-content-center align-items-center">
+          <b-spinner variant="success" label="Loading..."></b-spinner>
+        </div>
+        <DataSourceFunc v-else />
       </div>
       <section>
         <Testimonials />
@@ -104,7 +112,9 @@
 </template>
 
 <script>
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import { groupIndicator } from '@/util/helper';
+import DataLayerMixin from '@/modules/data-layer/mixin';
 import theHeader from './layout/theHeader.vue';
 import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
@@ -123,6 +133,7 @@ export default {
     AvailableDataPageFunc,
     Testimonials,
   },
+  mixins: [DataLayerMixin],
   data() {
     return {
       selected: null,
@@ -236,6 +247,7 @@ export default {
           },
         },
       ],
+      isLoading: true,
     };
   },
 
@@ -246,10 +258,36 @@ export default {
         programAreasSection.scrollIntoView({ behavior: 'smooth' });
       }
     },
+
+    async initializeDataLayer() {
+      try {
+        // Get all indicators and datasources
+        const data = await apiServices.getOtherEndpoint();
+
+        if (data && Array.isArray(data)) {
+          // Initialize data layer with all available indicators and datasources
+          await this.$DL.init({
+            dashboardIndicators: data[1]?.data?.results || [],
+            defaultIndicators: data[1]?.data?.results?.length > 0 ? [data[1].data.results[0].id] : [],
+            dashboardDataSources: data[7]?.data?.results || [],
+          });
+        }
+
+        this.isLoading = false;
+      } catch (error) {
+        console.error('Error initializing data layer:', error);
+        this.isLoading = false;
+      }
+    },
   },
 
-  mounted() {
-    this.indicators = groupIndicator(this.dlIndicator, 'program_area');
+  async mounted() {
+    // Check if data is already loaded
+    if (!this.dlIndicator || this.dlIndicator.length === 0) {
+      await this.initializeDataLayer();
+    }
+
+    this.indicators = this.dlIndicator ? groupIndicator(this.dlIndicator, 'program_area') : [];
     this.scrollTo(window.location.hash.slice(1));
   },
 };
@@ -927,4 +965,9 @@ div.modal {
 }
 
 /* EXTRA LARGE */
-@media (min-width: 1200px) {}</style>
+@media (min-width: 1200px) {}
+
+.loading-container {
+  min-height: 300px;
+}
+</style>
