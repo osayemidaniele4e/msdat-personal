@@ -83,10 +83,7 @@
       <section id="available-data">
         <h5>Available Data</h5>
         <p>
-          The Indicators provided by the Central Analytic Dashboard can be
-          selected on the dashboard by clicking on the Select Indicator
-          Drop-down, we've circled it red on the image to your left. The list of
-          Indicators on the dashboard cab be found below:
+          The table below shows the data sources containing data for each indicator. Only sources with checkmarks have data for the indicator on the row.
         </p>
         <div v-if="isLoading" class="loading-container d-flex justify-content-center align-items-center">
           <b-spinner variant="success" label="Loading..."></b-spinner>
