@@ -82,14 +82,11 @@
             </div>
             <div class="col-1 d-flex justify-content-center align-items-end">
               <button class="triangulate-btn-2" @click="triangulate">
-                <div
-              v-if="showLoader"
-              class="spinner-border text-light mx-3"
-              role="status"
-            >
-              <span class="sr-only">Loading...</span>
-            </div>
-                Triangulate</button>
+                <div v-if="showLoader" class="spinner-border text-light mx-3" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                Triangulate
+              </button>
             </div>
           </div>
         </div>
@@ -103,15 +100,11 @@
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
-                  <div class="d-flex justify-content-center pb-4">
-                    <h5 class="text-center desc w-75">
-                      {{
-                        `When compared with ${headers[0]}, the extent to which ${headers[1]} ${
-                          headers[2] === undefined ? '' : `+ ${headers[2]} `
-                        } provides matches is
-                     ${consistencyScore}%`
-                      }}
-                    </h5>
+                  <div class="d-flex flex-column align-items-center mb-3">
+                    <h4 class="text-center title">Degree of Data Source Consistency</h4>
+                    <p class="text-center my-2 sub-title w-75">
+                      How well different data sources agree or match with each other.
+                    </p>
                   </div>
 
                   <div class="progress-container">
@@ -130,25 +123,25 @@
                       <div class="progress-value">{{ consistencyScore }}</div>
                     </div>
                   </div>
-                  <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">Degree of Data Source Consistency</h4>
-                    <p class="text-center my-2 sub-title w-75">
-                      How well different data sources agree or match with each other.
-                    </p>
+                  <div class="d-flex justify-content-center pb-4">
+                    <h5 class="text-center desc w-75">
+                      {{
+                        `When compared with ${primaryDataSource?.datasource}, the extent to which ${dataSourcesCompare[0]?.datasource} ${
+                          dataSourcesCompare[1] === undefined ? '' : `+ ${dataSourcesCompare[1]?.datasource} `
+                        } provides matches is
+                     ${consistencyScore}%`
+                      }}
+                    </h5>
                   </div>
                 </div>
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
-                  <div class="d-flex justify-content-center pb-4">
-                    <h5 class="text-center desc w-75">
-                      {{
-                        `When compared with ${headers[0]}, the extent to which ${headers[1]} ${
-                          headers[2] === undefined ? '' : `+ ${headers[2]} `
-                        }  provides matches is
-                      ${complementarityScore}%`
-                      }}
-                    </h5>
+                  <div class="d-flex flex-column align-items-center mb-3">
+                    <h4 class="text-center title">Degree of Data Source Complimentary</h4>
+                    <p class="text-center sub-title my-2 w-75">
+                      How well different data sources work together to provide a complete picture.
+                    </p>
                   </div>
 
                   <div class="progress-container">
@@ -167,13 +160,34 @@
                     </div>
                   </div>
 
-                  <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">Degree of Data Source Complimentary</h4>
-                    <p class="text-center sub-title my-2 w-75">
-                      How well different data sources work together to provide a complete picture.
-                    </p>
+                  <div class="d-flex justify-content-center pb-4">
+                    <h5 class="text-center desc w-75">
+                      {{
+                        `When compared with ${primaryDataSource?.datasource}, the extent to which ${dataSourcesCompare[0]?.datasource} ${
+                          dataSourcesCompare[1] === undefined ? '' : `+ ${dataSourcesCompare[1]?.datasource} `
+                        }  provides matches is
+                      ${complementarityScore}%`
+                      }}
+                    </h5>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="py-2 d-flex">
+              <div class="border-right-2">
+                0 - 20 - Very Low
+              </div>
+              <div class="border-right-2">
+                21 - 40 - Low
+              </div>
+              <div class="border-right-2">
+                41 - 60 - moderate
+              </div>
+              <div class="border-right-2">
+                61 - 80 - High
+              </div>
+              <div class="border-right-3">
+                81 - 100 - Very High
               </div>
             </div>
           </div>
@@ -186,17 +200,19 @@
 
             <div class="table-container">
               <table>
-                <tr>
-                  <th>SCORING METRICS</th>
-                  <th v-for="(source, index) in sources" :key="'header-' + index">{{ source }}</th>
+                <thead>
+                  <th style="width: 25%">SCORING METRICS</th>
+                  <th v-for="(source, index) in sources" :key="'header-' + index" style=" width: 13%" >
+                    {{ formatString(source) }}
+                  </th>
                   <th>Score</th>
-                </tr>
+                </thead>
                 <tr class="section-header">
                   <td style="width: 25%">Degree of Data Source Consistency</td>
                   <!-- <td class="score">{{ consistencyScore }}%</td> -->
                   <td v-for="(source, index) in sources" :key="'consistency-header-' + index"></td>
-                  <td style="width: 8%">
-                    <div class="circle-progress" :style="`--percentage: ${consistencyScore};`">
+                  <td style="width: 10%">
+                    <div class="" :style="`--percentage: ${consistencyScore};`">
                       <span>{{ consistencyScore }} %</span>
                     </div>
                   </td>
@@ -208,7 +224,11 @@
                     :key="'consistency-' + source + '-' + index"
                   >
                     {{ grade.values[source]?.score }} -
-                    {{ grade.values[source]?.scale || grade.values[source]?.description }}
+                    {{
+                      typeof grade.values[source]?.description === 'object'
+                        ? grade.values[source]?.description.short
+                        : grade.values[source]?.scale || grade.values[source]?.description
+                    }}
                   </td>
                   <td></td>
                 </tr>
@@ -235,13 +255,35 @@
                     :key="'complementarity-' + source + '-' + index"
                   >
                     {{ grade.values[source]?.score }} -
-                    {{ grade.values[source]?.scale || grade.values[source]?.description }}
+                    {{
+                      typeof grade.values[source]?.description === 'object'
+                        ? grade.values[source]?.description.short
+                        : grade.values[source]?.scale || grade.values[source]?.description
+                    }}
                   </td>
                   <td></td>
                 </tr>
               </table>
             </div>
+            <div class="py-2 d-flex justify-content-center mt-4">
+              <div class="border-right-2">
+               1 - Poor
+              </div>
+              <div class="border-right-2">
+                2 - Fair
+              </div>
+              <div class="border-right-2">
+                3 - moderate
+              </div>
+              <div class="border-right-2">
+                4 - Good
+              </div>
+              <div class="border-right-3">
+                5 - Excellent
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
       <div
@@ -340,14 +382,11 @@
         </div>
         <div class="col-1 d-flex justify-content-center align-items-end">
           <button class="triangulate-btn" @click="triangulate">
-            <div
-              v-if="showLoader"
-              class="spinner-border text-light mx-3"
-              role="status"
-            >
+            <div v-if="showLoader" class="spinner-border text-light mx-3" role="status">
               <span class="sr-only">Loading...</span>
             </div>
-            Triangulate</button>
+            Triangulate
+          </button>
         </div>
       </div>
     </div>
@@ -389,6 +428,7 @@ export default {
       rawData: [], // Holds API response
       headers: [],
       showLoader: false,
+      position: {},
     };
   },
 
@@ -400,16 +440,28 @@ export default {
     },
     async getAllIndicators() {
       const { data } = await apiServices.fetchAllIndicators();
-      // console.log(data.results, 'HENRY');
-      //   this.allIndicators = this.setAllIndicatorDropdown(data.results);
-      const formattedData = groupIndicator(data.results, 'program_area');
+      console.log(data.results, '@@@');
+      const tempList = data.results;
+      const blankIndicator = {
+        id: undefined,
+        full_name: 'None',
+        program_area: 'RMNCH',
+      };
+      tempList.unshift(blankIndicator);
+      const formattedData = groupIndicator(tempList, 'program_area');
       this.allIndicators = formattedData;
-      // console.log(this.allIndicators, 'HENRY 2');
+
+      console.log(this.allIndicators, 'HENRY 2');
       // this.allDatasources = data.results;
     },
     async getAllLocations() {
       const { data } = await apiServices.fetchAllLocation();
       this.locations = data.results;
+      const blankLocation = {
+        id: undefined,
+        name: 'None',
+      };
+      this.locations.unshift(blankLocation);
     },
     removeUndefined(obj = {}) {
       return Object.fromEntries(
@@ -425,6 +477,13 @@ export default {
         this.dataSourcesCompare.pop(); // Remove the last selected item
       }
       // this.dataSourcesCompare = selected;
+    },
+
+    cleanObject(obj) {
+      return Object.fromEntries(
+        // eslint-disable-next-line no-unused-vars
+        Object.entries(obj).filter(([_, value]) => value != null),
+      );
     },
 
     triangulate() {
@@ -444,10 +503,6 @@ export default {
       console.log(obj);
       const cleanObj = this.removeUndefined(obj);
       // Remove null and undefined values
-      // const cleanObj = Object.fromEntries(
-      //   // eslint-disable-next-line no-unused-vars
-      //   Object.entries(obj).filter(([_, value]) => value != null), // Filters out null and undefined
-      // );
       if (cleanObj.primary === undefined || cleanObj.secondary === undefined) {
         this.$swal({
           toast: true,
@@ -467,18 +522,39 @@ export default {
       apiServices
         .getTriangulation(cleanObj)
         .then(({ data }) => {
+          const positionTemp = {
+            primary: this.primaryDataSource.datasource,
+            secondary: this.dataSourcesCompare.datasource,
+            optional: this.dataSourcesCompare?.datasource,
+          };
+
+          this.position = this.cleanObject(positionTemp);
+          console.log(this.position);
           console.log(data);
           this.showTriangulation = true;
           this.rawData = data.data; // Store API response
           this.processData(data.data);
           this.headers = data.data
-            .filter((objItem) => !Object.keys(objItem).includes('aggregate')) // Exclude 'aggregate'
-            .flatMap((objItem) => Object.keys(objItem));
+            .flatMap((objItem) => {
+              if (objItem.aggregate) {
+                // Extract headers from all aggregate objects
+                return objItem.aggregate.flatMap((agg) => Object.keys(agg));
+              }
+              return Object.keys(objItem);
+            })
+            .filter(
+              (header, index, self) => header
+                && header !== 'null'
+                && header !== 'undefined'
+                && self.indexOf(header) === index,
+            ); // Remove duplicates and invalid headers
           console.log(this.headers, 'keys@fa-inverse');
           this.showLoader = false; // Show loading spinner
         })
         .catch((error) => {
-          this.$swal(`error : ${error}`);
+          console.log(error);
+          const msg = error.response.data.message;
+          this.$swal(`error : ${msg}`);
           this.showLoader = false; // Hide loading spinner
         });
     },
@@ -499,61 +575,112 @@ export default {
         };
       }
 
-      this.sources = data.map((entry) => Object.keys(entry)[0]);
+      const position = {
+        primary: 'world bank',
+        secondary: 'MICS',
+        optional: 'NPC',
+      };
+
+      this.sources = data.flatMap((entry) => {
+        if (entry.aggregate) {
+          return entry.aggregate.map((agg) => Object.keys(agg)[0]); // Get aggregate sources
+        }
+        return Object.keys(entry);
+      });
 
       const consistency = {};
       const complementarity = {};
       let consistencySum = 0;
       let complementaritySum = 0;
       let sourceCount = 0;
+      const allMetrics = new Set();
 
       data.forEach((entry) => {
-        const source = Object.keys(entry)[0];
-        const sourceData = entry[source];
+        if (entry.aggregate) {
+          entry.aggregate.forEach((aggEntry) => {
+            const aggSource = Object.keys(aggEntry)[0];
+            const aggData = aggEntry[aggSource];
 
-        if (source === 'aggregate') {
-          // Only process the individual metrics, ignore `score`
-          Object.entries(sourceData.complementarity).forEach(([key, value]) => {
-            if (!complementarity[key]) {
-              complementarity[key] = { metric: key, values: {} };
-            }
-            complementarity[key].values[source] = value;
-          });
+            // Process complementarity (excluding score)
+            Object.entries(aggData.complementarity).forEach(([key, value]) => {
+              allMetrics.add(key);
+              if (!complementarity[key]) {
+                complementarity[key] = { metric: key, values: {} };
+              }
+              complementarity[key].values[aggSource] = value;
+            });
 
-          Object.entries(sourceData.consistency).forEach(([key, value]) => {
-            if (!consistency[key]) {
-              consistency[key] = { metric: key, values: {} };
-            }
-            consistency[key].values[source] = value;
+            // Process consistency (excluding score)
+            Object.entries(aggData.consistency).forEach(([key, value]) => {
+              allMetrics.add(key);
+              if (!consistency[key]) {
+                consistency[key] = { metric: key, values: {} };
+              }
+              consistency[key].values[aggSource] = value;
+            });
           });
-        } else if (sourceData?.complementarity?.score && sourceData?.consistency?.score) {
-          // Accumulate scores for non-aggregate sources
-          complementaritySum += Number(sourceData.complementarity.score) || 0;
-          consistencySum += Number(sourceData.consistency.score) || 0;
-          sourceCount++;
+        } else {
+          const source = Object.keys(entry)[0];
+          const sourceData = entry[source];
 
-          Object.entries(sourceData.complementarity.grades).forEach(([key, value]) => {
-            if (!complementarity[key]) {
-              complementarity[key] = { metric: key, values: {} };
-            }
-            complementarity[key].values[source] = value;
-          });
+          if (sourceData?.complementarity?.score && sourceData?.consistency?.score) {
+            complementaritySum += Number(sourceData.complementarity.score) || 0;
+            consistencySum += Number(sourceData.consistency.score) || 0;
+            sourceCount++;
 
-          Object.entries(sourceData.consistency.grades).forEach(([key, value]) => {
-            if (!consistency[key]) {
-              consistency[key] = { metric: key, values: {} };
-            }
-            consistency[key].values[source] = value;
-          });
+            Object.entries(sourceData.complementarity.grades).forEach(([key, value]) => {
+              allMetrics.add(key);
+              if (!complementarity[key]) {
+                complementarity[key] = { metric: key, values: {} };
+              }
+              complementarity[key].values[source] = value;
+            });
+
+            Object.entries(sourceData.consistency.grades).forEach(([key, value]) => {
+              allMetrics.add(key);
+              if (!consistency[key]) {
+                consistency[key] = { metric: key, values: {} };
+              }
+              consistency[key].values[source] = value;
+            });
+          }
         }
       });
+
+      // Ensure values are ordered according to the position mapping
+      function reorderValues(dataObject) {
+        return Object.values(dataObject).map((entry) => {
+          const orderedValues = {};
+          const otherSources = [];
+
+          // Arrange values based on position mapping
+          // eslint-disable-next-line no-unused-vars
+          Object.entries(position).forEach(([_, source]) => {
+            orderedValues[source] = entry.values[source] || null;
+          });
+
+          // Add any remaining sources that are not in the predefined order
+          Object.keys(entry.values).forEach((source) => {
+            if (!Object.values(position).includes(source)) {
+              otherSources.push(source);
+            }
+          });
+
+          // Append other sources
+          otherSources.forEach((source) => {
+            orderedValues[source] = entry.values[source];
+          });
+
+          return { metric: entry.metric, values: orderedValues };
+        });
+      }
 
       const result = {
         complementarityScore: sourceCount ? (complementaritySum / sourceCount).toFixed(1) : '0',
         consistencyScore: sourceCount ? (consistencySum / sourceCount).toFixed(1) : '0',
         gradedData: {
-          consistency: Object.values(consistency),
-          complementarity: Object.values(complementarity),
+          consistency: reorderValues(consistency),
+          complementarity: reorderValues(complementarity),
         },
       };
 
@@ -561,8 +688,14 @@ export default {
       this.consistencyScore = result.consistencyScore;
       this.gradedData = result.gradedData;
 
-      console.log(this.gradedData, 'this.gradedData');
+      // console.log('Headers:', this.headers);
+      console.log('Processed Data:', this.gradedData);
+
       return result;
+    },
+
+    formatString(input) {
+      return input.includes('_') ? `${input.replace(/_/g, ' ')} aggregate` : input;
     },
 
     circleStyle(progress) {
@@ -791,12 +924,23 @@ export default {
 }
 .table-container {
   width: 100%;
+  overflow-y: auto;
   overflow-x: auto;
+  position: relative;
 }
 table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Ensure header is visible */
+  z-index: 10;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 5px 0;
 }
 th,
 td {
@@ -835,4 +979,15 @@ span.multiselect__single {
   font-size: 24px !important;
 }
 
+.border-right-2 {
+  border-right: 2px solid #a8a2a2;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.border-right-3 {
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
 </style>
