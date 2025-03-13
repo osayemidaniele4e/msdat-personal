@@ -19,23 +19,6 @@ const ALL_DASHBOARD_SOURCES = 'allSources';
 const ALL_INDICATOR = 'allIndicator';
 const NHMIS_MONTHLY = 'nhmis_monthly';
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 5000; // 5 seconds
-
-//  utility function
-async function retry(fn, retries = MAX_RETRIES, delay = RETRY_DELAY) {
-  try {
-    return await fn();
-  } catch (error) {
-    if (retries > 0) {
-      console.log(`Retrying... ${retries} attempts remaining`);
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      return retry(fn, retries - 1, delay);
-    }
-    throw error;
-  }
-}
-
 export default class DataLayer {
   constructor(store) {
     this.DB = '';
@@ -419,109 +402,73 @@ export default class DataLayer {
 
   async initDataWithYears(indicator) {
     const validIndicators = indicator.filter((value) => !Number.isNaN(value));
-    const errors = [];
+    for (let i = 0; i < validIndicators.length; i++) {
+      const indicatorID = validIndicators[i];
+      // console.log(indicatorID, 'validIndicators');
+      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
 
-    await Promise.all(
-      validIndicators.map(async (indicatorID) => {
-        try {
-          // Wrap network calls in retry logic
-          const yearsNotAvailableInDB = await retry(async () => this.checkAllYearsExistInDB(indicatorID));
+      const sortedYears = this.sortYearsDescending(yearsNotAvailableInDB);
 
-          const sortedYears = this.sortYearsDescending(yearsNotAvailableInDB);
+      // const currentYear = new Date().getFullYear();
+      // Separate integer years and month names
+      // eslint-disable-next-line no-restricted-globals, radix
+      // const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
+      // eslint-disable-next-line no-restricted-globals, radix
 
-          if (yearsNotAvailableInDB.length > 0) {
-            const yearsToTake = 3;
-            const theYears = take(sortedYears, yearsToTake);
+      // const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
 
-            // Process years sequentially to better handle failures
-            await Promise.all(
-              theYears.map(async (year) => {
-                try {
-                  const result = await retry(async () => apiServices.getIndicatorsWithPeriod(indicatorID, year));
-
-                  const requestResult = result.data.results;
-                  await this.DB.storeDataInDB(requestResult);
-                  this.updatedStoreAvailableIndicator(indicatorID);
-                } catch (yearError) {
-                  errors.push({
-                    indicatorID,
-                    year,
-                    error: yearError.message,
-                  });
-                  console.error(
-                    `Failed to process indicator ${indicatorID} for year ${year}:`,
-                    yearError,
-                  );
-                }
-              }),
-            );
-          }
-        } catch (indicatorError) {
-          errors.push({
-            indicatorID,
-            error: indicatorError.message,
-          });
-          console.error(`Failed to process indicator ${indicatorID}:`, indicatorError);
+      // Combine top 5 past years, future years, and the remaining past years
+      // const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
+      // take only the at least 8 years
+      if (yearsNotAvailableInDB.length > 0) {
+        // const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        const yearsToTake = 3;
+        const theYears = take(sortedYears, yearsToTake);
+        const arrayOfPromises = theYears.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
+        const results = await Promise.all(arrayOfPromises);
+        for (let j = 0; j < results.length; j++) {
+          const requestResult = results[j].data.results;
+          // check if empty
+          await this.DB.storeDataInDB(requestResult);
         }
-      }),
-    );
-
-    // Log summary of errors
-    if (errors.length > 0) {
-      console.error('Data retrieval completed with errors:', errors);
-      this.store.commit('DL/SET_DATA', {
-        tableName: 'syncErrors',
-        data: errors,
-      });
+        this.updatedStoreAvailableIndicator(indicatorID);
+      }
     }
   }
 
   async initDataWithRemainingYears(indicator) {
     console.log('Phase 2 started');
     const validIndicators = indicator.filter((value) => !Number.isNaN(value));
-    const errors = [];
-
     for (let i = 0; i < validIndicators.length; i++) {
       const indicatorID = validIndicators[i];
-      try {
-        await this.processIndicator(indicatorID, errors);
-      } catch (indicatorError) {
-        errors.push({
-          indicatorID,
-          error: indicatorError.message,
-        });
-        console.error(`Failed to process indicator ${indicatorID}:`, indicatorError);
-      }
-    }
+      // console.log('indicatorId', indicatorID);
+      const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
 
-    this.handleErrors(errors);
-  }
+      const currentYear = new Date().getFullYear();
+      // Separate integer years and month names
+      // eslint-disable-next-line no-restricted-globals, radix
+      const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
+      // eslint-disable-next-line no-restricted-globals, radix
 
-  // Extract the batch processing logic
-  async processIndicator(indicatorID, errors) {
-    const yearsNotAvailableInDB = await retry(async () => this.checkAllYearsExistInDB(indicatorID));
+      const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
 
-    if (yearsNotAvailableInDB.length > 0) {
-      const years = this.prepareYearsArray(yearsNotAvailableInDB);
-      const RemainingResults = years.slice(3);
-      await this.processBatches(indicatorID, RemainingResults, errors);
-    }
-  }
+      // Combine top 5 past years, future years, and the remaining past years
+      const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
+      // take only the at least 8 years
+      if (yearsNotAvailableInDB.length > 0) {
+        // const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
+        // const yearsToTake = 3;
+        // const theYears = take(result, yearsToTake);
+        const RemainingResults = result.slice(3);
+        const arrayOfPromises = RemainingResults.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
+        const results = await Promise.all(arrayOfPromises);
 
-  // Process batches of years
-  async processBatches(indicatorID, years, errors) {
-    const BATCH_SIZE = 5;
-
-    for (let j = 0; j < years.length; j += BATCH_SIZE) {
-      const batch = years.slice(j, j + BATCH_SIZE);
-      const success = await this.processBatch(indicatorID, batch, j, years.length);
-
-      if (!success) {
-        errors.push({
-          indicatorID,
-          yearBatch: batch,
-          error: 'Batch processing failed',
-        });
+        for (let j = 0; j < results.length; j++) {
+          const requestResult = results[j].data.results;
+          // check if empty
+          await this.DB.storeDataInDB(requestResult);
+        }
+        // this.updatedStoreAvailableIndicator(indicatorID);
       }
     }
   }
@@ -651,82 +598,5 @@ export default class DataLayer {
         image: 'custom-swal-image',
       },
     });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  showSyncStatus() {
-    return Vue.swal({
-      toast: true,
-      position: 'bottom-end',
-      imageWidth: 100,
-      imageHeight: 100,
-      title:
-        '<div style="display: flex; align-items: center; margin-left: 66px;">Data Synchronizing</div>',
-      html: '<div style="margin-top: -14px; margin-bottom: -10px;;"> <img src="https://my.vsu.edu.ph/assets/img/green_spinner.gif" style="width: 55px; height: 55px; margin-right: 13px; margin-top: -21px" alt="Loading"/>Updating dashboard with more data</div>',
-      showConfirmButton: false,
-      timerProgressBar: false,
-      allowOutsideClick: false,
-      showLoading: true,
-      customClass: {
-        image: 'custom-swal-image',
-      },
-    });
-  }
-
-  async processBatch(indicatorID, batch, currentIndex, totalLength) {
-    try {
-      const batchPromises = batch.map((year) => retry(async () => {
-        const result = await apiServices.getIndicatorsWithPeriod(indicatorID, year);
-        const requestResult = result.data.results;
-        await this.DB.storeDataInDB(requestResult);
-        return true;
-      }));
-
-      const results = await Promise.all(batchPromises);
-
-      // Update store with successful indicator
-      this.updatedStoreAvailableIndicator(indicatorID);
-
-      // Log progress
-      console.log(
-        `Processed ${currentIndex + batch.length}/${totalLength} years for indicator ${indicatorID}`,
-      );
-
-      return results.every((result) => result === true);
-    } catch (error) {
-      console.error(`Batch processing failed for indicator ${indicatorID}:`, error);
-      return false;
-    }
-  }
-
-  // Add this method inside the DataLayer class
-  // eslint-disable-next-line class-methods-use-this
-  handleErrors(errors) {
-    if (errors.length > 0) {
-      console.error('Data synchronization completed with errors:', errors);
-
-      // Store errors in Vuex
-      this.store.commit('DL/SET_DATA', {
-        tableName: 'syncErrors',
-        data: errors,
-      });
-
-      // Show error notification
-      Vue.swal({
-        toast: true,
-        position: 'bottom-end',
-        icon: 'warning',
-        title: 'Synchronization Warning',
-        text: `${errors.length} items failed to sync`,
-        timer: 3000,
-        showConfirmButton: false,
-        timerProgressBar: true,
-      });
-    }
-  }
-
-  // Add method to prepare years array if it's missing
-  prepareYearsArray(years) {
-    return this.sortYearsDescending(years);
   }
 }

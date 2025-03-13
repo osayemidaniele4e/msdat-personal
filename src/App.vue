@@ -1,15 +1,14 @@
 <template>
- <div class="position-relative" id="app">
+  <div class="position-relative" id="app">
     <router-view />
     <feedback />
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-      <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
+    <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
   </div>
-
 </template>
 
 <script>
@@ -24,6 +23,7 @@ import reviewPlugin from './modules/plugins/reviewPlugin';
 import screenshotManager from './modules/plugins/screenshotManager';
 import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
+import ApiServices from './modules/data-layer/services/ApiServices';
 
 export default {
   components: {
@@ -37,6 +37,7 @@ export default {
       showDataSourceListComponent: false, // Replace with your actual state variable
       showWhatsNewComponent: false,
       lastExecutionTime: null,
+      whatsNewContent: [],
     };
   },
   computed: {
@@ -148,6 +149,11 @@ export default {
       this.toggleShowWhatsNew();
     },
 
+    async getWhatsNew() {
+      const { data } = await ApiServices.getWhatsNew();
+      this.whatsNewContent = data.results;
+    },
+
     handleAppUnload() {
       // Perform your cleanup or function call here
       console.log('Application is being unloaded.');
@@ -176,7 +182,6 @@ export default {
         }, 1 * 60 * 1000); // 3 minutes delay in milliseconds
       }
     },
-
   },
   beforeDestroy() {
     // Remove the event listener to avoid memory leaks
@@ -206,7 +211,7 @@ export default {
   top: 1px;
   height: 100vh;
 }
-  .light {
+.light {
   background-color: #ffffff;
   color: #000000;
 }
@@ -247,9 +252,8 @@ html.large {
 }
 
 [data-theme='neutral'] {
-  --primary-color: #EA4700;
-  --secondary-color: #EE6C33;
-  --background-color: #FBDACC;
+  --primary-color: #ea4700;
+  --secondary-color: #ee6c33;
+  --background-color: #fbdacc;
 }
-
 </style>
