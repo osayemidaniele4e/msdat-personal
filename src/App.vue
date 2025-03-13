@@ -179,7 +179,7 @@ export default {
         localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 1 * 60 * 1000); // 3 minutes delay in milliseconds
+        }, 30 * 1000); // 30 seconds delay in milliseconds
       }
     },
   },

@@ -15,7 +15,7 @@ export default {
         indicator: indicator?.id,
         datasource: datasource?.id,
         location: location?.id,
-        // year,
+        year,
       };
 
       const queryString = Object.keys(params)
@@ -36,7 +36,7 @@ export default {
       if (query) {
         const {
           indicator, datasource, location,
-          // year,
+          year,
         } = query;
 
         if (indicator !== undefined) {
@@ -51,7 +51,7 @@ export default {
           this.payload.location = { id: Number(location) };
         }
 
-        // this.payload.year = year; // Uncomment if needed
+        this.payload.year = year; // Uncomment if needed
       }
     },
 
@@ -74,7 +74,7 @@ export default {
         this.payload.indicator = state.indicator;
         this.payload.datasource = state.datasource;
         this.payload.location = state.location;
-        // this.payload.year = state.year;
+        this.payload.year = state.year;
       }
     },
   },
@@ -83,7 +83,7 @@ export default {
     'payload.indicator': 'updateParams',
     'payload.datasource': 'updateParams',
     'payload.location': 'updateParams',
-    // 'payload.year': 'updateParams',
+    'payload.year': 'updateParams',
     controlIndex: {
       async handler(newValue) {
         this.index = newValue;

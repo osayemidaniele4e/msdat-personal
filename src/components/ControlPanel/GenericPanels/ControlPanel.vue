@@ -50,7 +50,7 @@
       <!-- <pre>{{ values }}</pre> -->
 
       <!-- ADVANCED ANALYTICS -->
-       <!-- <pre>{{ values }}</pre> -->
+      <!-- <pre>{{ values }}</pre> -->
       <selectWrapper
         v-if="values.type === 'dropdown' && values.key === 'indicator'"
         :id="label"
@@ -155,7 +155,7 @@
           <p class="check-label ml-1">SDG</p>
         </div>
       </div>
-  <div v-if="values.type === 'visualization'" class="btn-group d-flex work-sans" role="group">
+      <div v-if="values.type === 'visualization'" class="btn-group d-flex work-sans" role="group">
         <button
           type="button"
           @click="updatePayload('zonal_map', values.key), (activeToggleButton = 'zonal_map')"
@@ -499,9 +499,9 @@ export default {
       return el;
     });
     this.updatePayload(this.defaultIndicator, 'indicator');
-    this.updatePayload(this.defaultDataSource, 'datasource');
+    // this.updatePayload(this.defaultDataSource, 'datasource');
     this.updatePayload(this.defaultLocation, 'location');
-    this.updatePayload(this.defaultYear, 'year');
+    this.updatePayload(this.$store.state.MSDAT_STORE.urlPeriod, 'year');
     this.activeToggleButton = this.payload.visualization;
   },
 };
@@ -552,9 +552,8 @@ button {
 // }
 
 @media (max-width: 900px) {
-  .prog-label{
+  .prog-label {
     display: none;
   }
 }
-
 </style>

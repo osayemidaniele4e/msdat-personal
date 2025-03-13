@@ -66,6 +66,39 @@
         </div>
       </div>
     </div>
+    <div class="border-bottom col-12 pt-3 pb-3">
+      <h6 class="font-weight-bold work-sans">Share Specific Link</h6>
+      <div class="row no-gutters">
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            style="border-bottom-right-radius: 0px; border-top-right-radius: 0"
+            placeholder="Shareable Specific URL"
+            ref="sharedInput"
+            v-model="shareLink"
+            readonly
+          />
+        </div>
+        <div class="col-md-3">
+          <button
+            type="button"
+            class="btn btn-block btn-primary py-2 text-uppercase border"
+            style="
+              color: #007d53;
+              border-bottom-left-radius: 0px;
+              border-top-left-radius: 0;
+              background-color: #dff3f3;
+              border-color: #dff3f3;
+            "
+            @click="copy_shared_text"
+          >
+            {{ copy_shared }}
+            <b-icon class="" style="color: #007d53" icon="bookmarks" @click="copy_shared_text" />
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="col-12 pt-3 pb-3">
       <h6 class="font-weight-bold work-sans">Share on social media</h6>
       <div class="row no-gutters">
@@ -134,6 +167,8 @@ export default {
       twitterUser: '@eHealth4every1',
       hashtags:
         'HealthTech,HealthData,DataAnalytics,HealthDataAnalytics,BigData,DataSources,Data,DataScientist,DataAnalyst,HealthIndicators',
+      shareLink: '',
+      copy_shared: 'Copy',
     };
   },
   computed: {
@@ -141,6 +176,12 @@ export default {
   },
   mounted() {
     this.shareDesc = `Take a look at '${this.getSelectedConfig.indicator.full_name}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
+
+    const params = new URLSearchParams(window.location.search);
+    params.set('section', this.$store.state.MSDAT_STORE.selectedSection);
+    this.shareLink = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, '', this.shareLink);
+    // Update the shareable link with the new parameter
   },
 
   methods: {
@@ -148,6 +189,12 @@ export default {
       this.$refs.linkInput.select();
       document.execCommand('copy');
       this.copy_text = 'Copied';
+    },
+
+    copy_shared_text() {
+      this.$refs.sharedInput.select();
+      document.execCommand('copy');
+      this.copy_shared = 'Copied';
     },
 
     shareViaEmail() {
