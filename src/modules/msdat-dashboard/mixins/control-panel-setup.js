@@ -261,6 +261,10 @@ export default {
       const formattedData = groupIndicator(indicatorWithData, 'program_area');
       return formattedData;
     },
+    async setAllIndicatorDropdown(indicators) {
+      const formattedData = groupIndicator(indicators, 'program_area');
+      return formattedData;
+    },
     async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorFromDexie(datasourceID);
 
