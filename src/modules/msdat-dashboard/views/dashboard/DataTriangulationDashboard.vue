@@ -100,15 +100,11 @@
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
-                  <div class="d-flex justify-content-center pb-4">
-                    <h5 class="text-center desc w-75">
-                      {{
-                        `When compared with ${headers[0]}, the extent to which ${headers[1]} ${
-                          headers[2] === undefined ? '' : `+ ${headers[2]} `
-                        } provides matches is
-                     ${consistencyScore}%`
-                      }}
-                    </h5>
+                  <div class="d-flex flex-column align-items-center mb-3">
+                    <h4 class="text-center title">Degree of Data Source Consistency</h4>
+                    <p class="text-center my-2 sub-title w-75">
+                      How well different data sources agree or match with each other.
+                    </p>
                   </div>
 
                   <div class="progress-container">
@@ -127,25 +123,25 @@
                       <div class="progress-value">{{ consistencyScore }}</div>
                     </div>
                   </div>
-                  <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">Degree of Data Source Consistency</h4>
-                    <p class="text-center my-2 sub-title w-75">
-                      How well different data sources agree or match with each other.
-                    </p>
+                  <div class="d-flex justify-content-center pb-4">
+                    <h5 class="text-center desc w-75">
+                      {{
+                        `When compared with ${primaryDataSource?.datasource}, the extent to which ${dataSourcesCompare[0]?.datasource} ${
+                          dataSourcesCompare[1] === undefined ? '' : `+ ${dataSourcesCompare[1]?.datasource} `
+                        } provides matches is
+                     ${consistencyScore}%`
+                      }}
+                    </h5>
                   </div>
                 </div>
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
-                  <div class="d-flex justify-content-center pb-4">
-                    <h5 class="text-center desc w-75">
-                      {{
-                        `When compared with ${headers[0]}, the extent to which ${headers[1]} ${
-                          headers[2] === undefined ? '' : `+ ${headers[2]} `
-                        }  provides matches is
-                      ${complementarityScore}%`
-                      }}
-                    </h5>
+                  <div class="d-flex flex-column align-items-center mb-3">
+                    <h4 class="text-center title">Degree of Data Source Complimentary</h4>
+                    <p class="text-center sub-title my-2 w-75">
+                      How well different data sources work together to provide a complete picture.
+                    </p>
                   </div>
 
                   <div class="progress-container">
@@ -164,13 +160,34 @@
                     </div>
                   </div>
 
-                  <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">Degree of Data Source Complimentary</h4>
-                    <p class="text-center sub-title my-2 w-75">
-                      How well different data sources work together to provide a complete picture.
-                    </p>
+                  <div class="d-flex justify-content-center pb-4">
+                    <h5 class="text-center desc w-75">
+                      {{
+                        `When compared with ${primaryDataSource?.datasource}, the extent to which ${dataSourcesCompare[0]?.datasource} ${
+                          dataSourcesCompare[1] === undefined ? '' : `+ ${dataSourcesCompare[1]?.datasource} `
+                        }  provides matches is
+                      ${complementarityScore}%`
+                      }}
+                    </h5>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="py-2 d-flex">
+              <div class="border-right-2">
+                0 - 20 - Very Low
+              </div>
+              <div class="border-right-2">
+                21 - 40 - Low
+              </div>
+              <div class="border-right-2">
+                41 - 60 - moderate
+              </div>
+              <div class="border-right-2">
+                61 - 80 - High
+              </div>
+              <div class="border-right-3">
+                81 - 100 - Very High
               </div>
             </div>
           </div>
@@ -183,13 +200,13 @@
 
             <div class="table-container">
               <table>
-                <tr>
-                  <th>SCORING METRICS</th>
-                  <th v-for="(source, index) in sources" :key="'header-' + index">
+                <thead>
+                  <th style="width: 25%">SCORING METRICS</th>
+                  <th v-for="(source, index) in sources" :key="'header-' + index" style="padding: 0 50px;" >
                     {{ formatString(source) }}
                   </th>
                   <th>Score</th>
-                </tr>
+                </thead>
                 <tr class="section-header">
                   <td style="width: 25%">Degree of Data Source Consistency</td>
                   <!-- <td class="score">{{ consistencyScore }}%</td> -->
@@ -248,7 +265,25 @@
                 </tr>
               </table>
             </div>
+            <div class="py-2 d-flex justify-content-center mt-4">
+              <div class="border-right-2">
+               1 - Poor
+              </div>
+              <div class="border-right-2">
+                2 - Fair
+              </div>
+              <div class="border-right-2">
+                3 - moderate
+              </div>
+              <div class="border-right-2">
+                4 - Good
+              </div>
+              <div class="border-right-3">
+                5 - Excellent
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
       <div
@@ -393,305 +428,6 @@ export default {
       rawData: [], // Holds API response
       headers: [],
       showLoader: false,
-      tempData: [
-        {
-          'world bank': {
-            complementarity: {
-              score: 93.33,
-              grades: {
-                years_available: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                methodology: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                area: {
-                  score: 3,
-                  scale: 'Moderate',
-                },
-                study_population: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                research_design: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                related_indicators: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-              },
-            },
-            consistency: {
-              score: 80,
-              grades: {
-                variability: {
-                  score: 2,
-                  scale: 'Fair',
-                },
-                metadata_documentation_quality: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                source_credibility: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                uniformity_of_data: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                uniformity_in_findings: {
-                  score: 4,
-                  scale: 'Good',
-                },
-              },
-            },
-          },
-        },
-        {
-          MICS: {
-            complementarity: {
-              score: 86.67,
-              grades: {
-                years_available: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                methodology: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                area: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                study_population: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                research_design: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                related_indicators: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-              },
-            },
-            consistency: {
-              score: 88,
-              grades: {
-                variability: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                metadata_documentation_quality: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                source_credibility: {
-                  score: 5,
-                  scale: 'Excellent',
-                },
-                uniformity_of_data: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                uniformity_in_findings: {
-                  score: 4,
-                  scale: 'Good',
-                },
-              },
-            },
-          },
-        },
-        {
-          NPC: {
-            complementarity: {
-              score: 63.33,
-              grades: {
-                years_available: {
-                  score: 2,
-                  scale: 'Fair',
-                },
-                methodology: {
-                  score: 3,
-                  scale: 'Moderate',
-                },
-                area: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                study_population: {
-                  score: 3,
-                  scale: 'Moderate',
-                },
-                research_design: {
-                  score: 4,
-                  scale: 'Good',
-                },
-                related_indicators: {
-                  score: 3,
-                  scale: 'Moderate',
-                },
-              },
-            },
-            consistency: {
-              score: 56,
-              grades: {
-                variability: {
-                  score: 2,
-                  scale: 'Fair',
-                },
-                metadata_documentation_quality: {
-                  score: 3,
-                  scale: 'Moderate',
-                },
-                source_credibility: {
-                  score: 3,
-                  scale: 'Moderate',
-                },
-                uniformity_of_data: {
-                  score: 3,
-                  scale: 'Moderate',
-                },
-                uniformity_in_findings: {
-                  score: 3,
-                  scale: 'Moderate',
-                },
-              },
-            },
-          },
-        },
-        {
-          aggregate: [
-            {
-              'world bank_MICS': {
-                complementarity: {
-                  years_available: {
-                    score: 4,
-                    description: 'Covers most of the relevant period but may lack the latest year.',
-                  },
-                  methodology: {
-                    score: 5,
-                    description:
-                      'Well-documented and standardized methods with high reproducibility.',
-                  },
-                  area: {
-                    score: 3,
-                    description: 'National and Regional.',
-                  },
-                  study_population: {
-                    score: 4,
-                    description:
-                      'Mostly aligned; minor gaps in population coverage or demographic detail.',
-                  },
-                  research_design: {
-                    score: 4,
-                    description: 'Strong design with minor limitations or gaps in documentation.',
-                  },
-                  related_indicators: {
-                    score: 5,
-                    description:
-                      'Provides a broad set of complementary indicators for all program area (80-100%).',
-                  },
-                },
-                consistency: {
-                  variability: {
-                    score: 3,
-                    description: {
-                      short: 'Data sources exhibit moderate variability.',
-                      long: 'Differences are noticeable and warrant some investigation. While the overall trend may still be apparent,                    caution should be exercised when drawing precise conclusions. Further investigation is needed to verify the discrepancies.',
-                    },
-                  },
-                  metadata_documentation_quality: {
-                    score: 5,
-                    description:
-                      'Metadata is complete, well-documented, and well structured, with all necessary details clearly outlined.',
-                  },
-                  source_credibility: {
-                    score: 5,
-                    description:
-                      'Source is highly reputable, peer-reviewed, and widely recognized; adheres to international standards.',
-                  },
-                  uniformity_of_data: {
-                    score: 4,
-                    description: 'Minor inconsistencies; mostly standardized.',
-                  },
-                  uniformity_in_findings: {
-                    score: 4,
-                    description: 'Minor discrepancies; overall alignment is strong.',
-                  },
-                },
-              },
-            },
-            {
-              'world bank_NPC': {
-                complementarity: {
-                  years_available: {
-                    score: 3,
-                    description: 'Covers part of the relevant period with noticeable gaps.',
-                  },
-                  methodology: {
-                    score: 4,
-                    description: 'Mostly robust with minor inconsistency.',
-                  },
-                  area: {
-                    score: 3,
-                    description: 'National and Regional.',
-                  },
-                  study_population: {
-                    score: 4,
-                    description:
-                      'Mostly aligned; minor gaps in population coverage or demographic detail.',
-                  },
-                  research_design: {
-                    score: 4,
-                    description: 'Strong design with minor limitations or gaps in documentation.',
-                  },
-                  related_indicators: {
-                    score: 4,
-                    description:
-                      'Provides most relevant indicators but may lack a few key ones (60-79%).',
-                  },
-                },
-                consistency: {
-                  variability: {
-                    score: 2,
-                    description: {
-                      short: 'Data sources display considerable variability.',
-                      long: 'Significant discrepancies exist that raise concerns about data quality and comparability. Careful analysis and reconciliation are required before using the data.                    Potential errors or methodological differences between sources are likely.',
-                    },
-                  },
-                  metadata_documentation_quality: {
-                    score: 4,
-                    description:
-                      'Metadata is mostly complete but may lack minor details or some structural clarity.',
-                  },
-                  source_credibility: {
-                    score: 4,
-                    description:
-                      'Source is reputable with strong recognition but lacks peer review or full international compliance.',
-                  },
-                  uniformity_of_data: {
-                    score: 3,
-                    description: 'Noticeable inconsistencies across datasets.',
-                  },
-                  uniformity_in_findings: {
-                    score: 3,
-                    description: 'Noticeable conflicts requiring reconciliation.',
-                  },
-                },
-              },
-            },
-          ],
-        },
-      ],
       position: {},
     };
   },
@@ -712,8 +448,6 @@ export default {
         program_area: 'RMNCH',
       };
       tempList.unshift(blankIndicator);
-      // console.log(data.results, 'HENRY');
-      //   this.allIndicators = this.setAllIndicatorDropdown(data.results);
       const formattedData = groupIndicator(tempList, 'program_area');
       this.allIndicators = formattedData;
 
@@ -753,29 +487,6 @@ export default {
     },
 
     triangulate() {
-      // this.processData(this.tempData);
-      // this.headers = this.tempData
-      //   .flatMap((objItem) => {
-      //     if (objItem.aggregate) {
-      //       // Extract headers from all aggregate objects
-      //       return objItem.aggregate.flatMap((agg) => Object.keys(agg));
-      //     }
-      //     return Object.keys(objItem);
-      //   })
-      //   .filter(
-      //     (header, index, self) => header && header !== 'null' && header !== 'undefined' && self.indexOf(header) === index,
-      //   ); // Remove duplicates and invalid headers
-      // console.log(this.headers, 'Triangulation');
-      // this.showTriangulation = true;
-
-      // const positionTemp = {
-      //   primary: this.primaryDataSource.datasource,
-      //   secondary: this.dataSourcesCompare.datasource,
-      //   optional: this.dataSourcesCompare?.datasource,
-      // };
-
-      // this.position = this.cleanObject(positionTemp);
-
       const {
         primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation,
       } = this;
@@ -792,10 +503,6 @@ export default {
       console.log(obj);
       const cleanObj = this.removeUndefined(obj);
       // Remove null and undefined values
-      // const cleanObj = Object.fromEntries(
-      //   // eslint-disable-next-line no-unused-vars
-      //   Object.entries(obj).filter(([_, value]) => value != null), // Filters out null and undefined
-      // );
       if (cleanObj.primary === undefined || cleanObj.secondary === undefined) {
         this.$swal({
           toast: true,
@@ -827,9 +534,6 @@ export default {
           this.showTriangulation = true;
           this.rawData = data.data; // Store API response
           this.processData(data.data);
-          // this.headers = data.data
-          //   .filter((objItem) => !Object.keys(objItem).includes('aggregate')) // Exclude 'aggregate'
-          //   .flatMap((objItem) => Object.keys(objItem));
           this.headers = data.data
             .flatMap((objItem) => {
               if (objItem.aggregate) {
@@ -839,7 +543,10 @@ export default {
               return Object.keys(objItem);
             })
             .filter(
-              (header, index, self) => header && header !== 'null' && header !== 'undefined' && self.indexOf(header) === index,
+              (header, index, self) => header
+                && header !== 'null'
+                && header !== 'undefined'
+                && self.indexOf(header) === index,
             ); // Remove duplicates and invalid headers
           console.log(this.headers, 'keys@fa-inverse');
           this.showLoader = false; // Show loading spinner
@@ -968,9 +675,6 @@ export default {
         });
       }
 
-      // Generate headers (metric names + source names in correct order)
-      // this.headers = ['Metric', ...Object.values(position), ...this.sources.filter((s) => !Object.values(position).includes(s))];
-
       const result = {
         complementarityScore: sourceCount ? (complementaritySum / sourceCount).toFixed(1) : '0',
         consistencyScore: sourceCount ? (consistencySum / sourceCount).toFixed(1) : '0',
@@ -993,117 +697,6 @@ export default {
     formatString(input) {
       return input.includes('_') ? `${input.replace(/_/g, ' ')} aggregate` : input;
     },
-
-    // processData(data = []) {
-    //   if (!Array.isArray(data) || data.length === 0) {
-    //     return {
-    //       complementarityScore: 0,
-    //       consistencyScore: 0,
-    //       gradedData: {
-    //         consistency: [],
-    //         complementarity: [],
-    //       },
-    //     };
-    //   }
-
-    //   const position = {
-    //     primary: 'world bank',
-    //     secondary: 'MICS',
-    //     optional: 'NPC',
-    //   };
-
-    //   // Extract all sources including aggregate sources
-    //   this.sources = data.flatMap((entry) => {
-    //     if (entry.aggregate) {
-    //       return entry.aggregate.map((agg) => Object.keys(agg)[0]); // Get aggregate sources
-    //     }
-    //     return Object.keys(entry);
-    //   });
-
-    //   const consistency = {};
-    //   const complementarity = {};
-    //   let consistencySum = 0;
-    //   let complementaritySum = 0;
-    //   let sourceCount = 0;
-
-    //   data.forEach((entry) => {
-    //     if (entry.aggregate) {
-    //       // Process each object in the aggregate array
-    //       entry.aggregate.forEach((aggEntry) => {
-    //         const aggSource = Object.keys(aggEntry)[0];
-    //         const aggData = aggEntry[aggSource];
-
-    //         // Process complementarity
-    //         Object.entries(aggData.complementarity).forEach(([key, value]) => {
-    //           if (!complementarity[key]) {
-    //             complementarity[key] = { metric: key, values: {} };
-    //           }
-    //           complementarity[key].values[aggSource] = value;
-    //         });
-
-    //         // Process consistency
-    //         Object.entries(aggData.consistency).forEach(([key, value]) => {
-    //           if (!consistency[key]) {
-    //             consistency[key] = { metric: key, values: {} };
-    //           }
-    //           consistency[key].values[aggSource] = value;
-    //         });
-    //       });
-    //     } else {
-    //       // Process non-aggregate sources
-    //       const source = Object.keys(entry)[0];
-    //       const sourceData = entry[source];
-
-    //       if (sourceData?.complementarity?.score && sourceData?.consistency?.score) {
-    //         complementaritySum += Number(sourceData.complementarity.score) || 0;
-    //         consistencySum += Number(sourceData.consistency.score) || 0;
-    //         sourceCount++;
-
-    //         Object.entries(sourceData.complementarity.grades).forEach(([key, value]) => {
-    //           if (!complementarity[key]) {
-    //             complementarity[key] = { metric: key, values: {} };
-    //           }
-    //           complementarity[key].values[source] = value;
-    //         });
-
-    //         Object.entries(sourceData.consistency.grades).forEach(([key, value]) => {
-    //           if (!consistency[key]) {
-    //             consistency[key] = { metric: key, values: {} };
-    //           }
-    //           consistency[key].values[source] = value;
-    //         });
-    //       }
-    //     }
-    //   });
-
-    //   // Ensure values are ordered according to the position mapping
-    //   function reorderValues(dataObject) {
-    //     return Object.values(dataObject).map((entry) => {
-    //       const orderedValues = [
-    //         entry.values[position.primary] || null,
-    //         entry.values[position.secondary] || null,
-    //         entry.values[position.optional] || null,
-    //       ];
-    //       return { metric: entry.metric, values: orderedValues };
-    //     });
-    //   }
-
-    //   const result = {
-    //     complementarityScore: sourceCount ? (complementaritySum / sourceCount).toFixed(1) : '0',
-    //     consistencyScore: sourceCount ? (consistencySum / sourceCount).toFixed(1) : '0',
-    //     gradedData: {
-    //       consistency: reorderValues(consistency),
-    //       complementarity: reorderValues(complementarity),
-    //     },
-    //   };
-
-    //   this.complementarityScore = result.complementarityScore;
-    //   this.consistencyScore = result.consistencyScore;
-    //   this.gradedData = result.gradedData;
-
-    //   console.log(this.gradedData, 'this.gradedData');
-    //   return result;
-    // },
 
     circleStyle(progress) {
       const radius = 65;
@@ -1331,12 +924,22 @@ export default {
 }
 .table-container {
   width: 100%;
-  overflow-x: auto;
+  overflow-y: auto;
+  position: relative;
 }
 table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Ensure header is visible */
+  z-index: 10;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 5px 0;
 }
 th,
 td {
@@ -1373,5 +976,17 @@ th {
 
 span.multiselect__single {
   font-size: 24px !important;
+}
+
+.border-right-2 {
+  border-right: 2px solid #a8a2a2;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.border-right-3 {
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
 }
 </style>
