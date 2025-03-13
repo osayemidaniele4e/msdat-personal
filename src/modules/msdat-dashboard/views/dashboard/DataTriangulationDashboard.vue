@@ -202,7 +202,7 @@
               <table>
                 <thead>
                   <th style="width: 25%">SCORING METRICS</th>
-                  <th v-for="(source, index) in sources" :key="'header-' + index" style="padding: 0 50px;" >
+                  <th v-for="(source, index) in sources" :key="'header-' + index" style=" width: 13%" >
                     {{ formatString(source) }}
                   </th>
                   <th>Score</th>
@@ -925,6 +925,7 @@ export default {
 .table-container {
   width: 100%;
   overflow-y: auto;
+  overflow-x: auto;
   position: relative;
 }
 table {
