@@ -57,7 +57,7 @@ const appVueCode = `
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-      <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
+      <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
   </div>
@@ -70,6 +70,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
+import ApiServices from './modules/data-layer/services/ApiServices';
 ${pluginImports.join('\n')}
 
 export default {
@@ -84,6 +85,7 @@ export default {
       showDataSourceListComponent: false, // Replace with your actual state variable
       showWhatsNewComponent: false,
       lastExecutionTime: null,
+      whatsNewContent: [],
     };
   },
    computed: {
@@ -141,6 +143,11 @@ export default {
       this.toggleShowWhatsNew();
     },
 
+     async getWhatsNew() {
+      const { data } = await ApiServices.getWhatsNew();
+      this.whatsNewContent = data.results;
+    },
+
      handleAppUnload() {
       // Perform your cleanup or function call here
       console.log('Application is being unloaded.');
@@ -166,7 +173,7 @@ export default {
         localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 1 * 60 * 1000); // 3 minutes delay in milliseconds
+        }, 30 * 1000); // 30 seconds delay in milliseconds
       }
     },
 

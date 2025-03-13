@@ -22,9 +22,13 @@ export interface State {
   isResponding: boolean;
   conversationHistory: Conversation[];
   selectedSection: string;
+  selectedSectionIndex: string;
   location:string;
   showDataSourceList: boolean;
   showWhatsNew: boolean;
+  urlDatasource: number;
+  urlLocation: number;
+  urlPeriod: string;
 }
 
 export type Conversation = {

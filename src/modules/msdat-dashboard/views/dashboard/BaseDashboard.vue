@@ -224,8 +224,8 @@ import {
   BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
 // import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
-// import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -381,7 +381,19 @@ export default {
     window.removeEventListener('wheel', this.handleScroll);
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS', 'UPDATE_PROGRAM_AREAS']),
+    ...mapMutations('MSDAT_STORE', [
+      'SET_CONFIGURATIONS',
+      'UPDATE_PROGRAM_AREAS',
+      'SET_SECTION',
+      'SET_URL_DATASOURCE',
+      'SET_SECTION_PAYLOAD',
+      'SET_MULTI_DATASOURCE_PAYLOAD',
+      'SET_DATASET_DATASOURCE_PAYLOAD',
+      'SET_URL_LOCATION',
+      'SET_URL_PERIOD',
+      'SET_MULTI_LOCATION_PAYLOAD',
+      'SET_MULTI_PERIOD_PAYLOAD',
+    ]),
     ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
@@ -578,6 +590,73 @@ export default {
 
   async mounted() {
     this.loading = false;
+    if (this.$route.query.datasource) {
+      this.SET_URL_DATASOURCE(this.$route.query.datasource);
+      const { data } = await apiServices.getSingleDataSourceObj(this.$route.query.datasource);
+
+      const arr = [0, 1, 2, 3, 4, 5];
+
+      arr.forEach((index) => {
+        const obj = {
+          controlIndex: index,
+          key: 'datasource',
+          value: data,
+        };
+
+        if ([0, 1, 2, 5].includes(index)) {
+          this.SET_SECTION_PAYLOAD(obj);
+        } else if (index === 3) {
+          this.SET_DATASET_DATASOURCE_PAYLOAD(obj);
+        } else if (index === 4) {
+          this.SET_MULTI_DATASOURCE_PAYLOAD(obj);
+        }
+      });
+    }
+
+    if (this.$route.query.location) {
+      this.SET_URL_LOCATION(this.$route.query.location);
+      const { data } = await apiServices.getSingleLocationObj(this.$route.query.location);
+
+      const arr = [0, 1, 2, 3, 4, 5];
+
+      arr.forEach((index) => {
+        const obj = {
+          controlIndex: index,
+          key: 'location',
+          value: data,
+        };
+
+        if ([0, 1, 2, 3, 5].includes(index)) {
+          this.SET_SECTION_PAYLOAD(obj);
+        } else if (index === 4) {
+          this.SET_MULTI_LOCATION_PAYLOAD(obj);
+        }
+      });
+    }
+
+    if (this.$route.query.year) {
+      this.SET_URL_PERIOD(this.$route.query.year);
+      const year = this.$route.query.year;
+      const arr = [0, 1, 2, 3, 4, 5];
+
+      arr.forEach((index) => {
+        const obj = {
+          controlIndex: index,
+          key: 'year',
+          value: year,
+        };
+
+        if ([0, 1, 2, 3, 5].includes(index)) {
+          this.SET_SECTION_PAYLOAD(obj);
+        } else if (index === 4) {
+          this.SET_MULTI_PERIOD_PAYLOAD(obj);
+        }
+      });
+    }
+
+    if (this.$route.query.section) {
+      this.SET_SECTION(this.$route.query.section);
+    }
     // initializing data for dashboard
     // console.trace(this.$route.query);
     let urlRequestedIndicator = [];
