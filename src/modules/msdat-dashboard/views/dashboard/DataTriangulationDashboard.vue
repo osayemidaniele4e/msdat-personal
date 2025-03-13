@@ -704,6 +704,7 @@ export default {
     },
     async getAllIndicators() {
       const { data } = await apiServices.fetchAllIndicators();
+      console.log(data.results, '@@@');
       const tempList = data.results;
       const blankIndicator = {
         id: undefined,
@@ -844,7 +845,9 @@ export default {
           this.showLoader = false; // Show loading spinner
         })
         .catch((error) => {
-          this.$swal(`error : ${error}`);
+          console.log(error);
+          const msg = error.response.data.message;
+          this.$swal(`error : ${msg}`);
           this.showLoader = false; // Hide loading spinner
         });
     },
