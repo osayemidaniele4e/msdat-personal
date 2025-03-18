@@ -1,11 +1,14 @@
 <template>
   <b-container fluid class="box">
-    <h2>WHAT OUR USERS SAY</h2>
-    <span class="top-text">
-      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod <br>
-      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-    </span>
-    <router-link to="/testimonials" class="btn btn-primary rounded-0 m-5 px-5"><span class="px-3">View All</span></router-link>
+    <div class="top-cont">
+
+      <h2>WHAT OUR USERS SAY</h2>
+      <span class="top-text">
+        Discover what our valued customers have to say about their experiences. <br>
+        Real stories from real people who have used our platform.
+      </span>
+      <router-link to="/testimonials" class="btn btn-primary rounded-0 m-5 px-5"><span class="px-3">View All</span></router-link>
+    </div>
     <div class="position-relative" style="z-index: 0; width: 1150px">
       <button
         class="btn btn-outline-primary arrow left"
@@ -48,23 +51,18 @@ export default {
     return {
       testimonials: [
         {
-          text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-          username: 'Neo Amadi',
-          rating: 3,
+          text: 'I have been using the MSDAT for over 6 years. I discovered the platform at a partners meeting organized by FMoH sometime in 2018. The MSDAT platform has enabled me to visualize health data from multiple sources, including routine data, surveys, and global estimates providing a comprehensive view of health indicators.',
+          username: 'Caleb Aromeh',
+          rating: 5,
         },
         {
-          text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-          username: 'Neo Amadi',
-          rating: 4,
+          text: 'I have been using the MSDAT for over 6 years. I discovered the platform at a partners meeting organized by FMoH sometime in 2018. The MSDAT platform has enabled me to visualize health data from multiple sources, including routine data, surveys, and global estimates providing a comprehensive view of health indicators.',
+          username: 'Caleb Aromeh',
+          rating: 5,
         },
         {
-          text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-          username: 'Neo Amadi',
-          rating: 4,
-        },
-        {
-          text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-          username: 'Neo Amadi',
+          text: 'I have been using the MSDAT for over 6 years. I discovered the platform at a partners meeting organized by FMoH sometime in 2018. The MSDAT platform has enabled me to visualize health data from multiple sources, including routine data, surveys, and global estimates providing a comprehensive view of health indicators.',
+          username: 'Caleb Aromeh',
           rating: 5,
         },
       ],
@@ -84,14 +82,20 @@ export default {
 .box {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-width: 1400px;
-  overflow-x: auto;
 }
 .box h2 {
   font-weight: bold;
   padding: 1rem;
 }
+
+.top-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
 .top-text {
   text-align: center;
   font-size: 1.4rem;

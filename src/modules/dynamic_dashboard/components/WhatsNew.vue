@@ -65,7 +65,6 @@ export default {
     async getWhatsNew() {
       const { data } = await ApiServices.getWhatsNew();
       const temp = this.groupByCategory(data.results);
-      console.log(temp, '@Response');
       this.whatsNew = temp;
     },
     groupByCategory(data) {
@@ -78,7 +77,6 @@ export default {
 
     navigateToDashboard(str) {
       const link = str.split(' ').join('_');
-      console.log(link, '@Response');
       const origin = window.location.origin;
       const url = `/dashboard/${link}`;
       // Construct the full URL

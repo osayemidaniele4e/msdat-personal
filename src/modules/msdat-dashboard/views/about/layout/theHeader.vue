@@ -104,21 +104,21 @@
               </h2>
             </div>
             <div class="main-text" v-else>
-                <h2 class="main-text d-inline-block">
+              <h2 class="main-text d-inline-block">
                 <small>MSDAT PLATFORM</small>
                 <br />
                 {{ $route.meta.title }}
-                </h2>
-                <span
-    class="share-button d-inline-block ml-3"
-    v-b-tooltip.hover
-    title="Share Dashboard"
-    @click="toggleSocialModal"
-  >
-    <a href="#" @click.prevent>
-      <img src="@/assets/share.png" alt="share-btn" class="share-icon" />
-    </a>
-  </span>
+              </h2>
+              <span
+                class="share-button d-inline-block ml-3"
+                v-b-tooltip.hover
+                title="Share Dashboard "
+                @click="toggleSocialModal"
+              >
+                <a href="#" @click.prevent>
+                  <img src="@/assets/share.png" alt="share-btn" class="share-icon" />
+                </a>
+              </span>
             </div>
 
             <!-- <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
@@ -148,9 +148,7 @@
                   v-if="isAuthenticated === false"
                   >Home</a
                 >
-                <div
-                  @click="showExpandedDropdown = !showExpandedDropdown"
-                >
+                <div @click="showExpandedDropdown = !showExpandedDropdown">
                   <button class="btn btn-outline-primary border-light rounded-0">
                     Select&nbsp;Dashboard&nbsp;<b-icon
                       icon="triangle-fill"
@@ -305,7 +303,7 @@
               <h4>{{ getUser.email }}</h4>
             </div>
             <div class="close mr-2" @click.prevent="showCard = false">
-              <img src="@/assets/close.png" alt="">
+              <img src="@/assets/close.png" alt="" />
             </div>
           </div>
           <div class="d-flex py-2">
@@ -317,16 +315,12 @@
         </div>
       </div>
     </header>
-    <base-modal
-    :showModal="socialModal"
-    :size="'md'"
-    @hide="handleModalHide"
-  >
-    <template #title>
-      <h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
-    </template>
-    <Socials />
-  </base-modal>
+    <base-modal :showModal="socialModal" :size="'md'" @hide="handleModalHide">
+      <template #title>
+        <h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
+      </template>
+      <Socials />
+    </base-modal>
     <ClearDBCacheModal
       style="z-index: 1500"
       v-if="showClearDataModal"
@@ -523,7 +517,7 @@ export default {
 .share-icon {
   width: 26px;
   height: 24px;
-  margin-top:-5px;
+  margin-top: -5px;
   background-color: white;
   border: 1px solid black;
   border-radius: 6px;
@@ -568,7 +562,7 @@ button {
 }
 .btn:hover {
   background-color: white;
-  color: $primary
+  color: $primary;
 }
 
 .main {

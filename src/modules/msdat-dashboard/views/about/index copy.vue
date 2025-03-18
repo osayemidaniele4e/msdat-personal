@@ -61,7 +61,7 @@
       </section>
       <!-- available data -->
       <section>
-        <h5>Available Data</h5>
+        <h5>Available DataX</h5>
         <p>
           The Indicators provided by the Central Analytic Dashboard can be
           selected on the dashboard by clicking on the Select Indicator
