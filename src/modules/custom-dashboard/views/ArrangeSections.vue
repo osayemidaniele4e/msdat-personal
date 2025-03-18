@@ -485,11 +485,7 @@ export default {
                 }
               });
             this.$store.dispatch('customDashboard', true);
-            const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
-            this.$router.push({
-              path: `/dashboard/${t}`,
-              component: () => import('../../dynamic-dashboard/index.vue'),
-            });
+            this.$router.push('/account#/savedDashboards');
           } else {
             await this.$swal.fire({
               title: 'An Error Occured',
@@ -520,11 +516,7 @@ export default {
         this.SAVE_USER_DASHBOARD(cleanedData);
 
         this.$store.dispatch('customDashboard', true);
-        const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
-        this.$router.push({
-          path: `/dashboard/${t}`,
-          component: () => import('../../dynamic-dashboard/index.vue'),
-        });
+        this.$router.push('/account#/savedDashboards');
       }
 
       //
