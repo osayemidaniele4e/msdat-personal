@@ -58,19 +58,39 @@
       >
     </div>
 
-    <div v-if="isCustomDashboard && $store.getters.getEmbedIframe !== null" class=" mt-5">
+    <div
+      v-if="
+        isCustomDashboard &&
+        $store.getters.getEmbedIframe !== null &&
+        $store.getters.getEmbedIframe !== ''
+      "
+      class="mt-5"
+    >
       <h1 class="url_title">Embedded Iframe</h1>
       <div class="w-100 url_height">
         <div v-html="$store.getters.getEmbedIframe"></div>
       </div>
     </div>
 
-    <div v-if="isCustomDashboard && $store.getters.embeddedUrl !== null" :class="[$store.getters.getEmbedIframe === null ? 'url_body_2': 'url_body']">
+    <div
+      v-if="
+        isCustomDashboard &&
+        $store.getters.embeddedUrl !== null &&
+        $store.getters.embeddedUrl !== ''
+      "
+      :class="[
+        $store.getters.getEmbedIframe === null || $store.getters.getEmbedIframe === ''
+          ? 'url_body_2'
+          : 'url_body',
+      ]"
+    >
       <h1 class="url_title">Embedded URL</h1>
       <div class="w-100 url_height">
         <!-- <b-embed type="iframe" aspect="21by9" :src="$store.getters.getEmbedUrl" width="100%" ></b-embed> -->
-        <iframe :src="$store.getters.getEmbedUrl" style="width: 100%; height: 800px; border: none;"></iframe>
-
+        <iframe
+          :src="$store.getters.getEmbedUrl"
+          style="width: 100%; height: 800px; border: none"
+        ></iframe>
       </div>
     </div>
 
@@ -553,9 +573,9 @@ iframe {
 }
 
 iframe {
-    width: 100%;
-    height: 800px; /* Adjust as needed */
-    border: none;
+  width: 100%;
+  height: 800px; /* Adjust as needed */
+  border: none;
 }
 
 .url_title {
@@ -568,7 +588,7 @@ iframe {
   margin-top: 20rem;
   margin-bottom: 25rem;
 }
-.url_body_2{
+.url_body_2 {
   margin-top: 5rem;
   margin-bottom: 22rem;
 }
