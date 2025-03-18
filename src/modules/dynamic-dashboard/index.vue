@@ -58,14 +58,14 @@
       >
     </div>
 
-    <div v-if="isCustomDashboard" class=" mt-5">
+    <div v-if="isCustomDashboard && $store.getters.getEmbedIframe !== null" class=" mt-5">
       <h1 class="url_title">Embedded Iframe</h1>
       <div class="w-100 url_height">
         <div v-html="$store.getters.getEmbedIframe"></div>
       </div>
     </div>
 
-    <div v-if="isCustomDashboard" :class="[$store.getters.getEmbedIframe === null ? 'url_body_2': 'url_body']">
+    <div v-if="isCustomDashboard && $store.getters.embeddedUrl !== null" :class="[$store.getters.getEmbedIframe === null ? 'url_body_2': 'url_body']">
       <h1 class="url_title">Embedded URL</h1>
       <div class="w-100 url_height">
         <!-- <b-embed type="iframe" aspect="21by9" :src="$store.getters.getEmbedUrl" width="100%" ></b-embed> -->

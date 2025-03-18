@@ -62,7 +62,7 @@
           <!-- v-b-modal.modal-visibility -->
 
           <!-- <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button> -->
-          <button @click="approveData">
+          <button class="create_dashboard_btn" @click="approveData">
             {{ $store.getters.editMode ? 'Update' : 'Create' }} dashboard
           </button>
 
@@ -379,6 +379,13 @@ export default {
       return data.every((item) => item.selected === false);
     },
 
+    removeNullFields(obj) {
+      return Object.fromEntries(
+        // eslint-disable-next-line no-unused-vars
+        Object.entries(obj).filter(([_, value]) => value !== null),
+      );
+    },
+
     async createPublicDashboard() {
       // send the request to create a public dashboard
       this.public_creator.dashboard_details = await this.$store.getters.dashboardDetails;
@@ -436,7 +443,6 @@ export default {
         surveyArray: this.$store.getters.getDataSource,
         sectionsArray: arrangedSections,
       });
-      console.log('config @@', config);
       // if the dashboard is public, run these functions
       if (this.getVisibility === 'public') {
         const id = `${Date.now()}${this.getUser.id}`;
@@ -493,20 +499,25 @@ export default {
         }
       } else {
         // Save Private Dashboard
-        const id = `${Date.now()}${this.getUser.id}`;
-        this.SAVE_USER_DASHBOARD({
-          id,
-          username: this.getUser.username,
+        const data = {
+
+          name: this.getUser.username,
           email: this.getUser.email,
-          user: this.getUser.id,
+          category: this.dashboardDetails.category,
+          reason: this.dashboardDetails.reason,
+          description: this.dashboardDetails.description,
+          name_of_dashboard: this.dashboardDetails.name,
+          organization: 'string',
           config: JSON.stringify(config),
-          created: new Date(),
-          title: this.dashboardDetails.name,
-          link: `${window.location.origin}/custom/private/`,
+          link: `${window.location.origin}/custom/public/`,
           embedded_url: this.modifyTableauUrl(this.url),
           embedded_iframe: this.public_creator.embedded_iframe,
-          is_private: true,
-        });
+          is_confirmed: false,
+          is_private: this.$store.getters.getVisibility === 'private',
+        };
+        const cleanedData = this.removeNullFields(data);
+
+        this.SAVE_USER_DASHBOARD(cleanedData);
 
         this.$store.dispatch('customDashboard', true);
         const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
@@ -552,7 +563,6 @@ export default {
         checked: e.target.checked,
         checkedField: fieldName,
       };
-      console.log(payload, '@');
       this.$store.dispatch('dynamicSection', payload);
       if (fieldName === 'Indicator Overview') {
         this.$store.state.MSDAT_STORE.indicatorComparision = e.target.checked;
@@ -659,6 +669,8 @@ export default {
   width: 188px;
   height: 43px;
   font-size: 15px;
+  color: #ffffff;
+  border: none;
 }
 
 .in-review {
