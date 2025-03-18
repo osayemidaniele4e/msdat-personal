@@ -139,6 +139,9 @@
         </base-sub-card>
       </div>
     </template>
+    <div class="py-5 bg-danger">
+      <h1>HERE</h1>
+    </div>
 
     <!-- <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">

@@ -28,6 +28,9 @@ const getAllNHMISData = async (obj) => axiosInstance.get(`data/?size=5000&indica
 const getNHMISDataObj = async (obj) => axiosInstance.get(`data/?size=2000&indicator=${obj.indicator}&datasource=${obj.datasource}&ordering=-created_at&location=1`);
 const getWhatsNew = async () => axiosInstance.get('news/updates/?size=1000');
 const saveWhatsNew = async (data) => axiosInstance.post('news/updates/', data);
+const saveCustomDashboard = async (data) => axiosInstance.post('custom-dashboard/', data);
+const getSingleCustomDashboard = async (id) => axiosInstance.get(`custom-dashboard/${id}`);
+const getCustomDashboard = async () => axiosInstance.get('custom-dashboard/');
 const fetchAllDataSources = async () => axiosInstance.get('datasources/?size=50');
 const fetchAllIndicators = async () => axiosInstance.get('indicators/?size=2000');
 const fetchAllLocation = async () => axiosInstance.get('location/?size=1000');
@@ -90,6 +93,9 @@ export default {
   getAllNHMISData,
   getWhatsNew,
   saveWhatsNew,
+  saveCustomDashboard,
+  getSingleCustomDashboard,
+  getCustomDashboard,
   fetchAllDataSources,
   fetchAllIndicators,
   fetchAllLocation,

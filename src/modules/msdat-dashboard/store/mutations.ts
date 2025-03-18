@@ -165,6 +165,10 @@ const mutations: MutationTree<State> = {
     state.selectedSection = text;
   },
 
+  SET_DASHBOARD: (state, dashboards) => {
+    state.dashboards = dashboards;
+  },
+
   SET_SECTION_PAYLOAD: (state, obj) => {
     if (state.controlConfig[obj.controlIndex].payload !== null) {
       if (!Array.isArray(state.controlConfig[obj.controlIndex].payload)) {

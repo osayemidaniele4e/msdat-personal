@@ -3,6 +3,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 import axios from 'axios';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   resetState({ commit }) {
@@ -345,11 +346,13 @@ export default {
   // eslint-disable-next-line no-unused-vars
   async setDashboardRequest({ commit }, payload) {
     try {
-      await axios.put(
-        `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`,
-        payload,
-      );
+      // await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`, payload);
+      // await axios.put(
+      //   `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`,
+      //   payload,
+      // );
       // const response = await axios.post('http://172.93.52.240:3001/api/request_dashboard/', payload);
+      console.log(payload, 'payload @@');
       return true;
     } catch (error) {
       console.error('Error sending data to API:', error);
@@ -358,11 +361,15 @@ export default {
   },
   // RETRIEVE ALL DASHBOARD REQUESTS
   async getDashboards({ commit }) {
-    const { data } = await axios.get(
-      'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json',
-    );
-    if (data) commit('setAllPublicDashboards', Object.values(data));
-    return { data };
+    // const { data } = await axios.get(
+    //   'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json',
+    // );
+    const { data } = await ApiServices.getCustomDashboard();
+    console.log(data, '@@@@TY@@@@@ 6');
+    if (data.data.results) commit('setAllPublicDashboards', Object.values(data.data.results));
+    const result = data.data.results;
+    console.log(result, '@@@@TY@@@@@ 6');
+    return { result };
   },
   // RETRIEVE DASHBOARD DETAILS
   async getDashboardDetails(_, id) {
@@ -373,8 +380,12 @@ export default {
   },
 
   // RETRIEVE A SINGLE DASHBOARD BY ID
-  getDashboard(_, id) {
-    return axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);
+  async getDashboard(_, id) {
+    console.log(id, '@@Henry 2');
+    const { data } = await ApiServices.getSingleCustomDashboard(id);
+    console.log(data, '@@Henry 4');
+    return { data };
+    // return axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);
   },
   // UPDATE A DASHBOARD REQUEST (APPROVE/DISAPPROVE)
   updateDashboard(_, payload) {
