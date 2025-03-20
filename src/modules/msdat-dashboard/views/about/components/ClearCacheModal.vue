@@ -79,9 +79,10 @@ export default {
 
   /* Modal Content */
   .modal-content {
-    background: rgba(255, 255, 255, 0.3); /* Semi-transparent background */
-    backdrop-filter: blur(30px); /* Stronger blur inside */
-    -webkit-backdrop-filter: blur(30px);
+    background: white; /* Semi-transparent background */
+    /* backdrop-filter: blur(30px);  */
+    /* Stronger blur inside */
+    /* -webkit-backdrop-filter: blur(30px); */
     padding: 20px;
     border-radius: 12px;
     width: 500px;
