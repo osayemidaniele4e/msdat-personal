@@ -406,8 +406,11 @@ export default class DataLayer {
       const indicatorID = validIndicators[i];
       // console.log(indicatorID, 'validIndicators');
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
+      console.log(yearsNotAvailableInDB, 'Henry@@ 1');
 
       const sortedYears = this.sortYearsDescending(yearsNotAvailableInDB);
+
+      console.log(sortedYears, 'Henry@@ 3');
 
       // const currentYear = new Date().getFullYear();
       // Separate integer years and month names
@@ -444,22 +447,13 @@ export default class DataLayer {
       // console.log('indicatorId', indicatorID);
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
 
-      const currentYear = new Date().getFullYear();
-      // Separate integer years and month names
-      // eslint-disable-next-line no-restricted-globals, radix
-      const pastYears = yearsNotAvailableInDB.filter((year) => Number(year) <= currentYear).sort((a, b) => b - a);
-      // eslint-disable-next-line no-restricted-globals, radix
-
-      const futureYears = yearsNotAvailableInDB.filter((year) => Number(year) > currentYear).sort((a, b) => a - b);
-
-      // Combine top 5 past years, future years, and the remaining past years
-      const result = [...pastYears.slice(0, 5), ...futureYears, ...pastYears.slice(5)];
+      const sortedYears = this.sortYearsDescending(yearsNotAvailableInDB);
       // take only the at least 8 years
       if (yearsNotAvailableInDB.length > 0) {
         // const yearsToTake = limit === 0 ? yearsNotAvailableInDB.length : limit;
         // const yearsToTake = 3;
         // const theYears = take(result, yearsToTake);
-        const RemainingResults = result.slice(3);
+        const RemainingResults = sortedYears.slice(3);
         const arrayOfPromises = RemainingResults.map((item) => apiServices.getIndicatorsWithPeriod(indicatorID, item));
         const results = await Promise.all(arrayOfPromises);
 
