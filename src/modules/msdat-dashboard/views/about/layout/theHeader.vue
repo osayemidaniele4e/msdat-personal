@@ -189,7 +189,7 @@
                   >MSDAT 1.5</a
                 >
                 <div>
-                  <button @click="clearDB" class="btn btn-outline-primary bg-danger rounded-2">
+                  <button @click="showClearDBModal = true" class="btn btn-outline-primary bg-danger rounded-2">
                     CLEAR CACHE
                   </button>
                 </div>
@@ -321,11 +321,20 @@
       </template>
       <Socials />
     </base-modal>
-    <ClearDBCacheModal
+    <!-- <ClearDBCacheModal
       style="z-index: 1500"
       v-if="showClearDataModal"
       :showModal="showClearDataModal"
-    />
+    /> -->
+    <ClearDBCacheModal
+      :isOpen="showClearDBModal"
+      @close="showClearDBModal = false"
+      @clear="clearDBCache"
+      clearText="CLEAR"
+    >
+      <h3>Clear Cache</h3>
+      <p class="clearCacheSubtitle" >Click on the button below to clear dashboard cache</p>
+    </ClearDBCacheModal>
   </div>
 </template>
 
@@ -338,7 +347,7 @@ import Sidebar from '../components/Sidebar.vue';
 import shareDashboard from '../components/shareDashboard.vue';
 import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
-import ClearDBCacheModal from '../components/ClearDBCache.vue';
+import ClearDBCacheModal from '../components/ClearCacheModal.vue';
 
 export default {
   name: 'theHeader',
@@ -379,6 +388,7 @@ export default {
       screenWidth: 0,
       showClearDataModal: false,
       socialModal: false,
+      showClearDBModal: false,
     };
   },
   computed: {
@@ -412,6 +422,14 @@ export default {
     showAuthModal() {
       this.$bvModal.show('auth-modal');
     },
+    async clearDBCache() {
+      await this.$store.dispatch('DL/CLEAR_DB');
+      this.showModal = false;
+      const dashboard = this.$route.params.name;
+      this.$router.push({ path: `/dashboard/${dashboard}` });
+      window.location.reload();
+    },
+
     hideAuthModal() {
       this.$bvModal.hide('auth-modal');
     },
@@ -1219,6 +1237,10 @@ div {
   text-transform: capitalize;
 }
 .name h4 {
+  font-size: 16px;
+}
+
+.clearCacheSubtitle {
   font-size: 16px;
 }
 </style>
