@@ -101,10 +101,10 @@
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
                   <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">Degree of Data Source Consistency</h4>
-                    <p class="text-center my-2 sub-title w-75">
+                    <h4 class="text-center title">Degree of Data Source Consistency <b-icon-info-circle-fill v-tooltip="'This refers to the degree to which different data sources provide similar or aligned information over time and across datasets. Consistent data sources should show comparable trends and values for the same indicators, despite being collected using different methodologies.'" class="data-source-info mx-0" font-scale="1" /></h4>
+                    <!-- <p class="text-center my-2 sub-title w-75">
                       How well different data sources agree or match with each other.
-                    </p>
+                    </p> -->
                   </div>
 
                   <div class="progress-container">
@@ -120,16 +120,19 @@
                         ></circle>
                         <!-- Increased cx, cy, and r -->
                       </svg>
-                      <div class="progress-value">{{ consistencyScore }}</div>
+                      <div class="progress-value">{{ consistencyScore }}%</div>
                     </div>
                   </div>
                   <div class="d-flex justify-content-center pb-4">
                     <h5 class="text-center desc w-75">
                       {{
-                        `When compared with ${primaryDataSource?.datasource}, the extent to which ${dataSourcesCompare[0]?.datasource} ${
-                          dataSourcesCompare[1] === undefined ? '' : `+ ${dataSourcesCompare[1]?.datasource} `
-                        } provides matches is
-                     ${consistencyScore}%`
+                        `Data source consistency result: When compared with ${
+                          primaryDataSource?.datasource
+                        } the degree of data source consistency of ${
+                          dataSourcesCompare[0]?.datasource
+                        } ${
+                          dataSourcesCompare[1] ? `+ ${dataSourcesCompare[1]?.datasource}` : ''
+                        }  is ${getStatus(consistencyScore)} (${consistencyScore}%)`
                       }}
                     </h5>
                   </div>
@@ -138,10 +141,13 @@
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
                   <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">Degree of Data Source Complimentary</h4>
-                    <p class="text-center sub-title my-2 w-75">
+                    <h4 class="text-center title">
+                      Degree of Data Source Complimentary
+                      <b-icon-info-circle-fill v-tooltip="'This refers to the ability of different data sources to provide additional or supporting information that, when combined, offers a more comprehensive view of a subject. This enhances decision-making by integrating multiple perspectives from different data collection methods.'" class="data-source-info mx-0" font-scale="1" />
+                    </h4>
+                    <!-- <p class="text-center sub-title my-2 w-75">
                       How well different data sources work together to provide a complete picture.
-                    </p>
+                    </p> -->
                   </div>
 
                   <div class="progress-container">
@@ -156,17 +162,20 @@
                           :style="circleStyle(complementarityScore)"
                         ></circle>
                       </svg>
-                      <div class="progress-value">{{ complementarityScore }}</div>
+                      <div class="progress-value">{{ complementarityScore }}%</div>
                     </div>
                   </div>
 
                   <div class="d-flex justify-content-center pb-4">
                     <h5 class="text-center desc w-75">
                       {{
-                        `When compared with ${primaryDataSource?.datasource}, the extent to which ${dataSourcesCompare[0]?.datasource} ${
-                          dataSourcesCompare[1] === undefined ? '' : `+ ${dataSourcesCompare[1]?.datasource} `
-                        }  provides matches is
-                      ${complementarityScore}%`
+                        `Data source complementarity: The degree to which ${
+                          primaryDataSource?.datasource
+                        } complements ${dataSourcesCompare[0]?.datasource} ${
+                          dataSourcesCompare[1] ? `+ ${dataSourcesCompare[1]?.datasource}` : ''
+                        } as a data source is ${getStatus(
+                          complementarityScore
+                        )} (${complementarityScore}%)`
                       }}
                     </h5>
                   </div>
@@ -174,21 +183,11 @@
               </div>
             </div>
             <div class="py-2 d-flex">
-              <div class="border-right-2">
-                0 - 20 - Very Low
-              </div>
-              <div class="border-right-2">
-                21 - 40 - Low
-              </div>
-              <div class="border-right-2">
-                41 - 60 - moderate
-              </div>
-              <div class="border-right-2">
-                61 - 80 - High
-              </div>
-              <div class="border-right-3">
-                81 - 100 - Very High
-              </div>
+              <div class="border-right-2">0 - 20 - Very Low</div>
+              <div class="border-right-2">21 - 40 - Low</div>
+              <div class="border-right-2">41 - 60 - moderate</div>
+              <div class="border-right-2">61 - 80 - High</div>
+              <div class="border-right-3">81 - 100 - Very High</div>
             </div>
           </div>
           <div class="col-8 d-flex px-0 results_height flex-column border">
@@ -202,7 +201,11 @@
               <table>
                 <thead>
                   <th style="width: 25%">SCORING METRICS</th>
-                  <th v-for="(source, index) in sources" :key="'header-' + index" style=" width: 13%" >
+                  <th
+                    v-for="(source, index) in sources"
+                    :key="'header-' + index"
+                    style="width: 13%"
+                  >
                     {{ formatString(source) }}
                   </th>
                   <th>Score</th>
@@ -266,24 +269,13 @@
               </table>
             </div>
             <div class="py-2 d-flex justify-content-center mt-4">
-              <div class="border-right-2">
-               1 - Poor
-              </div>
-              <div class="border-right-2">
-                2 - Fair
-              </div>
-              <div class="border-right-2">
-                3 - moderate
-              </div>
-              <div class="border-right-2">
-                4 - Good
-              </div>
-              <div class="border-right-3">
-                5 - Excellent
-              </div>
+              <div class="border-right-2">1 - Poor</div>
+              <div class="border-right-2">2 - Fair</div>
+              <div class="border-right-2">3 - moderate</div>
+              <div class="border-right-2">4 - Good</div>
+              <div class="border-right-3">5 - Excellent</div>
             </div>
           </div>
-
         </div>
       </div>
       <div
@@ -468,6 +460,14 @@ export default {
         // eslint-disable-next-line no-unused-vars
         Object.entries(obj).filter(([_, value]) => value !== undefined),
       );
+    },
+
+    getStatus(value) {
+      if (value >= 81) return 'Very High';
+      if (value >= 61) return 'High';
+      if (value >= 41) return 'Moderate';
+      if (value >= 21) return 'Low';
+      return 'Very Low';
     },
 
     limitSelection() {
@@ -716,7 +716,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 .section-height {
@@ -863,7 +863,7 @@ export default {
   top: 55%;
   left: 45%;
   transform: translate(-50%, -50%);
-  font-size: 26px; /* Adjust font size for larger circle */
+  font-size: 20px; /* Adjust font size for larger circle */
   font-weight: bold;
   color: #2b7a78;
   line-height: 1;
@@ -887,7 +887,7 @@ export default {
 
 .desc {
   font-family: Inter;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 24px;
   text-align: center;
@@ -990,4 +990,11 @@ span.multiselect__single {
   font-size: 12px;
   font-weight: 600;
 }
+
+.data-source-info {
+  cursor: pointer;
+  color: #348481 !important;
+  font-size: 18px;
+}
+
 </style>
