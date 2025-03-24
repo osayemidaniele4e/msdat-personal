@@ -406,11 +406,8 @@ export default class DataLayer {
       const indicatorID = validIndicators[i];
       // console.log(indicatorID, 'validIndicators');
       const yearsNotAvailableInDB = await this.checkAllYearsExistInDB(indicatorID);
-      console.log(yearsNotAvailableInDB, 'Henry@@ 1');
 
       const sortedYears = this.sortYearsDescending(yearsNotAvailableInDB);
-
-      console.log(sortedYears, 'Henry@@ 3');
 
       // const currentYear = new Date().getFullYear();
       // Separate integer years and month names

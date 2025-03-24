@@ -188,11 +188,21 @@ export default {
 
           if (this.controlIndex !== 2) {
             const availableYears = await this.getAvailableYears();
+            console.log(availableYears, 'availableYears@');
             this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
               key: 'year',
-              values: availableYears.sort((a, b) => b - a),
+              values: availableYears.sort((a, b) => {
+                const [yearA, weekA] = a.split(' Week ').map(Number);
+                const [yearB, weekB] = b.split(' Week ').map(Number);
+
+                // Sort by year in descending order
+                if (yearA !== yearB) return yearB - yearA;
+
+                // Sort by week in descending order
+                return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+              }),
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
             await this.SETUP_CONTROL_OPTIONS1({
@@ -241,7 +251,16 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears.sort((a, b) => b - a),
+            values: availableYears.sort((a, b) => {
+              const [yearA, weekA] = a.split(' Week ').map(Number);
+              const [yearB, weekB] = b.split(' Week ').map(Number);
+
+              // Sort by year in descending order
+              if (yearA !== yearB) return yearB - yearA;
+
+              // Sort by week in descending order
+              return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+            }),
           });
           // ============
           if (this.controlIndex === 2) {
@@ -274,7 +293,16 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears.sort((a, b) => b - a),
+            values: availableYears.sort((a, b) => {
+              const [yearA, weekA] = a.split(' Week ').map(Number);
+              const [yearB, weekB] = b.split(' Week ').map(Number);
+
+              // Sort by year in descending order
+              if (yearA !== yearB) return yearB - yearA;
+
+              // Sort by week in descending order
+              return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+            }),
           });
         }
       },
