@@ -146,7 +146,7 @@ export default {
 
     getStateDataAccordingToRegionInHighChartFormat(data) {
       // add this function to a mixin later
-      const formatToHighChart = (dataValues) => dataValues.map((item) => [this.dlGetLocation(item.location).name, parseFloat(item.value)]);
+      const formatToHighChart = (dataValues) => dataValues.map((item) => [this.getAbbreviatedStateName(this.dlGetLocation(item.location).name), parseFloat(item.value)]);
 
       // already know the zonal levels/parent of all the value
       // index starts at one to skip region data for the series
@@ -166,6 +166,49 @@ export default {
       }
       // console.log(chartSeries, 'chartseries')
       return chartSeries;
+    },
+
+    getAbbreviatedStateName(stateName) {
+      const stateAbbreviations = {
+        Abia: 'ABI',
+        Adamawa: 'ADA',
+        'Akwa Ibom': 'AKW',
+        Anambra: 'ANB',
+        Bauchi: 'BAU',
+        Bayelsa: 'BAY',
+        Benue: 'BEN',
+        Borno: 'BOR',
+        'Cross River': 'CRS',
+        Delta: 'DEL',
+        Ebonyi: 'EBO',
+        Edo: 'EDO',
+        Ekiti: 'EKI',
+        Enugu: 'ENU',
+        FCT: 'FCT',
+        Gombe: 'GOM',
+        Imo: 'IMO',
+        Jigawa: 'JIG',
+        Kaduna: 'KAD',
+        Kano: 'KAN',
+        Katsina: 'KAT',
+        Kebbi: 'KEB',
+        Kogi: 'KOG',
+        Kwara: 'KWA',
+        Lagos: 'LAG',
+        Nasarawa: 'NAS',
+        Niger: 'NIG',
+        Ogun: 'OGU',
+        Ondo: 'OND',
+        Osun: 'OSU',
+        Oyo: 'OYO',
+        Plateau: 'PLA',
+        Rivers: 'RIV',
+        Sokoto: 'SOK',
+        Taraba: 'TAR',
+        Yobe: 'YOB',
+        Zamfara: 'ZAM',
+      };
+      return stateAbbreviations[stateName] || stateName;
     },
   },
   watch: {
@@ -187,14 +230,12 @@ export default {
               (item) => this.dlGetLocation(item.location).parent === val.location.id,
             );
 
-            const formatToHighChart = (dataValues) => dataValues.map((item) => [
-              this.dlGetLocation(item.location).name,
+            const formattedData = filteredLGADataForState.map((item) => [
+              this.getAbbreviatedStateName(this.dlGetLocation(item.location).name),
               parseFloat(item.value),
             ]);
 
             const chartSeries = [];
-            const formattedData = formatToHighChart(filteredLGADataForState);
-
             const sortedData = formattedData.sort(sortHighChartDataFormat);
 
             const stateObject = this.dlGetLocation(val.location.id);
