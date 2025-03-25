@@ -132,7 +132,7 @@
                           dataSourcesCompare[0]?.datasource
                         } ${
                           dataSourcesCompare[1] ? `+ ${dataSourcesCompare[1]?.datasource}` : ''
-                        }  is ${getStatus(consistencyScore)} (${consistencyScore}%)`
+                        }  is ${getStatus(consistencyScore)} at (${consistencyScore}%)`
                       }}
                     </h5>
                   </div>
@@ -175,7 +175,7 @@
                           dataSourcesCompare[1] ? `+ ${dataSourcesCompare[1]?.datasource}` : ''
                         } as a data source is ${getStatus(
                           complementarityScore
-                        )} (${complementarityScore}%)`
+                        )} at (${complementarityScore}%)`
                       }}
                     </h5>
                   </div>
