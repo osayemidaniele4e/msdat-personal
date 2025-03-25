@@ -142,7 +142,7 @@
                 >
                   <div class="d-flex flex-column align-items-center mb-3">
                     <h4 class="text-center title">
-                      Degree of Data Source Complimentary
+                      Degree of Data Source Complementarity
                       <b-icon-info-circle-fill v-tooltip="'This refers to the ability of different data sources to provide additional or supporting information that, when combined, offers a more comprehensive view of a subject. This enhances decision-making by integrating multiple perspectives from different data collection methods.'" class="data-source-info mx-0" font-scale="1" />
                     </h4>
                     <!-- <p class="text-center sub-title my-2 w-75">
