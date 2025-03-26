@@ -6,6 +6,13 @@ export default {
     return state.dashboardDetails;
   },
 
+  getEmbedUrl(state) {
+    return state.embeddedUrl;
+  },
+  getEmbedIframe(state) {
+    return state.embeddedIframe;
+  },
+
   indicators(state) {
     return state.indicators;
   },

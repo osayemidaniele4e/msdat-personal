@@ -195,7 +195,6 @@ export default {
               values: availableYears.sort((a, b) => b - a),
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
-
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,

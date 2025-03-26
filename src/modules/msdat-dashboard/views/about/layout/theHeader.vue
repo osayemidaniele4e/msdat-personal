@@ -104,21 +104,21 @@
               </h2>
             </div>
             <div class="main-text" v-else>
-                <h2 class="main-text d-inline-block">
+              <h2 class="main-text d-inline-block">
                 <small>MSDAT PLATFORM</small>
                 <br />
                 {{ $route.meta.title }}
-                </h2>
-                <span
-    class="share-button d-inline-block ml-3"
-    v-b-tooltip.hover
-    title="Share Dashboard"
-    @click="toggleSocialModal"
-  >
-    <a href="#" @click.prevent>
-      <img src="@/assets/share.png" alt="share-btn" class="share-icon" />
-    </a>
-  </span>
+              </h2>
+              <span
+                class="share-button d-inline-block ml-3"
+                v-b-tooltip.hover
+                title="Share Dashboard "
+                @click="toggleSocialModal"
+              >
+                <a href="#" @click.prevent>
+                  <img src="@/assets/share.png" alt="share-btn" class="share-icon" />
+                </a>
+              </span>
             </div>
 
             <!-- <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
@@ -148,9 +148,7 @@
                   v-if="isAuthenticated === false"
                   >Home</a
                 >
-                <div
-                  @click="showExpandedDropdown = !showExpandedDropdown"
-                >
+                <div @click="showExpandedDropdown = !showExpandedDropdown">
                   <button class="btn btn-outline-primary border-light rounded-0">
                     Select&nbsp;Dashboard&nbsp;<b-icon
                       icon="triangle-fill"
@@ -191,7 +189,7 @@
                   >MSDAT 1.5</a
                 >
                 <div>
-                  <button @click="clearDB" class="btn btn-outline-primary bg-danger rounded-2">
+                  <button @click="showClearDBModal = true" class="btn btn-outline-primary bg-danger rounded-2">
                     CLEAR CACHE
                   </button>
                 </div>
@@ -305,7 +303,7 @@
               <h4>{{ getUser.email }}</h4>
             </div>
             <div class="close mr-2" @click.prevent="showCard = false">
-              <img src="@/assets/close.png" alt="">
+              <img src="@/assets/close.png" alt="" />
             </div>
           </div>
           <div class="d-flex py-2">
@@ -317,21 +315,26 @@
         </div>
       </div>
     </header>
-    <base-modal
-    :showModal="socialModal"
-    :size="'md'"
-    @hide="handleModalHide"
-  >
-    <template #title>
-      <h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
-    </template>
-    <Socials />
-  </base-modal>
-    <ClearDBCacheModal
+    <base-modal :showModal="socialModal" :size="'md'" @hide="handleModalHide">
+      <template #title>
+        <h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
+      </template>
+      <Socials />
+    </base-modal>
+    <!-- <ClearDBCacheModal
       style="z-index: 1500"
       v-if="showClearDataModal"
       :showModal="showClearDataModal"
-    />
+    /> -->
+    <ClearDBCacheModal
+      :isOpen="showClearDBModal"
+      @close="showClearDBModal = false"
+      @clear="clearDBCache"
+      clearText="CLEAR"
+    >
+      <h3>Clear Cache</h3>
+      <p class="clearCacheSubtitle" >Click on the button below to clear dashboard cache</p>
+    </ClearDBCacheModal>
   </div>
 </template>
 
@@ -344,7 +347,7 @@ import Sidebar from '../components/Sidebar.vue';
 import shareDashboard from '../components/shareDashboard.vue';
 import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
-import ClearDBCacheModal from '../components/ClearDBCache.vue';
+import ClearDBCacheModal from '../components/ClearCacheModal.vue';
 
 export default {
   name: 'theHeader',
@@ -385,6 +388,7 @@ export default {
       screenWidth: 0,
       showClearDataModal: false,
       socialModal: false,
+      showClearDBModal: false,
     };
   },
   computed: {
@@ -418,6 +422,14 @@ export default {
     showAuthModal() {
       this.$bvModal.show('auth-modal');
     },
+    async clearDBCache() {
+      await this.$store.dispatch('DL/CLEAR_DB');
+      this.showModal = false;
+      const dashboard = this.$route.params.name;
+      this.$router.push({ path: `/dashboard/${dashboard}` });
+      window.location.reload();
+    },
+
     hideAuthModal() {
       this.$bvModal.hide('auth-modal');
     },
@@ -523,7 +535,7 @@ export default {
 .share-icon {
   width: 26px;
   height: 24px;
-  margin-top:-5px;
+  margin-top: -5px;
   background-color: white;
   border: 1px solid black;
   border-radius: 6px;
@@ -568,7 +580,7 @@ button {
 }
 .btn:hover {
   background-color: white;
-  color: $primary
+  color: $primary;
 }
 
 .main {
@@ -1225,6 +1237,10 @@ div {
   text-transform: capitalize;
 }
 .name h4 {
+  font-size: 16px;
+}
+
+.clearCacheSubtitle {
   font-size: 16px;
 }
 </style>

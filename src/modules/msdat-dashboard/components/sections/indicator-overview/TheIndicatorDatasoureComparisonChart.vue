@@ -53,7 +53,7 @@
         v-if="Object.keys(values).length && dataSourcesOptions.length !== 0"
       >
         <template #title>
-          <p v-if="hasOneDatasource" class="work-sans mb-0 line-height">
+          <p v-if="ChartOptions.series.length === 1" class="work-sans mb-0 line-height">
             Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
           </p>
           <p v-else class="work-sans mb-0 line-height">
@@ -494,7 +494,6 @@ export default {
     updateChart(e) {
       this.ChartOptions.chart.type = e;
     },
-
     togglePopUp() {
       this.showPopUp = !this.showPopUp;
     },

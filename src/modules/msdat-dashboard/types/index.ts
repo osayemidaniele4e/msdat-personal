@@ -1,3 +1,52 @@
+/* eslint-disable camelcase */
+
+interface Config {
+  name?: string;
+  dashboardDetails?: {
+    name: string;
+    description: string;
+    category: string;
+  };
+  composedData?: {
+    parent: {
+      isChildSelected: boolean;
+    };
+    children: {
+      id: number;
+      selected: boolean;
+    }[];
+  }[];
+  surveyArray?: {
+    children: {
+      id: number;
+      selected: boolean;
+    }[];
+  }[];
+  sectionsArray?: {
+    id: number;
+    name: string;
+    active: boolean;
+    isShow: boolean;
+  }[];
+}
+
+interface DashboardEntry {
+  id: number;
+  name: string;
+  email: string;
+  category: string;
+  reason: string | null;
+  description: string;
+  // eslint-disable-next-line camelcase
+  name_of_dashboard: string;
+  organization: string | null;
+  config: Config | string;
+  link: string;
+  embedded_url: string | null;
+  embedded_iframe: string | null;
+  created: string;
+}
+
 export interface State {
   indicatorComparision: boolean;
   zonalAnalysis: boolean;
@@ -22,9 +71,14 @@ export interface State {
   isResponding: boolean;
   conversationHistory: Conversation[];
   selectedSection: string;
+  selectedSectionIndex: string;
   location:string;
   showDataSourceList: boolean;
   showWhatsNew: boolean;
+  dashboards: DashboardEntry[]
+  urlDatasource: number;
+  urlLocation: number;
+  urlPeriod: string;
 }
 
 export type Conversation = {

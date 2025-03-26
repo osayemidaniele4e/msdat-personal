@@ -1,8 +1,5 @@
 <template>
   <div class="position-relative">
-    <div class="mt-5">
-      <h1>HHHHHHHHHHHHs</h1>
-    </div>
     <MSDAT
       v-show="!isAdvanced"
       v-if="Object.entries(configObject).length"
