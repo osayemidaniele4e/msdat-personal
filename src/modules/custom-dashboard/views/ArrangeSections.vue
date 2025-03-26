@@ -382,7 +382,7 @@ export default {
     removeNullFields(obj) {
       return Object.fromEntries(
         // eslint-disable-next-line no-unused-vars
-        Object.entries(obj).filter(([_, value]) => value !== null),
+        Object.entries(obj).filter(([_, value]) => value != null && value !== ''),
       );
     },
 
