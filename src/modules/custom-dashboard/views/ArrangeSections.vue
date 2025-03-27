@@ -464,32 +464,20 @@ export default {
             text: 'Warning: You need to select at least a section',
           });
         } else {
+          const cleanedData = this.removeNullFields(this.public_creator);
           // const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
-          const res = await apiServices.saveCustomDashboard(this.public_creator);
-          // hide the 'modal-public-dashboard'
-          await this.$bvModal.hide('modal-public-dashboard');
-          // show the 'modal-in-review'
-          // await this.$bvModal.show('modal-in-review');
-          if (res) {
-            await this.$swal
-              .fire({
-                title: 'Dashboard in Review',
-                text: `Your Public Dashboard will be approved within the next 48hrs.\n\n URL: "${this.public_creator.link}"`,
-                icon: 'success',
-                confirmButtonText: 'Copy URL',
-              })
-              .then((result) => {
-                if (result.isConfirmed) {
-                  navigator.clipboard.writeText(this.public_creator.link);
-                  this.$swal.fire('URL copied to clipboard!');
-                }
-              });
-            this.$store.dispatch('customDashboard', true);
-            this.$router.push('/account#/savedDashboards');
-          } else {
-            await this.$swal.fire({
-              title: 'An Error Occured',
-              text: 'Your request for a Public Dashboard could not be granted. Please try again later.',
+          try {
+            const res = await apiServices.saveCustomDashboard(cleanedData);
+
+            if (res) {
+              this.$store.dispatch('customDashboard', true);
+              this.$router.push('/account#/savedDashboards');
+            }
+          } catch (error) {
+            this.$swal.fire({
+              title: 'Error',
+              text: `${error.response.data.message}`,
+              icon: 'error',
             });
           }
         }
@@ -511,12 +499,21 @@ export default {
           is_confirmed: false,
           is_private: this.$store.getters.getVisibility === 'private',
         };
-        const cleanedData = this.removeNullFields(data);
 
-        this.SAVE_USER_DASHBOARD(cleanedData);
+        try {
+          const cleanedData = this.removeNullFields(data);
 
-        this.$store.dispatch('customDashboard', true);
-        this.$router.push('/account#/savedDashboards');
+          this.SAVE_USER_DASHBOARD(cleanedData);
+
+          this.$store.dispatch('customDashboard', true);
+          this.$router.push('/account#/savedDashboards');
+        } catch (error) {
+          this.$swal.fire({
+            title: 'Error',
+            text: `${error.response.data.message}`,
+            icon: 'error',
+          });
+        }
       }
 
       //
