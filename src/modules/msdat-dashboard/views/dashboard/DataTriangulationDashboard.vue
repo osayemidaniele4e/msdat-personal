@@ -101,10 +101,19 @@
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
                   <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">Degree of Data Source Consistency</h4>
-                    <p class="text-center my-2 sub-title w-75">
+                    <h4 class="text-center title">
+                      Degree of Data Source Consistency
+                      <b-icon-info-circle-fill
+                        v-tooltip="
+                          'This refers to the degree to which different data sources provide similar or aligned information over time and across datasets. Consistent data sources should show comparable trends and values for the same indicators, despite being collected using different methodologies.'
+                        "
+                        class="data-source-info mx-0"
+                        font-scale="1"
+                      />
+                    </h4>
+                    <!-- <p class="text-center my-2 sub-title w-75">
                       How well different data sources agree or match with each other.
-                    </p>
+                    </p> -->
                   </div>
 
                   <div class="progress-container">
@@ -120,16 +129,19 @@
                         ></circle>
                         <!-- Increased cx, cy, and r -->
                       </svg>
-                      <div class="progress-value">{{ consistencyScore }}</div>
+                      <div class="progress-value">{{ consistencyScore }}%</div>
                     </div>
                   </div>
                   <div class="d-flex justify-content-center pb-4">
                     <h5 class="text-center desc w-75">
                       {{
-                        `When compared with ${primaryDataSource?.datasource}, the extent to which ${dataSourcesCompare[0]?.datasource} ${
-                          dataSourcesCompare[1] === undefined ? '' : `+ ${dataSourcesCompare[1]?.datasource} `
-                        } provides matches is
-                     ${consistencyScore}%`
+                        `Data source consistency result: When compared with ${
+                          headerSource[0]
+                        } the degree of data source consistency of ${
+                          headerSource[1]
+                        } ${
+                          headerSource[2] ? `+ ${headerSource[2]}` : ''
+                        }  is ${getStatus(consistencyScore)} at (${consistencyScore}%)`
                       }}
                     </h5>
                   </div>
@@ -138,10 +150,19 @@
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
                   <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">Degree of Data Source Complimentary</h4>
-                    <p class="text-center sub-title my-2 w-75">
+                    <h4 class="text-center title">
+                      Degree of Data Source Complementarity
+                      <b-icon-info-circle-fill
+                        v-tooltip="
+                          'This refers to the ability of different data sources to provide additional or supporting information that, when combined, offers a more comprehensive view of a subject. This enhances decision-making by integrating multiple perspectives from different data collection methods.'
+                        "
+                        class="data-source-info mx-0"
+                        font-scale="1"
+                      />
+                    </h4>
+                    <!-- <p class="text-center sub-title my-2 w-75">
                       How well different data sources work together to provide a complete picture.
-                    </p>
+                    </p> -->
                   </div>
 
                   <div class="progress-container">
@@ -156,17 +177,18 @@
                           :style="circleStyle(complementarityScore)"
                         ></circle>
                       </svg>
-                      <div class="progress-value">{{ complementarityScore }}</div>
+                      <div class="progress-value">{{ complementarityScore }}%</div>
                     </div>
                   </div>
 
                   <div class="d-flex justify-content-center pb-4">
                     <h5 class="text-center desc w-75">
                       {{
-                        `When compared with ${primaryDataSource?.datasource}, the extent to which ${dataSourcesCompare[0]?.datasource} ${
-                          dataSourcesCompare[1] === undefined ? '' : `+ ${dataSourcesCompare[1]?.datasource} `
-                        }  provides matches is
-                      ${complementarityScore}%`
+                        `Data source complementarity: The degree to which ${headerSource[1]} ${
+                          headerSource[2] ? `and ${headerSource[2]} ` : ''
+                        } complements  ${headerSource[0]}   as a data source is ${getStatus(
+                          complementarityScore
+                        )} at (${complementarityScore}%)`
                       }}
                     </h5>
                   </div>
@@ -174,21 +196,11 @@
               </div>
             </div>
             <div class="py-2 d-flex">
-              <div class="border-right-2">
-                0 - 20 - Very Low
-              </div>
-              <div class="border-right-2">
-                21 - 40 - Low
-              </div>
-              <div class="border-right-2">
-                41 - 60 - moderate
-              </div>
-              <div class="border-right-2">
-                61 - 80 - High
-              </div>
-              <div class="border-right-3">
-                81 - 100 - Very High
-              </div>
+              <div class="border-right-2">0 - 20 - Very Low</div>
+              <div class="border-right-2">21 - 40 - Low</div>
+              <div class="border-right-2">41 - 60 - moderate</div>
+              <div class="border-right-2">61 - 80 - High</div>
+              <div class="border-right-3">81 - 100 - Very High</div>
             </div>
           </div>
           <div class="col-8 d-flex px-0 results_height flex-column border">
@@ -202,7 +214,11 @@
               <table>
                 <thead>
                   <th style="width: 25%">SCORING METRICS</th>
-                  <th v-for="(source, index) in sources" :key="'header-' + index" style=" width: 13%" >
+                  <th
+                    v-for="(source, index) in sources"
+                    :key="'header-' + index"
+                    style="width: 13%"
+                  >
                     {{ formatString(source) }}
                   </th>
                   <th>Score</th>
@@ -266,24 +282,13 @@
               </table>
             </div>
             <div class="py-2 d-flex justify-content-center mt-4">
-              <div class="border-right-2">
-               1 - Poor
-              </div>
-              <div class="border-right-2">
-                2 - Fair
-              </div>
-              <div class="border-right-2">
-                3 - moderate
-              </div>
-              <div class="border-right-2">
-                4 - Good
-              </div>
-              <div class="border-right-3">
-                5 - Excellent
-              </div>
+              <div class="border-right-2">1 - Poor</div>
+              <div class="border-right-2">2 - Fair</div>
+              <div class="border-right-2">3 - moderate</div>
+              <div class="border-right-2">4 - Good</div>
+              <div class="border-right-3">5 - Excellent</div>
             </div>
           </div>
-
         </div>
       </div>
       <div
@@ -429,18 +434,17 @@ export default {
       headers: [],
       showLoader: false,
       position: {},
+      headerSource: [],
     };
   },
 
   methods: {
     async getAllDataSource() {
       const { data } = await apiServices.fetchAllDataSources();
-      console.log(data.results, 'HENRY');
       this.allDatasources = data.results;
     },
     async getAllIndicators() {
       const { data } = await apiServices.fetchAllIndicators();
-      console.log(data.results, '@@@');
       const tempList = data.results;
       const blankIndicator = {
         id: undefined,
@@ -450,8 +454,6 @@ export default {
       tempList.unshift(blankIndicator);
       const formattedData = groupIndicator(tempList, 'program_area');
       this.allIndicators = formattedData;
-
-      console.log(this.allIndicators, 'HENRY 2');
       // this.allDatasources = data.results;
     },
     async getAllLocations() {
@@ -470,8 +472,15 @@ export default {
       );
     },
 
+    getStatus(value) {
+      if (value >= 81) return 'Very High';
+      if (value >= 61) return 'High';
+      if (value >= 41) return 'Moderate';
+      if (value >= 21) return 'Low';
+      return 'Very Low';
+    },
+
     limitSelection() {
-      console.log(this.dataSourcesCompare, 'limitSelection');
       if (this.dataSourcesCompare.length > 2) {
         // Set your limit here
         this.dataSourcesCompare.pop(); // Remove the last selected item
@@ -500,7 +509,6 @@ export default {
         selectedLocation: selectedLocation?.id,
       };
 
-      console.log(obj);
       const cleanObj = this.removeUndefined(obj);
       // Remove null and undefined values
       if (cleanObj.primary === undefined || cleanObj.secondary === undefined) {
@@ -516,7 +524,6 @@ export default {
         return;
       }
 
-      console.log(cleanObj);
       this.showLoader = true; // Show loading spinner
 
       apiServices
@@ -529,8 +536,6 @@ export default {
           };
 
           this.position = this.cleanObject(positionTemp);
-          console.log(this.position);
-          console.log(data);
           this.showTriangulation = true;
           this.rawData = data.data; // Store API response
           this.processData(data.data);
@@ -548,11 +553,9 @@ export default {
                 && header !== 'undefined'
                 && self.indexOf(header) === index,
             ); // Remove duplicates and invalid headers
-          console.log(this.headers, 'keys@fa-inverse');
           this.showLoader = false; // Show loading spinner
         })
         .catch((error) => {
-          console.log(error);
           const msg = error.response.data.message;
           this.$swal(`error : ${msg}`);
           this.showLoader = false; // Hide loading spinner
@@ -561,6 +564,9 @@ export default {
 
     normalizeText(text) {
       return text.replace(/_/g, ' ');
+    },
+    removeUnderscoreItems(arr) {
+      return arr.filter((item) => !item.includes('_'));
     },
 
     processData(data = []) {
@@ -587,6 +593,7 @@ export default {
         }
         return Object.keys(entry);
       });
+      this.headerSource = this.removeUnderscoreItems(this.sources);
 
       const consistency = {};
       const complementarity = {};
@@ -688,9 +695,6 @@ export default {
       this.consistencyScore = result.consistencyScore;
       this.gradedData = result.gradedData;
 
-      // console.log('Headers:', this.headers);
-      console.log('Processed Data:', this.gradedData);
-
       return result;
     },
 
@@ -716,7 +720,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 .section-height {
@@ -845,7 +849,7 @@ export default {
   width: 100%;
   height: 100%;
   fill: none;
-  stroke-width: 20; /* Adjust thickness */
+  stroke-width: 10; /* Adjust thickness */
   stroke-linecap: round;
   transform: translate(10px, 10px); /* Adjust to center */
   stroke: #cff8f8;
@@ -863,7 +867,7 @@ export default {
   top: 55%;
   left: 45%;
   transform: translate(-50%, -50%);
-  font-size: 26px; /* Adjust font size for larger circle */
+  font-size: 20px; /* Adjust font size for larger circle */
   font-weight: bold;
   color: #2b7a78;
   line-height: 1;
@@ -887,7 +891,7 @@ export default {
 
 .desc {
   font-family: Inter;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 24px;
   text-align: center;
@@ -989,5 +993,11 @@ span.multiselect__single {
   padding: 0 10px;
   font-size: 12px;
   font-weight: 600;
+}
+
+.data-source-info {
+  cursor: pointer;
+  color: #348481 !important;
+  font-size: 18px;
 }
 </style>
