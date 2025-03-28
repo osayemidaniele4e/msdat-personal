@@ -99,6 +99,8 @@ export default {
       this.$store.commit('setPArea', composedData);
       this.$store.commit('setDArea', surveyArray);
       this.$store.commit('arrangedSections', sectionsArray);
+      this.$store.commit('setEmbedUrl', dashboard.embedded_url);
+      this.$store.commit('setEmbedIframe', dashboard.embedded_iframe);
     },
     loadDashboard(dashboard) {
       this.load(dashboard);

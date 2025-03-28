@@ -57,7 +57,7 @@ const appVueCode = `
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-      <div v-if="showWhatsNewComponent" class="position-fixed whats-new">
+      <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
   </div>
@@ -70,6 +70,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
+import ApiServices from './modules/data-layer/services/ApiServices';
 ${pluginImports.join('\n')}
 
 export default {
@@ -84,7 +85,12 @@ export default {
       showDataSourceListComponent: false, // Replace with your actual state variable
       showWhatsNewComponent: false,
       lastExecutionTime: null,
+      whatsNewContent: [],
     };
+  },
+   computed: {
+    ...mapGetters('appearance', ['viewMode', 'fontSize', 'theme']),
+    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
   },
   watch: {
     '$store.state.MSDAT_STORE.showDataSourceList': {
@@ -102,16 +108,28 @@ export default {
       },
       deep: true, // If you want to watch nested changes
     },
+     viewMode(newMode) {
+      document.body.className = newMode;
+    },
+    fontSize(newSize) {
+      document.documentElement.style.fontSize = newSize;
+    },
+    theme(newTheme) {
+      document.documentElement.setAttribute('data-theme', newTheme);
+    },
   },
   async mounted() {
    window.addEventListener('unload', this.handleAppUnload);
    this.startSixHourInterval();
    this.firstTimeExecution();
-
+  // eslint-disable-next-line
     let plugins_imported = [];
     ${pluginInstalls.join('\n')}
     console.log('pluginsImported', this.pluginsImported)
-    await this.SET_PLUGINS_IMPORTED(this.pluginsImported)
+    await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
+     document.body.className = this.viewMode;
+    document.documentElement.style.fontSize = this.fontSize;
+    document.documentElement.setAttribute('data-theme', this.theme);
   },
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
@@ -123,6 +141,11 @@ export default {
       this.lastExecutionTime = now.toLocaleTimeString();
       // Add your task logic here
       this.toggleShowWhatsNew();
+    },
+
+     async getWhatsNew() {
+      const { data } = await ApiServices.getWhatsNew();
+      this.whatsNewContent = data.results;
     },
 
      handleAppUnload() {
@@ -150,7 +173,7 @@ export default {
         localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 1 * 60 * 1000); // 3 minutes delay in milliseconds
+        }, 30 * 1000); // 30 seconds delay in milliseconds
       }
     },
 
@@ -184,6 +207,51 @@ export default {
   z-index: 999999;
   top: 1px;
   height: 100vh;
+}
+  .light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Define styles for different font sizes */
+html {
+  font-size: 16px; /* default */
+}
+
+html.small {
+  font-size: 14px;
+}
+
+html.medium {
+  font-size: 20px;
+}
+
+html.large {
+  font-size: 24px;
+}
+
+/* Define styles for different themes */
+[data-theme='default'] {
+  --primary-color: #28a745;
+  --secondary-color: #20c997;
+  --background-color: #e9ecef;
+}
+
+[data-theme='calm'] {
+  --primary-color: #007bff;
+  --secondary-color: #17a2b8;
+  --background-color: #e3f2fd;
+}
+
+[data-theme='neutral'] {
+  --primary-color: #EA4700;
+  --secondary-color: #EE6C33;
+  --background-color: #FBDACC;
 }
 
 </style>

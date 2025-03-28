@@ -112,9 +112,12 @@
             <router-link to="/ministers-dashboard" target="_blank"
               ><b-list-group-item>SWAP Ministerial Dashboard</b-list-group-item></router-link
             >
+            <router-link to="/data-triangulation-dashboard" target="_blank"
+              ><b-list-group-item>Triangulation Dashboard</b-list-group-item></router-link
+            >
           </b-list-group>
         </div>
-        <!-- <div class="col mb-3" v-if="isAuthenticated">
+        <div class="col mb-3" v-if="isAuthenticated">
           <b-list-group>
             <h5 class="text-underline">Custom Dashboards</h5>
             <div v-for="dashboard in userDashboards" :key="dashboard.id">
@@ -123,7 +126,7 @@
               >
             </div>
           </b-list-group>
-        </div> -->
+        </div>
       </div>
     </div>
   </section>
@@ -187,9 +190,9 @@ export default {
     // prevent excess request in dev mode
     const { origin } = window.location;
     if (!origin.includes('//localhost') && !origin.includes('//192')) {
-      await this.SAVE_DASHBOARDS();
-      this.userDashboards = await this.filterArray(this.getUser, this.getDashboards);
-      this.getUserDashboards();
+      const { data } = await this.SAVE_DASHBOARDS();
+      console.log(data.results, '@@@');
+      this.userDashboards = data.results.filter((item) => item.is_private === false);
     }
     this.loading = false;
   },

@@ -1,14 +1,11 @@
 <template>
   <section class="d-none d-lg-inline-block">
-    <div
-      @click="showExpandedDropdown = false"
-      class="backdrop">
-    </div>
+    <div @click="showExpandedDropdown = false" class="backdrop"></div>
     <div class="container-fluid card dropdown-expanded work-sans">
       <div class="row p-3">
         <div class="col mb-3">
           <b-list-group>
-            <h5 class="text-underline">Health Outcomes</h5>
+            <h5 class="text-underline">Health OutcomesX</h5>
             <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
               <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
             </router-link>
@@ -30,7 +27,9 @@
               ><b-list-group-item>Health Workforce</b-list-group-item></router-link
             >
             <router-link to="/state-health-facility" target="_blank"
-              ><b-list-group-item>Health Facilities Finder(GIS)- work in progress</b-list-group-item></router-link
+              ><b-list-group-item
+                >Health Facilities Finder(GIS)- work in progress</b-list-group-item
+              ></router-link
             >
           </b-list-group>
         </div>
@@ -47,7 +46,9 @@
               <b-list-group-item> Health Service Uptake (NHMIS)</b-list-group-item>
             </a>
             <router-link to="/health-service-uptake" target="_blank"
-              ><b-list-group-item>Health Service Uptake (NHMIS-Quarterly)</b-list-group-item></router-link
+              ><b-list-group-item
+                >Health Service Uptake (NHMIS-Quarterly)</b-list-group-item
+              ></router-link
             >
             <a href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/" target="_blank">
               <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
@@ -115,18 +116,23 @@
             <router-link to="/ministers-dashboard" target="_blank"
               ><b-list-group-item>SWAP Ministerial Dashboard</b-list-group-item></router-link
             >
+            <router-link to="/data-triangulation-dashboard" target="_blank"
+              ><b-list-group-item>Triangulation Dashboard</b-list-group-item></router-link
+            >
           </b-list-group>
         </div>
-        <!-- <div class="col mb-3" v-if="isAuthenticated">
+        <div class="col mb-3" v-if="isAuthenticated">
           <b-list-group>
             <h5 class="text-underline">Custom Dashboards</h5>
             <div v-for="dashboard in userDashboards" :key="dashboard.id">
-              <router-link :to="'/custom/private/' + dashboard.id" target="_blank"
-                ><b-list-group-item> {{ dashboard.title }}</b-list-group-item></router-link
+              <router-link :to="'/custom/public/' + dashboard.id" target="_blank"
+                ><b-list-group-item>
+                  {{ dashboard.name_of_dashboard }}</b-list-group-item
+                ></router-link
               >
             </div>
           </b-list-group>
-        </div> -->
+        </div>
       </div>
     </div>
   </section>
@@ -164,8 +170,8 @@ export default {
     ...mapMutations('AUTH_STORE', ['UPDATE_USER_DASHBOARDS']),
 
     filterArray(obj, arr) {
-      const userId = obj.id;
-      const filteredArr = arr.filter((item) => item.user === userId);
+      const userEmail = obj.email;
+      const filteredArr = arr.filter((item) => item.email === userEmail);
       return filteredArr;
     },
 
@@ -190,9 +196,9 @@ export default {
     // prevent excess request in dev mode
     const { origin } = window.location;
     if (!origin.includes('//localhost') && !origin.includes('//192')) {
-      await this.SAVE_DASHBOARDS();
-      this.userDashboards = await this.filterArray(this.getUser, this.getDashboards);
-      this.getUserDashboards();
+      const { data } = await this.SAVE_DASHBOARDS();
+      console.log(data.results, '@@@');
+      this.userDashboards = data.results.filter((item) => item.is_private === false);
     }
     this.loading = false;
   },
@@ -229,8 +235,8 @@ div {
       color: inherit;
     }
   }
-  div.list-group{
-    h5.text-underline{
+  div.list-group {
+    h5.text-underline {
       font-size: 0.9rem !important;
     }
   }
@@ -271,5 +277,4 @@ h5.text-underline {
   opacity: 0.5;
   z-index: 5;
 }
-
 </style>

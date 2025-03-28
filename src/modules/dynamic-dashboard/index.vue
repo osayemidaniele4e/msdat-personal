@@ -58,6 +58,42 @@
       >
     </div>
 
+    <div
+      v-if="
+        isCustomDashboard &&
+        $store.getters.getEmbedIframe !== null &&
+        $store.getters.getEmbedIframe !== ''
+      "
+      class="mt-5"
+    >
+      <h1 class="url_title">Embedded Iframe</h1>
+      <div class="w-100 url_height">
+        <div v-html="$store.getters.getEmbedIframe"></div>
+      </div>
+    </div>
+
+    <div
+      v-if="
+        isCustomDashboard &&
+        $store.getters.embeddedUrl !== null &&
+        $store.getters.embeddedUrl !== ''
+      "
+      :class="[
+        $store.getters.getEmbedIframe === null || $store.getters.getEmbedIframe === ''
+          ? 'url_body_2'
+          : 'url_body',
+      ]"
+    >
+      <h1 class="url_title">Embedded URL</h1>
+      <div class="w-100 url_height">
+        <!-- <b-embed type="iframe" aspect="21by9" :src="$store.getters.getEmbedUrl" width="100%" ></b-embed> -->
+        <iframe
+          :src="$store.getters.getEmbedUrl"
+          style="width: 100%; height: 800px; border: none"
+        ></iframe>
+      </div>
+    </div>
+
     <!-- <NewsLetter v-if="!loading" /> -->
 
     <NewsLetter />
@@ -113,6 +149,8 @@ export default {
       latitude: '',
       userLocation: null,
       error: null,
+      isCustomDashboard: false,
+      height: '800px',
     };
   },
   computed: {
@@ -301,10 +339,13 @@ export default {
      * @author chisom.chima
      */
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
+      this.isCustomDashboard = true;
       // this.isCustom = true; // this variable doesn't exist
       sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
+      sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
+      sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
@@ -397,6 +438,7 @@ export default {
     }
 
     if (name === 'GIS_Mapping_Dashboard') {
+      this.isCustomDashboard = false;
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
@@ -426,6 +468,7 @@ export default {
      * @author sami56
      */
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
+      this.isCustomDashboard = false;
       try {
         this.loading = true;
         this.$store.dispatch('customDashboard', false);
@@ -523,5 +566,30 @@ iframe {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1500;
+}
+.url_height {
+  height: 600px;
+  width: 100%;
+}
+
+iframe {
+  width: 100%;
+  height: 800px; /* Adjust as needed */
+  border: none;
+}
+
+.url_title {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: gray;
+  padding: 10px;
+}
+.url_body {
+  margin-top: 20rem;
+  margin-bottom: 25rem;
+}
+.url_body_2 {
+  margin-top: 5rem;
+  margin-bottom: 22rem;
 }
 </style>
