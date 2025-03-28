@@ -31,7 +31,7 @@ const indicatorSetConfig = [
   {
     class: ['col-sm-6 col-md-6 col-lg-4'],
     type: 'dropdown',
-    label: 'Year',
+    label: 'Period',
     key: 'year',
     options: [],
     dropdownProps: {
@@ -72,7 +72,7 @@ const indicatorSetConfig2 = [
   {
     class: ['col-sm-6 col-md-6 col-lg-4'],
     type: 'dropdown',
-    label: 'Year',
+    label: 'Period',
     key: 'year',
     options: [],
     dropdownProps: {
@@ -113,7 +113,7 @@ const indicatorSetConfig3 = [
   {
     class: ['col-sm-6 col-md-6 col-lg-4'],
     type: 'dropdown',
-    label: 'Year',
+    label: 'Period',
     key: 'year',
     options: [],
     dropdownProps: {
