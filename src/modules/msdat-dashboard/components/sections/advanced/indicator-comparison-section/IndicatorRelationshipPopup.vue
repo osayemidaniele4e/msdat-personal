@@ -218,11 +218,11 @@ export default {
    font-weight: 600;
    color: #17606B;
    margin-bottom: 12px;
-   font-size: 1rem;
+   font-size: 1.7rem;
  }
 
  .summary-content {
-   font-size: 20px;
+   font-size: 25px;
    line-height: 1.6;
    color: #2c3e50;
 
