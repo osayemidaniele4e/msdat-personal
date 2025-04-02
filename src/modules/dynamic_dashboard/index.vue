@@ -32,7 +32,7 @@
       "
     >
     </advanceMSDAT>
-    <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
+    <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" :showModal="showClearDataModal" />
   </div>
 </template>
 <script>
@@ -44,7 +44,7 @@ import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import config from './config/dashboard_config';
 // eslint-disable-next-line import/no-unresolved
-import ClearDBModal from './ClearDBModal.vue';
+import ClearDBModal from '../msdat-dashboard/views/about/components/ClearDBCache.vue';
 // import ShowDataSourcesList from './components/ShowDataSourcesList.vue';
 
 export default {

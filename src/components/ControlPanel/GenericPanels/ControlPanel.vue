@@ -499,9 +499,9 @@ export default {
       return el;
     });
     this.updatePayload(this.defaultIndicator, 'indicator');
-    // this.updatePayload(this.defaultDataSource, 'datasource');
+    this.updatePayload(this.defaultDataSource, 'datasource');
     this.updatePayload(this.defaultLocation, 'location');
-    this.updatePayload(this.$store.state.MSDAT_STORE.urlPeriod, 'year');
+    this.updatePayload(this.defaultYear, 'year');
     this.activeToggleButton = this.payload.visualization;
   },
 };

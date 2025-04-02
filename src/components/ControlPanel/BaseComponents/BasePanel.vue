@@ -74,11 +74,7 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
     filterModifiedControls() {
-      console.log('filtered modifiedControls YY: 2', this.modifiedControls);
-      console.log('filtered modifiedControls YY: 3', this.$store.state.MSDAT_STORE.selectedSection);
       const section = this.modifiedControls.filter((item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection);
-
-      console.log('filtered modifiedControls YY:', section[0]);
       this.changeControl(section[0].index, section[0].title);
     },
 
@@ -124,11 +120,11 @@ export default {
           key: 'datasource',
           value: selectedConfig.dataSource,
         });
-        // this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
-        //   controlIndex: index,
-        //   key: 'period',
-        //   value: selectedConfig.period,
-        // });
+        this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
+          controlIndex: index,
+          key: 'period',
+          value: selectedConfig.period,
+        });
       }
 
       if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard') {
