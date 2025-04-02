@@ -47,7 +47,7 @@
           : true
       "
     />
-    <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
+    <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" :showModal="showClearDataModal" />
     <div class="preview" v-if="$route.query.prev">
       <b-button
         @click="$router.push('/custom/requests')"
@@ -107,7 +107,7 @@ import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instance-gis.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
-import ClearDBModal from './ClearDBModal.vue';
+import ClearDBModal from '../msdat-dashboard/views/about/components/ClearCacheModal.vue';
 import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
@@ -285,7 +285,7 @@ export default {
 
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
         // this sets skilled attendance at birth indicator on mounted
-        this.SET_SELECTED_CONFIG(defaultData);
+        // this.SET_SELECTED_CONFIG(defaultData);
       } else if (this.$route.params.name === 'Disease_Surveillance') {
         // this sets covid 19 confirmed cases indicator on mounted
         this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);

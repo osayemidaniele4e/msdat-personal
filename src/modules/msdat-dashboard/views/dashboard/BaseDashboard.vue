@@ -634,26 +634,6 @@ export default {
       });
     }
 
-    if (this.$route.query.year) {
-      this.SET_URL_PERIOD(this.$route.query.year);
-      const year = this.$route.query.year;
-      const arr = [0, 1, 2, 3, 4, 5];
-
-      arr.forEach((index) => {
-        const obj = {
-          controlIndex: index,
-          key: 'year',
-          value: year,
-        };
-
-        if ([0, 1, 2, 3, 5].includes(index)) {
-          this.SET_SECTION_PAYLOAD(obj);
-        } else if (index === 4) {
-          this.SET_MULTI_PERIOD_PAYLOAD(obj);
-        }
-      });
-    }
-
     if (this.$route.query.section) {
       this.SET_SECTION(this.$route.query.section);
     }
