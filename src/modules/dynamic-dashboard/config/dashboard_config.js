@@ -71,7 +71,7 @@ export default [
     ],
     // defaultIndicators: [63, 64, 65], // an indicator ID and related indicators,
     defaultIndicators: [63],
-    dataSources: [1, 2, 3, 4, 6, 7, 8, 9, 15, 18, 19, 20, 21, 22, 23, 26, 27, 28, 29, 33],
+    dataSources: [1, 2, 3, 4, 6, 7, 8, 9, 15, 18, 19, 20, 21, 22, 23, 26, 27, 28, 29, 33, 36],
     initialIndicator: 63,
     initialDataSource: 19,
     initialLocation: 1,
@@ -115,7 +115,7 @@ export default [
     initialLocation: 1,
   },
   {
-    name: 'GIS_Mapping',
+    name: 'GIS_Mapping_Dashboard',
     title: 'GIS Mapping',
     indicators: [
       39, 40, 41, 42, 44, 53, 62, 293, 294, 295, 296, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 362, 363, 364,

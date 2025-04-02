@@ -90,7 +90,7 @@ export default [
       84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94,
     ],
     defaultIndicators: [63, 64, 65], // an indicator ID and related indicators,
-    dataSources: [7, 18, 21, 23, 19, 22, 20, 27, 28, 2],
+    dataSources: [7, 18, 21, 23, 19, 22, 20, 27, 28, 2, 36],
     initialIndicator: 63,
     initialDataSource: 19,
     initialLocation: 1,

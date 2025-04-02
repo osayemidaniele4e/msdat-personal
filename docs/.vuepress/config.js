@@ -85,6 +85,16 @@ module.exports = {
           collapsable: false,
           children: ['user-activity', 'social-authentication'],
         },
+        {
+          title: '2024 Edits',
+          collapsable: false,
+          children: [
+            'custom-dashboard',
+            'quaterly-performance',
+            'health-facilities-finder',
+            'added-functionalities'
+          ],
+        },
       ],
 
       '/config/': [

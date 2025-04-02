@@ -10,9 +10,8 @@
       :updateValue="updateValue"
       :updateKey="updateKey"
       :resetData="resetData"
-        @swipe="changeSwipe"
+      @swipe="changeSwipe"
     >
-
       <template v-slot:section-before-0>
         <slot name="top-section"></slot>
       </template>
@@ -57,19 +56,44 @@
         </div>
       </template>
 
+      <template v-slot:section-2="{ payload, controlIndex }">
+        <div class="col-md-12" style="margin-bottom: 4rem">
+          <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+            <template #title>
+              <h5 class="font-weight-bold work-sans text-white">
+                Multi-Source Indicator Comparison
+              </h5>
+            </template>
+            <!-- lazy loading for each section starts here -->
+            <!-- the first section doesn't need the component
+                 since it will be mounted first -->
+            <template>
+              <LazyLoading>
+                <ControlPanelConfiguration :controlIndex="controlIndex">
+                  <MultiSourceComponent
+                    :controlPanelProps="payload"
+                    :dashboardIndicators="dashboardIndicators"
+                  />
+                </ControlPanelConfiguration>
+              </LazyLoading>
+            </template>
+          </base-sub-card>
+        </div>
+      </template>
     </BaseDashboard>
   </div>
 </template>
 
 <script>
 import { mapMutations } from 'vuex';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 // import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import IndicatorComparisonSection from '../../components/sections/gis/indicator-comparison/GisIndicatorComparison.vue';
 import IndicatorComparisonConfig from '../../components/sections/gis/indicator-comparison/indicator-compare-gis-config';
 import DatasetComparisonSection from '../../components/sections/gis/dataset-comparison/GisDatasetComparison.vue';
 import DatasetComparisonConfig from '../../components/sections/gis/dataset-comparison/dataset-compare-gis-config';
-// import MultiSourceComponent from '../../components/sections/gis/multi-source-compare/BaseMultiSourceSection.vue';
-// import MultiSourceConfig from '../../components/sections/gis/multi-source-compare/multi-source-gis-compare.js';
+import MultiSourceComponent from '../../components/sections/gis/multi-source-compare/BaseMultiSourceSection.vue';
+import MultiSourceConfig from '../../components/sections/gis/multi-source-compare/multi-source-gis-compare';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
@@ -81,16 +105,16 @@ export default {
       updateValue: {},
       updateKey: '',
       resetData: 1,
+      dashboardIndicators: [],
     };
   },
   components: {
     BaseDashboard,
     ControlPanelConfiguration,
     LazyLoading,
-    // MultiSourceComponent,
+    MultiSourceComponent,
     IndicatorComparisonSection,
     DatasetComparisonSection,
-
   },
   props: {
     initialIndicator: {
@@ -121,7 +145,6 @@ export default {
       type: Boolean,
       default: true,
     },
-
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
@@ -139,6 +162,13 @@ export default {
         // Request for animation
         window.requestAnimationFrame(this.scroll);
       }
+    },
+
+    async getGisDashboardIndicatorsAndDatasources() {
+      const indicatorResp = await apiServices.getDashboardIndicator('370');
+
+      this.dashboardIndicators = indicatorResp.data.filter((item) => item.datasources.length);
+      console.log(this.dashboardIndicators, 'dashboard indicators');
     },
 
     changeSwipe(cord) {
@@ -222,11 +252,14 @@ export default {
     // }
     this.ADD_CONTROL_PANEL(IndicatorComparisonConfig);
     this.ADD_CONTROL_PANEL(DatasetComparisonConfig);
-    // this.ADD_CONTROL_PANEL(MultiSourceConfig);
+    this.ADD_CONTROL_PANEL(MultiSourceConfig);
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
     this.$route.meta.title = 'GIS Mapping';
+  },
+  async mounted() {
+    await this.getGisDashboardIndicatorsAndDatasources();
   },
 
   destroyed() {
@@ -248,16 +281,16 @@ export default {
 }
 
 .comparison-header {
- display: none;
+  display: none;
 }
 
 @media (max-width: 800px) {
-.comparison-header {
-  display: inherit;
-  margin: 0 auto;
-  text-align: center;
-  font-weight: bold;
-  margin: 5px;
-}
+  .comparison-header {
+    display: inherit;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    margin: 5px;
+  }
 }
 </style>

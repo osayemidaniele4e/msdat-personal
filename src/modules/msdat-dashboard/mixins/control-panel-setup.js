@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
 import { sortBy, uniq } from 'lodash';
@@ -15,6 +17,56 @@ export default {
       defaultLocationDropdown: [],
       defaultYearDropdown: [],
       cpIsLoading: false,
+      additionalLocation: [
+        {
+          id: 2,
+          name: 'North-Central',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.900629Z',
+          updated_at: '2022-10-20T09:08:41.900636Z',
+        },
+        {
+          id: 3,
+          name: 'North-East',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.901842Z',
+          updated_at: '2022-10-20T09:08:41.901848Z',
+        },
+        {
+          id: 4,
+          name: 'North-West',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.902790Z',
+          updated_at: '2022-10-20T09:08:41.902797Z',
+        },
+        {
+          id: 5,
+          name: 'South-East',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.903856Z',
+          updated_at: '2022-10-20T09:08:41.903866Z',
+        },
+        {
+          id: 6,
+          name: 'South-South',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.905143Z',
+          updated_at: '2022-10-20T09:08:41.905153Z',
+        },
+        {
+          id: 7,
+          name: 'South-West',
+          parent: 1,
+          level: 2,
+          created_at: '2022-10-20T09:08:41.906410Z',
+          updated_at: '2022-10-20T09:08:41.906420Z',
+        },
+      ],
     };
   },
   watch: {
@@ -69,24 +121,24 @@ export default {
         indicator: queryIndicator,
         datasource: queryDatasource,
         location: queryLocation,
-        year: queryYear,
+        // year: queryYear,
       } = query;
 
       // Check if query parameters for indicator, datasource, location, and year are present
-      const hasQueryParams = queryIndicator !== undefined
-        || queryDatasource !== undefined
-        || queryLocation !== undefined
-        || queryYear !== undefined;
+      // const hasQueryParams = queryIndicator !== undefined
+      //   || queryDatasource !== undefined
+      //   || queryLocation !== undefined
+      //   || queryYear !== undefined;
 
-      this.defaultIndicator = hasQueryParams
+      this.defaultIndicator = queryIndicator
         ? this.dlGetIndicator(Number(queryIndicator))
         : this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
 
-      this.defaultDataSource = hasQueryParams
+      this.defaultDataSource = queryDatasource
         ? this.dlGetDataSource(Number(queryDatasource))
         : this.dlGetDataSource(this.$store.state.MSDAT_STORE.default.datasource);
 
-      this.defaultLocation = hasQueryParams
+      this.defaultLocation = queryLocation
         ? this.dlGetLocation(Number(queryLocation))
         : this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
     },
@@ -101,14 +153,13 @@ export default {
         datasource: dataSourceID,
         location: locationID,
       });
-      // console.log(data);
-      const onlyYearData = data?.filter((item) => {
-        if (isDataYearly(item.period)) {
-          return item.period;
-        }
-        return false;
-      });
-      const years = onlyYearData?.map((item) => item.period);
+      // const onlyYearData = data?.filter((item) => {
+      //   if (isDataYearly(item.period)) {
+      //     return item.period;
+      //   }
+      //   return false;
+      // });
+      const years = data?.map((item) => item.period);
       const uniqueYears = uniq(years);
       return uniqueYears.sort((a, b) => b - a);
     },
@@ -126,6 +177,69 @@ export default {
       const uniqueYears = uniq(years);
       return uniqueYears.sort((a, b) => b - a);
     },
+
+    /**
+     * Method to set the location dropdown based on the selected data source and indicator.
+     * It fetches available locations from the database and updates the store with the unique locations.
+     *
+     * @param {number} dataSourceID - The ID of the selected data source. Defaults to the default data source ID.
+     * @param {number} indicatorID - The ID of the selected indicator. Defaults to the default indicator ID.
+     * @param {number} controlIndex - The index of the control to update. Defaults to 0.
+     */
+    async setLocationDropdown(
+      dataSourceID = this.defaultDataSource.id,
+      indicatorID = this.defaultIndicator.id,
+      // eslint-disable-next-line no-unused-vars
+      controlIndex = 0,
+    ) {
+      // Return if either dataSourceID or indicatorID is not provided
+      if (!dataSourceID || !indicatorID) return;
+
+      let data = [];
+
+      // Fetch available locations for each indicator if indicatorID is an array
+      if (Array.isArray(indicatorID)) {
+        for (const ind of indicatorID) {
+          data = data.concat(await this.queryDBForAvailableLocation(dataSourceID, ind));
+        }
+      // Fetch available locations for each data source if dataSourceID is an array
+      } else if (Array.isArray(dataSourceID)) {
+        for (const dat of dataSourceID) {
+          data = data.concat(await this.queryDBForAvailableLocation(dat, indicatorID));
+        }
+      // Fetch available locations for the given dataSourceID and indicatorID
+      } else {
+        data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
+      }
+
+      // Get locations of level 3 and level 2
+      const locations = this.dlGetLocation({ level: 3 });
+      const zonalLocation = this.dlGetLocation({ level: 2 });
+      let allLocations = [...locations, ...zonalLocation];
+
+      // Add Nigeria (level 1) to the top of the locations array
+      allLocations.unshift(this.dlGetLocation(1));
+
+      // Filter locations to include only those present in the data array
+      allLocations = allLocations.filter(({ id }) => data.includes(id));
+
+      // Remove duplicate locations
+      const uniqueItems = Array.from(new Map(allLocations.map((obj) => [obj.id, obj])).values());
+
+      // Commit the unique locations to the store
+      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+        key: 'location',
+        payload: uniqueItems,
+      });
+
+      // Set the default location (Nigeria) in the store
+      // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+      //   controlIndex,
+      //   key: 'location',
+      //   value: this.dlGetLocation(1),
+      // });
+    },
+
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
       const data = await this.getDataSourcesFromDexie(indicatorID);
@@ -134,7 +248,42 @@ export default {
     // Get available Indicator
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorFromDexie(datasourceID);
-      const formattedData = groupIndicator(data, 'program_area');
+      const indicatorWithData = data.filter(async (indicatorItem) => {
+        const indicatorData = await this.dlQuery({
+          indicator: indicatorItem.id,
+          datasource: datasourceID,
+        });
+
+        // Keep only items where indicatorData is not an empty array
+        return indicatorData.length > 0;
+      });
+
+      const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      return formattedData;
+    },
+    async setAllIndicatorDropdown(indicators) {
+      const formattedData = groupIndicator(indicators, 'program_area');
+      return formattedData;
+    },
+    async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorFromDexie(datasourceID);
+
+      const indicatorWithData = data.filter(async (indicatorItem) => {
+        const indicatorData = await this.dlQuery({
+          indicator: indicatorItem.id,
+          datasource: datasourceID,
+        });
+
+        // Keep only items where indicatorData is not an empty array
+        return indicatorData.length > 0;
+      });
+
+      // this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_PAYLOAD', {
+      //   key: 'indicator',
+      //   value: indicatorWithData[1],
+      // });
+
+      const formattedData = groupIndicator(indicatorWithData, 'program_area');
       return formattedData;
     },
   },

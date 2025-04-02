@@ -105,6 +105,18 @@ export default {
     }
   },
 
+  // delete plug-in
+  async DELETE_PLUGIN({ commit }, payload) {
+    try {
+      const response = await axiosInstance.delete(
+        `http://msdat2api.e4eweb.space/api/plugins/${payload}/`,
+      );
+      commit('set_success', response);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   async SET_DASHBOARD_LOCATION(payload) {
     try {
       const { data } = await axios.post(
@@ -124,6 +136,23 @@ export default {
       commit('setPluginsImported', payload);
     } catch (error) {
       console.log(error);
+    }
+  },
+  async GET_USERS({ commit }) {
+    try {
+      const response = await axiosInstance.get('/users/?size=1000');
+      const { results } = response.data;
+      commit('setUsers', results);
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  async GET_ACTIVE_DASHBOARDS({ commit }) {
+    try {
+      const response = await axiosInstance.get('/dashboards');
+      commit('setActiveDashboards', response.data);
+    } catch (error) {
+      console.error(error);
     }
   },
 };

@@ -205,7 +205,7 @@ class DataEntryService {
   }): Promise<ProgramAreaIndicatorI[]> => {
     const indicatorIds = [];
     const urlSource = `location/${locationId}/`;
-    const urlSource2 = (levelName: string) => `datasource_specific_indicator/?datasource=${DS}&${levelName}=true&size=1000`;
+    const urlSource2 = (levelName: string) => `datasource_specific_indicator/?datasource=${DS}&${levelName}=true&size=2000`;
 
     const locationName = ['national', 'zonal', 'state', 'lga', 'senatorial'];
     try {

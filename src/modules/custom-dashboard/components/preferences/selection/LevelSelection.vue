@@ -1,42 +1,47 @@
 <!-- Auther: Ghufran Ahmed -->
 <template>
-  <div style="height: 89px">
-    <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
-      >Level Selection</b
-    ><br />
+  <div class="level-card" >
+    <div  class="selection-header">
+
+      <b style="font-size: 13px; font-family: Work Sans"
+        >LEVEL</b
+      ><br />
+    </div>
     <Card class="scroll" style="height: 89px">
-      <TheLoader v-if="loading == true" style="margin: 14px 0px 0px 127px" />
-      <div
-        v-for="(level, index) in distinctLevels"
-        :key="index"
-        style="
-          display: inline-block;
-          justify-content: space-around;
-          font-size: 13px;
-          margin-left: -6px;
-        "
-      >
-        <input
-          type="checkbox"
-          :id="level.value"
-          :value="level.value"
-          :checked="isSelect(level)"
-          @click="selectLevel($event)"
-          style="margin-left: 12px"
-          class="checkbox"
-        />
-        <label
-          :for="level.value"
+      <TheLoader v-if="loading == true"/>
+      <div v-else>
+        <div
+          v-for="(level, index) in distinctLevels"
+          :key="index"
           style="
-            cursor: pointer;
-            padding-left: 6px;
-            font-size: 12px;
-            font-family: Work Sans;
-            margin-left: -4px;
+            display: inline-block;
+            justify-content: space-around;
+            font-size: 13px;
+            margin-left: -6px;
           "
         >
-          {{ level.value }}
-        </label>
+          <input
+            type="checkbox"
+            :id="level.value"
+            :value="level.value"
+            :checked="isSelect(level)"
+            @click="selectLevel($event)"
+            style="margin-left: 12px"
+            class="checkbox"
+          />
+          <label
+            :for="level.value"
+            style="
+              cursor: pointer;
+              padding-left: 6px;
+              font-size: 12px;
+              font-family: Work Sans;
+              margin-left: -4px;
+            "
+          >
+            {{ level.value }}
+          </label>
+        </div>
       </div>
     </Card>
   </div>
@@ -45,7 +50,7 @@
 <script>
 import Card from '../../Card.vue';
 // eslint-disable-next-line import/extensions
-import TheLoader from '../../Loading/TheLoader';
+import TheLoader from '../../Loading/TheLoader2';
 
 export default {
   components: {
@@ -108,3 +113,17 @@ export default {
   },
 };
 </script>
+<style lang="css" scoped>
+.level-card{
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0px 20px 8px 8px;
+  font-family: Work Sans;
+}
+.selection-header{
+  background-color:#F1F2F7;
+  padding:10px;
+  margin: 0px -20px 5px -10px;
+}
+</style>

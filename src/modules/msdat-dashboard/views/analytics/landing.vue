@@ -8,7 +8,7 @@
           <h1>The Advanced Analytics Dashboard</h1>
         </div>
         <small>
-          Explore Key Health Indicators, Analyse Trends and Harness the Power of Predictive Modeling to Anticipate Future Health Trends
+          Explore Key Health Indicators, Analyze Trends and Harness the Power of Predictive Modeling to Anticipate Future Health Trends
         </small>
       </div>
     </b-row>
@@ -34,12 +34,7 @@ import { mapMutations } from 'vuex';
 import Header from '../about/layout/theHeader.vue';
 import tour from '../onboarding/tour';
 
-import DescriptiveAnalysisConfig from '../../components/sections/advanced/descriptive-section/descriptive-section-config';
-import CorrelationAnalysisConfig from '../../components/sections/advanced/correlation-section/correlation-section-config';
-import IndicatorComparisonConfig from '../../components/sections/advanced/indicator-comparison-section/indicator-comparison-section-config';
-import PredictiveAnalysisConfig from '../../components/sections/advanced/predictive-section/predictive-section-config';
-import AdvancedMultiSourceConfig from '../../components/sections/advanced/multisource-section/Multisource-section-config';
-import ScatterplotConfig from '../../components/sections/advanced/scatterplot-section/scatterplot-section-config';
+import { advancedSections } from './sections';
 
 export default {
   name: 'Landing',
@@ -49,32 +44,10 @@ export default {
   },
   data() {
     return {
-      sections: [
-        {
-          title: 'Correlation Analysis',
-          id: 'CorrelationAnalysis',
-        },
-        {
-          title: 'Descriptive Analysis',
-          id: 'DescriptiveAnalysis',
-        },
-        {
-          title: 'Indicator Comparison',
-          id: 'IndicatorComparison',
-        },
-        {
-          title: 'Predictive Analysis',
-          id: 'PredictiveAnalysis',
-        },
-        {
-          title: 'Multi-source Indicator Comparison',
-          id: 'Multi-source Indicator Comparison',
-        },
-        {
-          title: 'Scatter Plot Analysis',
-          id: 'ScatterPlotAnalysis',
-        },
-      ],
+      sections: advancedSections.map((section) => ({
+        title: section.label,
+        id: section.label.replace(/ /g, ''),
+      })),
     };
   },
   methods: {
@@ -88,12 +61,9 @@ export default {
   async created() {
     await this.CLEAR_CONTROL_PANEL();
 
-    this.ADD_CONTROL_PANEL(CorrelationAnalysisConfig);
-    this.ADD_CONTROL_PANEL(DescriptiveAnalysisConfig);
-    this.ADD_CONTROL_PANEL(IndicatorComparisonConfig);
-    this.ADD_CONTROL_PANEL(PredictiveAnalysisConfig);
-    this.ADD_CONTROL_PANEL(AdvancedMultiSourceConfig);
-    this.ADD_CONTROL_PANEL(ScatterplotConfig);
+    advancedSections.forEach((section) => {
+      this.ADD_CONTROL_PANEL(section);
+    });
   },
 };
 </script>

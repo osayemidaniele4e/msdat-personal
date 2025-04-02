@@ -3,41 +3,46 @@
 /* eslint-disable no-unused-expressions */
 
 <template>
-  <div>
-    <b class="selection-header" style="font-size: 13px; font-family: Work Sans"
-      >Period Selection</b
-    ><br />
+  <div class="year-card">
+    <div class="selection-header">
+
+      <b  style="font-size: 13px; font-family: Work Sans"
+        >YEARS</b
+      ><br />
+    </div>
     <small style="font-size: 13px; font-family: Work Sans"
       >Select available years under each source</small
     >
     <Card class="scroll" style="">
-      <TheLoader v-if="loading == true" style="margin: 60px 0px 0px 119px" />
-      <div
-        v-for="(item, index) in distinctYears"
-        :key="index"
-        style="
-          display: inline-block;
-          justify-content: space-around;
-          font-size: 13px;
-        "
-        class=""
-      >
-        <input
-          type="checkbox"
-          name=""
-          :id="item.value"
-          :value="item.value"
-          :checked="isSelected(item)"
-          @change="selectYear($event)"
-          style="margin-left: 12px"
-          class="checkbox"
-        />
-        <label
-          :for="item.value"
-          style="cursor: pointer; font-size: 12px; font-family: Work Sans"
+      <TheLoader v-if="loading == true"/>
+      <div v-else>
+        <div
+          v-for="(item, index) in distinctYears"
+          :key="index"
+          style="
+            display: inline-block;
+            justify-content: space-around;
+            font-size: 13px;
+          "
+          class=""
         >
-          {{ item.value }}
-        </label>
+          <input
+            type="checkbox"
+            name=""
+            :id="item.value"
+            :value="item.value"
+            :checked="isSelected(item)"
+            @change="selectYear($event)"
+            style="margin-left: 12px"
+            class="checkbox"
+          />
+          <label
+            :for="item.value"
+            style="cursor: pointer; font-size: 12px; font-family: Work Sans"
+          >
+            {{ item.value }}
+          </label>
+        </div>
       </div>
     </Card>
   </div>
@@ -46,7 +51,7 @@
 <script>
 import Card from '../../Card.vue';
 // eslint-disable-next-line import/extensions
-import TheLoader from '../../Loading/TheLoader';
+import TheLoader from '../../Loading/TheLoader2';
 
 export default {
   // emits: ['show-notes'],
@@ -124,3 +129,18 @@ export default {
   },
 };
 </script>
+
+<style lang="css" scoped>
+.year-card{
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0px 20px 8px 8px;
+  font-family: Work Sans;
+}
+.selection-header{
+  background-color:#F1F2F7;
+  padding:10px;
+  margin: 0px -20px 5px -10px;
+}
+</style>

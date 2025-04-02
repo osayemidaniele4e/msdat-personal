@@ -335,6 +335,12 @@ export default {
   selectAll(state, payload) {
     state.allSelected = payload;
   },
+  setEmbedUrl(state, url) {
+    state.embeddedUrl = url;
+  },
+  setEmbedIframe(state, iframe) {
+    state.embeddedIframe = iframe;
+  },
 
   // ********* LOADING ********//
   setIndiLoading(state, payload) {

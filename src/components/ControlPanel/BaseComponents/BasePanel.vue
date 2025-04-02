@@ -11,7 +11,7 @@
             v-for="(el, i) in modifiedControls"
             :key="i"
             :id="`panel-${el.index}`"
-            @click="changeControl(el.index)"
+            @click="changeControl(el.index, el.title)"
           >
             {{ el.title }}
           </li>
@@ -19,7 +19,7 @@
       </draggable>
     </ul>
 
-    <div class="control-title">{{ title }}</div>
+    <div class="control-title">{{ title }}x2</div>
     <!-- Multi-select dropdown here -->
     <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
@@ -28,11 +28,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
+import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 
 export default {
   name: 'BasePanel',
+  mixins: [controlSetup],
   components: {
     draggable,
   },
@@ -68,48 +70,89 @@ export default {
     },
   },
   methods: {
-    ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
+    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX']),
+    ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
-    changeControl(index) {
-      // console.log(this.modifiedControls, { index });
+    filterModifiedControls() {
+      console.log('filtered modifiedControls YY: 2', this.modifiedControls);
+      console.log('filtered modifiedControls YY: 3', this.$store.state.MSDAT_STORE.selectedSection);
+      const section = this.modifiedControls.filter((item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection);
+
+      console.log('filtered modifiedControls YY:', section[0]);
+      this.changeControl(section[0].index, section[0].title);
+    },
+
+    async changeControl(index, title) {
+      // Set section title if provided
+      if (title) {
+        this.$store.commit('MSDAT_STORE/SET_SECTION', title);
+      }
+
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
-      if (index !== 4 && this.getSelectedConfig().indicator !== null) {
-        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: index,
-          key: 'indicator',
-          value: this.getSelectedConfig().indicator,
-        });
-      }
-      if (index !== 4) {
-        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: index,
-          key: 'datasource',
-          value: this.getSelectedConfig().dataSource,
-        });
-      }
+      this.SET_SECTION_INDEX(index);
 
-      if (index === 4) {
+      const selectedConfig = this.getSelectedConfig();
+
+      if (index !== 4) {
+        if (selectedConfig.indicator !== null) {
+          this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+            controlIndex: index,
+            key: 'indicator',
+            value: selectedConfig.indicator,
+          });
+        }
+        // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        //   controlIndex: index,
+        //   key: 'datasource',
+        //   value: selectedConfig.dataSource,
+        // });
+        // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        //   controlIndex: index,
+        //   key: 'period',
+        //   value: '2020',
+        // });
+      } else {
         this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
           controlIndex: index,
           key: 'indicator',
-          value: this.getSelectedConfig().indicator,
+          value: selectedConfig.indicator,
         });
-
         this.$store.commit('MSDAT_STORE/SET_MULTI_DATASOURCE_PAYLOAD', {
           controlIndex: index,
           key: 'datasource',
-          value: this.getSelectedConfig().dataSource,
+          value: selectedConfig.dataSource,
         });
-        this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
+        // this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
+        //   controlIndex: index,
+        //   key: 'period',
+        //   value: selectedConfig.period,
+        // });
+      }
+
+      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard') {
+        const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
+
+        this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {
+          value: availableIndicator,
+        });
+
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
           controlIndex: index,
-          key: 'period',
-          value: this.getSelectedConfig().period,
+          key: 'indicator',
+          value: selectedConfig.indicator,
+        });
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'datasource',
+          value: selectedConfig.dataSource,
         });
       }
+
       this.$emit('showSection', index);
     },
+
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
@@ -200,6 +243,7 @@ export default {
         }
       }
     },
+
   },
   computed: {
     // abc() {
@@ -211,7 +255,29 @@ export default {
   },
   mounted() {
     const index = parseInt(this.$route.query.index, 10) || 0;
+    console.log('index@', index);
     this.selectControl(index);
+    console.log('filtered modifiedControls :TT', this.modifiedControls);
+
+    this.$nextTick(() => {
+      if (this.modifiedControls.length > 0) {
+        this.filterModifiedControls();
+      } else {
+        console.log('modifiedControls is still empty after nextTick');
+      }
+    });
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('section')) { // Check if 'section' exists in the URL
+      // const paramValue = url.searchParams.get('section');
+      // console.log('section modifiedControls:', paramValue);
+      // console.log(this.modifiedControls.length, 'modifiedControls');
+
+      // const section = this.modifiedControls.filter((item) => item?.title?.trim() === paramValue?.trim());
+      // console.log(section, 'filtered modifiedControls');
+    } else {
+      console.log('No section param found in the URL');
+    }
   },
   created() {
     this.controls = this.$children;
@@ -254,13 +320,13 @@ export default {
   border: 1px solid $primary;
   background-color: white;
   color: black !important;
-  padding:1rem 2rem;
+  padding: 1rem 2rem;
   height: 1rem;
   max-width: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px ;
+  margin: 10px;
   font-weight: 200;
   font-size: 1rem;
   &:first-child {

@@ -141,7 +141,7 @@
           <tr class="" v-if="dataArray.length > 1">
             <td class="border-0"></td>
             <td colspan="30" class="border-0 heading_alt">
-              <h6 class="font-weight-bold mb-0">Related Indicators</h6>
+              <h6 class="font-weight-bold mb-0">Related Indicators@</h6>
             </td>
           </tr>
           <!-- This loops  the the other indicator of the array of indicators -->
@@ -153,6 +153,7 @@
               :rowData="indicatorData"
               @indicator-info:clicked="$emit('selected:indicator-info', $event)"
               :factors="factors"
+              related="related"
             >
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
@@ -630,7 +631,7 @@ export default {
     },
     async fetchNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
-      // console.log('new result', result)
+      console.log('new result', result);
       return result.reverse()[0];
       // return result[result.length - 1];
     },

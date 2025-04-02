@@ -12,14 +12,14 @@
         })
         ">
         <template #title>
-          <p class="work-sans mb-0 line-height" v-if="level === 1">
+          <p class="work-sans mb-0 line-height sub-title" v-if="level === 1">
             Distribution of
 
             <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
             <b>{{ values.indicator.short_name }}</b> across <b>{{ values.location.name }}.</b> Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b>
           </p>
-          <p class="work-sans mb-0 line-height" v-if="level !== 1">
+          <p class="work-sans mb-0 line-height sub-title" v-if="level !== 1">
             Distribution of
             <b>{{ values.indicator.short_name }}</b> across the states. Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b>
@@ -38,10 +38,11 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
+import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import { eventBus } from '@/main';
-import { mapState } from 'vuex';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
 
@@ -199,6 +200,37 @@ export default {
         await ndData,
         this.values.numdenum,
       );
+      chartOptions.plotOptions = {
+        series: {
+          dataLabels: {
+            enabled: true,
+            formatter() {
+              // Check if the value is an integer (no decimals)
+              if (Number.isInteger(this.y)) {
+                // If the value is over 1000, add a thousand separator
+                return this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y;
+              }
+              // Return the value as is for decimal numbers
+              return this.y;
+            },
+          },
+          pointWidth: 10, // Fixes the width of each point
+        },
+      };
+
+      // Adding tooltip formatter
+      chartOptions.tooltip = {
+        pointFormatter() {
+          // Check if the value is an integer (no decimals)
+          if (Number.isInteger(this.y)) {
+            // If the value is over 1000, add a thousand separator
+            return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y}</b><br/>`;
+          }
+          // Return the value as is for decimal numbers
+          return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y}</b><br/>`;
+        },
+      };
+
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup :cry: :worried: :rage:
       const parentValue = await this.dlQuery({
@@ -372,4 +404,8 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.sub-title {
+  font-size: 14px !important;
+}
+</style>

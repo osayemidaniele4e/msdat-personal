@@ -37,7 +37,7 @@ export default [
   },
   {
     path: '/custom/private/:id',
-    name: 'custom-dashboard-public',
+    name: 'custom-dashboard-private',
     component: () => import('./views/Private.vue'),
     meta: {
       title: 'Custom Dashboard',
@@ -150,5 +150,11 @@ export default [
     props: true,
     component: () => import('./views/CustomDashboard.vue'),
     // component: () => import('../dynamic-dashboard/index.vue'),
+  },
+  {
+    path: '/saved-dashboard',
+    name: 'saved-dashboard',
+    props: true,
+    component: () => import('./components/SavedDashboardList.vue'),
   },
 ];

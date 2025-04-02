@@ -114,7 +114,7 @@ export default {
         return this.values.indicator.filter((indicator) => !this.hasDataForIndicator(indicator));
       }
       // Handle the case when this.values.indicator is not an array
-      console.error('Indicator is not an array:', this.values.indicator);
+      // console.error('Indicator is not an array:', this.values.indicator);
       return [];
     },
   },
@@ -203,6 +203,15 @@ export default {
       }));
 
       const results = await Promise.all(dataPromises);
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        yTitles.push(displayFactor.display_factor);
+      }
 
       for (let i = 0; i < results.length; i += 1) {
         // formate result to HighChart Format
@@ -212,7 +221,7 @@ export default {
           this.dlGetLocation(item.location).name,
           parseFloat(item.value),
         ]);
-        const displayFactor = this.dlGetFactor(indicator.factor);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
         const yAxis = {
           yAxis: [
             {
@@ -233,7 +242,8 @@ export default {
           ],
           title: {
             ...defaultOptions.yAxis.title,
-            text: displayFactor.display_factor,
+            // text: displayFactor.display_factor,
+            text: [...new Set(yTitles)].join(' | '),
           },
           opposite: !!i, // this will become either true of false as 0 or 1
         };
@@ -250,10 +260,12 @@ export default {
               fontSize: '10px',
             },
           },
-          name: indicator.full_name,
+          // name: indicator.full_name,
+          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
           data: toHighChartFormat,
         };
-        highChartOptions.yAxis.push(yAxis);
+        // highChartOptions.yAxis.push(yAxis);
+        if (i === 0) highChartOptions.yAxis.push(yAxis);
         if (toHighChartFormat.length) highChartOptions.series.push(obj);
       }
       return highChartOptions;
@@ -399,6 +411,16 @@ export default {
 
       const results = await Promise.all(dataPromises);
       // debugger;
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        yTitles.push(displayFactor.display_factor);
+      }
+
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];
@@ -409,35 +431,39 @@ export default {
         ]);
         const sortTheYear = formatToHighChartFormat.sort((a, b) => a[0] - b[0]);
 
-        const displayFactor = this.dlGetFactor(indicator.factor);
-        highChartOptions.yAxis.push({
-          yAxis: [
-            {
-              plotLines: [],
-              labels: {
-                style: {
-                  fontFamily: 'Work Sans, sans-serif',
-                  fontSize: '11px',
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        if (i === 0) {
+          highChartOptions.yAxis.push({
+            yAxis: [
+              {
+                plotLines: [],
+                labels: {
+                  style: {
+                    fontFamily: 'Work Sans, sans-serif',
+                    fontSize: '11px',
+                  },
+                },
+                title: {
+                  style: {
+                    ...defaultOptions.yAxis.title.style,
+                    fontSize: '10px',
+                  },
                 },
               },
-              title: {
-                style: {
-                  ...defaultOptions.yAxis.title.style,
-                  fontSize: '10px',
-                },
-              },
+            ],
+            title: {
+              ...defaultOptions.yAxis.title,
+              // text: displayFactor.display_factor,
+              text: [...new Set(yTitles)].join(' | '),
             },
-          ],
-          title: {
-            ...defaultOptions.yAxis.title,
-            text: displayFactor.display_factor,
-          },
-          opposite: !!i, // this will become either true of false as 0 or 1
-        });
+            opposite: !!i, // this will become either true of false as 0 or 1
+          });
+        }
         const obj = {
           color: this.color[i],
           lineWidth: 3,
-          name: indicator.full_name,
+          // name: indicator.full_name,
+          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
           data: sortTheYear,
         };
         if (sortTheYear.length) highChartOptions.series.push(obj);

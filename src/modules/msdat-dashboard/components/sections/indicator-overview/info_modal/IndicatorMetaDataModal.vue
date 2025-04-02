@@ -42,6 +42,7 @@
                   })[0].indicator_definition
                 : ''
             }}
+
           </div>
           <p></p>
 
@@ -119,7 +120,7 @@
               <div class="available d-flex align-items-center mr-3">
                 <span class="mr-1 text2 level-text">National</span>
                 <b-icon-check-circle-fill
-                 class="check-circle"
+                  class="check-circle"
                   scale="0.9"
                   :variant="
                     dlGetDataSourceSpecificIndicator({
@@ -139,7 +140,7 @@
               <div class="d-flex align-items-center mr-3">
                 <span class="mr-1 text2 level-text">Geopolitical Zone</span>
                 <b-icon-check-circle-fill
-                class="check-circle"
+                  class="check-circle"
                   scale="0.9"
                   :variant="
                     dlGetDataSourceSpecificIndicator({
@@ -159,7 +160,7 @@
               <div class="available d-flex align-items-center mr-3">
                 <span class="mr-1 text2 level-text">State Level</span>
                 <b-icon-check-circle-fill
-                 class="check-circle"
+                  class="check-circle"
                   scale="0.9"
                   :variant="
                     dlGetDataSourceSpecificIndicator({
@@ -179,7 +180,7 @@
               <div class="d-flex align-items-center mr-3">
                 <span class="mr-1 text2 level-text">Senatorial Level</span>
                 <b-icon-check-circle-fill
-                 class="check-circle"
+                  class="check-circle"
                   scale="0.9"
                   :variant="
                     dlGetDataSourceSpecificIndicator({
@@ -199,7 +200,7 @@
               <div class="d-flex align-items-center mr-3">
                 <span class="mr-1 text2 level-text">Local Govt Area</span>
                 <b-icon-check-circle-fill
-                 class="check-circle"
+                  class="check-circle"
                   scale="0.9"
                   :variant="
                     dlGetDataSourceSpecificIndicator({
@@ -241,6 +242,7 @@ export default {
       type: Number,
     },
   },
+
   async mounted() {
     //   this.dataSources = this.dlGetDashboardDataSource().map((item) => ({
     //     id: item.id,
@@ -267,7 +269,7 @@ div.loading_screen {
   color: black;
 }
 
-.datasource{
+.datasource {
   font-size: 13px;
 }
 
@@ -328,18 +330,16 @@ div.loading_screen {
     margin-bottom: 20px;
     padding-left: 10px;
   }
-
 }
 
-.level-text{
+.level-text {
   margin-top: 20px;
- display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.check-circle{
+.check-circle {
   font-size: 20px;
-
 }
 </style>

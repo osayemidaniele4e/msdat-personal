@@ -37,11 +37,11 @@ export default {
     {
       class: ['col-md-2'],
       type: 'dropdown',
-      label: 'Year',
+      label: 'Period',
       key: 'year',
       options: [],
       dropdownProps: {
-        'preselect-first': true,
+        'preselect-first': false,
       },
     },
     {

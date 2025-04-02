@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div v-if="!loading" class="table-responsive">
-      <table class="table table-bordered align-middle text-nowrap">
+      <table class="table table-bordered align-middle">
         <tbody>
           <tr>
             <td rowspan="2" scope="col" class="text-center align-middle border-0"></td>
@@ -10,7 +10,7 @@
               scope="col"
               class="align-middle text-center text-uppercase h6 font-weight-bold"
             >
-              <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center px-5">
                 <span>Indicators</span>
                 <!-- <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span> -->
               </div>
@@ -27,8 +27,14 @@
           </tr>
           <!-- This loop through the available dataSource from the dataOptions
           eg. Routine,Survey,Estimate -->
-          <tr v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis">
-            <div class="nhmis_month_head">NHMIS-DHIS2 (monthly)</div>
+          <tr
+            v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
+            class="text-nowrap"
+          >
+            <div @click="handleNhmisMonthlyClicked" class="nhmis_month_head">
+              <span>NHMIS-DHIS2</span>
+              <span>(monthly)</span>
+            </div>
             <TableDataSourceCell
               v-for="(dt, i) in source"
               :key="`${i}-row3`"
@@ -40,7 +46,7 @@
               @key="getKey"
             />
           </tr>
-          <tr v-else>
+          <tr v-else class="text-nowrap">
             <TableDataSourceCell
               v-for="(dt, i) in source"
               :key="`${i}-row4`"
@@ -56,11 +62,12 @@
           <!-- The display the the first indicator of the array of indicator -->
           <!-- please note that the first indicator is assumed to be
           the main indicator and others, the related indicators -->
-
+          <!-- <pre>{{ dataArray  }}</pre> -->
           <TableDataRow
-            class="base_subCard_header text-white"
+            class="tableRowBg"
             :rowData="dataArray[0]"
             @indicator-info:clicked="$emit('selected:indicator-info', $event)"
+            :replaceContent="replaceContent"
           >
             <template v-slot:indicator="props">
               <slot name="indicator-0" :indicator="props"></slot>
@@ -68,10 +75,11 @@
             <template
               #default
               v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
+              class=""
             >
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
-              <div v-if="nhmisMonthData[0]" class="nhmis-monthly">
+              <div v-if="nhmisMonthData[0]" class="nhmis-monthly tableRowBg2 ">
                 <span class="value-nhmis">{{
                   nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].value}%`
                 }}</span>
@@ -80,7 +88,7 @@
                 }}</span>
               </div>
 
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+              <td class="text-center tableRowBg2 p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
                   :dataColors="' '"
@@ -88,7 +96,7 @@
               </td>
             </template>
             <template #default v-else>
-              <td class="text-center p-2" v-for="(dt, index) in source" :key="index" scope="col">
+              <td class="text-center tableRowBg p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <!-- percentage values and year -->
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
@@ -110,11 +118,11 @@
               </td>
               <td colspan="20" class="num-denom-content">
                 <slot name="NHMIS-DETAILS">
-                  <div class="numDemValues text-center">
-                    <div>
+                  <div class="numDemValues px-3 py-1 w-100">
+                    <div class="text-left">
                       <p><span>Numerator: </span> {{ numerator }}</p>
                     </div>
-                    <div>
+                    <div class="text-left">
                       <p><span>Denominator: </span> {{ denominator }}</p>
                     </div>
                   </div>
@@ -132,12 +140,16 @@
           </tr>
           <!-- This loops  the the other indicator of the array of indicators -->
           <!-- TODO: fix -->
+
           <template v-for="(indicatorData, index) in dataArray">
             <TableDataRow
               :key="indicatorData.indicator.id"
               v-if="index > 0"
               :rowData="indicatorData"
               @indicator-info:clicked="$emit('selected:indicator-info', $event)"
+              related="related"
+              :replaceContent="replaceContent"
+              :index="index"
             >
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
@@ -167,7 +179,7 @@
                   <div class="nhmis-rel-text2">-</div>
                 </td>
                 <td
-                  class="text-center p-2"
+                  class="text-center  p-2"
                   v-for="(dt, i) in source"
                   :key="`${i}-row9`"
                   scope="col"
@@ -205,6 +217,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import { flatten, uniq, countBy } from 'lodash';
 import mixin from '@/modules/data-layer/mixin';
 import TableDataCell from './TableDataCell.vue';
@@ -242,6 +255,10 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    replaceItem: {
+      type: Function,
+      required: true,
     },
     /**
      * To controls the order of the indicators
@@ -322,9 +339,31 @@ export default {
       numerator: null,
       numDenum: false,
       hasNhmis: false,
+      nhmisMonthly: {
+        id: 30,
+        datasource: 'NHMIS-DHIS2 (monthly)',
+        full_name: 'National Health Management Information System (Monthly) - DHIS2',
+        description:
+          'National Health Management Information System: Nigeria has adopted the DHIS2 as the National tool for the reporting of routine health-related data. This data is reported and aggregated monthly using this platform.',
+        year_available: 'Not Available',
+        period_available: 'Not Available',
+        methodology:
+          "Facility level aggregate data that is reported by health facilities routinely on a monthly basis using DHIS2. Health facilities are expected to report by the month's data by the 15th of the next month. Due to incomplete reporting by the health facilities, poor reporting by private facilities, the data may be biased.",
+        subnational_data: 'Not Available',
+        classification: 'Routine',
+        group: [],
+        link: 'https://dhis2nigeria.org.ng',
+        created_at: '2022-10-20T08:13:15.793993Z',
+        updated_at: '2022-10-20T08:13:15.794000Z',
+        indicators: [
+          5, 6, 18, 29, 19, 31, 20, 30, 21, 7, 32, 212, 4, 13, 17, 397, 10, 23, 410, 409, 2, 398,
+          22, 584, 585, 586, 587,
+        ],
+      },
     };
   },
   methods: {
+    ...mapMutations('MSDAT_STORE', ['SET_SELECTED_CONFIG']),
     /**
      * @param {array}  valueArray Array of values to be
      * @param {string} column The data source associated to the column
@@ -341,7 +380,6 @@ export default {
      */
     getValueForColumn(valueArray, column) {
       const valueObj = valueArray.find((e) => e.dataSources === column);
-      // console.log('🚀valueObj', valueObj);
       if (valueObj) {
         return valueObj;
       }
@@ -385,6 +423,12 @@ export default {
       }
     },
 
+    replaceContent(item) {
+      // this.$emit('replaceItem', item);
+      this.replaceItem(item);
+      this.getNhmisMonthly();
+    },
+
     /**
      * this filter thorough the array of data parse and et all available  Parsed
      */
@@ -416,7 +460,21 @@ export default {
       }
       this.selectedSource = e;
       this.$emit('selected:source', e);
-      // this.rowShow = !this.rowShow;
+      this.rowShow = !this.rowShow;
+    },
+
+    handleNhmisMonthlyClicked() {
+      if (this.selectedSource === this.nhmisMonthly) {
+        this.selectedSource = '';
+        return;
+      }
+      this.$emit('clickedDatasource', this.nhmisMonthly);
+      this.$emit('key', 'datasource');
+      const item = {
+        payload: this.nhmisMonthly,
+        entity: 'dataSource',
+      };
+      this.SET_SELECTED_CONFIG(item);
     },
 
     // new emits
@@ -459,7 +517,7 @@ export default {
               datasource: datasource.id,
             })[0].measurement_numerator;
             const numerator = numeratorData[0];
-            this.numerator = `${numeratorName} - ${Number(numerator.value).toLocaleString()}`;
+            this.numerator = `${numeratorName} : ${Number(numerator.value).toLocaleString()}`;
           } else {
             this.numerator = 'N/a';
           }
@@ -469,7 +527,7 @@ export default {
               datasource: datasource.id,
             })[0].measurement_denominator;
             const denominator = denominatorData[0];
-            this.denominator = `${denominatorName} - ${Number(denominator.value).toLocaleString()}`;
+            this.denominator = `${denominatorName} : ${Number(denominator.value).toLocaleString()}`;
           } else {
             this.denominator = 'N/a';
           }
@@ -499,10 +557,10 @@ export default {
           const data = await this.getNhmisData(el);
           if (data === undefined) {
             const updatedData = { ...data, value: null };
-            this.nhmisMonthData.push(updatedData);
+            this.nhmisMonthData.unshift(updatedData);
           } else {
             const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
-            this.nhmisMonthData.push(updatedData);
+            this.nhmisMonthData.unshift(updatedData);
           }
         }),
       );
@@ -635,25 +693,26 @@ table.table {
     td.num-denom {
       // background-color: #2b5d5b;
       background-color: $primary;
-      padding-top: 10px;
+      // padding-top: 10px;
       h5 {
         font-size: 15px !important;
         font-weight: 300;
       }
     }
     td.num-denom-content {
-      padding-top: 10px;
+      // padding-top: 2px;
       // background-color: #2b5d5b;
       background-color: $primary;
       div.numDemValues {
         background-color: #fff;
         color: rgb(15, 14, 14);
-        height: 34px;
+        // height: fit-content;
         display: flex;
+        flex-direction: column;
         border-radius: 4px;
-        padding: 7px 10px 0;
-        gap: 10px;
-        justify-content: space-evenly;
+        // padding: 2px;
+        // gap: 2px;
+        // justify-content: space-evenly;
         p {
           font-size: 13px !important;
           font-weight: 300;
@@ -709,12 +768,15 @@ table.table {
   font-size: 0.7rem;
   font-weight: 700;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   /* padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px; */
   padding: 0.75rem;
+  text-align: center;
+  cursor: pointer;
 }
 
 .meta_icon {
@@ -738,4 +800,16 @@ table.table {
   font-size: 12px;
   font-weight: 600;
 }
+
+.tableRowBg {
+  background-color: #348481 !important;
+  color: white;
+}
+
+.tableRowBg2 {
+  background-color: #348481 !important;
+  color: white;
+  /* padding: 30px 0; */
+}
+
 </style>

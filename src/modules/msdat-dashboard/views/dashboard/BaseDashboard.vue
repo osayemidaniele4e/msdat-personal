@@ -224,8 +224,8 @@ import {
   BasePanel, ControlBase, ControlPanel, SelectDropdown,
 } from '@/components/ControlPanel';
 // import BaseUpdate from '@/modules/msdat-dashboard/components/NewUpdate.vue';
-// import apiServices from '@/modules/DataLayer/services/ApiServices';
 import config from '@/modules/dynamic_dashboard/config/dashboard_config';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import formatter from '../../mixins/formatter';
 import controlPanelSetup from '../../mixins/control-panel-setup';
 import tour from '../onboarding/tour';
@@ -324,6 +324,7 @@ export default {
   },
 
   async created() {
+    // log route path Health_Outcomes_and_Service_Coverage
     this.indicators = this.getConfigObject().indicators;
     this.dataSources = this.getConfigObject().dataSources;
     this.defaultIndicators = this.getConfigObject().defaultIndicators;
@@ -331,7 +332,11 @@ export default {
     this.initialDataSource = this.getConfigObject().initialDataSource;
     this.initialLocation = this.getConfigObject().initialLocation;
     window.addEventListener('resize', this.onResize);
+
     const { name } = this.$route.params;
+    if (name === 'Advanced_Analytics') {
+      this.isAdvanced = true;
+    }
     if (name === 'Advanced_Analytics') {
       this.isAdvanced = true;
     }
@@ -357,9 +362,12 @@ export default {
      * Update Site-Wide OG tags for crawlers
      */
     // eslint-disable-next-line camelcase
-    const indicator = this.getSelectedConfig().indicator?.full_name
+    const indicator
       // eslint-disable-next-line camelcase
-      || this.dlIndicator.find((ind) => ind.id === this.initialIndicator?.full_name) || 'Skilled attendance at delivery or birth';
+      = this.getSelectedConfig().indicator?.full_name
+      // eslint-disable-next-line camelcase
+      || this.dlIndicator.find((ind) => ind.id === this.initialIndicator?.full_name)
+      || 'Skilled attendance at delivery or birth';
     const pageDesc = `Take a look at '${indicator}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
 
     const descEl = document.querySelector('head meta[property="og:description"]');
@@ -373,7 +381,19 @@ export default {
     window.removeEventListener('wheel', this.handleScroll);
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_CONFIGURATIONS', 'UPDATE_PROGRAM_AREAS']),
+    ...mapMutations('MSDAT_STORE', [
+      'SET_CONFIGURATIONS',
+      'UPDATE_PROGRAM_AREAS',
+      'SET_SECTION',
+      'SET_URL_DATASOURCE',
+      'SET_SECTION_PAYLOAD',
+      'SET_MULTI_DATASOURCE_PAYLOAD',
+      'SET_DATASET_DATASOURCE_PAYLOAD',
+      'SET_URL_LOCATION',
+      'SET_URL_PERIOD',
+      'SET_MULTI_LOCATION_PAYLOAD',
+      'SET_MULTI_PERIOD_PAYLOAD',
+    ]),
     ...mapGetters('MSDAT_STORE', ['getConfigObject', 'getSelectedConfig', 'getLoadingStatus']),
     //  passing the value of the v-model for program areas dynamically
     indexModel(index) {
@@ -570,6 +590,73 @@ export default {
 
   async mounted() {
     this.loading = false;
+    if (this.$route.query.datasource) {
+      this.SET_URL_DATASOURCE(this.$route.query.datasource);
+      const { data } = await apiServices.getSingleDataSourceObj(this.$route.query.datasource);
+
+      const arr = [0, 1, 2, 3, 4, 5];
+
+      arr.forEach((index) => {
+        const obj = {
+          controlIndex: index,
+          key: 'datasource',
+          value: data,
+        };
+
+        if ([0, 1, 2, 5].includes(index)) {
+          this.SET_SECTION_PAYLOAD(obj);
+        } else if (index === 3) {
+          this.SET_DATASET_DATASOURCE_PAYLOAD(obj);
+        } else if (index === 4) {
+          this.SET_MULTI_DATASOURCE_PAYLOAD(obj);
+        }
+      });
+    }
+
+    if (this.$route.query.location) {
+      this.SET_URL_LOCATION(this.$route.query.location);
+      const { data } = await apiServices.getSingleLocationObj(this.$route.query.location);
+
+      const arr = [0, 1, 2, 3, 4, 5];
+
+      arr.forEach((index) => {
+        const obj = {
+          controlIndex: index,
+          key: 'location',
+          value: data,
+        };
+
+        if ([0, 1, 2, 3, 5].includes(index)) {
+          this.SET_SECTION_PAYLOAD(obj);
+        } else if (index === 4) {
+          this.SET_MULTI_LOCATION_PAYLOAD(obj);
+        }
+      });
+    }
+
+    if (this.$route.query.year) {
+      this.SET_URL_PERIOD(this.$route.query.year);
+      const year = this.$route.query.year;
+      const arr = [0, 1, 2, 3, 4, 5];
+
+      arr.forEach((index) => {
+        const obj = {
+          controlIndex: index,
+          key: 'year',
+          value: year,
+        };
+
+        if ([0, 1, 2, 3, 5].includes(index)) {
+          this.SET_SECTION_PAYLOAD(obj);
+        } else if (index === 4) {
+          this.SET_MULTI_PERIOD_PAYLOAD(obj);
+        }
+      });
+    }
+
+    if (this.$route.query.section) {
+      this.SET_SECTION(this.$route.query.section);
+    }
     // initializing data for dashboard
     // console.trace(this.$route.query);
     let urlRequestedIndicator = [];
@@ -664,6 +751,7 @@ div.temp {
   }
   .lessVisible {
     z-index: -1;
+    margin-top: 1px;
   }
 }
 div#browserSupport {
@@ -697,7 +785,34 @@ div#browserSupport img {
   font-size: 10px;
   font-weight: bold;
 }
+.program {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 18px;
+  margin: 10px;
+}
+.program label {
+  font-size: 12px;
+  font-weight: bold;
+}
+.prog-drop {
+  width: 450px;
+}
+.prog-visual {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 10px;
+  width: 400px;
+  border: 1px solid#007D53;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #000;
+}
 
+.rotated {
+  transform: rotate(180deg);
+}
 @media (max-width: 800px) {
   .swipe-btn-flex {
     display: flex;

@@ -7,6 +7,8 @@ const SurveyArray = sessionStorage.getItem('surveyArray');
 const SectionsArray = sessionStorage.getItem('sectionsArray');
 const dashboardDetails = localStorage.getItem('dashboardDetails');
 const customDashboard = localStorage.getItem('customDashboardStatus') || false;
+const embedUrl = sessionStorage.getItem('embedUrl');
+const embedIframe = sessionStorage.getItem('embedIframe');
 
 const store = {
   state: {
@@ -62,6 +64,9 @@ const store = {
     dashboardRequest: {},
     publicDashboard: false,
     allPublicDashboards: [],
+    selectedIndicators: [],
+    embeddedUrl: JSON.parse(embedUrl),
+    embeddedIframe: JSON.parse(embedIframe),
   },
 
   mutations,

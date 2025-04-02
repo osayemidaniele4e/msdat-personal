@@ -42,7 +42,7 @@
             </svg>
           </span>
           <div>
-            <p>Comparison can only be done for 2 data sources</p>
+            <p>Interpretation is only available when comparing two datasets</p>
           </div>
         </div>
         <div class="comparison" v-else>
@@ -194,6 +194,8 @@ export default {
           indicator: this.values.indicator.id,
           datasource: dataSourceObject.id,
         });
+
+        console.log(data, dataSourceObject, 'availableDS@ 3');
         if (data.length > 0) {
           const onlyYearlyData = data.filter((item) => {
             if (isDataYearly(item.period)) {
@@ -342,10 +344,18 @@ export default {
             column: {
               dataLabels: {
                 enabled: true,
+                padding: 10,
+                style: {
+                  fontSize: '9px',
+                  fontFamily: '"Work Sans", sans-serif',
+                  backgroundColor: 'none',
+                },
                 formatter() {
                   return Highcharts.numberFormat(this.y, 0, '', ',');
                 },
               },
+              groupPadding: 0.08,
+              pointPadding: 0.16,
             },
           },
           chart: {
@@ -355,10 +365,13 @@ export default {
             title: {
               text: 'Values',
               style: {
-                fontSize: '13px',
+                fontSize: '11px',
                 fontFamily: '"Work Sans", sans-serif',
               },
             },
+          },
+          exporting: {
+            filename: `indicator-${this.values.indicator.full_name}`,
           },
           colors: ['#17606B', '#E85D58', '#58B74E'],
         };

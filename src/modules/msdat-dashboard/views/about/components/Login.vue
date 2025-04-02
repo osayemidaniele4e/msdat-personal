@@ -8,27 +8,27 @@
         <!-- <div class="loader" v-if="isLoading">
           <the-loader />
         </div> -->
-        <h3 class="w-100 text-center mx-auto mt-3" style="font-size: 24px">Signin with</h3>
+        <p class="w-100 text-center mx-auto mt-3" style="font-size: 20px"> Sign in with </p>
 
-        <div class="d-flex w-100 justify-content-center">
+        <div class="d-flex w-100 justify-content-center mt-4">
           <button
             type="submit"
-            class="btn btn-lg btn-primary px-3 py-2 mr-2"
+            class="soc-btn px-2 py-2 mr-2"
             @click="handleClickSignIn()"
           >
-            <b-icon-google></b-icon-google>
-
-            <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
+            <b-icon-google  class="mr-4"></b-icon-google>
+            GOOGLE
           </button>
-          <button type="submit" class="btn btn-lg btn-primary px-3 py-2 mr-2">
-            <b-icon-facebook></b-icon-facebook>
 
-            <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
+          <button type="submit" class="soc-btn px-2 py-2 mr-2">
+            <b-icon-facebook  class="mr-4"></b-icon-facebook> FACEBOOK
           </button>
-          <a :href="linkedlnUrl" class="btn btn-lg btn-primary px-3 py-2">
-            <b-icon-linkedin></b-icon-linkedin>
+
+          <a :href="linkedlnUrl" class="soc-btn px-2 py-2 d-inline-block">
+            <b-icon-linkedin class="mr-4" ></b-icon-linkedin> LINKEDIN
           </a>
         </div>
+        <p class="orp w-100 text-center mx-auto mt-4"> OR </p>
         <div class="row">
           <div class="col-12 mx-auto h-50px">
             <form>
@@ -36,31 +36,28 @@
                 <!-- <ul v-if="!formIsValid" class="mx-auto text-center">
                   <li style="color: red; list-style: none">{{ msg }}</li>
                 </ul> -->
-
-                <label for="" class="form-label">Username</label>
                 <input
                   type="text"
                   v-model="username"
                   class="form-control"
-                  placeholder="Enter your user name"
+                  placeholder="Username"
                 />
               </div>
-              <div class="mb-3 w-100 mx-auto mt-3 pos-rel">
-                <label for="" class="form-label">Password</label>
+              <div class="mb-3 w-100 mx-auto mt-4">
                 <input
                   type="password"
                   v-model="password"
                   class="form-control"
-                  placeholder="******************"
+                  placeholder="Password"
                 />
 
-                <a href="#" class="forgot-abs text-dark">Forgot?</a>
               </div>
-              <div class="text-center lg">
+              <a href="#" class="forgot-abs">Forgot Password?</a>
+              <div class="text-center lg mt-4">
                 <button
                   type="submit"
                   @click.prevent="login"
-                  class="btn btn-lg btn-primary px-5"
+                  class="submit-btnn px-5"
                   style="font-size: 15px"
                 >
                   LOG IN
@@ -169,6 +166,7 @@ export default {
             console.log(res);
             // eslint-disable-next-line eqeqeq
             if (res.status == 200) {
+              this.$emit('login-success');
               this.$swal({
                 toast: true,
                 position: 'bottom',
@@ -221,6 +219,7 @@ export default {
         await this.AUTHENTICATE(data)
           .then((res) => {
             if (res.status === 200 || res.status === 201) {
+              this.$emit('login-success');
               this.$swal({
                 toast: true,
                 position: 'bottom',
@@ -254,6 +253,7 @@ export default {
         await this.AUTHENTICATE_LINKEDIN(data)
           .then((res) => {
             if (res.status === 200 || res.status === 201) {
+              this.$emit('login-success');
               this.$swal({
                 toast: true,
                 position: 'bottom',
@@ -390,24 +390,11 @@ h4::after {
 .pos-rel {
   position: relative !important;
 }
-.input-label {
-  top: 223px;
-  left: 702px;
-  width: 54px;
-  height: 29px;
-  text-align: left;
-  font: normal normal normal 22px/29px DM Sans;
-  letter-spacing: 0px;
-  color: #000000;
-  opacity: 1;
+.form-control::placeholder {
+  font-size: 16px !important;
 }
 .forgot-abs {
-  position: absolute;
-  bottom: 0;
-  top: 45px;
-  right: 0;
-  margin-right: 20px;
-  text-decoration: underline;
+ color:#348481 ;
 }
 .input-field {
   top: 399px;
@@ -440,5 +427,44 @@ h4::after {
 
 .login-section {
   font-family: 'Work sans';
+  padding: 0px 50px;
+}
+
+.container {
+  padding: 0px 50px;
+}
+
+.submit-btnn{
+  width: 100%;
+  height: 40px;
+  background: #348481;
+  font-size: 15px;
+  border-radius: 4px;
+  opacity: 1;
+  text-align: center;
+  letter-spacing: 0px;
+  color: #fff;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.orp{
+  font-size: 16px;
+  color: #000000;
+}
+.soc-btn {
+  width: 100%;
+  height: 36px;
+  background: #fff;
+  font-size: 15px;
+  border: 1px solid #348481;
+  border-radius: 4px;
+  opacity: 1;
+  text-align: center;
+  letter-spacing: 0px;
+  color: #348481;
+  text-transform: uppercase;
+  opacity: 1;
+  text-decoration: none;
 }
 </style>

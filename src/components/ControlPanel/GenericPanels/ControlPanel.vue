@@ -1,5 +1,6 @@
 <template>
   <div class="row" id="control-panel">
+    <!-- <pre>{{ setup }}</pre> -->
     <div
       v-for="(values, index) in setup"
       :class="values.class"
@@ -46,7 +47,10 @@
         {{ values.label }}
       </label>
 
+      <!-- <pre>{{ values }}</pre> -->
+
       <!-- ADVANCED ANALYTICS -->
+      <!-- <pre>{{ values }}</pre> -->
       <selectWrapper
         v-if="values.type === 'dropdown' && values.key === 'indicator'"
         :id="label"
@@ -85,7 +89,7 @@
         :id="label"
         :value="payload[values.key]"
         @input="updatePayload($event, values.key)"
-        :options="locationCheck(values.options)"
+        :options="locationCheck(values.options, 'location')"
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
         :placeholder="'Select location'"
@@ -206,6 +210,12 @@
           Column <b-icon icon="bar-chart-fill"></b-icon>
         </button>
       </div>
+      <!-- <div v-if="values.key === 'indicator' && getSelectedSection === 'Indicator Overview'" class="prog-label">
+  <p class="first-text">
+    Program Area: {{ payload.indicator ? payload.indicator.program_area : '' }}
+  </p>
+  <p class="second-text">The program area will display for each indicator</p>
+</div> -->
     </div>
   </div>
 </template>
@@ -361,7 +371,8 @@ export default {
         };
         const lastActivity = JSON.parse(localStorage.getItem('lastActivity') || '{}');
         const hold = (Date.now() - lastActivity.datetime || 0) >= 5000;
-        const diff = lastActivity.page !== activityObject.page
+        const diff
+          = lastActivity.page !== activityObject.page
           || lastActivity.section !== activityObject.section
           || lastActivity.parameters !== activityObject.parameters;
         if (hold && diff) {
@@ -372,7 +383,6 @@ export default {
       }
     },
     locationCheck(options) {
-      // console.log(options, 'options');
       if (
         // eslint-disable-next-line operator-linebreak
         this.$route.params.name === 'Disease_Surveillance' &&
@@ -384,6 +394,7 @@ export default {
         // console.log(main, 'Nigeria');
         return options.filter((s) => s.name === 'Nigeria');
       }
+
       return options;
     },
     checkNHMISDHIS2() {
@@ -445,6 +456,7 @@ export default {
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
+    ...mapGetters('MSDAT_STORE', ['getSelectedSection']),
     payload() {
       if (this.groupIndex != null) {
         // this is to take into consideration control panel that
@@ -460,6 +472,7 @@ export default {
         this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage'
         || this.$route.path === '/dashboard/Health_Financing'
         || this.$route.path === '/dashboard/Health_Service_Access'
+        || this.$route.path === '/dashboard/Demographics'
       ) {
         return true;
       }
@@ -486,9 +499,9 @@ export default {
       return el;
     });
     this.updatePayload(this.defaultIndicator, 'indicator');
-    this.updatePayload(this.defaultDataSource, 'datasource');
+    // this.updatePayload(this.defaultDataSource, 'datasource');
     this.updatePayload(this.defaultLocation, 'location');
-    this.updatePayload(this.defaultYear, 'year');
+    this.updatePayload(this.$store.state.MSDAT_STORE.urlPeriod, 'year');
     this.activeToggleButton = this.payload.visualization;
   },
 };
@@ -504,5 +517,43 @@ export default {
 button {
   font-size: 12px;
   font-weight: bold;
+}
+
+// .prog-label {
+//   display: flex;
+//   position: absolute;
+//   align-items: center;
+//   background-color: #DFF3F3;
+//   border:1px solid #D6D6D6;
+//   margin-top: 12px;
+//   margin-left: -8px;
+//   left: 0;
+//   right: 0;
+//   font-weight: 400;
+//   width: 100vw;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   z-index: 10;
+//   padding: 1px 16px;
+// }
+
+// .first-text {
+//   font-size: 14px;
+//   font-weight: 500;
+//   margin-bottom: 0;
+//   color: #232323;
+// }
+
+// .second-text {
+//   font-size: 13px;
+//   margin-bottom: 0;
+//   color: #656565;
+//   padding-right: 32px;
+// }
+
+@media (max-width: 900px) {
+  .prog-label {
+    display: none;
+  }
 }
 </style>

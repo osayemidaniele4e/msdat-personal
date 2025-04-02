@@ -11,7 +11,7 @@
       <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm base">
         <template #title>
           <h5 class="font-weight-bold work-sans text-white">
-            National Data Repository Dashboard 1
+            HIV/AIDs National Repository Dashboard 1
           </h5>
         </template>
         <!-- <a class="btn btn-primary" href="#" @click="openInNewTab(url)">
@@ -19,7 +19,7 @@
         </a> -->
         <div class="dashboard-link-container">
           <p class="dashboard-link-description">
-            Click the link below to view the National Data Repository Dashboard 1
+            Click the link below to view the HIV/AIDs National Repository Dashboard 1
           </p>
           <button
             class="btn btn-primary dashboard-link-button mt-2"

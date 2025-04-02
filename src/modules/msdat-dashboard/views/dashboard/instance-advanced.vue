@@ -111,20 +111,20 @@
                 </div>
                 <div class="desc-text p-2">
                   <p>
-                    Predictive analysis is a form of advanced analytics that uses current and
-                    historical data to forecast activity, behavior and trends. It involves applying
-                    statistical analysis techniques, data queries and machine learning algorithms to
-                    data sets to create predictive models that place a numerical value or score on
-                    the likelihood of a particular action or event happening.
+                    The Predictive Analysis section of MSDAT involves transforming raw data
+                    into a structured data frame for better analysis. An optimal ARIMA model
+                    is then applied to forecast future trends based on historical data.
+                    Once predictions are generated, the results are sent to the front end
+                    for real-time display, providing users with clear and actionable insights.
                   </p>
                 </div>
               </div>
             </template>
             <template>
               <LazyLoading>
-                <ControlPanelConfiguration :controlIndex="controlIndex">
+                <AdvancedControlPanelConfiguration :controlIndex="controlIndex">
                   <PredictiveAnalysisSection :values="payload" :controlIndex="controlIndex" />
-                </ControlPanelConfiguration>
+                </AdvancedControlPanelConfiguration>
               </LazyLoading>
             </template>
           </base-sub-card>

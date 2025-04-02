@@ -182,7 +182,7 @@ export default {
     this.username = this.user.username;
     this.$store.commit('updateStep', 1);
 
-    this.initializeToLocal();
+    // this.initializeToLocal();
 
     // store.replaceState({})
     // this.$forceUpdate();
@@ -223,7 +223,7 @@ export default {
       let currentCustomDashboard;
       const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
       // get list for current user
-      const list = customDashboardsList[this.getUser.username];
+      const list = customDashboardsList[this.getUser.username || this.getUser.id];
       if (!this.$store.getters.editMode) {
         localStorage.removeItem('vuex');
         this.$store.dispatch('resetState');
@@ -313,26 +313,28 @@ export default {
         return;
       }
 
-      // do not submit if dashboard name already exists in saved list
-      const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
-      const list = customDashboardsList[this.getUser.username] || [];
-      const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
-      let existing;
-      if (this.$store.getters.editMode) {
-        existing = list.find((dashboard) => (dashboard.id !== currentCustomDashboard.id)
-          && (dashboard.config.dashboardDetails.name === this.dName.val));
-      } else {
-        existing = list.find((dashboard) => dashboard.config.dashboardDetails.name === this.dName.val);
+      // // do not submit if dashboard name already exists in saved list
+      // const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
+      // const list = customDashboardsList[this.getUser.username] || [];
+      // const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
+      // let existing;
+      // if (this.$store.getters.editMode) {
+      //   existing = list.find((dashboard) => (dashboard.id !== currentCustomDashboard.id)
+      //     && (dashboard.config.dashboardDetails.name === this.dName.val));
+      // } else {
+      //   existing = list.find((dashboard) => dashboard.config.dashboardDetails.name === this.dName.val);
 
-        // clear dataArray (for next page)
-        const dataArray = [];
-        this.$store.dispatch('clearAllData', dataArray);
-      }
-      if (existing) {
-        this.$swal('The dashboard name you inputed already exists, kindly edit.');
-        return;
-      }
+      //   // clear dataArray (for next page)
+      //   const dataArray = [];
+      //   this.$store.dispatch('clearAllData', dataArray);
+      // }
+      // if (existing) {
+      //   this.$swal('The dashboard name you inputed already exists, kindly edit.');
+      //   return;
+      // }
 
+      const dataArray = [];
+      this.$store.dispatch('clearAllData', dataArray);
       let formData = {};
 
       if (this.isPublicDashboard) {

@@ -3,9 +3,11 @@ import VueRouter from 'vue-router';
 import createPersistedState from 'vuex-persistedstate';
 import store from '@/store/index';
 import USER_ROUTE from '@/modules/msdat-dashboard/views/userLog/router';
+import ADMIN_ROUTE from '@/modules/msdat-dashboard/views/adminLog/router';
 import MSDAT_ABOUT_ROUTE from '@/modules/msdat-dashboard/views/about/router';
 import CREATE_PLUGIN_ROUTE from '@/modules/msdat-dashboard/views/create_plugin/router';
 import MSDAT_SETTINGS_ROUTE from '@/modules/msdat-dashboard/views/settings/router';
+import MSDAT_CONFIGURER_ROUTE from '@/modules/msdat-dashboard/views/configurer/router';
 import MSDAT_EXTERNAL_ROUTE from '@/modules/msdat-dashboard/views/external/router';
 import MSDAT_FAQ_ROUTE from '@/modules/msdat-dashboard/views/faq/router';
 import MSDAT_UPDATE_LOG from '@/modules/msdat-dashboard/views/update_log/router';
@@ -18,12 +20,14 @@ import NATURAL_LANGUAGE_SEARCH from '@/modules/natural-language-search/router';
 import NotFound from '@/modules/msdat-dashboard/views/NotFound.vue';
 import AUTH_ROUTE from '@/modules/auth/router';
 import DATA_ENTRY from '@/modules/data-entry/router';
+import OLLAMA_AI from '@/modules/msdat-dashboard/views/llama_ai/router';
 
 Vue.use(VueRouter);
 
 const routes = [
   ...MSDAT_ABOUT_ROUTE,
   ...MSDAT_SETTINGS_ROUTE,
+  ...MSDAT_CONFIGURER_ROUTE,
   ...MSDAT_EXTERNAL_ROUTE,
   ...MSDAT_FAQ_ROUTE,
   ...MSDAT_UPDATE_LOG,
@@ -35,8 +39,10 @@ const routes = [
   ...NATURAL_LANGUAGE_SEARCH,
   ...AUTH_ROUTE,
   ...USER_ROUTE,
+  ...ADMIN_ROUTE,
   ...DATA_ENTRY,
   ...CREATE_PLUGIN_ROUTE,
+  ...OLLAMA_AI,
   {
     path: '*',
     name: 'NotFound',

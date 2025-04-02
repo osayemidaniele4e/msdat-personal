@@ -1,7 +1,7 @@
 <template>
-  <!-- Label to show when there is no available data as requested -->
-  <!-- @open="initialCSS" -->
-  <multiselect
+  <div class="">
+  <!-- <pre>{{ groupLabelStates }}</pre> -->
+    <multiselect
     :id="formattedID"
     v-model="selected"
     :options="options"
@@ -15,25 +15,28 @@
     deselectLabel=""
     autocomplete="off"
     class="custom-placeholder"
+    @open="handleOpen"
+    @close="handleClose"
+    @search-change="handleSearchChange"
   >
-    <!-- @open="initialCSS" -->
     <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
-    <!---
-      START
-      THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
-      THAT HAVE GROUPED OPTIONS
-    -->
+
     <template v-if="multiSelectProps['group-values']" slot="option" slot-scope="props">
-      <!-- {{ multiSelectProps['group-values'] }} {{ section }} {{ props }} -->
       <template v-if="props.option.$groupLabel">
-        <span class="overflow-text" :data-parent="props.option.$groupLabel">
+        <span class="overflow-textg" :data-parent="props.option.$groupLabel">
           {{ props.option.$groupLabel }}
           <span
-            v-if="
-              multiSelectProps['group-values'] === 'indicators' &&
-              section !== 'Indicator-Comparison'
-            "
-          ></span>
+            v-if="isCollapsibleActive"
+            class="newGrouplabel"
+            :class="{ 'open-caret': groupLabelStates[props.option.$groupLabel] }"
+            @click.stop="toggleGroupLabel(props.option.$groupLabel)"
+          >
+            {{
+              groupLabelStates[props.option.$groupLabel]
+                ? 'Click to collapse ▲'
+                : 'Click to expand ▼'
+            }}
+          </span>
         </span>
       </template>
       <template v-if="props.option.item">
@@ -55,14 +58,8 @@
         </div>
       </template>
     </template>
-    <!---
-    END
-    THIS TEMPLATE IS ONLY ADDED ON MULTISELECTS
-    THAT HAVE GROUPED OPTIONS
-    -->
-
-    <!-- {{ showItems(options) }} -->
   </multiselect>
+  </div>
 </template>
 <script>
 import { has } from 'lodash';
@@ -77,6 +74,10 @@ export default {
       section: '',
       indicatorId: 7,
       datasourceId: 6,
+      groupLabelStates: {},
+      groupLabels: {},
+      isCollapsibleActive: false,
+      isSearchActive: false,
     };
   },
   computed: {
@@ -85,7 +86,12 @@ export default {
         return this.value;
       },
       set(val) {
-        if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
+        if (
+          val
+          && typeof val === 'object'
+          && val.id !== undefined
+          && val.program_area !== undefined
+        ) {
           this.selectedOption = val;
           // this.indicatorId = val.id;
           // this.saveIndicatorToStorage(val.id);
@@ -93,7 +99,6 @@ export default {
             payload: val,
             entity: 'indicator',
           };
-          console.log(val, 'HH@@HH');
           const indicatorId = val.id;
           const indicatorFirstRelated = val.first_related;
           const indicatorSecondRelated = val.second_related;
@@ -102,7 +107,8 @@ export default {
           localStorage.setItem('indicatorSecondRelated', indicatorSecondRelated);
           this.SET_SELECTED_CONFIG(item);
         } else if (
-          typeof val === 'object'
+          val
+          && typeof val === 'object'
           && val.id !== undefined
           && val.methodology !== undefined
         ) {
@@ -113,7 +119,8 @@ export default {
           };
           this.SET_SELECTED_CONFIG(item);
         } else if (
-          typeof val !== 'object'
+          val
+          && typeof val !== 'object'
           && val.id === undefined
           && val.created_at === undefined
         ) {
@@ -124,17 +131,20 @@ export default {
 
           this.SET_SELECTED_CONFIG(item);
           // this.addQueryParamToUrl();
-        } else if (val.parent !== undefined) {
+        } else if (val && val.parent !== undefined) {
           localStorage.setItem('locationId', val.id);
+          // this.SET_LOCATION()
         }
         this.$emit('input', val);
       },
     },
     formattedID() {
+      console.log(this.id, 'DROPDOWN');
       if (this.multiSelectProps['group-values']) {
         if (this.multiSelectProps['group-label'] === 'datasource') {
           return 'groupedSources';
         }
+
         return this.id;
       }
       return null;
@@ -159,7 +169,6 @@ export default {
       default: () => 'List is empty',
     },
     placeholder: {
-      // New prop for placeholder
       type: String,
       default: '',
     },
@@ -188,7 +197,8 @@ export default {
               }
               this.UPDATE_ALL_YEARS(this.options);
               // this was commented out because it updates all the selected year across all section in the multi-source comparison section
-              this.UPDATE_MULTI_YEARS(this.options);
+
+              // this.UPDATE_MULTI_YEARS(this.options);
             } else {
               const { name } = this.$route.params;
               if (name === 'Demographics') {
@@ -217,6 +227,7 @@ export default {
            * if it is an array check if the previously selected DS is included in the list, if yes select it if not select the first DS from the list.
            * if its not an array, make the object the default selected
            */
+
           if (this.multiSelectProps?.label === 'datasource') {
             if (Array.isArray(newValue) && newValue?.length > 0) {
               this.UPDATE_ALL_DATASOURCES(newValue);
@@ -245,18 +256,81 @@ export default {
     immediate: false,
   },
   methods: {
+    toggleGroupLabel(groupLabel) {
+      if (this.isCollapsibleActive) {
+        this.$set(this.groupLabelStates, groupLabel, !this.groupLabelStates[groupLabel]);
+      }
+    },
+    // this function is called when the multiselect is opened thereby it checks if collapsible is active and calls the initialCSS function
+    handleOpen() {
+      this.isCollapsibleActive = true;
+      this.resetState();
+      this.$nextTick(() => {
+        this.initialCSS(this.formattedID);
+      });
+      console.log('opened');
+    },
+
+    // this function is called when the search input is activated thereby it makes the program areas open automaatically when search is active
+    handleSearchChange() {
+      this.isCollapsibleActive = false;
+      this.openAllGroupLabels();
+
+      // Ensure all items with data-child attribute and role="option" are visible
+      this.$nextTick(() => {
+        const iterable = document.querySelectorAll('[data-child][role="option"]');
+        iterable.forEach((item) => {
+          // eslint-disable-next-line no-param-reassign
+          item.style.display = 'block';
+        });
+
+        // this fix works for now
+        //  Ensure all elements in data-child with id ending in -1 are always shown
+        const elementsWithEnding1 = document.querySelectorAll('[role="option"][id$="-1"]');
+        elementsWithEnding1.forEach((element) => {
+          // eslint-disable-next-line no-param-reassign
+          element.style.display = 'block';
+        });
+      });
+      this.isSearchActive = true;
+    },
+    resetState() {
+      this.isCollapsibleActive = true;
+      this.isSearchActive = false;
+      this.groupLabelStates = {};
+      this.groupLabels = {};
+      this.$nextTick(() => {
+        const iterable = document.querySelectorAll('[data-child][role="option"]');
+        iterable.forEach((item) => {
+          // eslint-disable-next-line
+          item.style.display = 'none';
+        });
+      });
+    },
+    handleClose() {
+      this.resetState();
+      this.isSearchActive = false;
+      console.log('closed');
+    },
+
+    openAllGroupLabels() {
+      if (this.multiSelectProps['group-values']) {
+        this.groupLabelStates = {};
+        this.options
+          .filter((option) => option.$groupLabel)
+          .forEach((option) => {
+            this.$set(this.groupLabelStates, option.$groupLabel, true);
+          });
+      }
+    },
     ...mapMutations('MSDAT_STORE', [
       'SET_SELECTED_CONFIG',
       'UPDATE_ALL_DATASOURCES',
       'UPDATE_ALL_YEARS',
       'UPDATE_MULTI_YEARS',
       'setSelectedState',
+      'SET_LOCATION',
     ]),
-
-    // showItems(item) {
-    //   console.log(item, 'DDDOOO');
-    // },
-
     modifyDataSourceChildLabel(tag) {
       const tempArray = tag.split(' ');
       tempArray.pop();
@@ -265,38 +339,44 @@ export default {
       }
       return tempArray.join(' ');
     },
+
     /**
      * This method is called when a program area title
      * is clicked, handles the show and hide of its
      * child nodes and also the dropdown caret rotation
      */
     async pickProgramArea(event) {
+      if (!this.isCollapsibleActive) return;
+
       this.loading = true;
       event.preventDefault();
       event.stopPropagation();
       if (event.type === 'click') {
         const parent = event.target?.children[0]?.children[0]?.dataset?.parent;
-        // if (parent === undefined) return;
+        console.log('Program Area Clicked:', parent);
         const all = Array.from(event.target?.parentNode?.children);
         all.forEach(async (element) => {
-          // eslint-disable-next-line prefer-destructuring
           const child = await element?.children[0]?.children[0]?.dataset?.child;
           const tempParent = await element?.children[0]?.children[0]?.dataset?.parent;
-          // if (child === undefined || tempParent === undefined) return;
           if (parent === child) {
             if (element.style.display === 'none') {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'block';
+              this.$set(this.groupLabelStates, parent, true);
               // eslint-disable-next-line no-unused-expressions
               element?.children[0]?.children[0]?.classList.toggle('open-caret');
             } else {
               // eslint-disable-next-line no-param-reassign
               element.style.display = 'none';
+              this.$set(this.groupLabelStates, parent, false);
             }
           }
           if (parent === tempParent) {
             // eslint-disable-next-line no-unused-expressions
             element?.children[0]?.children[0]?.children[0]?.classList.toggle('open-caret');
+          }
+          if (parent && !this.groupLabels[parent]) {
+            this.$set(this.groupLabels, parent, true);
           }
         });
       }
@@ -309,39 +389,28 @@ export default {
      *  @var multiselectProps, its "group-value" property.
      *
      */
-    // async initialCSS(multiselectID) {
-    //   this.section = multiselectID;
-    //   if (
-    //     this.multiSelectProps['group-values'] !== 'indicators'
-    //     || multiselectID === 'Indicator-Comparison'
-    //   ) {
-    //     return;
-    //   }
-    //   this.loading = true;
-    //   if (this.multiSelectProps['group-values']) {
-    //     const specificPart = document.querySelector(`input#${multiselectID}`);
-    //     if (this.options?.length !== 0) {
-    //       const iterable = await specificPart.parentNode.nextElementSibling.children[0]?.children;
-    //       const tell = await specificPart.parentElement.parentElement.attributes['data-visted']
-    //         .value;
-    //       // eslint-disable-next-line no-plusplus
-    //       for (let i = 0; i <= iterable.length; i++) {
-    //         if (iterable[i]?.children[0]?.children[0]?.dataset.child) {
-    //           iterable[i].style.display = 'none';
-    //         } else if (tell === 'notVisited') {
-    //           if (iterable[i] === undefined) return;
-    //           iterable[i].addEventListener('click', (e) => {
-    //             e.preventDefault();
-    //             e.stopPropagation();
-    //             this.pickProgramArea(e);
-    //           });
-    //           specificPart.parentElement.parentElement.attributes['data-visted'].value = null;
-    //         }
-    //       }
-    //     }
-    //   }
-    //   this.loading = false;
-    // },
+    initialCSS(multiselectID) {
+      this.loading = true;
+      if (this.multiSelectProps['group-values']) {
+        const specificPart = document.querySelector(`input#${multiselectID}`);
+        if (this.options?.length !== 0 && specificPart) {
+          const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;
+          if (iterable) {
+            Array.from(iterable).forEach((element) => {
+              if (element.children[0]?.children[0]?.dataset.child) {
+                // eslint-disable-next-line
+                element.style.display = 'none';
+              } else {
+                element.removeEventListener('click', this.pickProgramArea);
+                element.addEventListener('click', this.pickProgramArea);
+              }
+            });
+          }
+          specificPart.parentElement.parentElement.setAttribute('data-visted', 'visited');
+        }
+      }
+      this.loading = false;
+    },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', item);
     // },
@@ -378,7 +447,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss">
 .down-caret {
   width: 0;
@@ -393,14 +461,22 @@ export default {
   transition: all 0.25s ease-in;
   cursor: pointer;
 }
+.newGrouplabel {
+  position: absolute;
+  right: 5%;
+  top: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  color: #a4fab7;
+  transition: all 1.25s ease-in;
+}
 
 .open-caret {
-  transform: rotate(360deg);
+  transform: rotate(0deg);
   transition: all 0.25s ease-out;
   cursor: pointer;
 }
 ul li.multiselect__element {
-  // border-bottom: 1px solid #0000;
   transition: all 1.5s ease-in-out;
   cursor: pointer;
 }
@@ -414,11 +490,17 @@ span.multiselect__single::-webkit-scrollbar-thumb {
   background-color: #b3b3b3;
 }
 .overflow-text {
-  // text-overflow: ellipsis;
-  // overflow: hidden;
-  // white-space: nowrap;
   cursor: pointer;
+  z-index: 999;
 }
+.overflow-textg {
+  display: inline-block;
+  max-width: 200px;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 multiselect,
 input::placeholder {
   font-size: 11.5px !important; /* Adjust the font size as needed */

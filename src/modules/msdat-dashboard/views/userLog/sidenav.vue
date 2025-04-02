@@ -2,58 +2,95 @@
   <div>
     <Header ref="theHeader" />
     <div @click="$refs.theHeader.close()">
-      <!-- <div class="title text-center border-0">
-        <button class="btn btn-primary px-2" @click="$router.go(-1)">
-          &larr;&nbsp;Back to Home
-        </button>
-        <h3 class="mt-2">Account Settings</h3>
-      </div> -->
-      <div class="title border-0 d-flex justify-content-between align-items-center">
-        <button class="btn btn-primary px-3 ml-4" @click="$router.go(-1)">&larr;&nbsp;Back</button>
-        <h3 class="mt-2 text-center" style="font-family: Work sans">Account Settings</h3>
-        <div></div>
-        <!-- Add an empty div for spacing or other content if needed -->
-      </div>
       <div class="d-flex" style="font-family: Work sans">
-        <div class="col-lg-2 col-1 d-flex flex-column mt-3 px-2 py-5 border-right">
-          <!-- <a href="#/profile" class="item"><b-icon-person-circle></b-icon-person-circle>&nbsp;&nbsp; <span class="d-none d-lg-inline">Profile</span></a>
-        <a href="#/notification" class="mt-4 item"><b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp; <span class="d-none d-lg-inline">Notification</span></a> -->
-          <a href="#/userActivity" class="mt-4 item"
-          :class="{ active: isCurrentRoute('/userActivity') }"
-            ><b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp;
-            <span class="d-none d-lg-inline">User Activity</span></a
-          >
-          <a href="#/savedDashboards" class="mt-4 item"
-          :class="{ active: isCurrentRoute('/savedDashboards') }"
-            ><b-icon-card-heading></b-icon-card-heading>&nbsp;&nbsp;
-            <span class="d-none d-lg-inline">Saved Dashboards</span></a
-          >
-          <a href="#/createPlugin" class="mt-4 item blue"
-          :class="{ active: isCurrentRoute('/createPlugin') }"
-            ><b-icon-cloud-upload></b-icon-cloud-upload>&nbsp;&nbsp;
-            <span class="d-none d-lg-inline">Create a plugin</span></a
-          >
-          <a href="#/approvePlugin" class="mt-4 item blue"
-          :class="{ active: isCurrentRoute('/approvePlugin') }"
-            ><b-icon-check2-square></b-icon-check2-square>&nbsp;&nbsp;
-            <span class="d-none d-lg-inline">Approve Plugins</span></a
-          >
-
-          <router-link to="/data-entry" class="mt-4 item blue"
-          :class="{ active: isCurrentRoute('/data-entry') }"
+        <div class="d-flex flex-column pt-4 px-4 border-right">
+          <div class="b-dashboard row align-items-center ml-2" @click="$router.go(-1)">
+            <b-icon-chevron-left></b-icon-chevron-left>
+            <div class="ml-2 d-none d-lg-inline">Back to Dashboard</div>
+          </div>
+          <div class="search-input mt-5">
+            <button type="submit" class="btn search-icon p-1">
+              <i class="fa fa-search"></i>
+            </button>
+            <input type="text" class="" v-model="query" placeholder="Search">
+          </div>
+          <div class="mt-4">
+            <p style="font-size: 17px;">User Profile</p>
+          </div>
+          <div class="d-flex flex-column px-2 py-1 text-nowrap">
+            <a
+              href="#/userActivity"
+              class="item"
+              :class="{ active: isCurrentRoute('/userActivity') }"
             >
-            <img src="@/assets/img/icons/ic_upload.svg" alt="" />
+              <b-icon-clock-history></b-icon-clock-history>&nbsp;&nbsp;
+              <span class="d-none d-lg-inline">User Activity</span>
+            </a>
+            <a
+              href="#/savedDashboards"
+              class="item"
+              :class="{ active: isCurrentRoute('/savedDashboards') }"
+            >
+              <b-icon-card-heading></b-icon-card-heading>&nbsp;&nbsp;
+              <span class="d-none d-lg-inline">Saved Dashboards</span>
+            </a>
 
-            &nbsp;&nbsp;
-            <span class="d-none d-lg-inline">Data Entry</span></router-link
-          >
+            <a
+              href="#/createPlugin"
+              class="item blue"
+              :class="{ active: isCurrentRoute('/createPlugin') }"
+            >
+              <b-icon-plus-square></b-icon-plus-square>&nbsp;&nbsp;
+              <span class="d-none d-lg-inline">Create Plugin</span>
+            </a>
+            <a
+              href="#/approvePlugin"
+              class="item blue"
+              :class="{ active: isCurrentRoute('/approvePlugin') }"
+            >
+              <b-icon-check2-square></b-icon-check2-square>&nbsp;&nbsp;
+              <span class="d-none d-lg-inline">Approve Plugins</span>
+            </a>
+            <a
+              href="#/notification"
+              class="item"
+              :class="{ active: isCurrentRoute('/notification') }"
+            >
+              <b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp;
+              <span class="d-none d-lg-inline">Notifications</span>
+            </a>
+          </div>
+          <div class="my-5">
+            <div class="border-top"></div>
+            <a
+              href="#/settings"
+              class="item mt-2"
+              :class="{ active: isCurrentRoute('/settings') }"
+            >
+              <b-icon-gear></b-icon-gear>&nbsp;&nbsp;
+              <span class="d-none d-lg-inline">Settings</span>
+            </a>
+            <a
+              href="#"
+              class="item"
+              @click.prevent="logout"
+            >
+              <b-icon-box-arrow-right></b-icon-box-arrow-right>&nbsp;&nbsp;
+              <span class="d-none d-lg-inline">Logout</span>
+            </a>
+          </div>
         </div>
-        <div class="col-lg-10 col-11">
+        <div class="col-lg-10 col-10">
+          <div class="section-title">
+            <h3 class="mt-2 text-center" style="font-family: Work sans">
+              {{ currentTitle }}
+            </h3>
+          </div>
           <savedDashboards :is="currentView" />
         </div>
       </div>
     </div>
-    <Footer />
+    <Footer style="z-index: 10;"> </Footer>
   </div>
 </template>
 
@@ -63,9 +100,10 @@ import Footer from '@/modules/msdat-dashboard/views/about/layout/theFooter.vue';
 import Profile from './profile.vue';
 import Notification from './notifications.vue';
 import userActivity from './userActivity.vue';
-import savedDashboards from './savedDashboards.vue';
+import savedDashboards from './UpdatedSavedDashboard.vue';
 import createPlugin from './createPlugin.vue';
 import approvePlugin from './approvePlugin.vue';
+import userSettings from './usersettings.vue';
 
 const routes = {
   '/': userActivity,
@@ -75,6 +113,19 @@ const routes = {
   '/savedDashboards': savedDashboards,
   '/createPlugin': createPlugin,
   '/approvePlugin': approvePlugin,
+  '/settings': userSettings,
+};
+
+const titles = {
+  '/': 'User Activity',
+  '/profile': 'Profile',
+  '/notification': 'Notifications',
+  '/userActivity': 'User Activity',
+  '/savedDashboards': 'Saved Dashboards',
+  '/createPlugin': 'Create Plugin',
+  '/approvePlugin': 'Approve Plugins',
+  '/settings': 'User Settings',
+
 };
 
 export default {
@@ -91,10 +142,21 @@ export default {
     currentView() {
       return routes[this.currentPath.slice(1) || '/'];
     },
+    currentTitle() {
+      return titles[this.currentPath.slice(1) || '/'];
+    },
   },
   methods: {
     isCurrentRoute(route) {
       return this.currentPath === `#${route}`;
+    },
+
+    // function to logout a particular user
+    async logout() {
+      this.$store.dispatch('AUTH_STORE/logout');
+      if (!this.$route.fullPath.includes('dashboard')) {
+        this.$router.push('/');
+      }
     },
   },
   mounted() {
@@ -104,20 +166,25 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-.title {
-  display: flex;
+.section-title {
+display: flex;
+justify-content: center;
   height: 70px;
-  justify-content: center;
   align-items: center;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+  background-color: #DFF3F3;
+ margin-left: -16px;
 }
 h3 {
   font-weight: bold;
 }
 
 .item {
+  display: flex;
+  align-items: center;
+  padding:10px;
+  font-size: 15px;
+  font-weight: 500;
   color: black !important;
 }
 
@@ -126,7 +193,10 @@ h3 {
 }
 
 .active {
-  color: green !important;
+border: none;
+background-color: #DFF3F3;
+border-radius: 5px;
+
 }
 
 a {
@@ -136,4 +206,71 @@ a {
 .blue {
   color: blue;
 }
+.search-btn{
+  background-color: #007D53;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 40px;
+  font-size: 10px;
+  cursor: pointer;
+}
+.search-btn:hover{
+  background-color: #007D53;
+}
+
+  .search-btn:active{
+    background-color: #007D53;
+    outline: none;
+    border: none;
+  }
+
+  .search-btn:focus{
+    background-color: #007D53;
+    outline: none;
+    border: none;
+  }
+  .search-input{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #D4D4D4;
+    border-radius: 8px;
+
+  }
+
+  .b-dashboard{
+    cursor: pointer;
+    color: #007D53;
+  }
+
+  .b-dashboard:hover{
+   color: #40ac88;
+  }
+
+  .search-input input{
+    border: none;
+    outline: none;
+    width: 100%;
+  }
+  .search-icon{
+    height:35px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: medium;
+    box-shadow: none;
+  }
+  .search-icon:hover{
+    color: #000;
+  }
+  .search-icon:focus{
+    color: #000;
+    box-shadow: none;
+    border: none;
+
+  }
 </style>

@@ -1,109 +1,127 @@
 <template>
   <!-- <header id="the-header" class="sticky"> Moses changed from this -->
-  <header id="the-header" class="position-relative" data-testid="header">
-    <b-container fluid>
-      <b-row class="d-flex justify-content-between align-items-center">
-        <b-col cols md="1" lg="1" class="main">
-          <div v-if="dashboardName == 'MSDAT PLATFORM'">
-            <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
-          </div>
-          <div v-if="dashboardName != 'MSDAT PLATFORM'">
-            <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
-          </div>
-        </b-col>
-        <b-col
-          cols
-          md="11"
-          lg="11"
-          class="d-flex justify-content-between align-items-center border-left main mains"
-        >
-          <!-- testing for mobile -->
-          <div class="mobile-flex">
-            <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
-            <img
-              src="@/assets/img/Logo-mob.svg"
-              alt="FMOH Logo"
-              class="mob-img"
-              variant="primary"
-            />
-            <div class="mobile-flex-col" v-if="this.$store.getters.customDashboard === true">
-              <small class="mobile-flex-col-text1">{{
-                this.$store.getters.dashboardDetails.name
-              }}</small>
-              <div class="mobile-flex-col-text2">
-                {{ this.$store.getters.dashboardDetails.description }}
-                <!-- <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools"> -->
-                <small v-if="isAuthenticated" class="text-warning ml-2 tools">
-                  <!-- <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+  <div>
+    <header id="the-header" class="position-relative" data-testid="header">
+      <b-container fluid>
+        <b-row class="d-flex justify-content-between align-items-center">
+          <b-col cols md="1" lg="1" class="main">
+            <div v-if="dashboardName == 'MSDAT PLATFORM'">
+              <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
+            </div>
+            <div v-if="dashboardName != 'MSDAT PLATFORM'">
+              <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
+            </div>
+          </b-col>
+          <b-col
+            cols
+            md="11"
+            lg="11"
+            class="d-flex justify-content-between align-items-center border-left main mains"
+          >
+            <!-- testing for mobile -->
+            <div class="mobile-flex">
+              <!-- <div ><img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="mob-img" /></div> -->
+              <img
+                src="@/assets/img/Logo-mob.svg"
+                alt="FMOH Logo"
+                class="mob-img"
+                variant="primary"
+              />
+              <div class="mobile-flex-col" v-if="this.$store.getters.customDashboard === true">
+                <small class="mobile-flex-col-text1">{{
+                  this.$store.getters.dashboardDetails.name
+                }}</small>
+                <div class="mobile-flex-col-text2">
+                  {{ this.$store.getters.dashboardDetails.description }}
+                  <!-- <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools"> -->
+                  <small v-if="isAuthenticated" class="text-warning ml-2 tools">
+                    <!-- <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
                   <b-icon font-scale="2" icon="dot"></b-icon> -->
-                  <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
-                    >Create New</span
-                  >
-                  <b-icon font-scale="2" icon="dot"></b-icon>
-                  <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
-                </small>
+                    <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
+                      >Create New</span
+                    >
+                    <b-icon font-scale="2" icon="dot"></b-icon>
+                    <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                  </small>
+                </div>
               </div>
-            </div>
-            <div class="mobile-flex-col" v-else>
-              <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
-              <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
+              <div class="mobile-flex-col" v-else>
+                <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
+                <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
+              </div>
+
+              <div v-if="$route.path !== '/account'">
+                <b-dropdown
+                  text="Select Section"
+                  toggle-class="select-dropdown"
+                  variant="none"
+                  text-variant="none"
+                  right
+                >
+                  <b-dropdown-item
+                    id="dropdownMenuButton"
+                    class="select-dropdown-item"
+                    v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
+                    :key="index"
+                    :href="
+                      $route.path == '/advanced_analytics'
+                        ? `/dashboard/Advanced_Analytics?index=${index}`
+                        : '#'
+                    "
+                    @click="emitIndex(index)"
+                    >{{ control.label }}
+                  </b-dropdown-item>
+                </b-dropdown>
+              </div>
+
+              <b-sidebar id="sidebar-1" title="" right shadow>
+                <SideBar />
+              </b-sidebar>
             </div>
 
-            <div v-if="$route.path !== '/account'">
-              <b-dropdown
-                text="Select Section"
-                toggle-class="select-dropdown"
-                variant="none"
-                text-variant="none"
-                right
+            <div class="main-text" v-if="this.$store.getters.customDashboard === true">
+              <h2 class="main-text">
+                <small>{{ this.$store.getters.dashboardDetails.name }}</small>
+                <div>
+                  {{ this.$store.getters.dashboardDetails.description }}
+                  <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools">
+                    <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
+                    <b-icon font-scale="2" icon="dot"></b-icon>
+                    <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
+                      >Create New</span
+                    >
+                    <b-icon font-scale="2" icon="dot"></b-icon>
+                    <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
+                    <!-- Modal for share Dashboard -->
+                    <b-icon font-scale="2" icon="dot"></b-icon>
+                    <span style="cursor: pointer" @click="shareDash">Share Dashboard</span>
+
+                    <b-modal id="share-dashboard-modal" title="Share Dashboard" hide-footer>
+                      <shareDashboard />
+                    </b-modal>
+                  </small>
+                </div>
+              </h2>
+            </div>
+            <div class="main-text" v-else>
+              <h2 class="main-text d-inline-block">
+                <small>MSDAT PLATFORM</small>
+                <br />
+                {{ $route.meta.title }}
+              </h2>
+              <span
+                class="share-button d-inline-block ml-3"
+                v-b-tooltip.hover
+                title="Share Dashboard "
+                @click="toggleSocialModal"
               >
-                <b-dropdown-item
-                  id="dropdownMenuButton"
-                  class="select-dropdown-item"
-                  v-for="(control, index) in $store.state.MSDAT_STORE.controlConfig"
-                  :key="index"
-                  :href="
-                    $route.path == '/advanced_analytics'
-                      ? `/dashboard/Advanced_Analytics?index=${index}`
-                      : '#'
-                  "
-                  @click="emitIndex(index)"
-                  >{{ control.label }}
-                </b-dropdown-item>
-              </b-dropdown>
+                <a href="#" @click.prevent>
+                  <img src="@/assets/share.png" alt="share-btn" class="share-icon" />
+                </a>
+              </span>
             </div>
 
-            <b-sidebar id="sidebar-1" title="" right shadow>
-              <SideBar />
-            </b-sidebar>
-          </div>
-
-          <div class="main-text" v-if="this.$store.getters.customDashboard === true">
-            <h2 class="main-text">
-              <small>{{ this.$store.getters.dashboardDetails.name }}</small>
-              <div>
-                {{ this.$store.getters.dashboardDetails.description }}
-                <small v-if="isAuthenticated && isAuthor" class="text-warning ml-2 tools">
-                  <span style="cursor: pointer" @click="editDashboard">Edit Dashboard</span>
-                  <b-icon font-scale="2" icon="dot"></b-icon>
-                  <span style="cursor: pointer" @click="$router.push('/my-dashboard/details')"
-                    >Create New</span
-                  >
-                  <b-icon font-scale="2" icon="dot"></b-icon>
-                  <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
-                </small>
-              </div>
-            </h2>
-          </div>
-          <div class="main-text" v-else>
-            <h2 class="main-text">
-              <small>MSDAT PLATFORM</small>
-              <br />
-              {{ $route.meta.title }}
-            </h2>
-          </div>
-
-          <!-- <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
+            <!-- <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">
             <h2 class="main-text">
               <small>MSDAT PLATFORM</small>
               <br />
@@ -119,201 +137,217 @@
             </h2>
           </div> -->
 
-          <!-- <b-col cols md="6" lg="6"> -->
-          <div class="d-flex justify-content-end h-100 align-items-center header-navs main">
-            <b-nav class="h-100 align-items-center main d-flex">
-              <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
-              <a
-                href="https://msdat.fmohconnect.gov.ng/"
-                target="_blank"
-                class="nav-link"
-                v-if="isAuthenticated === false"
-                >Home</a
-              >
-              <router-link
-                to="/about"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >About</router-link
-              >
-              <router-link
-                to="/faq"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Help & FAQ</router-link
-              >
-              <router-link
+            <!-- <b-col cols md="6" lg="6"> -->
+            <div class="d-flex justify-content-end h-100 align-items-center header-navs main">
+              <b-nav class="h-100 align-items-center main d-flex">
+                <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
+                <a
+                  href="https://msdat.fmohconnect.gov.ng/"
+                  target="_blank"
+                  class="nav-link"
+                  v-if="isAuthenticated === false"
+                  >Home</a
+                >
+                <div @click="showExpandedDropdown = !showExpandedDropdown">
+                  <button class="btn btn-outline-primary border-light rounded-0">
+                    Select&nbsp;Dashboard&nbsp;<b-icon
+                      icon="triangle-fill"
+                      font-scale="0.5"
+                      class="btn-icon"
+                      :class="[showExpandedDropdown ? 'down' : 'up']"
+                    ></b-icon>
+                  </button>
+                  <DropCard
+                    v-if="showExpandedDropdown"
+                    @click="showExpandedDropdown = false"
+                    :class="{ dropcard: showExpandedDropdown }"
+                  />
+                </div>
+                <router-link
+                  to="/about"
+                  class="nav-link"
+                  v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                  >About</router-link
+                >
+                <router-link
+                  to="/faq"
+                  class="nav-link"
+                  v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                  >Help & FAQ</router-link
+                >
+                <!-- <router-link
                 to="/custom"
                 class="nav-link"
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
-              >
-              <div></div>
-              <a
-                href="https://msdat.old.fmohconnect.gov.ng"
-                class="nav-link"
-                v-if="isAuthenticated === false"
-                >Go back to MSDAT 1.5</a
-              >
-              <div
-                @mouseover="showExpandedDropdown = true"
-                @mouseleave="showExpandedDropdown = false"
-              >
-                <button class="btn btn-outline-primary border-light rounded-0">
-                  Select&nbsp;Dashboard&nbsp;<b-icon
-                    icon="triangle-fill"
-                    font-scale="0.5"
-                    class="btn-icon"
-                    :class="[showExpandedDropdown ? 'down' : 'up']"
-                  ></b-icon>
-                </button>
-                <DropCard
-                  v-show="showExpandedDropdown"
-                  @click="showExpandedDropdown = false"
-                  :class="{ dropcard: showExpandedDropdown }"
-                />
-              </div>
-              <div
-                v-b-toggle.sidebar-2
-                v-if="isAuthenticated === false"
-                class="auth ml-2 d-flex align-items-center"
-              >
-                <b-icon-person-circle style="width: 18px; height: 18px"></b-icon-person-circle
-                >&nbsp;<span class="d-none d-md-inline">Login/Register</span>
-              </div>
-              <div v-else @click="showCard = true">
-                <div class="ml-2 profile d-flex align-items-center">
-                  <img
-                    :src="
-                      getUser.avatar !== undefined
-                        ? 'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar
-                        : 'https://w7.pngwing.com/pngs/754/2/png-transparent-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-blue-angle-sphere-thumbnail.png'
-                    "
-                    class="profile-picture mr-1"
-                    width="48"
-                    height="48"
-                  />
-                  Hi,&nbsp;{{ getUser.username !== undefined ? getUser.username : getUser.email }}
+              > -->
+                <a
+                  href="https://msdat.old.fmohconnect.gov.ng"
+                  class="nav-link"
+                  target="_blank"
+                  v-if="isAuthenticated === false"
+                  >MSDAT 1.5</a
+                >
+                <div>
+                  <button @click="showClearDBModal = true" class="btn btn-outline-primary bg-danger rounded-2">
+                    CLEAR CACHE
+                  </button>
                 </div>
-              </div>
-              <b-sidebar
-                id="sidebar-2"
-                title=""
-                right
-                shadow
-                style="background: #fff"
-                v-if="isAuthenticated === false"
-              >
-                <LoginSidebar v-if="show" />
-                <SignUp v-else />
-                <div class="row" v-if="show">
-                  <div class="col-12 text-center">
-                    <h4 class="py-3" style="font-size: 15px; font-family: Work sans">
-                      Don't have an account?
+
+                <!-- Modal for Sign In/Sign Up -->
+                <b-modal
+                  id="auth-modal"
+                  title=""
+                  centered
+                  size="lg"
+                  hide-footer
+                  @hide="hideAuthModal"
+                >
+                  <div v-if="show">
+                    <LoginSidebar @login-success="hideAuthModal" />
+                  </div>
+                  <div v-else>
+                    <SignUp @login-success="hideAuthModal" />
+                  </div>
+
+                  <div class="signup-main text-center mt-4" v-if="show">
+                    <h4 style="font-size: 15px; font-family: Work sans">Don't have an account?</h4>
+                    <p class="sign-uptxt" @click.prevent="showLoginForm">Create an Account</p>
+                  </div>
+
+                  <div class="signup-main text-center mt-4" v-else>
+                    <h4 style="font-size: 15px; font-family: Work sans">
+                      Already have an account?
                     </h4>
-                    <button
-                      class="btn btn-lg btn-light btn-outline-dark text-dark"
-                      style="
-                        font-size: 15px;
-                        background: #f7f7f7;
-                        border: 1px solid #707070;
-                        font-family: Work sans;
+                    <p class="sign-uptxt" @click="showRegForm">Log In</p>
+                  </div>
+                </b-modal>
+
+                <!-- Trigger button for modal -->
+                <div
+                  v-if="!isAuthenticated"
+                  class="auth ml-2 d-flex align-items-center"
+                  @click="showAuthModal"
+                >
+                  <b-icon-person-circle style="width: 18px; height: 18px"></b-icon-person-circle>
+                  &nbsp;<span class="d-none d-md-inline">Login/Register</span>
+                </div>
+                <div v-else @click="showCard = true">
+                  <div class="ml-2 profile d-flex align-items-center">
+                    <img
+                      :src="
+                        getUser.avatar !== undefined
+                          ? 'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar
+                          : 'https://w7.pngwing.com/pngs/754/2/png-transparent-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-blue-angle-sphere-thumbnail.png'
                       "
-                      @click.prevent="showLoginForm"
-                    >
-                      CREATE AN ACCOUNT
-                    </button>
+                      class="profile-picture mr-1"
+                      width="48"
+                      height="48"
+                    />
+                    Hi,&nbsp;{{ getUser.username !== undefined ? getUser.username : getUser.email }}
                   </div>
                 </div>
-
-                <div v-else>
-                  <div class="justify-content-center text-center">
-                    <button
-                      class="btn btn-lg btn-light btn-outline-dark text-dark mb-3"
-                      style="background: #f7f7f7; border: 1px solid #707070"
-                      @click="showRegForm"
-                    >
-                      LOGIN
-                    </button>
-                  </div>
-                </div>
-              </b-sidebar>
-            </b-nav>
-            <b-icon
-              @click="toggleOption = !toggleOption"
-              icon="three-dots-vertical"
-              font-scale="1.5"
-              class="main"
-            />
-            <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon" v-b-toggle.sidebar-1></b-icon>
-            <b-icon
-              @click="toggleOption = !toggleOption"
-              icon="three-dots-vertical"
-              font-scale="1.5"
-              class="mob"
-            />
-            <header-option
-              v-if="toggleOption"
-              v-on:showContact="contactBtn = true"
-              v-on:tour="runIntro"
-              v-on:print="print"
-            />
-          </div>
-        </b-col>
-      </b-row>
-      <!--  please someone show separate the
+              </b-nav>
+              <b-icon
+                @click="toggleOption = !toggleOption"
+                icon="three-dots-vertical"
+                font-scale="1.5"
+                class="main"
+              />
+              <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon" v-b-toggle.sidebar-1></b-icon>
+              <b-icon
+                @click="toggleOption = !toggleOption"
+                icon="three-dots-vertical"
+                font-scale="1.5"
+                class="mob"
+              />
+              <header-option
+                v-if="toggleOption"
+                v-on:showContact="contactBtn = true"
+                v-on:tour="runIntro"
+                v-on:print="print"
+                v-on:closeoptions="toggleOption = false"
+              />
+            </div>
+          </b-col>
+        </b-row>
+        <!--  please someone show separate the
       header for the about page from this it going to cause issues  -->
-      <b-row v-show="aboutPage" class="main">
-        <b-col cols="1">
-          <!-- <a href=""> -->
-          <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
-          <!-- </a> -->
-        </b-col>
-      </b-row>
-    </b-container>
+        <b-row v-show="aboutPage" class="main">
+          <b-col cols="1">
+            <!-- <a href=""> -->
+            <b-icon @click="$router.go(-1)" class="back-icn main" icon="chevron-left" />
+            <!-- </a> -->
+          </b-col>
+        </b-row>
+      </b-container>
 
-    <!-- <DropCard v-show="showExpandedDropdown" /> -->
-    <div v-if="isAuthenticated === true">
-      <div class="container card shadow dropCard work-sans" v-if="showCard">
-        <div class="row p-3 d-flex user-details">
-          <div class="col-3">
-            <img
-              :src="
-                getUser.avatar !== undefined
-                  ? 'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar
-                  : 'https://w7.pngwing.com/pngs/754/2/png-transparent-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-blue-angle-sphere-thumbnail.png'
-              "
-              class="profile-picture mr-1"
-              width="48"
-              height="48"
-            />
+      <!-- <DropCard v-show="showExpandedDropdown" /> -->
+      <div v-if="isAuthenticated === true">
+        <div class="container card shadow dropCard work-sans" v-if="showCard">
+          <div class="row p-3 d-flex user-details">
+            <div class="col-3">
+              <img
+                :src="
+                  getUser.avatar !== undefined
+                    ? 'https://msdat-api.fmohconnect.gov.ng' + getUser.avatar
+                    : 'https://w7.pngwing.com/pngs/754/2/png-transparent-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-blue-angle-sphere-thumbnail.png'
+                "
+                class="profile-picture mr-1"
+                width="48"
+                height="48"
+              />
+            </div>
+            <div class="col-8 name">
+              <h3>{{ getUser.username }}</h3>
+              <h4>{{ getUser.email }}</h4>
+            </div>
+            <div class="close mr-2" @click.prevent="showCard = false">
+              <img src="@/assets/close.png" alt="" />
+            </div>
           </div>
-          <div class="col-8">
-            <div>{{ getUser.username }}</div>
-            <div>{{ getUser.email }}</div>
-          </div>
-          <div class="close mr-2" @click.prevent="showCard = false">
-            <b-icon-x-circle></b-icon-x-circle>
-          </div>
-        </div>
-        <div class="d-flex py-2">
-          <router-link to="/account"><a href="#" class="ml-2">View Account</a></router-link>
-          <div class="logout">
-            <a href="#" class="mr-2" @click.prevent="logout">Log Out</a>
+          <div class="d-flex py-2">
+            <router-link to="/account"><a href="#" class="ml-2">View Account</a></router-link>
+            <div class="logout">
+              <a href="#" class="mr-2" @click.prevent="logout">Log Out</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </header>
+    </header>
+    <base-modal :showModal="socialModal" :size="'md'" @hide="handleModalHide">
+      <template #title>
+        <h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
+      </template>
+      <Socials />
+    </base-modal>
+    <!-- <ClearDBCacheModal
+      style="z-index: 1500"
+      v-if="showClearDataModal"
+      :showModal="showClearDataModal"
+    /> -->
+    <ClearDBCacheModal
+      :isOpen="showClearDBModal"
+      @close="showClearDBModal = false"
+      @clear="clearDBCache"
+      clearText="CLEAR"
+    >
+      <h3>Clear Cache</h3>
+      <p class="clearCacheSubtitle" >Click on the button below to clear dashboard cache</p>
+    </ClearDBCacheModal>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import Socials from '@/modules/msdat-dashboard/components/social_media/SocialMediaModal.vue';
 import HeaderOption from '../components/HeaderOption.vue';
 import DropCard from '../components/DropCard.vue';
 import Sidebar from '../components/Sidebar.vue';
+import shareDashboard from '../components/shareDashboard.vue';
 import LoginSidebar from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
+import ClearDBCacheModal from '../components/ClearCacheModal.vue';
 
 export default {
   name: 'theHeader',
@@ -323,6 +357,9 @@ export default {
     SideBar: Sidebar,
     LoginSidebar,
     SignUp,
+    shareDashboard,
+    ClearDBCacheModal,
+    Socials,
   },
   data() {
     return {
@@ -349,6 +386,9 @@ export default {
       ],
       controls: [],
       screenWidth: 0,
+      showClearDataModal: false,
+      socialModal: false,
+      showClearDBModal: false,
     };
   },
   computed: {
@@ -361,7 +401,9 @@ export default {
         localStorage.getItem('customDashboardsList') || JSON.stringify({}),
       );
       // retrieve dashboards belonging to current user
-      const list = customDashboardsList[this.getUser.username];
+      const list = customDashboardsList[this.getUser.username || this.getUser.id];
+      // console log to check current author
+      console.log('current author', this.getUser.username);
       // find currently loaded dashboard in list
       const { name, description } = this.$store.getters.dashboardDetails;
       return list?.find(
@@ -377,6 +419,30 @@ export default {
   },
 
   methods: {
+    showAuthModal() {
+      this.$bvModal.show('auth-modal');
+    },
+    async clearDBCache() {
+      await this.$store.dispatch('DL/CLEAR_DB');
+      this.showModal = false;
+      const dashboard = this.$route.params.name;
+      this.$router.push({ path: `/dashboard/${dashboard}` });
+      window.location.reload();
+    },
+
+    hideAuthModal() {
+      this.$bvModal.hide('auth-modal');
+    },
+    togglemodal() {
+      this.modal = !this.modal;
+    },
+    toggleSocialModal() {
+      this.socialModal = !this.socialModal;
+    },
+
+    handleModalHide() {
+      this.socialModal = false;
+    },
     showRegForm() {
       // eslint-disable-next-line no-unused-expressions
       this.show = true;
@@ -415,6 +481,12 @@ export default {
       this.$store.commit('startEdit');
       this.$router.push('/my-dashboard/details');
     },
+    shareDash() {
+      this.$bvModal.show('share-dashboard-modal');
+    },
+    async clearDB() {
+      this.showClearDataModal = true;
+    },
   },
   watch: {
     $route: {
@@ -439,6 +511,12 @@ export default {
       type: File,
     },
   },
+  mounted() {
+    console.log('usserrrr', this.getUser.id);
+    if (this.$route.query.code) {
+      this.showAuthModal();
+    }
+  },
 };
 </script>
 
@@ -449,7 +527,40 @@ export default {
   display: inline-flex;
   align-items: center;
 }
+
+.share-button {
+  cursor: pointer;
+}
+
+.share-icon {
+  width: 26px;
+  height: 24px;
+  margin-top: -5px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 6px;
+  padding: 4px;
+}
 .tools span:hover {
+  text-decoration: underline;
+}
+
+.signup-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.sign-uptxt {
+  cursor: pointer;
+  color: #348481;
+  margin-top: 9px;
+  font-weight: 600;
+  font-size: 15px;
+}
+.sign-uptxt:hover {
   text-decoration: underline;
 }
 .custom-header {
@@ -463,12 +574,22 @@ button {
 
 .btn {
   color: white;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 5px !important;
+}
+.btn:hover {
+  background-color: white;
+  color: $primary;
 }
 
 .main {
   display: inherit;
 }
-
+.auth {
+  display: inherit;
+  cursor: pointer;
+}
 .mob {
   display: none;
 }
@@ -507,12 +628,12 @@ header#the-header {
     margin-left: 0.5rem;
   }
   .up {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.15s ease-in-out;
     transform: rotate(0deg);
   }
   .down {
     transform: rotate(180deg);
-    transition: all 0.5s ease-in-out;
+    transition: all 0.15s ease-in-out;
   }
   .drop-card {
     transition: all 1s ease-in-out;
@@ -677,6 +798,8 @@ header#the-header {
 
   .btn {
     color: white;
+    font-weight: 500;
+    font-size: 14px;
   }
 
   #about-wrap {
@@ -779,6 +902,8 @@ header#the-header {
 
   .btn {
     color: white;
+    font-weight: 500;
+    font-size: 14px;
   }
 
   #about-wrap {
@@ -1100,5 +1225,22 @@ div {
   body {
     -webkit-print-color-adjust: exact !important;
   }
+}
+.close img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.name h3 {
+  font-size: 30px;
+  text-transform: capitalize;
+}
+.name h4 {
+  font-size: 16px;
+}
+
+.clearCacheSubtitle {
+  font-size: 16px;
 }
 </style>

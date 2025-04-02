@@ -9,10 +9,10 @@
       :dots="true"
       :nav="false"
       :lazyLoad="true"
-      :navText="owlNavText"
       :touchDrag="false"
       :mouseDrag="false"
-    >
+      >
+      <!-- :navText="owlNavText" -->
       <section>
         <div class="mx-4 mt-5">
           <img :src="pic1" alt="first image" />

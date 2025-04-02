@@ -3,6 +3,7 @@
     <div class="col-md-8">
       <div class="row">
         <div class="col-md-12 mb-lg-5 mb-3">
+          <!-- <pre>{{ controlPanelProps }}</pre> -->
           <TableComponent
             :values="controlPanelProps"
             @value="getValue"
@@ -11,7 +12,12 @@
           />
         </div>
         <div class="col-md-12">
-          <IDCC :values="controlPanelProps" :closeOverlay="closeSubCard" :resetIndex="resetIndex" @reset="getReset" />
+          <IDCC
+            :values="controlPanelProps"
+            :closeOverlay="closeSubCard"
+            :resetIndex="resetIndex"
+            @reset="getReset"
+          />
         </div>
       </div>
     </div>

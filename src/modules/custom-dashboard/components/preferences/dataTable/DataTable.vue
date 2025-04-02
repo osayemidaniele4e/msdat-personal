@@ -11,7 +11,7 @@
       style="
         position: absolute;
         height: 100vh;
-        width: 100%
+        width: 100%;
         pointer-events: none;
         z-index: 99;
         overflow: none;
@@ -37,9 +37,9 @@
         </p>
       </div>
     </div>
-  <div class="container-fluid table-responsive overflow-auto shadow-sm" >
-      <table class="table" style="border: 1px solid #e3e3e3">
-      <thead style="position: sticky; top: 0: back-ground-color: white;">
+    <div class="container-fluid table-responsive overflow-auto shadow-sm custom-container">
+      <table class="table" style="border: 1px solid #D9D9D9; padding: 0px -20px 0px -20px ; ">
+      <thead style="position: sticky; top: 0; background-color: #F1F2F7;">
         <tr>
           <th
             class="col-3"
@@ -48,11 +48,10 @@
               text-align: left;
               font-size: 13px;
               font-family: Work Sans;
-              font-weight: normal;
-              padding-left: 15px;
+              font-weight: bold;
             "
           >
-            INDICATORS
+            INDICATOR(S)
           </th>
           <th
             scope="col"
@@ -61,11 +60,11 @@
               text-align: left;
               font-size: 13px;
               font-family: Work Sans;
-              font-weight: normal;
+              font-weight: bold;
               /* padding-left: 30px; */
             "
           >
-            DATA SOURCES
+            DATA SOURCE(S)
           </th>
           <th
             class="col-3"
@@ -74,11 +73,11 @@
               text-align: left;
               font-size: 13px;
               font-family: Work Sans;
-              font-weight: normal;
+              font-weight: bold;
               /* padding-left: 30px; */
             "
           >
-            LEVELS
+            LEVEL(S)
           </th>
           <th
             class="col-3"
@@ -87,11 +86,11 @@
               text-align: left;
               font-size: 13px;
               font-family: Work Sans;
-              font-weight: normal;
+              font-weight: bold;
               /* padding-left: 30px; */
             "
           >
-            YEARS
+            YEAR(S)
           </th>
         </tr>
       </thead>
@@ -106,7 +105,7 @@
               font-size: 13px;
               padding-left: 23px;
               color: #000000;
-              line-spacing: 21px;
+              line-height: 21px;
               font-family: Work Sans;
               font-weight: bold;
             "
@@ -188,7 +187,7 @@
 
 <script>
 // eslint-disable-next-line import/extensions
-import TheLoader from '../../Loading/TheLoader.vue';
+import TheLoader from '../../Loading/TheLoader2.vue';
 
 export default {
   props: ['indicator', 'dataSource', 'level', 'years'],
@@ -218,6 +217,12 @@ export default {
 </script>
 
 <style scoped>
+.custom-container {
+  min-height: 80vh;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
 @media (min-width: 740px) {
   .section__datasource {
     width: 25%;

@@ -13,6 +13,7 @@ import apiServices from '@/modules/data-layer/services/ApiServices';
 // import { time } from 'highcharts';
 import controlSetup from '../../mixins/control-panel-setup';
 import updateQueryParams from './paramsMixin';
+// import nhmisMonthlyPeriod from './nhmis-monthly-period.json';
 
 export default {
   name: 'ControlPanelConfiguration',
@@ -57,7 +58,7 @@ export default {
     // }
   },
   mounted() {
-    console.log('control index', this.controlIndex);
+    // console.log('control index', this.controlIndex);
     const now = new Date();
     const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -69,7 +70,7 @@ export default {
     });
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1']),
+    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1', 'SET_INDICATOR_COMPARISON_PAYLOAD']),
     ...mapActions([
       'SET_INTERACTIONS',
       'GET_INTERACTIONS',
@@ -78,18 +79,22 @@ export default {
     ]),
     async getAvailableYears() {
       // debugger;
+
+      // if (this.payload?.datasource?.id === 30) {
+      //   return nhmisMonthlyPeriod;
+      // }
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
         this.payload?.datasource?.id,
         this.payload?.location?.id,
       );
-
       return available;
     },
     async getAvailableDataSources() {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
     async getAvailableDataIndicators() {
+      console.log('Indicator4rmDB');
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
     removeDuplicates(arr) {
@@ -134,8 +139,26 @@ export default {
         }
       }
     },
+    setStatesDropdown() {
+      this.setLocationDropdown(
+        Array.isArray(this.payload?.datasource)
+          ? this.payload?.datasource.map((d) => d.id)
+          : this.payload?.datasource?.id,
+        Array.isArray(this.payload?.indicator)
+          ? this.payload?.indicator.map((i) => i.id)
+          : this.payload?.indicator?.id,
+        this.controlIndex,
+      );
+    },
   },
   watch: {
+    controlIndex: {
+      handler() {
+        this.setStatesDropdown();
+      },
+      // deep: true,
+      immediate: true,
+    },
     // get latest available years when indicator , datasource or location are changed
     'payload.indicator': {
       async handler() {
@@ -159,19 +182,27 @@ export default {
 
           this.SET_INDICATOR_TIME_SPENT(timespent);
 
-          console.log('timespent in indicator', timespent);
-
           this.previous_time = this.after_time;
 
           this.previous_indicator = this.payload.indicator;
 
           if (this.controlIndex !== 2) {
             const availableYears = await this.getAvailableYears();
+            console.log(availableYears, 'availableYears@');
             this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
               key: 'year',
-              values: availableYears,
+              values: availableYears.sort((a, b) => {
+                const [yearA, weekA] = a.split(' Week ').map(Number);
+                const [yearB, weekB] = b.split(' Week ').map(Number);
+
+                // Sort by year in descending order
+                if (yearA !== yearB) return yearB - yearA;
+
+                // Sort by week in descending order
+                return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+              }),
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
             await this.SETUP_CONTROL_OPTIONS1({
@@ -181,13 +212,13 @@ export default {
               values: availableDS,
             });
           }
+          this.setStatesDropdown();
         }
       },
     },
     'payload.datasource': {
       async handler() {
         // new ones
-
         const now = new Date();
         const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -206,8 +237,6 @@ export default {
 
         this.SET_DATASOURCE_TIME_SPENT(timespent);
 
-        console.log('timespent in   datasource', timespent);
-
         this.previous_time_datasource = this.after_time_datasource;
 
         this.previous_datasource = this.payload.datasource;
@@ -222,11 +251,27 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears,
+            values: availableYears.sort((a, b) => {
+              const [yearA, weekA] = a.split(' Week ').map(Number);
+              const [yearB, weekB] = b.split(' Week ').map(Number);
+
+              // Sort by year in descending order
+              if (yearA !== yearB) return yearB - yearA;
+
+              // Sort by week in descending order
+              return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+            }),
           });
           // ============
           if (this.controlIndex === 2) {
             const availableIndicator = await this.getAvailableDataIndicators();
+
+            await this.SET_INDICATOR_COMPARISON_PAYLOAD({
+              groupIndex: this.groupIndex,
+              panelIndex: this.controlIndex,
+              key: 'indicator',
+              value: availableIndicator[0].indicators[0],
+            });
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
@@ -235,6 +280,7 @@ export default {
             });
           }
           this.setInteractions();
+          this.setStatesDropdown();
         }
       },
     },
@@ -247,7 +293,16 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears,
+            values: availableYears.sort((a, b) => {
+              const [yearA, weekA] = a.split(' Week ').map(Number);
+              const [yearB, weekB] = b.split(' Week ').map(Number);
+
+              // Sort by year in descending order
+              if (yearA !== yearB) return yearB - yearA;
+
+              // Sort by week in descending order
+              return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+            }),
           });
         }
       },

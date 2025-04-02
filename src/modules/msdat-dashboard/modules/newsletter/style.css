@@ -4,16 +4,12 @@ div#modal-newsLetter .modal-content {
   width: 60% !important;
   margin: auto !important;
 }
-
 div#modal-newsLetter header.modal-header {
   display: none;
 }
-
 div#modal-newsLetter footer.modal-footer {
   display: none;
 }
-
 div#modal-newsLetter div.modal-body {
   padding: 0;
-}
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

@@ -60,7 +60,7 @@
       v-slot:[`section-${sectionArray[setIndex(allSections[2])]}`]="{ payload, controlIndex }"
     >
       <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
           <template #title>
             <h5 class="font-weight-bold work-sans text-white">
               Indicator Comparison - By Period/State
@@ -107,6 +107,7 @@
           <template>
             <div class="dummy-row2 row">
               <div v-for="n in 3" :key="n" class="flex-item col-lg-4 col-12">
+                <!-- <pre>{{ payload }}</pre> -->
                 <div class="comparison-header">Comparison ({{ n }})</div>
                 <LazyLoading>
                   <ControlPanelConfiguration :groupIndex="n - 1" :controlIndex="controlIndex">
@@ -138,6 +139,9 @@
         </base-sub-card>
       </div>
     </template>
+    <div class="py-5 bg-danger">
+      <h1>HERE</h1>
+    </div>
 
     <!-- <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
       <div class="col-md-12">

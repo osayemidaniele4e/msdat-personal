@@ -8,3 +8,4 @@ max_line_length = 100
 #  exclude a file from 100 character line length rule
 #  exclude_file_pattern =
 exclude_files = customDashboardSvgs.vue
+

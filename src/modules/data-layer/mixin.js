@@ -112,9 +112,14 @@ export default {
      */
     // eslint-disable-next-line consistent-return
     async dlQuery(queryObject) {
+      // if (queryObject.datasource !== undefined && queryObject.datasource === 30) {
+      //   const { data } = await apiServices.getNHMISData(queryObject);
+      //   return data.results;
+      // }
       // i could do this in individual component when making request with the
       // function by after this it will after all at once
       const query = queryObject;
+
       // if (query.datasource === 25) {
       //   query.value_type = 1;
       // } else if (!has(query, 'value_type')) {
@@ -130,6 +135,7 @@ export default {
       //   );
       //   query.value_type = valuetype[0]?.id;
       // }
+
       const datasource = await this.dlGetDataSource(query.datasource);
       // if (this.valueType?.length <= 0) {
       //   this.valueType = await this.getDexieTableValues('valuetypes');
@@ -140,7 +146,7 @@ export default {
       const valuetype = this.valueType?.filter(
         (item) => item.value_type === datasource?.classification
       );
-      query.value_type = valuetype[0]?.id ?? 2;
+      query.value_type = query.value_type || valuetype[0]?.id || 2;
 
       if (isObject(query.location)) {
         const { location } = query;
@@ -166,6 +172,10 @@ export default {
       const result = await DB.queryDBForYearsByDs(query);
       return result;
     },
+    async queryDBForAvailableLocation(sourceId, indId) {
+      const result = await DB.getAvailableLocationByIndNSource(sourceId, indId);
+      return result;
+    },
     /**
      * @function dlGetDashboardDataSource
      * @description filter the config
@@ -186,7 +196,6 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      // console.log(this.dlLocation, 'this.dlLocation');
       if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }
@@ -199,7 +208,9 @@ export default {
       return this.dlLocation.find((item) => item.name === values);
     },
     dlGetFactor(id) {
-      return this.dlFactors.find((item) => item.id === id);
+      const factor = this.dlFactors.find((item) => item.id === id);
+      if (factor && factor.display_factor === '1') factor.display_factor = ' ';
+      return factor;
     },
     dlGetDataSource(id) {
       return this.dlDatasource.find((item) => item.id === id);
@@ -266,9 +277,8 @@ export default {
      * rewrite to standard 'result[result.length - 1]' to get latest month data
      */
     async getNhmisData(query) {
-      const result = await DB.queryDBForNhmisMonthly(query);
-      // console.log('new result', result)
-      return result.reverse()[0];
+      const { data } = await apiServices.getNHMISDataObj(query);
+      return data.results[0];
       // return result[result.length - 1];
     },
     async getDexieTableValues(query) {

@@ -21,14 +21,14 @@
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
             <div class="indicator-name">{{ rowData.indicator.full_name }}</div>
           </slot>
-          <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
+          <!-- <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span> -->
         </div>
 
         <div class="d-flex flex-column" v-else>
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
             <div class="">{{ rowData.indicator.full_name }}</div>
           </slot>
-          <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span>
+          <!-- <span style="font-size: 10px; margin: 0 5px"> ({{ factor }})</span> -->
         </div>
       </td>
       <!-- the default slot for the system -->
