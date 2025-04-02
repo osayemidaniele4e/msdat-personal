@@ -218,6 +218,7 @@ export default {
    font-weight: 600;
    color: #17606B;
    margin-bottom: 12px;
+
    font-size: 1.7rem;
  }
 
