@@ -18,12 +18,22 @@
       >
         <template #title>
           <!-- Display comparison text when the selected indicator is not an array -->
-          <p
-            class="work-sans mb-0 line-height"
-            v-if="!Array.isArray(values.indicator.length)"
-          >
-          Comparison of selected indicators across {{ values.compareBy.name}}s <b>({{ values.datasource.datasource }})</b>
-          </p>
+          <div class="d-flex align-items-center justify-content-between w-100">
+            <p
+              class="work-sans mb-0 line-height"
+              v-if="!Array.isArray(values.indicator.length)"
+            >
+            Comparison of selected indicators across {{ values.compareBy.name}}s <b>({{ values.datasource.datasource }})</b>
+            </p>
+            <button
+              class="relationship-btn"
+              @click="showRelationshipPopup = true"
+              title="Show indicator relationships"
+            >
+            <b-icon class="report-icon" icon="file-earmark-bar-graph"></b-icon>
+
+            </button>
+          </div>
           <!-- <p class="text-dark work-sans mb-0 line-height" v-else>
            Comparison of <b>{{ values.indicator[0].short_name }}</b> and
             <b>{{ values.indicator[1].short_name }}</b>
@@ -58,7 +68,14 @@
     </li>
   </ul>
 </div>
+  <!-- Indicator Relationship Popup -->
+  <IndicatorRelationshipPopup
+    :show="showRelationshipPopup"
+    :indicators="getIndicatorsWithRelations"
+    @close="showRelationshipPopup = false"
+  />
   </div>
+
 </template>
 
 <script>
@@ -68,12 +85,14 @@ import AdvancedControlPanelSetup from '@/modules/msdat-dashboard/mixins/advanced
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import chartDownload from '../mixins/chart_download';
+import IndicatorRelationshipPopup from './IndicatorRelationshipPopup.vue';
 
 export default {
   name: 'ICS',
   mixins: [chartDownload, AdvancedControlPanelSetup],
   components: {
     BarChart,
+    IndicatorRelationshipPopup,
   },
   data() {
     return {
@@ -82,6 +101,7 @@ export default {
       dataSeries: [],
       loading: false,
       chartOptions: {},
+      showRelationshipPopup: false,
     };
   },
 
@@ -116,6 +136,27 @@ export default {
       // Handle the case when this.values.indicator is not an array
       // console.error('Indicator is not an array:', this.values.indicator);
       return [];
+    },
+    getIndicatorsWithRelations() {
+      const indicators = Array.isArray(this.values.indicator)
+        ? this.values.indicator
+        : [this.values.indicator];
+
+      return indicators.map((indicator) => {
+        const relatedIds = [
+          indicator.first_related,
+          indicator.second_related,
+          indicator.third_related,
+          indicator.fourth_related,
+        ].filter((id) => id != null);
+
+        const relatedIndicators = relatedIds.map((id) => this.dlIndicator.find((ind) => ind.id === id)).filter((ind) => ind != null);
+
+        return {
+          ...indicator,
+          relatedIndicators,
+        };
+      });
     },
   },
   methods: {
@@ -663,5 +704,23 @@ div.ics_wrapper {
     text-align: left;
     margin-bottom: 0.5rem;
   }
+}
+
+.relationship-btn {
+  background: none;
+  border: none;
+  color: #17606B;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight:600;
+
+  &:hover {
+    color: #E85D58;
+  }
+}
+
+.report-icon {
+
 }
 </style>

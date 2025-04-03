@@ -120,11 +120,11 @@ export default {
           key: 'datasource',
           value: selectedConfig.dataSource,
         });
-        // this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
-        //   controlIndex: index,
-        //   key: 'period',
-        //   value: selectedConfig.period,
-        // });
+        this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
+          controlIndex: index,
+          key: 'period',
+          value: selectedConfig.period,
+        });
       }
 
       if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard') {
