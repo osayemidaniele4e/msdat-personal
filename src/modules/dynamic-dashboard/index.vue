@@ -47,7 +47,16 @@
           : true
       "
     />
-    <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" :showModal="showClearDataModal" />
+    <!-- <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" /> -->
+    <ClearDBCacheModal
+      :isOpen="showClearDataModal"
+      @close="showClearDataModal = false"
+      @clear="clearDBCache"
+      clearText="CLEAR"
+    >
+      <h3>Clear Cache</h3>
+      <p class="clearCacheSubtitle" >Click on the button below to clear dashboard cache</p>
+    </ClearDBCacheModal>
     <div class="preview" v-if="$route.query.prev">
       <b-button
         @click="$router.push('/custom/requests')"
@@ -107,7 +116,7 @@ import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instance-gis.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
-import ClearDBModal from '../msdat-dashboard/views/about/components/ClearCacheModal.vue';
+// import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
 import defaultData from './defaultIndicator.json';
 import defaultDiseaseSurveillanceData from './defaultDS.json';
@@ -117,6 +126,7 @@ import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
 import defaultGISDatasource from './gisDataSource.json';
 import defaultGISYear from './gisDefaultYear.json';
 import defaultGISIndicator from './gisIndicator.json';
+import ClearDBCacheModal from '../msdat-dashboard/views/about/components/ClearCacheModal.vue';
 
 export default {
   name: 'DynamicDashboard',
@@ -124,8 +134,9 @@ export default {
     MSDAT: instance,
     AdvanceMSDAT: advanceInstance,
     GisMSDAT: gisInstance,
-    ClearDBModal,
+    // ClearDBModal,
     NewsLetter,
+    ClearDBCacheModal,
   },
   data() {
     return {
@@ -253,6 +264,14 @@ export default {
       } else {
         this.error = 'Geolocation is not supported in your browser.';
       }
+    },
+
+    async clearDBCache() {
+      await this.$store.dispatch('DL/CLEAR_DB');
+      this.showModal = false;
+      const dashboard = this.$route.params.name;
+      this.$router.push({ path: `/dashboard/${dashboard}` });
+      window.location.reload();
     },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', 7);

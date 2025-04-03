@@ -205,6 +205,7 @@ export default {
               }),
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
+            console.log(availableDS, 'availableDS');
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
