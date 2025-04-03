@@ -74,11 +74,7 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
     filterModifiedControls() {
-      console.log('filtered modifiedControls YY: 2', this.modifiedControls);
-      console.log('filtered modifiedControls YY: 3', this.$store.state.MSDAT_STORE.selectedSection);
       const section = this.modifiedControls.filter((item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection);
-
-      console.log('filtered modifiedControls YY:', section[0]);
       this.changeControl(section[0].index, section[0].title);
     },
 
@@ -255,10 +251,7 @@ export default {
   },
   mounted() {
     const index = parseInt(this.$route.query.index, 10) || 0;
-    console.log('index@', index);
     this.selectControl(index);
-    console.log('filtered modifiedControls :TT', this.modifiedControls);
-
     this.$nextTick(() => {
       if (this.modifiedControls.length > 0) {
         this.filterModifiedControls();
@@ -266,18 +259,6 @@ export default {
         console.log('modifiedControls is still empty after nextTick');
       }
     });
-
-    const url = new URL(window.location.href);
-    if (url.searchParams.has('section')) { // Check if 'section' exists in the URL
-      // const paramValue = url.searchParams.get('section');
-      // console.log('section modifiedControls:', paramValue);
-      // console.log(this.modifiedControls.length, 'modifiedControls');
-
-      // const section = this.modifiedControls.filter((item) => item?.title?.trim() === paramValue?.trim());
-      // console.log(section, 'filtered modifiedControls');
-    } else {
-      console.log('No section param found in the URL');
-    }
   },
   created() {
     this.controls = this.$children;
