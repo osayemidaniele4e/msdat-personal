@@ -532,7 +532,6 @@ export default class DataLayer {
       const dataResult = await apiServices.getIndicatorsWithAvailable(indicatorID);
       const dataValue = dataResult.data.years;
       const sortedYears = this.sortYearsDescending(dataValue);
-      console.log(sortedYears, 'sortedYears');
       const yearsToTake = limit;
       const theYears = take(sortedYears, yearsToTake);
 
