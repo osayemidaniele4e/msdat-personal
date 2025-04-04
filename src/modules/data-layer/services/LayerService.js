@@ -152,7 +152,7 @@ export default class DataLayer {
         // debugger;
         this.storeTimestampInLocal();
         // await this.initDataWithYearsWithYearlyChecks([7, 6, 1], 8);
-        await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 16);
+        await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
         await this.setAvailableDashboardIndicator();
         // await this.initDataWithYears(this.defaultIndicators);
       }
