@@ -58,7 +58,6 @@ export default {
     // }
   },
   mounted() {
-    // console.log('control index', this.controlIndex);
     const now = new Date();
     const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -94,7 +93,6 @@ export default {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
     async getAvailableDataIndicators() {
-      console.log('Indicator4rmDB');
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
     removeDuplicates(arr) {
@@ -188,7 +186,6 @@ export default {
 
           if (this.controlIndex !== 2) {
             const availableYears = await this.getAvailableYears();
-            console.log(availableYears, 'availableYears@');
             this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
@@ -205,7 +202,6 @@ export default {
               }),
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
-            console.log(availableDS, 'availableDS');
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
