@@ -152,7 +152,7 @@ export default class DataLayer {
         // debugger;
         this.storeTimestampInLocal();
         // await this.initDataWithYearsWithYearlyChecks([7, 6, 1], 8);
-        await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 8);
+        await this.initDataWithYearsWithYearlyChecks(indicatorsNotOnIdb, 16);
         await this.setAvailableDashboardIndicator();
         // await this.initDataWithYears(this.defaultIndicators);
       }
@@ -465,25 +465,55 @@ export default class DataLayer {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  // sortYearsDescending(years) {
+  //   // Filter valid years (numbers) and invalid ones (months or incorrect values)
+  //   const validYears = [];
+  //   const invalidEntries = [];
+
+  //   years.forEach((item) => {
+  //     const trimmed = item.trim();
+  //     if (/^\d{4}$/.test(trimmed)) {
+  //       validYears.push(Number(trimmed));
+  //     } else {
+  //       invalidEntries.push(trimmed);
+  //     }
+  //   });
+
+  //   // Sort valid years in descending order
+  //   validYears.sort((a, b) => b - a);
+
+  //   // Return sorted years with invalid entries at the bottom
+  //   return [...validYears, ...invalidEntries];
+  // }
+  // eslint-disable-next-line class-methods-use-this
   sortYearsDescending(years) {
-    // Filter valid years (numbers) and invalid ones (months or incorrect values)
-    const validYears = [];
+    const currentYear = new Date().getFullYear();
+
+    const validPastYears = [];
+    const projectedYears = [];
     const invalidEntries = [];
 
     years.forEach((item) => {
-      const trimmed = item.trim();
+      const trimmed = item.toString().trim();
+
+      // Match exactly 4-digit numbers
       if (/^\d{4}$/.test(trimmed)) {
-        validYears.push(Number(trimmed));
+        const year = Number(trimmed);
+        if (year > currentYear) {
+          projectedYears.push(year);
+        } else {
+          validPastYears.push(year);
+        }
       } else {
         invalidEntries.push(trimmed);
       }
     });
 
-    // Sort valid years in descending order
-    validYears.sort((a, b) => b - a);
+    // Sort both valid and projected years in descending order
+    validPastYears.sort((a, b) => b - a);
+    projectedYears.sort((a, b) => b - a);
 
-    // Return sorted years with invalid entries at the bottom
-    return [...validYears, ...invalidEntries];
+    return [...validPastYears, ...invalidEntries, ...projectedYears];
   }
 
   handleShowLoaded() {
