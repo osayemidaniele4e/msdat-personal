@@ -134,6 +134,13 @@ const mutations: MutationTree<State> = {
     }
   },
 
+  SET_ZONAL_DATASOURCE: (state, obj: setPayload) => {
+    console.log('REACHED HERE ABEG');
+
+    // Now it's safe to push the value
+    state.controlConfig[1].payload[obj.key] = obj.value;
+  },
+
   SET_MULTI_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[4].payload !== null) {
       // eslint-disable-next-line no-return-assign, no-param-reassign

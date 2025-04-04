@@ -77,6 +77,7 @@
               v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
               class=""
             >
+            <!-- <pre>{{ nhmisMonthData }}</pre> -->
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
               <div v-if="nhmisMonthData[0]" class="nhmis-monthly tableRowBg2 ">
@@ -541,30 +542,47 @@ export default {
     // get the data Arrays
     // use the function similar
 
+    sortByIndicatorOrder(referenceArray, targetArray) {
+    // Extract the order of indicators from the reference array
+      const indicatorOrder = referenceArray.map((item) => item.id);
+
+      // Sort the target array based on the extracted order
+      return targetArray.sort((a, b) => indicatorOrder.indexOf(a.indicator) - indicatorOrder.indexOf(b.indicator));
+    },
     async getNhmisMonthly() {
       this.indicators = [];
       this.nhmisMonthData = [];
-      this.dataArray.map(async (element) => {
-        await this.indicators.push({
-          datasource: 30, // nhmis monthly id
+      const tempData = [];
+      const temp = this.dataArray.map((e) => e.indicator);
+
+      // Step 1: Populate `this.indicators`
+      this.dataArray.forEach((element) => {
+        this.indicators.push({
+          datasource: 30, // NHMIS monthly ID
           indicator: element.indicator.id,
           location: this.values.location.id,
         });
       });
-      // Step 2: get the data for the selected indicator and the related indicator
-      Promise.all(
+
+      // Step 2: Fetch NHMIS data for all indicators
+      await Promise.all(
         this.indicators.map(async (el) => {
           const data = await this.getNhmisData(el);
-          if (data === undefined) {
-            const updatedData = { ...data, value: null };
-            this.nhmisMonthData.unshift(updatedData);
-          } else {
-            const updatedData = { ...data, value: parseFloat(data.value).toFixed(1) };
-            this.nhmisMonthData.unshift(updatedData);
-          }
+          const updatedData = data
+            ? { ...data, value: parseFloat(data.value).toFixed(1) }
+            : {
+              indicator: el.indicator,
+              value: null,
+            };
+
+          // this.nhmisMonthData.unshift(updatedData);
+          tempData.push(updatedData);
         }),
       );
+      const sortedArray = this.sortByIndicatorOrder(temp, tempData);
+      this.nhmisMonthData = sortedArray;
     },
+
   },
   watch: {
     dataArray: {
