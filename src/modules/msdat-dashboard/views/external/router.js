@@ -4,6 +4,7 @@ import ndr2 from './dashboards/ndr2.vue';
 import ministers from './dashboards/ministers.vue';
 import quarterReview from './dashboards/quarter-review.vue';
 import HealthFacilityDashboard from './dashboards/health-facility.vue';
+import HealthFacilitiesProfile from './dashboards/health-facility-profile.vue';
 import goggleForm from './dashboards/goggleForm.vue';
 import healthServiceUptake from './dashboards/health-service-uptake.vue';
 import IndicatorPreview from './dashboards/Minister of Health Dashboard/dashboard-landing-page.vue';
@@ -63,6 +64,16 @@ export default [
     meta: {
       title: 'Health Facilities Finder',
     },
+  },
+  // health facilities dashboard
+  {
+    path: '/health-facilities-profile',
+    name: 'health-facilities-profile',
+    component: HealthFacilitiesProfile,
+    meta: {
+      title: 'Health Facilities Profile Dashboard',
+    },
+
   },
   {
     path: '/dashboard-landing-page',

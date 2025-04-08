@@ -61,13 +61,13 @@ export default {
     try {
       const response = await axios.post('https://msdat2api.e4eweb.space/api/login/', payload);
       const user = response.data;
-      console.log(user);
 
       const savedUser = VueCookies.get('msdat-user-details');
       if (savedUser) {
         commit('setUser', savedUser);
       }
 
+      // Create the formatted user without role initially
       const formattedUser = {
         avatar: user.avatar,
         email: user.email,
@@ -76,8 +76,36 @@ export default {
         tokens: {
           access_token: user.token,
         },
+        role: {
+          value: '', // Will be updated after fetching user details
+          label: '',
+        },
       };
 
+      // Fetch the user details to get the role
+      try {
+        const userDetailsResponse = await axios.get(
+          `https://msdat2api.e4eweb.space/api/users/${user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          },
+        );
+
+        // Get the role from the user details response
+        const role = userDetailsResponse.data.role || '';
+
+        // Update the formattedUser with the role information
+        formattedUser.role = {
+          value: role,
+          label: role,
+        };
+      } catch (detailsErr) {
+        console.log('Failed to fetch user details:', detailsErr);
+      }
+
+      // Save user details and commit regardless of whether role fetch succeeded
       VueCookies.set('msdat-user-details', formattedUser);
       commit('setUser', formattedUser);
       return response;

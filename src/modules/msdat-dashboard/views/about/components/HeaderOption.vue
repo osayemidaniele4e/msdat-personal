@@ -239,8 +239,12 @@ export default {
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser', 'isAuthenticated']),
     isAllowedEmail() {
-      // Check if the email exists and ends with '@e4email.net'
-      return this.getUser?.email?.endsWith('@e4email.net') || false;
+      // Check if user has specified email or admin role
+      return (
+      this.getUser?.email?.endsWith('@e4email.net')
+      || this.getUser?.role?.value === 'admin'
+      ) || false;
+      // console log get user
     },
 
     ...mapGetters(['getPluginsImported']),
