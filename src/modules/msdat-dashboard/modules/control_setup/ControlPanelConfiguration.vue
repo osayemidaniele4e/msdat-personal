@@ -191,15 +191,24 @@ export default {
               panelIndex: this.controlIndex,
               key: 'year',
               values: availableYears.sort((a, b) => {
-                const [yearA, weekA] = a.split(' Week ').map(Number);
-                const [yearB, weekB] = b.split(' Week ').map(Number);
+                const extract = (str) => {
+                  const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+                  const year = match ? parseInt(match[1], 10) : 0;
+                  const week = match && match[2] ? parseInt(match[2], 10) : null;
+                  return { year, week };
+                };
 
-                // Sort by year in descending order
+                const { year: yearA, week: weekA } = extract(a);
+                const { year: yearB, week: weekB } = extract(b);
+
                 if (yearA !== yearB) return yearB - yearA;
 
-                // Sort by week in descending order
-                return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+                if (weekA !== null && weekB !== null) return weekB - weekA;
+                if (weekA === null) return 1;
+                if (weekB === null) return -1;
+                return 0;
               }),
+
             });
             const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
             await this.SETUP_CONTROL_OPTIONS1({
@@ -249,15 +258,24 @@ export default {
             panelIndex: this.controlIndex,
             key: 'year',
             values: availableYears.sort((a, b) => {
-              const [yearA, weekA] = a.split(' Week ').map(Number);
-              const [yearB, weekB] = b.split(' Week ').map(Number);
+              const extract = (str) => {
+                const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+                const year = match ? parseInt(match[1], 10) : 0;
+                const week = match && match[2] ? parseInt(match[2], 10) : null;
+                return { year, week };
+              };
 
-              // Sort by year in descending order
+              const { year: yearA, week: weekA } = extract(a);
+              const { year: yearB, week: weekB } = extract(b);
+
               if (yearA !== yearB) return yearB - yearA;
 
-              // Sort by week in descending order
-              return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+              if (weekA !== null && weekB !== null) return weekB - weekA;
+              if (weekA === null) return 1;
+              if (weekB === null) return -1;
+              return 0;
             }),
+
           });
           // ============
           if (this.controlIndex === 2) {
@@ -291,15 +309,24 @@ export default {
             panelIndex: this.controlIndex,
             key: 'year',
             values: availableYears.sort((a, b) => {
-              const [yearA, weekA] = a.split(' Week ').map(Number);
-              const [yearB, weekB] = b.split(' Week ').map(Number);
+              const extract = (str) => {
+                const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+                const year = match ? parseInt(match[1], 10) : 0;
+                const week = match && match[2] ? parseInt(match[2], 10) : null;
+                return { year, week };
+              };
 
-              // Sort by year in descending order
+              const { year: yearA, week: weekA } = extract(a);
+              const { year: yearB, week: weekB } = extract(b);
+
               if (yearA !== yearB) return yearB - yearA;
 
-              // Sort by week in descending order
-              return (Number.isNaN(weekB) ? -1 : weekB) - (Number.isNaN(weekA) ? -1 : weekA);
+              if (weekA !== null && weekB !== null) return weekB - weekA;
+              if (weekA === null) return 1;
+              if (weekB === null) return -1;
+              return 0;
             }),
+
           });
         }
       },
