@@ -26,7 +26,7 @@
             <b-col cols="4">
               <div class="user-card">
                 <div class="w-70">
-                  <h3 class="summary-number">{{ adminProfiles }}</h3>
+                    <h3 class="summary-number">{{ users.filter(user => user.role?.value === 'admin').length }}</h3>
                   <p class="summary-title">Admin Profiles</p>
                   <small>Last Updated: {{ lastUpdatedAdminProfiles }}</small>
                  </div>
@@ -278,6 +278,28 @@
       <p>Are you sure you want to delete {{ deleteTarget.type === 'single' ? 'this user' : 'these users' }}?</p>
       <p class="text-danger">This action cannot be undone.</p>
     </b-modal>
+
+    <!-- Role Management Modal -->
+    <b-modal
+      id="role-management-modal"
+      title="Manage User Role"
+      @ok="handleRoleChange"
+      ok-variant="primary"
+      ok-title="Confirm"
+    >
+      <div class="role-management-content" v-if="selectedUserForRole">
+        <p>Current Role: <strong>{{ selectedUserForRole.role?.value || 'User' }}</strong></p>
+        <p>Are you sure you want to {{ selectedUserForRole.role?.value === 'admin' ? 'downgrade' : 'upgrade' }} this user's role?</p>
+        <p class="text-info">
+          {{ selectedUserForRole.role?.value === 'admin'
+            ? 'This will remove admin privileges from the user.'
+            : 'This will grant admin privileges to the user.' }}
+        </p>
+      </div>
+      <div v-else>
+        <p>No user selected for role management.</p>
+      </div>
+    </b-modal>
   </div>
  </template>
 
@@ -299,6 +321,7 @@ export default {
       filterRole: '',
       selectedUsers: [],
       searchTimeout: null,
+      selectedUserForRole: null,
       deleteTarget: {
         type: 'single',
         items: [],
@@ -313,7 +336,7 @@ export default {
         { key: 'imgUrl', label: '' },
         { key: 'username', label: 'User', sortable: true },
         { key: 'email', label: 'Email Address', sortable: true },
-        { key: 'role', label: 'Role', sortable: true },
+        { key: 'role.value', label: 'Role', sortable: true },
         { key: 'lastLogin', label: 'Last Login', sortable: true },
         { key: 'actions', label: '' },
       ],
@@ -359,7 +382,7 @@ export default {
 
       // Apply role filter
       if (this.filterRole) {
-        filtered = filtered.filter((user) => user.role && user.role.toLowerCase() === this.filterRole.toLowerCase());
+        filtered = filtered.filter((user) => user.role.value && user.role.value.toLowerCase() === this.filterRole.toLowerCase());
       }
       return filtered.map((user) => ({
         ...user,
@@ -583,23 +606,29 @@ export default {
     },
 
     async assignRole(user) {
+      this.selectedUserForRole = user;
+      this.$bvModal.show('role-management-modal');
+    },
+
+    async handleRoleChange() {
       try {
         this.isLoading = true;
-        const newRole = user.role === 'admin' ? 'user' : 'admin';
-        const response = await fetch(`https://msdat2api.e4eweb.space/api/users/${user.id}/role/`, {
-          method: 'PATCH',
+        const isAdmin = this.selectedUserForRole.role.value === 'admin';
+        const endpoint = isAdmin ? 'downgrade' : 'upgrade';
+
+        const response = await fetch(`https://msdat2api.e4eweb.space/api/users/${this.selectedUserForRole.id}/${endpoint}/`, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ role: newRole }),
         });
 
         if (!response.ok) {
-          throw new Error('Failed to assign role');
+          throw new Error(`Failed to ${endpoint} user role`);
         }
 
         await this.GET_USERS();
-        this.$bvToast.toast('Role assigned successfully', {
+        this.$bvToast.toast(`User role ${endpoint}d successfully`, {
           title: 'Success',
           variant: 'success',
           solid: true,
@@ -612,6 +641,7 @@ export default {
         });
       } finally {
         this.isLoading = false;
+        this.selectedUserForRole = null;
       }
     },
   },
