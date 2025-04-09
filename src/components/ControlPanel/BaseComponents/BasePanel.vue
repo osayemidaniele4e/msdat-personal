@@ -83,6 +83,9 @@ export default {
       if (title) {
         this.$store.commit('MSDAT_STORE/SET_SECTION', title);
       }
+      const path = `/dashboard/Advanced_Analytics?index=${index}`;
+      const fullUrl = `${window.location.origin}${path}`;
+      localStorage.setItem('advanced_url', fullUrl);
 
       this.selectedIndex = index;
       this.checkIndex = index;
