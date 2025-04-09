@@ -5,7 +5,7 @@
       <div class="row p-3">
         <div class="col mb-3">
           <b-list-group>
-            <h5 class="text-underline">Health OutcomesX</h5>
+            <h5 class="text-underline">Health Outcomes</h5>
             <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
               <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
             </router-link>
@@ -31,6 +31,9 @@
                 >Health Facilities Finder(GIS)- work in progress</b-list-group-item
               ></router-link
             >
+            <router-link to="/health-facilities-profile" target="_blank"
+              ><b-list-group-item>Health Facilities Profile</b-list-group-item></router-link
+              >
           </b-list-group>
         </div>
         <div class="col mb-3">
