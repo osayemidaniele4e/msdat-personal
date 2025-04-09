@@ -177,12 +177,8 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
   },
   mounted() {
-    const advancedUrl2 = localStorage.getItem('advanced_url');
     // this.shareDesc = `Take a look at '${this.getSelectedConfig.indicator.full_name}' on the Multi-Source Data and Triangulation (MSDAT) platform`;
     const { name } = this.$route.params;
-    console.log(this.$route, '@@@');
-    console.log(advancedUrl2, '@@@ 2');
-    console.log(name, '@@@ 3');
 
     if (name === 'Advanced_Analytics') {
       const advancedUrl = localStorage.getItem('advanced_url');
