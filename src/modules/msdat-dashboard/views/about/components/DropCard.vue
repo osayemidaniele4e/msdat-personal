@@ -32,8 +32,8 @@
               ></router-link
             >
             <router-link to="/health-facilities-profile" target="_blank"
-              ><b-list-group-item>Health Facilities Profile</b-list-group-item></router-link
-            >
+              ><b-list-group-item>Multi-Source Health Facilities Profile</b-list-group-item></router-link
+              >
           </b-list-group>
         </div>
         <div class="col mb-3">
