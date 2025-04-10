@@ -2,7 +2,7 @@
 
 
 >These methods are pure methods that perform minor tasks for parts of the `LayerService.js`, though pure functions
- for other component parts in this module could be added as well while the project advances and expands.
+ for other component parts in this module could be added as well while the project advances and expands..
 
 ## Methods in this file
 
