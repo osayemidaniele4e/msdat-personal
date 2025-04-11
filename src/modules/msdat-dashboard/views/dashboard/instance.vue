@@ -143,23 +143,22 @@
       <h1>HERE</h1>
     </div>
 
-    <!-- <template v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
-      <div class="col-md-12">
-        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-          <template #title>
-            <h5 class="font-weight-bold work-sans text-white">Policy Simulator</h5>
-          </template>
-
-          <template>
-            <LazyLoading>
-              <ControlPanelConfiguration :controlIndex="controlIndex">
-                <PolicySimulator />
-              </ControlPanelConfiguration>
-            </LazyLoading>
-          </template>
-        </base-sub-card>
-      </div>
-    </template> -->
+    <template v-if="shouldShowScorecard" v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
+  <div class="col-md-12">
+    <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+      <template #title>
+        <h5 class="font-weight-bold work-sans text-white">Scorecard</h5>
+      </template>
+      <template>
+        <LazyLoading>
+          <ControlPanelConfiguration :controlIndex="controlIndex">
+            <ScorecardSection :values="payload" :controlIndex="controlIndex" />
+          </ControlPanelConfiguration>
+        </LazyLoading>
+      </template>
+    </base-sub-card>
+  </div>
+</template>
   </BaseDashboard>
 </template>
 
@@ -182,6 +181,8 @@ import DynamicSection from '../../components/sections/dynamic-section/DynamicSec
 import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
+import ScorecardSection from '../../components/sections/scorecard/ScorecardSection.vue';
+import ScorecardConfig from '../../components/sections/scorecard/scorecard-config';
 // eslint-disable-next-line import/extensions
 // import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config.js';
 // import PolicySimulator from '../../components/sections/policy-simulator/policySimulator.vue';
@@ -201,7 +202,7 @@ export default {
         'Dataset Comparison',
         'Multi-Source Comparison',
         'Disaggregation',
-        // 'Policy Simulator',
+        'Scorecard',
       ],
     };
   },
@@ -215,6 +216,7 @@ export default {
     DataSetComparison,
     MultiSourceComponent,
     DynamicSection,
+    ScorecardSection,
     // PolicySimulator,
   },
   props: {
@@ -224,6 +226,14 @@ export default {
     },
   },
   computed: {
+    shouldShowScorecard() {
+      const allowedDashboards = [
+        '/dashboard/Demographics',
+        '/dashboard/Health_Facility',
+        '/dashboard/Health_Outcomes_and_Service_Coverage',
+      ];
+      return allowedDashboards.includes(this.$route.path);
+    },
     customDashboard() {
       return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
     },
@@ -288,6 +298,10 @@ export default {
         this.ADD_CONTROL_PANEL(config);
       }
       this.ADD_CONTROL_PANEL(DynamicSectionConfig);
+      // Only add Scorecard config for specific dashboards
+      if (this.shouldShowScorecard) {
+        this.ADD_CONTROL_PANEL(ScorecardConfig);
+      }
     },
     filterSectionArray(configs, activeSections) {
       const arrayCopyModified = this.fieldsArray.map((el) => ({
@@ -363,7 +377,6 @@ export default {
       ICSConfig,
       DataSetComparisonConfig,
       BaseMultiSourceConfig,
-      // PolicySimulatorConfiguration,
     ];
 
     // Updated flow
