@@ -32,7 +32,7 @@
               ></router-link
             >
             <router-link to="/health-facilities-profile" target="_blank"
-              ><b-list-group-item>Health Facilities Profile</b-list-group-item></router-link
+              ><b-list-group-item>Multi-Source Health Facilities Profile</b-list-group-item></router-link
               >
           </b-list-group>
         </div>
@@ -64,14 +64,22 @@
         <div class="col mb-3">
           <b-list-group>
             <h5 class="text-underline">Advanced Analytics</h5>
-            <router-link
+            <b-list-group-item
+              v-for="(section, index) in advancedSections"
+              :key="section.label"
+              @click="openAdvancedAnalytics(index, section.label)"
+              class="cursor-pointer"
+            >
+              {{ section.label }}
+            </b-list-group-item>
+            <!-- <router-link
               v-for="(section, index) in advancedSections"
               :key="section.label"
               :to="`/dashboard/Advanced_Analytics?index=${index}`"
               target="_blank"
             >
               <b-list-group-item> {{ section.label }}</b-list-group-item></router-link
-            >
+            > -->
           </b-list-group>
         </div>
         <div class="col mb-3">
@@ -178,6 +186,21 @@ export default {
       return filteredArr;
     },
 
+    openAdvancedAnalytics(index, label) {
+      this.showExpandedDropdown = false;
+      console.log(`Opening Advanced Analytics for: ${label} (index ${index})`);
+
+      const relativeUrl = this.$router.resolve({
+        path: '/dashboard/Advanced_Analytics',
+        query: { index },
+      }).href;
+
+      const fullUrl = `${window.location.origin}${relativeUrl}`;
+
+      localStorage.setItem('advanced_url', fullUrl);
+      window.open(fullUrl, '_blank');
+    },
+
     refreshUserData() {
       this.loading = true;
 
@@ -279,5 +302,9 @@ h5.text-underline {
   background-color: gray;
   opacity: 0.5;
   z-index: 5;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

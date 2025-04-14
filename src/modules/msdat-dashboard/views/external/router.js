@@ -68,10 +68,10 @@ export default [
   // health facilities dashboard
   {
     path: '/health-facilities-profile',
-    name: 'health-facilities-profile',
+    name: 'Multi-Source Health Facilities Profile Dashboard',
     component: HealthFacilitiesProfile,
     meta: {
-      title: 'Health Facilities Profile Dashboard',
+      title: 'Multi-Source Health Facilities Profile',
     },
 
   },
