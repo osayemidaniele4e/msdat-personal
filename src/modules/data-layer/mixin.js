@@ -148,23 +148,80 @@ export default {
       );
       query.value_type = query.value_type || valuetype[0]?.id || 2;
 
-      if (isObject(query.location)) {
+      // check for undefined
+      function hasUndefinedOrNullValues(obj) {
+        if (obj === null || obj === undefined) return true;
+
+        if (typeof obj === 'object' && !Array.isArray(obj)) {
+          // eslint-disable-next-line no-unused-vars
+          return Object.entries(obj).some(([_, value]) => hasUndefinedOrNullValues(value));
+        }
+
+        return false;
+      }
+
+      function hasInvalidValues(obj) {
+        if (obj === null || obj === undefined || obj === '') return true;
+
+        if (typeof obj === 'object' && !Array.isArray(obj)) {
+          // eslint-disable-next-line no-unused-vars
+          return Object.entries(obj).some(([_, value]) => hasInvalidValues(value));
+        }
+
+        return false;
+      }
+
+      if (isObject(query.location) && hasInvalidValues(query) === false) {
+        // const { location } = query;
+        // const newQueryObject = omit(query, ['location']);
+        // const locationValues = this.dlGetLocation(location);
+        // const locationID = locationValues.map((item) => item.id);
+        // console.log(newQueryObject, 'LocationsID');
+        // const resultValue = await DB.queryDB(newQueryObject, locationID);
+        // console.log(resultValue, 'LocationsID 2');
+        // return resultValue;
+
+        // using API
         const { location } = query;
-        const newQueryObject = omit(query, ['location']);
+        const baseQuery = omit(query, ['location']);
         const locationValues = this.dlGetLocation(location);
         const locationID = locationValues.map((item) => item.id);
-        const resultValue = await DB.queryDB(newQueryObject, locationID);
-        return resultValue;
+        console.log(location, 'LocationsID 1');
+        console.log(locationID, 'LocationsID');
+        // Map each location ID to an API call
+        const apiCalls = locationID.map(async (locationSID) => {
+          const queryObjectWithLocation = {
+            ...baseQuery,
+            location: locationSID,
+          };
+          console.log(queryObjectWithLocation, 'query@zX Locations');
+
+          // Replace this with your actual API call function
+          return apiServices.getDataWithPeriod(queryObjectWithLocation); // 👈 async function
+        });
+
+        const allResponses = await Promise.all(apiCalls);
+
+        // Extract and flatten only the "results" from each API response
+        const allResults = allResponses.flatMap((response) => response.data.results);
+
+        console.log(allResults, 'LocationsID data');
+
+        return allResults;
       }
 
       // check for undefined
-      function hasUndefinedOrNullValues(obj) {
-        return Object.values(obj).some((val) => val === undefined || val === null);
-      }
+      // function hasUndefinedOrNullValues(obj) {
+      //   return Object.values(obj).some((val) => val === undefined || val === null);
+      // }
 
       if (hasUndefinedOrNullValues(query) === false) {
-        const result = await DB.queryDB(query);
+        console.log('mappedResponse@R@ 1', query);
+        const temp = await apiServices.getDataWithValueType(query);
+        const result = temp.data.results;
         return result;
+        // const result = await DB.queryDB(query);
+        // return result;
       }
     },
     // get yeardropdown by Datasource

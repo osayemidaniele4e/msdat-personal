@@ -43,6 +43,7 @@ import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import { eventBus } from '@/main';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
 
@@ -233,13 +234,23 @@ export default {
 
       chartOptions.yAxis.title.text = `${displayFactor}`;
       // add nation and state selected to fit according to mockup :cry: :worried: :rage:
-      const parentValue = await this.dlQuery({
+      // const parentValue = await this.dlQuery({
+      //   indicator: this.values.indicator.id,
+      //   datasource: this.values.datasource.id,
+      //   period: this.values.year,
+      //   // value_type: 5,
+      //   location: this.values.location.id,
+      // });
+      const response = await ApiServices.getParentData({
         indicator: this.values.indicator.id,
         datasource: this.values.datasource.id,
         period: this.values.year,
         // value_type: 5,
         location: this.values.location.id,
       });
+      const parentValue = response.data.results;
+      console.log(parentValue, 'LocationsID Value');
+
       // because i know i am expecting only on value in the array of results
       if (parentValue.length > 0) {
         const parent = parentValue[0];
@@ -325,21 +336,38 @@ export default {
       this.loading = false;
     },
     async computeNationalND() {
+      console.log(this.values, 'LocationsID c');
       if (this.values.numdenum === true) {
-        const numeratorData = await this.dlQuery({
-          datasource: this.values.datasource.id,
+        // const numeratorData = await this.dlQuery({
+        //   datasource: this.values.datasource.id,
+        //   indicator: this.values.indicator.id,
+        //   period: this.values.year,
+        //   location: this.values.location.id,
+        //   value_type: 6, // numerator
+        // });
+        const numResponse = await ApiServices.getDataWithPeriod({
           indicator: this.values.indicator.id,
-          period: this.values.year,
-          location: this.values.location.id,
-          value_type: 6, // numerator
-        });
-        const denominatorData = await this.dlQuery({
           datasource: this.values.datasource.id,
-          indicator: this.values.indicator.id,
           period: this.values.year,
+          value_type: 6,
           location: this.values.location.id,
-          value_type: 7, // denominator
         });
+        const numeratorData = numResponse.data.results;
+        const denumResponse = await ApiServices.getDataWithPeriod({
+          indicator: this.values.indicator.id,
+          datasource: this.values.datasource.id,
+          period: this.values.year,
+          value_type: 7,
+          location: this.values.location.id,
+        });
+        const denominatorData = denumResponse.data.results;
+        // const denominatorData = await this.dlQuery({
+        //   datasource: this.values.datasource.id,
+        //   indicator: this.values.indicator.id,
+        //   period: this.values.year,
+        //   location: this.values.location.id,
+        //   value_type: 7, // denominator
+        // });
         if (numeratorData.length > 0 || denominatorData.length > 0) {
           return {
             numerator: Number(numeratorData[0]?.value).toLocaleString(),

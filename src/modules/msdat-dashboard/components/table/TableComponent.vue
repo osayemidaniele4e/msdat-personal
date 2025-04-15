@@ -31,10 +31,10 @@
             v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
             class="text-nowrap"
           >
-            <div @click="handleNhmisMonthlyClicked" class="nhmis_month_head">
+            <!-- <div @click="handleNhmisMonthlyClicked" class="nhmis_month_head">
               <span>NHMIS-DHIS2</span>
               <span>(monthly)</span>
-            </div>
+            </div> -->
             <TableDataSourceCell
               v-for="(dt, i) in source"
               :key="`${i}-row3`"
@@ -80,14 +80,14 @@
             <!-- <pre>{{ nhmisMonthData }}</pre> -->
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
-              <div v-if="nhmisMonthData[0]" class="nhmis-monthly tableRowBg2 ">
+              <!-- <div v-if="nhmisMonthData[0]" class="nhmis-monthly tableRowBg2 ">
                 <span class="value-nhmis">{{
                   nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].value}%`
                 }}</span>
                 <span class="period-nhmis">{{
                   nhmisMonthData[0].value === null ? '-' : `${nhmisMonthData[0].period}`
                 }}</span>
-              </div>
+              </div> -->
 
               <td class="text-center tableRowBg2 p-2" v-for="(dt, index) in source" :key="index" scope="col">
                 <TableDataCell
@@ -155,43 +155,7 @@
               <template v-slot:indicator="props">
                 <slot :name="`indicator-${index}`" :indicator="props"></slot>
               </template>
-              <template
-                #default
-                v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
-              >
-                <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
-                <td class="text-center p-2" v-if="nhmisMonthData[index]">
-                  <TableDataCell />
-                  <!-- id's -->
-                  <!-- static data (only for overview table) for NHMIS data -->
-                  <div class="nhmis-rel-text1">
-                    <span v-if="nhmisMonthData[index].value === null"> - </span>
-                    <span v-else> {{ nhmisMonthData[index].value }}%</span>
-                  </div>
-                  <div class="nhmis-rel-text2">
-                    <span v-if="nhmisMonthData[index].value === null"> - </span>
-                    <span v-else> {{ nhmisMonthData[index].period }}</span>
-                  </div>
-                </td>
-
-                <td v-else>
-                  <TableDataCell />
-                  <div class="nhmis-rel-text1 text-center">-</div>
-                  <div class="nhmis-rel-text2">-</div>
-                </td>
-                <td
-                  class="text-center  p-2"
-                  v-for="(dt, i) in source"
-                  :key="`${i}-row9`"
-                  scope="col"
-                >
-                  <TableDataCell
-                    :cellData="getValueForColumn(indicatorData.values, dt)"
-                    :dataColors="'#515151; #888888;'"
-                  />
-                </td>
-              </template>
-              <template #default v-else>
+              <template #default>
                 <td
                   class="text-center p-2"
                   v-for="(dt, i) in source"

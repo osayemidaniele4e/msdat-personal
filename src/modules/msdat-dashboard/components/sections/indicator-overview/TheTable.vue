@@ -136,10 +136,10 @@ export default {
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
-            const temp = dataSources.filter((item) => item.id !== 30);
+            // const temp = dataSources.filter((item) => item.id !== 30);
             const indicatorObject = this.dlGetIndicator(indicatorID);
-            for (let index = 0; index < temp.length; index += 1) {
-              const element = temp[index];
+            for (let index = 0; index < dataSources.length; index += 1) {
+              const element = dataSources[index];
               // eslint-disable-next-line no-await-in-loop
               const ab = await this.dlGetLatestSourceAndIndicatorData({
                 indicator: indicatorID,
@@ -233,6 +233,35 @@ export default {
     togglePopUp() {
       this.showPopUp = !this.showPopUp;
     },
+    parsePeriodToDate(period) {
+      // Check for "week" format, e.g., "2024 week 40"
+      const weekMatch = period.match(/^(\d{4})\s+week\s+(\d{1,2})$/i);
+      if (weekMatch) {
+        const year = parseInt(weekMatch[1], 10);
+        const week = parseInt(weekMatch[2], 10);
+
+        // Week-based date: approximate start of the week (Monday)
+        const simple = new Date(year, 0, 1 + (week - 1) * 7);
+        const day = simple.getDay();
+        const ISOweekStart = new Date(simple); // clone date
+
+        if (day <= 4) {
+          ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+        } else {
+          ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+        }
+
+        return ISOweekStart;
+      }
+
+      // Try to parse as "Month Year"
+      const fullDate = new Date(period);
+      if (!Number.isNaN(fullDate)) return fullDate;
+
+      // Fallback: just a year (e.g., "2015")
+      const yearOnly = new Date(`${period}-01-01`);
+      return yearOnly;
+    },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;
       const filteredIndicator = await this.dlQuery(queryObject);
@@ -247,11 +276,14 @@ export default {
           });
         }
       } else if (filteredIndicator.length > 0) {
-        return filteredIndicator.reduce((max, currentValues) => {
-          if (currentValues.period > max.period) {
-            return currentValues;
-          }
-          return max;
+        console.log(filteredIndicator, 'filteredIndicator');
+        if (filteredIndicator.length === 0) return null;
+
+        return filteredIndicator.reduce((latest, current) => {
+          const latestDate = this.parsePeriodToDate(latest.period);
+          const currentDate = this.parsePeriodToDate(current.period);
+
+          return currentDate > latestDate ? current : latest;
         });
       }
       return null;

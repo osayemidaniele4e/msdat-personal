@@ -47,6 +47,7 @@ const getTriangulation = async (obj) => {
 
   return instance3.get(`triangulation_dashboard/?${params.toString()}`);
 };
+const getDataWithPeriod = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=${obj.location}&value_type=${obj.value_type}&period=${obj.period}`);
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -63,6 +64,8 @@ const otherEndpoints = [
 ];
 
 const getOtherEndpoint = async () => Promise.all(otherEndpoints.map((endpoint) => getRequiredEndpoint(endpoint)));
+const getDataWithValueType = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=1&value_type=${obj.value_type}`);
+const getParentData = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=${obj.location}&period=${obj.period}`);
 
 export default {
   otherEndpoints,
@@ -101,4 +104,7 @@ export default {
   fetchAllLocation,
   getTriangulation,
   getSingleLocationObj,
+  getDataWithPeriod,
+  getDataWithValueType,
+  getParentData,
 };
