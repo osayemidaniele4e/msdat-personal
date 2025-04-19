@@ -48,6 +48,10 @@ const getTriangulation = async (obj) => {
   return instance3.get(`triangulation_dashboard/?${params.toString()}`);
 };
 const getDataWithPeriod = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=${obj.location}&value_type=${obj.value_type}&period=${obj.period}`);
+const getZonalData = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&period=${obj.period}`);
+const getZonalData2 = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&period=${obj.period}&location=${obj.location}`);
+
+const getDataByDatasource = async (dataSourceID) => axiosInstance.get(`data/?size=3000&datasource=${dataSourceID}`);
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -107,4 +111,7 @@ export default {
   getDataWithPeriod,
   getDataWithValueType,
   getParentData,
+  getZonalData,
+  getZonalData2,
+  getDataByDatasource,
 };

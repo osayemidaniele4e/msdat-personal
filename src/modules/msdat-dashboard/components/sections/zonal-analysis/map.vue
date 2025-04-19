@@ -74,6 +74,7 @@
 <script>
 import BaseMap from '@/components/maps/BaseMap.vue';
 import { eventBus } from '@/main';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 import chartDownload from '../../../mixins/chart_download';
 import NoAvailableData from '../../NoData2.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
@@ -143,17 +144,33 @@ export default {
     controlPanelProps: {
       async handler(val) {
         this.loader = true;
-        const data = await this.dlQuery({
+        // const data = await this.dlQuery({
+        //   indicator: val.indicator.id,
+        //   datasource: val.datasource.id,
+        //   period: val.year,
+        // });
+        const zonalResponse = await ApiServices.getZonalData({
           indicator: val.indicator.id,
           datasource: val.datasource.id,
           period: val.year,
         });
-        const specificData = await this.dlQuery({
+        const data = zonalResponse.data.results;
+        console.log(zonalResponse, 'ZONAL-HENRY');
+
+        const zonalResponse2 = await ApiServices.getZonalData2({
           indicator: val.indicator.id,
           datasource: val.datasource.id,
           period: val.year,
-          location: val.location.id,
         });
+        console.log(zonalResponse2, 'fZONAL-HENRY 2');
+        const specificData = zonalResponse2.data.results;
+
+        // const specificData = await this.dlQuery({
+        //   indicator: val.indicator.id,
+        //   datasource: val.datasource.id,
+        //   period: val.year,
+        //   location: val.location.id,
+        // });
         // console.log(val, 'filteredLGADataForState kogi');
         this.selectedState = val.location.name;
 

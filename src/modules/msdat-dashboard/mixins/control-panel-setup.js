@@ -249,6 +249,7 @@ export default {
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorFromDexie(datasourceID);
       const indicatorWithData = data.filter(async (indicatorItem) => {
+        // indicator data
         const indicatorData = await this.dlQuery({
           indicator: indicatorItem.id,
           datasource: datasourceID,
@@ -269,6 +270,7 @@ export default {
       const data = await this.getIndicatorFromDexie(datasourceID);
 
       const indicatorWithData = data.filter(async (indicatorItem) => {
+        // indicator data
         const indicatorData = await this.dlQuery({
           indicator: indicatorItem.id,
           datasource: datasourceID,
