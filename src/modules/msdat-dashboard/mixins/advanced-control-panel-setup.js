@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
 import { sortBy, uniq } from 'lodash';
-import { groupIndicator, isDataYearly } from '@/util/helper';
+import { groupIndicator } from '@/util/helper';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   data() {
@@ -80,36 +81,27 @@ export default {
       dataSourceID = this.defaultDataSource.id,
       locationID = this.defaultLocation.id,
     ) {
-      const data = await this.dlQuery({
+      const { data } = await ApiServices.getPeriod({
         indicator: indicatorID,
         datasource: dataSourceID,
         location: locationID,
       });
-      // debugger;
-      // console.log(data);
-      const onlyYearData = data?.filter((item) => {
-        if (isDataYearly(item.period)) {
-          return item.period;
-        }
-        return false;
-      });
-      const years = onlyYearData?.map((item) => item.period);
-      const uniqueYears = uniq(years);
-      return uniqueYears.sort((a, b) => b - a);
+      const years = data.periods;
+      return years.sort((a, b) => b - a);
     },
     // get years by datasource
     async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
       const data = await this.queryDBForYearByDs(dataSourceID);
       // debugger;
-      const onlyYearData = data?.filter((item) => {
-        if (isDataYearly(item.period)) {
-          return item.period;
-        }
-        return false;
-      });
-      const years = onlyYearData?.map((item) => item.period);
-      const uniqueYears = uniq(years);
-      return uniqueYears.sort((a, b) => b - a);
+      // const onlyYearData = data?.filter((item) => {
+      //   if (isDataYearly(item.period)) {
+      //     return item.period;
+      //   }
+      //   return false;
+      // });
+      // const years = onlyYearData?.map((item) => item.period);
+      // const uniqueYears = uniq(years);
+      return data.sort((a, b) => b - a);
     },
 
     async setLocationDropdown(
@@ -152,7 +144,7 @@ export default {
 
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
-      const data = await this.getDataSourcesFromDexie(indicatorID);
+      const data = await this.getDataSourcesFromIndicator(indicatorID);
       return data;
     },
     // Get available Indicator

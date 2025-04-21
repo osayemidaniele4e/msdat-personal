@@ -226,12 +226,12 @@ export default {
     },
     // get yeardropdown by Datasource
     async queryDBForYearByDs(query) {
-      const result = await DB.queryDBForYearsByDs(query);
-      return result;
+      const { data } = await apiServices.getPeriodByDatasource(query);
+      return data.periods;
     },
     async queryDBForAvailableLocation(sourceId, indId) {
-      const result = await DB.getAvailableLocationByIndNSource(sourceId, indId);
-      return result;
+      const { data } = await apiServices.getLocations({ datasource: sourceId, indicator: indId });
+      return data.locations;
     },
     /**
      * @function dlGetDashboardDataSource
@@ -292,14 +292,16 @@ export default {
      * available datasources from dexie
      * @returns array of datasource objects
      */
-    async getDataSourcesFromDexie(value) {
+    async getDataSourcesFromIndicator(value) {
       const indicatorId = value || 1;
-      const sourcesAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
+      const { data } = await apiServices.getIndicatorDataSources(indicatorId);
+      const sourcesAvailable = data.datasources;
+      console.log(sourcesAvailable, 'getDataSourcesFromIndicator');
       if (sourcesAvailable.length <= 0) {
         return [];
       }
-      const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
-      return sourceObjects;
+      // const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
+      return sourcesAvailable;
     },
     async getAllDatasources() {
       const datasources = await DB.getEveryDatasource();

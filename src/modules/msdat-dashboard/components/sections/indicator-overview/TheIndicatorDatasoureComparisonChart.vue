@@ -782,7 +782,7 @@ export default {
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.getDataSourcesFromDexie(this.values.indicator.id);
+      const availableDataSource = await this.getDataSourcesFromIndicator(this.values.indicator.id);
       return availableDataSource;
     },
     // Function to get datasource from dropdown

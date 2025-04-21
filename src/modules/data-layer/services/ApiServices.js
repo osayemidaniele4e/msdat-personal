@@ -52,6 +52,12 @@ const getZonalData = async (obj) => axiosInstance.get(`data/?size=3000&indicator
 const getZonalData2 = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&period=${obj.period}&location=${obj.location}`);
 
 const getDataByDatasource = async (dataSourceID) => axiosInstance.get(`data/?size=3000&datasource=${dataSourceID}`);
+const getPeriodByDatasource = async (dataSourceID) => axiosInstance.get(`period-data/?datasource=${dataSourceID}`);
+
+const getPeriod = async (obj) => axiosInstance.get(`period-data/?datasource=${obj.datasource}&indicator=${obj.indicator}&location=${obj.location}`);
+const getLocations = async (obj) => axiosInstance.get(`location-data/?datasource=${obj.datasource}&indicator=${obj.indicator}`);
+const getIndicatorDataSources = async (indicatorID) => axiosInstance.get(`indicator-data/datasources/${indicatorID}`);
+const getDataSourceIndicators = async (dataSourceID) => axiosInstance.get(`datasource-data/indicators/${dataSourceID}`);
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -114,4 +120,9 @@ export default {
   getZonalData,
   getZonalData2,
   getDataByDatasource,
+  getPeriodByDatasource,
+  getPeriod,
+  getLocations,
+  getIndicatorDataSources,
+  getDataSourceIndicators,
 };
