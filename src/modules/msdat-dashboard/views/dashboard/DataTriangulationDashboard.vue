@@ -100,39 +100,7 @@
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
-                  <div class="d-flex flex-column align-items-center mb-3">
-                    <h4 class="text-center title">
-                      Degree of Data Source Consistency
-                      <b-icon-info-circle-fill
-                        v-tooltip="
-                          'This refers to the degree to which different data sources provide similar or aligned information over time and across datasets. Consistent data sources should show comparable trends and values for the same indicators, despite being collected using different methodologies.'
-                        "
-                        class="data-source-info mx-0"
-                        font-scale="1"
-                      />
-                    </h4>
-                    <!-- <p class="text-center my-2 sub-title w-75">
-                      How well different data sources agree or match with each other.
-                    </p> -->
-                  </div>
-
-                  <div class="progress-container">
-                    <div class="circular-progress">
-                      <svg>
-                        <circle cx="75" cy="75" r="65"></circle>
-                        <!-- Increased cx, cy, and r -->
-                        <circle
-                          cx="75"
-                          cy="75"
-                          r="65"
-                          :style="circleStyle(consistencyScore)"
-                        ></circle>
-                        <!-- Increased cx, cy, and r -->
-                      </svg>
-                      <div class="progress-value">{{ consistencyScore }}%</div>
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-center pb-4">
+                <div class="d-flex justify-content-center pb-4">
                     <h5 class="text-center desc w-75">
                       {{
                         `Data source consistency result: When compared with ${
@@ -145,10 +113,69 @@
                       }}
                     </h5>
                   </div>
+
+                  <div class="progress-container">
+                    <div class="circular-progress">
+                      <svg>
+                        <circle cx="85" cy="85" r="75"></circle>
+                        <!-- Increased cx, cy, and r -->
+                        <circle
+                          cx="85"
+                          cy="85"
+                          r="75"
+                          :style="circleStyle(consistencyScore)"
+                        ></circle>
+                        <!-- Increased cx, cy, and r -->
+                      </svg>
+                      <div class="progress-value">{{ consistencyScore }}%</div>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column align-items-center mb-3">
+                    <h4 class="text-center title">
+                      Degree of Data Source Consistency
+                      <b-icon-info-circle-fill
+                        v-tooltip="
+                          'This refers to the degree to which different data sources provide similar or aligned information over time and across datasets. Consistent data sources should show comparable trends and values for the same indicators, despite being collected using different methodologies.'
+                        "
+                        class="data-source-info mx-0"
+                        font-scale="1"
+                      />
+                    </h4>
+                    <h4 class="text-center desc2 px-5 mb-3">How well different datasources agree or match wih each other.</h4>
+
+                  </div>
+
                 </div>
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
+                <div class="d-flex justify-content-center pb-4">
+                    <h5 class="text-center desc w-75">
+                      {{
+                        `Data source complementarity: The degree to which ${headerSource[1]} ${
+                          headerSource[2] ? `and ${headerSource[2]} ` : ''
+                        } complements  ${headerSource[0]}   as a data source is ${getStatus(
+                          complementarityScore
+                        )} at (${complementarityScore}%)`
+                      }}
+                    </h5>
+                  </div>
+
+                  <div class="progress-container">
+                    <div class="circular-progress">
+                      <svg>
+                        <circle cx="85" cy="85" r="75"></circle>
+
+                        <circle
+                          cx="85"
+                          cy="85"
+                          r="75"
+                          :style="circleStyle(complementarityScore)"
+                        ></circle>
+                      </svg>
+                      <div class="progress-value">{{ complementarityScore }}%</div>
+                    </div>
+                  </div>
                   <div class="d-flex flex-column align-items-center mb-3">
                     <h4 class="text-center title">
                       Degree of Data Source Complementarity
@@ -160,38 +187,10 @@
                         font-scale="1"
                       />
                     </h4>
-                    <!-- <p class="text-center sub-title my-2 w-75">
-                      How well different data sources work together to provide a complete picture.
-                    </p> -->
+                    <h4 class="text-center desc2 px-3">How different datasources work together to provide a complete picture.</h4>
+
                   </div>
 
-                  <div class="progress-container">
-                    <div class="circular-progress">
-                      <svg>
-                        <circle cx="75" cy="75" r="65"></circle>
-
-                        <circle
-                          cx="75"
-                          cy="75"
-                          r="65"
-                          :style="circleStyle(complementarityScore)"
-                        ></circle>
-                      </svg>
-                      <div class="progress-value">{{ complementarityScore }}%</div>
-                    </div>
-                  </div>
-
-                  <div class="d-flex justify-content-center pb-4">
-                    <h5 class="text-center desc w-75">
-                      {{
-                        `Data source complementarity: The degree to which ${headerSource[1]} ${
-                          headerSource[2] ? `and ${headerSource[2]} ` : ''
-                        } complements  ${headerSource[0]}   as a data source is ${getStatus(
-                          complementarityScore
-                        )} at (${complementarityScore}%)`
-                      }}
-                    </h5>
-                  </div>
                 </div>
               </div>
             </div>
@@ -849,7 +848,7 @@ export default {
   width: 100%;
   height: 100%;
   fill: none;
-  stroke-width: 10; /* Adjust thickness */
+  stroke-width: 20; /* Adjust thickness */
   stroke-linecap: round;
   transform: translate(10px, 10px); /* Adjust to center */
   stroke: #cff8f8;
@@ -896,6 +895,15 @@ export default {
   line-height: 24px;
   text-align: center;
   color: #000000;
+}
+
+.desc2 {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+  color: #221f1f;
 }
 
 .header_bg {
