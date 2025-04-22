@@ -113,39 +113,10 @@ export default {
      */
     // eslint-disable-next-line consistent-return
     async dlQuery(queryObject) {
-      // console.log(store.state.configObject, '@LINUS');
-      // if (queryObject.datasource !== undefined && queryObject.datasource === 30) {
-      //   const { data } = await apiServices.getNHMISData(queryObject);
-      //   return data.results;
-      // }
-      // i could do this in individual component when making request with the
-      // function by after this it will after all at once
       const query = queryObject;
-      // query.dashboardId = store.state.configObject.id;
-
-      // if (query.datasource === 25) {
-      //   query.value_type = 1;
-      // } else if (!has(query, 'value_type')) {
-      //   const datasource = await this.dlGetDataSource(query.datasource);
-      //   // if (this.valueType?.length <= 0) {
-      //   //   this.valueType = await this.getDexieTableValues('valuetypes');
-      //   //   return false;
-      //   // }
-
-      //   // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
-      //   const valuetype = this.valueType?.filter(
-      //     (item) => item.value_type === datasource?.classification
-      //   );
-      //   query.value_type = valuetype[0]?.id;
-      // }
 
       const datasource = await this.dlGetDataSource(query.datasource);
-      // if (this.valueType?.length <= 0) {
-      //   this.valueType = await this.getDexieTableValues('valuetypes');
-      //   return false;
-      // }
 
-      // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
       const valuetype = this.valueType?.filter(
         (item) => item.value_type === datasource?.classification
       );
@@ -175,6 +146,7 @@ export default {
       }
 
       if (isObject(query.location) && hasInvalidValues(query) === false) {
+        console.log(query.location, '@AGBO');
         // const { location } = query;
         // const newQueryObject = omit(query, ['location']);
         // const locationValues = this.dlGetLocation(location);
@@ -218,8 +190,8 @@ export default {
       //   return Object.values(obj).some((val) => val === undefined || val === null);
       // }
 
-      if (hasUndefinedOrNullValues(query) === false) {
-        console.log('mappedResponse@R@ 1', query);
+      if (!isObject(query.location) && hasUndefinedOrNullValues(query) === false) {
+        console.log(query.location, '@AGBO 1');
         const temp = await apiServices.getDashboardData(store.state.configObject.id, query);
         const result = temp.data.results;
         console.log(result, '@LINUS');
@@ -299,7 +271,8 @@ export default {
     async getDataSourcesFromIndicator(value) {
       const indicatorId = value || 1;
       const { data } = await apiServices.getIndicatorDataSources(indicatorId);
-      const sourcesAvailable = data.datasources;
+      const sourcesAvailable = data.datasources.map((source) => this.dlGetDataSource(source.id));
+
       console.log(sourcesAvailable, 'getDataSourcesFromIndicator');
       if (sourcesAvailable.length <= 0) {
         return [];
