@@ -241,19 +241,21 @@ export default {
     },
     // Get available Indicator
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
-      const data = await this.getIndicatorFromDexie(datasourceID);
-      const indicatorWithData = data.filter(async (indicatorItem) => {
-        // indicator data
-        const indicatorData = await this.dlQuery({
-          indicator: indicatorItem.id,
-          datasource: datasourceID,
-        });
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
+      console.log(data, 'indicator world');
 
-        // Keep only items where indicatorData is not an empty array
-        return indicatorData.length > 0;
-      });
+      // const indicatorWithData = data.filter(async (indicatorItem) => {
+      //   // indicator data
+      //   const indicatorData = await this.dlQuery({
+      //     indicator: indicatorItem.id,
+      //     datasource: datasourceID,
+      //   });
 
-      const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      //   // Keep only items where indicatorData is not an empty array
+      //   return indicatorData.length > 0;
+      // });
+
+      const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
     async setAllIndicatorDropdown(indicators) {
@@ -261,25 +263,26 @@ export default {
       return formattedData;
     },
     async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
-      const data = await this.getIndicatorFromDexie(datasourceID);
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
+      console.log(data, 'indicator world 2');
 
-      const indicatorWithData = data.filter(async (indicatorItem) => {
-        // indicator data
-        const indicatorData = await this.dlQuery({
-          indicator: indicatorItem.id,
-          datasource: datasourceID,
-        });
+      // const indicatorWithData = data.filter(async (indicatorItem) => {
+      //   // indicator data
+      //   const indicatorData = await this.dlQuery({
+      //     indicator: indicatorItem.id,
+      //     datasource: datasourceID,
+      //   });
 
-        // Keep only items where indicatorData is not an empty array
-        return indicatorData.length > 0;
-      });
+      //   // Keep only items where indicatorData is not an empty array
+      //   return indicatorData.length > 0;
+      // });
 
       // this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_PAYLOAD', {
       //   key: 'indicator',
       //   value: indicatorWithData[1],
       // });
 
-      const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
   },

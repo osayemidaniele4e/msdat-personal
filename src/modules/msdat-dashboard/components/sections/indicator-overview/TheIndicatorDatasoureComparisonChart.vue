@@ -157,6 +157,7 @@ export default {
         this.notShow = true;
         this.loading = true;
         const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+        console.log(dataSources, '@LINUSX 1');
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
@@ -186,12 +187,14 @@ export default {
           } else {
             dataSourceSelected = newVal;
           }
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
-          this.setUpHighChartConfig(seriesArray, years);
-          this.loading = false;
+          console.log(dataSourceSelected, '@LINUSX 2');
+          // const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
+          // this.setUpHighChartConfig(seriesArray, years);
+          // this.loading = false;
         } else {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const filteredDataSources = dataSources.filter((dataSource) => dataSource.id !== 30);
+          console.log(dataSources, '@LINUSX 3');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredDataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
@@ -210,6 +213,7 @@ export default {
           } else {
             this.hasOneDatasource = false;
           }
+          console.log(dataSources, '@LINUSX 4');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
           // added this so that the datasource list will update anytime an indicator is selected
@@ -229,6 +233,7 @@ export default {
         this.loading = true;
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          console.log(dataSources, '@LINUSX 5');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
@@ -243,6 +248,7 @@ export default {
         this.loading = true;
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          console.log(dataSources, '@LINUSX 6');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
@@ -624,8 +630,10 @@ export default {
         };
       }
 
+      // console.log(dataSources, '@LINUSX');
+
       const chartSeriesArray = [];
-      const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
+      // const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
 
       const mappedValueTypes = valueTypeArray?.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
@@ -641,8 +649,8 @@ export default {
        * also take into consideration that sometimes the visualization may require a particular
        * Value type
        */
-      if (mappedDataSource !== undefined) {
-        mappedDataSource.forEach((datasource) => {
+      if (dataSources !== undefined) {
+        dataSources.forEach((datasource) => {
           const searchDataSource = parameterObject;
           searchDataSource.datasource = datasource?.id;
           if (mappedValueTypes.length > 0) {
@@ -726,6 +734,7 @@ export default {
        * radio button so it only returns/ selectees a single Object
        * at a time
        */
+      console.log([datasourceArray], '@LINUSX 7');
 
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
@@ -751,7 +760,7 @@ export default {
         });
         const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
         // confidence range
-
+        console.log(datasource, '@LINUSX 8');
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           [this.selectedDS],
           valueType,
@@ -767,9 +776,11 @@ export default {
         this.loading = true;
         if (!this.selectDataSource) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          console.log(dataSources, '@LINUSX 9');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         } else {
+          console.log(this.selectDataSource, '@LINUSX 10');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(this.selectDataSource);
           this.setUpHighChartConfig(seriesArray, years);
         }
@@ -783,12 +794,15 @@ export default {
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
       const availableDataSource = await this.getDataSourcesFromIndicator(this.values.indicator.id);
+      console.log(availableDataSource, 'getDataSourcesFromIndicator 2');
+
       return availableDataSource;
     },
     // Function to get datasource from dropdown
     async getDataSourceFromDropdown() {
       // get datasource from the dropdown
       const dataSourceDropdown = await this.setDataSourcesDropdown(this.values.indicator.id);
+      console.log(dataSourceDropdown, 'getDataSourcesFromIndicator 3');
       const dataSourceList = [];
       dataSourceDropdown.forEach((item) => {
         const arr = item.datasource;

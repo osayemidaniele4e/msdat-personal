@@ -168,7 +168,7 @@ export default {
     //   return formattedData;
     // },
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
-      const data = await this.getIndicatorFromDexie(datasourceID);
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
 
       // console.log(data, 'indicator world');
       // console.log(datasourceID, 'indicator world');

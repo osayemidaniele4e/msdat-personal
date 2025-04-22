@@ -77,6 +77,18 @@ const getOtherEndpoint = async () => Promise.all(otherEndpoints.map((endpoint) =
 const getDataWithValueType = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=1&value_type=${obj.value_type}`);
 const getParentData = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=${obj.location}&period=${obj.period}`);
 
+const getDashboardData = async (id, obj) => {
+  const params = new URLSearchParams({ caching: true });
+
+  Object.entries(obj).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.append(key, value);
+    }
+  });
+
+  return axiosInstance.get(`dashboard-data/${id}/?${params.toString()}`);
+};
+
 export default {
   otherEndpoints,
   // getLastUpdatedDate,
@@ -125,4 +137,5 @@ export default {
   getLocations,
   getIndicatorDataSources,
   getDataSourceIndicators,
+  getDashboardData,
 };

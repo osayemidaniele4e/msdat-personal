@@ -393,6 +393,7 @@ export default {
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
+        // id: dashboard.id,
       };
       this.saveDashboard(
         ids,
@@ -492,6 +493,7 @@ export default {
           initialDataSource: dashboard.initialDataSource,
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
+          id: dashboard.id,
         };
         this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;

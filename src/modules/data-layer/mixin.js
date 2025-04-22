@@ -8,6 +8,7 @@ import formatter from '../msdat-dashboard/mixins/formatter';
 
 import DB from './services/database.worker';
 import apiServices from './services/ApiServices';
+import store from '../msdat-dashboard/store';
 
 const { mapState } = createNamespacedHelpers('DL');
 
@@ -112,6 +113,7 @@ export default {
      */
     // eslint-disable-next-line consistent-return
     async dlQuery(queryObject) {
+      // console.log(store.state.configObject, '@LINUS');
       // if (queryObject.datasource !== undefined && queryObject.datasource === 30) {
       //   const { data } = await apiServices.getNHMISData(queryObject);
       //   return data.results;
@@ -119,6 +121,7 @@ export default {
       // i could do this in individual component when making request with the
       // function by after this it will after all at once
       const query = queryObject;
+      // query.dashboardId = store.state.configObject.id;
 
       // if (query.datasource === 25) {
       //   query.value_type = 1;
@@ -197,7 +200,7 @@ export default {
           console.log(queryObjectWithLocation, 'query@zX Locations');
 
           // Replace this with your actual API call function
-          return apiServices.getDataWithPeriod(queryObjectWithLocation); // 👈 async function
+          return apiServices.getDashboardData(store.state.configObject.id, queryObjectWithLocation); // 👈 async function
         });
 
         const allResponses = await Promise.all(apiCalls);
@@ -217,8 +220,9 @@ export default {
 
       if (hasUndefinedOrNullValues(query) === false) {
         console.log('mappedResponse@R@ 1', query);
-        const temp = await apiServices.getDataWithValueType(query);
+        const temp = await apiServices.getDashboardData(store.state.configObject.id, query);
         const result = temp.data.results;
+        console.log(result, '@LINUS');
         return result;
         // const result = await DB.queryDB(query);
         // return result;
@@ -304,8 +308,8 @@ export default {
       return sourcesAvailable;
     },
     async getAllDatasources() {
-      const datasources = await DB.getEveryDatasource();
-      return datasources;
+      const { data } = await apiServices.getAllDataSources();
+      return data.results;
     },
 
     /**
@@ -316,14 +320,15 @@ export default {
      * available datasources from dexie
      * @returns array of datasource objects
      */
-    async getIndicatorFromDexie(value) {
+    async getIndicatorsFromDatasource(value) {
       const datasourceId = value || 1;
-      const sourcesAvailable = await DB.getAvailableIndicatorBySource(datasourceId);
+      const { data } = await apiServices.getDataSourceIndicators(datasourceId);
+      const sourcesAvailable = data.indicators;
       if (sourcesAvailable.length <= 0) {
         return [];
       }
-      const sourceObjects = sourcesAvailable.map((source) => this.dlGetIndicator(source));
-      return sourceObjects;
+      // const sourceObjects = sourcesAvailable.map((source) => this.dlGetIndicator(source));
+      return sourcesAvailable;
     },
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
