@@ -89,11 +89,12 @@ export default {
     setUpControlPanelDropDown() {
       // debugger;
       this.defaultIndicatorDropdown = groupIndicator(this.dlGetAvailableIndicators, 'program_area');
+      console.log(this.defaultIndicatorDropdown, 'indicator world 3');
 
-      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
-        key: 'indicator',
-        payload: this.defaultDataSourceDropdown,
-      });
+      // this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+      //   key: 'indicator',
+      //   payload: this.defaultDataSourceDropdown,
+      // });
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
@@ -195,35 +196,24 @@ export default {
       if (Array.isArray(indicatorID)) {
         for (const ind of indicatorID) {
           data = data.concat(await this.queryDBForAvailableLocation(dataSourceID, ind));
+          console.log(data, 'LocationsX@ 1');
         }
       // Fetch available locations for each data source if dataSourceID is an array
       } else if (Array.isArray(dataSourceID)) {
         for (const dat of dataSourceID) {
           data = data.concat(await this.queryDBForAvailableLocation(dat, indicatorID));
+          console.log(data, 'LocationsX@ 2');
         }
       // Fetch available locations for the given dataSourceID and indicatorID
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
+        console.log(data, 'LocationsX@ 3');
       }
-
-      // Get locations of level 3 and level 2
-      const locations = this.dlGetLocation({ level: 3 });
-      const zonalLocation = this.dlGetLocation({ level: 2 });
-      let allLocations = [...locations, ...zonalLocation];
-
-      // Add Nigeria (level 1) to the top of the locations array
-      allLocations.unshift(this.dlGetLocation(1));
-
-      // Filter locations to include only those present in the data array
-      allLocations = allLocations.filter(({ id }) => data.includes(id));
-
-      // Remove duplicate locations
-      const uniqueItems = Array.from(new Map(allLocations.map((obj) => [obj.id, obj])).values());
 
       // Commit the unique locations to the store
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
-        payload: uniqueItems,
+        payload: data,
       });
 
       // Set the default location (Nigeria) in the store

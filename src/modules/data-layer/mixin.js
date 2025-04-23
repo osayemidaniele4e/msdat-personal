@@ -104,8 +104,11 @@ export default {
      * @returns {dataObjectType}
      */
     async queryDBForNumDenum(query) {
-      const result = await DB.queryDBForNumDenum(query);
-      return result;
+      // const result = await DB.queryDBForNumDenum(query);
+      const data = await this.dlQuery(query);
+      const results = data.filter((item) => item.value_type === 6 || item.value_type === 7);
+      console.log(data.results, 'NUMDENUM');
+      return results;
     },
     /**
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties

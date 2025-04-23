@@ -55,6 +55,7 @@ const getDataByDatasource = async (dataSourceID) => axiosInstance.get(`data/?siz
 const getPeriodByDatasource = async (dataSourceID) => axiosInstance.get(`period-data/?datasource=${dataSourceID}`);
 
 const getPeriod = async (obj) => axiosInstance.get(`period-data/?datasource=${obj.datasource}&indicator=${obj.indicator}&location=${obj.location}`);
+const getPeriodWithoutLocation = async (obj) => axiosInstance.get(`period-data/?datasource=${obj.datasource}&indicator=${obj.indicator}`);
 const getLocations = async (obj) => axiosInstance.get(`location-data/?datasource=${obj.datasource}&indicator=${obj.indicator}`);
 const getIndicatorDataSources = async (indicatorID) => axiosInstance.get(`indicator-data/datasources/${indicatorID}`);
 const getDataSourceIndicators = async (dataSourceID) => axiosInstance.get(`datasource-data/indicators/${dataSourceID}`);
@@ -88,6 +89,8 @@ const getDashboardData = async (id, obj) => {
 
   return axiosInstance.get(`dashboard-data/${id}/?${params.toString()}`);
 };
+
+const getDashboardIndicators = async (dashboardID) => axiosInstance.get(`dashboard-data/indicators/${dashboardID}/`);
 
 export default {
   otherEndpoints,
@@ -138,4 +141,6 @@ export default {
   getIndicatorDataSources,
   getDataSourceIndicators,
   getDashboardData,
+  getPeriodWithoutLocation,
+  getDashboardIndicators,
 };

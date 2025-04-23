@@ -655,6 +655,8 @@ export default {
     }, 60000);
     try {
       // The initializing the control panel
+      const dashboardID = localStorage.getItem('activeDashboardID');
+      // console.log('MSDAT@ 2');
 
       await this.$DL.init({
         dashboardIndicators: this.indicators,
@@ -663,6 +665,7 @@ export default {
             ? urlRequestedIndicator
             : this.defaultIndicators,
         dashboardDataSources: this.dataSources,
+        dashboardID,
       });
 
       this.loading = true;
