@@ -6,7 +6,7 @@ import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
 
-import DB from './services/database.worker';
+// import DB from './services/database.worker';
 import apiServices from './services/ApiServices';
 import store from '../msdat-dashboard/store';
 
@@ -107,7 +107,6 @@ export default {
       // const result = await DB.queryDBForNumDenum(query);
       const data = await this.dlQuery(query);
       const results = data.filter((item) => item.value_type === 6 || item.value_type === 7);
-      console.log(data.results, 'NUMDENUM');
       return results;
     },
     /**
@@ -149,30 +148,17 @@ export default {
       }
 
       if (isObject(query.location) && hasInvalidValues(query) === false) {
-        console.log(query.location, '@AGBO');
-        // const { location } = query;
-        // const newQueryObject = omit(query, ['location']);
-        // const locationValues = this.dlGetLocation(location);
-        // const locationID = locationValues.map((item) => item.id);
-        // console.log(newQueryObject, 'LocationsID');
-        // const resultValue = await DB.queryDB(newQueryObject, locationID);
-        // console.log(resultValue, 'LocationsID 2');
-        // return resultValue;
-
         // using API
         const { location } = query;
         const baseQuery = omit(query, ['location']);
         const locationValues = this.dlGetLocation(location);
         const locationID = locationValues.map((item) => item.id);
-        console.log(location, 'LocationsID 1');
-        console.log(locationID, 'LocationsID');
         // Map each location ID to an API call
         const apiCalls = locationID.map(async (locationSID) => {
           const queryObjectWithLocation = {
             ...baseQuery,
             location: locationSID,
           };
-          console.log(queryObjectWithLocation, 'query@zX Locations');
 
           // Replace this with your actual API call function
           return apiServices.getDashboardData(store.state.configObject.id, queryObjectWithLocation); // 👈 async function
@@ -183,21 +169,12 @@ export default {
         // Extract and flatten only the "results" from each API response
         const allResults = allResponses.flatMap((response) => response.data.results);
 
-        console.log(allResults, 'LocationsID data');
-
         return allResults;
       }
 
-      // check for undefined
-      // function hasUndefinedOrNullValues(obj) {
-      //   return Object.values(obj).some((val) => val === undefined || val === null);
-      // }
-
       if (!isObject(query.location) && hasUndefinedOrNullValues(query) === false) {
-        console.log(query.location, '@AGBO 1');
         const temp = await apiServices.getDashboardData(store.state.configObject.id, query);
         const result = temp.data.results;
-        console.log(result, '@LINUS');
         return result;
         // const result = await DB.queryDB(query);
         // return result;
@@ -276,7 +253,6 @@ export default {
       const { data } = await apiServices.getIndicatorDataSources(indicatorId);
       const sourcesAvailable = data.datasources.map((source) => this.dlGetDataSource(source.id));
 
-      console.log(sourcesAvailable, 'getDataSourcesFromIndicator');
       if (sourcesAvailable.length <= 0) {
         return [];
       }
@@ -321,15 +297,5 @@ export default {
       return data.results[0];
       // return result[result.length - 1];
     },
-    async getDexieTableValues(query) {
-      if (query === '') {
-        return false;
-      }
-      const result = await DB.queryTableByName(query);
-      return result;
-    },
-  },
-  async mounted() {
-    // this.valueType = await this.getDexieTableValues('valuetypes');
   },
 };

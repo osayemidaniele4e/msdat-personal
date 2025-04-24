@@ -39,7 +39,6 @@ export default class DataLayer {
    */
 
   setup(object) {
-    console.log(object, 'INIT DATA LAYER 2');
     this.indicatorList = object.dashboardIndicators;
     this.defaultIndicators = object.defaultIndicators;
     this.dataSourceList = object.dashboardDataSources;
@@ -69,12 +68,6 @@ export default class DataLayer {
    * with all of it then populates the
    * with the first three in the list
   //  */
-  // setAllIndicators() {
-  //   const allIndicators = this.DB.listAllIndicators();
-  //   this.indicatorList = allIndicators;
-  //   console.log(this.indicatorList);
-  //   this.defaultIndicators = allIndicators.slice(0, 3);
-  // }
 
   /**
    * data layer initialization
@@ -85,7 +78,6 @@ export default class DataLayer {
       this.setup(object);
 
       console.time('fetching');
-      console.log('fetching', object);
 
       /**
          * The apiServices returns all the and array of response for the
@@ -116,7 +108,6 @@ export default class DataLayer {
       const dashboardIndicators = await apiServices.getDashboardIndicators(this.dashboardID);
 
       const dashboardIndicatorIDs = dashboardIndicators.data.indicators.map((item) => item.id);
-      console.log(dashboardIndicatorIDs, 'dashboardIndicatorIDs');
 
       const filteredIndicatorIDArray = dashboardIndicatorIDs.filter(
         (value) => value !== undefined && !Number.isNaN(value),
@@ -217,8 +208,6 @@ export default class DataLayer {
     if (!Array.isArray(indicatorsIDs)) {
       indicators = [indicatorsIDs];
     }
-
-    console.log(indicators, 'filteredIndicatorIDArray');
 
     this.store.commit('DL/ADD_DATA', {
       tableName: AVAILABLE_DASHBOARD_INDICATOR,

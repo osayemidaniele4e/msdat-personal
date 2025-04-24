@@ -276,7 +276,6 @@ export default {
           });
         }
       } else if (filteredIndicator.length > 0) {
-        console.log(filteredIndicator, 'filteredIndicator');
         if (filteredIndicator.length === 0) return null;
 
         return filteredIndicator.reduce((latest, current) => {

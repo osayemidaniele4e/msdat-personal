@@ -157,19 +157,11 @@ export default {
         this.notShow = true;
         this.loading = true;
         const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-        console.log(dataSources, '@LINUSX 1');
+
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
         this.notShow = false;
-      },
-      deep: false,
-      immediate: false,
-    },
-
-    selectedDS: {
-      async handler() {
-        console.log('cali');
       },
       deep: false,
       immediate: false,
@@ -180,6 +172,7 @@ export default {
         // debugger;
         // this.loading = true;
         // first condition checks if there is change in the old and new datasource then sets newVal as datasource selected
+        // eslint-disable-next-line no-unused-vars
         let dataSourceSelected = [];
         if (oldVal !== newVal) {
           if (!Array.isArray(newVal)) {
@@ -187,14 +180,9 @@ export default {
           } else {
             dataSourceSelected = newVal;
           }
-          console.log(dataSourceSelected, '@LINUSX 2');
-          // const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
-          // this.setUpHighChartConfig(seriesArray, years);
-          // this.loading = false;
         } else {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const filteredDataSources = dataSources.filter((dataSource) => dataSource.id !== 30);
-          console.log(dataSources, '@LINUSX 3');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredDataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
@@ -213,7 +201,6 @@ export default {
           } else {
             this.hasOneDatasource = false;
           }
-          console.log(dataSources, '@LINUSX 4');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
           // added this so that the datasource list will update anytime an indicator is selected
@@ -233,7 +220,6 @@ export default {
         this.loading = true;
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          console.log(dataSources, '@LINUSX 5');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
@@ -248,7 +234,6 @@ export default {
         this.loading = true;
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          console.log(dataSources, '@LINUSX 6');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
@@ -273,103 +258,6 @@ export default {
      * @mixin formatter
      */
 
-    // setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
-    //   const currentYear = new Date().getFullYear();
-    //   const { name } = this.$route.params;
-
-    //   // const beforeCurrentYearColor = 'rgba(173, 216, 230, 0.3)'; // Change this color as needed
-    //   // const afterCurrentYearColor = 'rgba(144, 238, 144, 0.3)'; // Change this color as needed
-
-    //   this.ChartOptions = {
-    //     tooltip: {
-    //       // pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
-    //       shared: true,
-    //     },
-    //     yAxis: {
-    //       ...defaultOptions.yAxis,
-    //       title: {
-    //         ...defaultOptions.yAxis.title,
-    //       },
-    //       gridLineWidth: 0,
-    //       labels: {
-    //         ...defaultOptions.yAxis.labels,
-    //       },
-    //       plotLines: [...this.computeChartPlotLines(this.values)],
-    //     },
-    //     xAxis: {
-    //       ...defaultOptions.xAxis,
-    //       crosshair: {
-    //         enabled: true,
-    //       },
-    //       categories: sortedYear,
-    //       plotLines: [
-    //         // Plot line for the current year
-    //         {
-    //           value: currentYear,
-    //           color: 'gray', // Change this color as needed
-    //           width: 2,
-    //           zIndex: 2,
-    //         },
-    //       ],
-    //     },
-    //     chart: {
-    //       ...defaultOptions.chart,
-    //       type: 'line',
-    //       height: '300',
-    //     },
-    //     title: {
-    //       ...defaultOptions.title,
-    //     },
-    //     series: ChartSeriesObject.map((series) => {
-    //       // Divide the series data into two based on the current year only if the condition is met
-    //       if (name === 'Demographics') {
-    //         const dataBeforeCurrentYear = series.data.filter(([year]) => year < currentYear);
-    //         const dataAfterCurrentYear = series.data.filter(([year]) => year >= currentYear);
-
-    //         // Assign different line styles for data before and after the current year
-    //         return [
-    //           {
-    //             // name: series.name + ' (Before ' + currentYear + ')',
-    //             name: `${series.name}`,
-    //             data: dataBeforeCurrentYear,
-    //             lineDashStyle: 'Solid', // Change this to 'Dash' for a dashed line
-    //           },
-    //           {
-    //             name: `${series.name} (Projection)`,
-    //             //  name: `${series.name} (Projection)`,
-    //             data: dataAfterCurrentYear,
-    //             lineDashStyle: 'Dash', // Change this to 'Solid' for a solid line
-    //           },
-    //         ];
-    //       }
-    //       // If the condition is not met, use the original series data
-    //       return series;
-    //     }).flat(),
-    //     plotOptions: {
-    //       series: {
-    //         // grouping: true,
-    //         // pointWidth: 10,
-    //         // connectNulls: false,
-    //         // pointPlacement: 'between',
-    //         // borderWidth: 0,
-    //       },
-    //       column: {
-    //         borderRadius: 0,
-    //         pointPadding: 0.5,
-    //         groupPadding: 0.05,
-    //         borderWidth: 5,
-    //       },
-    //       line: {
-    //         tooltip: {
-    //           pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
-    //           shared: true,
-    //         },
-    //       },
-    //     },
-    //   };
-    //   const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
-    //   this.ChartOptions.yAxis.title.text = displayFactor;
-    // },
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       const currentYear = new Date().getFullYear();
       const { name } = this.$route.params;
@@ -630,8 +518,6 @@ export default {
         };
       }
 
-      // console.log(dataSources, '@LINUSX');
-
       const chartSeriesArray = [];
       // const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
 
@@ -734,7 +620,6 @@ export default {
        * radio button so it only returns/ selectees a single Object
        * at a time
        */
-      console.log([datasourceArray], '@LINUSX 7');
 
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
@@ -760,7 +645,6 @@ export default {
         });
         const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
         // confidence range
-        console.log(datasource, '@LINUSX 8');
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           [this.selectedDS],
           valueType,
@@ -776,11 +660,9 @@ export default {
         this.loading = true;
         if (!this.selectDataSource) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          console.log(dataSources, '@LINUSX 9');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
           this.setUpHighChartConfig(seriesArray, years);
         } else {
-          console.log(this.selectDataSource, '@LINUSX 10');
           const { seriesArray, years } = await this.toHighChartSeriesSetup(this.selectDataSource);
           this.setUpHighChartConfig(seriesArray, years);
         }
@@ -794,7 +676,6 @@ export default {
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
       const availableDataSource = await this.getDataSourcesFromIndicator(this.values.indicator.id);
-      console.log(availableDataSource, 'getDataSourcesFromIndicator 2');
 
       return availableDataSource;
     },
@@ -802,7 +683,6 @@ export default {
     async getDataSourceFromDropdown() {
       // get datasource from the dropdown
       const dataSourceDropdown = await this.setDataSourcesDropdown(this.values.indicator.id);
-      console.log(dataSourceDropdown, 'getDataSourcesFromIndicator 3');
       const dataSourceList = [];
       dataSourceDropdown.forEach((item) => {
         const arr = item.datasource;

@@ -541,24 +541,6 @@ export default {
     setState(val) {
       this.selectedMapName = val;
     },
-    // async log(optionsObject, index, index2) {
-    // console.log('MSDAT2.0');
-    /**
-     * This Update the route any time the  control panel changers
-     */
-    // if (Object.keys(optionsObject).length > 0) {
-    //   const objects = this.extractIdsOfObject(optionsObject);
-    //   this.addHashToLocation({
-    //     section: index,
-    //     first_related: optionsObject.indicator.first_related,
-    //     second_related: optionsObject.indicator.second_related,
-    //     ...objects,
-    //   });
-    // }
-    // },
-    // closeOnboard() {
-    //   this.firstTime = false;
-    // },
 
     onResize() {
       if (window.innerWidth < 769) {
@@ -569,7 +551,6 @@ export default {
     },
     updateProgram(item, indicators, index2) {
       const filteredIndicator = indicators.filter((indicator) => indicator.program_area === item);
-      console.log(filteredIndicator, '@@item@@');
       const data = {
         content: filteredIndicator[0],
         index: index2,
@@ -582,7 +563,6 @@ export default {
   watch: {
     async program_option(newVal) {
       const indicators = this.program_areas.map((p) => p.indicators);
-      console.log(indicators, 'indicators');
       const singleArr = indicators.flat();
       this.program_selected = singleArr.filter((item) => item.full_name === newVal);
     },

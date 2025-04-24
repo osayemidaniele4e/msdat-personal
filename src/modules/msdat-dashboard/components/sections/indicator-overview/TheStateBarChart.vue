@@ -92,10 +92,6 @@ export default {
           this.$refs.SubCard.close();
         }
       },
-      acrossRegion(oldValue, newValue) {
-        console.log(newValue, 'I can nerver lie');
-        console.log(oldValue, 'I can nerver lie');
-      },
       deep: true,
     },
 
@@ -249,7 +245,6 @@ export default {
         location: this.values.location.id,
       });
       const parentValue = response.data.results;
-      console.log(parentValue, 'LocationsID Value');
 
       // because i know i am expecting only on value in the array of results
       if (parentValue.length > 0) {
@@ -336,15 +331,7 @@ export default {
       this.loading = false;
     },
     async computeNationalND() {
-      console.log(this.values, 'LocationsID c');
       if (this.values.numdenum === true) {
-        // const numeratorData = await this.dlQuery({
-        //   datasource: this.values.datasource.id,
-        //   indicator: this.values.indicator.id,
-        //   period: this.values.year,
-        //   location: this.values.location.id,
-        //   value_type: 6, // numerator
-        // });
         const numResponse = await ApiServices.getDataWithPeriod({
           indicator: this.values.indicator.id,
           datasource: this.values.datasource.id,

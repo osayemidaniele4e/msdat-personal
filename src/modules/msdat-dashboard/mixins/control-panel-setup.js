@@ -89,7 +89,6 @@ export default {
     setUpControlPanelDropDown() {
       // debugger;
       this.defaultIndicatorDropdown = groupIndicator(this.dlGetAvailableIndicators, 'program_area');
-      console.log(this.defaultIndicatorDropdown, 'indicator world 3');
 
       // this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
       //   key: 'indicator',
@@ -196,18 +195,15 @@ export default {
       if (Array.isArray(indicatorID)) {
         for (const ind of indicatorID) {
           data = data.concat(await this.queryDBForAvailableLocation(dataSourceID, ind));
-          console.log(data, 'LocationsX@ 1');
         }
       // Fetch available locations for each data source if dataSourceID is an array
       } else if (Array.isArray(dataSourceID)) {
         for (const dat of dataSourceID) {
           data = data.concat(await this.queryDBForAvailableLocation(dat, indicatorID));
-          console.log(data, 'LocationsX@ 2');
         }
       // Fetch available locations for the given dataSourceID and indicatorID
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
-        console.log(data, 'LocationsX@ 3');
       }
 
       // Commit the unique locations to the store
@@ -232,18 +228,6 @@ export default {
     // Get available Indicator
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorsFromDatasource(datasourceID);
-      console.log(data, 'indicator world');
-
-      // const indicatorWithData = data.filter(async (indicatorItem) => {
-      //   // indicator data
-      //   const indicatorData = await this.dlQuery({
-      //     indicator: indicatorItem.id,
-      //     datasource: datasourceID,
-      //   });
-
-      //   // Keep only items where indicatorData is not an empty array
-      //   return indicatorData.length > 0;
-      // });
 
       const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
@@ -254,23 +238,6 @@ export default {
     },
     async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorsFromDatasource(datasourceID);
-      console.log(data, 'indicator world 2');
-
-      // const indicatorWithData = data.filter(async (indicatorItem) => {
-      //   // indicator data
-      //   const indicatorData = await this.dlQuery({
-      //     indicator: indicatorItem.id,
-      //     datasource: datasourceID,
-      //   });
-
-      //   // Keep only items where indicatorData is not an empty array
-      //   return indicatorData.length > 0;
-      // });
-
-      // this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_PAYLOAD', {
-      //   key: 'indicator',
-      //   value: indicatorWithData[1],
-      // });
 
       const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
