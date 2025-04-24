@@ -46,7 +46,7 @@
                   LOG IN
                   <!-- <router-link :to="to" @click="submitForm"> LOG IN </router-link> -->
                 </button>
-                <h4 class="py-3" style="font-size: 15px">Social Authentication</h4>
+                <!-- <h4 class="py-3" style="font-size: 15px">Social Authentication</h4>
                 <div class="d-flex gap-2 justify-content-center align-items-center">
                   <button
                     type="button"
@@ -58,7 +58,7 @@
                   <a :href="linkedlnUrl" class="m-0 ml-2 rounded overflow-hidden">
                     <img width="48" height="36" src="/img/linkedln-logo.png" alt="linkedln logo" />
                   </a>
-                </div>
+                </div> -->
               </div>
             </form>
 
