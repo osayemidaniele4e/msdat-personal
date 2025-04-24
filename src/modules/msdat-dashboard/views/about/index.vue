@@ -15,7 +15,7 @@
       <!-- about MSDAT dashboard -->
       <div class="about-sec-1 d-flex flex-column align-items-center">
 
-        <h1>ABOUT THE MSDAT DASHBOARD</h1>
+        <h1>ABOUT THE MSDAT DASHBOARDX</h1>
 
         <div class="about-sec-text2">
           The Federal Ministry of Health (FMOH) Nigeria multi source data analysis resource provides a single transparent
@@ -76,7 +76,7 @@
       <!-- logical framework -->
       <br><br>
       <div id="logical-framework">
-        <img src="./assets/logical-group.png" class="logical-framework-img">
+        <img src="./assets/Logical-Framework.png" class="logical-framework-img">
       </div>
       <br><br>
       <!-- available data -->
@@ -378,6 +378,7 @@ $msdat-darkgrey: #dedede;
 .logical-framework-img{
   width: 1266px;
   height: 730px;
+  object-fit: contain;
 }
 
 div.modal {
