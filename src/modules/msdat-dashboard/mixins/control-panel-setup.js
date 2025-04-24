@@ -111,6 +111,8 @@ export default {
 
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
 
+      console.log(this.defaultLocationDropdown, 'defaultDataSourceDropdown');
+
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
         payload: this.defaultLocationDropdown,
@@ -205,11 +207,11 @@ export default {
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
-
+      console.log(data, 'defaultDataSourceDropdown');
       // Commit the unique locations to the store
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
-        payload: data,
+        payload: data.sort((a, b) => a.id - b.id),
       });
 
       // Set the default location (Nigeria) in the store
