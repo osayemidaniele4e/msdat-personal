@@ -13,7 +13,7 @@
             :id="`panel-${el.index}`"
             @click="changeControl(el.index, el.title)"
           >
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between el-tit align-items-center">
               {{ el.title }}
               <div class="share-icon-wrapper">
                 <img
@@ -302,7 +302,7 @@ export default {
 
 .share-icon-wrapper {
   border: 1px solid #2b5d5b;
-  margin-left: 20px;
+  margin-left: 15px;
   padding: 2px;
   border-radius: 3px;
 }
@@ -310,6 +310,10 @@ export default {
 .share-icon-wrapper img {
   width: 14px;
   height: 14px;
+}
+.el-tit{
+  font-size:0.9rem;
+  white-space: nowrap;
 }
 
 .border-b {
