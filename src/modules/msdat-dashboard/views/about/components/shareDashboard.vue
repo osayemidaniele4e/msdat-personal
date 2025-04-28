@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="border-bottom col-12 pb-3">
-      <h6 class="font-weight-bold work-sans">Send by Emailx</h6>
+      <h6 class="font-weight-bold work-sans">Send by Email</h6>
       <form class="row no-gutters" @submit.prevent="shareViaEmail">
         <div class="col-md-10">
           <input

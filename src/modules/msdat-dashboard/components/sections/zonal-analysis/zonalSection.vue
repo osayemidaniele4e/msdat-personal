@@ -30,7 +30,7 @@ import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import chartDownload from '../../../mixins/chart_download';
-import { sortHighChartDataFormat } from '../../../mixins/util';
+import { sortHighchartsDataInObjectFormat } from '../../../mixins/util';
 
 export default {
   name: 'ZonalSectionChart',
@@ -69,10 +69,10 @@ export default {
      * @mixin formatter
      */
     formatToHighChart(dataSeries) {
-      // console.log(dataSeries, 'dataSeries');
       const displayFactor = this.dlGetFactor(
         this.controlPanelProps.indicator.factor,
-      ).display_factor;
+        // eslint-disable-next-line
+      )?.display_factor || 'Value'; // Add fallback for displayFactor
 
       this.chart = {
         chart: {
@@ -80,36 +80,56 @@ export default {
           zoomType: 'xy',
         },
         xAxis: {
-          type: 'category',
-          min: -0.3,
-          max:
-            dataSeries.reduce(
-              (total, obj, ind) => total + obj.data.filter((dat) => ind === 0 || !dat[0].includes('-')).length,
-              0,
-            ) - 0.7,
+          type: 'category', // Use category axis for object names
+          // Remove min/max - let Highcharts handle category spacing
+          labels: {
+            rotation: -45, // Rotate labels to prevent overlap if many categories
+            style: {
+              fontSize: '10px', // Adjust font size if needed
+              textOverflow: 'none', // Prevent labels from being cut off (...)
+            },
+          },
         },
         yAxis: {
           gridLineWidth: 0,
           plotLines: [...this.computeChartPlotLines(this.controlPanelProps)],
           title: {
-            text: 'Values',
+            text: displayFactor, // Set title directly here
             style: {
               fontSize: '13px',
               fontFamily: '"Work Sans", sans-serif',
             },
           },
         },
+        tooltip: {
+          // Use pointFormat to display series name, full location name, and value
+          // Access the custom 'fullName' property using point.fullName
+          pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.fullName} - {point.y}</b><br/>',
+          // Use shared tooltip to show all series values for a category on hover
+          // shared: true, // Uncomment if you want a shared tooltip
+        },
         plotOptions: {
           series: {
             dataLabels: {
               enabled: true,
-              format: '{y}',
+              format: '{y}', // Show value on top of column
+              style: {
+                fontSize: '9px', // Smaller font for data labels
+                textOutline: 'none', // Remove outline for better readability
+              },
             },
+            // Adjust padding if columns overlap or are too far apart
+            // pointPadding: 0.1,
+            // groupPadding: 0.2,
+          },
+          column: {
+            borderWidth: 0, // Remove column borders
           },
         },
-        series: dataSeries,
+        series: dataSeries, // dataSeries now contains objects with name, y, fullName
       };
-      this.chart.yAxis.title.text = displayFactor;
+      // yAxis title is already set above
+      // this.chart.yAxis.title.text = displayFactor; // Remove this duplicate line
     },
 
     getZonalDataInHighChartFormat(data) {
@@ -125,16 +145,17 @@ export default {
       for (let index = 1; index < this.colors.length; index += 1) {
         const zonal = data.find((item) => item.location === this.colors[index].id);
         const series = this.dlGetLocation(this.colors[index].id);
-        if (zonal) {
+        if (zonal && series) { // Check both exist
           zonesSeries.push({
-            name: series.name,
+            name: series.name, // Zone name (used for category axis if needed, and default tooltip)
             y: parseFloat(zonal.value),
+            fullName: series.name, // Explicitly add fullName for tooltip consistency
             color: Highcharts.color(zonalColors[series.name]).get(),
           });
         }
       }
-      // sort Zonal series data in ascending order
-      return zonesSeries.sort((a, b) => b.y - a.y);
+      // sort Zonal series data in ascending order (using the correct sorter)
+      return zonesSeries.sort(sortHighchartsDataInObjectFormat); // Use object sorter
     },
 
     filterNonEmptyData(series) {
@@ -146,23 +167,35 @@ export default {
 
     getStateDataAccordingToRegionInHighChartFormat(data) {
       // add this function to a mixin later
-      const formatToHighChart = (dataValues) => dataValues.map((item) => [this.getAbbreviatedStateName(this.dlGetLocation(item.location).name), parseFloat(item.value)]);
+      const formatToHighChart = (dataValues) => dataValues.map((item) => {
+        const location = this.dlGetLocation(item.location);
+        const fullName = location ? location.name : 'Unknown Location'; // Provide a default
+        const abbreviatedName = this.getAbbreviatedStateName(fullName);
+        return {
+          name: abbreviatedName, // For category axis
+          y: parseFloat(item.value),
+          fullName, // For tooltip
+        };
+      });
 
       // already know the zonal levels/parent of all the value
       // index starts at one to skip region data for the series
       const chartSeries = [];
       for (let index = 1; index < this.colors.length; index += 1) {
         const group = data.filter(
-          (item) => this.dlGetLocation(item.location).parent === this.colors[index].id,
+          (item) => this.dlGetLocation(item.location)?.parent === this.colors[index].id, // Safe navigation
         );
         const formattedData = formatToHighChart(group);
-        const sortedData = formattedData.sort(sortHighChartDataFormat);
+        // Use the correct sorting function for objects
+        const sortedData = formattedData.sort(sortHighchartsDataInObjectFormat);
         const series = this.dlGetLocation(this.colors[index].id);
-        chartSeries.push({
-          color: this.colors[index].color,
-          name: series.name,
-          data: sortedData,
-        });
+        if (series) { // Check if series (zone) exists
+          chartSeries.push({
+            color: this.colors[index].color,
+            name: series.name, // Zone name
+            data: sortedData, // Array of {name: 'ABR', y: ..., fullName: ...} objects
+          });
+        }
       }
       // console.log(chartSeries, 'chartseries')
       return chartSeries;
@@ -214,8 +247,6 @@ export default {
   watch: {
     controlPanelProps: {
       async handler(val) {
-        // console.log(val, 'dataSeries val');
-        // debugger;
         this.chart = {};
         this.loader = true;
         const data = await this.dlQuery({
@@ -224,82 +255,109 @@ export default {
           period: val.year,
         });
 
-        if (data.length > 0) {
-          if (val.location.id !== 1) {
+        if (data && data.length > 0) { // Check data is not null/undefined
+          if (val.location.id !== 1) { // State/LGA level view
             const filteredLGADataForState = data.filter(
-              (item) => this.dlGetLocation(item.location).parent === val.location.id,
+              (item) => this.dlGetLocation(item.location)?.parent === val.location.id, // Safe navigation
             );
 
-            const formattedData = filteredLGADataForState.map((item) => [
-              this.getAbbreviatedStateName(this.dlGetLocation(item.location).name),
-              parseFloat(item.value),
-            ]);
+            const formattedData = filteredLGADataForState.map((item) => {
+              const location = this.dlGetLocation(item.location);
+              const fullName = location ? location.name : 'Unknown LGA'; // Default for LGA
+              return {
+                name: fullName, // Using full name for LGA axis label for clarity
+                y: parseFloat(item.value),
+                fullName, // Full name for tooltip
+              };
+            });
 
             const chartSeries = [];
-            const sortedData = formattedData.sort(sortHighChartDataFormat);
+            // Use the correct sorting function for objects
+            const sortedData = formattedData.sort(sortHighchartsDataInObjectFormat);
 
             const stateObject = this.dlGetLocation(val.location.id);
-
             const stateData = data.find((item) => item.location === val.location.id);
+            const zoneColorObj = this.colors.find((item2) => item2.id === stateObject?.parent); // Safe navigation
 
-            sortedData.unshift({
-              name: stateObject.name,
-              y: parseFloat(stateData?.value),
-              // color: this.colors[0].color,
-              color: this.colors.find((item2) => item2.id === stateObject.parent).color,
-            });
+            // Prepend state-level data point if available
+            if (stateObject && stateData && zoneColorObj) {
+              const stateFullName = stateObject.name;
+              const stateAbbreviatedName = this.getAbbreviatedStateName(stateFullName);
+              sortedData.unshift({
+                name: stateAbbreviatedName, // Abbreviated name for axis consistency with national view
+                y: parseFloat(stateData.value),
+                fullName: stateFullName, // Full name for tooltip
+                color: zoneColorObj.color, // Apply color directly to the point
+              });
 
-            const zoneColorObj = this.colors.find((item2) => item2.id === stateObject.parent);
-
-            chartSeries.push({
-              color: zoneColorObj.color,
-              name: stateObject.name,
-              data: sortedData,
-            });
+              chartSeries.push({
+                color: zoneColorObj.color, // Series color remains the zone color
+                name: stateFullName, // Series name is the state name
+                data: sortedData,
+              });
+            } else if (stateObject) {
+              // Handle case where state data or zone color might be missing but we still want to show LGAs
+              chartSeries.push({
+                color: '#cccccc', // Example default color
+                name: stateObject.name,
+                data: sortedData, // Still show sorted LGAs
+              });
+            } else {
+              // Handle case where stateObject itself is missing
+              console.warn('Could not find state object for ID:', val.location.id);
+              // Optionally push an empty series or handle as error
+            }
 
             this.formatToHighChart(chartSeries);
-          } else {
-            // already know the zonal levels/parent of all the value
-            // index starts at one to skip region data for the series
-            const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data);
+          } else { // National/Zonal level view
+            const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data); // Returns objects {name: 'ABR', y: ..., fullName: ...}
+            const zonalSeries = this.getZonalDataInHighChartFormat(data); // Returns objects {name: 'Zone', y: ..., fullName: ..., color: ...}
 
-            const zonalSeries = this.getZonalDataInHighChartFormat(data);
-
-            // console.log(zonalSeries);
-            // add national to top of the zonal series series
             const national = data.find((item) => item.location === 1);
-            zonalSeries.unshift({
-              name: 'Nigeria',
-              y: parseFloat(national.value),
-              color: Highcharts.color('#000000').get(),
-            });
-            const zonalZee = {
-              color: Highcharts.color('#000000').get(),
-              name: 'Nigeria',
-              data: zonalSeries,
-            };
-            // for the new chart, eact array of states has the zone included
-            const newChart = [];
+            if (national) { // Check if national data exists
+              zonalSeries.unshift({
+                name: 'Nigeria', // For axis/default tooltip
+                y: parseFloat(national.value),
+                fullName: 'Nigeria', // Explicit fullName
+                color: Highcharts.color('#000000').get(),
+              });
+            }
 
-            chartSeries.forEach((item) => {
-              const zonalP = zonalZee?.data.find((element) => element.color === item.color);
+            const zonalZee = { // This series groups the National + Zonal columns
+              color: Highcharts.color('#000000').get(), // Default/base color for this series group
+              name: 'Nigeria & Zones', // More descriptive series name
+              data: zonalSeries, // Data points are {name: 'Zone/Nigeria', y: ..., fullName: ..., color: ...}
+            };
+
+            const newChart = [];
+            chartSeries.forEach((item) => { // item is { color: zoneColor, name: zoneName, data: [{name: 'ABR', y: ..., fullName: ...}, ...] }
+              const zonalP = zonalZee?.data.find((element) => element.color === item.color); // Find corresponding zone data point by color
               if (zonalP !== undefined) {
-                const newArr = [zonalP?.name, zonalP?.y];
-                item.data.unshift(newArr);
+                // Prepend the zone data point to the state data array
+                item.data.unshift({
+                  name: zonalP.name, // Zone name for axis category
+                  y: zonalP.y,
+                  fullName: zonalP.fullName, // Zone name for tooltip
+                  color: zonalP.color, // Use the zone's specific color for this point
+                });
+                newChart.push(item);
+              } else {
+                // If zone data point not found (e.g., color mismatch), still add the state series
+                console.warn('Could not find matching zone data for series:', item.name);
                 newChart.push(item);
               }
             });
 
-            newChart.unshift();
-            // add zonal series to top of main the series
-            chartSeries.unshift(zonalZee);
-            const filteredSeries = this.filterNonEmptyData(chartSeries);
-            // chartSeries.unshift(zonalZee); //  removed this part
+            // Add the national/zonal series itself as the first series
+            newChart.unshift(zonalZee);
+
+            const filteredSeries = this.filterNonEmptyData(newChart);
             this.formatToHighChart(filteredSeries);
           }
+        } else {
+          console.warn('No data received from dlQuery for:', val);
+          this.chart = {}; // Clear chart if no data
         }
-        // Plot for LGAs
-
         this.loader = false;
       },
       deep: true,

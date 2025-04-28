@@ -94,7 +94,7 @@
                     <span style="cursor: pointer" @click="$router.push('/custom')">Home</span>
                     <!-- Modal for share Dashboard -->
                     <b-icon font-scale="2" icon="dot"></b-icon>
-                    <span style="cursor: pointer" @click="shareDash">Share Dashboard</span>
+                    <span style="cursor: pointer" @click="shareDash">Share Dashboardxz</span>
 
                     <b-modal id="share-dashboard-modal" title="Share Dashboard" hide-footer>
                       <shareDashboard />
