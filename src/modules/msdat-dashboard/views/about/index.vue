@@ -76,7 +76,7 @@
       <!-- logical framework -->
       <br><br>
       <div id="logical-framework">
-        <img src="./assets/logical-group.png" class="logical-framework-img">
+        <img src="./assets/Logical-Framework.png" class="logical-framework-img">
       </div>
       <br><br>
       <!-- available data -->
@@ -378,6 +378,7 @@ $msdat-darkgrey: #dedede;
 .logical-framework-img{
   width: 1266px;
   height: 730px;
+  object-fit: contain;
 }
 
 div.modal {
