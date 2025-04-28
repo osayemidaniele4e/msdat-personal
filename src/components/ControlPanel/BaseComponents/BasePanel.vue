@@ -74,7 +74,9 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
     filterModifiedControls() {
-      const section = this.modifiedControls.filter((item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection);
+      const section = this.modifiedControls.filter(
+        (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection,
+      );
       this.changeControl(section[0].index, section[0].title);
     },
 
@@ -242,7 +244,6 @@ export default {
         }
       }
     },
-
   },
   computed: {
     // abc() {
@@ -275,6 +276,22 @@ export default {
 
 .main {
   display: inherit;
+}
+
+.share-icon-wrapper {
+  border: 1px solid #2b5d5b;
+  margin-left: 15px;
+  padding: 2px;
+  border-radius: 3px;
+}
+
+.share-icon-wrapper img {
+  width: 14px;
+  height: 14px;
+}
+.el-tit {
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .border-b {
