@@ -13,17 +13,7 @@
             :id="`panel-${el.index}`"
             @click="changeControl(el.index, el.title)"
           >
-            <div class="d-flex justify-content-between align-items-center">
-              {{ el.title }}
-              <div class="share-icon-wrapper">
-                <img
-                  src="@/assets/share.png"
-                  alt="share-btn"
-                  class="share-icon"
-                  @click.stop="toggleShareModal(el.title)"
-                />
-              </div>
-            </div>
+            {{ el.title }}
           </li>
         </transition-group>
       </draggable>
@@ -34,17 +24,12 @@
     <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
-    <base-modal :showModal="showShareSectionModal" :size="'md'">
-      <template #title><h4 class="mb-0 font-weight-bold work-sans">Share Section</h4> </template>
-      <ShareSection />
-    </base-modal>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
-import ShareSection from '@/modules/msdat-dashboard/components/ShareSection.vue';
 import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 
 export default {
@@ -52,7 +37,6 @@ export default {
   mixins: [controlSetup],
   components: {
     draggable,
-    ShareSection,
   },
   data() {
     return {
@@ -61,7 +45,6 @@ export default {
       selectedIndex: 0,
       title: 'Indicator Overview',
       checkIndex: 0,
-      showShareSectionModal: false,
     };
   },
 
@@ -87,7 +70,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX', 'SET_SECTION']),
+    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX']),
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
     filterModifiedControls() {
@@ -95,11 +78,6 @@ export default {
         (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection,
       );
       this.changeControl(section[0].index, section[0].title);
-    },
-
-    toggleShareModal(title) {
-      this.showShareSectionModal = !this.showShareSectionModal;
-      this.SET_SECTION(title);
     },
 
     async changeControl(index, title) {
@@ -302,7 +280,7 @@ export default {
 
 .share-icon-wrapper {
   border: 1px solid #2b5d5b;
-  margin-left: 20px;
+  margin-left: 15px;
   padding: 2px;
   border-radius: 3px;
 }
@@ -310,6 +288,10 @@ export default {
 .share-icon-wrapper img {
   width: 14px;
   height: 14px;
+}
+.el-tit {
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .border-b {
@@ -333,18 +315,13 @@ export default {
   // padding: 20px;
 }
 
-.tab-link.active .share-icon-wrapper {
-  background-color: white;
-  color: white !important;
-}
-
 .tab-link {
   // border-bottom: 2.5px solid $primary;
   // border: 1.0px solid #007d53;
   border: 1px solid $primary;
   background-color: white;
   color: black !important;
-  padding: 1rem 1rem;
+  padding: 1rem 2rem;
   height: 1rem;
   max-width: 600px;
   display: flex;
