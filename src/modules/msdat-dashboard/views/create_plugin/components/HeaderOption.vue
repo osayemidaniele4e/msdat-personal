@@ -136,23 +136,12 @@
           <span>Subscribe to our newsletter</span>
         </a>
       </li>
-      <div>
-        <button @click="clearDB" class="btn-2 btn-outline-primary bg-danger rounded-2">
-          CLEAR CACHE
-        </button>
-      </div>
     </ul>
     <base-modal :showModal="socialModal" :size="'md'">
       <template #title><h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6> </template>
       <Socials />
     </base-modal>
     <NewsLetter />
-
-    <ClearDBCacheModal
-      style="z-index: 1500"
-      v-if="showClearDataModal"
-      :showModal="showClearDataModal"
-    />
   </div>
 </template>
 
@@ -193,9 +182,6 @@ export default {
     // NewsLetter Modal
     showModal() {
       this.$root.$emit('bv::show::modal', 'modal-newsLetter', '#btnShow');
-    },
-    async clearDB() {
-      this.showClearDataModal = true;
     },
   },
 };

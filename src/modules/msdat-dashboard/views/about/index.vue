@@ -260,6 +260,7 @@ export default {
       try {
         // Get all indicators and datasources
         const data = await apiServices.getOtherEndpoint();
+        console.log('MSDAT@ 3');
 
         if (data && Array.isArray(data)) {
           // Initialize data layer with all available indicators and datasources

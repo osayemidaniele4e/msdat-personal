@@ -187,6 +187,7 @@ export default {
     async setUpDataSourceNYearDropdown() {
       const multiSelectGroup = [];
       const dataSources = this.dlGetDashboardDataSource();
+      console.log(dataSources, '@ERASMUS 3X');
       for (let index = 0; index < dataSources.length; index += 1) {
         const dataSourceObject = dataSources[index];
         // eslint-disable-next-line no-await-in-loop
@@ -316,28 +317,6 @@ export default {
             },
           });
         }
-
-        // const orderResult = queryObject.map((item, index) => {
-        //   const response = result[index];
-        //   const dataValues = response.map((element) => [
-        //     this.dlGetLocation(element.location).name,
-        //     parseFloat(element.value),
-        //   ]);
-        //   // const dataSource = this.dlGetDataSource(item.datasource).datasource;
-
-        //   console.trace({
-        //     indicator: controlValues.indicator.id,
-        //     // eslint-disable-next-line radix
-        //     datasource: parseInt(controlValues.datasource.id.split('-')[0]),
-        //     period: controlValues.datasource.id.split('-')[1],
-        //     location: 1,
-        //   });
-
-        //   return {
-        //     name: dataSourcesNYear[index].item,
-        //     data: dataValues,
-        //   };
-        // });
 
         this.chartConfig = {
           plotOptions: {

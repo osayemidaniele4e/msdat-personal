@@ -47,16 +47,6 @@
           : true
       "
     />
-    <!-- <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" /> -->
-    <ClearDBCacheModal
-      :isOpen="showClearDataModal"
-      @close="showClearDataModal = false"
-      @clear="clearDBCache"
-      clearText="CLEAR"
-    >
-      <h3>Clear Cache</h3>
-      <p class="clearCacheSubtitle" >Click on the button below to clear dashboard cache</p>
-    </ClearDBCacheModal>
     <div class="preview" v-if="$route.query.prev">
       <b-button
         @click="$router.push('/custom/requests')"
@@ -119,7 +109,6 @@ import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
 // import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
 import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
-import ClearDBCacheModal from '../msdat-dashboard/views/about/components/ClearCacheModal.vue';
 
 export default {
   name: 'DynamicDashboard',
@@ -129,7 +118,6 @@ export default {
     GisMSDAT: gisInstance,
     // ClearDBModal,
     NewsLetter,
-    ClearDBCacheModal,
   },
   data() {
     return {
@@ -393,6 +381,7 @@ export default {
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
+        // id: dashboard.id,
       };
       this.saveDashboard(
         ids,
@@ -454,6 +443,7 @@ export default {
       this.isGIS = true;
       this.configObject = '';
       this.configObject = dashboard;
+      localStorage.setItem('activeDashboardID', dashboard.id);
       this.SET_CONFIGURATIONS(dashboard);
       return;
     }
@@ -492,7 +482,9 @@ export default {
           initialDataSource: dashboard.initialDataSource,
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
+          id: dashboard.id,
         };
+        localStorage.setItem('activeDashboardID', dashboard.id);
         this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;
         this.isGIS = false;
