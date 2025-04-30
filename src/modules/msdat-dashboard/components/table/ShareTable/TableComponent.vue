@@ -622,16 +622,25 @@ export default {
 
       // check for undefined
       function hasUndefinedOrNullValues(obj) {
-        return Object.values(obj).some((val) => val === undefined || val === null);
+        // return Object.values(obj).some((val) => val === undefined || val === null);
+        if (obj === null || obj === undefined || obj === '') return true;
+
+        if (typeof obj === 'object' && !Array.isArray(obj)) {
+          // eslint-disable-next-line no-unused-vars
+          return Object.entries(obj).some(([_, value]) => hasUndefinedOrNullValues(value));
+        }
+
+        return false;
       }
       if (hasUndefinedOrNullValues(queryObject) === false) {
-        const result = await DB.queryDB(queryObject);
+        const result = await this.dlQuery(queryObject);
+        console.log(result, '@NAGO');
         return result;
       }
     },
     async fetchNhmisData(query) {
       const result = await DB.queryDBForNhmisMonthly(query);
-      console.log('new result', result);
+      console.log('new result@@', result);
       return result.reverse()[0];
       // return result[result.length - 1];
     },

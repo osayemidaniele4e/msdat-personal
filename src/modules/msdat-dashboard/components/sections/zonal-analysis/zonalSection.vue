@@ -29,6 +29,7 @@
 import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 import chartDownload from '../../../mixins/chart_download';
 import { sortHighchartsDataInObjectFormat } from '../../../mixins/util';
 
@@ -249,11 +250,17 @@ export default {
       async handler(val) {
         this.chart = {};
         this.loader = true;
-        const data = await this.dlQuery({
+        const zonalResponse = await ApiServices.getZonalData({
           indicator: val.indicator.id,
           datasource: val.datasource.id,
           period: val.year,
         });
+        const data = zonalResponse.data.results;
+        // const data = await this.dlQuery({
+        //   indicator: val.indicator.id,
+        //   datasource: val.datasource.id,
+        //   period: val.year,
+        // });
 
         if (data && data.length > 0) { // Check data is not null/undefined
           if (val.location.id !== 1) { // State/LGA level view
