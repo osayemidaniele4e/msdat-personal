@@ -567,7 +567,24 @@ export default {
         allYears.push(...years);
       });
       // sort and get only unique ears for the categories
-      const sortedYear = sortBy(uniq(allYears));
+      const sortedYear = sortBy(uniq(allYears)).sort((a, b) => {
+        const extract = (str) => {
+          const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+          const year = match ? parseInt(match[1], 10) : 0;
+          const week = match && match[2] ? parseInt(match[2], 10) : null;
+          return { year, week };
+        };
+
+        const { year: yearA, week: weekA } = extract(a);
+        const { year: yearB, week: weekB } = extract(b);
+
+        if (yearA !== yearB) return yearA - yearB;
+
+        if (weekA !== null && weekB !== null) return weekA - weekB;
+        if (weekA === null) return -1;
+        if (weekB === null) return 1;
+        return 0;
+      });
 
       // cause we know the queryArray  array
       // follows the same index as the mappedResponse array
@@ -575,10 +592,24 @@ export default {
       mappedResponse.forEach((item, index) => {
         const data = item?.map((Object) => [Object.period, Number.parseFloat(Object.value)]);
 
-        sortedData = data.sort(
-          // eslint-disable-next-line radix
-          (a, b) => Number.parseInt(a[0]) - Number.parseInt(b[0]),
-        );
+        sortedData = data.sort((a, b) => {
+          const extract = (str) => {
+            const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+            const year = match ? parseInt(match[1], 10) : 0;
+            const week = match && match[2] ? parseInt(match[2], 10) : null;
+            return { year, week };
+          };
+
+          const { year: yearA, week: weekA } = extract(a[0]);
+          const { year: yearB, week: weekB } = extract(b[0]);
+
+          if (yearA !== yearB) return yearA - yearB;
+
+          if (weekA !== null && weekB !== null) return weekA - weekB;
+          if (weekA === null) return -1;
+          if (weekB === null) return 1;
+          return 0;
+        });
         const datasource = this.dlGetDataSource(queryArray[index].datasource);
         let seriesObject = {};
         if (mappedValueTypes.length > 0) {
