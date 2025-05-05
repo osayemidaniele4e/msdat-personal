@@ -252,7 +252,7 @@ export default {
      * @Function Function to get datasource related to a particular indicator
      * @param {Number} indicatorID
      */
-    const ds = await this.getDataSourcesFromDexie(this.indicatorSelectedID);
+    const ds = await this.getDataSourcesFromIndicator(this.indicatorSelectedID);
     this.dataSources = ds.map((item) => ({
       id: item.id,
       datasource: item.datasource,

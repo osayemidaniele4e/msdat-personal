@@ -157,18 +157,11 @@ export default {
         this.notShow = true;
         this.loading = true;
         const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
         this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
         this.notShow = false;
-      },
-      deep: false,
-      immediate: false,
-    },
-
-    selectedDS: {
-      async handler() {
-        console.log('cali');
       },
       deep: false,
       immediate: false,
@@ -179,6 +172,7 @@ export default {
         // debugger;
         // this.loading = true;
         // first condition checks if there is change in the old and new datasource then sets newVal as datasource selected
+        // eslint-disable-next-line no-unused-vars
         let dataSourceSelected = [];
         if (oldVal !== newVal) {
           if (!Array.isArray(newVal)) {
@@ -186,9 +180,6 @@ export default {
           } else {
             dataSourceSelected = newVal;
           }
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
-          this.setUpHighChartConfig(seriesArray, years);
-          this.loading = false;
         } else {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const filteredDataSources = dataSources.filter((dataSource) => dataSource.id !== 30);
@@ -267,103 +258,6 @@ export default {
      * @mixin formatter
      */
 
-    // setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
-    //   const currentYear = new Date().getFullYear();
-    //   const { name } = this.$route.params;
-
-    //   // const beforeCurrentYearColor = 'rgba(173, 216, 230, 0.3)'; // Change this color as needed
-    //   // const afterCurrentYearColor = 'rgba(144, 238, 144, 0.3)'; // Change this color as needed
-
-    //   this.ChartOptions = {
-    //     tooltip: {
-    //       // pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
-    //       shared: true,
-    //     },
-    //     yAxis: {
-    //       ...defaultOptions.yAxis,
-    //       title: {
-    //         ...defaultOptions.yAxis.title,
-    //       },
-    //       gridLineWidth: 0,
-    //       labels: {
-    //         ...defaultOptions.yAxis.labels,
-    //       },
-    //       plotLines: [...this.computeChartPlotLines(this.values)],
-    //     },
-    //     xAxis: {
-    //       ...defaultOptions.xAxis,
-    //       crosshair: {
-    //         enabled: true,
-    //       },
-    //       categories: sortedYear,
-    //       plotLines: [
-    //         // Plot line for the current year
-    //         {
-    //           value: currentYear,
-    //           color: 'gray', // Change this color as needed
-    //           width: 2,
-    //           zIndex: 2,
-    //         },
-    //       ],
-    //     },
-    //     chart: {
-    //       ...defaultOptions.chart,
-    //       type: 'line',
-    //       height: '300',
-    //     },
-    //     title: {
-    //       ...defaultOptions.title,
-    //     },
-    //     series: ChartSeriesObject.map((series) => {
-    //       // Divide the series data into two based on the current year only if the condition is met
-    //       if (name === 'Demographics') {
-    //         const dataBeforeCurrentYear = series.data.filter(([year]) => year < currentYear);
-    //         const dataAfterCurrentYear = series.data.filter(([year]) => year >= currentYear);
-
-    //         // Assign different line styles for data before and after the current year
-    //         return [
-    //           {
-    //             // name: series.name + ' (Before ' + currentYear + ')',
-    //             name: `${series.name}`,
-    //             data: dataBeforeCurrentYear,
-    //             lineDashStyle: 'Solid', // Change this to 'Dash' for a dashed line
-    //           },
-    //           {
-    //             name: `${series.name} (Projection)`,
-    //             //  name: `${series.name} (Projection)`,
-    //             data: dataAfterCurrentYear,
-    //             lineDashStyle: 'Dash', // Change this to 'Solid' for a solid line
-    //           },
-    //         ];
-    //       }
-    //       // If the condition is not met, use the original series data
-    //       return series;
-    //     }).flat(),
-    //     plotOptions: {
-    //       series: {
-    //         // grouping: true,
-    //         // pointWidth: 10,
-    //         // connectNulls: false,
-    //         // pointPlacement: 'between',
-    //         // borderWidth: 0,
-    //       },
-    //       column: {
-    //         borderRadius: 0,
-    //         pointPadding: 0.5,
-    //         groupPadding: 0.05,
-    //         borderWidth: 5,
-    //       },
-    //       line: {
-    //         tooltip: {
-    //           pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
-    //           shared: true,
-    //         },
-    //       },
-    //     },
-    //   };
-    //   const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
-    //   this.ChartOptions.yAxis.title.text = displayFactor;
-    // },
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       const currentYear = new Date().getFullYear();
       const { name } = this.$route.params;
@@ -625,7 +519,7 @@ export default {
       }
 
       const chartSeriesArray = [];
-      const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
+      // const mappedDataSource = dataSources?.map((item) => this.dlGetDataSource(item.id));
 
       const mappedValueTypes = valueTypeArray?.map((item) => this.dlGetValueTypes(item));
       const queryArray = [];
@@ -641,8 +535,8 @@ export default {
        * also take into consideration that sometimes the visualization may require a particular
        * Value type
        */
-      if (mappedDataSource !== undefined) {
-        mappedDataSource.forEach((datasource) => {
+      if (dataSources !== undefined) {
+        dataSources.forEach((datasource) => {
           const searchDataSource = parameterObject;
           searchDataSource.datasource = datasource?.id;
           if (mappedValueTypes.length > 0) {
@@ -751,7 +645,6 @@ export default {
         });
         const valueType = [valuetype[0].id, 4, 3]; // when know that 4 and 3 are the upper and lower
         // confidence range
-
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           [this.selectedDS],
           valueType,
@@ -782,7 +675,8 @@ export default {
     // Function to get available data sources by indicator to accommodate...
     // ...new feature that only displays data sources related to the indicator
     async getAvailableDataSources() {
-      const availableDataSource = await this.getDataSourcesFromDexie(this.values.indicator.id);
+      const availableDataSource = await this.getDataSourcesFromIndicator(this.values.indicator.id);
+
       return availableDataSource;
     },
     // Function to get datasource from dropdown

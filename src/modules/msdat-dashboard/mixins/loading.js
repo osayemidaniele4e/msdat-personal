@@ -17,32 +17,29 @@ export default {
   },
   methods: {
     changeLoadingData() {
-      for (let i = 1; i < 4; i += 1) {
+      for (let i = 1; i < 1; i += 1) {
         setInterval(() => {
           // console.log(i);
           this.loadingData = i;
-        }, i * 4000);
+        }, i * 1000);
       }
     },
   },
   watch: {
     loadingData(newValue) {
-      const firstvisit = localStorage.getItem('visited');
+      // const firstvisit = localStorage.getItem('visited');
       switch (newValue) {
         case 0:
           this.loadingTitle = '.';
-          this.loadingContent
-            = firstvisit === null
-              ? 'Getting the dashboard ready for the first time'
-              : 'Importing key health indicators...';
+          this.loadingContent = 'Preparing Data';
           break;
         case 1:
           this.loadingTitle = '..';
-          this.loadingContent = 'Importing key health indicators...';
+          this.loadingContent = 'Setting up visualizations...';
           break;
         case 2:
           this.loadingTitle = '...';
-          this.loadingContent = 'Importing datasources across states...';
+          this.loadingContent = 'Completed...';
           break;
         case 3:
           this.loadingTitle = '....';
@@ -55,12 +52,9 @@ export default {
     },
   },
   mounted() {
-    const firstvisit = localStorage.getItem('visited');
+    // const firstvisit = localStorage.getItem('visited');
     this.changeLoadingData();
-    this.loadingContent
-      = firstvisit === null
-        ? 'Getting the dashboard ready for the first time'
-        : 'Importing key health indicators...';
+    this.loadingContent = 'Setting up visualizations...';
     this.loadingTitle = '';
   },
 };

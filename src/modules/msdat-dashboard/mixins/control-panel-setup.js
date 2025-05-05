@@ -3,7 +3,8 @@
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
 import { sortBy, uniq } from 'lodash';
-import { groupIndicator, isDataYearly } from '@/util/helper';
+import { groupIndicator } from '@/util/helper';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   data() {
@@ -89,10 +90,10 @@ export default {
       // debugger;
       this.defaultIndicatorDropdown = groupIndicator(this.dlGetAvailableIndicators, 'program_area');
 
-      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
-        key: 'indicator',
-        payload: this.defaultDataSourceDropdown,
-      });
+      // this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+      //   key: 'indicator',
+      //   payload: this.defaultDataSourceDropdown,
+      // });
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
@@ -109,6 +110,8 @@ export default {
       this.defaultLocationDropdown.unshift(location);
 
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
+
+      console.log(this.defaultLocationDropdown, 'defaultDataSourceDropdown');
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
@@ -148,34 +151,27 @@ export default {
       dataSourceID = this.defaultDataSource.id,
       locationID = this.defaultLocation.id,
     ) {
-      const data = await this.dlQuery({
+      const { data } = await ApiServices.getPeriod({
         indicator: indicatorID,
         datasource: dataSourceID,
         location: locationID,
       });
+      const years = data.periods;
+      return years.sort((a, b) => b - a);
+    },
+    // get years by datasource
+    async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
+      const data = await this.queryDBForYearByDs(dataSourceID);
+      // debugger;
       // const onlyYearData = data?.filter((item) => {
       //   if (isDataYearly(item.period)) {
       //     return item.period;
       //   }
       //   return false;
       // });
-      const years = data?.map((item) => item.period);
-      const uniqueYears = uniq(years);
-      return uniqueYears.sort((a, b) => b - a);
-    },
-    // get years by datasource
-    async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
-      const data = await this.queryDBForYearByDs(dataSourceID);
-      // debugger;
-      const onlyYearData = data?.filter((item) => {
-        if (isDataYearly(item.period)) {
-          return item.period;
-        }
-        return false;
-      });
-      const years = onlyYearData?.map((item) => item.period);
-      const uniqueYears = uniq(years);
-      return uniqueYears.sort((a, b) => b - a);
+      // const years = onlyYearData?.map((item) => item.period);
+      // const uniqueYears = uniq(years);
+      return data.sort((a, b) => b - a);
     },
 
     /**
@@ -211,25 +207,11 @@ export default {
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
-
-      // Get locations of level 3 and level 2
-      const locations = this.dlGetLocation({ level: 3 });
-      const zonalLocation = this.dlGetLocation({ level: 2 });
-      let allLocations = [...locations, ...zonalLocation];
-
-      // Add Nigeria (level 1) to the top of the locations array
-      allLocations.unshift(this.dlGetLocation(1));
-
-      // Filter locations to include only those present in the data array
-      allLocations = allLocations.filter(({ id }) => data.includes(id));
-
-      // Remove duplicate locations
-      const uniqueItems = Array.from(new Map(allLocations.map((obj) => [obj.id, obj])).values());
-
+      console.log(data, 'defaultDataSourceDropdown');
       // Commit the unique locations to the store
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
-        payload: uniqueItems,
+        payload: data.sort((a, b) => a.id - b.id),
       });
 
       // Set the default location (Nigeria) in the store
@@ -242,23 +224,14 @@ export default {
 
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
-      const data = await this.getDataSourcesFromDexie(indicatorID);
+      const data = await this.getDataSourcesFromIndicator(indicatorID);
       return data;
     },
     // Get available Indicator
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
-      const data = await this.getIndicatorFromDexie(datasourceID);
-      const indicatorWithData = data.filter(async (indicatorItem) => {
-        const indicatorData = await this.dlQuery({
-          indicator: indicatorItem.id,
-          datasource: datasourceID,
-        });
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
 
-        // Keep only items where indicatorData is not an empty array
-        return indicatorData.length > 0;
-      });
-
-      const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
     async setAllIndicatorDropdown(indicators) {
@@ -266,24 +239,9 @@ export default {
       return formattedData;
     },
     async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
-      const data = await this.getIndicatorFromDexie(datasourceID);
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
 
-      const indicatorWithData = data.filter(async (indicatorItem) => {
-        const indicatorData = await this.dlQuery({
-          indicator: indicatorItem.id,
-          datasource: datasourceID,
-        });
-
-        // Keep only items where indicatorData is not an empty array
-        return indicatorData.length > 0;
-      });
-
-      // this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_PAYLOAD', {
-      //   key: 'indicator',
-      //   value: indicatorWithData[1],
-      // });
-
-      const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
   },

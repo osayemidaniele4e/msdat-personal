@@ -76,7 +76,7 @@
       <!-- logical framework -->
       <br><br>
       <div id="logical-framework">
-        <img src="./assets/logical-group.png" class="logical-framework-img">
+        <img src="./assets/Logical-Framework.png" class="logical-framework-img">
       </div>
       <br><br>
       <!-- available data -->
@@ -260,6 +260,7 @@ export default {
       try {
         // Get all indicators and datasources
         const data = await apiServices.getOtherEndpoint();
+        console.log('MSDAT@ 3');
 
         if (data && Array.isArray(data)) {
           // Initialize data layer with all available indicators and datasources
@@ -378,6 +379,7 @@ $msdat-darkgrey: #dedede;
 .logical-framework-img{
   width: 1266px;
   height: 730px;
+  object-fit: contain;
 }
 
 div.modal {

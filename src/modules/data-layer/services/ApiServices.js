@@ -47,6 +47,18 @@ const getTriangulation = async (obj) => {
 
   return instance3.get(`triangulation_dashboard/?${params.toString()}`);
 };
+const getDataWithPeriod = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=${obj.location}&value_type=${obj.value_type}&period=${obj.period}`);
+const getZonalData = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&period=${obj.period}`);
+const getZonalData2 = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&period=${obj.period}&location=${obj.location}`);
+
+const getDataByDatasource = async (dataSourceID) => axiosInstance.get(`data/?size=3000&datasource=${dataSourceID}`);
+const getPeriodByDatasource = async (dataSourceID) => axiosInstance.get(`period-data/?datasource=${dataSourceID}`);
+
+const getPeriod = async (obj) => axiosInstance.get(`period-data/?datasource=${obj.datasource}&indicator=${obj.indicator}&location=${obj.location}`);
+const getPeriodWithoutLocation = async (obj) => axiosInstance.get(`period-data/?datasource=${obj.datasource}&indicator=${obj.indicator}`);
+const getLocations = async (obj) => axiosInstance.get(`location-data/?datasource=${obj.datasource}&indicator=${obj.indicator}`);
+const getIndicatorDataSources = async (indicatorID) => axiosInstance.get(`indicator-data/datasources/${indicatorID}`);
+const getDataSourceIndicators = async (dataSourceID) => axiosInstance.get(`datasource-data/indicators/${dataSourceID}`);
 
 // https://msdat-api.fmohconnect.gov.ng/api/data/?size=1000&indicator=7
 
@@ -63,6 +75,22 @@ const otherEndpoints = [
 ];
 
 const getOtherEndpoint = async () => Promise.all(otherEndpoints.map((endpoint) => getRequiredEndpoint(endpoint)));
+const getDataWithValueType = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=1&value_type=${obj.value_type}`);
+const getParentData = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=${obj.location}&period=${obj.period}`);
+
+const getDashboardData = async (id, obj) => {
+  const params = new URLSearchParams({ caching: true });
+
+  Object.entries(obj).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.append(key, value);
+    }
+  });
+
+  return axiosInstance.get(`dashboard-data/${id}/?${params.toString()}`);
+};
+
+const getDashboardIndicators = async (dashboardID) => axiosInstance.get(`dashboard-data/indicators/${dashboardID}/`);
 
 export default {
   otherEndpoints,
@@ -101,4 +129,18 @@ export default {
   fetchAllLocation,
   getTriangulation,
   getSingleLocationObj,
+  getDataWithPeriod,
+  getDataWithValueType,
+  getParentData,
+  getZonalData,
+  getZonalData2,
+  getDataByDatasource,
+  getPeriodByDatasource,
+  getPeriod,
+  getLocations,
+  getIndicatorDataSources,
+  getDataSourceIndicators,
+  getDashboardData,
+  getPeriodWithoutLocation,
+  getDashboardIndicators,
 };
