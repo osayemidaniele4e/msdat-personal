@@ -7,7 +7,7 @@
      </div>
      <div class="popup-body">
        <div v-for="(indicator, index) in indicators" :key="index" class="indicator-group">
-         <h5>{{ indicator.short_name }}</h5>
+         <h3>{{ indicator.short_name }}</h3>
          <p class="program-area">Program Area: {{ indicator.program_area }}</p>
 
          <div v-if="indicator.relatedIndicators.length" class="related-section">
@@ -118,7 +118,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .relationship-popup {
  position: fixed;
  top: 0;
@@ -176,6 +176,7 @@ export default {
  background: white;
  border-radius: 10px;
  padding: 20px;
+ font-size: 18px;
  margin-bottom: 25px;
  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
@@ -188,6 +189,7 @@ export default {
 
 .relation-title {
  font-weight: bold;
+ font-size: 1.2rem;
  margin: 10px 0 5px;
 }
 
@@ -195,10 +197,12 @@ export default {
  list-style: none;
  padding-left: 15px;
  margin: 0;
+ font-size: 1.1rem;
 
  li {
    margin: 5px 0;
    color: #17606B;
+   font-size: 1.1rem !important;
  }
 }
 
@@ -223,9 +227,9 @@ export default {
  }
 
  .summary-content {
-   font-size: 25px;
    line-height: 1.6;
    color: #2c3e50;
+   font-size: 1.1rem !important; /* Added font-size property */
 
    strong, b {
      color: #17606B;
@@ -243,15 +247,15 @@ export default {
 
    p {
      margin: 12px 0;
+     font-size: 1.1rem !important; /* Override for paragraphs specifically */
    }
-
    hr.section-divider {
      border: 0;
      height: 1px;
      background: rgba(23, 96, 107, 0.2);
      margin: 15px 0;
    }
- }
+  }
 
  .summary-loading {
    font-style: italic;

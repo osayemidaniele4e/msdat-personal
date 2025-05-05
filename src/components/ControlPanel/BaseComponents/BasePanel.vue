@@ -6,7 +6,7 @@
           class="d-flex mr-2 list-unstyled step-sections pt-2 mb-0 border-b cursor-pointer main tabs-sec"
         >
           <li
-            class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+            class="mb-0 tab-link h5 text-black-50 bg-tab-color work-sans main"
             :class="[el.index === selectedIndex ? 'active font-weight-bold' : '']"
             v-for="(el, i) in modifiedControls"
             :key="i"
@@ -301,10 +301,6 @@ export default {
   color: #515151;
 }
 
-.tabs-sec {
-  // max-width: 1200px;
-}
-
 .tab-link.active {
   // border-bottom: 2.5px solid $primary;
   // border: 1px solid #2B5D5B;
@@ -329,7 +325,7 @@ export default {
   align-items: center;
   margin: 10px;
   font-weight: 200;
-  font-size: 1rem;
+  font-size: 0.9rem !important;
   &:first-child {
     margin-left: 0;
   }

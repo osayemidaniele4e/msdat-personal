@@ -15,9 +15,9 @@
     "test:unit:watch": "vue-cli-service test:unit --watch",
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs",
+    "docgen": "vue-docgen-cli",
     "dev": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve  --https true ",
     "start": "serve -s dist"
-    
   },
   "dependencies": {
     "@highcharts/map-collection": "^1.1.3",
@@ -90,6 +90,7 @@
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "~4.1.5",
+    "vue-docgen-cli": "^4.79.0",
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.11",
     "vuepress": "^1.5.3"
