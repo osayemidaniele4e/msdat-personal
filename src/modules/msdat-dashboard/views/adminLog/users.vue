@@ -451,7 +451,7 @@ export default {
 
       this.isLoading = true;
       try {
-        await axios.post('https://msdat2api.e4eweb.space/api/users/', this.newUser, {
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}users/`, this.newUser, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -517,7 +517,7 @@ export default {
     async editUser(user) {
       try {
         this.isLoading = true;
-        const response = await fetch(`https://msdat2api.e4eweb.space/api/users/${user.id}/`, {
+        const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}users/${user.id}/`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -593,7 +593,7 @@ export default {
     },
 
     async deleteUser(user) {
-      const response = await fetch(`https://msdat2api.e4eweb.space/api/users/${user.id}/`, {
+      const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}users/${user.id}/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -616,7 +616,7 @@ export default {
         const isAdmin = this.selectedUserForRole.role.value === 'admin';
         const endpoint = isAdmin ? 'downgrade' : 'upgrade';
 
-        const response = await fetch(`https://msdat2api.e4eweb.space/api/users/${this.selectedUserForRole.id}/${endpoint}/`, {
+        const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}users/${this.selectedUserForRole.id}/${endpoint}/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
