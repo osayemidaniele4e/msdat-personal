@@ -141,13 +141,12 @@ export default {
       const indicators = Array.isArray(this.values.indicator)
         ? this.values.indicator
         : [this.values.indicator];
-
       return indicators.map((indicator) => {
         const relatedIds = [
-          indicator.first_related,
-          indicator.second_related,
-          indicator.third_related,
-          indicator.fourth_related,
+          indicator.first_related_id,
+          indicator.second_related_id,
+          indicator.third_related_id,
+          indicator.fourth_related_id,
         ].filter((id) => id != null);
 
         const relatedIndicators = relatedIds.map((id) => this.dlIndicator.find((ind) => ind.id === id)).filter((ind) => ind != null);

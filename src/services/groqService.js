@@ -12,26 +12,22 @@ const GROQ_API_KEY = process.env.VUE_APP_GROQ_API_KEY || 'gsk_IXgN4hQN4zhzD3E31d
 const generateRelationshipSummary = async (
   indicator,
   relatedIndicators,
-  options = { maxWords: 200, format: 'markdown' },
+  options = { maxWords: 80, format: 'markdown' }, // Default maxWords updated to 20
 ) => {
   try {
+    // Updated prompt for conciseness
     const prompt = `
-Analyze the relationship between the health indicator "${indicator.short_name}" (${indicator.program_area}) 
-and these related indicators: ${relatedIndicators.map((ri) => `"${ri.short_name}" (${ri.program_area})`).join(', ')}.
- 
-Please format your response as follows:
-1. Start with a title using **bold formatting**
-2. Follow with a short introduction paragraph about the primary indicator
-3. For each related indicator:
-   * Use a **bolded subheading** with the indicator name
-   * Explain how it connects to the primary indicator
-   * Note any mutual impacts or causal relationships
-4. End with a brief summary paragraph
+Concisely analyze the core relationship between the health indicator "${indicator.short_name}" (${
+  indicator.program_area
+}) 
+and these related indicators: ${relatedIndicators
+    .map((ri) => `"${ri.short_name}" (${ri.program_area})`)
+    .join(', ')}.
 
-Keep the explanation under ${options.maxWords} words. Use markdown formatting:
-* **bold text** for headings and emphasis
-* Bullet points (*) for listing key points
-* Short paragraphs for readability
+Focus *only* on the most important connection or mutual impact. 
+Keep the entire response under ${
+  options.maxWords
+} words. Do not use headings or lists. Just provide a single short paragraph.
 `;
 
     const response = await fetch(GROQ_API_URL, {
@@ -46,16 +42,16 @@ Keep the explanation under ${options.maxWords} words. Use markdown formatting:
           {
             role: 'system',
             content:
-              'You are a public health expert specializing in analyzing relationships between health indicators. Provide clear, concise, evidence-based explanations.',
+              'You are a public health expert specializing in analyzing relationships between health indicators. Provide extremely concise, key insights only.', // System prompt adjusted for conciseness
           },
           {
             role: 'user',
             content: prompt,
           },
         ],
-        temperature: 0.4, // Slightly lower for more consistent output
-        top_p: 0.95,
-        max_tokens: 500, // Setting a token limit
+        temperature: 0.3, // Lowered temperature slightly for more focused output
+        top_p: 0.9,
+        max_tokens: 60, // Reduced max_tokens for shorter response
         stream: false,
       }),
     });
@@ -67,7 +63,8 @@ Keep the explanation under ${options.maxWords} words. Use markdown formatting:
     }
 
     const data = await response.json();
-    return data.choices[0].message.content;
+    // Trim potential leading/trailing whitespace which might affect word count perception
+    return data.choices[0].message.content.trim();
   } catch (error) {
     console.error('Error generating relationship summary:', error);
 
