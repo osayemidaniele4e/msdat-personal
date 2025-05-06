@@ -8,6 +8,9 @@
       <!-- :style="{ backgroundColor }" -->
       <div v-if="removeTitle === false" class="title ">
         <slot name="title"> slot title fallback </slot>
+        <div v-if="backgroundColor === 'header'" class="">
+          <img @click="toggleShareModal"  class="share-section-icon" src="@/assets/Share-button.png" alt="">
+        </div>
       </div>
       <div
         class="action-icon d-flex justify-content-around align-items-center"
@@ -73,10 +76,15 @@
         <slot> </slot>
       </template>
     </base-modal>
+    <base-modal :showModal="showShareModal" :size="'md'">
+      <template #title><h4 class="mb-0 font-weight-bold work-sans">Share Section</h4> </template>
+      <ShareSection />
+    </base-modal>
   </div>
 </template>
 
 <script>
+import ShareSection from '@/modules/msdat-dashboard/components/ShareSection.vue';
 import SubCardToggleButton from './base-subcard/SubCardToggleButton.vue';
 import SubCardDropdown from './base-subcard/SubCardDropdown.vue';
 import SubCardSideControl from './base-subcard/SubCardSideControl.vue';
@@ -87,12 +95,14 @@ export default {
     return {
       showMenu: false,
       showModal: false,
+      showShareModal: false,
     };
   },
   components: {
     SubCardToggleButton,
     SubCardDropdown,
     SubCardSideControl,
+    ShareSection,
   },
   props: {
     showControls: {
@@ -145,6 +155,10 @@ export default {
         this.showMenu = false;
       }
     },
+    toggleShareModal() {
+      this.showShareModal = !this.showShareModal;
+    },
+
   },
   mounted() {},
 };
@@ -153,12 +167,26 @@ export default {
 <style lang="scss" scoped>
 .title {
   color: black;
-  width: 97%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .expand-icon img {
   width: 32px;
   height: 32px;
   cursor: pointer;
+}
+.share-section-icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  object-fit: contain;
+}
+.share-wrapper {
+  background-color: white;
+  padding: 0px 4px;
+  border-radius: 5px;
 }
 </style>
 
