@@ -5,18 +5,7 @@
       <div class="row p-3">
         <div class="col mb-3">
           <b-list-group>
-            <h5 class="text-underline">Health Outcomes</h5>
-            <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
-              <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
-            </router-link>
-            <router-link to="/dashboard/Quarterly_Performance_Assessment_Dashboard" target="_blank">
-              <b-list-group-item>Quarterly Performance Assessment</b-list-group-item>
-            </router-link>
-          </b-list-group>
-        </div>
-        <div class="col mb-3">
-          <b-list-group>
-            <h5 class="text-underline">Health Input</h5>
+            <h5 class="text-underline">Health Inputs</h5>
             <router-link to="/dashboard/Health_Facility" target="_blank"
               ><b-list-group-item>Health Facility</b-list-group-item></router-link
             >
@@ -59,6 +48,17 @@
             <router-link to="/dashboard/Disease_Surveillance" target="_blank"
               ><b-list-group-item>Disease Surveillance</b-list-group-item></router-link
             >
+          </b-list-group>
+        </div>
+        <div class="col mb-3">
+          <b-list-group>
+            <h5 class="text-underline">Health Outcomes</h5>
+            <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
+              <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
+            </router-link>
+            <router-link to="/dashboard/Quarterly_Performance_Assessment_Dashboard" target="_blank">
+              <b-list-group-item>Quarterly Performance Assessment</b-list-group-item>
+            </router-link>
           </b-list-group>
         </div>
         <div class="col mb-3">
