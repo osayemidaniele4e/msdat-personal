@@ -88,7 +88,7 @@ export default {
     controlIndex: {
       async handler(newValue) {
         this.index = newValue;
-        if (newValue !== 0 && newValue !== 1) { this.removeQuery(); } else this.updateParams();
+        if (newValue !== 0 && newValue !== 1 && newValue !== 4) { this.removeQuery(); } else this.updateParams();
       },
       immediate: true,
       deep: true,
