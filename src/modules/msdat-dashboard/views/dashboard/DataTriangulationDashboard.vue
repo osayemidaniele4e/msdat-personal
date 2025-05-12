@@ -90,24 +90,25 @@
             </div>
           </div>
         </div>
-        <div class="px-4 row d-flex py-3 justify-content-between d_height">
+        <div class="px-4 row d-flex py-3 justify-content-between d_height position-relative">
           <div class="col-4">
-            <div class="card-1">
+            <div class="card-1 relative-position">
               <div class="w-100 header py-2 d-flex justify-content-center">
                 <h3>Results</h3>
+              </div>
+              <div @click="toggleExpand()" class=" py-2">
+                <img   class="expand-icon" src="@/assets/Expand.png" alt="" />
               </div>
               <div class="row h-100">
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
-                <div class="d-flex justify-content-center pb-4">
+                  <div class="d-flex justify-content-center pb-4">
                     <h5 class="text-center desc w-75">
                       {{
                         `Data source consistency result: When compared with ${
                           headerSource[0]
-                        } the degree of data source consistency of ${
-                          headerSource[1]
-                        } ${
+                        } the degree of data source consistency of ${headerSource[1]} ${
                           headerSource[2] ? `+ ${headerSource[2]}` : ''
                         }  is ${getStatus(consistencyScore)} at (${consistencyScore}%)`
                       }}
@@ -141,15 +142,15 @@
                         font-scale="1"
                       />
                     </h4>
-                    <h4 class="text-center desc2 px-5 mb-3">How well different datasources agree or match wih each other.</h4>
-
+                    <h4 class="text-center desc2 px-5 mb-3">
+                      How well different datasources agree or match wih each other.
+                    </h4>
                   </div>
-
                 </div>
                 <div
                   class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
                 >
-                <div class="d-flex justify-content-center pb-4">
+                  <div class="d-flex justify-content-center pb-4">
                     <h5 class="text-center desc w-75">
                       {{
                         `Data source complementarity: The degree to which ${headerSource[1]} ${
@@ -187,10 +188,10 @@
                         font-scale="1"
                       />
                     </h4>
-                    <h4 class="text-center desc2 px-3">How different datasources work together to provide a complete picture.</h4>
-
+                    <h4 class="text-center desc2 px-3">
+                      How different datasources work together to provide a complete picture.
+                    </h4>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -286,6 +287,116 @@
               <div class="border-right-2">3 - moderate</div>
               <div class="border-right-2">4 - Good</div>
               <div class="border-right-3">5 - Excellent</div>
+            </div>
+          </div>
+          <div v-if="showExpand" class="absolute-position-2">
+            <div class="modal-wrapper relative-position">
+              <div class="results-header">Results</div>
+              <div class="absolute-position pt-5 py-2">
+                <img @click="toggleExpand" class="expand-icon" src="@/assets/close.png" alt="" />
+              </div>
+              <div class="row h-100">
+                <div
+                  class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
+                >
+                  <div class="d-flex justify-content-center pb-5">
+                    <h5 class="text-center desc w-75">
+                      {{
+                        `Data source consistency result: When compared with ${
+                          headerSource[0]
+                        } the degree of data source consistency of ${headerSource[1]} ${
+                          headerSource[2] ? `+ ${headerSource[2]}` : ''
+                        }  is ${getStatus(consistencyScore)} at (${consistencyScore}%)`
+                      }}
+                    </h5>
+                  </div>
+
+                  <div class="progress-container">
+                    <div class="circular-progress-2">
+                      <svg>
+                        <circle cx="90" cy="90" r="80"></circle>
+                        <!-- Increased cx, cy, and r -->
+                        <circle
+                          cx="90"
+                          cy="90"
+                          r="80"
+                          :style="circleStyle(consistencyScore)"
+                        ></circle>
+                        <!-- Increased cx, cy, and r -->
+                      </svg>
+                      <div class="progress-value-2">{{ consistencyScore }}%</div>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column align-items-center mt-5">
+                    <h4 class="text-center title">
+                      Degree of Data Source Consistency
+                      <b-icon-info-circle-fill
+                        v-tooltip="
+                          'This refers to the degree to which different data sources provide similar or aligned information over time and across datasets. Consistent data sources should show comparable trends and values for the same indicators, despite being collected using different methodologies.'
+                        "
+                        class="data-source-info mx-0"
+                        font-scale="1"
+                      />
+                    </h4>
+                    <h4 class="text-center desc2 px-5 mb-3">
+                      How well different datasources agree or match wih each other.
+                    </h4>
+                  </div>
+                </div>
+                <div
+                  class="col-6 py-5 d-flex flex-column align-items-center justify-content-between"
+                >
+                  <div class="d-flex justify-content-center pb-4">
+                    <h5 class="text-center desc w-75">
+                      {{
+                        `Data source complementarity: The degree to which ${headerSource[1]} ${
+                          headerSource[2] ? `and ${headerSource[2]} ` : ''
+                        } complements  ${headerSource[0]}   as a data source is ${getStatus(
+                          complementarityScore
+                        )} at (${complementarityScore}%)`
+                      }}
+                    </h5>
+                  </div>
+
+                  <div class="progress-container">
+                    <div class="circular-progress-2">
+                      <svg>
+                        <circle cx="90" cy="90" r="80"></circle>
+
+                        <circle
+                          cx="90"
+                          cy="90"
+                          r="80"
+                          :style="circleStyle(complementarityScore)"
+                        ></circle>
+                      </svg>
+                      <div class="progress-value-2">{{ complementarityScore }}%</div>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column align-items-center mt-4">
+                    <h4 class="text-center title">
+                      Degree of Data Source Complementarity
+                      <b-icon-info-circle-fill
+                        v-tooltip="
+                          'This refers to the ability of different data sources to provide additional or supporting information that, when combined, offers a more comprehensive view of a subject. This enhances decision-making by integrating multiple perspectives from different data collection methods.'
+                        "
+                        class="data-source-info mx-0"
+                        font-scale="1"
+                      />
+                    </h4>
+                    <h4 class="text-center desc2 px-3">
+                      How different datasources work together to provide a complete picture.
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="py-2 d-flex w-100 justify-content-center">
+                <div class="px-2 border-right-4">0 - 20 - None</div>
+                <div class="px-2 border-right-4">21 - 40 - Low</div>
+                <div class="px-2 border-right-4">41 - 60 - Moderate</div>
+                <div class="px-2 border-right-4">61 - 80 - Significant</div>
+                <div class="px-2 border-right-4x">81 - 100 - Very Significant</div>
+              </div>
             </div>
           </div>
         </div>
@@ -434,6 +545,7 @@ export default {
       showLoader: false,
       position: {},
       headerSource: [],
+      showExpand: false,
     };
   },
 
@@ -441,6 +553,10 @@ export default {
     async getAllDataSource() {
       const { data } = await apiServices.fetchAllDataSources();
       this.allDatasources = data.results;
+    },
+
+    toggleExpand() {
+      this.showExpand = !this.showExpand;
     },
     async getAllIndicators() {
       const { data } = await apiServices.fetchAllIndicators();
@@ -725,6 +841,61 @@ export default {
 .section-height {
   height: 90vh;
 }
+
+.expand-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 9999;
+  position: absolute;
+  right: 10px;
+}
+
+.expand-icon-2 {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.relative-position {
+  position: relative;
+  cursor: pointer;
+}
+
+.absolute-position {
+  position: absolute;
+  right: 10px;
+}
+
+.absolute-position-2 {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  // right: 200px;
+  top: 100px;
+}
+.modal-wrapper {
+  background-color: white;
+  z-index: 9999;
+  height: 550px;
+  width: 60%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.results-header {
+  background-color: #dff3f3;
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  color: #171717;
+  padding: 5px 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
 .section-height-2 {
   height: 90vh;
 }
@@ -861,10 +1032,50 @@ export default {
   transition: stroke-dashoffset 0.5s ease;
 }
 
+.circular-progress-2 {
+  position: relative;
+  width: 200px; /* Increased size */
+  height: 200px; /* Increased size */
+}
+
+.circular-progress-2 svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circular-progress-2 circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 25; /* Adjust thickness */
+  stroke-linecap: round;
+  transform: translate(10px, 10px); /* Adjust to center */
+  stroke: #cff8f8;
+}
+
+.circular-progress-2 circle:nth-child(2) {
+  stroke-dasharray: 409px; /* Adjusted for larger size */
+  stroke-dashoffset: 0px;
+  stroke: #2b7a78;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
 .progress-value {
   position: absolute;
   top: 55%;
   left: 45%;
+  transform: translate(-50%, -50%);
+  font-size: 20px; /* Adjust font size for larger circle */
+  font-weight: bold;
+  color: #2b7a78;
+  line-height: 1;
+}
+.progress-value-2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   font-size: 20px; /* Adjust font size for larger circle */
   font-weight: bold;
@@ -996,6 +1207,15 @@ span.multiselect__single {
   padding: 0 10px;
   font-size: 12px;
   font-weight: 600;
+}
+.border-right-4 {
+  border-right: 2px solid #a8a2a2;
+  font-size: 12px;
+  font-weight: 500;
+}
+.border-right-4x {
+  font-size: 12px;
+  font-weight: 500;
 }
 .border-right-3 {
   padding: 0 10px;
