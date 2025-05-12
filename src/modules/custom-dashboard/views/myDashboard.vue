@@ -6,6 +6,7 @@
         $route.name === 'preference-table' ||
         $route.name === 'my-dashboard-details' ||
         $route.name === 'data-table' ||
+        $route.name === 'embed-dashboard' ||
         $route.name === 'sections'
       "
     >

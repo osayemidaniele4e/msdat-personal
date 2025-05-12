@@ -33,35 +33,8 @@
           </transition-group>
         </draggable>
       </b-col>
-      <b-col md="8" sm="12">
-        <div class="mb-3 embed">
-          <label>Enter URL:</label>
-          <input v-model="url" type="text" placeholder="https://example.com" required />
-        </div>
-        <div class="embed">
-          <label>Paste Iframe Code:</label>
-          <textarea
-            :rows="5"
-            v-model="public_creator.embedded_iframe"
-            placeholder='<iframe src="https://example.com"></iframe>'
-            required
-          ></textarea>
-        </div>
-      </b-col>
       <b-col md="12" lg="12" sm="12">
         <div class="d-flex mb-5">
-          <!-- <b-col cols="auto"
-          ><b-button
-            @click="approveData"
-            class="nextBtn"
-            style="font-family: Work Sans"
-            >COMPLETE</b-button
-          ></b-col
-        > -->
-
-          <!-- v-b-modal.modal-visibility -->
-
-          <!-- <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button> -->
           <button class="create_dashboard_btn" @click="approveData">
             {{ $store.getters.editMode ? 'Update' : 'Create' }} dashboard
           </button>
@@ -137,16 +110,6 @@
                   </b-col>
                 </b-row>
 
-                <!-- <b-form-group id="input-group-2" label="Organisation:" label-for="input-2">
-                  <b-form-input
-                    id="input-2"
-                    v-model="public_creator.organization"
-                    placeholder="Organization"
-                    class="input"
-                    required
-                  ></b-form-input>
-                </b-form-group> -->
-
                 <b-form-group id="input-group-2" label="Reason:" label-for="input-2">
                   <b-form-input
                     id="input-2"
@@ -180,12 +143,6 @@
               >Create a private dashboard</b-button
             >
             <b-collapse id="collapse-private" class="mt-2">
-              <!-- <b-button
-            @click="approveData"
-            class="nextBtn"
-            style="font-family: Work Sans"
-            >COMPLETE</b-button
-          > -->
               <button @click="createPrivateDashboard()">Private dashboard</button>
             </b-collapse>
 
@@ -205,10 +162,6 @@
                   placeholder="Email address"
                 ></b-form-input>
                 <br />
-                <!-- <b-form-input
-                  v-model="public_creator.organization"
-                  placeholder="Organisation"
-                ></b-form-input> -->
                 <br />
                 <b-form-input v-model="public_creator.Reason" placeholder="Reason"></b-form-input>
                 <br />
@@ -220,41 +173,9 @@
                 <button @click="createPublicDashboard()">Public dashboard</button>
               </b-card>
             </b-collapse>
-            <!--
-  <button @click="changeVisibility('private')">
-    change to private
-  </button>
-
-  <button @click="changeVisibility('public')">
-    change to public
-  </button> -->
           </b-modal>
         </div>
       </b-col>
-      <!-- <b-col md="4" sm="12">
-        <div class="dragable-list">
-          <dragable-list />
-          <b-row align-h="center" class="mt-3 text-right">
-            // eslint-disable-next-line vue/no-parsing-error
-            <!- <b-col class="align-baseline" cols="auto"
-              ><p class="baseline">Save for Later</p>
-            </b-col> -->
-      <!-- <b-col cols="auto"
-              ><b-button
-                @click="approveData"
-                class="nextBtn"
-                style="font-family: Work Sans"
-                >COMPLETE</b-button
-              ></b-col
-            > -->
-      <!-- <b-col cols="auto"
-              ><b-button class="SFL" disabled style="font-family: Work Sans"
-                >Save for Later</b-button
-              ></b-col
-            > -->
-      <!-- </b-row>
-        </div>
-      </b-col> -->
       <br />
     </b-row>
   </b-container>
@@ -338,7 +259,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.commit('updateStep', 4);
+    this.$store.commit('updateStep', 5);
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
@@ -348,6 +269,12 @@ export default {
     },
     getVisibility() {
       return this.$store.getters.getVisibility;
+    },
+    getUrl() {
+      return this.$store.getters.getEmbedUrl;
+    },
+    getEmbedIframe() {
+      return this.$store.getters.getEmbedIframe;
     },
   },
   methods: {
@@ -421,9 +348,6 @@ export default {
       // create the dashboard using the approveData() function
       await this.approveData();
     },
-    modifyTableauUrl(url) {
-      return url.includes('public.tableau.com') ? `${url}:showVizHome=no&embed=true` : url;
-    },
 
     // Below function is excuted when approve data button is clicked
 
@@ -456,7 +380,8 @@ export default {
         this.public_creator.created = new Date();
         this.public_creator.name_of_dashboard = this.dashboardDetails.name;
         this.public_creator.link = `${window.location.origin}/custom/public/`;
-        this.public_creator.embedded_url = this.modifyTableauUrl(this.url);
+        this.public_creator.embedded_url = this.$store.getters.getUrl;
+        this.public_creator.embedded_iframe = this.$store.getters.getIframeEmbed;
 
         if (this.areAllSelectedFalse(this.values)) {
           await this.$swal.fire({
@@ -465,6 +390,7 @@ export default {
           });
         } else {
           const cleanedData = this.removeNullFields(this.public_creator);
+          console.log('cleanedData', cleanedData);
           // const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
           try {
             const res = await apiServices.saveCustomDashboard(cleanedData);
@@ -494,14 +420,15 @@ export default {
           organization: 'string',
           config: JSON.stringify(config),
           link: `${window.location.origin}/custom/public/`,
-          embedded_url: this.modifyTableauUrl(this.url),
-          embedded_iframe: this.public_creator.embedded_iframe,
+          embedded_url: this.$store.getters.getUrl,
+          embedded_iframe: this.$store.getters.getIframeEmbed,
           is_confirmed: false,
           is_private: this.$store.getters.getVisibility === 'private',
         };
 
         try {
           const cleanedData = this.removeNullFields(data);
+          console.log('cleanedData', cleanedData);
 
           this.SAVE_USER_DASHBOARD(cleanedData);
 
@@ -515,35 +442,6 @@ export default {
           });
         }
       }
-
-      //
-      // // SAVE DASHBOARD LOCALLY
-      // // retrieve initial currentDashboard value (consisting only id & userId)
-      // const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
-      // // retrieve all saved dashboards
-      // const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
-      // // retrieve dashboards belonging to current user
-      // let list = customDashboardsList[this.getUser.username];
-      // // create the dashboard config to be saved
-
-      // // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
-      // const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
-      // if (dashboard) {
-      //   dashboard.lastEdited = Date.now();
-      //   dashboard.config = config;
-      //   localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
-      //   this.$store.commit('endEdit');
-      // } else {
-      // // (new dashboard) -> add 'config' and 'created' properties to currentDashboard and insert to start of list
-      //   if (!list) {
-      //     customDashboardsList[this.getUser.username] = [];
-      //     list = customDashboardsList[this.getUser.username];
-      //   }
-      //   currentCustomDashboard.created = Date.now();
-      //   currentCustomDashboard.config = config;
-      //   list.unshift(currentCustomDashboard);
-      //   localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
-      // }
     },
 
     // PRESELECTION OF Dashboard widgets

@@ -31,8 +31,8 @@ const saveWhatsNew = async (data) => axiosInstance.post('news/updates/', data);
 const saveCustomDashboard = async (data) => axiosInstance.post('custom-dashboard/', data);
 const getSingleCustomDashboard = async (id) => axiosInstance.get(`custom-dashboard/${id}`);
 const getCustomDashboard = async () => axiosInstance.get('custom-dashboard/');
-const fetchAllDataSources = async () => axiosInstance.get('datasources/?size=50');
-const fetchAllIndicators = async () => axiosInstance.get('indicators/?size=2000');
+const fetchAllDataSources = async () => axiosInstance.get('datasources/?size=100');
+const fetchAllIndicators = async () => axiosInstance.get('indicators/?size=4000');
 const fetchAllLocation = async () => axiosInstance.get('location/?size=1000');
 const getTriangulation = async (obj) => {
   const params = new URLSearchParams({
@@ -79,7 +79,18 @@ const getDataWithValueType = async (obj) => axiosInstance.get(`data/?size=3000&i
 const getParentData = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=${obj.location}&period=${obj.period}`);
 
 const getDashboardData = async (id, obj) => {
-  const params = new URLSearchParams({ caching: true });
+  if (id !== null && id !== undefined) {
+    const params = new URLSearchParams({ caching: true });
+
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        params.append(key, value);
+      }
+    });
+
+    return axiosInstance.get(`dashboard-data/${id}/?${params.toString()}`);
+  }
+  const params = new URLSearchParams();
 
   Object.entries(obj).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
@@ -87,7 +98,7 @@ const getDashboardData = async (id, obj) => {
     }
   });
 
-  return axiosInstance.get(`dashboard-data/${id}/?${params.toString()}`);
+  return axiosInstance.get(`data/?${params.toString()}`);
 };
 
 const getDashboardIndicators = async (dashboardID) => axiosInstance.get(`dashboard-data/indicators/${dashboardID}/`);
