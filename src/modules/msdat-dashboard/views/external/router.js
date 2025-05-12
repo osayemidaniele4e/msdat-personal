@@ -8,6 +8,7 @@ import HealthFacilitiesProfile from './dashboards/health-facility-profile.vue';
 import goggleForm from './dashboards/goggleForm.vue';
 import healthServiceUptake from './dashboards/health-service-uptake.vue';
 import IndicatorPreview from './dashboards/Minister of Health Dashboard/dashboard-landing-page.vue';
+import presidentBondScorecard from './dashboards/presidentBondScorecard.vue';
 
 export default [
   {
@@ -31,6 +32,14 @@ export default [
     component: ministers,
     meta: {
       title: 'SWAP Ministerial Dashboard',
+    },
+  },
+  {
+    path: '/presidential-bond-scorecard',
+    name: 'president-bond-scorecard',
+    component: presidentBondScorecard,
+    meta: {
+      title: 'Scorecard Dashboard of Presidential Bond Indicators',
     },
   },
   {
