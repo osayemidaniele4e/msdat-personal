@@ -13,28 +13,34 @@ const apiConfigs = {
   default: process.env.VUE_APP_API_BASE_URL,
   instance1: process.env.VUE_APP_API_BASE_URL1,
   instance3: process.env.VUE_APP_API_BASE_URL3,
-  authInstance: process.env.VUE_APP_API_BASE_URL, // Add an API base URL for authenticated requests
+  authInstance: process.env.VUE_APP_API_BASE_URL,
+  msdatHeaderName: process.env.VUE_APP_API_HEADER_NAME,
+  msdatHeaderPassword: process.env.VUE_APP_API_HEADER_PASSWORD,
 };
 
 const createAxiosInstance = (baseURL, withAuth = false) => {
   const instance = axios.create({ baseURL });
 
-  if (withAuth) {
-    instance.interceptors.request.use(
-      (config) => {
-        const newConfig = { ...config };
-        const token = userDetails.tokens.access_token;
-        if (token) {
-          newConfig.headers = {
-            ...newConfig.headers,
-            Authorization: `Bearer ${token}`,
-          };
-        }
-        return newConfig;
-      },
-      (error) => Promise.reject(error),
-    );
-  }
+  instance.interceptors.request.use(
+    (config) => {
+      const newConfig = { ...config };
+
+      // Always include X-MSDAT-AUTH header
+      newConfig.headers = {
+        ...newConfig.headers,
+        'X-MSDAT-AUTH': 'e4e@devoP$ysadmin2025',
+      };
+
+      // Optionally include Authorization header
+      // eslint-disable-next-line camelcase
+      if (withAuth && userDetails?.tokens?.access_token) {
+        newConfig.headers.Authorization = `Bearer ${userDetails.tokens.access_token}`;
+      }
+
+      return newConfig;
+    },
+    (error) => Promise.reject(error),
+  );
 
   instance.interceptors.response.use(
     (response) => response,
@@ -59,7 +65,7 @@ const AxiosInstances = {
   default: createAxiosInstance(apiConfigs.default),
   instance1: createAxiosInstance(apiConfigs.instance1),
   instance3: createAxiosInstance(apiConfigs.instance3),
-  authInstance: createAxiosInstance(apiConfigs.authInstance, true), // Authenticated instance
+  authInstance: createAxiosInstance(apiConfigs.authInstance, true),
 };
 
 export const { instance1, instance3, authInstance } = AxiosInstances;

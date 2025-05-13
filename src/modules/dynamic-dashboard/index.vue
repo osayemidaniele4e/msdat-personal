@@ -471,6 +471,7 @@ export default {
         console.log(dashboard, 'dashboard@ 1');
         this.configObject = '';
         this.configObject = {
+          id: dashboard.id,
           name: dashboard.name,
           title: dashboard.title,
           indicators: dashboard.indicators,
