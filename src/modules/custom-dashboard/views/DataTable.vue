@@ -94,7 +94,7 @@ export default {
       if (!this.$store.getters.editMode) {
         this.$store.dispatch('deactivateAllSections');
       }
-      this.$router.push('sections');
+      this.$router.push('embed-dashboard');
     },
     backToPrefrence() {
       this.$router.push('preference-table');

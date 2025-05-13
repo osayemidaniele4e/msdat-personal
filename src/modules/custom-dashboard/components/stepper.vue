@@ -54,6 +54,14 @@
               text="4"
             ></b-avatar>
           </b-col>
+          <b-col class="px-0">
+          </b-col>
+          <b-col class="px-0" cols="auto">
+            <b-avatar
+              :class="this.step >= 5 ? 'active-step' : ''"
+              text="5"
+            ></b-avatar>
+          </b-col>
         </b-row>
         <b-row class="mt-2 d-none d-lg-flex stepper-text">
           <b-col class="px-0" cols="auto">
@@ -69,13 +77,19 @@
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-right: -50%">
+            <p class="text-center" style="margin-right: -20%">
               Dashboard data table
             </p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
             <p class="text-center" style="margin-right: -80%">
+              Embed Dashboard
+            </p>
+          </b-col>
+          <b-col class="px-0"> </b-col>
+          <b-col class="px-0" cols="auto">
+            <p class="text-center" style="margin-right: -100%">
               Arrange dashboard sections
             </p>
           </b-col>

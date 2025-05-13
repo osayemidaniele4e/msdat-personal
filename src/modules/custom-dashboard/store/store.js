@@ -67,6 +67,8 @@ const store = {
     selectedIndicators: [],
     embeddedUrl: JSON.parse(embedUrl),
     embeddedIframe: JSON.parse(embedIframe),
+    embedUrl: '',
+    embedIframe: '',
   },
 
   mutations,
