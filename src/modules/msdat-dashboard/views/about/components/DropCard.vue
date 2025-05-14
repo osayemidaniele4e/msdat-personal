@@ -7,7 +7,7 @@
           <b-list-group>
             <h5 class="text-underline">Health Inputs</h5>
             <router-link to="/dashboard/Health_Facility" target="_blank"
-              ><b-list-group-item>Health Facility</b-list-group-item></router-link
+              ><b-list-group-item>Health Facilities</b-list-group-item></router-link
             >
             <router-link to="/dashboard/Health_Financing" target="_blank"
               ><b-list-group-item>Health Finance</b-list-group-item></router-link
@@ -35,7 +35,7 @@
               href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
               target="_blank"
             >
-              <b-list-group-item> Health Service Uptake (NHMIS)</b-list-group-item>
+              <b-list-group-item> Health Service Uptake (NHMIS-Monthly)</b-list-group-item>
             </a>
             <router-link to="/health-service-uptake" target="_blank"
               ><b-list-group-item
@@ -130,6 +130,9 @@
             <router-link to="/data-triangulation-dashboard" target="_blank"
               ><b-list-group-item>Triangulation Dashboard</b-list-group-item></router-link
             >
+            <!-- Scorecard Dashboard of Presidential Bond Indicators -->
+            <router-link to="/presidential-bond-scorecard" target="_blank"
+              ><b-list-group-item>Scorecard Dashboard of Presidential Bond Indicators</b-list-group-item></router-link>
           </b-list-group>
         </div>
         <div class="col mb-3" v-if="isAuthenticated">
