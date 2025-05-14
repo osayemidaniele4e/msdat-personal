@@ -95,13 +95,13 @@ export default {
 
     console.log(setYearDropdown, 'available');
     // debugger;
-    this.SET_CONTROL_OPTIONS({
-      multipleSetup: true,
-      panelIndex: 4,
-      controlIndex: this.currentIndex,
-      controlIndex2: 0,
-      values: this.defaultIndicatorDropdown,
-    });
+    // this.SET_CONTROL_OPTIONS({
+    //   multipleSetup: true,
+    //   panelIndex: 4,
+    //   controlIndex: this.currentIndex,
+    //   controlIndex2: 0,
+    //   values: this.defaultIndicatorDropdown,
+    // });
     // this.SET_CONTROL_OPTIONS({
     //   multipleSetup: true,
     //   panelIndex: 4,
@@ -109,20 +109,20 @@ export default {
     //   controlIndex2: 3,
     //   values: this.defaultLocationDropdown,
     // });
-    this.SET_CONTROL_OPTIONS({
-      multipleSetup: true,
-      panelIndex: 4,
-      controlIndex: this.currentIndex,
-      controlIndex2: 2,
-      values: this.defaultDataSourceDropdown,
-    });
-    this.SET_CONTROL_OPTIONS({
-      multipleSetup: true,
-      panelIndex: 4,
-      controlIndex: this.currentIndex,
-      controlIndex2: 3,
-      values: setYearDropdown,
-    });
+    // this.SET_CONTROL_OPTIONS({
+    //   multipleSetup: true,
+    //   panelIndex: 4,
+    //   controlIndex: this.currentIndex,
+    //   controlIndex2: 2,
+    //   values: this.defaultDataSourceDropdown,
+    // });
+    // this.SET_CONTROL_OPTIONS({
+    //   multipleSetup: true,
+    //   panelIndex: 4,
+    //   controlIndex: this.currentIndex,
+    //   controlIndex2: 3,
+    //   values: setYearDropdown,
+    // });
   },
 };
 </script>

@@ -74,6 +74,7 @@ export default {
       // logic for 'Other_Section'
     } else {
       const params = new URLSearchParams(window.location.search);
+      params.set('year', this.$store.state.MSDAT_STORE.selectedConfigurations.period);
       params.set('section', this.$store.state.MSDAT_STORE.selectedSection);
       this.shareLink = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
       window.history.pushState({}, '', this.shareLink);
