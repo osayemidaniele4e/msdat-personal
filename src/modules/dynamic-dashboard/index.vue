@@ -483,7 +483,6 @@ export default {
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
-        console.log(this.configObject, 'configObject');
         this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;
         this.isGIS = false;

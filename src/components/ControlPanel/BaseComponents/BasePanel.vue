@@ -17,7 +17,7 @@
               {{ el.title }}
               <div v-if="el.index === selectedIndex" class="share-icon-wrapper">
                 <img
-                  src="@/assets/share.png"
+                  src="@/assets/Share-button.png"
                   alt="share-btn"
                   class="share-icon"
                   @click.stop="toggleShareModal(el.title)"
@@ -219,7 +219,6 @@ export default {
     },
 
     selectedIndex(newValue) {
-      // console.log('selected', this.$store.getters);
       this.changeControl(newValue);
 
       const { name } = this.$route.params;
@@ -303,12 +302,12 @@ export default {
 .share-icon-wrapper {
   border: 1px solid #2b5d5b;
   margin-left: 15px;
-  padding: 2px;
+  //padding: 2px;
   border-radius: 3px;
 }
 
 .share-icon-wrapper img {
-  width: 14px;
+  width: 16px;
   height: 14px;
 }
 .el-tit {
