@@ -223,12 +223,10 @@ export default {
     this.loading = true;
 
     // prevent excess request in dev mode
-    const { origin } = window.location;
-    if (!origin.includes('//localhost') && !origin.includes('//192')) {
-      const { data } = await this.SAVE_DASHBOARDS();
-      console.log(data.results, '@@@');
-      this.userDashboards = data.results.filter((item) => item.is_private === false);
-    }
+    // const { origin } = window.location;
+    const { data } = await this.SAVE_DASHBOARDS();
+    console.log(data.results, '@@@');
+    this.userDashboards = data.results.filter((item) => item.is_private === false);
     this.loading = false;
   },
 

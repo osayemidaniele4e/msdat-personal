@@ -144,7 +144,6 @@ export default {
       },
     },
     formattedID() {
-      console.log(this.id, 'DROPDOWN');
       if (this.multiSelectProps['group-values']) {
         if (this.multiSelectProps['group-label'] === 'datasource') {
           return 'groupedSources';
