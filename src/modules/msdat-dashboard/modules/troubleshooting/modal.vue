@@ -4,7 +4,7 @@
       <div class="w-75 work-sans">
         <h6 class="mb-0">
           <img :src="icon1" alt="warning-icon" width="7%" /><span class="ml-4 header_text"
-            >MSDAT Dashboard not Loading?</span
+            >MSDAT Platform not Loading?</span
           >
         </h6>
       </div>

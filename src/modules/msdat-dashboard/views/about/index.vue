@@ -15,7 +15,7 @@
       <!-- about MSDAT dashboard -->
       <div class="about-sec-1 d-flex flex-column align-items-center">
 
-        <h1>ABOUT THE MSDAT DASHBOARD</h1>
+        <h1>ABOUT THE MSDAT PLATFORM</h1>
 
         <div class="about-sec-text2">
           The Federal Ministry of Health (FMOH) Nigeria multi source data analysis resource provides a single transparent

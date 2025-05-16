@@ -10,7 +10,7 @@ MSDAT custom dashboard helps you to set up your custom dashboard to suit your ne
 
 ### Some Key functions
 
-This function in the dynamic dashboard folder of the MSDAT modules helps us push selected data into the msdat dashboard config array.
+This function in the dynamic dashboard folder of the MSDAT modules helps us push selected data into the msdat platform config array.
 
 ```js  
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
