@@ -443,6 +443,7 @@ export default {
       this.isGIS = true;
       this.configObject = '';
       this.configObject = dashboard;
+      localStorage.setItem('activeDashboardID', dashboard.id);
       this.SET_CONFIGURATIONS(dashboard);
       return;
     }
@@ -483,6 +484,7 @@ export default {
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
+        localStorage.setItem('activeDashboardID', dashboard.id);
         this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;
         this.isGIS = false;
