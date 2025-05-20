@@ -1,4 +1,4 @@
-import axiosInstance, { instance3 } from '@/plugins/axios';
+import axiosInstance, { noHeadersInstance } from '@/plugins/axios';
 import apiEndpoints from '../config/endpoint';
 
 const getDashboard = async () => axiosInstance.get(apiEndpoints.getDashboard);
@@ -45,7 +45,7 @@ const getTriangulation = async (obj) => {
   if (obj.selectedIndicator) params.append('indicator_id', obj.selectedIndicator);
   if (obj.selectedLocation) params.append('location_id', obj.selectedLocation);
 
-  return instance3.get(`triangulation_dashboard/?${params.toString()}`);
+  return noHeadersInstance.get(`triangulation_dashboard/?${params.toString()}`);
 };
 const getDataWithPeriod = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&location=${obj.location}&value_type=${obj.value_type}&period=${obj.period}`);
 const getZonalData = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&period=${obj.period}`);
