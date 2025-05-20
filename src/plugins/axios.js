@@ -14,7 +14,6 @@ const apiConfigs = {
   instance1: process.env.VUE_APP_API_BASE_URL1,
   instance3: process.env.VUE_APP_API_BASE_URL3,
   authInstance: process.env.VUE_APP_API_BASE_URL,
-  noHeadersInstance: process.env.VUE_APP_API_BASE_URL, // Same or different base URL
 };
 
 const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => {
@@ -75,7 +74,7 @@ const AxiosInstances = {
   instance1: createAxiosInstance(apiConfigs.instance1),
   instance3: createAxiosInstance(apiConfigs.instance3),
   authInstance: createAxiosInstance(apiConfigs.authInstance, true),
-  noHeadersInstance: createAxiosInstance(apiConfigs.noHeadersInstance, false, true), // <- No headers
+  noHeadersInstance: createAxiosInstance(apiConfigs.instance3, false, true), // <- No headers
 };
 
 export const {
