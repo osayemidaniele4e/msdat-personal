@@ -96,8 +96,8 @@
               <div class="w-100 header py-2 d-flex justify-content-center">
                 <h3>Results</h3>
               </div>
-              <div @click="toggleExpand()" class=" py-2">
-                <img   class="expand-icon" src="@/assets/Expand.png" alt="" />
+              <div @click="toggleExpand()" class="py-2">
+                <img class="expand-icon" src="@/assets/Expand.png" alt="" />
               </div>
               <div class="row h-100">
                 <div
@@ -416,8 +416,12 @@
         <p class="info-action-desc w-50">
           Note: Selecting an 'Indicator' and a 'Location' is optional to filter down the results.
         </p>
+        <!-- <pre>{{ allIndicators }}</pre> -->
         <div class="mt-5 w-75">
-          <div class="row d-flex">
+          <div
+            v-if="allIndicators.length && allDatasources.length && locations.length"
+            class="row d-flex"
+          >
             <div class="col-2">
               <label>Primary Datasource</label>
               <multiselect
@@ -494,6 +498,13 @@
               </multiselect>
             </div>
           </div>
+          <div v-else class="w-100 d-flex flex-column align-items-center  ">
+            <div  class="spinner-border fs-4 text-success mx-3 mb-2" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <h4>Please wait while Datasources, Indicators and Locations data load</h4>
+          </div>
+
         </div>
         <div class="col-1 d-flex justify-content-center align-items-end">
           <button class="triangulate-btn" @click="triangulate">
