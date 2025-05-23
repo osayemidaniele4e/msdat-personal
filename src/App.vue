@@ -71,72 +71,43 @@ export default {
     },
   },
   async mounted() {
+    await this.getWhatsNew();
     window.addEventListener('unload', this.handleAppUnload);
+
     this.startSixHourInterval();
     this.firstTimeExecution();
-    // eslint-disable-next-line
-    let plugins_imported = [];
 
-    this.pluginsImported.push('contextPlugin');
-    if (!localStorage.getItem('contextPlugin')) {
-      localStorage.setItem('contextPlugin', 'false');
-    }
+    const plugins = [
+      { name: 'contextPlugin', module: contextPlugin },
+      { name: 'indicatorPlugin', module: indicatorPlugin },
+      { name: 'reviewPlugin', module: reviewPlugin },
+      { name: 'screenshotManager', module: screenshotManager },
+      { name: 'testonePlugin', module: testonePlugin },
+      { name: 'testPlugin', module: testPlugin },
+    ];
 
-    if (localStorage.getItem('contextPlugin') === 'true') {
-      Vue.use(contextPlugin);
-    }
+    this.pluginsImported = [];
 
-    this.pluginsImported.push('indicatorPlugin');
-    if (!localStorage.getItem('indicatorPlugin')) {
-      localStorage.setItem('indicatorPlugin', 'false');
-    }
+    plugins.forEach(({ name, module }) => {
+      this.pluginsImported.push(name);
 
-    if (localStorage.getItem('indicatorPlugin') === 'true') {
-      Vue.use(indicatorPlugin);
-    }
+      if (!localStorage.getItem(name)) {
+        localStorage.setItem(name, 'false');
+      }
 
-    this.pluginsImported.push('reviewPlugin');
-    if (!localStorage.getItem('reviewPlugin')) {
-      localStorage.setItem('reviewPlugin', 'false');
-    }
-
-    if (localStorage.getItem('reviewPlugin') === 'true') {
-      Vue.use(reviewPlugin);
-    }
-
-    this.pluginsImported.push('screenshotManager');
-    if (!localStorage.getItem('screenshotManager')) {
-      localStorage.setItem('screenshotManager', 'false');
-    }
-
-    if (localStorage.getItem('screenshotManager') === 'true') {
-      Vue.use(screenshotManager);
-    }
-
-    this.pluginsImported.push('testonePlugin');
-    if (!localStorage.getItem('testonePlugin')) {
-      localStorage.setItem('testonePlugin', 'false');
-    }
-
-    if (localStorage.getItem('testonePlugin') === 'true') {
-      Vue.use(testonePlugin);
-    }
-
-    this.pluginsImported.push('testPlugin');
-    if (!localStorage.getItem('testPlugin')) {
-      localStorage.setItem('testPlugin', 'false');
-    }
-
-    if (localStorage.getItem('testPlugin') === 'true') {
-      Vue.use(testPlugin);
-    }
+      if (localStorage.getItem(name) === 'true') {
+        Vue.use(module);
+      }
+    });
 
     console.log('pluginsImported', this.pluginsImported);
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
+
     document.body.className = this.viewMode;
     document.documentElement.style.fontSize = this.fontSize;
     document.documentElement.setAttribute('data-theme', this.theme);
   },
+
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
@@ -145,7 +116,6 @@ export default {
     executeTask() {
       const now = new Date();
       this.lastExecutionTime = now.toLocaleTimeString();
-      // Add your task logic here
       this.toggleShowWhatsNew();
     },
 
@@ -155,9 +125,7 @@ export default {
     },
 
     handleAppUnload() {
-      // Perform your cleanup or function call here
       console.log('Application is being unloaded.');
-      // Example: Save data to local storage or call an API
       localStorage.removeItem('firstTimeExecution');
     },
 
@@ -166,27 +134,28 @@ export default {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
-        // Check if it's a 6-hour interval (00:00, 06:00, 12:00, 18:00)
         if (hours % 6 === 0 && minutes === 0) {
           this.executeTask();
         }
       };
-      // Check every minute
       setInterval(checkAndExecute, 60 * 1000);
     },
+
     firstTimeExecution() {
-      if (!localStorage.getItem('firstTimeExecution')) {
+      const alreadyExecuted = localStorage.getItem('firstTimeExecution');
+      if (!alreadyExecuted) {
         localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 30 * 1000); // 30 seconds delay in milliseconds
+        }, 30 * 1000); // Delay of 30 seconds
       }
     },
   },
+
   beforeDestroy() {
-    // Remove the event listener to avoid memory leaks
     window.removeEventListener('unload', this.handleAppUnload);
   },
+
 };
 </script>
 

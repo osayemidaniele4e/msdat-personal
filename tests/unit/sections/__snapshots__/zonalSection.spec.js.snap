@@ -3,7 +3,6 @@
 exports[`Mounted zonalSection Component  renders correctly 1`] = `
 <base-overlay
   class="main"
-  show="true"
 >
   <base-sub-card
     showcontrols=""

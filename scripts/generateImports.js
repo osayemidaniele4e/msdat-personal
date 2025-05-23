@@ -118,14 +118,19 @@ export default {
     },
   },
   async mounted() {
-   window.addEventListener('unload', this.handleAppUnload);
-   this.startSixHourInterval();
-   this.firstTimeExecution();
+   await this.getWhatsNew();
+    window.addEventListener('unload', this.handleAppUnload);
+
+    this.startSixHourInterval();
+    this.firstTimeExecution();
+
+
+
   // eslint-disable-next-line
     let plugins_imported = [];
     ${pluginInstalls.join('\n')}
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
-     document.body.className = this.viewMode;
+    document.body.className = this.viewMode;
     document.documentElement.style.fontSize = this.fontSize;
     document.documentElement.setAttribute('data-theme', this.theme);
   },
@@ -134,48 +139,43 @@ export default {
     ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 
-     executeTask() {
+    executeTask() {
       const now = new Date();
       this.lastExecutionTime = now.toLocaleTimeString();
-      // Add your task logic here
       this.toggleShowWhatsNew();
     },
 
-     async getWhatsNew() {
+    async getWhatsNew() {
       const { data } = await ApiServices.getWhatsNew();
       this.whatsNewContent = data.results;
     },
 
-     handleAppUnload() {
-      // Perform your cleanup or function call here
+    handleAppUnload() {
       console.log('Application is being unloaded.');
-      // Example: Save data to local storage or call an API
       localStorage.removeItem('firstTimeExecution');
     },
 
-     startSixHourInterval() {
+    startSixHourInterval() {
       const checkAndExecute = () => {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
-        // Check if it's a 6-hour interval (00:00, 06:00, 12:00, 18:00)
         if (hours % 6 === 0 && minutes === 0) {
           this.executeTask();
         }
       };
-      // Check every minute
       setInterval(checkAndExecute, 60 * 1000);
     },
-     firstTimeExecution() {
-      if (!localStorage.getItem('firstTimeExecution')) {
+
+    firstTimeExecution() {
+      const alreadyExecuted = localStorage.getItem('firstTimeExecution');
+      if (!alreadyExecuted) {
         localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 30 * 1000); // 30 seconds delay in milliseconds
+        }, 30 * 1000); // Delay of 30 seconds
       }
     },
-
-
     
   },
    beforeDestroy() {
