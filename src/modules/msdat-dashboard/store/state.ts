@@ -50,6 +50,7 @@ const state: State = {
   location: 'Nigeria',
   showDataSourceList: false,
   showWhatsNew: false,
+  showShareSection: false,
   dashboards: [],
   urlDatasource: 1,
   urlLocation: 1,
