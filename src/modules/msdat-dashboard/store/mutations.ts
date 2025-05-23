@@ -292,6 +292,14 @@ const mutations: MutationTree<State> = {
     state.showWhatsNew = false;
   },
 
+  toggleShowShareSection: (state) => {
+    state.showShareSection = true;
+  },
+
+  closeShowShareSection: (state) => {
+    state.showShareSection = false;
+  },
+
   /**
    * This function is used to set control options
    */

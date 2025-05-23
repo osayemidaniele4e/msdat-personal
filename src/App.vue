@@ -8,6 +8,10 @@
     <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
+
+    <div v-if="showShareSectionComponent" class="position-fixed whats-new">
+      <ShareSection />
+    </div>
   </div>
 </template>
 
@@ -17,6 +21,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
+import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
 import reviewPlugin from './modules/plugins/reviewPlugin';
@@ -30,12 +35,14 @@ export default {
     feedback,
     ShowDataSourcesList,
     WhatsNew,
+    ShareSection,
   },
   data() {
     return {
       pluginsImported: [], // Explicitly specify the type as an array of strings
       showDataSourceListComponent: false, // Replace with your actual state variable
       showWhatsNewComponent: false,
+      showShareSectionComponent: false,
       lastExecutionTime: null,
       whatsNewContent: [],
     };
@@ -57,6 +64,13 @@ export default {
       // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
         this.showWhatsNewComponent = newVal;
+      },
+      deep: true, // If you want to watch nested changes
+    },
+    '$store.state.MSDAT_STORE.showShareSection': {
+      // eslint-disable-next-line no-unused-vars
+      handler(newVal, oldVal) {
+        this.showShareSectionComponent = newVal;
       },
       deep: true, // If you want to watch nested changes
     },
@@ -155,7 +169,6 @@ export default {
   beforeDestroy() {
     window.removeEventListener('unload', this.handleAppUnload);
   },
-
 };
 </script>
 

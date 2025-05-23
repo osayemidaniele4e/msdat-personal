@@ -60,6 +60,9 @@ const appVueCode = `
       <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
+    <div v-if="showShareSectionComponent" class="position-fixed whats-new">
+      <ShareSection />
+    </div>
   </div>
 
 </template>
@@ -70,6 +73,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
+import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue';
 import ApiServices from './modules/data-layer/services/ApiServices';
 ${pluginImports.join('\n')}
 
@@ -78,6 +82,7 @@ export default {
     feedback,
     ShowDataSourcesList,
     WhatsNew,
+    ShareSection,
   },
   data() {
     return {
@@ -86,6 +91,7 @@ export default {
       showWhatsNewComponent: false,
       lastExecutionTime: null,
       whatsNewContent: [],
+      showWhatsNewComponent: false,
     };
   },
    computed: {
@@ -104,6 +110,13 @@ export default {
       // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
         this.showWhatsNewComponent = newVal;
+      },
+      deep: true, // If you want to watch nested changes
+    },
+     '$store.state.MSDAT_STORE.showShareSection': {
+      // eslint-disable-next-line no-unused-vars
+      handler(newVal, oldVal) {
+        this.showShareSectionComponent = newVal;
       },
       deep: true, // If you want to watch nested changes
     },
