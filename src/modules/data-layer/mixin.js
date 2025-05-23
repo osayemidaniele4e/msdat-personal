@@ -251,13 +251,21 @@ export default {
     async getDataSourcesFromIndicator(value) {
       const indicatorId = value || 1;
       const { data } = await apiServices.getIndicatorDataSources(indicatorId);
-      const sourcesAvailable = data.datasources.map((source) => this.dlGetDataSource(source.id));
+      // console.log('API Response:', data.datasources);
+      // Use the datasources directly from the API response
+      const sourcesAvailable = data.datasources;
 
       if (sourcesAvailable.length <= 0) {
         return [];
       }
-      // const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
-      return sourcesAvailable;
+      // console.log('Sources before sorting:', sourcesAvailable);
+      const sorted = sourcesAvailable.sort((a, b) => {
+        const nameA = a.datasource || '';
+        const nameB = b.datasource || '';
+        return nameA.localeCompare(nameB);
+      });
+      // console.log('Sources after sorting:', sorted);
+      return sorted;
     },
     async getAllDatasources() {
       const { data } = await apiServices.getAllDataSources();
