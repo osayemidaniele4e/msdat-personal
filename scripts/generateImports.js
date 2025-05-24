@@ -91,7 +91,7 @@ export default {
       showWhatsNewComponent: false,
       lastExecutionTime: null,
       whatsNewContent: [],
-      showWhatsNewComponent: false,
+      showShareSectionComponent: false,
     };
   },
    computed: {
