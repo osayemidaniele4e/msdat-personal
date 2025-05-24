@@ -75,6 +75,7 @@ export interface State {
   location:string;
   showDataSourceList: boolean;
   showWhatsNew: boolean;
+  showShareSection: boolean;
   dashboards: DashboardEntry[]
   urlDatasource: number;
   urlLocation: number;

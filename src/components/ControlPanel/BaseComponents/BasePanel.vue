@@ -34,17 +34,17 @@
     <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
-    <base-modal :showModal="showShareSectionModal" :size="'md'">
-      <template #title><h4 class="mb-0 font-weight-bold work-sans">Share Section</h4> </template>
-      <ShareSection />
-    </base-modal>
+
+    <!-- <div class="">
+       <ShareSection />
+    </div> -->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
-import ShareSection from '@/modules/msdat-dashboard/components/ShareSection.vue';
+// import ShareSection from '@/modules/msdat-dashboard/components/ShareSection.vue';
 import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 
 export default {
@@ -52,7 +52,7 @@ export default {
   mixins: [controlSetup],
   components: {
     draggable,
-    ShareSection,
+    // ShareSection,
   },
   data() {
     return {
@@ -87,7 +87,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX', 'SET_SECTION']),
+    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX', 'SET_SECTION', 'toggleShowShareSection']),
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
     filterModifiedControls() {
@@ -172,8 +172,8 @@ export default {
     },
 
     toggleShareModal(title) {
-      this.showShareSectionModal = !this.showShareSectionModal;
       this.SET_SECTION(title);
+      this.toggleShowShareSection();
     },
 
     selectControl(controlIndex) {
