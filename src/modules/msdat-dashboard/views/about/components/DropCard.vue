@@ -6,144 +6,292 @@
         <div class="col mb-3">
           <b-list-group>
             <h5 class="text-underline">Health Inputs</h5>
-            <router-link to="/dashboard/Health_Facility" target="_blank"
-              ><b-list-group-item>Health Facilities</b-list-group-item></router-link
-            >
-            <router-link to="/dashboard/Health_Financing" target="_blank"
-              ><b-list-group-item>Health Finance</b-list-group-item></router-link
-            >
-            <router-link to="/dashboard/Health_Workforce" target="_blank"
-              ><b-list-group-item>Health Workforce</b-list-group-item></router-link
-            >
-            <router-link to="/state-health-facility" target="_blank"
-              ><b-list-group-item
-                >Health Facilities Finder(GIS)- work in progress</b-list-group-item
-              ></router-link
-            >
-            <router-link to="/health-facilities-profile" target="_blank"
-              ><b-list-group-item>Multi-Source Health Facilities Profile</b-list-group-item></router-link
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Health_Facility" target="_blank">
+                <b-list-group-item>Health Facilities</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of indicators on the availability and distribution of
+                health facilities.</span
               >
+            </div>
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Health_Financing" target="_blank">
+                <b-list-group-item>Health Finance</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard includes indicators on funding sources and expenditure.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Health_Workforce" target="_blank">
+                <b-list-group-item>Health Workforce</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of indicators on health personnel across different cadres.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link to="/health-facilities-profile" target="_blank">
+                <b-list-group-item
+                  >Health Facilities Finder(GIS)- work in progress</b-list-group-item
+                >
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard is a geographic tool for locating health facilities.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link to="/health-facilities-profile" target="_blank">
+                <b-list-group-item>Multi-Source Health Facilities Profile</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard provides a detailed description of the listed health facilities.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">
           <b-list-group>
             <h5 class="text-underline">Health Outputs</h5>
-            <router-link to="/dashboard/Health_Service_Access" target="_blank">
-              <b-list-group-item>Health Service Access</b-list-group-item>
-            </router-link>
-            <a
-              href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
-              target="_blank"
-            >
-              <b-list-group-item> Health Service Uptake (NHMIS-Monthly)</b-list-group-item>
-            </a>
-            <router-link to="/health-service-uptake" target="_blank"
-              ><b-list-group-item
-                >Health Service Uptake (NHMIS-Quarterly)</b-list-group-item
-              ></router-link
-            >
-            <a href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/" target="_blank">
-              <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
-            >
-            <router-link to="/dashboard/Disease_Surveillance" target="_blank"
-              ><b-list-group-item>Disease Surveillance</b-list-group-item></router-link
-            >
+
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Health_Service_Access" target="_blank">
+                <b-list-group-item>Health Service Access</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of indicators on population access to health services.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <a
+                href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
+                target="_blank"
+              >
+                <b-list-group-item> Health Service Uptake (NHMIS-Monthly)</b-list-group-item>
+              </a>
+              <span class="custom-tooltip"
+                >This dashboard consists of selected indicators that are tracked quarterly.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link to="/health-service-uptake" target="_blank">
+                <b-list-group-item>Health Service Uptake (NHMIS-Quarterly)</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of selected indicators that are tracked quarterly.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <a href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/" target="_blank">
+                <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
+              >
+              <span class="custom-tooltip"
+                >This dashboard consists of analytical insights of selected RMCHN indicators from
+                NHMIS monthly data.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Disease_Surveillance" target="_blank">
+                <b-list-group-item>Disease Surveillance</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of Integrated Disease Surveillance and Response (IDSR)
+                indicators of relevant communicable diseases.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">
           <b-list-group>
             <h5 class="text-underline">Health Outcomes</h5>
-            <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
-              <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
-            </router-link>
-            <router-link to="/dashboard/Quarterly_Performance_Assessment_Dashboard" target="_blank">
-              <b-list-group-item>Quarterly Performance Assessment</b-list-group-item>
-            </router-link>
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
+                <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of indicators that show disease burden and intervention
+                coverage.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link
+                to="/dashboard/Quarterly_Performance_Assessment_Dashboard"
+                target="_blank"
+              >
+                <b-list-group-item>Quarterly Performance Assessment</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of selected indicators with quarterly analytics.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">
           <b-list-group>
             <h5 class="text-underline">Advanced Analytics</h5>
+
             <b-list-group-item
               v-for="(section, index) in advancedSections"
               :key="section.label"
               @click="openAdvancedAnalytics(index, section.label)"
-              class="cursor-pointer"
+              class="cursor-pointer tooltip-wrapper"
             >
               {{ section.label }}
+              <span class="custom-tooltip"
+                >This dashboard provides tools for deep and interactive data analysis.
+              </span>
             </b-list-group-item>
-            <!-- <router-link
-              v-for="(section, index) in advancedSections"
-              :key="section.label"
-              :to="`/dashboard/Advanced_Analytics?index=${index}`"
-              target="_blank"
-            >
-              <b-list-group-item> {{ section.label }}</b-list-group-item></router-link
-            > -->
           </b-list-group>
         </div>
         <div class="col mb-3">
           <b-list-group>
             <h5 class="text-underline">Population</h5>
-            <router-link to="/dashboard/Demographics" target="_blank"
-              ><b-list-group-item>Demographics</b-list-group-item></router-link
-            >
-            <router-link to="/dashboard/GIS_Mapping_Dashboard" target="_blank"
-              ><b-list-group-item>GIS Mapping</b-list-group-item></router-link
-            >
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Demographics" target="_blank">
+                <b-list-group-item>Demographics</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of indicators that show population structure, growth, and
+                distribution.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/GIS_Mapping_Dashboard" target="_blank">
+                <b-list-group-item>GIS Mapping</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard displays indicators using geospatial visualisation to show
+                population distribution and its relationship with key health data.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">
           <b-list-group>
             <h5 class="text-underline">Thematic Dashboard</h5>
-            <router-link to="/external-ndr1" target="_blank"
-              ><b-list-group-item
-                >HIV/AIDs National Repository Dashboard 1</b-list-group-item
-              ></router-link
-            >
+            <div class="tooltip-wrapper">
+              <router-link to="/external-ndr1" target="_blank">
+                <b-list-group-item>HIV/AIDs National Repository Dashboard 1</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of comprehensive HIV-related data from national systems.
+              </span>
+            </div>
 
-            <router-link to="/external-ndr2" target="_blank"
-              ><b-list-group-item
-                >HIV/AIDs National Repository Dashboard 2</b-list-group-item
-              ></router-link
-            >
-            <router-link to="/external-ncdc" target="_blank"
-              ><b-list-group-item>Disease Surveillance (NCDC)</b-list-group-item></router-link
-            >
+            <div class="tooltip-wrapper">
+              <router-link to="/external-ndr2" target="_blank">
+                <b-list-group-item>HIV/AIDs National Repository Dashboard 2</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This dashboard consists of comprehensive HIV-related data from national systems.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link to="/external-ncdc" target="_blank">
+                <b-list-group-item>Disease Surveillance (NCDC)</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >This shows the Nigeria Centre for Disease Control (NCDC) dashboard, with IDSR
+                indicators of relevant diseases.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">
           <b-list-group>
             <h5 class="text-underline">Other Dashboards</h5>
-            <router-link to="/custom" target="_blank"
-              ><b-list-group-item> Create Your Dashboard</b-list-group-item></router-link
-            >
-            <router-link to="/health-profiles" target="_blank"
-              ><b-list-group-item>Health Profiles</b-list-group-item></router-link
-            >
-            <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
-              ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
-            >
-            <router-link to="/ministers-dashboard" target="_blank"
-              ><b-list-group-item>SWAP Ministerial Dashboard</b-list-group-item></router-link
-            >
-            <router-link to="/data-triangulation-dashboard" target="_blank"
-              ><b-list-group-item>Triangulation Dashboard</b-list-group-item></router-link
-            >
-            <!-- Scorecard Dashboard of Presidential Bond Indicators -->
-            <router-link to="/presidential-bond-scorecard" target="_blank"
-              ><b-list-group-item>Scorecard Dashboard of Presidential Bond Indicators</b-list-group-item></router-link>
+            <div class="tooltip-wrapper-2">
+              <router-link to="/custom" target="_blank">
+                <b-list-group-item>Create Your Dashboard</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2"
+                >This enables users to build their dashboards using indicators and data sources
+                available on the MSDAT.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper-2">
+              <router-link to="/health-profiles" target="_blank">
+                <b-list-group-item>Health Profiles</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2"
+                >This dashboard contains indicators that give an overview of the State or National
+                health status.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper-2">
+              <a href="https://ngf.fmohconnect.gov.ng/" target="_blank"
+                ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
+              >
+              <span class="custom-tooltip-2"
+                >This dashboard contains selected indicators that give high-level insights into
+                health at the state level.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper-2">
+              <router-link to="/ministers-dashboard" target="_blank">
+                <b-list-group-item>SWAP Ministerial Dashboard</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2"
+                >This dashboard contains selected indicators that give high-level insights into
+                health at the national level.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper-2">
+              <router-link to="/data-triangulation-dashboard" target="_blank">
+                <b-list-group-item>Triangulation Dashboard</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2"
+                >This dashboard enables users to analyze multiple sources to ensure data consistency
+                and reliability for decision-making.
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper-2">
+              <router-link to="/presidential-bond-scorecard" target="_blank">
+                <b-list-group-item
+                  >Scorecard Dashboard of Presidential Bond Indicators</b-list-group-item
+                >
+              </router-link>
+              <span class="custom-tooltip-2"
+                >This dashboard consists of indicators that monitor priority national health
+                commitments.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3" v-if="isAuthenticated">
           <b-list-group>
             <h5 class="text-underline">Custom Dashboards</h5>
             <div v-for="dashboard in userDashboards" :key="dashboard.id">
-              <router-link :to="'/custom/public/' + dashboard.id" target="_blank"
+              <div class="tooltip-wrapper-2">
+                <router-link :to="'/custom/public/' + dashboard.id" target="_blank">
+                  <b-list-group-item> {{ dashboard.name_of_dashboard }}</b-list-group-item>
+                </router-link>
+                <span class="custom-tooltip-2"
+                  >This dashboard is created by you or other users and is available for public
+                  access.
+                </span>
+              </div>
+              <!-- <router-link :to="'/custom/public/' + dashboard.id" target="_blank"
                 ><b-list-group-item>
                   {{ dashboard.name_of_dashboard }}</b-list-group-item
                 ></router-link
-              >
+              > -->
             </div>
           </b-list-group>
         </div>
@@ -247,6 +395,124 @@ export default {
 
 <style lang="scss">
 @import '@/scss/abstracts/_variables.scss';
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%; // ensure it wraps the whole item cleanly
+
+  &:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.tooltip-wrapper-2 {
+  position: relative;
+  display: inline-block;
+  width: 100%; // ensure it wraps the whole item cleanly
+
+  &:hover .custom-tooltip-2 {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.custom-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 999;
+  bottom: 50%; // place it above the item
+  left: 60%;
+  transform: translateX(-50%) translateY(-8px);
+  background-color: #fff;
+  color: #000;
+  padding: 6px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  white-space: normal; // allows line break
+  width: 300px; // or whatever fits your layout
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e5e5;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #494545 transparent transparent transparent;
+  }
+}
+
+.custom-tooltip-2 {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 999;
+  bottom: 50%; // place it above the item
+  left: 35%;
+  transform: translateX(-50%) translateY(-8px);
+  background-color: #fff;
+  color: #000;
+  padding: 6px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  white-space: normal; // allows line break
+  width: 300px; // or whatever fits your layout
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e5e5;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #494545 transparent transparent transparent;
+  }
+}
+
+// .custom-tooltip {
+//   visibility: hidden;
+//   opacity: 0;
+//   position: absolute;
+//   z-index: 999;
+//   bottom: 50%; // Place above the item
+//   // left: 10;
+//   transform: translateY(-50%);
+//   background-color: #494545;
+//   color: #fff;
+//   padding: 6px 10px;
+//   font-size: 0.75rem;
+//   white-space: nowrap;
+//   border-radius: 4px;
+//   transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+//   pointer-events: none;
+//   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     top: 50%;
+//     left: 0;
+//     transform: translateY(-50%);
+//     margin-left: -5px;
+//     border-width: 5px;
+//     border-style: solid;
+//     border-color: transparent #333 transparent transparent;
+//   }
+// }
+
 div {
   &.dropdown-expanded {
     position: absolute;
