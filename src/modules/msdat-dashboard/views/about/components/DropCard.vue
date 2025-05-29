@@ -424,7 +424,7 @@ export default {
   position: absolute;
   z-index: 999;
   bottom: 50%; // place it above the item
-  left: 60%;
+  left: 70%;
   transform: translateX(-50%) translateY(-8px);
   background-color: #fff;
   color: #000;
@@ -456,7 +456,7 @@ export default {
   position: absolute;
   z-index: 999;
   bottom: 50%; // place it above the item
-  left: 35%;
+  left: 10%;
   transform: translateX(-50%) translateY(-8px);
   background-color: #fff;
   color: #000;
