@@ -13,15 +13,18 @@
             :id="`panel-${el.index}`"
             @click="changeControl(el.index, el.title)"
           >
-            <div class="d-flex justify-content-between el-tit align-items-center">
+            <div class="d-flex justify-content-between el-tit align-items-center ">
               {{ el.title }}
-              <div v-if="el.index === selectedIndex" class="share-icon-wrapper">
+              <div v-if="el.index === selectedIndex" class="share-icon-wrapper tooltip-wrapper">
                 <img
                   src="@/assets/Share-button.png"
                   alt="share-btn"
                   class="share-icon"
                   @click.stop="toggleShareModal(el.title)"
                 />
+                 <span class="custom-tooltip"
+                >Share Section
+              </span>
               </div>
             </div>
           </li>
@@ -294,6 +297,52 @@ export default {
 <style lang="scss" scoped>
 // $primary: #2b5d5b;
 @import '@/scss/abstracts/_variables.scss';
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%; // ensure it wraps the whole item cleanly
+
+  &:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.custom-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 999;
+  bottom: 50%; // place it above the item
+  left: 70%;
+  transform: translateX(-50%) translateY(-8px);
+  background-color: #fff;
+  color: #000;
+  padding: 6px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  white-space: normal; // allows line break
+  width: 100px; // or whatever fits your layout
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #494545 transparent transparent transparent;
+  }
+}
 
 .main {
   display: inherit;
