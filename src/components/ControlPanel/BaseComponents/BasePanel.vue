@@ -23,7 +23,7 @@
                   @click.stop="toggleShareModal(el.title)"
                 />
                  <span class="custom-tooltip"
-                >Share Section
+                >Share
               </span>
               </div>
             </div>
