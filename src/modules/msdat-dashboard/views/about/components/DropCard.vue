@@ -11,8 +11,7 @@
                 <b-list-group-item>Health Facilities</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of indicators on the availability and distribution of
-                health facilities.</span
+                >Availability and distribution of health facilities.</span
               >
             </div>
             <div class="tooltip-wrapper">
@@ -20,7 +19,7 @@
                 <b-list-group-item>Health Finance</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard includes indicators on funding sources and expenditure.
+                >Funding sources and expenditure.
               </span>
             </div>
 
@@ -29,7 +28,8 @@
                 <b-list-group-item>Health Workforce</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of indicators on health personnel across different cadres.
+                >Health personnel across different cadres.
+
               </span>
             </div>
 
@@ -40,7 +40,8 @@
                 >
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard is a geographic tool for locating health facilities.
+                >Geographic tool for locating health facilities.
+
               </span>
             </div>
 
@@ -49,7 +50,7 @@
                 <b-list-group-item>Multi-Source Health Facilities Profile</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard provides a detailed description of the listed health facilities.
+                >Description of health facilities.
               </span>
             </div>
           </b-list-group>
@@ -63,7 +64,7 @@
                 <b-list-group-item>Health Service Access</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of indicators on population access to health services.
+                >Population access to health services.
               </span>
             </div>
 
@@ -75,7 +76,7 @@
                 <b-list-group-item> Health Service Uptake (NHMIS-Monthly)</b-list-group-item>
               </a>
               <span class="custom-tooltip"
-                >This dashboard consists of selected indicators that are tracked quarterly.
+                >Selected indicators tracked monthly.
               </span>
             </div>
 
@@ -84,7 +85,8 @@
                 <b-list-group-item>Health Service Uptake (NHMIS-Quarterly)</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of selected indicators that are tracked quarterly.
+                >Selected indicators tracked quarterly.
+
               </span>
             </div>
 
@@ -93,20 +95,11 @@
                 <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
               >
               <span class="custom-tooltip"
-                >This dashboard consists of analytical insights of selected RMCHN indicators from
-                NHMIS monthly data.
+                >Analytical insights of selected RMNCH indicators.
+
               </span>
             </div>
 
-            <div class="tooltip-wrapper">
-              <router-link to="/dashboard/Disease_Surveillance" target="_blank">
-                <b-list-group-item>Disease Surveillance</b-list-group-item>
-              </router-link>
-              <span class="custom-tooltip"
-                >This dashboard consists of Integrated Disease Surveillance and Response (IDSR)
-                indicators of relevant communicable diseases.
-              </span>
-            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">
@@ -117,8 +110,7 @@
                 <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of indicators that show disease burden and intervention
-                coverage.
+                >Disease burden and intervention coverage.
               </span>
             </div>
 
@@ -130,7 +122,17 @@
                 <b-list-group-item>Quarterly Performance Assessment</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of selected indicators with quarterly analytics.
+                >Selected indicators with quarterly analytics.
+
+              </span>
+            </div>
+
+            <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Disease_Surveillance" target="_blank">
+                <b-list-group-item>Disease Surveillance</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip"
+                >Communicable diseases.
               </span>
             </div>
           </b-list-group>
@@ -147,7 +149,7 @@
             >
               {{ section.label }}
               <span class="custom-tooltip"
-                >This dashboard provides tools for deep and interactive data analysis.
+                >{{ section.tooltip }}
               </span>
             </b-list-group-item>
           </b-list-group>
@@ -160,8 +162,8 @@
                 <b-list-group-item>Demographics</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of indicators that show population structure, growth, and
-                distribution.
+                >Indicators showing population structure, growth, and distribution.
+
               </span>
             </div>
 
@@ -170,8 +172,7 @@
                 <b-list-group-item>GIS Mapping</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard displays indicators using geospatial visualisation to show
-                population distribution and its relationship with key health data.
+                >Geospatial visualization showing population distribution and its relationship with key health data.
               </span>
             </div>
           </b-list-group>
@@ -184,7 +185,8 @@
                 <b-list-group-item>HIV/AIDs National Repository Dashboard 1</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of comprehensive HIV-related data from national systems.
+                >Comprehensive HIV-related data from national systems.
+
               </span>
             </div>
 
@@ -193,7 +195,8 @@
                 <b-list-group-item>HIV/AIDs National Repository Dashboard 2</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This dashboard consists of comprehensive HIV-related data from national systems.
+                >Comprehensive HIV-related data from national systems.
+
               </span>
             </div>
 
@@ -202,8 +205,8 @@
                 <b-list-group-item>Disease Surveillance (NCDC)</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >This shows the Nigeria Centre for Disease Control (NCDC) dashboard, with IDSR
-                indicators of relevant diseases.
+                >IDSR indicators of relevant diseases.
+
               </span>
             </div>
           </b-list-group>
@@ -216,8 +219,7 @@
                 <b-list-group-item>Create Your Dashboard</b-list-group-item>
               </router-link>
               <span class="custom-tooltip-2"
-                >This enables users to build their dashboards using indicators and data sources
-                available on the MSDAT.
+                >Build your personalized dashboard.
               </span>
             </div>
 
@@ -226,8 +228,7 @@
                 <b-list-group-item>Health Profiles</b-list-group-item>
               </router-link>
               <span class="custom-tooltip-2"
-                >This dashboard contains indicators that give an overview of the State or National
-                health status.
+                >Overview of  State or National health status.
               </span>
             </div>
 
@@ -236,8 +237,7 @@
                 ><b-list-group-item>Governors' Dashboard</b-list-group-item></a
               >
               <span class="custom-tooltip-2"
-                >This dashboard contains selected indicators that give high-level insights into
-                health at the state level.
+                >High-level insights into health at the state level.
               </span>
             </div>
 
@@ -246,8 +246,8 @@
                 <b-list-group-item>SWAP Ministerial Dashboard</b-list-group-item>
               </router-link>
               <span class="custom-tooltip-2"
-                >This dashboard contains selected indicators that give high-level insights into
-                health at the national level.
+                >High-level insights into health at the national level.
+
               </span>
             </div>
 
@@ -256,8 +256,7 @@
                 <b-list-group-item>Triangulation Dashboard</b-list-group-item>
               </router-link>
               <span class="custom-tooltip-2"
-                >This dashboard enables users to analyze multiple sources to ensure data consistency
-                and reliability for decision-making.
+                >Analyze health data from multiple sources.
               </span>
             </div>
 
@@ -268,8 +267,8 @@
                 >
               </router-link>
               <span class="custom-tooltip-2"
-                >This dashboard consists of indicators that monitor priority national health
-                commitments.
+                >Monitor priority national health commitments.
+
               </span>
             </div>
           </b-list-group>
