@@ -107,10 +107,12 @@ export default {
     async setLocationDropdown(
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
+      // eslint-disable-next-line no-unused-vars
       controlIndex = 0,
     ) {
       if (!dataSourceID || !indicatorID) return;
       let data = [];
+
       if (Array.isArray(indicatorID)) {
         // eslint-disable-next-line no-restricted-syntax
         for (const ind of indicatorID) {
@@ -126,20 +128,26 @@ export default {
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
-      let locations = this.dlGetLocation({ level: 3 });
-      locations.unshift(this.dlGetLocation(1));
-      locations = locations.filter(({ id }) => data.includes(id));
 
+      // Commit the unique locations to the store
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
-        payload: locations,
+        payload: data.sort((a, b) => a.id - b.id),
       });
+      // let locations = this.dlGetLocation({ level: 3 });
+      // locations.unshift(this.dlGetLocation(1));
+      // locations = locations.filter(({ id }) => data.includes(id));
 
-      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-        controlIndex,
-        key: 'location',
-        value: locations[0] || this.dlGetLocation(1),
-      });
+      // this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+      //   key: 'location',
+      //   payload: locations,
+      // });
+
+      // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+      //   controlIndex,
+      //   key: 'location',
+      //   value: locations[0] || this.dlGetLocation(1),
+      // });
     },
 
     // Get available DataSources

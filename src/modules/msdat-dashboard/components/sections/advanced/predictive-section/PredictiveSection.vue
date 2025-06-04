@@ -146,6 +146,8 @@ export default {
 
         this.selectDataSource = dataSourceSelected;
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
+        console.log(seriesArray, years, 'seriesArray D');
+
         await this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
@@ -164,6 +166,7 @@ export default {
           const { seriesArray, years } = await this.toHighChartSeriesSetup(
             this.values?.datasource ? [this.values.datasource] : dataSources,
           );
+          console.log(seriesArray, years, 'seriesArray I');
           await this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -184,6 +187,7 @@ export default {
           const { seriesArray, years } = await this.toHighChartSeriesSetup(
             this.values?.datasource ? [this.values.datasource] : dataSources,
           );
+          console.log(seriesArray, years, 'seriesArray L');
           await this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -197,7 +201,7 @@ export default {
     ...mapGetters(['getPredictedData', 'getSelectedDataSourceID']),
   },
   methods: {
-    ...mapActions(['PREDICTIVE_ANALYSIS']),
+    ...mapActions(['PREDICTIVE_ANALYSIS', 'getPredictiveAnalysisData']),
     ...mapMutations(['setDataSource']),
     /**
      * @typedef {Object} HighChartObject
@@ -213,96 +217,105 @@ export default {
      */
 
     async setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
+      console.log(this.values, 'values in predictive section');
+
+      const body = {
+        indicator: this.values.indicator.full_name,
+        location: this.values.location.name,
+        datasource: this.values.datasource.datasource,
+      };
+
+      // const response = await this.getPredictiveAnalysisData(body);
+      // console.log(response, 'response from predictive analysis');
       // Getting chart series
       // Calling enpoint to process data
       // Getting response of predictive data
       // Putting the respnse in the ChartSeriesObject
-      const { data } = ChartSeriesObject.find((item) => item.name === this.getSelectedDataSourceID);
-      if (data.length >= 7) {
-        try {
-          await this.PREDICTIVE_ANALYSIS({ data });
-          const yearArray = [];
-          if (this.getPredictedData.prediction !== undefined) {
-            this.getPredictedData.prediction.forEach((item) => {
-              const arr = item[0];
-              yearArray.push(arr);
-            });
-          }
-          const year = [...sortedYear, ...yearArray];
-          // eslint-disable-next-line camelcase
-          const sorted_year = year.sort();
-          if (this.getPredictedData.prediction !== undefined) {
-            const switchPrediction = this.getPredictedData.prediction.map((val) => [
-              val[0],
-              val[1],
-            ]);
-            this.ChartOptions = {
-              tooltip: {
-                shared: true,
-              },
-              yAxis: {
-                ...defaultOptions.yAxis,
-                title: {
-                  ...defaultOptions.yAxis.title,
-                },
-                gridLineWidth: 0,
-                labels: {
-                  ...defaultOptions.yAxis.labels,
-                },
-                plotLines: [...this.computeChartPlotLines(this.values)],
-              },
-              xAxis: {
-                ...defaultOptions.xAxis,
-                crosshair: {
-                  enabled: true,
-                },
-                categories: sorted_year,
-              },
-              chart: {
-                ...defaultOptions.chart,
-                type: 'line',
-                height: '300',
-              },
-              title: {
-                ...defaultOptions.title,
-              },
-              series: [
-                {
-                  name: 'Actual Data',
-                  data: data || [],
-                  color: 'red',
-                },
-                {
-                  name: 'Prediction',
-                  data: switchPrediction,
-                  color: 'blue',
-                  dashStyle: 'dot',
-                },
-              ],
-              plotOptions: {
-                series: {
-                  grouping: true,
-                  pointWidth: 10,
-                  connectNulls: false,
-                  pointPlacement: 'between',
-                },
-                line: {
-                  tooltip: {
-                    pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
-                    shared: true,
-                  },
-                },
-              },
-            };
-          }
-          const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
-          this.ChartOptions.yAxis.title.text = displayFactor;
-          this.showNoAvailablePrediction = false;
-        } catch (error) {
-          console.log(error);
+      // const { data } = ChartSeriesObject.find((item) => item.name === this.getSelectedDataSourceID);
+
+      try {
+        // await this.PREDICTIVE_ANALYSIS({ data });
+        const response = await this.getPredictiveAnalysisData(body);
+        const yearArray = [];
+        if (response.prediction !== undefined) {
+          response.prediction.forEach((item) => {
+            const arr = item[0];
+            yearArray.push(arr);
+          });
         }
-      } else {
-        this.showNoAvailablePrediction = true;
+        const year = [...sortedYear, ...yearArray];
+        // eslint-disable-next-line camelcase
+        const sorted_year = year.sort();
+        if (response.prediction !== undefined) {
+          const switchPrediction = response.prediction.map((val) => [
+            val[0],
+            val[1],
+          ]);
+          this.ChartOptions = {
+            tooltip: {
+              shared: true,
+            },
+            yAxis: {
+              ...defaultOptions.yAxis,
+              title: {
+                ...defaultOptions.yAxis.title,
+              },
+              gridLineWidth: 0,
+              labels: {
+                ...defaultOptions.yAxis.labels,
+              },
+              plotLines: [...this.computeChartPlotLines(this.values)],
+            },
+            xAxis: {
+              ...defaultOptions.xAxis,
+              crosshair: {
+                enabled: true,
+              },
+              categories: sorted_year,
+            },
+            chart: {
+              ...defaultOptions.chart,
+              type: 'line',
+              height: '300',
+            },
+            title: {
+              ...defaultOptions.title,
+            },
+            series: [
+              {
+                name: 'Actual Data',
+                data: response.previous
+ || [],
+                color: 'red',
+              },
+              {
+                name: 'Prediction',
+                data: switchPrediction,
+                color: 'blue',
+                dashStyle: 'dot',
+              },
+            ],
+            plotOptions: {
+              series: {
+                grouping: true,
+                pointWidth: 10,
+                connectNulls: false,
+                pointPlacement: 'between',
+              },
+              line: {
+                tooltip: {
+                  pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
+                  shared: true,
+                },
+              },
+            },
+          };
+        }
+        const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+        this.ChartOptions.yAxis.title.text = displayFactor;
+        this.showNoAvailablePrediction = false;
+      } catch (error) {
+        console.log(error);
       }
     },
     /**
