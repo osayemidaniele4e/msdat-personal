@@ -110,6 +110,15 @@ export default [
       },
       // Page 4
       {
+        path: 'embed-dashboard',
+        name: 'embed-dashboard',
+        component: () => import('./views/EmbedDashboardSection.vue'),
+        meta: {
+          title: 'Custom Dashboard',
+        },
+      },
+      // Page 4
+      {
         path: 'visibility',
         name: 'visibility',
         component: () => import('./views/ChooseVisibility.vue'),

@@ -277,7 +277,7 @@
           <!-- </a> -->
         </b-col>
         <b-col class="main">
-          <h4 class="mt-4">About the MSDAT Dashboard</h4>
+          <h4 class="mt-4">About the MSDAT Platform</h4>
           <p>
             This dashboard is developed and managed by the Department of Health Planning Research
             and Statistics (DHPRS)
@@ -323,7 +323,7 @@
     <b-modal id="modal-apps" title="MSDAT Apps Plugins" hide-footer>
       <b-collapse id="collapse-1" class="mt-2">
         <b-card>
-          This enables you to comment on any section in the MSDAT dashboard just by clicking the
+          This enables you to comment on any section in the MSDAT Platform just by clicking the
           headings
         </b-card>
       </b-collapse>

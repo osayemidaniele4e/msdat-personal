@@ -60,6 +60,9 @@ const appVueCode = `
       <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
+    <div v-if="showShareSectionComponent" class="position-fixed whats-new">
+      <ShareSection />
+    </div>
   </div>
 
 </template>
@@ -70,6 +73,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
+import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue';
 import ApiServices from './modules/data-layer/services/ApiServices';
 ${pluginImports.join('\n')}
 
@@ -78,6 +82,7 @@ export default {
     feedback,
     ShowDataSourcesList,
     WhatsNew,
+    ShareSection,
   },
   data() {
     return {
@@ -86,6 +91,7 @@ export default {
       showWhatsNewComponent: false,
       lastExecutionTime: null,
       whatsNewContent: [],
+      showShareSectionComponent: false,
     };
   },
    computed: {
@@ -107,6 +113,13 @@ export default {
       },
       deep: true, // If you want to watch nested changes
     },
+     '$store.state.MSDAT_STORE.showShareSection': {
+      // eslint-disable-next-line no-unused-vars
+      handler(newVal, oldVal) {
+        this.showShareSectionComponent = newVal;
+      },
+      deep: true, // If you want to watch nested changes
+    },
      viewMode(newMode) {
       document.body.className = newMode;
     },
@@ -118,14 +131,19 @@ export default {
     },
   },
   async mounted() {
-   window.addEventListener('unload', this.handleAppUnload);
-   this.startSixHourInterval();
-   this.firstTimeExecution();
+   await this.getWhatsNew();
+    window.addEventListener('unload', this.handleAppUnload);
+
+    this.startSixHourInterval();
+    this.firstTimeExecution();
+
+
+
   // eslint-disable-next-line
     let plugins_imported = [];
     ${pluginInstalls.join('\n')}
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
-     document.body.className = this.viewMode;
+    document.body.className = this.viewMode;
     document.documentElement.style.fontSize = this.fontSize;
     document.documentElement.setAttribute('data-theme', this.theme);
   },
@@ -134,48 +152,43 @@ export default {
     ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 
-     executeTask() {
+    executeTask() {
       const now = new Date();
       this.lastExecutionTime = now.toLocaleTimeString();
-      // Add your task logic here
       this.toggleShowWhatsNew();
     },
 
-     async getWhatsNew() {
+    async getWhatsNew() {
       const { data } = await ApiServices.getWhatsNew();
       this.whatsNewContent = data.results;
     },
 
-     handleAppUnload() {
-      // Perform your cleanup or function call here
+    handleAppUnload() {
       console.log('Application is being unloaded.');
-      // Example: Save data to local storage or call an API
       localStorage.removeItem('firstTimeExecution');
     },
 
-     startSixHourInterval() {
+    startSixHourInterval() {
       const checkAndExecute = () => {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
-        // Check if it's a 6-hour interval (00:00, 06:00, 12:00, 18:00)
         if (hours % 6 === 0 && minutes === 0) {
           this.executeTask();
         }
       };
-      // Check every minute
       setInterval(checkAndExecute, 60 * 1000);
     },
-     firstTimeExecution() {
-      if (!localStorage.getItem('firstTimeExecution')) {
+
+    firstTimeExecution() {
+      const alreadyExecuted = localStorage.getItem('firstTimeExecution');
+      if (!alreadyExecuted) {
         localStorage.setItem('firstTimeExecution', 'true');
         setTimeout(() => {
           this.toggleShowWhatsNew();
-        }, 30 * 1000); // 30 seconds delay in milliseconds
+        }, 30 * 1000); // Delay of 30 seconds
       }
     },
-
-
     
   },
    beforeDestroy() {

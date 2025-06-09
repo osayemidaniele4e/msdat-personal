@@ -47,6 +47,7 @@
           : true
       "
     />
+    <!-- <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" /> -->
     <div class="preview" v-if="$route.query.prev">
       <b-button
         @click="$router.push('/custom/requests')"
@@ -65,7 +66,7 @@
       "
       class="mt-5"
     >
-      <h1 class="url_title">Embedded Iframe</h1>
+      <h1 class="url_title">{{ this.$store.getters.dashboardDetails.description }} - (Iframe)</h1>
       <div class="w-100 url_height">
         <div v-html="$store.getters.getEmbedIframe"></div>
       </div>
@@ -74,8 +75,8 @@
     <div
       v-if="
         isCustomDashboard &&
-        $store.getters.embeddedUrl !== null &&
-        $store.getters.embeddedUrl !== ''
+        $store.getters.getEmbedUrl !== null &&
+        $store.getters.getEmbedUrl !== ''
       "
       :class="[
         $store.getters.getEmbedIframe === null || $store.getters.getEmbedIframe === ''
@@ -83,7 +84,7 @@
           : 'url_body',
       ]"
     >
-      <h1 class="url_title">Embedded URL</h1>
+      <h1 class="url_title">{{ this.$store.getters.dashboardDetails.description }} - (URL)</h1>
       <div class="w-100 url_height">
         <!-- <b-embed type="iframe" aspect="21by9" :src="$store.getters.getEmbedUrl" width="100%" ></b-embed> -->
         <iframe
@@ -381,7 +382,6 @@ export default {
         initialIndicator: ids[0],
         initialDataSource: sourcesID[0],
         initialLocation: 1,
-        // id: dashboard.id,
       };
       this.saveDashboard(
         ids,
@@ -472,6 +472,7 @@ export default {
         console.log(dashboard, 'dashboard@ 1');
         this.configObject = '';
         this.configObject = {
+          id: dashboard.id,
           name: dashboard.name,
           title: dashboard.title,
           indicators: dashboard.indicators,
@@ -482,7 +483,6 @@ export default {
           initialDataSource: dashboard.initialDataSource,
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
-          id: dashboard.id,
         };
         localStorage.setItem('activeDashboardID', dashboard.id);
         this.SET_CONFIGURATIONS(this.configObject);

@@ -11,7 +11,7 @@
         <template #title>
           <h5 class="font-weight-bold work-sans text-white">National Disease Outbreak Dashboard</h5>
         </template>
-        <div class="container pl-5">
+        <div class="">
           <b-embed type="iframe" aspect="16by9" :src="url" :width="width" :height="height"></b-embed>
         </div>
       </base-sub-card>
@@ -35,7 +35,7 @@ export default {
       title: '',
       configObject: {}, // This should be an Object initially
       url: 'https://public.tableau.com/views/NationalDiseaseDashboardNCDC2022/Dashboard1?:language=en-US&:embed=y&:sid=&:redirect=auth&:embed_code_version=3&:loadOrderID=0&:display_count=y&publish=yes&:origin=viz_share_link:showVizHome=no&:embed=true',
-      width: '70%',
+      width: '100%',
       height: '600',
       showComing: true,
     };
@@ -52,7 +52,7 @@ export default {
 }
 .base {
   height: auto;
-  width: 70vw;
+  width: 95vw;
 }
 .heading {
   margin: 10px;

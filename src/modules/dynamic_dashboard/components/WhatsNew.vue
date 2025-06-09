@@ -66,6 +66,7 @@ export default {
       const { data } = await ApiServices.getWhatsNew();
       const temp = this.groupByCategory(data.results);
       this.whatsNew = temp;
+      console.log('Whats New:', this.whatsNew);
     },
     groupByCategory(data) {
       return data.reduce((acc, item) => {

@@ -27,7 +27,7 @@ export default {
       try {
         commit('setIndiLoading', loading);
 
-        const res = await axios.get('https://msdat2api.e4eweb.space/api/indicators/?size=3000');
+        const res = await ApiServices.fetchAllIndicators();
         if (res.data && res.data.results && Array.isArray(res.data.results)) {
           const data = res.data.results;
           const array = (data || []).map((pArea) => pArea.program_area || 'Unknown');
@@ -105,8 +105,7 @@ export default {
       commit('setDSLoading', loading);
       // state.indicatorloading = true;
       // await axios.get('http://135.181.212.168:9234/api/crud/datasources/')
-      await axios
-        .get('https://msdat-api.fmohconnect.gov.ng/api/datasources/')
+      await ApiServices.fetchAllDataSources()
         .then((res) => {
           // const { data } = res;
           const data = res.data.results;
@@ -335,6 +334,13 @@ export default {
 
   setVisibility({ commit }, payload) {
     commit('setVisibility', payload);
+  },
+  setEmbedUrl({ commit }, payload) {
+    commit('setUrlEmbed', payload);
+  },
+
+  setEmbedIframe({ commit }, payload) {
+    commit('setIframe', payload);
   },
 
   setIsPublicDashboard({ commit }, payload) {

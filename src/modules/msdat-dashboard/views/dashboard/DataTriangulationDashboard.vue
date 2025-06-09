@@ -96,8 +96,8 @@
               <div class="w-100 header py-2 d-flex justify-content-center">
                 <h3>Results</h3>
               </div>
-              <div @click="toggleExpand()" class=" py-2">
-                <img   class="expand-icon" src="@/assets/Expand.png" alt="" />
+              <div @click="toggleExpand()" class="py-2">
+                <img class="expand-icon" src="@/assets/Expand.png" alt="" />
               </div>
               <div class="row h-100">
                 <div
@@ -136,7 +136,7 @@
                       Degree of Data Source Consistency
                       <b-icon-info-circle-fill
                         v-tooltip="
-                          'This refers to the degree to which different data sources provide similar or aligned information over time and across datasets. Consistent data sources should show comparable trends and values for the same indicators, despite being collected using different methodologies.'
+                          'This is the extent to which different data sources align. Consistent sources will show comparable datasets regardless of the data source methodology.'
                         "
                         class="data-source-info mx-0"
                         font-scale="1"
@@ -182,7 +182,7 @@
                       Degree of Data Source Complementarity
                       <b-icon-info-circle-fill
                         v-tooltip="
-                          'This refers to the ability of different data sources to provide additional or supporting information that, when combined, offers a more comprehensive view of a subject. This enhances decision-making by integrating multiple perspectives from different data collection methods.'
+                          'This shows the possibility of data sources to provide supporting information when combined to cover gap periods in datasets'
                         "
                         class="data-source-info mx-0"
                         font-scale="1"
@@ -416,8 +416,12 @@
         <p class="info-action-desc w-50">
           Note: Selecting an 'Indicator' and a 'Location' is optional to filter down the results.
         </p>
+        <!-- <pre>{{ allIndicators }}</pre> -->
         <div class="mt-5 w-75">
-          <div class="row d-flex">
+          <div
+            v-if="allIndicators.length && allDatasources.length && locations.length"
+            class="row d-flex"
+          >
             <div class="col-2">
               <label>Primary Datasource</label>
               <multiselect
@@ -493,6 +497,12 @@
               >
               </multiselect>
             </div>
+          </div>
+          <div v-else class="w-100 d-flex flex-column align-items-center">
+            <div class="spinner-border fs-4 text-success mx-3 mb-2" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <h4>Please wait while Datasources, Indicators and Locations data load</h4>
           </div>
         </div>
         <div class="col-1 d-flex justify-content-center align-items-end">
@@ -671,8 +681,12 @@ export default {
           this.showLoader = false; // Show loading spinner
         })
         .catch((error) => {
-          const msg = error.response.data.message;
-          this.$swal(`error : ${msg}`);
+          console.log(error, '@Triangulation Error');
+          this.showLoader = false; // Hide loading spinner
+
+          const msg
+            = error?.response?.data?.message || error.message || 'An unknown error occurred';
+          this.$swal(`error: ${msg}`);
           this.showLoader = false; // Hide loading spinner
         });
     },

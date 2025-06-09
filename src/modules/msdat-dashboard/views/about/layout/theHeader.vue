@@ -109,7 +109,7 @@
                 <br />
                 {{ $route.meta.title }}
               </h2>
-              <span
+              <!-- <span
                 class="share-button d-inline-block ml-3"
                 v-b-tooltip.hover
                 title="Share Dashboard "
@@ -118,7 +118,7 @@
                 <a href="#" @click.prevent>
                   <img src="@/assets/share.png" alt="share-btn" class="share-icon" />
                 </a>
-              </span>
+              </span> -->
             </div>
 
             <!-- <div class="main-text" v-if="dashboardName == 'MSDAT PLATFORM'">

@@ -453,6 +453,63 @@ export default {
       this.groupIndexSub = this.groupIndex;
       this.$emit('data:options', this.payload);
     },
+    updateMultiIndicatorPayload(value) {
+      if (this.groupIndexSub != null) {
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        // debugger;
+        this.$store.commit('MSDAT_STORE/SET_SELECTED_CONFIG', {
+          entity: 'indicator',
+          payload: value,
+        });
+      } else {
+        this.$store.commit('MSDAT_STORE/SET_SELECTED_CONFIG', {
+          entity: 'indicator',
+          payload: value,
+        });
+      }
+      // this.controlIndexSub = this.controlIndex;
+      // this.groupIndexSub = this.groupIndex;
+      // this.$emit('data:options', this.payload);
+    },
+    updateMultiDatasourcePayload(value) {
+      if (this.groupIndexSub != null) {
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        // debugger;
+        this.$store.commit('MSDAT_STORE/SET_SELECTED_CONFIG', {
+          entity: 'dataSource',
+          payload: value,
+        });
+      } else {
+        this.$store.commit('MSDAT_STORE/SET_SELECTED_CONFIG', {
+          entity: 'dataSource',
+          payload: value,
+        });
+      }
+      // this.controlIndexSub = this.controlIndex;
+      // this.groupIndexSub = this.groupIndex;
+      // this.$emit('data:options', this.payload);
+    },
+    updateMultiPeriodPayload(value) {
+      if (this.groupIndexSub != null) {
+        // this is to take into consideration control panel that
+        // are grouped example is Multi-source comparison section
+        // debugger;
+        this.$store.commit('MSDAT_STORE/SET_SELECTED_CONFIG', {
+          entity: 'period',
+          payload: value,
+        });
+      } else {
+        this.$store.commit('MSDAT_STORE/SET_SELECTED_CONFIG', {
+          entity: 'period',
+          payload: value,
+        });
+      }
+      // this.controlIndexSub = this.controlIndex;
+      // this.groupIndexSub = this.groupIndex;
+      // this.$emit('data:options', this.payload);
+    },
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
@@ -499,9 +556,12 @@ export default {
       return el;
     });
     this.updatePayload(this.defaultIndicator, 'indicator');
+    this.updateMultiIndicatorPayload(this.defaultIndicator);
     this.updatePayload(this.defaultDataSource, 'datasource');
+    this.updateMultiDatasourcePayload(this.defaultDataSource);
     this.updatePayload(this.defaultLocation, 'location');
     this.updatePayload(this.defaultYear, 'year');
+    this.updateMultiPeriodPayload(this.defaultYear);
     this.activeToggleButton = this.payload.visualization;
   },
 };

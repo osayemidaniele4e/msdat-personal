@@ -9,8 +9,14 @@ export default {
   getEmbedUrl(state) {
     return state.embeddedUrl;
   },
+  getUrl(state) {
+    return state.embedUrl;
+  },
   getEmbedIframe(state) {
     return state.embeddedIframe;
+  },
+  getIframeEmbed(state) {
+    return state.embedIframe;
   },
 
   indicators(state) {

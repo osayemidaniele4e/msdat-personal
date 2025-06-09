@@ -13,7 +13,20 @@
             :id="`panel-${el.index}`"
             @click="changeControl(el.index, el.title)"
           >
-            {{ el.title }}
+            <div class="d-flex justify-content-between el-tit align-items-center ">
+              {{ el.title }}
+              <div v-if="el.index === selectedIndex" class="share-icon-wrapper tooltip-wrapper">
+                <img
+                  src="@/assets/Share-button.png"
+                  alt="share-btn"
+                  class="share-icon"
+                  @click.stop="toggleShareModal(el.title)"
+                />
+                 <span class="custom-tooltip"
+                >Share
+              </span>
+              </div>
+            </div>
           </li>
         </transition-group>
       </draggable>
@@ -24,12 +37,17 @@
     <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
+
+    <!-- <div class="">
+       <ShareSection />
+    </div> -->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
+// import ShareSection from '@/modules/msdat-dashboard/components/ShareSection.vue';
 import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 
 export default {
@@ -37,6 +55,7 @@ export default {
   mixins: [controlSetup],
   components: {
     draggable,
+    // ShareSection,
   },
   data() {
     return {
@@ -45,6 +64,7 @@ export default {
       selectedIndex: 0,
       title: 'Indicator Overview',
       checkIndex: 0,
+      showShareSectionModal: false,
     };
   },
 
@@ -70,7 +90,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX']),
+    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX', 'SET_SECTION', 'toggleShowShareSection']),
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
     filterModifiedControls() {
@@ -154,6 +174,11 @@ export default {
       this.$emit('showSection', index);
     },
 
+    toggleShareModal(title) {
+      this.SET_SECTION(title);
+      this.toggleShowShareSection();
+    },
+
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
@@ -197,7 +222,6 @@ export default {
     },
 
     selectedIndex(newValue) {
-      // console.log('selected', this.$store.getters);
       this.changeControl(newValue);
 
       const { name } = this.$route.params;
@@ -274,6 +298,52 @@ export default {
 // $primary: #2b5d5b;
 @import '@/scss/abstracts/_variables.scss';
 
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%; // ensure it wraps the whole item cleanly
+
+  &:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.custom-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 999;
+  bottom: 50%; // place it above the item
+  left: 70%;
+  transform: translateX(-50%) translateY(-8px);
+  background-color: #fff;
+  color: #000;
+  padding: 6px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  white-space: normal; // allows line break
+  width: 100px; // or whatever fits your layout
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #494545 transparent transparent transparent;
+  }
+}
+
 .main {
   display: inherit;
 }
@@ -281,12 +351,12 @@ export default {
 .share-icon-wrapper {
   border: 1px solid #2b5d5b;
   margin-left: 15px;
-  padding: 2px;
+  //padding: 2px;
   border-radius: 3px;
 }
 
 .share-icon-wrapper img {
-  width: 14px;
+  width: 16px;
   height: 14px;
 }
 .el-tit {
@@ -311,13 +381,18 @@ export default {
   // padding: 20px;
 }
 
+.tab-link.active .share-icon-wrapper {
+  background-color: white;
+  color: white !important;
+}
+
 .tab-link {
   // border-bottom: 2.5px solid $primary;
   // border: 1.0px solid #007d53;
   border: 1px solid $primary;
   background-color: white;
   color: black !important;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
   height: 1rem;
   max-width: 600px;
   display: flex;

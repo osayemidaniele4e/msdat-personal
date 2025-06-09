@@ -135,8 +135,6 @@ const mutations: MutationTree<State> = {
   },
 
   SET_ZONAL_DATASOURCE: (state, obj: setPayload) => {
-    console.log('REACHED HERE ABEG');
-
     // Now it's safe to push the value
     state.controlConfig[1].payload[obj.key] = obj.value;
   },
@@ -233,7 +231,6 @@ const mutations: MutationTree<State> = {
   // },
 
   SET_IDC_INDICATOR_PAYLOAD: (state, obj: setPayload) => {
-    console.log('REACHED HERE 2');
     // Ensure payload[obj.key] is initialized as an array
     if (!Array.isArray(state.controlConfig[2].payload[obj.key])) {
       state.controlConfig[2].payload[obj.key] = [];
@@ -293,6 +290,14 @@ const mutations: MutationTree<State> = {
 
   closeShowWhatsNew: (state) => {
     state.showWhatsNew = false;
+  },
+
+  toggleShowShareSection: (state) => {
+    state.showShareSection = true;
+  },
+
+  closeShowShareSection: (state) => {
+    state.showShareSection = false;
   },
 
   /**
