@@ -149,9 +149,17 @@
             >
               {{ section.label }}
               <span class="custom-tooltip"
-                >{{ section.tooltip }}
+              >{{ section.tooltip }}
               </span>
             </b-list-group-item>
+            <div class="tooltip-wrapper-2">
+              <router-link to="/data-triangulation-dashboard" target="_blank">
+              <b-list-group-item>Advanced Triangulation</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2"
+              >Analyze health data from multiple sources.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">
@@ -250,16 +258,6 @@
 
               </span>
             </div>
-
-            <div class="tooltip-wrapper-2">
-              <router-link to="/data-triangulation-dashboard" target="_blank">
-                <b-list-group-item>Triangulation Dashboard</b-list-group-item>
-              </router-link>
-              <span class="custom-tooltip-2"
-                >Analyze health data from multiple sources.
-              </span>
-            </div>
-
             <div class="tooltip-wrapper-2">
               <router-link to="/presidential-bond-scorecard" target="_blank">
                 <b-list-group-item
