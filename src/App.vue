@@ -1,18 +1,18 @@
 <template>
- <div class="position-relative" id="app">
+  <div class="position-relative" id="app">
     <router-view />
     <feedback />
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-      <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
+    <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
+
     <div v-if="showShareSectionComponent" class="position-fixed whats-new">
       <ShareSection />
     </div>
   </div>
-
 </template>
 
 <script>
@@ -22,13 +22,13 @@ import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
 import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue';
-import ApiServices from './modules/data-layer/services/ApiServices';
 import contextPlugin from './modules/plugins/contextPlugin';
 import indicatorPlugin from './modules/plugins/indicatorPlugin';
 import reviewPlugin from './modules/plugins/reviewPlugin';
 import screenshotManager from './modules/plugins/screenshotManager';
 import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
+import ApiServices from './modules/data-layer/services/ApiServices';
 
 export default {
   components: {
@@ -42,9 +42,9 @@ export default {
       pluginsImported: [], // Explicitly specify the type as an array of strings
       showDataSourceListComponent: false, // Replace with your actual state variable
       showWhatsNewComponent: false,
+      showShareSectionComponent: false,
       lastExecutionTime: null,
       whatsNewContent: [],
-      showShareSectionComponent: false,
     };
   },
   computed: {
@@ -55,6 +55,7 @@ export default {
     '$store.state.MSDAT_STORE.showDataSourceList': {
       // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
+        // eslint-disable-next-line no-unused-vars
         this.showDataSourceListComponent = newVal;
       },
       deep: true, // If you want to watch nested changes
@@ -90,68 +91,37 @@ export default {
     this.startSixHourInterval();
     this.firstTimeExecution();
 
-    // eslint-disable-next-line
-    let plugins_imported = [];
+    const plugins = [
+      { name: 'contextPlugin', module: contextPlugin },
+      { name: 'indicatorPlugin', module: indicatorPlugin },
+      { name: 'reviewPlugin', module: reviewPlugin },
+      { name: 'screenshotManager', module: screenshotManager },
+      { name: 'testonePlugin', module: testonePlugin },
+      { name: 'testPlugin', module: testPlugin },
+    ];
 
-    this.pluginsImported.push('contextPlugin');
-    if (!localStorage.getItem('contextPlugin')) {
-      localStorage.setItem('contextPlugin', 'false');
-    }
+    this.pluginsImported = [];
 
-    if (localStorage.getItem('contextPlugin') === 'true') {
-      Vue.use(contextPlugin);
-    }
+    plugins.forEach(({ name, module }) => {
+      this.pluginsImported.push(name);
 
-    this.pluginsImported.push('indicatorPlugin');
-    if (!localStorage.getItem('indicatorPlugin')) {
-      localStorage.setItem('indicatorPlugin', 'false');
-    }
+      if (!localStorage.getItem(name)) {
+        localStorage.setItem(name, 'false');
+      }
 
-    if (localStorage.getItem('indicatorPlugin') === 'true') {
-      Vue.use(indicatorPlugin);
-    }
+      if (localStorage.getItem(name) === 'true') {
+        Vue.use(module);
+      }
+    });
 
-    this.pluginsImported.push('reviewPlugin');
-    if (!localStorage.getItem('reviewPlugin')) {
-      localStorage.setItem('reviewPlugin', 'false');
-    }
-
-    if (localStorage.getItem('reviewPlugin') === 'true') {
-      Vue.use(reviewPlugin);
-    }
-
-    this.pluginsImported.push('screenshotManager');
-    if (!localStorage.getItem('screenshotManager')) {
-      localStorage.setItem('screenshotManager', 'false');
-    }
-
-    if (localStorage.getItem('screenshotManager') === 'true') {
-      Vue.use(screenshotManager);
-    }
-
-    this.pluginsImported.push('testonePlugin');
-    if (!localStorage.getItem('testonePlugin')) {
-      localStorage.setItem('testonePlugin', 'false');
-    }
-
-    if (localStorage.getItem('testonePlugin') === 'true') {
-      Vue.use(testonePlugin);
-    }
-
-    this.pluginsImported.push('testPlugin');
-    if (!localStorage.getItem('testPlugin')) {
-      localStorage.setItem('testPlugin', 'false');
-    }
-
-    if (localStorage.getItem('testPlugin') === 'true') {
-      Vue.use(testPlugin);
-    }
-
+    console.log('pluginsImported', this.pluginsImported);
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
+
     document.body.className = this.viewMode;
     document.documentElement.style.fontSize = this.fontSize;
     document.documentElement.setAttribute('data-theme', this.theme);
   },
+
   methods: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
@@ -194,10 +164,9 @@ export default {
         }, 30 * 1000); // Delay of 30 seconds
       }
     },
-
   },
+
   beforeDestroy() {
-    // Remove the event listener to avoid memory leaks
     window.removeEventListener('unload', this.handleAppUnload);
   },
 };
@@ -224,7 +193,7 @@ export default {
   top: 1px;
   height: 100vh;
 }
-  .light {
+.light {
   background-color: #ffffff;
   color: #000000;
 }
@@ -265,9 +234,8 @@ html.large {
 }
 
 [data-theme='neutral'] {
-  --primary-color: #EA4700;
-  --secondary-color: #EE6C33;
-  --background-color: #FBDACC;
+  --primary-color: #ea4700;
+  --secondary-color: #ee6c33;
+  --background-color: #fbdacc;
 }
-
 </style>
