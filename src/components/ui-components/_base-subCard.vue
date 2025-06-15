@@ -6,8 +6,9 @@
       v-if="removeTitle === false"
     >
       <!-- :style="{ backgroundColor }" -->
-      <div v-if="removeTitle === false" class="title ">
+      <div v-if="removeTitle === false" class="title">
         <slot name="title"> slot title fallback </slot>
+        <slot  name="selectors"> </slot>
       </div>
       <div
         class="action-icon d-flex justify-content-around align-items-center"
@@ -17,7 +18,7 @@
           <slot name="refresh"> </slot>
         </div>
         <div class="expand-icon">
-          <img  @click="showModal = !showModal" src="@/assets/Expand.png" alt="">
+          <img @click="showModal = !showModal" src="@/assets/Expand.png" alt="" />
         </div>
         <!-- <b-icon
           icon="arrows-fullscreen"
@@ -69,6 +70,7 @@
       <template #title>
         <slot name="title"> slot for modal title fallback </slot>
       </template>
+
       <template>
         <slot> </slot>
       </template>
@@ -137,6 +139,10 @@ export default {
       default: () => {},
     },
     removeTitle: Boolean,
+    showDropdown: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   watch: {},
   methods: {
@@ -146,7 +152,9 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    console.log(this.showDropdown, 'showDropdown prop value');
+  },
 };
 </script>
 

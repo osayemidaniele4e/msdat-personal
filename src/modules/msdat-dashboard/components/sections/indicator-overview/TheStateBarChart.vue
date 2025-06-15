@@ -4,7 +4,7 @@
   <div class="position-relative" id="stateBarChartComponent"
     style="display: flex; flex-direction: column; align-items: center; justify-content: center">
     <base-overlay :show="loading">
-      <base-sub-card ref="SubCard" showControls v-if="Object.keys(values).length" @dropdownTypeSelected="
+      <base-sub-card :showDropdown="false" ref="SubCard" showControls v-if="Object.keys(values).length" @dropdownTypeSelected="
         downLoadType($event, {
           indicator: values.indicator.short_name,
           datasource: values.datasource.datatsource,
