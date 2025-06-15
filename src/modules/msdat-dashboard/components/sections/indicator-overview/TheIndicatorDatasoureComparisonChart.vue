@@ -369,7 +369,7 @@ export default {
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           this.indicatorDatasources = dataSources;
-          const allSelectedDataSources = [this.value, ...this.selectedDatasources];
+          const allSelectedDataSources = [this.selectedSource, ...this.selectedDatasources];
           const aIds = allSelectedDataSources.map((item) => item.id);
           const filteredAllDataSources = dataSources.filter((item) => aIds.includes(item.id));
 
@@ -391,7 +391,7 @@ export default {
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           this.indicatorDatasources = dataSources;
-          const allSelectedDataSources = [this.value, ...this.selectedDatasources];
+          const allSelectedDataSources = [this.selectedSource, ...this.selectedDatasources];
           const aIds = allSelectedDataSources.map((item) => item.id);
           const filteredAllDataSources = dataSources.filter((item) => aIds.includes(item.id));
 
