@@ -7,6 +7,7 @@
         ref="SubCard"
         buttonToggle
         showControls
+        :showDropdown="true"
         :dataSourceOptions="dataSourcesOptions"
         @toggled-button="updateChart($event)"
         @selected-datasource="onSelectedSource($event)"
@@ -29,6 +30,55 @@
             Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
             {{ values.indicator.short_name }}) across different data sources.
           </p>
+        </template>
+        <template #selectors>
+          <div class="row">
+            <div class="col-3">
+              <label>Primary Datasource</label>
+              <multiselect
+                v-model="selectedSource"
+                track-by="datasource"
+                label="datasource"
+                placeholder="Select one"
+                data-visted="notVisited"
+                :options="indicatorDatasources"
+                :searchable="false"
+                :allow-empty="false"
+                aria-label="pick a value"
+                deselectLabel=""
+                selectLabel=""
+              >
+                <!-- <template v-slot:singleLabel="{ option }"
+                  ><strong>{{ option.name }}</strong> is written in
+                  <strong> {{ option.language }}</strong></template
+                > -->
+              </multiselect>
+            </div>
+            <div class="col-8">
+              <label>Other Datasources</label>
+              <multiselect
+                id="multiselect"
+                v-model="selectedDatasources"
+                :options="indicatorDatasources.filter((item) => item.id !== selectedSource.id)"
+                :multiple="true"
+                :preserve-search="true"
+                placeholder="select other sources"
+                track-by="datasource"
+                label="datasource"
+                :preselect-first="false"
+                deselectLabel=""
+                selectLabel=""
+                :searchable="false"
+                :allow-empty="false"
+              >
+                <!-- <template #selection="{ values, search, isOpen }">
+                    <span class="multiselect__single" v-if="values.length" v-show="!isOpen"
+                      >{{ values.length }} options selected</span
+                    >
+                  </template> -->
+              </multiselect>
+            </div>
+          </div>
         </template>
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
       </base-sub-card>
@@ -60,6 +110,55 @@
             Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
             {{ values.indicator.short_name }}) across different data sources.
           </p>
+        </template>
+        <template #selectors>
+          <div class="row">
+            <div class="col-3">
+              <label>Main Datasource</label>
+              <multiselect
+                v-model="selectedSource"
+                track-by="datasource"
+                label="datasource"
+                placeholder="Select one"
+                data-visted="notVisited"
+                :options="indicatorDatasources"
+                :searchable="false"
+                :allow-empty="false"
+                aria-label="pick a value"
+                deselectLabel=""
+                selectLabel=""
+              >
+                <!-- <template v-slot:singleLabel="{ option }"
+                  ><strong>{{ option.name }}</strong> is written in
+                  <strong> {{ option.language }}</strong></template
+                > -->
+              </multiselect>
+            </div>
+            <div class="col-8">
+              <label>Other Datasources</label>
+              <multiselect
+                id="multiselect"
+                v-model="selectedDatasources"
+                :options="indicatorDatasources.filter((item) => item.id !== selectedSource.id)"
+                :multiple="true"
+                :preserve-search="true"
+                placeholder="select other sources"
+                track-by="datasource"
+                label="datasource"
+                :preselect-first="false"
+                deselectLabel=""
+                selectLabel=""
+                :searchable="false"
+                :allow-empty="false"
+              >
+                <!-- <template #selection="{ values, search, isOpen }">
+                    <span class="multiselect__single" v-if="values.length" v-show="!isOpen"
+                      >{{ values.length }} options selected</span
+                    >
+                  </template> -->
+              </multiselect>
+            </div>
+          </div>
         </template>
 
         <!-- refresh button to show all datasources in the chart -->
@@ -111,6 +210,11 @@ export default {
       selectDataSource: null,
       showPopUp: false,
       hasOneDatasource: false,
+      selectedSource: {
+        id: 6, datasource: 'NHMIS-DHIS2', full_name: 'National Health Management Information System (DHIS2)', description: 'National Health Management Information System: Nigeria has adopted the DHIS2 as the National tool for the reporting of routine health-related data. This data is reported and aggregated monthly using this platform.', year_available: '2013 - 2022', period_available: '2023', methodology: "Facility level aggregate data that is reported by health facilities routinely on a monthly basis using DHIS2. Health facilities are expected to report by the month's data by the 15th of the next month. Due to incomplete reporting by the health facilities, poor reporting by private facilities, the data may be biased.", subnational_data: 'Yes', classification: 'Routine', groups: [], link: 'https://dhis2nigeria.org.ng', created_at: '2022-10-20T08:13:15.757413Z', updated_at: '2024-05-15T09:46:43.792173Z', indicators: [62, 412, 413, 414, 415, 416, 417, 418, 584, 585, 586, 587, 16, 5, 6, 397, 4, 212, 18, 31, 19, 29, 20, 30, 409, 21, 13, 10, 23, 7, 410, 32, 17, 2, 398, 22, 1685, 1687, 1686],
+      },
+      indicatorDatasources: [],
+      selectedDatasources: [],
     };
   },
   props: {
@@ -169,6 +273,7 @@ export default {
 
     'values.datasource': {
       async handler(newVal, oldVal) {
+        this.selectedSource = newVal;
         // debugger;
         // this.loading = true;
         // first condition checks if there is change in the old and new datasource then sets newVal as datasource selected
@@ -183,7 +288,11 @@ export default {
         } else {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
           const filteredDataSources = dataSources.filter((dataSource) => dataSource.id !== 30);
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredDataSources);
+          this.indicatorDatasources = dataSources;
+          const allSelectedDataSources = [this.selectedSource, ...this.selectedDatasources];
+          const aIds = allSelectedDataSources.map((item) => item.id);
+          const filteredAllDataSources = filteredDataSources.filter((item) => aIds.includes(item.id));
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredAllDataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
       },
@@ -196,12 +305,16 @@ export default {
         // change get datasource function to API matching indicator to dataSource
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          this.indicatorDatasources = dataSources;
           if (dataSources.length === 1) {
             this.hasOneDatasource = true;
           } else {
             this.hasOneDatasource = false;
           }
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          const allSelectedDataSources = [this.selectedSource, ...this.selectedDatasources];
+          const aIds = allSelectedDataSources.map((item) => item.id);
+          const filteredAllDataSources = dataSources.filter((item) => aIds.includes(item.id));
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredAllDataSources);
           this.setUpHighChartConfig(seriesArray, years);
           // added this so that the datasource list will update anytime an indicator is selected
           await this.getDataSourceFromDropdown();
@@ -220,7 +333,10 @@ export default {
         this.loading = true;
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          const allSelectedDataSources = [this.selectedSource, ...this.selectedDatasources];
+          const aIds = allSelectedDataSources.map((item) => item.id);
+          const filteredAllDataSources = dataSources.filter((item) => aIds.includes(item.id));
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredAllDataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -234,7 +350,10 @@ export default {
         this.loading = true;
         if (this.values.indicator.id !== undefined) {
           const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
+          const allSelectedDataSources = [this.selectedSource, ...this.selectedDatasources];
+          const aIds = allSelectedDataSources.map((item) => item.id);
+          const filteredAllDataSources = dataSources.filter((item) => aIds.includes(item.id));
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredAllDataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -242,6 +361,50 @@ export default {
       },
       deep: true,
       immediate: false,
+    },
+    selectedSource: {
+      async handler() {
+        this.loading = true;
+        // change get datasource function to API matching indicator to dataSource
+        if (this.values.indicator.id !== undefined) {
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          this.indicatorDatasources = dataSources;
+          const allSelectedDataSources = [this.value, ...this.selectedDatasources];
+          const aIds = allSelectedDataSources.map((item) => item.id);
+          const filteredAllDataSources = dataSources.filter((item) => aIds.includes(item.id));
+
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredAllDataSources);
+          this.setUpHighChartConfig(seriesArray, years);
+          // added this so that the datasource list will update anytime an indicator is selected
+          await this.getDataSourceFromDropdown();
+        }
+
+        this.loading = false;
+      },
+      deep: true,
+      immediate: true,
+    },
+    selectedDatasources: {
+      async handler() {
+        this.loading = true;
+        // change get datasource function to API matching indicator to dataSource
+        if (this.values.indicator.id !== undefined) {
+          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+          this.indicatorDatasources = dataSources;
+          const allSelectedDataSources = [this.value, ...this.selectedDatasources];
+          const aIds = allSelectedDataSources.map((item) => item.id);
+          const filteredAllDataSources = dataSources.filter((item) => aIds.includes(item.id));
+
+          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredAllDataSources);
+          this.setUpHighChartConfig(seriesArray, years);
+          // added this so that the datasource list will update anytime an indicator is selected
+          await this.getDataSourceFromDropdown();
+        }
+
+        this.loading = false;
+      },
+      deep: true,
+      immediate: true,
     },
   },
   methods: {
@@ -948,5 +1111,11 @@ div.iddc_wrapper {
 }
 .pop-up h3:hover {
   color: #00ac40;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
 }
 </style>
