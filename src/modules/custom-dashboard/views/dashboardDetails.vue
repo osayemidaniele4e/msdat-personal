@@ -172,7 +172,7 @@ export default {
         { value: 'population', text: 'Population' },
         { value: 'health_outcomes', text: 'Health Outcomes' },
         { value: 'health_input', text: 'Health Input' },
-        { value: 'health_outputs', text: 'Health Outpust' },
+        { value: 'health_outputs', text: 'Health Output' },
         { value: 'other', text: 'Other' },
       ],
     };
