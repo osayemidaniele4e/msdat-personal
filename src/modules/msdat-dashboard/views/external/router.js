@@ -15,6 +15,9 @@ export default [
     path: '/external-ncdc',
     name: 'ncdc',
     component: ncdc,
+    meta: {
+      title: 'Disease Surveillance Dashboard (NCDC)',
+    },
   },
   {
     path: '/external-ndr1',
