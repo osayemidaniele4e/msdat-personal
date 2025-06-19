@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-secondary">
+  <section class="bg-secondary notification-parent">
     <Header />
     <div class="w-100 bg-secondary d-flex justify-content-center align-items-center">
       <div v-if="showTriangulation" class="w-100">
@@ -516,6 +516,12 @@
       </div>
     </div>
     <Footer />
+    <div v-if="showLoadingPopup" class="notification-body">
+     <div class="content">
+      <span>Resources Loading ....</span>
+       <h1>Selected Datasources contains large datasets</h1>
+     </div>
+    </div>
   </section>
 </template>
 
@@ -556,6 +562,7 @@ export default {
       position: {},
       headerSource: [],
       showExpand: false,
+      showLoadingPopup: false,
     };
   },
 
@@ -650,6 +657,7 @@ export default {
       }
 
       this.showLoader = true; // Show loading spinner
+      this.showLoadingPopup = true; // Show loading popup
 
       apiServices
         .getTriangulation(cleanObj)
@@ -679,15 +687,18 @@ export default {
                 && self.indexOf(header) === index,
             ); // Remove duplicates and invalid headers
           this.showLoader = false; // Show loading spinner
+          this.showLoadingPopup = false; // Hide loading popup
         })
         .catch((error) => {
           console.log(error, '@Triangulation Error');
           this.showLoader = false; // Hide loading spinner
+          this.showLoadingPopup = false; // Hide loading popup
 
           const msg
             = error?.response?.data?.message || error.message || 'An unknown error occurred';
           this.$swal(`error: ${msg}`);
           this.showLoader = false; // Hide loading spinner
+          this.showLoadingPopup = false; // Hide loading popup
         });
     },
 
@@ -851,6 +862,48 @@ export default {
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.notification-parent {
+  position: relative;
+}
+
+.notification-body {
+  position: absolute;
+  background-color: white;
+  height: 200px;
+  width: 400px;
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.notification-body .content {
+  text-align: center;
+}
+
+.notification-body .content span {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: center;
+  color: #413f3f;
+}
+.notification-body .content h1 {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 32px;
+  text-align: center;
+  color: #413f3f;
+}
 
 .section-height {
   height: 90vh;
