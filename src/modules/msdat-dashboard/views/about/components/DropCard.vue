@@ -19,7 +19,7 @@
                 <b-list-group-item>Health Finance</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >Funding sources and expenditure.
+                >Health funding sources, priority areas and expenditure
               </span>
             </div>
 
@@ -76,7 +76,7 @@
                 <b-list-group-item> Health Service Uptake (NHMIS-Monthly)</b-list-group-item>
               </a>
               <span class="custom-tooltip"
-                >Selected indicators tracked monthly.
+                >Selected NHMIS-DHIS2 indicators tracked monthly.
               </span>
             </div>
 
@@ -85,7 +85,7 @@
                 <b-list-group-item>Health Service Uptake (NHMIS-Quarterly)</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >Selected indicators tracked quarterly.
+                >Selected NHMIS-DHIS2 indicators tracked quarterly.
 
               </span>
             </div>
@@ -122,7 +122,7 @@
                 <b-list-group-item>Quarterly Performance Assessment</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >Selected indicators with quarterly analytics.
+                >Quarterly analytics on state performance.
 
               </span>
             </div>
@@ -132,7 +132,7 @@
                 <b-list-group-item>Disease Surveillance</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >Communicable diseases.
+                >Integrated disease surveillance and response (IDSR) indicators.
               </span>
             </div>
           </b-list-group>
