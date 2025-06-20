@@ -151,7 +151,7 @@ export default {
     ) {
       const { data } = await ApiServices.getPeriod({
         indicator: indicatorID,
-        datasource: dataSourceID,
+        datasource: dataSourceID || this.this.$route.query.datasource,
         location: locationID,
       });
       const years = data.periods;
