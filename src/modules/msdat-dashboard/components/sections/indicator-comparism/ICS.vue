@@ -43,9 +43,8 @@
         </template>
         <BarChart ref="BaseChart" :title="title" :chartOptions="chartOptions" />
       </base-sub-card>
-    </base-overlay>
-    <!-- Display 'no_data' block when data is not loading and checkData() returns false -->
-    <div v-if="!loading && checkData() === false" class="no_data">
+    </base-overlay>    <!-- Display 'no_data' block when there's no data and we're not loading -->
+    <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
       <img
         :src="require('@/assets/no-data/No_Available_Data.svg')"
         alt="no data"
@@ -53,6 +52,10 @@
         height="auto"
         width="240px"
       />
+    </div>
+    <!-- Initial state message -->
+    <div v-if="!loading && !validateRequiredValues(values)" class="no_data">
+      <p class="text-muted">Please select all required values to view the comparison</p>
     </div>
   </div>
 </template>
@@ -107,14 +110,13 @@ export default {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
     ...mapMutations('MSDAT_STORE', ['TOGGLE_VISIBILITY', 'SETUP_CONTROL_OPTIONS1']),
     checkData() {
-      const datar = this.chartOptions?.series?.map((el, i) => el.data[i]);
-      if (datar !== undefined) {
-        if (datar[0]?.length >= 1) {
-          return true;
-        }
+      // Check if we have any series data
+      if (!this.chartOptions?.series?.length) {
         return false;
       }
-      return false;
+
+      // Check if any series has data
+      return this.chartOptions.series.some((series) => series.data && series.data.length > 0);
     },
     displayFactorSign(factor) {
       const dpfactor = factor;
@@ -537,43 +539,53 @@ export default {
         }
       }
     },
+    validateRequiredValues(values) {
+      if (!values) return false;
+
+      // Basic validation of values object
+      if (!values.datasource?.id || !values.indicator) return false;
+
+      // For Period comparison
+      if (values.compareBy?.name === 'Period' && !values.location?.id) return false;
+
+      // For State comparison
+      if (values.compareBy?.name === 'State' && !values.year) return false;
+
+      // If indicator is an array, validate each item
+      if (Array.isArray(values.indicator)) {
+        return values.indicator.every((ind) => ind && ind.id);
+      }
+
+      // If single indicator
+      return !!values.indicator.id;
+    },
+    async safeRenderChart(values) {
+      if (!this.validateRequiredValues(values)) {
+        console.log('Missing required values for chart rendering');
+        return;
+      }
+
+      this.loading = true;
+      try {
+        await this.renderChart(values);
+      } catch (error) {
+        console.error('Error rendering chart:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
   watch: {
-    'values.indicator': {
-      async handler() {
-        // this.chartOptions = {}; // remove soon
-        this.loading = true;
-        await this.renderChart(this.values);
-        this.loading = false;
+    values: {
+      immediate: true, // This ensures the watcher runs on component creation
+      handler(newValues) {
+        if (this.validateRequiredValues(newValues)) {
+          this.safeRenderChart(newValues);
+        }
       },
-      immediate: true,
-      // deep: true,
+      deep: true,
     },
-    'values.datasource': {
-      async handler() {
-        // this.chartOptions = {};
-        this.loading = true;
-        await this.renderChart(this.values);
-        this.loading = false;
-      },
-      // immediate: true,
-      // deep: true,
-    },
-    'values.year': {
-      async handler() {
-        // this.chartOptions = {};
-        this.loading = true;
-        await this.renderChart(this.values);
-        this.loading = false;
-      },
-    },
-    'values.location': {
-      async handler() {
-        this.loading = true;
-        await this.renderChart(this.values);
-        this.loading = false;
-      },
-    },
+
     'values.compareBy': {
       async handler(data) {
         if (data.name === 'Period') {
@@ -582,15 +594,11 @@ export default {
             key: 'year',
             value: false,
           });
-
           this.TOGGLE_VISIBILITY({
             panelIndex: this.controlIndex,
             key: 'location',
             value: true,
           });
-          this.loading = true;
-          await this.renderChart(this.values);
-          this.loading = false;
         } else if (data.name === 'State') {
           this.TOGGLE_VISIBILITY({
             panelIndex: this.controlIndex,
@@ -639,6 +647,12 @@ export default {
   },
 
   async mounted() {
+    // Initial render if we have the required values
+    if (this.validateRequiredValues(this.values)) {
+      this.$nextTick(() => {
+        this.safeRenderChart(this.values);
+      });
+    }
     if (!Array.isArray(this.values.indicator.length)) {
       this.title = ` Comparison Of ${this.values.indicator.short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}`;
     } else {
