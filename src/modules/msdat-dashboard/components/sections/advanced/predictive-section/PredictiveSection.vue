@@ -86,6 +86,50 @@ export default {
       years: {},
       selectDataSource: null,
       showNoAvailablePrediction: false,
+      valueTypes: [
+        {
+          id: 1,
+          value_type: 'Estimate',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 2,
+          value_type: 'Survey',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 3,
+          value_type: 'Lower bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 4,
+          value_type: 'Upper bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 5,
+          value_type: 'Routine',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 6,
+          value_type: 'Numerator',
+          created_at: '2021-07-02T08:45:20.707139Z',
+          updated_at: '2021-07-02T08:45:20.707348Z',
+        },
+        {
+          id: 7,
+          value_type: 'Denominator',
+          created_at: '2021-07-02T08:56:10.401735Z',
+          updated_at: '2021-07-02T08:56:10.401798Z',
+        },
+      ],
     };
   },
   props: {
@@ -216,13 +260,19 @@ export default {
      * @mixin formatter
      */
 
-    async setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
-      console.log(this.values, 'values in predictive section');
+    getValueTypeId(searchString) {
+      const match = this.valueTypes.find(
+        (item) => item.value_type.toLowerCase() === searchString.toLowerCase(),
+      );
+      return match ? match.id : null; // or undefined or throw error if not found
+    },
 
+    async setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
       const body = {
-        indicator: this.values.indicator.full_name,
-        location: this.values.location.name,
-        datasource: this.values.datasource.datasource,
+        indicator: this.values.indicator.id,
+        location: this.values.location.id,
+        datasource: this.values.datasource.id,
+        value_type: this.getValueTypeId(this.values.datasource.classification),
       };
 
       // const response = await this.getPredictiveAnalysisData(body);
@@ -242,6 +292,7 @@ export default {
             const arr = item[0];
             yearArray.push(arr);
           });
+          // yearArray = Object.keys(response.prediction[0]);
         }
         const year = [...sortedYear, ...yearArray];
         // eslint-disable-next-line camelcase
