@@ -518,7 +518,7 @@
     <Footer />
     <div v-if="showLoadingPopup" class="notification-body">
      <div class="content">
-      <span>Resources Loading ....</span>
+      <span>Triangulation in progress ....</span>
        <h1>Selected Datasources contains large datasets</h1>
      </div>
     </div>

@@ -30,10 +30,8 @@ export default {
         payload,
       );
 
-      console.log(response, 'RESPONSE@DATA');
-
       const previous = response.data.Actual.map((item) => [item.period, parseFloat(item.value)]);
-      const prediction = Object.entries(response.data.Predicted);
+      const prediction = Object.entries(response.data.Predicted[0]);
 
       const resp = {
         previous,
