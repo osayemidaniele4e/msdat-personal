@@ -83,7 +83,6 @@
         :NoDataLabel="values.label"
         :placeholder="'Select datasource'"
       />
-
       <selectWrapper
         v-if="values.type === 'dropdown' && values.key === 'location'"
         :id="label"
@@ -383,17 +382,20 @@ export default {
       }
     },
     locationCheck(options) {
-      if (
-        // eslint-disable-next-line operator-linebreak
-        this.$route.params.name === 'Disease_Surveillance' &&
-        // eslint-disable-next-line operator-linebreak
-        options !== null &&
-        options.length === 38
-      ) {
-        // const main = options.filter((s) => s.name === 'Nigeria');
-        // console.log(main, 'Nigeria');
-        return options.filter((s) => s.name === 'Nigeria');
-      }
+      // I do not understand this logic, but it is used to filter out
+      // the options in the dropdown based on the current route
+      // if (
+      //   // eslint-disable-next-line operator-linebreak
+      //   this.$route.params.name === 'Disease_Surveillance' &&
+      //   // eslint-disable-next-line operator-linebreak
+      //   options !== null &&
+      //   options.length === 38
+      // ) {
+      //   // const main = options.filter((s) => s.name === 'Nigeria');
+      //   // console.log(main, 'Nigeria');
+      //   return options.filter((s) => s.name === 'Nigeria');
+      // }
+      // am returning the options as is
 
       return options;
     },

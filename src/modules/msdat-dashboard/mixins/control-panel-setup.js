@@ -180,6 +180,7 @@ export default {
      * @param {number} indicatorID - The ID of the selected indicator. Defaults to the default indicator ID.
      * @param {number} controlIndex - The index of the control to update. Defaults to 0.
      */
+
     async setLocationDropdown(
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
@@ -205,10 +206,14 @@ export default {
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
+
+      const uniqueById = Array.from(
+        new Map(data.map((item) => [item.id, item])).values(),
+      );
       // Commit the unique locations to the store
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
-        payload: data.sort((a, b) => a.id - b.id),
+        payload: uniqueById.sort((a, b) => a.id - b.id),
       });
 
       // Set the default location (Nigeria) in the store
