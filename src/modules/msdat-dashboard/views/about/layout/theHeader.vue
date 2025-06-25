@@ -46,7 +46,7 @@
                 </div>
               </div>
               <div class="mobile-flex-col" v-else>
-                <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
+                <small class="mobile-flex-col-text1">MSDAT PLATFORMX</small>
                 <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
               </div>
 
@@ -104,11 +104,21 @@
               </h2>
             </div>
             <div class="main-text" v-else>
-              <h2 class="main-text d-inline-block">
+              <div class="main-text d-inline-block">
                 <small>MSDAT PLATFORM</small>
                 <br />
-                {{ $route.meta.title }}
-              </h2>
+                <div class="d-flex align-items-center">
+                  {{ $route.meta.title
+                  }}<b-icon-info-circle-fill
+                    v-if="$route.meta.title === 'Data Triangulation Dashboard'"
+                    v-tooltip="
+                      'This enables users to analyse various sources to ensure data consistency and reliability for decision-making'
+                    "
+                    class="data-source-info"
+                    font-scale="1"
+                  />
+                </div>
+              </div>
               <!-- <span
                 class="share-button d-inline-block ml-3"
                 v-b-tooltip.hover
@@ -1214,5 +1224,12 @@ div {
 
 .clearCacheSubtitle {
   font-size: 16px;
+}
+
+.data-source-info {
+  cursor: pointer;
+  color: #ebf3f3 !important;
+  font-size: 14px;
+  margin-left: 8px;
 }
 </style>
