@@ -58,6 +58,7 @@
               placeholder="Type to search"
               track-by="full_name"
               label="full_name"
+               openDirection="bottom"
               @select="handleSelect"
               v-bind="multiSelectProps"
               close-on-select
@@ -147,6 +148,7 @@
               placeholder="Type to search"
               track-by="full_name"
               label="full_name"
+              openDirection="bottom"
               @select="handleSelect"
               v-bind="multiSelectProps"
               close-on-select
