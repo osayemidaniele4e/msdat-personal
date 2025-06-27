@@ -3,7 +3,7 @@
   <!-- <base-overlay :show="loading"> -->
   <div id="the-table">
     <div v-if="!loading">
-      <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
+      <base-sub-card :showDropdown="false" showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
           <div
             class="w-100 d-flex justify-content-between align-items-center position-relative p-1"

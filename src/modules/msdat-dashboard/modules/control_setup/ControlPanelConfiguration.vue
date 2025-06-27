@@ -69,7 +69,7 @@ export default {
     });
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1', 'SET_INDICATOR_COMPARISON_PAYLOAD']),
+    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1', 'SET_INDICATOR_COMPARISON_PAYLOAD', 'SET_INDICATOR_DATASOURCES']),
     ...mapActions([
       'SET_INTERACTIONS',
       'GET_INTERACTIONS',
@@ -211,6 +211,7 @@ export default {
 
             });
             const availableDS = await this.getDataSourcesFromIndicator(this.payload?.indicator?.id);
+            this.SET_INDICATOR_DATASOURCES(availableDS);
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,

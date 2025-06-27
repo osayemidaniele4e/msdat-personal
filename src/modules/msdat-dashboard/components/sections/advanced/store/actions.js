@@ -1,4 +1,5 @@
 import axiosInstance from '@/plugins/axios';
+import axios from 'axios';
 
 export default {
   /**
@@ -16,6 +17,28 @@ export default {
       commit('setPredictedData', data);
       console.log(data, 'DATA@');
       return data;
+    } catch (error) {
+      commit('setError', error);
+      return 'Error';
+    }
+  },
+
+  async getPredictiveAnalysisData({ commit }, payload) {
+    try {
+      const response = await axios.post(
+        'https://cloud.activepieces.com/api/v1/webhooks/Qegsj29iWOADcj9qgGWXz/sync',
+        payload,
+      );
+
+      const previous = response.data.Actual.map((item) => [item.period, parseFloat(item.value)]);
+      const prediction = Object.entries(response.data.Predicted[0]);
+
+      const resp = {
+        previous,
+        prediction,
+      };
+
+      return resp; // ✅ Now you're returning from the outer function
     } catch (error) {
       commit('setError', error);
       return 'Error';

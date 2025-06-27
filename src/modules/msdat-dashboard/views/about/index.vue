@@ -64,13 +64,13 @@
       <!-- program area section -->
 
       <div id="program-areas">
-        <div
+        <!-- <div
           v-if="isLoading"
           class="loading-container d-flex justify-content-center align-items-center"
         >
           <b-spinner variant="success" label="Loading..."></b-spinner>
-        </div>
-        <IndicatorPageFunc v-else />
+        </div> -->
+        <IndicatorPageFunc />
       </div>
 
       <br /><br />
