@@ -185,46 +185,6 @@
                   v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                   >Help & FAQ</router-link
                 >
-                <!-- <router-link
-                to="/custom"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Create New Dashboard</router-link
-              > -->
-                <!-- <a
-                  href="https://msdat.old.fmohconnect.gov.ng"
-                  class="nav-link"
-                  target="_blank"
-                  v-if="isAuthenticated === false"
-                  >MSDAT 1.5</a
-                > -->
-                <!-- <div class="drop-down-wrapper">
-                  <multiselect
-                    id="single-select-object"
-                    v-model="selectedVersion"
-                    track-by="version"
-                    label="version"
-                    placeholder="Select one"
-                    :options="versions"
-                    openDirection="bottom"
-                    :searchable="false"
-                    :allow-empty="true"
-                    selectLabel=""
-                    data-visted="notVisited"
-                    deselectLabel=""
-                    autocomplete="off"
-                    aria-label="pick a value"
-                    @select="handleSelect"
-                  />
-
-                  <div class="icon-span">
-                    <b-icon
-                      icon="triangle-fill"
-                      font-scale="0.5"
-                      class="btn-icon"
-                    ></b-icon>
-                  </div>
-                </div> -->
 
                 <div @click="showVersionsDropdown = !showVersionsDropdown" class="">
                   <button class="btn btn-2 btn-outline-primary border-light rounded-0">
