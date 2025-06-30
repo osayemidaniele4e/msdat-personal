@@ -174,8 +174,7 @@ export default {
       // state.loader.levels = true;
       // commit('setshowLoader');
       // await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
-      await axios
-        .get(`https://msdat-api.fmohconnect.gov.ng/api/datasource_specific_indicator/${payload.id}`)
+      await ApiServices.fetchAllCoverageLevels(payload.id)
         .then((res) => {
           const { data } = res;
           // const data = res.data;
