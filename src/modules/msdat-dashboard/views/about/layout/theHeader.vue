@@ -191,13 +191,40 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >Create New Dashboard</router-link
               > -->
-                <a
+                <!-- <a
                   href="https://msdat.old.fmohconnect.gov.ng"
                   class="nav-link"
                   target="_blank"
                   v-if="isAuthenticated === false"
                   >MSDAT 1.5</a
-                >
+                > -->
+                <div class="drop-down-wrapper">
+                  <multiselect
+                    id="single-select-object"
+                    v-model="selectedVersion"
+                    track-by="version"
+                    label="version"
+                    placeholder="Select one"
+                    :options="versions"
+                    openDirection="bottom"
+                    :searchable="false"
+                    :allow-empty="true"
+                    selectLabel=""
+                    data-visted="notVisited"
+                    deselectLabel=""
+                    autocomplete="off"
+                    aria-label="pick a value"
+                    @select="handleSelect"
+                  />
+
+                  <div class="icon-span">
+                    <b-icon
+                      icon="triangle-fill"
+                      font-scale="0.5"
+                      class="btn-icon"
+                    ></b-icon>
+                  </div>
+                </div>
 
                 <!-- Modal for Sign In/Sign Up -->
                 <b-modal
@@ -378,6 +405,12 @@ export default {
       showClearDataModal: false,
       socialModal: false,
       showClearDBModal: false,
+      selectedVersion: { version: 'MSDAT 2.7', link: 'https://msdat.fmohconnect.gov.ng/' },
+      versions: [
+        { version: 'MSDAT 1.5', link: 'https://msdat.old.fmohconnect.gov.ng' },
+        { version: 'MSDAT 2.6', link: 'https://msdat2.6.fmohconnect.gov.ng/' },
+        { version: 'MSDAT 2.7', link: 'https://msdat.fmohconnect.gov.ng/' },
+      ],
     };
   },
   computed: {
@@ -410,6 +443,17 @@ export default {
   methods: {
     showAuthModal() {
       this.$bvModal.show('auth-modal');
+    },
+
+    handleSelect(option) {
+      if (option && option.link) {
+        window.open(option.link, '_blank');
+        // Optional: prevent updating the selectedVersion
+        // Reset it to the previous value
+        this.$nextTick(() => {
+          this.selectedVersion = { version: 'MSDAT 2.7', link: 'https://msdat.fmohconnect.gov.ng/' }; // or set to the old one
+        });
+      }
     },
 
     hideAuthModal() {
@@ -482,6 +526,13 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+    selectedVersion: {
+      handler(e) {
+        if (e && e.link) {
+          window.open(e.link, '_blank');
+        }
+      },
     },
   },
   props: {
@@ -1231,5 +1282,34 @@ div {
   color: #ebf3f3 !important;
   font-size: 14px;
   margin-left: 8px;
+}
+
+.drop-down-wrapper {
+  width: 130px;
+  position: relative;
+}
+
+.icon-span {
+  position: absolute;
+  right: 15px;
+  top: 13px;
+}
+.drop-down-wrapper .multiselect .multiselect__tags {
+  background: transparent;
+  border: 1px solid #fff !important;
+}
+
+.drop-down-wrapper .multiselect .multiselect__select {
+  color: #8b2b2b !important;
+  display: none;
+}
+
+.drop-down-wrapper .multiselect .multiselect__tags .multiselect__single {
+  background: transparent;
+  color: #fff !important;
+}
+.btn-icon-2 {
+  height: 8px;
+  width: 8px;
 }
 </style>
