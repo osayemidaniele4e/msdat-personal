@@ -198,7 +198,7 @@
                   v-if="isAuthenticated === false"
                   >MSDAT 1.5</a
                 > -->
-                <div class="drop-down-wrapper">
+                <!-- <div class="drop-down-wrapper">
                   <multiselect
                     id="single-select-object"
                     v-model="selectedVersion"
@@ -224,6 +224,18 @@
                       class="btn-icon"
                     ></b-icon>
                   </div>
+                </div> -->
+
+                <div @click="showVersionsDropdown = !showVersionsDropdown" class="">
+                  <button class="btn btn-2 btn-outline-primary border-light rounded-0">
+                    MSDAT Old Versions&nbsp;<b-icon
+                      icon="triangle-fill"
+                      font-scale="0.5"
+                      class="btn-icon"
+                      :class="[showVersionsDropdown ? 'down' : 'up']"
+                    ></b-icon>
+                  </button>
+
                 </div>
 
                 <!-- Modal for Sign In/Sign Up -->
@@ -346,6 +358,31 @@
           </div>
         </div>
       </div>
+      <div class="container card shadow versionsDropCard work-sans" v-if="showVersionsDropdown">
+        <div class="p-1 user-details">
+          <b-list-group>
+            <div class="tooltip-wrapper">
+              <a
+                href="https://msdat.old.fmohconnect.gov.ng"
+                target="_blank"
+              >
+                <b-list-group-item @click="toggleDropdown"> MSDAT 1.5</b-list-group-item>
+              </a>
+
+            </div>
+            <div class="tooltip-wrapper">
+             <a
+                href="https://msdat2.6.fmohconnect.gov.ng/"
+                target="_blank"
+              >
+                <b-list-group-item @click="toggleDropdown"> MSDAT 2.6</b-list-group-item>
+              </a>
+
+            </div>
+
+          </b-list-group>
+        </div>
+      </div>
     </header>
     <base-modal :showModal="socialModal" :size="'md'" @hide="handleModalHide">
       <template #title>
@@ -383,6 +420,7 @@ export default {
       customImg: '',
       showCard: false,
       showExpandedDropdown: false,
+      showVersionsDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
       contactBtn: false,
@@ -437,7 +475,6 @@ export default {
   created() {
     this.controls = this.$children;
     this.screenWidth = window.innerWidth;
-    // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
   },
 
   methods: {
@@ -445,15 +482,8 @@ export default {
       this.$bvModal.show('auth-modal');
     },
 
-    handleSelect(option) {
-      if (option && option.link) {
-        window.open(option.link, '_blank');
-        // Optional: prevent updating the selectedVersion
-        // Reset it to the previous value
-        this.$nextTick(() => {
-          this.selectedVersion = { version: 'MSDAT 2.7', link: 'https://msdat.fmohconnect.gov.ng/' }; // or set to the old one
-        });
-      }
+    toggleDropdown() {
+      this.showVersionsDropdown = false;
     },
 
     hideAuthModal() {
@@ -609,6 +639,11 @@ button {
   color: white;
   font-weight: 500;
   font-size: 14px;
+  border-radius: 5px !important;
+}
+.btn-2 {
+  font-size: 10px !important;
+  font-weight: 500 !important;
   border-radius: 5px !important;
 }
 .btn:hover {
@@ -1118,6 +1153,21 @@ div {
     width: 26vw;
     z-index: 5;
     right: 1rem;
+    color: black;
+    max-height: 30rem;
+    overflow-y: auto;
+    a {
+      color: inherit;
+    }
+  }
+}
+
+div {
+  &.versionsDropCard {
+    position: absolute;
+    width: 8vw;
+    z-index: 5;
+    right: 11rem;
     color: black;
     max-height: 30rem;
     overflow-y: auto;
