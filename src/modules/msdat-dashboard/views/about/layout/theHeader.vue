@@ -185,19 +185,18 @@
                   v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                   >Help & FAQ</router-link
                 >
-                <!-- <router-link
-                to="/custom"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Create New Dashboard</router-link
-              > -->
-                <a
-                  href="https://msdat.old.fmohconnect.gov.ng"
-                  class="nav-link"
-                  target="_blank"
-                  v-if="isAuthenticated === false"
-                  >MSDAT 1.5</a
-                >
+
+                <div @click="showVersionsDropdown = !showVersionsDropdown" class="">
+                  <button class="btn btn-2 btn-outline-primary border-light rounded-0">
+                    MSDAT Old Versions&nbsp;<b-icon
+                      icon="triangle-fill"
+                      font-scale="0.5"
+                      class="btn-icon"
+                      :class="[showVersionsDropdown ? 'down' : 'up']"
+                    ></b-icon>
+                  </button>
+
+                </div>
 
                 <!-- Modal for Sign In/Sign Up -->
                 <b-modal
@@ -319,6 +318,31 @@
           </div>
         </div>
       </div>
+      <div class="container card shadow versionsDropCard work-sans" v-if="showVersionsDropdown">
+        <div class="p-1 user-details">
+          <b-list-group>
+            <div class="tooltip-wrapper">
+              <a
+                href="https://msdat.old.fmohconnect.gov.ng"
+                target="_blank"
+              >
+                <b-list-group-item @click="toggleDropdown"> MSDAT 1.5</b-list-group-item>
+              </a>
+
+            </div>
+            <div class="tooltip-wrapper">
+             <a
+                href="https://msdat2.6.fmohconnect.gov.ng/"
+                target="_blank"
+              >
+                <b-list-group-item @click="toggleDropdown"> MSDAT 2.6</b-list-group-item>
+              </a>
+
+            </div>
+
+          </b-list-group>
+        </div>
+      </div>
     </header>
     <base-modal :showModal="socialModal" :size="'md'" @hide="handleModalHide">
       <template #title>
@@ -356,6 +380,7 @@ export default {
       customImg: '',
       showCard: false,
       showExpandedDropdown: false,
+      showVersionsDropdown: false,
       userName: sessionStorage.getItem('username'),
       toggleOption: false,
       contactBtn: false,
@@ -378,6 +403,12 @@ export default {
       showClearDataModal: false,
       socialModal: false,
       showClearDBModal: false,
+      selectedVersion: { version: 'MSDAT 2.7', link: 'https://msdat.fmohconnect.gov.ng/' },
+      versions: [
+        { version: 'MSDAT 1.5', link: 'https://msdat.old.fmohconnect.gov.ng' },
+        { version: 'MSDAT 2.6', link: 'https://msdat2.6.fmohconnect.gov.ng/' },
+        { version: 'MSDAT 2.7', link: 'https://msdat.fmohconnect.gov.ng/' },
+      ],
     };
   },
   computed: {
@@ -404,12 +435,15 @@ export default {
   created() {
     this.controls = this.$children;
     this.screenWidth = window.innerWidth;
-    // console.log('MSDAT store',  $store.state.MSDAT_STORE.controlConfig)
   },
 
   methods: {
     showAuthModal() {
       this.$bvModal.show('auth-modal');
+    },
+
+    toggleDropdown() {
+      this.showVersionsDropdown = false;
     },
 
     hideAuthModal() {
@@ -482,6 +516,13 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+    selectedVersion: {
+      handler(e) {
+        if (e && e.link) {
+          window.open(e.link, '_blank');
+        }
+      },
     },
   },
   props: {
@@ -558,6 +599,11 @@ button {
   color: white;
   font-weight: 500;
   font-size: 14px;
+  border-radius: 5px !important;
+}
+.btn-2 {
+  font-size: 10px !important;
+  font-weight: 500 !important;
   border-radius: 5px !important;
 }
 .btn:hover {
@@ -1075,6 +1121,21 @@ div {
     }
   }
 }
+
+div {
+  &.versionsDropCard {
+    position: absolute;
+    width: 8vw;
+    z-index: 5;
+    right: 11rem;
+    color: black;
+    max-height: 30rem;
+    overflow-y: auto;
+    a {
+      color: inherit;
+    }
+  }
+}
 .user-details {
   background: #fafafa;
 }
@@ -1231,5 +1292,34 @@ div {
   color: #ebf3f3 !important;
   font-size: 14px;
   margin-left: 8px;
+}
+
+.drop-down-wrapper {
+  width: 130px;
+  position: relative;
+}
+
+.icon-span {
+  position: absolute;
+  right: 15px;
+  top: 13px;
+}
+.drop-down-wrapper .multiselect .multiselect__tags {
+  background: transparent;
+  border: 1px solid #fff !important;
+}
+
+.drop-down-wrapper .multiselect .multiselect__select {
+  color: #8b2b2b !important;
+  display: none;
+}
+
+.drop-down-wrapper .multiselect .multiselect__tags .multiselect__single {
+  background: transparent;
+  color: #fff !important;
+}
+.btn-icon-2 {
+  height: 8px;
+  width: 8px;
 }
 </style>
