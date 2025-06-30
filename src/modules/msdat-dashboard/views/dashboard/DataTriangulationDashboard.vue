@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-secondary">
+  <section class="bg-secondary notification-parent">
     <Header />
     <div class="w-100 bg-secondary d-flex justify-content-center align-items-center">
       <div v-if="showTriangulation" class="w-100">
@@ -136,7 +136,7 @@
                       Degree of Data Source Consistency
                       <b-icon-info-circle-fill
                         v-tooltip="
-                          'This refers to the degree to which different data sources provide similar or aligned information over time and across datasets. Consistent data sources should show comparable trends and values for the same indicators, despite being collected using different methodologies.'
+                          'This is the extent to which different data sources align. Consistent sources will show comparable datasets regardless of the data source methodology.'
                         "
                         class="data-source-info mx-0"
                         font-scale="1"
@@ -182,7 +182,7 @@
                       Degree of Data Source Complementarity
                       <b-icon-info-circle-fill
                         v-tooltip="
-                          'This refers to the ability of different data sources to provide additional or supporting information that, when combined, offers a more comprehensive view of a subject. This enhances decision-making by integrating multiple perspectives from different data collection methods.'
+                          'This shows the possibility of data sources to provide supporting information when combined to cover gap periods in datasets'
                         "
                         class="data-source-info mx-0"
                         font-scale="1"
@@ -498,13 +498,12 @@
               </multiselect>
             </div>
           </div>
-          <div v-else class="w-100 d-flex flex-column align-items-center  ">
-            <div  class="spinner-border fs-4 text-success mx-3 mb-2" role="status">
+          <div v-else class="w-100 d-flex flex-column align-items-center">
+            <div class="spinner-border fs-4 text-success mx-3 mb-2" role="status">
               <span class="sr-only">Loading...</span>
             </div>
             <h4>Please wait while Datasources, Indicators and Locations data load</h4>
           </div>
-
         </div>
         <div class="col-1 d-flex justify-content-center align-items-end">
           <button class="triangulate-btn" @click="triangulate">
@@ -517,6 +516,12 @@
       </div>
     </div>
     <Footer />
+    <div v-if="showLoadingPopup" class="notification-body">
+     <div class="content">
+      <span>Triangulation in progress ....</span>
+       <h1>Selected Datasources contains large datasets</h1>
+     </div>
+    </div>
   </section>
 </template>
 
@@ -557,6 +562,7 @@ export default {
       position: {},
       headerSource: [],
       showExpand: false,
+      showLoadingPopup: false,
     };
   },
 
@@ -651,6 +657,7 @@ export default {
       }
 
       this.showLoader = true; // Show loading spinner
+      this.showLoadingPopup = true; // Show loading popup
 
       apiServices
         .getTriangulation(cleanObj)
@@ -680,11 +687,18 @@ export default {
                 && self.indexOf(header) === index,
             ); // Remove duplicates and invalid headers
           this.showLoader = false; // Show loading spinner
+          this.showLoadingPopup = false; // Hide loading popup
         })
         .catch((error) => {
-          const msg = error.response.data.message;
-          this.$swal(`error : ${msg}`);
+          console.log(error, '@Triangulation Error');
           this.showLoader = false; // Hide loading spinner
+          this.showLoadingPopup = false; // Hide loading popup
+
+          const msg
+            = error?.response?.data?.message || error.message || 'An unknown error occurred';
+          this.$swal(`error: ${msg}`);
+          this.showLoader = false; // Hide loading spinner
+          this.showLoadingPopup = false; // Hide loading popup
         });
     },
 
@@ -848,6 +862,48 @@ export default {
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.notification-parent {
+  position: relative;
+}
+
+.notification-body {
+  position: absolute;
+  background-color: white;
+  height: 200px;
+  width: 400px;
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.notification-body .content {
+  text-align: center;
+}
+
+.notification-body .content span {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: center;
+  color: #413f3f;
+}
+.notification-body .content h1 {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 32px;
+  text-align: center;
+  color: #413f3f;
+}
 
 .section-height {
   height: 90vh;
