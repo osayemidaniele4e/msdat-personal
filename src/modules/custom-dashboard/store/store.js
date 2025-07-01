@@ -68,7 +68,9 @@ const store = {
     embeddedUrl: JSON.parse(embedUrl),
     embeddedIframe: JSON.parse(embedIframe),
     embedUrl: '',
+    embedUrlTitle: '',
     embedIframe: '',
+    embedIframeTitle: '',
   },
 
   mutations,

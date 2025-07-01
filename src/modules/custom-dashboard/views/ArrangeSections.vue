@@ -183,7 +183,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import apiServices from '@/modules/data-layer/services/ApiServices';
+// import apiServices from '@/modules/data-layer/services/ApiServices';
 import resizeConfig from '../utils/resizeConfig';
 
 export default {
@@ -245,8 +245,11 @@ export default {
         name_of_dashboard: '',
         dashboard_details: null,
         embedded_url: null,
+        embedded_url_title: null,
         embedded_iframe: null,
+        embedded_iframe_title: null,
         is_private: false,
+
       },
       form: {
         email: '',
@@ -260,6 +263,27 @@ export default {
   },
   mounted() {
     this.$store.commit('updateStep', 5);
+    const programArea = this.$store.getters.getprogramArea;
+    const dataSource = this.$store.getters.getDataSource;
+    const urlTitle = this.$store.getters.getUrlTitle;
+    const url = this.$store.getters.getUrl;
+    const iframeTitle = this.$store.getters.getIframeEmbedTitle;
+    const iframe = this.$store.getters.getIframeEmbed;
+
+    if (programArea != null && dataSource != null) {
+      const tempConfig = {
+        dashboardDetails: this.$store.getters.dashboardDetails,
+        composedData: programArea,
+        surveyArray: dataSource,
+        url,
+        iframe,
+        urlTitle,
+        iframeTitle,
+      };
+      const stringifyConfig = JSON.stringify(tempConfig);
+      console.log(stringifyConfig, 'PPP');
+      localStorage.setItem('storedConfig', stringifyConfig);
+    }
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
@@ -352,6 +376,18 @@ export default {
     // Below function is excuted when approve data button is clicked
 
     async approveData() {
+      if (this.areAllSelectedFalse(this.values)) {
+        await this.$swal.fire({
+          title: 'No Section Selected',
+          text: 'Warning: You need to select at least a section',
+        });
+        return;
+      }
+
+      const storedConfig = localStorage.getItem('storedConfig');
+      const parsedConfig = JSON.parse(storedConfig);
+      console.log(parsedConfig, '@BB@');
+      console.log(this.dashboardDetails, '@X@');
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
         this.$swal('Dashboard name not provided');
@@ -363,8 +399,8 @@ export default {
       }
       const config = resizeConfig({
         dashboardDetails: this.$store.getters.dashboardDetails,
-        composedData: this.$store.getters.getprogramArea,
-        surveyArray: this.$store.getters.getDataSource,
+        composedData: this.$store.getters.getprogramArea || parsedConfig.composedData,
+        surveyArray: this.$store.getters.getDataSource || parsedConfig.surveyArray,
         sectionsArray: arrangedSections,
       });
       // if the dashboard is public, run these functions
@@ -380,8 +416,10 @@ export default {
         this.public_creator.created = new Date();
         this.public_creator.name_of_dashboard = this.dashboardDetails.name;
         this.public_creator.link = `${window.location.origin}/custom/public/`;
-        this.public_creator.embedded_url = this.$store.getters.getUrl;
-        this.public_creator.embedded_iframe = this.$store.getters.getIframeEmbed;
+        this.public_creator.embedded_url = parsedConfig.url;
+        this.public_creator.embedded_url_title = parsedConfig.urlTitle;
+        this.public_creator.embedded_iframe = parsedConfig.iframe;
+        this.public_creator.embedded_iframe_title = parsedConfig.iframeTitle;
 
         if (this.areAllSelectedFalse(this.values)) {
           await this.$swal.fire({
@@ -392,25 +430,26 @@ export default {
           const cleanedData = this.removeNullFields(this.public_creator);
           console.log('cleanedData', cleanedData);
           // const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
-          try {
-            const res = await apiServices.saveCustomDashboard(cleanedData);
 
-            if (res) {
-              this.$store.dispatch('customDashboard', true);
-              this.$router.push('/account#/savedDashboards');
-            }
-          } catch (error) {
-            this.$swal.fire({
-              title: 'Error',
-              text: `${error.response.data.message}`,
-              icon: 'error',
-            });
-          }
+          console.log(cleanedData);
+          // try {
+          //   const res = await apiServices.saveCustomDashboard(cleanedData);
+
+          //   if (res) {
+          //     this.$store.dispatch('customDashboard', true);
+          //     this.$router.push('/account#/savedDashboards');
+          //   }
+          // } catch (error) {
+          //   this.$swal.fire({
+          //     title: 'Error',
+          //     text: `${error.response.data.message}`,
+          //     icon: 'error',
+          //   });
+          // }
         }
       } else {
         // Save Private Dashboard
         const data = {
-
           name: this.getUser.username,
           email: this.getUser.email,
           category: this.dashboardDetails.category,
@@ -420,27 +459,31 @@ export default {
           organization: 'string',
           config: JSON.stringify(config),
           link: `${window.location.origin}/custom/public/`,
-          embedded_url: this.$store.getters.getUrl,
-          embedded_iframe: this.$store.getters.getIframeEmbed,
+          embedded_url: parsedConfig.url,
+          embedded_url_title: parsedConfig.urlTitle,
+          embedded_iframe: parsedConfig.iframe,
+          embedded_iframe_title: parsedConfig.iframeTitle,
           is_confirmed: false,
           is_private: this.$store.getters.getVisibility === 'private',
         };
 
-        try {
-          const cleanedData = this.removeNullFields(data);
-          console.log('cleanedData', cleanedData);
+        console.log(data);
 
-          this.SAVE_USER_DASHBOARD(cleanedData);
+        // try {
+        //   const cleanedData = this.removeNullFields(data);
+        //   console.log('cleanedData', cleanedData);
 
-          this.$store.dispatch('customDashboard', true);
-          this.$router.push('/account#/savedDashboards');
-        } catch (error) {
-          this.$swal.fire({
-            title: 'Error',
-            text: `${error.response.data.message}`,
-            icon: 'error',
-          });
-        }
+        //   this.SAVE_USER_DASHBOARD(cleanedData);
+
+        //   this.$store.dispatch('customDashboard', true);
+        //   this.$router.push('/account#/savedDashboards');
+        // } catch (error) {
+        //   this.$swal.fire({
+        //     title: 'Error',
+        //     text: `${error.response.data.message}`,
+        //     icon: 'error',
+        //   });
+        // }
       }
     },
 

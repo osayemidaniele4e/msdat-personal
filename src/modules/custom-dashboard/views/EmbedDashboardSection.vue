@@ -38,9 +38,17 @@
           <b-row>
 
             <b-col md="12" sm="12">
+               <div class="mb-3 embed">
+                <label>URL Title:</label>
+                <input v-model="urlTitle" type="text" placeholder="Enter Title" required />
+              </div>
               <div class="mb-3 embed">
                 <label>Enter URL:</label>
                 <input v-model="url" type="text" placeholder="https://example.com" required />
+              </div>
+               <div class=" embed">
+                <label>Iframe Title:</label>
+                <input v-model="iframeTitle" type="text" placeholder="Enter Title" required />
               </div>
               <div class="embed">
                 <label>Paste Iframe Code:</label>
@@ -82,6 +90,8 @@ export default {
       embedded_url: null,
       embedded_iframe: null,
       url: '',
+      urlTitle: '',
+      iframeTitle: '',
     };
   },
   computed: {
@@ -94,14 +104,18 @@ export default {
     this.$store.commit('updateStep', 4);
     this.url = this.$store.getters.getUrl;
     this.embedded_iframe = this.$store.getters.getIframeEmbed;
+    this.urlTitle = this.$store.getters.embedUrlTitle;
+    this.iframeTitle = this.$store.getters.embedIframeTitle;
   },
 
   methods: {
     saveEmbed() {
       // save url to store
       this.$store.dispatch('setEmbedUrl', this.modifyTableauUrl(this.url));
+      this.$store.dispatch('setEmbedUrlTitle', this.urlTitle);
       // save iframe to store
       this.$store.dispatch('setEmbedIframe', this.embedded_iframe);
+      this.$store.dispatch('setEmbedIframeTitle', this.iframeTitle);
       this.$router.push('sections');
     },
     backToPrefrence() {

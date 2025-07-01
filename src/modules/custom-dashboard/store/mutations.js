@@ -95,8 +95,14 @@ export default {
   setUrlEmbed(state, payload) {
     state.embedUrl = payload;
   },
+  setUrlEmbedTitle(state, payload) {
+    state.embedUrlTitle = payload;
+  },
   setIframe(state, payload) {
     state.embedIframe = payload;
+  },
+  setIframeTitle(state, payload) {
+    state.embedIframeTitle = payload;
   },
 
   resetState(state) {

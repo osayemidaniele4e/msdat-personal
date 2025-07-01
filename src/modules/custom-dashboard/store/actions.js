@@ -174,7 +174,9 @@ export default {
       // state.loader.levels = true;
       // commit('setshowLoader');
       // await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
-      await ApiServices.fetchAllCoverageLevels(payload.id)
+      await
+      // axios.get(`https://msdat-api.fmohconnect.gov.ng/api/datasource_specific_indicator/${payload.id}`)
+      ApiServices.fetchAllCoverageLevels(payload.id)
         .then((res) => {
           const { data } = res;
           // const data = res.data;
@@ -222,8 +224,9 @@ export default {
       loading = true;
       commit('setYearsLoading', loading);
       // await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
-      await axios
-        .get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
+      await
+      // axios.get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
+      ApiServices.getIndicatorsWithAvailable(payload.id)
         .then((res) => {
           const { data } = res;
 
@@ -337,9 +340,16 @@ export default {
   setEmbedUrl({ commit }, payload) {
     commit('setUrlEmbed', payload);
   },
+  setEmbedUrlTitle({ commit }, payload) {
+    commit('setUrlEmbedTitle', payload);
+  },
 
   setEmbedIframe({ commit }, payload) {
     commit('setIframe', payload);
+  },
+
+  setEmbedIframeTitle({ commit }, payload) {
+    commit('setIframeTitle', payload);
   },
 
   setIsPublicDashboard({ commit }, payload) {
