@@ -269,6 +269,15 @@
 
               </span>
             </div>
+            <!-- cemonc dashboard -->
+             <div class="tooltip-wrapper-2">
+              <router-link to="/cemonc-dashboard" target="_blank">
+                <b-list-group-item>CEmONC Dashboard</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2"
+                >Comprehensive dashboard for CEmONC data.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3" v-if="isAuthenticated">
