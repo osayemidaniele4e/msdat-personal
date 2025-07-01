@@ -33,7 +33,8 @@
              <b-icon icon="person-fill"></b-icon>
           </div>
           <div class="message-content">
-            <div class="message-text">{{ message.text }}</div>
+            <div class="message-text" v-if="message.type === 'bot'" v-html="renderMarkdown(message.text)"></div>
+            <div class="message-text" v-else>{{ message.text }}</div>
             <div v-if="message.suggestions && message.suggestions.length > 0" class="suggestions">
               <span
                 v-for="(suggestion, sIndex) in message.suggestions"
@@ -63,12 +64,16 @@
 
       <!-- Chat Input -->
       <div class="chat-input">
-        <input
+        <textarea
           v-model="userInput"
-          @keyup.enter="sendMessage"
+          @input="autoResizeInput"
+          @keyup.enter.exact="sendMessage"
           placeholder="Type your message here..."
           :disabled="isLoading"
-        />          <button
+          ref="chatInput"
+          rows="1"
+        ></textarea>
+        <button
           @click="sendMessage"
           :disabled="isLoading || !userInput.trim()"
         >
@@ -80,6 +85,8 @@
 </template>
 
 <script>
+import { marked } from 'marked';
+
 export default {
   name: 'ChatBot',
   data() {
@@ -92,12 +99,12 @@ export default {
           text: "Hi there! I'm a bot designed to help you understand and explore Indicator metadata. You can ask me things like:",
           suggestions: [
             "What's the latest on malaria cases?",
-            "Where can I find last year's data?",
-            'What is this page about?',
+            'what datasources does under5 mortality rate have?',
           ],
         },
       ],
       isLoading: false,
+      sessionId: '',
     };
   },
   methods: {
@@ -109,6 +116,40 @@ export default {
         });
       }
     },
+    // UUID generator (RFC4122 version 4 compliant)
+    generateSessionId() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = Math.floor(Math.random() * 16);
+        let v;
+        if (c === 'x') {
+          v = r;
+        } else {
+          v = (r % 4) + 8;
+        }
+        return v.toString(16);
+      });
+    },
+    persistSession() {
+      sessionStorage.setItem('chatbot_session_id', this.sessionId);
+      sessionStorage.setItem('chatbot_messages', JSON.stringify(this.messages));
+    },
+    restoreSession() {
+      const storedId = sessionStorage.getItem('chatbot_session_id');
+      const storedMessages = sessionStorage.getItem('chatbot_messages');
+      if (storedId) {
+        this.sessionId = storedId;
+      } else {
+        this.sessionId = this.generateSessionId();
+        sessionStorage.setItem('chatbot_session_id', this.sessionId);
+      }
+      if (storedMessages) {
+        try {
+          this.messages = JSON.parse(storedMessages);
+        } catch (e) {
+          // fallback to default if parse fails
+        }
+      }
+    },
     async sendMessage() {
       if (!this.userInput.trim() || this.isLoading) return;
 
@@ -117,35 +158,45 @@ export default {
         type: 'user',
         text: this.userInput,
       });
+      this.persistSession();
 
-      const userMessage = this.userInput; // userMessage is used below for clarity, could be removed later
+      const userMessage = this.userInput;
       this.userInput = '';
       this.isLoading = true;
 
       try {
-        // TODO: Replace with actual Activepieces webhook integration
-        // Simulated response for now
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Webhook integration
+        const response = await fetch('https://cloud.activepieces.com/api/v1/webhooks/y4MNr1MBY7n2RzmVnYM8E/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: userMessage,
+            overrideConfig: { sessionId: this.sessionId },
+          }),
+        });
+        const data = await response.json();
+        // Accepts either {text: ...} or fallback
+        const botText = data && data.text ? data.text : 'Sorry, I did not understand the response.';
         this.messages.push({
           type: 'bot',
-          text: `You asked: "${userMessage}". This is a simulated response. The actual integration with Activepieces webhook will be implemented here.`,
+          text: botText,
         });
       } catch (error) {
-        console.error('Error sending message:', error); // Log the error
         this.messages.push({
           type: 'bot',
           text: 'Sorry, I encountered an error. Please try again.',
         });
       } finally {
         this.isLoading = false;
+        this.persistSession();
         this.$nextTick(() => {
           this.scrollToBottom();
         });
       }
     },
     sendSuggestedMessage(suggestion) {
-      this.userInput = suggestion; // Set the input to the suggestion
-      this.sendMessage(); // Send the message;
+      this.userInput = suggestion;
+      this.sendMessage();
     },
     scrollToBottom() {
       const container = this.$refs.messagesContainer;
@@ -153,6 +204,21 @@ export default {
         container.scrollTop = container.scrollHeight;
       }
     },
+    renderMarkdown(text) {
+      return marked.parse(text || '');
+    },
+    autoResizeInput() {
+      this.$nextTick(() => {
+        const input = this.$refs.chatInput;
+        if (input) {
+          input.style.height = 'auto';
+          input.style.height = `${input.scrollHeight}px`;
+        }
+      });
+    },
+  },
+  mounted() {
+    this.restoreSession();
   },
 };
 </script>
@@ -351,17 +417,23 @@ export default {
   padding: 0.8rem 1rem;
   border-top: 1px solid #eee;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.5rem;
   background-color: #f8f9fa; /* Adjusted background color */
 
-  input {
+  textarea {
     flex: 1;
     padding: 0.6rem 0.8rem;
     border: 1px solid #ddd;
     border-radius: 20px;
     font-size: 14px;
     outline: none;
+    min-height: 36px;
+    max-height: 120px;
+    resize: none;
+    overflow-y: auto;
+    line-height: 1.4;
+    transition: border-color 0.2s;
 
     &:focus {
       border-color: #007d53;
