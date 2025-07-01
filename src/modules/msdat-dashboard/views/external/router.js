@@ -9,6 +9,7 @@ import goggleForm from './dashboards/goggleForm.vue';
 import healthServiceUptake from './dashboards/health-service-uptake.vue';
 import IndicatorPreview from './dashboards/Minister of Health Dashboard/dashboard-landing-page.vue';
 import presidentBondScorecard from './dashboards/presidentBondScorecard.vue';
+import CEMONC from './dashboards/CEMONC.vue';
 
 export default [
   {
@@ -43,6 +44,14 @@ export default [
     component: presidentBondScorecard,
     meta: {
       title: 'Scorecard Dashboard of Presidential Bond Indicators',
+    },
+  },
+  {
+    path: '/cemonc-dashboard',
+    name: 'cemonc-dashboard',
+    component: CEMONC,
+    meta: {
+      title: 'CEmONC Dashboard',
     },
   },
   {
