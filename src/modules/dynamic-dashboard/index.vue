@@ -430,7 +430,7 @@ export default {
       // const dashboard = config.find((el) => el.name === 'GIS_Mapping_Dashboard');
 
       const response = await apiServices.getDashboard();
-      const results = response.data;
+      const results = response.data.results;
       const dashboard = results.find((item) => item?.name === name);
 
       if (dashboard === undefined) {
@@ -463,7 +463,7 @@ export default {
         // ============
 
         const response = await apiServices.getDashboard();
-        const results = response.data;
+        const results = response.data.results;
         const dashboard = results.find((item) => item?.name === name);
         if (dashboard === undefined) {
           this.$router.push('/*');
