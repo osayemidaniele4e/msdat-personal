@@ -56,8 +56,9 @@ export default {
     },
     async getConfigData() {
       const { name } = this.$route.params;
-      const data = await apiServices.getDashboard();
-      this.dashboard = data.data.find((item) => item.name === name);
+      const response = await apiServices.getDashboard();
+      const results = response.data.results;
+      this.dashboard = results.find((item) => item.name === name);
       this.indicatorCount
         = this.dashboard?.indicators.length || localStorage.getItem('lsIndicatorCount');
       this.dataSourceCount
