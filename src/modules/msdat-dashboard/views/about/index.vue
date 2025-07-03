@@ -71,6 +71,12 @@
           <b-spinner variant="success" label="Loading..."></b-spinner>
         </div> -->
         <IndicatorPageFunc />
+        <div class="chat-section mt-4">
+          <ChatBot ref="chatBot" />          <button class="chat-button" @click="$refs.chatBot.toggleChat()">
+            <img src="./assets/ai-launcher.svg" alt="AI" class="ai-icon">
+            <span>Metdata Chatbot</span>
+          </button>
+        </div>
       </div>
 
       <br /><br />
@@ -80,6 +86,7 @@
           <section>
           <div id="logical-framework">
             <img src="./assets/Logical-Framework.png" class="logical-framework-img" />
+
           </div>
         </section>
         </div>
@@ -120,6 +127,7 @@
       Statistics (DHPRS)
     </footer>
     <the-footer />
+    <ChatBot />
   </div>
 </template>
 
@@ -127,6 +135,7 @@
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import { groupIndicator } from '@/util/helper';
 import DataLayerMixin from '@/modules/data-layer/mixin';
+import ChatBot from '@/modules/msdat-dashboard/components/ChatBot.vue';
 import theHeader from './layout/theHeader.vue';
 import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
@@ -144,6 +153,7 @@ export default {
     IndicatorPageFunc,
     AvailableDataPageFunc,
     Testimonials,
+    ChatBot,
   },
   mixins: [DataLayerMixin],
   data() {
@@ -1007,5 +1017,37 @@ div.modal {
 
 .loading-container {
   min-height: 300px;
+}
+
+.chat-section {
+  display: flex;
+  margin-top: 2rem;
+  padding-right: 2rem;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.chat-button {
+  display: flex;
+  margin-right: 1.9rem !important;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem !important;
+  background-color: #007d53;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  .ai-icon {
+    width: 22px;
+    height: 20px;
+  }
+
+  &:hover {
+    background-color: #006b47;
+  }
 }
 </style>
