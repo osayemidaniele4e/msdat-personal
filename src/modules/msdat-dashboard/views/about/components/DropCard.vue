@@ -16,7 +16,7 @@
             </div>
             <div class="tooltip-wrapper">
               <router-link to="/dashboard/Health_Financing" target="_blank">
-                <b-list-group-item>Health Finance</b-list-group-item>
+                <b-list-group-item>Health Financing</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
                 >Health funding sources, priority areas and expenditure
