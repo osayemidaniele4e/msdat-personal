@@ -2,12 +2,6 @@
   <div class="section-container">
     <the-header ref="theHeader" />
 
-    <!-- Hero Section with dynamic text -->
-    <div class="hero-section">
-      <h1 class="hero-title">{{ currentHeroTitle }}</h1>
-      <p class="hero-description">{{ currentHeroDescription }}</p>
-    </div>
-
     <div class="tab-container">
       <div
         v-for="section in sections"
