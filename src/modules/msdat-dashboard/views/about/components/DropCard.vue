@@ -27,10 +27,7 @@
               <router-link to="/dashboard/Health_Workforce" target="_blank">
                 <b-list-group-item>Health Workforce</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip"
-                >Health personnel across different cadres.
-
-              </span>
+              <span class="custom-tooltip">Health personnel across different cadres. </span>
             </div>
 
             <div class="tooltip-wrapper">
@@ -39,19 +36,14 @@
                   >Health Facilities Finder(GIS)- work in progress</b-list-group-item
                 >
               </router-link>
-              <span class="custom-tooltip"
-                >Geographic tool for locating health facilities.
-
-              </span>
+              <span class="custom-tooltip">Geographic tool for locating health facilities. </span>
             </div>
 
             <div class="tooltip-wrapper">
               <router-link to="/health-facilities-profile" target="_blank">
                 <b-list-group-item>Multi-Source Health Facilities Profile</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip"
-                >Description of health facilities.
-              </span>
+              <span class="custom-tooltip">Description of health facilities. </span>
             </div>
           </b-list-group>
         </div>
@@ -63,9 +55,7 @@
               <router-link to="/dashboard/Health_Service_Access" target="_blank">
                 <b-list-group-item>Health Service Access</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip"
-                >Population access to health services.
-              </span>
+              <span class="custom-tooltip">Population access to health services. </span>
             </div>
 
             <div class="tooltip-wrapper">
@@ -75,9 +65,7 @@
               >
                 <b-list-group-item> Health Service Uptake (NHMIS-Monthly)</b-list-group-item>
               </a>
-              <span class="custom-tooltip"
-                >Selected NHMIS-DHIS2 indicators tracked monthly.
-              </span>
+              <span class="custom-tooltip">Selected NHMIS-DHIS2 indicators tracked monthly. </span>
             </div>
 
             <div class="tooltip-wrapper">
@@ -86,7 +74,6 @@
               </router-link>
               <span class="custom-tooltip"
                 >Selected NHMIS-DHIS2 indicators tracked quarterly.
-
               </span>
             </div>
 
@@ -94,12 +81,8 @@
               <a href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/" target="_blank">
                 <b-list-group-item>Monthly NHMIS Insights</b-list-group-item></a
               >
-              <span class="custom-tooltip"
-                >Analytical insights of selected RMNCH indicators.
-
-              </span>
+              <span class="custom-tooltip">Analytical insights of selected RMNCH indicators. </span>
             </div>
-
           </b-list-group>
         </div>
         <div class="col mb-3">
@@ -109,9 +92,7 @@
               <router-link to="/dashboard/Health_Outcomes_and_Service_Coverage" target="_blank">
                 <b-list-group-item>Health Outcomes and Service Coverage</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip"
-                >Disease burden and intervention coverage.
-              </span>
+              <span class="custom-tooltip">Disease burden and intervention coverage. </span>
             </div>
 
             <div class="tooltip-wrapper">
@@ -121,10 +102,7 @@
               >
                 <b-list-group-item>Quarterly Performance Assessment</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip"
-                >Quarterly analytics on state performance.
-
-              </span>
+              <span class="custom-tooltip">Quarterly analytics on state performance. </span>
             </div>
 
             <div class="tooltip-wrapper">
@@ -148,17 +126,13 @@
               class="cursor-pointer tooltip-wrapper"
             >
               {{ section.label }}
-              <span class="custom-tooltip"
-              >{{ section.tooltip }}
-              </span>
+              <span class="custom-tooltip">{{ section.tooltip }} </span>
             </b-list-group-item>
             <div class="tooltip-wrapper-2">
-              <router-link to="/data-triangulation-dashboard" target="_blank">
-              <b-list-group-item>Advanced Triangulation</b-list-group-item>
+              <router-link to="/advanced-triangulation-dashboard" target="_blank">
+                <b-list-group-item>Advanced Triangulation</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip-2"
-              >Analyze health data from multiple sources.
-              </span>
+              <span class="custom-tooltip-2">Analyze health data from multiple sources. </span>
             </div>
           </b-list-group>
         </div>
@@ -171,7 +145,6 @@
               </router-link>
               <span class="custom-tooltip"
                 >Indicators showing population structure, growth, and distribution.
-
               </span>
             </div>
 
@@ -180,7 +153,8 @@
                 <b-list-group-item>GIS Mapping</b-list-group-item>
               </router-link>
               <span class="custom-tooltip"
-                >Geospatial visualization showing population distribution and its relationship with key health data.
+                >Geospatial visualization showing population distribution and its relationship with
+                key health data.
               </span>
             </div>
           </b-list-group>
@@ -194,7 +168,6 @@
               </router-link>
               <span class="custom-tooltip"
                 >Comprehensive HIV-related data from national systems.
-
               </span>
             </div>
 
@@ -204,7 +177,6 @@
               </router-link>
               <span class="custom-tooltip"
                 >Comprehensive HIV-related data from national systems.
-
               </span>
             </div>
 
@@ -212,10 +184,14 @@
               <router-link to="/external-ncdc" target="_blank">
                 <b-list-group-item>Disease Surveillance (NCDC)</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip"
-                >IDSR indicators of relevant diseases.
-
-              </span>
+              <span class="custom-tooltip">IDSR indicators of relevant diseases. </span>
+            </div>
+            <!-- cemonc dashboard -->
+            <div class="tooltip-wrapper-2">
+              <router-link to="/cemonc-dashboard" target="_blank">
+                <b-list-group-item>CEmONC Dashboard</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2">Comprehensive dashboard for CEmONC data. </span>
             </div>
           </b-list-group>
         </div>
@@ -226,18 +202,14 @@
               <router-link to="/custom" target="_blank">
                 <b-list-group-item>Create Your Dashboard</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip-2"
-                >Build your personalized dashboard.
-              </span>
+              <span class="custom-tooltip-2">Build your personalized dashboard. </span>
             </div>
 
             <div class="tooltip-wrapper-2">
               <router-link to="/health-profiles" target="_blank">
                 <b-list-group-item>Health Profiles</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip-2"
-                >Overview of  State or National health status.
-              </span>
+              <span class="custom-tooltip-2">Overview of State or National health status. </span>
             </div>
 
             <div class="tooltip-wrapper-2">
@@ -255,7 +227,6 @@
               </router-link>
               <span class="custom-tooltip-2"
                 >High-level insights into health at the national level.
-
               </span>
             </div>
             <div class="tooltip-wrapper-2">
@@ -264,19 +235,7 @@
                   >Scorecard Dashboard of Presidential Bond Indicators</b-list-group-item
                 >
               </router-link>
-              <span class="custom-tooltip-2"
-                >Monitor priority national health commitments.
-
-              </span>
-            </div>
-            <!-- cemonc dashboard -->
-             <div class="tooltip-wrapper-2">
-              <router-link to="/cemonc-dashboard" target="_blank">
-                <b-list-group-item>CEmONC Dashboard</b-list-group-item>
-              </router-link>
-              <span class="custom-tooltip-2"
-                >Comprehensive dashboard for CEmONC data.
-              </span>
+              <span class="custom-tooltip-2">Monitor priority national health commitments. </span>
             </div>
           </b-list-group>
         </div>

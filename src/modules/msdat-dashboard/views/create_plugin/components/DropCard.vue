@@ -112,7 +112,7 @@
             <router-link to="/ministers-dashboard" target="_blank"
               ><b-list-group-item>SWAP Ministerial Dashboard</b-list-group-item></router-link
             >
-            <router-link to="/data-triangulation-dashboard" target="_blank"
+            <router-link to="/advanced-triangulation-dashboard" target="_blank"
               ><b-list-group-item>Triangulation Dashboard</b-list-group-item></router-link
             >
           </b-list-group>
