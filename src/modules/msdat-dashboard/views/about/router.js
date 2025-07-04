@@ -21,11 +21,11 @@ export default [
     },
   },
   {
-    path: '/data-triangulation-dashboard',
+    path: '/advanced-triangulation-dashboard',
     name: 'DataTriangulationDashboard',
     component: DataTriangulationDashboard,
     meta: {
-      title: 'Data Triangulation Dashboard',
+      title: 'Advanced Triangulation Dashboard',
     },
   },
   // {

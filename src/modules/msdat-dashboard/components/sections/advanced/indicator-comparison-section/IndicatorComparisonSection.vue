@@ -9,7 +9,7 @@
     <div v-if="title === 'Demographics'">
       <div class="heading">
         <!-- <div class="main-text">Demographics in Nigeria</div> -->
-        <!-- <div class="sub-text"> Source: NHA 2017 </div> -->
+        <!-- <div class="sub-text"> Source: NHA 2017 </div> --->
       </div>
       <b-embed type="iframe" aspect="21by9" :src="url" :width="width" :height="height"></b-embed>
     </div>

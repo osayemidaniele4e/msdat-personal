@@ -141,21 +141,12 @@ export default {
       const indicators = Array.isArray(this.values.indicator)
         ? this.values.indicator
         : [this.values.indicator];
-      return indicators.map((indicator) => {
-        const relatedIds = [
-          indicator.first_related_id,
-          indicator.second_related_id,
-          indicator.third_related_id,
-          indicator.fourth_related_id,
-        ].filter((id) => id != null);
 
-        const relatedIndicators = relatedIds.map((id) => this.dlIndicator.find((ind) => ind.id === id)).filter((ind) => ind != null);
-
-        return {
-          ...indicator,
-          relatedIndicators,
-        };
-      });
+      // Return selected indicators for analysis (not related indicators)
+      return indicators.map((indicator) => ({
+        ...indicator,
+        selectedIndicators: indicators, // Pass all selected indicators for analysis
+      }));
     },
   },
   methods: {
@@ -720,6 +711,7 @@ div.ics_wrapper {
 }
 
 .report-icon {
-
+  font-size: 1.2rem;
+  color: #17606B;
 }
 </style>

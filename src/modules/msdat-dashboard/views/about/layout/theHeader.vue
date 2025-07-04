@@ -104,21 +104,12 @@
               </h2>
             </div>
             <div class="main-text" v-else>
-              <div class="main-text d-inline-block">
+               <h2 class="main-text d-inline-block">
                 <small>MSDAT PLATFORM</small>
                 <br />
-                <div class="d-flex align-items-center">
-                  {{ $route.meta.title
-                  }}<b-icon-info-circle-fill
-                    v-if="$route.meta.title === 'Data Triangulation Dashboard'"
-                    v-tooltip="
-                      'This enables users to analyse various sources to ensure data consistency and reliability for decision-making'
-                    "
-                    class="data-source-info"
-                    font-scale="1"
-                  />
-                </div>
-              </div>
+                {{ $route.meta.title }}
+              </h2>
+
               <!-- <span
                 class="share-button d-inline-block ml-3"
                 v-b-tooltip.hover
@@ -195,7 +186,6 @@
                       :class="[showVersionsDropdown ? 'down' : 'up']"
                     ></b-icon>
                   </button>
-
                 </div>
 
                 <!-- Modal for Sign In/Sign Up -->
@@ -322,24 +312,15 @@
         <div class="p-1 user-details">
           <b-list-group>
             <div class="tooltip-wrapper">
-              <a
-                href="https://msdat.old.fmohconnect.gov.ng"
-                target="_blank"
-              >
+              <a href="https://msdat.old.fmohconnect.gov.ng" target="_blank">
                 <b-list-group-item @click="toggleDropdown"> MSDAT 1.5</b-list-group-item>
               </a>
-
             </div>
             <div class="tooltip-wrapper">
-             <a
-                href="https://msdat2.6.fmohconnect.gov.ng/"
-                target="_blank"
-              >
+              <a href="https://msdat2.6.fmohconnect.gov.ng/" target="_blank">
                 <b-list-group-item @click="toggleDropdown"> MSDAT 2.6</b-list-group-item>
               </a>
-
             </div>
-
           </b-list-group>
         </div>
       </div>

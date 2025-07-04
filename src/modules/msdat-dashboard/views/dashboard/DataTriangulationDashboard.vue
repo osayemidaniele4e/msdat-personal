@@ -405,10 +405,9 @@
         v-else
         class="w-100 d-flex flex-column align-items-center justify-content-center section-height-2"
       >
-        <h1 class="into-title">Data Source Triangulation Dashboard</h1>
-        <p class="info-desc w-75">
-          Data triangulation is a way of looking at information from different sources to get a more
-          accurate and complete picture.
+        <h1 class="into-title">Advanced Triangulation Dashboard</h1>
+        <p class="info-action-desc w-75">
+          This enables deep data exploration and validation from multiple sources and their methodologies to strengthen analytical confidence, identify discrepancies, and validate insights. Users can authenticate datasets through multi-source validation, cross-verification of findings, and convergent analysis across different datasets
         </p>
         <h2 class="info-action mt-5">
           Select a 'Primary Data Source' and additional 'Data Source(s) to be Compared'.
