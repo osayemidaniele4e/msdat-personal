@@ -144,38 +144,18 @@ export default {
     controlPanelProps: {
       async handler(val) {
         this.loader = true;
-        // const data = await this.dlQuery({
-        //   indicator: val.indicator.id,
-        //   datasource: val.datasource.id,
-        //   period: val.year,
-        // });
+
         const zonalResponse = await ApiServices.getZonalData({
           indicator: val.indicator.id,
           datasource: val.datasource.id,
           period: val.year,
         });
         const data = zonalResponse.data.results;
-        console.log(zonalResponse, 'ZONAL-HENRY');
 
-        const zonalResponse2 = await ApiServices.getZonalData2({
-          indicator: val.indicator.id,
-          datasource: val.datasource.id,
-          period: val.year,
-        });
-        console.log(zonalResponse2, 'fZONAL-HENRY 2');
-        const specificData = zonalResponse2.data.results;
-
-        // const specificData = await this.dlQuery({
-        //   indicator: val.indicator.id,
-        //   datasource: val.datasource.id,
-        //   period: val.year,
-        //   location: val.location.id,
-        // });
-        // console.log(val, 'filteredLGADataForState kogi');
         this.selectedState = val.location.name;
 
         const stateObject = this.dlGetLocation(val.location.id);
-        console.log(specificData, 'filteredLGADataForState 4');
+        // console.log(specificData, 'filteredLGADataForState 4');
 
         // PLOT 1ST MAP AS ZOANL
         if (stateObject.level === 1) {
@@ -254,7 +234,6 @@ export default {
 
             // Modify the chartSeries to exclude "Nigeria" if it exists
             const chartSeriesWithoutNigeria = chartSeries.filter((item) => item.name !== 'Nigeria');
-            console.log(chartSeriesWithoutNigeria, 'filteredLGADataForState XX');
 
             this.chart = {
               series: chartSeriesWithoutNigeria,
@@ -299,10 +278,7 @@ export default {
           const filteredLGADataForState = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id,
           );
-          console.log(filteredLGADataForState, 'filteredLGADataForStatex');
           const tempData = this.updatedSeries();
-          console.log(tempData, 'filteredLGADataForState 7');
-          console.log(filteredLGADataForState, 'filteredLGADataForState 8');
 
           if (filteredLGADataForState.length === 0) {
             this.showNoAvailableData = true;
@@ -327,7 +303,6 @@ export default {
             const chartSeries = [];
             const formattedData = formatToHighChart(filteredLGADataForState);
             const sortedData = formattedData.sort(sortHighChartDataFormat);
-            console.log('sorted', sortedData);
             // remove LGAs sting from LGA name cause mapdata does not support the format
             sortedData.forEach((item) => {
               const newItem = item;
