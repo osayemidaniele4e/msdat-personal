@@ -2,27 +2,19 @@
  <div v-if="show" class="relationship-popup" @click.self="$emit('close')">
    <div class="popup-content">
      <div class="popup-header">
-       <h4>Indicator Relationships</h4>
+       <h4>Indicator Analysis</h4>
        <button class="close-btn" @click="$emit('close')">&times;</button>
      </div>
      <div class="popup-body">
-       <div v-for="(indicator, index) in indicators" :key="index" class="indicator-group">
-         <h3>{{ indicator.short_name }}</h3>
-         <p class="program-area">Program Area: {{ indicator.program_area }}</p>
+       <!-- Show single analysis for all selected indicators -->
+       <div class="indicator-analysis">
+         <div v-if="indicators.length === 1" class="single-indicator-summary">
+           <h3>{{ indicators[0].short_name }}</h3>
+           <p class="program-area">Program Area: {{ indicators[0].program_area }}</p>
 
-         <div v-if="indicator.relatedIndicators.length" class="related-section">
-           <div class="related-indicators">
-             <p class="relation-title">Related Indicators:</p>
-             <ul>
-               <li v-for="related in indicator.relatedIndicators" :key="related.id">
-                 {{ related.short_name }} ({{ related.program_area }})
-               </li>
-             </ul>
-           </div>
-
-           <div class="relationship-summary">
-             <p class="summary-title">Relationship Analysis:</p>
-             <div class="summary-content" v-if="summaries[index]" v-html="formatSummary(summaries[index])"></div>
+           <div class="analysis-summary">
+             <p class="summary-title">Indicator Summary:</p>
+             <div class="summary-content" v-if="summaries[0]" v-html="formatSummary(summaries[0])"></div>
              <div v-else class="summary-loading">
                <span v-if="loading">Generating analysis...</span>
                <span v-else class="error-text">{{ errorMessage }}</span>
@@ -30,7 +22,27 @@
            </div>
          </div>
 
-         <p v-else class="no-relations">No related indicators found</p>
+         <div v-else-if="indicators.length > 1" class="multiple-indicators-relationship">
+           <h3>Selected Indicators Relationship Analysis</h3>
+           <div class="selected-indicators-list">
+             <ul>
+               <li v-for="indicator in indicators" :key="indicator.id">
+                 {{ indicator.short_name }} ({{ indicator.program_area }})
+               </li>
+             </ul>
+           </div>
+
+           <div class="relationship-summary">
+             <p class="summary-title">Relationship Analysis:</p>
+             <div class="summary-content" v-if="summaries[0]" v-html="formatSummary(summaries[0])"></div>
+             <div v-else class="summary-loading">
+               <span v-if="loading">Generating analysis...</span>
+               <span v-else class="error-text">{{ errorMessage }}</span>
+             </div>
+           </div>
+         </div>
+
+         <p v-else class="no-indicators">No indicators selected</p>
        </div>
      </div>
    </div>
@@ -38,7 +50,7 @@
 </template>
 
 <script>
-import generateRelationshipSummary from '@/services/groqService';
+import generateIndicatorSummary from '@/services/groqService';
 
 export default {
   name: 'IndicatorRelationshipPopup',
@@ -93,20 +105,11 @@ export default {
           this.loading = true;
           this.errorMessage = '';
           try {
-            const promises = this.indicators.map((indicator, index) => {
-              if (indicator.relatedIndicators.length) {
-                return generateRelationshipSummary(
-                  indicator,
-                  indicator.relatedIndicators,
-                ).then((summary) => {
-                  this.$set(this.summaries, index, summary);
-                });
-              }
-              return Promise.resolve();
-            });
-            await Promise.all(promises);
+            // Generate a single summary for all selected indicators
+            const summary = await generateIndicatorSummary(this.indicators);
+            this.$set(this.summaries, 0, summary);
           } catch (error) {
-            this.errorMessage = 'Failed to generate relationship analysis.';
+            this.errorMessage = 'Failed to generate indicator analysis.';
             console.error('Error:', error);
           } finally {
             this.loading = false;
@@ -172,12 +175,11 @@ export default {
  padding: 15px;
 }
 
-.indicator-group {
+.indicator-analysis {
  background: white;
  border-radius: 10px;
  padding: 20px;
  font-size: 18px;
- margin-bottom: 25px;
  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -187,30 +189,34 @@ export default {
  margin: 5px 0;
 }
 
-.relation-title {
- font-weight: bold;
- font-size: 1.2rem;
- margin: 10px 0 5px;
-}
-
-.related-indicators ul {
- list-style: none;
- padding-left: 15px;
- margin: 0;
- font-size: 1.1rem;
-
- li {
-   margin: 5px 0;
+.single-indicator-summary,
+.multiple-indicators-relationship {
+ h3 {
    color: #17606B;
-   font-size: 1.1rem !important;
+   margin-bottom: 10px;
  }
 }
 
-.no-relations {
- color: #666;
- font-style: italic;
+.selected-indicators-list {
+ margin: 15px 0;
+ font-size: 1.1rem !important; // Add font-size here for the container
+
+ ul {
+   font-size: 1.1rem !important; // Keep consistent font-size
+   list-style: none;
+   padding-left: 15px;
+   margin: 0;
+
+   li {
+     margin: 8px 0;
+     color: #17606B;
+     font-weight: 500;
+     font-size: 1.1rem !important; // Ensure li elements have the right size
+   }
+ }
 }
 
+.analysis-summary,
 .relationship-summary {
  margin-top: 15px;
  padding: 15px;
@@ -222,14 +228,13 @@ export default {
    font-weight: 600;
    color: #17606B;
    margin-bottom: 12px;
-
    font-size: 1.7rem;
  }
 
  .summary-content {
    line-height: 1.6;
    color: #2c3e50;
-   font-size: 1.1rem !important; /* Added font-size property */
+   font-size: 1.1rem !important;
 
    strong, b {
      color: #17606B;
@@ -247,15 +252,16 @@ export default {
 
    p {
      margin: 12px 0;
-     font-size: 1.1rem !important; /* Override for paragraphs specifically */
+     font-size: 1.1rem !important;
    }
+
    hr.section-divider {
      border: 0;
      height: 1px;
      background: rgba(23, 96, 107, 0.2);
      margin: 15px 0;
    }
-  }
+ }
 
  .summary-loading {
    font-style: italic;
@@ -274,9 +280,10 @@ export default {
  }
 }
 
-.related-section {
- border-left: 3px solid #17606B;
- padding-left: 20px;
- margin-top: 15px;
+.no-indicators {
+ color: #666;
+ font-style: italic;
+ text-align: center;
+ padding: 20px;
 }
 </style>

@@ -24,7 +24,7 @@
               ><b-list-group-item>Health Facility</b-list-group-item></router-link
             >
             <router-link to="/dashboard/Health_Financing" target="_blank"
-              ><b-list-group-item>Health Finance</b-list-group-item></router-link
+              ><b-list-group-item>Health Financing</b-list-group-item></router-link
             >
             <router-link to="/dashboard/Health_Workforce" target="_blank"
               ><b-list-group-item>Health Workforce</b-list-group-item></router-link
@@ -112,7 +112,7 @@
             <router-link to="/ministers-dashboard" target="_blank"
               ><b-list-group-item>SWAP Ministerial Dashboard</b-list-group-item></router-link
             >
-            <router-link to="/data-triangulation-dashboard" target="_blank"
+            <router-link to="/advanced-triangulation-dashboard" target="_blank"
               ><b-list-group-item>Triangulation Dashboard</b-list-group-item></router-link
             >
           </b-list-group>

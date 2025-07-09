@@ -120,7 +120,7 @@ export default {
   async SET_DASHBOARD_LOCATION(payload) {
     try {
       const { data } = await axios.post(
-        'https://msdat2api.e4eweb.space/api/user_dashboard_location/',
+        'https://msdat-api.fmohconnect.gov.ng/api/user_dashboard_location/',
         payload,
       );
       console.log(data);
