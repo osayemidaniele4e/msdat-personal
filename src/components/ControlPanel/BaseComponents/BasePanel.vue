@@ -32,7 +32,7 @@
       </draggable>
     </ul>
 
-    <div class="control-title">{{ title }}x2</div>
+    <div class="control-title">{{ title }}</div>
     <!-- Multi-select dropdown here -->
     <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
