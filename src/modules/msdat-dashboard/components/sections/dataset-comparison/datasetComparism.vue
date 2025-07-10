@@ -100,6 +100,15 @@ export default {
     ...mapMutations('MSDAT_STORE', [
       'SETUP_CONTROL_OPTIONS1', // -> this.foo()
     ]),
+    sortLocationsWithNigeriaFirst(locations) {
+      return locations.sort((a, b) => {
+        // Nigeria should always come first
+        if (a.name === 'Nigeria') return -1;
+        if (b.name === 'Nigeria') return 1;
+        // All other locations sorted alphabetically
+        return a.name.localeCompare(b.name);
+      });
+    },
     getOlderYear(year1, year2) {
       // eslint-disable-next-line radix
       const extractYear = (str) => parseInt(str.match(/\d{4}/)?.[0] || 0);
@@ -124,20 +133,60 @@ export default {
           this.indicatorOne = series[0].name;
           this.indicatorTwo = series[1].name;
 
-          const updatedObj1 = obj1Data.map((item1) => {
-            const matchingItem2 = obj2Data.find((item2) => item1.name === item2.name);
-            if (matchingItem2) {
-              return { ...item1, extraData: this.computeDiffValues(item1, matchingItem2).value, isPositive: this.computeDiffValues(item1, matchingItem2).isPositive };
-            }
-            return item1;
+          // Create a master list of all unique locations from both datasets
+          const allLocationNames = [...new Set([
+            ...obj1Data.map((item) => item.name),
+            ...obj2Data.map((item) => item.name),
+          ])];
+
+          // Sort the master list with Nigeria first
+          const sortedLocationNames = allLocationNames.sort((a, b) => {
+            if (a === 'Nigeria') return -1;
+            if (b === 'Nigeria') return 1;
+            return a.localeCompare(b);
           });
-          const updatedObj2 = obj2Data.map((item1) => {
-            const matchingItem1 = updatedObj1.find((item2) => item1.name === item2.name);
-            if (matchingItem1) {
-              return { ...item1, extraData: matchingItem1.extraData, isPositive: matchingItem1.isPositive };
+
+          // Create updated arrays in the correct order
+          const updatedObj1 = sortedLocationNames.map((locationName) => {
+            const item1 = obj1Data.find((item) => item.name === locationName);
+            const item2 = obj2Data.find((item) => item.name === locationName);
+
+            if (item1 && item2) {
+              const diffData = this.computeDiffValues(item1, item2);
+              return {
+                ...item1,
+                extraData: diffData.value,
+                isPositive: diffData.isPositive,
+              };
             }
-            return item1;
-          });
+            return item1 || {
+              name: locationName,
+              y: 0,
+              extraData: '',
+              isPositive: false,
+            };
+          }).filter((item) => item.y !== undefined); // Remove items that don't exist in obj1
+
+          const updatedObj2 = sortedLocationNames.map((locationName) => {
+            const item1 = obj1Data.find((item) => item.name === locationName);
+            const item2 = obj2Data.find((item) => item.name === locationName);
+
+            if (item1 && item2) {
+              const diffData = this.computeDiffValues(item1, item2);
+              return {
+                ...item2,
+                extraData: diffData.value,
+                isPositive: diffData.isPositive,
+              };
+            }
+            return item2 || {
+              name: locationName,
+              y: 0,
+              extraData: '',
+              isPositive: false,
+            };
+          }).filter((item) => item.y !== undefined); // Remove items that don't exist in obj2
+
           this.chartConfig.series[0].data = updatedObj1;
           this.chartConfig.series[1].data = updatedObj2;
           this.chartConfig.tooltip.pointFormat = '{point.name}: <b>{point.y:.1f}</b><br>Difference:{point.extraData}%';
@@ -281,7 +330,7 @@ export default {
         const orderResult = [];
         for (let index = 0; index < queryObject.length; index += 1) {
           const response = result[index];
-          const dataValues = response.map((element) => ({
+          const stateDataValues = response.map((element) => ({
             name: this.dlGetLocation(element.location).name,
             y: parseFloat(element.value),
             extraData: '',
@@ -305,16 +354,13 @@ export default {
             isPositive: false,
           };
 
-          // add it ot the top of the series
-          dataValues.unshift(nationValueSeries);
+          // Combine national and state data, then sort with Nigeria first
+          const allDataValues = [nationValueSeries, ...stateDataValues];
+          const dataValues = this.sortLocationsWithNigeriaFirst(allDataValues);
 
           orderResult.push({
             name: dataSourcesNYear[index].item,
             data: dataValues,
-            dataSorting: {
-              enabled: true,
-              sortKey: 'extraData',
-            },
           });
         }
 
@@ -325,7 +371,7 @@ export default {
                 enabled: true,
                 padding: 10,
                 style: {
-                  fontSize: '9px',
+                  fontSize: '12px',
                   fontFamily: '"Work Sans", sans-serif',
                   backgroundColor: 'none',
                 },
