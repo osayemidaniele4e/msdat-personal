@@ -18,12 +18,22 @@
       >
         <template #title>
           <!-- Display comparison text when the selected indicator is not an array -->
-          <p
-            class="work-sans mb-0 line-height"
-            v-if="!Array.isArray(values.indicator.length)"
-          >
-          Comparison of selected indicators across {{ values.compareBy.name}}s <b>({{ values.datasource.datasource }})</b>
-          </p>
+          <div class="d-flex align-items-center justify-content-between w-100">
+            <p
+              class="work-sans mb-0 line-height"
+              v-if="!Array.isArray(values.indicator.length)"
+            >
+            Comparison of selected indicators across {{ values.compareBy.name}}s <b>({{ values.datasource.datasource }})</b>
+            </p>
+            <button
+              class="relationship-btn"
+              @click="showRelationshipPopup = true"
+              title="Show indicator relationships"
+            >
+            <b-icon class="report-icon" icon="file-earmark-bar-graph"></b-icon>
+
+            </button>
+          </div>
           <!-- <p class="text-dark work-sans mb-0 line-height" v-else>
            Comparison of <b>{{ values.indicator[0].short_name }}</b> and
             <b>{{ values.indicator[1].short_name }}</b>
@@ -58,7 +68,14 @@
     </li>
   </ul>
 </div>
+  <!-- Indicator Relationship Popup -->
+  <IndicatorRelationshipPopup
+    :show="showRelationshipPopup"
+    :indicators="getIndicatorsWithRelations"
+    @close="showRelationshipPopup = false"
+  />
   </div>
+
 </template>
 
 <script>
@@ -68,12 +85,14 @@ import AdvancedControlPanelSetup from '@/modules/msdat-dashboard/mixins/advanced
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import chartDownload from '../mixins/chart_download';
+import IndicatorRelationshipPopup from './IndicatorRelationshipPopup.vue';
 
 export default {
   name: 'ICS',
   mixins: [chartDownload, AdvancedControlPanelSetup],
   components: {
     BarChart,
+    IndicatorRelationshipPopup,
   },
   data() {
     return {
@@ -82,6 +101,7 @@ export default {
       dataSeries: [],
       loading: false,
       chartOptions: {},
+      showRelationshipPopup: false,
     };
   },
 
@@ -116,6 +136,17 @@ export default {
       // Handle the case when this.values.indicator is not an array
       // console.error('Indicator is not an array:', this.values.indicator);
       return [];
+    },
+    getIndicatorsWithRelations() {
+      const indicators = Array.isArray(this.values.indicator)
+        ? this.values.indicator
+        : [this.values.indicator];
+
+      // Return selected indicators for analysis (not related indicators)
+      return indicators.map((indicator) => ({
+        ...indicator,
+        selectedIndicators: indicators, // Pass all selected indicators for analysis
+      }));
     },
   },
   methods: {
@@ -203,6 +234,15 @@ export default {
       }));
 
       const results = await Promise.all(dataPromises);
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        yTitles.push(displayFactor.display_factor);
+      }
 
       for (let i = 0; i < results.length; i += 1) {
         // formate result to HighChart Format
@@ -212,7 +252,7 @@ export default {
           this.dlGetLocation(item.location).name,
           parseFloat(item.value),
         ]);
-        const displayFactor = this.dlGetFactor(indicator.factor);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
         const yAxis = {
           yAxis: [
             {
@@ -233,7 +273,8 @@ export default {
           ],
           title: {
             ...defaultOptions.yAxis.title,
-            text: displayFactor.display_factor,
+            // text: displayFactor.display_factor,
+            text: [...new Set(yTitles)].join(' | '),
           },
           opposite: !!i, // this will become either true of false as 0 or 1
         };
@@ -250,10 +291,12 @@ export default {
               fontSize: '10px',
             },
           },
-          name: indicator.full_name,
+          // name: indicator.full_name,
+          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
           data: toHighChartFormat,
         };
-        highChartOptions.yAxis.push(yAxis);
+        // highChartOptions.yAxis.push(yAxis);
+        if (i === 0) highChartOptions.yAxis.push(yAxis);
         if (toHighChartFormat.length) highChartOptions.series.push(obj);
       }
       return highChartOptions;
@@ -399,6 +442,16 @@ export default {
 
       const results = await Promise.all(dataPromises);
       // debugger;
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        yTitles.push(displayFactor.display_factor);
+      }
+
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];
@@ -409,35 +462,39 @@ export default {
         ]);
         const sortTheYear = formatToHighChartFormat.sort((a, b) => a[0] - b[0]);
 
-        const displayFactor = this.dlGetFactor(indicator.factor);
-        highChartOptions.yAxis.push({
-          yAxis: [
-            {
-              plotLines: [],
-              labels: {
-                style: {
-                  fontFamily: 'Work Sans, sans-serif',
-                  fontSize: '11px',
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        if (i === 0) {
+          highChartOptions.yAxis.push({
+            yAxis: [
+              {
+                plotLines: [],
+                labels: {
+                  style: {
+                    fontFamily: 'Work Sans, sans-serif',
+                    fontSize: '11px',
+                  },
+                },
+                title: {
+                  style: {
+                    ...defaultOptions.yAxis.title.style,
+                    fontSize: '10px',
+                  },
                 },
               },
-              title: {
-                style: {
-                  ...defaultOptions.yAxis.title.style,
-                  fontSize: '10px',
-                },
-              },
+            ],
+            title: {
+              ...defaultOptions.yAxis.title,
+              // text: displayFactor.display_factor,
+              text: [...new Set(yTitles)].join(' | '),
             },
-          ],
-          title: {
-            ...defaultOptions.yAxis.title,
-            text: displayFactor.display_factor,
-          },
-          opposite: !!i, // this will become either true of false as 0 or 1
-        });
+            opposite: !!i, // this will become either true of false as 0 or 1
+          });
+        }
         const obj = {
           color: this.color[i],
           lineWidth: 3,
-          name: indicator.full_name,
+          // name: indicator.full_name,
+          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
           data: sortTheYear,
         };
         if (sortTheYear.length) highChartOptions.series.push(obj);
@@ -637,5 +694,24 @@ div.ics_wrapper {
     text-align: left;
     margin-bottom: 0.5rem;
   }
+}
+
+.relationship-btn {
+  background: none;
+  border: none;
+  color: #17606B;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight:600;
+
+  &:hover {
+    color: #E85D58;
+  }
+}
+
+.report-icon {
+  font-size: 1.2rem;
+  color: #17606B;
 }
 </style>

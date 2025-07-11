@@ -7,7 +7,7 @@
           <h2
             style="
               background-color: #f5f5f5;
-              width: 45%;
+              width: 100%;
               font-family: Work Sans;
               font-size: 23px;
               font-weight: bold;
@@ -94,7 +94,7 @@ export default {
       if (!this.$store.getters.editMode) {
         this.$store.dispatch('deactivateAllSections');
       }
-      this.$router.push('sections');
+      this.$router.push('embed-dashboard');
     },
     backToPrefrence() {
       this.$router.push('preference-table');

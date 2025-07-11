@@ -6,6 +6,9 @@ export default {
       fontWeight: 'normal',
     },
   },
+  lang: {
+    noData: 'No states data to display',
+  },
   exporting: {
     enabled: true,
     chartOptions: {

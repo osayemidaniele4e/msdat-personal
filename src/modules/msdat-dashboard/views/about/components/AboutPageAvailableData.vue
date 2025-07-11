@@ -83,57 +83,30 @@ export default {
 <style lang="scss" scoped>
 $msdat-green: #007d53;
 
-// div {
-//   table,
-//   th,
-//   td {
-//     border: 1px solid #cfcfcf;
-//     border-collapse: collapse;
-//   }
+.table-responsive {
+  height: 500px; // You can adjust this height as needed
+  overflow-y: auto;
+  position: relative;
+}
 
-//   table {
-//     width: 100%;
-//     margin: auto;
-//     text-align: center;
-//     & > :first-child {
-//       th {
-//         // width: auto;
-//         height: 50px;
-//         padding: 1.5% 1%;
-//         font-size: 13px;
-//         color: #515151;
-//       }
+table {
+  position: relative;
 
-//       th:nth-child(2) {
-//         width: 30%;
-//         text-align: start;
-//       }
-//     }
-//     & > :last-child {
-//       font-size: 13px;
-//       color: #515151;
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
 
-//       td {
-//         height: 60px;
-//         padding: 0% 1%;
+    th {
+      background-color: white; // Add background color to prevent content showing through
+      position: sticky;
+      top: 0;
+      box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1); // Optional: adds subtle shadow under header
+    }
+  }
+}
 
-//         &:nth-child(2) {
-//           text-align: start;
-//         }
-//         svg {
-//           // background-color: orange !important;
-//           font-size: 15px;
-//           color: #4caf50;
-//         }
-//       }
-
-//       tr:nth-child(even) {
-//         background-color: #8484840f;
-//       }
-//     }
-//   }
-// }
-
+// Rest of your existing button styles...
 button {
   height: 40px;
   background-color: $msdat-green;
@@ -149,5 +122,4 @@ button {
     border-width: 0;
   }
 }
-// indicators and data source
 </style>

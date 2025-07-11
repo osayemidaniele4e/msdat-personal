@@ -118,6 +118,11 @@ export default {
             entity: 'dataSource',
           };
           this.SET_SELECTED_CONFIG(item);
+          const item2 = {
+            value: val,
+            key: 'datasource',
+          };
+          this.SET_ZONAL_DATASOURCE(item2);
         } else if (
           val
           && typeof val !== 'object'
@@ -139,7 +144,6 @@ export default {
       },
     },
     formattedID() {
-      console.log(this.id, 'DROPDOWN');
       if (this.multiSelectProps['group-values']) {
         if (this.multiSelectProps['group-label'] === 'datasource') {
           return 'groupedSources';
@@ -330,6 +334,7 @@ export default {
       'UPDATE_MULTI_YEARS',
       'setSelectedState',
       'SET_LOCATION',
+      'SET_ZONAL_DATASOURCE',
     ]),
     modifyDataSourceChildLabel(tag) {
       const tempArray = tag.split(' ');

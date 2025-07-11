@@ -172,7 +172,7 @@ export default {
         { value: 'population', text: 'Population' },
         { value: 'health_outcomes', text: 'Health Outcomes' },
         { value: 'health_input', text: 'Health Input' },
-        { value: 'health_outputs', text: 'Health Outpust' },
+        { value: 'health_outputs', text: 'Health Output' },
         { value: 'other', text: 'Other' },
       ],
     };
@@ -223,7 +223,7 @@ export default {
       let currentCustomDashboard;
       const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
       // get list for current user
-      const list = customDashboardsList[this.getUser.username];
+      const list = customDashboardsList[this.getUser.username || this.getUser.id];
       if (!this.$store.getters.editMode) {
         localStorage.removeItem('vuex');
         this.$store.dispatch('resetState');

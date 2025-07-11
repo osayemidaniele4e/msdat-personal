@@ -75,6 +75,8 @@ function getDefaultState() {
         isShow: false,
       },
     ],
+    embedUrl: '',
+    embedIframe: '',
   };
 }
 
@@ -88,6 +90,13 @@ const showLoaderTrue = (sta) => {
 export default {
   updateStep(state, payload) {
     state.step = payload;
+  },
+
+  setUrlEmbed(state, payload) {
+    state.embedUrl = payload;
+  },
+  setIframe(state, payload) {
+    state.embedIframe = payload;
   },
 
   resetState(state) {
@@ -334,6 +343,12 @@ export default {
 
   selectAll(state, payload) {
     state.allSelected = payload;
+  },
+  setEmbedUrl(state, url) {
+    state.embeddedUrl = url;
+  },
+  setEmbedIframe(state, iframe) {
+    state.embeddedIframe = iframe;
   },
 
   // ********* LOADING ********//

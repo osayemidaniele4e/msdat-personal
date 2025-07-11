@@ -8,7 +8,7 @@ different data sources. This section aims at providing a detailed explanation of
 
 ## Mode of Use
 
-There are 5 core sections in the MSDAT dashboard i.e;
+There are 5 core sections in the MSDAT Platform i.e;
 
 1.) Indicator Overview
 

@@ -135,25 +135,6 @@
                 v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
                 >About</router-link
               >
-              <router-link
-                to="/faq"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Help & FAQ</router-link
-              >
-              <router-link
-                to="/custom"
-                class="nav-link"
-                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
-                >Create New Dashboard</router-link
-              >
-              <div></div>
-              <a
-                href="https://msdat.old.fmohconnect.gov.ng"
-                class="nav-link"
-                v-if="isAuthenticated === false"
-                >Go back to MSDAT 1.5</a
-              >
               <div
                 @mouseover="showExpandedDropdown = true"
                 @mouseleave="showExpandedDropdown = false"
@@ -167,11 +148,30 @@
                   ></b-icon>
                 </button>
                 <DropCard
-                  v-show="showExpandedDropdown"
+                  v-if="showExpandedDropdown"
                   @click="showExpandedDropdown = false"
                   :class="{ dropcard: showExpandedDropdown }"
                 />
               </div>
+              <router-link
+                to="/faq"
+                class="nav-link"
+                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                >Help & FAQ</router-link
+              >
+              <!-- <router-link
+                to="/custom"
+                class="nav-link"
+                v-if="!this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard"
+                >Create New Dashboard</router-link
+              > -->
+              <div></div>
+              <a
+                href="https://msdat.old.fmohconnect.gov.ng"
+                class="nav-link"
+                v-if="isAuthenticated === false"
+                >MSDAT 1.5</a
+              >
               <!-- button to view the list of plugins -->
               <!-- <button
                 v-b-modal.modal-apps
@@ -277,7 +277,7 @@
           <!-- </a> -->
         </b-col>
         <b-col class="main">
-          <h4 class="mt-4">About the MSDAT Dashboard</h4>
+          <h4 class="mt-4">About the MSDAT Platform</h4>
           <p>
             This dashboard is developed and managed by the Department of Health Planning Research
             and Statistics (DHPRS)
@@ -323,7 +323,7 @@
     <b-modal id="modal-apps" title="MSDAT Apps Plugins" hide-footer>
       <b-collapse id="collapse-1" class="mt-2">
         <b-card>
-          This enables you to comment on any section in the MSDAT dashboard just by clicking the
+          This enables you to comment on any section in the MSDAT Platform just by clicking the
           headings
         </b-card>
       </b-collapse>

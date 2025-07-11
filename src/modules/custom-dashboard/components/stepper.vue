@@ -31,7 +31,6 @@
             ></b-avatar>
           </b-col>
           <b-col class="px-0">
-            <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
             <b-avatar
@@ -40,7 +39,6 @@
             ></b-avatar>
           </b-col>
           <b-col class="px-0">
-            <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
             <b-avatar
@@ -49,12 +47,19 @@
             ></b-avatar>
           </b-col>
           <b-col class="px-0">
-            <hr class="between" />
           </b-col>
           <b-col class="px-0" cols="auto">
             <b-avatar
               :class="this.step >= 4 ? 'active-step' : ''"
               text="4"
+            ></b-avatar>
+          </b-col>
+          <b-col class="px-0">
+          </b-col>
+          <b-col class="px-0" cols="auto">
+            <b-avatar
+              :class="this.step >= 5 ? 'active-step' : ''"
+              text="5"
             ></b-avatar>
           </b-col>
         </b-row>
@@ -72,13 +77,19 @@
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-right: -50%">
+            <p class="text-center" style="margin-right: -20%">
               Dashboard data table
             </p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
             <p class="text-center" style="margin-right: -80%">
+              Embed Dashboard
+            </p>
+          </b-col>
+          <b-col class="px-0"> </b-col>
+          <b-col class="px-0" cols="auto">
+            <p class="text-center" style="margin-right: -100%">
               Arrange dashboard sections
             </p>
           </b-col>

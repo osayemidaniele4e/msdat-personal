@@ -47,7 +47,7 @@
           : true
       "
     />
-    <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" />
+    <!-- <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" /> -->
     <div class="preview" v-if="$route.query.prev">
       <b-button
         @click="$router.push('/custom/requests')"
@@ -56,6 +56,42 @@
         style="font-size: 1.5rem"
         >Back to Requests</b-button
       >
+    </div>
+
+    <div
+      v-if="
+        isCustomDashboard &&
+        $store.getters.getEmbedIframe !== null &&
+        $store.getters.getEmbedIframe !== ''
+      "
+      class="mt-5"
+    >
+      <h1 class="url_title">{{ this.$store.getters.dashboardDetails.description }} - (Iframe)</h1>
+      <div class="w-100 url_height">
+        <div v-html="$store.getters.getEmbedIframe"></div>
+      </div>
+    </div>
+
+    <div
+      v-if="
+        isCustomDashboard &&
+        $store.getters.getEmbedUrl !== null &&
+        $store.getters.getEmbedUrl !== ''
+      "
+      :class="[
+        $store.getters.getEmbedIframe === null || $store.getters.getEmbedIframe === ''
+          ? 'url_body_2'
+          : 'url_body',
+      ]"
+    >
+      <h1 class="url_title">{{ this.$store.getters.dashboardDetails.description }} - (URL)</h1>
+      <div class="w-100 url_height">
+        <!-- <b-embed type="iframe" aspect="21by9" :src="$store.getters.getEmbedUrl" width="100%" ></b-embed> -->
+        <iframe
+          :src="$store.getters.getEmbedUrl"
+          style="width: 100%; height: 800px; border: none"
+        ></iframe>
+      </div>
     </div>
 
     <!-- <NewsLetter v-if="!loading" /> -->
@@ -71,16 +107,9 @@ import apiServices from '@/modules/data-layer/services/ApiServices';
 import advanceInstance from '@/modules/msdat-dashboard/views/dashboard/instance-advanced.vue';
 import gisInstance from '@/modules/msdat-dashboard/views/dashboard/instance-gis.vue';
 import instance from '@/modules/msdat-dashboard/views/dashboard/instance.vue';
-import ClearDBModal from './ClearDBModal.vue';
+// import ClearDBModal from './ClearDBModal.vue';
 import config from './config/dashboard_config';
-import defaultData from './defaultIndicator.json';
-import defaultDiseaseSurveillanceData from './defaultDS.json';
-import defaultDSyear from './defaultDSYear.json';
-import defaultAdvancedYear from './defaultAdvancedYear.json';
 import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
-import defaultGISDatasource from './gisDataSource.json';
-import defaultGISYear from './gisDefaultYear.json';
-import defaultGISIndicator from './gisIndicator.json';
 
 export default {
   name: 'DynamicDashboard',
@@ -88,7 +117,7 @@ export default {
     MSDAT: instance,
     AdvanceMSDAT: advanceInstance,
     GisMSDAT: gisInstance,
-    ClearDBModal,
+    // ClearDBModal,
     NewsLetter,
   },
   data() {
@@ -113,6 +142,8 @@ export default {
       latitude: '',
       userLocation: null,
       error: null,
+      isCustomDashboard: false,
+      height: '800px',
     };
   },
   computed: {
@@ -206,15 +237,29 @@ export default {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
             };
+
+            // Store location data for future visits
+            localStorage.setItem('userLocationProvided', 'true');
+            localStorage.setItem('userLatitude', position.coords.latitude);
+            localStorage.setItem('userLongitude', position.coords.longitude);
           },
           (error) => {
             this.error = error.message;
+            console.log('Geolocation error:', error.message);
             // eslint-disable-next-line comma-dangle
           }
         );
       } else {
         this.error = 'Geolocation is not supported in your browser.';
       }
+    },
+
+    async clearDBCache() {
+      await this.$store.dispatch('DL/CLEAR_DB');
+      this.showModal = false;
+      const dashboard = this.$route.params.name;
+      this.$router.push({ path: `/dashboard/${dashboard}` });
+      window.location.reload();
     },
     // saveIndicatorToStorage(item) {
     //   localStorage.setItem('indicatorId', 7);
@@ -226,57 +271,72 @@ export default {
     // }
   },
   async mounted() {
-    this.getUserLocation();
+    // Check if user has already provided location before
+    const hasProvidedLocation = localStorage.getItem('userLocationProvided');
+
     console.log('modal', this.modalShown);
 
-    await navigator.geolocation.getCurrentPosition((position) => {
-      this.latitude = position.coords.latitude;
-      this.longitude = position.coords.longitude;
+    if (!hasProvidedLocation) {
+      // Only prompt first-time users
+      this.getUserLocation();
 
-      // Now that you have the geolocation data, you can use it here
-      const data = {
-        dashboard: this.$route.params.name,
-        longitude: this.longitude,
-        latitude: this.latitude,
-        time: Date.now(),
-      };
+      await navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
 
-      this.SET_DASHBOARD_LOCATION(data);
+        // Mark that user has provided location
+        localStorage.setItem('userLocationProvided', 'true');
+        localStorage.setItem('userLatitude', this.latitude);
+        localStorage.setItem('userLongitude', this.longitude);
 
-      this.clearData();
+        // Now that you have the geolocation data, you can use it here
+        const data = {
+          dashboard: this.$route.params.name,
+          longitude: this.longitude,
+          latitude: this.latitude,
+          time: Date.now(),
+        };
 
-      if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-        // this sets skilled attendance at birth indicator on mounted
-        this.SET_SELECTED_CONFIG(defaultData);
-      } else if (this.$route.params.name === 'Disease_Surveillance') {
-        // this sets covid 19 confirmed cases indicator on mounted
-        this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
-        this.SET_SELECTED_CONFIG(defaultDSyear);
-      } else if (this.$route.params.name === 'Advanced_Analytics') {
-        this.SET_SELECTED_CONFIG(defaultData);
-        this.SET_SELECTED_CONFIG(defaultAdvancedYear);
-      } else if (this.$route.params.name === 'GIS_Mapping_Dashboard') {
-        this.SET_SELECTED_CONFIG(defaultGISIndicator);
-        this.SET_SELECTED_CONFIG(defaultGISDatasource);
-        this.SET_SELECTED_CONFIG(defaultGISYear);
+        this.SET_DASHBOARD_LOCATION(data);
+      }, (error) => {
+        console.log('Location access denied or failed:', error.message);
+        // Continue without location data
+        this.clearData();
+      });
+    } else {
+      // Use stored location for returning users
+      this.latitude = localStorage.getItem('userLatitude') || '';
+      this.longitude = localStorage.getItem('userLongitude') || '';
+
+      if (this.latitude && this.longitude) {
+        const data = {
+          dashboard: this.$route.params.name,
+          longitude: this.longitude,
+          latitude: this.latitude,
+          time: Date.now(),
+        };
+
+        this.SET_DASHBOARD_LOCATION(data);
       }
-    });
+    }
 
-    // // console.log(defaultData, 'defaultData');
+    this.clearData();
+
     // if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
     //   // this sets skilled attendance at birth indicator on mounted
-    //   this.SET_SELECTED_CONFIG(defaultData);
+    //   // this.SET_SELECTED_CONFIG(defaultData);
     // } else if (this.$route.params.name === 'Disease_Surveillance') {
     //   // this sets covid 19 confirmed cases indicator on mounted
-    //   this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
-    //   this.SET_SELECTED_CONFIG(defaultDSyear);
+    //   // this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+    //   // this.SET_SELECTED_CONFIG(defaultDSyear);
     // } else if (this.$route.params.name === 'Advanced_Analytics') {
     //   this.SET_SELECTED_CONFIG(defaultData);
     //   this.SET_SELECTED_CONFIG(defaultAdvancedYear);
+    // } else if (this.$route.params.name === 'GIS_Mapping_Dashboard') {
+    //   this.SET_SELECTED_CONFIG(defaultGISIndicator);
+    //   this.SET_SELECTED_CONFIG(defaultGISDatasource);
+    //   this.SET_SELECTED_CONFIG(defaultGISYear);
     // }
-    // setTimeout(() => {
-    //   console.log('config', this.$store.state.MSDAT_STORE.configObject);
-    // }, 5000);
   },
   async created() {
     // this.saveIndicatorToStorage();
@@ -301,10 +361,13 @@ export default {
      * @author chisom.chima
      */
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
+      this.isCustomDashboard = true;
       // this.isCustom = true; // this variable doesn't exist
       sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
+      sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
+      sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
@@ -389,7 +452,7 @@ export default {
       // if (dashboard === undefined) {
       //   this.$router.push('/*');
       //   return;
-      // }
+      // }s
       // this.isAdvanced = true;
       //   this.configObject = '';
       //   this.configObject = dashboard;
@@ -397,19 +460,27 @@ export default {
     }
 
     if (name === 'GIS_Mapping_Dashboard') {
+      this.isCustomDashboard = false;
       this.$store.dispatch('customDashboard', false);
       this.$store.dispatch('resetState');
       localStorage.removeItem('vuex');
-      const dashboard = config.find((el) => el.name === 'GIS_Mapping_Dashboard');
+      // const dashboard = config.find((el) => el.name === 'GIS_Mapping_Dashboard');
+
+      const response = await apiServices.getDashboard();
+      const results = response.data.results;
+      const dashboard = results.find((item) => item?.name === name);
+
       if (dashboard === undefined) {
         this.$router.push('/*');
         return;
       }
-      console.log(dashboard, 'dashboard');
+
+      console.log(dashboard, 'dashboard@');
 
       this.isGIS = true;
       this.configObject = '';
       this.configObject = dashboard;
+      localStorage.setItem('activeDashboardID', dashboard.id);
       this.SET_CONFIGURATIONS(dashboard);
       return;
     }
@@ -420,6 +491,7 @@ export default {
      * @author sami56
      */
     if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
+      this.isCustomDashboard = false;
       try {
         this.loading = true;
         this.$store.dispatch('customDashboard', false);
@@ -428,14 +500,16 @@ export default {
         // ============
 
         const response = await apiServices.getDashboard();
-        const results = response.data;
+        const results = response.data.results;
         const dashboard = results.find((item) => item?.name === name);
         if (dashboard === undefined) {
           this.$router.push('/*');
           return;
         }
+        console.log(dashboard, 'dashboard@ 1');
         this.configObject = '';
         this.configObject = {
+          id: dashboard.id,
           name: dashboard.name,
           title: dashboard.title,
           indicators: dashboard.indicators,
@@ -447,6 +521,7 @@ export default {
           initialLocation: dashboard.initialLocation,
           showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
         };
+        localStorage.setItem('activeDashboardID', dashboard.id);
         this.SET_CONFIGURATIONS(this.configObject);
         this.isAdvanced = false;
         this.isGIS = false;
@@ -516,5 +591,30 @@ iframe {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1500;
+}
+.url_height {
+  height: 600px;
+  width: 100%;
+}
+
+iframe {
+  width: 100%;
+  height: 800px; /* Adjust as needed */
+  border: none;
+}
+
+.url_title {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: gray;
+  padding: 10px;
+}
+.url_body {
+  margin-top: 20rem;
+  margin-bottom: 25rem;
+}
+.url_body_2 {
+  margin-top: 5rem;
+  margin-bottom: 22rem;
 }
 </style>

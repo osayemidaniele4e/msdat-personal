@@ -46,7 +46,15 @@ const state: State = {
   isResponding: false,
   conversationHistory: [],
   selectedSection: 'Indicator Overview',
+  selectedSectionIndex: '0',
   location: 'Nigeria',
+  showDataSourceList: false,
+  showWhatsNew: false,
+  showShareSection: false,
+  dashboards: [],
+  urlDatasource: 1,
+  urlLocation: 1,
+  urlPeriod: '2023',
 };
 
 export default state;

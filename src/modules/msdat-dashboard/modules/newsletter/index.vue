@@ -16,7 +16,7 @@
           <div class="text-center">
             <h6><strong>Keep me updated</strong></h6>
             <p class="small">
-              Subscribe to our newsletter to receive latest updates on the MSDAT dashboard.
+              Subscribe to our newsletter to receive latest updates on the MSDAT Platform.
             </p>
           </div>
           <form action="" v-on:submit.prevent="newsLetter()">

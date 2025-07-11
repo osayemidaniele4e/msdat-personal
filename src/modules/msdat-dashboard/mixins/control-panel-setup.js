@@ -1,7 +1,10 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 // import { uniq, sortBy, groupBy } from 'lodash';
 import { sortBy, uniq } from 'lodash';
-import { groupIndicator, isDataYearly } from '@/util/helper';
+import { groupIndicator } from '@/util/helper';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   data() {
@@ -87,10 +90,10 @@ export default {
       // debugger;
       this.defaultIndicatorDropdown = groupIndicator(this.dlGetAvailableIndicators, 'program_area');
 
-      this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
-        key: 'indicator',
-        payload: this.defaultDataSourceDropdown,
-      });
+      // this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
+      //   key: 'indicator',
+      //   payload: this.defaultDataSourceDropdown,
+      // });
       this.defaultDataSourceDropdown = this.dlGetDashboardDataSource();
 
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
@@ -146,96 +149,101 @@ export default {
       dataSourceID = this.defaultDataSource.id,
       locationID = this.defaultLocation.id,
     ) {
-      const data = await this.dlQuery({
+      const { data } = await ApiServices.getPeriod({
         indicator: indicatorID,
-        datasource: dataSourceID,
+        datasource: dataSourceID || this.this.$route.query.datasource,
         location: locationID,
       });
-      // console.log(data);
-      const onlyYearData = data?.filter((item) => {
-        if (isDataYearly(item.period)) {
-          return item.period;
-        }
-        return false;
-      });
-      const years = onlyYearData?.map((item) => item.period);
-      const uniqueYears = uniq(years);
-      return uniqueYears.sort((a, b) => b - a);
+      const years = data.periods;
+      return years.sort((a, b) => b - a);
     },
     // get years by datasource
     async setYearDropdownByDatasource(dataSourceID = this.defaultDataSource.id) {
       const data = await this.queryDBForYearByDs(dataSourceID);
       // debugger;
-      const onlyYearData = data?.filter((item) => {
-        if (isDataYearly(item.period)) {
-          return item.period;
-        }
-        return false;
-      });
-      const years = onlyYearData?.map((item) => item.period);
-      const uniqueYears = uniq(years);
-      return uniqueYears.sort((a, b) => b - a);
+      // const onlyYearData = data?.filter((item) => {
+      //   if (isDataYearly(item.period)) {
+      //     return item.period;
+      //   }
+      //   return false;
+      // });
+      // const years = onlyYearData?.map((item) => item.period);
+      // const uniqueYears = uniq(years);
+      return data.sort((a, b) => b - a);
     },
+
+    /**
+     * Method to set the location dropdown based on the selected data source and indicator.
+     * It fetches available locations from the database and updates the store with the unique locations.
+     *
+     * @param {number} dataSourceID - The ID of the selected data source. Defaults to the default data source ID.
+     * @param {number} indicatorID - The ID of the selected indicator. Defaults to the default indicator ID.
+     * @param {number} controlIndex - The index of the control to update. Defaults to 0.
+     */
 
     async setLocationDropdown(
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
+      // eslint-disable-next-line no-unused-vars
       controlIndex = 0,
     ) {
+      // Return if either dataSourceID or indicatorID is not provided
       if (!dataSourceID || !indicatorID) return;
+
       let data = [];
+
+      // Fetch available locations for each indicator if indicatorID is an array
       if (Array.isArray(indicatorID)) {
-        // eslint-disable-next-line no-restricted-syntax
         for (const ind of indicatorID) {
-          // eslint-disable-next-line no-await-in-loop
           data = data.concat(await this.queryDBForAvailableLocation(dataSourceID, ind));
         }
+      // Fetch available locations for each data source if dataSourceID is an array
       } else if (Array.isArray(dataSourceID)) {
-        // eslint-disable-next-line no-restricted-syntax
         for (const dat of dataSourceID) {
-          // eslint-disable-next-line no-await-in-loop
           data = data.concat(await this.queryDBForAvailableLocation(dat, indicatorID));
         }
+      // Fetch available locations for the given dataSourceID and indicatorID
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
-      let locations = this.dlGetLocation({ level: 3 });
-      locations.unshift(this.dlGetLocation(1));
-      locations = locations.filter(({ id }) => data.includes(id));
-      locations.push(...this.additionalLocation);
-      const uniqueItems = Array.from(new Map(locations.map((obj) => [obj.id, obj])).values());
 
+      const uniqueById = Array.from(
+        new Map(data.map((item) => [item.id, item])).values(),
+      );
+      // Commit the unique locations to the store
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
-        payload: uniqueItems,
+        payload: uniqueById.sort((a, b) => a.id - b.id),
       });
 
-      this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-        controlIndex,
-        key: 'location',
-        value: locations[0] || this.dlGetLocation(1),
-      });
+      // Set the default location (Nigeria) in the store
+      // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+      //   controlIndex,
+      //   key: 'location',
+      //   value: this.dlGetLocation(1),
+      // });
     },
 
     // Get available DataSources
     async setDataSourcesDropdown(indicatorID = this.defaultIndicator.id) {
-      const data = await this.getDataSourcesFromDexie(indicatorID);
+      const data = await this.getDataSourcesFromIndicator(indicatorID);
       return data;
     },
     // Get available Indicator
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
-      const data = await this.getIndicatorFromDexie(datasourceID);
-      const indicatorWithData = data.filter(async (indicatorItem) => {
-        const indicatorData = await this.dlQuery({
-          indicator: indicatorItem.id,
-          datasource: datasourceID,
-        });
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
 
-        // Keep only items where indicatorData is not an empty array
-        return indicatorData.length > 0;
-      });
+      const formattedData = groupIndicator(data, 'program_area');
+      return formattedData;
+    },
+    async setAllIndicatorDropdown(indicators) {
+      const formattedData = groupIndicator(indicators, 'program_area');
+      return formattedData;
+    },
+    async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
 
-      const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
   },

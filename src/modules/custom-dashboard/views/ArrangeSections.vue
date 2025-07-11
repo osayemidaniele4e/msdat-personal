@@ -5,12 +5,7 @@
   <b-container>
     <b-row>
       <h2
-        style="
-          color: #202020;
-          font-family: Work Sans;
-          font-size: 25px;
-          margin-top: -24px;
-        "
+        style="color: #202020; font-family: Work Sans; font-size: 25px; margin-top: -24px"
         class="ml-3"
       >
         Select your sections and arrange your widgets
@@ -18,205 +13,169 @@
       <br />
       <b-col md="8" sm="12">
         <draggable v-model="values" @update="handleListUpdate">
-          <transition-group
-          >
-          <div v-for="(value, index) in values" :key="index" :id="index">
-            <div class="">
-              <input
-                type="checkbox"
-                :name="`dashboard${index}`"
-                :id="`dashboard${index}`"
-                v-model="value.selected"
-                @click="selectedComponent($event, value.fieldName)"
-              />
-              <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
+          <transition-group>
+            <div v-for="(value, index) in values" :key="index" :id="index">
+              <div class="">
+                <input
+                  type="checkbox"
+                  :name="`dashboard${index}`"
+                  :id="`dashboard${index}`"
+                  v-model="value.selected"
+                  @click="selectedComponent($event, value.fieldName)"
+                />
+                <label :for="`dashboard${index}`" class="fields">{{ value.fieldName }}</label>
+              </div>
+              <p style="width: 100%; font-family: Work Sans; font-size: 14px">
+                This section shows an overview of your dashboard. This is a brief description...
+              </p>
+              <img :src="value.fieldImage" class="layout" />
             </div>
-            <p style="width: 100%; font-family: Work Sans; font-size: 14px">
-              This section shows an overview of your dashboard. This is a brief
-              description...
-            </p>
-            <img :src="value.fieldImage" class="layout" />
-          </div>
-        </transition-group>
-      </draggable>
+          </transition-group>
+        </draggable>
       </b-col>
-      <b-col md="12" lg='12' sm="12">
+      <b-col md="12" lg="12" sm="12">
         <div class="d-flex mb-5">
-        <!-- <b-col cols="auto"
-          ><b-button
-            @click="approveData"
-            class="nextBtn"
-            style="font-family: Work Sans"
-            >COMPLETE</b-button
-          ></b-col
-        > -->
+          <button class="create_dashboard_btn" @click="approveData">
+            {{ $store.getters.editMode ? 'Update' : 'Create' }} dashboard
+          </button>
 
-        <!-- v-b-modal.modal-visibility -->
+          <b-popover
+            ref="popover"
+            target="popover-button-event"
+            triggers="hover"
+            title="Choose visibility"
+          >
+            <span @click="createPrivateDashboard()" class="choose-visibility-option">
+              <b-icon icon="person-fill" style="color: #7952b3"></b-icon>
+              Private dashboard</span
+            >
+            <br />
+            <span class="choose-visibility-option" v-b-modal.modal-public-dashboard>
+              <b-icon icon="globe" style="color: #7952b3"></b-icon>
+              Public dashboard</span
+            >
+          </b-popover>
 
-        <!-- <button id="popover-button-event">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button> -->
-        <button @click="approveData">{{ $store.getters.editMode ? 'Update':'Create' }} dashboard</button>
+          <b-modal id="modal-in-review" title="BootstrapVue" size="lg" hide-footer hide-header>
+            <div class="in-review">
+              <b-icon icon="exclamation-circle" style="color: #7952b3"></b-icon>
+              <br />
+              <h2>Your dashboard is currently in review</h2>
+              <span>You will be notified when your dashboard is published</span>
+              <br />
+              <span>you will be directed to your dashboard in 5 seconds</span>
+              <!-- <button>Continue</button> -->
+            </div>
+          </b-modal>
 
-        <b-popover ref="popover" target="popover-button-event" triggers="hover" title="Choose visibility">
-      <span @click="createPrivateDashboard()" class="choose-visibility-option">
-      <b-icon icon="person-fill" style="color: #7952b3;"></b-icon>
-      Private dashboard</span>
-      <br>
-      <span
-      class="choose-visibility-option"
-      v-b-modal.modal-public-dashboard>
-      <b-icon icon="globe" style="color: #7952b3;"></b-icon>
-      Public dashboard</span>
-    </b-popover>
+          <b-modal
+            id="modal-public-dashboard"
+            title="BootstrapVue"
+            size="lg"
+            hide-footer
+            hide-header
+          >
+            <div class="modal-form-div">
+              <span class="modalHeader1">Create a Public Dashboard</span>
+              <br /><br />
+              <b-form @submit="onSubmit" @reset="onReset">
+                <b-row>
+                  <b-col>
+                    <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+                      <b-form-input
+                        id="input-2"
+                        v-model="public_creator.name"
+                        placeholder="Full name"
+                        class="input"
+                        required
+                      ></b-form-input> </b-form-group
+                  ></b-col>
 
-    <b-modal id="modal-in-review" title="BootstrapVue" size="lg" hide-footer hide-header>
-      <div class="in-review">
-        <b-icon icon="exclamation-circle" style="color: #7952b3;"></b-icon>
-        <br>
-        <h2>Your dashboard is currently in review</h2>
-        <span>You will be notified when your dashboard is published</span>
-        <br>
-        <span>you will be directed to your dashboard in 5 seconds</span>
-        <!-- <button>Continue</button> -->
-      </div>
+                  <b-col>
+                    <b-form-group
+                      id="input-group-1"
+                      label="Email address:"
+                      label-for="input-1"
+                      required
+                    >
+                      <b-form-input
+                        id="input-1"
+                        v-model="public_creator.email"
+                        type="email"
+                        placeholder="Enter email"
+                        class="input"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
 
-</b-modal>
+                <b-form-group id="input-group-2" label="Reason:" label-for="input-2">
+                  <b-form-input
+                    id="input-2"
+                    v-model="public_creator.Reason"
+                    placeholder="Reason"
+                    class="input"
+                    required
+                  ></b-form-input>
+                </b-form-group>
 
-    <b-modal id="modal-public-dashboard" title="BootstrapVue" size="lg" hide-footer hide-header>
-      <div class="modal-form-div">
-        <span class="modalHeader1">Create a Public Dashboard</span>
-      <br><br>
-      <b-form @submit="onSubmit" @reset="onReset">
-        <b-row>
-          <b-col>        <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="public_creator.name"
-          placeholder="Full name"
-          class="input"
-          required
-        ></b-form-input>
-      </b-form-group></b-col>
+                <b-form-group id="input-group-2" label="Dashboard name:" label-for="input-2">
+                  <b-form-input
+                    id="input-2"
+                    v-model="public_creator.name_of_dashboard"
+                    placeholder="Dashboard name"
+                    class="input"
+                    required
+                  ></b-form-input>
+                </b-form-group>
+                <br />
+                <b-button type="submit" variant="primary" class="create_dashboard_btn"
+                  >Create Dashboard</b-button
+                >
+                <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
+              </b-form>
+            </div>
+          </b-modal>
 
-      <b-col>
-        <b-form-group
-        id="input-group-1"
-        label="Email address:"
-        label-for="input-1"
-        required
-      >
-        <b-form-input
-          id="input-1"
-          v-model="public_creator.email"
-          type="email"
-          placeholder="Enter email"
-          class="input"
-          required
-        ></b-form-input>
-      </b-form-group>
-      </b-col>
-        </b-row>
+          <b-modal id="modal-visibility" title="BootstrapVue" size="lg" hide-footer>
+            <b-button v-b-toggle.collapse-private variant="primary"
+              >Create a private dashboard</b-button
+            >
+            <b-collapse id="collapse-private" class="mt-2">
+              <button @click="createPrivateDashboard()">Private dashboard</button>
+            </b-collapse>
 
-      <b-form-group id="input-group-2" label="Organisation:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="public_creator.organization"
-          placeholder="Organization"
-          class="input"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-2" label="Reason:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="public_creator.Reason"
-          placeholder="Reason"
-          class="input"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-2" label="Dashboard name:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="public_creator.name_of_dashboard"
-          placeholder="Dashboard name"
-          class="input"
-          required
-        ></b-form-input>
-      </b-form-group>
-<br>
-      <b-button type="submit" variant="primary" class="create_dashboard_btn">Create Dashboard</b-button>
-      <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
-    </b-form>
-      </div>
-
-</b-modal>
-
-<b-modal id="modal-visibility" title="BootstrapVue" size="lg" hide-footer>
-  <b-button v-b-toggle.collapse-private variant="primary">Create a private dashboard</b-button>
-  <b-collapse id="collapse-private" class="mt-2">
-    <!-- <b-button
-            @click="approveData"
-            class="nextBtn"
-            style="font-family: Work Sans"
-            >COMPLETE</b-button
-          > -->
-          <button @click="createPrivateDashboard()">Private dashboard</button>
-
-  </b-collapse>
-
-  <b-button v-b-toggle.collapse-public variant="primary" hide-header>Create a public dashboard</b-button>
-  <b-collapse id="collapse-public" class="mt-2">
-    <b-card>
-      <b-form-input v-model="public_creator.name" placeholder="Full name" class="input"></b-form-input>
-      <br>
-      <b-form-input v-model="public_creator.email" placeholder="Email address"></b-form-input>
-      <br>
-      <b-form-input v-model="public_creator.organization" placeholder="Organisation"></b-form-input>
-      <br>
-      <b-form-input v-model="public_creator.Reason" placeholder="Reason"></b-form-input>
-      <br>
-      <b-form-input v-model="public_creator.name_of_dashboard" placeholder="Name of Dashboard"></b-form-input>
-      <br>
-      <button @click="createPublicDashboard()">Public dashboard</button>
-    </b-card>
-  </b-collapse>
-<!--
-  <button @click="changeVisibility('private')">
-    change to private
-  </button>
-
-  <button @click="changeVisibility('public')">
-    change to public
-  </button> -->
-</b-modal>
+            <b-button v-b-toggle.collapse-public variant="primary" hide-header
+              >Create a public dashboard</b-button
+            >
+            <b-collapse id="collapse-public" class="mt-2">
+              <b-card>
+                <b-form-input
+                  v-model="public_creator.name"
+                  placeholder="Full name"
+                  class="input"
+                ></b-form-input>
+                <br />
+                <b-form-input
+                  v-model="public_creator.email"
+                  placeholder="Email address"
+                ></b-form-input>
+                <br />
+                <br />
+                <b-form-input v-model="public_creator.Reason" placeholder="Reason"></b-form-input>
+                <br />
+                <b-form-input
+                  v-model="public_creator.name_of_dashboard"
+                  placeholder="Name of Dashboard"
+                ></b-form-input>
+                <br />
+                <button @click="createPublicDashboard()">Public dashboard</button>
+              </b-card>
+            </b-collapse>
+          </b-modal>
         </div>
       </b-col>
-      <!-- <b-col md="4" sm="12">
-        <div class="dragable-list">
-          <dragable-list />
-          <b-row align-h="center" class="mt-3 text-right">
-            // eslint-disable-next-line vue/no-parsing-error
-            <!- <b-col class="align-baseline" cols="auto"
-              ><p class="baseline">Save for Later</p>
-            </b-col> -->
-      <!-- <b-col cols="auto"
-              ><b-button
-                @click="approveData"
-                class="nextBtn"
-                style="font-family: Work Sans"
-                >COMPLETE</b-button
-              ></b-col
-            > -->
-      <!-- <b-col cols="auto"
-              ><b-button class="SFL" disabled style="font-family: Work Sans"
-                >Save for Later</b-button
-              ></b-col
-            > -->
-      <!-- </b-row>
-        </div>
-      </b-col> -->
       <br />
     </b-row>
   </b-container>
@@ -224,12 +183,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import resizeConfig from '../utils/resizeConfig';
 
 export default {
   components: {
-  // eslint-disable-next-line vue/no-unused-components
+    // eslint-disable-next-line vue/no-unused-components
     draggable,
   },
   data() {
@@ -239,42 +198,55 @@ export default {
         {
           fieldName: 'Indicator Overview',
           // selected: this.$store.state.MSDAT_STORE.indicatorComparision,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Overview').isShow,
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Indicator Overview',
+          ).isShow,
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
         {
-          fieldName: 'Zonal Analysis',
-          // selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Zonal Analysis').isShow,
+          fieldName: 'Zonal analysis',
+          // selected: this.$store.state.MSDAT_STORE.zonalAna,
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Zonal analysis',
+          ).isShow,
           fieldImage: '/img/dashboardPreviewImages/ZonalAnalysis.PNG',
         },
         {
           fieldName: 'Indicator Comparison',
           // selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Indicator Comparison').isShow,
-          fieldImage:
-            '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Indicator Comparison',
+          ).isShow,
+          fieldImage: '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
         },
         {
           fieldName: 'Dataset Comparison',
           // selected: this.$store.state.MSDAT_STORE.datasetComperision,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Dataset Comparison').isShow,
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Dataset Comparison',
+          ).isShow,
           fieldImage: '/img/dashboardPreviewImages/DataSetComparison.PNG',
         },
         {
           fieldName: 'Multi-source Comparison',
           // selected: this.$store.state.MSDAT_STORE.multisourceComparison,
-          selected: this.$store.getters.arrangedSections.find((sec) => sec.name === 'Multi-source Comparison').isShow,
+          selected: this.$store.getters.arrangedSections.find(
+            (sec) => sec.name === 'Multi-source Comparison',
+          ).isShow,
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
       ],
+      url: '',
       public_creator: {
         name: '',
         email: '',
-        organization: '',
+        // organization: '',
         Reason: '',
         name_of_dashboard: '',
         dashboard_details: null,
+        embedded_url: null,
+        embedded_iframe: null,
+        is_private: false,
       },
       form: {
         email: '',
@@ -287,7 +259,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.commit('updateStep', 4);
+    this.$store.commit('updateStep', 5);
   },
   computed: {
     ...mapGetters('AUTH_STORE', ['getUser']),
@@ -297,6 +269,12 @@ export default {
     },
     getVisibility() {
       return this.$store.getters.getVisibility;
+    },
+    getUrl() {
+      return this.$store.getters.getEmbedUrl;
+    },
+    getEmbedIframe() {
+      return this.$store.getters.getEmbedIframe;
     },
   },
   methods: {
@@ -310,7 +288,7 @@ export default {
       // Reset our form values
       this.public_creator.name = '';
       this.public_creator.email = '';
-      this.public_creator.organization = '';
+      // this.public_creator.organization = '';
       this.public_creator.Reason = '';
       this.public_creator.name_of_dashboard = '';
     },
@@ -324,8 +302,19 @@ export default {
       }
     },
 
+    areAllSelectedFalse(data) {
+      return data.every((item) => item.selected === false);
+    },
+
+    removeNullFields(obj) {
+      return Object.fromEntries(
+        // eslint-disable-next-line no-unused-vars
+        Object.entries(obj).filter(([_, value]) => value != null && value !== ''),
+      );
+    },
+
     async createPublicDashboard() {
-    // send the request to create a public dashboard
+      // send the request to create a public dashboard
       this.public_creator.dashboard_details = await this.$store.getters.dashboardDetails;
       await this.$store.dispatch('setDashboardRequest', this.public_creator);
       // hide the 'modal-public-dashboard'
@@ -335,7 +324,7 @@ export default {
 
       // Wait for 10 seconds using setTimeout
       setTimeout(() => {
-      // After waiting for 10 seconds, call the approveData() function
+        // After waiting for 10 seconds, call the approveData() function
         this.approveData();
       }, 5000); // 10000 milliseconds = 10 seconds
     },
@@ -352,7 +341,7 @@ export default {
       return storeArray;
     },
     async createPrivateDashboard() {
-    // send the request to create a public daashboard
+      // send the request to create a public daashboard
 
       // change the visibility
       await this.changeVisibility('private');
@@ -362,9 +351,9 @@ export default {
 
     // Below function is excuted when approve data button is clicked
 
-    async  approveData() {
+    async approveData() {
       if (!this.dashboardDetails.name) {
-      // eslint-disable-next-line no-alert
+        // eslint-disable-next-line no-alert
         this.$swal('Dashboard name not provided');
         return;
       }
@@ -378,7 +367,6 @@ export default {
         surveyArray: this.$store.getters.getDataSource,
         sectionsArray: arrangedSections,
       });
-
       // if the dashboard is public, run these functions
       if (this.getVisibility === 'public') {
         const id = `${Date.now()}${this.getUser.id}`;
@@ -391,80 +379,69 @@ export default {
         this.public_creator.config = JSON.stringify(config);
         this.public_creator.created = new Date();
         this.public_creator.name_of_dashboard = this.dashboardDetails.name;
-        this.public_creator.link = `${window.location.origin}/custom/public/${id}`;
-        const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
-        // hide the 'modal-public-dashboard'
-        await this.$bvModal.hide('modal-public-dashboard');
-        // show the 'modal-in-review'
-        // await this.$bvModal.show('modal-in-review');
-        if (res) {
+        this.public_creator.link = `${window.location.origin}/custom/public/`;
+        this.public_creator.embedded_url = this.$store.getters.getUrl;
+        this.public_creator.embedded_iframe = this.$store.getters.getIframeEmbed;
+
+        if (this.areAllSelectedFalse(this.values)) {
           await this.$swal.fire({
-            title: 'Dashboard in Review',
-            text: `Your Public Dashboard will be approved within the next 48hrs.\n\n URL: "${this.public_creator.link}"`,
-            icon: 'success',
-            confirmButtonText: 'Copy URL',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              navigator.clipboard.writeText(this.public_creator.link);
-              this.$swal.fire('URL copied to clipboard!');
-            }
+            title: 'No Section Selected',
+            text: 'Warning: You need to select at least a section',
           });
         } else {
-          await this.$swal.fire({
-            title: 'An Error Occured',
-            text: 'Your request for a Public Dashboard could not be granted. Please try again later.',
-          });
+          const cleanedData = this.removeNullFields(this.public_creator);
+          console.log('cleanedData', cleanedData);
+          // const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
+          try {
+            const res = await apiServices.saveCustomDashboard(cleanedData);
+
+            if (res) {
+              this.$store.dispatch('customDashboard', true);
+              this.$router.push('/account#/savedDashboards');
+            }
+          } catch (error) {
+            this.$swal.fire({
+              title: 'Error',
+              text: `${error.response.data.message}`,
+              icon: 'error',
+            });
+          }
         }
       } else {
         // Save Private Dashboard
-        const id = `${Date.now()}${this.getUser.id}`;
-        this.SAVE_USER_DASHBOARD({
-          id,
-          username: this.getUser.username,
+        const data = {
+
+          name: this.getUser.username,
           email: this.getUser.email,
-          user: this.getUser.id,
+          category: this.dashboardDetails.category,
+          reason: this.dashboardDetails.reason,
+          description: this.dashboardDetails.description,
+          name_of_dashboard: this.dashboardDetails.name,
+          organization: 'string',
           config: JSON.stringify(config),
-          created: new Date(),
-          title: this.dashboardDetails.name,
-          link: `${window.location.origin}/custom/private/${id}`,
-        });
+          link: `${window.location.origin}/custom/public/`,
+          embedded_url: this.$store.getters.getUrl,
+          embedded_iframe: this.$store.getters.getIframeEmbed,
+          is_confirmed: false,
+          is_private: this.$store.getters.getVisibility === 'private',
+        };
+
+        try {
+          const cleanedData = this.removeNullFields(data);
+          console.log('cleanedData', cleanedData);
+
+          this.SAVE_USER_DASHBOARD(cleanedData);
+
+          this.$store.dispatch('customDashboard', true);
+          this.$router.push('/account#/savedDashboards');
+        } catch (error) {
+          this.$swal.fire({
+            title: 'Error',
+            text: `${error.response.data.message}`,
+            icon: 'error',
+          });
+        }
       }
-
-      //
-      // // SAVE DASHBOARD LOCALLY
-      // // retrieve initial currentDashboard value (consisting only id & userId)
-      // const currentCustomDashboard = JSON.parse(localStorage.getItem('currentCustomDashboard'));
-      // // retrieve all saved dashboards
-      // const customDashboardsList = JSON.parse(localStorage.getItem('customDashboardsList') || JSON.stringify({}));
-      // // retrieve dashboards belonging to current user
-      // let list = customDashboardsList[this.getUser.username];
-      // // create the dashboard config to be saved
-
-      // // find dashboard to be edited by id and update the 'config' and 'lastEdited' properties
-      // const dashboard = list?.find((dashb) => dashb.id === currentCustomDashboard.id);
-      // if (dashboard) {
-      //   dashboard.lastEdited = Date.now();
-      //   dashboard.config = config;
-      //   localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
-      //   this.$store.commit('endEdit');
-      // } else {
-      // // (new dashboard) -> add 'config' and 'created' properties to currentDashboard and insert to start of list
-      //   if (!list) {
-      //     customDashboardsList[this.getUser.username] = [];
-      //     list = customDashboardsList[this.getUser.username];
-      //   }
-      //   currentCustomDashboard.created = Date.now();
-      //   currentCustomDashboard.config = config;
-      //   list.unshift(currentCustomDashboard);
-      //   localStorage.setItem('customDashboardsList', JSON.stringify(customDashboardsList));
-      // }
-
-      this.$store.dispatch('customDashboard', true);
-      const t = this.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
-      this.$router.push({
-        path: `/dashboard/${t}`,
-        component: () => import('../../dynamic-dashboard/index.vue'),
-      });
     },
 
     // PRESELECTION OF Dashboard widgets
@@ -548,7 +525,7 @@ export default {
   font-size: 15.00000375px;
 }
 
-.modalHeader1{
+.modalHeader1 {
   font: var(--unnamed-font-style-normal) normal bold 35px/47px var(--unnamed-font-family-dm-sans);
   letter-spacing: var(--unnamed-character-spacing-0);
   color: var(--unnamed-color-202020);
@@ -559,40 +536,52 @@ export default {
   opacity: 1;
 }
 
-.modal-form-div{
+.modal-form-div {
   padding: 20px;
 }
 
-.input{
+.input {
   /* UI Properties */
-  background: #EAEAEA 0% 0% no-repeat padding-box;
+  background: #eaeaea 0% 0% no-repeat padding-box;
   opacity: 1;
   border: none;
   padding: 20px;
 }
 
-.create_dashboard_btn{
-  background: #3F8994 0% 0% no-repeat padding-box;
+.create_dashboard_btn {
+  background: #3f8994 0% 0% no-repeat padding-box;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 10px;
   opacity: 1;
   width: 188px;
   height: 43px;
   font-size: 15px;
+  color: #ffffff;
+  border: none;
 }
 
-.in-review{
+.in-review {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.choose-visibility-option{
+.choose-visibility-option {
   cursor: pointer;
 }
 
-.choose-visibility-option:hover{
+.choose-visibility-option:hover {
   opacity: 0.7;
+}
+
+.embed input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+}
+label {
+  margin-bottom: -20px;
 }
 </style>

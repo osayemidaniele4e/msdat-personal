@@ -8,9 +8,7 @@
     >
       <strong slot="title"> Contact Us</strong>
       <div slot="footer-btn">
-        <button class="btn work-sans send" @click="submitContactForm">
-          SEND
-        </button>
+        <button class="btn work-sans send" @click="submitContactForm">SEND</button>
       </div>
       <contact :submitForm="submit"> </contact>
     </base-modal>
@@ -22,7 +20,7 @@
         </router-link>
       </li>
 
-         <li>
+      <li>
         <!-- <router-link to="/external-dashboards">
           <img src="@/assets/img/icons/ic_info.svg" alt="" />
           <span>External Dashboards</span>
@@ -35,7 +33,7 @@
       </li> -->
         <!-- <b-button class="external-dashboards-btn mb-2" block >
         </b-button> -->
-      <!-- </b-card-header>
+        <!-- </b-card-header>
       <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
         <div class="my-2 mx-3">
           <router-link to="/external-ndr1">
@@ -84,13 +82,16 @@
       </li>
       <div class="divider"></div>
       <li>
-        <a
-          href="https://mapping.fmohconnect.gov.ng/inventory/submit-dataset"
-          target="_blank"
-        >
+        <a href="https://mapping.fmohconnect.gov.ng/inventory/submit-dataset" target="_blank">
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
           <span>Submit New Dataset</span>
         </a>
+      </li>
+      <li>
+        <router-link to="/data-partnership">
+          <img src="@/assets/img/icons/ic_help.svg" alt="" />
+          <span>Request Data Partnership</span>
+        </router-link>
       </li>
       <!-- <li>
         <router-link to="/">
@@ -123,7 +124,7 @@
           <span>Help and FAQs</span>
         </router-link>
       </li>
-       <!-- <li>
+      <!-- <li>
         <router-link to="/data-entry">
           <img src="@/assets/img/icons/ic_upload.svg" alt="" />
           <span>Data Entry</span>
@@ -137,9 +138,7 @@
       </li>
     </ul>
     <base-modal :showModal="socialModal" :size="'md'">
-      <template #title
-        ><h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6>
-      </template>
+      <template #title><h6 class="mb-0 font-weight-bold work-sans">Share Dashboard</h6> </template>
       <Socials />
     </base-modal>
     <NewsLetter />
@@ -158,6 +157,7 @@ export default {
       modal: false,
       submit: false,
       socialModal: false,
+      showClearDataModal: false,
     };
   },
   methods: {
@@ -188,15 +188,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.external-dashboards-btn, .external-dropdown
-{
+.external-dashboards-btn,
+.external-dropdown {
   border: none !important;
   background-color: transparent;
   box-shadow: none;
   color: black;
 }
-.external-dashboards-btn:hover
-{
+.external-dashboards-btn:hover {
   color: black;
 }
 
@@ -380,5 +379,13 @@ export default {
 
 /* LARGE */
 @media (min-width: 992px) and (max-width: 1200px) {
+}
+
+.btn-2 {
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  margin: 10px;
+  width: 200px;
 }
 </style>

@@ -13,6 +13,7 @@ import apiServices from '@/modules/data-layer/services/ApiServices';
 // import { time } from 'highcharts';
 import controlSetup from '../../mixins/control-panel-setup';
 import updateQueryParams from './paramsMixin';
+// import nhmisMonthlyPeriod from './nhmis-monthly-period.json';
 
 export default {
   name: 'ControlPanelConfiguration',
@@ -57,7 +58,6 @@ export default {
     // }
   },
   mounted() {
-    // console.log('control index', this.controlIndex);
     const now = new Date();
     const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -69,7 +69,7 @@ export default {
     });
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1', 'SET_INDICATOR_COMPARISON_PAYLOAD']),
+    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1', 'SET_INDICATOR_COMPARISON_PAYLOAD', 'SET_INDICATOR_DATASOURCES']),
     ...mapActions([
       'SET_INTERACTIONS',
       'GET_INTERACTIONS',
@@ -78,19 +78,21 @@ export default {
     ]),
     async getAvailableYears() {
       // debugger;
+
+      // if (this.payload?.datasource?.id === 30) {
+      //   return nhmisMonthlyPeriod;
+      // }
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
         this.payload?.datasource?.id,
         this.payload?.location?.id,
       );
-
       return available;
     },
     async getAvailableDataSources() {
       return this.setDataSourcesDropdown(this.payload?.indicator?.id);
     },
     async getAvailableDataIndicators() {
-      console.log('Indicator4rmDB');
       return this.setIndicatorDropdown(this.payload?.datasource?.id);
     },
     removeDuplicates(arr) {
@@ -178,25 +180,38 @@ export default {
 
           this.SET_INDICATOR_TIME_SPENT(timespent);
 
-          console.log('timespent in indicator', timespent);
-
           this.previous_time = this.after_time;
 
           this.previous_indicator = this.payload.indicator;
 
-          console.log(this.controlIndex, 'availableDSX');
-
           if (this.controlIndex !== 2) {
-            console.log(this.controlIndex, 'availableDSX 1');
             const availableYears = await this.getAvailableYears();
             this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
               key: 'year',
-              values: availableYears,
+              values: availableYears.sort((a, b) => {
+                const extract = (str) => {
+                  const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+                  const year = match ? parseInt(match[1], 10) : 0;
+                  const week = match && match[2] ? parseInt(match[2], 10) : null;
+                  return { year, week };
+                };
+
+                const { year: yearA, week: weekA } = extract(a);
+                const { year: yearB, week: weekB } = extract(b);
+
+                if (yearA !== yearB) return yearB - yearA;
+
+                if (weekA !== null && weekB !== null) return weekB - weekA;
+                if (weekA === null) return 1;
+                if (weekB === null) return -1;
+                return 0;
+              }),
+
             });
-            const availableDS = await this.getDataSourcesFromDexie(this.payload?.indicator?.id);
-            console.log(availableDS, 'availableDS@ 1');
+            const availableDS = await this.getDataSourcesFromIndicator(this.payload?.indicator?.id);
+            this.SET_INDICATOR_DATASOURCES(availableDS);
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
@@ -211,7 +226,6 @@ export default {
     'payload.datasource': {
       async handler() {
         // new ones
-
         const now = new Date();
         const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -230,8 +244,6 @@ export default {
 
         this.SET_DATASOURCE_TIME_SPENT(timespent);
 
-        console.log('timespent in   datasource', timespent);
-
         this.previous_time_datasource = this.after_time_datasource;
 
         this.previous_datasource = this.payload.datasource;
@@ -246,11 +258,30 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears,
+            values: availableYears.sort((a, b) => {
+              const extract = (str) => {
+                const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+                const year = match ? parseInt(match[1], 10) : 0;
+                const week = match && match[2] ? parseInt(match[2], 10) : null;
+                return { year, week };
+              };
+
+              const { year: yearA, week: weekA } = extract(a);
+              const { year: yearB, week: weekB } = extract(b);
+
+              if (yearA !== yearB) return yearB - yearA;
+
+              if (weekA !== null && weekB !== null) return weekB - weekA;
+              if (weekA === null) return 1;
+              if (weekB === null) return -1;
+              return 0;
+            }),
+
           });
           // ============
           if (this.controlIndex === 2) {
             const availableIndicator = await this.getAvailableDataIndicators();
+
             await this.SET_INDICATOR_COMPARISON_PAYLOAD({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
@@ -278,7 +309,25 @@ export default {
             groupIndex: this.groupIndex,
             panelIndex: this.controlIndex,
             key: 'year',
-            values: availableYears,
+            values: availableYears.sort((a, b) => {
+              const extract = (str) => {
+                const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+                const year = match ? parseInt(match[1], 10) : 0;
+                const week = match && match[2] ? parseInt(match[2], 10) : null;
+                return { year, week };
+              };
+
+              const { year: yearA, week: weekA } = extract(a);
+              const { year: yearB, week: weekB } = extract(b);
+
+              if (yearA !== yearB) return yearB - yearA;
+
+              if (weekA !== null && weekB !== null) return weekB - weekA;
+              if (weekA === null) return 1;
+              if (weekB === null) return -1;
+              return 0;
+            }),
+
           });
         }
       },

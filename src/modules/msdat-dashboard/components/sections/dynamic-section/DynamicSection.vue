@@ -77,7 +77,7 @@ export default {
       url2: 'https://public.tableau.com/views/HealthworkforcedisaggregationDashboard/Dashboard3?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url3: 'https://public.tableau.com/views/Healthfinancingdisaggregationsection/Dashboard1?:language=en-GB&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url4: 'https://public.tableau.com/views/Health_Outcomesdisaggregation/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-      url5: 'https://public.tableau.com/views/Healthfacilitydisaggregationdashboard2_0/Dashboard1?:language=en-GB&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      url5: 'https://public.tableau.com/views/Healthfacilitydisaggregationdashboard2_0/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       url6: 'https://public.tableau.com/views/Healthserviceaccessdisaggregationdashboard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       height: '400',
       showComing: true,

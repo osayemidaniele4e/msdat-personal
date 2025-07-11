@@ -8,9 +8,9 @@
           dlDashboardIndicator.length > indicatorCount
             ? indicatorCount
             : dlDashboardIndicator.length
-        }}/{{ indicatorCount }}&ensp;Indicators, {{ dlDashboardDataSource.length }}/{{
-          dataSourceCount
-        }}&ensp;Data&nbsp;sources</span
+        }}/{{ indicatorCount }}&ensp;Indicators,
+        <span
+          >{{ dlDashboardDataSource.length }}/{{ dataSourceCount }}</span>&ensp;Data&nbsp;sources <span @click="showDatasourceList" class="datasourec-action">( view all )</span></span
       >
       <span>Last Updated {{ latestDate }}</span>
     </div>
@@ -45,7 +45,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['UPDATE_LOADING_STATUS']),
+    ...mapMutations('MSDAT_STORE', ['UPDATE_LOADING_STATUS', 'toggleShowDataSourceList']),
 
     async getLatestDate() {
       const res = await apiServices.getLatestDate();
@@ -56,10 +56,19 @@ export default {
     },
     async getConfigData() {
       const { name } = this.$route.params;
-      const data = await apiServices.getDashboard();
-      this.dashboard = data.data.find((item) => item.name === name);
-      this.indicatorCount = this.dashboard?.indicators.length || localStorage.getItem('lsIndicatorCount');
-      this.dataSourceCount = this.dashboard?.dataSources.length || localStorage.getItem('lsDataSourceCount');
+      const response = await apiServices.getDashboard();
+      const results = response.data.results;
+      this.dashboard = results.find((item) => item.name === name);
+      this.indicatorCount
+        = this.dashboard?.indicators.length || localStorage.getItem('lsIndicatorCount');
+      this.dataSourceCount
+        = this.dashboard?.dataSources.length || localStorage.getItem('lsDataSourceCount');
+    },
+
+    showDatasourceList() {
+      console.log('dataSources');
+      console.log('Investigations Footer');
+      this.toggleShowDataSourceList();
     },
     // async captureAndShare() {
     //   // Capture the content of the index.vue component
@@ -141,6 +150,15 @@ export default {
 
 .hide-footer {
   display: none;
+}
+
+.datasourec-action {
+  cursor: pointer;
+  color: white;
+  text-decoration: underline;
+}
+.datasourec-action:hover {
+  color: #90ee90;
 }
 
 footer#the-footer {

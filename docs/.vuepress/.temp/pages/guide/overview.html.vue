@@ -3,7 +3,7 @@
 <p>The MSDAT 2.0 was developed to provide a straightforward, user friendly and functional way for performing integrated analysis, viewing and comparing key health indicators from
 different data sources. This section aims at giving a detailed explanation of the different compartments at which MSDAT 2.0 houses to achieve its core objectives.</p>
 <h2 id="mode-of-use" tabindex="-1"><a class="header-anchor" href="#mode-of-use" aria-hidden="true">#</a> Mode of Use</h2>
-<p>There are 5 sections in the MSDAT dashboard i.e; Indicator Overview, Zonal analysis, Indicator Comparison, Dataset Comparison and Multi-Source Comparison.
+<p>There are 5 sections in the MSDAT Platform i.e; Indicator Overview, Zonal analysis, Indicator Comparison, Dataset Comparison and Multi-Source Comparison.
 For each section listed, there is a dedicated control panel displaying fields that filters the data displayed when applied.</p>
 <h4 id="controls" tabindex="-1"><a class="header-anchor" href="#controls" aria-hidden="true">#</a> controls:</h4>
 <ul>

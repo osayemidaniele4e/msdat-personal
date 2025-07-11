@@ -8,7 +8,8 @@ export default {
     // Method to update route parameters
     updateParams() {
       const {
-        indicator, datasource, location, year,
+        indicator, datasource, location,
+        //  year,
       } = this.payload;
 
       const params = {
@@ -27,7 +28,7 @@ export default {
       if (this.index === 0 || this.index === 1) {
         // Use pushState to update the URL
         window.history.pushState({
-          indicator, datasource, location, year,
+          indicator, datasource, location, // year,
         }, '', newUrl);
       }
     },
@@ -61,7 +62,7 @@ export default {
       urlWithoutParams.searchParams.delete('indicator');
       urlWithoutParams.searchParams.delete('datasource');
       urlWithoutParams.searchParams.delete('location');
-      urlWithoutParams.searchParams.delete('year');
+      // urlWithoutParams.searchParams.delete('year');
 
       window.history.pushState({}, '', urlWithoutParams.toString());
     },
@@ -74,7 +75,7 @@ export default {
         this.payload.indicator = state.indicator;
         this.payload.datasource = state.datasource;
         this.payload.location = state.location;
-        // this.payload.year = state.year;
+        this.payload.year = state.year;
       }
     },
   },
@@ -87,7 +88,7 @@ export default {
     controlIndex: {
       async handler(newValue) {
         this.index = newValue;
-        if (newValue !== 0 && newValue !== 1) { this.removeQuery(); } else this.updateParams();
+        if (newValue !== 0 && newValue !== 1 && newValue !== 4) { this.removeQuery(); } else this.updateParams();
       },
       immediate: true,
       deep: true,

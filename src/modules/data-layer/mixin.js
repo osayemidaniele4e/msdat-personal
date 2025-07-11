@@ -6,8 +6,9 @@ import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
 
-import DB from './services/database.worker';
+// import DB from './services/database.worker';
 import apiServices from './services/ApiServices';
+import store from '../msdat-dashboard/store';
 
 const { mapState } = createNamespacedHelpers('DL');
 
@@ -103,8 +104,10 @@ export default {
      * @returns {dataObjectType}
      */
     async queryDBForNumDenum(query) {
-      const result = await DB.queryDBForNumDenum(query);
-      return result;
+      // const result = await DB.queryDBForNumDenum(query);
+      const data = await this.dlQuery(query);
+      const results = data.filter((item) => item.value_type === 6 || item.value_type === 7);
+      return results;
     },
     /**
      * @param {{[indicator]: number, [datasource]: number}} queryObject query objects properties
@@ -112,64 +115,79 @@ export default {
      */
     // eslint-disable-next-line consistent-return
     async dlQuery(queryObject) {
-      // i could do this in individual component when making request with the
-      // function by after this it will after all at once
       const query = queryObject;
 
-      // if (query.datasource === 25) {
-      //   query.value_type = 1;
-      // } else if (!has(query, 'value_type')) {
-      //   const datasource = await this.dlGetDataSource(query.datasource);
-      //   // if (this.valueType?.length <= 0) {
-      //   //   this.valueType = await this.getDexieTableValues('valuetypes');
-      //   //   return false;
-      //   // }
-
-      //   // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
-      //   const valuetype = this.valueType?.filter(
-      //     (item) => item.value_type === datasource?.classification
-      //   );
-      //   query.value_type = valuetype[0]?.id;
-      // }
       const datasource = await this.dlGetDataSource(query.datasource);
-      // if (this.valueType?.length <= 0) {
-      //   this.valueType = await this.getDexieTableValues('valuetypes');
-      //   return false;
-      // }
 
-      // const valuetype = this.dlGetValueTypes({ value_type: datasource.classification });
       const valuetype = this.valueType?.filter(
         (item) => item.value_type === datasource?.classification
       );
       query.value_type = query.value_type || valuetype[0]?.id || 2;
 
-      if (isObject(query.location)) {
-        const { location } = query;
-        const newQueryObject = omit(query, ['location']);
-        const locationValues = this.dlGetLocation(location);
-        const locationID = locationValues.map((item) => item.id);
-        const resultValue = await DB.queryDB(newQueryObject, locationID);
-        return resultValue;
-      }
-
       // check for undefined
       function hasUndefinedOrNullValues(obj) {
-        return Object.values(obj).some((val) => val === undefined || val === null);
+        if (obj === null || obj === undefined) return true;
+
+        if (typeof obj === 'object' && !Array.isArray(obj)) {
+          // eslint-disable-next-line no-unused-vars
+          return Object.entries(obj).some(([_, value]) => hasUndefinedOrNullValues(value));
+        }
+
+        return false;
       }
 
-      if (hasUndefinedOrNullValues(query) === false) {
-        const result = await DB.queryDB(query);
+      function hasInvalidValues(obj) {
+        if (obj === null || obj === undefined || obj === '') return true;
+
+        if (typeof obj === 'object' && !Array.isArray(obj)) {
+          // eslint-disable-next-line no-unused-vars
+          return Object.entries(obj).some(([_, value]) => hasInvalidValues(value));
+        }
+
+        return false;
+      }
+
+      if (isObject(query.location) && hasInvalidValues(query) === false) {
+        // using API
+        const { location } = query;
+        const baseQuery = omit(query, ['location']);
+        const locationValues = this.dlGetLocation(location);
+        const locationID = locationValues.map((item) => item.id);
+        // Map each location ID to an API call
+        const apiCalls = locationID.map(async (locationSID) => {
+          const queryObjectWithLocation = {
+            ...baseQuery,
+            location: locationSID,
+          };
+
+          // Replace this with your actual API call function
+          return apiServices.getDashboardData(store.state.configObject.id, queryObjectWithLocation); // 👈 async function
+        });
+
+        const allResponses = await Promise.all(apiCalls);
+
+        // Extract and flatten only the "results" from each API response
+        const allResults = allResponses.flatMap((response) => response.data.results);
+
+        return allResults;
+      }
+
+      if (!isObject(query.location) && hasUndefinedOrNullValues(query) === false) {
+        const temp = await apiServices.getDashboardData(store.state.configObject.id, query);
+        const result = temp.data.results;
         return result;
+        // const result = await DB.queryDB(query);
+        // return result;
       }
     },
     // get yeardropdown by Datasource
     async queryDBForYearByDs(query) {
-      const result = await DB.queryDBForYearsByDs(query);
-      return result;
+      const { data } = await apiServices.getPeriodByDatasource(query);
+      return data.periods;
     },
     async queryDBForAvailableLocation(sourceId, indId) {
-      const result = await DB.getAvailableLocationByIndNSource(sourceId, indId);
-      return result;
+      const { data } = await apiServices.getLocations({ datasource: sourceId, indicator: indId });
+      return data.locations;
     },
     /**
      * @function dlGetDashboardDataSource
@@ -191,7 +209,6 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetLocation(values) {
-      // console.log(this.dlLocation, 'this.dlLocation');
       if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }
@@ -205,7 +222,7 @@ export default {
     },
     dlGetFactor(id) {
       const factor = this.dlFactors.find((item) => item.id === id);
-      if (factor.display_factor === '1') factor.display_factor = ' ';
+      if (factor && factor.display_factor === '1') factor.display_factor = ' ';
       return factor;
     },
     dlGetDataSource(id) {
@@ -231,18 +248,28 @@ export default {
      * available datasources from dexie
      * @returns array of datasource objects
      */
-    async getDataSourcesFromDexie(value) {
+    async getDataSourcesFromIndicator(value) {
       const indicatorId = value || 1;
-      const sourcesAvailable = await DB.getAvailableSoucesForIndicator(indicatorId);
+      const { data } = await apiServices.getIndicatorDataSources(indicatorId);
+      // console.log('API Response:', data.datasources);
+      // Use the datasources directly from the API response
+      const sourcesAvailable = data.datasources;
+
       if (sourcesAvailable.length <= 0) {
         return [];
       }
-      const sourceObjects = sourcesAvailable.map((source) => this.dlGetDataSource(source));
-      return sourceObjects;
+      // console.log('Sources before sorting:', sourcesAvailable);
+      const sorted = sourcesAvailable.sort((a, b) => {
+        const nameA = a.datasource || '';
+        const nameB = b.datasource || '';
+        return nameA.localeCompare(nameB);
+      });
+      // console.log('Sources after sorting:', sorted);
+      return sorted;
     },
     async getAllDatasources() {
-      const datasources = await DB.getEveryDatasource();
-      return datasources;
+      const { data } = await apiServices.getAllDataSources();
+      return data.results;
     },
 
     /**
@@ -253,14 +280,15 @@ export default {
      * available datasources from dexie
      * @returns array of datasource objects
      */
-    async getIndicatorFromDexie(value) {
+    async getIndicatorsFromDatasource(value) {
       const datasourceId = value || 1;
-      const sourcesAvailable = await DB.getAvailableIndicatorBySource(datasourceId);
+      const { data } = await apiServices.getDataSourceIndicators(datasourceId);
+      const sourcesAvailable = data.indicators;
       if (sourcesAvailable.length <= 0) {
         return [];
       }
-      const sourceObjects = sourcesAvailable.map((source) => this.dlGetIndicator(source));
-      return sourceObjects;
+      // const sourceObjects = sourcesAvailable.map((source) => this.dlGetIndicator(source));
+      return sourcesAvailable;
     },
     async getLatestDate() {
       const { data } = await apiServices.getLatestDate();
@@ -273,20 +301,9 @@ export default {
      * rewrite to standard 'result[result.length - 1]' to get latest month data
      */
     async getNhmisData(query) {
-      const result = await DB.queryDBForNhmisMonthly(query);
-      // console.log('new result', result)
-      return result.reverse()[0];
+      const { data } = await apiServices.getNHMISDataObj(query);
+      return data.results[0];
       // return result[result.length - 1];
     },
-    async getDexieTableValues(query) {
-      if (query === '') {
-        return false;
-      }
-      const result = await DB.queryTableByName(query);
-      return result;
-    },
-  },
-  async mounted() {
-    // this.valueType = await this.getDexieTableValues('valuetypes');
   },
 };

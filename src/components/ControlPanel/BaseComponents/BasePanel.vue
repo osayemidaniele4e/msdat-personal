@@ -6,35 +6,56 @@
           class="d-flex mr-2 list-unstyled step-sections pt-2 mb-0 border-b cursor-pointer main tabs-sec"
         >
           <li
-            class="mb-0 tab-link h6 text-black-50 bg-tab-color work-sans main"
+            class="mb-0 tab-link h5 text-black-50 bg-tab-color work-sans main"
             :class="[el.index === selectedIndex ? 'active font-weight-bold' : '']"
             v-for="(el, i) in modifiedControls"
             :key="i"
             :id="`panel-${el.index}`"
             @click="changeControl(el.index, el.title)"
           >
-            {{ el.title }}
+            <div class="d-flex justify-content-between el-tit align-items-center ">
+              {{ el.title }}
+              <div v-if="el.index === selectedIndex" class="share-icon-wrapper tooltip-wrapper">
+                <img
+                  src="@/assets/Share-button.png"
+                  alt="share-btn"
+                  class="share-icon"
+                  @click.stop="toggleShareModal(el.title)"
+                />
+                 <span class="custom-tooltip"
+                >Share
+              </span>
+              </div>
+            </div>
           </li>
         </transition-group>
       </draggable>
     </ul>
 
-    <div class="control-title">{{ title }}</div>
+    <div class="control-title">{{ title }}x2</div>
     <!-- Multi-select dropdown here -->
     <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
     </div>
+
+    <!-- <div class="">
+       <ShareSection />
+    </div> -->
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
+// import ShareSection from '@/modules/msdat-dashboard/components/ShareSection.vue';
+import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 
 export default {
   name: 'BasePanel',
+  mixins: [controlSetup],
   components: {
     draggable,
+    // ShareSection,
   },
   data() {
     return {
@@ -43,7 +64,7 @@ export default {
       selectedIndex: 0,
       title: 'Indicator Overview',
       checkIndex: 0,
-
+      showShareSectionModal: false,
     };
   },
 
@@ -69,52 +90,95 @@ export default {
     },
   },
   methods: {
-    ...mapGetters('MSDAT_STORE', ['getSelectedConfig']),
+    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX', 'SET_SECTION', 'toggleShowShareSection']),
+    ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
-    changeControl(index, title) {
-      // console.log(this.modifiedControls, { index });
+    filterModifiedControls() {
+      const section = this.modifiedControls.filter(
+        (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection,
+      );
+      this.changeControl(section[0].index, section[0].title);
+    },
 
-      if (title !== undefined) {
+    async changeControl(index, title) {
+      // Set section title if provided
+      if (title) {
         this.$store.commit('MSDAT_STORE/SET_SECTION', title);
       }
+      const path = `/dashboard/Advanced_Analytics?index=${index}`;
+      const fullUrl = `${window.location.origin}${path}`;
+      localStorage.setItem('advanced_url', fullUrl);
+
       this.selectedIndex = index;
       this.checkIndex = index;
       this.selectControl(index);
-      if (index !== 4 && this.getSelectedConfig().indicator !== null) {
-        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: index,
-          key: 'indicator',
-          value: this.getSelectedConfig().indicator,
-        });
-      }
-      if (index !== 4) {
-        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
-          controlIndex: index,
-          key: 'datasource',
-          value: this.getSelectedConfig().dataSource,
-        });
-      }
+      this.SET_SECTION_INDEX(index);
 
-      if (index === 4) {
+      const selectedConfig = this.getSelectedConfig();
+
+      if (index !== 4) {
+        if (selectedConfig.indicator !== null) {
+          this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+            controlIndex: index,
+            key: 'indicator',
+            value: selectedConfig.indicator,
+          });
+        }
+        // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        //   controlIndex: index,
+        //   key: 'datasource',
+        //   value: selectedConfig.dataSource,
+        // });
+        // this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+        //   controlIndex: index,
+        //   key: 'period',
+        //   value: '2020',
+        // });
+      } else {
         this.$store.commit('MSDAT_STORE/SET_MULTI_PAYLOAD', {
           controlIndex: index,
           key: 'indicator',
-          value: this.getSelectedConfig().indicator,
+          value: selectedConfig.indicator,
         });
-
         this.$store.commit('MSDAT_STORE/SET_MULTI_DATASOURCE_PAYLOAD', {
           controlIndex: index,
           key: 'datasource',
-          value: this.getSelectedConfig().dataSource,
+          value: selectedConfig.dataSource,
         });
         this.$store.commit('MSDAT_STORE/SET_MULTI_YEAR_PAYLOAD', {
           controlIndex: index,
           key: 'period',
-          value: this.getSelectedConfig().period,
+          value: selectedConfig.period,
         });
       }
+
+      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard') {
+        const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
+
+        this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {
+          value: availableIndicator,
+        });
+
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'indicator',
+          value: selectedConfig.indicator,
+        });
+        this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {
+          controlIndex: index,
+          key: 'datasource',
+          value: selectedConfig.dataSource,
+        });
+      }
+
       this.$emit('showSection', index);
     },
+
+    toggleShareModal(title) {
+      this.SET_SECTION(title);
+      this.toggleShowShareSection();
+    },
+
     selectControl(controlIndex) {
       this.selectedIndex = controlIndex;
       // loop over all the tabs
@@ -158,7 +222,6 @@ export default {
     },
 
     selectedIndex(newValue) {
-      // console.log('selected', this.$store.getters);
       this.changeControl(newValue);
 
       const { name } = this.$route.params;
@@ -217,6 +280,13 @@ export default {
   mounted() {
     const index = parseInt(this.$route.query.index, 10) || 0;
     this.selectControl(index);
+    this.$nextTick(() => {
+      if (this.modifiedControls.length > 0) {
+        this.filterModifiedControls();
+      } else {
+        console.log('modifiedControls is still empty after nextTick');
+      }
+    });
   },
   created() {
     this.controls = this.$children;
@@ -228,8 +298,70 @@ export default {
 // $primary: #2b5d5b;
 @import '@/scss/abstracts/_variables.scss';
 
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%; // ensure it wraps the whole item cleanly
+
+  &:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.custom-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 999;
+  bottom: 50%; // place it above the item
+  left: 70%;
+  transform: translateX(-50%) translateY(-8px);
+  background-color: #fff;
+  color: #000;
+  padding: 6px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  white-space: normal; // allows line break
+  width: 100px; // or whatever fits your layout
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #494545 transparent transparent transparent;
+  }
+}
+
 .main {
   display: inherit;
+}
+
+.share-icon-wrapper {
+  border: 1px solid #2b5d5b;
+  margin-left: 15px;
+  //padding: 2px;
+  border-radius: 3px;
+}
+
+.share-icon-wrapper img {
+  width: 16px;
+  height: 14px;
+}
+.el-tit {
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .border-b {
@@ -237,10 +369,6 @@ export default {
 }
 .bg-tab-color {
   color: #515151;
-}
-
-.tabs-sec {
-  // max-width: 1200px;
 }
 
 .tab-link.active {
@@ -253,13 +381,18 @@ export default {
   // padding: 20px;
 }
 
+.tab-link.active .share-icon-wrapper {
+  background-color: white;
+  color: white !important;
+}
+
 .tab-link {
   // border-bottom: 2.5px solid $primary;
   // border: 1.0px solid #007d53;
   border: 1px solid $primary;
   background-color: white;
   color: black !important;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
   height: 1rem;
   max-width: 600px;
   display: flex;
@@ -267,7 +400,7 @@ export default {
   align-items: center;
   margin: 10px;
   font-weight: 200;
-  font-size: 1rem;
+  font-size: 0.9rem !important;
   &:first-child {
     margin-left: 0;
   }

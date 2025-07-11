@@ -351,7 +351,6 @@ export default class DataBase {
     }
 
     const data = await dexie.table(DATA).where(compoundTable).equals(compoundQuery).toArray();
-
     return data;
   }
 

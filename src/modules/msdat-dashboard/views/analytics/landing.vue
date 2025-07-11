@@ -8,7 +8,7 @@
           <h1>The Advanced Analytics Dashboard</h1>
         </div>
         <small>
-          Explore Key Health Indicators, Analyse Trends and Harness the Power of Predictive Modeling to Anticipate Future Health Trends
+          Explore Key Health Indicators, Analyze Trends and Harness the Power of Predictive Modeling to Anticipate Future Health Trends
         </small>
       </div>
     </b-row>
@@ -33,7 +33,8 @@ import { mapMutations } from 'vuex';
 
 import Header from '../about/layout/theHeader.vue';
 import tour from '../onboarding/tour';
-import { advancedSections, advancedTitles } from './sections';
+
+import { advancedSections } from './sections';
 
 export default {
   name: 'Landing',
@@ -41,13 +42,13 @@ export default {
   components: {
     Header,
   },
-  data() { },
-  computed: {
-    sections() {
-      return advancedTitles.map((title) => ({
-        title, id: title.replaceAll(' ', ''),
-      }));
-    },
+  data() {
+    return {
+      sections: advancedSections.map((section) => ({
+        title: section.label,
+        id: section.label.replace(/ /g, ''),
+      })),
+    };
   },
   methods: {
     ...mapMutations('MSDAT_STORE', ['ADD_CONTROL_PANEL', 'CLEAR_CONTROL_PANEL']),
@@ -57,7 +58,7 @@ export default {
       return require(`@/assets/img/analytics/${sec}.png`);
     },
   },
-  async mounted() {
+  async created() {
     await this.CLEAR_CONTROL_PANEL();
 
     advancedSections.forEach((section) => {
@@ -131,7 +132,7 @@ export default {
   @media (max-width: 1300px) {
 
     .btm-section{
-      top: 50%;
+      top: 40%;
     }
 
     .bg {

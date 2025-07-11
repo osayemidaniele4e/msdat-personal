@@ -67,22 +67,22 @@
                 <div class="mr-3">
                   <input
                     type="radio"
-                    id="Chloropleth"
+                    id="state_map"
                     name="visualization1"
-                    value="Chloropleth"
+                    value="state_map"
                     v-model="selectedVisualizationColumn1"
                   />
-                  <label class="radio-label ml-1" for="Chloropleth">Chloropleth</label>
+                  <label class="radio-label ml-1" for="state_map">State Map</label>
                 </div>
                 <div class="">
                   <input
                     type="radio"
                     id="heat_map"
                     name="visualization1"
-                    value="Heat Map"
+                    value="Zonal"
                     v-model="selectedVisualizationColumn1"
                   />
-                  <label class="radio-label ml-1" for="heat_map">Heat Map</label>
+                  <label class="radio-label ml-1" for="Zonal">Zonal Map</label>
                 </div>
               </div>
               <div class="bg-secondary p-3">
@@ -93,18 +93,35 @@
                     :removeTitle="true"
                   >
                     <BaseMap
+                      v-if="
+                        selectedVisualizationColumn1 === 'state_map' &&
+                        showSubNationalDataAvailableDataColumn1 === false
+                      "
                       ref="BaseMap"
                       :mapObject="mapObjectColumn1"
-                      :level="level"
+                      :level="columnLevel1"
                       :lgaState="stateName"
                       :title="titleColumn1"
                     />
+                    <BaseMap
+                      v-if="
+                        selectedVisualizationColumn1 === 'Zonal' &&
+                        showSubNationalDataAvailableDataColumn1 === false
+                      "
+                      ref="BaseMap"
+                      :mapObject="mapObjectColumn1"
+                      :level="columnLevel1"
+                      :lgaState="stateName"
+                      :title="titleColumn1"
+                    />
+                    <NoSubNational v-if="showSubNationalDataAvailableDataColumn1" class="" />
                   </base-sub-card>
-                  <NoAvailableData
+                  <!-- <NoAvailableData
                     v-if="showNoAvailableDataColumn1"
                     class="position-absolute"
                     style="top: 16%; width: 50%; left: 25%"
-                  />
+                  /> -->
+                  <!-- <NoSubNational v-if="showSubNationalDataAvailableDataColumn1" class="position-absolute" style="top: 16%; width: 50%; left: 25%" /> -->
                 </base-overlay>
               </div>
             </div>
@@ -176,22 +193,22 @@
                   <div class="mr-3">
                     <input
                       type="radio"
-                      id="Chloropleth"
+                      id="state_map"
                       name="visualization"
-                      value="Chloropleth"
+                      value="state_map"
                       v-model="selectedVisualizationColumn2"
                     />
-                    <label class="radio-label ml-1" for="Chloropleth">Chloropleth</label>
+                    <label class="radio-label ml-1" for="state_map">State Map</label>
                   </div>
                   <div class="">
                     <input
                       type="radio"
                       id="heat_map"
                       name="visualization"
-                      value="Heat Map"
+                      value="Zonal"
                       v-model="selectedVisualizationColumn2"
                     />
-                    <label class="radio-label ml-1" for="heat_map">Heat Map</label>
+                    <label class="radio-label ml-1" for="Zonal">Zonal Map</label>
                   </div>
                 </div>
                 <div class="bg-secondary p-3">
@@ -202,18 +219,29 @@
                       :removeTitle="true"
                     >
                       <BaseMap
+                        v-if="
+                          selectedVisualizationColumn2 === 'state_map' &&
+                          showSubNationalDataAvailableDataColumn2 === false
+                        "
                         ref="BaseMap"
                         :mapObject="mapObjectColumn2"
-                        :level="level"
+                        :level="columnLevel2"
                         :lgaState="stateName"
                         :title="titleColumn2"
                       />
+                      <BaseMap
+                        v-if="
+                          selectedVisualizationColumn2 === 'Zonal' &&
+                          showSubNationalDataAvailableDataColumn2 === false
+                        "
+                        ref="BaseMap"
+                        :mapObject="mapObjectColumn2"
+                        :level="columnLevel2"
+                        :lgaState="stateName"
+                        :title="titleColumn2"
+                      />
+                      <NoSubNational v-if="showSubNationalDataAvailableDataColumn2" class="" />
                     </base-sub-card>
-                    <NoAvailableData
-                      v-if="showNoAvailableDataColumn2"
-                      class="position-absolute"
-                      style="top: 16%; width: 50%; left: 25%"
-                    />
                   </base-overlay>
                 </div>
               </div>
@@ -286,22 +314,22 @@
                   <div class="mr-3">
                     <input
                       type="radio"
-                      id="Chloropleth"
+                      id="state_map"
                       name="visualization3"
-                      value="Chloropleth"
+                      value="state_map"
                       v-model="selectedVisualizationColumn3"
                     />
-                    <label class="radio-label ml-1" for="Chloropleth">Chloropleth</label>
+                    <label class="radio-label ml-1" for="state_map">State Map</label>
                   </div>
                   <div class="">
                     <input
                       type="radio"
                       id="heat_map"
                       name="visualization3"
-                      value="Heat Map"
+                      value="Zonal"
                       v-model="selectedVisualizationColumn3"
                     />
-                    <label class="radio-label ml-1" for="heat_map">Heat Map</label>
+                    <label class="radio-label ml-1" for="Zonal">Zonal Map</label>
                   </div>
                 </div>
                 <div class="bg-secondary p-3">
@@ -312,18 +340,29 @@
                       :removeTitle="true"
                     >
                       <BaseMap
+                        v-if="
+                          selectedVisualizationColumn3 === 'state_map' &&
+                          showSubNationalDataAvailableDataColumn3 === false
+                        "
                         ref="BaseMap"
                         :mapObject="mapObjectColumn3"
-                        :level="level"
+                        :level="columnLevel3"
                         :lgaState="stateName"
                         :title="titleColumn3"
                       />
+                      <BaseMap
+                        v-if="
+                          selectedVisualizationColumn3 === 'Zonal' &&
+                          showSubNationalDataAvailableDataColumn3 === false
+                        "
+                        ref="BaseMap"
+                        :mapObject="mapObjectColumn3"
+                        :level="columnLevel3"
+                        :lgaState="stateName"
+                        :title="titleColumn3"
+                      />
+                      <NoSubNational v-if="showSubNationalDataAvailableDataColumn3" class="" />
                     </base-sub-card>
-                    <NoAvailableData
-                      v-if="showNoAvailableDataColumn3"
-                      class="position-absolute"
-                      style="top: 16%; width: 50%; left: 25%"
-                    />
                   </base-overlay>
                 </div>
               </div>
@@ -338,14 +377,16 @@
 <script>
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import Maps from '@/components/maps/ZonalBaseMap.vue';
+// import PieMaps from '@/components/maps/PieMap.vue';
 import { sortHighChartDataFormat } from '../../../../mixins/util';
 import chartDownload from '../../../../mixins/chart_download';
-import NoAvailableData from '../../../NoData2.vue';
+// import NoAvailableData from '../../../NoData2.vue';
+import NoSubNational from './NoSubNational.vue';
 
 export default {
   name: 'Multi-Source Comparison',
   mixins: [chartDownload],
-  components: { BaseMap: Maps, NoAvailableData },
+  components: { BaseMap: Maps, NoSubNational },
   props: {
     dashboardIndicators: Array,
   },
@@ -355,47 +396,67 @@ export default {
       stateName: 'Delta',
       level: 1,
       // column 1
+      showSubNationalDataAvailableDataColumn1: false,
+      showSubNationalDataAvailableDataColumn2: false,
+      showSubNationalDataAvailableDataColumn3: false,
       titleColumn1: '',
       selectedIndicatorColumn1: {
-        id: 8,
-        full_name: 'Postnatal care coverage (mother)',
-        short_name: 'Postnatal care coverage',
-        desirable_slope: 'Positive',
-        indicator_type: 'Outcome',
+        id: 2,
+        full_name: 'Adolescent birth rate',
+        short_name: 'Adolescent birth rate',
+        desirable_slope: 'Negative',
+        indicator_type: 'Impact',
         program_area: 'RMNCH',
-        national_target: '80.00',
-        national_source: 'NRHP 2017',
-        national_information:
-          'Target obtained from the National Reproductive Health Policy (NRHP) 2017 to 2021',
+        national_target: '90.00',
+        national_source: 'NSHDP 2010 to 2015',
+        national_information: 'Target was obtained from the National Strategic and Health Development Plan (NSHDP) 2010 to 2015. It is the latest available target for this indicator.',
         sdg_target: null,
         sdg_information: 'Not available',
-        created_at: '2022-10-20T08:42:09.560835Z',
-        updated_at: '2023-03-16T15:29:08.616312Z',
-        factor: 2,
-        first_related: 6,
-        second_related: 5,
-        third_related: 7,
+        created_at: '2022-10-20T08:42:09.550494Z',
+        updated_at: '2024-10-23T09:29:04.425406Z',
+        factor: null,
+        first_related: 1,
+        second_related: 4,
+        third_related: 3,
         fourth_related: null,
-        datasources: [1, 2, 7, 3],
+        datasources: [
+          2,
+          4,
+          6,
+          7,
+          8,
+          9,
+          15,
+          18,
+          30,
+        ],
         group: [],
       },
       selectedDatasourceColumn1: {
-        id: 1,
-        datasource: 'MICS',
-        full_name: 'Multiple Indicator Cluster Survey',
+        id: 2,
+        datasource: 'NDHS',
+        full_name: 'National Demographic and Health Survey',
         description:
-          'The Multiple Indicator Cluster Survey is a nationwide household survey programme developed by the United Nations Children Fund (UNICEF) and designed to collect statistically sound and internationally comparable estimates of key indicators that are used to assess the situation of children and women in the areas of health, education, child protection and HIV/AIDS.',
-        year_available: '1995, 1999, 2007, 2011, 2016-2017, 2021',
-        period_available: '2026',
+          'The Nigeria Demographic Health Survey is a national sample survey that provides up-to-date information on demographic and health characteristics of Nigerians.',
+        year_available: '1990,1999, 2003, 2008, 2013, 2018',
+        period_available: '2023',
         methodology:
-          "A household survey carried out every 4-5 years and conducted among a nationally representative sample of women and men aged 15 – 49 years, and children aged less than 5 years. Topics covered include child health and mortality, nutrition, sanitation, reproductive health, education, child protection, and HIV/AIDS. The survey provides estimated disaggregation of Nigeria by states, geo political zones, sex, age, residence (urban and rural), mother's education and wealth quintiles. The sample for the Nigeria MICS 2016-17 was designed to provide estimates for a large number of indicators on the situation of children and women at the national, rural/urban, states as well as the 6 geopolitical zones of Nigeria. To sample, the states within each zone were identified as the main sampling Strata while the Enumeration Areas (EAs) within each state were identified as the Primary Sampling Units (PSUs). The EAs for the survey are selected from the National Integrated Survey of Households round 2 (NISH2) master sample, based on a list of EAs prepared for the 2006 Population Census. Two stage sampling is conducted with the first stage being the selection of EAs within the strata while the second stage was the selection of households within each EAs.",
+          'A nationally representative household survey conducted among women and men aged 15-49 years. The sample is nationally representative and covers the entire population residing in non-institutional dwelling units in the country. The survey uses a sampling frame of the list of enumeration areas (EAs) provided by the National Population Commission. The sample is designed to provide population and health indicator estimates at the national, zonal, and state levels, and is selected using a stratified three-stage cluster design consisting of clusters of urban and rural areas.The sample design allowed for specific indicators to be calculated for each of the six zones, 36 states, and the Federal Capital Territory, Abuja.',
         subnational_data: 'Yes',
         classification: 'Survey',
         group: [],
-        link: 'https://mics.unicef.org/surveys',
-        created_at: '2022-10-20T08:13:15.745372Z',
-        updated_at: '2022-10-20T08:13:15.745380Z',
-        indicators: [],
+        link: 'https://statcompiler.com/en/',
+        created_at: '2022-10-20T08:13:15.751354Z',
+        updated_at: '2022-10-20T08:13:15.751362Z',
+        indicators: [
+          457, 9, 12, 27, 26, 11, 3, 25, 18, 24, 10, 8, 385, 327, 20, 19, 28, 33, 5, 6, 29, 70, 549,
+          529, 530, 531, 535, 538, 15, 542, 545, 544, 551, 557, 552, 553, 558, 554, 555, 556, 559,
+          560, 550, 580, 589, 577, 578, 579, 590, 541, 14, 66, 67, 16, 31, 411, 407, 400, 399, 405,
+          403, 404, 401, 402, 7, 1677, 1676, 32, 4, 1638, 1663, 1636, 1637, 409, 1655, 1662, 1641,
+          1640, 1650, 1651, 1652, 1653, 1654, 1660, 1657, 1656, 1659, 1643, 1658, 1642, 1661, 1644,
+          1645, 1639, 1648, 1646, 410, 30, 406, 1674, 1670, 1675, 1669, 1668, 1667, 1665, 1664,
+          1666, 1671, 1672, 1673, 2, 397, 212, 21, 13, 23, 398, 17, 22, 1, 2696, 2697, 2705, 2706,
+        ],
       },
       selectedYearColumn1: '2023',
       datasourcesColumn1: [],
@@ -410,54 +471,72 @@ export default {
         title: {
           text: 'Indicator Name',
         },
-
       },
       loadingColumn1: true,
       showNoAvailableDataColumn1: false,
-      selectedVisualizationColumn1: 'Chloropleth',
+      selectedVisualizationColumn1: 'state_map',
+      columnLevel1: 1,
       // end Column 1
       // start Column 2
+      columnLevel2: 1,
       titleColumn2: '',
       selectedIndicatorColumn2: {
-        id: 8,
-        full_name: 'Postnatal care coverage (mother)',
-        short_name: 'Postnatal care coverage',
-        desirable_slope: 'Positive',
-        indicator_type: 'Outcome',
+        id: 2,
+        full_name: 'Adolescent birth rate',
+        short_name: 'Adolescent birth rate',
+        desirable_slope: 'Negative',
+        indicator_type: 'Impact',
         program_area: 'RMNCH',
-        national_target: '80.00',
-        national_source: 'NRHP 2017',
-        national_information:
-          'Target obtained from the National Reproductive Health Policy (NRHP) 2017 to 2021',
+        national_target: '90.00',
+        national_source: 'NSHDP 2010 to 2015',
+        national_information: 'Target was obtained from the National Strategic and Health Development Plan (NSHDP) 2010 to 2015. It is the latest available target for this indicator.',
         sdg_target: null,
         sdg_information: 'Not available',
-        created_at: '2022-10-20T08:42:09.560835Z',
-        updated_at: '2023-03-16T15:29:08.616312Z',
-        factor: 2,
-        first_related: 6,
-        second_related: 5,
-        third_related: 7,
+        created_at: '2022-10-20T08:42:09.550494Z',
+        updated_at: '2024-10-23T09:29:04.425406Z',
+        factor: null,
+        first_related: 1,
+        second_related: 4,
+        third_related: 3,
         fourth_related: null,
-        datasources: [1, 2, 7, 3],
+        datasources: [
+          2,
+          4,
+          6,
+          7,
+          8,
+          9,
+          15,
+          18,
+          30,
+        ],
         group: [],
       },
       selectedDatasourceColumn2: {
-        id: 1,
-        datasource: 'MICS',
-        full_name: 'Multiple Indicator Cluster Survey',
+        id: 2,
+        datasource: 'NDHS',
+        full_name: 'National Demographic and Health Survey',
         description:
-          'The Multiple Indicator Cluster Survey is a nationwide household survey programme developed by the United Nations Children Fund (UNICEF) and designed to collect statistically sound and internationally comparable estimates of key indicators that are used to assess the situation of children and women in the areas of health, education, child protection and HIV/AIDS.',
-        year_available: '1995, 1999, 2007, 2011, 2016-2017, 2021',
-        period_available: '2026',
+          'The Nigeria Demographic Health Survey is a national sample survey that provides up-to-date information on demographic and health characteristics of Nigerians.',
+        year_available: '1990,1999, 2003, 2008, 2013, 2018',
+        period_available: '2023',
         methodology:
-          "A household survey carried out every 4-5 years and conducted among a nationally representative sample of women and men aged 15 – 49 years, and children aged less than 5 years. Topics covered include child health and mortality, nutrition, sanitation, reproductive health, education, child protection, and HIV/AIDS. The survey provides estimated disaggregation of Nigeria by states, geo political zones, sex, age, residence (urban and rural), mother's education and wealth quintiles. The sample for the Nigeria MICS 2016-17 was designed to provide estimates for a large number of indicators on the situation of children and women at the national, rural/urban, states as well as the 6 geopolitical zones of Nigeria. To sample, the states within each zone were identified as the main sampling Strata while the Enumeration Areas (EAs) within each state were identified as the Primary Sampling Units (PSUs). The EAs for the survey are selected from the National Integrated Survey of Households round 2 (NISH2) master sample, based on a list of EAs prepared for the 2006 Population Census. Two stage sampling is conducted with the first stage being the selection of EAs within the strata while the second stage was the selection of households within each EAs.",
+          'A nationally representative household survey conducted among women and men aged 15-49 years. The sample is nationally representative and covers the entire population residing in non-institutional dwelling units in the country. The survey uses a sampling frame of the list of enumeration areas (EAs) provided by the National Population Commission. The sample is designed to provide population and health indicator estimates at the national, zonal, and state levels, and is selected using a stratified three-stage cluster design consisting of clusters of urban and rural areas.The sample design allowed for specific indicators to be calculated for each of the six zones, 36 states, and the Federal Capital Territory, Abuja.',
         subnational_data: 'Yes',
         classification: 'Survey',
         group: [],
-        link: 'https://mics.unicef.org/surveys',
-        created_at: '2022-10-20T08:13:15.745372Z',
-        updated_at: '2022-10-20T08:13:15.745380Z',
-        indicators: [],
+        link: 'https://statcompiler.com/en/',
+        created_at: '2022-10-20T08:13:15.751354Z',
+        updated_at: '2022-10-20T08:13:15.751362Z',
+        indicators: [
+          457, 9, 12, 27, 26, 11, 3, 25, 18, 24, 10, 8, 385, 327, 20, 19, 28, 33, 5, 6, 29, 70, 549,
+          529, 530, 531, 535, 538, 15, 542, 545, 544, 551, 557, 552, 553, 558, 554, 555, 556, 559,
+          560, 550, 580, 589, 577, 578, 579, 590, 541, 14, 66, 67, 16, 31, 411, 407, 400, 399, 405,
+          403, 404, 401, 402, 7, 1677, 1676, 32, 4, 1638, 1663, 1636, 1637, 409, 1655, 1662, 1641,
+          1640, 1650, 1651, 1652, 1653, 1654, 1660, 1657, 1656, 1659, 1643, 1658, 1642, 1661, 1644,
+          1645, 1639, 1648, 1646, 410, 30, 406, 1674, 1670, 1675, 1669, 1668, 1667, 1665, 1664,
+          1666, 1671, 1672, 1673, 2, 397, 212, 21, 13, 23, 398, 17, 22, 1, 2696, 2697, 2705, 2706,
+        ],
       },
       selectedYearColumn2: '2023',
       datasourcesColumn2: [],
@@ -472,54 +551,71 @@ export default {
         title: {
           text: 'Indicator Name',
         },
-
       },
       loadingColumn2: true,
       showNoAvailableDataColumn2: false,
-      selectedVisualizationColumn2: 'Chloropleth',
+      selectedVisualizationColumn2: 'state_map',
 
       // end Column 3
+      columnLevel3: 1,
       titleColumn3: '',
       selectedIndicatorColumn3: {
-        id: 8,
-        full_name: 'Postnatal care coverage (mother)',
-        short_name: 'Postnatal care coverage',
-        desirable_slope: 'Positive',
-        indicator_type: 'Outcome',
+        id: 2,
+        full_name: 'Adolescent birth rate',
+        short_name: 'Adolescent birth rate',
+        desirable_slope: 'Negative',
+        indicator_type: 'Impact',
         program_area: 'RMNCH',
-        national_target: '80.00',
-        national_source: 'NRHP 2017',
-        national_information:
-          'Target obtained from the National Reproductive Health Policy (NRHP) 2017 to 2021',
+        national_target: '90.00',
+        national_source: 'NSHDP 2010 to 2015',
+        national_information: 'Target was obtained from the National Strategic and Health Development Plan (NSHDP) 2010 to 2015. It is the latest available target for this indicator.',
         sdg_target: null,
         sdg_information: 'Not available',
-        created_at: '2022-10-20T08:42:09.560835Z',
-        updated_at: '2023-03-16T15:29:08.616312Z',
-        factor: 2,
-        first_related: 6,
-        second_related: 5,
-        third_related: 7,
+        created_at: '2022-10-20T08:42:09.550494Z',
+        updated_at: '2024-10-23T09:29:04.425406Z',
+        factor: null,
+        first_related: 1,
+        second_related: 4,
+        third_related: 3,
         fourth_related: null,
-        datasources: [1, 2, 7, 3],
+        datasources: [
+          2,
+          4,
+          6,
+          7,
+          8,
+          9,
+          15,
+          18,
+          30,
+        ],
         group: [],
       },
       selectedDatasourceColumn3: {
-        id: 1,
-        datasource: 'MICS',
-        full_name: 'Multiple Indicator Cluster Survey',
+        id: 2,
+        datasource: 'NDHS',
+        full_name: 'National Demographic and Health Survey',
         description:
-          'The Multiple Indicator Cluster Survey is a nationwide household survey programme developed by the United Nations Children Fund (UNICEF) and designed to collect statistically sound and internationally comparable estimates of key indicators that are used to assess the situation of children and women in the areas of health, education, child protection and HIV/AIDS.',
-        year_available: '1995, 1999, 2007, 2011, 2016-2017, 2021',
-        period_available: '2026',
+          'The Nigeria Demographic Health Survey is a national sample survey that provides up-to-date information on demographic and health characteristics of Nigerians.',
+        year_available: '1990,1999, 2003, 2008, 2013, 2018',
+        period_available: '2023',
         methodology:
-          "A household survey carried out every 4-5 years and conducted among a nationally representative sample of women and men aged 15 – 49 years, and children aged less than 5 years. Topics covered include child health and mortality, nutrition, sanitation, reproductive health, education, child protection, and HIV/AIDS. The survey provides estimated disaggregation of Nigeria by states, geo political zones, sex, age, residence (urban and rural), mother's education and wealth quintiles. The sample for the Nigeria MICS 2016-17 was designed to provide estimates for a large number of indicators on the situation of children and women at the national, rural/urban, states as well as the 6 geopolitical zones of Nigeria. To sample, the states within each zone were identified as the main sampling Strata while the Enumeration Areas (EAs) within each state were identified as the Primary Sampling Units (PSUs). The EAs for the survey are selected from the National Integrated Survey of Households round 2 (NISH2) master sample, based on a list of EAs prepared for the 2006 Population Census. Two stage sampling is conducted with the first stage being the selection of EAs within the strata while the second stage was the selection of households within each EAs.",
+          'A nationally representative household survey conducted among women and men aged 15-49 years. The sample is nationally representative and covers the entire population residing in non-institutional dwelling units in the country. The survey uses a sampling frame of the list of enumeration areas (EAs) provided by the National Population Commission. The sample is designed to provide population and health indicator estimates at the national, zonal, and state levels, and is selected using a stratified three-stage cluster design consisting of clusters of urban and rural areas.The sample design allowed for specific indicators to be calculated for each of the six zones, 36 states, and the Federal Capital Territory, Abuja.',
         subnational_data: 'Yes',
         classification: 'Survey',
         group: [],
-        link: 'https://mics.unicef.org/surveys',
-        created_at: '2022-10-20T08:13:15.745372Z',
-        updated_at: '2022-10-20T08:13:15.745380Z',
-        indicators: [],
+        link: 'https://statcompiler.com/en/',
+        created_at: '2022-10-20T08:13:15.751354Z',
+        updated_at: '2022-10-20T08:13:15.751362Z',
+        indicators: [
+          457, 9, 12, 27, 26, 11, 3, 25, 18, 24, 10, 8, 385, 327, 20, 19, 28, 33, 5, 6, 29, 70, 549,
+          529, 530, 531, 535, 538, 15, 542, 545, 544, 551, 557, 552, 553, 558, 554, 555, 556, 559,
+          560, 550, 580, 589, 577, 578, 579, 590, 541, 14, 66, 67, 16, 31, 411, 407, 400, 399, 405,
+          403, 404, 401, 402, 7, 1677, 1676, 32, 4, 1638, 1663, 1636, 1637, 409, 1655, 1662, 1641,
+          1640, 1650, 1651, 1652, 1653, 1654, 1660, 1657, 1656, 1659, 1643, 1658, 1642, 1661, 1644,
+          1645, 1639, 1648, 1646, 410, 30, 406, 1674, 1670, 1675, 1669, 1668, 1667, 1665, 1664,
+          1666, 1671, 1672, 1673, 2, 397, 212, 21, 13, 23, 398, 17, 22, 1, 2696, 2697, 2705, 2706,
+        ],
       },
       selectedYearColumn3: '2023',
       datasourcesColumn3: [],
@@ -534,13 +630,11 @@ export default {
         title: {
           text: 'Indicator Name',
         },
-
       },
       loadingColumn3: true,
       showNoAvailableDataColumn3: false,
-      selectedVisualizationColumn3: 'Chloropleth',
+      selectedVisualizationColumn3: 'state_map',
       // end
-
     };
   },
 
@@ -549,9 +643,27 @@ export default {
       async handler(newIndicator) {
         this.loadingColumn1 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
-        this.datasourcesColumn1 = data;
-        console.log(data, 'Indicator Datasource');
-        this.selectedDatasourceColumn1 = data[0];
+
+        // Filter out items that return an empty array from the second API call
+        const filteredData = await Promise.all(
+          data.map(async (item) => {
+            const obj = {
+              datasourceID: item.id,
+              indicatorID: newIndicator.id,
+            };
+            const response = await apiServices.getDataObj(obj);
+
+            return response.data.results.length > 0 ? item : null;
+          }),
+        );
+
+        const indicatorWithData = filteredData.filter((item) => item !== null);
+
+        console.log(indicatorWithData, 'filteredIndicators');
+
+        this.datasourcesColumn1 = indicatorWithData;
+        this.selectedDatasourceColumn1 = indicatorWithData[0];
+        this.resetCol1Data();
       },
       immediate: true,
       deep: true,
@@ -559,18 +671,11 @@ export default {
     selectedDatasourceColumn1: {
       async handler(newDatasource) {
         await this.getAvailableYears(newDatasource);
+        this.resetCol1Data();
       },
     },
     selectedYearColumn1: {
       async handler(newYear) {
-        // const obj = {
-        //   period: newYear,
-        //   datasourceID: this.selectedDatasourceColumn1.id,
-        //   indicatorID: this.selectedIndicatorColumn1.id,
-        // };
-        // const { data } = await apiServices.getAllDataObj(obj);
-        // console.log(data, 'Dashboard');
-
         const data = await this.dlQuery({
           indicator: this.selectedIndicatorColumn1.id,
           datasource: this.selectedDatasourceColumn1.id,
@@ -588,14 +693,17 @@ export default {
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn1 = true;
-        } else {
+          this.showSubNationalDataAvailableDataColumn1 = false;
+        } else if (data.length === 1) {
           this.showNoAvailableDataColumn1 = false;
+          this.showSubNationalDataAvailableDataColumn1 = true;
+        } else if (data.length > 1) {
+          this.showNoAvailableDataColumn1 = false;
+          this.showSubNationalDataAvailableDataColumn1 = false;
         }
 
         const formattedData = this.formatDataToSeriesMapFormat(data);
         this.mapObjectColumn1 = this.formatToHighChartOptionForMap(formattedData, configObj);
-
-        console.log(data, 'Dashboard-ALT');
         this.loadingColumn1 = false;
       },
     },
@@ -603,9 +711,24 @@ export default {
       async handler(newIndicator) {
         this.loadingColumn2 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
-        this.datasourcesColumn2 = data;
-        console.log(data, 'Indicator Datasource');
-        this.selectedDatasourceColumn2 = data[0];
+
+        // Filter out items that return an empty array from the second API call
+        const filteredData = await Promise.all(
+          data.map(async (item) => {
+            const obj = {
+              datasourceID: item.id,
+              indicatorID: newIndicator.id,
+            };
+            const response = await apiServices.getDataObj(obj);
+
+            return response.data.results.length > 0 ? item : null;
+          }),
+        );
+
+        const indicatorWithData = filteredData.filter((item) => item !== null);
+
+        this.datasourcesColumn2 = indicatorWithData;
+        this.selectedDatasourceColumn2 = indicatorWithData[0];
       },
       immediate: true,
       deep: true,
@@ -617,14 +740,6 @@ export default {
     },
     selectedYearColumn2: {
       async handler(newYear) {
-        // const obj = {
-        //   period: newYear,
-        //   datasourceID: this.selectedDatasourceColumn1.id,
-        //   indicatorID: this.selectedIndicatorColumn1.id,
-        // };
-        // const { data } = await apiServices.getAllDataObj(obj);
-        // console.log(data, 'Dashboard');
-
         const data = await this.dlQuery({
           indicator: this.selectedIndicatorColumn2.id,
           datasource: this.selectedDatasourceColumn2.id,
@@ -642,14 +757,17 @@ export default {
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn2 = true;
-        } else {
+          this.showSubNationalDataAvailableDataColumn2 = false;
+        } else if (data.length === 1) {
           this.showNoAvailableDataColumn2 = false;
+          this.showSubNationalDataAvailableDataColumn2 = true;
+        } else if (data.length > 1) {
+          this.showNoAvailableDataColumn2 = false;
+          this.showSubNationalDataAvailableDataColumn2 = false;
         }
 
         const formattedData = this.formatDataToSeriesMapFormat(data);
         this.mapObjectColumn2 = this.formatToHighChartOptionForMap(formattedData, configObj);
-
-        console.log(data, 'Dashboard-ALT 2');
         this.loadingColumn2 = false;
       },
     },
@@ -657,29 +775,35 @@ export default {
       async handler(newIndicator) {
         this.loadingColumn3 = true;
         const { data } = await apiServices.getIndicatorDatasources(newIndicator.id);
-        this.datasourcesColumn3 = data;
-        console.log(data, 'Indicator Datasource');
-        this.selectedDatasourceColumn3 = data[0];
+
+        // Filter out items that return an empty array from the second API call
+        const filteredData = await Promise.all(
+          data.map(async (item) => {
+            const obj = {
+              datasourceID: item.id,
+              indicatorID: newIndicator.id,
+            };
+            const response = await apiServices.getDataObj(obj);
+
+            return response.data.results.length > 0 ? item : null;
+          }),
+        );
+
+        const indicatorWithData = filteredData.filter((item) => item !== null);
+
+        this.datasourcesColumn3 = indicatorWithData;
+        this.selectedDatasourceColumn3 = indicatorWithData[0];
       },
       immediate: true,
       deep: true,
     },
     selectedDatasourceColumn3: {
       async handler(newDatasource) {
-        console.log(newDatasource, 'Indicator Datasource');
         await this.getAvailableYears3(newDatasource);
       },
     },
     selectedYearColumn3: {
       async handler(newYear) {
-        // const obj = {
-        //   period: newYear,
-        //   datasourceID: this.selectedDatasourceColumn1.id,
-        //   indicatorID: this.selectedIndicatorColumn1.id,
-        // };
-        // const { data } = await apiServices.getAllDataObj(obj);
-        // console.log(data, 'Dashboard');
-
         const data = await this.dlQuery({
           indicator: this.selectedIndicatorColumn3.id,
           datasource: this.selectedDatasourceColumn3.id,
@@ -697,16 +821,95 @@ export default {
 
         if (data.length === 0) {
           this.showNoAvailableDataColumn3 = true;
-        } else {
+          this.showSubNationalDataAvailableDataColumn3 = false;
+        } else if (data.length === 1) {
           this.showNoAvailableDataColumn3 = false;
+          this.showSubNationalDataAvailableDataColumn3 = true;
+        } else if (data.length > 1) {
+          this.showNoAvailableDataColumn3 = false;
+          this.showSubNationalDataAvailableDataColumn3 = false;
         }
 
         const formattedData = this.formatDataToSeriesMapFormat(data);
         this.mapObjectColumn3 = this.formatToHighChartOptionForMap(formattedData, configObj);
 
-        console.log(this.mapObjectColumn3, 'Dashboard-ALT 3');
         this.loadingColumn3 = false;
       },
+    },
+    selectedVisualizationColumn1: {
+      async handler(value) {
+        this.loading = true;
+        switch (value) {
+          case 'state_map':
+            this.mapDataLevel = 3;
+            this.columnLevel1 = 1;
+            this.visualization = 'map';
+            this.visualizationText = 'state map';
+            break;
+          case 'Zonal':
+            this.visualization = 'map';
+            this.visualizationText = 'zonal map';
+            this.columnLevel1 = 2;
+            this.mapDataLevel = 2;
+            break;
+          default:
+            break;
+        }
+        this.resetCol1Data();
+        this.loadingColumn1 = false;
+      },
+      deep: true,
+      immediate: false,
+    },
+    selectedVisualizationColumn2: {
+      async handler(value) {
+        this.loading = true;
+        switch (value) {
+          case 'state_map':
+            this.mapDataLevel = 3;
+            this.columnLevel2 = 1;
+            this.visualization = 'map';
+            this.visualizationText = 'state map';
+            break;
+          case 'Zonal':
+            this.visualization = 'map';
+            this.visualizationText = 'zonal map';
+            this.columnLevel2 = 2;
+            this.mapDataLevel = 2;
+            break;
+          default:
+            break;
+        }
+        this.resetCol2Data();
+        this.loadingColumn2 = false;
+      },
+      deep: true,
+      immediate: false,
+    },
+    selectedVisualizationColumn3: {
+      async handler(value) {
+        this.loading = true;
+        switch (value) {
+          case 'state_map':
+            this.mapDataLevel = 3;
+            this.columnLevel3 = 1;
+            this.visualization = 'map';
+            this.visualizationText = 'state map';
+            break;
+          case 'Zonal':
+            this.visualization = 'map';
+            this.visualizationText = 'zonal map';
+            this.columnLevel3 = 2;
+            this.mapDataLevel = 2;
+            break;
+          default:
+            break;
+        }
+        this.resetCol3Data();
+        this.loadingColumn3 = false;
+      },
+      deep: true,
+      immediate: false,
     },
   },
   methods: {
@@ -716,9 +919,9 @@ export default {
         indicatorID: this.selectedIndicatorColumn1.id,
       };
       const { data } = await apiServices.getDataObj(obj);
-      console.log(data, 'Data @@');
+      // const response = await apiServices.getDataObj(obj);
+      // console.log(response, 'firstLoad World');
       this.availableYearsColumn1 = this.getPeriodValues(data.results);
-      console.log(this.availableYearsColumn1, 'Data @@');
       this.selectedYearColumn1 = this.availableYearsColumn1[0];
     },
     async getAvailableYears2(datasource) {
@@ -727,9 +930,9 @@ export default {
         indicatorID: this.selectedIndicatorColumn2.id,
       };
       const { data } = await apiServices.getDataObj(obj);
-      console.log(data, 'Data @@');
+
       this.availableYearsColumn2 = this.getPeriodValues(data.results);
-      console.log(this.availableYearsColumn2, 'Data @@');
+
       this.selectedYearColumn2 = this.availableYearsColumn2[0];
     },
     async getAvailableYears3(datasource) {
@@ -738,10 +941,26 @@ export default {
         indicatorID: this.selectedIndicatorColumn3.id,
       };
       const { data } = await apiServices.getDataObj(obj);
-      console.log(data, 'Data @@ 3');
+
       this.availableYearsColumn3 = this.getPeriodValues(data.results);
-      console.log(this.availableYearsColumn3, 'Data @@ 3');
+
       this.selectedYearColumn3 = this.availableYearsColumn3[0];
+    },
+    async fetchIndicatorData(datasource) {
+      try {
+        const obj = {
+          datasourceID: datasource.id,
+          indicatorID: this.selectedIndicatorColumn1.id,
+        };
+        const { data } = await apiServices.getDataObj(obj);
+        return Object.keys(data).length ? data : null; // Check if data is not empty
+      } catch (error) {
+        return null;
+      }
+    },
+    async filterIndicators(indicators) {
+      const results = await Promise.all(indicators.map(this.fetchIndicatorData));
+      return indicators.filter((_, index) => results[index]);
     },
     getPeriodValues(temp) {
       return [...new Set(temp.map((item) => item.period))].sort((a, b) => b - a);
@@ -783,9 +1002,9 @@ export default {
       };
     },
     formatToHighChartOptionForLine(data, chartType, controlPanelObject) {
-      // const sortedData = this.sortedData(data);
       const tempData = this.sortData(data);
-      // console.log(data, 'Crash-data');
+      console.log(tempData, 'chartOptions 2');
+
       const chartOptions = {
         chart: {
           type: chartType,
@@ -815,8 +1034,110 @@ export default {
       };
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       chartOptions.yAxis.title.text = displayFactor;
+      console.log(chartOptions, 'chartOptions 1');
       return chartOptions;
     },
+    async resetCol1Data() {
+      const data = await this.dlQuery({
+        indicator: this.selectedIndicatorColumn1.id,
+        datasource: this.selectedDatasourceColumn1.id,
+        period: this.selectedYearColumn1,
+        // value_type: 5,
+        location: {
+          level: this.mapDataLevel,
+        },
+      });
+      const configObj = {
+        indicator: this.selectedIndicatorColumn1,
+        datasource: this.selectedDatasourceColumn1,
+        year: this.selectedYearColumn1,
+      };
+
+      if (data.length === 0) {
+        this.showNoAvailableDataColumn1 = true;
+        this.showSubNationalDataAvailableDataColumn1 = false;
+      } else if (data.length === 1) {
+        this.showNoAvailableDataColumn1 = false;
+        this.showSubNationalDataAvailableDataColumn1 = true;
+      } else if (data.length > 1) {
+        this.showNoAvailableDataColumn1 = false;
+        this.showSubNationalDataAvailableDataColumn1 = false;
+      }
+
+      const formattedData = this.formatDataToSeriesMapFormat(data);
+      this.mapObjectColumn1 = this.formatToHighChartOptionForMap(formattedData, configObj);
+
+      this.loadingColumn1 = false;
+    },
+    async resetCol2Data() {
+      const data = await this.dlQuery({
+        indicator: this.selectedIndicatorColumn2.id,
+        datasource: this.selectedDatasourceColumn2.id,
+        period: this.selectedYearColumn2,
+        // value_type: 5,
+        location: {
+          level: this.mapDataLevel,
+        },
+      });
+      const configObj = {
+        indicator: this.selectedIndicatorColumn2,
+        datasource: this.selectedDatasourceColumn2,
+        year: this.selectedYearColumn2,
+      };
+
+      if (data.length === 0) {
+        this.showNoAvailableDataColumn2 = true;
+        this.showSubNationalDataAvailableDataColumn2 = false;
+      } else if (data.length === 1) {
+        this.showNoAvailableDataColumn2 = false;
+        this.showSubNationalDataAvailableDataColumn2 = true;
+      } else if (data.length > 1) {
+        this.showNoAvailableDataColumn2 = false;
+        this.showSubNationalDataAvailableDataColumn2 = false;
+      }
+
+      const formattedData = this.formatDataToSeriesMapFormat(data);
+      this.mapObjectColumn2 = this.formatToHighChartOptionForMap(formattedData, configObj);
+
+      this.loadingColumn2 = false;
+    },
+    async resetCol3Data() {
+      const data = await this.dlQuery({
+        indicator: this.selectedIndicatorColumn3.id,
+        datasource: this.selectedDatasourceColumn3.id,
+        period: this.selectedYearColumn3,
+        // value_type: 5,
+        location: {
+          level: this.mapDataLevel,
+        },
+      });
+      const configObj = {
+        indicator: this.selectedIndicatorColumn3,
+        datasource: this.selectedDatasourceColumn3,
+        year: this.selectedYearColumn3,
+      };
+
+      if (data.length === 0) {
+        this.showNoAvailableDataColumn3 = true;
+        this.showSubNationalDataAvailableDataColumn3 = false;
+      } else if (data.length === 1) {
+        this.showNoAvailableDataColumn3 = false;
+        this.showSubNationalDataAvailableDataColumn3 = true;
+      } else if (data.length > 1) {
+        this.showNoAvailableDataColumn3 = false;
+        this.showSubNationalDataAvailableDataColumn3 = false;
+      }
+
+      const formattedData = this.formatDataToSeriesMapFormat(data);
+      this.mapObjectColumn3 = this.formatToHighChartOptionForMap(formattedData, configObj);
+
+      this.loadingColumn3 = false;
+    },
+  },
+  mounted() {
+    this.resetCol1Data();
+    this.resetCol2Data();
+    this.resetCol3Data();
   },
 };
 </script>

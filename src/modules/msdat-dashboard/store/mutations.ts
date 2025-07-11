@@ -33,6 +33,10 @@ const mutations: MutationTree<State> = {
   SET_CONVERSATION: (state, payload) => {
     state.conversationHistory = [payload];
   },
+  SET_SECTION_INDEX: (state, payload) => {
+    state.selectedSectionIndex = payload;
+  },
+
   POP_LAST: (state) => {
     state.conversationHistory = [...state.conversationHistory.slice(0, -1)];
   },
@@ -63,7 +67,6 @@ const mutations: MutationTree<State> = {
   },
 
   SETUP_CONTROL_OPTIONS1: (state, obj: setOptionsPayload) => {
-    console.log(obj, 'availableDS@ 2');
     const checkTheObject = state.controlConfig[obj.panelIndex].setup[0];
     if (Array.isArray(checkTheObject)) {
       const setUpArrayOfObject = state.controlConfig[obj.panelIndex].setup[obj.groupIndex];
@@ -131,10 +134,28 @@ const mutations: MutationTree<State> = {
     }
   },
 
+  SET_ZONAL_DATASOURCE: (state, obj: setPayload) => {
+    // Now it's safe to push the value
+    state.controlConfig[1].payload[obj.key] = obj.value;
+  },
+
   SET_MULTI_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[4].payload !== null) {
       // eslint-disable-next-line no-return-assign, no-param-reassign
       state.controlConfig[4].payload.forEach((item) => (item.indicator = obj.value));
+    }
+  },
+  // SET_MULTI_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
+  //   if (state.controlConfig[4].payload !== null) {
+  //     // eslint-disable-next-line no-return-assign, no-param-reassign
+  //     state.controlConfig[4].payload.forEach((item) => (item.datasource = obj.value));
+  //   }
+  // },
+  SET_DATASET_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[3].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[3].payload[obj.key] = [];
+      state.controlConfig[3].payload[obj.key].push(obj.value);
     }
   },
 
@@ -149,6 +170,30 @@ const mutations: MutationTree<State> = {
     state.selectedSection = text;
   },
 
+  SET_DASHBOARD: (state, dashboards) => {
+    state.dashboards = dashboards;
+  },
+
+  SET_SECTION_PAYLOAD: (state, obj) => {
+    if (state.controlConfig[obj.controlIndex].payload !== null) {
+      if (!Array.isArray(state.controlConfig[obj.controlIndex].payload)) {
+        state.controlConfig[obj.controlIndex].payload[obj.key] = obj.value;
+      } else {
+        // taking into consideration sections like multi-source comparison
+        state.controlConfig[obj.controlIndex].payload[obj.groupIndex][obj.key] = obj.value;
+      }
+    }
+  },
+  SET_URL_DATASOURCE: (state, text) => {
+    state.urlDatasource = text;
+  },
+  SET_URL_LOCATION: (state, text) => {
+    state.urlLocation = text;
+  },
+  SET_URL_PERIOD: (state, text) => {
+    state.urlPeriod = text;
+  },
+
   SET_LOCATION: (state, text) => {
     state.location = text;
   },
@@ -158,6 +203,41 @@ const mutations: MutationTree<State> = {
       // eslint-disable-next-line no-return-assign, no-param-reassign
       state.controlConfig[4].payload.forEach((item) => (item.datasource = obj.value));
     }
+  },
+
+  SET_MULTI_LOCATION_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[4].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[4].payload.forEach((item) => (item.location = obj.value));
+    }
+  },
+
+  SET_MULTI_PERIOD_PAYLOAD: (state, obj: setPayload) => {
+    if (state.controlConfig[4].payload !== null) {
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[4].payload.forEach((item) => (item.period = obj.value));
+
+      // eslint-disable-next-line no-return-assign, no-param-reassign
+      state.controlConfig[4].payload.forEach((item) => (item.year = obj.value));
+    }
+  },
+
+  SET_IDC_INDICATOR_OPTIONS: (state, obj: setPayload) => {
+    state.controlConfig[2].setup[4].options = obj.value;
+  },
+
+  // SET_IDC_INDICATOR_PAYLOAD: (state, obj: setPayload) => {
+  //   state.controlConfig[2].payload[obj.key].push(obj.value);
+  // },
+
+  SET_IDC_INDICATOR_PAYLOAD: (state, obj: setPayload) => {
+    // Ensure payload[obj.key] is initialized as an array
+    if (!Array.isArray(state.controlConfig[2].payload[obj.key])) {
+      state.controlConfig[2].payload[obj.key] = [];
+    }
+
+    // Now it's safe to push the value
+    state.controlConfig[2].payload[obj.key].push(obj.value);
   },
 
   SET_GIS_MULTI_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
@@ -194,6 +274,30 @@ const mutations: MutationTree<State> = {
    */
   CLEAR_CONTROL_PANEL: (state) => {
     state.controlConfig = [];
+  },
+
+  toggleShowDataSourceList: (state) => {
+    state.showDataSourceList = true;
+  },
+
+  closeShowDataSourceList: (state) => {
+    state.showDataSourceList = false;
+  },
+
+  toggleShowWhatsNew: (state) => {
+    state.showWhatsNew = true;
+  },
+
+  closeShowWhatsNew: (state) => {
+    state.showWhatsNew = false;
+  },
+
+  toggleShowShareSection: (state) => {
+    state.showShareSection = true;
+  },
+
+  closeShowShareSection: (state) => {
+    state.showShareSection = false;
   },
 
   /**
@@ -248,6 +352,7 @@ const mutations: MutationTree<State> = {
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Indicator Comparison') {
         item.payload.forEach((source) => {
+          // eslint-disable-next-line no-param-reassign
           source.datasource = payload;
         });
       }
@@ -259,6 +364,7 @@ const mutations: MutationTree<State> = {
     state.controlConfig.forEach((item) => {
       if (item.label === 'Multi-Source Indicator Comparison') {
         item.payload.forEach((source) => {
+          // eslint-disable-next-line no-param-reassign
           source.datasource = payload;
         });
       }

@@ -10,7 +10,7 @@ exports[`DataTable.vue renders properly 1`] = `
   >
     <div>
       <h2
-        style="background-color: rgb(245, 245, 245); width: 45%; font-family: Work Sans; font-size: 23px; font-weight: bold; margin-left: 30px;"
+        style="background-color: rgb(245, 245, 245); width: 100%; font-family: Work Sans; font-size: 23px; font-weight: bold; margin-left: 30px;"
       >
         <span
           class="col-6"

@@ -1,5 +1,6 @@
 import VueCookies from 'vue-cookies';
 import axios from 'axios';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 import axiosInstance from '../config/axios';
 import authInstance from '../config/axiosAuth';
 
@@ -27,13 +28,18 @@ export default {
       // console.log(err);
     }
   },
+
   // eslint-disable-next-line consistent-return, no-unused-vars
   async SAVE_USER_DASHBOARD({ commit }, payload) {
     try {
       // const response = await axiosInstance.post('/dashboards/', payload);
-      const response = await axios.put(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private/${payload.id}.json`, payload);
+      const res = await ApiServices.saveCustomDashboard(payload);
+      // const response = await axios.put(
+      //   `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private/${payload.id}.json`,
+      //   payload,
+      // );
       this.SAVE_DASHBOARDS();
-      return response;
+      return res;
     } catch (err) {
       // console.log(err);
     }
@@ -42,9 +48,9 @@ export default {
   // eslint-disable-next-line consistent-return, no-unused-vars
   async SAVE_DASHBOARDS({ commit }, payload) {
     try {
-      const response = await axiosInstance.get('https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private.json');
-      commit('setDashboards', Object.values(response.data));
-      return response;
+      const { data } = await ApiServices.getCustomDashboard();
+      commit('setDashboards', Object.values(data.data.results));
+      return data;
     } catch (err) {
       // console.log(err);
     }
@@ -55,7 +61,11 @@ export default {
     try {
       const response = await axiosInstance.post('/login/', payload);
       const user = response.data;
-      console.log(user);
+
+      const savedUser = VueCookies.get('msdat-user-details');
+      if (savedUser) {
+        commit('setUser', savedUser);
+      }
 
       const formattedUser = {
         avatar: user.avatar,
@@ -65,7 +75,27 @@ export default {
         tokens: {
           access_token: user.token,
         },
+        role: {
+          value: '',
+          label: '',
+        },
       };
+
+      try {
+        const userDetailsResponse = await axiosInstance.get(`/users/${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        const role = userDetailsResponse.data.role || '';
+        formattedUser.role = {
+          value: role,
+          label: role,
+        };
+      } catch (detailsErr) {
+        console.log('Failed to fetch user details:', detailsErr);
+      }
 
       VueCookies.set('msdat-user-details', formattedUser);
       commit('setUser', formattedUser);
@@ -95,7 +125,10 @@ export default {
 
   async AUTHENTICATE_LINKEDIN({ commit }, payload) {
     try {
-      const response = await axios.post('https://msdat2api.e4eweb.space/api/social/auth/linkedin/', payload);
+      const response = await axios.post(
+        'https://msdat2api.e4eweb.space/api/social/auth/linkedin/',
+        payload,
+      );
       console.log('linkedln login', response);
       const user = response.data.data;
 

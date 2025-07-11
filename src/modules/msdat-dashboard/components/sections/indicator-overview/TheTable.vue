@@ -3,10 +3,12 @@
   <!-- <base-overlay :show="loading"> -->
   <div id="the-table">
     <div v-if="!loading">
-      <base-sub-card showControls :showDownload="false" v-if="Object.keys(values).length">
+      <base-sub-card :showDropdown="false" showControls :showDownload="false" v-if="Object.keys(values).length">
         <template #title>
-          <div class="w-100 d-flex justify-content-between align-items-center p-1">
-            <p class="work-sans mb-0 line-height">
+          <div
+            class="w-100 d-flex justify-content-between align-items-center position-relative p-1"
+          >
+            <p class="work-sans mb-0 line-height sub-title">
               <b>{{ values.indicator.short_name }}</b>
               and related indicators (with year of latest values) across {{ values.location.name }}.
             </p>
@@ -15,12 +17,16 @@
               <div
                 @mouseover="showTooltip"
                 @mouseout="hideTooltip"
-                @click="toggleShowShareModal()"
-                class="share-btn"
+                @click="toggleShowShareModal"
+                class=""
               >
-                <img src="@/assets/img/code.svg" alt="" />
+                <img src="@/assets/html.png" alt="" />
               </div>
             </div>
+            <!-- <div v-if="showPopUp" class="pop-up">
+              <h3 @click="toggleShowShareModal" >Share as HTML Code</h3>
+
+            </div> -->
           </div>
         </template>
         <TableComponent
@@ -102,6 +108,7 @@ export default {
       tableLink: null,
       isTooltipVisible: false,
       shareUrl: null,
+      showPopUp: false,
     };
   },
   props: {
@@ -129,7 +136,7 @@ export default {
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
-            // console.log(dataSources, 'this.dataArray');
+            // const temp = dataSources.filter((item) => item.id !== 30);
             const indicatorObject = this.dlGetIndicator(indicatorID);
             for (let index = 0; index < dataSources.length; index += 1) {
               const element = dataSources[index];
@@ -205,6 +212,7 @@ export default {
      */
 
     toggleShowShareModal() {
+      this.showPopUp = false;
       const routeTitle = this.$route.params.name;
       localStorage.setItem('dashboardName', routeTitle);
       console.log(this.$route);
@@ -222,6 +230,38 @@ export default {
     closeShareModal() {
       this.showShareCodeModal = false;
     },
+    togglePopUp() {
+      this.showPopUp = !this.showPopUp;
+    },
+    parsePeriodToDate(period) {
+      // Check for "week" format, e.g., "2024 week 40"
+      const weekMatch = period.match(/^(\d{4})\s+week\s+(\d{1,2})$/i);
+      if (weekMatch) {
+        const year = parseInt(weekMatch[1], 10);
+        const week = parseInt(weekMatch[2], 10);
+
+        // Week-based date: approximate start of the week (Monday)
+        const simple = new Date(year, 0, 1 + (week - 1) * 7);
+        const day = simple.getDay();
+        const ISOweekStart = new Date(simple); // clone date
+
+        if (day <= 4) {
+          ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+        } else {
+          ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+        }
+
+        return ISOweekStart;
+      }
+
+      // Try to parse as "Month Year"
+      const fullDate = new Date(period);
+      if (!Number.isNaN(fullDate)) return fullDate;
+
+      // Fallback: just a year (e.g., "2015")
+      const yearOnly = new Date(`${period}-01-01`);
+      return yearOnly;
+    },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;
       const filteredIndicator = await this.dlQuery(queryObject);
@@ -236,11 +276,13 @@ export default {
           });
         }
       } else if (filteredIndicator.length > 0) {
-        return filteredIndicator.reduce((max, currentValues) => {
-          if (currentValues.period > max.period) {
-            return currentValues;
-          }
-          return max;
+        if (filteredIndicator.length === 0) return null;
+
+        return filteredIndicator.reduce((latest, current) => {
+          const latestDate = this.parsePeriodToDate(latest.period);
+          const currentDate = this.parsePeriodToDate(current.period);
+
+          return currentDate > latestDate ? current : latest;
         });
       }
       return null;
@@ -360,16 +402,13 @@ export default {
 }
 
 .share-btn img {
-  width: 20px;
-  margin-right: 2px;
+  width: 32px;
+  height: 32px;
 }
 
 .share-wrapper {
   display: flex;
-}
-
-.share-btn:hover {
-  border: 1px solid #61a229;
+  cursor: pointer;
 }
 
 .tooltip-wrap {
@@ -378,5 +417,28 @@ export default {
   padding: 2px 5px;
   border-radius: 5px;
   font-size: 1rem;
+}
+
+.pop-up {
+  height: fit-content;
+  background-color: #fff;
+  z-index: 99999;
+  padding: 10px;
+  position: absolute;
+  width: 200px;
+  right: 0;
+  top: 50px;
+  border-radius: 10px;
+  border: 1px solid #b3b3b3;
+}
+.pop-up h3 {
+  font-size: 12px;
+  cursor: pointer;
+}
+.pop-up h3:hover {
+  color: #00ac40;
+}
+.sub-title {
+  font-size: 14px;
 }
 </style>

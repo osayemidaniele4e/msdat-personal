@@ -86,6 +86,50 @@ export default {
       years: {},
       selectDataSource: null,
       showNoAvailablePrediction: false,
+      valueTypes: [
+        {
+          id: 1,
+          value_type: 'Estimate',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 2,
+          value_type: 'Survey',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 3,
+          value_type: 'Lower bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 4,
+          value_type: 'Upper bound',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 5,
+          value_type: 'Routine',
+          created_at: null,
+          updated_at: null,
+        },
+        {
+          id: 6,
+          value_type: 'Numerator',
+          created_at: '2021-07-02T08:45:20.707139Z',
+          updated_at: '2021-07-02T08:45:20.707348Z',
+        },
+        {
+          id: 7,
+          value_type: 'Denominator',
+          created_at: '2021-07-02T08:56:10.401735Z',
+          updated_at: '2021-07-02T08:56:10.401798Z',
+        },
+      ],
     };
   },
   props: {
@@ -129,6 +173,9 @@ export default {
     },
 
     'values.datasource': {
+      /**
+       * Update Highchart Config on Datasource change
+       */
       async handler(selectedDataSource) {
         // console.log(selectedDataSource, '@@GPPG@@');
         this.setDataSource(selectedDataSource.datasource);
@@ -143,6 +190,8 @@ export default {
 
         this.selectDataSource = dataSourceSelected;
         const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSourceSelected);
+        console.log(seriesArray, years, 'seriesArray D');
+
         await this.setUpHighChartConfig(seriesArray, years);
         this.loading = false;
       },
@@ -150,6 +199,9 @@ export default {
       immediate: false,
     },
     'values.indicator': {
+      /**
+       * Update Highchart Config on Indicator change
+       */
       async handler() {
         this.loading = true;
         // change get datasource function to API matching indicator to dataSource
@@ -158,6 +210,7 @@ export default {
           const { seriesArray, years } = await this.toHighChartSeriesSetup(
             this.values?.datasource ? [this.values.datasource] : dataSources,
           );
+          console.log(seriesArray, years, 'seriesArray I');
           await this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -167,6 +220,9 @@ export default {
       immediate: true,
     },
     'values.location': {
+      /**
+       * Update Highchart Config on Location change
+       */
       async handler() {
         this.loading = true;
         // change get datasource function to API matching indicator to dataSource
@@ -175,6 +231,7 @@ export default {
           const { seriesArray, years } = await this.toHighChartSeriesSetup(
             this.values?.datasource ? [this.values.datasource] : dataSources,
           );
+          console.log(seriesArray, years, 'seriesArray L');
           await this.setUpHighChartConfig(seriesArray, years);
         }
 
@@ -188,7 +245,7 @@ export default {
     ...mapGetters(['getPredictedData', 'getSelectedDataSourceID']),
   },
   methods: {
-    ...mapActions(['PREDICTIVE_ANALYSIS']),
+    ...mapActions(['PREDICTIVE_ANALYSIS', 'getPredictiveAnalysisData']),
     ...mapMutations(['setDataSource']),
     /**
      * @typedef {Object} HighChartObject
@@ -203,97 +260,113 @@ export default {
      * @mixin formatter
      */
 
+    getValueTypeId(searchString) {
+      const match = this.valueTypes.find(
+        (item) => item.value_type.toLowerCase() === searchString.toLowerCase(),
+      );
+      return match ? match.id : null; // or undefined or throw error if not found
+    },
+
     async setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
+      const body = {
+        indicator: this.values.indicator.id,
+        location: this.values.location.id,
+        datasource: this.values.datasource.id,
+        value_type: this.getValueTypeId(this.values.datasource.classification),
+      };
+
+      // const response = await this.getPredictiveAnalysisData(body);
+      // console.log(response, 'response from predictive analysis');
       // Getting chart series
       // Calling enpoint to process data
       // Getting response of predictive data
       // Putting the respnse in the ChartSeriesObject
-      const { data } = ChartSeriesObject.find((item) => item.name === this.getSelectedDataSourceID);
-      if (data.length >= 7) {
-        try {
-          await this.PREDICTIVE_ANALYSIS({ data });
-          const yearArray = [];
-          if (this.getPredictedData.prediction !== undefined) {
-            this.getPredictedData.prediction.forEach((item) => {
-              const arr = item[0];
-              yearArray.push(arr);
-            });
-          }
-          const year = [...sortedYear, ...yearArray];
-          // eslint-disable-next-line camelcase
-          const sorted_year = year.sort();
-          if (this.getPredictedData.prediction !== undefined) {
-            const switchPrediction = this.getPredictedData.prediction.map((val) => [
-              val[0],
-              val[1],
-            ]);
-            this.ChartOptions = {
-              tooltip: {
-                shared: true,
-              },
-              yAxis: {
-                ...defaultOptions.yAxis,
-                title: {
-                  ...defaultOptions.yAxis.title,
-                },
-                gridLineWidth: 0,
-                labels: {
-                  ...defaultOptions.yAxis.labels,
-                },
-                plotLines: [...this.computeChartPlotLines(this.values)],
-              },
-              xAxis: {
-                ...defaultOptions.xAxis,
-                crosshair: {
-                  enabled: true,
-                },
-                categories: sorted_year,
-              },
-              chart: {
-                ...defaultOptions.chart,
-                type: 'line',
-                height: '300',
-              },
-              title: {
-                ...defaultOptions.title,
-              },
-              series: [
-                {
-                  name: 'Actual Data',
-                  data: data || [],
-                  color: 'red',
-                },
-                {
-                  name: 'Prediction',
-                  data: switchPrediction,
-                  color: 'blue',
-                  dashStyle: 'dot',
-                },
-              ],
-              plotOptions: {
-                series: {
-                  grouping: true,
-                  pointWidth: 10,
-                  connectNulls: false,
-                  pointPlacement: 'between',
-                },
-                line: {
-                  tooltip: {
-                    pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
-                    shared: true,
-                  },
-                },
-              },
-            };
-          }
-          const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
-          this.ChartOptions.yAxis.title.text = displayFactor;
-          this.showNoAvailablePrediction = false;
-        } catch (error) {
-          console.log(error);
+      // const { data } = ChartSeriesObject.find((item) => item.name === this.getSelectedDataSourceID);
+
+      try {
+        // await this.PREDICTIVE_ANALYSIS({ data });
+        const response = await this.getPredictiveAnalysisData(body);
+        const yearArray = [];
+        if (response.prediction !== undefined) {
+          response.prediction.forEach((item) => {
+            const arr = item[0];
+            yearArray.push(arr);
+          });
+          // yearArray = Object.keys(response.prediction[0]);
         }
-      } else {
-        this.showNoAvailablePrediction = true;
+        const year = [...sortedYear, ...yearArray];
+        // eslint-disable-next-line camelcase
+        const sorted_year = year.sort();
+        if (response.prediction !== undefined) {
+          const switchPrediction = response.prediction.map((val) => [
+            val[0],
+            val[1],
+          ]);
+          this.ChartOptions = {
+            tooltip: {
+              shared: true,
+            },
+            yAxis: {
+              ...defaultOptions.yAxis,
+              title: {
+                ...defaultOptions.yAxis.title,
+              },
+              gridLineWidth: 0,
+              labels: {
+                ...defaultOptions.yAxis.labels,
+              },
+              plotLines: [...this.computeChartPlotLines(this.values)],
+            },
+            xAxis: {
+              ...defaultOptions.xAxis,
+              crosshair: {
+                enabled: true,
+              },
+              categories: sorted_year,
+            },
+            chart: {
+              ...defaultOptions.chart,
+              type: 'line',
+              height: '300',
+            },
+            title: {
+              ...defaultOptions.title,
+            },
+            series: [
+              {
+                name: 'Actual Data',
+                data: response.previous
+ || [],
+                color: 'red',
+              },
+              {
+                name: 'Prediction',
+                data: switchPrediction,
+                color: 'blue',
+                dashStyle: 'dot',
+              },
+            ],
+            plotOptions: {
+              series: {
+                grouping: true,
+                pointWidth: 10,
+                connectNulls: false,
+                pointPlacement: 'between',
+              },
+              line: {
+                tooltip: {
+                  pointFormat: '{series.name}: <b>{point.y:.1f}</b><br/>',
+                  shared: true,
+                },
+              },
+            },
+          };
+        }
+        const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+        this.ChartOptions.yAxis.title.text = displayFactor;
+        this.showNoAvailablePrediction = false;
+      } catch (error) {
+        console.log(error);
       }
     },
     /**

@@ -66,6 +66,38 @@
         </div>
       </div>
     </div>
+    <div class="border-bottom col-12 pt-3 pb-3">
+      <h6 class="font-weight-bold work-sans">Share Specific Link</h6>
+      <div class="row no-gutters">
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            style="border-bottom-right-radius: 0px; border-top-right-radius: 0"
+            placeholder="Shareable Specific URL"
+            ref="linkInput"
+            readonly
+          />
+        </div>
+        <div class="col-md-3">
+          <button
+            type="button"
+            class="btn btn-block btn-primary py-2 text-uppercase border"
+            style="
+              color: #007d53;
+              border-bottom-left-radius: 0px;
+              border-top-left-radius: 0;
+              background-color: #dff3f3;
+              border-color: #dff3f3;
+            "
+            @click="copyToClipboard"
+          >
+            {{ copy_text }}
+            <b-icon class="" style="color: #007d53" icon="bookmarks" />
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="col-12 pt-3 pb-3">
       <h6 class="font-weight-bold work-sans">Share on social media</h6>
       <div class="row no-gutters">

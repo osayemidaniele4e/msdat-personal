@@ -94,6 +94,8 @@ export default {
       : 'Importing key health indicators...';
     this.loadingTitle = '';
     this.loading = false;
+    console.log(MSDAT, 'MSDAT@');
+
     await this.$DL.init({
       dashboardIndicators: MSDAT.indicators,
       defaultIndicators: MSDAT.defaultIndicators,

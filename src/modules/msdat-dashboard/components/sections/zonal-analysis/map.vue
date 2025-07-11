@@ -35,6 +35,15 @@
             &nbsp;Back to National
           </button>
           <button
+            title="Back to National"
+            @click="returnToNational"
+            v-if="showBackButton"
+            class="bg-primary font-weight-bold"
+          >
+            <b-icon icon="chevron-left" />
+            &nbsp;Back to National
+          </button>
+          <button
             title="Back to Zonal "
             @click="returnToZonal"
             v-if="level === 3"
@@ -65,6 +74,7 @@
 <script>
 import BaseMap from '@/components/maps/BaseMap.vue';
 import { eventBus } from '@/main';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 import chartDownload from '../../../mixins/chart_download';
 import NoAvailableData from '../../NoData2.vue';
 import { sortHighChartDataFormat } from '../../../mixins/util';
@@ -95,6 +105,7 @@ export default {
       showNoAvailableData: false,
       stateData: [],
       selectedState: null,
+      showBackButton: false,
     };
   },
   methods: {
@@ -133,22 +144,18 @@ export default {
     controlPanelProps: {
       async handler(val) {
         this.loader = true;
-        const data = await this.dlQuery({
+
+        const zonalResponse = await ApiServices.getZonalData({
           indicator: val.indicator.id,
           datasource: val.datasource.id,
           period: val.year,
         });
-        const specificData = await this.dlQuery({
-          indicator: val.indicator.id,
-          datasource: val.datasource.id,
-          period: val.year,
-          location: val.location.id,
-        });
-        console.log(val, 'filteredLGADataForState kogi');
+        const data = zonalResponse.data.results;
+
         this.selectedState = val.location.name;
 
         const stateObject = this.dlGetLocation(val.location.id);
-        console.log(specificData, 'filteredLGADataForState 4');
+        // console.log(specificData, 'filteredLGADataForState 4');
 
         // PLOT 1ST MAP AS ZOANL
         if (stateObject.level === 1) {
@@ -189,10 +196,10 @@ export default {
           }
 
           const filteredSeries = chartSeries.filter((item) => item.data.length > 0);
-          console.log(filteredSeries, 'filteredLGADataForState 5');
           this.stateData = filteredSeries;
 
           if (filteredSeries.length === 1) {
+            this.showBackButton = false;
             const groupP = data.filter((item) => this.dlGetLocation(item.location).parent === 1);
             if (groupP.length === 0) {
               this.showNoAvailableData = true;
@@ -210,8 +217,6 @@ export default {
               data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
             }));
 
-            console.log(zData, 'filteredLGADataForState XX');
-
             this.chart = {
               series: zData,
             };
@@ -219,6 +224,7 @@ export default {
             this.level = 2;
             this.stateName = 'Nigeria';
           } else {
+            this.showBackButton = false;
             this.stateName = stateObject.name; // Please always change the state name before
             // changing the level else you would get an error
             this.level = 1;
@@ -228,7 +234,6 @@ export default {
 
             // Modify the chartSeries to exclude "Nigeria" if it exists
             const chartSeriesWithoutNigeria = chartSeries.filter((item) => item.name !== 'Nigeria');
-            console.log(chartSeriesWithoutNigeria, 'filteredLGADataForState XX');
 
             this.chart = {
               series: chartSeriesWithoutNigeria,
@@ -237,6 +242,7 @@ export default {
         }
         // PLOT 2ND MAP AS STATE
         if (stateObject.level === 2) {
+          this.showBackButton = false;
           this.zone = stateObject.id;
           const filteredStateDataForZone = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id,
@@ -268,13 +274,11 @@ export default {
         }
         // PLOT 3RD MAP AS LGA
         if (stateObject.level === 3) {
+          this.showBackButton = false;
           const filteredLGADataForState = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id,
           );
-          console.log(filteredLGADataForState, 'filteredLGADataForStatex');
           const tempData = this.updatedSeries();
-          console.log(tempData, 'filteredLGADataForState 7');
-          console.log(filteredLGADataForState, 'filteredLGADataForState 8');
 
           if (filteredLGADataForState.length === 0) {
             this.showNoAvailableData = true;
@@ -284,13 +288,14 @@ export default {
           }
 
           if (filteredLGADataForState.length === 0) {
+            this.showBackButton = true;
             this.showNoAvailableData = true;
             this.loader = false;
             this.chart = {
               series: tempData,
             };
           } else {
-            console.log(filteredLGADataForState, 'filteredLGADataForState 2');
+            this.showBackButton = false;
             const formatToHighChart = (dataValues) => dataValues.map((item) => [
               this.dlGetLocation(item.location).name,
               parseFloat(item.value),
@@ -298,7 +303,6 @@ export default {
             const chartSeries = [];
             const formattedData = formatToHighChart(filteredLGADataForState);
             const sortedData = formattedData.sort(sortHighChartDataFormat);
-            console.log('sorted', sortedData);
             // remove LGAs sting from LGA name cause mapdata does not support the format
             sortedData.forEach((item) => {
               const newItem = item;

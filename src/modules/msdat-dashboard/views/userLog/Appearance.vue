@@ -108,6 +108,8 @@ Dashboard
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
@@ -115,6 +117,28 @@ export default {
       fontSize: 'small',
       theme: 'default',
     };
+  },
+  computed: {
+    ...mapGetters('appearance', ['viewMode', 'fontSize', 'theme']),
+  },
+  methods: {
+    ...mapActions('appearance', ['setViewMode', 'setFontSize', 'setTheme']),
+  },
+  watch: {
+    viewMode(newMode) {
+      this.setViewMode(newMode);
+    },
+    fontSize(newSize) {
+      this.setFontSize(newSize);
+    },
+    theme(newTheme) {
+      this.setTheme(newTheme);
+    },
+  },
+  mounted() {
+    this.setViewMode(this.viewMode);
+    this.setFontSize(this.fontSize);
+    this.setTheme(this.theme);
   },
 };
 </script>

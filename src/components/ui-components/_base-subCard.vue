@@ -6,8 +6,9 @@
       v-if="removeTitle === false"
     >
       <!-- :style="{ backgroundColor }" -->
-      <div v-if="removeTitle === false" class="title w-100">
+      <div v-if="removeTitle === false" class="title">
         <slot name="title"> slot title fallback </slot>
+        <slot  name="selectors"> </slot>
       </div>
       <div
         class="action-icon d-flex justify-content-around align-items-center"
@@ -16,12 +17,15 @@
         <div class="d-flex align-items-center">
           <slot name="refresh"> </slot>
         </div>
-        <b-icon
+        <div class="expand-icon">
+          <img @click="showModal = !showModal" src="@/assets/Expand.png" alt="" />
+        </div>
+        <!-- <b-icon
           icon="arrows-fullscreen"
           @click="showModal = !showModal"
           class="pointer_click mx-1 font-weight-bold"
           font-scale="0.5"
-        ></b-icon>
+        ></b-icon> -->
         <!-- v-b-tooltip.hover title="Tooltip directive content" -->
         <!-- icon="three-dots-vertical" -->
         <!-- <b-icon
@@ -66,6 +70,7 @@
       <template #title>
         <slot name="title"> slot for modal title fallback </slot>
       </template>
+
       <template>
         <slot> </slot>
       </template>
@@ -134,6 +139,10 @@ export default {
       default: () => {},
     },
     removeTitle: Boolean,
+    showDropdown: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   watch: {},
   methods: {
@@ -143,13 +152,21 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    console.log(this.showDropdown, 'showDropdown prop value');
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .title {
   color: black;
+  width: 97%;
+}
+.expand-icon img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
 }
 </style>
 
