@@ -97,6 +97,8 @@ export default {
       const section = this.modifiedControls.filter(
         (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection,
       );
+      console.log(section, '@T@ @-5');
+
       this.changeControl(section[0].index, section[0].title);
     },
 
@@ -279,6 +281,7 @@ export default {
   },
   mounted() {
     const index = parseInt(this.$route.query.index, 10) || 0;
+    console.log(this.modifiedControls, '@T@ @-4');
     this.selectControl(index);
     this.$nextTick(() => {
       if (this.modifiedControls.length > 0) {

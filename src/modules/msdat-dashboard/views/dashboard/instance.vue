@@ -143,22 +143,43 @@
       <h1>HERE</h1>
     </div>
 
-    <template v-if="shouldShowScorecard" v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
-  <div class="col-md-12">
-    <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
-      <template #title>
-        <h5 class="font-weight-bold work-sans text-white">Scorecard</h5>
-      </template>
-      <template>
-        <LazyLoading>
-          <ControlPanelConfiguration :controlIndex="controlIndex">
-            <ScorecardSection :values="payload" :controlIndex="controlIndex" />
-          </ControlPanelConfiguration>
-        </LazyLoading>
-      </template>
-    </base-sub-card>
-  </div>
-</template>
+    <template
+      v-if="shouldShowScorecard"
+      v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }"
+    >
+      <div class="col-md-12">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">Scorecard</h5>
+          </template>
+          <template>
+            <LazyLoading>
+              <ControlPanelConfiguration :controlIndex="controlIndex">
+                <ScorecardSection :values="payload" :controlIndex="controlIndex" />
+              </ControlPanelConfiguration>
+            </LazyLoading>
+          </template>
+        </base-sub-card>
+      </div>
+    </template>
+    <template
+      v-slot:[`section-${sectionArray[setIndex(allSections[7])]}`]="{ payload, controlIndex }"
+    >
+      <div class="col-md-12">
+        <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+          <template #title>
+            <h5 class="font-weight-bold work-sans text-white">Embedded Dashboard</h5>
+          </template>
+          <template>
+            <LazyLoading>
+              <ControlPanelConfiguration :controlIndex="controlIndex">
+                <EmbeddedSections :values="payload" :controlIndex="controlIndex" />
+              </ControlPanelConfiguration>
+            </LazyLoading>
+          </template>
+        </base-sub-card>
+      </div>
+    </template>
   </BaseDashboard>
 </template>
 
@@ -183,6 +204,8 @@ import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 import ScorecardSection from '../../components/sections/scorecard/ScorecardSection.vue';
 import ScorecardConfig from '../../components/sections/scorecard/scorecard-config';
+import EmbeddedConfigs from '../../components/sections/embed-section/embed-configs';
+import EmbeddedSections from '../../components/sections/embed-section/EmbeddedSection.vue';
 // eslint-disable-next-line import/extensions
 // import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config.js';
 // import PolicySimulator from '../../components/sections/policy-simulator/policySimulator.vue';
@@ -194,7 +217,7 @@ export default {
       updateValue: {},
       updateKey: '',
       resetData: 1,
-      sectionArray: [0, 1, 2, 3, 4, 5, 6],
+      sectionArray: [0, 1, 2, 3, 4, 5, 6, 7],
       allSections: [
         'Indicator Overview',
         'Zonal Analysis',
@@ -203,6 +226,7 @@ export default {
         'Multi-Source Comparison',
         'Disaggregation',
         'Scorecard',
+        'Embedded Dashboard',
       ],
     };
   },
@@ -217,6 +241,7 @@ export default {
     MultiSourceComponent,
     DynamicSection,
     ScorecardSection,
+    EmbeddedSections,
     // PolicySimulator,
   },
   props: {
@@ -287,7 +312,16 @@ export default {
       return tempArray;
     },
     setPresetSections(arg, configs) {
-      const reorderedConfigs = this.reorderFields(this.fieldsArray, configs);
+      console.log(this.fieldsArray, '@T@ @');
+      console.log(arg, '@T@ @-2');
+      const newFieldsArray = [...this.fieldsArray, {
+        active: false,
+        id: 7,
+        isShow: true,
+        name: 'Embedded Dashboard',
+      }];
+      const reorderedConfigs = this.reorderFields(newFieldsArray, configs);
+      console.log(reorderedConfigs, '@T@ reorderedConfigs');
       reorderedConfigs.forEach((field) => {
         this.ADD_CONTROL_PANEL(field);
       });
@@ -385,10 +419,16 @@ export default {
       if (queryParameter) {
         // const preexistingDashboard = StaticConfig.find((item) => item.name === queryParameter);
         const retrievedSections = this.getConfigObject()?.sections;
+        // console.log(retrievedSections, '@T@');
+        // console.log(configs, '@T@');
+        // console.log(EmbeddedConfigs, '@T@ 1');
+        const customConfig = [...configs, EmbeddedConfigs];
+        // console.log(customConfig, '@T@ 1x');
+
         if (retrievedSections && retrievedSections.length > 0) {
           this.filterSectionArray(configs, retrievedSections);
         } else {
-          this.setPresetSections(this.fieldsArray, configs);
+          this.setPresetSections(this.fieldsArray, customConfig);
         }
       } else {
         this.setPresetSections(this.fieldsArray, configs);
