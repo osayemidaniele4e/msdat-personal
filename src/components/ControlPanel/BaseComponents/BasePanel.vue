@@ -97,14 +97,12 @@ export default {
       const section = this.modifiedControls.filter(
         (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection,
       );
-      console.log(section, '@T@ @-5');
 
       this.changeControl(section[0].index, section[0].title);
     },
 
     async changeControl(index, title) {
       // Set section title if provided
-      console.log(title, '@T@ @-5dx');
       if (title) {
         this.$store.commit('MSDAT_STORE/SET_SECTION', title);
       }
@@ -154,8 +152,6 @@ export default {
           value: selectedConfig.period,
         });
       }
-
-      console.log(selectedConfig, 'selectedConfig');
 
       if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard' && title !== 'Embedded Dashboard') {
         const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
@@ -284,7 +280,6 @@ export default {
   },
   mounted() {
     const index = parseInt(this.$route.query.index, 10) || 0;
-    console.log(this.modifiedControls, '@T@ @-4');
     this.selectControl(index);
     this.$nextTick(() => {
       if (this.modifiedControls.length > 0) {

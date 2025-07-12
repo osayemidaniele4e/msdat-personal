@@ -380,10 +380,8 @@ export default {
     //   'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json',
     // );
     const { data } = await ApiServices.getCustomDashboard();
-    console.log(data, '@@@@TY@@@@@ 6');
     if (data.data.results) commit('setAllPublicDashboards', Object.values(data.data.results));
     const result = data.data.results;
-    console.log(result, '@@@@TY@@@@@ 6');
     return { result };
   },
   // RETRIEVE DASHBOARD DETAILS
@@ -396,9 +394,7 @@ export default {
 
   // RETRIEVE A SINGLE DASHBOARD BY ID
   async getDashboard(_, id) {
-    console.log(id, '@@Henry 2');
     const { data } = await ApiServices.getSingleCustomDashboard(id);
-    console.log(data, '@@Henry 4');
     return { data };
     // return axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);
   },
