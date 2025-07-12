@@ -183,7 +183,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-// import apiServices from '@/modules/data-layer/services/ApiServices';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import resizeConfig from '../utils/resizeConfig';
 
 export default {
@@ -281,7 +281,6 @@ export default {
         iframeTitle,
       };
       const stringifyConfig = JSON.stringify(tempConfig);
-      console.log(stringifyConfig, 'PPP');
       localStorage.setItem('storedConfig', stringifyConfig);
     }
   },
@@ -386,8 +385,6 @@ export default {
 
       const storedConfig = localStorage.getItem('storedConfig');
       const parsedConfig = JSON.parse(storedConfig);
-      console.log(parsedConfig, '@BB@');
-      console.log(this.dashboardDetails, '@X@');
       if (!this.dashboardDetails.name) {
         // eslint-disable-next-line no-alert
         this.$swal('Dashboard name not provided');
@@ -432,20 +429,20 @@ export default {
           // const res = await this.$store.dispatch('setDashboardRequest', this.public_creator);
 
           console.log(cleanedData);
-          // try {
-          //   const res = await apiServices.saveCustomDashboard(cleanedData);
+          try {
+            const res = await apiServices.saveCustomDashboard(cleanedData);
 
-          //   if (res) {
-          //     this.$store.dispatch('customDashboard', true);
-          //     this.$router.push('/account#/savedDashboards');
-          //   }
-          // } catch (error) {
-          //   this.$swal.fire({
-          //     title: 'Error',
-          //     text: `${error.response.data.message}`,
-          //     icon: 'error',
-          //   });
-          // }
+            if (res) {
+              this.$store.dispatch('customDashboard', true);
+              this.$router.push('/account#/savedDashboards');
+            }
+          } catch (error) {
+            this.$swal.fire({
+              title: 'Error',
+              text: `${error.response.data.message}`,
+              icon: 'error',
+            });
+          }
         }
       } else {
         // Save Private Dashboard
@@ -469,21 +466,20 @@ export default {
 
         console.log(data);
 
-        // try {
-        //   const cleanedData = this.removeNullFields(data);
-        //   console.log('cleanedData', cleanedData);
+        try {
+          const cleanedData = this.removeNullFields(data);
 
-        //   this.SAVE_USER_DASHBOARD(cleanedData);
+          this.SAVE_USER_DASHBOARD(cleanedData);
 
-        //   this.$store.dispatch('customDashboard', true);
-        //   this.$router.push('/account#/savedDashboards');
-        // } catch (error) {
-        //   this.$swal.fire({
-        //     title: 'Error',
-        //     text: `${error.response.data.message}`,
-        //     icon: 'error',
-        //   });
-        // }
+          this.$store.dispatch('customDashboard', true);
+          this.$router.push('/account#/savedDashboards');
+        } catch (error) {
+          this.$swal.fire({
+            title: 'Error',
+            text: `${error.response.data.message}`,
+            icon: 'error',
+          });
+        }
       }
     },
 

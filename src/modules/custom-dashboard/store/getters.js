@@ -13,7 +13,7 @@ export default {
     return state.embedUrl;
   },
   getUrlTitle(state) {
-    return state.embedUrlTitle;
+    return state.embeddedUrlTitle;
   },
   getEmbedIframe(state) {
     return state.embeddedIframe;
@@ -22,7 +22,7 @@ export default {
     return state.embedIframe;
   },
   getIframeEmbedTitle(state) {
-    return state.embedIframeTitle;
+    return state.embeddedIframeTitle;
   },
 
   indicators(state) {

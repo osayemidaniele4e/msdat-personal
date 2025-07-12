@@ -104,6 +104,7 @@ export default {
 
     async changeControl(index, title) {
       // Set section title if provided
+      console.log(title, '@T@ @-5dx');
       if (title) {
         this.$store.commit('MSDAT_STORE/SET_SECTION', title);
       }
@@ -154,7 +155,9 @@ export default {
         });
       }
 
-      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard') {
+      console.log(selectedConfig, 'selectedConfig');
+
+      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard' && title !== 'Embedded Dashboard') {
         const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
 
         this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {

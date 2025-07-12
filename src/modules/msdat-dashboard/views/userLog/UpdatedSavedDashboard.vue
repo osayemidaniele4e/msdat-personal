@@ -44,10 +44,10 @@
         @click="open(dashboard.link)"
       >
         <div class="d-flex w-100 justify-content-between">
-          <div class="mb-1">
+          <div @click="copy(`${dashboard.link}${dashboard.id}`, $event)" class="mb-1">
             <strong class="text-primary mr-2">{{ dashboard.name_of_dashboard }}</strong>
             <b-button-group size="xs">
-              <b-button @click="copy(`${dashboard.link}${dashboard.id}`, $event)" class="py-1" variant="info"
+              <b-button  class="py-1" variant="info"
                 >Copy Link</b-button
               >
             </b-button-group>

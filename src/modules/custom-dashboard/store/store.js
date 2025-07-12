@@ -9,6 +9,8 @@ const dashboardDetails = localStorage.getItem('dashboardDetails');
 const customDashboard = localStorage.getItem('customDashboardStatus') || false;
 const embedUrl = sessionStorage.getItem('embedUrl');
 const embedIframe = sessionStorage.getItem('embedIframe');
+const embedUrlTitle1 = sessionStorage.getItem('embedUrlTitle');
+const embedIframeTitle2 = sessionStorage.getItem('embedIframeTitle');
 
 const store = {
   state: {
@@ -67,6 +69,8 @@ const store = {
     selectedIndicators: [],
     embeddedUrl: JSON.parse(embedUrl),
     embeddedIframe: JSON.parse(embedIframe),
+    embeddedUrlTitle: JSON.parse(embedUrlTitle1),
+    embeddedIframeTitle: JSON.parse(embedIframeTitle2),
     embedUrl: '',
     embedUrlTitle: '',
     embedIframe: '',

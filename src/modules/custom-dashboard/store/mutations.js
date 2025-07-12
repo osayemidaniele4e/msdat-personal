@@ -356,6 +356,12 @@ export default {
   setEmbedIframe(state, iframe) {
     state.embeddedIframe = iframe;
   },
+  setEmbedUrlTitle(state, title) {
+    state.embeddedUrlTitle = title;
+  },
+  setEmbedIframeTitle(state, title) {
+    state.embeddedIframeTitle = title;
+  },
 
   // ********* LOADING ********//
   setIndiLoading(state, payload) {
