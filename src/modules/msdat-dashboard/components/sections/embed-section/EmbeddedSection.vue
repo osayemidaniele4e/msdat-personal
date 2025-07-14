@@ -1,34 +1,24 @@
 <template>
   <div>
-    <div v-if="
-        $store.getters.getEmbedIframe !== null &&
-        $store.getters.getEmbedUrl !== null
-      " class="">
-      <div
-      v-if="
-        $store.getters.getEmbedIframe !== null &&
-        $store.getters.getEmbedIframe !== ''
-      "
+    <div
+      v-if="$store.getters.getEmbedIframe !== null && $store.getters.getEmbedIframe !== ''"
       class="mt-1"
     >
-      <h1 class="url_title">{{ this.$store.getters.getIframeEmbedTitle }}</h1>
+      <h1 v-if="this.$store.getters.getIframeEmbedTitle !== null" class="url_title">{{ this.$store.getters.getIframeEmbedTitle }}</h1>
       <div class="w-100 url_height">
         <div v-html="$store.getters.getEmbedIframe"></div>
       </div>
     </div>
 
     <div
-      v-if="
-        $store.getters.getEmbedUrl !== null &&
-        $store.getters.getEmbedUrl !== ''
-      "
+      v-if="$store.getters.getEmbedUrl !== null && $store.getters.getEmbedUrl !== ''"
       :class="[
         $store.getters.getEmbedIframe === null || $store.getters.getEmbedIframe === ''
           ? 'url_body_2'
           : 'url_body',
       ]"
     >
-      <h1 class="url_title">{{ this.$store.getters.getUrlTitle }}</h1>
+      <h1 v-if="this.$store.getters.getUrlTitle !== null" class="url_title">{{ this.$store.getters.getUrlTitle }}</h1>
       <div class="w-100 url_height">
         <iframe
           :src="$store.getters.getEmbedUrl"
@@ -36,11 +26,12 @@
         ></iframe>
       </div>
     </div>
-    </div>
-    <div v-else class="d-flex justify-content-center mt-5">
+    <div
+      v-if="$store.getters.getEmbedUrl === null && $store.getters.getEmbedIframe === null"
+      class="d-flex justify-content-center mt-1"
+    >
       <h1 class="url_title">No Embedded Dashboard Available</h1>
     </div>
-
   </div>
 </template>
 
@@ -93,6 +84,7 @@ iframe {
   margin-bottom: 25rem;
 }
 .url_body_2 {
-  margin-top: 5rem;
+  margin-top: 1rem;
   margin-bottom: 22rem;
-}</style>
+}
+</style>
