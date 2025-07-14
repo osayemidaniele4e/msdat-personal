@@ -95,8 +95,14 @@ export default {
   setUrlEmbed(state, payload) {
     state.embedUrl = payload;
   },
+  setUrlEmbedTitle(state, payload) {
+    state.embedUrlTitle = payload;
+  },
   setIframe(state, payload) {
     state.embedIframe = payload;
+  },
+  setIframeTitle(state, payload) {
+    state.embedIframeTitle = payload;
   },
 
   resetState(state) {
@@ -349,6 +355,12 @@ export default {
   },
   setEmbedIframe(state, iframe) {
     state.embeddedIframe = iframe;
+  },
+  setEmbedUrlTitle(state, title) {
+    state.embeddedUrlTitle = title;
+  },
+  setEmbedIframeTitle(state, title) {
+    state.embeddedIframeTitle = title;
   },
 
   // ********* LOADING ********//

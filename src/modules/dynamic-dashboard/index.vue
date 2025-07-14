@@ -58,7 +58,7 @@
       >
     </div>
 
-    <div
+    <!-- <div
       v-if="
         isCustomDashboard &&
         $store.getters.getEmbedIframe !== null &&
@@ -86,13 +86,12 @@
     >
       <h1 class="url_title">{{ this.$store.getters.dashboardDetails.description }} - (URL)</h1>
       <div class="w-100 url_height">
-        <!-- <b-embed type="iframe" aspect="21by9" :src="$store.getters.getEmbedUrl" width="100%" ></b-embed> -->
         <iframe
           :src="$store.getters.getEmbedUrl"
           style="width: 100%; height: 800px; border: none"
         ></iframe>
       </div>
-    </div>
+    </div> -->
 
     <!-- <NewsLetter v-if="!loading" /> -->
 
@@ -368,6 +367,8 @@ export default {
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
       sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
       sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
+      sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
+      sessionStorage.setItem('embedIframeTitle', JSON.stringify(this.$store.getters.getEmbedIframeTitle));
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];

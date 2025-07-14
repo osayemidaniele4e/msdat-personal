@@ -32,7 +32,7 @@
       </draggable>
     </ul>
 
-    <div class="control-title">{{ title }}x2</div>
+    <div class="control-title">{{ title }}</div>
     <!-- Multi-select dropdown here -->
     <div class="mx-lg-2 px-3 mx-auto pb-3 step-controls styles">
       <slot v-bind:selectControl="selectControl" />
@@ -97,6 +97,7 @@ export default {
       const section = this.modifiedControls.filter(
         (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection,
       );
+
       this.changeControl(section[0].index, section[0].title);
     },
 
@@ -152,7 +153,7 @@ export default {
         });
       }
 
-      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard') {
+      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard' && title !== 'Embedded Dashboard') {
         const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
 
         this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {

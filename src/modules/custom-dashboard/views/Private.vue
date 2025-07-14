@@ -40,22 +40,17 @@ export default {
     ...mapGetters('AUTH_STORE', ['isAuthenticated', 'getUser', 'getDashboards']),
   },
   mounted() {
+    const id = this.$route.params.id || this.$route.query.id;
+
     this.timeout = setTimeout(() => {
       this.msg = 'Retrieving Dashboard taking too long. Kindly try again later.';
     }, 10000);
-  },
-  watch: {
-    // When Dashboards list is updated in store
-    // Get currently selected dashboard and load
-    // If not found or exceeds delay, display error message
-    getDashboards(dashboards) {
-      clearTimeout(this.timeout);
-      const id = this.$route.params.id;
-      const data = dashboards.find((dash) => dash.id === id);
-      console.log(data);
-      if (data) {
-        if (this.isAuthenticated) {
-          const config = JSON.parse(data.config);
+    this.$store.dispatch('getDashboard', id).then(({ data }) => {
+      const result = data.data;
+      if (result) {
+        const isConfirmed = result.is_confirmed;
+        if (isConfirmed === false) {
+          const config = JSON.parse(result.config);
           const {
             dashboardDetails, composedData, surveyArray, sectionsArray,
           } = config;
@@ -67,19 +62,67 @@ export default {
           this.$store.commit('setPArea', composedData);
           this.$store.commit('setDArea', surveyArray);
           this.$store.commit('arrangedSections', sectionsArray);
+          this.$store.commit('setEmbedUrl', result.embedded_url);
+          this.$store.commit('setEmbedIframe', result.embedded_iframe);
+          this.$store.commit('setEmbedUrlTitle', result.embedded_url_title);
+          this.$store.commit('setEmbedIframeTitle', result.embedded_iframe_title);
 
           const t = config.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
           this.$router.push({
-            path: `/dashboard/${t}`,
+            path: `/dashboard/${t}/${id}/`,
+            query: { id },
             component: () => import('../../dynamic-dashboard/index.vue'),
           });
+        } else if (data.disapproved) {
+          this.msg = 'The requested Dashboard was not approved!';
         } else {
-          this.msg = 'You need to be logged in to view your Dashboards!';
+          this.msg = 'The requested Dashboard is currently awaiting approval!';
         }
-      } else {
-        this.msg = 'Dashboard not found!';
       }
-    },
+    }).catch(() => {
+      this.msg = 'An error occured!';
+    });
+  },
+  watch: {
+    // When Dashboards list is updated in store
+    // Get currently selected dashboard and load
+    // If not found or exceeds delay, display error message
+    // getDashboards(dashboards) {
+    //   clearTimeout(this.timeout);
+    //   const id = this.$route.params.id;
+    //   const data = dashboards.find((dash) => dash.id === id);
+    //   console.log(data, '@@@');
+    //   if (data) {
+    //     if (this.isAuthenticated) {
+    //       const config = JSON.parse(data.config);
+    //       const {
+    //         dashboardDetails, composedData, surveyArray, sectionsArray,
+    //       } = config;
+
+    //       this.$store.dispatch('resetState');
+    //       this.$store.dispatch('dashboardConfiguration', dashboardDetails);
+    //       this.$store.dispatch('customDashboard', true);
+
+    //       this.$store.commit('setPArea', composedData);
+    //       this.$store.commit('setDArea', surveyArray);
+    //       this.$store.commit('arrangedSections', sectionsArray);
+    //       this.$store.commit('setEmbedUrl', result.embedded_url);
+    //       this.$store.commit('setEmbedIframe', result.embedded_iframe);
+    //       this.$store.commit('setEmbedUrlTitle', result.embedded_url_title);
+    //       this.$store.commit('setEmbedIframeTitle', result.embedded_iframe_title);
+
+    //       const t = config.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
+    //       this.$router.push({
+    //         path: `/dashboard/${t}`,
+    //         component: () => import('../../dynamic-dashboard/index.vue'),
+    //       });
+    //     } else {
+    //       this.msg = 'You need to be logged in to view your Dashboards!';
+    //     }
+    //   } else {
+    //     this.msg = 'Dashboard not found!';
+    //   }
+    // },
   },
 };
 </script>

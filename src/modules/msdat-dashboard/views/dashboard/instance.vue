@@ -139,10 +139,6 @@
         </base-sub-card>
       </div>
     </template>
-    <div class="py-5 bg-danger">
-      <h1>HERE</h1>
-    </div>
-
     <template v-if="shouldShowScorecard" v-slot:[`section-${sectionArray[setIndex(allSections[6])]}`]="{ payload, controlIndex }">
   <div class="col-md-12">
     <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
@@ -153,6 +149,22 @@
         <LazyLoading>
           <ControlPanelConfiguration :controlIndex="controlIndex">
             <ScorecardSection :values="payload" :controlIndex="controlIndex" />
+          </ControlPanelConfiguration>
+        </LazyLoading>
+      </template>
+    </base-sub-card>
+  </div>
+</template>
+<template v-if="customDashboard" v-slot:[`section-${sectionArray[setIndex(allSections[7])]}`]="{ payload, controlIndex }">
+  <div class="col-md-12">
+    <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
+      <template #title>
+        <h5 class="font-weight-bold work-sans text-white">Embedded Dashboard</h5>
+      </template>
+      <template>
+        <LazyLoading>
+          <ControlPanelConfiguration :controlIndex="controlIndex">
+            <EmbedDashboard :values="payload" :controlIndex="controlIndex" />
           </ControlPanelConfiguration>
         </LazyLoading>
       </template>
@@ -183,6 +195,8 @@ import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 import ScorecardSection from '../../components/sections/scorecard/ScorecardSection.vue';
 import ScorecardConfig from '../../components/sections/scorecard/scorecard-config';
+import EmbedDashboard from '../../components/sections/embed-section/EmbeddedSection.vue';
+import EmbedDashboardConfig from '../../components/sections/embed-section/embed-configs';
 // eslint-disable-next-line import/extensions
 // import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config.js';
 // import PolicySimulator from '../../components/sections/policy-simulator/policySimulator.vue';
@@ -194,7 +208,7 @@ export default {
       updateValue: {},
       updateKey: '',
       resetData: 1,
-      sectionArray: [0, 1, 2, 3, 4, 5, 6],
+      sectionArray: [0, 1, 2, 3, 4, 5, 6, 7],
       allSections: [
         'Indicator Overview',
         'Zonal Analysis',
@@ -203,6 +217,7 @@ export default {
         'Multi-Source Comparison',
         'Disaggregation',
         'Scorecard',
+        'Embedded Dashboard',
       ],
     };
   },
@@ -217,6 +232,7 @@ export default {
     MultiSourceComponent,
     DynamicSection,
     ScorecardSection,
+    EmbedDashboard,
     // PolicySimulator,
   },
   props: {
@@ -291,6 +307,7 @@ export default {
       reorderedConfigs.forEach((field) => {
         this.ADD_CONTROL_PANEL(field);
       });
+      this.ADD_CONTROL_PANEL(EmbedDashboardConfig);
     },
     setAllSections(configs) {
       for (let i = 0; i < configs.length; i++) {

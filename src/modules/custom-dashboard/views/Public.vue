@@ -58,6 +58,8 @@ export default {
           this.$store.commit('arrangedSections', sectionsArray);
           this.$store.commit('setEmbedUrl', result.embedded_url);
           this.$store.commit('setEmbedIframe', result.embedded_iframe);
+          this.$store.commit('setEmbedUrlTitle', result.embedded_url_title);
+          this.$store.commit('setEmbedIframeTitle', result.embedded_iframe_title);
 
           const t = config.dashboardDetails.name.replace(/\s+/g, '_').toLowerCase();
           this.$router.push({
