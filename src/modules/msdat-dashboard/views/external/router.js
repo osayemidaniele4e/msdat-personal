@@ -104,12 +104,4 @@ export default [
       title: 'SECTOR WIDE APPROACH PLATFORM Minister of Health Dashboard',
     },
   },
-  {
-    path: '/quartely-performance-scorecard',
-    name: 'state-health-facility',
-    component: QuarterlyPerformanceScorecard,
-    meta: {
-      title: 'Quarterly Performance Scorecard',
-    },
-  }
 ];
