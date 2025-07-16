@@ -78,12 +78,6 @@ export default {
       currentTitle: 'Quarterly Performance Assessment',
     };
   },
-  methods: {
-    // setTab(tab) {
-    //   this.currentTab = tab;
-    //   this.currentTitle = tab;
-    // },
-  },
 };
 </script>
 

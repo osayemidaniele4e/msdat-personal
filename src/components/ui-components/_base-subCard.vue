@@ -46,7 +46,7 @@
       </div>
 
       <div class="row no-gutters">
-        <div class="col" :class="[sideControl ? 'col-10' : '']">
+        <div ref="chartContainer" class="col chart-container" :class="[sideControl ? 'col-10 pr-3' : '']">
           <div v-if="buttonToggle" class="d-flex justify-content-end pt-1 px-1">
             <SubCardToggleButton
               v-show="showToggle"
@@ -127,7 +127,7 @@ export default {
       default: () => false,
     },
     sideControl: {
-      true: Boolean,
+      type: Boolean,
       default: () => false,
     },
     dataSourceOptions: {
@@ -144,16 +144,41 @@ export default {
       default: () => false,
     },
   },
-  watch: {},
+  watch: {
+    sideControl: {
+      handler(newValue) {
+        if (newValue) {
+          // Trigger window resize event when sidebar appears to force chart redraw
+          this.$nextTick(() => {
+            window.dispatchEvent(new Event('resize'));
+            // Give additional time for the DOM to update
+            setTimeout(() => {
+              window.dispatchEvent(new Event('resize'));
+            }, 100);
+          });
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
     close() {
       if (this.showMenu !== false) {
         this.showMenu = false;
       }
     },
+    notifyChartToReflow() {
+      // Notify any chart components to reflow
+      this.$emit('card-layout-changed');
+      window.dispatchEvent(new Event('resize'));
+    }
   },
   mounted() {
     console.log(this.showDropdown, 'showDropdown prop value');
+    // Trigger initial resize to ensure chart layout is correct
+    this.$nextTick(() => {
+      this.notifyChartToReflow();
+    });
   },
 };
 </script>
@@ -167,6 +192,13 @@ export default {
   width: 32px;
   height: 32px;
   cursor: pointer;
+}
+.chart-container {
+  transition: width 0.2s ease;
+  box-sizing: border-box;
+}
+.pr-3 {
+  padding-right: 1rem !important;
 }
 </style>
 
