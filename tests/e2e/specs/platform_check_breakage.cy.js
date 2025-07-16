@@ -1,6 +1,6 @@
 // This test script checks for important elements that are to be present on the base page of the platform.
 // If they are not present it means the app is broken, otherwise it is not
-// This will be run on the pipeline that deploys chamges from staging to production
+// This will be run on the pipeline that deploys changes from staging to production
 
 describe('Test if Platform is broken', () => {
   it('Test if Navbar is Visible', () => {
