@@ -3,6 +3,11 @@ export default {
     type: 'bar',
     zoomType: 'xy',
     height: 800,
+    reflow: true,
+    spacingRight: 30,
+    marginRight: 30,
+    // Animation enabled by default for smooth transitions
+    animation: true,
   },
   lang: {
     noData: 'The data you have selected is not available, please select another',
@@ -60,7 +65,6 @@ export default {
               })
               .add();
           },
-
         },
       },
     },
@@ -150,6 +154,26 @@ export default {
       fontFamily: '"Work Sans", sans-serif',
       fontWeight: 400,
     },
+  },
+  responsive: {
+    rules: [
+      {
+        condition: {
+          callback: function () {
+            return true; // Always apply these rules
+          },
+        },
+        chartOptions: {
+          chart: {
+            spacingRight: 25,
+          },
+          legend: {
+            align: 'center',
+            verticalAlign: 'bottom',
+          },
+        },
+      },
+    ],
   },
   plotOptions: {
     column: {
