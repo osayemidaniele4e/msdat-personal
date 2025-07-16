@@ -47,17 +47,28 @@
         </div>
         <div class="comparison" v-else>
           <div>
-            <p>
-              The value of <strong>{{ indicatorOne }}</strong
-                > is {{ this.positiveDifference === true ? 'HIGHER' : 'LOWER' }} than <strong>{{ indicatorTwo }}</strong> by
+            <p v-if="this.value === 'N/A'">
+              The value of <strong>{{ indicatorOne }}</strong> cannot be compared with <strong>{{ indicatorTwo }}</strong> 
+              due to zero values
+            </p>
+            <p v-else>
+              The value of <strong>{{ indicatorOne }}</strong> is 
+              <span v-if="this.value > 1">
+                {{ (this.value).toFixed(2) }} times {{ this.positiveDifference === true ? 'HIGHER' : 'LOWER' }} than
+              </span>
+              <span v-else>
+                {{ (1/this.value).toFixed(2) }} times {{ this.positiveDifference === true ? 'HIGHER' : 'LOWER' }} than
+              </span>
+              <strong>{{ indicatorTwo }}</strong>
             </p>
           </div>
-<div style="display: flex; flex-direction:row; gap: 5px; align-items:center; padding-left:-10%;">
-  <h6>{{ Math.abs(this.value) }}%</h6>
-  <p>
-    <span>in {{ this.comparisonLocation }}</span>
-  </p>
-</div>
+          <div style="display: flex; flex-direction:row; gap: 5px; align-items:center; padding-left:-10%; font-size: 14px;">
+            <!-- <h6 v-if="this.value === 'N/A'">N/A</h6>
+            <h6 v-else-if="this.value > 1">{{ (this.value).toFixed(2) }} times</h6>
+            <h6 v-else>{{ (1/this.value).toFixed(2) }} times</h6>
+            <p> -->
+              <span>in {{ this.comparisonLocation }}</span>
+          </div>
         </div>
       </div>
       </transition>
@@ -189,7 +200,17 @@ export default {
 
           this.chartConfig.series[0].data = updatedObj1;
           this.chartConfig.series[1].data = updatedObj2;
-          this.chartConfig.tooltip.pointFormat = '{point.name}: <b>{point.y:.1f}</b><br>Difference:{point.extraData}%';
+          this.chartConfig.tooltip.pointFormatter = function() {
+            let multiplierText = '';
+            if (this.extraData === 'N/A') {
+              multiplierText = 'N/A';
+            } else if (this.extraData > 1) {
+              multiplierText = `${this.extraData.toFixed(2)} times`;
+            } else {
+              multiplierText = `${(1/this.extraData).toFixed(2)} times`;
+            }
+            return `${this.name}: <b>${Highcharts.numberFormat(this.y, 1)}</b><br>Multiplier: ${multiplierText}`;
+          };
         }
       } else {
         this.comparisonUnavailable = true;
@@ -222,10 +243,18 @@ export default {
       const denominator = indicatorTwo.y;
       initial = indicatorTwo.y;
       final = indicatorOne.y;
+      
+      // Handle zero values
+      if (initial === 0 || final === 0) {
+        return { value: 'N/A', isPositive: false };
+      }
+      
       const isPositive = final >= initial;
-      const diff = final - initial;
-      const value = this.customRound((diff / denominator) * 100);
-      return { value, isPositive };
+      
+      // Calculate multiplier instead of percentage
+      const multiplier = final / denominator;
+      
+      return { value: multiplier, isPositive };
     },
     customRound(number) {
       if (number < 1 && number % 1 !== 0) {

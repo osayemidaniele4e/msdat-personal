@@ -74,7 +74,7 @@
         <div class="chat-section mt-4">
           <ChatBot ref="chatBot" />          <button class="chat-button" @click="$refs.chatBot.toggleChat()">
             <img src="./assets/ai-launcher.svg" alt="AI" class="ai-icon">
-            <span>Metdata Chatbot</span>
+            <span>Metadata Chatbot</span>
           </button>
         </div>
       </div>
