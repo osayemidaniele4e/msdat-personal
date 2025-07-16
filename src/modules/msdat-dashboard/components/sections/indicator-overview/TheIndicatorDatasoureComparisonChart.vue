@@ -30,14 +30,14 @@
             {{ values.indicator.short_name }}) across different data sources.
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
+        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="false" v-if="!notShow" />
       </base-sub-card>
       <!-- BASE SUBCARD FOR INDICATORS WITHOUT CONFIDENCE RANGE -->
       <base-sub-card
         ref="SubCard"
         buttonToggle
         showControls
-        sideControl="true"
+        :sideControl="true"
         :dataSourceOptions="dataSourcesOptions"
         @toggled-button="updateChart($event)"
         @selected-datasource="onSelectedSource($event)"
@@ -77,7 +77,7 @@
         <!-- <div v-if="showPopUp" class="pop-up">
           <h3 @click="getReset()">Refresh Table</h3>
         </div> -->
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" v-if="!notShow" />
+        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="true" v-if="!notShow" />
       </base-sub-card>
     </base-overlay>
   </div>

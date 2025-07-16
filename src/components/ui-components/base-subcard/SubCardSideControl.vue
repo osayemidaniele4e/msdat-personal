@@ -1,5 +1,5 @@
 <template>
-  <div class="col p-2 bg-gray">
+  <div class="col p-2 bg-gray pl-0">
     <div class="my-4 mx-auto">
       <h6 class="work-sans font-size-small font-weight-bold">
         CONFIDENCE RANGE
