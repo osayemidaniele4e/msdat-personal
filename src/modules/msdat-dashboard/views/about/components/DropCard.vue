@@ -193,6 +193,14 @@
               </router-link>
               <span class="custom-tooltip-2">Comprehensive dashboard for CEmONC data. </span>
             </div>
+            <div class="tooltip-wrapper-2">
+              <router-link to="/ndhs-tracker" target="_blank">
+                <b-list-group-item>NDHS Tracker Dashboard</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2"
+                >Track NDHS indicators and their trends over time.
+              </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">

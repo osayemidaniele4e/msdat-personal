@@ -30,8 +30,7 @@
               @click="showRelationshipPopup = true"
               title="Show indicator relationships"
             >
-            <b-icon class="report-icon" icon="file-earmark-bar-graph"></b-icon>
-
+              <b-icon class="report-icon" icon="link-45deg"></b-icon>
             </button>
           </div>
           <!-- <p class="text-dark work-sans mb-0 line-height" v-else>
@@ -698,12 +697,15 @@ div.ics_wrapper {
 
 .relationship-btn {
   background: none;
-  border: none;
   color: #17606B;
-  padding: 5px;
   cursor: pointer;
-  font-size: 1.5rem;
-  font-weight:600;
+  font-weight: 600;
+  border: 1px solid #17606B; 
+  border-radius: 20%; 
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: #E85D58;
@@ -711,7 +713,7 @@ div.ics_wrapper {
 }
 
 .report-icon {
-  font-size: 1.2rem;
+  font-size: 17px;
   color: #17606B;
 }
 </style>

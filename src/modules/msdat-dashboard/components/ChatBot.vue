@@ -9,7 +9,7 @@
            <img src="./assets/ai-launcher.svg" alt="AI" class="ai-icons">
           </div>
           <div class="header-title">
-            <span>Metdata Chatbot</span>
+            <span>Metadata Chatbot</span>
             <span class="online-status">• Online</span>
           </div>
         </div>
