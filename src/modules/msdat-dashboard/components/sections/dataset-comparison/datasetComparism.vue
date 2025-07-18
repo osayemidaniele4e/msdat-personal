@@ -511,6 +511,9 @@ export default {
   justify-content: center;
   gap: 7px;
 }
+.comparison span{
+  margin-top: -5px;
+}
 .noComparison {
   border-radius: 10px;
   border: 1px solid #e85d58;
