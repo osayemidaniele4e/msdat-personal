@@ -11130,7 +11130,7 @@
     "mdurl" "^1.0.1"
     "uc.micro" "^1.0.5"
 
-"marked@4.3.0":
+"marked@^4.3.0":
   "integrity" "sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A=="
   "resolved" "https://registry.npmjs.org/marked/-/marked-4.3.0.tgz"
   "version" "4.3.0"

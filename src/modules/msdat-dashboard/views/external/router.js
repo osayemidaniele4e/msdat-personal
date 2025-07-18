@@ -9,6 +9,7 @@ import goggleForm from './dashboards/goggleForm.vue';
 import healthServiceUptake from './dashboards/health-service-uptake.vue';
 import IndicatorPreview from './dashboards/Minister of Health Dashboard/dashboard-landing-page.vue';
 import presidentBondScorecard from './dashboards/presidentBondScorecard.vue';
+import ndhsTracker from './dashboards/ndhsTracker.vue';
 import CEMONC from './dashboards/CEMONC.vue';
 
 export default [
@@ -94,6 +95,16 @@ export default [
     meta: {
       title: 'Multi-Source Health Facilities Profile',
     },
+
+  },
+  {
+    path: '/ndhs-tracker',
+    name: 'ndhs-tracker',
+    component: ndhsTracker,
+    meta: {
+      title: 'NDHS Tracker Dashboard',
+    },
+
 
   },
   {
