@@ -1,26 +1,14 @@
 <template>
   <div>
-    <Modal
-      :noBackdrop="true"
-      :showBackground="background"
-      @clickHide="close"
-      showCloseButton
-    >
+    <Modal :noBackdrop="true" :showBackground="background" @clickHide="close" showCloseButton>
       <div class="onboarding__bg">
         <div v-show="onboarding1st" class="onboarding__body">
           <div class="onboarding__img-container my-5 pt-4">
-            <img
-              :src="launchImg"
-              alt="first_img"
-              class="onboarding__img"
-              width="250px"
-            />
+            <img :src="launchImg" alt="first_img" class="onboarding__img" width="250px" />
           </div>
-          <h2 class="text" @click="removeBackground">Welcome to MSDAT V2.6</h2>
+          <h2 class="text" @click="removeBackground">Welcome to MSDAT V2.7</h2>
           <p class="text">Get analysis of health indicators easily</p>
-          <button @click="onboarding1st = !onboarding1st">
-            Start Tutorial
-          </button>
+          <button @click="onboarding1st = !onboarding1st">Start Tutorial</button>
           <br />
           <button @click="close" class="bg-white skip">Skip</button>
         </div>
@@ -62,7 +50,7 @@ export default {
 };
 </script>
 
-<style  scoped >
+<style scoped>
 .text {
   font-family: 'Work Sans', sans-serif;
 }
