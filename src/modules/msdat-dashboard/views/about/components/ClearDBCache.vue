@@ -2,11 +2,11 @@
     <base-modal class="work-sans" :showModal="showModal" :size="''" :header="'white'">
       <template #title>
         <div class="w-75 work-sans">
-          <h6 class="mb-0">DATA CLEARING SEQUENCE STARTED</h6>
+          <h6 class="mb-0">SOMETHING WENT WRONG</h6>
         </div>
       </template>
       <template>
-        <p class="mt-2 work-sans">Click on the button below to clear dashboard cache</p>
+        <p class="mt-2 work-sans">Click on the button below to reload</p>
       </template>
        <template #footer-btn>
             <button class="btn btn-success mb-3 mt-2" @click="clearDB">
@@ -27,8 +27,6 @@ export default {
   },
   methods: {
     async clearDB() {
-      await this.$store.dispatch('DL/CLEAR_DB');
-      this.showModal = false;
       const dashboard = this.$route.params.name;
       this.$router.push({ path: `/dashboard/${dashboard}` });
       window.location.reload();
