@@ -1,31 +1,47 @@
 <!-- eslint-disable camelcase -->
 <!-- eslint-disable camelcase -->
 <template>
-  <div class="position-relative" id="stateBarChartComponent"
-    style="display: flex; flex-direction: column; align-items: center; justify-content: center">
+  <div
+    class="position-relative"
+    id="stateBarChartComponent"
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center"
+  >
     <base-overlay :show="loading">
-      <base-sub-card :showDropdown="false" ref="SubCard" showControls v-if="Object.keys(values).length" @dropdownTypeSelected="
-        downLoadType($event, {
-          indicator: values.indicator.short_name,
-          datasource: values.datasource.datatsource,
-          year: values.year,
-        })
-        ">
+      <base-sub-card
+        :showDropdown="false"
+        ref="SubCard"
+        showControls
+        v-if="Object.keys(values).length"
+        @dropdownTypeSelected="
+          downLoadType($event, {
+            indicator: values.indicator.short_name,
+            datasource: values.datasource.datatsource,
+            year: values.year,
+          })
+        "
+      >
         <template #title>
           <p class="work-sans mb-0 line-height sub-title" v-if="level === 1">
             Distribution of
 
             <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
-            <b>{{ values.indicator.short_name }}</b> across <b>{{ values.location.name }}.</b> Source:<b>
-              {{ values.datasource.datasource }} {{ values.year }}</b>
+            <b>{{ values.indicator.short_name }}</b> across
+            <b>{{ values.location.name }}.</b> Source:<b>
+              {{ values.datasource.datasource }} {{ values.year }}</b
+            >
           </p>
           <p class="work-sans mb-0 line-height sub-title" v-if="level !== 1">
             Distribution of
             <b>{{ values.indicator.short_name }}</b> across the states. Source:<b>
-              {{ values.datasource.datasource }} {{ values.year }}</b>
+              {{ values.datasource.datasource }} {{ values.year }}</b
+            >
           </p>
         </template>
-        <button @click="returnToNational" v-show="level !== 1" class="bg-transparent text-dark font-weight-bold">
+        <button
+          @click="returnToNational"
+          v-show="level !== 1"
+          class="bg-transparent text-dark font-weight-bold"
+        >
           <b-icon icon="chevron-left" />
           &nbsp;Back to National
         </button>
@@ -34,7 +50,11 @@
         </div>
       </base-sub-card>
     </base-overlay>
-    <NoSubNationalData v-if="showNoSubNationalData" class="position-absolute" style="top: 15%; width: 80%" />
+    <NoSubNationalData
+      v-if="showNoSubNationalData"
+      class="position-absolute"
+      style="top: 15%; width: 80%"
+    />
   </div>
 </template>
 <script>
@@ -138,12 +158,14 @@ export default {
   },
   methods: {
     async getNDData(queryArray) {
-      const nums = await queryArray.map((item) => this.queryDBForNumDenum({
-        datasource: item.datasource,
-        period: item.period,
-        indicator: item.indicator,
-        location: item.location,
-      }));
+      const nums = await queryArray.map((item) =>
+        this.queryDBForNumDenum({
+          datasource: item.datasource,
+          period: item.period,
+          indicator: item.indicator,
+          location: item.location,
+        })
+      );
       const returnedNums = await Promise.allSettled(nums);
       const noData = returnedNums.every((value) => value.value.length === 0);
       if (!noData) {
@@ -171,7 +193,7 @@ export default {
       }
       // eslint-disable-next-line camelcase
       const { national_target, sdg_target, desirable_slope } = this.dlGetIndicator(
-        this.values.indicator.id,
+        this.values.indicator.id
       );
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       const national = await this.computeNationalND();
@@ -195,7 +217,7 @@ export default {
           },
         },
         await ndData,
-        this.values.numdenum,
+        this.values.numdenum
       );
       chartOptions.plotOptions = {
         series: {
@@ -221,7 +243,9 @@ export default {
           // Check if the value is an integer (no decimals)
           if (Number.isInteger(this.y)) {
             // If the value is over 1000, add a thousand separator
-            return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y}</b><br/>`;
+            return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${
+              this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y
+            }</b><br/>`;
           }
           // Return the value as is for decimal numbers
           return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y}</b><br/>`;
@@ -314,18 +338,20 @@ export default {
       if (this.values.numdenum === true) {
         chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
         chartOptions.tooltip.outside = true;
-        chartOptions.tooltip.pointFormat = `${'<span style="font-size:10px; color:black;font-weight:bold;">'
-          + '{series.name}:'
-          + ' {point.y:.2f}'
-          // eslint-disable-next-line indent
-          }<br>`
-          + '<span style="font-size:10px; color:black;">'
-          + '('
-          + '{point.nd} '
-          + 'of'
-          + ' {point.dn}'
-          + ')'
-          + '</span>';
+        chartOptions.tooltip.pointFormat =
+          `${
+            '<span style="font-size:10px; color:black;font-weight:bold;">' +
+            '{series.name}:' +
+            ' {point.y:.2f}'
+            // eslint-disable-next-line indent
+          }<br>` +
+          '<span style="font-size:10px; color:black;">' +
+          '(' +
+          '{point.nd} ' +
+          'of' +
+          ' {point.dn}' +
+          ')' +
+          '</span>';
       }
       this.BarChartOptions = chartOptions;
       this.loading = false;
@@ -372,9 +398,7 @@ export default {
       };
     },
     async getData(optionsObject) {
-      const {
-        datasource, indicator, location, year,
-      } = optionsObject;
+      const { datasource, indicator, location, year } = optionsObject;
       let locationValue = location;
       if (location.id === 1) {
         locationValue = { level: 3 };
@@ -389,6 +413,10 @@ export default {
         location: locationValue,
         // value_type: 5,
       });
+
+      if (data.length === 0 || data === undefined || data === null) {
+        return;
+      }
 
       // loop through data and parseFloat the value toFixed(1)
       for (let i = 0; i < data.length; i += 1) {
