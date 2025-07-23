@@ -32,6 +32,7 @@ const saveCustomDashboard = async (data) => axiosInstance.post('custom-dashboard
 const getSingleCustomDashboard = async (id) => axiosInstance.get(`custom-dashboard/${id}`);
 const getCustomDashboard = async () => axiosInstance.get('custom-dashboard/');
 const fetchAllDataSources = async () => axiosInstance.get('datasources/?size=100');
+const fetchAllCoverageLevels = async (id) => axiosInstance.get(`datasource_specific_indicator/${id}`);
 const fetchAllIndicators = async () => axiosInstance.get('indicators/?size=4000');
 const fetchAllLocation = async () => axiosInstance.get('location/?size=1000');
 const getTriangulation = async (obj) => {
@@ -154,4 +155,5 @@ export default {
   getDashboardData,
   getPeriodWithoutLocation,
   getDashboardIndicators,
+  fetchAllCoverageLevels,
 };

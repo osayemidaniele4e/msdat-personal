@@ -12,11 +12,17 @@ export default {
   getUrl(state) {
     return state.embedUrl;
   },
+  getUrlTitle(state) {
+    return state.embeddedUrlTitle;
+  },
   getEmbedIframe(state) {
     return state.embeddedIframe;
   },
   getIframeEmbed(state) {
     return state.embedIframe;
+  },
+  getIframeEmbedTitle(state) {
+    return state.embeddedIframeTitle;
   },
 
   indicators(state) {

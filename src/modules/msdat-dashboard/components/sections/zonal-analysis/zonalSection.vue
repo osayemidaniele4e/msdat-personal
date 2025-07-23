@@ -75,6 +75,22 @@ export default {
         // eslint-disable-next-line
       )?.display_factor || 'Value'; // Add fallback for displayFactor
 
+      // Calculate total data points across all series for responsive width
+      let totalDataPoints = 0;
+      dataSeries.forEach((series) => {
+        totalDataPoints += Array.isArray(series.data) ? series.data.length : 1;
+      });
+
+      // Set point width based on data count - thinner bars for fewer points
+      let pointWidth = null; // Default: let Highcharts decide
+      if (totalDataPoints <= 2) {
+        pointWidth = 20; // Very few data points
+      } else if (totalDataPoints <= 5) {
+        pointWidth = 30; // Few data points
+      } else if (totalDataPoints <= 10) {
+        pointWidth = 40; // Medium number of points
+      }
+
       this.chart = {
         chart: {
           type: 'column',
@@ -111,11 +127,12 @@ export default {
         },
         plotOptions: {
           series: {
+            pointWidth, // Dynamic point width based on data count
             dataLabels: {
               enabled: true,
               format: '{y}', // Show value on top of column
               style: {
-                fontSize: '9px', // Smaller font for data labels
+                fontSize: '10px', // Smaller font for data labels
                 textOutline: 'none', // Remove outline for better readability
               },
             },
@@ -146,7 +163,8 @@ export default {
       for (let index = 1; index < this.colors.length; index += 1) {
         const zonal = data.find((item) => item.location === this.colors[index].id);
         const series = this.dlGetLocation(this.colors[index].id);
-        if (zonal && series) { // Check both exist
+        if (zonal && series) {
+          // Check both exist
           zonesSeries.push({
             name: series.name, // Zone name (used for category axis if needed, and default tooltip)
             y: parseFloat(zonal.value),
@@ -190,7 +208,8 @@ export default {
         // Use the correct sorting function for objects
         const sortedData = formattedData.sort(sortHighchartsDataInObjectFormat);
         const series = this.dlGetLocation(this.colors[index].id);
-        if (series) { // Check if series (zone) exists
+        if (series) {
+          // Check if series (zone) exists
           chartSeries.push({
             color: this.colors[index].color,
             name: series.name, // Zone name
@@ -262,8 +281,10 @@ export default {
         //   period: val.year,
         // });
 
-        if (data && data.length > 0) { // Check data is not null/undefined
-          if (val.location.id !== 1) { // State/LGA level view
+        if (data && data.length > 0) {
+          // Check data is not null/undefined
+          if (val.location.id !== 1) {
+            // State/LGA level view
             const filteredLGADataForState = data.filter(
               (item) => this.dlGetLocation(item.location)?.parent === val.location.id, // Safe navigation
             );
@@ -316,12 +337,14 @@ export default {
             }
 
             this.formatToHighChart(chartSeries);
-          } else { // National/Zonal level view
+          } else {
+            // National/Zonal level view
             const chartSeries = this.getStateDataAccordingToRegionInHighChartFormat(data); // Returns objects {name: 'ABR', y: ..., fullName: ...}
             const zonalSeries = this.getZonalDataInHighChartFormat(data); // Returns objects {name: 'Zone', y: ..., fullName: ..., color: ...}
 
             const national = data.find((item) => item.location === 1);
-            if (national) { // Check if national data exists
+            if (national) {
+              // Check if national data exists
               zonalSeries.unshift({
                 name: 'Nigeria', // For axis/default tooltip
                 y: parseFloat(national.value),
@@ -330,14 +353,16 @@ export default {
               });
             }
 
-            const zonalZee = { // This series groups the National + Zonal columns
+            const zonalZee = {
+              // This series groups the National + Zonal columns
               color: Highcharts.color('#000000').get(), // Default/base color for this series group
               name: 'Nigeria & Zones', // More descriptive series name
               data: zonalSeries, // Data points are {name: 'Zone/Nigeria', y: ..., fullName: ..., color: ...}
             };
 
             const newChart = [];
-            chartSeries.forEach((item) => { // item is { color: zoneColor, name: zoneName, data: [{name: 'ABR', y: ..., fullName: ...}, ...] }
+            chartSeries.forEach((item) => {
+              // item is { color: zoneColor, name: zoneName, data: [{name: 'ABR', y: ..., fullName: ...}, ...] }
               const zonalP = zonalZee?.data.find((element) => element.color === item.color); // Find corresponding zone data point by color
               if (zonalP !== undefined) {
                 // Prepend the zone data point to the state data array

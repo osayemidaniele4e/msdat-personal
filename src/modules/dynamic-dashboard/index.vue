@@ -58,7 +58,7 @@
       >
     </div>
 
-    <div
+    <!-- <div
       v-if="
         isCustomDashboard &&
         $store.getters.getEmbedIframe !== null &&
@@ -86,13 +86,12 @@
     >
       <h1 class="url_title">{{ this.$store.getters.dashboardDetails.description }} - (URL)</h1>
       <div class="w-100 url_height">
-        <!-- <b-embed type="iframe" aspect="21by9" :src="$store.getters.getEmbedUrl" width="100%" ></b-embed> -->
         <iframe
           :src="$store.getters.getEmbedUrl"
           style="width: 100%; height: 800px; border: none"
         ></iframe>
       </div>
-    </div>
+    </div> -->
 
     <!-- <NewsLetter v-if="!loading" /> -->
 
@@ -237,9 +236,15 @@ export default {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
             };
+
+            // Store location data for future visits
+            localStorage.setItem('userLocationProvided', 'true');
+            localStorage.setItem('userLatitude', position.coords.latitude);
+            localStorage.setItem('userLongitude', position.coords.longitude);
           },
           (error) => {
             this.error = error.message;
+            console.log('Geolocation error:', error.message);
             // eslint-disable-next-line comma-dangle
           }
         );
@@ -265,41 +270,72 @@ export default {
     // }
   },
   async mounted() {
-    this.getUserLocation();
+    // Check if user has already provided location before
+    const hasProvidedLocation = localStorage.getItem('userLocationProvided');
+
     console.log('modal', this.modalShown);
 
-    await navigator.geolocation.getCurrentPosition((position) => {
-      this.latitude = position.coords.latitude;
-      this.longitude = position.coords.longitude;
+    if (!hasProvidedLocation) {
+      // Only prompt first-time users
+      this.getUserLocation();
 
-      // Now that you have the geolocation data, you can use it here
-      const data = {
-        dashboard: this.$route.params.name,
-        longitude: this.longitude,
-        latitude: this.latitude,
-        time: Date.now(),
-      };
+      await navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
 
-      this.SET_DASHBOARD_LOCATION(data);
+        // Mark that user has provided location
+        localStorage.setItem('userLocationProvided', 'true');
+        localStorage.setItem('userLatitude', this.latitude);
+        localStorage.setItem('userLongitude', this.longitude);
 
-      this.clearData();
+        // Now that you have the geolocation data, you can use it here
+        const data = {
+          dashboard: this.$route.params.name,
+          longitude: this.longitude,
+          latitude: this.latitude,
+          time: Date.now(),
+        };
 
-      // if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-      //   // this sets skilled attendance at birth indicator on mounted
-      //   // this.SET_SELECTED_CONFIG(defaultData);
-      // } else if (this.$route.params.name === 'Disease_Surveillance') {
-      //   // this sets covid 19 confirmed cases indicator on mounted
-      //   // this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
-      //   // this.SET_SELECTED_CONFIG(defaultDSyear);
-      // } else if (this.$route.params.name === 'Advanced_Analytics') {
-      //   this.SET_SELECTED_CONFIG(defaultData);
-      //   this.SET_SELECTED_CONFIG(defaultAdvancedYear);
-      // } else if (this.$route.params.name === 'GIS_Mapping_Dashboard') {
-      //   this.SET_SELECTED_CONFIG(defaultGISIndicator);
-      //   this.SET_SELECTED_CONFIG(defaultGISDatasource);
-      //   this.SET_SELECTED_CONFIG(defaultGISYear);
-      // }
-    });
+        this.SET_DASHBOARD_LOCATION(data);
+      }, (error) => {
+        console.log('Location access denied or failed:', error.message);
+        // Continue without location data
+        this.clearData();
+      });
+    } else {
+      // Use stored location for returning users
+      this.latitude = localStorage.getItem('userLatitude') || '';
+      this.longitude = localStorage.getItem('userLongitude') || '';
+
+      if (this.latitude && this.longitude) {
+        const data = {
+          dashboard: this.$route.params.name,
+          longitude: this.longitude,
+          latitude: this.latitude,
+          time: Date.now(),
+        };
+
+        this.SET_DASHBOARD_LOCATION(data);
+      }
+    }
+
+    this.clearData();
+
+    // if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
+    //   // this sets skilled attendance at birth indicator on mounted
+    //   // this.SET_SELECTED_CONFIG(defaultData);
+    // } else if (this.$route.params.name === 'Disease_Surveillance') {
+    //   // this sets covid 19 confirmed cases indicator on mounted
+    //   // this.SET_SELECTED_CONFIG(defaultDiseaseSurveillanceData);
+    //   // this.SET_SELECTED_CONFIG(defaultDSyear);
+    // } else if (this.$route.params.name === 'Advanced_Analytics') {
+    //   this.SET_SELECTED_CONFIG(defaultData);
+    //   this.SET_SELECTED_CONFIG(defaultAdvancedYear);
+    // } else if (this.$route.params.name === 'GIS_Mapping_Dashboard') {
+    //   this.SET_SELECTED_CONFIG(defaultGISIndicator);
+    //   this.SET_SELECTED_CONFIG(defaultGISDatasource);
+    //   this.SET_SELECTED_CONFIG(defaultGISYear);
+    // }
   },
   async created() {
     // this.saveIndicatorToStorage();
@@ -331,6 +367,8 @@ export default {
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
       sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
       sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
+      sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
+      sessionStorage.setItem('embedIframeTitle', JSON.stringify(this.$store.getters.getEmbedIframeTitle));
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];

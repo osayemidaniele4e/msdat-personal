@@ -403,8 +403,6 @@ export default {
       );
       // retrieve dashboards belonging to current user
       const list = customDashboardsList[this.getUser.username || this.getUser.id];
-      // console log to check current author
-      console.log('current author', this.getUser.username);
       // find currently loaded dashboard in list
       const { name, description } = this.$store.getters.dashboardDetails;
       return list?.find(

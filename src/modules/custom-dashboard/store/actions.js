@@ -174,8 +174,9 @@ export default {
       // state.loader.levels = true;
       // commit('setshowLoader');
       // await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
-      await axios
-        .get(`https://msdat-api.fmohconnect.gov.ng/api/datasource_specific_indicator/${payload.id}`)
+      await
+      // axios.get(`https://msdat-api.fmohconnect.gov.ng/api/datasource_specific_indicator/${payload.id}`)
+      ApiServices.fetchAllCoverageLevels(payload.id)
         .then((res) => {
           const { data } = res;
           // const data = res.data;
@@ -223,8 +224,9 @@ export default {
       loading = true;
       commit('setYearsLoading', loading);
       // await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
-      await axios
-        .get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
+      await
+      // axios.get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
+      ApiServices.getIndicatorsWithAvailable(payload.id)
         .then((res) => {
           const { data } = res;
 
@@ -338,9 +340,16 @@ export default {
   setEmbedUrl({ commit }, payload) {
     commit('setUrlEmbed', payload);
   },
+  setEmbedUrlTitle({ commit }, payload) {
+    commit('setUrlEmbedTitle', payload);
+  },
 
   setEmbedIframe({ commit }, payload) {
     commit('setIframe', payload);
+  },
+
+  setEmbedIframeTitle({ commit }, payload) {
+    commit('setIframeTitle', payload);
   },
 
   setIsPublicDashboard({ commit }, payload) {
@@ -371,10 +380,8 @@ export default {
     //   'https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public.json',
     // );
     const { data } = await ApiServices.getCustomDashboard();
-    console.log(data, '@@@@TY@@@@@ 6');
     if (data.data.results) commit('setAllPublicDashboards', Object.values(data.data.results));
     const result = data.data.results;
-    console.log(result, '@@@@TY@@@@@ 6');
     return { result };
   },
   // RETRIEVE DASHBOARD DETAILS
@@ -387,9 +394,7 @@ export default {
 
   // RETRIEVE A SINGLE DASHBOARD BY ID
   async getDashboard(_, id) {
-    console.log(id, '@@Henry 2');
     const { data } = await ApiServices.getSingleCustomDashboard(id);
-    console.log(data, '@@Henry 4');
     return { data };
     // return axios.get(`https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`);
   },

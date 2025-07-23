@@ -80,11 +80,12 @@ export default {
     },
 
     diffBaseOnTarget(data, targetValue) {
-      const aboveTargetData = takeWhile(data, (item) => item.y >= targetValue);
-      const belowTargetData = difference(data, aboveTargetData);
-
+      const aboveTargetData = data.filter((item) => item.y > targetValue);
+      const onTargetData = data.filter((item) => item.y === targetValue);
+      const belowTargetData = data.filter((item) => item.y < targetValue);
       return {
         aboveTargetData,
+        onTargetData,
         belowTargetData,
       };
     },
@@ -204,42 +205,48 @@ export default {
             color: this.color.blue,
             data: dataObjectWithTarget.aboveTargetData,
           });
-          // series.push({
-          //   name: 'Below Target',
-          //   color: this.color.blue,
-          //   data: dataObjectWithTarget.belowTargetData,
-          // });
         }
 
         if (options.nationalTarget.value !== null) {
+          // Determine colors based on slope
+          let aboveColor, onColor, belowColor;
           if (options.nationalTarget.slope === 'Positive') {
+            aboveColor = this.color.green;
+            onColor = this.color.blue;
+            belowColor = this.color.red;
+          } else if (options.nationalTarget.slope === 'Negative') {
+            aboveColor = this.color.red;
+            onColor = this.color.blue;
+            belowColor = this.color.green;
+          } else {
+            // fallback if slope is not defined
+            aboveColor = this.color.green;
+            onColor = this.color.blue;
+            belowColor = this.color.red;
+          }
+          if (dataObjectWithTarget.aboveTargetData.length > 0) {
             series.push({
-              name: 'On Target',
-              color: this.color.green,
+              name: 'Above Target',
+              color: aboveColor,
               data: dataObjectWithTarget.aboveTargetData,
-            });
-            series.push({
-              name: 'Below Target',
-              color: this.color.red,
-              data: dataObjectWithTarget.belowTargetData,
             });
           }
-
-          if (options.nationalTarget.slope === 'Negative') {
+          if (dataObjectWithTarget.onTargetData.length > 0) {
             series.push({
               name: 'On Target',
-              color: this.color.red,
-              data: dataObjectWithTarget.aboveTargetData,
+              color: onColor,
+              data: dataObjectWithTarget.onTargetData,
             });
+          }
+          if (dataObjectWithTarget.belowTargetData.length > 0) {
             series.push({
               name: 'Below Target',
-              color: this.color.green,
+              color: belowColor,
               data: dataObjectWithTarget.belowTargetData,
             });
           }
         }
 
-        // yAxis.plotLine = plotLine;
         let { yAxis } = defaultObject;
         yAxis = Object.assign(yAxis, { plotLines });
         if (showingNumDenum) {
