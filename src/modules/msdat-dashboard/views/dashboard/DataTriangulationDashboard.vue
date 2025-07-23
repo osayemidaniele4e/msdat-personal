@@ -407,7 +407,17 @@
       >
         <h1 class="into-title">Advanced Triangulation Dashboard</h1>
         <p class="info-action-desc w-75">
-          This enables deep data exploration and validation from multiple sources and their methodologies to strengthen analytical confidence, identify discrepancies, and validate insights. Users can authenticate datasets through multi-source validation, cross-verification of findings, and convergent analysis across different datasets
+          Basic data triangulation in the MSDAT is done when users compare data across indicators,
+          datasets, and/or multiple sources. This process allows users to examine health data from
+          different perspectives within the platform. Users can cross-reference various data points
+          to build a more comprehensive understanding of health indicators.
+        </p>
+        <p class="info-action-desc w-75">
+          Advanced triangulation improves this analysis by allowing users to verify data through
+          systematic cross-checking of findings across multiple datasets. This process enables
+          convergent analysis where different data sources are compared to identify consistent
+          patterns and validate results. Users can authenticate their findings through structured
+          verification protocols that ensure data reliability and accuracy.
         </p>
         <h2 class="info-action mt-5">
           Select a 'Primary Data Source' and additional 'Data Source(s) to be Compared'.
@@ -516,10 +526,10 @@
     </div>
     <Footer />
     <div v-if="showLoadingPopup" class="notification-body">
-     <div class="content">
-      <span>Triangulation in progress ....</span>
-       <h1>Selected Datasources contains large datasets</h1>
-     </div>
+      <div class="content">
+        <span>Triangulation in progress ....</span>
+        <h1>Selected Datasources contains large datasets</h1>
+      </div>
     </div>
   </section>
 </template>
@@ -599,7 +609,7 @@ export default {
     removeUndefined(obj = {}) {
       return Object.fromEntries(
         // eslint-disable-next-line no-unused-vars
-        Object.entries(obj).filter(([_, value]) => value !== undefined),
+        Object.entries(obj).filter(([_, value]) => value !== undefined)
       );
     },
 
@@ -622,14 +632,12 @@ export default {
     cleanObject(obj) {
       return Object.fromEntries(
         // eslint-disable-next-line no-unused-vars
-        Object.entries(obj).filter(([_, value]) => value != null),
+        Object.entries(obj).filter(([_, value]) => value != null)
       );
     },
 
     triangulate() {
-      const {
-        primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation,
-      } = this;
+      const { primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation } = this;
 
       // Construct object with possible undefined/null values
       const obj = {
@@ -680,10 +688,11 @@ export default {
               return Object.keys(objItem);
             })
             .filter(
-              (header, index, self) => header
-                && header !== 'null'
-                && header !== 'undefined'
-                && self.indexOf(header) === index,
+              (header, index, self) =>
+                header &&
+                header !== 'null' &&
+                header !== 'undefined' &&
+                self.indexOf(header) === index
             ); // Remove duplicates and invalid headers
           this.showLoader = false; // Show loading spinner
           this.showLoadingPopup = false; // Hide loading popup
@@ -693,8 +702,8 @@ export default {
           this.showLoader = false; // Hide loading spinner
           this.showLoadingPopup = false; // Hide loading popup
 
-          const msg
-            = error?.response?.data?.message || error.message || 'An unknown error occurred';
+          const msg =
+            error?.response?.data?.message || error.message || 'An unknown error occurred';
           this.$swal(`error: ${msg}`);
           this.showLoader = false; // Hide loading spinner
           this.showLoadingPopup = false; // Hide loading popup

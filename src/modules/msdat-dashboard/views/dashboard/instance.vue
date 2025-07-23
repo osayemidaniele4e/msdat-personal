@@ -159,7 +159,7 @@
   <div class="col-md-12">
     <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
       <template #title>
-        <h5 class="font-weight-bold work-sans text-white">Embedded Dashboard</h5>
+        <h5 class="font-weight-bold work-sans text-white">{{ customTitle }}</h5>
       </template>
       <template>
         <LazyLoading>
@@ -217,8 +217,9 @@ export default {
         'Multi-Source Comparison',
         'Disaggregation',
         'Scorecard',
-        'Embedded Dashboard',
+        // 'Embedded Dashboard',
       ],
+      customTitle: ''
     };
   },
   components: {
@@ -307,7 +308,19 @@ export default {
       reorderedConfigs.forEach((field) => {
         this.ADD_CONTROL_PANEL(field);
       });
-      this.ADD_CONTROL_PANEL(EmbedDashboardConfig);
+      const { embeddedIframeTitle, embeddedUrlTitle } = this.$store.state.CUSTOM_DASHBOARD_STORE;
+      const newEmbedConfig = {
+        ...EmbedDashboardConfig,
+        label:
+          embeddedIframeTitle && embeddedIframeTitle.trim() !== ''
+            ? embeddedIframeTitle
+            : embeddedUrlTitle && embeddedUrlTitle.trim() !== ''
+            ? embeddedUrlTitle
+            : 'Embedded_Dashboard',
+      };
+      this.allSections.push(newEmbedConfig.label);
+      this.customTitle = newEmbedConfig.label;
+      this.ADD_CONTROL_PANEL(newEmbedConfig);
     },
     setAllSections(configs) {
       for (let i = 0; i < configs.length; i++) {

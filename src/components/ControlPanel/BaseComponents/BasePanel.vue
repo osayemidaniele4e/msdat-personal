@@ -153,7 +153,7 @@ export default {
         });
       }
 
-      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard' && title !== 'Embedded Dashboard') {
+      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard' && title === 'Indicator Comparison') {
         const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
 
         this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {
