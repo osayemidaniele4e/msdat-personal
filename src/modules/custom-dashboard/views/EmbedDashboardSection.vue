@@ -122,10 +122,12 @@ export default {
 
   mounted() {
     this.$store.commit('updateStep', 4);
+    this.activeTab = localStorage.getItem('activeTab') || 'embedUrl';
     this.url = this.$store.getters.getUrl;
     this.embedded_iframe = this.$store.getters.getIframeEmbed;
-    this.urlTitle = this.$store.getters.embedUrlTitle;
-    this.iframeTitle = this.$store.getters.embedIframeTitle;
+    this.urlTitle = this.$store.getters.getNewEmbedUrlTitle;
+    this.iframeTitle = this.$store.getters.getNewEmbedIframeTitle;
+    console.log(this.urlTitle, 'urlTitle');
   },
 
   methods: {
@@ -135,10 +137,14 @@ export default {
     saveEmbed() {
       // save url to store
       this.$store.dispatch('setEmbedUrl', this.modifyTableauUrl(this.url));
-      this.$store.dispatch('setEmbedUrlTitle', this.urlTitle);
+      this.$store.dispatch('setNewEmbedUrlTitleAction', this.modifyTableauUrl( this.urlTitle));
+       this.$store.dispatch('setNewEmbedIframeTitleAction', this.modifyTableauUrl( this.urlTitle));
+      console.log(this.urlTitle, 'urlTitle');
+      localStorage.setItem('activeTab', this.activeTab);
+    
       // save iframe to store
       this.$store.dispatch('setEmbedIframe', this.embedded_iframe);
-      this.$store.dispatch('setEmbedIframeTitle', this.iframeTitle);
+      // this.$store.dispatch('setEmbedIframeTitle', this.iframeTitle);
       this.$router.push('sections');
     },
 

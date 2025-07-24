@@ -309,6 +309,7 @@ export default {
         this.ADD_CONTROL_PANEL(field);
       });
       const { embeddedIframeTitle, embeddedUrlTitle } = this.$store.state.CUSTOM_DASHBOARD_STORE;
+     
       const newEmbedConfig = {
         ...EmbedDashboardConfig,
         label:

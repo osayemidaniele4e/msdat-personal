@@ -1,4 +1,5 @@
 {
+ "pageLoadTimeout": 200000,   
  "baseUrl": "https://msdat.fmohconnect.gov.ng/",
  "fixturesFolder": "tests/e2e/fixtures",
  "integrationFolder": "tests/e2e/specs",

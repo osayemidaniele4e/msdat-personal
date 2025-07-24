@@ -43,45 +43,52 @@ function getDefaultState() {
     notes: [],
     visibility: 'private',
     editMode: false,
-    ArrangedSections: SectionsArray ? JSON.parse(SectionsArray) : [
-      {
-        id: 0,
-        name: 'Indicator Overview',
-        active: false,
-        isShow: false,
-      },
-      {
-        id: 1,
-        name: 'Zonal Analysis',
-        active: false,
-        isShow: false,
-      },
-      {
-        id: 2,
-        name: 'Indicator Comparison',
-        active: false,
-        isShow: false,
-      },
-      {
-        id: 3,
-        name: 'Dataset Comparison',
-        active: false,
-        isShow: false,
-      },
-      {
-        id: 4,
-        name: 'Multi-source Comparison',
-        active: false,
-        isShow: false,
-      },
-    ],
+    ArrangedSections: SectionsArray
+      ? JSON.parse(SectionsArray)
+      : [
+          {
+            id: 0,
+            name: 'Indicator Overview',
+            active: false,
+            isShow: false,
+          },
+          {
+            id: 1,
+            name: 'Zonal Analysis',
+            active: false,
+            isShow: false,
+          },
+          {
+            id: 2,
+            name: 'Indicator Comparison',
+            active: false,
+            isShow: false,
+          },
+          {
+            id: 3,
+            name: 'Dataset Comparison',
+            active: false,
+            isShow: false,
+          },
+          {
+            id: 4,
+            name: 'Multi-source Comparison',
+            active: false,
+            isShow: false,
+          },
+        ],
     embedUrl: '',
     embedIframe: '',
   };
 }
 
 const showLoaderTrue = (sta) => {
-  if (sta.levels === true || sta.indicator === true || sta.datasource === true || sta.years === true) {
+  if (
+    sta.levels === true ||
+    sta.indicator === true ||
+    sta.datasource === true ||
+    sta.years === true
+  ) {
     sta.show = true;
   } else {
     sta.show = false;
@@ -197,7 +204,8 @@ export default {
       element.children.map((child) => {
         if (child.id === payload.id) {
           child.selected = payload.checked;
-        } if (payload.checked) {
+        }
+        if (payload.checked) {
           // element.parent.selected = true;
           counter = 1;
         } else if (child.selected) {
@@ -352,6 +360,12 @@ export default {
   },
   setEmbedUrl(state, url) {
     state.embeddedUrl = url;
+  },
+  setNewEmbedUrlTitle(state, title) {
+    state.setNewEmbedUrlTitle = title;
+  },
+    setNewEmbedIframeTitle(state, title) {
+    state.setNewEmbedIframeTitle = title;
   },
   setEmbedIframe(state, iframe) {
     state.embeddedIframe = iframe;

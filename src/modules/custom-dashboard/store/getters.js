@@ -9,6 +9,12 @@ export default {
   getEmbedUrl(state) {
     return state.embeddedUrl;
   },
+   getNewEmbedUrlTitle(state) {
+    return state.setNewEmbedUrlTitle;
+  },
+   getNewEmbedIframeTitle(state) {
+    return state.setNewEmbedIframeTitle;
+  },
   getUrl(state) {
     return state.embedUrl;
   },
