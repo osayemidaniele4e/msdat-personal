@@ -366,6 +366,8 @@ export default {
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
       sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
+      sessionStorage.setItem('setEmbedUrlTitle', JSON.stringify(this.$store.getters.getNewEmbedUrlTitle));
+       sessionStorage.setItem('setEmbedIframeTitle', JSON.stringify(this.$store.getters.getNewEmbedIframeTitle));
       sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
       sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
       sessionStorage.setItem('embedIframeTitle', JSON.stringify(this.$store.getters.getEmbedIframeTitle));

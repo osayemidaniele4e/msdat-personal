@@ -135,7 +135,7 @@ export default {
                       x.selected = true;
                       return x;
                     }
-                  },
+                  }
                 ),
                 parent: distItem.toUpperCase(),
               });
@@ -174,8 +174,7 @@ export default {
       // state.loader.levels = true;
       // commit('setshowLoader');
       // await axios.get(`http://135.181.212.168:9234/api/crud/datasource_specific_indicator/${payload.id}`)
-      await
-      // axios.get(`https://msdat-api.fmohconnect.gov.ng/api/datasource_specific_indicator/${payload.id}`)
+      await // axios.get(`https://msdat-api.fmohconnect.gov.ng/api/datasource_specific_indicator/${payload.id}`)
       ApiServices.fetchAllCoverageLevels(payload.id)
         .then((res) => {
           const { data } = res;
@@ -224,37 +223,35 @@ export default {
       loading = true;
       commit('setYearsLoading', loading);
       // await axios.get(`http://135.181.212.168:9234/api/crud/indicators/${payload.id}/years_available/`)
-      await
-      // axios.get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
-      ApiServices.getIndicatorsWithAvailable(payload.id)
-        .then((res) => {
-          const { data } = res;
+      await // axios.get(`https://msdat-api.fmohconnect.gov.ng/api/indicators/${payload.id}/years_available/`)
+      ApiServices.getIndicatorsWithAvailable(payload.id).then((res) => {
+        const { data } = res;
 
-          const currentYear = new Date().getFullYear();
-          const years = data.years.filter((year) => Number(year) && Number(year) <= currentYear);
-          // console.log(data, 'data');
-          if (state.allSelected === false) {
-            const yearsData = years.map((year) => ({ selected: false, value: year }));
-            dataObj = {
-              id: payload.id,
-              childName: payload.child,
-              years: yearsData,
-              parentName: payload.parent,
-              checked: payload.checked,
-            };
-          } else {
-            const yearsData = years.map((year) => ({ selected: true, value: year }));
-            dataObj = {
-              id: payload.id,
-              childName: payload.child,
-              years: yearsData,
-              parentName: payload.parent,
-              checked: payload.checked,
-            };
-          }
-          loading = false;
-          commit('setYearsLoading', loading);
-        });
+        const currentYear = new Date().getFullYear();
+        const years = data.years.filter((year) => Number(year) && Number(year) <= currentYear);
+        // console.log(data, 'data');
+        if (state.allSelected === false) {
+          const yearsData = years.map((year) => ({ selected: false, value: year }));
+          dataObj = {
+            id: payload.id,
+            childName: payload.child,
+            years: yearsData,
+            parentName: payload.parent,
+            checked: payload.checked,
+          };
+        } else {
+          const yearsData = years.map((year) => ({ selected: true, value: year }));
+          dataObj = {
+            id: payload.id,
+            childName: payload.child,
+            years: yearsData,
+            parentName: payload.parent,
+            checked: payload.checked,
+          };
+        }
+        loading = false;
+        commit('setYearsLoading', loading);
+      });
     } else {
       dataObj = {
         id: payload.id,
@@ -340,6 +337,13 @@ export default {
   setEmbedUrl({ commit }, payload) {
     commit('setUrlEmbed', payload);
   },
+  setNewEmbedUrlTitleAction({ commit }, payload) {
+    commit('setNewEmbedUrlTitle', payload);
+  },
+  setNewEmbedIframeTitleAction({ commit }, payload) {
+    commit('setNewEmbedIframeTitle', payload);
+  },
+
   setEmbedUrlTitle({ commit }, payload) {
     commit('setUrlEmbedTitle', payload);
   },
@@ -387,7 +391,7 @@ export default {
   // RETRIEVE DASHBOARD DETAILS
   async getDashboardDetails(_, id) {
     const { data } = await axios.get(
-      `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`,
+      `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`
     );
     return { data };
   },
@@ -402,7 +406,7 @@ export default {
   updateDashboard(_, payload) {
     return axios.patch(
       `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`,
-      payload,
+      payload
     );
   },
 };
