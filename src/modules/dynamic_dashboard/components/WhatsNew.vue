@@ -77,9 +77,11 @@ export default {
     },
 
     navigateToDashboard(str) {
-      const link = str.split(' ').join('_');
+      if (str === null || str === undefined || str === 'null') {
+        return;
+      }
       const origin = window.location.origin;
-      const url = `/dashboard/${link}`;
+      const url = `/${str}`;
       // Construct the full URL
       const fullUrl = origin + url;
       // Open the full URL in a new tab

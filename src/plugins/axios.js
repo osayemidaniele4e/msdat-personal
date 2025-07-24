@@ -1,13 +1,6 @@
 import axios from 'axios';
 import Vue from 'vue';
-import VueCookies from 'vue-cookies';
-
-Vue.use(VueCookies);
-
-let userDetails = null;
-if (typeof window !== 'undefined') {
-  userDetails = VueCookies.get('msdat-user-details');
-}
+import store from '@/store';
 
 const apiConfigs = {
   default: process.env.VUE_APP_API_BASE_URL,
@@ -25,7 +18,7 @@ const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => 
         (config) => {
           const newConfig = { ...config };
           // eslint-disable-next-line camelcase
-          const token = userDetails?.tokens?.access_token;
+          const token = store.getters['AUTH_STORE/getToken'];
           if (token) {
             newConfig.headers = {
               ...newConfig.headers,
