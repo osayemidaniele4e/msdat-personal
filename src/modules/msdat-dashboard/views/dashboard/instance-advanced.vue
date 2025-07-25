@@ -190,7 +190,7 @@
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
-              <h5 class="font-weight-bold work-sans text-white">Scatterplot Analysis</h5>
+              <h5 class="font-weight-bold work-sans text-white">Bubble Chart Analysis</h5>
             </template>
             <!-- lazy loading for each section starts here -->
             <!-- the first section doesn't need the component

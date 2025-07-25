@@ -265,9 +265,9 @@ export default {
     this.$store.commit('updateStep', 5);
     const programArea = this.$store.getters.getprogramArea;
     const dataSource = this.$store.getters.getDataSource;
-    const urlTitle = this.$store.getters.getUrlTitle;
+    const urlTitle = this.$store.getters.getNewEmbedUrlTitle;
     const url = this.$store.getters.getUrl;
-    const iframeTitle = this.$store.getters.getIframeEmbedTitle;
+    const iframeTitle = this.$store.getters.getNewEmbedIframeTitle;
     const iframe = this.$store.getters.getIframeEmbed;
 
     if (programArea != null && dataSource != null) {
@@ -463,8 +463,6 @@ export default {
           is_confirmed: false,
           is_private: this.$store.getters.getVisibility === 'private',
         };
-
-        console.log(data);
 
         try {
           const cleanedData = this.removeNullFields(data);

@@ -27,7 +27,7 @@
                 class="mob-img"
                 variant="primary"
               />
-              <div class="mobile-flex-col" v-if="this.$store.getters.customDashboard === true">
+              <div class="mobile-flex-col" v-if="this.customDashboard">
                 <small class="mobile-flex-col-text1">{{
                   this.$store.getters.dashboardDetails.name
                 }}</small>
@@ -409,6 +409,9 @@ export default {
         (dashb) => dashb.config.dashboardDetails.name === name
           && dashb.config.dashboardDetails.description === description
       );
+    },
+    customDashboard() {
+      return this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard;
     },
   },
   created() {

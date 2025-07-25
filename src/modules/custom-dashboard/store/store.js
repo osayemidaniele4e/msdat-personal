@@ -8,6 +8,8 @@ const SectionsArray = sessionStorage.getItem('sectionsArray');
 const dashboardDetails = localStorage.getItem('dashboardDetails');
 const customDashboard = localStorage.getItem('customDashboardStatus') || false;
 const embedUrl = sessionStorage.getItem('embedUrl');
+const setEmbedUrlTitle = sessionStorage.getItem('setEmbedUrlTitle');
+const setEmbedIframeTitle = sessionStorage.getItem('setEmbedIframeTitle');
 const embedIframe = sessionStorage.getItem('embedIframe');
 const embedUrlTitle1 = sessionStorage.getItem('embedUrlTitle');
 const embedIframeTitle2 = sessionStorage.getItem('embedIframeTitle');
@@ -68,6 +70,8 @@ const store = {
     allPublicDashboards: [],
     selectedIndicators: [],
     embeddedUrl: JSON.parse(embedUrl),
+    setNewEmbedUrlTitle: JSON.parse(setEmbedUrlTitle),
+    setNewEmbedIframeTitle: JSON.parse(setEmbedIframeTitle),
     embeddedIframe: JSON.parse(embedIframe),
     embeddedUrlTitle: JSON.parse(embedUrlTitle1),
     embeddedIframeTitle: JSON.parse(embedIframeTitle2),
