@@ -205,6 +205,18 @@ export default {
           key: 'indicatorPlugin',
           enabled: localStorage.getItem('indicatorPlugin') === 'true',
         },
+        {
+          title: 'Screenshot Manager',
+          description: 'Enable screenshot capture and management features',
+          key: 'screenshotManager',
+          enabled: localStorage.getItem('screenshotManager') === 'true',
+        },
+        {
+          title: 'Accessibility Plugin',
+          description: 'Enable accessibility features like high contrast mode, font size adjustment, and screen reader support',
+          key: 'accessibilityPlugin',
+          enabled: localStorage.getItem('accessibilityPlugin') === 'true',
+        },
       ],
       data, // Importing data from custom_dashboard_data.js
 
