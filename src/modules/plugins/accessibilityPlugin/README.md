@@ -46,7 +46,7 @@ The Accessibility Plugin provides comprehensive accessibility features to make t
 
 ### Method 1: Through User Settings (Recommended)
 
-1. Navigate to User Settings in the application
+1. Navigate to User Settings in the applications
 2. Go to the "Plugins" section
 3. Find "Accessibility Plugin" in the list
 4. Toggle it to "Enabled"
