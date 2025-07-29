@@ -186,7 +186,7 @@
               Disable
             </button>
           </div>
-        </div>
+        </div> 
       </div>
     </b-modal>
     <ClearDBCacheModal

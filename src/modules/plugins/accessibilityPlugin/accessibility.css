@@ -1,0 +1,104 @@
+/* High Contrast Mode Styles */
+.high-contrast {
+  filter: contrast(50%) !important;
+}
+
+.high-contrast * {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+.high-contrast input,
+.high-contrast button,
+.high-contrast select,
+.high-contrast textarea {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+
+.high-contrast a {
+  color: #00ffff !important;
+}
+
+.high-contrast a:visited {
+  color: #ff00ff !important;
+}
+
+.high-contrast .accessibility-plugin {
+  background-color: #000 !important;
+  border-color: #fff !important;
+}
+
+/* Enhanced Focus Indicators */
+.enhanced-focus *:focus {
+  outline: 3px solid #ffcc00 !important;
+  outline-offset: 2px !important;
+}
+
+.enhanced-focus button:focus,
+.enhanced-focus input:focus,
+.enhanced-focus select:focus,
+.enhanced-focus textarea:focus,
+.enhanced-focus a:focus {
+  box-shadow: 0 0 0 3px #ffcc00 !important;
+}
+
+/* Reduced Motion */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 10000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Ensure accessibility plugin is visible in high contrast */
+.high-contrast .accessibility-main button {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.high-contrast .accessibility-plugin {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.high-contrast .accessibility-plugin .control-label {
+  color: #fff !important;
+}
+
+.high-contrast .accessibility-plugin .control-description {
+  color: #ccc !important;
+}

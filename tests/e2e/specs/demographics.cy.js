@@ -14,15 +14,15 @@ describe('Demographic Page', () => {
   it('should have a visible Table Component', () => {
     cy.get('#the-table', { timeout: 200000 }).should('be.visible');
   });
-   it('should have a visible footer', () => {
+  it('should have a visible footer', () => {
     cy.get('#the-footer', { timeout: 180000 }).should('be.visible');
   });
-   it('should have a visible State Bar Chart Component', () => {
+  it('should have a visible State Bar Chart Component', () => {
     cy.get('#stateBarChartComponent', { timeout: 180000 }).should('be.visible');
   });
-//    it('should have a visible Indicator Datasource Comparison Component', () => {
-//     cy.get('#iddc-component', { timeout: 180000 }).should('be.visible');
-//   });
+  //    it('should have a visible Indicator Datasource Comparison Component', () => {
+  //     cy.get('#iddc-component', { timeout: 180000 }).should('be.visible');
+  //   });
 });
 describe('Demographics Config API', () => {
   let responseBody;
@@ -59,12 +59,10 @@ describe('Demographics Config API', () => {
     expect(responseBody.indicators).to.be.an('array').and.to.not.be.empty;
   });
 
-
   it('should have a dataSources property', () => {
     expect(responseBody).to.have.property('dataSources');
-    
   });
-   it('should have a non-empty array of dataSources', () => {
+  it('should have a non-empty array of dataSources', () => {
     expect(responseBody.dataSources).to.be.an('array').and.to.not.be.empty;
   });
 
@@ -78,8 +76,6 @@ describe('Demographics Config API', () => {
     }
   });
 });
-
-
 
 describe('Dashboard Indicators', () => {
   let responseBody;
@@ -102,8 +98,7 @@ describe('Dashboard Indicators', () => {
 
   it('should have a non-empty array of indicators', () => {
     expect(responseBody.indicators).to.be.an('array').and.to.not.be.empty;
-  });    
-
+  });
 });
 
 describe('Dashboard Data', () => {
@@ -127,6 +122,5 @@ describe('Dashboard Data', () => {
 
   it('should have a non-empty array of results', () => {
     expect(responseBody.results).to.be.an('array').and.to.not.be.empty;
-  });    
-
+  });
 });
