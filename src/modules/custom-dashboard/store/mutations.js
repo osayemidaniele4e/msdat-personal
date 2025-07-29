@@ -372,9 +372,11 @@ export default {
   },
   setEmbedUrlTitle(state, title) {
     state.embeddedUrlTitle = title;
+    state.setNewEmbedUrlTitle = title;
   },
   setEmbedIframeTitle(state, title) {
     state.embeddedIframeTitle = title;
+    state.setNewEmbedIframeTitle = title;
   },
 
   // ********* LOADING ********//

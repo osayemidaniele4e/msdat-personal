@@ -137,8 +137,8 @@ export default {
     saveEmbed() {
       // save url to store
       this.$store.dispatch('setEmbedUrl', this.modifyTableauUrl(this.url));
-      this.$store.dispatch('setNewEmbedUrlTitleAction', this.modifyTableauUrl( this.urlTitle));
-       this.$store.dispatch('setNewEmbedIframeTitleAction', this.modifyTableauUrl( this.urlTitle));
+      this.$store.dispatch('setNewEmbedUrlTitleAction', this.urlTitle);
+       this.$store.dispatch('setNewEmbedIframeTitleAction', this.iframeTitle);
       console.log(this.urlTitle, 'urlTitle');
       localStorage.setItem('activeTab', this.activeTab);
     

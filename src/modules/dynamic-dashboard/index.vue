@@ -423,12 +423,12 @@ export default {
         initialDataSource: sourcesID[0],
         initialLocation: 1,
       };
-      this.saveDashboard(
-        ids,
-        sourcesID,
-        // eslint-disable-next-line comma-dangle
-        this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-      );
+      // this.saveDashboard(
+      //   ids,
+      //   sourcesID,
+      //   // eslint-disable-next-line comma-dangle
+      //   this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+      // );
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
