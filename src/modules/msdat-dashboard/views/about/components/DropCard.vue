@@ -229,14 +229,14 @@
               </span>
             </div>
 
-            <div class="tooltip-wrapper-2">
+            <!-- <div class="tooltip-wrapper-2">
               <router-link to="/ministers-dashboard" target="_blank">
                 <b-list-group-item>SWAP Ministerial Dashboard</b-list-group-item>
               </router-link>
               <span class="custom-tooltip-2"
                 >High-level insights into health at the national level.
               </span>
-            </div>
+            </div>  -->
             <div class="tooltip-wrapper-2">
               <router-link to="/presidential-bond-scorecard" target="_blank">
                 <b-list-group-item
