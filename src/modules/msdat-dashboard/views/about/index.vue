@@ -85,7 +85,7 @@
         <div class="image-container">
           <section>
           <div id="logical-framework">
-            <img src="./assets/Logical-Framework.png" class="logical-framework-img" />
+            <img src="./assets/Framework.png" class="logical-framework-img" />
 
           </div>
         </section>
