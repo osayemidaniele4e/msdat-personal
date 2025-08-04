@@ -128,11 +128,11 @@
               {{ section.label }}
               <span class="custom-tooltip">{{ section.tooltip }} </span>
             </b-list-group-item>
-            <div class="tooltip-wrapper-2">
+            <div class="tooltip-wrapper">
               <router-link to="/advanced-triangulation-dashboard" target="_blank">
                 <b-list-group-item>Advanced Triangulation</b-list-group-item>
               </router-link>
-              <span class="custom-tooltip-2">Analyze health data from multiple sources. </span>
+              <span class="custom-tooltip">Analyze health data from multiple sources. </span>
             </div>
           </b-list-group>
         </div>
@@ -396,7 +396,7 @@ export default {
   opacity: 0;
   position: absolute;
   z-index: 999;
-  bottom: 50%; // place it above the item
+  bottom: -30px; // place it above the item
   left: 70%;
   transform: translateX(-50%) translateY(-8px);
   background-color: #fff;
@@ -411,16 +411,6 @@ export default {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid #e5e5e5;
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 6px;
-    border-style: solid;
-    border-color: #494545 transparent transparent transparent;
-  }
 }
 
 .custom-tooltip-2 {
@@ -428,7 +418,7 @@ export default {
   opacity: 0;
   position: absolute;
   z-index: 999;
-  bottom: 50%; // place it above the item
+  bottom: -30px; // place it above the item
   left: 10%;
   transform: translateX(-50%) translateY(-8px);
   background-color: #fff;
@@ -443,16 +433,7 @@ export default {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid #e5e5e5;
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 6px;
-    border-style: solid;
-    border-color: #494545 transparent transparent transparent;
-  }
+  
 }
 
 // .custom-tooltip {
