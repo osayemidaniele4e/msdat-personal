@@ -4,7 +4,6 @@
       v-if="$store.getters.getEmbedIframe !== null && $store.getters.getEmbedIframe !== ''"
       class="mt-1"
     >
-      <h1 v-if="this.$store.getters.getIframeEmbedTitle !== null" class="url_title">{{ this.$store.getters.getIframeEmbedTitle }}</h1>
       <div class="w-100 url_height">
         <div v-html="$store.getters.getEmbedIframe"></div>
       </div>
@@ -18,7 +17,6 @@
           : 'url_body',
       ]"
     >
-      <h1 v-if="this.$store.getters.getUrlTitle !== null" class="url_title">{{ this.$store.getters.getUrlTitle }}</h1>
       <div class="w-100 url_height">
         <iframe
           :src="$store.getters.getEmbedUrl"

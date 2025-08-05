@@ -58,7 +58,7 @@
               placeholder="Type to search"
               track-by="full_name"
               label="full_name"
-               openDirection="bottom"
+              openDirection="bottom"
               @select="handleSelect"
               v-bind="multiSelectProps"
               close-on-select
@@ -254,7 +254,10 @@ export default {
       type: String,
       required: false,
     },
-    value: {},
+    value: {
+      type: [String, Number, Object, Array, Boolean],
+      required: false,
+    },
     replaceContent: {
       type: Function,
       required: true,

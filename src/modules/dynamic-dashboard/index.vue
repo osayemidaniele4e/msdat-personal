@@ -366,6 +366,8 @@ export default {
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
       sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
+      sessionStorage.setItem('setEmbedUrlTitle', JSON.stringify(this.$store.getters.getNewEmbedUrlTitle));
+       sessionStorage.setItem('setEmbedIframeTitle', JSON.stringify(this.$store.getters.getNewEmbedIframeTitle));
       sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
       sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
       sessionStorage.setItem('embedIframeTitle', JSON.stringify(this.$store.getters.getEmbedIframeTitle));
@@ -421,12 +423,12 @@ export default {
         initialDataSource: sourcesID[0],
         initialLocation: 1,
       };
-      this.saveDashboard(
-        ids,
-        sourcesID,
-        // eslint-disable-next-line comma-dangle
-        this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-      );
+      // this.saveDashboard(
+      //   ids,
+      //   sourcesID,
+      //   // eslint-disable-next-line comma-dangle
+      //   this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+      // );
       VueCookies.set('customDashboardConfig', formattedConfig);
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
