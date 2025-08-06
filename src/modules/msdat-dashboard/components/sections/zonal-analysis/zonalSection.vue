@@ -213,7 +213,7 @@ export default {
           chartSeries.push({
             color: this.colors[index].color,
             name: series.name, // Zone name
-            data: sortedData, // Array of {name: 'ABR', y: ..., fullName: ...} objects
+            data: sortedData, // Array of {name: 'ABR', y: ..., fullName: ...} objectss
           });
         }
       }
