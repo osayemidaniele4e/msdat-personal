@@ -53,7 +53,7 @@
                     <div class="summary-number">{{ availablePluginsCount }}</div>
                     <div class="summary-title">Available Plug-ins</div>
                   </b-col>
-                  <span class="view-all"><a href="#Plugins">View all</a></span>
+                  <span class="view-all"><a href="#/Plugins">View all</a></span>
                 </b-row>
               </div>
             </div>

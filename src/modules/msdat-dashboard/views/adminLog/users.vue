@@ -16,9 +16,9 @@
                 <div class="left-top w-70">
                   <h3 class="summary-number">{{ activeUsers }}</h3>
                   <p class="summary-title">Active Users</p>
-                  <small>Last Updated: {{ lastUpdatedActiveUsers }}</small>
+                  <small>Last Updated: {{ formattedDate }}</small>
                  </div>
-                 <div class="w-30"><a href="#" class="view-all">View All</a></div>
+                 <div class="w-30"><a href="#" class="view-all" @click.prevent="viewAllActiveUsers">View All</a></div>
               </div>
             </b-col>
 
@@ -28,9 +28,9 @@
                 <div class="w-70">
                     <h3 class="summary-number">{{ users.filter(user => user.role?.value === 'admin').length }}</h3>
                   <p class="summary-title">Admin Profiles</p>
-                  <small>Last Updated: {{ lastUpdatedAdminProfiles }}</small>
+                  <small>Last Updated: {{ formattedDate }}</small>
                  </div>
-                 <div class="w-30"><a href="#" class="view-all">View All</a></div>
+                 <div class="w-30"><a href="#" class="view-all" @click.prevent="viewAllAdminUsers">View All</a></div>
               </div>
             </b-col>
 
@@ -40,7 +40,7 @@
                 <div class="w-70">
                   <h3 class="summary-number">{{ publicDashboards }}</h3>
                   <p class="summary-title">Public Dashboards</p>
-                  <small>Last Updated: {{ lastUpdatedPublicDashboards }}</small>
+                  <small>Last Updated: {{ formattedDate }}</small>
                  </div>
                  <!-- <div class="w-30"><a href="#" class="view-all">View All</a></div> -->
               </div>
@@ -319,6 +319,7 @@ export default {
       errors: {},
       searchQuery: '',
       filterRole: '',
+      filterType: '', // Add filter type to track active/admin filter
       selectedUsers: [],
       searchTimeout: null,
       selectedUserForRole: null,
@@ -328,9 +329,7 @@ export default {
       },
       adminProfiles: 1,
       publicDashboards: '',
-      lastUpdatedActiveUsers: '30th January, 2025',
-      lastUpdatedAdminProfiles: '20th February, 2025',
-      lastUpdatedPublicDashboards: '10th February, 2025',
+      currentDate: null,
       fields: [
         { key: 'select', label: '' },
         { key: 'imgUrl', label: '' },
@@ -365,6 +364,18 @@ export default {
       return this.usersCount;
     },
 
+    formattedDate() {
+      if (this.currentDate) {
+        // Format the current date to include the full month name
+        return this.currentDate.toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+      }
+      return ''; // Return an empty string if currentDate is not set
+    },
+
     // First, get filtered data without pagination
     filteredData() {
       let filtered = [...this.users];
@@ -384,6 +395,16 @@ export default {
       if (this.filterRole) {
         filtered = filtered.filter((user) => user.role.value && user.role.value.toLowerCase() === this.filterRole.toLowerCase());
       }
+
+      // Apply filter type (active users or admin users)
+      if (this.filterType === 'active') {
+        // Assuming active users are those with recent activity or a specific status
+        // You may need to adjust this logic based on your user data structure
+        filtered = filtered.filter((user) => user.is_active !== false);
+      } else if (this.filterType === 'admin') {
+        filtered = filtered.filter((user) => user.role?.value === 'admin');
+      }
+
       return filtered.map((user) => ({
         ...user,
         selected: this.selectedUsers.includes(user.id),
@@ -407,6 +428,10 @@ export default {
 
   methods: {
     ...mapActions(['GET_USERS', 'GET_ACTIVE_DASHBOARDS', 'SET_PLUGINS_IMPORTED']),
+
+    setCurrentDate() {
+      this.currentDate = new Date(); // Set the current date
+    },
 
     validateState(field) {
       if (!this.formValidated) return null;
@@ -494,6 +519,7 @@ export default {
 
     handleSearch() {
       this.currentPage = 1; // Reset to first page when searching
+      this.filterType = ''; // Reset filter type when searching
       clearTimeout(this.searchTimeout);
       this.searchTimeout = setTimeout(() => {
       // Filtering is handled by computed property
@@ -502,6 +528,39 @@ export default {
 
     handleFilter() {
       this.currentPage = 1; // Reset to first page when filtering
+      this.filterType = ''; // Reset filter type when using role filter
+    },
+
+    viewAllActiveUsers() {
+      // Clear other filters and set filter type to active
+      this.searchQuery = '';
+      this.filterRole = '';
+      this.filterType = 'active';
+      this.currentPage = 1;
+      
+      // Scroll to the user table
+      this.$nextTick(() => {
+        const tableElement = document.querySelector('.b-table');
+        if (tableElement) {
+          tableElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    },
+
+    viewAllAdminUsers() {
+      // Clear other filters and set filter type to admin
+      this.searchQuery = '';
+      this.filterRole = 'admin';
+      this.filterType = 'admin';
+      this.currentPage = 1;
+      
+      // Scroll to the user table
+      this.$nextTick(() => {
+        const tableElement = document.querySelector('.b-table');
+        if (tableElement) {
+          tableElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
     },
 
     handleUserSelection(user) {
@@ -648,6 +707,7 @@ export default {
 
   async mounted() {
     console.log(this.getAllusers);
+    this.setCurrentDate(); // Set the current date when component mounts
     try {
       this.isLoading = true;
       await this.GET_USERS();
