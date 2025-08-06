@@ -121,7 +121,7 @@ export default {
         tooltip: {
           // Use pointFormat to display series name, full location name, and value
           // Access the custom 'fullName' property using point.fullName
-          pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.fullName} - {point.y}</b><br/>',
+          pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.fullName} : {point.y}</b><br/>',
           // Use shared tooltip to show all series values for a category on hover
           // shared: true, // Uncomment if you want a shared tooltip
         },
