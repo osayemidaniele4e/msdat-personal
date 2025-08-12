@@ -38,14 +38,14 @@
           class="px-5 py-2 mr-2"
           :class="[activeTab === 'embedUrl' ? 'embed-choice-active' : 'embed-choice']"
         >
-          Embed URL
+          Embed External Page(Link)
         </div>
         <div
           @click="toggleTab('embedIframe')"
           class="px-5 py-2"
           :class="[activeTab === 'embedIframe' ? 'embed-choice-active' : 'embed-choice']"
         >
-          Embed Iframe
+          Embed External Page(Iframe)
         </div>
       </div>
       <div class="w-100">
@@ -53,24 +53,24 @@
         <b-row>
           <b-col md="12" sm="12">
             <div v-if="activeTab === 'embedUrl'" class="">
-               <h2>Embed URL</h2>
-              <div class="mb-3 embed">
-                <label>URL Title:</label>
+               <h2>Embed External Page(Link)</h2>
+              <div class="mb-3 mt-4 embed">
+                <label>Embed External Page(Link) Title:</label>
                 <input v-model="urlTitle" type="text" placeholder="Enter Title" required />
                 <div class="mb-3 embed">
-                  <label>Enter URL:</label>
+                  <label>Enter Embed External Page Link:</label>
                   <input v-model="url" type="text" placeholder="https://example.com" required />
                 </div>
               </div>
             </div>
             <div v-if="activeTab === 'embedIframe'" class="">
-               <h2>Embed Iframe</h2>
-              <div class="embed">
-                <label>Iframe Title:</label>
+               <h2>Embed External Page(Iframe)</h2>
+              <div class="embed mt-4">
+                <label>External Page(Iframe) Title:</label>
                 <input v-model="iframeTitle" type="text" placeholder="Enter Title" required />
               </div>
               <div class="embed">
-                <label>Paste Iframe Code:</label>
+                <label>Paste External Page(Iframe) Code:</label>
                 <textarea
                   :rows="5"
                   v-model="embedded_iframe"
@@ -90,7 +90,7 @@
               </b-col> -->
       <b-col cols="auto"
         ><b-button style="font-family: Work Sans" class="editBtn" @click="backToPrefrence">
-          Data Table</b-button
+         Back to Data Table</b-button
         ></b-col
       >
       <b-col cols="auto"
@@ -127,7 +127,6 @@ export default {
     this.embedded_iframe = this.$store.getters.getIframeEmbed;
     this.urlTitle = this.$store.getters.getNewEmbedUrlTitle;
     this.iframeTitle = this.$store.getters.getNewEmbedIframeTitle;
-    console.log(this.urlTitle, 'urlTitle');
   },
 
   methods: {
@@ -177,6 +176,7 @@ textarea {
 }
 label {
   margin-bottom: -20px;
+  font-size: 16px;
 }
 .nextBtn {
   background-color: #3f8994;
