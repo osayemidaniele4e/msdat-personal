@@ -251,11 +251,11 @@
           <b-list-group>
             <h5 class="text-underline">Custom Dashboards</h5>
             <div v-for="dashboard in userDashboards" :key="dashboard.id">
-              <div class="tooltip-wrapper-2">
+              <div class="tooltip-wrapper-3">
                 <router-link :to="'/custom/public/' + dashboard.id" target="_blank">
                   <b-list-group-item> {{ dashboard.name_of_dashboard }}</b-list-group-item>
                 </router-link>
-                <span class="custom-tooltip-2"
+                <span class="custom-tooltip-3"
                   >This dashboard is created by you or other users and is available for public
                   access.
                 </span>
@@ -391,6 +391,17 @@ export default {
   }
 }
 
+.tooltip-wrapper-3 {
+  position: relative;
+  display: inline-block;
+  width: 100%; // ensure it wraps the whole item cleanly
+
+  &:hover .custom-tooltip-3 {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
 .custom-tooltip {
   visibility: hidden;
   opacity: 0;
@@ -432,7 +443,28 @@ export default {
   pointer-events: none;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid #e5e5e5;
+  
+}
 
+.custom-tooltip-3 {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 999;
+  bottom: -45px; // place it above the item
+  left: 30%;
+  transform: translateX(-50%) translateY(-8px);
+  background-color: #fff;
+  color: #000;
+  padding: 6px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  white-space: normal; // allows line break
+  width: 300px; // or whatever fits your layout
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e5e5;
   
 }
 
