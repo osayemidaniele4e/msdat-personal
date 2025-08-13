@@ -38,14 +38,14 @@
           class="px-5 py-2 mr-2"
           :class="[activeTab === 'embedUrl' ? 'embed-choice-active' : 'embed-choice']"
         >
-          Embed External Page(Link)
+          Embed External Page (Link)
         </div>
         <div
           @click="toggleTab('embedIframe')"
           class="px-5 py-2"
           :class="[activeTab === 'embedIframe' ? 'embed-choice-active' : 'embed-choice']"
         >
-          Embed External Page(Iframe)
+          Embed External Page (Iframe)
         </div>
       </div>
       <div class="w-100">
@@ -55,22 +55,22 @@
             <div v-if="activeTab === 'embedUrl'" class="">
                <h2>Embed External Page(Link)</h2>
               <div class="mb-3 mt-4 embed">
-                <label>Embed External Page(Link) Title:</label>
-                <input v-model="urlTitle" type="text" placeholder="Enter Title" required />
-                <div class="mb-3 embed">
-                  <label>Enter Embed External Page Link:</label>
-                  <input v-model="url" type="text" placeholder="https://example.com" required />
+                <label>Embed External Page Title:</label>
+                <input v-model="urlTitle" type="text" placeholder="Enter Page Title" required />
+                <div class="mb-3 mt-3 embed">
+                  <label>Link To The Embedded Page:</label>
+                  <input v-model="url" type="text" placeholder="Page Link - Example: ( https://example.com )" required />
                 </div>
               </div>
             </div>
             <div v-if="activeTab === 'embedIframe'" class="">
-               <h2>Embed External Page(Iframe)</h2>
+               <h2>Embed External Page (Iframe)</h2>
               <div class="embed mt-4">
-                <label>External Page(Iframe) Title:</label>
+                <label>External Page (Iframe) Title:</label>
                 <input v-model="iframeTitle" type="text" placeholder="Enter Title" required />
               </div>
               <div class="embed">
-                <label>Paste External Page(Iframe) Code:</label>
+                <label>Paste External Page (Iframe) Code:</label>
                 <textarea
                   :rows="5"
                   v-model="embedded_iframe"
