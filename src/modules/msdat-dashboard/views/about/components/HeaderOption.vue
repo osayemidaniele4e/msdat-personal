@@ -298,10 +298,15 @@ export default {
     },
     // Dynamically generated methods for plugin activation
     pluginActive(plugin, data) {
-      const isActive = localStorage.getItem(plugin);
-      this.$set(this, `${isActive}PluginActive`, isActive);
-      localStorage.setItem(plugin, data);
-      this.$router.go();
+  // Persist new desired state
+  localStorage.setItem(plugin, data);
+
+  // Update this component's reactive flag: is{Plugin}Active -> 'true' | 'false'
+  const capitalized = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+  this.$set(this, `is${capitalized}Active`, data);
+
+  // Notify the app to (de)activate plugin runtime without a full reload
+  this.$root.$emit('plugins:changed', { plugin, value: data === 'true' });
     },
     //
 

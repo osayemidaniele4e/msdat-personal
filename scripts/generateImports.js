@@ -25,18 +25,21 @@ const findJSFiles = (dir) => {
   return jsFiles;
 };
 
-// Find all '.js' files in subdirectories
-const jsFiles = findJSFiles(basePath);
+// Find all '.js' files in subdirectories, but only keep index.js files
+const jsFiles = findJSFiles(basePath).filter((fp) => path.basename(fp) === 'index.js');
+
+// Derive unique plugin folder names from the index.js files
+const pluginFolders = Array.from(
+  new Set(jsFiles.map((filePath) => path.basename(path.dirname(filePath))))
+);
 
 // Generate plugin import statements and conditions
-const pluginImports = jsFiles.map((filePath) => {
-  const folderName = path.basename(path.dirname(filePath));
-  return `import ${folderName} from './modules/plugins/${folderName}';`;
-});
+const pluginImports = pluginFolders.map(
+  (folderName) => `import ${folderName} from './modules/plugins/${folderName}';`
+);
 
-const pluginInstalls = jsFiles.map((filePath) => {
-  const folderName = path.basename(path.dirname(filePath));
-  return `
+const pluginInstalls = pluginFolders.map(
+  (folderName) => `
   this.pluginsImported.push('${folderName}')
   if (!localStorage.getItem('${folderName}')) {
     localStorage.setItem('${folderName}', 'false');
@@ -45,8 +48,11 @@ const pluginInstalls = jsFiles.map((filePath) => {
   if (localStorage.getItem('${folderName}') === 'true') {
     Vue.use(${folderName});
   }
-`;
-});
+`
+);
+
+// Build a registry mapping for live toggling
+const registryObject = `const registry = {\n${pluginFolders.map((f) => `  ${f},`).join('\n')}\n};`;
 
 // Additional code for App.vue
 const appVueCode = `
@@ -190,10 +196,50 @@ export default {
       }
     },
     
+    // Live plugin toggling without reload
+    onPluginsChanged({ plugin, value }) {
+      ${registryObject}
+
+      const pkg = registry[plugin];
+      if (!pkg) return;
+
+      if (value) {
+        try {
+          Vue.use(pkg);
+        } catch (e) {
+          // already installed or plugin guarded; ignore
+        }
+
+        if (Vue.prototype.$pluginBus) {
+          Vue.prototype.$pluginBus.$emit('plugin:toggle', { plugin, enabled: true });
+          Vue.prototype.$pluginBus.$emit('plugin:enable', plugin);
+          Vue.prototype.$pluginBus.$emit(\`plugin:enable:\${plugin}\`);
+        }
+        this.$root.$emit('plugin:enable', plugin);
+      } else {
+        if (Vue.prototype.$pluginBus) {
+          Vue.prototype.$pluginBus.$emit('plugin:toggle', { plugin, enabled: false });
+          Vue.prototype.$pluginBus.$emit('plugin:disable', plugin);
+          Vue.prototype.$pluginBus.$emit(\`plugin:disable:\${plugin}\`);
+        }
+        this.$root.$emit('plugin:disable', plugin);
+      }
+    },
   },
    beforeDestroy() {
     // Remove the event listener to avoid memory leaks
     window.removeEventListener('unload', this.handleAppUnload);
+  },
+  created() {
+    // global plugin bus for cross-cutting enable/disable notifications
+    if (!Vue.prototype.$pluginBus) {
+      Vue.prototype.$pluginBus = new Vue();
+    }
+    // listen to plugin change events emitted from settings or header
+    this.$root.$on('plugins:changed', this.onPluginsChanged);
+  },
+  destroyed() {
+    this.$root.$off('plugins:changed', this.onPluginsChanged);
   },
 };
 </script>
