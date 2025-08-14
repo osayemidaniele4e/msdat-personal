@@ -326,14 +326,12 @@ export default {
     },
 
     togglePlugin(plugin) {
-      // Convert boolean to string for localStorage
-      const pluginState = plugin.enabled.toString();
+  // Persist state
+  const pluginState = plugin.enabled ? 'true' : 'false';
+  localStorage.setItem(plugin.key, pluginState);
 
-      // Store the plugin state in localStorage
-      localStorage.setItem(plugin.key, pluginState);
-
-      // Optional: You might want to reload the page or emit an event
-      this.$router.go();
+  // Notify root to (de)activate plugin at runtime without reload
+  this.$root.$emit('plugins:changed', { plugin: plugin.key, value: plugin.enabled });
     },
     async changePassword() {
       if (!this.passwordsMatch) {
