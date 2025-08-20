@@ -275,6 +275,7 @@ export default {
           period: val.year,
         });
         const data = zonalResponse.data.results;
+        
         // const data = await this.dlQuery({
         //   indicator: val.indicator.id,
         //   datasource: val.datasource.id,

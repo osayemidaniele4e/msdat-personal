@@ -126,7 +126,7 @@
               class="cursor-pointer tooltip-wrapper"
             >
               {{ section.label }}
-              <span class="custom-tooltip">{{ section.tooltip }} </span>
+              <span class="custom-tooltip-ab">{{ section.tooltip }} </span>
             </b-list-group-item>
             <div class="tooltip-wrapper">
               <router-link to="/advanced-triangulation-dashboard" target="_blank">
@@ -378,6 +378,10 @@ export default {
     visibility: visible;
     opacity: 1;
   }
+  &:hover .custom-tooltip-ab {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 .tooltip-wrapper-2 {
@@ -408,7 +412,7 @@ export default {
   position: absolute;
   z-index: 999;
   bottom: -30px; // place it above the item
-  left: 70%;
+  // right: 0;
   transform: translateX(-50%) translateY(-8px);
   background-color: #fff;
   color: #000;
@@ -421,8 +425,31 @@ export default {
   pointer-events: none;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid #e5e5e5;
-
+  margin-left: 50px; // adjust as needed to align with the item
 }
+.custom-tooltip-ab {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    z-index: 999;
+    bottom: -30px; // place it above the item
+    // right: 0;
+    transform: translateX(-50%) translateY(-8px);
+    background-color: #fff;
+    color: #000;
+    padding: 6px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    white-space: normal; // allows line break
+    width: 300px; // or whatever fits your layout
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    pointer-events: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e5e5;
+    margin-left: 100px; // adjust as needed to align with the item
+  }
+
+
 
 .custom-tooltip-2 {
   visibility: hidden;
@@ -443,7 +470,6 @@ export default {
   pointer-events: none;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid #e5e5e5;
-  
 }
 
 .custom-tooltip-3 {
@@ -465,7 +491,6 @@ export default {
   pointer-events: none;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid #e5e5e5;
-  
 }
 
 // .custom-tooltip {
@@ -559,5 +584,60 @@ h5.text-underline {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+/* Large devices (laptops, 769px to 1024px) */
+@media only screen and (min-width: 769px) and (max-width: 1400px) {
+  .custom-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    z-index: 999;
+    bottom: -30px; // place it above the item
+    // right: 0;
+    transform: translateX(-50%) translateY(-8px);
+    background-color: #33bd45;
+    color: #000;
+    padding: 6px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    white-space: normal; // allows line break
+    width: 300px; // or whatever fits your layout
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    pointer-events: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e5e5;
+    margin-left: 220px; // adjust as needed to align with the item
+  }
+
+  .custom-tooltip-ab {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    z-index: 999;
+    bottom: -30px; // place it above the item
+    // right: 0;
+    transform: translateX(-50%) translateY(-8px);
+    background-color: #fff;
+    color: #000;
+    padding: 6px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    white-space: normal; // allows line break
+    width: 300px; // or whatever fits your layout
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    pointer-events: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e5e5;
+    margin-left: 100px; // adjust as needed to align with the item
+  }
+}
+
+/* Extra large devices (desktops, 1025px and up) */
+@media only screen and (min-width: 1560px) {
+  .custom-tooltip {
+    margin-left: 200px;
+    background-color: #fff;
+  }
 }
 </style>
