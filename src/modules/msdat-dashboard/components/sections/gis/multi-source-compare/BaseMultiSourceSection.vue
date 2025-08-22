@@ -393,6 +393,7 @@ export default {
 
   data() {
     return {
+      mapDataLevel: 3,
       stateName: 'Delta',
       level: 1,
       // column 1
@@ -1047,6 +1048,7 @@ export default {
           level: this.mapDataLevel,
         },
       });
+      
       const configObj = {
         indicator: this.selectedIndicatorColumn1,
         datasource: this.selectedDatasourceColumn1,
