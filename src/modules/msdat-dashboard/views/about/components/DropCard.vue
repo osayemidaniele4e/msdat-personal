@@ -596,7 +596,7 @@ h5.text-underline {
     bottom: -30px; // place it above the item
     // right: 0;
     transform: translateX(-50%) translateY(-8px);
-    background-color: #33bd45;
+    background-color: #fff;
     color: #000;
     padding: 6px;
     font-size: 0.75rem;
