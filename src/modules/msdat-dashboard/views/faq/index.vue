@@ -121,9 +121,7 @@ export default {
   methods: {
     navigateToCentralAnalytics() {
       this.isLoading = true;
-      setTimeout(() => {
-        this.$router.push('dashboard/Health_Outcomes_and_Service_Coverage');
-      }, 500);
+      this.$router.go(-1);
     },
   },
   computed: {
