@@ -10,6 +10,20 @@
 // const webpack = require('@cypress/webpack-preprocessor')
 
 module.exports = (on, config) => {
+  // Handle TLS/SSL issues
+  on('before:browser:launch', (browser = {}, launchOptions) => {
+    if (browser.name === 'chrome') {
+      launchOptions.args.push('--ignore-certificate-errors');
+      launchOptions.args.push('--ignore-ssl-errors');
+      launchOptions.args.push('--allow-running-insecure-content');
+      launchOptions.args.push('--disable-web-security');
+    }
+    return launchOptions;
+  });
+
+  // Set Node.js TLS options
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
   return {
     ...config,
     fixturesFolder: 'tests/e2e/fixtures',
@@ -17,5 +31,7 @@ module.exports = (on, config) => {
     screenshotsFolder: 'tests/e2e/screenshots',
     videosFolder: 'tests/e2e/videos',
     supportFile: 'tests/e2e/support/index.js',
+    chromeWebSecurity: false,
+    modifyObstructiveCode: false,
   };
 };

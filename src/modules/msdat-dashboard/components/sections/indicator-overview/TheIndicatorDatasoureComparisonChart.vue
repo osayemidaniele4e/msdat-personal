@@ -78,7 +78,9 @@
           <h3 @click="getReset()">Refresh Table</h3>
         </div> -->
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="true" v-if="!notShow" />
+
       </base-sub-card>
+
     </base-overlay>
   </div>
 </template>

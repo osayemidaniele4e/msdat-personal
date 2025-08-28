@@ -121,7 +121,7 @@ export default {
         tooltip: {
           // Use pointFormat to display series name, full location name, and value
           // Access the custom 'fullName' property using point.fullName
-          pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.fullName} - {point.y}</b><br/>',
+          pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.fullName} : {point.y}</b><br/>',
           // Use shared tooltip to show all series values for a category on hover
           // shared: true, // Uncomment if you want a shared tooltip
         },
@@ -213,7 +213,7 @@ export default {
           chartSeries.push({
             color: this.colors[index].color,
             name: series.name, // Zone name
-            data: sortedData, // Array of {name: 'ABR', y: ..., fullName: ...} objects
+            data: sortedData, // Array of {name: 'ABR', y: ..., fullName: ...} objectss
           });
         }
       }
@@ -275,6 +275,7 @@ export default {
           period: val.year,
         });
         const data = zonalResponse.data.results;
+        
         // const data = await this.dlQuery({
         //   indicator: val.indicator.id,
         //   datasource: val.datasource.id,

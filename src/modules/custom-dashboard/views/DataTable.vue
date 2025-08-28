@@ -58,7 +58,7 @@
           style="font-family: Work Sans"
           class="editBtn"
           @click="backToPrefrence"
-          >Edit Data Table</b-button
+          >Back To Edit Data Table</b-button
         ></b-col
       >
       <b-col cols="auto"

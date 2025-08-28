@@ -50,6 +50,19 @@
               <b-progress-bar :value="passwordStrength" class="progress-bar"></b-progress-bar>
             </b-progress>
             <span :class="passwordStrengthClass">{{ passwordStrengthText }}</span>
+            
+            <!-- Password Requirements -->
+            <div v-if="newPassword" class="password-requirements mt-2">
+              <div 
+                v-for="(requirement, index) in passwordRequirements" 
+                :key="index" 
+                class="requirement-item"
+                :class="{ 'requirement-met': requirement.met, 'requirement-unmet': !requirement.met }"
+              >
+                <i :class="requirement.met ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+                <span>{{ requirement.text }}</span>
+              </div>
+            </div>
           </b-form-group>
           <b-form-group id="input-group-8" class="form-group">
             <div class="input-label">
@@ -266,6 +279,33 @@ export default {
       }
       return 'text-success';
     },
+    passwordRequirements() {
+      return [
+        {
+          text: 'At least 8 characters',
+          met: this.newPassword.length >= 8,
+        },
+        {
+          text: 'One uppercase letter (A-Z)',
+          met: /[A-Z]/.test(this.newPassword),
+        },
+        {
+          text: 'One lowercase letter (a-z)',
+          met: /[a-z]/.test(this.newPassword),
+        },
+        {
+          text: 'One number (0-9)',
+          met: /[0-9]/.test(this.newPassword),
+        },
+        {
+          text: 'One special character (!@#$%^&*)',
+          met: /[^A-Za-z0-9]/.test(this.newPassword),
+        },
+      ];
+    },
+    isPasswordValid() {
+      return this.passwordRequirements.every(req => req.met);
+    },
     passwordsMatch() {
       return this.newPassword === this.confirmPassword;
     },
@@ -286,23 +326,38 @@ export default {
     },
 
     togglePlugin(plugin) {
-      // Convert boolean to string for localStorage
-      const pluginState = plugin.enabled.toString();
+  // Persist state
+  const pluginState = plugin.enabled ? 'true' : 'false';
+  localStorage.setItem(plugin.key, pluginState);
 
-      // Store the plugin state in localStorage
-      localStorage.setItem(plugin.key, pluginState);
-
-      // Optional: You might want to reload the page or emit an event
-      this.$router.go();
+  // Notify root to (de)activate plugin at runtime without reload
+  this.$root.$emit('plugins:changed', { plugin: plugin.key, value: plugin.enabled });
     },
     async changePassword() {
       if (!this.passwordsMatch) {
-        this.$swal('Passwords do not match', '', 'error');
+        this.$swal('Error', 'Passwords do not match', 'error');
         return;
       }
 
-      if (this.passwordStrength < 60) {
-        this.$swal('Password strength is too weak', '', 'error');
+      if (!this.isPasswordValid) {
+        this.$swal({
+          title: 'Invalid Password',
+          html: `
+            <div style="text-align: left;">
+              <p>Password must meet all the following requirements:</p>
+              <ul style="list-style: none; padding-left: 0;">
+                ${this.passwordRequirements.map(req => 
+                  `<li style="color: ${req.met ? '#28a745' : '#dc3545'}; margin: 5px 0;">
+                    <i class="fas ${req.met ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                    ${req.text}
+                  </li>`
+                ).join('')}
+              </ul>
+            </div>
+          `,
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
         return;
       }
 
@@ -687,6 +742,35 @@ b-form-checkbox {
   right: 10px;
   top: 38px;
   cursor: pointer;
+ }
+
+ /* Password Requirements Styles */
+ .password-requirements {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+ }
+
+ .requirement-item {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  font-size: 12px;
+ }
+
+ .requirement-item i {
+  margin-right: 8px;
+  font-size: 12px;
+ }
+
+ .requirement-met {
+  color: #28a745;
+ }
+
+ .requirement-unmet {
+  color: #dc3545;
  }
 
  @media (max-width: 768px) {

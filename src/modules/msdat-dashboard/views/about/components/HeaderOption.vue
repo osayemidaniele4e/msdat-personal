@@ -160,34 +160,37 @@
     </base-modal>
     <NewsLetter />
     <!-- plugin modal -->
-    <b-modal id="plugin-modal" title="MSDAT Apps Plugins" hide-footer>
-      <div v-for="plugin in getPluginsImported" :key="plugin">
-        <div class="plugin-row">
-          <h5>
-            <span>
-              {{ plugin }}
-              <b-icon-info-circle></b-icon-info-circle>
-            </span>
-          </h5>
+    <b-modal id="plugin-modal" title="MSDAT Apps Plugins" dialog-class="plugin-modal-size"">
+      <div class="plugin-modal-body">
+        <div v-if="(getPluginsImported || []).length === 0" class="text-center text-muted py-4">
+          No plugins found
+        </div>
 
-          <div>
-            <button
-              class="enable-btn"
-              @click="pluginActive(plugin, 'true')"
-              v-if="getDynamicProperty(plugin) === 'false'"
-            >
-              Enable
-            </button>
-            <button
-              class="enable-btn"
-              @click="pluginActive(plugin, 'false')"
-              v-if="getDynamicProperty(plugin) === 'true'"
-            >
-              Disable
-            </button>
+        <div
+          v-for="plugin in (getPluginsImported || [])"
+          :key="plugin"
+          class="plugin-card d-flex justify-content-between align-items-center"
+        >
+          <div class="plugin-info d-flex align-items-center">
+            <img :src="getPluginLogo(plugin)" :alt="plugin + ' logo'" class="plugin-logo mr-2" />
+            <h6 class="mb-0 mr-2 plugin-name">{{ formatPluginName(plugin) }} Plugin</h6>
           </div>
-        </div> 
+          <div class="plugin-toggle">
+            <b-form-checkbox
+              switch
+              :checked="getDynamicProperty(plugin) === 'true'"
+              @change="onPluginToggle(plugin, $event)"
+            >
+              <span class="sr-only">Toggle {{ plugin }}</span>
+            </b-form-checkbox>
+          </div>
+        </div>
       </div>
+      <template #modal-footer>
+        <div class="w-100 text-right">
+          <b-button class="close-plugin-btn px-4" @click="$bvModal.hide('plugin-modal')">Close</b-button>
+        </div>
+      </template>
     </b-modal>
     <ClearDBCacheModal
       style="z-index: 1500"
@@ -217,6 +220,7 @@ export default {
       submit: false,
       socialModal: false,
       showClearDataModal: false,
+  // pluginSearch removed
     };
 
     // Fetch the list of available plugins from the store
@@ -251,6 +255,7 @@ export default {
     getDynamicProperty() {
       return (propertyName) => this[`is${this.capitalizeFirstLetter(propertyName)}Active`];
     },
+  // filteredPlugins removed (search functionality disabled)
   },
 
   mounted() {
@@ -283,6 +288,9 @@ export default {
       // Close the header options
       this.$emit('closeoptions');
     },
+    onPluginToggle(plugin, checked) {
+      this.pluginActive(plugin, checked ? 'true' : 'false');
+    },
     isPluginActive(pluginName) {
       // Assuming you have a method to check if the plugin is active
       return this[`is${this.capitalizeFirstLetter(pluginName)}Active`] === true;
@@ -296,12 +304,40 @@ export default {
     showPluginModal() {
       this.$bvModal.show('plugin-modal');
     },
+    getPluginLogo(plugin) {
+      // Attempt to map plugin names to existing asset icons.
+      // Fallback to generic plugin icon.
+      try {
+        // simple heuristic: look for an asset matching plugin name
+        const cleaned = plugin.replace(/Plugin$/i, '').toLowerCase();
+        const possible = require(`@/assets/${cleaned}.png`);
+        if (possible) return possible;
+      } catch (e) {
+        // ignore resolution errors
+      }
+      return require('@/assets/plugin.png');
+    },
+    formatPluginName(name) {
+      // Convert camelCase or snake_case to spaced Title Case for display
+      if (!name) return '';
+      const spaced = name
+        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+        .replace(/[_-]+/g, ' ')
+        .replace(/plugin$/i, '')
+        .trim();
+      return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+    },
     // Dynamically generated methods for plugin activation
     pluginActive(plugin, data) {
-      const isActive = localStorage.getItem(plugin);
-      this.$set(this, `${isActive}PluginActive`, isActive);
-      localStorage.setItem(plugin, data);
-      this.$router.go();
+  // Persist new desired state
+  localStorage.setItem(plugin, data);
+
+  // Update this component's reactive flag: is{Plugin}Active -> 'true' | 'false'
+  const capitalized = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+  this.$set(this, `is${capitalized}Active`, data);
+
+  // Notify the app to (de)activate plugin runtime without a full reload
+  this.$root.$emit('plugins:changed', { plugin, value: data === 'true' });
     },
     //
 
@@ -531,5 +567,67 @@ export default {
   font-size: 14px;
   margin: 10px;
   width: 200px;
+}
+
+/* Plugin modal custom styles */
+.plugin-modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 4px; /* account for scrollbar */
+}
+
+.plugin-modal-size {
+  max-width: 400px !important;
+}
+
+.plugin-card {
+  background: #f9fafb;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.85rem;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  font-family: 'work-sans', sans-serif;
+}
+
+.plugin-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.plugin-logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.plugin-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.close-plugin-btn {
+  background-color: #007d53;
+  border: none;
+  border-radius: 24px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(0, 125, 83, 0.3);
+}
+.close-plugin-btn:hover, .close-plugin-btn:focus {
+  background-color: #009f69;
+  color: #fff;
+}
+
+.plugin-toggle .custom-control-label::before, 
+.plugin-toggle .custom-control-label::after {
+  cursor: pointer;
 }
 </style>

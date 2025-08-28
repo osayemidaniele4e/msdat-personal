@@ -36,6 +36,14 @@
 <script>
 export default {
   name: 'ScorecardSection',
+  methods: {
+    logStoreGetters() {
+      console.log(this.$store.getters, 'Custom Getters');
+    },
+  },
+  mounted() {
+    this.logStoreGetters();
+  },
 };
 </script>
 
