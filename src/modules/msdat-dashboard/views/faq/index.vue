@@ -15,7 +15,7 @@
       <div class="faq_img_container">
         <img :src="headerImg" alt="frequently_asked_question" class="img-fluid" />
         <div class="content container">
-          <h3 class="font-weight-bold mb-0">How to use the dashboard</h3>
+          <h3 class="font-weight-bold mb-0">How to use the platform</h3>
           <small>Multi-Source Data Analytics & Triangulation Dashboard</small>
           <div class="input-group w-50 mx-auto mt-3">
             <div class="input-group-prepend">

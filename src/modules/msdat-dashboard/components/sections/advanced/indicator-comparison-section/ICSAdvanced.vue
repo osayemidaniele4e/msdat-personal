@@ -29,8 +29,10 @@
               class="relationship-btn"
               @click="showRelationshipPopup = true"
               title="Show indicator relationships"
+              type="button"
+              aria-haspopup="dialog"
             >
-              <b-icon class="report-icon" icon="link-45deg"></b-icon>
+              Show indicator relationships
             </button>
           </div>
           <!-- <p class="text-dark work-sans mb-0 line-height" v-else>
@@ -696,19 +698,22 @@ div.ics_wrapper {
 }
 
 .relationship-btn {
-  background: none;
+  background: transparent;
   color: #17606B;
   cursor: pointer;
   font-weight: 600;
-  border: 1px solid #17606B; 
-  border-radius: 20%; 
-  padding: 6px;
-  display: flex;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  line-height: 1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
     color: #E85D58;
+    text-decoration: underline;
+    background-color: rgba(23, 96, 107, 0.06);
   }
 }
 
