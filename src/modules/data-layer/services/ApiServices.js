@@ -99,7 +99,6 @@ const getDataWithPeriod = async (obj) => {
 //   );
 // const getZonalData = async (obj) => axiosInstance.get(`data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&period=${obj.period}`);
 const getZonalData = async (obj) => {
-
   const { indicator, datasource, period } = obj || {};
 
   // fire request only when all props are valid
@@ -125,11 +124,7 @@ const getPeriodByDatasource = async (dataSourceID) =>
 const getPeriod = async (obj) => {
   const { datasource, indicator, location } = obj || {};
 
-  if (
-    [datasource, indicator, location].every(
-      (val) => val !== undefined && val !== null && val.toString().trim() !== ''
-    )
-  ) {
+  if ([datasource, indicator, location].every((val) => Number.isInteger(val))) {
     return axiosInstance.get(
       `period-data/?datasource=${datasource}&indicator=${indicator}&location=${location}`
     );
