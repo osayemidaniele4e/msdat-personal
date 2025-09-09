@@ -34,6 +34,7 @@ export default {
   data() {
     return {
       options: { ...defaultOptions },
+  resizeObserver: null,
     };
   },
   props: {
@@ -82,6 +83,11 @@ export default {
           this.options.chart.spacingRight = 30;
           this.options.chart.marginRight = 30;
         }
+
+        // Debounced refresh of data table only when options change (e.g., indicator change)
+        this.$nextTick(() => {
+          this.refreshDataTableIfVisibleDebounced();
+        });
       },
       deep: true,
       immediate: true,
@@ -106,6 +112,9 @@ export default {
     highcharts: genComponent('Highcharts', Highcharts),
   },
   mounted() {
+    // Patch Highcharts viewData once to add a Close button after the table renders
+    this.patchHighchartsViewDataOnce();
+
     if (this.title) {
       // Set the title in the exporting object if a custom title is provided
       if (this.options.exporting && this.options.exporting.chartOptions) {
@@ -123,6 +132,8 @@ export default {
     
     // Use a MutationObserver to detect DOM changes that might affect the chart
     this.setupResizeObserver();
+
+  // No redraw hook to avoid repeated rebuilds; we refresh on options change only
   },
   
   beforeDestroy() {
@@ -131,9 +142,150 @@ export default {
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
+  clearTimeout(this._tableRefreshTimer);
   },
   
   methods: {
+    removeExistingDataTable(chart) {
+      if (!chart) return;
+      const parent = chart && chart.renderTo && chart.renderTo.parentNode;
+      if (!parent) return;
+      // Remove by ID if present
+      const byId = document.getElementById(`highcharts-data-table-${chart.index}`);
+      if (byId) {
+        // Remove associated close button in the same container
+        const container = (byId.classList && byId.classList.contains('highcharts-data-table'))
+          ? byId
+          : byId.parentNode;
+        const closeBtn = container && container.querySelector && container.querySelector('.hc-data-close');
+        if (closeBtn) closeBtn.remove();
+
+        if (byId.classList && byId.classList.contains('highcharts-data-table')) {
+          // ID is on the wrapper div
+          byId.remove();
+        } else if (
+          byId.tagName === 'TABLE' &&
+          byId.parentNode &&
+          byId.parentNode.classList &&
+          byId.parentNode.classList.contains('highcharts-data-table')
+        ) {
+          // ID on table inside wrapper div
+          byId.parentNode.remove();
+        } else {
+          // Fallback: just remove the element itself
+          byId.remove();
+        }
+      }
+      // Remove any stray tables for this chart under parent
+      const tables = parent.querySelectorAll('.highcharts-data-table');
+      tables.forEach((tbl) => {
+        // Only remove the data table wrapper itself
+        tbl.remove();
+      });
+    },
+  refreshDataTableIfVisible() {
+      const chart = this.$refs.lineCharts && this.$refs.lineCharts.chart;
+      if (!chart) return;
+      const tableEl = this.getDataTableElement(chart);
+      if (tableEl) {
+        // Table exists, rebuild it to ensure it reflects latest series
+        if (this._tableRefreshing) return;
+        this._tableRefreshing = true;
+        // Rebuild with a short delay to let chart update settle
+        setTimeout(() => {
+          try {
+      // Ensure previous table is fully removed to prevent stacking
+      this.removeExistingDataTable(chart);
+      // Make sure Highcharts state is reset before re-creating
+      chart.isDataTableVisible = false;
+      if (typeof chart.viewData === 'function') chart.viewData();
+          } catch (e) {
+            // ignore
+          } finally {
+            this._tableRefreshing = false;
+          }
+        }, 50);
+      }
+    },
+
+    refreshDataTableIfVisibleDebounced() {
+      clearTimeout(this._tableRefreshTimer);
+      this._tableRefreshTimer = setTimeout(() => {
+        this.refreshDataTableIfVisible();
+      }, 120);
+    },
+
+    getDataTableElement(chart) {
+      if (!chart) return null;
+      // Try by known id first
+      const byId = document.getElementById(`highcharts-data-table-${chart.index}`);
+      if (byId) return byId;
+      // Fallback to searching within chart container parent
+      const parent = chart && chart.renderTo && chart.renderTo.parentNode;
+      if (!parent) return null;
+      return parent.querySelector('.highcharts-data-table');
+    },
+
+    patchHighchartsViewDataOnce() {
+      if (Highcharts.Chart.prototype._viewDataWithClosePatched) return;
+  const originalView = Highcharts.Chart.prototype.viewData;
+  const originalHide = Highcharts.Chart.prototype.hideData;
+  if (typeof originalView !== 'function') return;
+
+      // eslint-disable-next-line no-param-reassign
+      Highcharts.Chart.prototype.viewData = function patchedViewData() {
+        const ret = originalView.apply(this, arguments);
+        try {
+          // Track visibility for menu label accuracy
+          this.isDataTableVisible = true;
+          const table = document.getElementById(`highcharts-data-table-${this.index}`) ||
+            (this.renderTo && this.renderTo.parentNode && this.renderTo.parentNode.querySelector('.highcharts-data-table'));
+          if (table && !table.parentNode.querySelector('.hc-data-close')) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'hc-data-close';
+    btn.textContent = 'Close';
+            // Inline minimal styles to avoid scoped CSS issues
+            btn.style.position = 'absolute';
+            btn.style.right = '8px';
+            btn.style.top = '8px';
+            btn.style.padding = '4px 8px';
+            btn.style.fontSize = '12px';
+    btn.style.border = 'none';
+    btn.style.borderRadius = '3px';
+    btn.style.background = '#e53935';
+    btn.style.color = '#fff';
+    btn.style.cursor = 'pointer';
+    btn.style.zIndex = '0';
+            // Ensure wrapper is positioned
+            const wrapper = table.parentNode;
+            if (wrapper && getComputedStyle(wrapper).position === 'static') {
+              wrapper.style.position = 'relative';
+            }
+            btn.addEventListener('click', () => {
+      if (typeof this.hideData === 'function') this.hideData();
+      // Explicitly mark closed so the hamburger label updates next open
+      this.isDataTableVisible = false;
+            });
+            wrapper.insertBefore(btn, table);
+          }
+        } catch (e) {
+          // ignore
+        }
+        return ret;
+      };
+      // Also patch hideData to keep state in sync
+      if (typeof originalHide === 'function') {
+        Highcharts.Chart.prototype.hideData = function patchedHideData() {
+          const r = originalHide.apply(this, arguments);
+          this.isDataTableVisible = false;
+          return r;
+        };
+      }
+      // eslint-disable-next-line no-param-reassign
+      Highcharts.Chart.prototype._viewDataWithClosePatched = true;
+    },
+
     forceChartReflow() {
       if (this.$refs.lineCharts && this.$refs.lineCharts.chart) {
         // For charts with side control, we need to be more aggressive with redraws
@@ -166,7 +318,7 @@ export default {
     },
     
     handleResize() {
-      this.forceChartReflow();
+  this.forceChartReflow();
     },
     
     setupResizeObserver() {
