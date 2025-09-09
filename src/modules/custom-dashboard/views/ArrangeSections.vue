@@ -199,7 +199,7 @@ export default {
           fieldName: 'Indicator Overview',
           // selected: this.$store.state.MSDAT_STORE.indicatorComparision,
           selected: this.$store.getters.arrangedSections.find(
-            (sec) => sec.name === 'Indicator Overview',
+            (sec) => sec.name === 'Indicator Overview'
           ).isShow,
           fieldImage: '/img/dashboardPreviewImages/Dashboard.PNG',
         },
@@ -207,7 +207,7 @@ export default {
           fieldName: 'Zonal analysis',
           // selected: this.$store.state.MSDAT_STORE.zonalAna,
           selected: this.$store.getters.arrangedSections.find(
-            (sec) => sec.name === 'Zonal analysis',
+            (sec) => sec.name === 'Zonal analysis'
           ).isShow,
           fieldImage: '/img/dashboardPreviewImages/ZonalAnalysis.PNG',
         },
@@ -215,7 +215,7 @@ export default {
           fieldName: 'Indicator Comparison',
           // selected: this.$store.state.MSDAT_STORE.zonalAnalysis,
           selected: this.$store.getters.arrangedSections.find(
-            (sec) => sec.name === 'Indicator Comparison',
+            (sec) => sec.name === 'Indicator Comparison'
           ).isShow,
           fieldImage: '/img/dashboardPreviewImages/IndicatorComparision-byPeriod.PNG',
         },
@@ -223,7 +223,7 @@ export default {
           fieldName: 'Dataset Comparison',
           // selected: this.$store.state.MSDAT_STORE.datasetComperision,
           selected: this.$store.getters.arrangedSections.find(
-            (sec) => sec.name === 'Dataset Comparison',
+            (sec) => sec.name === 'Dataset Comparison'
           ).isShow,
           fieldImage: '/img/dashboardPreviewImages/DataSetComparison.PNG',
         },
@@ -231,7 +231,7 @@ export default {
           fieldName: 'Multi-source Comparison',
           // selected: this.$store.state.MSDAT_STORE.multisourceComparison,
           selected: this.$store.getters.arrangedSections.find(
-            (sec) => sec.name === 'Multi-source Comparison',
+            (sec) => sec.name === 'Multi-source Comparison'
           ).isShow,
           fieldImage: '/img/dashboardPreviewImages/MultiSourceComparison.PNG',
         },
@@ -248,8 +248,8 @@ export default {
         embedded_url_title: null,
         embedded_iframe: null,
         embedded_iframe_title: null,
+        embedded_dashboard_description: null,
         is_private: false,
-
       },
       form: {
         email: '',
@@ -269,6 +269,7 @@ export default {
     const url = this.$store.getters.getUrl;
     const iframeTitle = this.$store.getters.getNewEmbedIframeTitle;
     const iframe = this.$store.getters.getIframeEmbed;
+    const description = this.$store.getters.getNewEmbedDashboardDescription;
 
     if (programArea != null && dataSource != null) {
       const tempConfig = {
@@ -279,6 +280,7 @@ export default {
         iframe,
         urlTitle,
         iframeTitle,
+        description,
       };
       const stringifyConfig = JSON.stringify(tempConfig);
       localStorage.setItem('storedConfig', stringifyConfig);
@@ -332,7 +334,7 @@ export default {
     removeNullFields(obj) {
       return Object.fromEntries(
         // eslint-disable-next-line no-unused-vars
-        Object.entries(obj).filter(([_, value]) => value != null && value !== ''),
+        Object.entries(obj).filter(([_, value]) => value != null && value !== '')
       );
     },
 
@@ -417,6 +419,7 @@ export default {
         this.public_creator.embedded_url_title = parsedConfig.urlTitle;
         this.public_creator.embedded_iframe = parsedConfig.iframe;
         this.public_creator.embedded_iframe_title = parsedConfig.iframeTitle;
+        this.public_creator.embedded_dashboard_description = parsedConfig.description;
 
         if (this.areAllSelectedFalse(this.values)) {
           await this.$swal.fire({
@@ -462,6 +465,7 @@ export default {
           embedded_iframe_title: parsedConfig.iframeTitle,
           is_confirmed: false,
           is_private: this.$store.getters.getVisibility === 'private',
+          embedded_dashboard_description: parsedConfig.description,
         };
 
         try {
