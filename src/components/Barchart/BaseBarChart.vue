@@ -228,53 +228,69 @@ export default {
 
     patchHighchartsViewDataOnce() {
       if (Highcharts.Chart.prototype._viewDataWithClosePatched) return;
-  const originalView = Highcharts.Chart.prototype.viewData;
-  const originalHide = Highcharts.Chart.prototype.hideData;
-  if (typeof originalView !== 'function') return;
+      const originalView = Highcharts.Chart.prototype.viewData;
+      const originalHide = Highcharts.Chart.prototype.hideData;
+      if (typeof originalView !== 'function') return;
 
       // eslint-disable-next-line no-param-reassign
       Highcharts.Chart.prototype.viewData = function patchedViewData() {
         const ret = originalView.apply(this, arguments);
         try {
-          // Track visibility for menu label accuracy
           this.isDataTableVisible = true;
           const table = document.getElementById(`highcharts-data-table-${this.index}`) ||
             (this.renderTo && this.renderTo.parentNode && this.renderTo.parentNode.querySelector('.highcharts-data-table'));
-          if (table && !table.parentNode.querySelector('.hc-data-close')) {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'hc-data-close';
-    btn.textContent = 'Close';
-            // Inline minimal styles to avoid scoped CSS issues
-            btn.style.position = 'absolute';
-            btn.style.right = '8px';
-            btn.style.top = '8px';
-            btn.style.padding = '4px 8px';
-            btn.style.fontSize = '12px';
-    btn.style.border = 'none';
-    btn.style.borderRadius = '3px';
-    btn.style.background = '#e53935';
-    btn.style.color = '#fff';
-    btn.style.cursor = 'pointer';
-    btn.style.zIndex = '0';
-            // Ensure wrapper is positioned
+          if (table) {
             const wrapper = table.parentNode;
-            if (wrapper && getComputedStyle(wrapper).position === 'static') {
+            if (wrapper) {
+              // Keep that table inside the chart window; to avoid covering the control panels; please don't remove.
               wrapper.style.position = 'relative';
+              wrapper.style.maxWidth = '100%';
+              wrapper.style.maxHeight = '60vh'; // prevent overstretching the window
+              wrapper.style.overflowX = 'auto';
+              wrapper.style.overflowY = 'auto';
+              wrapper.style.zIndex = '10'; 
+              wrapper.style.background = '#fff';
+              wrapper.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+              wrapper.style.borderRadius = '6px';
+              wrapper.style.padding = '16px 8px 56px 8px';
+              wrapper.style.marginBottom = '8px';
             }
-            btn.addEventListener('click', () => {
-      if (typeof this.hideData === 'function') this.hideData();
-      // Explicitly mark closed so the hamburger label updates next open
-      this.isDataTableVisible = false;
-            });
-            wrapper.insertBefore(btn, table);
+            // Table itself
+            table.style.maxWidth = '100%';
+            table.style.overflowX = 'auto';
+            table.style.display = 'block';
+            table.style.zIndex = '11';
+            
+            if (!wrapper.querySelector('.hc-data-close')) {
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = 'hc-data-close';
+              btn.textContent = 'Close';
+              btn.style.position = 'absolute';
+              btn.style.right = '8px';
+              btn.style.top = '8px';
+              btn.style.padding = '4px 8px';
+              btn.style.fontSize = '12px';
+              btn.style.border = 'none';
+              btn.style.borderRadius = '3px';
+              btn.style.background = '#e53935';
+              btn.style.color = '#fff';
+              btn.style.cursor = 'pointer';
+              btn.style.zIndex = '12';
+              
+              btn.style.marginBottom = '9px';
+              btn.addEventListener('click', () => {
+                if (typeof this.hideData === 'function') this.hideData();
+                this.isDataTableVisible = false;
+              });
+              wrapper.insertBefore(btn, table);
+            }
           }
         } catch (e) {
-          // ignore
+         
         }
         return ret;
       };
-      // Also patch hideData to keep state in sync
       if (typeof originalHide === 'function') {
         Highcharts.Chart.prototype.hideData = function patchedHideData() {
           const r = originalHide.apply(this, arguments);
