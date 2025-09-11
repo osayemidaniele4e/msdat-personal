@@ -364,8 +364,11 @@ export default {
   setNewEmbedUrlTitle(state, title) {
     state.setNewEmbedUrlTitle = title;
   },
-    setNewEmbedIframeTitle(state, title) {
+  setNewEmbedIframeTitle(state, title) {
     state.setNewEmbedIframeTitle = title;
+  },
+  setNewEmbedDashboardDescription(state, description) {
+    state.setNewEmbedDashboardDescription = description;
   },
   setEmbedIframe(state, iframe) {
     state.embeddedIframe = iframe;

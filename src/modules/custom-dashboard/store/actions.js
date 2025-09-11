@@ -344,6 +344,10 @@ export default {
     commit('setNewEmbedIframeTitle', payload);
   },
 
+  setEmbedDashboardDescriptionAction({ commit }, payload) {
+    commit('setNewEmbedDashboardDescription', payload);
+  },
+
   setEmbedUrlTitle({ commit }, payload) {
     commit('setUrlEmbedTitle', payload);
   },

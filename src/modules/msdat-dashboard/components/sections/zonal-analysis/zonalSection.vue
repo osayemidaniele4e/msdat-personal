@@ -357,7 +357,7 @@ export default {
             const zonalZee = {
               // This series groups the National + Zonal columns
               color: Highcharts.color('#000000').get(), // Default/base color for this series group
-              name: 'Nigeria & Zones', // More descriptive series name
+              name: 'Nigeria', // More descriptive series name
               data: zonalSeries, // Data points are {name: 'Zone/Nigeria', y: ..., fullName: ..., color: ...}
             };
 

@@ -49,22 +49,26 @@
         </div>
       </div>
       <div class="w-100">
-       
         <b-row>
           <b-col md="12" sm="12">
             <div v-if="activeTab === 'embedUrl'" class="">
-               <h2>Embed External Page(Link)</h2>
+              <h2>Embed External Page(Link)</h2>
               <div class="mb-3 mt-4 embed">
                 <label>Embed External Page Title:</label>
                 <input v-model="urlTitle" type="text" placeholder="Enter Page Title" required />
                 <div class="mb-3 mt-3 embed">
                   <label>Link To The Embedded Page:</label>
-                  <input v-model="url" type="text" placeholder="Page Link - Example: ( https://example.com )" required />
+                  <input
+                    v-model="url"
+                    type="text"
+                    placeholder="Page Link - Example: ( https://example.com )"
+                    required
+                  />
                 </div>
               </div>
             </div>
             <div v-if="activeTab === 'embedIframe'" class="">
-               <h2>Embed External Page (Iframe)</h2>
+              <h2>Embed External Page (Iframe)</h2>
               <div class="embed mt-4">
                 <label>External Page (Iframe) Title:</label>
                 <input v-model="iframeTitle" type="text" placeholder="Enter Title" required />
@@ -79,6 +83,15 @@
                 ></textarea>
               </div>
             </div>
+            <div class="Description">
+              <label>Dashboard Description:</label>
+              <textarea
+                :rows="5"
+                v-model="description"
+                placeholder="Enter Description "
+                required
+              ></textarea>
+            </div>
           </b-col>
         </b-row>
       </div>
@@ -90,7 +103,7 @@
               </b-col> -->
       <b-col cols="auto"
         ><b-button style="font-family: Work Sans" class="editBtn" @click="backToPrefrence">
-         Back to Data Table</b-button
+          Back to Data Table</b-button
         ></b-col
       >
       <b-col cols="auto"
@@ -112,6 +125,7 @@ export default {
       urlTitle: '',
       iframeTitle: '',
       activeTab: 'embedUrl',
+      description: '',
     };
   },
   computed: {
@@ -127,6 +141,7 @@ export default {
     this.embedded_iframe = this.$store.getters.getIframeEmbed;
     this.urlTitle = this.$store.getters.getNewEmbedUrlTitle;
     this.iframeTitle = this.$store.getters.getNewEmbedIframeTitle;
+    this.description = this.$store.getters.getNewEmbedDashboardDescription;
   },
 
   methods: {
@@ -137,10 +152,11 @@ export default {
       // save url to store
       this.$store.dispatch('setEmbedUrl', this.modifyTableauUrl(this.url));
       this.$store.dispatch('setNewEmbedUrlTitleAction', this.urlTitle);
-       this.$store.dispatch('setNewEmbedIframeTitleAction', this.iframeTitle);
+      this.$store.dispatch('setNewEmbedIframeTitleAction', this.iframeTitle);
+       this.$store.dispatch('setEmbedDashboardDescriptionAction', this.description);
       console.log(this.urlTitle, 'urlTitle');
       localStorage.setItem('activeTab', this.activeTab);
-    
+
       // save iframe to store
       this.$store.dispatch('setEmbedIframe', this.embedded_iframe);
       // this.$store.dispatch('setEmbedIframeTitle', this.iframeTitle);

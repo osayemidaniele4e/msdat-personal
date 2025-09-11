@@ -3,7 +3,7 @@
 /* eslint-disable camelcase */
 <template>
   <div>
-    <Highmaps :options="defaultOptions" />
+  <Highmaps :options="defaultOptions" ref="mapChart" />
   </div>
 </template>
 
@@ -129,9 +129,132 @@ export default {
         Taraba,
         Yobe,
       },
+      _tableRefreshTimer: null,
     };
   },
   methods: {
+    getChart() {
+      return this.$refs.mapChart && this.$refs.mapChart.chart;
+    },
+
+    getDataTableElement(chart) {
+      if (!chart) return null;
+      const byId = document.getElementById(`highcharts-data-table-${chart.index}`);
+      if (byId) return byId;
+      const parent = chart && chart.renderTo && chart.renderTo.parentNode;
+      if (!parent) return null;
+      return parent.querySelector('.highcharts-data-table');
+    },
+
+    removeExistingDataTable(chart) {
+      if (!chart) return;
+      const parent = chart && chart.renderTo && chart.renderTo.parentNode;
+      if (!parent) return;
+      const byId = document.getElementById(`highcharts-data-table-${chart.index}`);
+      if (byId) {
+        const container = (byId.classList && byId.classList.contains('highcharts-data-table'))
+          ? byId
+          : byId.parentNode;
+        const closeBtn = container && container.querySelector && container.querySelector('.hc-data-close');
+        if (closeBtn) closeBtn.remove();
+        if (byId.classList && byId.classList.contains('highcharts-data-table')) {
+          byId.remove();
+        } else if (
+          byId.tagName === 'TABLE' &&
+          byId.parentNode &&
+          byId.parentNode.classList &&
+          byId.parentNode.classList.contains('highcharts-data-table')
+        ) {
+          byId.parentNode.remove();
+        } else {
+          byId.remove();
+        }
+      }
+      const tables = parent.querySelectorAll('.highcharts-data-table');
+      tables.forEach((tbl) => tbl.remove());
+    },
+
+    refreshDataTableIfVisible() {
+      const chart = this.getChart();
+      if (!chart) return;
+      const tableEl = this.getDataTableElement(chart);
+      if (tableEl) {
+        if (this._tableRefreshing) return;
+        this._tableRefreshing = true;
+        setTimeout(() => {
+          try {
+            this.removeExistingDataTable(chart);
+            chart.isDataTableVisible = false;
+            if (typeof chart.viewData === 'function') chart.viewData();
+          } catch (e) {
+            // ignore
+          } finally {
+            this._tableRefreshing = false;
+          }
+        }, 50);
+      }
+    },
+
+    refreshDataTableIfVisibleDebounced() {
+      clearTimeout(this._tableRefreshTimer);
+      this._tableRefreshTimer = setTimeout(() => {
+        this.refreshDataTableIfVisible();
+      }, 120);
+    },
+
+    patchHighchartsViewDataOnce() {
+      if (Highcharts.Chart.prototype._viewDataWithClosePatched) return;
+      const originalView = Highcharts.Chart.prototype.viewData;
+      const originalHide = Highcharts.Chart.prototype.hideData;
+      if (typeof originalView !== 'function') return;
+
+      Highcharts.Chart.prototype.viewData = function patchedViewData() {
+        const ret = originalView.apply(this, arguments);
+        try {
+          this.isDataTableVisible = true;
+          const table = document.getElementById(`highcharts-data-table-${this.index}`) ||
+            (this.renderTo && this.renderTo.parentNode && this.renderTo.parentNode.querySelector('.highcharts-data-table'));
+          if (table && !table.parentNode.querySelector('.hc-data-close')) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'hc-data-close';
+            btn.textContent = 'Close';
+            btn.style.position = 'absolute';
+            btn.style.right = '8px';
+            btn.style.top = '8px';
+            btn.style.padding = '4px 8px';
+            btn.style.fontSize = '12px';
+            btn.style.border = 'none';
+            btn.style.borderRadius = '3px';
+            btn.style.background = '#e53935';
+            btn.style.color = '#fff';
+            btn.style.cursor = 'pointer';
+            btn.style.zIndex = '10';
+            const wrapper = table.parentNode;
+            if (wrapper && getComputedStyle(wrapper).position === 'static') {
+              wrapper.style.position = 'relative';
+            }
+            btn.addEventListener('click', () => {
+              if (typeof this.hideData === 'function') this.hideData();
+              this.isDataTableVisible = false;
+            });
+            wrapper.insertBefore(btn, table);
+          }
+        } catch (e) {
+          // ignore
+        }
+        return ret;
+      };
+
+      if (typeof originalHide === 'function') {
+        Highcharts.Chart.prototype.hideData = function patchedHideData() {
+          const r = originalHide.apply(this, arguments);
+          this.isDataTableVisible = false;
+          return r;
+        };
+      }
+      Highcharts.Chart.prototype._viewDataWithClosePatched = true;
+    },
 
     plotMapLevel(level) {
       // check space is in string and add underscore
@@ -158,12 +281,14 @@ export default {
           break;
       }
       this.defaultOptions = { ...this.defaultOptions };
+      this.$nextTick(() => this.refreshDataTableIfVisibleDebounced());
     },
   },
   watch: {
     mapObject: {
       handler(newVal) {
         this.defaultOptions = Object.assign(this.defaultOptions, newVal);
+        this.$nextTick(() => this.refreshDataTableIfVisibleDebounced());
       },
       immediate: true,
       deep: true,
@@ -180,8 +305,15 @@ export default {
   },
 
   mounted() {
+    // Patch Highcharts viewData once to add red Close button & state sync
+    this.patchHighchartsViewDataOnce();
     // changing the title of the text when downloaded
-    this.defaultOptions.exporting.chartOptions.title.text = this.title;
+    if (this.defaultOptions.exporting && this.defaultOptions.exporting.chartOptions) {
+      this.defaultOptions.exporting.chartOptions.title.text = this.title;
+    }
+  },
+  beforeDestroy() {
+    clearTimeout(this._tableRefreshTimer);
   },
 };
 </script>

@@ -140,8 +140,16 @@ const getPeriod = async (obj) => {
 //   );
 const getPeriodWithoutLocation = async (obj) =>
   axiosInstance.get(`period-data/?datasource=${obj.datasource}&indicator=${obj.indicator}`);
-const getLocations = async (obj) =>
-  axiosInstance.get(`location-data/?datasource=${obj.datasource}&indicator=${obj.indicator}`);
+const getLocations = async (obj) => {
+  const { datasource, indicator } = obj;
+
+  // Block if either contains a dash (-)
+  if (String(datasource).includes('-') || String(indicator).includes('-')) {
+    throw new Error('Request blocked: datasource or indicator contains a hyphen (-).');
+  }
+
+  return axiosInstance.get(`location-data/?datasource=${datasource}&indicator=${indicator}`);
+};
 const getIndicatorDataSources = async (indicatorID) =>
   axiosInstance.get(`indicator-data/datasources/${indicatorID}`);
 const getDataSourceIndicators = async (dataSourceID) =>
