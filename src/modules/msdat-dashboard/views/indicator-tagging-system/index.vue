@@ -5,7 +5,9 @@
     <div class="p-4 position-relative">
       <div class="d-flex header-wrapper justify-content-between align-items-center mb-3">
         <h4 class="">Tag Management</h4>
-        <button class="btn"><i class="bi bi-plus-lg"></i> Create New Tag</button>
+        <button @click="toggleModal" class="btn">
+          <i class="bi bi-plus-lg"></i> Create New Tag
+        </button>
       </div>
 
       <!-- Search -->
@@ -75,27 +77,62 @@
           </ul>
         </nav>
       </div>
-      <div class="position-absolute create-wrapper">
+      <div v-if="openCreateModal" class="position-absolute create-wrapper">
         <div class="create-header">
-          <h1>kkkkkk</h1>
+          <span>Create New Tag</span>
+          <img @click="cancelCreate" src="@/assets/close-icon.png" alt="close-icon" />
         </div>
         <div v-if="indicators.length" class="create-content g-3">
           <div class="mb-3 mt-4">
             <label>Tag Name</label>
-            <input type="text" />
+            <input type="text" placeholder="Enter Tag Name" />
           </div>
           <div class="mb-3">
-            <label>Tag Name</label>
-            <input type="text" />
+            <div class="form-group">
+              <label>Category:</label>
+              <select v-model="selectedOption" class="form-control" id="exampleFormControlSelect1" >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+
+            <label
+              >Selected Category: <strong>{{ selectedOption || 'None' }}</strong></label
+            >
           </div>
-          <div class="mb-3">
-            <label>Tag Name</label>
-            <input type="text" />
+
+          <div class="mb-3 d-flex flex-column">
+            <label>Description</label>
+            <textarea v-model="description" name="" id="" rows="3"></textarea>
           </div>
-          <div class="">
-            <label>Associated Indicators ( {{ chosen.length }})</label>
-            <div class="w-100 drop-list-wrapper">
+          <div class="d-flex flex-column mt-5">
+            <label>Associated Indicators ( {{ selected.length }} )</label>
+            <!-- <div class="w-100 drop-list-wrapper">
               <DropdownCheckbox :items="indicators" v-model="chosen" />
+            </div> -->
+
+            <div class="dropdown">
+              <!-- Button -->
+              <button class="dropdown-btn" @click="open = !open">
+                <span>Select Options</span>
+              </button>
+
+              <!-- List -->
+              <div v-if="open" @mouseleave="open = false" class="dropdown-list">
+                <div
+                  v-for="option in indicators"
+                  :key="option.id"
+                  :class="[isSelected(option) ? 'selected-dropdown-item' : '']"
+                  class="dropdown-item"
+                  @click="toggleOption(option)"
+                >
+                  <span>{{ option.full_name }}</span>
+                  <span v-if="isSelected(option)">✔️</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -106,7 +143,8 @@
           <h4>Please wait while Indicators data load</h4>
         </div>
         <div class="create-footer">
-          <span>hhhhhh</span>
+          <button @click="cancelCreate" class="btn btn-secondary mr-2 py-3 px-5">Cancel</button>
+          <button class="btn btn-primary py-3 px-5">Save Tag</button>
         </div>
       </div>
     </div>
@@ -155,6 +193,16 @@ export default {
         // Add more sample data as needed
       ],
       chosen: [],
+      open: false,
+      selected: [],
+      options: [
+        { id: '1', label: 'Option 1' },
+        { id: '2', label: 'Option 2' },
+        { id: '3', label: 'Option 3' },
+      ],
+      selectedOption: '',
+      description: '',
+      openCreateModal: false,
     };
   },
   computed: {
@@ -189,6 +237,28 @@ export default {
       const { data } = await apiServices.fetchAllIndicators();
       this.indicators = data.results;
       console.log(this.indicators);
+    },
+
+    toggleModal() {
+      this.openCreateModal = true;
+    },
+
+    cancelCreate() {
+      this.openCreateModal = false;
+    },
+
+    toggleOption(option) {
+      const index = this.selected.findIndex((o) => o.id === option.id);
+      if (index > -1) {
+        // remove if already selected
+        this.selected.splice(index, 1);
+      } else {
+        // add if not selected
+        this.selected.push(option);
+      }
+    },
+    isSelected(option) {
+      return this.selected.some((o) => o.id === option.id);
     },
   },
 
@@ -257,22 +327,46 @@ export default {
 }
 
 .create-header {
-  height: 50px;
+  height: 60px;
   width: 100%;
   position: absolute;
   top: 0;
   background-color: #fff;
   border-bottom: 1px solid #f1f1f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.create-header span {
+  font-size: 18px;
+  font-weight: 800;
+  color: #333333;
+}
+
+.create-header img {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
 }
 
 .create-footer {
-  height: 50px;
+  height: 70px;
   width: 100%;
   position: absolute;
   bottom: 0;
   background-color: #fff;
   border-top: 1px solid #f1f1f1;
   z-index: 0;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.create-footer button {
+  font-size: 14px;
 }
 .create-content {
   padding-top: 60px;
@@ -299,5 +393,103 @@ export default {
   height: 350px;
   overflow-y: auto;
   width: 100%;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  min-width: 180px;
+  text-align: left;
+}
+
+/* dropdown container */
+.dropdown-list {
+  position: absolute;
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  z-index: 10;
+  max-height: 200px;
+
+  /* allow vertical scrolling only, block horizontal */
+  overflow-y: auto;
+  overflow-x: hidden; /* prevent horizontal scrollbar */
+
+  /* allow wrapping */
+  white-space: normal;
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
+/* each item — keep label and check in a flexible row */
+.dropdown-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 12px;
+  gap: 8px;
+  cursor: pointer;
+
+  /* remove any truncation rules */
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+}
+
+.selected-dropdown-item span {
+  color: #007d53;
+}
+.dropdown-item span {
+  flex: 1 1 auto;
+  min-width: 0; /* allow shrinking to fit container */
+  white-space: normal; /* wrap text */
+  word-break: break-word; /* break long words if needed */
+  overflow-wrap: anywhere; /* modern way to allow breaks */
+}
+
+/* label must be allowed to shrink and wrap — this is CRITICAL */
+.dropdown-item .label {
+  flex: 1 1 auto; /* grow & shrink */
+  min-width: 0; /* <-- this prevents the flex child from forcing horizontal scroll */
+  white-space: normal;
+  word-break: break-word; /* break long words if needed */
+}
+
+/* checkmark stays fixed size on the right */
+.dropdown-item .check {
+  flex: 0 0 auto;
+  align-self: center;
+  margin-left: 6px;
+}
+
+input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  border-color: #007d53; /* Bootstrap blue */
+  outline: none; /* remove default outline */
+}
+
+textarea {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+textarea:focus {
+  border-color: #007d53; /* Bootstrap blue */
+  outline: none; /* remove default outline */
 }
 </style>
