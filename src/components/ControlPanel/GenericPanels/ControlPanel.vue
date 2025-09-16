@@ -216,6 +216,26 @@
   <p class="second-text">The program area will display for each indicator</p>
 </div> -->
     </div>
+
+     <!-- Voice Control Button -->
+  <div v-if="isIndicatorOverviewPanel" class="col-auto d-flex align-items-start "> <!-- Adjust class/styling as needed -->
+      <b-button
+        variant="outline-info"
+        size="lg"
+        pill
+        @click="isVoiceModalVisible = true"
+        class="voice-btn-custom"
+        title="Voice Control"
+      >
+        <b-icon icon="mic-fill"></b-icon> Voice
+      </b-button>
+    </div>
+
+    <!-- Voice Control Modal Component -->
+    <VoiceControlModal
+      :show="isVoiceModalVisible"
+      @close="isVoiceModalVisible = false"
+    />
   </div>
 </template>
 
@@ -228,6 +248,7 @@ import BaseCheckbox from '@/components/ControlPanel/components/checkbox.vue';
 import toggle from '@/components/ControlPanel/components/toggle-switch.vue';
 import selectWrapper from './SelectDropdown.vue';
 import Generate from '../components/generate.vue';
+import VoiceControlModal from '../components/VoiceControl/voiceControlModal.vue';
 
 export default {
   name: 'ControlPanel',
@@ -235,12 +256,14 @@ export default {
     return {
       activeToggleButton: '',
       dashboardName: '',
+       showVoiceControl: false,
       // using component data with 'Sub' addition to prevent prop mutations
       // (controlIndex & groupIndex)
       controlIndexSub: this.controlIndex,
       groupIndexSub: this.groupIndex,
       hasNHMIS: false,
       selectedSection: '',
+       isVoiceModalVisible: false,
     };
   },
   components: {
@@ -248,6 +271,7 @@ export default {
     BaseCheckbox,
     toggle,
     Generate,
+    VoiceControlModal, 
   },
   props: {
     setup: {
@@ -537,6 +561,17 @@ export default {
       }
       return false;
     },
+    // Show voice controls only on the Indicator Overview control panel
+    isIndicatorOverviewPanel() {
+      try {
+        const configLabel = this.$store.state.MSDAT_STORE.controlConfig[this.controlIndex]?.label;
+        return (
+          configLabel === 'Indicator Overview' || this.getSelectedSection === 'Indicator Overview'
+        );
+      } catch (e) {
+        return this.getSelectedSection === 'Indicator Overview';
+      }
+    },
   },
 
   mounted() {
@@ -581,6 +616,22 @@ button {
   font-weight: bold;
 }
 
+.voice-btn-custom {
+  --custom-color: #007d53;
+  color: var(--custom-color);
+  border-color: var(--custom-color);
+  background-color: #fff; /* Set default background to white */
+}
+
+.voice-btn-custom:hover,
+.voice-btn-custom:focus,
+.voice-btn-custom:active,
+.voice-btn-custom.active {
+  color: #fff; /* White text on hover/active */
+  background-color: var(--custom-color);
+  border-color: var(--custom-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 125, 83, 0.5); /* Optional: Adjust focus shadow color */
+}
 // .prog-label {
 //   display: flex;
 //   position: absolute;
