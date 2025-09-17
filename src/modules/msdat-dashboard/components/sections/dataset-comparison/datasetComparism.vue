@@ -72,7 +72,8 @@
         </div>
       </div>
       </transition>
-      <BaseChart ref="BaseChart" :title="title" :chartOptions="chartConfig" />
+      <BaseChart ref="BaseChart" :title="title" 
+      :categoryLabel="'Datasources'":chartOptions="chartConfig" />
     </base-sub-card>
   </base-overlay>
 </template>

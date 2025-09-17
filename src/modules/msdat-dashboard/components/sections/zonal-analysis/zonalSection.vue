@@ -20,7 +20,7 @@
           {{ controlPanelProps.year }}
         </p>
       </template>
-      <BarChart ref="BaseChart" :title="title" :chartOptions="chart" class="barchart" />
+      <BarChart ref="BaseChart" :title="title"  :categoryLabel="'Location'" :chartOptions="chart" class="barchart" />
     </base-sub-card>
   </base-overlay>
 </template>
