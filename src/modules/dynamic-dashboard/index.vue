@@ -371,6 +371,7 @@ export default {
       sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
       sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
       sessionStorage.setItem('embedIframeTitle', JSON.stringify(this.$store.getters.getEmbedIframeTitle));
+      sessionStorage.setItem('setEmbedDashboardDesc', JSON.stringify(this.$store.getters.getNewEmbedDashboardDescription));
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];

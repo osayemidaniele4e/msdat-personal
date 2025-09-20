@@ -58,6 +58,7 @@
             :mapObject="chart"
             :level="level"
             :lgaState="stateName"
+            :categoryLabel="'Location'"
           />
 
           <NoAvailableData
@@ -89,6 +90,10 @@ export default {
       type: [Object, Array],
       required: true,
     },
+      categoryLabel: {
+      type: String,
+      default: 'Category',
+    },
   },
   components: {
     BaseMap,
@@ -109,6 +114,7 @@ export default {
     };
   },
   methods: {
+    
     returnToNational() {
       const selectedPlace = this.dlGetLocation({ level: 1 });
       if (selectedPlace.length !== 0) {
@@ -127,6 +133,7 @@ export default {
         }
       }
     },
+    
     updatedSeries() {
       return this.stateData.map((region) => {
         // Check if the region contains the selected state

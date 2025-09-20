@@ -41,7 +41,8 @@
             <b> {{ values.location.name }} </b>
           </p>
         </template>
-        <BarChart ref="BaseChart" :title="title" :chartOptions="chartOptions" />
+        <BarChart ref="BaseChart" :title="title" 
+        :categoryLabel="'Indicators'":chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>    <!-- Display 'no_data' block when there's no data and we're not loading -->
     <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">

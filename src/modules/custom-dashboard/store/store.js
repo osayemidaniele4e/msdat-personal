@@ -10,6 +10,7 @@ const customDashboard = localStorage.getItem('customDashboardStatus') || false;
 const embedUrl = sessionStorage.getItem('embedUrl');
 const setEmbedUrlTitle = sessionStorage.getItem('setEmbedUrlTitle');
 const setEmbedIframeTitle = sessionStorage.getItem('setEmbedIframeTitle');
+const setEmbedDashboardDesc = sessionStorage.getItem('setEmbedDashboardDesc');
 const embedIframe = sessionStorage.getItem('embedIframe');
 const embedUrlTitle1 = sessionStorage.getItem('embedUrlTitle');
 const embedIframeTitle2 = sessionStorage.getItem('embedIframeTitle');
@@ -72,6 +73,7 @@ const store = {
     embeddedUrl: JSON.parse(embedUrl),
     setNewEmbedUrlTitle: JSON.parse(setEmbedUrlTitle),
     setNewEmbedIframeTitle: JSON.parse(setEmbedIframeTitle),
+    setNewEmbedDashboardDescription: JSON.parse(setEmbedDashboardDesc),
     embeddedIframe: JSON.parse(embedIframe),
     embeddedUrlTitle: JSON.parse(embedUrlTitle1),
     embeddedIframeTitle: JSON.parse(embedIframeTitle2),
