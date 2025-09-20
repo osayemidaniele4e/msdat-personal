@@ -86,6 +86,10 @@ export default {
       type: String,
       default: '',
     },
+    categoryLabel: {
+      type: String,
+      default: 'Category',
+    },
   },
   data() {
     return {
@@ -239,6 +243,12 @@ export default {
               this.isDataTableVisible = false;
             });
             wrapper.insertBefore(btn, table);
+            
+            // Customize the first column header
+            const firstTh = table.querySelector('thead th:first-child');
+            if (firstTh) {
+              firstTh.textContent = this.options.categoryLabel || 'Category';
+            }
           }
         } catch (e) {
           // ignore
@@ -299,6 +309,9 @@ export default {
     lgaState() {
       this.plotMapLevel(this.level);
     },
+    categoryLabel(newVal) {
+      this.defaultOptions.categoryLabel = newVal;
+    },
   },
   created() {
     this.plotMapLevel(this.level);
@@ -311,6 +324,8 @@ export default {
     if (this.defaultOptions.exporting && this.defaultOptions.exporting.chartOptions) {
       this.defaultOptions.exporting.chartOptions.title.text = this.title;
     }
+    // Set custom category label
+    this.defaultOptions.categoryLabel = this.categoryLabel;
   },
   beforeDestroy() {
     clearTimeout(this._tableRefreshTimer);
