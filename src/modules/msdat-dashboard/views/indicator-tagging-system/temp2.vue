@@ -45,8 +45,12 @@
                   </td>
                   <td>{{ tag.createdDate }}</td>
                   <td>
-                    <img  src="../../../../assets/svg/Edit.svg" alt="edit" />
-                    <img  src="../../../../assets/svg/delete.svg" alt="edit" />
+                    <button class="btn btn-sm btn-icon">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-icon">
+                      <i class="bi bi-trash"></i>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -81,7 +85,7 @@
           </div>
         </div>
       </div>
-      <div v-if="openCreateModal" class="">
+      <div  class="">
         <CreateTagModal @close="cancelCreate" />
       </div>
     </div>
@@ -276,15 +280,15 @@ export default {
 <style scoped>
 .header-wrapper {
   padding: 0 20px;
-}
+} */
 
-.header-wrapper h4 {
+/* .header-wrapper h4 {
   font-size: 24px;
   font-weight: 700;
   color: #007d53;
-}
+} */
 
-.header-wrapper button {
+/* .header-wrapper button {
   background-color: #007d53;
   width: 165.58px;
   height: 41.33px;
@@ -292,6 +296,17 @@ export default {
   font-size: 14px;
 }
 
+/* .create-wrapper {
+  background-color: white;
+  height: 80vh;
+  width: 500px;
+  top: 70px;
+  right: 20px;
+  z-index: 100;
+  position: relative;
+  border: 1px solid #f1f1f1;
+  border-radius: 10px;
+} */
 .container {
   max-width: 1200px;
 }
@@ -343,14 +358,6 @@ tbody tr td {
   padding: 14px 10px;
   border-bottom: 1px solid #e0e0e0;
 }
-
-
-tbody tr td img {
- width: 20px;
- height: 20px;
- margin-right: 5px;
- cursor: pointer;
-}
 .indicator-badge {
   background-color: #eaf3f2;
   color: #0d6e66;
@@ -363,7 +370,6 @@ tbody tr td img {
   justify-content: center;
   align-items: center;
 }
-
 .btn-icon {
   color: #6c757d;
 }
@@ -381,7 +387,6 @@ tbody tr td img {
   justify-content: center;
   margin: 0 2px;
 }
-
 .pagination .page-item.active .page-link {
   background-color: #007d53;
   color: white;

@@ -53,6 +53,8 @@ const getNHMISDataObj = async (obj) =>
   );
 const getWhatsNew = async () => axiosInstance.get('news/updates/?size=1000');
 const saveWhatsNew = async (data) => authInstance.post('news/updates/', data);
+const tagIndicator = async (data) => authInstance.post('tags/', data);
+const getTags = async () => axiosInstance.get('tags/?size=1000');
 const saveCustomDashboard = async (data) => axiosInstance.post('custom-dashboard/', data);
 const getSingleCustomDashboard = async (id) => axiosInstance.get(`custom-dashboard/${id}`);
 const getCustomDashboard = async () => axiosInstance.get('custom-dashboard/');
@@ -258,4 +260,6 @@ export default {
   getPeriodWithoutLocation,
   getDashboardIndicators,
   fetchAllCoverageLevels,
+  tagIndicator,
+  getTags
 };
