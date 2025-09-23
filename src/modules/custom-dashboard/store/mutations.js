@@ -130,6 +130,10 @@ export default {
     state.masterData = payload;
   },
 
+  setAllSources(state, payload) {
+    state.allDataSources = payload;
+  },
+
   // For Notices
   isNotExistYear(state, payload) {
     state.isNotExistYear.push(payload);

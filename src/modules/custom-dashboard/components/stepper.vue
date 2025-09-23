@@ -1,9 +1,10 @@
 <template>
-  <div class="px-5 stepper-body">
-    <div @click='handleLogout()' class="d-flex flex-row-reverse signout">
+  <div class="stepper-body">
+    <!-- <div @click='handleLogout()' class="d-flex flex-row-reverse signout">
       Signout
-    </div>
-    <b-row class="mt-4 mb-1">
+    </div> -->
+    <Header />
+    <b-row class="mt-5 mb-1">
       <b-col sm="12" md="3" class="mb-4 mb-md-0">
         <div style="margin-top: 12px">
           <a v-show="this.step >= 2" @click="$router.back()" class="back">
@@ -25,73 +26,44 @@
       <b-col sm="12" md="8">
         <b-row>
           <b-col class="px-0" cols="auto">
-            <b-avatar
-              :class="this.step >= 1 ? 'active-step' : ''"
-              text="1"
-            ></b-avatar>
+            <b-avatar :class="this.step >= 1 ? 'active-step' : ''" text="1"></b-avatar>
           </b-col>
-          <b-col class="px-0">
-          </b-col>
+          <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <b-avatar
-              :class="this.step >= 2 ? 'active-step' : ''"
-              text="2"
-            ></b-avatar>
+            <b-avatar :class="this.step >= 2 ? 'active-step' : ''" text="2"></b-avatar>
           </b-col>
-          <b-col class="px-0">
-          </b-col>
+          <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <b-avatar
-              :class="this.step >= 3 ? 'active-step' : ''"
-              text="3"
-            ></b-avatar>
+            <b-avatar :class="this.step >= 3 ? 'active-step' : ''" text="3"></b-avatar>
           </b-col>
-          <b-col class="px-0">
-          </b-col>
+          <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <b-avatar
-              :class="this.step >= 4 ? 'active-step' : ''"
-              text="4"
-            ></b-avatar>
+            <b-avatar :class="this.step >= 4 ? 'active-step' : ''" text="4"></b-avatar>
           </b-col>
-          <b-col class="px-0">
-          </b-col>
+          <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <b-avatar
-              :class="this.step >= 5 ? 'active-step' : ''"
-              text="5"
-            ></b-avatar>
+            <b-avatar :class="this.step >= 5 ? 'active-step' : ''" text="5"></b-avatar>
           </b-col>
         </b-row>
         <b-row class="mt-2 d-none d-lg-flex stepper-text">
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-left: -60%">
-              Input dashboard details
-            </p>
+            <p class="text-center" style="margin-left: -60%">Input dashboard details</p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-left: -20%">
-              Select your preferences
-            </p>
+            <p class="text-center" style="margin-left: -20%">Select your preferences</p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-right: -20%">
-              Dashboard data table
-            </p>
+            <p class="text-center" style="margin-right: -20%">Dashboard data table</p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-right: -80%">
-              Embed Dashboard
-            </p>
+            <p class="text-center" style="margin-right: -80%">Embed Dashboard</p>
           </b-col>
           <b-col class="px-0"> </b-col>
           <b-col class="px-0" cols="auto">
-            <p class="text-center" style="margin-right: -100%">
-              Arrange dashboard sections
-            </p>
+            <p class="text-center" style="margin-right: -100%">Arrange dashboard sections</p>
           </b-col>
         </b-row>
       </b-col>
@@ -101,10 +73,13 @@
 
 <script>
 import VueCookies from 'vue-cookies';
+import Header from '../../../modules/msdat-dashboard/views/about/layout/theHeader.vue';
 
 export default {
   name: 'cd-stepper',
-  components: {},
+  components: {
+    Header,
+  },
   data() {
     return {};
   },
@@ -147,7 +122,6 @@ export default {
 }
 .stepper-body {
   border-bottom: 3px solid #0000001f;
-  border-top: 51px solid #035c6e;
 }
 .active-step {
   background-color: #035c6e;
@@ -159,5 +133,4 @@ export default {
   color: #035c6e;
   cursor: pointer;
 }
-
 </style>

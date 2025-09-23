@@ -1,6 +1,17 @@
+
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
+
+// helper to safely parse JSON
+const safeJSONParse = (value, fallback = null) => {
+  if (!value || value === "undefined") return fallback;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+};
 
 const composedData = sessionStorage.getItem('composedData');
 const SurveyArray = sessionStorage.getItem('surveyArray');
@@ -26,61 +37,37 @@ const store = {
     },
     allSelected: false,
     step: 1,
-    customDashboard: JSON.parse(customDashboard),
-    dashboardDetails: JSON.parse(dashboardDetails),
+    customDashboard: safeJSONParse(customDashboard, false),
+    dashboardDetails: safeJSONParse(dashboardDetails, {}),
     rmnchs: [],
-    masterData: JSON.parse(composedData),
-    SurveyArray: JSON.parse(SurveyArray),
+    masterData: safeJSONParse(composedData, []),
+    SurveyArray: safeJSONParse(SurveyArray, []),
     notes: [],
     visibility: 'private',
     editMode: false,
-    ArrangedSections: SectionsArray ? JSON.parse(SectionsArray) : [
-      {
-        id: 0,
-        name: 'Indicator Overview',
-        active: false,
-        isShow: false,
-      },
-      {
-        id: 1,
-        name: 'Zonal analysis',
-        active: false,
-        isShow: false,
-      },
-      {
-        id: 2,
-        name: 'Indicator Comparison',
-        active: false,
-        isShow: false,
-      },
-      {
-        id: 3,
-        name: 'Dataset Comparison',
-        active: false,
-        isShow: false,
-      },
-      {
-        id: 4,
-        name: 'Multi-source Comparison',
-        active: false,
-        isShow: false,
-      },
-    ],
+    ArrangedSections: safeJSONParse(SectionsArray, [
+      { id: 0, name: 'Indicator Overview', active: false, isShow: false },
+      { id: 1, name: 'Zonal analysis', active: false, isShow: false },
+      { id: 2, name: 'Indicator Comparison', active: false, isShow: false },
+      { id: 3, name: 'Dataset Comparison', active: false, isShow: false },
+      { id: 4, name: 'Multi-source Comparison', active: false, isShow: false },
+    ]),
     dashboardRequest: {},
     publicDashboard: false,
     allPublicDashboards: [],
     selectedIndicators: [],
-    embeddedUrl: JSON.parse(embedUrl),
-    setNewEmbedUrlTitle: JSON.parse(setEmbedUrlTitle),
-    setNewEmbedIframeTitle: JSON.parse(setEmbedIframeTitle),
-    setNewEmbedDashboardDescription: JSON.parse(setEmbedDashboardDesc),
-    embeddedIframe: JSON.parse(embedIframe),
-    embeddedUrlTitle: JSON.parse(embedUrlTitle1),
-    embeddedIframeTitle: JSON.parse(embedIframeTitle2),
+    embeddedUrl: safeJSONParse(embedUrl, ''),
+    setNewEmbedUrlTitle: safeJSONParse(setEmbedUrlTitle, ''),
+    setNewEmbedIframeTitle: safeJSONParse(setEmbedIframeTitle, ''),
+    setNewEmbedDashboardDescription: safeJSONParse(setEmbedDashboardDesc, ''),
+    embeddedIframe: safeJSONParse(embedIframe, ''),
+    embeddedUrlTitle: safeJSONParse(embedUrlTitle1, ''),
+    embeddedIframeTitle: safeJSONParse(embedIframeTitle2, ''),
     embedUrl: '',
     embedUrlTitle: '',
     embedIframe: '',
     embedIframeTitle: '',
+    allDataSources: [],
   },
 
   mutations,
@@ -89,3 +76,4 @@ const store = {
 };
 
 export default store;
+
