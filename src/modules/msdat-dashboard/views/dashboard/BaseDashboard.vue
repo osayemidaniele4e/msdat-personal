@@ -538,8 +538,6 @@ export default {
           key: 'datasource',
           value: data,
         };
-
-        console.log(obj, '@@@@');
         
 
         if ([0, 1, 2, 5].includes(index)) {
