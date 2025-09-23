@@ -14,10 +14,14 @@
         padding: 10px;
       "
     >
-      <b class="selection-header" style="font-size: 13px; font-family: Work Sans">
-        INDICATOR(S)
-      </b>
-      <span class="transform" :style="{ transform: isContentVisible ?  'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }">
+      <b class="selection-header" style="font-size: 13px; font-family: Work Sans"> INDICATOR(S) </b>
+      <span
+        class="transform"
+        :style="{
+          transform: isContentVisible ? 'rotate(180deg)' : 'rotate(0deg)',
+          transition: 'transform 0.3s',
+        }"
+      >
         ▼
       </span>
     </div>
@@ -25,7 +29,7 @@
     <!-- Collapsible Content -->
     <div v-show="isContentVisible" style="transition: all 0.3s ease">
       <!-- Search Input and Select All Button Container -->
-      <div class="search-container" style="margin: 20px 0; display: flex; gap: 8px;">
+      <div class="search-container" style="margin: 20px 0; display: flex; gap: 8px">
         <input
           type="text"
           v-model="searchTerm"
@@ -52,7 +56,7 @@
             text-decoration: none;
             white-space: nowrap;
           "
-          :class="{ 'selected': allIndicatorsSelected }"
+          :class="{ selected: allIndicatorsSelected }"
         >
           {{ allIndicatorsSelected ? 'Deselect All' : 'Select All' }}
         </button>
@@ -61,11 +65,7 @@
       <Card class="scroll">
         <TheLoader v-if="loading" />
         <div v-else>
-          <div
-            v-for="(items, idx) in filteredHeading"
-            :key="idx"
-            style="margin-top: 0px"
-          >
+          <div v-for="(items, idx) in filteredHeading" :key="idx" style="margin-top: 0px">
             <div
               class="program-areas my-2"
               style="background: #f3f3f3; font-size: 13px"
@@ -75,12 +75,7 @@
                 type="checkbox"
                 :id="items.parent.value"
                 @click="
-                  toggleAll(
-                    $event,
-                    items.children,
-                    items.parent.value,
-                    items.parent.selected
-                  )
+                  toggleAll($event, items.children, items.parent.value, items.parent.selected)
                 "
                 class="checkbox no-pointer-events"
                 :checked="isAllSelected(items.parent)"
@@ -146,6 +141,7 @@
 import Card from '../../Card.vue';
 // eslint-disable-next-line import/extensions
 import TheLoader from '../../Loading/TheLoader2';
+import apiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   props: {
@@ -175,6 +171,7 @@ export default {
       searchTerm: '',
       allIndicatorsSelected: false,
       isContentVisible: true, // New data property for collapse/expand
+      allDatasources: [],
     };
   },
   computed: {
@@ -193,7 +190,9 @@ export default {
 
       return this.heading.map((section) => ({
         parent: { ...section.parent },
-        children: section.children.filter((item) => item.short_name.toLowerCase().includes(searchLower)),
+        children: section.children.filter((item) =>
+          item.short_name.toLowerCase().includes(searchLower)
+        ),
       }));
     },
   },
@@ -214,7 +213,7 @@ export default {
         this.toggleAll(
           { target: { checked: this.allIndicatorsSelected } },
           section.children,
-          section.parent.value,
+          section.parent.value
         );
       });
     },
@@ -246,7 +245,7 @@ export default {
     loadIndicators() {
       this.$store.dispatch('loadIndicators');
     },
-    selectIndicator(e, parentValue, childId, childName) {
+    async selectIndicator(e, parentValue, childId, childName) {
       this.indicatorSelected = e.target.checked;
       this.showList = e.target.checked;
       this.$store.dispatch('forSelectedIndicator', {
@@ -254,6 +253,32 @@ export default {
         id: childId,
         showList: this.showList,
       });
+
+      const indicatorDatasources = await apiServices.getIndicatorDataSources(childId);
+      const sources = indicatorDatasources.data.datasources;
+
+      if (e.target.checked) {
+        // add them
+        this.allDatasources.push(...sources.map((s) => ({ ...s, child_id: childId })));
+      } else {
+        // remove them
+        const sourceIds = sources.map((s) => s.id); // or unique key field
+        this.allDatasources = this.allDatasources.filter(
+          (item) => !(sourceIds.includes(item.id) && item.child_id === childId)
+        );
+      }
+
+      const grouped = Object.values(
+        this.allDatasources.reduce((acc, item) => {
+          if (!acc[item.classification]) {
+            acc[item.classification] = { parent: item.classification, children: [] };
+          }
+          acc[item.classification].children.push(item);
+          return acc;
+        }, {})
+      );
+
+       this.$store.commit('setAllSources', grouped)
 
       this.$store.dispatch('loadCoverageLevels', {
         id: childId,
@@ -276,7 +301,7 @@ export default {
         this.heading.forEach((section) => {
           section.children.forEach((child) => {
             if (newIndicators.includes(child.short_name)) {
-            // Replicate selectIndicator functionality
+              // Replicate selectIndicator functionality
               this.$store.dispatch('forSelectedIndicator', {
                 checked: true,
                 id: child.id,
@@ -306,11 +331,13 @@ export default {
     selectedProgramArea: {
       handler(newProgramArea) {
         if (newProgramArea) {
-        // Find the section corresponding to the selected program area
-          const matchingSection = this.heading.find((section) => section.parent.value === newProgramArea);
+          // Find the section corresponding to the selected program area
+          const matchingSection = this.heading.find(
+            (section) => section.parent.value === newProgramArea
+          );
 
           if (matchingSection) {
-          // Update the parent's selected state
+            // Update the parent's selected state
             matchingSection.parent.selected = true;
           }
         }
@@ -336,7 +363,7 @@ export default {
 .search-container {
   position: relative;
 }
-.transform{
+.transform {
   font-size: 14px;
 }
 .scroll {
@@ -355,12 +382,12 @@ button:hover {
 button.selected {
   background: #e0e0e0;
 }
-.header-container{
-  background-color:#F1F2F7;
+.header-container {
+  background-color: #f1f2f7;
   margin: 0px -20px -10px -10px;
 }
 
 .header-container:hover {
-  background-color: #F1F2F7;
+  background-color: #f1f2f7;
 }
 </style>

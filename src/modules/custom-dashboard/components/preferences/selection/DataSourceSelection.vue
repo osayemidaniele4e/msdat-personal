@@ -154,7 +154,7 @@ export default {
       return this.$store.getters.Datasourceloading;
     },
     sources() {
-      return this.$store.getters.getDataSource;
+      return this.$store.getters.getAllSources;
     },
     filteredSources() {
       if (!this.searchTerm.trim()) {
