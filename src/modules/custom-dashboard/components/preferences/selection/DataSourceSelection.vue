@@ -17,7 +17,13 @@
       <b class="selection-header" style="font-size: 13px; font-family: Work Sans">
         DATA SOURCE(S)
       </b>
-      <span class="transform" :style="{ transform: isContentVisible ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }">
+      <span
+        class="transform"
+        :style="{
+          transform: isContentVisible ? 'rotate(180deg)' : 'rotate(0deg)',
+          transition: 'transform 0.3s',
+        }"
+      >
         ▼
       </span>
     </div>
@@ -25,7 +31,7 @@
     <!-- Collapsible Content -->
     <div v-show="isContentVisible" style="transition: all 0.3s ease">
       <!-- Search Input and Select All Button Container -->
-      <div class="search-container" style="margin: 20px 0; display: flex; gap: 8px;">
+      <div class="search-container" style="margin: 20px 0; display: flex; gap: 8px">
         <input
           type="text"
           v-model="searchTerm"
@@ -52,7 +58,7 @@
             text-decoration: none;
             white-space: nowrap;
           "
-          :class="{ 'selected': allSourcesSelected }"
+          :class="{ selected: allSourcesSelected }"
         >
           {{ allSourcesSelected ? 'Deselect All' : 'Select All' }}
         </button>
@@ -61,8 +67,7 @@
       <Card class="scroll">
         <TheLoader v-if="loading == true" />
         <div v-else>
-          <div v-for="(items, idx) in filteredSources" :key="idx"
-          style="margin-top: 0px">
+          <div v-for="(items, idx) in filteredSources" :key="idx" style="margin-top: 0px">
             <div
               class="program-areas"
               style="background: #f3f3f3; font-size: 13px"
@@ -83,8 +88,8 @@
               </span>
             </div>
             <div
-              v-for="item in items.children"
-              :key="item.id"
+              v-for="(item, index) in items.children"
+              :key="index"
               class="indicators col-4"
               style="
                 display: inline-block;
@@ -100,13 +105,7 @@
                 :value="item.datasource"
                 :checked="isSelected(item)"
                 @click="
-                  selectSource(
-                    $event,
-                    items.parent.value,
-                    item.id,
-                    item.datasource,
-                    item.selected
-                  )
+                  selectSource($event, items.parent.value, item.id, item.datasource, item.selected)
                 "
                 class="checkbox no-pointer-events"
               />
@@ -165,7 +164,9 @@ export default {
 
       return this.sources.map((section) => ({
         parent: section.parent,
-        children: section.children.filter((item) => item.datasource.toLowerCase().includes(searchLower)),
+        children: section.children.filter((item) =>
+          item.datasource.toLowerCase().includes(searchLower)
+        ),
       }));
     },
   },
@@ -189,7 +190,7 @@ export default {
             { target: { checked: this.allSourcesSelected } },
             section.parent,
             item.id,
-            item.datasource,
+            item.datasource
           );
         });
       });
@@ -232,7 +233,7 @@ export default {
   max-height: calc(100vh - 200px);
   overflow-y: auto;
 }
-.transform{
+.transform {
   font-size: 14px;
 }
 button {
@@ -248,12 +249,12 @@ button.selected {
 }
 
 /* New styles for collapsible header */
-.header-container{
-  background-color:#F1F2F7;
+.header-container {
+  background-color: #f1f2f7;
   margin: 0px -20px -10px -10px;
 }
 
 .header-container:hover {
-  background-color: #F1F2F7;
+  background-color: #f1f2f7;
 }
 </style>

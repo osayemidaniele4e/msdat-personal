@@ -258,14 +258,17 @@ export default {
       const sources = indicatorDatasources.data.datasources;
 
       if (e.target.checked) {
-        // add them
-        this.allDatasources.push(...sources.map((s) => ({ ...s, child_id: childId })));
+        const newItems = sources.map((s) => ({ ...s, child_id: childId }));
+
+        const unique = new Map();
+        [...this.allDatasources, ...newItems].forEach((item) => {
+          unique.set(item.id, item); // uniqueness only by id
+        });
+
+        this.allDatasources = [...unique.values()];
       } else {
-        // remove them
-        const sourceIds = sources.map((s) => s.id); // or unique key field
-        this.allDatasources = this.allDatasources.filter(
-          (item) => !(sourceIds.includes(item.id) && item.child_id === childId)
-        );
+        const sourceIds = sources.map((s) => s.id);
+        this.allDatasources = this.allDatasources.filter((item) => !sourceIds.includes(item.id));
       }
 
       const grouped = Object.values(
@@ -278,7 +281,7 @@ export default {
         }, {})
       );
 
-       this.$store.commit('setAllSources', grouped)
+      this.$store.commit('setAllSources', grouped);
 
       this.$store.dispatch('loadCoverageLevels', {
         id: childId,
