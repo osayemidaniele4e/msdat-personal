@@ -28,6 +28,8 @@ export default {
         commit('setIndiLoading', loading);
 
         const res = await ApiServices.fetchAllIndicators();
+        console.log(res, 'All Indicator');
+
         if (res.data && res.data.results && Array.isArray(res.data.results)) {
           const data = res.data.results;
           const array = (data || []).map((pArea) => pArea.program_area || 'Unknown');
@@ -39,11 +41,7 @@ export default {
           // eslint-disable-next-line no-restricted-syntax
           for (const pa of distinctArray) {
             const paData = sortedData.filter((ind) => ind.program_area === pa);
-            if (pa === 'RMNCH') {
-              filteredData = filteredData.concat(paData.slice(0, 10));
-            } else {
-              filteredData = filteredData.concat(paData.slice(0, 2));
-            }
+            filteredData = filteredData.concat(paData);
           }
 
           distinctArray.forEach((distItem) => {

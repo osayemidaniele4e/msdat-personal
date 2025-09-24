@@ -39,4 +39,27 @@ export default [
       title: route.params.name,
     }),
   },
+
+  {
+    path: '/custom-dashboard/:name',
+    component: () => import('./custom.vue'),
+    props: (route) => ({ id: route.query.id }),
+    // meta: {
+    //   title: 'MSDAT PLATFORM', // The title of the page on the Header.This ia also changed dynamically
+    // },
+    meta: (route) => ({
+      title: route.params.name,
+    }),
+  },
+  {
+    path: '/custom-dashboard/:name/:id',
+    component: () => import('./custom.vue'),
+    props: (route) => ({ id: route.query.id }),
+    // meta: {
+    //   title: 'MSDAT PLATFORM', // The title of the page on the Header.This ia also changed dynamically
+    // },
+    meta: (route) => ({
+      title: route.params.name,
+    }),
+  },
 ];
