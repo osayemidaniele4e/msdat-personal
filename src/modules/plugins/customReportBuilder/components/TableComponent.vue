@@ -1,8 +1,8 @@
 <template>
   <div class="table-component">
-    <div v-if="data && data.image" class="table-snapshot">
-      <img :src="data.image" alt="table snapshot" style="max-width:100%; height:auto;" />
-      <div v-if="data.fallbackSnapshot" class="snapshot-badge">Captured from page (fallback)</div>
+    <div v-if="data && data.image" class="table-snapshot" :style="{ width: data.width || '100%' }">
+  <img :src="data.image" alt="table snapshot" :style="{ width: 'auto', height: 'auto', maxWidth: '100%', display: 'block' }" />
+      <div v-if="isDebug && data.fallbackSnapshot" class="snapshot-badge">Captured from page (fallback)</div>
     </div>
     <div v-else>
     <table v-if="columns.length">
@@ -20,14 +20,14 @@
     </div>
     <div v-if="!columns.length && !data.image">
       No table data
-      <div v-if="data && data.debugQuery" class="debug-query">
+      <div v-if="isDebug && data && data.debugQuery" class="debug-query">
         <strong>Query used:</strong>
         <pre>{{ JSON.stringify(data.debugQuery, null, 2) }}</pre>
       </div>
     </div>
 
     <!-- Persistent debug banner so the query and row count are visible in-app -->
-    <div class="table-debug-banner" v-if="data">
+    <div class="table-debug-banner" v-if="isDebug && data">
       <div><strong>Debug:</strong></div>
       <div><small>Query: <code>{{ shortQuery }}</code></small></div>
       <div><small>Rows: <code>{{ rowsCount }}</code></small></div>
@@ -42,7 +42,10 @@ import dlMixin from '@/modules/data-layer/mixin';
 export default {
   name: 'TableComponent',
   mixins: [dlMixin],
-  props: ['data'],
+  props: {
+    data: { type: Object, required: true },
+    debug: { type: Boolean, default: false },
+  },
   data() {
     return {
       columns: this.data.columns || [],
@@ -84,6 +87,13 @@ export default {
     }
   },
   computed: {
+    isDebug() {
+      try {
+        return this.debug || (typeof localStorage !== 'undefined' && localStorage.getItem('CRB_DEBUG') === '1');
+      } catch (e) {
+        return this.debug || false;
+      }
+    },
     rowsCount() {
       return Array.isArray(this.rows) ? this.rows.length : 0;
     },
@@ -93,6 +103,18 @@ export default {
       } catch (e) {
         return String(this.data && this.data.query);
       }
+    },
+  },
+  methods: {
+    annotationStyle(a) {
+      return {
+        position: 'absolute',
+        left: `${a.x}px`,
+        top: `${a.y}px`,
+        background: 'rgba(255,255,0,0.9)',
+        padding: '2px 6px',
+        borderRadius: '4px',
+      };
     },
   },
 };
