@@ -80,15 +80,13 @@
           </base-sub-card>
         </div>
       </template>
-      <template v-slot:section-3="{ payload, controlIndex }">
+      <!-- <template v-slot:section-3="{ payload, controlIndex }">
         <div class="col-md-12" style="margin-bottom: 4rem">
           <base-sub-card :backgroundColor="'header'" class="my-2 shadow-sm">
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Health Facility Mapping </h5>
             </template>
-            <!-- lazy loading for each section starts here -->
-            <!-- the first section doesn't need the component
-                 since it will be mounted first -->
+           
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">
@@ -98,7 +96,7 @@
             </template>
           </base-sub-card>
         </div>
-      </template>
+      </template> -->
     </BaseDashboard>
   </div>
 </template>
@@ -113,8 +111,8 @@ import DatasetComparisonSection from '../../components/sections/gis/dataset-comp
 import DatasetComparisonConfig from '../../components/sections/gis/dataset-comparison/dataset-compare-gis-config';
 import MultiSourceComponent from '../../components/sections/gis/multi-source-compare/BaseMultiSourceSection.vue';
 import MultiSourceConfig from '../../components/sections/gis/multi-source-compare/multi-source-gis-compare';
-import MultiHealthFacility from '../../components/sections/gis/multi-health-facility/multisource-health-facility.vue';
-import MulitHealthConfig from '../../components/sections/gis/multi-health-facility/multi-healthfacility-config';
+// import MultiHealthFacility from '../../components/sections/gis/multi-health-facility/multisource-health-facility.vue';
+// import MulitHealthConfig from '../../components/sections/gis/multi-health-facility/multi-healthfacility-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
@@ -136,7 +134,7 @@ export default {
     MultiSourceComponent,
     IndicatorComparisonSection,
     DatasetComparisonSection,
-    MultiHealthFacility,
+    // MultiHealthFacility,
   },
   props: {
     initialIndicator: {
@@ -275,7 +273,7 @@ export default {
     this.ADD_CONTROL_PANEL(IndicatorComparisonConfig);
     this.ADD_CONTROL_PANEL(DatasetComparisonConfig);
     this.ADD_CONTROL_PANEL(MultiSourceConfig);
-    this.ADD_CONTROL_PANEL(MulitHealthConfig);
+    // this.ADD_CONTROL_PANEL(MulitHealthConfig);
 
     //  Adding 'Dynamic section' to the control panel
     //  when not in the 'Health Outcomes dashboard'
