@@ -39,12 +39,12 @@
               <span class="custom-tooltip">Geographic tool for locating health facilities. </span>
             </div>
 
-            <div class="tooltip-wrapper">
+            <!-- <div class="tooltip-wrapper">
               <router-link to="/health-facilities-profile" target="_blank">
                 <b-list-group-item>Multi-Source Health Facilities Profile</b-list-group-item>
               </router-link>
               <span class="custom-tooltip">Description of health facilities. </span>
-            </div>
+            </div> -->
           </b-list-group>
         </div>
         <div class="col mb-3">

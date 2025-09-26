@@ -253,6 +253,10 @@ export default {
       };
 
       chartOptions.yAxis.title.text = `${displayFactor}`;
+      
+      // Only adjust yAxis for target lines if targets exceed data range
+      this.adjustYAxisForTargetLines(chartOptions, national_target, sdg_target);
+      
       // add nation and state selected to fit according to mockup :cry: :worried: :rage:
       // const parentValue = await this.dlQuery({
       //   indicator: this.values.indicator.id,
@@ -335,6 +339,10 @@ export default {
           }
         }
       }
+      
+      // Re-adjust yAxis range after adding parent data
+      this.adjustYAxisForTargetLines(chartOptions, national_target, sdg_target);
+      
       if (this.values.numdenum === true) {
         chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
         chartOptions.tooltip.outside = true;
@@ -424,6 +432,98 @@ export default {
       }
 
       return data;
+    },
+    adjustYAxisForTargetLines(chartOptions, nationalTarget, sdgTarget) {
+      // Collect target values that should be visible
+      const targetValues = [];
+      
+      if (nationalTarget !== null && this.values.target.national) {
+        targetValues.push(nationalTarget);
+      }
+      
+      if (sdgTarget !== null && this.values.target.sdg) {
+        targetValues.push(sdgTarget);
+      }
+      
+      // Only adjust if we have targets
+      if (targetValues.length === 0) {
+        return;
+      }
+
+      // Get all data values from the chart
+      const allDataValues = [];
+      
+      if (chartOptions.series) {
+        chartOptions.series.forEach(series => {
+          if (series.data) {
+            series.data.forEach(point => {
+              if (typeof point === 'object' && typeof point.y === 'number') {
+                allDataValues.push(point.y);
+              } else if (typeof point === 'number') {
+                allDataValues.push(point);
+              }
+            });
+          }
+        });
+      }
+
+      if (allDataValues.length > 0) {
+        const dataMin = Math.min(...allDataValues);
+        const dataMax = Math.max(...allDataValues);
+        const targetMin = Math.min(...targetValues);
+        const targetMax = Math.max(...targetValues);
+        
+        // Check if ANY targets are outside data range
+        const targetsExceedDataRange = targetMax > dataMax || targetMin < dataMin;
+        
+        if (targetsExceedDataRange) {
+          // Targets are outside data range - need to adjust range to include both data and targets
+          const overallMin = Math.min(dataMin, targetMin);
+          const overallMax = Math.max(dataMax, targetMax);
+          
+          // Use reasonable padding based on the overall range
+          const range = overallMax - overallMin;
+          const padding = Math.max(range * 0.05, 1); // 5% padding or minimum 1 unit
+          
+          chartOptions.yAxis.min = Math.max(0, overallMin - padding);
+          chartOptions.yAxis.max = overallMax + padding;
+          
+          console.log('YAxis adjusted to include targets outside data range:', {
+            dataRange: `${dataMin} - ${dataMax}`,
+            targetRange: `${targetMin} - ${targetMax}`,
+            finalRange: `${chartOptions.yAxis.min.toFixed(1)} - ${chartOptions.yAxis.max.toFixed(1)}`,
+            reason: targetMax > dataMax ? 'Target above data' : 'Target below data'
+          });
+        } else {
+          // Targets are within data range - remove any fixed scaling to let Highcharts auto-scale
+          if (chartOptions.yAxis.min !== undefined) {
+            delete chartOptions.yAxis.min;
+          }
+          if (chartOptions.yAxis.max !== undefined) {
+            delete chartOptions.yAxis.max;
+          }
+          
+          console.log('YAxis auto-scaling enabled - targets within data range:', {
+            dataRange: `${dataMin} - ${dataMax}`,
+            targetRange: `${targetMin} - ${targetMax}`,
+            message: 'Using Highcharts default scaling'
+          });
+        }
+      } else {
+        // No data, only targets - use minimal range around targets
+        const targetMin = Math.min(...targetValues);
+        const targetMax = Math.max(...targetValues);
+        const targetRange = Math.max(targetMax - targetMin, Math.abs(targetMax * 0.2), 10);
+        const padding = Math.max(targetRange * 0.1, 2);
+        
+        chartOptions.yAxis.min = Math.max(0, targetMin - padding);
+        chartOptions.yAxis.max = targetMax + padding;
+        
+        console.log('YAxis adjusted for targets only:', {
+          targetValues: targetValues,
+          finalRange: `${chartOptions.yAxis.min.toFixed(1)} - ${chartOptions.yAxis.max.toFixed(1)}`
+        });
+      }
     },
     handleChartClick(e) {
       const point = e?.point?.name;
