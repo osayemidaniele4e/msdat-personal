@@ -115,4 +115,8 @@ export default {
   isPublicDashboard(state) {
     return state.publicDashboard;
   },
+
+  getAllSources(state){
+    return state.allDataSources
+  }
 };

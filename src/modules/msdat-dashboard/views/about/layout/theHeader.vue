@@ -46,7 +46,7 @@
                 </div>
               </div>
               <div class="mobile-flex-col" v-else>
-                <small class="mobile-flex-col-text1">MSDAT PLATFORMX</small>
+                <small class="mobile-flex-col-text1">MSDAT PLATFORM</small>
                 <div class="mobile-flex-col-text2">{{ $route.meta.title }}</div>
               </div>
 

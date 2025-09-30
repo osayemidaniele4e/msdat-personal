@@ -133,7 +133,9 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('getDashboards').then(({ data }) => {
+    this.$store.dispatch('getDashboards').then((response) => {
+      const data = response.result
+      
       this.publicDashboards = Object.values(data)
         .filter((req) => req.email === this.getUser.email)
         .map((req) => ({
