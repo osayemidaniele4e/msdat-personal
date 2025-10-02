@@ -192,13 +192,21 @@ export default {
       };
 
       console.log('✅ Final Payload:', payload);
-      try {
-        const response = await apiServices.tagIndicator(payload);
-        console.log(response, '@<>@');
-        
-      } catch (error) {}
-
-      // TODO: integrate save API
+      const response = await apiServices.tagIndicator(payload);
+      console.log(response, '@<>@');
+      if (response.status === '201') {
+        this.handleClose();
+        this.$emit('refresh');
+      } else {
+        this.$swal({
+          toast: true,
+          position: 'botom-left',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'error',
+          title: 'Error Taging indicator',
+        });
+      }
     },
   },
 

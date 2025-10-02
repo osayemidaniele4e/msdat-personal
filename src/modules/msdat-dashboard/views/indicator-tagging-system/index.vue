@@ -41,12 +41,12 @@
                   <td>{{ tag.name }}</td>
                   <td>{{ tag.description }}</td>
                   <td>
-                    <span class="badge indicator-badge">{{ tag.indicators }}</span>
+                    <span class="badge indicator-badge">{{ tag.indicators.length }}</span>
                   </td>
-                  <td>{{ tag.createdDate }}</td>
+                  <td>{{ new Date(tag.created_at).toLocaleString() }}</td>
                   <td>
-                    <img  src="../../../../assets/svg/Edit.svg" alt="edit" />
-                    <img  src="../../../../assets/svg/delete.svg" alt="edit" />
+                    <img src="../../../../assets/svg/Edit.svg" alt="edit" />
+                    <img src="../../../../assets/svg/delete.svg" alt="edit" />
                   </td>
                 </tr>
               </tbody>
@@ -82,7 +82,7 @@
         </div>
       </div>
       <div v-if="openCreateModal" class="">
-        <CreateTagModal @close="cancelCreate" />
+        <CreateTagModal @close="cancelCreate" @refresh="getAllTags" />
       </div>
     </div>
     <Footer />
@@ -110,78 +110,7 @@ export default {
       itemsPerPage: 5,
       indicators: [],
       selectedIndicators: [],
-      tags: [
-        {
-          id: 1,
-          name: 'Maternal Health',
-          description: 'Indicators related to maternal health outcomes and services',
-          indicators: 12,
-          createdDate: '2023-05-15',
-        },
-        {
-          id: 2,
-          name: 'Child Nutrition',
-          description: 'Indicators for nutritional status in children under 5',
-          indicators: 8,
-          createdDate: '2023-05-16',
-        },
-        {
-          id: 3,
-          name: 'Immunization Coverage',
-          description: 'Vaccination rates and related public health metrics',
-          indicators: 15,
-          createdDate: '2023-05-17',
-        },
-        {
-          id: 4,
-          name: 'HIV/AIDS',
-          description: 'Prevalence, incidence, and treatment of HIV/AIDS',
-          indicators: 22,
-          createdDate: '2023-05-18',
-        },
-        {
-          id: 5,
-          name: 'Malaria Prevention',
-          description: 'Data on malaria control and prevention efforts',
-          indicators: 7,
-          createdDate: '2023-05-19',
-        },
-        {
-          id: 6,
-          name: 'Tuberculosis',
-          description: 'Indicators tracking TB cases and treatment success',
-          indicators: 11,
-          createdDate: '2023-05-20',
-        },
-        {
-          id: 7,
-          name: 'Water & Sanitation',
-          description: 'Access to clean water and sanitation facilities',
-          indicators: 18,
-          createdDate: '2023-05-21',
-        },
-        {
-          id: 8,
-          name: 'Non-communicable Diseases',
-          description: 'Metrics on chronic diseases like diabetes and hypertension',
-          indicators: 25,
-          createdDate: '2023-05-22',
-        },
-        {
-          id: 9,
-          name: 'Mental Health',
-          description: 'Indicators related to mental health services and outcomes',
-          indicators: 9,
-          createdDate: '2023-05-23',
-        },
-        {
-          id: 10,
-          name: 'Health Workforce',
-          description: 'Data on healthcare workers and system capacity',
-          indicators: 14,
-          createdDate: '2023-05-24',
-        },
-      ],
+      tags: [],
       chosen: [],
       open: false,
       selected: [],
@@ -238,6 +167,13 @@ export default {
       console.log(this.indicators);
     },
 
+    async getAllTags() {
+      const { data } = await apiServices.getTags();
+      // this.indicators = data.results;
+      console.log(data.data.results, 'Tags');
+      this.tags = data.data.results;
+    },
+
     toggleModal() {
       this.openCreateModal = true;
     },
@@ -269,6 +205,9 @@ export default {
         this.currentPage = this.totalPages;
       }
     },
+  },
+  mounted() {
+    this.getAllTags();
   },
 };
 </script>
@@ -344,12 +283,11 @@ tbody tr td {
   border-bottom: 1px solid #e0e0e0;
 }
 
-
 tbody tr td img {
- width: 20px;
- height: 20px;
- margin-right: 5px;
- cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  cursor: pointer;
 }
 .indicator-badge {
   background-color: #eaf3f2;
