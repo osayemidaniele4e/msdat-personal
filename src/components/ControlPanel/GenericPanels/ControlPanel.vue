@@ -1,3 +1,24 @@
+  async addCurrentToReport() {
+  // Demo helper: build a context from current payload to add a chart and table
+  const payload = this.payload;
+  // Example: send table with current payload as query
+  const tableQuery = {
+  indicator: payload.indicator,
+  datasource: payload.datasource,
+  location: payload.location,
+  year: payload.year,
+  };
+  if (this.$customreportbuilder && typeof this.$customreportbuilder.addItemWithContext === 'function') {
+  // add a table item
+  await this.$customreportbuilder.addItemWithContext('table', { query: tableQuery });
+  // try to snapshot a chart container if present - host pages should pass real selector
+  // here we attempt a common chart container id '#main-chart' as an example
+  await this.$customreportbuilder.addItemWithContext('chart', { chartSelector: '#main-chart' });
+  } else {
+  // eslint-disable-next-line no-console
+  console.warn('Report builder plugin not available');
+  }
+  },
 <template>
   <div class="row" id="control-panel">
     <!-- <pre>{{ setup }}</pre> -->
@@ -231,6 +252,8 @@
       </b-button>
     </div>
 
+  <!-- (report builder capture is automatic; demo button removed) -->
+
     <!-- Voice Control Modal Component -->
     <VoiceControlModal
       :show="isVoiceModalVisible"
@@ -405,6 +428,7 @@ export default {
         localStorage.setItem('lastActivity', JSON.stringify(activityObject));
       }
     },
+    // ...existing methods continue here
     locationCheck(options) {
       // I do not understand this logic, but it is used to filter out
       // the options in the dropdown based on the current route
