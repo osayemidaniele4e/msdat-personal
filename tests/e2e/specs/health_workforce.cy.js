@@ -23,7 +23,7 @@ describe('Health Workforce Page', () => {
 
 });
 
-describe('Health Facility Config API', () => {
+describe('Health Workforce Config API', () => {
   let responseBody;
 
   before(() => {
