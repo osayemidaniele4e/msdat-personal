@@ -239,11 +239,12 @@
                     v-for="(source, index) in sources"
                     :key="'consistency-' + source + '-' + index"
                   >
-                    {{ grade.values[source]?.score }} -
+                    {{ grade.values[source] && grade.values[source].score }} -
                     {{
-                      typeof grade.values[source]?.description === 'object'
-                        ? grade.values[source]?.description.short
-                        : grade.values[source]?.scale || grade.values[source]?.description
+                      typeof (grade.values[source] && grade.values[source].description) === 'object'
+                        ? grade.values[source] && grade.values[source].description.short
+                        : (grade.values[source] && grade.values[source].scale) ||
+                          (grade.values[source] && grade.values[source].description)
                     }}
                   </td>
                   <td></td>
@@ -270,11 +271,12 @@
                     v-for="(source, index) in sources"
                     :key="'complementarity-' + source + '-' + index"
                   >
-                    {{ grade.values[source]?.score }} -
+                    {{ grade.values[source] && grade.values[source].score }} -
                     {{
-                      typeof grade.values[source]?.description === 'object'
-                        ? grade.values[source]?.description.short
-                        : grade.values[source]?.scale || grade.values[source]?.description
+                      typeof (grade.values[source] && grade.values[source].description) === 'object'
+                        ? grade.values[source] && grade.values[source].description.short
+                        : (grade.values[source] && grade.values[source].scale) ||
+                          (grade.values[source] && grade.values[source].description)
                     }}
                   </td>
                   <td></td>
@@ -514,7 +516,7 @@
             <h4>Please wait while Datasources, Indicators and Locations data load</h4>
           </div>
         </div>
-        <div class="col-1 d-flex justify-content-center align-items-end">
+        <div class="col-1 d-flex justify-content-center align-items-end mt-5">
           <button class="triangulate-btn" @click="triangulate">
             <div v-if="showLoader" class="spinner-border text-light mx-3" role="status">
               <span class="sr-only">Loading...</span>
@@ -972,7 +974,8 @@ export default {
   border-top-right-radius: 10px;
 }
 .section-height-2 {
-  height: 90vh;
+  height: auto;
+  padding: 80px 0;
 }
 .into-title {
   font-family: DM Sans;

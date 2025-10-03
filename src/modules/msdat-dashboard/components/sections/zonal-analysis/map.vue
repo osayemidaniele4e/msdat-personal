@@ -187,15 +187,6 @@ export default {
               color,
               name: series.name,
               data: sortedData,
-              dataLabels: {
-                enabled: true,
-                format: '{point.name}: {point.value}', // show location name + value
-                style: {
-                  fontSize: '10px',
-                  fontWeight: 'bold',
-                  textOutline: 'none',
-                },
-              },
             });
 
             /**
@@ -231,15 +222,15 @@ export default {
               color: this.colors.find((item2) => item2.id === item.location).color,
               name: this.dlGetLocation(item.location).name,
               data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
-              dataLabels: {
-                enabled: true,
-                format: '{point.name}: {point.value}', // show location name + value
-                style: {
-                  fontSize: '10px',
-                  fontWeight: 'bold',
-                  textOutline: 'none',
-                },
-              },
+              // dataLabels: {
+              //   enabled: true,
+              //   format: '{point.name}: {point.value}', // show location name + value
+              //   style: {
+              //     fontSize: '10px',
+              //     fontWeight: 'bold',
+              //     textOutline: 'none',
+              //   },
+              // },
             }));
 
             this.chart = {
