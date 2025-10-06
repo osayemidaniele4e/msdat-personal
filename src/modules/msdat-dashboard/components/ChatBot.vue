@@ -160,18 +160,18 @@ export default {
       });
       this.persistSession();
 
-      const userMessage = this.userInput;
-      this.userInput = '';
-      this.isLoading = true;
+  const userMessage = this.userInput;
+  this.userInput = '';
+  this.isLoading = true;
 
       try {
         // Webhook integration
-        const response = await fetch('https://cloud.activepieces.com/api/v1/webhooks/y4MNr1MBY7n2RzmVnYM8E/sync', {
+        const response = await fetch('https://n8n.e4eweb.space/webhook-test/7038e292-511b-49ca-94ba-92738219de03', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            question: userMessage,
-            overrideConfig: { sessionId: this.sessionId },
+            sessionId: this.sessionId,
+            chatInput: userMessage,
           }),
         });
         const data = await response.json();
