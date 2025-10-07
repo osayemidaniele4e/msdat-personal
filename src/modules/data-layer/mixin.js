@@ -284,6 +284,8 @@ export default {
       const datasourceId = value || 1;
       const { data } = await apiServices.getDataSourceIndicators(datasourceId);
       const sourcesAvailable = data.indicators;
+      console.log(sourcesAvailable, '<<@>>');
+      
       if (sourcesAvailable.length <= 0) {
         return [];
       }

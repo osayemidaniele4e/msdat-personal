@@ -289,6 +289,7 @@ export default {
               key: 'indicator',
               value: availableIndicator[0].indicators[0],
             });
+            
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,

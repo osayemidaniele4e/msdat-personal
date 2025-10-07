@@ -67,6 +67,7 @@ const mutations: MutationTree<State> = {
   },
 
   SETUP_CONTROL_OPTIONS1: (state, obj: setOptionsPayload) => {
+    
     const checkTheObject = state.controlConfig[obj.panelIndex].setup[0];
     if (Array.isArray(checkTheObject)) {
       const setUpArrayOfObject = state.controlConfig[obj.panelIndex].setup[obj.groupIndex];
