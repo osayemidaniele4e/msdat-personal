@@ -90,6 +90,17 @@ export default {
   },
   mounted() {
     this.getWhatsNew();
+
+    // ⏱️ Auto-close after 2 minutes (120,000 ms)
+    this.autoCloseTimer = setTimeout(() => {
+      this.closeComponent();
+    }, 90000);
+  },
+  beforeUnmount() {
+    // cleanup when component is destroyed
+    if (this.autoCloseTimer) {
+      clearTimeout(this.autoCloseTimer);
+    }
   },
 };
 </script>
@@ -196,5 +207,35 @@ export default {
   text-decoration: underline;
   color: #0e3a27;
   cursor: pointer;
+}
+
+/* 📱 MOBILE RESPONSIVE STYLES */
+@media (max-width: 600px) {
+  .whats-new-content {
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  .info h3 {
+    font-size: 12px;
+  }
+  ul {
+    // list-style: none;   // removes default bullet points
+    padding-left: 0; // removes the indentation
+    margin: 0; // optional: cleans up spacing
+    margin-top: 15px;
+  }
+
+  .close-btn img {
+    width: 40px;
+    height: 40px;
+  }
+  .close-btn {
+    top: 0;
+    right: 0;
+  }
+  .link {
+    font-size: 12px;
+  }
 }
 </style>

@@ -67,7 +67,7 @@ export default {
     setDefaults() {
       this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
       this.defaultDataSource = this.dlGetDataSource(
-        this.$store.state.MSDAT_STORE.default.datasource,
+        this.$store.state.MSDAT_STORE.default.datasource
       );
       this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
 
@@ -79,7 +79,7 @@ export default {
     async setYearDropdown(
       indicatorID = this.defaultIndicator.id,
       dataSourceID = this.defaultDataSource.id,
-      locationID = this.defaultLocation.id,
+      locationID = this.defaultLocation.id
     ) {
       const { data } = await ApiServices.getPeriod({
         indicator: indicatorID,
@@ -108,7 +108,7 @@ export default {
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
       // eslint-disable-next-line no-unused-vars
-      controlIndex = 0,
+      controlIndex = 0
     ) {
       if (!dataSourceID || !indicatorID) return;
       let data = [];
@@ -178,25 +178,40 @@ export default {
     async setIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorsFromDatasource(datasourceID);
 
+      const formattedData = groupIndicator(data, 'program_area');
+      return formattedData;
+
       // console.log(data, 'indicator world');
       // console.log(datasourceID, 'indicator world');
 
-      const indicatorWithDataPromises = data.map(async (indicatorItem) => {
-        const indicatorData = await this.dlQuery({
-          indicator: indicatorItem.id,
-          datasource: datasourceID,
-        });
+      // const indicatorWithDataPromises = data.map(async (indicatorItem) => {
+      //   const indicatorData = await this.dlQuery({
+      //     indicator: indicatorItem.id,
+      //     datasource: datasourceID,
+      //   });
 
-        // Return the item if indicatorData has content, else return null
-        return indicatorData.length > 0 ? indicatorItem : null;
-      });
+      //   // Return the item if indicatorData has content, else return null
+      //   return indicatorData.length > 0 ? indicatorItem : null;
+      // });
 
-      // Await all promises and filter out any null values
-      const indicatorWithData = (await Promise.all(indicatorWithDataPromises)).filter(Boolean);
+      // // Await all promises and filter out any null values
+      // const indicatorWithData = (await Promise.all(indicatorWithDataPromises)).filter(Boolean);
 
-      // console.log(indicatorWithData, 'indicator world');
+      // // console.log(indicatorWithData, 'indicator world');
 
-      const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      // const formattedData = groupIndicator(indicatorWithData, 'program_area');
+      // return formattedData;
+    },
+
+    async setAllIndicatorDropdown(indicators) {
+      const formattedData = groupIndicator(indicators, 'program_area');
+
+      return formattedData;
+    },
+    async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
+
+      const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
 
