@@ -15,6 +15,13 @@
         </div>
         <div class="header-right">
           <img src="../views/about/assets/expand.svg" alt="Expand" class="header-icon expand-icon">
+          <button class="header-icon refresh-icon" type="button" title="Clear chat" @click="clearChat" aria-label="Clear chat">
+            <!-- inline refresh SVG -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M21 12a9 9 0 10-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 3v6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
           <img src="../views/about/assets/cancel.svg" alt="Close" class="close-icon" @click="toggleChat">
         </div>
       </div>
@@ -96,11 +103,7 @@ export default {
       messages: [
         {
           type: 'bot',
-          text: "Hi there! I'm a bot designed to help you understand and explore Indicator metadata. You can ask me things like:",
-          suggestions: [
-            "What's the latest on malaria cases?",
-            'what datasources does under5 mortality rate have?',
-          ],
+          text: "👋 Hi there! I’m <span class='soma-name'>**Soma**</span> — **MSDAT Data Assistant**.\n\nI can help you explore Nigeria’s health data on the MSDAT platform.\n\nAsk me about **metadata, indicators, data sources**, reporting periods, or even how to interpret key health metrics.",
         },
       ],
       isLoading: false,
@@ -132,6 +135,18 @@ export default {
     persistSession() {
       sessionStorage.setItem('chatbot_session_id', this.sessionId);
       sessionStorage.setItem('chatbot_messages', JSON.stringify(this.messages));
+    },
+    clearChat() {
+      // generate a fresh session and reset messages to the Soma welcome
+      this.sessionId = this.generateSessionId();
+      this.messages = [
+        {
+          type: 'bot',
+          text: "👋 Hi there! I’m <span class='soma-name'>**Soma**</span> — **MSDAT Data Assistant**.\n\nI can help you explore Nigeria’s health data on the MSDAT platform.\n\nAsk me about **metadata, indicators, data sources**, reporting periods, or even how to interpret key health metrics.",
+        },
+      ];
+      this.persistSession();
+      this.$nextTick(() => this.scrollToBottom());
     },
     restoreSession() {
       const storedId = sessionStorage.getItem('chatbot_session_id');
@@ -166,25 +181,51 @@ export default {
 
       try {
         // Webhook integration
-        const response = await fetch('https://cloud.activepieces.com/api/v1/webhooks/y4MNr1MBY7n2RzmVnYM8E/sync', {
+        const response = await fetch('https://n8n.e4eweb.space/webhook/7038e292-511b-49ca-94ba-92738219de03', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            question: userMessage,
-            overrideConfig: { sessionId: this.sessionId },
+            sessionId: this.sessionId,
+            chatInput: userMessage,
           }),
         });
-        const data = await response.json();
-        // Accepts either {text: ...} or fallback
-        const botText = data && data.text ? data.text : 'Sorry, I did not understand the response.';
-        this.messages.push({
-          type: 'bot',
-          text: botText,
-        });
+
+        // Read raw text first to avoid JSON parsing errors on non-JSON responses
+        const raw = await response.text();
+        let data = null;
+        try {
+          data = raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          // not JSON — that's fine, we'll use raw text below
+          data = null;
+        }
+
+        if (!response.ok) {
+          // server returned an error status; show helpful info and log details
+          console.error('Chatbot fetch error', response.status, response.statusText, raw);
+          const serverMessage = (data && (data.error || data.message)) ? (data.error || data.message) : raw || `${response.status} ${response.statusText}`;
+          this.messages.push({
+            type: 'bot',
+            text: `Error from server: ${serverMessage}`,
+          });
+        } else {
+          // Success path: prefer structured data.text, then other common fields, then raw text
+          const botText = (data && (data.text || data.message || data.response))
+            ? (data.text || data.message || data.response)
+            : (raw || 'Sorry, I did not understand the response.');
+
+          this.messages.push({
+            type: 'bot',
+            text: botText,
+          });
+        }
       } catch (error) {
+        // Network or unexpected failure
+        console.error('Chatbot network/error', error);
+        const errMsg = error && error.message ? error.message : '';
         this.messages.push({
           type: 'bot',
-          text: 'Sorry, I encountered an error. Please try again.',
+          text: `Sorry, I encountered an error. ${errMsg}`,
         });
       } finally {
         this.isLoading = false;
@@ -305,6 +346,34 @@ export default {
         background-color: rgba(255, 255, 255, 0.1);
       }
     }
+    .refresh-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      transition: background-color 0.15s, transform 0.08s;
+
+      svg {
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+
+      &:active {
+        transform: scale(0.96);
+      }
+    }
   }
 }
 
@@ -357,10 +426,14 @@ export default {
      gap: 0.5rem;
      word-break: break-word;
      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Added subtle box shadow */
+    .soma-name {
+     color: #007d53;
+     font-weight: 700;
+    }
   }
 
   .message-text {
-      font-size: 14px;
+     font-size: 16px;
   }
 
   &.user {
