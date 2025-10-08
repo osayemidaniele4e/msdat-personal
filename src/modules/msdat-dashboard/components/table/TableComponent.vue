@@ -384,7 +384,7 @@ export default {
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-        this.classify_nm[0][1] += 1;
+        // this.classify_nm[0][1] += 1;
       }
     },
 
