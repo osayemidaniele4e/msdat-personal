@@ -403,10 +403,10 @@ export default {
       // console.log(allAvailableSources, 'this.dataArray');
       // add this to use only datasource on the dropdown for the table component
       /**
-       * order AvailableSources according to the OrderSourceBy Array;
+       * order AvailableSources according to the classification order: Routine, Survey, Estimate
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
+        (a, b) => this.classificationOrder.indexOf(a.classification) - this.classificationOrder.indexOf(b.classification),
       );
       this.source = sortedSource;
 
