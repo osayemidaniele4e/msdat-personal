@@ -58,11 +58,18 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    categoryLabel: {
+      type: String,
+      default: 'Category',
+    },
   },
   watch: {
     chartOptions: {
       handler(passedObj) {
         this.options = cloneDeep({ ...this.options, ...passedObj });
+        
+        // Set custom category label for data table
+        this.options.categoryLabel = this.categoryLabel;
         
         // Update the exporting title without modifying the default options
         if (this.options.exporting && this.options.exporting.chartOptions) {
@@ -260,6 +267,12 @@ export default {
             table.style.overflowX = 'auto';
             table.style.display = 'block';
             table.style.zIndex = '11';
+            
+            // Customize the first column header
+            const firstTh = table.querySelector('thead th:first-child');
+            if (firstTh) {
+              firstTh.textContent = this.options.categoryLabel || 'Category';
+            }
             
             if (!wrapper.querySelector('.hc-data-close')) {
               const btn = document.createElement('button');

@@ -138,11 +138,8 @@ export default {
   },
   async mounted() {
    await this.getWhatsNew();
-    window.addEventListener('unload', this.handleAppUnload);
 
-    this.startSixHourInterval();
-    this.firstTimeExecution();
-
+   this.firstTimeExecution();
 
 
   // eslint-disable-next-line
@@ -187,13 +184,14 @@ export default {
     },
 
     firstTimeExecution() {
-      const alreadyExecuted = localStorage.getItem('firstTimeExecution');
-      if (!alreadyExecuted) {
-        localStorage.setItem('firstTimeExecution', 'true');
-        setTimeout(() => {
+      setTimeout(() => {
+        const alreadyExecuted = localStorage.getItem('firstTimeExecution');
+        if (alreadyExecuted === null) {
+          localStorage.setItem('firstTimeExecution', 'true');
           this.toggleShowWhatsNew();
-        }, 30 * 1000); // Delay of 30 seconds
-      }
+        }
+      }, 60 * 1000);
+
     },
     
     // Live plugin toggling without reload
@@ -226,10 +224,7 @@ export default {
       }
     },
   },
-   beforeDestroy() {
-    // Remove the event listener to avoid memory leaks
-    window.removeEventListener('unload', this.handleAppUnload);
-  },
+   
   created() {
     // global plugin bus for cross-cutting enable/disable notifications
     if (!Vue.prototype.$pluginBus) {

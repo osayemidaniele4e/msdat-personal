@@ -86,9 +86,7 @@ export default {
   },
   async mounted() {
     await this.getWhatsNew();
-    window.addEventListener('unload', this.handleAppUnload);
-
-    this.startSixHourInterval();
+   
     this.firstTimeExecution();
 
     const plugins = [
@@ -114,7 +112,7 @@ export default {
       }
     });
 
-    console.log('pluginsImported', this.pluginsImported);
+    // console.log('pluginsImported', this.pluginsImported);
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
 
     document.body.className = this.viewMode;
@@ -156,18 +154,15 @@ export default {
     },
 
     firstTimeExecution() {
-      const alreadyExecuted = localStorage.getItem('firstTimeExecution');
-      if (!alreadyExecuted) {
-        localStorage.setItem('firstTimeExecution', 'true');
-        setTimeout(() => {
+      setTimeout(() => {
+        const alreadyExecuted = localStorage.getItem('firstTimeExecution');
+        if (alreadyExecuted === null) {
+          localStorage.setItem('firstTimeExecution', 'true');
           this.toggleShowWhatsNew();
-        }, 30 * 1000); // Delay of 30 seconds
-      }
-    },
-  },
+        }
+      }, 60 * 1000);
 
-  beforeDestroy() {
-    window.removeEventListener('unload', this.handleAppUnload);
+    },
   },
 };
 </script>

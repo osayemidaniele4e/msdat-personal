@@ -30,7 +30,7 @@
             {{ values.indicator.short_name }}) across different data sources.
           </p>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="false" v-if="!notShow" />
+        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="false" :categoryLabel="'Datasources'" v-if="!notShow" />
       </base-sub-card>
       <!-- BASE SUBCARD FOR INDICATORS WITHOUT CONFIDENCE RANGE -->
       <base-sub-card
@@ -77,7 +77,7 @@
         <!-- <div v-if="showPopUp" class="pop-up">
           <h3 @click="getReset()">Refresh Table</h3>
         </div> -->
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="true" v-if="!notShow" />
+        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="true" :categoryLabel="'indicators'" v-if="!notShow" />
 
       </base-sub-card>
 

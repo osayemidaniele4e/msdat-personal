@@ -41,7 +41,8 @@
             <b> {{ values.location.name }} </b>
           </p>
         </template>
-        <BarChart ref="BaseChart" :title="title" :chartOptions="chartOptions" />
+        <BarChart ref="BaseChart" :title="title" 
+        :categoryLabel="'Indicators'":chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>    <!-- Display 'no_data' block when there's no data and we're not loading -->
     <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
@@ -53,6 +54,16 @@
         width="240px"
       />
     </div>
+    <div v-if="!loading && filteredIndicators.length > 0" class="no_ind_data">
+   <!--list to present indicators without available data -->
+  <ul>
+  <!-- Loop through filtered indicators and display a list item for each -->
+    <li v-for="(indicator, index) in filteredIndicators" :key="index"  >
+   <!-- Display indicator's short name and a message indicating no available data -->
+      <b>{{ indicator.short_name }},</b> does not have available data.
+    </li>
+  </ul>
+</div>
     <!-- Initial state message -->
     <div v-if="!loading && !validateRequiredValues(values)" class="no_data">
       <p class="text-muted">Please select all required values to view the comparison</p>
@@ -106,9 +117,38 @@ export default {
   //     this.chartOptions.series.push(dataSeries);
   //   },
   // },
+  computed: {
+     filteredIndicators() {
+    // Check if this.values.indicator is an array before using filter
+      if (Array.isArray(this.values.indicator)) {
+        return this.values.indicator.filter((indicator) => !this.hasDataForIndicator(indicator));
+      }
+      // Handle the case when this.values.indicator is not an array
+      // console.error('Indicator is not an array:', this.values.indicator);
+      return [];
+    },
+  },
   methods: {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
     ...mapMutations('MSDAT_STORE', ['TOGGLE_VISIBILITY', 'SETUP_CONTROL_OPTIONS1']),
+     hasDataForIndicator(indicator) {
+          // Check if chartOptions and its series are defined
+          if (this.chartOptions?.series) {
+            // Exclude "Skilled birth attendance" from the check it is considered to have data
+            if (indicator.short_name.toLowerCase() === 'skilled birth attendance') {
+              return true;
+            }
+            // Find the series corresponding to the indicator
+            const indicatorSeries = this.chartOptions.series.find(
+              (series) => series.name.toLowerCase().includes(indicator.full_name.toLowerCase()),
+            );
+    
+            // Check if the indicatorSeries has data points
+            return indicatorSeries?.data && indicatorSeries.data.length > 0;
+          }
+          // Return false if chartOptions or series are not defined
+          return false;
+        },
     checkData() {
       // Check if we have any series data
       if (!this.chartOptions?.series?.length) {
@@ -676,4 +716,32 @@ div.ics_wrapper {
     height: 100%;
   }
 }
+.no_ind_data {
+  position:fixed ;
+  top:280px;
+  right: 110px;
+  padding: 10px;
+  background-color: #ffffff;
+  z-index: 1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+
+  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: sticky;
+  }
+
+  li {
+    font-size: 12px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+}
+
 </style>

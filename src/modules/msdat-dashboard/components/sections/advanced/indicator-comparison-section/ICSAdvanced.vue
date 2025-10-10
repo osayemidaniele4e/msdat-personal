@@ -45,6 +45,7 @@
         </template>
         <BarChart ref="BaseChart"
         :title="title"
+        :categoryLabel="'Indicators'"
         :chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>

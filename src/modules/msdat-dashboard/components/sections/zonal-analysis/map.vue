@@ -58,6 +58,7 @@
             :mapObject="chart"
             :level="level"
             :lgaState="stateName"
+            :categoryLabel="'Location'"
           />
 
           <NoAvailableData
@@ -88,6 +89,10 @@ export default {
     colors: {
       type: [Object, Array],
       required: true,
+    },
+    categoryLabel: {
+      type: String,
+      default: 'Category',
     },
   },
   components: {
@@ -120,13 +125,14 @@ export default {
       // check if the selectedPlace is an array, if it is filter it by this.zone and then emit the first item item.id === this.controlPanelProps.location.id
       if (Array.isArray(selectedPlace)) {
         const selectedPlace2 = selectedPlace.filter(
-          (item) => item.id === this.controlPanelProps.location.parent,
+          (item) => item.id === this.controlPanelProps.location.parent
         );
         if (selectedPlace2.length !== 0) {
           eventBus.$emit('handleClick', selectedPlace2[0]);
         }
       }
     },
+
     updatedSeries() {
       return this.stateData.map((region) => {
         // Check if the region contains the selected state
@@ -159,10 +165,11 @@ export default {
 
         // PLOT 1ST MAP AS ZOANL
         if (stateObject.level === 1) {
-          const formatToHighChart = (dataValues) => dataValues.map((item) => [
-            this.dlGetLocation(item.location).name,
-            parseFloat(item.value),
-          ]);
+          const formatToHighChart = (dataValues) =>
+            dataValues.map((item) => [
+              this.dlGetLocation(item.location).name,
+              parseFloat(item.value),
+            ]);
 
           const chartSeries = [];
 
@@ -215,6 +222,15 @@ export default {
               color: this.colors.find((item2) => item2.id === item.location).color,
               name: this.dlGetLocation(item.location).name,
               data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
+              // dataLabels: {
+              //   enabled: true,
+              //   format: '{point.name}: {point.value}', // show location name + value
+              //   style: {
+              //     fontSize: '10px',
+              //     fontWeight: 'bold',
+              //     textOutline: 'none',
+              //   },
+              // },
             }));
 
             this.chart = {
@@ -245,7 +261,7 @@ export default {
           this.showBackButton = false;
           this.zone = stateObject.id;
           const filteredStateDataForZone = data.filter(
-            (item) => this.dlGetLocation(item.location).parent === stateObject.id,
+            (item) => this.dlGetLocation(item.location).parent === stateObject.id
           );
           if (filteredStateDataForZone.length === 0) {
             this.showNoAvailableData = true;
@@ -276,7 +292,7 @@ export default {
         if (stateObject.level === 3) {
           this.showBackButton = false;
           const filteredLGADataForState = data.filter(
-            (item) => this.dlGetLocation(item.location).parent === stateObject.id,
+            (item) => this.dlGetLocation(item.location).parent === stateObject.id
           );
           const tempData = this.updatedSeries();
 
@@ -296,10 +312,11 @@ export default {
             };
           } else {
             this.showBackButton = false;
-            const formatToHighChart = (dataValues) => dataValues.map((item) => [
-              this.dlGetLocation(item.location).name,
-              parseFloat(item.value),
-            ]);
+            const formatToHighChart = (dataValues) =>
+              dataValues.map((item) => [
+                this.dlGetLocation(item.location).name,
+                parseFloat(item.value),
+              ]);
             const chartSeries = [];
             const formattedData = formatToHighChart(filteredLGADataForState);
             const sortedData = formattedData.sort(sortHighChartDataFormat);

@@ -384,7 +384,7 @@ export default {
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-        this.classify_nm[0][1] += 1;
+        // this.classify_nm[0][1] += 1;
       }
     },
 
@@ -403,10 +403,10 @@ export default {
       // console.log(allAvailableSources, 'this.dataArray');
       // add this to use only datasource on the dropdown for the table component
       /**
-       * order AvailableSources according to the OrderSourceBy Array;
+       * order AvailableSources according to the classification order: Routine, Survey, Estimate
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
+        (a, b) => this.classificationOrder.indexOf(a.classification) - this.classificationOrder.indexOf(b.classification),
       );
       this.source = sortedSource;
 
