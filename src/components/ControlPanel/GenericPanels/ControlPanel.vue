@@ -239,7 +239,7 @@
     </div>
 
      <!-- Voice Control Button -->
-  <div v-if="isIndicatorOverviewPanel" class="col-auto d-flex align-items-start "> <!-- Adjust class/styling as needed -->
+  <!-- <div v-if="isIndicatorOverviewPanel" class="col-auto d-flex align-items-start "> 
       <b-button
         variant="outline-info"
         size="lg"
@@ -250,7 +250,7 @@
       >
         <b-icon icon="mic-fill"></b-icon> Voice
       </b-button>
-    </div>
+    </div> -->
 
   <!-- (report builder capture is automatic; demo button removed) -->
 
