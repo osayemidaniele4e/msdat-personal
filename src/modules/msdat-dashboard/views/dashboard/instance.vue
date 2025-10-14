@@ -317,7 +317,7 @@ export default {
             ? embeddedIframeTitle
             : embeddedUrlTitle && embeddedUrlTitle.trim() !== ''
             ? embeddedUrlTitle
-            : 'Embedded_Dashboard',
+            : 'Dashoard',
       };
       this.allSections.push(newEmbedConfig.label);
       this.customTitle = newEmbedConfig.label;
