@@ -12,13 +12,7 @@
         ref="SubCard"
         showControls
         v-if="Object.keys(values).length"
-        @dropdownTypeSelected="
-          downLoadType($event, {
-            indicator: values.indicator.short_name,
-            datasource: values.datasource.datatsource,
-            year: values.year,
-          })
-        "
+        @dropdownTypeSelected="mapDownload($event)"
       >
         <template #title>
           <p class="work-sans mb-0 line-height sub-title" v-if="level === 1">
@@ -45,15 +39,48 @@
           <b-icon icon="chevron-left" />
           &nbsp;Back to National
         </button>
-        <div @click="handleChartClick">
+        <div class="d-flex justify-content-start work-sans">
+          <button
+            type="button"
+            @click="setVisualization('bar')"
+            class="btn btn-sm btn-outline-primary mr-2 d-flex align-items-center"
+            :class="[activeToggleButton === 'bar' ? 'active' : '']"
+          >
+            <b-icon icon="bar-chart-fill" class="ml-1"></b-icon>
+             Bar
+          </button>
+          <button
+            type="button"
+            @click="setVisualization('map')"
+            class="btn btn-sm btn-outline-primary d-flex align-items-center"
+            :class="[activeToggleButton === 'map' ? 'active' : '']"
+          >
+            <b-icon icon="map" class="ml-1"></b-icon>
+             Map
+          </button>
+        </div>
+        <div v-if="visualization === 'bar'" @click="handleChartClick">
           <BarChart ref="BaseChart" :chartOptions="BarChartOptions" :title="title" />
         </div>
+        <BaseMap
+          v-else
+          ref="BaseMap"
+          :mapObject="mapObject"
+          :level="1"
+          :lgaState="'Nigeria'"
+          :title="title"
+        />
       </base-sub-card>
     </base-overlay>
     <NoSubNationalData
       v-if="showNoSubNationalData"
       class="position-absolute"
       style="top: 15%; width: 80%"
+    />
+    <NoAvailableData
+      v-if="showNoAvailableData"
+      class="position-absolute"
+      style="top: 16%; width: 50%; left: 25%"
     />
   </div>
 </template>
@@ -66,12 +93,16 @@ import { eventBus } from '@/main';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
+import BaseMap from '@/components/maps/ZonalBaseMap.vue';
+import NoAvailableData from '../../NoData2.vue';
 
 export default {
   mixins: [chartDownload, formatter],
   components: {
     BarChart,
     NoSubNationalData,
+    BaseMap,
+    NoAvailableData,
   },
   data() {
     return {
@@ -83,6 +114,23 @@ export default {
       updateData: 0,
       desirable_slope: '',
       acrossRegion: 'Country',
+      visualization: 'bar',
+      activeToggleButton: 'bar',
+      mapObject: {
+        series: [
+          {
+            name: 'Nigeria',
+            data: [],
+          },
+        ],
+        title: {
+          text: 'Indicator Name',
+        },
+        subtitle: {
+          text: 'NHMIS = 2018',
+        },
+      },
+      showNoAvailableData: false,
     };
   },
   props: {
@@ -126,7 +174,9 @@ export default {
     values: {
       async handler() {
         await this.updateValue();
-        this.title = `Distribution Of ${this.values.indicator.short_name} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+        const factor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+        const indicatorWithFactor = `${this.values.indicator.short_name}${factor.trim() ? ` (${factor})` : ''}`;
+        this.title = `Distribution Of ${indicatorWithFactor} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
       },
       deep: true,
       immediate: true,
@@ -186,6 +236,25 @@ export default {
       return [];
     },
     async updateValue() {
+      if (this.visualization === 'map') {
+        this.loading = true;
+        const data = await this.dlQuery({
+          indicator: this.values.indicator.id,
+          datasource: this.values.datasource.id,
+          period: this.values.year,
+          location: { level: 3 },
+        });
+        if (data?.length === 0) {
+          this.showNoAvailableData = true;
+        } else {
+          this.showNoAvailableData = false;
+        }
+        const formattedData = this.formatDataToSeriesMapFormat(data);
+        this.mapObject = this.formatToHighChartOptionForMap(formattedData, this.values);
+        this.loading = false;
+        return;
+      }
+      // Bar chart logic
       this.loading = true;
       const data = await this.getData(this.values);
       if (this.values.indicator?.id === undefined) {
@@ -540,15 +609,92 @@ export default {
       }
       this.level = 1;
     },
+    setVisualization(vis) {
+      this.visualization = vis;
+      this.activeToggleButton = vis;
+      this.updateValue();
+    },
+    mapDownload(e) {
+      if (this.visualization === 'bar') {
+        this.downLoadType(e, {
+          indicator: this.values.indicator.short_name,
+          datasource: this.values.datasource.datasource,
+          year: this.values.year,
+        });
+      } else {
+        this.downLoadTypeMap(e, {
+          indicator: this.values.indicator.short_name,
+          datasource: this.values.datasource.datasource,
+          year: this.values.year,
+        });
+      }
+    },
+    formatDataToSeriesMapFormat(data) {
+      return data?.map((item) => [
+        this.dlGetLocation(item.location).name,
+        Number.parseFloat(item.value) || 0,
+      ]);
+    },
+    formatToHighChartOptionForMap(data, controlPanelObject) {
+      const factor = this.dlGetFactor(controlPanelObject.indicator.factor).display_factor;
+      const titleText = `${controlPanelObject.indicator.short_name}${factor.trim() ? ` (${factor})` : ''}`;
+      
+      return {
+        title: {
+          text: titleText,
+          style: {
+            fontSize: '13px',
+            fontFamily: '"Work Sans", sans-serif',
+            fontWeight: 'normal',
+          },
+        },
+        subtitle: {
+          text: `${controlPanelObject.datasource.datasource} - ${controlPanelObject.year}`,
+          style: {
+            fontSize: '13px',
+            fontFamily: '"Work Sans", sans-serif',
+            fontWeight: 'normal',
+          },
+        },
+        colors: ['#114663'],
+        colorAxis: {
+          min: 0,
+          minColor: '#E6E6E6',
+          maxColor: '#114663',
+        },
+        series: [
+          {
+            //  borderColor: 'white',
+            borderWidth: 0,
+            name: 'Nigeria',
+            data,
+          },
+        ],
+      };
+    },
   },
   mounted() {
     this.updateData = +1;
-    this.title = `Distribution Of ${this.values.indicator.short_name} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+    const factor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+    const indicatorWithFactor = `${this.values.indicator.short_name}${factor.trim() ? ` (${factor})` : ''}`;
+    this.title = `Distribution Of ${indicatorWithFactor} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
   },
 };
 </script>
 <style lang="scss" scoped>
 .sub-title {
   font-size: 14px !important;
+}
+
+.btn-outline-primary:not(.active) {
+  background-color: white !important;
+  color: #348481 !important;
+  border-color: #348481 !important;
+}
+
+.btn-outline-primary.active {
+  background-color: #348481 !important;
+  color: white !important;
+  border-color: #348481 !important;
 }
 </style>
