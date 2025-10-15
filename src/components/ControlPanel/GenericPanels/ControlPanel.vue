@@ -1,24 +1,13 @@
-  async addCurrentToReport() {
-  // Demo helper: build a context from current payload to add a chart and table
-  const payload = this.payload;
-  // Example: send table with current payload as query
-  const tableQuery = {
-  indicator: payload.indicator,
-  datasource: payload.datasource,
-  location: payload.location,
-  year: payload.year,
-  };
-  if (this.$customreportbuilder && typeof this.$customreportbuilder.addItemWithContext === 'function') {
-  // add a table item
-  await this.$customreportbuilder.addItemWithContext('table', { query: tableQuery });
-  // try to snapshot a chart container if present - host pages should pass real selector
-  // here we attempt a common chart container id '#main-chart' as an example
-  await this.$customreportbuilder.addItemWithContext('chart', { chartSelector: '#main-chart' });
-  } else {
-  // eslint-disable-next-line no-console
-  console.warn('Report builder plugin not available');
-  }
-  },
+async addCurrentToReport() { // Demo helper: build a context from current payload to add a chart and
+table const payload = this.payload; // Example: send table with current payload as query const
+tableQuery = { indicator: payload.indicator, datasource: payload.datasource, location:
+payload.location, year: payload.year, }; if (this.$customreportbuilder && typeof
+this.$customreportbuilder.addItemWithContext === 'function') { // add a table item await
+this.$customreportbuilder.addItemWithContext('table', { query: tableQuery }); // try to snapshot a
+chart container if present - host pages should pass real selector // here we attempt a common chart
+container id '#main-chart' as an example await this.$customreportbuilder.addItemWithContext('chart',
+{ chartSelector: '#main-chart' }); } else { // eslint-disable-next-line no-console
+console.warn('Report builder plugin not available'); } },
 <template>
   <div class="row" id="control-panel">
     <!-- <pre>{{ setup }}</pre> -->
@@ -238,8 +227,8 @@
 </div> -->
     </div>
 
-     <!-- Voice Control Button -->
-  <!-- <div v-if="isIndicatorOverviewPanel" class="col-auto d-flex align-items-start "> 
+    <!-- Voice Control Button -->
+    <div v-if="isIndicatorOverviewPanel" class="col-auto d-flex align-items-start">
       <b-button
         variant="outline-info"
         size="lg"
@@ -250,15 +239,12 @@
       >
         <b-icon icon="mic-fill"></b-icon> Voice
       </b-button>
-    </div> -->
+    </div>
 
-  <!-- (report builder capture is automatic; demo button removed) -->
+    <!-- (report builder capture is automatic; demo button removed) -->
 
     <!-- Voice Control Modal Component -->
-    <VoiceControlModal
-      :show="isVoiceModalVisible"
-      @close="isVoiceModalVisible = false"
-    />
+    <VoiceControlModal :show="isVoiceModalVisible" @close="isVoiceModalVisible = false" />
   </div>
 </template>
 
@@ -279,14 +265,14 @@ export default {
     return {
       activeToggleButton: '',
       dashboardName: '',
-       showVoiceControl: false,
+      showVoiceControl: false,
       // using component data with 'Sub' addition to prevent prop mutations
       // (controlIndex & groupIndex)
       controlIndexSub: this.controlIndex,
       groupIndexSub: this.groupIndex,
       hasNHMIS: false,
       selectedSection: '',
-       isVoiceModalVisible: false,
+      isVoiceModalVisible: false,
     };
   },
   components: {
@@ -294,7 +280,7 @@ export default {
     BaseCheckbox,
     toggle,
     Generate,
-    VoiceControlModal, 
+    VoiceControlModal,
   },
   props: {
     setup: {
@@ -388,9 +374,7 @@ export default {
      * checks if the array has NHMIS-DHIS2 with id of 6
      */
     saveNewActivity(newValue) {
-      const {
-        indicator, datasource, location, year,
-      } = newValue;
+      const { indicator, datasource, location, year } = newValue;
       // eslint-disable-next-line camelcase
       const ind = Array.isArray(indicator)
         ? // eslint-disable-next-line operator-linebreak
@@ -404,8 +388,8 @@ export default {
       const dat = Array.isArray(datasource)
         ? datasource[datasource.length - 1]?.item
         : datasource.datasource
-          ? datasource.datasource
-          : datasource?.item;
+        ? datasource.datasource
+        : datasource?.item;
       const loc = location?.name === 'Nigeria' ? 'National' : location?.name;
       if (ind && dat && this.getUser.id) {
         const activityObject = {
@@ -417,10 +401,10 @@ export default {
         };
         const lastActivity = JSON.parse(localStorage.getItem('lastActivity') || '{}');
         const hold = (Date.now() - lastActivity.datetime || 0) >= 5000;
-        const diff
-          = lastActivity.page !== activityObject.page
-          || lastActivity.section !== activityObject.section
-          || lastActivity.parameters !== activityObject.parameters;
+        const diff =
+          lastActivity.page !== activityObject.page ||
+          lastActivity.section !== activityObject.section ||
+          lastActivity.parameters !== activityObject.parameters;
         if (hold && diff) {
           // send activity post request to backend
           console.log('activity', activityObject);
@@ -469,8 +453,8 @@ export default {
 
       const { name } = this.$route.params;
       if (
-        name === 'Advanced_Analytics'
-        && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison'
+        name === 'Advanced_Analytics' &&
+        this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison'
       ) {
         return data?.filter((item) => item.program_area === this.indicatorList);
       }
@@ -576,10 +560,10 @@ export default {
     },
     disableTarget() {
       if (
-        this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage'
-        || this.$route.path === '/dashboard/Health_Financing'
-        || this.$route.path === '/dashboard/Health_Service_Access'
-        || this.$route.path === '/dashboard/Demographics'
+        this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage' ||
+        this.$route.path === '/dashboard/Health_Financing' ||
+        this.$route.path === '/dashboard/Health_Service_Access' ||
+        this.$route.path === '/dashboard/Demographics'
       ) {
         return true;
       }
