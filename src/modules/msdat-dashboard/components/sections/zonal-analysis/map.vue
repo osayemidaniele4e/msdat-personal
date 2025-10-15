@@ -205,9 +205,10 @@ export default {
           const filteredSeries = chartSeries.filter((item) => item.data.length > 0);
           this.stateData = filteredSeries;
 
-          if (filteredSeries.length === 1) {
+          if (filteredSeries.length === 0) {
             this.showBackButton = false;
             const groupP = data.filter((item) => this.dlGetLocation(item.location).parent === 1);
+
             if (groupP.length === 0) {
               this.showNoAvailableData = true;
               this.chart = {
@@ -291,9 +292,11 @@ export default {
         // PLOT 3RD MAP AS LGA
         if (stateObject.level === 3) {
           this.showBackButton = false;
+
           const filteredLGADataForState = data.filter(
             (item) => this.dlGetLocation(item.location).parent === stateObject.id
           );
+
           const tempData = this.updatedSeries();
 
           if (filteredLGADataForState.length === 0) {
@@ -308,7 +311,7 @@ export default {
             this.showNoAvailableData = true;
             this.loader = false;
             this.chart = {
-              series: tempData,
+              series: [],
             };
           } else {
             this.showBackButton = false;

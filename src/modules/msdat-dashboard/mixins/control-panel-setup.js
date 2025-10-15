@@ -154,6 +154,8 @@ export default {
         datasource: dataSourceID || this.this.$route.query.datasource,
         location: locationID,
       });
+      console.log(data, '<<@@>> 1');
+      
       const years = data.periods;
       return years.sort((a, b) => b - a);
     },
