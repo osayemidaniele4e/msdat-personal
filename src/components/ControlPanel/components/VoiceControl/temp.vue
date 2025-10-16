@@ -110,14 +110,11 @@ export default {
     },
     async sendTranscriptToAPI(text) {
       try {
-        const response = await fetch(
-          'https://cloud.activepieces.com/api/v1/webhooks/ofFJumlrn1gBaz0mBF8Mo/sync',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text }),
-          }
-        );
+        const response = await fetch('https://cloud.activepieces.com/api/v1/webhooks/ofFJumlrn1gBaz0mBF8Mo/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text }),
+        });
 
         if (!response.ok) {
           throw new Error(`API responded with status ${response.status}`);
