@@ -15,6 +15,10 @@ export default {
   exporting: {
     enabled: true,
     chartOptions: {
+      chart: {
+        width: 1200,
+        height: 800,
+      },
       // title: {
       //   text: '',
       //   x: -20,
@@ -31,6 +35,8 @@ export default {
         },
       },
       chart: {
+        width: 1200,
+        height: 800,
         // plotBackground: 'https://i.stack.imgur.com/E1r9X.png', https://gitlab.com/e4e-webdev/msdat/-/blob/feature/george-chart-watermark/src/assets/img/watermark.png
         events: {
           load() {
@@ -50,8 +56,8 @@ export default {
             const chartWidth = this.plotWidth;
             const chartHeight = this.plotHeight;
 
-            const x = (xPercentage / 100) * chartWidth;
-            const y = (yPercentage / 100) * chartHeight;
+            const x = (chartWidth / 100) * xPercentage;
+            const y = (chartHeight / 100) * yPercentage;
 
             // Add watermark text at the specified percentage positions
             this.renderer
