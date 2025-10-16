@@ -547,7 +547,7 @@ export default {
         this.loading = false;
       },
       immediate: true,
-      // deep: true,
+      // deep: true
     },
     'values.datasource': {
       async handler() {
