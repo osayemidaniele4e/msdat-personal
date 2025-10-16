@@ -284,6 +284,18 @@ export default {
       this.defaultOptions = { ...this.defaultOptions };
       this.$nextTick(() => this.refreshDataTableIfVisibleDebounced());
     },
+
+    handleFullscreenChange() {
+      setTimeout(() => {
+        if (!document.fullscreenElement) {
+          // Exited fullscreen, reset chart size to auto
+          const chart = this.getChart();
+          if (chart) {
+            chart.setSize(null, null, false);
+          }
+        }
+      }, 100);
+    },
   },
   watch: {
     mapObject: {
@@ -312,9 +324,12 @@ export default {
     if (this.defaultOptions.exporting && this.defaultOptions.exporting.chartOptions) {
       this.defaultOptions.exporting.chartOptions.title.text = this.title;
     }
+    // Add fullscreen change listener
+    window.addEventListener('fullscreenchange', this.handleFullscreenChange);
   },
   beforeDestroy() {
     clearTimeout(this._tableRefreshTimer);
+    window.removeEventListener('fullscreenchange', this.handleFullscreenChange);
   },
 };
 </script>
