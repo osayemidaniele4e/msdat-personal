@@ -70,15 +70,15 @@
       </base-sub-card>
     </base-overlay>
     <div class="py-3">
-      <h4>Select Visualizations</h4>
-      <div class="d-flex visualizations">
-        <img @click="switchToState" src="../../../../../assets/img/stateMap.png" alt="" />
-        <img
-          @click="switchToZonal"
-          v-if="hasZonal"
-          src="../../../../../assets/img/zonalMap.png"
-          alt=""
-        />
+      <div v-if="shovViz" class="d-flex">
+        <div class="visualization">
+          <img @click="switchToState" src="../../../../../assets/img/stateMap.png" alt="" />
+          <div @click="switchToState" class="btn-switch">Switch to State</div>
+        </div>
+        <div class="visualization">
+          <img @click="switchToZonal" src="../../../../../assets/img/Zones.svg" alt="" />
+          <div @click="switchToZonal" class="btn-switch">Switch to Zonal</div>
+        </div>
       </div>
     </div>
   </div>
@@ -123,7 +123,7 @@ export default {
       stateData: [],
       selectedState: null,
       showBackButton: false,
-      hasZonal: false,
+      shovViz: false,
       allData: [],
       zonalObj: null,
     };
@@ -293,10 +293,10 @@ export default {
         this.allData = data;
 
         console.log(data, 'Zonal Response');
-        if (data.length > 37) {
-          this.hasZonal = true;
+        if (data.length) {
+          this.shovViz = true;
         } else {
-          this.hasZonal = false;
+          this.shovViz = false;
         }
 
         this.selectedState = val.location.name;
@@ -508,14 +508,25 @@ export default {
 };
 </script>
 <style scoped>
-.visualizations {
+.visualization {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.visualizations img {
-  width: 100px;
-  height: 100px;
+.visualization img {
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   margin: 0 5px;
+}
+
+.visualization .btn-switch {
+  font-size: 12px;
+  background-color: #007d53;
+  color: white;
+  padding: 4px 10px;
+  margin-right: 2px;
+  border-radius: 4px;
 }
 </style>
