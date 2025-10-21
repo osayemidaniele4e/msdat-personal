@@ -8,7 +8,9 @@ export default {
       key: 'compareBy',
       options: [
         { id: 1, name: 'Period' },
-        { id: 2, name: 'State' },
+        { id: 2, name: 'National' },
+        { id: 3, name: 'Zonal' },
+        { id: 4, name: 'State' },
       ],
       dropdownProps: {
         label: 'name',
