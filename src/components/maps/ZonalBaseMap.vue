@@ -134,6 +134,11 @@ export default {
     };
   },
   methods: {
+    // Remove a leading "Distribution of" (case-insensitive) from titles
+    sanitizedExportTitle(title) {
+      if (!title || typeof title !== 'string') return title;
+      return title.replace(/^\s*distribution\s+of\s+/i, '').trim();
+    },
     getChart() {
       return this.$refs.mapChart && this.$refs.mapChart.chart;
     },
@@ -284,6 +289,18 @@ export default {
       this.defaultOptions = { ...this.defaultOptions };
       this.$nextTick(() => this.refreshDataTableIfVisibleDebounced());
     },
+
+    handleFullscreenChange() {
+      setTimeout(() => {
+        if (!document.fullscreenElement) {
+          // Exited fullscreen, reset chart size to auto
+          const chart = this.getChart();
+          if (chart) {
+            chart.setSize(null, null, false);
+          }
+        }
+      }, 100);
+    },
   },
   watch: {
     mapObject: {
@@ -310,11 +327,25 @@ export default {
     this.patchHighchartsViewDataOnce();
     // changing the title of the text when downloaded
     if (this.defaultOptions.exporting && this.defaultOptions.exporting.chartOptions) {
-      this.defaultOptions.exporting.chartOptions.title.text = this.title;
+      // Ensure exported title doesn't include leading "Distribution of"
+      this.defaultOptions.exporting.chartOptions.title.text = this.sanitizedExportTitle(this.title);
     }
+    // keep exported title in sync when prop changes
+    this.$watch(
+      'title',
+      (newTitle) => {
+        if (this.defaultOptions.exporting && this.defaultOptions.exporting.chartOptions) {
+          this.defaultOptions.exporting.chartOptions.title.text = this.sanitizedExportTitle(newTitle);
+        }
+      },
+      { immediate: false }
+    );
+    // Add fullscreen change listener
+    window.addEventListener('fullscreenchange', this.handleFullscreenChange);
   },
   beforeDestroy() {
     clearTimeout(this._tableRefreshTimer);
+    window.removeEventListener('fullscreenchange', this.handleFullscreenChange);
   },
 };
 </script>

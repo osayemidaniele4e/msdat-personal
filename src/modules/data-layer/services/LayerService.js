@@ -220,9 +220,9 @@ export default class DataLayer {
    */
   async setAvailableDashboardIndicator() {
     // const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
-    const response = await apiServices.getDashboardIndicators(this.dashboardID);
+    const response = await apiServices.fetchAllIndicators()
 
-    const dashboardIndicatorIDs = response.data.indicators.map((item) => item.id);
+    const dashboardIndicatorIDs = response.data.results.map((item) => item.id);
 
     const dashboardIndicators = dashboardIndicatorIDs.filter((item) => this.indicatorList.includes(item));
 

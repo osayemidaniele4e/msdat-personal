@@ -12,6 +12,10 @@ export default {
   exporting: {
     enabled: true,
     chartOptions: {
+      chart: {
+        width: 1200,
+        height: 800,
+      },
       title: {
         text: '',
         x: -20,
@@ -79,7 +83,7 @@ export default {
         enabled: true,
         formatter() {
           if (this.point.value) {
-            return this.point.name;
+            return `${this.point.name} <br/> ${this.point.value}`;
           }
           return this.point.name;
         },
@@ -87,6 +91,7 @@ export default {
           fontSize: '10px',
           fontFamily: '"Work Sans", sans-serif',
           fontWeight: 'normal',
+          textAlign: 'center',
         },
         // allowOverlap: false
       },
