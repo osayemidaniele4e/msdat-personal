@@ -1,6 +1,6 @@
 <template lang="">
   <BaseModal :showModal="show" @hidden="$emit('close')" size="" centered>
-    <div class="container mt-4">
+     <div class="container mt-4">
       <div class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title mb-3">🎤 Voice to Text (with API)</h5>
