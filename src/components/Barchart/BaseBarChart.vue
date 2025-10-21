@@ -137,6 +137,9 @@ export default {
     // Add window resize listener to handle any size changes
     window.addEventListener('resize', this.handleResize);
     
+    // Add fullscreen change listener
+    window.addEventListener('fullscreenchange', this.handleFullscreenChange);
+    
     // Use a MutationObserver to detect DOM changes that might affect the chart
     this.setupResizeObserver();
 
@@ -146,6 +149,7 @@ export default {
   beforeDestroy() {
     // Clean up event listeners
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('fullscreenchange', this.handleFullscreenChange);
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -348,6 +352,18 @@ export default {
     
     handleResize() {
   this.forceChartReflow();
+    },
+    
+    handleFullscreenChange() {
+      setTimeout(() => {
+        if (!document.fullscreenElement) {
+          // Exited fullscreen, reset chart size to auto
+          const chart = this.$refs.lineCharts && this.$refs.lineCharts.chart;
+          if (chart) {
+            chart.setSize(null, null, false);
+          }
+        }
+      }, 100);
     },
     
     setupResizeObserver() {
