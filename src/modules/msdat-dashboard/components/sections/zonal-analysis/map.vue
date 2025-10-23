@@ -69,6 +69,18 @@
         </div>
       </base-sub-card>
     </base-overlay>
+    <div class="py-3">
+      <div v-if="shovViz" class="d-flex">
+        <div class="visualization">
+          <img @click="switchToState" src="../../../../../assets/img/stateMap.png" alt="" />
+          <div @click="switchToState" class="btn-switch">Switch to State</div>
+        </div>
+        <div class="visualization">
+          <img @click="switchToZonal" src="../../../../../assets/img/Zones.svg" alt="" />
+          <div @click="switchToZonal" class="btn-switch">Switch to Zonal</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -111,6 +123,9 @@ export default {
       stateData: [],
       selectedState: null,
       showBackButton: false,
+      shovViz: false,
+      allData: [],
+      zonalObj: null,
     };
   },
   methods: {
@@ -144,6 +159,124 @@ export default {
         };
       });
     },
+    switchToZonal() {
+      const formatToHighChart = (dataValues) =>
+        dataValues.map((item) => [this.dlGetLocation(item.location).name, parseFloat(item.value)]);
+
+      const chartSeries = [];
+
+      for (let index = 0; index < this.colors.length; index += 1) {
+        const group = this.allData?.filter(
+          (item) => this.dlGetLocation(item.location).parent === this.colors[index].id
+        );
+
+        const { color } = this.colors.find((item) => item.id === this.colors[index].id);
+        const formattedData = formatToHighChart(group);
+        const sortedData = formattedData.sort(sortHighChartDataFormat);
+        const series = this.dlGetLocation(this.colors[index].id);
+
+        chartSeries.push({
+          color,
+          name: series.name,
+          data: sortedData,
+        });
+
+        /**
+         * Function no fully functional
+         * ! Need to fix the issue
+         */
+        for (let i = 0; i < chartSeries.length; i += 1) {
+          if (chartSeries[i].data.length === 0) {
+            // this.showNoAvailableData = true;
+          } else {
+            this.showNoAvailableData = false;
+          }
+        }
+      }
+
+      const filteredSeries = chartSeries.filter((item) => item.data.length > 0);
+      const temp = [];
+
+      const zonalChatSerries = filteredSeries[0];
+      temp.push(zonalChatSerries);
+      this.stateData = temp;
+
+      this.showBackButton = false;
+      const groupP = this.allData.filter((item) => this.dlGetLocation(item.location).parent === 1);
+      if (groupP.length === 0) {
+        this.showNoAvailableData = true;
+        this.chart = {
+          series: [],
+        };
+        this.loader = false;
+        return;
+      }
+
+      this.showNoAvailableData = false;
+      const zData = groupP.map((item) => ({
+        color: this.colors.find((item2) => item2.id === item.location).color,
+        name: this.dlGetLocation(item.location).name,
+        data: [[this.dlGetLocation(item.location).name, parseFloat(item.value)]],
+      }));
+
+      this.chart = {
+        series: zData,
+      };
+      // this.title = `Distribution of ${val.indicator.full_name} Across ${this.controlPanelProps.location.name}`;
+      this.level = 2;
+      this.stateName = 'Nigeria';
+    },
+    switchToState() {
+      const formatToHighChart = (dataValues) =>
+        dataValues.map((item) => [this.dlGetLocation(item.location).name, parseFloat(item.value)]);
+
+      const chartSeries = [];
+
+      for (let index = 0; index < this.colors.length; index += 1) {
+        const group = this.allData?.filter(
+          (item) => this.dlGetLocation(item.location).parent === this.colors[index].id
+        );
+
+        const { color } = this.colors.find((item) => item.id === this.colors[index].id);
+        const formattedData = formatToHighChart(group);
+        const sortedData = formattedData.sort(sortHighChartDataFormat);
+        const series = this.dlGetLocation(this.colors[index].id);
+
+        chartSeries.push({
+          color,
+          name: series.name,
+          data: sortedData,
+        });
+
+        /**
+         * Function no fully functional
+         * ! Need to fix the issue
+         */
+        for (let i = 0; i < chartSeries.length; i += 1) {
+          if (chartSeries[i].data.length === 0) {
+            // this.showNoAvailableData = true;
+          } else {
+            this.showNoAvailableData = false;
+          }
+        }
+      }
+
+      this.showBackButton = false;
+      // this.stateName = stateObject.name; // Please always change the state name before
+      // changing the level else you would get an error
+      this.level = 1;
+      // this.chart = {
+      //   series: chartSeries,
+      // };
+
+      // Modify the chartSeries to exclude "Nigeria" if it exists
+      const chartSeriesWithoutNigeria = chartSeries.filter((item) => item.name !== 'Nigeria');
+      console.log(chartSeriesWithoutNigeria, 'chartSeriesWithoutNigeria');
+
+      this.chart = {
+        series: chartSeriesWithoutNigeria,
+      };
+    },
   },
 
   watch: {
@@ -157,14 +290,24 @@ export default {
           period: val.year,
         });
         const data = zonalResponse.data.results;
+        this.allData = data;
+
+        console.log(data, 'Zonal Response');
+        if (data.length) {
+          this.shovViz = true;
+        } else {
+          this.shovViz = false;
+        }
 
         this.selectedState = val.location.name;
 
         const stateObject = this.dlGetLocation(val.location.id);
+        this.zonalObj = this.dlGetLocation(val.location.id);
         // console.log(specificData, 'filteredLGADataForState 4');
 
         // PLOT 1ST MAP AS ZOANL
         if (stateObject.level === 1) {
+          console.log('@@@ 1');
           const formatToHighChart = (dataValues) =>
             dataValues.map((item) => [
               this.dlGetLocation(item.location).name,
@@ -213,6 +356,7 @@ export default {
 
           const filteredSeries = chartSeries.filter((item) => item.data.length > 0);
           this.stateData = filteredSeries;
+          console.log(filteredSeries, 'filteredSeries');
 
           if (filteredSeries.length === 0) {
             this.showBackButton = false;
@@ -249,6 +393,7 @@ export default {
             this.title = `Distribution of ${val.indicator.full_name} Across ${this.controlPanelProps.location.name}`;
             this.level = 2;
             this.stateName = 'Nigeria';
+            console.log('@@@ 1X');
           } else {
             this.showBackButton = false;
             this.stateName = stateObject.name; // Please always change the state name before
@@ -260,6 +405,7 @@ export default {
 
             // Modify the chartSeries to exclude "Nigeria" if it exists
             const chartSeriesWithoutNigeria = chartSeries.filter((item) => item.name !== 'Nigeria');
+            console.log(chartSeriesWithoutNigeria, 'chartSeriesWithoutNigeria');
 
             this.chart = {
               series: chartSeriesWithoutNigeria,
@@ -268,6 +414,7 @@ export default {
         }
         // PLOT 2ND MAP AS STATE
         if (stateObject.level === 2) {
+          console.log('@@@ 2');
           this.showBackButton = false;
           this.zone = stateObject.id;
           const filteredStateDataForZone = data.filter(
@@ -300,6 +447,7 @@ export default {
         }
         // PLOT 3RD MAP AS LGA
         if (stateObject.level === 3) {
+          console.log('@@@ 3');
           this.showBackButton = false;
 
           const filteredLGADataForState = data.filter(
@@ -371,3 +519,26 @@ export default {
   },
 };
 </script>
+<style scoped>
+.visualization {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.visualization img {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.visualization .btn-switch {
+  font-size: 12px;
+  background-color: #007d53;
+  color: white;
+  padding: 4px 10px;
+  margin-right: 2px;
+  border-radius: 4px;
+}
+</style>
