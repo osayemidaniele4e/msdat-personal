@@ -48,7 +48,8 @@
           :chartOptions="chartOptions"
         />
       </base-sub-card>
-    </base-overlay>    <!-- Display 'no_data' block when there's no data and we're not loading -->
+    </base-overlay>
+    <!-- Display 'no_data' block when there's no data and we're not loading -->
     <!-- <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
       <img
         :src="require('@/assets/no-data/No_Available_Data.svg')"
@@ -57,7 +58,8 @@
         height="auto"
         width="240px"
       />
-    </div> -->
+    </div>
+    --> 
     <div v-if="!loading && filteredIndicators.length > 0" class="no_ind_data">
       <!--list to present indicators without available data -->
       <ul>
@@ -890,6 +892,52 @@ export default {
             value: true,
           });
         } else if (data.name === 'State') {
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: true,
+          });
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: false,
+          });
+
+          // get the list of years by datasource
+          const setYearDropdown = await this.setYearDropdown();
+          // period dropdown;
+          this.SET_CONTROL_OPTIONS({
+            panelIndex: 2,
+            controlIndex: 2,
+            values: setYearDropdown,
+          });
+          this.loading = true;
+          await this.renderChart(this.values);
+          this.loading = false;
+        } else if (data.name === 'National') {
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: true,
+          });
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: false,
+          });
+
+          // get the list of years by datasource
+          const setYearDropdown = await this.setYearDropdown();
+          // period dropdown;
+          this.SET_CONTROL_OPTIONS({
+            panelIndex: 2,
+            controlIndex: 2,
+            values: setYearDropdown,
+          });
+          this.loading = true;
+          await this.renderChart(this.values);
+          this.loading = false;
+        } else if (data.name === 'Zonal') {
           this.TOGGLE_VISIBILITY({
             panelIndex: this.controlIndex,
             key: 'year',
