@@ -203,7 +203,6 @@ export default {
         );
 
         const responseText = await response.text();
-        console.log(responseText, 'responseText');
 
         addDebugInfo(`API response status: ${response.status}`);
         addDebugInfo('--- BEGIN RAW API RESPONSE TEXT ---');
@@ -225,23 +224,27 @@ export default {
           throw new Error(`Failed to parse response: ${err.message}`);
         }
 
-        // ✅ Check for Navigation type
+        // ✅ Handle navigation type
         if (data && data.type === 'Navigation' && data.route) {
           addDebugInfo(`Navigation detected — redirecting to ${data.route}`);
 
-          console.log(data, 'responseText');
-          
+          // Build the full URL based on the current site origin
+          let targetUrl = data.route.trim();
 
-          // Ensure the route is a valid absolute URL
-          const targetUrl = /^https?:\/\//i.test(data.route) ? data.route : `https://${data.route}`;
+          // If route doesn't start with "http", prepend the current origin
+          if (!/^https?:\/\//i.test(targetUrl)) {
+            // Remove any accidental double slashes
+            targetUrl = `${window.location.origin}/dashboard/${targetUrl.replace(/^\/+/, '')}`;
+          }
 
-          // ✅ Redirect in same tab
+          addDebugInfo(`Final navigation URL: ${targetUrl}`);
+
+          // Redirect in the same tab
           window.location.href = targetUrl;
-
-          return; // Stop here — no further code should run
+          return;
         }
 
-        // ✅ Continue with normal response flow if not navigation
+        // ✅ Continue normal response flow
         addDebugInfo(`API response data: ${JSON.stringify(data)}`);
 
         if (data.text_response) {
@@ -481,6 +484,7 @@ export default {
       if (audioRef.value) {
         audioRef.value.pause();
       }
+      this.$emit('close');
     });
 
     return {
