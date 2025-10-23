@@ -45,7 +45,7 @@
         :categoryLabel="'Indicators'":chartOptions="chartOptions" />
       </base-sub-card>
     </base-overlay>    <!-- Display 'no_data' block when there's no data and we're not loading -->
-    <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
+    <!-- <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
       <img
         :src="require('@/assets/no-data/No_Available_Data.svg')"
         alt="no data"
@@ -53,7 +53,7 @@
         height="auto"
         width="240px"
       />
-    </div>
+    </div> -->
     <div v-if="!loading && filteredIndicators.length > 0" class="no_ind_data">
    <!--list to present indicators without available data -->
   <ul>
