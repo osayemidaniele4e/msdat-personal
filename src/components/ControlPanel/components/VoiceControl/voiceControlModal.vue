@@ -1,134 +1,127 @@
 <template>
- <BaseModal :showModal="show" @hidden="$emit('close')" size=""  centered>
-   <template #title>
-     MSDAT Assistant
-   </template>
-   <template #default>
-     <div class="voice-assistant-container p-3">
-       <!-- Title and introduction -->
-       <div class="text-center mb-4">
-         <p class="">Hello! Welcome to the MSDAT Platform. How can I help you?</p>
-       </div>
+  <BaseModal :showModal="show" @hidden="$emit('close')" size="" centered>
+    <template #title> MSDAT Assistant </template>
+    <template #default>
+      <div class="voice-assistant-container p-3">
+        <!-- Title and introduction -->
+        <div class="text-center mb-4">
+          <p class="">Hello! Welcome to the MSDAT Platform. How can I help you?</p>
+        </div>
 
-       <!-- Transcript display -->
-       <div v-if="transcript" class="mb-4 p-3 bg-light rounded border">
-         <p>
-           <strong>You said:</strong> {{ transcript }}
-         </p>
-       </div>
+        <!-- Transcript display -->
+        <div v-if="transcript" class="mb-4 p-3 bg-light rounded border">
+          <p><strong>You said:</strong> {{ transcript }}</p>
+        </div>
 
-       <!-- Loading spinner -->
-       <div v-if="status === 'processing'" class="mb-4 p-3 bg-light rounded border text-center">
-         <div class="d-flex align-items-center justify-content-center">
-           <div class="rolling-spinner mr-2"></div>
-           <span>Processing your request...</span>
-         </div>
-       </div>
+        <!-- Loading spinner -->
+        <div v-if="status === 'processing'" class="mb-4 p-3 bg-light rounded border text-center">
+          <div class="d-flex align-items-center justify-content-center">
+            <div class="rolling-spinner mr-2"></div>
+            <span>Processing your request...</span>
+          </div>
+        </div>
 
-       <!-- Text response display -->
-       <div v-if="textResponse" class="mb-4 p-3 bg-info-light rounded border">
-         <p>
-           <strong>Assistant:</strong> {{ textResponse }}
-         </p>
-       </div>
+        <!-- Text response display -->
+        <div v-if="textResponse" class="mb-4 p-3 bg-info-light rounded border">
+          <p><strong>Assistant:</strong> {{ textResponse }}</p>
+        </div>
 
-       <!-- Microphone permission warning -->
-       <b-alert
-         :show="micPermission !== 'granted'"
-         variant="warning"
-         class="d-flex align-items-center mb-4"
-       >
-         <b-icon icon="info-circle-fill" class="mr-2"></b-icon>
-         <span>
-           {{ micPermission === "denied"
-             ? "Microphone access denied. Please enable microphone access in your browser settings."
-             : "Microphone permission required. Click the button below to grant access." }}
-         </span>
-       </b-alert>
+        <!-- Microphone permission warning -->
+        <b-alert
+          :show="micPermission !== 'granted'"
+          variant="warning"
+          class="d-flex align-items-center mb-4"
+        >
+          <b-icon icon="info-circle-fill" class="mr-2"></b-icon>
+          <span>
+            {{
+              micPermission === 'denied'
+                ? 'Microphone access denied. Please enable microphone access in your browser settings.'
+                : 'Microphone permission required. Click the button below to grant access.'
+            }}
+          </span>
+        </b-alert>
 
-       <!-- Browser compatibility warning -->
-       <b-alert
-         :show="!recognitionSupported"
-         variant="danger"
-         class="d-flex align-items-center mb-4"
-       >
-         <b-icon icon="exclamation-triangle-fill" class="mr-2"></b-icon>
-         <span>
-           Speech recognition is not supported in this browser. Please try Chrome, Edge, or Safari.
-         </span>
-       </b-alert>
+        <!-- Browser compatibility warning -->
+        <b-alert
+          :show="!recognitionSupported"
+          variant="danger"
+          class="d-flex align-items-center mb-4"
+        >
+          <b-icon icon="exclamation-triangle-fill" class="mr-2"></b-icon>
+          <span>
+            Speech recognition is not supported in this browser. Please try Chrome, Edge, or Safari.
+          </span>
+        </b-alert>
 
-       <!-- Microphone control -->
-       <div class="mic-control text-center mb-4">
-         <p class="mb-3">{{ statusText }}</p>
-         <b-button
-           :variant="micButtonVariant"
-           class="rounded-circle mic-button d-flex align-items-center justify-content-center"
-           style="width: 80px; height: 80px;"
-           :class="micButtonClass"
-           @click="micPermission !== 'granted' ? requestMicrophoneAccess() : null"
-           @mousedown="micPermission === 'granted' ? startListening() : null"
-           @mouseup="micPermission === 'granted' ? stopListening() : null"
-           @touchstart.prevent="micPermission === 'granted' ? startListening() : null"
-           @touchend.prevent="micPermission === 'granted' ? stopListening() : null"
-         >
-           <b-icon icon="mic-fill" font-scale="2" class="text-white"></b-icon>
-         </b-button>
-       </div>
+        <!-- Microphone control -->
+        <div class="mic-control text-center mb-4">
+          <p class="mb-3">{{ statusText }}</p>
+          <b-button
+            :variant="micButtonVariant"
+            class="rounded-circle mic-button d-flex align-items-center justify-content-center"
+            style="width: 80px; height: 80px"
+            :class="micButtonClass"
+            @click="micPermission !== 'granted' ? requestMicrophoneAccess() : null"
+            @mousedown="micPermission === 'granted' ? startListening() : null"
+            @mouseup="micPermission === 'granted' ? stopListening() : null"
+            @touchstart.prevent="micPermission === 'granted' ? startListening() : null"
+            @touchend.prevent="micPermission === 'granted' ? stopListening() : null"
+          >
+            <b-icon icon="mic-fill" font-scale="2" class="text-white"></b-icon>
+          </b-button>
+        </div>
 
-       <!-- Test API button -->
-       <div class="my-4">
-         <b-button
-           variant="light"
-           block
-           @click="testAPIDirectly"
-         >
-           Test API with Sample Command
-         </b-button>
-       </div>
+        <!-- Test API button -->
+        <div class="my-4">
+          <b-button variant="light" block @click="testAPIDirectly">
+            Test API with Sample Command
+          </b-button>
+        </div>
 
-       <!-- Debug information panel -->
-       <div class="mt-4 border-top pt-3">
-         <details>
-           <summary class="cursor-pointer">Debug Information</summary>
-           <div class="mt-2 bg-light p-2 rounded border" style="max-height: 150px; overflow-y: auto;">
-             <div v-if="debugInfo.length === 0">
-               <p>No debug information available</p>
-             </div>
-             <div v-else>
-               <div v-for="(info, index) in debugInfo" :key="index" class="mb-1">
-                 {{ info }}
-               </div>
-             </div>
-           </div>
-         </details>
-       </div>
+        <!-- Debug information panel -->
+        <div class="mt-4 border-top pt-3">
+          <details>
+            <summary class="cursor-pointer">Debug Information</summary>
+            <div
+              class="mt-2 bg-light p-2 rounded border"
+              style="max-height: 150px; overflow-y: auto"
+            >
+              <div v-if="debugInfo.length === 0">
+                <p>No debug information available</p>
+              </div>
+              <div v-else>
+                <div v-for="(info, index) in debugInfo" :key="index" class="mb-1">
+                  {{ info }}
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
 
-       <!-- Audio element -->
-       <audio
-         ref="audioRef"
-         controls
-         class="mt-4 w-100"
-         @error="(e) => addDebugInfo(`Audio error: ${e.target.error?.message || 'Unknown error'}`)"
-         @play="() => addDebugInfo('Audio started playing')"
-         @pause="() => addDebugInfo('Audio paused')"
-         @ended="() => addDebugInfo('Audio playback completed')"
-       >
-         Your browser does not support the audio element.
-       </audio>
-     </div>
-   </template>
-   <template #footer-btn>
-     <button type="button" class="btn btn-secondary" @click="$emit('close')">Close</button>
-   </template>
- </BaseModal>
+        <!-- Audio element -->
+        <audio
+          ref="audioRef"
+          controls
+          class="mt-4 w-100"
+          @error="(e) => addDebugInfo(`Audio error: ${e.target.error?.message || 'Unknown error'}`)"
+          @play="() => addDebugInfo('Audio started playing')"
+          @pause="() => addDebugInfo('Audio paused')"
+          @ended="() => addDebugInfo('Audio playback completed')"
+        >
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </template>
+    <template #footer-btn>
+      <button type="button" class="btn btn-secondary" @click="$emit('close')">Close</button>
+    </template>
+  </BaseModal>
 </template>
 
 <script>
 import BaseModal from '@/components/ui-components/_base-modal.vue'; // Adjust path if necessary
-import {
-  ref, computed, onMounted, onBeforeUnmount,
-} from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 export default {
   name: 'VoiceControlModal',
@@ -196,67 +189,76 @@ export default {
       const payload = JSON.stringify({ command });
       addDebugInfo(`API request payload: ${payload}`);
       textResponse.value = ''; // Clear previous text response
+
       try {
         addDebugInfo('Sending request to API endpoint...');
-        // Try with direct fetch first
-        try {
-          const response = await fetch('https://n8n.e4eweb.space/webhook/9ddd74ac-f821-45c9-a341-357971c5e359', {
+
+        const response = await fetch(
+          'https://n8n.e4eweb.space/webhook/9ddd74ac-f821-45c9-a341-357971c5e359',
+          {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: payload,
-          });
-          addDebugInfo(`API response status: ${response.status}`);
-          const responseText = await response.text(); // Get raw text first
+          }
+        );
 
-          console.log(responseText, 'responseText');
+        const responseText = await response.text();
+        console.log(responseText, 'responseText');
+
+        addDebugInfo(`API response status: ${response.status}`);
+        addDebugInfo('--- BEGIN RAW API RESPONSE TEXT ---');
+        addDebugInfo(responseText);
+        addDebugInfo('--- END RAW API RESPONSE TEXT ---');
+
+        if (!response.ok) {
+          throw new Error(
+            `API request failed with status ${response.status}. Response: ${responseText}`
+          );
+        }
+
+        // ✅ Try to parse JSON
+        let data;
+        try {
+          data = JSON.parse(responseText);
+        } catch (err) {
+          addDebugInfo(`Error parsing JSON: ${err.message}`);
+          throw new Error(`Failed to parse response: ${err.message}`);
+        }
+
+        // ✅ Check for Navigation type
+        if (data && data.type === 'Navigation' && data.route) {
+          addDebugInfo(`Navigation detected — redirecting to ${data.route}`);
+
+          console.log(data, 'responseText');
           
 
-          addDebugInfo('--- BEGIN RAW API RESPONSE TEXT (INITIAL) ---');
-          addDebugInfo(responseText); // Log raw text directly
-          addDebugInfo('--- END RAW API RESPONSE TEXT (INITIAL) ---');
+          // Ensure the route is a valid absolute URL
+          const targetUrl = /^https?:\/\//i.test(data.route) ? data.route : `https://${data.route}`;
 
-          if (!response.ok) {
-            throw new Error(`API request failed with status ${response.status}. Response: ${responseText}`);
-          }
+          // ✅ Redirect in same tab
+          window.location.href = targetUrl;
 
-          addDebugInfo('Parsing API response...');
-          let data;
-          try {
-            data = sanitizeJsonResponse(responseText);
-          } catch (parseError) {
-            const errorMessage = parseError instanceof Error ? parseError.message : String(parseError);
-            addDebugInfo(`Error parsing JSON. Details: ${errorMessage}`);
-            addDebugInfo('--- BEGIN RAW API RESPONSE TEXT (CAUSING PARSE ERROR) ---');
-            addDebugInfo(responseText);
-            addDebugInfo('--- END RAW API RESPONSE TEXT (CAUSING PARSE ERROR) ---');
-            throw new Error(`Failed to parse JSON response: ${errorMessage}. Check debug logs for raw response text.`);
-          }
+          return; // Stop here — no further code should run
+        }
 
-          addDebugInfo(`API response data: ${JSON.stringify(data)}`);
-          if (data.text_response) {
-            textResponse.value = data.text_response;
-            addDebugInfo(`Text response received: ${data.text_response}`);
-          }
-          if (data.audio_response) {
-            processAudioResponse(data.audio_response);
-          } else {
-            addDebugInfo('No audio response in API response');
-            if (!data.text_response) status.value = 'idle'; // Only set to idle if no text response either
-          }
-        } catch (error) {
-          console.log(error, 'error');
-          
-          // If direct fetch fails, try with a CORS proxy
-          addDebugInfo(`Direct API call failed: ${error instanceof Error ? error.message : String(error)}`);
-          addDebugInfo('Attempting with CORS proxy...');
-         
-          
+        // ✅ Continue with normal response flow if not navigation
+        addDebugInfo(`API response data: ${JSON.stringify(data)}`);
+
+        if (data.text_response) {
+          textResponse.value = data.text_response;
+          addDebugInfo(`Text response received: ${data.text_response}`);
+        }
+
+        if (data.audio_response) {
+          processAudioResponse(data.audio_response);
+        } else {
+          addDebugInfo('No audio response in API response');
+          if (!data.text_response) status.value = 'idle';
         }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        addDebugInfo(`All API attempts failed: ${errorMessage}`);
+        console.error('Error in sendCommandToAPI:', errorMessage);
+        addDebugInfo(`API call failed: ${errorMessage}`);
         status.value = 'idle';
       }
     };
@@ -410,7 +412,7 @@ export default {
 
     // Test API directly
     const testAPIDirectly = () => {
-      const testCommand = 'what is the value for Skill birth attendance for ekiti state in twenty twenty two';
+      const testCommand = 'Navigate me to health outcome dashboard';
       addDebugInfo(`Testing API with command: "${testCommand}"`);
       sendCommandToAPI(testCommand);
     };
@@ -424,7 +426,8 @@ export default {
     const micButtonClass = computed(() => {
       if (isListening.value) {
         return 'bg-red-500 text-white';
-      } if (micPermission.value !== 'granted') {
+      }
+      if (micPermission.value !== 'granted') {
         return 'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-400';
       }
       return 'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-400';
@@ -433,11 +436,14 @@ export default {
     const statusText = computed(() => {
       if (isListening.value) {
         return 'Listening...';
-      } if (status.value === 'processing') {
+      }
+      if (status.value === 'processing') {
         return 'Processing your request...';
-      } if (status.value === 'response') {
+      }
+      if (status.value === 'response') {
         return 'Playing response...';
-      } if (micPermission.value !== 'granted') {
+      }
+      if (micPermission.value !== 'granted') {
         return 'Click the microphone to grant access';
       }
       return 'Press and hold the microphone to speak';
