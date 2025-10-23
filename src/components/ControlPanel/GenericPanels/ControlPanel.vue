@@ -241,7 +241,7 @@ console.warn('Report builder plugin not available'); } },
       </b-button>
     </div> -->
 
-    <!-- (report builder capture is automatic; demo button removed) -->
+    <!-- (report builder capture is automatic demo button removed) -->
 
     <!-- Voice Control Modal Component -->
     <VoiceControlModal :show="isVoiceModalVisible" @close="isVoiceModalVisible = false" />
