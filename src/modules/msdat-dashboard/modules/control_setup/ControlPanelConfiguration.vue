@@ -58,6 +58,12 @@ export default {
     // }
   },
   mounted() {
+    this.MODIFY_IDC_DATASOURCE({
+      id: 0,
+      datasource: 'ALL',
+      full_name: 'ALL',
+      indicators: [],
+    });
     const now = new Date();
     const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -69,7 +75,12 @@ export default {
     });
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1', 'SET_INDICATOR_COMPARISON_PAYLOAD', 'SET_INDICATOR_DATASOURCES']),
+    ...mapMutations('MSDAT_STORE', [
+      'SETUP_CONTROL_OPTIONS1',
+      'SET_INDICATOR_COMPARISON_PAYLOAD',
+      'SET_INDICATOR_DATASOURCES',
+      'MODIFY_IDC_DATASOURCE',
+    ]),
     ...mapActions([
       'SET_INTERACTIONS',
       'GET_INTERACTIONS',
@@ -85,7 +96,7 @@ export default {
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
         this.payload?.datasource?.id,
-        this.payload?.location?.id,
+        this.payload?.location?.id
       );
       return available;
     },
@@ -107,7 +118,7 @@ export default {
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       if (this.getInternetStatus === true) {
         const data = await apiServices.getDashboard();
-        
+
         this.dashboard = data.data.results.find((item) => item.title === this.$route.meta.title);
       }
       const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
@@ -146,7 +157,7 @@ export default {
         Array.isArray(this.payload?.indicator)
           ? this.payload?.indicator.map((i) => i.id)
           : this.payload?.indicator?.id,
-        this.controlIndex,
+        this.controlIndex
       );
     },
   },
@@ -209,9 +220,10 @@ export default {
                 if (weekB === null) return -1;
                 return 0;
               }),
-
             });
             const availableDS = await this.getDataSourcesFromIndicator(this.payload?.indicator?.id);
+            console.log(availableDS, 'availableDS');
+
             this.SET_INDICATOR_DATASOURCES(availableDS);
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
@@ -219,7 +231,7 @@ export default {
               key: 'datasource',
               values: availableDS,
             });
-          }
+          } 
           this.setStatesDropdown();
         }
       },
@@ -277,7 +289,6 @@ export default {
               if (weekB === null) return -1;
               return 0;
             }),
-
           });
           // ============
           if (this.controlIndex === 2) {
@@ -289,7 +300,7 @@ export default {
               key: 'indicator',
               value: availableIndicator[0].indicators[0],
             });
-            
+
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
@@ -329,7 +340,6 @@ export default {
               if (weekB === null) return -1;
               return 0;
             }),
-
           });
         }
       },

@@ -67,7 +67,6 @@ const mutations: MutationTree<State> = {
   },
 
   SETUP_CONTROL_OPTIONS1: (state, obj: setOptionsPayload) => {
-    
     const checkTheObject = state.controlConfig[obj.panelIndex].setup[0];
     if (Array.isArray(checkTheObject)) {
       const setUpArrayOfObject = state.controlConfig[obj.panelIndex].setup[obj.groupIndex];
@@ -328,6 +327,21 @@ const mutations: MutationTree<State> = {
         }
       }
     });
+  },
+
+  MODIFY_IDC_DATASOURCE: (state, payload) => {
+    console.log(payload, '@@@Payload');
+
+    const options = state.controlConfig[2].setup[1].options;
+
+    // Assuming each option has a unique `id` property
+    const exists = options.some((opt) => opt.id === payload.id);
+
+    if (!exists) {
+      options.push(payload);
+    } else {
+      console.log('Item already exists:', payload.id);
+    }
   },
 
   SET_CONFIGURATIONS: (state, payload) => {
