@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Vue from 'vue';
 import store from '@/store';
+import frontendAuthService from '@/modules/auth/services/frontendAuthService';
 
 const apiConfigs = {
   default: process.env.VUE_APP_API_BASE_URL,
@@ -39,6 +40,24 @@ const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => 
           // 'X-MSDAT-AUTH': 'e4e@devoP$ysadmin2025',
         };
         return newConfig;
+      },
+      (error) => Promise.reject(error),
+    );
+
+    // Add frontend JWT interceptor to all instances
+    instance.interceptors.request.use(
+      async (config) => {
+        try {
+          const token = await frontendAuthService.getValidToken();
+          config.headers = {
+            ...config.headers,
+            'X-Frontend-JWT': `Token ${token}`,
+          };
+        } catch (error) {
+          console.error('Failed to add frontend JWT header:', error);
+        
+        }
+        return config;
       },
       (error) => Promise.reject(error),
     );
