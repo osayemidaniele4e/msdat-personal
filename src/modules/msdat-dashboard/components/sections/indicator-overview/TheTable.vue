@@ -3,7 +3,12 @@
   <!-- <base-overlay :show="loading"> -->
   <div id="the-table">
     <div v-if="!loading">
-      <base-sub-card :showDropdown="false" showControls :showDownload="false" v-if="Object.keys(values).length">
+      <base-sub-card
+        :showDropdown="false"
+        showControls
+        :showDownload="false"
+        v-if="Object.keys(values).length"
+      >
         <template #title>
           <div
             class="w-100 d-flex justify-content-between align-items-center position-relative p-1"
@@ -22,7 +27,7 @@
               >
                 <img src="@/assets/html.png" alt="" />
               </div>
-              <div class="analyze-btn"
+              <!-- <div class="analyze-btn"
                    @click.prevent="toggleShowAnalysis"
                    :class="{ 'disabled': analysisLoading }"
               >
@@ -30,7 +35,7 @@
                 <span v-if="analysisLoading" class="loading-indicator">
                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </span>
-              </div>
+              </div> -->
             </div>
             <!-- <div v-if="showPopUp" class="pop-up">
               <h3 @click="toggleShowShareModal" >Share as HTML Code</h3>
@@ -436,7 +441,10 @@ export default {
 
         // Store the captured image
         this.capturedChart = canvas.toDataURL('image/png');
-        console.log('Chart converted to data URL, length:', this.capturedChart ? this.capturedChart.length : 0);
+        console.log(
+          'Chart converted to data URL, length:',
+          this.capturedChart ? this.capturedChart.length : 0
+        );
 
         // Show the modal
         this.showAnalysisModal = true;
