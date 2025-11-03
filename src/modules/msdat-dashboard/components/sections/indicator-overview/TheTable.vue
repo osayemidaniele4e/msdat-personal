@@ -3,7 +3,12 @@
   <!-- <base-overlay :show="loading"> -->
   <div id="the-table">
     <div v-if="!loading">
-      <base-sub-card :showDropdown="false" showControls :showDownload="false" v-if="Object.keys(values).length">
+      <base-sub-card
+        :showDropdown="false"
+        showControls
+        :showDownload="false"
+        v-if="Object.keys(values).length"
+      >
         <template #title>
           <div
             class="w-100 d-flex justify-content-between align-items-center position-relative p-1"
@@ -18,10 +23,19 @@
                 @mouseover="showTooltip"
                 @mouseout="hideTooltip"
                 @click="toggleShowShareModal"
-                class=""
+                class="share-btn"
               >
                 <img src="@/assets/html.png" alt="" />
               </div>
+              <!-- <div class="analyze-btn"
+                   @click.prevent="toggleShowAnalysis"
+                   :class="{ 'disabled': analysisLoading }"
+              >
+                <img src="@/assets/img/analysis.svg" alt="Analyze" />
+                <span v-if="analysisLoading" class="loading-indicator">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </span>
+              </div> -->
             </div>
             <!-- <div v-if="showPopUp" class="pop-up">
               <h3 @click="toggleShowShareModal" >Share as HTML Code</h3>
@@ -68,6 +82,12 @@
       v-if="showShareCodeModal"
       :tableContent="shareUrl"
     />
+    <ChartAnalysisModal
+      :show="showAnalysisModal"
+      :chartImage="capturedChart"
+      :indicatorData="values.indicator"
+      @close="closeAnalysisModal"
+    />
   </div>
 
   <!-- </base-overlay> -->
@@ -78,10 +98,12 @@ import { mapGetters } from 'vuex';
 import TableComponent from '@/modules/msdat-dashboard/components/table/TableComponent.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
+import html2canvas from 'html2canvas';
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
 import ShareCodeModal from './shareTableModal.vue';
+import ChartAnalysisModal from './ChartAnalysisModal.vue';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -91,6 +113,7 @@ export default {
     DataSourceMetaDataModal,
     TableLoader,
     ShareCodeModal,
+    ChartAnalysisModal,
   },
   data() {
     return {
@@ -108,6 +131,9 @@ export default {
       tableLink: null,
       isTooltipVisible: false,
       shareUrl: null,
+      showAnalysisModal: false,
+      capturedChart: null,
+      analysisLoading: false,
       showPopUp: false,
     };
   },
@@ -366,6 +392,89 @@ export default {
     hideTooltip() {
       this.isTooltipVisible = false;
     },
+    async toggleShowAnalysis(e) {
+      // Prevent default event behavior and stop propagation
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      // If modal is already open, just close it
+      if (this.showAnalysisModal) {
+        this.closeAnalysisModal();
+        return;
+      }
+
+      try {
+        this.analysisLoading = true;
+        console.log('Starting analysis process...');
+
+        // Find the chart element
+        const chartElement = document.querySelector('#state-bar-chart .iddc_wrapper');
+        console.log('Chart element found:', !!chartElement);
+        if (!chartElement) {
+          console.error('Chart element not found');
+          return;
+        }
+
+        // Wait for next tick to ensure chart is rendered
+        await this.$nextTick();
+        console.log('Next tick completed');
+
+        // Capture the chart
+        console.log('Capturing chart...');
+        const canvas = await html2canvas(chartElement, {
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          scale: 2,
+          logging: false,
+          onclone: (clonedDoc) => {
+            const clonedElement = clonedDoc.querySelector('.iddc_wrapper');
+            if (clonedElement) {
+              clonedElement.style.visibility = 'visible';
+              clonedElement.style.display = 'block';
+            }
+          },
+        });
+        console.log('Chart captured successfully');
+
+        // Store the captured image
+        this.capturedChart = canvas.toDataURL('image/png');
+        console.log(
+          'Chart converted to data URL, length:',
+          this.capturedChart ? this.capturedChart.length : 0
+        );
+
+        // Show the modal
+        this.showAnalysisModal = true;
+        console.log('Modal state set to true');
+
+        console.log('Toggle analysis:', {
+          showAnalysisModal: this.showAnalysisModal,
+          hasChart: !!this.capturedChart,
+          hasIndicator: !!this.values.indicator,
+        });
+      } catch (error) {
+        console.error('Error capturing chart:', error);
+      } finally {
+        this.analysisLoading = false;
+      }
+    },
+    closeAnalysisModal() {
+      this.showAnalysisModal = false;
+      // Reset the captured chart to prevent memory issues
+      this.capturedChart = null;
+    },
+    onChartCaptured({ image }) {
+      console.log('Chart captured:', {
+        hasImage: !!image,
+        imageLength: image ? image.length : 0,
+      });
+      this.capturedChart = image;
+      // Optional: automatically show analysis after capture
+      this.toggleShowAnalysis();
+    },
   },
   mounted() {
     this.updateData += 1;
@@ -417,6 +526,37 @@ export default {
   padding: 2px 5px;
   border-radius: 5px;
   font-size: 1rem;
+}
+
+.analyze-btn {
+  // Similar styling to share-btn
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #b3b3b3;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 0 5px;
+
+  &:hover {
+    border: 1px solid #61a229;
+  }
+
+  position: relative;
+
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .pop-up {

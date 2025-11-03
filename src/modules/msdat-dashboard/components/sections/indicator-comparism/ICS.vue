@@ -37,15 +37,20 @@
         <template #title>
           <p class="work-sans mb-0 line-height">
             Comparison of <b>selected indicators</b> according to the
-            <b> {{ values.datasource.datasource }} </b> across {{ values.compareBy.name }} in
+            <b> {{ values.datasource.datasource }} </b> acrossX {{ values.compareBy.name }} in
             <b> {{ values.location.name }} </b>
           </p>
         </template>
-        <BarChart ref="BaseChart" :title="title" 
-        :categoryLabel="'Indicators'":chartOptions="chartOptions" />
+        <BarChart
+          ref="BaseChart"
+          :title="title"
+          :categoryLabel="'Indicators'"
+          :chartOptions="chartOptions"
+        />
       </base-sub-card>
-    </base-overlay>    <!-- Display 'no_data' block when there's no data and we're not loading -->
-    <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
+    </base-overlay>
+    <!-- Display 'no_data' block when there's no data and we're not loading -->
+    <!-- <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
       <img
         :src="require('@/assets/no-data/No_Available_Data.svg')"
         alt="no data"
@@ -54,16 +59,17 @@
         width="240px"
       />
     </div>
+    --> 
     <div v-if="!loading && filteredIndicators.length > 0" class="no_ind_data">
-   <!--list to present indicators without available data -->
-  <ul>
-  <!-- Loop through filtered indicators and display a list item for each -->
-    <li v-for="(indicator, index) in filteredIndicators" :key="index"  >
-   <!-- Display indicator's short name and a message indicating no available data -->
-      <b>{{ indicator.short_name }},</b> does not have available data.
-    </li>
-  </ul>
-</div>
+      <!--list to present indicators without available data -->
+      <ul>
+        <!-- Loop through filtered indicators and display a list item for each -->
+        <li v-for="(indicator, index) in filteredIndicators" :key="index">
+          <!-- Display indicator's short name and a message indicating no available data -->
+          <b>{{ indicator.short_name }},</b> does not have available data.
+        </li>
+      </ul>
+    </div>
     <!-- Initial state message -->
     <div v-if="!loading && !validateRequiredValues(values)" class="no_data">
       <p class="text-muted">Please select all required values to view the comparison</p>
@@ -118,8 +124,8 @@ export default {
   //   },
   // },
   computed: {
-     filteredIndicators() {
-    // Check if this.values.indicator is an array before using filter
+    filteredIndicators() {
+      // Check if this.values.indicator is an array before using filter
       if (Array.isArray(this.values.indicator)) {
         return this.values.indicator.filter((indicator) => !this.hasDataForIndicator(indicator));
       }
@@ -131,24 +137,24 @@ export default {
   methods: {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
     ...mapMutations('MSDAT_STORE', ['TOGGLE_VISIBILITY', 'SETUP_CONTROL_OPTIONS1']),
-     hasDataForIndicator(indicator) {
-          // Check if chartOptions and its series are defined
-          if (this.chartOptions?.series) {
-            // Exclude "Skilled birth attendance" from the check it is considered to have data
-            if (indicator.short_name.toLowerCase() === 'skilled birth attendance') {
-              return true;
-            }
-            // Find the series corresponding to the indicator
-            const indicatorSeries = this.chartOptions.series.find(
-              (series) => series.name.toLowerCase().includes(indicator.full_name.toLowerCase()),
-            );
-    
-            // Check if the indicatorSeries has data points
-            return indicatorSeries?.data && indicatorSeries.data.length > 0;
-          }
-          // Return false if chartOptions or series are not defined
-          return false;
-        },
+    hasDataForIndicator(indicator) {
+      // Check if chartOptions and its series are defined
+      if (this.chartOptions?.series) {
+        // Exclude "Skilled birth attendance" from the check it is considered to have data
+        if (indicator.short_name.toLowerCase() === 'skilled birth attendance') {
+          return true;
+        }
+        // Find the series corresponding to the indicator
+        const indicatorSeries = this.chartOptions.series.find((series) =>
+          series.name.toLowerCase().includes(indicator.full_name.toLowerCase())
+        );
+
+        // Check if the indicatorSeries has data points
+        return indicatorSeries?.data && indicatorSeries.data.length > 0;
+      }
+      // Return false if chartOptions or series are not defined
+      return false;
+    },
     checkData() {
       // Check if we have any series data
       if (!this.chartOptions?.series?.length) {
@@ -199,17 +205,21 @@ export default {
       } else {
         indicators = values.indicator;
       }
-      const dataPromises = indicators?.map((item) => this.dlQuery({
-        indicator: item.id,
-        datasource: values.datasource.id,
-        period: values.year,
-        location: {
-          level: 3,
-        },
-      })
+      const dataPromises = indicators?.map((item) =>
+        this.dlQuery({
+          indicator: item.id,
+          datasource: values.datasource.id,
+          period: values.year,
+          location: {
+            level: 3,
+          },
+        })
       );
 
       const results = await Promise.all(dataPromises);
+
+      console.log(results, '@@<>@@');
+
       /**
        * Map the display factors for the different indicators
        */
@@ -266,7 +276,225 @@ export default {
             },
           },
           // name: indicator.full_name,
-          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
+          name: `${indicator.full_name} ${
+            displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+          }`,
+          data: toHighChartFormat,
+        };
+        if (i === 0) highChartOptions.yAxis.push(yAxis);
+        highChartOptions.series.push(obj);
+      }
+      return highChartOptions;
+    },
+
+    async plotForNational(values) {
+      const highChartOptions = {
+        chart: {
+          type: 'column',
+        },
+        series: [],
+        yAxis: [],
+        exporting: {
+          filename: `datasource-${values.datasource.datasource}`,
+        },
+        plotOptions: {
+          series: {
+            grouping: true,
+            pointWidth: 10,
+            connectNulls: false,
+            pointPlacement: 'between',
+            // borderWidth: 0,
+          },
+        },
+      };
+      let indicators = '';
+      if (!Array.isArray(values.indicator)) {
+        indicators = [values.indicator];
+      } else {
+        indicators = values.indicator;
+      }
+      const dataPromises = indicators?.map((item) =>
+        this.dlQuery({
+          indicator: item.id,
+          datasource: values.datasource.id,
+          period: values.year,
+          location: {
+            level: 1,
+          },
+        })
+      );
+
+      const results = await Promise.all(dataPromises);
+
+      console.log(results, '@@<>@@');
+
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        yTitles.push(displayFactor.display_factor);
+      }
+
+      for (let i = 0; i < results.length; i += 1) {
+        // formate result to HighChart Format
+        const indicator = indicators[i];
+        const data = results[i];
+        const toHighChartFormat = data?.map((item) => [
+          this.dlGetLocation(item.location).name,
+          parseFloat(item.value),
+        ]);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        const yAxis = {
+          yAxis: [
+            {
+              plotLines: [],
+              labels: {
+                style: {
+                  fontFamily: 'Work Sans, sans-serif',
+                  fontSize: '11px',
+                },
+              },
+              title: {
+                style: {
+                  ...defaultOptions.yAxis.title.style,
+                  fontSize: '10px',
+                },
+              },
+            },
+          ],
+          title: {
+            ...defaultOptions.yAxis.title,
+            // text: displayFactor.display_factor,
+            text: [...new Set(yTitles)].join(' | '),
+          },
+          opposite: !!i, // this will become either true of false as 0 or 1
+        };
+
+        const obj = {
+          // color: this.color[i],
+          dataLabels: {
+            enabled: true,
+            format: `{y}${this.displayFactorSign(displayFactor.display_factor)}`,
+            style: {
+              ...defaultOptions.yAxis.title.style,
+              fontSize: '10px',
+            },
+          },
+          // name: indicator.full_name,
+          name: `${indicator.full_name} ${
+            displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+          }`,
+          data: toHighChartFormat,
+        };
+        if (i === 0) highChartOptions.yAxis.push(yAxis);
+        highChartOptions.series.push(obj);
+      }
+      return highChartOptions;
+    },
+
+    async plotForZonal(values) {
+      const highChartOptions = {
+        chart: {
+          type: 'column',
+        },
+        series: [],
+        yAxis: [],
+        exporting: {
+          filename: `datasource-${values.datasource.datasource}`,
+        },
+        plotOptions: {
+          series: {
+            grouping: true,
+            pointWidth: 10,
+            connectNulls: false,
+            pointPlacement: 'between',
+            // borderWidth: 0,
+          },
+        },
+      };
+      let indicators = '';
+      if (!Array.isArray(values.indicator)) {
+        indicators = [values.indicator];
+      } else {
+        indicators = values.indicator;
+      }
+      const dataPromises = indicators?.map((item) =>
+        this.dlQuery({
+          indicator: item.id,
+          datasource: values.datasource.id,
+          period: values.year,
+          location: {
+            level: 2,
+          },
+        })
+      );
+
+      const results = await Promise.all(dataPromises);
+
+      console.log(results, '@@<>@@');
+
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        yTitles.push(displayFactor.display_factor);
+      }
+
+      for (let i = 0; i < results.length; i += 1) {
+        // formate result to HighChart Format
+        const indicator = indicators[i];
+        const data = results[i];
+        const toHighChartFormat = data?.map((item) => [
+          this.dlGetLocation(item.location).name,
+          parseFloat(item.value),
+        ]);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        const yAxis = {
+          yAxis: [
+            {
+              plotLines: [],
+              labels: {
+                style: {
+                  fontFamily: 'Work Sans, sans-serif',
+                  fontSize: '11px',
+                },
+              },
+              title: {
+                style: {
+                  ...defaultOptions.yAxis.title.style,
+                  fontSize: '10px',
+                },
+              },
+            },
+          ],
+          title: {
+            ...defaultOptions.yAxis.title,
+            // text: displayFactor.display_factor,
+            text: [...new Set(yTitles)].join(' | '),
+          },
+          opposite: !!i, // this will become either true of false as 0 or 1
+        };
+
+        const obj = {
+          // color: this.color[i],
+          dataLabels: {
+            enabled: true,
+            format: `{y}${this.displayFactorSign(displayFactor.display_factor)}`,
+            style: {
+              ...defaultOptions.yAxis.title.style,
+              fontSize: '10px',
+            },
+          },
+          // name: indicator.full_name,
+          name: `${indicator.full_name} ${
+            displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+          }`,
           data: toHighChartFormat,
         };
         if (i === 0) highChartOptions.yAxis.push(yAxis);
@@ -410,11 +638,12 @@ export default {
         indicators = values.indicator;
       }
 
-      const dataPromises = indicators?.map((item) => this.dlQuery({
-        indicator: item.id,
-        datasource: values.datasource.id,
-        location: values.location.id,
-      })
+      const dataPromises = indicators?.map((item) =>
+        this.dlQuery({
+          indicator: item.id,
+          datasource: values.datasource.id,
+          location: values.location.id,
+        })
       );
 
       const results = await Promise.all(dataPromises);
@@ -472,7 +701,9 @@ export default {
             color: this.color[i],
             lineWidth: 3,
             // name: indicator.full_name,
-            name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
+            name: `${indicator.full_name} ${
+              displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+            }`,
             data: formatToHighChartFormat,
           };
           highChartOptions.series.push(obj);
@@ -481,8 +712,8 @@ export default {
         // this functions checks to make years apear from smallest to highest when the first selected indicator
         // year have higher values than that of the second selected indicator
         if (
-          highChartOptions.series.length > 1
-        && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
+          highChartOptions.series.length > 1 &&
+          highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
         ) {
           const temporary = highChartOptions.series[1];
           highChartOptions.series[1] = highChartOptions.series[0];
@@ -494,7 +725,9 @@ export default {
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];
-        const filterOnlyYearlyValues = result.filter((item) => moment(item.period, 'YYYY', true).isValid());
+        const filterOnlyYearlyValues = result.filter((item) =>
+          moment(item.period, 'YYYY', true).isValid()
+        );
         const formatToHighChartFormat = filterOnlyYearlyValues?.map((item) => [
           item.period,
           Number.parseFloat(item.value),
@@ -533,7 +766,9 @@ export default {
           color: this.color[i],
           lineWidth: 3,
           // name: indicator.full_name,
-          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
+          name: `${indicator.full_name} ${
+            displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+          }`,
           data: sortTheYear,
         };
         highChartOptions.series.push(obj);
@@ -543,8 +778,8 @@ export default {
       // this functions checks to make years apear from smallest to highest when the first selected indicator
       // year have higher values than that of the second selected indicator
       if (
-        highChartOptions.series.length > 1
-        && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
+        highChartOptions.series.length > 1 &&
+        highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
       ) {
         const temporary = highChartOptions.series[1];
         highChartOptions.series[1] = highChartOptions.series[0];
@@ -572,6 +807,23 @@ export default {
 
       if (panelValues.compareBy.name === 'State') {
         const highChartOptions = await this.plotForState(panelValues);
+        this.chartOptions = { ...highChartOptions };
+        if (Object.keys(this.chartOptions).length !== 0) {
+          this.toggleSDGTargetLine(sdg);
+          this.toggleNationalTargetLine(national);
+        }
+      }
+
+      if (panelValues.compareBy.name === 'National') {
+        const highChartOptions = await this.plotForNational(panelValues);
+        this.chartOptions = { ...highChartOptions };
+        if (Object.keys(this.chartOptions).length !== 0) {
+          this.toggleSDGTargetLine(sdg);
+          this.toggleNationalTargetLine(national);
+        }
+      }
+      if (panelValues.compareBy.name === 'Zonal') {
+        const highChartOptions = await this.plotForZonal(panelValues);
         this.chartOptions = { ...highChartOptions };
         if (Object.keys(this.chartOptions).length !== 0) {
           this.toggleSDGTargetLine(sdg);
@@ -662,6 +914,52 @@ export default {
           this.loading = true;
           await this.renderChart(this.values);
           this.loading = false;
+        } else if (data.name === 'National') {
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: true,
+          });
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: false,
+          });
+
+          // get the list of years by datasource
+          const setYearDropdown = await this.setYearDropdown();
+          // period dropdown;
+          this.SET_CONTROL_OPTIONS({
+            panelIndex: 2,
+            controlIndex: 2,
+            values: setYearDropdown,
+          });
+          this.loading = true;
+          await this.renderChart(this.values);
+          this.loading = false;
+        } else if (data.name === 'Zonal') {
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: true,
+          });
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: false,
+          });
+
+          // get the list of years by datasource
+          const setYearDropdown = await this.setYearDropdown();
+          // period dropdown;
+          this.SET_CONTROL_OPTIONS({
+            panelIndex: 2,
+            controlIndex: 2,
+            values: setYearDropdown,
+          });
+          this.loading = true;
+          await this.renderChart(this.values);
+          this.loading = false;
         }
       },
       immediate: false,
@@ -717,8 +1015,8 @@ div.ics_wrapper {
   }
 }
 .no_ind_data {
-  position:fixed ;
-  top:280px;
+  position: fixed;
+  top: 280px;
   right: 110px;
   padding: 10px;
   background-color: #ffffff;
@@ -726,7 +1024,7 @@ div.ics_wrapper {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 
-  ul{
+  ul {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -743,5 +1041,4 @@ div.ics_wrapper {
     margin-bottom: 0.5rem;
   }
 }
-
 </style>
