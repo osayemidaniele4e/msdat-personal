@@ -186,7 +186,10 @@ export default {
         },
         series: [],
         yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
         exporting: {
+          ...defaultOptions.exporting,
           filename: `datasource-${values.datasource.datasource}`,
         },
         plotOptions: {
@@ -294,7 +297,10 @@ export default {
         },
         series: [],
         yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
         exporting: {
+          ...defaultOptions.exporting,
           filename: `datasource-${values.datasource.datasource}`,
         },
         plotOptions: {
@@ -402,7 +408,10 @@ export default {
         },
         series: [],
         yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
         exporting: {
+          ...defaultOptions.exporting,
           filename: `datasource-${values.datasource.datasource}`,
         },
         plotOptions: {
@@ -627,7 +636,10 @@ export default {
         },
         yAxis: [],
         series: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
         exporting: {
+          ...defaultOptions.exporting,
           filename: `datasource-${values.datasource.datasource}`,
         },
       };

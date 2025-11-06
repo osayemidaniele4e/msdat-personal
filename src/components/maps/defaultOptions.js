@@ -8,9 +8,26 @@ export default {
   },
   lang: {
     noData: 'No states data to display',
+    contextButtonTitle: 'Download',
+  },
+  navigation: {
+    buttonOptions: {
+      symbolSize: 14,
+    },
   },
   exporting: {
     enabled: true,
+    buttons: {
+      contextButton: {
+        symbol: 'url(/download-icon.svg)',
+        title: 'Download',
+        width: 28,
+        height: 28,
+        symbolSize: 20,
+        symbolX: 20,
+        symbolY: 20,
+      },
+    },
     chartOptions: {
       chart: {
         width: 1200,
