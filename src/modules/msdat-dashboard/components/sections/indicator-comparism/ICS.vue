@@ -668,9 +668,53 @@ export default {
           )
         );
 
-        const results = await Promise.all(dataPromises);
+        function getDatasourceById(data) {
+          // Early return if data or data.datasource is undefined/null
+          if (!data?.datasource) {
+            console.warn('Invalid data passed to getDatasourceById:', data);
+            return null;
+          }
+
+          console.log(data.datasource);
+
+          const result = datasources.find((source) => source.id === data.datasource);
+
+          console.log(result);
+
+          if (!result) {
+            console.warn(`No datasource found for id: ${data.datasource}`);
+          }
+
+          return result || null;
+        }
+
+        function getIndicatorById(data) {
+          if (!data?.indicator) {
+            console.warn('Invalid data passed to getDatasourceById:', data);
+            return null;
+          }
+
+          console.log(indicators, 'INDI');
+          
+
+          console.log(data);
+
+          const result = indicators.find((source) => source.id === data.indicator);
+
+          console.log(result);
+
+          if (!result) {
+            console.warn(`No indicator found for id: ${data.indicator}`);
+          }
+
+          return result || null;
+        }
+
+        const allResults = await Promise.all(dataPromises);
         // console.log(results0, '@@<>@@');
         // const results = results0.flat();
+
+        const results = allResults.filter((item) => Array.isArray(item) && item.length > 0);
 
         console.log(results, '@@<>@@');
 
@@ -731,6 +775,8 @@ export default {
               opposite: !!i, // this will become either true of false as 0 or 1
             };
 
+            console.log(data, '@@(X)@@');
+
             const obj = {
               // color: this.color[i],
               dataLabels: {
@@ -741,8 +787,9 @@ export default {
                   fontSize: '10px',
                 },
               },
+
               // name: indicator.full_name,
-              name: `hehry ${
+              name: `${getIndicatorById(data[0])?.full_name} ${
                 displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
               }`,
               data: toHighChartFormat,
