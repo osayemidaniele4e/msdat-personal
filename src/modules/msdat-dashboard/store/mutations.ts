@@ -338,7 +338,7 @@ const mutations: MutationTree<State> = {
     const exists = options.some((opt) => opt.id === payload.id);
 
     if (!exists) {
-      options.push(payload);
+      options.unshift(payload);
     } else {
       console.log('Item already exists:', payload.id);
     }
