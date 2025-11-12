@@ -316,10 +316,11 @@ export default {
   }
 
   .whats-new-content {
-    width: 98%;
+    width: 90%;
     padding: 15px 10px;
     border-radius: 6px;
-    min-height: 180px;
+    max-height: 400px;
+    overflow-y: auto;
   }
 
   .title h1 {
