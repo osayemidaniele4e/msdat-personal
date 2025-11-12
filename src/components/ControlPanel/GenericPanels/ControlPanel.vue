@@ -228,7 +228,7 @@ console.warn('Report builder plugin not available'); } },
     </div>
 
     <!-- Voice Control Button -->
-    <!-- <div v-if="isIndicatorOverviewPanel" class="col-auto d-flex align-items-start">
+    <div v-if="isIndicatorOverviewPanel" class="col-auto d-flex align-items-start">
       <b-button
         variant="outline-info"
         size="lg"
@@ -239,9 +239,9 @@ console.warn('Report builder plugin not available'); } },
       >
         <b-icon icon="mic-fill"></b-icon> Voice
       </b-button>
-    </div> -->
+    </div>
 
-    <!-- (report builder capture is automatic; demo button removed) -->
+    <!-- (report builder capture is automatic demo button removed) -->
 
     <!-- Voice Control Modal Component -->
     <VoiceControlModal :show="isVoiceModalVisible" @close="isVoiceModalVisible = false" />
