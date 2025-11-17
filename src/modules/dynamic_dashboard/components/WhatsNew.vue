@@ -210,32 +210,170 @@ export default {
 }
 
 /* 📱 MOBILE RESPONSIVE STYLES */
-@media (max-width: 600px) {
+
+/* Tablets and smaller devices */
+@media (max-width: 768px) {
+  .datasource-container {
+    padding: 10px;
+  }
+
   .whats-new-content {
-    width: 100%;
-    padding: 20px;
+    width: 90%;
+    min-height: 250px;
+    padding: 25px 20px;
     border-radius: 8px;
   }
+
+  .title h1 {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .info h2 {
+    font-size: 15px;
+    line-height: 16px;
+  }
+
+  .info h3 {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .icon img {
+    height: 30px;
+    width: 30px;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 600px) {
+  .datasource-container {
+    padding: 5px;
+  }
+
+  .whats-new-content {
+    width: 95%;
+    padding: 20px 15px;
+    border-radius: 8px;
+    min-height: 200px;
+  }
+
+  .title h1 {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .info h2 {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
   .info h3 {
     font-size: 12px;
+    line-height: 15px;
   }
+
+  .info p {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
   ul {
-    // list-style: none;   // removes default bullet points
-    padding-left: 0; // removes the indentation
-    margin: 0; // optional: cleans up spacing
-    margin-top: 15px;
+    padding-left: 15px;
+    margin: 10px 0;
+    margin-top: 10px;
+  }
+
+  .new-item {
+    margin: 8px 0;
+  }
+
+  .icon img {
+    height: 28px;
+    width: 28px;
   }
 
   .close-btn img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
+
   .close-btn {
-    top: 0;
-    right: 0;
+    top: 3px;
+    right: 3px;
   }
+
   .link {
     font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 400px) {
+  .datasource-container {
+    padding: 2px;
+  }
+
+  .whats-new-content {
+    width: 90%;
+    padding: 15px 10px;
+    border-radius: 6px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .title h1 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .info {
+    margin: 0 8px;
+  }
+
+  .info h2 {
+    font-size: 13px;
+    line-height: 15px;
+  }
+
+  .info h3 {
+    font-size: 11px;
+    line-height: 14px;
+  }
+
+  .info p {
+    font-size: 11px;
+    line-height: 14px;
+  }
+
+  ul {
+    padding-left: 12px;
+    margin: 8px 0;
+  }
+
+  .new-item {
+    margin: 6px 0;
+  }
+
+  .icon img {
+    height: 24px;
+    width: 24px;
+  }
+
+  .close-btn img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .close-btn {
+    top: 2px;
+    right: 2px;
+  }
+
+  .link {
+    font-size: 11px;
+    line-height: 14px;
   }
 }
 </style>
