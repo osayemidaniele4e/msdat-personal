@@ -85,6 +85,7 @@ import { uniq } from 'lodash';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { isDataYearly } from '@/util/helper';
 import BaseChart from '../../../../../components/Barchart/BaseBarChart.vue';
+import defaultOptions from '../../../../../components/Barchart/defaultOption';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 import chartDownload from '../../../mixins/chart_download';
 
@@ -425,7 +426,10 @@ export default {
               },
             },
           },
+          lang: defaultOptions.lang,
+          navigation: defaultOptions.navigation,
           exporting: {
+            ...defaultOptions.exporting,
             filename: `indicator-${this.values.indicator.full_name}`,
           },
           colors: ['#17606B', '#E85D58', '#58B74E'],
