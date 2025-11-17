@@ -48,7 +48,7 @@ exports[`DataTable.vue renders properly 1`] = `
         style="font-family: Work Sans;"
         type="button"
       >
-        Edit Data Table
+        Back To Edit Data Table
       </button>
     </div>
      

@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Advanced Analytics.vue renders correctly 1`] = `
+<section>
+  <div>
+    Mocked Header Component
+  </div>
+   
+  <b-row
+    style="position: relative;"
+  >
+    <img
+      alt="path background"
+      class="bg"
+      src="@/assets/img/analytics/bkg.png"
+    />
+     
+    <div
+      class="top-section"
+    >
+      <div
+        class="d-flex flex-column align-items-center"
+      >
+        <h1>
+          The Advanced Analytics Dashboard
+        </h1>
+      </div>
+       
+      <small>
+        
+        Explore Key Health Indicators, Analyze Trends and Harness the Power of Predictive Modeling to Anticipate Future Health Trends
+      
+      </small>
+    </div>
+  </b-row>
+   
+  <div
+    class="btm-section d-flex flex-column align-items-center mb-3 px-5"
+  >
+    <span
+      class="mb-5"
+    >
+      Select a Section to Start
+    </span>
+     
+    <b-row
+      cols="1"
+      cols-md="2"
+      cols-xl="3"
+    >
+      <b-col
+        class="d-flex flex-column align-items-center mb-4"
+      >
+        <router-link
+          id="CorrelationAnalysis"
+          to="/dashboard/Advanced_Analytics?index=0"
+        >
+          <img
+            alt="Correlation Analysis"
+            class="section"
+            src=""
+          />
+        </router-link>
+         
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=0"
+        >
+          <small
+            class="py-2"
+            style="font-size: 1.1rem; font-weight: 500;"
+          >
+            Correlation Analysis
+          </small>
+        </router-link>
+      </b-col>
+      <b-col
+        class="d-flex flex-column align-items-center mb-4"
+      >
+        <router-link
+          id="DescriptiveAnalysis"
+          to="/dashboard/Advanced_Analytics?index=1"
+        >
+          <img
+            alt="Descriptive Analysis"
+            class="section"
+            src=""
+          />
+        </router-link>
+         
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=1"
+        >
+          <small
+            class="py-2"
+            style="font-size: 1.1rem; font-weight: 500;"
+          >
+            Descriptive Analysis
+          </small>
+        </router-link>
+      </b-col>
+      <b-col
+        class="d-flex flex-column align-items-center mb-4"
+      >
+        <router-link
+          id="PredictiveAnalysis"
+          to="/dashboard/Advanced_Analytics?index=2"
+        >
+          <img
+            alt="Predictive Analysis"
+            class="section"
+            src=""
+          />
+        </router-link>
+         
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=2"
+        >
+          <small
+            class="py-2"
+            style="font-size: 1.1rem; font-weight: 500;"
+          >
+            Predictive Analysis
+          </small>
+        </router-link>
+      </b-col>
+      <b-col
+        class="d-flex flex-column align-items-center mb-4"
+      >
+        <router-link
+          id="IndicatorComparison"
+          to="/dashboard/Advanced_Analytics?index=3"
+        >
+          <img
+            alt="Indicator Comparison"
+            class="section"
+            src=""
+          />
+        </router-link>
+         
+        <router-link
+          to="/dashboard/Advanced_Analytics?index=3"
+        >
+          <small
+            class="py-2"
+            style="font-size: 1.1rem; font-weight: 500;"
+          >
+            Indicator Comparison
+          </small>
+        </router-link>
+      </b-col>
+    </b-row>
+  </div>
+</section>
+`;
