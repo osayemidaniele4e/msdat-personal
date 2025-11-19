@@ -394,7 +394,10 @@ export default {
         },
         series: [],
         yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
         exporting: {
+          ...defaultOptions.exporting,
           filename: `datasource-${values.datasource.datasource}`,
         },
         plotOptions: {
@@ -502,7 +505,10 @@ export default {
         },
         series: [],
         yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
         exporting: {
+          ...defaultOptions.exporting,
           filename: `datasource-${values.datasource.datasource}`,
         },
         plotOptions: {
@@ -610,7 +616,10 @@ export default {
         },
         series: [],
         yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
         exporting: {
+          ...defaultOptions.exporting,
           filename: `datasource-${values.datasource.datasource}`,
         },
         plotOptions: {
@@ -1163,6 +1172,9 @@ export default {
             Number.parseFloat(item.value),
           ]);
           const sortTheYear = formatToHighChartFormat.sort((a, b) => a[0] - b[0]);
+
+          console.log(sortTheYear, 'sortTheYear');
+          
 
           const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
           if (i === 0) {

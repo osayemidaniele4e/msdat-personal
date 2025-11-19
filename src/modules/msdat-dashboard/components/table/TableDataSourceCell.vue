@@ -31,8 +31,8 @@
       <!-- Second line: parentheses text -->
       <template v-if="hasParentheses">
         <small
-          class="text-muted mt-1 fst-italic"
-          :class="{ 'text-white-50': selectedSource && selectedSource.id === source.id }"
+          class=" h6 mt-1 font-weight-bold"
+          :class="{ 'text-white': selectedSource && selectedSource.id === source.id }"
         >
           ({{ bracketText }})
         </small>

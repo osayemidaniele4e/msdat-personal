@@ -15,12 +15,19 @@
         @dropdownTypeSelected="mapDownload($event)"
       >
         <template #title>
-          <p class="work-sans mb-0 line-height sub-title" v-if="level === 1">
+          <p class="work-sans mb-0 line-height sub-title" v-if="level === 1 && visualization === 'bar'">
             Distribution of
 
-            <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
+            <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state --> 
             <b>{{ values.indicator.short_name }}</b> across
             <b>{{ values.location.name }}.</b> Source:<b>
+              {{ values.datasource.datasource }} {{ values.year }}</b
+            >
+          </p>
+          <p class="work-sans mb-0 line-height sub-title" v-if="level === 1 && visualization === 'map'">
+            Distribution of
+            <b>{{ values.indicator.short_name }}</b> across
+            <b>Nigeria.</b> Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b
             >
           </p>
@@ -176,6 +183,7 @@ export default {
         await this.updateValue();
         const factor = this.dlGetFactor(this.values.indicator.factor).display_factor;
         const indicatorWithFactor = `${this.values.indicator.short_name}${factor.trim() ? ` (${factor})` : ''}`;
+        // For map: always show "across the country" (Nigeria), for bar chart it will show the selected location
         this.title = `Distribution Of ${indicatorWithFactor} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
       },
       deep: true,
@@ -238,6 +246,7 @@ export default {
     async updateValue() {
       if (this.visualization === 'map') {
         this.loading = true;
+        // Always show national level map with all states
         const data = await this.dlQuery({
           indicator: this.values.indicator.id,
           datasource: this.values.datasource.id,

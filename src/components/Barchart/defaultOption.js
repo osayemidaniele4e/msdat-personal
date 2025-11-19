@@ -11,9 +11,26 @@ export default {
   },
   lang: {
     noData: 'The data you have selected is not available, please select another',
+    contextButtonTitle: 'Download',
+  },
+  navigation: {
+    buttonOptions: {
+      symbolSize: 16,
+    },
   },
   exporting: {
     enabled: true,
+    buttons: {
+      contextButton: {
+        symbol: 'url(/download-icon.svg)',
+        title: 'Download',
+        symbolSize: 22,
+        width: 26,
+        height: 26,
+        symbolX: 21,
+        symbolY: 21,
+      },
+    },
     chartOptions: {
       chart: {
         width: 1200,
