@@ -291,8 +291,6 @@ export default {
         });
         const data = zonalResponse.data.results;
         this.allData = data;
-
-        console.log(data, 'Zonal Response');
         if (data.length) {
           this.shovViz = true;
         } else {
@@ -307,7 +305,6 @@ export default {
 
         // PLOT 1ST MAP AS ZOANL
         if (stateObject.level === 1) {
-          console.log('@@@ 1');
           const formatToHighChart = (dataValues) =>
             dataValues.map((item) => [
               this.dlGetLocation(item.location).name,
@@ -356,7 +353,6 @@ export default {
 
           const filteredSeries = chartSeries.filter((item) => item.data.length > 0);
           this.stateData = filteredSeries;
-          console.log(filteredSeries, 'filteredSeries');
 
           if (filteredSeries.length === 0) {
             this.showBackButton = false;
@@ -393,7 +389,6 @@ export default {
             this.title = `Distribution of ${val.indicator.full_name} Across ${this.controlPanelProps.location.name}`;
             this.level = 2;
             this.stateName = 'Nigeria';
-            console.log('@@@ 1X');
           } else {
             this.showBackButton = false;
             this.stateName = stateObject.name; // Please always change the state name before
@@ -405,7 +400,6 @@ export default {
 
             // Modify the chartSeries to exclude "Nigeria" if it exists
             const chartSeriesWithoutNigeria = chartSeries.filter((item) => item.name !== 'Nigeria');
-            console.log(chartSeriesWithoutNigeria, 'chartSeriesWithoutNigeria');
 
             this.chart = {
               series: chartSeriesWithoutNigeria,
@@ -414,7 +408,6 @@ export default {
         }
         // PLOT 2ND MAP AS STATE
         if (stateObject.level === 2) {
-          console.log('@@@ 2');
           this.showBackButton = false;
           this.zone = stateObject.id;
           const filteredStateDataForZone = data.filter(
@@ -447,7 +440,6 @@ export default {
         }
         // PLOT 3RD MAP AS LGA
         if (stateObject.level === 3) {
-          console.log('@@@ 3');
           this.showBackButton = false;
 
           const filteredLGADataForState = data.filter(

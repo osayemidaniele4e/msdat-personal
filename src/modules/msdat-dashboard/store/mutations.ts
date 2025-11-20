@@ -150,7 +150,6 @@ const mutations: MutationTree<State> = {
   //   }
   // },
   SET_DATASET_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
-    console.log(state.controlConfig, 'Abeg 00');
 
     const item = state.controlConfig?.[3];
     if (item && item.payload) {
