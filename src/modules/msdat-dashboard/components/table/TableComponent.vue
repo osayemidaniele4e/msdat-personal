@@ -388,11 +388,14 @@ export default {
       });
       // Order classification following the Order
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
+      
       const resultSorted = result.sort(
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0])
       );
       // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
+     
+      
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
@@ -427,8 +430,6 @@ export default {
         ...sortedSource.filter((item) => item.id !== 30),
       ];
       this.source = reordered;
-
-      console.log(reordered, '<<<< sortedSource >>>>>>');
 
       // checking if it has NHMIS as a datasource
       if (this.source.some((item) => item.id === 6)) {

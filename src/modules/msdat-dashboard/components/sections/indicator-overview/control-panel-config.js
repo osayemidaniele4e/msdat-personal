@@ -31,6 +31,7 @@ export default {
       key: 'location',
       dropdownProps: {
         label: 'name',
+        key: 'location',
       },
       options: [],
     },
