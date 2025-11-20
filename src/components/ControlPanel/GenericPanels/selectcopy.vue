@@ -73,7 +73,7 @@ export default {
           console.warn('Value is empty or null');
           return;
         }
-        console.log(val, 'HH@@HH');
+  
         if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
           this.selectedOption = val;
           // this.indicatorId = val.id;

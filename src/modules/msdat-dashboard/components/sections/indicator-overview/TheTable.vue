@@ -162,6 +162,7 @@ export default {
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
+            
             // const temp = dataSources.filter((item) => item.id !== 30);
             const indicatorObject = this.dlGetIndicator(indicatorID);
             for (let index = 0; index < dataSources.length; index += 1) {
@@ -176,6 +177,8 @@ export default {
             }
             formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
+          
+          
           this.TableData = formattedData;
           this.setTableSelected = datasource;
           this.loading = false;
@@ -241,13 +244,12 @@ export default {
       this.showPopUp = false;
       const routeTitle = this.$route.params.name;
       localStorage.setItem('dashboardName', routeTitle);
-      console.log(this.$route);
       const storedIndicatorID = localStorage.getItem('indicatorID');
       const indicatorID = storedIndicatorID === null ? 7 : storedIndicatorID;
       const storedLocationId = localStorage.getItem('locationId');
       const locationId = storedLocationId === null ? 1 : storedLocationId;
       const url = `${window.location.origin}/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${locationId}`;
-      console.log(url);
+    
       const iframeUrl = `<iframe style="padding: 5px; width: 95%; padding: 10px; height: 500px; margin: 40px;" src="${url}" />`;
       this.shareUrl = iframeUrl;
       this.showShareCodeModal = true;
@@ -348,7 +350,7 @@ export default {
     },
     replaceItem(newItem) {
       this.TableData.splice(newItem.index, 1, newItem.formattedData[0]);
-      console.log(newItem, '@@FX');
+     
     },
 
     getReset() {
@@ -407,11 +409,11 @@ export default {
 
       try {
         this.analysisLoading = true;
-        console.log('Starting analysis process...');
+       
 
         // Find the chart element
         const chartElement = document.querySelector('#state-bar-chart .iddc_wrapper');
-        console.log('Chart element found:', !!chartElement);
+      
         if (!chartElement) {
           console.error('Chart element not found');
           return;
@@ -419,10 +421,10 @@ export default {
 
         // Wait for next tick to ensure chart is rendered
         await this.$nextTick();
-        console.log('Next tick completed');
+       
 
         // Capture the chart
-        console.log('Capturing chart...');
+       
         const canvas = await html2canvas(chartElement, {
           useCORS: true,
           allowTaint: true,
@@ -437,7 +439,7 @@ export default {
             }
           },
         });
-        console.log('Chart captured successfully');
+        
 
         // Store the captured image
         this.capturedChart = canvas.toDataURL('image/png');
