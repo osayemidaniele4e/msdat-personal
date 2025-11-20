@@ -170,10 +170,10 @@ export default {
       return this.chartOptions.series.some((series) => series.data && series.data.length > 0);
     },
 
-    getDatasourceById(id) {
-      console.log(id, '@@PP');
+    getDatasourceById(data) {
 
-      const found = this.datasources.find((item) => item.id === id);
+
+      const found = this.datasources.find((item) => item.id === data.datasource);
 
       console.log(found, '@@PPx');
       return found;
@@ -195,6 +195,7 @@ export default {
 
         // Extract data from each response
         this.datasources = responses.map((res) => res.data);
+        
         // console.log('✅ DataSources:', data);
         // return data;
       } catch (err) {
@@ -215,177 +216,6 @@ export default {
           sign = '';
       }
       return sign;
-    },
-    async plotForStateAndAllDatasources(values) {
-      const highChartOptions = {
-        chart: {
-          type: 'column',
-        },
-        series: [],
-        yAxis: [],
-        exporting: {
-          filename: `datasource-${values.datasource.datasource}`,
-        },
-        plotOptions: {
-          series: {
-            grouping: true,
-            pointWidth: 10,
-            connectNulls: false,
-            pointPlacement: 'between',
-            // borderWidth: 0,
-          },
-        },
-      };
-      let indicators = '';
-      if (!Array.isArray(values.indicator)) {
-        indicators = [values.indicator];
-      } else {
-        indicators = values.indicator;
-      }
-
-      console.log(this.getIDCDatasources, 'getIDCDatasources');
-
-      const dataPromises = indicators?.flatMap((indicator) =>
-        this.datasources?.map((datasource) =>
-          this.dlQuery({
-            indicator: indicator.id,
-            datasource: datasource.id,
-            period: values.year,
-            location: { level: 3 },
-          })
-        )
-      );
-
-      function getDatasourceById(data) {
-        // Early return if data or data.datasource is undefined/null
-        if (!data?.datasource) {
-          console.warn('Invalid data passed to getDatasourceById:', data);
-          return null;
-        }
-
-        console.log(data.datasource);
-
-        const result = this.datasources.find((source) => source.id === data.datasource);
-
-        console.log(result);
-
-        if (!result) {
-          console.warn(`No datasource found for id: ${data.datasource}`);
-        }
-
-        return result || null;
-      }
-
-      function getIndicatorById(data) {
-        if (!data?.indicator) {
-          console.warn('Invalid data passed to getDatasourceById:', data);
-          return null;
-        }
-
-        console.log(indicators, 'INDI');
-
-        console.log(data);
-
-        const result = indicators.find((source) => source.id === data.indicator);
-
-        console.log(result);
-
-        if (!result) {
-          console.warn(`No indicator found for id: ${data.indicator}`);
-        }
-
-        return result || null;
-      }
-
-      const allResults = await Promise.all(dataPromises);
-      // console.log(results0, '@@<>@@');
-      // const results = results0.flat();
-
-      const results = allResults.filter((item) => Array.isArray(item) && item.length > 0);
-
-      console.log(results, '@@<>@@');
-
-      /**
-       * Map the display factors for the different indicators
-       */
-      if (indicators.length) {
-        const yTitles = [];
-        // for (let i = 0; i < results.length; i += 1) {
-        //   const indicator = indicators[i];
-        //   console.log(indicator, '@@<>@@ 2');
-        //   const displayFactor = this.dlGetFactor(indicator?.factor_id) || { display_factor: '' };
-        //   yTitles.push(displayFactor.display_factor);
-        // }
-        // for (let i = 0; i < results.length; i += 1) {
-        //   // Determine which indicator this result belongs to
-        //   const indicatorIndex = Math.floor(i / datasources.length);
-        //   const indicator = indicators[indicatorIndex];
-
-        //   console.log(indicator, '@@<>@@ 2');
-
-        //   const displayFactor = this.dlGetFactor(indicator?.factor_id) || { display_factor: '' };
-        //   yTitles.push(displayFactor.display_factor);
-        // }
-
-        for (let i = 0; i < results.length; i += 1) {
-          // formate result to HighChart Format
-          const indicator = indicators[i];
-          const data = results[i];
-          const toHighChartFormat = data?.map((item) => [
-            this.dlGetLocation(item.location).name,
-            parseFloat(item.value),
-          ]);
-          const displayFactor = this.dlGetFactor(indicator?.factor_id) || { display_factor: '' };
-          const yAxis = {
-            yAxis: [
-              {
-                plotLines: [],
-                labels: {
-                  style: {
-                    fontFamily: 'Work Sans, sans-serif',
-                    fontSize: '11px',
-                  },
-                },
-                title: {
-                  style: {
-                    ...defaultOptions.yAxis.title.style,
-                    fontSize: '10px',
-                  },
-                },
-              },
-            ],
-            title: {
-              ...defaultOptions.yAxis.title,
-              // text: displayFactor.display_factor,
-              text: [...new Set(yTitles)].join(' | '),
-            },
-            opposite: !!i, // this will become either true of false as 0 or 1
-          };
-
-          console.log(data, '@@(X)@@');
-
-          const obj = {
-            // color: this.color[i],
-            dataLabels: {
-              enabled: true,
-              format: `{y}${this.displayFactorSign(displayFactor.display_factor)}`,
-              style: {
-                ...defaultOptions.yAxis.title.style,
-                fontSize: '10px',
-              },
-            },
-
-            // name: indicator.full_name,
-            name: `${getIndicatorById(data[0])?.full_name} ${
-              displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
-            }`,
-            data: toHighChartFormat,
-          };
-          if (i === 0) highChartOptions.yAxis.push(yAxis);
-          highChartOptions.series.push(obj);
-        }
-        return highChartOptions;
-      }
     },
     async plotForState(values) {
       const highChartOptions = {
@@ -894,6 +724,28 @@ export default {
           return result || null;
         }
 
+         function findDatasourceById(data) {
+          if (!data?.datasource) {
+            console.warn('Invalid data passed to getDatasourceById:', data);
+            return null;
+          }
+
+          console.log(datasources, '@INDI@');
+
+          console.log(data);
+
+          const result = this.datasources.find((source) => source.id === data.datasource);
+
+          console.log(result);
+
+          if (!result) {
+            console.warn(`No datasource found for id: ${data.datasource}`);
+          }
+
+          return result || null;
+        }
+
+
         const dataPromises = indicators.flatMap((indicator) =>
           this.datasources.map((datasource) =>
             this.dlQuery({
@@ -1037,7 +889,7 @@ export default {
             color: this.color[i],
             lineWidth: 3,
             // name: indicator.full_name,
-            name: `${getIndicatorById(result[0])?.full_name} ${
+            name: `${getIndicatorById(result[0])?.full_name}: ${this.getDatasourceById(result[0])?.datasource}  ${
               displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
             }`,
             data: sortTheYear,
@@ -1259,15 +1111,6 @@ export default {
         }
       }
 
-      if (panelValues.compareBy.name === 'State & All Datasources') {
-        const highChartOptions = await this.plotForStateAndAllDatasources(panelValues);
-        this.chartOptions = { ...highChartOptions };
-        if (Object.keys(this.chartOptions).length !== 0) {
-          this.toggleSDGTargetLine(sdg);
-          this.toggleNationalTargetLine(national);
-        }
-      }
-
       if (panelValues.compareBy.name === 'National') {
         const highChartOptions = await this.plotForNational(panelValues);
         this.chartOptions = { ...highChartOptions };
@@ -1453,7 +1296,7 @@ export default {
   },
 
   async mounted() {
-    this.fetchAllDataSources();
+    
     // Initial render if we have the required values
     if (this.validateRequiredValues(this.values)) {
       this.$nextTick(() => {
@@ -1465,6 +1308,9 @@ export default {
     } else {
       this.title = ` Comparison Of ${this.values.indicator[0].short_name} and ${this.values.indicator[1].short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}s`;
     }
+  },
+  created() {
+   this.fetchAllDataSources();
   },
 };
 </script>

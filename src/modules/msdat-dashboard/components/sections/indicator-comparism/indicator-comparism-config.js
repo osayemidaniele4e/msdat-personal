@@ -11,7 +11,6 @@ export default {
         { id: 2, name: 'National' },
         { id: 3, name: 'Zonal' },
         { id: 4, name: 'State' },
-        { id: 5, name: 'State & All Datasources' },
       ],
       dropdownProps: {
         label: 'name',
