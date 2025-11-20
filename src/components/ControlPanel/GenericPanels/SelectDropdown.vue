@@ -181,6 +181,7 @@ export default {
     options: {
       async handler(newValue) {
         // this.addQueryParamToUrl();
+        
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
@@ -247,6 +248,24 @@ export default {
             this.selected = {};
             this.selected = await newValue[0];
           }
+           if (this.multiSelectProps?.key === 'location') {
+            // console.log(newValue, '@newValue location');
+            
+            
+            if (Array.isArray(newValue) && newValue?.length > 0) {
+             
+              const defaultSelected = newValue.find((item) => item?.id === this.selected?.id);
+              if (defaultSelected?.id !== undefined) {
+                this.selected = {};
+                this.selected = defaultSelected;
+                return;
+              }
+              this.selected = {};
+              this.selected = await newValue[0];
+            }
+            // this.selected = {};
+            // this.selected = await newValue[0];
+          }
         }
         this.loading = false;
       },
@@ -272,7 +291,6 @@ export default {
       this.$nextTick(() => {
         this.initialCSS(this.formattedID);
       });
-      console.log('opened');
     },
 
     // this function is called when the search input is activated thereby it makes the program areas open automaatically when search is active
@@ -314,7 +332,6 @@ export default {
     handleClose() {
       this.resetState();
       this.isSearchActive = false;
-      console.log('closed');
     },
 
     openAllGroupLabels() {
@@ -358,7 +375,6 @@ export default {
       event.stopPropagation();
       if (event.type === 'click') {
         const parent = event.target?.children[0]?.children[0]?.dataset?.parent;
-        console.log('Program Area Clicked:', parent);
         const all = Array.from(event.target?.parentNode?.children);
         all.forEach(async (element) => {
           const child = await element?.children[0]?.children[0]?.dataset?.child;

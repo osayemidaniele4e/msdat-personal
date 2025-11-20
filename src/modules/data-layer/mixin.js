@@ -74,6 +74,12 @@ export default {
           created_at: '2021-07-02T08:56:10.401735Z',
           updated_at: '2021-07-02T08:56:10.401798Z',
         },
+        {
+          id: 8,
+          value_type: 'Report',
+          created_at: '2025-10-17T03:33:55.266612Z',
+          updated_at: '2025-10-17T03:33:55.266625Z',
+        },
       ],
     };
   },
@@ -283,7 +289,6 @@ export default {
       const datasourceId = value || 1;
       const { data } = await apiServices.getDataSourceIndicators(datasourceId);
       const sourcesAvailable = data.indicators;
-      console.log(sourcesAvailable, '<<@>>');
 
       if (sourcesAvailable.length <= 0) {
         return [];
