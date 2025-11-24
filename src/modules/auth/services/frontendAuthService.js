@@ -20,9 +20,7 @@ function validateEnvVariables() {
   const auth = process.env.VUE_APP_FRONTEND_AUTH;
   
   if (!keyId || !auth) {
-    // console.error('❌ Frontend Auth Error: Missing environment variables');
-    // console.error('VUE_APP_FRONTEND_KEY_ID:', keyId ? '✓ Set' : '✗ Missing');
-    // console.error('VUE_APP_FRONTEND_AUTH:', auth ? '✓ Set' : '✗ Missing');
+    
     throw new Error('Frontend authentication credentials not configured. Check .env file.');
   }
   

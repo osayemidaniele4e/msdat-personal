@@ -21,6 +21,7 @@ import NotFound from '@/modules/msdat-dashboard/views/NotFound.vue';
 import AUTH_ROUTE from '@/modules/auth/router';
 import DATA_ENTRY from '@/modules/data-entry/router';
 import OLLAMA_AI from '@/modules/msdat-dashboard/views/llama_ai/router';
+import MetadataQA from '@/views/MetadataQA.vue';
 
 Vue.use(VueRouter);
 
@@ -43,6 +44,15 @@ const routes = [
   ...DATA_ENTRY,
   ...CREATE_PLUGIN_ROUTE,
   ...OLLAMA_AI,
+  {
+    path: '/metadata-qa',
+    name: 'MetadataQA',
+    component: MetadataQA,
+    meta: {
+      title: 'Metadata Q&A',
+      requiresAuth: false, // Assuming it should be public like the chatbot
+    },
+  },
   {
     path: '*',
     name: 'NotFound',

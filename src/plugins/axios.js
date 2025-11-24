@@ -13,7 +13,7 @@ const apiConfigs = {
 const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => {
   const instance = axios.create({ 
     baseURL,
-    withCredentials: true, // Enable CORS credentials
+    withCredentials: true, 
   });
 
   if (!skipHeaders) {
@@ -71,7 +71,7 @@ const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => 
     async (error) => {
       const originalRequest = error.config;
       
-      // Check if error is 401 and we haven't already retried
+   
       if (error.response?.status === 401 && !originalRequest._retry) {
         console.log('🔄 Received 401 error, attempting to refresh frontend token...');
         
@@ -106,7 +106,7 @@ const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => 
         }
       }
       
-      // For other errors or if retry already attempted, show notification and reject
+    
       Vue.swal({
         toast: true,
         position: 'bottom',
