@@ -62,13 +62,8 @@
     -->
     <div v-if="!loading && filteredIndicators.length > 0" class="no_ind_data">
       <!--list to present indicators without available data -->
-      <ul>
-        <!-- Loop through filtered indicators and display a list item for each -->
-        <li v-for="(indicator, index) in filteredIndicators" :key="index">
-          <!-- Display indicator's short name and a message indicating no available data -->
-          <b>{{ indicator.short_name }},</b> does not have available data.
-        </li>
-      </ul>
+      <span>Data not available for one or more selected filters</span>
+      
     </div>
     <!-- Initial state message -->
     <div v-if="!loading && !validateRequiredValues(values)" class="no_data">
@@ -1333,27 +1328,18 @@ div.ics_wrapper {
   position: fixed;
   top: 280px;
   right: 110px;
-  padding: 10px;
+  padding: 4px 14px;
   background-color: #ffffff;
   z-index: 1;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+  height: fit-content;
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    position: sticky;
-  }
-
-  li {
+  span {
     font-size: 12px;
-    font-weight: 400;
-    color: #000000;
-    line-height: 1.5;
-    letter-spacing: 0.5px;
-    text-align: left;
-    margin-bottom: 0.5rem;
+    color: #333333;
   }
+
+ 
 }
 </style>
