@@ -61,8 +61,8 @@ export default {
               .image('https://i.imgur.com/yyqklZM.png', 150, 62, 230, 53)
               .attr({
                 zIndex: 1000,
-                x: '80%',
-                y: '84%',
+                x: '10%',
+                y: '10%',
                 width: '116',
                 height: '25',
               })
