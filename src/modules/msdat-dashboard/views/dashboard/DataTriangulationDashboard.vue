@@ -638,10 +638,9 @@ export default {
       );
     },
 
-    triangulate() {
+    async triangulate() {
       const { primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation } = this;
 
-      // Construct object with possible undefined/null values
       const obj = {
         primary: primaryDataSource?.id,
         secondary: dataSourcesCompare?.[0]?.id,
@@ -651,8 +650,8 @@ export default {
       };
 
       const cleanObj = this.removeUndefined(obj);
-      // Remove null and undefined values
-      if (cleanObj.primary === undefined || cleanObj.secondary === undefined) {
+
+      if (!cleanObj.primary || !cleanObj.secondary) {
         this.$swal({
           toast: true,
           position: 'bottom',
@@ -665,51 +664,71 @@ export default {
         return;
       }
 
-      this.showLoader = true; // Show loading spinner
-      this.showLoadingPopup = true; // Show loading popup
+      // Build URL parameters
+      const params = new URLSearchParams({
+        primary_datasource: cleanObj.primary,
+        secondary_datasource: cleanObj.secondary,
+      });
 
-      apiServices
-        .getTriangulation(cleanObj)
-        .then(({ data }) => {
-          const positionTemp = {
-            primary: this.primaryDataSource.datasource,
-            secondary: this.dataSourcesCompare.datasource,
-            optional: this.dataSourcesCompare?.datasource,
-          };
+      if (cleanObj.optional) params.append('third_datasource', cleanObj.optional);
+      if (cleanObj.selectedIndicator) params.append('indicator_id', cleanObj.selectedIndicator);
+      if (cleanObj.selectedLocation) params.append('location_id', cleanObj.selectedLocation);
 
-          this.position = this.cleanObject(positionTemp);
-          this.showTriangulation = true;
-          this.rawData = data.data; // Store API response
-          this.processData(data.data);
-          this.headers = data.data
-            .flatMap((objItem) => {
-              if (objItem.aggregate) {
-                // Extract headers from all aggregate objects
-                return objItem.aggregate.flatMap((agg) => Object.keys(agg));
-              }
-              return Object.keys(objItem);
-            })
-            .filter(
-              (header, index, self) =>
-                header &&
-                header !== 'null' &&
-                header !== 'undefined' &&
-                self.indexOf(header) === index
-            ); // Remove duplicates and invalid headers
-          this.showLoader = false; // Show loading spinner
-          this.showLoadingPopup = false; // Hide loading popup
-        })
-        .catch((error) => {
-          console.log(error, '@Triangulation Error');
-          this.showLoader = false; // Hide loading spinner
-          this.showLoadingPopup = false; // Hide loading popup
+      const url = `${process.env.VUE_APP_API_BASE_URL3}/triangulation_dashboard/?${params.toString()}`;
 
-          const msg =
-            error?.response?.data?.message || error.message || 'An unknown error occurred';
-          this.$swal(`error: ${msg}`);
-          this.showLoader = false; // Hide loading spinner
-          this.showLoadingPopup = false; // Hide loading popup
+      this.showLoader = true;
+      this.showLoadingPopup = true;
+
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+          },
+          // ❌ No credentials
+          // credentials: "include"
         });
+
+        if (!response.ok) {
+          const err = await response.json().catch(() => null);
+          throw new Error(err?.message || response.statusText);
+        }
+
+        const data = await response.json();
+
+        const positionTemp = {
+          primary: this.primaryDataSource.datasource,
+          secondary: this.dataSourcesCompare.datasource,
+          optional: this.dataSourcesCompare?.datasource,
+        };
+
+        this.position = this.cleanObject(positionTemp);
+        this.showTriangulation = true;
+
+        this.rawData = data.data;
+        this.processData(data.data);
+
+        this.headers = data.data
+          .flatMap((objItem) => {
+            if (objItem.aggregate) {
+              return objItem.aggregate.flatMap((agg) => Object.keys(agg));
+            }
+            return Object.keys(objItem);
+          })
+          .filter(
+            (header, index, self) =>
+              header &&
+              header !== 'null' &&
+              header !== 'undefined' &&
+              self.indexOf(header) === index
+          );
+      } catch (error) {
+        console.error('@Triangulation Error:', error);
+        this.$swal(`error: ${error.message}`);
+      } finally {
+        this.showLoader = false;
+        this.showLoadingPopup = false;
+      }
     },
 
     normalizeText(text) {
