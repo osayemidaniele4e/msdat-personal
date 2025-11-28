@@ -113,32 +113,138 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      viewMode: 'light',
-      fontSize: 'small',
-      theme: 'default',
+      localViewMode: 'light',
+      localFontSize: 'small',
+      localTheme: 'default',
+      systemPrefersDark: false,
+      mediaQuery: null,
     };
   },
   computed: {
-    ...mapGetters('appearance', ['viewMode', 'fontSize', 'theme']),
+    ...mapGetters('appearance', {
+      storeViewMode: 'viewMode',
+      storeFontSize: 'fontSize',
+      storeTheme: 'theme',
+    }),
+    viewMode: {
+      get() {
+        return this.storeViewMode || this.localViewMode;
+      },
+      set(value) {
+        this.localViewMode = value;
+        this.setViewMode(value);
+        this.applyViewMode(value);
+      },
+    },
+    fontSize: {
+      get() {
+        return this.storeFontSize || this.localFontSize;
+      },
+      set(value) {
+        this.localFontSize = value;
+        this.setFontSize(value);
+        this.applyFontSize(value);
+      },
+    },
+    theme: {
+      get() {
+        return this.storeTheme || this.localTheme;
+      },
+      set(value) {
+        this.localTheme = value;
+        this.setTheme(value);
+        this.applyTheme(value);
+      },
+    },
   },
   methods: {
     ...mapActions('appearance', ['setViewMode', 'setFontSize', 'setTheme']),
-  },
-  watch: {
-    viewMode(newMode) {
-      this.setViewMode(newMode);
+
+    getSystemPreference() {
+      if (window.matchMedia) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      return false;
     },
-    fontSize(newSize) {
-      this.setFontSize(newSize);
+
+    applyViewMode(mode) {
+      let effectiveMode = mode;
+      if (mode === 'system') {
+        effectiveMode = this.systemPrefersDark ? 'dark' : 'light';
+      }
+      
+      // Remove existing mode classes and add new one
+      document.body.classList.remove('light', 'dark');
+      document.body.classList.add(effectiveMode);
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(effectiveMode);
+      
+      // Also set a data attribute for more styling options
+      document.documentElement.setAttribute('data-view-mode', effectiveMode);
     },
-    theme(newTheme) {
-      this.setTheme(newTheme);
+
+    applyFontSize(size) {
+      const fontSizeMap = {
+        small: '14px',
+        medium: '18px',
+        large: '22px',
+      };
+      document.documentElement.style.fontSize = fontSizeMap[size] || '16px';
+      document.documentElement.setAttribute('data-font-size', size);
+    },
+
+    applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+    },
+
+    handleSystemThemeChange(e) {
+      this.systemPrefersDark = e.matches;
+      if (this.viewMode === 'system') {
+        this.applyViewMode('system');
+      }
+    },
+
+    initSystemThemeListener() {
+      if (window.matchMedia) {
+        this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        this.systemPrefersDark = this.mediaQuery.matches;
+        
+        // Use addEventListener for modern browsers
+        if (this.mediaQuery.addEventListener) {
+          this.mediaQuery.addEventListener('change', this.handleSystemThemeChange);
+        } else if (this.mediaQuery.addListener) {
+          // Fallback for older browsers
+          this.mediaQuery.addListener(this.handleSystemThemeChange);
+        }
+      }
+    },
+
+    removeSystemThemeListener() {
+      if (this.mediaQuery) {
+        if (this.mediaQuery.removeEventListener) {
+          this.mediaQuery.removeEventListener('change', this.handleSystemThemeChange);
+        } else if (this.mediaQuery.removeListener) {
+          this.mediaQuery.removeListener(this.handleSystemThemeChange);
+        }
+      }
     },
   },
   mounted() {
-    this.setViewMode(this.viewMode);
-    this.setFontSize(this.fontSize);
-    this.setTheme(this.theme);
+    // Initialize system theme detection
+    this.initSystemThemeListener();
+    
+    // Apply current settings from store
+    this.localViewMode = this.storeViewMode || 'light';
+    this.localFontSize = this.storeFontSize || 'small';
+    this.localTheme = this.storeTheme || 'default';
+    
+    // Apply all settings
+    this.applyViewMode(this.localViewMode);
+    this.applyFontSize(this.localFontSize);
+    this.applyTheme(this.localTheme);
+  },
+  beforeDestroy() {
+    this.removeSystemThemeListener();
   },
 };
 </script>

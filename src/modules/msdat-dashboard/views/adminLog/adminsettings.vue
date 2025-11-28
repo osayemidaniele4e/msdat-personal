@@ -128,6 +128,8 @@
       </div>
     </b-row>
   </b-col>
+    <!-- Appearance Settings Component -->
+    <appearance-settings></appearance-settings>
     </b-col>
  <div class="mt-3 btn-double">
   <div class="inner-box">
@@ -141,10 +143,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
+import AppearanceSettings from '../userLog/Appearance.vue';
 
 export default {
   name: 'adminsettings',
   components: {
+    AppearanceSettings,
   },
   data() {
     return {

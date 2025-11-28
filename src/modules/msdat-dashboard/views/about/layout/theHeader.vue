@@ -4,18 +4,20 @@
     <header id="the-header" class="position-relative" data-testid="header">
       <b-container fluid>
         <b-row class="d-flex justify-content-between align-items-center">
-          <b-col cols md="1" lg="1" class="main">
-            <div v-if="dashboardName == 'MSDAT PLATFORM'">
-              <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" />
+          <b-col cols="2" md="2" lg="2" class="main">
+            <div v-if="dashboardName == 'MSDAT PLATFORM'" style="cursor: pointer; display: flex; align-items: center;" @click="goToHome">
+              <b-icon icon="house" font-scale="1.5" class="home-icon mr-1" v-b-tooltip.hover="'Home'"></b-icon>
+              <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" v-b-tooltip.hover="'Home'" />
             </div>
-            <div v-if="dashboardName != 'MSDAT PLATFORM'">
-              <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" />
+            <div v-if="dashboardName != 'MSDAT PLATFORM'" style="cursor: pointer; display: flex; align-items: center;" @click="goToHome">
+              <b-icon icon="house" font-scale="1.5" class="home-icon mr-1" v-b-tooltip.hover="'Home'"></b-icon>
+              <img :src="dashboardImage" alt="FMOH Logo" class="img-fluid" v-b-tooltip.hover="'Home'" />
             </div>
           </b-col>
           <b-col
-            cols
-            md="11"
-            lg="11"
+            cols="10"
+            md="10"
+            lg="10"
             class="d-flex justify-content-between align-items-center border-left main mains"
           >
             <!-- testing for mobile -->
@@ -75,7 +77,7 @@
               </div>
 
               <b-sidebar id="sidebar-1" title="" right shadow>
-                <SideBar />
+                <SideBar @show-auth-modal="showAuthModal" />
               </b-sidebar>
             </div>
 
@@ -143,11 +145,10 @@
               <b-nav class="h-100 align-items-center main d-flex">
                 <!-- @click="showExpandedDropdown = !showExpandedDropdown" -->
                 <a
-                  href="https://msdat.fmohconnect.gov.ng/"
-                  target="_blank"
-                  class="nav-link"
-                  v-if="isAuthenticated === false"
-                  >Home</a
+                  href="#"
+                  class="nav-link share-link d-flex align-items-center"
+                  @click.prevent="toggleSocialModal"
+                  >Share <img src="@/assets/share.png" alt="Share" class="share-nav-icon ml-1" /></a
                 >
                 <div @click="showExpandedDropdown = !showExpandedDropdown">
                   <button class="btn btn-outline-primary border-light rounded-0">
@@ -248,7 +249,7 @@
                 font-scale="1.5"
                 class="main"
               />
-              <b-icon icon="grid3x3-gap-fill" class="mob-grid-icon" v-b-toggle.sidebar-1></b-icon>
+              <b-icon icon="grid-fill" class="mob-grid-icon" v-b-toggle.sidebar-1></b-icon>
               <b-icon
                 @click="toggleOption = !toggleOption"
                 icon="three-dots-vertical"
@@ -485,6 +486,9 @@ export default {
     async clearDB() {
       this.showClearDataModal = true;
     },
+    goToHome() {
+      this.$router.push('/');
+    },
   },
   watch: {
     $route: {
@@ -545,6 +549,16 @@ export default {
   border: 1px solid black;
   border-radius: 6px;
   padding: 4px;
+}
+
+.share-nav-icon {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+.home-icon {
+  color: white;
+  cursor: pointer;
 }
 .tools span:hover {
   text-decoration: underline;
@@ -684,7 +698,7 @@ header#the-header {
           &:first-child {
             img {
               width: auto;
-              height: 50px;
+              height: 40px;
               float: left;
             }
           }
