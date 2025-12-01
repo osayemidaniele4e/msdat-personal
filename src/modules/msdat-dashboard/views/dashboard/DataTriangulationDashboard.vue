@@ -674,12 +674,16 @@ export default {
       if (cleanObj.selectedIndicator) params.append('indicator_id', cleanObj.selectedIndicator);
       if (cleanObj.selectedLocation) params.append('location_id', cleanObj.selectedLocation);
 
-      const url = `${process.env.VUE_APP_API_BASE_URL3}/triangulation_dashboard/?${params.toString()}`;
+      const url = `${
+        process.env.VUE_APP_API_BASE_URL3
+      }/triangulation_dashboard/?${params.toString()}`;
 
       this.showLoader = true;
       this.showLoadingPopup = true;
 
       try {
+        console.log('FETCH API IN PROGRESS...');
+
         const response = await fetch(url, {
           method: 'GET',
           headers: {
