@@ -132,7 +132,7 @@ export default {
     },
   },
   async mounted() {
-    this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
+    this.title = `Comparison of ${this.values.indicator.short_name} 
         (Time-series comparison of ${this.values.indicator.short_name} ) across different data
             sources.`;
   },

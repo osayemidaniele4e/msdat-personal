@@ -157,6 +157,8 @@ export default {
         const baseQuery = omit(query, ['location']);
         const locationValues = this.dlGetLocation(location);
 
+        console.log(locationValues, '@@<HHH>@@');
+
         const locationID = locationValues.map((item) => item.id);
         // Map each location ID to an API call
         const apiCalls = locationID.map(async (locationSID) => {

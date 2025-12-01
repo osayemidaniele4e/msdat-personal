@@ -15,25 +15,19 @@
         @dropdownTypeSelected="mapDownload($event)"
       >
         <template #title>
-          <p class="work-sans mb-0 line-height sub-title" v-if="level === 1 && visualization === 'bar'">
+          <p class="work-sans mb-0 line-height sub-title" v-if="level === 1">
             Distribution of
 
             <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state --> 
             <b>{{ values.indicator.short_name }}</b> across
-            <b>{{ values.location.name }}.</b> Source:<b>
+            <b>{{ visualization === 'map' ? 'Nigeria' : values.location.name }}.</b> Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b
             >
           </p>
-          <p class="work-sans mb-0 line-height sub-title" v-if="level === 1 && visualization === 'map'">
+          <p class="work-sans mb-0 line-height sub-title" v-if="level === 3">
             Distribution of
             <b>{{ values.indicator.short_name }}</b> across
-            <b>Nigeria.</b> Source:<b>
-              {{ values.datasource.datasource }} {{ values.year }}</b
-            >
-          </p>
-          <p class="work-sans mb-0 line-height sub-title" v-if="level !== 1">
-            Distribution of
-            <b>{{ values.indicator.short_name }}</b> across the states. Source:<b>
+            <b>{{ values.location.name }}.</b> Source:<b>
               {{ values.datasource.datasource }} {{ values.year }}</b
             >
           </p>
@@ -73,8 +67,8 @@
           v-else
           ref="BaseMap"
           :mapObject="mapObject"
-          :level="1"
-          :lgaState="'Nigeria'"
+          :level="mapLevel"
+          :lgaState="values.location.name"
           :title="title"
         />
       </base-sub-card>
@@ -118,6 +112,7 @@ export default {
       loading: false,
       showNoSubNationalData: false,
       level: 1,
+      mapLevel: 1,
       updateData: 0,
       desirable_slope: '',
       acrossRegion: 'Country',
@@ -246,13 +241,28 @@ export default {
     async updateValue() {
       if (this.visualization === 'map') {
         this.loading = true;
-        // Always show national level map with all states
+        
+        // Determine map level and location query based on selected location
+        const isNationalLevel = this.values.location.id === 1;
+        let locationQuery = {};
+        
+        if (isNationalLevel) {
+          // National level: show all states on national map
+          locationQuery = { level: 3 };
+          this.mapLevel = 1;
+        } else {
+          // State level: show LGAs for the selected state (level 4)
+          locationQuery = { parent: this.values.location.id, level: 4 };
+          this.mapLevel = 3;
+        }
+        
         const data = await this.dlQuery({
           indicator: this.values.indicator.id,
           datasource: this.values.datasource.id,
           period: this.values.year,
-          location: { level: 3 },
+          location: locationQuery,
         });
+        
         if (data?.length === 0) {
           this.showNoAvailableData = true;
         } else {
@@ -639,10 +649,12 @@ export default {
       }
     },
     formatDataToSeriesMapFormat(data) {
-      return data?.map((item) => [
-        this.dlGetLocation(item.location).name,
-        Number.parseFloat(item.value) || 0,
-      ]);
+      return data?.map((item) => {
+        const locationName = this.dlGetLocation(item.location).name;
+        // Remove " LGA" suffix for map matching
+        const cleanedName = locationName.replace(/ LGA$/i, '');
+        return [cleanedName, Number.parseFloat(item.value) || 0];
+      });
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
       const factor = this.dlGetFactor(controlPanelObject.indicator.factor).display_factor;

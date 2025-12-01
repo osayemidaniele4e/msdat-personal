@@ -151,7 +151,7 @@
       <div class="col mb-3 d-md-none">
         <b-list-group>
           <h5 class="text-underline main-item">User Profile</h5>
-            <div v-b-toggle.sidebar-2 class="text-dark sub-item">
+            <div @click="handleLoginClick" class="text-dark sub-item cursor-pointer">
                Login/Register
               </div>
         </b-list-group>
@@ -222,6 +222,9 @@ export default {
     },
     getUserDashboards() {
       this.$store.dispatch('getDashboards');
+    },
+    handleLoginClick() {
+      this.$emit('show-auth-modal');
     },
   },
 
