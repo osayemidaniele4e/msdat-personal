@@ -95,6 +95,13 @@
               <span class="custom-tooltip">Disease burden and intervention coverage. </span>
             </div>
 
+             <div class="tooltip-wrapper">
+              <router-link to="/dashboard/Child_Health" target="_blank">
+                <b-list-group-item>Child Health Dashbord</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip">Disease burden and intervention coverage. </span>
+            </div>
+
             <div class="tooltip-wrapper">
               <router-link
                 to="/dashboard/Quarterly_Performance_Assessment_Dashboard"
