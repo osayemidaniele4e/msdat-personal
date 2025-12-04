@@ -148,7 +148,7 @@ const macBookImg = require('./assets/About-Dashboard-image.svg');
 export default {
   // vue-meta block
   metaInfo: {
-    title: 'About Us — My Vue App',
+    title: 'About Us',
     meta: [
       {
         name: 'description',
