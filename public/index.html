@@ -5,8 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-    <!-- IMPORTANT: Removed ALL OG + Twitter meta tags
-         These will now be controlled dynamically with vue-meta -->
+    <meta property="og:title" content="MSDAT Nigeria" />
+    <meta
+      property="og:description"
+      content="Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform"
+    />
+    <meta
+      property="og:image"
+      content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLvwZU1lfm4BZRhqiwbLl0izzQdSwZum-odQ&usqp=CAU"
+    />
+    <meta
+      property="og:url"
+      content="https://msdat.fmohconnect.gov.ng/dashboard/Health_Outcomes_and_Service_Coverage"
+    />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MSDAT Nigeria" />
+    <meta
+      name="twitter:description"
+      content="Take a look at this health indicator on the Multi-Source Data and Triangulation (MSDAT) platform"
+    />
+    <meta
+      name="twitter:image"
+      content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLvwZU1lfm4BZRhqiwbLl0izzQdSwZum-odQ&usqp=CAU"
+    />
+    <meta
+      name="twitter:url"
+      content="https://msdat.fmohconnect.gov.ng/dashboard/Health_Outcomes_and_Service_Coverage"
+    />
 
     <link
       rel="icon"
@@ -25,79 +52,95 @@
       type="image/png"
       href="<%= BASE_URL %>img/icons/FMoH-4.png"
     />
-
     <meta name="theme-color" content="#007d53" />
-
+    <!-- Add to home screen for Safari on iOS -->
     <meta
       name="author"
       content="James Chinwokwu, Iboro Iyang, Mansi Kelvin, Ekwere Ime, Benard Z. David, Akpabio Moses, Chisom Chima, Samuel Adegbite, Henry Linus,Oluwakolade Olagunju, George Manger"
     />
     <meta name="author" content="eHealth4Everyone" />
-
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta
       name="apple-mobile-web-app-title"
       content="MSDAT: A health-data-platform"
     />
-
     <link
       rel="apple-touch-icon"
       href="<%= BASE_URL %>img/icons/apple-touch-icon-152x152.png"
     />
-
+    <!-- Add to home screen for Windows -->
     <meta
       name="msapplication-TileImage"
       content="<%= BASE_URL %>img/icons/msapplication-icon-144x144.png"
     />
     <meta name="msapplication-TileColor" content="#000000" />
-
-    <!-- Global Page Description (can be overridden dynamically) -->
+    <!--page description-->
     <meta
       name="description"
-      content="The Multi-Source Data Analytics and Triangulation (MSDAT) platform developed by the Federal Ministry of Health (FMoH) Nigeria is your one-stop shop for Health Data and Analytics."
+      content="The Multi-Source Data Analytics and Triangulation (MSDAT) platform developed by the Federal Ministry of Health (FMoH) Nigeria is your one-stop shop for Health Data and Analytics. It provides access to key health indicators/metrics at different levels (federal, state and LGA) and across three categories of data sources (routine, surveys, & global estimates)."
     />
-
     <style>
       body {
         width: 100%;
         height: 100%;
-        margin: 0;
-        padding: 0;
+        margin: 0px;
+        padding: 0px;
         box-sizing: border-box;
         overflow-x: hidden;
       }
     </style>
-
+    <!-- <title><%= htmlWebpackPlugin.options.title %></title> -->
     <title>MSDAT Nigeria</title>
-
     <script>
       window.UserHelpPublicProjectID="EqyqK1O64"
-    </script>
-    <script src="https://run.userhelp.co" async></script>
-
-    <script src="https://kit.fontawesome.com/00d9c5fa35.js" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/ea5d2d64a6.js" crossorigin="anonymous"></script>
+  </script>
+  <script src="https://run.userhelp.co" async></script>
+    <script
+      src="https://kit.fontawesome.com/00d9c5fa35.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/ea5d2d64a6.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <script src="https://kit.fontawesome.com/4340448964.js" crossorigin="anonymous"></script>
-
+    <script
+      src="https://kit.fontawesome.com/4340448964.js"
+      crossorigin="anonymous"
+    ></script>
     <script
       type="text/javascript"
       src="https://public.tableau.com/javascripts/api/tableau-2.min.js"
     ></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127976918-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VSGQ4LNYE1"></script>
+    gtag('config', 'UA-127976918-1');
+  </script> -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-VSGQ4LNYE1"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
       gtag('js', new Date());
       gtag('config', 'G-VSGQ4LNYE1');
     </script>
-
     <!-- Userback Feedback -->
     <script>
       Userback = window.Userback || {};
@@ -105,12 +148,15 @@
         '5242|7298|lUFRc3sWBPYdMhAU4AMcEkh9InV9BZRd1dg9WHvGEq2JMPUW5E';
 
       (function (id) {
-        if (document.getElementById(id)) { return; }
+        if (document.getElementById(id)) {
+          return;
+        }
         var s = document.createElement('script');
         s.id = id;
         s.async = 1;
         s.src = 'https://static.userback.io/widget/v1.js';
-        (document.head || document.body).appendChild(s);
+        var parent_node = document.head || document.body;
+        parent_node.appendChild(s);
       })('userback-sdk');
     </script>
     <!-- End Userback Feedback -->
@@ -118,28 +164,38 @@
 
   <body>
     <noscript>
-      <strong>
-        We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly
-        without JavaScript enabled. Please enable it to continue.
-      </strong>
+      <strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to
+        continue.</strong
+      >
     </noscript>
-
-    <div id="app"></div>
+    <div id="app" ></div>
+    <!-- built files will be auto injected -->
 
     <!-- BEGIN PLERDY CODE -->
     <script type="text/javascript" defer data-plerdy_code="1">
-      var _protocol = ('https:' == document.location.protocol ? ' https://' : ' http://');
-      _site_hash_code = 'e3885a65adb75a81dddbaa0cfdc82991';
-      _suid = 44439;
-      var plerdyScript = document.createElement('script');
-      plerdyScript.setAttribute('defer','');
-      plerdyScript.dataset.plerdymainscript = 'plerdymainscript';
-      plerdyScript.src = 'https://a.plerdy.com/public/js/click/main.js?v=' + Math.random();
-      var oldScript = document.querySelector("[data-plerdymainscript='plerdymainscript']");
-      if (oldScript) oldScript.parentNode.removeChild(oldScript);
-      try { document.head.appendChild(plerdyScript); }
-      catch (t) { console.log(t, 'unable add script tag'); }
+      var _protocol =
+        'https:' == document.location.protocol ? ' https://' : ' http://';
+      (_site_hash_code = 'e3885a65adb75a81dddbaa0cfdc82991'),
+        (_suid = 44439),
+        (plerdyScript = document.createElement('script'));
+      plerdyScript.setAttribute('defer', ''),
+        (plerdyScript.dataset.plerdymainscript = 'plerdymainscript'),
+        (plerdyScript.src =
+          'https://a.plerdy.com/public/js/click/main.js?v=' + Math.random());
+      var plerdymainscript = document.querySelector(
+        "[data-plerdymainscript='plerdymainscript']"
+      );
+      plerdymainscript &&
+        plerdymainscript.parentNode.removeChild(plerdymainscript);
+      try {
+        document.head.appendChild(plerdyScript);
+      } catch (t) {
+        console.log(t, 'unable add script tag');
+      }
     </script>
     <!-- END PLERDY CODE -->
+    <!-- <script defer src="https://cdn.commented.io/latest.js"></script> -->
   </body>
 </html>

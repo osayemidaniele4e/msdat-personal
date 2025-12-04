@@ -112,41 +112,6 @@ import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
 
 export default {
   name: 'DynamicDashboard',
-  metaInfo() {
-    const title = this.configObject?.title || 'MSDAT Dashboard';
-    const desc =
-      this.configObject?.description ||
-      this.configObject?.title ||
-      'Explore health indicators on the MSDAT platform';
-    const url = window.location.href;
-    const image =
-      this.configObject?.image ||
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLvwZU1lfm4BZRhqiwbLl0izzQdSwZum-odQ&usqp=CAU';
-
-    return {
-      title,
-
-      meta: [
-        // General SEO
-        { name: 'description', content: desc },
-
-        // Open Graph
-        { property: 'og:title', content: title },
-        { property: 'og:description', content: desc },
-        { property: 'og:image', content: image },
-        { property: 'og:url', content: url },
-        { property: 'og:type', content: 'website' },
-
-        // Twitter Cards
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: title },
-        { name: 'twitter:description', content: desc },
-        { name: 'twitter:image', content: image },
-        { name: 'twitter:url', content: url },
-      ],
-    };
-  },
-
   components: {
     MSDAT: instance,
     AdvanceMSDAT: advanceInstance,
@@ -314,32 +279,29 @@ export default {
       // Only prompt first-time users
       this.getUserLocation();
 
-      await navigator.geolocation.getCurrentPosition(
-        (position) => {
-          this.latitude = position.coords.latitude;
-          this.longitude = position.coords.longitude;
+      await navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
 
-          // Mark that user has provided location
-          localStorage.setItem('userLocationProvided', 'true');
-          localStorage.setItem('userLatitude', this.latitude);
-          localStorage.setItem('userLongitude', this.longitude);
+        // Mark that user has provided location
+        localStorage.setItem('userLocationProvided', 'true');
+        localStorage.setItem('userLatitude', this.latitude);
+        localStorage.setItem('userLongitude', this.longitude);
 
-          // Now that you have the geolocation data, you can use it here
-          const data = {
-            dashboard: this.$route.params.name,
-            longitude: this.longitude,
-            latitude: this.latitude,
-            time: Date.now(),
-          };
+        // Now that you have the geolocation data, you can use it here
+        const data = {
+          dashboard: this.$route.params.name,
+          longitude: this.longitude,
+          latitude: this.latitude,
+          time: Date.now(),
+        };
 
-          this.SET_DASHBOARD_LOCATION(data);
-        },
-        (error) => {
-          console.log('Location access denied or failed:', error.message);
-          // Continue without location data
-          this.clearData();
-        }
-      );
+        this.SET_DASHBOARD_LOCATION(data);
+      }, (error) => {
+        console.log('Location access denied or failed:', error.message);
+        // Continue without location data
+        this.clearData();
+      });
     } else {
       // Use stored location for returning users
       this.latitude = localStorage.getItem('userLatitude') || '';
@@ -404,24 +366,12 @@ export default {
       sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
       sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
       sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
-      sessionStorage.setItem(
-        'setEmbedUrlTitle',
-        JSON.stringify(this.$store.getters.getNewEmbedUrlTitle)
-      );
-      sessionStorage.setItem(
-        'setEmbedIframeTitle',
-        JSON.stringify(this.$store.getters.getNewEmbedIframeTitle)
-      );
+      sessionStorage.setItem('setEmbedUrlTitle', JSON.stringify(this.$store.getters.getNewEmbedUrlTitle));
+      sessionStorage.setItem('setEmbedIframeTitle', JSON.stringify(this.$store.getters.getNewEmbedIframeTitle));
       sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
       sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
-      sessionStorage.setItem(
-        'embedIframeTitle',
-        JSON.stringify(this.$store.getters.getEmbedIframeTitle)
-      );
-      sessionStorage.setItem(
-        'setEmbedDashboardDesc',
-        JSON.stringify(this.$store.getters.getNewEmbedDashboardDescription)
-      );
+      sessionStorage.setItem('embedIframeTitle', JSON.stringify(this.$store.getters.getEmbedIframeTitle));
+      sessionStorage.setItem('setEmbedDashboardDesc', JSON.stringify(this.$store.getters.getNewEmbedDashboardDescription));
       // * FOR Indicators
       const ids = [];
       const sourcesID = [];
