@@ -130,16 +130,23 @@ export default {
         },
         {
           property: 'og:image',
-          content: 'https://i.pinimg.com/736x/7c/86/dd/7c86ddc87216c4cf1fba5915188c702a.jpg',
+          content:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLvwZU1lfm4BZRhqiwbLl0izzQdSwZum-odQ&usqp=CAU',
         },
-        // {
-        //   property: 'og:url',
-        //   content: 'https://yourwebsite.com/',
-        // },
-        // {
-        //   name: 'twitter:card',
-        //   content: 'summary_large_image',
-        // },
+        {
+          property: 'og:url',
+          content:
+            'https://msdat.fmohconnect.gov.ng/dashboard/Health_Outcomes_and_Service_Coverage',
+        },
+        {
+          name: 'twitter:card',
+          content: 'summary_large_image',
+        },
+        {
+          name: 'twitter:url',
+          content:
+            'https://msdat.fmohconnect.gov.ng/dashboard/Health_Outcomes_and_Service_Coverage',
+        },
       ],
     };
   },
