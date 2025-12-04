@@ -113,43 +113,40 @@ import NewsLetter from '../msdat-dashboard/modules/newsletters/index.vue';
 export default {
   name: 'DynamicDashboard',
   metaInfo() {
+    const title = this.configObject?.title || 'MSDAT Dashboard';
+    const desc =
+      this.configObject?.description ||
+      this.configObject?.title ||
+      'Explore health indicators on the MSDAT platform';
+    const url = window.location.href;
+    const image =
+      this.configObject?.image ||
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLvwZU1lfm4BZRhqiwbLl0izzQdSwZum-odQ&usqp=CAU';
+
     return {
-      title: this.configObject?.title || 'MSDAT Dashboard',
+      title,
+
       meta: [
-        {
-          name: 'description',
-          content: 'Learn more about our company and what we do.',
-        },
-        {
-          property: 'og:title',
-          content: this.configObject?.title || 'MSDAT Dashboard',
-        },
-        {
-          property: 'og:description',
-          content: 'Discover our story, mission and values.',
-        },
-        {
-          property: 'og:image',
-          content:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLvwZU1lfm4BZRhqiwbLl0izzQdSwZum-odQ&usqp=CAU',
-        },
-        {
-          property: 'og:url',
-          content:
-            'https://msdat.fmohconnect.gov.ng/dashboard/Health_Outcomes_and_Service_Coverage',
-        },
-        {
-          name: 'twitter:card',
-          content: 'summary_large_image',
-        },
-        {
-          name: 'twitter:url',
-          content:
-            'https://msdat.fmohconnect.gov.ng/dashboard/Health_Outcomes_and_Service_Coverage',
-        },
+        // General SEO
+        { name: 'description', content: desc },
+
+        // Open Graph
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: desc },
+        { property: 'og:image', content: image },
+        { property: 'og:url', content: url },
+        { property: 'og:type', content: 'website' },
+
+        // Twitter Cards
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: desc },
+        { name: 'twitter:image', content: image },
+        { name: 'twitter:url', content: url },
       ],
     };
   },
+
   components: {
     MSDAT: instance,
     AdvanceMSDAT: advanceInstance,
