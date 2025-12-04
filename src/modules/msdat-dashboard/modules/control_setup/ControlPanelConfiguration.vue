@@ -59,12 +59,6 @@ export default {
     // }
   },
   mounted() {
-    this.MODIFY_IDC_DATASOURCE({
-      id: 0,
-      datasource: 'ALL',
-      full_name: 'ALL',
-      indicators: [],
-    });
     const now = new Date();
     const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -80,7 +74,6 @@ export default {
       'SETUP_CONTROL_OPTIONS1',
       'SET_INDICATOR_COMPARISON_PAYLOAD',
       'SET_INDICATOR_DATASOURCES',
-      'MODIFY_IDC_DATASOURCE',
     ]),
     ...mapActions([
       'SET_INTERACTIONS',
