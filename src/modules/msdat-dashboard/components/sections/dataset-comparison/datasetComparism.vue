@@ -298,6 +298,8 @@ export default {
           });
         }
       }
+
+        console.log(multiSelectGroup, 'multiSelectGroup@ 3');
       return multiSelectGroup;
     },
   },

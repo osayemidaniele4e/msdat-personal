@@ -13,7 +13,7 @@
             :id="`panel-${el.index}`"
             @click="changeControl(el.index, el.title)"
           >
-            <div class="d-flex justify-content-between el-tit align-items-center ">
+            <div class="d-flex justify-content-between el-tit align-items-center">
               {{ el.title }}
               <div v-if="el.index === selectedIndex" class="share-icon-wrapper tooltip-wrapper">
                 <img
@@ -22,9 +22,7 @@
                   class="share-icon"
                   @click.stop="toggleShareModal(el.title)"
                 />
-                 <span class="custom-tooltip"
-                >Share
-              </span>
+                <span class="custom-tooltip">Share </span>
               </div>
             </div>
           </li>
@@ -49,6 +47,8 @@ import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
 // import ShareSection from '@/modules/msdat-dashboard/components/ShareSection.vue';
 import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
+import apiServices from '@/modules/data-layer/services/ApiServices';
+import { groupIndicator } from '@/util/helper';
 
 export default {
   name: 'BasePanel',
@@ -95,7 +95,7 @@ export default {
 
     filterModifiedControls() {
       const section = this.modifiedControls.filter(
-        (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection,
+        (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection
       );
 
       this.changeControl(section[0].index, section[0].title);
@@ -153,11 +153,25 @@ export default {
         });
       }
 
-      if (index === 2 && this.getConfigObject().name !== 'GIS_Mapping_Dashboard' && title === 'Indicator Comparison') {
+      if (
+        index === 2 &&
+        this.getConfigObject().name !== 'GIS_Mapping_Dashboard' &&
+        title === 'Indicator Comparison'
+      ) {
+        const dashboardID = localStorage.getItem('activeDashboardID');
+
         const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
 
+        const response = await apiServices.getDashboardIndicator(dashboardID);
+
+        console.log(availableIndicator, 'availableIndicator@');
+
+        const indicators = response.data;
+        const formattedData = groupIndicator(indicators, 'program_area');
+        console.log(formattedData, 'availableIndicator@ 1');
+
         this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {
-          value: availableIndicator,
+          value: formattedData,
         });
 
         this.$store.commit('MSDAT_STORE/SET_PAYLOAD', {

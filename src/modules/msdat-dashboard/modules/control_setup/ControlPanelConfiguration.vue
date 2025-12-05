@@ -239,10 +239,10 @@ export default {
           const response = await apiServices.getDashboardIndicator(dashboardID);
 
           const indicators = response.data;
-         
+
           const formattedData = groupIndicator(indicators, 'program_area');
 
-           console.log(formattedData);
+          console.log(formattedData);
 
           if (this.controlIndex === 2) {
             await this.SET_INDICATOR_COMPARISON_PAYLOAD({
@@ -267,6 +267,16 @@ export default {
           this.after_time_datasource = totalTimeInMinutes;
 
           const diff = this.after_time_datasource - this.previous_time_datasource;
+
+          const dashboardID = localStorage.getItem('activeDashboardID');
+          console.log(this.payload?.datasource);
+          const response = await apiServices.getDashboardIndicator(dashboardID);
+
+          const indicators = response.data;
+
+          const formattedData = groupIndicator(indicators, 'program_area');
+
+          console.log(formattedData, 'formattedData');
 
           // sending to the api
 
@@ -321,14 +331,14 @@ export default {
                 groupIndex: this.groupIndex,
                 panelIndex: this.controlIndex,
                 key: 'indicator',
-                value: availableIndicator[0].indicators[0],
+                value: formattedData[0].indicators[0],
               });
 
               await this.SETUP_CONTROL_OPTIONS1({
                 groupIndex: this.groupIndex,
                 panelIndex: this.controlIndex,
                 key: 'indicator',
-                values: availableIndicator,
+                values: formattedData,
               });
             }
             this.setInteractions();
