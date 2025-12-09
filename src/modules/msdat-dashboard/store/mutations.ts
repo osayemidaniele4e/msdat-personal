@@ -328,19 +328,16 @@ const mutations: MutationTree<State> = {
     });
   },
 
-  MODIFY_IDC_DATASOURCE: (state, payload) => {
+  UPDATE_IDC_DATASOURCEs: (state, payload) => {
     console.log(payload, '@@@Payload');
 
-    const options = state.controlConfig[2].setup[1].options;
+   state.controlConfig[2].setup[1].options = payload
+  },
 
-    // Assuming each option has a unique `id` property
-    const exists = options.some((opt) => opt.id === payload.id);
+   UPDATE_IDC_INDICATORS: (state, payload) => {
+    console.log(payload, '@@@Payload');
 
-    if (!exists) {
-      options.unshift(payload);
-    } else {
-      console.log('Item already exists:', payload.id);
-    }
+   state.controlConfig[2].setup[5].options = payload
   },
 
   SET_CONFIGURATIONS: (state, payload) => {
