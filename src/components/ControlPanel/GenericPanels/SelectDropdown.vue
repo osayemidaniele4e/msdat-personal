@@ -376,7 +376,7 @@ export default {
     formatYear(option) {
       const year = parseInt(option, 10);
       const currentYear = new Date().getFullYear();
-      return year > currentYear ? `${option} (P)` : option;
+      return year > currentYear ? `${option}` : option;
     },
     getOptionLabel(option) {
       if (typeof option === 'string') {
