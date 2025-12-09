@@ -309,6 +309,8 @@ export default {
     // Check if data is already loaded
     if (!this.dlIndicator || this.dlIndicator.length === 0) {
       await this.initializeDataLayer();
+    } else {
+      this.isLoading = false;
     }
 
     this.indicators = this.dlIndicator ? groupIndicator(this.dlIndicator, 'program_area') : [];
