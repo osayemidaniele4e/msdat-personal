@@ -134,6 +134,39 @@ export default {
     };
   },
   methods: {
+    getLoadEvent() {
+      return function() {
+        // Watermark Image - Top Left
+        this.renderer
+          .image('https://i.imgur.com/yyqklZM.png', 150, 62, 230, 53)
+          .attr({
+            zIndex: 1000,
+            x: '2%', // Top Left
+            y: '2%', // Top Left
+            width: '116',
+            height: '25',
+          })
+          .add();
+
+        // Source Text - Top Left under image
+        const chartWidth = this.chartWidth;
+        const chartHeight = this.chartHeight;
+        
+        const x = (chartWidth / 100) * 2; 
+        const y = (chartHeight / 100) * 7;
+
+        this.renderer
+          .text('Source: MSDAT', x, y)
+          .css({
+            color: 'rgba(0, 0, 0, 0.5)',
+            fontSize: '12px',
+            fontFamily: '"Work Sans", sans-serif',
+            fontWeight: 'normal',
+            textAlign: 'left',
+          })
+          .add();
+      };
+    },
     // Remove a leading "Distribution of" (case-insensitive) from titles
     sanitizedExportTitle(title) {
       if (!title || typeof title !== 'string') return title;
@@ -329,6 +362,15 @@ export default {
     if (this.defaultOptions.exporting && this.defaultOptions.exporting.chartOptions) {
       // Ensure exported title doesn't include leading "Distribution of"
       this.defaultOptions.exporting.chartOptions.title.text = this.sanitizedExportTitle(this.title);
+
+      // Add load event for watermark
+      if (!this.defaultOptions.exporting.chartOptions.chart) {
+        this.defaultOptions.exporting.chartOptions.chart = {};
+      }
+      if (!this.defaultOptions.exporting.chartOptions.chart.events) {
+        this.defaultOptions.exporting.chartOptions.chart.events = {};
+      }
+      this.defaultOptions.exporting.chartOptions.chart.events.load = this.getLoadEvent();
     }
     // keep exported title in sync when prop changes
     this.$watch(

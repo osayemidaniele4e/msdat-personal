@@ -6,7 +6,7 @@
         <b-row class="d-flex justify-content-between align-items-center">
           <b-col cols="2" md="2" lg="2" class="main">
             <div v-if="dashboardName == 'MSDAT PLATFORM'" style="cursor: pointer; display: flex; align-items: center;" @click="goToHome">
-              <b-icon icon="house" font-scale="1.5" class="home-icon mr-1" v-b-tooltip.hover="'Home'"></b-icon>
+              <b-icon icon="house" font-scale="2.0" class="home-icon mr-1" v-b-tooltip.hover="'Home'"></b-icon>
               <img src="@/assets/img/Logo.svg" alt="FMOH Logo" class="img-fluid" v-b-tooltip.hover="'Home'" />
             </div>
             <div v-if="dashboardName != 'MSDAT PLATFORM'" style="cursor: pointer; display: flex; align-items: center;" @click="goToHome">
@@ -698,7 +698,7 @@ header#the-header {
           &:first-child {
             img {
               width: auto;
-              height: 40px;
+              height: 30px;
               float: left;
             }
           }

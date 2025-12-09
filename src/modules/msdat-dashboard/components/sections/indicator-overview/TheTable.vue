@@ -99,6 +99,7 @@ import TableComponent from '@/modules/msdat-dashboard/components/table/TableComp
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
 import html2canvas from 'html2canvas';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
@@ -179,7 +180,7 @@ export default {
           }
           
           
-          this.TableData = formattedData;
+          this.TableData = [...formattedData];
           this.setTableSelected = datasource;
           this.loading = false;
         }
@@ -292,7 +293,10 @@ export default {
     },
     async dlGetLatestSourceAndIndicatorData(queryObject) {
       const routeTitle = this.$route.path;
-      const filteredIndicator = await this.dlQuery(queryObject);
+      // const filteredIndicator = await this.dlQuery(queryObject);
+      const response = await ApiServices.getDashboardData(null, queryObject);
+      const filteredIndicator = response.data.results;
+
       if (routeTitle.endsWith('Demographics')) {
         if (filteredIndicator.length > 0) {
           const presentYear = new Date().getFullYear();
@@ -384,7 +388,7 @@ export default {
           }
           formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
         }
-        this.TableData = formattedData;
+        this.TableData = [...formattedData];
         this.loading = false;
       }
     },

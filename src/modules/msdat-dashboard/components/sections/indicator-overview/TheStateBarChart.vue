@@ -61,7 +61,7 @@
           </button>
         </div>
         <div v-if="visualization === 'bar'" @click="handleChartClick">
-          <BarChart ref="BaseChart" :chartOptions="BarChartOptions" :title="title" />
+          <BarChart ref="BaseChart" :chartOptions="BarChartOptions" :title="title" :watermarkPosition="{ x: '80%', y: '80%', textXPercent: 90, textYPercent: 90 }" />
         </div>
         <BaseMap
           v-else

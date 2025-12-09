@@ -59,6 +59,7 @@
             :level="level"
             :lgaState="stateName"
             :categoryLabel="'Location'"
+            :watermarkPosition="{ x: '2%', y: '2%', textXPercent: 2, textYPercent: 7 }"
           />
 
           <NoAvailableData
