@@ -90,7 +90,12 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SET_SECTION_INDEX', 'SET_SECTION', 'toggleShowShareSection']),
+    ...mapMutations('MSDAT_STORE', [
+      'SET_SECTION_INDEX',
+      'SET_SECTION',
+      'toggleShowShareSection',
+      'UPDATE_IDC_DATASOURCEs',
+    ]),
     ...mapGetters('MSDAT_STORE', ['getSelectedConfig', 'getConfigObject']),
 
     filterModifiedControls() {
@@ -168,7 +173,7 @@ export default {
 
         const indicators = response.data;
         const formattedData = groupIndicator(indicators, 'program_area');
-        console.log(formattedData, 'availableIndicator@ 1');
+        console.log(selectedConfig.dataSource, 'availableIndicator@ 2');
 
         this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {
           value: formattedData,
@@ -201,6 +206,23 @@ export default {
         // eslint-disable-next-line no-param-reassign
         control.active = index === controlIndex + 1;
       });
+    },
+
+    async setAllICSDatasources() {
+      console.log(this.getConfigObject(), '@@@Payload');
+
+      const datasourcesIDs = this.getConfigObject().dataSources;
+
+      const requests = datasourcesIDs.map((id) => apiServices.getSingleDataSourceObj(id));
+
+      const responses = await Promise.all(requests);
+
+      // Extract `data` from each response
+      const results = responses.map((res) => res.data);
+      console.log(results, 'defaultDataSourceDropdown');
+      this.UPDATE_IDC_DATASOURCEs(results);
+
+      // return results;
     },
     // selectControll(controlIndex) {
     //   this.selectedIndex = controlIndex;
@@ -302,6 +324,7 @@ export default {
         console.log('modifiedControls is still empty after nextTick');
       }
     });
+    // this.setAllICSDatasources();
   },
   created() {
     this.controls = this.$children;

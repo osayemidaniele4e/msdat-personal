@@ -116,6 +116,13 @@ export default {
         payload: this.defaultLocationDropdown,
       });
     },
+
+    setICSDatasources(datasources) {
+      this.$store.commit('MSDAT_STORE/UPDATE_IDC_DATASOURCEs', {
+        key: 'datasource',
+        payload: datasources,
+      });
+    },
     setDefaults() {
       const { query } = this.$route;
       const {
@@ -241,7 +248,7 @@ export default {
       return formattedData;
     },
 
-    async setAllIDCIndicators(){
+    async setAllIDCIndicators() {
       const data = await this.getIndicatorsFromDatasource(datasourceID);
     },
 

@@ -327,19 +327,19 @@ export default {
 
               console.log(availableIndicator, 'availableIndicator');
 
-              await this.SET_INDICATOR_COMPARISON_PAYLOAD({
-                groupIndex: this.groupIndex,
-                panelIndex: this.controlIndex,
-                key: 'indicator',
-                value: formattedData[0].indicators[0],
-              });
+              // await this.SET_INDICATOR_COMPARISON_PAYLOAD({
+              //   groupIndex: this.groupIndex,
+              //   panelIndex: this.controlIndex,
+              //   key: 'indicator',
+              //   value: formattedData[0].indicators[0],
+              // });
 
-              await this.SETUP_CONTROL_OPTIONS1({
-                groupIndex: this.groupIndex,
-                panelIndex: this.controlIndex,
-                key: 'indicator',
-                values: formattedData,
-              });
+              // await this.SETUP_CONTROL_OPTIONS1({
+              //   groupIndex: this.groupIndex,
+              //   panelIndex: this.controlIndex,
+              //   key: 'indicator',
+              //   values: formattedData,
+              // });
             }
             this.setInteractions();
             this.setStatesDropdown();
