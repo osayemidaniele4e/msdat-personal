@@ -129,9 +129,6 @@
         </audio>
       </div>
     </template>
-    <template #footer-btn>
-      <button type="button" class="btn btn-secondary" @click="$emit('close')">Close</button>
-    </template>
   </BaseModal>
 </template>
 
