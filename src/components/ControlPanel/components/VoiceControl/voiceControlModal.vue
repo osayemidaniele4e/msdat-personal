@@ -19,6 +19,9 @@
             <div class="rolling-spinner mr-2"></div>
             <span>Processing your request...</span>
           </div>
+          <b-button variant="outline-primary" size="sm" class="mt-2" @click="cancelRequest">
+            Cancel
+          </b-button>
         </div>
 
         <!-- Text response display -->
@@ -60,16 +63,29 @@
           <b-button
             :variant="micButtonVariant"
             class="rounded-circle mic-button d-flex align-items-center justify-content-center"
+            :class="{ 'listening': isListening }"
             style="width: 80px; height: 80px"
-            :class="micButtonClass"
-            @click="micPermission !== 'granted' ? requestMicrophoneAccess() : null"
-            @mousedown="micPermission === 'granted' ? startListening() : null"
-            @mouseup="micPermission === 'granted' ? stopListening() : null"
-            @touchstart.prevent="micPermission === 'granted' ? startListening() : null"
-            @touchend.prevent="micPermission === 'granted' ? stopListening() : null"
+            :disabled="!recognitionSupported || status === 'processing'"
+            @click="micPermission !== 'granted' ? requestMicrophoneAccess() : toggleListening()"
           >
-            <b-icon icon="mic-fill" font-scale="2" class="text-white"></b-icon>
+            <b-icon 
+              :icon="isListening ? 'stop-fill' : 'mic-fill'" 
+              font-scale="2" 
+              class="text-white"
+            ></b-icon>
           </b-button>
+          <small class="text-muted mt-2 d-block">
+            {{ isListening ? 'Click to stop' : 'Click to start speaking' }}
+          </small>
+          
+          <!-- Sound wave animation -->
+          <div v-if="isListening" class="sound-wave d-flex justify-content-center mt-3">
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+          </div>
         </div>
 
         <!-- Test API button -->
@@ -149,6 +165,9 @@ export default {
 
     const isListening = ref(false);
     const transcript = ref('');
+    const interimTranscript = ref(''); // For showing real-time transcription
+    const finalTranscript = ref(''); // Accumulated final results
+    const manualStop = ref(false); // Track if user manually stopped
     const textResponse = ref(''); // Added for text response
     const status = ref('idle'); // idle, listening, processing, response
     const audioUrl = ref(null);
@@ -157,6 +176,8 @@ export default {
     const debugInfo = ref([]);
     const micPermission = ref('prompt'); // granted, denied, prompt
     const recognitionSupported = ref(true);
+    const abortController = ref(null); // For cancelling API requests
+    const listeningTimeout = ref(null); // For auto-stop timeout
 
     // Add this function to log debug information
     const addDebugInfo = (message) => {
@@ -183,12 +204,25 @@ export default {
       }
     };
 
+    // Cancel ongoing API request
+    const cancelRequest = () => {
+      if (abortController.value) {
+        abortController.value.abort();
+        abortController.value = null;
+      }
+      status.value = 'idle';
+      addDebugInfo('Request cancelled by user');
+    };
+
     // Send command to API
     const sendCommandToAPI = async (command) => {
       addDebugInfo(`Preparing to send command to API: "${command}"`);
       const payload = JSON.stringify({ command });
       addDebugInfo(`API request payload: ${payload}`);
       textResponse.value = ''; // Clear previous text response
+      
+      // Create new AbortController for this request
+      abortController.value = new AbortController();
 
       try {
         addDebugInfo('Sending request to API endpoint...');
@@ -199,6 +233,7 @@ export default {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: payload,
+            signal: abortController.value.signal,
           }
         );
 
@@ -259,10 +294,16 @@ export default {
           if (!data.text_response) status.value = 'idle';
         }
       } catch (error) {
+        if (error.name === 'AbortError') {
+          addDebugInfo('Request was aborted');
+          return;
+        }
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.error('Error in sendCommandToAPI:', errorMessage);
         addDebugInfo(`API call failed: ${errorMessage}`);
         status.value = 'idle';
+      } finally {
+        abortController.value = null;
       }
     };
 
@@ -275,44 +316,122 @@ export default {
         if (SpeechRecognitionAPI) {
           addDebugInfo('Speech recognition API is available');
           recognitionRef.value = new SpeechRecognitionAPI();
-          // Configure the recognition
-          recognitionRef.value.continuous = false;
-          recognitionRef.value.interimResults = true;
+          // Configure the recognition for better accuracy
+          recognitionRef.value.continuous = true; // Keep listening until manually stopped
+          recognitionRef.value.interimResults = true; // Show results as user speaks
+          recognitionRef.value.maxAlternatives = 3; // Get multiple alternatives for better accuracy
           recognitionRef.value.lang = 'en-US';
+          
           // Set up event handlers
           recognitionRef.value.onstart = () => {
             addDebugInfo('Speech recognition started');
             isListening.value = true;
           };
+          
           recognitionRef.value.onresult = (event) => {
-            const current = event.resultIndex;
-            const transcriptText = event.results[current][0].transcript;
-            // Using string concatenation instead of template literal with escaped quotes
-            addDebugInfo(`Speech recognized (interim): "${transcriptText}"`);
-            // If this is a final result
-            if (event.results[current].isFinal) {
-              // Using string concatenation instead of template literal with escaped quotes
-              addDebugInfo(`Speech recognized (final): "${transcriptText}"`);
-              transcript.value = transcriptText;
-              isListening.value = false;
-              status.value = 'processing';
-              sendCommandToAPI(transcriptText);
-              // Emit the command
-              emit('command', transcriptText);
+            let interim = '';
+            let final = finalTranscript.value;
+            
+            // Process all results
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+              const result = event.results[i];
+              const transcriptText = result[0].transcript;
+              const confidence = result[0].confidence;
+              
+              if (result.isFinal) {
+                // Log alternatives for debugging
+                if (result.length > 1) {
+                  const alternatives = Array.from(result).map((alt, idx) => 
+                    `Alt ${idx + 1}: "${alt.transcript}" (${(alt.confidence * 100).toFixed(1)}%)`
+                  ).join(', ');
+                  addDebugInfo(`Alternatives: ${alternatives}`);
+                }
+                
+                final += transcriptText + ' ';
+                addDebugInfo(`Final result: "${transcriptText}" (confidence: ${(confidence * 100).toFixed(1)}%)`);
+              } else {
+                interim += transcriptText;
+              }
             }
+            
+            finalTranscript.value = final;
+            interimTranscript.value = interim;
+            
+            // Update display transcript (final + interim)
+            transcript.value = (final + interim).trim();
+            addDebugInfo(`Current transcript: "${transcript.value}"`);
           };
+          
+          recognitionRef.value.onspeechend = () => {
+            addDebugInfo('Speech ended (silence detected)');
+          };
+          
           recognitionRef.value.onerror = (event) => {
             addDebugInfo(`Speech recognition error: ${event.error}`);
+            
+            // Handle specific errors
+            if (event.error === 'no-speech') {
+              addDebugInfo('No speech detected - continuing to listen...');
+              // Don't stop on no-speech, let user keep trying
+              return;
+            }
+            
+            if (event.error === 'aborted') {
+              addDebugInfo('Recognition aborted');
+              return;
+            }
+            
+            if (event.error === 'network') {
+              addDebugInfo('Network error - check your connection');
+            }
+            
             isListening.value = false;
             status.value = 'idle';
           };
+          
           recognitionRef.value.onend = () => {
-            addDebugInfo('Speech recognition ended');
-            isListening.value = false;
-            if (status.value === 'listening') {
-              status.value = 'idle';
+            addDebugInfo(`Speech recognition ended. Manual stop: ${manualStop.value}, isListening: ${isListening.value}`);
+            
+            // If user manually stopped, process the transcript
+            if (manualStop.value) {
+              manualStop.value = false;
+              isListening.value = false;
+              
+              const fullTranscript = finalTranscript.value.trim();
+              if (fullTranscript) {
+                addDebugInfo(`Processing final transcript: "${fullTranscript}"`);
+                transcript.value = fullTranscript;
+                status.value = 'processing';
+                sendCommandToAPI(fullTranscript);
+                emit('command', fullTranscript);
+              } else {
+                addDebugInfo('No transcript to process');
+                status.value = 'idle';
+              }
+            } 
+            // If recognition ended but user didn't stop, restart it
+            else if (isListening.value && status.value === 'listening') {
+              addDebugInfo('Recognition ended unexpectedly, restarting...');
+              try {
+                setTimeout(() => {
+                  if (isListening.value && recognitionRef.value) {
+                    recognitionRef.value.start();
+                    addDebugInfo('Recognition restarted');
+                  }
+                }, 100);
+              } catch (error) {
+                addDebugInfo(`Error restarting recognition: ${error}`);
+                isListening.value = false;
+                status.value = 'idle';
+              }
+            } else {
+              isListening.value = false;
+              if (status.value === 'listening') {
+                status.value = 'idle';
+              }
             }
           };
+          
           recognitionSupported.value = true;
         } else {
           addDebugInfo('Speech recognition is NOT supported in this browser');
@@ -354,11 +473,23 @@ export default {
       }
     };
 
+    // Toggle listening on/off
+    const toggleListening = () => {
+      if (isListening.value) {
+        stopListening();
+      } else {
+        startListening();
+      }
+    };
+
     // Start listening function
     const startListening = () => {
       addDebugInfo('Starting to listen...');
       // Clear previous results
       transcript.value = '';
+      finalTranscript.value = '';
+      interimTranscript.value = '';
+      manualStop.value = false;
       textResponse.value = ''; // Clear previous text response
       audioUrl.value = null;
       status.value = 'listening';
@@ -381,6 +512,15 @@ export default {
       try {
         addDebugInfo('Attempting to start speech recognition');
         recognitionRef.value.start();
+        
+        // Auto-stop after 30 seconds to prevent endless listening
+        listeningTimeout.value = setTimeout(() => {
+          if (isListening.value) {
+            addDebugInfo('Auto-stopping after 30 second timeout');
+            stopListening();
+          }
+        }, 30000);
+        
       } catch (error) {
         addDebugInfo(`Error starting speech recognition: ${error}`);
         // If already started, stop and restart
@@ -400,16 +540,41 @@ export default {
 
     // Stop listening function
     const stopListening = () => {
-      addDebugInfo('Stopping listening...');
+      addDebugInfo('Stopping listening (manual stop)...');
+      
+      // Set manual stop flag so onend handler knows to process transcript
+      manualStop.value = true;
+      
+      // Clear the auto-stop timeout
+      if (listeningTimeout.value) {
+        clearTimeout(listeningTimeout.value);
+        listeningTimeout.value = null;
+      }
+      
       if (recognitionRef.value) {
         try {
           recognitionRef.value.stop();
-          addDebugInfo('Speech recognition stopped successfully');
+          addDebugInfo('Speech recognition stop requested');
         } catch (error) {
           addDebugInfo(`Error stopping speech recognition: ${error}`);
+          // If stop fails, still process what we have
+          manualStop.value = false;
+          isListening.value = false;
+          const fullTranscript = finalTranscript.value.trim();
+          if (fullTranscript) {
+            transcript.value = fullTranscript;
+            status.value = 'processing';
+            sendCommandToAPI(fullTranscript);
+            emit('command', fullTranscript);
+          } else {
+            status.value = 'idle';
+          }
         }
       } else {
         addDebugInfo('Speech recognition not initialized');
+        manualStop.value = false;
+        isListening.value = false;
+        status.value = 'idle';
       }
     };
 
@@ -438,7 +603,7 @@ export default {
 
     const statusText = computed(() => {
       if (isListening.value) {
-        return 'Listening...';
+        return 'Listening... Speak now';
       }
       if (status.value === 'processing') {
         return 'Processing your request...';
@@ -449,7 +614,7 @@ export default {
       if (micPermission.value !== 'granted') {
         return 'Click the microphone to grant access';
       }
-      return 'Press and hold the microphone to speak';
+      return 'Click the microphone to start speaking';
     });
 
     // Lifecycle hooks
@@ -474,6 +639,17 @@ export default {
 
     onBeforeUnmount(() => {
       addDebugInfo('Cleaning up voice assistant...');
+      
+      // Clear any pending timeouts
+      if (listeningTimeout.value) {
+        clearTimeout(listeningTimeout.value);
+      }
+      
+      // Cancel any pending API requests
+      if (abortController.value) {
+        abortController.value.abort();
+      }
+      
       if (recognitionRef.value) {
         try {
           recognitionRef.value.abort();
@@ -484,13 +660,13 @@ export default {
       if (audioRef.value) {
         audioRef.value.pause();
       }
-      this.$emit('close');
+      emit('close');
     });
 
     return {
       isListening,
       transcript,
-      textResponse, // Return textResponse
+      textResponse,
       status,
       audioUrl,
       audioRef,
@@ -502,6 +678,8 @@ export default {
       statusText,
       startListening,
       stopListening,
+      toggleListening,
+      cancelRequest,
       requestMicrophoneAccess,
       testAPIDirectly,
       addDebugInfo,
@@ -511,10 +689,67 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: Add minor adjustments if Bootstrap defaults aren't perfect */
-.mic-button:active {
-  /* Slightly darken the button on click if needed */
+/* Mic button base styles */
+.mic-button {
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.mic-button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.mic-button:active:not(:disabled) {
+  transform: scale(0.95);
   filter: brightness(90%);
+}
+
+.mic-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Pulsing animation when listening */
+.mic-button.listening {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(220, 53, 69, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+  }
+}
+
+/* Sound wave animation */
+.sound-wave {
+  gap: 4px;
+  height: 30px;
+  align-items: center;
+}
+
+.wave-bar {
+  width: 4px;
+  height: 10px;
+  background-color: #dc3545;
+  border-radius: 2px;
+  animation: wave 0.5s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes wave {
+  0%, 100% { height: 10px; }
+  50% { height: 25px; }
 }
 
 .mic-control {
@@ -531,7 +766,7 @@ export default {
 }
 
 .bg-info-light {
-  background-color: #e6f7ff; /* A light blue, adjust as needed */
+  background-color: #e6f7ff;
 }
 
 /* Rolling spinner animation */
