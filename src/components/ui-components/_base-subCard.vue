@@ -52,6 +52,7 @@
               v-show="showToggle"
               @button-clicked="$emit('toggled-button', $event)"
             />
+            <slot name="extra-toggles"></slot>
           </div>
           <slot>
             <!-- <p class="card-text">The SubCard fallback.</p> -->
