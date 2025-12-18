@@ -10,29 +10,38 @@
       </div>
       <br /><br />
       <div class="program-areas">
-        <!-- left section -->
+        <div
+          v-if="isLoading"
+          class="d-flex justify-content-center align-items-center w-100"
+          style="grid-column: 1 / -1; height: 400px"
+        >
+          <b-spinner variant="success" label="Loading..."></b-spinner>
+        </div>
+        <template v-else>
+          <!-- left section -->
 
-        <div class="program-area-sec">
-          <div v-for="(indicator, index) in indicators" :key="index">
-            <div
-              class="program-area-card display: flex; justify-content: center; align-items: center;r"
-              :class="{ 'green-card': indicator.program_area === selectedProgram }"
-              @click="setSelected(indicator)"
-            >
-              {{ indicator.program_area }}
+          <div class="program-area-sec">
+            <div v-for="(indicator, index) in indicators" :key="index">
+              <div
+                class="program-area-card display: flex; justify-content: center; align-items: center;r"
+                :class="{ 'green-card': indicator.program_area === selectedProgram }"
+                @click="setSelected(indicator)"
+              >
+                {{ indicator.program_area }}
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- right section -->
+          <!-- right section -->
 
-        <div class="program-area-des">
-          <h3>{{ this.selectedProgram }}</h3>
-          <hr />
-          <li v-for="name in filteredFullNames" :key="name.id">
-            {{ name.full_name }}
-          </li>
-        </div>
+          <div class="program-area-des">
+            <h3>{{ this.selectedProgram }}</h3>
+            <hr />
+            <li v-for="name in filteredFullNames" :key="name.id">
+              {{ name.full_name }}
+            </li>
+          </div>
+        </template>
       </div>
     </section>
 
@@ -61,6 +70,7 @@ export default {
       selected: 1,
       selectedIndicators: [],
       selectedProgram: '',
+      isLoading: true,
     };
   },
 
@@ -70,6 +80,20 @@ export default {
       this.selectedIndicators = indicator.indicators;
       this.selectedProgram = indicator.program_area;
     },
+    initializeData() {
+      if (this.dlIndicator && this.dlIndicator.length > 0) {
+        this.indicators = groupIndicator(this.dlIndicator, 'program_area');
+        if (this.indicators.length > 0) {
+          // Set the selectedProgram to the first program area in the indicators array
+          this.selectedProgram = this.indicators[0].program_area;
+          // Call the setSelected method with the first indicator as an argument
+          this.setSelected(this.indicators[0]);
+        }
+        this.isLoading = false;
+      } else {
+        this.isLoading = true;
+      }
+    },
   },
   computed: {
     filteredFullNames() {
@@ -77,15 +101,17 @@ export default {
       return this.selectedIndicators.map((item) => ({ id: item.id, full_name: item.full_name }));
     },
   },
+  watch: {
+    dlIndicator: {
+      handler() {
+        this.initializeData();
+      },
+      deep: true,
+    },
+  },
 
   mounted() {
-    this.indicators = groupIndicator(this.dlIndicator, 'program_area');
-    if (this.indicators.length > 0) {
-      // Set the selectedProgram to the first program area in the indicators array
-      this.selectedProgram = this.indicators[0].program_area;
-      // Call the setSelected method with the first indicator as an argument
-      this.setSelected(this.indicators[0]);
-    }
+    this.initializeData();
   },
 };
 </script>

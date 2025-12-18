@@ -264,6 +264,11 @@ export default {
       }
       return Math.round(number);
     },
+    formatYear(option) {
+      const year = parseInt(option, 10);
+      const currentYear = new Date().getFullYear();
+      return year > currentYear ? `${option} (P)` : option;
+    },
     async setUpDataSourceNYearDropdown() {
       const multiSelectGroup = [];
       const dataSources = this.dlGetDashboardDataSource();
@@ -289,7 +294,7 @@ export default {
 
           const mapToDropdown = sortedDates.map((item) => ({
             id: `${dataSourceObject.id}-${item}`,
-            item: `${dataSourceObject.datasource} ${item}`,
+            item: `${dataSourceObject.datasource} ${this.formatYear(item)}`,
           }));
 
           multiSelectGroup.push({
@@ -298,6 +303,8 @@ export default {
           });
         }
       }
+
+        console.log(multiSelectGroup, 'multiSelectGroup@ 3');
       return multiSelectGroup;
     },
   },

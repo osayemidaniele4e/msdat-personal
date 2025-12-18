@@ -116,6 +116,13 @@ export default {
         payload: this.defaultLocationDropdown,
       });
     },
+
+    setICSDatasources(datasources) {
+      this.$store.commit('MSDAT_STORE/UPDATE_IDC_DATASOURCEs', {
+        key: 'datasource',
+        payload: datasources,
+      });
+    },
     setDefaults() {
       const { query } = this.$route;
       const {
@@ -147,14 +154,14 @@ export default {
     async setYearDropdown(
       indicatorID = this.defaultIndicator.id,
       dataSourceID = this.defaultDataSource.id,
-      locationID = this.defaultLocation.id,
+      locationID = this.defaultLocation.id
     ) {
       const { data } = await ApiServices.getPeriod({
         indicator: indicatorID,
         datasource: dataSourceID || this.this.$route.query.datasource,
         location: locationID,
       });
-      
+
       const years = data.periods;
       return years.sort((a, b) => b - a);
     },
@@ -186,7 +193,7 @@ export default {
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
       // eslint-disable-next-line no-unused-vars
-      controlIndex = 0,
+      controlIndex = 0
     ) {
       // Return if either dataSourceID or indicatorID is not provided
       if (!dataSourceID || !indicatorID) return;
@@ -198,19 +205,17 @@ export default {
         for (const ind of indicatorID) {
           data = data.concat(await this.queryDBForAvailableLocation(dataSourceID, ind));
         }
-      // Fetch available locations for each data source if dataSourceID is an array
+        // Fetch available locations for each data source if dataSourceID is an array
       } else if (Array.isArray(dataSourceID)) {
         for (const dat of dataSourceID) {
           data = data.concat(await this.queryDBForAvailableLocation(dat, indicatorID));
         }
-      // Fetch available locations for the given dataSourceID and indicatorID
+        // Fetch available locations for the given dataSourceID and indicatorID
       } else {
         data = await this.queryDBForAvailableLocation(dataSourceID, indicatorID);
       }
 
-      const uniqueById = Array.from(
-        new Map(data.map((item) => [item.id, item])).values(),
-      );
+      const uniqueById = Array.from(new Map(data.map((item) => [item.id, item])).values());
       // Commit the unique locations to the store
       this.$store.commit('MSDAT_STORE/SET_ALL_CONTROL_OPTIONS', {
         key: 'location',
@@ -237,10 +242,16 @@ export default {
       const formattedData = groupIndicator(data, 'program_area');
       return formattedData;
     },
+
     async setAllIndicatorDropdown(indicators) {
       const formattedData = groupIndicator(indicators, 'program_area');
       return formattedData;
     },
+
+    async setAllIDCIndicators() {
+      const data = await this.getIndicatorsFromDatasource(datasourceID);
+    },
+
     async setIDCIndicatorDropdown(datasourceID = this.defaultDataSource.id) {
       const data = await this.getIndicatorsFromDatasource(datasourceID);
 

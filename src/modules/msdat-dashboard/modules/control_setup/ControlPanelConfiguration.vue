@@ -59,12 +59,6 @@ export default {
     // }
   },
   mounted() {
-    this.MODIFY_IDC_DATASOURCE({
-      id: 0,
-      datasource: 'ALL',
-      full_name: 'ALL',
-      indicators: [],
-    });
     const now = new Date();
     const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -80,7 +74,6 @@ export default {
       'SETUP_CONTROL_OPTIONS1',
       'SET_INDICATOR_COMPARISON_PAYLOAD',
       'SET_INDICATOR_DATASOURCES',
-      'MODIFY_IDC_DATASOURCE',
     ]),
     ...mapActions([
       'SET_INTERACTIONS',
@@ -246,10 +239,10 @@ export default {
           const response = await apiServices.getDashboardIndicator(dashboardID);
 
           const indicators = response.data;
-         
+
           const formattedData = groupIndicator(indicators, 'program_area');
 
-           console.log(formattedData);
+          console.log(formattedData);
 
           if (this.controlIndex === 2) {
             await this.SET_INDICATOR_COMPARISON_PAYLOAD({
@@ -274,6 +267,16 @@ export default {
           this.after_time_datasource = totalTimeInMinutes;
 
           const diff = this.after_time_datasource - this.previous_time_datasource;
+
+          const dashboardID = localStorage.getItem('activeDashboardID');
+          console.log(this.payload?.datasource);
+          const response = await apiServices.getDashboardIndicator(dashboardID);
+
+          const indicators = response.data;
+
+          const formattedData = groupIndicator(indicators, 'program_area');
+
+          console.log(formattedData, 'formattedData');
 
           // sending to the api
 
@@ -324,19 +327,19 @@ export default {
 
               console.log(availableIndicator, 'availableIndicator');
 
-              await this.SET_INDICATOR_COMPARISON_PAYLOAD({
-                groupIndex: this.groupIndex,
-                panelIndex: this.controlIndex,
-                key: 'indicator',
-                value: availableIndicator[0].indicators[0],
-              });
+              // await this.SET_INDICATOR_COMPARISON_PAYLOAD({
+              //   groupIndex: this.groupIndex,
+              //   panelIndex: this.controlIndex,
+              //   key: 'indicator',
+              //   value: formattedData[0].indicators[0],
+              // });
 
-              await this.SETUP_CONTROL_OPTIONS1({
-                groupIndex: this.groupIndex,
-                panelIndex: this.controlIndex,
-                key: 'indicator',
-                values: availableIndicator,
-              });
+              // await this.SETUP_CONTROL_OPTIONS1({
+              //   groupIndex: this.groupIndex,
+              //   panelIndex: this.controlIndex,
+              //   key: 'indicator',
+              //   values: formattedData,
+              // });
             }
             this.setInteractions();
             this.setStatesDropdown();

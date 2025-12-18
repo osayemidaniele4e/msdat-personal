@@ -72,8 +72,9 @@
         </div> -->
         <IndicatorPageFunc />
         <div class="chat-section mt-4">
-          <ChatBot ref="chatBot" />          <button class="chat-button" @click="$refs.chatBot.toggleChat()">
-            <img src="./assets/ai-launcher.svg" alt="AI" class="ai-icon">
+          <ChatBot ref="chatBot" />
+          <button class="chat-button" @click="$refs.chatBot.toggleChat()">
+            <img src="./assets/ai-launcher.svg" alt="AI" class="ai-icon" />
             <span>Metadata Chatbot</span>
           </button>
         </div>
@@ -84,11 +85,10 @@
       <div class="framework-wrapper">
         <div class="image-container">
           <section>
-          <div id="logical-framework">
-            <img src="./assets/Framework.png" class="logical-framework-img" />
-
-          </div>
-        </section>
+            <div id="logical-framework">
+              <img src="./assets/Framework.png" class="logical-framework-img" />
+            </div>
+          </section>
         </div>
       </div>
 
@@ -146,6 +146,24 @@ import Testimonials from './components/Testimonials.vue';
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
 export default {
+  // vue-meta block
+  metaInfo: {
+    title: 'About Us',
+    meta: [
+      {
+        name: 'description',
+        content: 'Learn more about our company and what we do.',
+      },
+      {
+        property: 'og:title',
+        content: 'About Us — My Vue App',
+      },
+      {
+        property: 'og:description',
+        content: 'Discover our story, mission and values.',
+      },
+    ],
+  },
   components: {
     theHeader,
     theFooter,
@@ -309,6 +327,8 @@ export default {
     // Check if data is already loaded
     if (!this.dlIndicator || this.dlIndicator.length === 0) {
       await this.initializeDataLayer();
+    } else {
+      this.isLoading = false;
     }
 
     this.indicators = this.dlIndicator ? groupIndicator(this.dlIndicator, 'program_area') : [];
@@ -411,8 +431,8 @@ $msdat-darkgrey: #dedede;
   justify-content: center;
 }
 
-.image-container{
-   width: 95%;
+.image-container {
+  width: 95%;
 }
 
 #logical-framework {
