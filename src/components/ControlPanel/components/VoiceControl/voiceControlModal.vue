@@ -1,6 +1,6 @@
 <template>
   <BaseModal :showModal="show" @hidden="$emit('close')" size="" centered>
-    <template #title> MSDAT Assistant </template>
+    <template #title> MSDAT Assistant Experimental</template>
     <template #default>
       <div class="voice-assistant-container p-3">
         <!-- Title and introduction -->

@@ -14,8 +14,8 @@
       <section>
         <h2>What Our Users Say</h2>
         <span class="top-text mb-5">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod <br>
-          tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Discover what users are saying about MSDAT. Our testimonials showcase real <br>
+            experiences and insights from professionals who use our platform daily.
         </span>
       </section>
       <section>
@@ -73,7 +73,7 @@
             <testimonial-card :testimonial="testimonial" />
           </b-col>
         </b-row>
-        <div class="text-center p-3">
+        <!-- <div class="text-center p-3">
           <button
             v-if="cardTestimonials.length > viewLength"
             style="font-size: large;
@@ -83,7 +83,7 @@
           >
             View More
           </button>
-        </div>
+        </div> -->
       </section>
       <section class="pb-5">
         <h2>Let Us Know What You Think</h2>
@@ -139,18 +139,44 @@ import TestimonialCard from './components/TestimonialCard.vue';
 export default {
   data() {
     return {
-      videoTestimonials: Array(7).fill({
-        username: 'Neo Amadi',
-        rating: 4,
-        text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magnal aliquyam erat, sed diam voluptua.',
-        videoUrl: 'https://www.youtube.com/embed/k75zoZ1SXgk',
-      }),
+      videoTestimonials: [
+        {
+          username: 'Ogeh AjiriOghene',
+          rating: 5,
+          text: 'This tool will empower the Ministry and its partners to make faster, smarter decisions. It is a critical step in achieving Universal Health Coverage goals.',
+          videoUrl: 'https://drive.google.com/file/d/10Ryaphn9ySxht_kECGzmChPkgZ-6kOGh/preview',
+        },
+        {
+          username: 'Caleb Aromeh',
+          rating: 5,
+          text: 'I have been using the MSDAT for over 6 years. I discovered the platform at a partners meeting organized by FMoH sometime in 2018. The MSDAT platform has enabled me to visualize health data from multiple sources, including routine data, surveys, and global estimates providing a comprehensive view of health indicators.',
+          videoUrl: 'https://drive.google.com/file/d/10Ryaphn9ySxht_kECGzmChPkgZ-6kOGh/preview',
+        },
+        {
+          username: 'Mamman Jepther Lere',
+          rating: 5,
+          text: 'The dashboard is considered very useful for health professionals as it provides a unified platform for data. It helps align stakeholders around a single "source of truth," reducing data fragmentation and improving coordination in health planning and program implementation. This centralisation increases confidence in data-driven decision-making.',
+          videoUrl: 'https://drive.google.com/file/d/10Ryaphn9ySxht_kECGzmChPkgZ-6kOGh/preview',
+        },
+      ],
       testimonialIndex: 1,
-      cardTestimonials: Array(16).fill({
-        username: 'Neo Amadi',
-        rating: 4,
-        text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magnal aliquyam erat, sed diam voluptua.',
-      }),
+      cardTestimonials: [
+        {
+          username: 'Ogeh AjiriOghene',
+          rating: 5,
+          text: 'This tool will empower the Ministry and its partners to make faster, smarter decisions. It is a critical step in achieving Universal Health Coverage goals.',
+        },
+        {
+          username: 'Caleb Aromeh',
+          rating: 5,
+          text: 'I have been using the MSDAT for over 6 years. I discovered the platform at a partners meeting organized by FMoH sometime in 2018. The MSDAT platform has enabled me to visualize health data from multiple sources, including routine data, surveys, and global estimates providing a comprehensive view of health indicators.',
+        },
+        {
+          username: 'Mamman Jepther Lere',
+          rating: 5,
+          text: 'The dashboard is considered very useful for health professionals as it provides a unified platform for data. It helps align stakeholders around a single "source of truth," reducing data fragmentation and improving coordination in health planning and program implementation. This centralisation increases confidence in data-driven decision-making.',
+        },
+      ],
       viewLength: 9,
       form: {},
       validationMsg: '',

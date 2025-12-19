@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 <template>
-  <div class="iddc_wrapper confidenceRange_Intro position-relative">
+  <div class="iddc_wrapper confidenceRange_Intro position-relative" id="indicatorComparisonChart">
     <base-overlay :show="loading || notShow">
       <!-- BASE SUBCARD FOR INDICATORS WITH CONFIDENCE RANGE -->
       <base-sub-card
@@ -22,13 +22,21 @@
         v-if="Object.keys(values).length && dataSourcesOptions.length === 0"
       >
         <template #title>
-          <p v-if="hasOneDatasource" class="work-sans mb-0 line-height">
-            Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
-          </p>
-          <p v-else class="work-sans mb-0 line-height">
-            Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
-            {{ values.indicator.short_name }}) across different data sources.
-          </p>
+          <div class="w-100 d-flex justify-content-between align-items-center">
+            <p v-if="hasOneDatasource" class="work-sans mb-0 line-height">
+              Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
+            </p>
+            <p v-else class="work-sans mb-0 line-height">
+              Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
+              {{ values.indicator.short_name }}) across different data sources.
+            </p>
+            <div class="summary-btn"
+                 @click.prevent="openSmartNarrative"
+                 title="Smart Summary"
+            >
+              <img src="@/assets/icons/smart-narrative-icon.svg" alt="Smart Summary" class="smart-narrative-icon" />
+            </div>
+          </div>
         </template>
         <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="false" :categoryLabel="'Datasources'" v-if="!notShow" />
       </base-sub-card>
@@ -53,13 +61,21 @@
         v-if="Object.keys(values).length && dataSourcesOptions.length !== 0"
       >
         <template #title>
-          <p v-if="ChartOptions.series.length === 1" class="work-sans mb-0 line-height">
-            Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
-          </p>
-          <p v-else class="work-sans mb-0 line-height">
-            Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
-            {{ values.indicator.short_name }}) across different data sources.
-          </p>
+          <div class="w-100 d-flex justify-content-between align-items-center">
+            <p v-if="ChartOptions.series.length === 1" class="work-sans mb-0 line-height">
+              Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
+            </p>
+            <p v-else class="work-sans mb-0 line-height">
+              Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
+              {{ values.indicator.short_name }}) across different data sources.
+            </p>
+            <div class="summary-btn"
+                 @click.prevent="openSmartNarrative"
+                 title="Smart Summary"
+            >
+              <img src="@/assets/icons/smart-narrative-icon.svg" alt="Smart Summary" class="smart-narrative-icon" />
+            </div>
+          </div>
         </template>
 
         <!-- refresh button to show all datasources in the chart -->
@@ -82,6 +98,12 @@
       </base-sub-card>
 
     </base-overlay>
+    <SmartNarrativeModal
+      :show="showSmartNarrative"
+      :values="values"
+      :chartImage="capturedChartImage"
+      @close="showSmartNarrative = false"
+    />
   </div>
 </template>
 
@@ -94,11 +116,14 @@ import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
+import SmartNarrativeModal from './SmartNarrativeModal.vue';
+import html2canvas from 'html2canvas';
 
 export default {
   mixins: [chartDownload, mixin, formatter, controlSetup],
   components: {
     BarChart,
+    SmartNarrativeModal,
   },
   data() {
     return {
@@ -113,6 +138,8 @@ export default {
       selectDataSource: null,
       showPopUp: false,
       hasOneDatasource: false,
+      showSmartNarrative: false,
+      capturedChartImage: null,
     };
   },
   props: {
@@ -247,6 +274,51 @@ export default {
     },
   },
   methods: {
+    async openSmartNarrative() {
+      // Show modal immediately - image capture happens in background
+      this.showSmartNarrative = true;
+      // Capture image asynchronously
+      this.captureChartImage().then(base64 => {
+        this.capturedChartImage = base64;
+      });
+    },
+    async captureChartImage() {
+      try {
+        const chart = this.$refs.BaseChart?.$refs.lineCharts?.chart;
+        if (!chart) return null;
+        
+        const svg = chart.getSVG();
+        const base64 = await this.svgToPng(svg);
+        console.log('IndicatorComparisonChart Image Base64:', base64.substring(0, 100) + '...');
+        return base64;
+      } catch (e) {
+        console.error('Failed to capture chart image', e);
+        return null;
+      }
+    },
+    svgToPng(svg) {
+      return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        const svgData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+        
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          // Fill white background
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+          resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = (e) => {
+            console.error('SVG to PNG conversion failed', e);
+            reject(e);
+        };
+        img.src = svgData;
+      });
+    },
     /**
      * @typedef {Object} HighChartObject
      * @property {Array} seriesArray - the seriesArray for the HighChart Series Options
@@ -950,5 +1022,32 @@ div.iddc_wrapper {
 }
 .pop-up h3:hover {
   color: #00ac40;
+}
+
+.summary-btn {
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #b3b3b3;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 0 5px;
+
+  &:hover {
+    border: 1px solid #348481;
+  }
+
+  .smart-narrative-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  &:has(.smart-narrative-icon) {
+    border: none;
+    width: auto;
+    height: auto;
+  }
 }
 </style>
