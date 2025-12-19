@@ -271,9 +271,9 @@ export default {
       try {
         const compiledData = await SmartAnalysisDataService.compileAnalysisData(this.values);
         
-        console.log('--- SMART NARRATIVE PAYLOAD ---');
-        console.log(JSON.stringify(compiledData, null, 2));
-        console.log('-------------------------------');
+        // console.log('--- SMART NARRATIVE PAYLOAD ---');
+        // console.log(JSON.stringify(compiledData, null, 2));
+        // console.log('-------------------------------');
 
         const result = await analysisService.generateChartAnalysis(
           this.values.indicator, 
