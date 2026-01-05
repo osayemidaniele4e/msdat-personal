@@ -5,7 +5,7 @@ export default {
     };
   },
   methods: {
-    // Method to update route parameters
+    // Method to update route parameter
     updateParams() {
       const url = new URL(window.location.href);
       if (url.searchParams.has('section')) {

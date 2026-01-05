@@ -57,17 +57,19 @@ export default {
     showLessIndicator() {
       return this.dlIndicator.slice(0, this.showNumberCount);
     },
+    dataSourceIndicatorMap() {
+      const map = new Set();
+      if (this.dlDataSourceSpecificIndicator) {
+        this.dlDataSourceSpecificIndicator.forEach((item) => {
+          map.add(`${item.indicator}-${item.datasource}`);
+        });
+      }
+      return map;
+    },
   },
   methods: {
     indicatorDataSourceAvailable(indicatorId, dataSourceId) {
-      const result = this.dlGetDataSourceSpecificIndicator({
-        indicator: indicatorId,
-        datasource: dataSourceId,
-      });
-      if (result.length > 0) {
-        return true;
-      }
-      return false;
+      return this.dataSourceIndicatorMap.has(`${indicatorId}-${dataSourceId}`);
     },
     toggleShowMore() {
       if (this.showNumberCount === 10) {

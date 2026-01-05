@@ -8,10 +8,31 @@ export default {
   },
   lang: {
     noData: 'No states data to display',
+    contextButtonTitle: 'Download',
+  },
+  navigation: {
+    buttonOptions: {
+      symbolSize: 14,
+    },
   },
   exporting: {
     enabled: true,
+    buttons: {
+      contextButton: {
+        symbol: 'url(/download-icon.svg)',
+        title: 'Download',
+        width: 28,
+        height: 28,
+        symbolSize: 20,
+        symbolX: 20,
+        symbolY: 20,
+      },
+    },
     chartOptions: {
+      chart: {
+        width: 1200,
+        height: 800,
+      },
       title: {
         text: '',
         x: -20,
@@ -79,7 +100,7 @@ export default {
         enabled: true,
         formatter() {
           if (this.point.value) {
-            return this.point.name;
+            return `${this.point.name} <br/> ${this.point.value}`;
           }
           return this.point.name;
         },
@@ -87,6 +108,7 @@ export default {
           fontSize: '10px',
           fontFamily: '"Work Sans", sans-serif',
           fontWeight: 'normal',
+          textAlign: 'center',
         },
         // allowOverlap: false
       },

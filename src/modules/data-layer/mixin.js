@@ -1,7 +1,5 @@
 import { createNamespacedHelpers } from 'vuex';
-import {
-  filter, omit, matches, isObject,
-} from 'lodash';
+import { filter, omit, matches, isObject } from 'lodash';
 import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
@@ -75,6 +73,12 @@ export default {
           value_type: 'Denominator',
           created_at: '2021-07-02T08:56:10.401735Z',
           updated_at: '2021-07-02T08:56:10.401798Z',
+        },
+        {
+          id: 8,
+          value_type: 'Report',
+          created_at: '2025-10-17T03:33:55.266612Z',
+          updated_at: '2025-10-17T03:33:55.266625Z',
         },
       ],
     };
@@ -152,6 +156,9 @@ export default {
         const { location } = query;
         const baseQuery = omit(query, ['location']);
         const locationValues = this.dlGetLocation(location);
+
+        console.log(locationValues, '@@<HHH>@@');
+
         const locationID = locationValues.map((item) => item.id);
         // Map each location ID to an API call
         const apiCalls = locationID.map(async (locationSID) => {
@@ -284,6 +291,7 @@ export default {
       const datasourceId = value || 1;
       const { data } = await apiServices.getDataSourceIndicators(datasourceId);
       const sourcesAvailable = data.indicators;
+
       if (sourcesAvailable.length <= 0) {
         return [];
       }

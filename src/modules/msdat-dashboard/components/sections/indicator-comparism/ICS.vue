@@ -37,15 +37,20 @@
         <template #title>
           <p class="work-sans mb-0 line-height">
             Comparison of <b>selected indicators</b> according to the
-            <b> {{ values.datasource.datasource }} </b> across {{ values.compareBy.name }} in
+            <b> {{ values.datasource.datasource }} </b> acrossX {{ values.compareBy.name }} in
             <b> {{ values.location.name }} </b>
           </p>
         </template>
-        <BarChart ref="BaseChart" :title="title" 
-        :categoryLabel="'Indicators'":chartOptions="chartOptions" />
+        <BarChart
+          ref="BaseChart"
+          :title="title"
+          :categoryLabel="'Indicators'"
+          :chartOptions="chartOptions"
+        />
       </base-sub-card>
-    </base-overlay>    <!-- Display 'no_data' block when there's no data and we're not loading -->
-    <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
+    </base-overlay>
+    <!-- Display 'no_data' block when there's no data and we're not loading -->
+    <!-- <div v-if="!loading && !checkData() && validateRequiredValues(values)" class="no_data">
       <img
         :src="require('@/assets/no-data/No_Available_Data.svg')"
         alt="no data"
@@ -53,6 +58,11 @@
         height="auto"
         width="240px"
       />
+    </div>
+    -->
+    <div v-if="!loading && filteredIndicators.length > 0" class="no_ind_data">
+      <!--list to present indicators without available data -->
+      <span>Data not available for one or more selected filters</span>
     </div>
     <!-- Initial state message -->
     <div v-if="!loading && !validateRequiredValues(values)" class="no_data">
@@ -62,12 +72,14 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
+import { mapMutations, mapActions, mapGetters } from 'vuex';
 import moment from 'moment';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
 import chartDownload from '../../../mixins/chart_download';
+import apiServices from '@/modules/data-layer/services/ApiServices';
+import { groupIndicator } from '@/util/helper';
 
 export default {
   name: 'ICS',
@@ -82,6 +94,7 @@ export default {
       dataSeries: [],
       loading: false,
       chartOptions: {},
+      datasources: [],
     };
   },
 
@@ -107,9 +120,46 @@ export default {
   //     this.chartOptions.series.push(dataSeries);
   //   },
   // },
+  computed: {
+    ...mapGetters('MSDAT_STORE', ['getIDCDatasources', 'getConfigObject']),
+
+    filteredIndicators() {
+      // Check if this.values.indicator is an array before using filter
+      if (Array.isArray(this.values.indicator)) {
+        return this.values.indicator.filter((indicator) => !this.hasDataForIndicator(indicator));
+      }
+      // Handle the case when this.values.indicator is not an array
+      // console.error('Indicator is not an array:', this.values.indicator);
+      return [];
+    },
+  },
   methods: {
     ...mapActions('MSDAT_STORE', ['SET_CONTROL_OPTIONS']),
-    ...mapMutations('MSDAT_STORE', ['TOGGLE_VISIBILITY', 'SETUP_CONTROL_OPTIONS1']),
+    ...mapMutations('MSDAT_STORE', [
+      'TOGGLE_VISIBILITY',
+      'SETUP_CONTROL_OPTIONS1',
+      'UPDATE_IDC_DATASOURCEs',
+      'UPDATE_IDC_INDICATORS',
+    ]),
+
+    hasDataForIndicator(indicator) {
+      // Check if chartOptions and its series are defined
+      if (this.chartOptions?.series) {
+        // Exclude "Skilled birth attendance" from the check it is considered to have data
+        if (indicator.short_name.toLowerCase() === 'skilled birth attendance') {
+          return true;
+        }
+        // Find the series corresponding to the indicator
+        const indicatorSeries = this.chartOptions.series.find((series) =>
+          series.name.toLowerCase().includes(indicator.full_name.toLowerCase())
+        );
+
+        // Check if the indicatorSeries has data points
+        return indicatorSeries?.data && indicatorSeries.data.length > 0;
+      }
+      // Return false if chartOptions or series are not defined
+      return false;
+    },
     checkData() {
       // Check if we have any series data
       if (!this.chartOptions?.series?.length) {
@@ -118,6 +168,57 @@ export default {
 
       // Check if any series has data
       return this.chartOptions.series.some((series) => series.data && series.data.length > 0);
+    },
+
+    getDatasourceById(data) {
+      const found = this.datasources.find((item) => item.id === data.datasource);
+      return found;
+    },
+
+    async dashboardIndicators() {
+      // const dashboardID = localStorage.getItem('activeDashboardID')
+      // const response = await apiServices.getDashboardIndicators(dashboardID);
+      console.log(this.dlDashboardDataSource, 'response');
+      // this.indicators = response.data.indicators
+    },
+
+    async getDatasourcesObj() {
+      const datasourcesIDs = this.getConfigObject.dataSources;
+
+      const requests = datasourcesIDs.map((id) => apiServices.getSingleDataSourceObj(id));
+
+      const responses = await Promise.all(requests);
+
+      // Extract `data` from each response
+      const results = responses.map((res) => res.data);
+      this.UPDATE_IDC_DATASOURCEs(results);
+    },
+
+    async getAllIndicators() {
+      const dashboardID = localStorage.getItem('activeDashboardID');
+      const response = await apiServices.getDashboardIndicator(dashboardID);
+
+      const indicators = response.data;
+
+      const formattedData = groupIndicator(indicators, 'program_area');
+      await this.UPDATE_IDC_INDICATORS(formattedData);
+    },
+
+    async fetchAllDataSources() {
+      try {
+        const requests = this.dlDashboardDataSource.map((id) =>
+          apiServices.getSingleDataSourceObj(id)
+        );
+        const responses = await Promise.all(requests);
+
+        // Extract data from each response
+        this.datasources = responses.map((res) => res.data);
+
+        // console.log('✅ DataSources:', data);
+        // return data;
+      } catch (err) {
+        console.error('❌ Error fetching data sources:', err);
+      }
     },
     displayFactorSign(factor) {
       const dpfactor = factor;
@@ -141,7 +242,10 @@ export default {
         },
         series: [],
         yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
         exporting: {
+          ...defaultOptions.exporting,
           filename: `datasource-${values.datasource.datasource}`,
         },
         plotOptions: {
@@ -160,17 +264,19 @@ export default {
       } else {
         indicators = values.indicator;
       }
-      const dataPromises = indicators?.map((item) => this.dlQuery({
-        indicator: item.id,
-        datasource: values.datasource.id,
-        period: values.year,
-        location: {
-          level: 3,
-        },
-      })
+      const dataPromises = indicators?.map((item) =>
+        this.dlQuery({
+          indicator: item.id,
+          datasource: values.datasource.id,
+          period: values.year,
+          location: {
+            level: 3,
+          },
+        })
       );
 
       const results = await Promise.all(dataPromises);
+
       /**
        * Map the display factors for the different indicators
        */
@@ -227,7 +333,227 @@ export default {
             },
           },
           // name: indicator.full_name,
-          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
+          name: `${getIndicatorById(data[0])?.full_name} ${
+            displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+          }`,
+          data: toHighChartFormat,
+        };
+        if (i === 0) highChartOptions.yAxis.push(yAxis);
+        highChartOptions.series.push(obj);
+      }
+      return highChartOptions;
+    },
+
+    async plotForNational(values) {
+      const highChartOptions = {
+        chart: {
+          type: 'column',
+        },
+        series: [],
+        yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
+        exporting: {
+          ...defaultOptions.exporting,
+          filename: `datasource-${values.datasource.datasource}`,
+        },
+        plotOptions: {
+          series: {
+            grouping: true,
+            pointWidth: 10,
+            connectNulls: false,
+            pointPlacement: 'between',
+            // borderWidth: 0,
+          },
+        },
+      };
+      let indicators = '';
+      if (!Array.isArray(values.indicator)) {
+        indicators = [values.indicator];
+      } else {
+        indicators = values.indicator;
+      }
+      const dataPromises = indicators?.map((item) =>
+        this.dlQuery({
+          indicator: item.id,
+          datasource: values.datasource.id,
+          period: values.year,
+          location: {
+            level: 1,
+          },
+        })
+      );
+
+      const results = await Promise.all(dataPromises);
+
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        yTitles.push(displayFactor.display_factor);
+      }
+
+      for (let i = 0; i < results.length; i += 1) {
+        // formate result to HighChart Format
+        const indicator = indicators[i];
+        const data = results[i];
+        const toHighChartFormat = data?.map((item) => [
+          this.dlGetLocation(item.location).name,
+          parseFloat(item.value),
+        ]);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        const yAxis = {
+          yAxis: [
+            {
+              plotLines: [],
+              labels: {
+                style: {
+                  fontFamily: 'Work Sans, sans-serif',
+                  fontSize: '11px',
+                },
+              },
+              title: {
+                style: {
+                  ...defaultOptions.yAxis.title.style,
+                  fontSize: '10px',
+                },
+              },
+            },
+          ],
+          title: {
+            ...defaultOptions.yAxis.title,
+            // text: displayFactor.display_factor,
+            text: [...new Set(yTitles)].join(' | '),
+          },
+          opposite: !!i, // this will become either true of false as 0 or 1
+        };
+
+        const obj = {
+          // color: this.color[i],
+          dataLabels: {
+            enabled: true,
+            format: `{y}${this.displayFactorSign(displayFactor.display_factor)}`,
+            style: {
+              ...defaultOptions.yAxis.title.style,
+              fontSize: '10px',
+            },
+          },
+          // name: indicator.full_name,
+          name: `${indicator.full_name} ${
+            displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+          }`,
+          data: toHighChartFormat,
+        };
+        if (i === 0) highChartOptions.yAxis.push(yAxis);
+        highChartOptions.series.push(obj);
+      }
+      return highChartOptions;
+    },
+
+    async plotForZonal(values) {
+      const highChartOptions = {
+        chart: {
+          type: 'column',
+        },
+        series: [],
+        yAxis: [],
+        lang: defaultOptions.lang,
+        navigation: defaultOptions.navigation,
+        exporting: {
+          ...defaultOptions.exporting,
+          filename: `datasource-${values.datasource.datasource}`,
+        },
+        plotOptions: {
+          series: {
+            grouping: true,
+            pointWidth: 10,
+            connectNulls: false,
+            pointPlacement: 'between',
+            // borderWidth: 0,
+          },
+        },
+      };
+      let indicators = '';
+      if (!Array.isArray(values.indicator)) {
+        indicators = [values.indicator];
+      } else {
+        indicators = values.indicator;
+      }
+      const dataPromises = indicators?.map((item) =>
+        this.dlQuery({
+          indicator: item.id,
+          datasource: values.datasource.id,
+          period: values.year,
+          location: {
+            level: 2,
+          },
+        })
+      );
+
+      const results = await Promise.all(dataPromises);
+
+      /**
+       * Map the display factors for the different indicators
+       */
+      const yTitles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        const indicator = indicators[i];
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        yTitles.push(displayFactor.display_factor);
+      }
+
+      for (let i = 0; i < results.length; i += 1) {
+        // formate result to HighChart Format
+        const indicator = indicators[i];
+        const data = results[i];
+        const toHighChartFormat = data?.map((item) => [
+          this.dlGetLocation(item.location).name,
+          parseFloat(item.value),
+        ]);
+        const displayFactor = this.dlGetFactor(indicator.factor) || { display_factor: '' };
+        const yAxis = {
+          yAxis: [
+            {
+              plotLines: [],
+              labels: {
+                style: {
+                  fontFamily: 'Work Sans, sans-serif',
+                  fontSize: '11px',
+                },
+              },
+              title: {
+                style: {
+                  ...defaultOptions.yAxis.title.style,
+                  fontSize: '10px',
+                },
+              },
+            },
+          ],
+          title: {
+            ...defaultOptions.yAxis.title,
+            // text: displayFactor.display_factor,
+            text: [...new Set(yTitles)].join(' | '),
+          },
+          opposite: !!i, // this will become either true of false as 0 or 1
+        };
+
+        const obj = {
+          // color: this.color[i],
+          dataLabels: {
+            enabled: true,
+            format: `{y}${this.displayFactorSign(displayFactor.display_factor)}`,
+            style: {
+              ...defaultOptions.yAxis.title.style,
+              fontSize: '10px',
+            },
+          },
+          // name: indicator.full_name,
+          name: `${indicator.full_name} ${
+            displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+          }`,
           data: toHighChartFormat,
         };
         if (i === 0) highChartOptions.yAxis.push(yAxis);
@@ -371,11 +697,12 @@ export default {
         indicators = values.indicator;
       }
 
-      const dataPromises = indicators?.map((item) => this.dlQuery({
-        indicator: item.id,
-        datasource: values.datasource.id,
-        location: values.location.id,
-      })
+      const dataPromises = indicators?.map((item) =>
+        this.dlQuery({
+          indicator: item.id,
+          datasource: values.datasource.id,
+          location: values.location.id,
+        })
       );
 
       const results = await Promise.all(dataPromises);
@@ -433,7 +760,9 @@ export default {
             color: this.color[i],
             lineWidth: 3,
             // name: indicator.full_name,
-            name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
+            name: `${indicator.full_name} ${
+              displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+            }`,
             data: formatToHighChartFormat,
           };
           highChartOptions.series.push(obj);
@@ -442,8 +771,8 @@ export default {
         // this functions checks to make years apear from smallest to highest when the first selected indicator
         // year have higher values than that of the second selected indicator
         if (
-          highChartOptions.series.length > 1
-        && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
+          highChartOptions.series.length > 1 &&
+          highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
         ) {
           const temporary = highChartOptions.series[1];
           highChartOptions.series[1] = highChartOptions.series[0];
@@ -455,7 +784,9 @@ export default {
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];
-        const filterOnlyYearlyValues = result.filter((item) => moment(item.period, 'YYYY', true).isValid());
+        const filterOnlyYearlyValues = result.filter((item) =>
+          moment(item.period, 'YYYY', true).isValid()
+        );
         const formatToHighChartFormat = filterOnlyYearlyValues?.map((item) => [
           item.period,
           Number.parseFloat(item.value),
@@ -494,7 +825,9 @@ export default {
           color: this.color[i],
           lineWidth: 3,
           // name: indicator.full_name,
-          name: `${indicator.full_name} ${displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''}`,
+          name: `${indicator.full_name} ${
+            displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
+          }`,
           data: sortTheYear,
         };
         highChartOptions.series.push(obj);
@@ -504,8 +837,8 @@ export default {
       // this functions checks to make years apear from smallest to highest when the first selected indicator
       // year have higher values than that of the second selected indicator
       if (
-        highChartOptions.series.length > 1
-        && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
+        highChartOptions.series.length > 1 &&
+        highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
       ) {
         const temporary = highChartOptions.series[1];
         highChartOptions.series[1] = highChartOptions.series[0];
@@ -515,6 +848,7 @@ export default {
     },
 
     async renderChart(panelValues) {
+
       const { sdg, national } = this.values.target;
       this.chartOptions = {};
       if (panelValues.compareBy.name === 'Period') {
@@ -539,12 +873,35 @@ export default {
           this.toggleNationalTargetLine(national);
         }
       }
+
+      if (panelValues.compareBy.name === 'National') {
+        const highChartOptions = await this.plotForNational(panelValues);
+        this.chartOptions = { ...highChartOptions };
+        if (Object.keys(this.chartOptions).length !== 0) {
+          this.toggleSDGTargetLine(sdg);
+          this.toggleNationalTargetLine(national);
+        }
+      }
+      if (panelValues.compareBy.name === 'Zonal') {
+        const highChartOptions = await this.plotForZonal(panelValues);
+        this.chartOptions = { ...highChartOptions };
+        if (Object.keys(this.chartOptions).length !== 0) {
+          this.toggleSDGTargetLine(sdg);
+          this.toggleNationalTargetLine(national);
+        }
+      }
     },
     validateRequiredValues(values) {
+
       if (!values) return false;
 
-      // Basic validation of values object
-      if (!values.datasource?.id || !values.indicator) return false;
+      // ✅ Accept 0 as a valid datasource ID
+      if (
+        values.datasource?.id === undefined ||
+        values.datasource?.id === null ||
+        !values.indicator
+      )
+        return false;
 
       // For Period comparison
       if (values.compareBy?.name === 'Period' && !values.location?.id) return false;
@@ -560,6 +917,7 @@ export default {
       // If single indicator
       return !!values.indicator.id;
     },
+
     async safeRenderChart(values) {
       if (!this.validateRequiredValues(values)) {
         console.log('Missing required values for chart rendering');
@@ -580,6 +938,7 @@ export default {
     values: {
       immediate: true, // This ensures the watcher runs on component creation
       handler(newValues) {
+
         if (this.validateRequiredValues(newValues)) {
           this.safeRenderChart(newValues);
         }
@@ -601,6 +960,52 @@ export default {
             value: true,
           });
         } else if (data.name === 'State') {
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: true,
+          });
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: false,
+          });
+
+          // get the list of years by datasource
+          const setYearDropdown = await this.setYearDropdown();
+          // period dropdown;
+          this.SET_CONTROL_OPTIONS({
+            panelIndex: 2,
+            controlIndex: 2,
+            values: setYearDropdown,
+          });
+          this.loading = true;
+          await this.renderChart(this.values);
+          this.loading = false;
+        } else if (data.name === 'National') {
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'year',
+            value: true,
+          });
+          this.TOGGLE_VISIBILITY({
+            panelIndex: this.controlIndex,
+            key: 'location',
+            value: false,
+          });
+
+          // get the list of years by datasource
+          const setYearDropdown = await this.setYearDropdown();
+          // period dropdown;
+          this.SET_CONTROL_OPTIONS({
+            panelIndex: 2,
+            controlIndex: 2,
+            values: setYearDropdown,
+          });
+          this.loading = true;
+          await this.renderChart(this.values);
+          this.loading = false;
+        } else if (data.name === 'Zonal') {
           this.TOGGLE_VISIBILITY({
             panelIndex: this.controlIndex,
             key: 'year',
@@ -648,6 +1053,10 @@ export default {
   },
 
   async mounted() {
+    this.getDatasourcesObj();
+    this.getAllIndicators();
+    // console.log(this.defaultDataSourceDropdown, 'this.defaultDataSourceDropdown');
+
     // Initial render if we have the required values
     if (this.validateRequiredValues(this.values)) {
       this.$nextTick(() => {
@@ -659,6 +1068,9 @@ export default {
     } else {
       this.title = ` Comparison Of ${this.values.indicator[0].short_name} and ${this.values.indicator[1].short_name} according to the ${this.values.datasource.datasource} across ${this.values.compareBy.name}s`;
     }
+  },
+  created() {
+    this.fetchAllDataSources();
   },
 };
 </script>
@@ -675,6 +1087,22 @@ div.ics_wrapper {
     align-items: center;
     width: 100%;
     height: 100%;
+  }
+}
+.no_ind_data {
+  position: fixed;
+  top: 280px;
+  right: 110px;
+  padding: 4px 14px;
+  background-color: #ffffff;
+  z-index: 1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  height: fit-content;
+
+  span {
+    font-size: 12px;
+    color: #333333;
   }
 }
 </style>

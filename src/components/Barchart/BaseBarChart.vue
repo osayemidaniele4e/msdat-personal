@@ -62,6 +62,10 @@ export default {
       type: String,
       default: 'Category',
     },
+    watermarkPosition: {
+      type: Object,
+      default: () => ({ x: '10%', y: '10%', textXPercent: 90, textYPercent: 100 }),
+    },
   },
   watch: {
     chartOptions: {
@@ -89,6 +93,12 @@ export default {
         if (this.hasSideControl && this.options.chart) {
           this.options.chart.spacingRight = 30;
           this.options.chart.marginRight = 30;
+        }
+
+        // Set watermark load event for export only
+        if (this.options.exporting && this.options.exporting.chartOptions && this.options.exporting.chartOptions.chart) {
+          if (!this.options.exporting.chartOptions.chart.events) this.options.exporting.chartOptions.chart.events = {};
+          this.options.exporting.chartOptions.chart.events.load = this.getLoadEvent();
         }
 
         // Debounced refresh of data table only when options change (e.g., indicator change)
@@ -137,6 +147,9 @@ export default {
     // Add window resize listener to handle any size changes
     window.addEventListener('resize', this.handleResize);
     
+    // Add fullscreen change listener
+    window.addEventListener('fullscreenchange', this.handleFullscreenChange);
+    
     // Use a MutationObserver to detect DOM changes that might affect the chart
     this.setupResizeObserver();
 
@@ -146,6 +159,7 @@ export default {
   beforeDestroy() {
     // Clean up event listeners
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('fullscreenchange', this.handleFullscreenChange);
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -153,8 +167,41 @@ export default {
   },
   
   methods: {
+    getLoadEvent() {
+      const position = this.watermarkPosition;
+      return function() {
+        this.renderer
+          .image('https://i.imgur.com/yyqklZM.png', 150, 62, 230, 53)
+          .attr({
+            zIndex: 1000,
+            x: position.x || '10%',
+            y: position.y || '10%',
+            width: '116',
+            height: '25',
+          })
+          .add();
+        const xPercentage = position.textXPercent || 90;
+        const yPercentage = position.textYPercent || 120;
+
+        const chartWidth = this.plotWidth;
+        const chartHeight = this.plotHeight;
+
+        const x = (chartWidth / 100) * xPercentage;
+        const y = (chartHeight / 100) * yPercentage;
+
+        this.renderer
+          .text('Source: MSDAT', x, y)
+          .css({
+            color: 'rgba(0, 0, 0, 0.3)',
+            fontSize: '16px',
+            fontFamily: '"Work Sans", sans-serif',
+            fontWeight: 'normal',
+            textAlign: 'right',
+          })
+          .add();
+      };
+    },
     removeExistingDataTable(chart) {
-      if (!chart) return;
       const parent = chart && chart.renderTo && chart.renderTo.parentNode;
       if (!parent) return;
       // Remove by ID if present
@@ -348,6 +395,18 @@ export default {
     
     handleResize() {
   this.forceChartReflow();
+    },
+    
+    handleFullscreenChange() {
+      setTimeout(() => {
+        if (!document.fullscreenElement) {
+          // Exited fullscreen, reset chart size to auto
+          const chart = this.$refs.lineCharts && this.$refs.lineCharts.chart;
+          if (chart) {
+            chart.setSize(null, null, false);
+          }
+        }
+      }, 100);
     },
     
     setupResizeObserver() {

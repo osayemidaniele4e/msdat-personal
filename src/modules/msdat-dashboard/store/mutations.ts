@@ -150,7 +150,6 @@ const mutations: MutationTree<State> = {
   //   }
   // },
   SET_DATASET_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
-    console.log(state.controlConfig, 'Abeg 00');
 
     const item = state.controlConfig?.[3];
     if (item && item.payload) {
@@ -327,6 +326,18 @@ const mutations: MutationTree<State> = {
         }
       }
     });
+  },
+
+  UPDATE_IDC_DATASOURCEs: (state, payload) => {
+    console.log(payload, '@@@Payload');
+
+   state.controlConfig[2].setup[1].options = payload
+  },
+
+   UPDATE_IDC_INDICATORS: (state, payload) => {
+    console.log(payload, '@@@Payload');
+
+   state.controlConfig[2].setup[5].options = payload
   },
 
   SET_CONFIGURATIONS: (state, payload) => {

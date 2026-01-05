@@ -77,7 +77,7 @@
               v-if="$route.params.name === 'Health_Outcomes_and_Service_Coverage' && hasNhmis"
               class=""
             >
-            <!-- <pre>{{ nhmisMonthData }}</pre> -->
+              <!-- <pre>{{ nhmisMonthData }}</pre> -->
               <!-- input this with NHMIS data -->
               <!-- conditonal statement checking if 'NHMIS monthly data' for the respective indicator is present -->
               <!-- <div v-if="nhmisMonthData[0]" class="nhmis-monthly tableRowBg2 ">
@@ -89,7 +89,12 @@
                 }}</span>
               </div> -->
 
-              <td class="text-center tableRowBg2 p-2" v-for="(dt, index) in source" :key="index" scope="col">
+              <td
+                class="text-center tableRowBg2 p-2"
+                v-for="(dt, index) in source"
+                :key="index"
+                scope="col"
+              >
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
                   :dataColors="' '"
@@ -97,7 +102,12 @@
               </td>
             </template>
             <template #default v-else>
-              <td class="text-center tableRowBg p-2" v-for="(dt, index) in source" :key="index" scope="col">
+              <td
+                class="text-center tableRowBg p-2"
+                v-for="(dt, index) in source"
+                :key="index"
+                scope="col"
+              >
                 <!-- percentage values and year -->
                 <TableDataCell
                   :cellData="getValueForColumn(dataArray[0].values, dt)"
@@ -358,7 +368,9 @@ export default {
      *
      */
     getDataSourcesClassification() {
-      const countClassification = this.dataArray.map((e) => e.values.map((et) => et.classification));
+      const countClassification = this.dataArray.map((e) =>
+        e.values.map((et) => et.classification)
+      );
       const counted = countClassification.map((e) => countBy(e));
       const classic = {};
       counted.forEach((e) => {
@@ -376,15 +388,18 @@ export default {
       });
       // Order classification following the Order
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
+      
       const resultSorted = result.sort(
-        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
+        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0])
       );
       // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
+     
+      
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
-        this.classify_nm[0][1] += 1;
+        // this.classify_nm[0][1] += 1;
       }
     },
 
@@ -403,12 +418,18 @@ export default {
       // console.log(allAvailableSources, 'this.dataArray');
       // add this to use only datasource on the dropdown for the table component
       /**
-       * order AvailableSources according to the OrderSourceBy Array;
+       * order AvailableSources according to the classification order: Routine, Survey, Estimate
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) => this.orderSourceBy.indexOf(a.datasource) - this.orderSourceBy.indexOf(b?.datasource),
+        (a, b) =>
+          this.classificationOrder.indexOf(a.classification) -
+          this.classificationOrder.indexOf(b.classification)
       );
-      this.source = sortedSource;
+      const reordered = [
+        ...sortedSource.filter((item) => item.id === 30),
+        ...sortedSource.filter((item) => item.id !== 30),
+      ];
+      this.source = reordered;
 
       // checking if it has NHMIS as a datasource
       if (this.source.some((item) => item.id === 6)) {
@@ -456,9 +477,7 @@ export default {
      */
     async getNumDenumData() {
       if (this.values?.datasource.id !== undefined) {
-        const {
-          indicator, year, location, datasource,
-        } = this.values;
+        const { indicator, year, location, datasource } = this.values;
 
         const numeratorData = await this.dlQuery({
           datasource: datasource.id,
@@ -507,11 +526,13 @@ export default {
     // use the function similar
 
     sortByIndicatorOrder(referenceArray, targetArray) {
-    // Extract the order of indicators from the reference array
+      // Extract the order of indicators from the reference array
       const indicatorOrder = referenceArray.map((item) => item.id);
 
       // Sort the target array based on the extracted order
-      return targetArray.sort((a, b) => indicatorOrder.indexOf(a.indicator) - indicatorOrder.indexOf(b.indicator));
+      return targetArray.sort(
+        (a, b) => indicatorOrder.indexOf(a.indicator) - indicatorOrder.indexOf(b.indicator)
+      );
     },
     async getNhmisMonthly() {
       this.indicators = [];
@@ -535,18 +556,17 @@ export default {
           const updatedData = data
             ? { ...data, value: parseFloat(data.value).toFixed(1) }
             : {
-              indicator: el.indicator,
-              value: null,
-            };
+                indicator: el.indicator,
+                value: null,
+              };
 
           // this.nhmisMonthData.unshift(updatedData);
           tempData.push(updatedData);
-        }),
+        })
       );
       const sortedArray = this.sortByIndicatorOrder(temp, tempData);
       this.nhmisMonthData = sortedArray;
     },
-
   },
   watch: {
     dataArray: {
@@ -793,5 +813,4 @@ table.table {
   color: white;
   /* padding: 30px 0; */
 }
-
 </style>

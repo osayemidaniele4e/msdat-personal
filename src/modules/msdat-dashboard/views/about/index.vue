@@ -71,12 +71,6 @@
           <b-spinner variant="success" label="Loading..."></b-spinner>
         </div> -->
         <IndicatorPageFunc />
-        <div class="chat-section mt-4">
-          <ChatBot ref="chatBot" />          <button class="chat-button" @click="$refs.chatBot.toggleChat()">
-            <img src="./assets/ai-launcher.svg" alt="AI" class="ai-icon">
-            <span>Metadata Chatbot</span>
-          </button>
-        </div>
       </div>
 
       <br /><br />
@@ -84,11 +78,10 @@
       <div class="framework-wrapper">
         <div class="image-container">
           <section>
-          <div id="logical-framework">
-            <img src="./assets/Framework.png" class="logical-framework-img" />
-
-          </div>
-        </section>
+            <div id="logical-framework">
+              <img src="./assets/Framework.png" class="logical-framework-img" />
+            </div>
+          </section>
         </div>
       </div>
 
@@ -127,7 +120,6 @@
       Statistics (DHPRS)
     </footer>
     <the-footer />
-    <ChatBot />
   </div>
 </template>
 
@@ -135,7 +127,6 @@
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import { groupIndicator } from '@/util/helper';
 import DataLayerMixin from '@/modules/data-layer/mixin';
-import ChatBot from '@/modules/msdat-dashboard/components/ChatBot.vue';
 import theHeader from './layout/theHeader.vue';
 import theFooter from './layout/theFooter.vue';
 import DataSourceFunc from './components/AboutPageDataSource.vue';
@@ -146,6 +137,24 @@ import Testimonials from './components/Testimonials.vue';
 const macBookImg = require('./assets/About-Dashboard-image.svg');
 
 export default {
+  // vue-meta block
+  metaInfo: {
+    title: 'About Us',
+    meta: [
+      {
+        name: 'description',
+        content: 'Learn more about our company and what we do.',
+      },
+      {
+        property: 'og:title',
+        content: 'About Us — My Vue App',
+      },
+      {
+        property: 'og:description',
+        content: 'Discover our story, mission and values.',
+      },
+    ],
+  },
   components: {
     theHeader,
     theFooter,
@@ -153,7 +162,6 @@ export default {
     IndicatorPageFunc,
     AvailableDataPageFunc,
     Testimonials,
-    ChatBot,
   },
   mixins: [DataLayerMixin],
   data() {
@@ -309,6 +317,8 @@ export default {
     // Check if data is already loaded
     if (!this.dlIndicator || this.dlIndicator.length === 0) {
       await this.initializeDataLayer();
+    } else {
+      this.isLoading = false;
     }
 
     this.indicators = this.dlIndicator ? groupIndicator(this.dlIndicator, 'program_area') : [];
@@ -411,8 +421,8 @@ $msdat-darkgrey: #dedede;
   justify-content: center;
 }
 
-.image-container{
-   width: 95%;
+.image-container {
+  width: 95%;
 }
 
 #logical-framework {

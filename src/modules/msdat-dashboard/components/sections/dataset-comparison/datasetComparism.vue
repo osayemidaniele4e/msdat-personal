@@ -85,6 +85,7 @@ import { uniq } from 'lodash';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import { isDataYearly } from '@/util/helper';
 import BaseChart from '../../../../../components/Barchart/BaseBarChart.vue';
+import defaultOptions from '../../../../../components/Barchart/defaultOption';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 import chartDownload from '../../../mixins/chart_download';
 
@@ -263,6 +264,11 @@ export default {
       }
       return Math.round(number);
     },
+    formatYear(option) {
+      const year = parseInt(option, 10);
+      const currentYear = new Date().getFullYear();
+      return year > currentYear ? `${option} (P)` : option;
+    },
     async setUpDataSourceNYearDropdown() {
       const multiSelectGroup = [];
       const dataSources = this.dlGetDashboardDataSource();
@@ -288,7 +294,7 @@ export default {
 
           const mapToDropdown = sortedDates.map((item) => ({
             id: `${dataSourceObject.id}-${item}`,
-            item: `${dataSourceObject.datasource} ${item}`,
+            item: `${dataSourceObject.datasource} ${this.formatYear(item)}`,
           }));
 
           multiSelectGroup.push({
@@ -297,6 +303,8 @@ export default {
           });
         }
       }
+
+        console.log(multiSelectGroup, 'multiSelectGroup@ 3');
       return multiSelectGroup;
     },
   },
@@ -425,7 +433,10 @@ export default {
               },
             },
           },
+          lang: defaultOptions.lang,
+          navigation: defaultOptions.navigation,
           exporting: {
+            ...defaultOptions.exporting,
             filename: `indicator-${this.values.indicator.full_name}`,
           },
           colors: ['#17606B', '#E85D58', '#58B74E'],

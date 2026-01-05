@@ -105,20 +105,24 @@ export default class DataLayer {
       this.setDataInStore(data[7].data.results, DATA_SOURCE);
       this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
 
-      const dashboardIndicators = await apiServices.getDashboardIndicators(this.dashboardID);
+      let filteredIndicatorIDArray = [];
 
-      const dashboardIndicatorIDs = dashboardIndicators.data.indicators.map((item) => item.id);
+      if (this.dashboardID) {
+        const dashboardIndicators = await apiServices.getDashboardIndicators(this.dashboardID);
 
-      const filteredIndicatorIDArray = dashboardIndicatorIDs.filter(
-        (value) => value !== undefined && !Number.isNaN(value),
-      );
+        const dashboardIndicatorIDs = dashboardIndicators.data.indicators.map((item) => item.id);
 
-      if (filteredIndicatorIDArray.length !== 0) {
-        // debugger;
-        this.storeTimestampInLocal();
+        filteredIndicatorIDArray = dashboardIndicatorIDs.filter(
+          (value) => value !== undefined && !Number.isNaN(value)
+        );
 
-        await this.setAvailableDashboardIndicator();
-        // await this.initDataWithYears(this.defaultIndicators);
+        if (filteredIndicatorIDArray.length !== 0) {
+          // debugger;
+          this.storeTimestampInLocal();
+
+          await this.setAvailableDashboardIndicator();
+          // await this.initDataWithYears(this.defaultIndicators);
+        }
       }
       // await this.initOtherTablesFromDB();
       setTimeout(async () => {
@@ -220,9 +224,9 @@ export default class DataLayer {
    */
   async setAvailableDashboardIndicator() {
     // const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
-    const response = await apiServices.getDashboardIndicators(this.dashboardID);
+    const response = await apiServices.fetchAllIndicators()
 
-    const dashboardIndicatorIDs = response.data.indicators.map((item) => item.id);
+    const dashboardIndicatorIDs = response.data.results.map((item) => item.id);
 
     const dashboardIndicators = dashboardIndicatorIDs.filter((item) => this.indicatorList.includes(item));
 

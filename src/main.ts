@@ -21,6 +21,7 @@ import store from './store';
 import 'regenerator-runtime';
 import './plugins/veevalidate';
 import './assets/styles/fonts.css';
+import VueMeta from "vue-meta";
 
 
 const gauthOption = {
@@ -39,6 +40,7 @@ Vue.use(VueSocialSharing);
 export const eventBus = new Vue();
 
 Vue.use(VueFriendlyIframe);
+Vue.use(VueMeta);
 // import Vue from 'vue';
 Vue.use(VueSweetalert2);
 Vue.use(DataLayer, {

@@ -156,6 +156,22 @@ export default {
     filteredIndicators(classification) {
       return this.dataSources.filter((indicator) => indicator.classification === classification);
     },
+    async initializeData() {
+      this.dataSources = await groupIndicator(this.dlDatasource, 'classification');
+
+      this.indicators = await groupIndicator(this.dlIndicator, 'program_area');
+
+      if (this.dataSources.length > 0) {
+        // Set the selectedDatasource to the first datasource in the dataSources array
+        this.selectedDatasource = this.dataSources[0].indicators[0].datasource;
+        // Call the setSelected method with the first indicator as an argument
+        this.setSelected(this.dataSources[0].indicators[0]);
+      }
+
+      this.filterClassifications();
+
+      console.log('datasources', this.dataSources);
+    },
   },
   computed: {
     filteredFullNames() {
@@ -166,22 +182,23 @@ export default {
     //   return this.dataSources.filter(indicator => indicator.classification === classification);
     // },
   },
+  watch: {
+    dlDatasource: {
+      handler() {
+        this.initializeData();
+      },
+      deep: true,
+    },
+    dlIndicator: {
+      handler() {
+        this.initializeData();
+      },
+      deep: true,
+    },
+  },
 
   async mounted() {
-    this.dataSources = await groupIndicator(this.dlDatasource, 'classification');
-
-    this.indicators = await groupIndicator(this.dlIndicator, 'program_area');
-
-    if (this.dataSources.length > 0) {
-      // Set the selectedDatasource to the first datasource in the dataSources array
-      this.selectedDatasource = this.dataSources[0].indicators[0].datasource;
-      // Call the setSelected method with the first indicator as an argument
-      this.setSelected(this.dataSources[0].indicators[0]);
-    }
-
-    this.filterClassifications();
-
-    console.log('datasources', this.dataSources);
+    this.initializeData();
   },
 };
 </script>

@@ -13,6 +13,7 @@ import apiServices from '@/modules/data-layer/services/ApiServices';
 // import { time } from 'highcharts';
 import controlSetup from '../../mixins/control-panel-setup';
 import updateQueryParams from './paramsMixin';
+import { groupIndicator } from '@/util/helper';
 // import nhmisMonthlyPeriod from './nhmis-monthly-period.json';
 
 export default {
@@ -69,7 +70,11 @@ export default {
     });
   },
   methods: {
-    ...mapMutations('MSDAT_STORE', ['SETUP_CONTROL_OPTIONS1', 'SET_INDICATOR_COMPARISON_PAYLOAD', 'SET_INDICATOR_DATASOURCES']),
+    ...mapMutations('MSDAT_STORE', [
+      'SETUP_CONTROL_OPTIONS1',
+      'SET_INDICATOR_COMPARISON_PAYLOAD',
+      'SET_INDICATOR_DATASOURCES',
+    ]),
     ...mapActions([
       'SET_INTERACTIONS',
       'GET_INTERACTIONS',
@@ -85,7 +90,7 @@ export default {
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
         this.payload?.datasource?.id,
-        this.payload?.location?.id,
+        this.payload?.location?.id
       );
       return available;
     },
@@ -107,7 +112,7 @@ export default {
       const getFormattedConfig = VueCookies.get('customDashboardConfig');
       if (this.getInternetStatus === true) {
         const data = await apiServices.getDashboard();
-        
+
         this.dashboard = data.data.results.find((item) => item.title === this.$route.meta.title);
       }
       const dashboardName = this.dashboard?.id || getFormattedConfig?.name;
@@ -146,7 +151,7 @@ export default {
         Array.isArray(this.payload?.indicator)
           ? this.payload?.indicator.map((i) => i.id)
           : this.payload?.indicator?.id,
-        this.controlIndex,
+        this.controlIndex
       );
     },
   },
@@ -209,9 +214,10 @@ export default {
                 if (weekB === null) return -1;
                 return 0;
               }),
-
             });
             const availableDS = await this.getDataSourcesFromIndicator(this.payload?.indicator?.id);
+            console.log(availableDS, 'availableDS');
+
             this.SET_INDICATOR_DATASOURCES(availableDS);
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
@@ -227,77 +233,117 @@ export default {
     'payload.datasource': {
       async handler() {
         // new ones
-        const now = new Date();
-        const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+        if (this.payload?.datasource?.id === 0) {
+          const dashboardID = localStorage.getItem('activeDashboardID');
+          console.log(this.payload?.datasource);
+          const response = await apiServices.getDashboardIndicator(dashboardID);
 
-        // Set the total time in minutes for the component data.
-        this.after_time_datasource = totalTimeInMinutes;
+          const indicators = response.data;
 
-        const diff = this.after_time_datasource - this.previous_time_datasource;
+          const formattedData = groupIndicator(indicators, 'program_area');
 
-        // sending to the api
+          console.log(formattedData);
 
-        const timespent = {
-          datasource: this.previous_datasource,
-          timeSpent: diff,
-          user: this.getUser.id,
-        };
-
-        this.SET_DATASOURCE_TIME_SPENT(timespent);
-
-        this.previous_time_datasource = this.after_time_datasource;
-
-        this.previous_datasource = this.payload.datasource;
-        let availableYears;
-        if (this.payload.indicator) {
           if (this.controlIndex === 2) {
-            availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
-          } else {
-            availableYears = await this.getAvailableYears();
-          }
-          await this.SETUP_CONTROL_OPTIONS1({
-            groupIndex: this.groupIndex,
-            panelIndex: this.controlIndex,
-            key: 'year',
-            values: availableYears.sort((a, b) => {
-              const extract = (str) => {
-                const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
-                const year = match ? parseInt(match[1], 10) : 0;
-                const week = match && match[2] ? parseInt(match[2], 10) : null;
-                return { year, week };
-              };
-
-              const { year: yearA, week: weekA } = extract(a);
-              const { year: yearB, week: weekB } = extract(b);
-
-              if (yearA !== yearB) return yearB - yearA;
-
-              if (weekA !== null && weekB !== null) return weekB - weekA;
-              if (weekA === null) return 1;
-              if (weekB === null) return -1;
-              return 0;
-            }),
-
-          });
-          // ============
-          if (this.controlIndex === 2) {
-            const availableIndicator = await this.getAvailableDataIndicators();
-
             await this.SET_INDICATOR_COMPARISON_PAYLOAD({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
               key: 'indicator',
-              value: availableIndicator[0].indicators[0],
+              value: formattedData[0].indicators[0],
             });
+
             await this.SETUP_CONTROL_OPTIONS1({
               groupIndex: this.groupIndex,
               panelIndex: this.controlIndex,
               key: 'indicator',
-              values: availableIndicator,
+              values: formattedData,
             });
           }
-          this.setInteractions();
-          this.setStatesDropdown();
+        } else {
+          const now = new Date();
+          const totalTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+
+          // Set the total time in minutes for the component data.
+          this.after_time_datasource = totalTimeInMinutes;
+
+          const diff = this.after_time_datasource - this.previous_time_datasource;
+
+          const dashboardID = localStorage.getItem('activeDashboardID');
+          console.log(this.payload?.datasource);
+          const response = await apiServices.getDashboardIndicator(dashboardID);
+
+          const indicators = response.data;
+
+          const formattedData = groupIndicator(indicators, 'program_area');
+
+          console.log(formattedData, 'formattedData');
+
+          // sending to the api
+
+          const timespent = {
+            datasource: this.previous_datasource,
+            timeSpent: diff,
+            user: this.getUser.id,
+          };
+
+          this.SET_DATASOURCE_TIME_SPENT(timespent);
+
+          this.previous_time_datasource = this.after_time_datasource;
+
+          this.previous_datasource = this.payload.datasource;
+          let availableYears;
+          if (this.payload.indicator) {
+            if (this.controlIndex === 2) {
+              availableYears = await this.setYearDropdownByDatasource(this.payload?.datasource?.id);
+            } else {
+              availableYears = await this.getAvailableYears();
+            }
+            await this.SETUP_CONTROL_OPTIONS1({
+              groupIndex: this.groupIndex,
+              panelIndex: this.controlIndex,
+              key: 'year',
+              values: availableYears.sort((a, b) => {
+                const extract = (str) => {
+                  const match = str.match(/(\d{4})(?:\s*week\s*(\d+))?/i);
+                  const year = match ? parseInt(match[1], 10) : 0;
+                  const week = match && match[2] ? parseInt(match[2], 10) : null;
+                  return { year, week };
+                };
+
+                const { year: yearA, week: weekA } = extract(a);
+                const { year: yearB, week: weekB } = extract(b);
+
+                if (yearA !== yearB) return yearB - yearA;
+
+                if (weekA !== null && weekB !== null) return weekB - weekA;
+                if (weekA === null) return 1;
+                if (weekB === null) return -1;
+                return 0;
+              }),
+            });
+            // ============
+            if (this.controlIndex === 2) {
+              const availableIndicator = await this.getAvailableDataIndicators();
+
+              console.log(availableIndicator, 'availableIndicator');
+
+              // await this.SET_INDICATOR_COMPARISON_PAYLOAD({
+              //   groupIndex: this.groupIndex,
+              //   panelIndex: this.controlIndex,
+              //   key: 'indicator',
+              //   value: formattedData[0].indicators[0],
+              // });
+
+              // await this.SETUP_CONTROL_OPTIONS1({
+              //   groupIndex: this.groupIndex,
+              //   panelIndex: this.controlIndex,
+              //   key: 'indicator',
+              //   values: formattedData,
+              // });
+            }
+            this.setInteractions();
+            this.setStatesDropdown();
+          }
         }
       },
     },
@@ -328,7 +374,6 @@ export default {
               if (weekB === null) return -1;
               return 0;
             }),
-
           });
         }
       },
