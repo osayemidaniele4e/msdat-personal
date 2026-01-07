@@ -1223,7 +1223,7 @@ div {
 }
 </style>
 
-<style>
+<style scoped>
 /* styling to overide bootstrap component (select dropdown) */
 
 .select-dropdown {
