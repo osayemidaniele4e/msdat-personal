@@ -285,11 +285,7 @@ export default {
         this.parsedSections = this.parseModelResponse(result);
       } catch (err) {
         console.error('Smart Narrative Error:', err);
-        if (process.env.NODE_ENV === 'development' || true) {
-          this.analysis = "In 2023, the national average for skilled birth attendance was 68%. The highest coverage was observed in Lagos State at 92%, while Zamfara State recorded the lowest coverage at 45%. Compared to 2022, 15 states experienced an increase in coverage.\n\nIn 2023, the national average for skilled birth attendance was 68%. The highest coverage was observed in Lagos State at 92%, while Zamfara State recorded the lowest coverage at 45%. Compared to 2022, 15 states experienced an increase in coverage, with Kano showing the largest improvement (+8 percentage points).\nCoverage remained relatively stable in 5 states, while 6 states experienced a slight decline, with Taraba declining by 4 percentage points.";
-        } else {
-          this.error = 'Failed to generate summary. Please try again.';
-        }
+        this.error = 'Failed to generate summary. Please try again.';
       } finally {
         this.loading = false;
       }
