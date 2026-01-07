@@ -19,6 +19,12 @@
             </p>
 
             <div class="share-wrapper">
+              <div class="analyze-btn"
+                   @click.prevent="openSmartNarrative"
+                   title="Smart Summary"
+              >
+                <img src="@/assets/icons/smart-narrative-icon.svg" alt="Smart Summary" class="smart-narrative-icon" />
+              </div>
               <div
                 @mouseover="showTooltip"
                 @mouseout="hideTooltip"
@@ -27,15 +33,6 @@
               >
                 <img src="@/assets/html.png" alt="" />
               </div>
-              <!-- <div class="analyze-btn"
-                   @click.prevent="toggleShowAnalysis"
-                   :class="{ 'disabled': analysisLoading }"
-              >
-                <img src="@/assets/img/analysis.svg" alt="Analyze" />
-                <span v-if="analysisLoading" class="loading-indicator">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                </span>
-              </div> -->
             </div>
             <!-- <div v-if="showPopUp" class="pop-up">
               <h3 @click="toggleShowShareModal" >Share as HTML Code</h3>
@@ -88,6 +85,12 @@
       :indicatorData="values.indicator"
       @close="closeAnalysisModal"
     />
+    <SmartNarrativeModal
+      :show="showSmartNarrative"
+      :values="values"
+      :chartImage="capturedChartImage"
+      @close="showSmartNarrative = false"
+    />
   </div>
 
   <!-- </base-overlay> -->
@@ -105,6 +108,7 @@ import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
 import ShareCodeModal from './shareTableModal.vue';
 import ChartAnalysisModal from './ChartAnalysisModal.vue';
+import SmartNarrativeModal from './SmartNarrativeModal.vue';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -115,6 +119,7 @@ export default {
     TableLoader,
     ShareCodeModal,
     ChartAnalysisModal,
+    SmartNarrativeModal,
   },
   data() {
     return {
@@ -136,6 +141,8 @@ export default {
       capturedChart: null,
       analysisLoading: false,
       showPopUp: false,
+      showSmartNarrative: false,
+      capturedChartImage: null,
     };
   },
   props: {
@@ -234,6 +241,27 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
   },
   methods: {
+    async openSmartNarrative() {
+      // Show modal immediately - image capture happens in background
+      this.showSmartNarrative = true;
+      // Capture image asynchronously - modal will show loading state
+      this.captureTableImage().then(base64 => {
+        this.capturedChartImage = base64;
+      });
+    },
+    async captureTableImage() {
+      try {
+        const element = document.getElementById('indicatorTable');
+        if (!element) return null;
+        const canvas = await html2canvas(element);
+        const base64 = canvas.toDataURL('image/png');
+        console.log('Table Image Base64:', base64.substring(0, 100) + '...');
+        return base64;
+      } catch (e) {
+        console.error('Failed to capture table image', e);
+        return null;
+      }
+    },
     /**
      * @param {Object} queryObject  The query Object
      * @param {number} queryObject.indicator The id of the indicator
@@ -562,6 +590,17 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+
+  .smart-narrative-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  &:has(.smart-narrative-icon) {
+    border: none;
+    width: auto;
+    height: auto;
   }
 }
 

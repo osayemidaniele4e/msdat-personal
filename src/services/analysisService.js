@@ -1,24 +1,31 @@
 const API_URL = 'https://cloud.activepieces.com/api/v1/webhooks/rX9dFZKJid6b8j2h8XAIH/sync';
 
 const analysisService = {
-  async generateChartAnalysis(indicatorData, chartImage) {
+  async generateChartAnalysis(indicatorData, chartImage, compiledData) {
     try {
       if (!indicatorData || !chartImage) {
         throw new Error('Missing required data for analysis');
       }
 
-      // Remove the data URL prefix if it exists
-      const cleanBase64 = chartImage.replace(/^data:image\/[a-z]+;base64,/, '');
+      // Remove the data URL prefix if it exists (handles png, jpeg, svg+xml, etc.)
+      const cleanBase64 = chartImage.replace(/^data:image\/[\w+\-\.]+;base64,/, '');
+
+      const payload = {
+        indicator_name: indicatorData.full_name,
+        image_base64: cleanBase64,
+      };
+
+      // Add the smart analysis data if provided
+      if (compiledData) {
+        payload.analysis_data = compiledData;
+      }
 
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          indicator_name: indicatorData.short_name,
-          image_base64: cleanBase64,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {

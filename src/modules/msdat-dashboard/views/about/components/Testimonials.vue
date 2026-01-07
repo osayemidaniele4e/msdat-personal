@@ -51,8 +51,8 @@ export default {
     return {
       testimonials: [
         {
-          text: 'I have been using the MSDAT for over 6 years. I discovered the platform at a partners meeting organized by FMoH sometime in 2018. The MSDAT platform has enabled me to visualize health data from multiple sources, including routine data, surveys, and global estimates providing a comprehensive view of health indicators.',
-          username: 'Caleb Aromeh',
+          text: 'This tool will empower the Ministry and its partners to make faster, smarter decisions. It is a critical step in achieving Universal Health Coverage goals.',
+          username: 'Ogeh AjiriOghene from the FMOH SWAP Coordination office.',
           rating: 5,
         },
         {
@@ -61,8 +61,8 @@ export default {
           rating: 5,
         },
         {
-          text: 'I have been using the MSDAT for over 6 years. I discovered the platform at a partners meeting organized by FMoH sometime in 2018. The MSDAT platform has enabled me to visualize health data from multiple sources, including routine data, surveys, and global estimates providing a comprehensive view of health indicators.',
-          username: 'Caleb Aromeh',
+          text: 'The dashboard is considered very useful for health professionals as it provides a unified platform for data. It helps align stakeholders around a single “source of truth,” reducing data fragmentation and improving coordination in health planning and program implementation. This centralisation increases confidence in data-driven decision-making.',
+          username: 'Mamman Jepther Lere; Senior Nursing Officer at FMOHSW ',
           rating: 5,
         },
       ],

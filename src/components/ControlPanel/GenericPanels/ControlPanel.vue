@@ -70,6 +70,7 @@ console.warn('Report builder plugin not available'); } },
         :multiSelectProps="values.dropdownProps"
         :NoDataLabel="values.label"
         :placeholder="'Select indicator'"
+        :customFilter="customFilter"
       />
       {{ checkNHMISDHIS2() }}
       <!-- MSDAT SUB-DASHBOARDS -->
@@ -543,6 +544,23 @@ export default {
       // this.controlIndexSub = this.controlIndex;
       // this.groupIndexSub = this.groupIndex;
       // this.$emit('data:options', this.payload);
+    },
+    customFilter(option, search) {
+      console.log('<<@>>');
+      
+      if (!search) return true;
+
+      // if search starts with #
+      if (search.startsWith('#')) {
+        const tagSearch = search.slice(1); // remove #
+        return option.tags.map((t) => String(t)).some((t) => t.includes(tagSearch));
+      }
+
+      // normal search
+      return (
+        option.full_name.toLowerCase().includes(search.toLowerCase()) ||
+        option.short_name.toLowerCase().includes(search.toLowerCase())
+      );
     },
   },
   computed: {

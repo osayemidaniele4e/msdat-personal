@@ -2,7 +2,7 @@
   <div class="p-2 px-5 mb-5 position-relative">
     <section class="d-flex justify-content-between py-3">
       <div class="">
-        <h4 class="">Notifications</h4>
+        <h4 class="">Notification</h4>
       </div>
       <div class="d-flex flex-row align-items-center notif-box">
         <select class="custom-select">

@@ -2,6 +2,7 @@ import index from './index.vue';
 // import IndicatorTable from '../../components/sections/indicator-overview/IndicatorTable.vue';
 import Testimonials from './Testimonials.vue';
 import DataTriangulationDashboard from '../dashboard/DataTriangulationDashboard.vue';
+import IndicatorTaggingSystem from '../indicator-tagging-system/index.vue'
 
 export default [
   {
@@ -28,8 +29,16 @@ export default [
       title: 'Advanced Triangulation Dashboard',
     },
   },
+  {
+    path: '/indicator-tagging-system',
+    name: 'IndicatorTaggingSystem',
+    component: IndicatorTaggingSystem,
+    meta: {
+      title: 'Indicator Tagging System',
+    },
+  },
   // {
-  //   path: '/indicator-table',
+  //   path: '/indicator-table',ss
   //   name: 'Indicator-Table',
   //   component: IndicatorTable,
   // },

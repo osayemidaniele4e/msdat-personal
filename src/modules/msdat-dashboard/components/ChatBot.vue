@@ -266,24 +266,22 @@ export default {
 
 <style lang="scss" scoped>
 .chatbot-container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
   position: relative;
 }
 
 .chat-window {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 350px;
-  height: 500px;
+  position: fixed;
+  bottom: 50px;
+  right: 90px;
+  width: 380px;
+  height: 520px;
   background: white;
-  border-radius: 8px; /* Adjusted border radius */
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15); /* Adjusted box shadow */
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  z-index: 99998;
 }
 
 .chat-header {
