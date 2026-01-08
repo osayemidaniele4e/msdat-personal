@@ -29,7 +29,7 @@
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
             <!-- <div class="indicator-name">{{ rowData.indicator.full_name }}</div> -->
             <div class="d-flex justify-content-between">
-              <div class="span">{{ rowData.indicator.full_name }}</div>
+              <div class="span indicator-data">{{ rowData.indicator.full_name }}</div>
               <b-icon-caret-down-fill
                 @click="toggleDropdown"
                 v-if="related === 'related' && showDropdown === false"
@@ -118,8 +118,8 @@
 
         <div class="d-flex flex-column" v-else>
           <slot :name="`indicator`" :indicator="rowData.indicator.id">
-            <div class="d-flex justify-content-between">
-              <div class="span">{{ rowData.indicator.full_name }}</div>
+            <div class="d-flex justify-content-between ">
+              <div class="span indicator-data">{{ rowData.indicator.full_name }}</div>
               <b-icon-caret-down-fill
                 @click="toggleDropdown"
                 v-if="related === 'related' && showDropdown === false"
@@ -602,5 +602,8 @@ input::placeholder {
 .tableRowBg {
   background-color: #348481 !important;
   color: white;
+}
+.indicator-data {
+  font-size: 14px;
 }
 </style>

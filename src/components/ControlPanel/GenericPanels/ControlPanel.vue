@@ -238,7 +238,7 @@ console.warn('Report builder plugin not available'); } },
         class="voice-btn-custom"
         title="Voice Control"
       >
-        <b-icon icon="mic-fill"></b-icon> Voice
+        <b-icon icon="mic-fill"></b-icon> Voice Experimental
       </b-button>
     </div>
 

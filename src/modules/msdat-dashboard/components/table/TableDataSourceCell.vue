@@ -7,17 +7,17 @@
   >
     <div class="icon d-flex flex-column align-items-center justify-content-center">
       <!-- First line: datasource + icon -->
-      <div class="d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center datasource-data">
         <span
           v-tooltip="source.full_name"
           class="data-source h6 mb-0 font-weight-bold"
           @click="$emit('source:click', source)"
         >
           <template v-if="hasParentheses">
-            {{ mainText }}
+            <span class="datasource-data">{{ mainText }} </span>
           </template>
           <template v-else>
-            {{ source.datasource }}
+            <span class="datasource-data" >{{ source.datasource }}</span>
           </template>
         </span>
 
@@ -31,7 +31,7 @@
       <!-- Second line: parentheses text -->
       <template v-if="hasParentheses">
         <small
-          class=" h6 mt-1 font-weight-bold"
+          class="h6 mt-1 font-weight-bold"
           :class="{ 'text-white': selectedSource && selectedSource.id === source.id }"
         >
           ({{ bracketText }})
@@ -96,5 +96,8 @@ export default {
 small {
   font-size: 0.8rem;
   line-height: 1.2;
+}
+.datasource-data {
+  font-size: 14px;
 }
 </style>
