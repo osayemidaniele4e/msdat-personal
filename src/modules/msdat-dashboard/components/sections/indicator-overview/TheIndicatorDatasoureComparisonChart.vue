@@ -30,15 +30,23 @@
               Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
               {{ values.indicator.short_name }}) across different data sources.
             </p>
-            <div class="summary-btn"
-                 @click.prevent="openSmartNarrative"
-                 title="Smart Summary"
-            >
-              <img src="@/assets/icons/smart-narrative-icon.svg" alt="Smart Summary" class="smart-narrative-icon" />
+            <div class="summary-btn" @click.prevent="openSmartNarrative" title="Smart Summary">
+              <img
+                src="@/assets/icons/smart-narrative-icon.svg"
+                alt="Smart Summary"
+                class="smart-narrative-icon"
+              />
             </div>
           </div>
         </template>
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="false" :categoryLabel="'Datasources'" v-if="!notShow" />
+        <BarChart
+          ref="BaseChart"
+          :chartOptions="ChartOptions"
+          :title="title"
+          :hasSideControl="false"
+          :categoryLabel="'Datasources'"
+          v-if="!notShow"
+        />
       </base-sub-card>
       <!-- BASE SUBCARD FOR INDICATORS WITHOUT CONFIDENCE RANGE -->
       <base-sub-card
@@ -69,11 +77,12 @@
               Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
               {{ values.indicator.short_name }}) across different data sources.
             </p>
-            <div class="summary-btn"
-                 @click.prevent="openSmartNarrative"
-                 title="Smart Summary"
-            >
-              <img src="@/assets/icons/smart-narrative-icon.svg" alt="Smart Summary" class="smart-narrative-icon" />
+            <div class="summary-btn" @click.prevent="openSmartNarrative" title="Smart Summary">
+              <img
+                src="@/assets/icons/smart-narrative-icon.svg"
+                alt="Smart Summary"
+                class="smart-narrative-icon"
+              />
             </div>
           </div>
         </template>
@@ -93,10 +102,15 @@
         <!-- <div v-if="showPopUp" class="pop-up">
           <h3 @click="getReset()">Refresh Table</h3>
         </div> -->
-        <BarChart ref="BaseChart" :chartOptions="ChartOptions" :title="title" :hasSideControl="true" :categoryLabel="'indicators'" v-if="!notShow" />
-
+        <BarChart
+          ref="BaseChart"
+          :chartOptions="ChartOptions"
+          :title="title"
+          :hasSideControl="true"
+          :categoryLabel="'indicators'"
+          v-if="!notShow"
+        />
       </base-sub-card>
-
     </base-overlay>
     <SmartNarrativeModal
       :show="showSmartNarrative"
@@ -215,6 +229,7 @@ export default {
           const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredDataSources);
           this.setUpHighChartConfig(seriesArray, years);
         }
+        this.ChartOptions.chart.type = 'line';
       },
       deep: false,
       immediate: false,
@@ -240,6 +255,7 @@ export default {
         this.title = `Comparison of ${this.values.indicator.short_name} and related indicators
         (Time-series comparison of ${this.values.indicator.short_name} ) across different data
             sources.`;
+        this.ChartOptions.chart.type = 'line';
       },
       deep: true,
       immediate: true,
@@ -278,7 +294,7 @@ export default {
       // Show modal immediately - image capture happens in background
       this.showSmartNarrative = true;
       // Capture image asynchronously
-      this.captureChartImage().then(base64 => {
+      this.captureChartImage().then((base64) => {
         this.capturedChartImage = base64;
       });
     },
@@ -286,7 +302,7 @@ export default {
       try {
         const chart = this.$refs.BaseChart?.$refs.lineCharts?.chart;
         if (!chart) return null;
-        
+
         const svg = chart.getSVG();
         const base64 = await this.svgToPng(svg);
         console.log('IndicatorComparisonChart Image Base64:', base64.substring(0, 100) + '...');
@@ -302,7 +318,7 @@ export default {
         const ctx = canvas.getContext('2d');
         const img = new Image();
         const svgData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
-        
+
         img.onload = () => {
           canvas.width = img.width;
           canvas.height = img.height;
@@ -313,8 +329,8 @@ export default {
           resolve(canvas.toDataURL('image/png'));
         };
         img.onerror = (e) => {
-            console.error('SVG to PNG conversion failed', e);
-            reject(e);
+          console.error('SVG to PNG conversion failed', e);
+          reject(e);
         };
         img.src = svgData;
       });
@@ -396,10 +412,10 @@ export default {
             // If this series has confidence data, we need to split that too
             if (series.confidenceData) {
               const confidenceBeforeYear = series.confidenceData.filter(
-                ([year]) => year < currentYear,
+                ([year]) => year < currentYear
               );
               const confidenceAfterYear = series.confidenceData.filter(
-                ([year]) => year >= currentYear,
+                ([year]) => year >= currentYear
               );
 
               return [
@@ -466,6 +482,7 @@ export default {
     },
     updateChart(e) {
       this.ChartOptions.chart.type = e;
+      localStorage.setItem('selectChartType', e);
     },
     togglePopUp() {
       this.showPopUp = !this.showPopUp;
@@ -486,7 +503,7 @@ export default {
       parameterObject = {
         indicator: this.values.indicator.id,
         location: this.values.location.id,
-      },
+      }
     ) {
       // debugger;
       if (dataSources[0].id === 30) {
@@ -733,7 +750,7 @@ export default {
 
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
-        valueType,
+        valueType
       );
       const seriesArr = await this.Reformat(seriesArray);
       this.setUpHighChartConfig(seriesArr, years);
@@ -757,7 +774,7 @@ export default {
         // confidence range
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           [this.selectedDS],
-          valueType,
+          valueType
         );
         const seriesArr = await this.Reformat(seriesArray);
 
