@@ -41,7 +41,11 @@ app.use(helmet({
 // CORS configuration
 app.use(cors({
   origin: IS_PRODUCTION 
-    ? ['https://msdat.fmohconnect.gov.ng', 'https://www.msdat.fmohconnect.gov.ng']
+    ? [
+        'https://msdat.fmohconnect.gov.ng', 
+        'https://www.msdat.fmohconnect.gov.ng',
+        'https://msdat2-staging.e4eweb.space'
+      ]
     : true,
   credentials: true,
 }));
