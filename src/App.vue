@@ -12,6 +12,11 @@
     <div v-if="showShareSectionComponent" class="position-fixed whats-new">
       <ShareSection />
     </div>
+    <transition name="fun-fact-slide">
+      <div v-if="showFunFact" class="fun-fact">
+        <h1>Fun Fact</h1>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -45,6 +50,9 @@ export default {
       showShareSectionComponent: false,
       lastExecutionTime: null,
       whatsNewContent: [],
+      showFunFact: false,
+      showInterval: null,
+      hideTimeout: null,
     };
   },
   computed: {
@@ -86,8 +94,16 @@ export default {
   },
   async mounted() {
     await this.getWhatsNew();
-   
+
     this.firstTimeExecution();
+
+    // Show immediately (optional)
+    this.showFunFactTemporarily();
+
+    // Repeat every 2 minutes
+    this.showInterval = setInterval(() => {
+      this.showFunFactTemporarily();
+    }, 2 * 60 * 1000);
 
     const plugins = [
       { name: 'contextPlugin', module: contextPlugin },
@@ -125,6 +141,21 @@ export default {
     ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 
+    showFunFactTemporarily() {
+      // Show
+      this.showFunFact = true;
+
+      // Clear previous timeout (important)
+      if (this.hideTimeout) {
+        clearTimeout(this.hideTimeout);
+      }
+
+      // Hide after 1 minute
+      this.hideTimeout = setTimeout(() => {
+        this.showFunFact = false;
+      }, 1 * 60 * 1000);
+    },
+
     executeTask() {
       const now = new Date();
       this.lastExecutionTime = now.toLocaleTimeString();
@@ -161,8 +192,13 @@ export default {
           this.toggleShowWhatsNew();
         }
       }, 60 * 1000);
-
     },
+  },
+
+  beforeDestroy() {
+    // Cleanup timers
+    if (this.showInterval) clearInterval(this.showInterval);
+    if (this.hideTimeout) clearTimeout(this.hideTimeout);
   },
 };
 </script>
@@ -188,6 +224,7 @@ export default {
   top: 1px;
   height: 100vh;
 }
+
 .light {
   background-color: #ffffff;
   color: #000000;
@@ -232,5 +269,34 @@ html.large {
   --primary-color: #ea4700;
   --secondary-color: #ee6c33;
   --background-color: #fbdacc;
+}
+
+.fun-fact {
+  position: fixed;
+  top: 150px;
+  left: 0;
+  width: 50vw;
+  background-color: #ea4700;
+  z-index: 999999;
+}
+
+/* ENTER */
+.fun-fact-slide-enter {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.fun-fact-slide-enter-active {
+  transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+/* LEAVE */
+.fun-fact-slide-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.fun-fact-slide-leave-active {
+  transition: transform 0.4s ease, opacity 0.2s ease;
 }
 </style>
