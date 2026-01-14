@@ -146,9 +146,10 @@ export default {
       // eslint-disable-next-line camelcase
       if (national_target && national) {
         plotLines.push({
-          width: 0.5,
-          color: '#222222',
+          width: 1,
+          color: '#000000',
           value: national_target,
+          zIndex: 5,
           label: {
             text: `NT: ${parseFloat(national_target)}`,
             verticalAlign: 'top',
@@ -157,8 +158,10 @@ export default {
             y: 15,
             x: 0,
             style: {
-              fontSize: '10px',
+              fontSize: '11px',
+              fontWeight: 'bold',
               fontFamily: '"Open Sans", sans-serif',
+              color: '#000000',
             },
           },
         });
@@ -166,10 +169,11 @@ export default {
       // eslint-disable-next-line camelcase
       if (sdg_target && sdg) {
         plotLines.push({
-          color: '#222222',
-          width: 0.5,
+          color: '#27AE60',
+          width: 2,
           value: sdg_target,
           dashStyle: 'longdashdot',
+          zIndex: 5,
           label: {
             text: `SDG: ${parseFloat(sdg_target)}`,
             verticalAlign: 'top',
@@ -178,8 +182,10 @@ export default {
             y: 20,
             x: 0,
             style: {
-              fontSize: '10px',
+              fontSize: '11px',
+              fontWeight: 'bold',
               fontFamily: '"Open Sans", sans-serif',
+              color: '#27AE60',
             },
           },
         });

@@ -80,7 +80,7 @@ export default {
 
     async newsLetter() {
       this.loading = true;
-      const url = `${process.env.VUE_APP_API_STAGING_BASE_URL}/mailchimp/`;
+      const url = `${process.env.VUE_APP_API_BASE_URL}mailchimp/`;
       const data = {
         email: this.email,
       };

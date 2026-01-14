@@ -6,6 +6,7 @@
       showControls
       sideControl="true"
       :dataSourceOptions="dataSourcesOptions"
+      :activeChartType="chartType"
       @toggled-button="updateChart($event)"
       @selected-datasource="onSelectedSource($event)"
       @toggle-confidence-range="onConfidenceRangeClicked($event)"
@@ -38,6 +39,7 @@ export default {
     return {
       ChartOptions: {},
       loading: false,
+      chartType: 'line',
       dataSourcesOptions: [
         {
           id: 8,
@@ -91,6 +93,7 @@ export default {
      * @param {Array} sortedYear - an arrays of years
      */
     setUpHighChartConfig(ChartSeriesObject, sortedYear = []) {
+      const currentChartType = this.chartType;
       this.ChartOptions = {
         xAxis: {
           ...defaultOptions.xAxis,
@@ -98,7 +101,6 @@ export default {
         },
         chart: {
           ...defaultOptions.chart,
-          type: 'line',
           height: '300',
         },
         title: {
@@ -106,8 +108,11 @@ export default {
         },
         series: ChartSeriesObject,
       };
+      // Explicitly set chart type after object creation to ensure it's not overwritten
+      this.ChartOptions.chart.type = currentChartType;
     },
     updateChart(e) {
+      this.chartType = e;
       this.ChartOptions.chart.type = e;
     },
 
