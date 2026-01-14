@@ -79,6 +79,11 @@ export default {
         if (this.options.exporting && this.options.exporting.chartOptions) {
           this.options.exporting.chartOptions.title = {
             text: this.title,
+            style: {
+              fontSize: '18px',
+              fontWeight: 'bold',
+              fontFamily: '"Work Sans", sans-serif',
+            },
           };
         }
         

@@ -341,14 +341,19 @@ export default {
           shared: true,
         },
         yAxis: {
-          ...defaultOptions.yAxis,
           title: {
             ...defaultOptions.yAxis.title,
           },
-          gridLineWidth: 0,
           labels: {
             ...defaultOptions.yAxis.labels,
           },
+          gridLineWidth: 1,
+          gridLineColor: '#d3d3d3',
+          tickAmount: 6,
+          min: 0,
+          allowDecimals: false,
+          endOnTick: true,
+          startOnTick: true,
           plotLines: [...this.computeChartPlotLines(this.values)],
         },
         xAxis: {
