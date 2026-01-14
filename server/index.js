@@ -31,20 +31,9 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 app.set('trust proxy', 1);
 
 // Security middleware (helmet)
+// CSP disabled to avoid blocking app scripts - let Nginx handle CSP if needed
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      imgSrc: ["'self'", "data:", "https:", "blob:"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      connectSrc: ["'self'", "https://api.msdat.fmohconnect.gov.ng", "https://www.google-analytics.com"],
-      frameSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      upgradeInsecureRequests: IS_PRODUCTION ? [] : null,
-    },
-  },
+  contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false, // Allow embedding maps and external content
   crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
@@ -52,7 +41,11 @@ app.use(helmet({
 // CORS configuration
 app.use(cors({
   origin: IS_PRODUCTION 
-    ? ['https://msdat.fmohconnect.gov.ng', 'https://www.msdat.fmohconnect.gov.ng']
+    ? [
+        'https://msdat.fmohconnect.gov.ng', 
+        'https://www.msdat.fmohconnect.gov.ng',
+        'https://msdat2-staging.e4eweb.space'
+      ]
     : true,
   credentials: true,
 }));
