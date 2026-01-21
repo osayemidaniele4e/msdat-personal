@@ -38,7 +38,7 @@
           <div class="d-flex align-items-center justify-content-between w-100">
             <p class="work-sans mb-0 line-height">
               Comparison of <b>selected indicators</b> according to the
-              <b> {{ values.datasource.datasource }} </b> acrossX {{ values.compareBy.name }} in
+              <b> {{ values.datasource.datasource }} </b> across {{ values.compareBy.name }} in
               <b> {{ values.location.name }} </b>
             </p>
             <button
@@ -886,7 +886,6 @@ export default {
     },
 
     async renderChart(panelValues) {
-
       const { sdg, national } = this.values.target;
       this.chartOptions = {};
       if (panelValues.compareBy.name === 'Period') {
@@ -930,7 +929,6 @@ export default {
       }
     },
     validateRequiredValues(values) {
-
       if (!values) return false;
 
       // ✅ Accept 0 as a valid datasource ID
@@ -976,7 +974,6 @@ export default {
     values: {
       immediate: true, // This ensures the watcher runs on component creation
       handler(newValues) {
-
         if (this.validateRequiredValues(newValues)) {
           this.safeRenderChart(newValues);
         }

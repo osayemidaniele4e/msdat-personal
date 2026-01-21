@@ -11,7 +11,7 @@
               class="align-middle text-center text-uppercase h6 font-weight-bold"
             >
               <div class="d-flex justify-content-between align-items-center px-5">
-                <span>Indicators</span>
+                <span class="indicator-head">Indicators</span>
                 <!-- <span id="reset" @click="$emit('clickedReset')"><b-icon-arrow-clockwise /></span> -->
               </div>
             </th>
@@ -388,14 +388,13 @@ export default {
       });
       // Order classification following the Order
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
-      
+
       const resultSorted = result.sort(
         (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0])
       );
       // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
-     
-      
+
       this.classify_nm = resultSorted;
       // adding an extra column for NHMIS monthly
       if (this.$route.params.name === 'Health_Outcomes_and_Service_Coverage') {
@@ -812,5 +811,8 @@ table.table {
   background-color: #348481 !important;
   color: white;
   /* padding: 30px 0; */
+}
+.indicator-head {
+  font-size: 14px;
 }
 </style>
