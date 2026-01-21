@@ -17,14 +17,14 @@
             <span class="datasource-data">{{ mainText }} </span>
           </template>
           <template v-else>
-            <span class="datasource-data" >{{ source.datasource }}</span>
+            <span class="datasource-data">{{ source.datasource }}</span>
           </template>
         </span>
 
         <b-icon-info-circle-fill
           @click.stop="$emit('source-info:click', source)"
           class="data-source-info ml-1"
-          font-scale="0.5"
+          font-scale="1"
         />
       </div>
 
