@@ -35,11 +35,23 @@
         </template> -->
 
         <template #title>
-          <p class="work-sans mb-0 line-height">
-            Comparison of <b>selected indicators</b> according to the
-            <b> {{ values.datasource.datasource }} </b> acrossX {{ values.compareBy.name }} in
-            <b> {{ values.location.name }} </b>
-          </p>
+          <div class="d-flex align-items-center justify-content-between w-100">
+            <p class="work-sans mb-0 line-height">
+              Comparison of <b>selected indicators</b> according to the
+              <b> {{ values.datasource.datasource }} </b> acrossX {{ values.compareBy.name }} in
+              <b> {{ values.location.name }} </b>
+            </p>
+            <button
+              v-if="showRelationshipFeature"
+              class="relationship-btn"
+              @click="showRelationshipPopup = true"
+              title="Show indicator relationships"
+              type="button"
+              aria-haspopup="dialog"
+            >
+              Show indicator relationships
+            </button>
+          </div>
         </template>
         <BarChart
           ref="BaseChart"
@@ -68,6 +80,13 @@
     <div v-if="!loading && !validateRequiredValues(values)" class="no_data">
       <p class="text-muted">Please select all required values to view the comparison</p>
     </div>
+    <!-- Indicator Relationship Popup -->
+    <IndicatorRelationshipPopup
+      v-if="showRelationshipFeature"
+      :show="showRelationshipPopup"
+      :indicators="getIndicatorsWithRelations"
+      @close="showRelationshipPopup = false"
+    />
   </div>
 </template>
 
@@ -80,12 +99,14 @@ import defaultOptions from '@/components/Barchart/defaultOption';
 import chartDownload from '../../../mixins/chart_download';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import { groupIndicator } from '@/util/helper';
+import IndicatorRelationshipPopup from '../advanced/indicator-comparison-section/IndicatorRelationshipPopup.vue';
 
 export default {
   name: 'ICS',
   mixins: [chartDownload, ControlPanelSetup],
   components: {
     BarChart,
+    IndicatorRelationshipPopup,
   },
   data() {
     return {
@@ -95,6 +116,7 @@ export default {
       loading: false,
       chartOptions: {},
       datasources: [],
+      showRelationshipPopup: false,
     };
   },
 
@@ -106,6 +128,10 @@ export default {
     controlIndex: {
       type: Number,
       required: true,
+    },
+    showRelationshipFeature: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -122,6 +148,18 @@ export default {
   // },
   computed: {
     ...mapGetters('MSDAT_STORE', ['getIDCDatasources', 'getConfigObject']),
+
+    getIndicatorsWithRelations() {
+      const indicators = Array.isArray(this.values.indicator)
+        ? this.values.indicator
+        : [this.values.indicator];
+
+      // Return selected indicators for analysis (not related indicators)
+      return indicators.map((indicator) => ({
+        ...indicator,
+        selectedIndicators: indicators, // Pass all selected indicators for analysis
+      }));
+    },
 
     filteredIndicators() {
       // Check if this.values.indicator is an array before using filter
@@ -1103,6 +1141,25 @@ div.ics_wrapper {
   span {
     font-size: 12px;
     color: #333333;
+  }
+}
+.relationship-btn {
+  background: transparent;
+  color: #17606B;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: #E85D58;
+    text-decoration: underline;
+    background-color: rgba(23, 96, 107, 0.06);
   }
 }
 </style>
