@@ -583,4 +583,13 @@ multiselect,
 input::placeholder {
   font-size: 11.5px !important; /* Adjust the font size as needed */
 }
+
+.multiselect {
+  .multiselect__select {
+    z-index: 1;
+  }
+  .multiselect__content-wrapper {
+    z-index: 2;
+  }
+}
 </style>
