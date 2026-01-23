@@ -88,6 +88,7 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-airbnb": "^5.3.0",
+    "@vue/eslint-config-typescript": "^5.1.0",
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "comlink-loader": "^2.0.0",
