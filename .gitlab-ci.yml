@@ -42,9 +42,9 @@ deploy_app:
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
   script:
-  - ssh e4esysadmin@208.87.128.190 "mkdir -p /srv/msdat3.0/msdat/dist" \
-    && rsync -avz --delete dist/ e4esysadmin@208.87.128.190:/srv/msdat3.0/msdat/dist/ \
-    && ssh e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat && sudo pm2 restart 0"
+  - ssh -p3322 e4esysadmin@208.87.128.190 "mkdir -p /srv/msdat3.0/msdat/dist" \
+    && rsync -avz --delete -e "ssh -p 3322" dist/ e4esysadmin@208.87.128.190:/srv/msdat3.0/msdat/dist/
+    && ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat && sudo pm2 restart 0"
     
   only:
     - develop
