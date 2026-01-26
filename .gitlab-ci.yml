@@ -5,9 +5,12 @@ stages:
   - deploy
 
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
+  key: 
+    files:
+      - yarn.lock
   paths:
     - node_modules/
+    - .yarn/cache
 
 # --------------------
 # BUILD STAGE (GitLab)
@@ -15,7 +18,8 @@ cache:
 build_frontend:
   stage: build
   script:
-    - yarn install --frozen-lockfile
+    - yarn install --frozen-lockfile --prefer-offline
+    - export CI=false
     - yarn build
     - node scripts/generateImports.js
   artifacts:
