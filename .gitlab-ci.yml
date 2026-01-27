@@ -81,6 +81,5 @@ deploy_master:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config'
   script:
     - rsync -avz --delete -e "ssh -p 3322" dist/ e4esysadmin@172.93.48.4:/srv/msdat/dist/
-    - ssh -p3322 e4esysadmin@172.93.48.4 "sudo cp -r /var/www/msdat-dashboard/dist/covid* /srv/msdat/dist/
-    -
+    - ssh -p3322 e4esysadmin@172.93.48.4 "sudo cp -r /var/www/msdat-dashboard/dist/covid* /srv/msdat/dist/"
 
