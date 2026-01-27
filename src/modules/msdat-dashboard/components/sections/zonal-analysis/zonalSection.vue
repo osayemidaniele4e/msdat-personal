@@ -108,7 +108,8 @@ export default {
           },
         },
         yAxis: {
-          gridLineWidth: 0,
+          gridLineWidth: 1,
+          gridLineColor: '#e6e6e6',
           plotLines: [...this.computeChartPlotLines(this.controlPanelProps)],
           title: {
             text: displayFactor, // Set title directly here

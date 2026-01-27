@@ -1,7 +1,7 @@
 <template>
   <section class="bg-secondary notification-parent">
     <Header />
-    <div class="w-100 bg-secondary d-flex justify-content-center align-items-center">
+    <div class="w-100 bg-secondary d-flex justify-content-center align-items-center pb-5 mb-5">
       <div v-if="showTriangulation" class="w-100">
         <div class="bg-white w-100">
           <div class="row pl-4 py-4">
@@ -96,8 +96,11 @@
               <div class="w-100 header py-2 d-flex justify-content-center">
                 <h3>Results</h3>
               </div>
-              <div @click="toggleExpand()" class="py-2">
-                <img class="expand-icon" src="@/assets/Expand.png" alt="" />
+              <div @click="toggleExpand()" class="py-2 d-flex">
+                <div class="expand-wrap d-flex">
+                  <span>Expand</span>
+                  <img class="" src="@/assets/Expand.png" alt="" />
+                </div>
               </div>
               <div class="row h-100">
                 <div
@@ -196,11 +199,11 @@
               </div>
             </div>
             <div class="py-2 d-flex">
-              <div class="border-right-2">0 - 20 - Very Low</div>
-              <div class="border-right-2">21 - 40 - Low</div>
-              <div class="border-right-2">41 - 60 - moderate</div>
-              <div class="border-right-2">61 - 80 - High</div>
-              <div class="border-right-3">81 - 100 - Very High</div>
+              <div class="border-right-2 stats-2">0 - 20 - Very Low</div>
+              <div class="border-right-2 stats-2">21 - 40 - Low</div>
+              <div class="border-right-2 stats-2">41 - 60 - moderate</div>
+              <div class="border-right-2 stats-2">61 - 80 - High</div>
+              <div class="border-right-3 stats-2">81 - 100 - Very High</div>
             </div>
           </div>
           <div class="col-8 d-flex px-0 results_height flex-column border">
@@ -284,11 +287,11 @@
               </table>
             </div>
             <div class="py-2 d-flex justify-content-center mt-4">
-              <div class="border-right-2">1 - Poor</div>
-              <div class="border-right-2">2 - Fair</div>
-              <div class="border-right-2">3 - moderate</div>
-              <div class="border-right-2">4 - Good</div>
-              <div class="border-right-3">5 - Excellent</div>
+              <div class="border-right-2 stats">1 - Poor</div>
+              <div class="border-right-2 stats">2 - Fair</div>
+              <div class="border-right-2 stats">3 - moderate</div>
+              <div class="border-right-2 stats">4 - Good</div>
+              <div class="border-right-3 stats">5 - Excellent</div>
             </div>
           </div>
           <div v-if="showExpand" class="absolute-position-2">
@@ -393,11 +396,11 @@
                 </div>
               </div>
               <div class="py-2 d-flex w-100 justify-content-center">
-                <div class="px-2 border-right-4">0 - 20 - None</div>
-                <div class="px-2 border-right-4">21 - 40 - Low</div>
-                <div class="px-2 border-right-4">41 - 60 - Moderate</div>
-                <div class="px-2 border-right-4">61 - 80 - Significant</div>
-                <div class="px-2 border-right-4x">81 - 100 - Very Significant</div>
+                <div class="px-2 border-right-4 stats">0 - 20 - None</div>
+                <div class="px-2 border-right-4 stats">21 - 40 - Low</div>
+                <div class="px-2 border-right-4 stats">41 - 60 - Moderate</div>
+                <div class="px-2 border-right-4 stats">61 - 80 - Significant</div>
+                <div class="px-2 border-right-4x stats">81 - 100 - Very Significant</div>
               </div>
             </div>
           </div>
@@ -452,7 +455,7 @@
               </multiselect>
             </div>
             <div class="col-4">
-              <label>Datasource(s) to be Compared</label>
+              <label>Datasource(s) to be Compared ( Atmost 2 )</label>
               <multiselect
                 v-model="dataSourcesCompare"
                 track-by="datasource"
@@ -531,6 +534,8 @@
       <div class="content">
         <span>Triangulation in progress ....</span>
         <h1>Selected Datasources contains large datasets</h1>
+
+        <span>Triangulation takes at least 3 minutes for large datasets ....</span>
       </div>
     </div>
   </section>
@@ -625,6 +630,15 @@ export default {
 
     limitSelection() {
       if (this.dataSourcesCompare.length > 2) {
+        this.$swal({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: 'error',
+          title: 'Selection Limit Exceeded',
+          text: 'Please only 2 selections are allowed',
+        });
         // Set your limit here
         this.dataSourcesCompare.pop(); // Remove the last selected item
       }
@@ -870,8 +884,9 @@ export default {
 
       return result;
     },
-
     formatString(input) {
+      if (!input) return 'N/A';
+
       return input.includes('_') ? `${input.replace(/_/g, ' ')} aggregate` : input;
     },
 
@@ -949,6 +964,22 @@ export default {
   z-index: 9999;
   position: absolute;
   right: 10px;
+}
+
+.expand-wrap {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 9999;
+  position: absolute;
+  right: 65px;
+}
+
+.expand-wrap span {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 2px;
 }
 
 .expand-icon-2 {
@@ -1328,5 +1359,19 @@ span.multiselect__single {
   cursor: pointer;
   color: #348481 !important;
   font-size: 18px;
+}
+.stats {
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  color: #171717;
+}
+.stats-2 {
+  font-family: Inter;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: start;
+  color: #171717;
 }
 </style>

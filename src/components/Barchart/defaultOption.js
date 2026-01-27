@@ -137,7 +137,9 @@ export default {
         fontFamily: '"Work Sans", sans-serif',
       },
     },
-    gridLineWidth: 0,
+    gridLineWidth: 1,
+    gridLineColor: '#d3d3d3',
+    tickAmount: 6,
     // minRange: 10,
 
     labels: {
@@ -149,7 +151,6 @@ export default {
         whiteSpace: 'normal',
       },
     },
-    tickPixelInterval: 400,
     plotLines: [
       {
         width: 2,
