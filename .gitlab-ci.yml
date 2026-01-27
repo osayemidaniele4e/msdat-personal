@@ -1,9 +1,20 @@
-image: node:16
+image: node:16-alpine
 
 stages:
   - build
   - deploy
 
+# --------------------
+# CACHE (speed boost)
+# --------------------
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+# --------------------
+# BUILD (develop)
+# --------------------
 build_develop:
   stage: build
   only:
@@ -20,6 +31,9 @@ build_develop:
       - docs/.vuepress/dist/
     expire_in: 1h
 
+# --------------------
+# DEPLOY (develop)
+# --------------------
 deploy_develop:
   stage: deploy
   only:
@@ -27,7 +41,7 @@ deploy_develop:
   dependencies:
     - build_develop
   before_script:
-    - apt-get update && apt-get install -y rsync openssh-client
+    - apk add --no-cache rsync openssh
     - mkdir -p ~/.ssh
     - echo "$MSDATDEVELOP" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
