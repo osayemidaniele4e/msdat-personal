@@ -23,12 +23,11 @@ build_develop:
   only:
     - develop
   script:
-    # Load your existing env file
     - cp "$staging_env" .env
     - export $(grep -v '^#' .env | xargs)
 
-    # Build docker image with baked Vue vars
-    - docker build \
+    - |
+      docker build \
         --build-arg VUE_APP_API_BASE_URL="$VUE_APP_API_BASE_URL" \
         --build-arg VUE_APP_API_LOGIN_URL="$VUE_APP_API_LOGIN_URL" \
         --build-arg VUE_APP_API_GPT_URL="$VUE_APP_API_GPT_URL" \
@@ -36,7 +35,6 @@ build_develop:
         --build-arg VUE_APP_FRONTEND_AUTH="$VUE_APP_FRONTEND_AUTH" \
         -t $IMAGE_NAME:$IMAGE_TAG .
 
-    # Push to GitLab registry
     - docker push $IMAGE_NAME:$IMAGE_TAG
 
 # --------------------
