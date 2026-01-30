@@ -51,7 +51,6 @@ deploy_develop:
     - rsync -avz --delete -e "ssh -p 3322" docs/.vuepress/dist/ e4esysadmin@208.87.128.190:/srv/msdat/docs/ || true
     - ssh -p3322 e4esysadmin@208.87.128.190 "pm2 reload msdat"
 
-
 build_master:
   stage: build
   only:
@@ -82,4 +81,3 @@ deploy_master:
   script:
     - rsync -avz --delete -e "ssh -p 3322" dist/ e4esysadmin@172.93.48.4:/srv/msdat/dist/
     - ssh -p3322 e4esysadmin@172.93.48.4 "sudo cp -r /var/www/msdat-dashboard/dist/covid* /srv/msdat/dist/"
-
