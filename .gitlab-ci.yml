@@ -1,35 +1,42 @@
-image: node:16-alpine
+image: docker:27
+
+services:
+  - docker:27-dind
 
 stages:
   - build
   - deploy
 
-# --------------------
-# CACHE (speed boost)
-# --------------------
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - node_modules/
+variables:
+  DOCKER_TLS_CERTDIR: ''
+  IMAGE_NAME: registry.gitlab.com/e4e-webdev/msdat
+
+before_script:
+  - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" --password-stdin
 
 # --------------------
-# BUILD (develop)
+# BUILD IMAGE (develop)
 # --------------------
 build_develop:
   stage: build
   only:
     - develop
+  variables:
+    IMAGE_TAG: develop
   script:
-    - test -f "$staging_env"
     - cp "$staging_env" .env
-    - yarn install --frozen-lockfile
-    - yarn build
-    - yarn docs:build || true
-  artifacts:
-    paths:
-      - dist/
-      - docs/.vuepress/dist/
-    expire_in: 1h
+    - export $(grep -v '^#' .env | xargs)
+
+    - |
+      docker build \
+        --build-arg VUE_APP_API_BASE_URL="$VUE_APP_API_BASE_URL" \
+        --build-arg VUE_APP_API_LOGIN_URL="$VUE_APP_API_LOGIN_URL" \
+        --build-arg VUE_APP_API_GPT_URL="$VUE_APP_API_GPT_URL" \
+        --build-arg VUE_APP_FRONTEND_KEY_ID="$VUE_APP_FRONTEND_KEY_ID" \
+        --build-arg VUE_APP_FRONTEND_AUTH="$VUE_APP_FRONTEND_AUTH" \
+        -t $IMAGE_NAME:$IMAGE_TAG .
+
+    - docker push $IMAGE_NAME:$IMAGE_TAG
 
 # --------------------
 # DEPLOY (develop)
@@ -38,46 +45,64 @@ deploy_develop:
   stage: deploy
   only:
     - develop
-  dependencies:
-    - build_develop
+  variables:
+    IMAGE_TAG: develop
   before_script:
-    - apk add --no-cache rsync openssh
+    - apk add --no-cache openssh-client
     - mkdir -p ~/.ssh
     - echo "$MSDATDEVELOP" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config'
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
   script:
-    - rsync -avz --delete -e "ssh -p 3322" dist/ e4esysadmin@208.87.128.190:/srv/msdat/dist/
-    - rsync -avz --delete -e "ssh -p 3322" docs/.vuepress/dist/ e4esysadmin@208.87.128.190:/srv/msdat/docs/ || true
-    - ssh -p3322 e4esysadmin@208.87.128.190 "pm2 reload msdat"
+    - |
+      ssh -p 3322 e4esysadmin@208.87.128.190 "
+        docker pull $IMAGE_NAME:$IMAGE_TAG &&
+        docker-compose -f /srv/msdat-develop/docker-compose.yml up -d --remove-orphans
+      "
 
+# ====================
+# BUILD IMAGE (master)
+# ====================
 build_master:
   stage: build
   only:
     - master
+  variables:
+    IMAGE_TAG: latest
   script:
-    - test -f "$master_env"
     - cp "$master_env" .env
-    - yarn install --frozen-lockfile
-    - yarn build
-  artifacts:
-    paths:
-      - dist/
-    expire_in: 1h
+    - export $(grep -v '^#' .env | xargs)
 
+    - |
+      docker build \
+        --build-arg VUE_APP_API_BASE_URL="$VUE_APP_API_BASE_URL" \
+        --build-arg VUE_APP_API_LOGIN_URL="$VUE_APP_API_LOGIN_URL" \
+        --build-arg VUE_APP_API_GPT_URL="$VUE_APP_API_GPT_URL" \
+        --build-arg VUE_APP_FRONTEND_KEY_ID="$VUE_APP_FRONTEND_KEY_ID" \
+        --build-arg VUE_APP_FRONTEND_AUTH="$VUE_APP_FRONTEND_AUTH" \
+        -t $IMAGE_NAME:$IMAGE_TAG .
+
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+
+# ====================
+# DEPLOY (master)
+# ====================
 deploy_master:
   stage: deploy
   only:
     - master
   when: manual
-  dependencies:
-    - build_master
+  variables:
+    IMAGE_TAG: latest
   before_script:
-    - apk add --no-cache rsync openssh
+    - apk add --no-cache openssh-client
     - mkdir -p ~/.ssh
     - echo "$MSDATMASTER" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config'
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
   script:
-    - rsync -avz --delete -e "ssh -p 3322" dist/ e4esysadmin@172.93.48.4:/srv/msdat/dist/
-    - ssh -p3322 e4esysadmin@172.93.48.4 "sudo cp -r /var/www/msdat-dashboard/dist/covid* /srv/msdat/dist/"
+    - |
+      ssh -p 3322 e4esysadmin@172.93.48.4 "
+        docker pull $IMAGE_NAME:$IMAGE_TAG &&
+        docker-compose -f /srv/msdat/docker-compose.yml up -d --remove-orphans
+      "
