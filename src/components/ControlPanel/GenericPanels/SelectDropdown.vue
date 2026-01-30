@@ -61,7 +61,7 @@
       </template>
       <template v-else>
         <div class="overflow-text">
-          {{ getOptionLabel(props.option) }}
+          {{ getOptionLabel(props.option) }}<sup v-if="isProjectedYear(props.option)" class="projected-label">projected</sup>
         </div>
       </template>
     </template>
@@ -378,6 +378,24 @@ export default {
       const currentYear = new Date().getFullYear();
       return year > currentYear ? `${option}` : option;
     },
+    isProjectedYear(option) {
+      // Only show projected label on Demographics dashboard year dropdown
+      const { name } = this.$route.params;
+      if (name !== 'Demographics') {
+        return false;
+      }
+      // Only apply to year dropdown (placeholder is 'Select year')
+      if (this.placeholder !== 'Select year') {
+        return false;
+      }
+      // Check if option is a year string/number greater than current year
+      if (typeof option === 'string' || typeof option === 'number') {
+        const year = parseInt(option, 10);
+        const currentYear = new Date().getFullYear();
+        return !isNaN(year) && year > currentYear;
+      }
+      return false;
+    },
     getOptionLabel(option) {
       if (typeof option === 'string') {
         return this.formatYear(option);
@@ -553,8 +571,25 @@ span.multiselect__single::-webkit-scrollbar-thumb {
   text-overflow: ellipsis;
 }
 
+.projected-label {
+  color: #28a745;
+  font-size: 1em;
+  font-weight: bold;
+  margin-left: 4px;
+  vertical-align: super;
+}
+
 multiselect,
 input::placeholder {
   font-size: 11.5px !important; /* Adjust the font size as needed */
+}
+
+.multiselect {
+  .multiselect__select {
+    z-index: 1;
+  }
+  .multiselect__content-wrapper {
+    z-index: 2;
+  }
 }
 </style>

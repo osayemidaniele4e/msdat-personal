@@ -69,7 +69,7 @@
           <template>
             <LazyLoading>
               <ControlPanelConfiguration :controlIndex="controlIndex">
-                <ICS :values="payload" :controlIndex="controlIndex" />
+                <ICS :values="payload" :controlIndex="controlIndex" :showRelationshipFeature="showIndicatorRelationship" />
               </ControlPanelConfiguration>
             </LazyLoading>
           </template>
@@ -247,6 +247,13 @@ export default {
       const allowedDashboards = [
         '/dashboard/Demographics',
         '/dashboard/Health_Facility',
+        '/dashboard/Health_Outcomes_and_Service_Coverage',
+      ];
+      return allowedDashboards.includes(this.$route.path);
+    },
+    showIndicatorRelationship() {
+      const allowedDashboards = [
+        '/dashboard/Demographics',
         '/dashboard/Health_Outcomes_and_Service_Coverage',
       ];
       return allowedDashboards.includes(this.$route.path);

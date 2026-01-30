@@ -1,75 +1,108 @@
-image: "docker:20.10.16"
-
-variables:
-  DOCKER_TLS_CERTDIR: "/certs"
+image: docker:27
 
 services:
-  - docker:20.10.16-dind
-  
+  - docker:27-dind
 
 stages:
+  - build
   - deploy
 
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  IMAGE_NAME: registry.gitlab.com/e4e-webdev/msdat
 
+before_script:
+  - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" --password-stdin
 
-deploy_3.0:
-  stage: deploy
-  
-  before_script: 
-      - mkdir -p ~/.ssh
-      - echo -e "$MSDATDEVELOP" > ~/.ssh/id_rsa
-      - chmod 600 ~/.ssh/id_rsa
-      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  script:
-    - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat3.0/msdat && sudo rm -rf dist && git stash && git pull origin develop && sudo yarn install && sudo yarn build && node scripts/generateImports.js && sudo systemctl reload nginx"
+# --------------------
+# BUILD IMAGE (develop)
+# --------------------
+build_develop:
+  stage: build
   only:
     - develop
-
-
-
-
-
-deploy_advanced analytics:
-  stage: deploy
-  
-  before_script: 
-      - mkdir -p ~/.ssh
-      - echo -e "$MSDATDEVELOP" > ~/.ssh/id_rsa
-      - chmod 600 ~/.ssh/id_rsa
-      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  variables:
+    IMAGE_TAG: develop
   script:
-    - ssh -p3322 e4esysadmin@208.87.128.190 "cd /srv/msdat/ && git checkout . && git checkout advanced && git pull && sudo yarn install && sudo yarn run build && sudo systemctl restart nginx "
+    - cp "$staging_env" .env
+    - export $(grep -v '^#' .env | xargs)
+
+    - |
+      docker build \
+        --build-arg VUE_APP_API_BASE_URL="$VUE_APP_API_BASE_URL" \
+        --build-arg VUE_APP_API_LOGIN_URL="$VUE_APP_API_LOGIN_URL" \
+        --build-arg VUE_APP_API_GPT_URL="$VUE_APP_API_GPT_URL" \
+        --build-arg VUE_APP_FRONTEND_KEY_ID="$VUE_APP_FRONTEND_KEY_ID" \
+        --build-arg VUE_APP_FRONTEND_AUTH="$VUE_APP_FRONTEND_AUTH" \
+        -t $IMAGE_NAME:$IMAGE_TAG .
+
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+
+# --------------------
+# DEPLOY (develop)
+# --------------------
+deploy_develop:
+  stage: deploy
   only:
-    - advanced
-
-
-
-
-
-deploy_staging:
-  stage: deploy
-  
-  before_script: 
-      - mkdir -p ~/.ssh
-      - echo -e "$MSDATDEVELOP" > ~/.ssh/id_rsa
-      - chmod 600 ~/.ssh/id_rsa
-      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - develop
+  variables:
+    IMAGE_TAG: develop
+  before_script:
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh
+    - echo "$MSDATDEVELOP" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
   script:
-    - ssh -p3322 e4esysadmin@208.87.128.190 "cd ~/msdat/ && sudo chown e4esysadmin:e4esysadmin -R docs/ && git checkout . && git checkout staging && git pull && sudo yarn install  && sudo yarn build  && sudo yarn docs:build && sudo systemctl reload nginx "
+    - |
+      ssh -p 3322 e4esysadmin@208.87.128.190 "
+        docker pull $IMAGE_NAME:$IMAGE_TAG &&
+        docker-compose -f /srv/msdat-develop/docker-compose.yml up -d --remove-orphans
+      "
+
+# ====================
+# BUILD IMAGE (master)
+# ====================
+build_master:
+  stage: build
   only:
-    - staging
-
-
-deploy_beta:
-  stage: deploy
-  
-  before_script: 
-      - mkdir -p ~/.ssh
-      - echo -e "$MSDATMASTER" > ~/.ssh/id_rsa
-      - chmod 600 ~/.ssh/id_rsa
-      - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - master
+  variables:
+    IMAGE_TAG: latest
   script:
-      - ssh -p3322 e4esysadmin@172.93.48.4 "cd /srv/msdat/  && git pull origin master && sudo yarn install &&  sudo yarn build && sudo cp -r /var/www/msdat-dashboard/dist/covid* /srv/msdat/dist/ && sudo systemctl reload nginx "
+    - cp "$master_env" .env
+    - export $(grep -v '^#' .env | xargs)
+
+    - |
+      docker build \
+        --build-arg VUE_APP_API_BASE_URL="$VUE_APP_API_BASE_URL" \
+        --build-arg VUE_APP_API_LOGIN_URL="$VUE_APP_API_LOGIN_URL" \
+        --build-arg VUE_APP_API_GPT_URL="$VUE_APP_API_GPT_URL" \
+        --build-arg VUE_APP_FRONTEND_KEY_ID="$VUE_APP_FRONTEND_KEY_ID" \
+        --build-arg VUE_APP_FRONTEND_AUTH="$VUE_APP_FRONTEND_AUTH" \
+        -t $IMAGE_NAME:$IMAGE_TAG .
+
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+
+# ====================
+# DEPLOY (master)
+# ====================
+deploy_master:
+  stage: deploy
   only:
     - master
   when: manual
+  variables:
+    IMAGE_TAG: latest
+  before_script:
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh
+    - echo "$MSDATMASTER" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+  script:
+    - |
+      ssh -p 3322 e4esysadmin@172.93.48.4 "
+        docker pull $IMAGE_NAME:$IMAGE_TAG &&
+        docker-compose -f /srv/msdat/docker-compose.yml up -d --remove-orphans
+      "

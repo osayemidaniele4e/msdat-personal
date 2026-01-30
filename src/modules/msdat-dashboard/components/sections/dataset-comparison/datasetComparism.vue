@@ -414,7 +414,7 @@ export default {
                   backgroundColor: 'none',
                 },
                 formatter() {
-                  return Highcharts.numberFormat(this.y, 0, '', ',');
+                  return Highcharts.numberFormat(this.y, 1, '.', ',');
                 },
               },
               groupPadding: 0.08,
