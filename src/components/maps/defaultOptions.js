@@ -7,7 +7,7 @@ export default {
     },
   },
   lang: {
-    noData: 'No states data to display',
+    noData: 'No data to display',
     contextButtonTitle: 'Download',
   },
   navigation: {
