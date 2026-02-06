@@ -18,7 +18,7 @@
           <div class="w-100 d-flex justify-content-between align-items-center">
             <p class="work-sans mb-0 line-height sub-title" v-if="level === 1">
               Distribution of
-              <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state --> 
+              <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
               <b>{{ values.indicator.short_name }}</b> across
               <b>{{ visualization === 'map' ? 'Nigeria' : values.location.name }}.</b> Source:<b>
                 {{ values.datasource.datasource }} {{ values.year }}</b
@@ -105,12 +105,11 @@ import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import { eventBus } from '@/main';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
+import BaseMap from '@/components/maps/ZonalBaseMap.vue';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
-import BaseMap from '@/components/maps/ZonalBaseMap.vue';
 import NoAvailableData from '../../NoData2.vue';
 import SmartNarrativeModal from './SmartNarrativeModal.vue';
-import html2canvas from 'html2canvas';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -151,6 +150,8 @@ export default {
       showNoAvailableData: false,
       showSmartNarrative: false,
       capturedChartImage: null,
+      // Request tracking to prevent race conditions
+      requestId: 0,
     };
   },
   props: {
@@ -232,7 +233,7 @@ export default {
       // Show modal immediately - image capture happens in background
       this.showSmartNarrative = true;
       // Capture image asynchronously
-      this.captureChartImage().then(base64 => {
+      this.captureChartImage().then((base64) => {
         this.capturedChartImage = base64;
       });
     },
@@ -240,16 +241,16 @@ export default {
       try {
         let chart;
         if (this.visualization === 'bar') {
-           chart = this.$refs.BaseChart?.$refs.lineCharts?.chart;
+          chart = this.$refs.BaseChart?.$refs.lineCharts?.chart;
         } else {
-           chart = this.$refs.BaseMap?.$refs.mapChart?.chart;
+          chart = this.$refs.BaseMap?.$refs.mapChart?.chart;
         }
-        
+
         if (!chart) return null;
 
         const svg = chart.getSVG();
         const base64 = await this.svgToPng(svg);
-        console.log('StateBarChart Image Base64:', base64.substring(0, 100) + '...');
+        console.log('StateBarChart Image Base64:', `${base64.substring(0, 100)}...`);
         return base64;
       } catch (e) {
         console.error('Failed to capture chart image', e);
@@ -261,8 +262,8 @@ export default {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const img = new Image();
-        const svgData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
-        
+        const svgData = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
+
         img.onload = () => {
           canvas.width = img.width;
           canvas.height = img.height;
@@ -273,21 +274,19 @@ export default {
           resolve(canvas.toDataURL('image/png'));
         };
         img.onerror = (e) => {
-            console.error('SVG to PNG conversion failed', e);
-            reject(e);
+          console.error('SVG to PNG conversion failed', e);
+          reject(e);
         };
         img.src = svgData;
       });
     },
     async getNDData(queryArray) {
-      const nums = await queryArray.map((item) =>
-        this.queryDBForNumDenum({
-          datasource: item.datasource,
-          period: item.period,
-          indicator: item.indicator,
-          location: item.location,
-        })
-      );
+      const nums = await queryArray.map((item) => this.queryDBForNumDenum({
+        datasource: item.datasource,
+        period: item.period,
+        indicator: item.indicator,
+        location: item.location,
+      }));
       const returnedNums = await Promise.allSettled(nums);
       const noData = returnedNums.every((value) => value.value.length === 0);
       if (!noData) {
@@ -308,13 +307,27 @@ export default {
       return [];
     },
     async updateValue() {
+      // Increment request ID to track this specific request
+      this.requestId += 1;
+      const currentRequestId = this.requestId;
+
+      // Immediately show loading state and clear previous data
+      this.loading = true;
+      this.showNoAvailableData = false;
+      this.showNoSubNationalData = false;
+
       if (this.visualization === 'map') {
-        this.loading = true;
-        
+        // Clear previous map data immediately
+        this.mapObject = {
+          series: [{ name: 'Nigeria', data: [] }],
+          title: { text: 'Loading...' },
+          subtitle: { text: '' },
+        };
+
         // Determine map level and location query based on selected location
         const isNationalLevel = this.values.location.id === 1;
         let locationQuery = {};
-        
+
         if (isNationalLevel) {
           // National level: show all states on national map
           locationQuery = { level: 3 };
@@ -324,14 +337,19 @@ export default {
           locationQuery = { parent: this.values.location.id, level: 4 };
           this.mapLevel = 3;
         }
-        
+
         const data = await this.dlQuery({
           indicator: this.values.indicator.id,
           datasource: this.values.datasource.id,
           period: this.values.year,
           location: locationQuery,
         });
-        
+
+        // Check if this request is still the latest one
+        if (currentRequestId !== this.requestId) {
+          return; // A newer request has been made, discard this result
+        }
+
         if (data?.length === 0) {
           this.showNoAvailableData = true;
         } else {
@@ -342,21 +360,41 @@ export default {
         this.loading = false;
         return;
       }
-      // Bar chart logic
-      this.loading = true;
+
+      // Bar chart logic - Clear previous chart data immediately
+      this.BarChartOptions = {};
+
       const data = await this.getData(this.values);
+
+      // Check if this request is still the latest one
+      if (currentRequestId !== this.requestId) {
+        return; // A newer request has been made, discard this result
+      }
+
       if (this.values.indicator?.id === undefined) {
+        this.loading = false;
         return;
       }
       // eslint-disable-next-line camelcase
       const { national_target, sdg_target, desirable_slope } = this.dlGetIndicator(
-        this.values.indicator.id
+        this.values.indicator.id,
       );
       const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
       const national = await this.computeNationalND();
+
+      // Check again after async operations
+      if (currentRequestId !== this.requestId) {
+        return; // A newer request has been made, discard this result
+      }
+
       let ndData = [];
       if (this.values.numdenum === true) {
         ndData = await this.getNDData(data);
+
+        // Check again after async operations
+        if (currentRequestId !== this.requestId) {
+          return; // A newer request has been made, discard this result
+        }
       }
 
       const chartOptions = this.genHighChartOption(
@@ -374,7 +412,7 @@ export default {
           },
         },
         await ndData,
-        this.values.numdenum
+        this.values.numdenum,
       );
       chartOptions.plotOptions = {
         series: {
@@ -410,10 +448,19 @@ export default {
       };
 
       chartOptions.yAxis.title.text = `${displayFactor}`;
-      
+
       // Only adjust yAxis for target lines if targets exceed data range
-      this.adjustYAxisForTargetLines(chartOptions, national_target, sdg_target);
-      
+      chartOptions.yAxis = this.adjustYAxisForTargetLines(
+        chartOptions.yAxis,
+        chartOptions.series,
+        {
+          nationalTarget: national_target,
+          sdgTarget: sdg_target,
+          showNational: this.values.target.national,
+          showSdg: this.values.target.sdg,
+        },
+      );
+
       // add nation and state selected to fit according to mockup :cry: :worried: :rage:
       // const parentValue = await this.dlQuery({
       //   indicator: this.values.indicator.id,
@@ -429,6 +476,12 @@ export default {
         // value_type: 5,
         location: this.values.location.id,
       });
+
+      // Check if this request is still the latest one
+      if (currentRequestId !== this.requestId) {
+        return; // A newer request has been made, discard this result
+      }
+
       const parentValue = response.data.results;
 
       // because i know i am expecting only on value in the array of results
@@ -496,27 +549,36 @@ export default {
           }
         }
       }
-      
+
       // Re-adjust yAxis range after adding parent data
-      this.adjustYAxisForTargetLines(chartOptions, national_target, sdg_target);
-      
+      chartOptions.yAxis = this.adjustYAxisForTargetLines(
+        chartOptions.yAxis,
+        chartOptions.series,
+        {
+          nationalTarget: national_target,
+          sdgTarget: sdg_target,
+          showNational: this.values.target.national,
+          showSdg: this.values.target.sdg,
+        },
+      );
+
       if (this.values.numdenum === true) {
         chartOptions.tooltip.backgroundColor = 'rgba(255, 255, 255, 1)';
         chartOptions.tooltip.outside = true;
-        chartOptions.tooltip.pointFormat =
-          `${
-            '<span style="font-size:10px; color:black;font-weight:bold;">' +
-            '{series.name}:' +
-            ' {point.y:.2f}'
+        chartOptions.tooltip.pointFormat
+          = `${
+            '<span style="font-size:10px; color:black;font-weight:bold;">'
+            + '{series.name}:'
+            + ' {point.y:.2f}'
             // eslint-disable-next-line indent
-          }<br>` +
-          '<span style="font-size:10px; color:black;">' +
-          '(' +
-          '{point.nd} ' +
-          'of' +
-          ' {point.dn}' +
-          ')' +
-          '</span>';
+          }<br>`
+          + '<span style="font-size:10px; color:black;">'
+          + '('
+          + '{point.nd} '
+          + 'of'
+          + ' {point.dn}'
+          + ')'
+          + '</span>';
       }
       this.BarChartOptions = chartOptions;
       this.loading = false;
@@ -563,7 +625,9 @@ export default {
       };
     },
     async getData(optionsObject) {
-      const { datasource, indicator, location, year } = optionsObject;
+      const {
+        datasource, indicator, location, year,
+      } = optionsObject;
       let locationValue = location;
       if (location.id === 1) {
         locationValue = { level: 3 };
@@ -580,7 +644,7 @@ export default {
       });
 
       if (data.length === 0 || data === undefined || data === null) {
-        return;
+        return [];
       }
 
       // loop through data and parseFloat the value toFixed(1)
@@ -590,30 +654,37 @@ export default {
 
       return data;
     },
-    adjustYAxisForTargetLines(chartOptions, nationalTarget, sdgTarget) {
+    adjustYAxisForTargetLines(yAxis, series, targetConfig) {
+      const nextYAxis = { ...yAxis };
+      const {
+        nationalTarget,
+        sdgTarget,
+        showNational,
+        showSdg,
+      } = targetConfig;
       // Collect target values that should be visible
       const targetValues = [];
-      
-      if (nationalTarget !== null && this.values.target.national) {
+
+      if (nationalTarget !== null && showNational) {
         targetValues.push(nationalTarget);
       }
-      
-      if (sdgTarget !== null && this.values.target.sdg) {
+
+      if (sdgTarget !== null && showSdg) {
         targetValues.push(sdgTarget);
       }
-      
+
       // Only adjust if we have targets
       if (targetValues.length === 0) {
-        return;
+        return nextYAxis;
       }
 
       // Get all data values from the chart
       const allDataValues = [];
-      
-      if (chartOptions.series) {
-        chartOptions.series.forEach(series => {
-          if (series.data) {
-            series.data.forEach(point => {
+
+      if (series) {
+        series.forEach((seriesItem) => {
+          if (seriesItem.data) {
+            seriesItem.data.forEach((point) => {
               if (typeof point === 'object' && typeof point.y === 'number') {
                 allDataValues.push(point.y);
               } else if (typeof point === 'number') {
@@ -629,41 +700,41 @@ export default {
         const dataMax = Math.max(...allDataValues);
         const targetMin = Math.min(...targetValues);
         const targetMax = Math.max(...targetValues);
-        
+
         // Check if ANY targets are outside data range
         const targetsExceedDataRange = targetMax > dataMax || targetMin < dataMin;
-        
+
         if (targetsExceedDataRange) {
           // Targets are outside data range - need to adjust range to include both data and targets
           const overallMin = Math.min(dataMin, targetMin);
           const overallMax = Math.max(dataMax, targetMax);
-          
+
           // Use reasonable padding based on the overall range
           const range = overallMax - overallMin;
           const padding = Math.max(range * 0.05, 1); // 5% padding or minimum 1 unit
-          
-          chartOptions.yAxis.min = Math.max(0, overallMin - padding);
-          chartOptions.yAxis.max = overallMax + padding;
-          
+
+          nextYAxis.min = Math.max(0, overallMin - padding);
+          nextYAxis.max = overallMax + padding;
+
           console.log('YAxis adjusted to include targets outside data range:', {
             dataRange: `${dataMin} - ${dataMax}`,
             targetRange: `${targetMin} - ${targetMax}`,
-            finalRange: `${chartOptions.yAxis.min.toFixed(1)} - ${chartOptions.yAxis.max.toFixed(1)}`,
-            reason: targetMax > dataMax ? 'Target above data' : 'Target below data'
+            finalRange: `${nextYAxis.min.toFixed(1)} - ${nextYAxis.max.toFixed(1)}`,
+            reason: targetMax > dataMax ? 'Target above data' : 'Target below data',
           });
         } else {
           // Targets are within data range - remove any fixed scaling to let Highcharts auto-scale
-          if (chartOptions.yAxis.min !== undefined) {
-            delete chartOptions.yAxis.min;
+          if (nextYAxis.min !== undefined) {
+            delete nextYAxis.min;
           }
-          if (chartOptions.yAxis.max !== undefined) {
-            delete chartOptions.yAxis.max;
+          if (nextYAxis.max !== undefined) {
+            delete nextYAxis.max;
           }
-          
+
           console.log('YAxis auto-scaling enabled - targets within data range:', {
             dataRange: `${dataMin} - ${dataMax}`,
             targetRange: `${targetMin} - ${targetMax}`,
-            message: 'Using Highcharts default scaling'
+            message: 'Using Highcharts default scaling',
           });
         }
       } else {
@@ -672,15 +743,16 @@ export default {
         const targetMax = Math.max(...targetValues);
         const targetRange = Math.max(targetMax - targetMin, Math.abs(targetMax * 0.2), 10);
         const padding = Math.max(targetRange * 0.1, 2);
-        
-        chartOptions.yAxis.min = Math.max(0, targetMin - padding);
-        chartOptions.yAxis.max = targetMax + padding;
-        
+
+        nextYAxis.min = Math.max(0, targetMin - padding);
+        nextYAxis.max = targetMax + padding;
+
         console.log('YAxis adjusted for targets only:', {
-          targetValues: targetValues,
-          finalRange: `${chartOptions.yAxis.min.toFixed(1)} - ${chartOptions.yAxis.max.toFixed(1)}`
+          targetValues,
+          finalRange: `${nextYAxis.min.toFixed(1)} - ${nextYAxis.max.toFixed(1)}`,
         });
       }
+      return nextYAxis;
     },
     handleChartClick(e) {
       const point = e?.point?.name;
@@ -728,7 +800,7 @@ export default {
     formatToHighChartOptionForMap(data, controlPanelObject) {
       const factor = this.dlGetFactor(controlPanelObject.indicator.factor).display_factor;
       const titleText = `${controlPanelObject.indicator.short_name}${factor.trim() ? ` (${factor})` : ''}`;
-      
+
       return {
         title: {
           text: titleText,
