@@ -143,6 +143,8 @@ export default {
       showPopUp: false,
       showSmartNarrative: false,
       capturedChartImage: null,
+      // Request tracking to prevent race conditions
+      requestId: 0,
     };
   },
   props: {
@@ -157,7 +159,14 @@ export default {
   watch: {
     values: {
       async handler({ indicator, location, datasource }) {
+        // Increment request ID to track this specific request
+        this.requestId += 1;
+        const currentRequestId = this.requestId;
+
+        // Immediately show loading state and clear previous data
         this.loading = true;
+        this.TableData = [];
+
         const formattedData = [];
         let indicators = [indicator.id, indicator.first_related, indicator.second_related];
 
@@ -166,14 +175,24 @@ export default {
         }
 
         for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
+          // Check if this request is still the latest one
+          if (currentRequestId !== this.requestId) {
+            return; // A newer request has been made, discard this result
+          }
+
           const indicatorID = indicators[indicatorIndex];
           if (indicatorID) {
             const data = [];
             const dataSources = this.dlGetDashboardDataSource();
-            
+
             // const temp = dataSources.filter((item) => item.id !== 30);
             const indicatorObject = this.dlGetIndicator(indicatorID);
             for (let index = 0; index < dataSources.length; index += 1) {
+              // Check if this request is still the latest one before each async call
+              if (currentRequestId !== this.requestId) {
+                return; // A newer request has been made, discard this result
+              }
+
               const element = dataSources[index];
               // eslint-disable-next-line no-await-in-loop
               const ab = await this.dlGetLatestSourceAndIndicatorData({
@@ -185,12 +204,16 @@ export default {
             }
             formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
           }
-          
-          
-          this.TableData = [...formattedData];
-          this.setTableSelected = datasource;
-          this.loading = false;
         }
+
+        // Final check before updating state
+        if (currentRequestId !== this.requestId) {
+          return; // A newer request has been made, discard this result
+        }
+
+        this.TableData = [...formattedData];
+        this.setTableSelected = datasource;
+        this.loading = false;
       },
       deep: true,
     },
@@ -245,7 +268,7 @@ export default {
       // Show modal immediately - image capture happens in background
       this.showSmartNarrative = true;
       // Capture image asynchronously - modal will show loading state
-      this.captureTableImage().then(base64 => {
+      this.captureTableImage().then((base64) => {
         this.capturedChartImage = base64;
       });
     },
@@ -255,7 +278,7 @@ export default {
         if (!element) return null;
         const canvas = await html2canvas(element);
         const base64 = canvas.toDataURL('image/png');
-        console.log('Table Image Base64:', base64.substring(0, 100) + '...');
+        console.log('Table Image Base64:', `${base64.substring(0, 100)}...`);
         return base64;
       } catch (e) {
         console.error('Failed to capture table image', e);
@@ -278,7 +301,7 @@ export default {
       const storedLocationId = localStorage.getItem('locationId');
       const locationId = storedLocationId === null ? 1 : storedLocationId;
       const url = `${window.location.origin}/indicator-table?dashboard_name=${routeTitle}&indicatorId=${indicatorID}&location=${locationId}`;
-    
+
       const iframeUrl = `<iframe style="padding: 5px; width: 95%; padding: 10px; height: 500px; margin: 40px;" src="${url}" />`;
       this.shareUrl = iframeUrl;
       this.showShareCodeModal = true;
@@ -382,7 +405,6 @@ export default {
     },
     replaceItem(newItem) {
       this.TableData.splice(newItem.index, 1, newItem.formattedData[0]);
-     
     },
 
     getReset() {
@@ -441,11 +463,10 @@ export default {
 
       try {
         this.analysisLoading = true;
-       
 
         // Find the chart element
         const chartElement = document.querySelector('#state-bar-chart .iddc_wrapper');
-      
+
         if (!chartElement) {
           console.error('Chart element not found');
           return;
@@ -453,10 +474,9 @@ export default {
 
         // Wait for next tick to ensure chart is rendered
         await this.$nextTick();
-       
 
         // Capture the chart
-       
+
         const canvas = await html2canvas(chartElement, {
           useCORS: true,
           allowTaint: true,
@@ -471,13 +491,12 @@ export default {
             }
           },
         });
-        
 
         // Store the captured image
         this.capturedChart = canvas.toDataURL('image/png');
         console.log(
           'Chart converted to data URL, length:',
-          this.capturedChart ? this.capturedChart.length : 0
+          this.capturedChart ? this.capturedChart.length : 0,
         );
 
         // Show the modal
