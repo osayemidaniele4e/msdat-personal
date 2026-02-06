@@ -59,10 +59,7 @@
             </div>
 
             <div class="tooltip-wrapper">
-              <a
-                href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
-                target="_blank"
-              >
+              <a href="https://msdat.fmohconnect.gov.ng/health_service_uptake/" target="_blank">
                 <b-list-group-item> Health Service Uptake (NHMIS-Monthly)</b-list-group-item>
               </a>
               <span class="custom-tooltip">Selected NHMIS-DHIS2 indicators tracked monthly. </span>

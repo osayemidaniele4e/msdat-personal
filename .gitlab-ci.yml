@@ -8,7 +8,7 @@ stages:
   - deploy
 
 variables:
-  DOCKER_TLS_CERTDIR: ""
+  DOCKER_TLS_CERTDIR: ''
   IMAGE_NAME: registry.gitlab.com/e4e-webdev/msdat
 
 before_script:
