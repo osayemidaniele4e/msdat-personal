@@ -1,9 +1,6 @@
 <template>
   <section class="d-none d-lg-inline-block">
-    <div
-      @click="showExpandedDropdown = false"
-      class="backdrop">
-    </div>
+    <div @click="showExpandedDropdown = false" class="backdrop"></div>
     <div class="container-fluid card dropdown-expanded work-sans">
       <div class="row p-3">
         <div class="col mb-3">
@@ -40,10 +37,7 @@
             <router-link to="/dashboard/Health_Service_Access" target="_blank">
               <b-list-group-item>Health Service Access</b-list-group-item>
             </router-link>
-            <a
-              href="https://msdat.fmohconnect.gov.ng/covid19_health_service_uptake/index.html"
-              target="_blank"
-            >
+            <a href="https://msdat.fmohconnect.gov.ng/health_service_uptake/" target="_blank">
               <b-list-group-item> Health Service Uptake (NHMIS)</b-list-group-item>
             </a>
             <a href="https://monthly-nhmis-analysis.fmohconnect.gov.ng/" target="_blank">
@@ -229,8 +223,8 @@ div {
       color: inherit;
     }
   }
-  div.list-group{
-    h5.text-underline{
+  div.list-group {
+    h5.text-underline {
       font-size: 0.9rem !important;
     }
   }
@@ -271,5 +265,4 @@ h5.text-underline {
   opacity: 0.5;
   z-index: 5;
 }
-
 </style>
