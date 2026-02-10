@@ -5,6 +5,13 @@
  * and serves them pre-rendered HTML with proper meta tags for social sharing.
  */
 
+const axios = require('axios');
+
+let frontendToken = null;
+let frontendTokenExpiry = null;
+const FRONTEND_TOKEN_TTL = 15 * 60 * 1000; // 15 minutes
+let frontendTokenPromise = null;
+
 const { 
   BASE_URL, 
   DEFAULT_IMAGE, 
@@ -86,6 +93,159 @@ function isCrawler(userAgent) {
 function formatDashboardName(urlName) {
   if (!urlName) return 'Dashboard';
   return urlName.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+/**
+ * Build meta overrides for shared indicator/section query params
+ * @param {Object} meta - Base meta object
+ * @param {Object} query - Express req.query
+ * @returns {Object} - Updated meta object
+ */
+function getApiBase() {
+  const envBase = stripQuotes(
+    process.env.MSDAT_API_BASE_URL
+      || process.env.API_BASE_URL
+      || process.env.VUE_APP_API_BASE_URL
+      || ''
+  );
+  return envBase.replace(/\/$/, '');
+}
+
+function stripQuotes(value) {
+  if (!value) return '';
+  return value.replace(/^"|"$/g, '').trim();
+}
+
+function getFrontendAuthConfig() {
+  const keyId = stripQuotes(process.env.VUE_APP_FRONTEND_KEY_ID || process.env.FRONTEND_KEY_ID || '');
+  const auth = stripQuotes(process.env.VUE_APP_FRONTEND_AUTH || process.env.FRONTEND_AUTH || '');
+  return { keyId, auth };
+}
+
+async function fetchFrontendToken() {
+  const { keyId, auth } = getFrontendAuthConfig();
+  if (!keyId || !auth) return '';
+
+  const baseUrl = getApiBase();
+  const url = `${baseUrl}/auth/frontend-token/`;
+
+  try {
+    const { data } = await axios.post(
+      url,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-FRONTEND-KEY-ID': keyId,
+          'X-FRONTEND-AUTH': auth,
+        },
+      }
+    );
+    const token = data && data.token ? data.token : '';
+    if (!token) return '';
+
+    frontendToken = token;
+    frontendTokenExpiry = Date.now() + FRONTEND_TOKEN_TTL;
+    return token;
+  } catch (error) {
+    return '';
+  }
+}
+
+async function getValidFrontendToken() {
+  if (frontendToken && frontendTokenExpiry && Date.now() < frontendTokenExpiry) {
+    return frontendToken;
+  }
+
+  if (frontendTokenPromise) {
+    return frontendTokenPromise;
+  }
+
+  frontendTokenPromise = fetchFrontendToken()
+    .then((token) => {
+      frontendTokenPromise = null;
+      return token;
+    })
+    .catch(() => {
+      frontendTokenPromise = null;
+      return '';
+    });
+
+  return frontendTokenPromise;
+}
+
+function getApiToken() {
+  return stripQuotes(
+    process.env.MSDAT_API_TOKEN
+      || process.env.API_TOKEN
+      || process.env.VUE_APP_API_TOKEN
+      || ''
+  );
+}
+
+function toCleanText(value) {
+  if (typeof value !== 'string') return '';
+  return value.replace(/_/g, ' ').replace(/\+/g, ' ').trim();
+}
+
+async function fetchResourceName(apiBaseUrl, path, fields) {
+  if (!apiBaseUrl) return '';
+  try {
+    const token = getApiToken();
+    const frontendJwt = await getValidFrontendToken();
+    const headers = frontendJwt
+      ? {
+          'X-Frontend-JWT': `Token ${frontendJwt}`,
+        }
+      : (token
+        ? {
+            Authorization: `Token ${token}`,
+            'X-MSDAT-AUTH': token,
+          }
+        : {});
+    const { data } = await axios.get(`${apiBaseUrl}${path}`, Object.keys(headers).length ? { headers } : undefined);
+    if (!data || !fields.length) return '';
+    return fields.map((field) => data[field]).find((val) => typeof val === 'string' && val.trim());
+  } catch (error) {
+    return '';
+  }
+}
+
+async function applySharedQueryMeta(meta, query, apiBaseUrl) {
+  if (!query || (!query.section && !query.indicator && !query.year && !query.location && !query.datasource)) {
+    return meta;
+  }
+
+  const section = toCleanText(query.section);
+  const indicatorId = typeof query.indicator === 'string' ? query.indicator.trim() : '';
+  const year = typeof query.year === 'string' ? query.year.trim() : '';
+  const locationId = typeof query.location === 'string' ? query.location.trim() : '';
+  const datasourceId = typeof query.datasource === 'string' ? query.datasource.trim() : '';
+
+  const [indicatorName, datasourceName, locationName] = await Promise.all([
+    indicatorId ? fetchResourceName(apiBaseUrl, `/indicators/${indicatorId}/`, ['full_name', 'indicator', 'name']) : '',
+    datasourceId ? fetchResourceName(apiBaseUrl, `/datasources/${datasourceId}/`, ['full_name', 'datasource', 'name']) : '',
+    locationId ? fetchResourceName(apiBaseUrl, `/location/${locationId}/`, ['name', 'location', 'full_name']) : '',
+  ]);
+
+  const displayIndicator = indicatorName || (indicatorId ? `Indicator ${indicatorId}` : 'Indicator');
+  const displayDatasource = datasourceName || (datasourceId ? `Source ${datasourceId}` : '');
+  const displayLocation = locationName || (locationId ? `Location ${locationId}` : '');
+
+  const parts = [
+    displayIndicator || null,
+    section || null,
+    displayLocation || null,
+    displayDatasource || null,
+    year || null,
+  ].filter(Boolean);
+  const suffix = parts.length ? ` (${parts.join(' • ')})` : '';
+
+  return {
+    ...meta,
+    title: meta.title ? `${meta.title}${suffix}` : `MSDAT Nigeria${suffix}`,
+    description: `Shared ${displayIndicator}${section ? ` in ${section}` : ''}${year ? ` for ${year}` : ''}${displayLocation ? ` in ${displayLocation}` : ''}${displayDatasource ? ` from ${displayDatasource}` : ''} on MSDAT Nigeria.`,
+  };
 }
 
 /**
@@ -210,9 +370,7 @@ function generateCrawlerHtml(meta, fullUrl, hostUrl) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Primary Meta Tags -->
-  <title>${title}</title>
+  <title> ${title}</title>
   <meta name="title" content="${title}">
   <meta name="description" content="${description}">
   <meta name="keywords" content="${keywords}">
@@ -288,7 +446,7 @@ function generateCrawlerHtml(meta, fullUrl, hostUrl) {
  * @param {Object} res - Express response object
  * @param {Function} next - Express next function
  */
-function crawlerMiddleware(req, res, next) {
+async function crawlerMiddleware(req, res, next) {
   const userAgent = req.get('User-Agent') || req.headers['user-agent'];
   
   // Only intercept GET requests from crawlers
@@ -304,9 +462,10 @@ function crawlerMiddleware(req, res, next) {
   }
 
   // Generate meta for the requested path
-  const meta = getMetaForPath(req.path);
   const protocol = req.protocol || 'https';
   const host = req.get('host') || req.headers.host || 'msdat.fmohconnect.gov.ng';
+  const apiBaseUrl = getApiBase();
+  const meta = await applySharedQueryMeta(getMetaForPath(req.path), req.query, apiBaseUrl);
   const fullUrl = `${protocol}://${host}${req.originalUrl}`;
   const hostUrl = `${protocol}://${host}`;
 
