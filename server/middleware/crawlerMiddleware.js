@@ -1,16 +1,22 @@
- /**
+/**
  * Social Media Crawler Detection Middleware
- * 
+ *
  * This middleware intercepts requests from social media crawlers (Facebook, Twitter, etc.)
  * and serves them pre-rendered HTML with proper meta tags for social sharing.
  */
 
-const { 
-  BASE_URL, 
-  DEFAULT_IMAGE, 
-  dashboardMeta, 
-  staticPageMeta, 
-  nigerianStates 
+const axios = require('axios');
+
+let frontendToken = null;
+let frontendTokenExpiry = null;
+const FRONTEND_TOKEN_TTL = 15 * 60 * 1000; // 15 minutes
+let frontendTokenPromise = null;
+
+const {
+  DEFAULT_IMAGE,
+  dashboardMeta,
+  staticPageMeta,
+  nigerianStates,
 } = require('../config/metaConfig');
 
 /**
@@ -71,11 +77,9 @@ const CRAWLER_USER_AGENTS = [
  */
 function isCrawler(userAgent) {
   if (!userAgent) return false;
-  
+
   const lowerUserAgent = userAgent.toLowerCase();
-  return CRAWLER_USER_AGENTS.some(crawler => 
-    lowerUserAgent.includes(crawler.toLowerCase())
-  );
+  return CRAWLER_USER_AGENTS.some((crawler) => lowerUserAgent.includes(crawler.toLowerCase()));
 }
 
 /**
@@ -85,7 +89,161 @@ function isCrawler(userAgent) {
  */
 function formatDashboardName(urlName) {
   if (!urlName) return 'Dashboard';
-  return urlName.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return urlName.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function stripQuotes(value) {
+  if (!value) return '';
+  return value.replace(/^"|"$/g, '').trim();
+}
+
+/**
+ * Build meta overrides for shared indicator/section query params
+ * @param {Object} meta - Base meta object
+ * @param {Object} query - Express req.query
+ * @returns {Object} - Updated meta object
+ */
+function getApiBase() {
+  const envBase = stripQuotes(
+    process.env.MSDAT_API_BASE_URL
+      || process.env.API_BASE_URL
+      || process.env.VUE_APP_API_BASE_URL
+      || '',
+  );
+  return envBase.replace(/\/$/, '');
+}
+
+function getFrontendAuthConfig() {
+  const keyId = stripQuotes(process.env.VUE_APP_FRONTEND_KEY_ID || process.env.FRONTEND_KEY_ID || '');
+  const auth = stripQuotes(process.env.VUE_APP_FRONTEND_AUTH || process.env.FRONTEND_AUTH || '');
+  return { keyId, auth };
+}
+
+async function fetchFrontendToken() {
+  const { keyId, auth } = getFrontendAuthConfig();
+  if (!keyId || !auth) return '';
+
+  const baseUrl = getApiBase();
+  const url = `${baseUrl}/auth/frontend-token/`;
+
+  try {
+    const { data } = await axios.post(
+      url,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-FRONTEND-KEY-ID': keyId,
+          'X-FRONTEND-AUTH': auth,
+        },
+      },
+    );
+    const token = data && data.token ? data.token : '';
+    if (!token) return '';
+
+    frontendToken = token;
+    frontendTokenExpiry = Date.now() + FRONTEND_TOKEN_TTL;
+    return token;
+  } catch (error) {
+    return '';
+  }
+}
+
+async function getValidFrontendToken() {
+  if (frontendToken && frontendTokenExpiry && Date.now() < frontendTokenExpiry) {
+    return frontendToken;
+  }
+
+  if (frontendTokenPromise) {
+    return frontendTokenPromise;
+  }
+
+  frontendTokenPromise = fetchFrontendToken()
+    .then((token) => {
+      frontendTokenPromise = null;
+      return token;
+    })
+    .catch(() => {
+      frontendTokenPromise = null;
+      return '';
+    });
+
+  return frontendTokenPromise;
+}
+
+function getApiToken() {
+  return stripQuotes(
+    process.env.MSDAT_API_TOKEN
+      || process.env.API_TOKEN
+      || process.env.VUE_APP_API_TOKEN
+      || '',
+  );
+}
+
+function toCleanText(value) {
+  if (typeof value !== 'string') return '';
+  return value.replace(/_/g, ' ').replace(/\+/g, ' ').trim();
+}
+
+async function fetchResourceName(apiBaseUrl, path, fields) {
+  if (!apiBaseUrl) return '';
+  try {
+    const token = getApiToken();
+    const frontendJwt = await getValidFrontendToken();
+    let headers = {};
+    if (frontendJwt) {
+      headers = {
+        'X-Frontend-JWT': `Token ${frontendJwt}`,
+      };
+    } else if (token) {
+      headers = {
+        Authorization: `Token ${token}`,
+        'X-MSDAT-AUTH': token,
+      };
+    }
+    const { data } = await axios.get(`${apiBaseUrl}${path}`, Object.keys(headers).length ? { headers } : undefined);
+    if (!data || !fields.length) return '';
+    return fields.map((field) => data[field]).find((val) => typeof val === 'string' && val.trim());
+  } catch (error) {
+    return '';
+  }
+}
+
+async function applySharedQueryMeta(meta, query, apiBaseUrl) {
+  if (!query || (!query.section && !query.indicator && !query.year && !query.location && !query.datasource)) {
+    return meta;
+  }
+
+  const section = toCleanText(query.section);
+  const indicatorId = typeof query.indicator === 'string' ? query.indicator.trim() : '';
+  const year = typeof query.year === 'string' ? query.year.trim() : '';
+  const locationId = typeof query.location === 'string' ? query.location.trim() : '';
+  const datasourceId = typeof query.datasource === 'string' ? query.datasource.trim() : '';
+
+  const [indicatorName, datasourceName, locationName] = await Promise.all([
+    indicatorId ? fetchResourceName(apiBaseUrl, `/indicators/${indicatorId}/`, ['full_name', 'indicator', 'name']) : '',
+    datasourceId ? fetchResourceName(apiBaseUrl, `/datasources/${datasourceId}/`, ['full_name', 'datasource', 'name']) : '',
+    locationId ? fetchResourceName(apiBaseUrl, `/location/${locationId}/`, ['name', 'location', 'full_name']) : '',
+  ]);
+
+  const displayIndicator = indicatorName || (indicatorId ? `Indicator ${indicatorId}` : 'Indicator');
+  const displayDatasource = datasourceName || (datasourceId ? `Source ${datasourceId}` : '');
+  const displayLocation = locationName || (locationId ? `Location ${locationId}` : '');
+
+  const parts = [
+    displayIndicator || null,
+    section || null,
+    displayLocation || null,
+    displayDatasource || null,
+    year || null,
+  ].filter(Boolean);
+  const suffix = parts.length ? ` (${parts.join(' • ')})` : '';
+
+  return {
+    ...meta,
+    title: meta.title ? `${meta.title}${suffix}` : `MSDAT Nigeria${suffix}`,
+    description: `Shared ${displayIndicator}${section ? ` in ${section}` : ''}${year ? ` for ${year}` : ''}${displayLocation ? ` in ${displayLocation}` : ''}${displayDatasource ? ` from ${displayDatasource}` : ''} on MSDAT Nigeria.`,
+  };
 }
 
 /**
@@ -95,8 +253,8 @@ function formatDashboardName(urlName) {
  */
 function getMetaForPath(pathname) {
   // Remove trailing slash if present
-  const cleanPath = pathname.endsWith('/') && pathname !== '/' 
-    ? pathname.slice(0, -1) 
+  const cleanPath = pathname.endsWith('/') && pathname !== '/'
+    ? pathname.slice(0, -1)
     : pathname;
 
   // Check for exact static page match first
@@ -108,7 +266,7 @@ function getMetaForPath(pathname) {
   const dashboardMatch = cleanPath.match(/^\/dashboard\/([^/]+)/);
   if (dashboardMatch) {
     const dashboardName = dashboardMatch[1];
-    
+
     if (dashboardMeta[dashboardName]) {
       return {
         title: `${dashboardMeta[dashboardName].title} - MSDAT Nigeria`,
@@ -117,7 +275,7 @@ function getMetaForPath(pathname) {
         keywords: dashboardMeta[dashboardName].keywords,
       };
     }
-    
+
     // Fallback for unknown dashboards
     const formattedName = formatDashboardName(dashboardName);
     return {
@@ -155,13 +313,13 @@ function getMetaForPath(pathname) {
   const stateProfileMatch = cleanPath.match(/^\/health-profiles\/([^/]+)/);
   if (stateProfileMatch) {
     const stateName = decodeURIComponent(stateProfileMatch[1]).replace(/-/g, ' ');
-    const formattedState = stateName.replace(/\b\w/g, c => c.toUpperCase());
-    
+    const formattedState = stateName.replace(/\b\w/g, (c) => c.toUpperCase());
+
     // Check if it's a valid Nigerian state
     const isValidState = nigerianStates.some(
-      s => s.toLowerCase() === formattedState.toLowerCase()
+      (s) => s.toLowerCase() === formattedState.toLowerCase(),
     );
-    
+
     if (isValidState) {
       return {
         title: `${formattedState} State Health Profile - MSDAT Nigeria`,
@@ -192,14 +350,14 @@ function generateCrawlerHtml(meta, fullUrl, hostUrl) {
   const title = meta.title || 'MSDAT Nigeria';
   const description = meta.description || 'Multi-Source Data Analytics and Triangulation platform for Health Data in Nigeria.';
   let image = meta.image || DEFAULT_IMAGE;
-  
+
   // Ensure image URL is absolute
   if (hostUrl && image && image.startsWith('/')) {
     image = `${hostUrl}${image}`;
   }
-  
+
   const keywords = meta.keywords || 'MSDAT, health data, Nigeria, analytics';
-  
+
   // Ensure favicon URLs are absolute or root-relative
   const faviconUrl = hostUrl ? `${hostUrl}/favicon.ico` : '/favicon.ico';
   const appleIconUrl = hostUrl ? `${hostUrl}/img/icons/apple-touch-icon.png` : '/img/icons/apple-touch-icon.png';
@@ -210,9 +368,7 @@ function generateCrawlerHtml(meta, fullUrl, hostUrl) {
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Primary Meta Tags -->
-  <title>${title}</title>
+  <title> ${title}</title>
   <meta name="title" content="${title}">
   <meta name="description" content="${description}">
   <meta name="keywords" content="${keywords}">
@@ -288,25 +444,26 @@ function generateCrawlerHtml(meta, fullUrl, hostUrl) {
  * @param {Object} res - Express response object
  * @param {Function} next - Express next function
  */
-function crawlerMiddleware(req, res, next) {
+async function crawlerMiddleware(req, res, next) {
   const userAgent = req.get('User-Agent') || req.headers['user-agent'];
-  
+
   // Only intercept GET requests from crawlers
   if (req.method !== 'GET' || !isCrawler(userAgent)) {
     return next();
   }
 
   // Skip API routes and static assets
-  if (req.path.startsWith('/api/') || 
-      req.path.startsWith('/static/') ||
-      req.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/i)) {
+  if (req.path.startsWith('/api/')
+      || req.path.startsWith('/static/')
+      || req.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/i)) {
     return next();
   }
 
   // Generate meta for the requested path
-  const meta = getMetaForPath(req.path);
   const protocol = req.protocol || 'https';
   const host = req.get('host') || req.headers.host || 'msdat.fmohconnect.gov.ng';
+  const apiBaseUrl = getApiBase();
+  const meta = await applySharedQueryMeta(getMetaForPath(req.path), req.query, apiBaseUrl);
   const fullUrl = `${protocol}://${host}${req.originalUrl}`;
   const hostUrl = `${protocol}://${host}`;
 
@@ -315,7 +472,7 @@ function crawlerMiddleware(req, res, next) {
 
   // Send pre-rendered HTML with meta tags
   res.set('Content-Type', 'text/html');
-  res.send(generateCrawlerHtml(meta, fullUrl, hostUrl));
+  return res.send(generateCrawlerHtml(meta, fullUrl, hostUrl));
 }
 
 module.exports = {
