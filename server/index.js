@@ -9,7 +9,6 @@
  *   Production: npm run server:start
  */
 
-require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const compression = require('compression');
