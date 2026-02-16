@@ -230,16 +230,29 @@ console.warn('Report builder plugin not available'); } },
 
     <!-- Voice Control Button -->
     <div v-if="isIndicatorOverviewPanel" class="col-auto d-flex align-items-start">
-      <b-button
+      <!-- <b-button
         variant="outline-info"
-        size="lg"
+        size="md"
         pill
         @click="isVoiceModalVisible = true"
-        class="voice-btn-custom"
+        class="voice-btn-custom p-0"
         title="Voice Control"
       >
-        <b-icon icon="mic-fill"></b-icon> Voice Experimental
-      </b-button>
+        <div class="d-flex align-items-center px-4">
+          <b-icon icon="mic-fill" class=""></b-icon>
+          <span class="font-weight-bold">voice</span>
+        </div>
+
+        <small class="">(experimental)</small>
+      </b-button> -->
+      <div @click="isVoiceModalVisible = true" class="voice-wrapper">
+        <div class="d-flex align-items-center voice-item">
+          <b-icon icon="mic-fill" class=""></b-icon>
+          <span class="font-weight-bold">voice</span>
+        </div>
+
+        <span class="exp">(experimental)</span>
+      </div>
     </div>
 
     <!-- (report builder capture is automatic demo button removed) -->
@@ -547,7 +560,7 @@ export default {
     },
     customFilter(option, search) {
       console.log('<<@>>');
-      
+
       if (!search) return true;
 
       // if search starts with #
@@ -658,6 +671,10 @@ button {
   border-color: var(--custom-color);
   box-shadow: 0 0 0 0.2rem rgba(0, 125, 83, 0.5); /* Optional: Adjust focus shadow color */
 }
+
+.voice-btn-custom:hover small {
+  color: white;
+}
 // .prog-label {
 //   display: flex;
 //   position: absolute;
@@ -694,5 +711,33 @@ button {
   .prog-label {
     display: none;
   }
+}
+
+.voice-wrapper {
+  border: 0.5px solid var(--custom-color);
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 0.1rem rgba(0, 125, 83, 0.5);
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: 40px;
+}
+
+.voice-wrapper .exp {
+  margin-top: -1px;
+  font-size: 10px;
+}
+
+.voice-wrapper:hover {
+  background-color: rgba(21, 90, 67, 0.5);
+  color: #fff;
+}
+
+.voice-wrapper:hover span {
+  color: #fff;
 }
 </style>

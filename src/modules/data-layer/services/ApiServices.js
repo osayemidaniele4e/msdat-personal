@@ -76,6 +76,25 @@ const getTriangulation = async (obj) => {
 
   return noHeadersInstance.get(`triangulation_dashboard/?${params.toString()}`);
 };
+const getFunFact = async (payload) => {
+  const response = await fetch(
+    'https://n8n.e4eweb.space/webhook/99f746a7-2f1b-435a-aaaa-32096bb5baca',
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Webhook error ${response.status}: ${text}`);
+  }
+
+  return response.json(); // or response.text()
+};
 
 const getDataWithPeriod = async (obj) => {
   const { indicator, datasource, location, value_type, period } = obj || {};
@@ -262,4 +281,5 @@ export default {
   fetchAllCoverageLevels,
   tagIndicator,
   getTags,
+  getFunFact,
 };

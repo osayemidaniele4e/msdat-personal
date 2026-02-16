@@ -128,10 +128,10 @@ import defaultOptions from '@/components/Barchart/defaultOption';
 import mixin from '@/modules/data-layer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
+
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
 import SmartNarrativeModal from './SmartNarrativeModal.vue';
-import html2canvas from 'html2canvas';
 
 export default {
   mixins: [chartDownload, mixin, formatter, controlSetup],
@@ -154,6 +154,8 @@ export default {
       hasOneDatasource: false,
       showSmartNarrative: false,
       capturedChartImage: null,
+      // Request tracking to prevent race conditions
+      requestId: 0,
     };
   },
   props: {
@@ -197,14 +199,7 @@ export default {
     // when the refresh button is clicked
     resetIndex: {
       async handler() {
-        this.notShow = true;
-        this.loading = true;
-        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-
-        const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-        this.setUpHighChartConfig(seriesArray, years);
-        this.loading = false;
-        this.notShow = false;
+        await this.loadChartData('reset');
       },
       deep: false,
       immediate: false,
@@ -212,84 +207,115 @@ export default {
 
     'values.datasource': {
       async handler(newVal, oldVal) {
-        // debugger;
-        // this.loading = true;
-        // first condition checks if there is change in the old and new datasource then sets newVal as datasource selected
-        // eslint-disable-next-line no-unused-vars
-        let dataSourceSelected = [];
+        // Only trigger if datasource actually changed
         if (oldVal !== newVal) {
-          if (!Array.isArray(newVal)) {
-            dataSourceSelected = [newVal];
-          } else {
-            dataSourceSelected = newVal;
+          // Datasource changes are handled by the indicator watcher
+          // Just update chart type
+          if (this.ChartOptions.chart) {
+            this.ChartOptions.chart.type = 'line';
           }
-        } else {
-          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          const filteredDataSources = dataSources.filter((dataSource) => dataSource.id !== 30);
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(filteredDataSources);
-          this.setUpHighChartConfig(seriesArray, years);
         }
-        this.ChartOptions.chart.type = 'line';
       },
       deep: false,
       immediate: false,
     },
     'values.indicator': {
       async handler() {
-        this.loading = true;
-        // change get datasource function to API matching indicator to dataSource
-        if (this.values.indicator.id !== undefined) {
-          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          if (dataSources.length === 1) {
-            this.hasOneDatasource = true;
-          } else {
-            this.hasOneDatasource = false;
-          }
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-          this.setUpHighChartConfig(seriesArray, years);
-          // added this so that the datasource list will update anytime an indicator is selected
-          await this.getDataSourceFromDropdown();
-        }
-
-        this.loading = false;
-        this.title = `Comparison of ${this.values.indicator.short_name}
-        (Time-series comparison of ${this.values.indicator.short_name} ) across different data
-            sources.`;
-        this.ChartOptions.chart.type = 'line';
+        await this.loadChartData('indicator');
       },
       deep: true,
       immediate: true,
     },
     'values.target': {
       async handler() {
-        this.loading = true;
-        if (this.values.indicator.id !== undefined) {
-          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-          this.setUpHighChartConfig(seriesArray, years);
-        }
-
-        this.loading = false;
+        await this.loadChartData('target');
       },
       deep: true,
       immediate: false,
     },
     'values.location': {
       async handler() {
-        this.loading = true;
-        if (this.values.indicator.id !== undefined) {
-          const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
-          const { seriesArray, years } = await this.toHighChartSeriesSetup(dataSources);
-          this.setUpHighChartConfig(seriesArray, years);
-        }
-
-        this.loading = false;
+        await this.loadChartData('location');
       },
       deep: true,
       immediate: false,
     },
   },
   methods: {
+    /**
+     * Centralized method to load chart data with request tracking
+     * to prevent race conditions when multiple selections change rapidly
+     */
+    async loadChartData(trigger) {
+      // Increment request ID to track this specific request
+      this.requestId += 1;
+      const currentRequestId = this.requestId;
+
+      // Immediately show loading state and clear previous data
+      this.notShow = true;
+      this.loading = true;
+
+      // Clear previous chart data immediately to prevent showing stale data
+      this.ChartOptions = {};
+
+      try {
+        if (this.values.indicator?.id === undefined) {
+          this.loading = false;
+          this.notShow = false;
+          return;
+        }
+
+        const dataSources = await this.getAvailableDataSources(this.values.indicator.id);
+
+        // Check if this request is still the latest one
+        if (currentRequestId !== this.requestId) {
+          return; // A newer request has been made, discard this result
+        }
+
+        if (trigger === 'indicator') {
+          this.hasOneDatasource = dataSources.length === 1;
+        }
+
+        const filteredDataSources = trigger === 'reset'
+          ? dataSources
+          : dataSources.filter((dataSource) => dataSource.id !== 30);
+
+        const { seriesArray, years } = await this.toHighChartSeriesSetup(
+          filteredDataSources.length > 0 ? filteredDataSources : dataSources,
+        );
+
+        // Check again if this request is still the latest one
+        if (currentRequestId !== this.requestId) {
+          return; // A newer request has been made, discard this result
+        }
+
+        this.setUpHighChartConfig(seriesArray, years);
+
+        // Update datasource dropdown if indicator changed
+        if (trigger === 'indicator') {
+          await this.getDataSourceFromDropdown();
+
+          // Final check after the last async operation
+          if (currentRequestId !== this.requestId) {
+            return;
+          }
+
+          this.title = `Comparison of ${this.values.indicator.short_name}
+          (Time-series comparison of ${this.values.indicator.short_name} ) across different data
+              sources.`;
+        }
+
+        if (this.ChartOptions.chart) {
+          this.ChartOptions.chart.type = 'line';
+        }
+      } finally {
+        // Only update loading state if this is still the current request
+        if (currentRequestId === this.requestId) {
+          this.loading = false;
+          this.notShow = false;
+        }
+      }
+    },
     async openSmartNarrative() {
       // Show modal immediately - image capture happens in background
       this.showSmartNarrative = true;
@@ -305,7 +331,7 @@ export default {
 
         const svg = chart.getSVG();
         const base64 = await this.svgToPng(svg);
-        console.log('IndicatorComparisonChart Image Base64:', base64.substring(0, 100) + '...');
+        console.log('IndicatorComparisonChart Image Base64:', `${base64.substring(0, 100)}...`);
         return base64;
       } catch (e) {
         console.error('Failed to capture chart image', e);
@@ -317,7 +343,7 @@ export default {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const img = new Image();
-        const svgData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+        const svgData = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
 
         img.onload = () => {
           canvas.width = img.width;
@@ -412,10 +438,10 @@ export default {
             // If this series has confidence data, we need to split that too
             if (series.confidenceData) {
               const confidenceBeforeYear = series.confidenceData.filter(
-                ([year]) => year < currentYear
+                ([year]) => year < currentYear,
               );
               const confidenceAfterYear = series.confidenceData.filter(
-                ([year]) => year >= currentYear
+                ([year]) => year >= currentYear,
               );
 
               return [
@@ -503,7 +529,7 @@ export default {
       parameterObject = {
         indicator: this.values.indicator.id,
         location: this.values.location.id,
-      }
+      },
     ) {
       // debugger;
       if (dataSources[0].id === 30) {
@@ -750,7 +776,7 @@ export default {
 
       const { seriesArray, years } = await this.toHighChartSeriesSetup(
         [datasourceArray],
-        valueType
+        valueType,
       );
       const seriesArr = await this.Reformat(seriesArray);
       this.setUpHighChartConfig(seriesArr, years);
@@ -774,7 +800,7 @@ export default {
         // confidence range
         const { seriesArray, years } = await this.toHighChartSeriesSetup(
           [this.selectedDS],
-          valueType
+          valueType,
         );
         const seriesArr = await this.Reformat(seriesArray);
 

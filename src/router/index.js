@@ -83,4 +83,19 @@ router.beforeEach((to, from, next) => {
     next(); // make sure to always call next()!
   }
 });
+
+// Google Analytics: Track page views on every route change
+router.afterEach((to) => {
+  // Wait for the page title to be set
+  Vue.nextTick(() => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'page_view', {
+        page_title: document.title,
+        page_path: to.fullPath,
+        page_location: window.location.href,
+      });
+    }
+  });
+});
+
 export default router;

@@ -1,14 +1,15 @@
 /**
  * MSDAT Production Server
- * 
+ *
  * This Express server serves the Vue.js SPA and handles social media crawler requests
  * by returning pre-rendered HTML with proper meta tags for social sharing.
- * 
+ *
  * Usage:
  *   Development: npm run server:dev
  *   Production: npm run server:start
  */
 
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const compression = require('compression');
@@ -35,17 +36,17 @@ app.set('trust proxy', 1);
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false, // Allow embedding maps and external content
-  crossOriginResourcePolicy: { policy: "cross-origin" },
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
 // CORS configuration
 app.use(cors({
-  origin: IS_PRODUCTION 
+  origin: IS_PRODUCTION
     ? [
-        'https://msdat.fmohconnect.gov.ng', 
-        'https://www.msdat.fmohconnect.gov.ng',
-        'https://msdat2-staging.e4eweb.space'
-      ]
+      'https://msdat.fmohconnect.gov.ng',
+      'https://www.msdat.fmohconnect.gov.ng',
+      'https://msdat2-staging.e4eweb.space',
+    ]
     : true,
   credentials: true,
 }));
@@ -109,13 +110,11 @@ app.use(express.static(DIST_PATH, {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
-    }
-    // Cache assets with hashes in filename for longer
-    else if (filePath.match(/\.(js|css)$/) && filePath.includes('.')) {
+    } else if (filePath.match(/\.(js|css)$/) && filePath.includes('.')) {
+      // Cache assets with hashes in filename for longer
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    }
-    // Cache images
-    else if (filePath.match(/\.(png|jpg|jpeg|gif|ico|svg|webp)$/)) {
+    } else if (filePath.match(/\.(png|jpg|jpeg|gif|ico|svg|webp)$/)) {
+      // Cache images
       res.setHeader('Cache-Control', 'public, max-age=86400');
     }
   },
@@ -125,25 +124,27 @@ app.use(express.static(DIST_PATH, {
 // SPA FALLBACK - Serve index.html for all unmatched routes
 // This enables client-side routing for the Vue app
 // ============================================================
-app.get('*', (req, res, next) => {
+app.get('*', (req, res) => {
   // Skip API routes
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'API endpoint not found' });
   }
 
   // Serve the Vue app's index.html
-  res.sendFile(path.join(DIST_PATH, 'index.html'), (err) => {
+  return res.sendFile(path.join(DIST_PATH, 'index.html'), (err) => {
     if (err) {
       console.error('Error serving index.html:', err);
-      res.status(500).send('Error loading application');
+      return res.status(500).send('Error loading application');
     }
+    return undefined;
   });
 });
 
 // Error handling middleware
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error('Server error:', err);
-  
+
   res.status(err.status || 500).json({
     error: IS_PRODUCTION ? 'Internal server error' : err.message,
     ...(IS_PRODUCTION ? {} : { stack: err.stack }),

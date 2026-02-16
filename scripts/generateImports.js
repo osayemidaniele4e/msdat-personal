@@ -69,6 +69,30 @@ const appVueCode = `
     <div v-if="showShareSectionComponent" class="position-fixed whats-new">
       <ShareSection />
     </div>
+
+     <transition name="fun-fact-slide">
+      <div v-if="showFunFact" class="fun-fact">
+        <button class="fun-fact-close" aria-label="Close fun fact" @click="closeFunFact">×</button>
+        <div class="fun-fact-icon">
+          <!-- Light bulb SVG -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="bulb-icon"
+          >
+            <path
+              d="M9 21h6v-1H9v1zm3-20C7.935 1 5 3.935 5 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-4.26c1.81-1.27 3-3.36 3-5.74 0-3.065-2.935-6-6-6z"
+            />
+          </svg>
+        </div>
+
+        <div class="fun-fact-content">
+          <p class="fun-fact-label">Did you know?</p>
+          <h1 class="fun-fact-text">{{ nugget }}</h1>
+        </div>
+      </div>
+    </transition>
     
     <!-- Global Chatbot - Commented out -->
     <!-- <div class="global-chatbot-wrapper">
@@ -114,6 +138,10 @@ export default {
       lastExecutionTime: null,
       whatsNewContent: [],
       showShareSectionComponent: false,
+      showFunFact: false,
+      showInterval: null,
+      hideTimeout: null,
+      nugget: null,
     };
   },
    computed: {
@@ -157,6 +185,14 @@ export default {
 
    this.firstTimeExecution();
 
+   // Show immediately (optional)
+    this.showFunFactTemporarily();
+
+    // Repeat every 2 minutes
+    this.showInterval = setInterval(() => {
+      this.showFunFactTemporarily();
+    }, 2 * 60 * 1000);
+
 
   // eslint-disable-next-line
     let plugins_imported = [];
@@ -170,6 +206,43 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
+
+     async showFunFactTemporarily() {
+      try {
+        const result = await ApiServices.getFunFact();
+
+        // ✅ Only show when webhook responds successfully
+        if (!result) return;
+
+        console.log(result, 'result @@');
+        this.nugget = result.output;
+
+        this.showFunFact = true;
+
+        // Clear previous timeout
+        if (this.hideTimeout) {
+          clearTimeout(this.hideTimeout);
+        }
+
+        // Hide after 1 minute
+        this.hideTimeout = setTimeout(() => {
+          this.showFunFact = false;
+        }, 15 * 1000);
+      } catch (error) {
+        console.error('Fun fact webhook error:', error);
+        this.showFunFact = false;
+      }
+    },
+
+    closeFunFact() {
+      this.showFunFact = false;
+
+      // Clear timeout so it doesn't re-hide later
+      if (this.hideTimeout) {
+        clearTimeout(this.hideTimeout);
+        this.hideTimeout = null;
+      }
+    },
 
     executeTask() {
       const now = new Date();
@@ -252,6 +325,11 @@ export default {
   destroyed() {
     this.$root.$off('plugins:changed', this.onPluginsChanged);
   },
+  beforeDestroy() {
+    // Cleanup timers
+    if (this.showInterval) clearInterval(this.showInterval);
+    if (this.hideTimeout) clearTimeout(this.hideTimeout);
+  },
 };
 </script>
 
@@ -266,6 +344,103 @@ export default {
   z-index: 999999;
   top: 10rem;
   height: 48rem;
+}
+
+.fun-fact {
+  position: fixed;
+  top: 500px;
+  left: 400px;
+  width: 50vw;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+
+  padding: 18px 20px;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #fff7e6, #ffffff);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  border-left: 5px solid #f59e0b;
+  z-index: 9999;
+}
+
+/* Close (X) */
+.fun-fact-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.fun-fact-close:hover {
+  color: #374151;
+}
+
+.fun-fact-icon {
+  flex-shrink: 0;
+  background: #f59e0b;
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bulb-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.fun-fact-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.fun-fact-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #92400e;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.fun-fact-text {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1f2937;
+  font-weight: 500;
+  margin: 0;
+}
+
+.fun-fact-slide-enter-active,
+.fun-fact-slide-leave-active {
+  transition: all 0.35s ease;
+}
+
+.fun-fact-slide-enter {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.fun-fact-slide-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fun-fact-slide-leave-to {
+  opacity: 0;
+  transform: translateX(40px);
 }
 
 .whats-new {

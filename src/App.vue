@@ -1,18 +1,41 @@
-
 <template>
- <div class="position-relative" id="app">
+  <div class="position-relative" id="app">
     <router-view />
     <feedback />
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-      <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
+    <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
     <div v-if="showShareSectionComponent" class="position-fixed whats-new">
       <ShareSection />
     </div>
-    
+
+    <transition name="fun-fact-slide">
+      <div v-if="showFunFact" class="fun-fact">
+        <button class="fun-fact-close" aria-label="Close fun fact" @click="closeFunFact">×</button>
+        <div class="fun-fact-icon">
+          <!-- Light bulb SVG -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="bulb-icon"
+          >
+            <path
+              d="M9 21h6v-1H9v1zm3-20C7.935 1 5 3.935 5 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-4.26c1.81-1.27 3-3.36 3-5.74 0-3.065-2.935-6-6-6z"
+            />
+          </svg>
+        </div>
+
+        <div class="fun-fact-content">
+          <p class="fun-fact-label">Did you know?</p>
+          <h1 class="fun-fact-text">{{ nugget }}</h1>
+        </div>
+      </div>
+    </transition>
+
     <!-- Global Chatbot - Commented out -->
     <!-- <div class="global-chatbot-wrapper">
       <ChatBot ref="globalChatBot" />
@@ -28,7 +51,6 @@
       </button>
     </div> -->
   </div>
-
 </template>
 
 <script>
@@ -37,7 +59,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
-import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue';// import ChatBot from './modules/msdat-dashboard/components/ChatBot.vue';
+import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue'; // import ChatBot from './modules/msdat-dashboard/components/ChatBot.vue';
 import ApiServices from './modules/data-layer/services/ApiServices';
 import accessibilityPlugin from './modules/plugins/accessibilityPlugin';
 import contextPlugin from './modules/plugins/contextPlugin';
@@ -49,7 +71,7 @@ import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
 
 export default {
- components: {
+  components: {
     feedback,
     ShowDataSourcesList,
     WhatsNew,
@@ -64,15 +86,19 @@ export default {
       lastExecutionTime: null,
       whatsNewContent: [],
       showShareSectionComponent: false,
+      showFunFact: false,
+      showInterval: null,
+      hideTimeout: null,
+      nugget: null,
     };
   },
-   computed: {
+  computed: {
     ...mapGetters('appearance', ['viewMode', 'fontSize', 'theme']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
   },
   watch: {
     '$store.state.MSDAT_STORE.showDataSourceList': {
-     // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
         this.showDataSourceListComponent = newVal;
       },
@@ -85,14 +111,14 @@ export default {
       },
       deep: true, // If you want to watch nested changes
     },
-     '$store.state.MSDAT_STORE.showShareSection': {
+    '$store.state.MSDAT_STORE.showShareSection': {
       // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
         this.showShareSectionComponent = newVal;
       },
       deep: true, // If you want to watch nested changes
     },
-     viewMode(newMode) {
+    viewMode(newMode) {
       document.body.className = newMode;
     },
     fontSize(newSize) {
@@ -103,92 +129,92 @@ export default {
     },
   },
   async mounted() {
-   await this.getWhatsNew();
+    await this.getWhatsNew();
 
-   this.firstTimeExecution();
+    this.firstTimeExecution();
 
+    // Show immediately (optional)
+    this.showFunFactTemporarily();
 
-  // eslint-disable-next-line
+    // Repeat every 2 minutes
+    this.showInterval = setInterval(() => {
+      this.showFunFactTemporarily();
+    }, 2 * 60 * 1000);
+
+    // eslint-disable-next-line
     let plugins_imported = [];
-    
-  this.pluginsImported.push('accessibilityPlugin')
-  if (!localStorage.getItem('accessibilityPlugin')) {
-    localStorage.setItem('accessibilityPlugin', 'false');
-  }
 
-  if (localStorage.getItem('accessibilityPlugin') === 'true') {
-    Vue.use(accessibilityPlugin);
-  }
+    this.pluginsImported.push('accessibilityPlugin');
+    if (!localStorage.getItem('accessibilityPlugin')) {
+      localStorage.setItem('accessibilityPlugin', 'false');
+    }
 
+    if (localStorage.getItem('accessibilityPlugin') === 'true') {
+      Vue.use(accessibilityPlugin);
+    }
 
-  this.pluginsImported.push('contextPlugin')
-  if (!localStorage.getItem('contextPlugin')) {
-    localStorage.setItem('contextPlugin', 'false');
-  }
+    this.pluginsImported.push('contextPlugin');
+    if (!localStorage.getItem('contextPlugin')) {
+      localStorage.setItem('contextPlugin', 'false');
+    }
 
-  if (localStorage.getItem('contextPlugin') === 'true') {
-    Vue.use(contextPlugin);
-  }
+    if (localStorage.getItem('contextPlugin') === 'true') {
+      Vue.use(contextPlugin);
+    }
 
+    this.pluginsImported.push('customReportBuilder');
+    if (!localStorage.getItem('customReportBuilder')) {
+      localStorage.setItem('customReportBuilder', 'false');
+    }
 
-  this.pluginsImported.push('customReportBuilder')
-  if (!localStorage.getItem('customReportBuilder')) {
-    localStorage.setItem('customReportBuilder', 'false');
-  }
+    if (localStorage.getItem('customReportBuilder') === 'true') {
+      Vue.use(customReportBuilder);
+    }
 
-  if (localStorage.getItem('customReportBuilder') === 'true') {
-    Vue.use(customReportBuilder);
-  }
+    this.pluginsImported.push('indicatorPlugin');
+    if (!localStorage.getItem('indicatorPlugin')) {
+      localStorage.setItem('indicatorPlugin', 'false');
+    }
 
+    if (localStorage.getItem('indicatorPlugin') === 'true') {
+      Vue.use(indicatorPlugin);
+    }
 
-  this.pluginsImported.push('indicatorPlugin')
-  if (!localStorage.getItem('indicatorPlugin')) {
-    localStorage.setItem('indicatorPlugin', 'false');
-  }
+    this.pluginsImported.push('reviewPlugin');
+    if (!localStorage.getItem('reviewPlugin')) {
+      localStorage.setItem('reviewPlugin', 'false');
+    }
 
-  if (localStorage.getItem('indicatorPlugin') === 'true') {
-    Vue.use(indicatorPlugin);
-  }
+    if (localStorage.getItem('reviewPlugin') === 'true') {
+      Vue.use(reviewPlugin);
+    }
 
+    this.pluginsImported.push('screenshotManager');
+    if (!localStorage.getItem('screenshotManager')) {
+      localStorage.setItem('screenshotManager', 'false');
+    }
 
-  this.pluginsImported.push('reviewPlugin')
-  if (!localStorage.getItem('reviewPlugin')) {
-    localStorage.setItem('reviewPlugin', 'false');
-  }
+    if (localStorage.getItem('screenshotManager') === 'true') {
+      Vue.use(screenshotManager);
+    }
 
-  if (localStorage.getItem('reviewPlugin') === 'true') {
-    Vue.use(reviewPlugin);
-  }
+    this.pluginsImported.push('testonePlugin');
+    if (!localStorage.getItem('testonePlugin')) {
+      localStorage.setItem('testonePlugin', 'false');
+    }
 
+    if (localStorage.getItem('testonePlugin') === 'true') {
+      Vue.use(testonePlugin);
+    }
 
-  this.pluginsImported.push('screenshotManager')
-  if (!localStorage.getItem('screenshotManager')) {
-    localStorage.setItem('screenshotManager', 'false');
-  }
+    this.pluginsImported.push('testPlugin');
+    if (!localStorage.getItem('testPlugin')) {
+      localStorage.setItem('testPlugin', 'false');
+    }
 
-  if (localStorage.getItem('screenshotManager') === 'true') {
-    Vue.use(screenshotManager);
-  }
-
-
-  this.pluginsImported.push('testonePlugin')
-  if (!localStorage.getItem('testonePlugin')) {
-    localStorage.setItem('testonePlugin', 'false');
-  }
-
-  if (localStorage.getItem('testonePlugin') === 'true') {
-    Vue.use(testonePlugin);
-  }
-
-
-  this.pluginsImported.push('testPlugin')
-  if (!localStorage.getItem('testPlugin')) {
-    localStorage.setItem('testPlugin', 'false');
-  }
-
-  if (localStorage.getItem('testPlugin') === 'true') {
-    Vue.use(testPlugin);
-  }
+    if (localStorage.getItem('testPlugin') === 'true') {
+      Vue.use(testPlugin);
+    }
 
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
     document.body.className = this.viewMode;
@@ -199,6 +225,43 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
+
+    async showFunFactTemporarily() {
+      try {
+        const result = await ApiServices.getFunFact();
+
+        // ✅ Only show when webhook responds successfully
+        if (!result) return;
+
+        console.log(result, 'result @@');
+        this.nugget = result.output;
+
+        this.showFunFact = true;
+
+        // Clear previous timeout
+        if (this.hideTimeout) {
+          clearTimeout(this.hideTimeout);
+        }
+
+        // Hide after 1 minute
+        this.hideTimeout = setTimeout(() => {
+          this.showFunFact = false;
+        }, 15 * 1000);
+      } catch (error) {
+        console.error('Fun fact webhook error:', error);
+        this.showFunFact = false;
+      }
+    },
+
+    closeFunFact() {
+      this.showFunFact = false;
+
+      // Clear timeout so it doesn't re-hide later
+      if (this.hideTimeout) {
+        clearTimeout(this.hideTimeout);
+        this.hideTimeout = null;
+      }
+    },
 
     executeTask() {
       const now = new Date();
@@ -236,21 +299,20 @@ export default {
           this.toggleShowWhatsNew();
         }
       }, 60 * 1000);
-
     },
-    
+
     // Live plugin toggling without reload
     onPluginsChanged({ plugin, value }) {
       const registry = {
-  accessibilityPlugin,
-  contextPlugin,
-  customReportBuilder,
-  indicatorPlugin,
-  reviewPlugin,
-  screenshotManager,
-  testonePlugin,
-  testPlugin,
-};
+        accessibilityPlugin,
+        contextPlugin,
+        customReportBuilder,
+        indicatorPlugin,
+        reviewPlugin,
+        screenshotManager,
+        testonePlugin,
+        testPlugin,
+      };
 
       const pkg = registry[plugin];
       if (!pkg) return;
@@ -278,7 +340,7 @@ export default {
       }
     },
   },
-   
+
   created() {
     // global plugin bus for cross-cutting enable/disable notifications
     if (!Vue.prototype.$pluginBus) {
@@ -289,6 +351,12 @@ export default {
   },
   destroyed() {
     this.$root.$off('plugins:changed', this.onPluginsChanged);
+  },
+
+  beforeDestroy() {
+    // Cleanup timers
+    if (this.showInterval) clearInterval(this.showInterval);
+    if (this.hideTimeout) clearTimeout(this.hideTimeout);
   },
 };
 </script>
@@ -304,6 +372,103 @@ export default {
   z-index: 999999;
   top: 10rem;
   height: 48rem;
+}
+
+.fun-fact {
+  position: fixed;
+  top: 500px;
+  left: 400px;
+  width: 50vw;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+
+  padding: 18px 20px;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #fff7e6, #ffffff);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  border-left: 5px solid #f59e0b;
+  z-index: 9999;
+}
+
+/* Close (X) */
+.fun-fact-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.fun-fact-close:hover {
+  color: #374151;
+}
+
+.fun-fact-icon {
+  flex-shrink: 0;
+  background: #f59e0b;
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bulb-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.fun-fact-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.fun-fact-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #92400e;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.fun-fact-text {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1f2937;
+  font-weight: 500;
+  margin: 0;
+}
+
+.fun-fact-slide-enter-active,
+.fun-fact-slide-leave-active {
+  transition: all 0.35s ease;
+}
+
+.fun-fact-slide-enter {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.fun-fact-slide-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fun-fact-slide-leave-to {
+  opacity: 0;
+  transform: translateX(40px);
 }
 
 .whats-new {
@@ -353,7 +518,7 @@ export default {
   height: 28px;
 }
 
-  .light {
+.light {
   background-color: #ffffff;
   color: #000000;
 }
@@ -394,9 +559,9 @@ html.large {
 }
 
 [data-theme='neutral'] {
-  --primary-color: #EA4700;
-  --secondary-color: #EE6C33;
-  --background-color: #FBDACC;
+  --primary-color: #ea4700;
+  --secondary-color: #ee6c33;
+  --background-color: #fbdacc;
 }
 
 /* Dark Mode Styles */
@@ -481,9 +646,9 @@ html.large {
   color: var(--text-muted);
 }
 
-[data-theme='dark'] input[type="text"],
-[data-theme='dark'] input[type="email"],
-[data-theme='dark'] input[type="password"],
+[data-theme='dark'] input[type='text'],
+[data-theme='dark'] input[type='email'],
+[data-theme='dark'] input[type='password'],
 [data-theme='dark'] textarea,
 [data-theme='dark'] select {
   background-color: var(--input-bg);
@@ -869,5 +1034,4 @@ html.large {
     background: white !important;
   }
 }
-
 </style>
