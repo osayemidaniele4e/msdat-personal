@@ -1,11 +1,14 @@
 import Vue from 'vue';
+import store from '@/store';
 import CustomReportBuilder from './components/index.vue';
 import ReportBuilderPlugin from './components/ReportBuilderPlugin.vue';
 
 export default {
+  // eslint-disable-next-line no-param-reassign
   install(vue) {
-    // Create plugin's root Vue instance
+    // Create plugin's root Vue instance with the app's Vuex store
     const root = new Vue({
+      store,
       render: (createElement) => createElement(CustomReportBuilder),
     });
     vue.component('custom-report-builder', CustomReportBuilder);
@@ -19,6 +22,7 @@ export default {
     // expose plugin helper (export/save/load)
     // create a Vue instance from the plugin helper component
     const helper = new Vue(ReportBuilderPlugin);
+    // eslint-disable-next-line no-param-reassign
     vue.prototype.$customReportBuilderHelper = helper;
 
     // expose programmatic API to add items with context
@@ -26,21 +30,22 @@ export default {
     // context example for chart: { chartSelector: '#myChart' } or { chartConfig: {...} }
     // context example for table: { query: { indicator: ..., location: ... } }
     // root is the mounted Vue instance whose first child is the plugin component
+    // eslint-disable-next-line no-param-reassign
     vue.prototype.$customreportbuilder.addItemWithContext = async (type, context = {}) => {
       try {
         const child = root.$children && root.$children[0];
         if (child && typeof child.$children !== 'undefined') {
           // find ReportBuilderMain instance if mounted
           const main = child.$children.find(
-            (c) => c.$options && c.$options.name === 'ReportBuilderMain'
+            (c) => c.$options && c.$options.name === 'ReportBuilderMain',
           );
           if (main && typeof main.addItemWithContext === 'function') {
             return await main.addItemWithContext(type, context);
           }
           // fallback: if main not found but the child itself has method
-          if (child && typeof child.addItemWithContext === 'function')
-            return await child.addItemWithContext(type, context);
+          if (child && typeof child.addItemWithContext === 'function') return await child.addItemWithContext(type, context);
         }
+        // eslint-disable-next-line no-console
         console.warn('ReportBuilder main not available to accept context');
         return null;
       } catch (e) {
