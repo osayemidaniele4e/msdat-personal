@@ -11,6 +11,7 @@ import IndicatorPreview from './dashboards/Minister of Health Dashboard/dashboar
 import presidentBondScorecard from './dashboards/presidentBondScorecard.vue';
 import ndhsTracker from './dashboards/ndhsTracker.vue';
 import CEMONC from './dashboards/CEMONC.vue';
+import mpcdrDashboard from './dashboards/mpcdr.vue';
 
 export default [
   {
@@ -105,7 +106,14 @@ export default [
       title: 'NDHS Tracker Dashboard',
     },
 
-
+  },
+  {
+    path: '/mpcdr-dashboard',
+    name: 'mpcdr-dashboard',
+    component: mpcdrDashboard,
+    meta: {
+      title: 'MPCDR Dashboard',
+    },
   },
   {
     path: '/dashboard-landing-page',
