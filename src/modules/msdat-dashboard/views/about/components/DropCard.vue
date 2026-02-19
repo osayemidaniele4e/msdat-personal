@@ -205,6 +205,12 @@
                 >Track NDHS indicators and their trends over time.
               </span>
             </div>
+            <div class="tooltip-wrapper-2">
+              <router-link to="/mpcdr-dashboard" target="_blank">
+                <b-list-group-item>MPCDR Dashboard</b-list-group-item>
+              </router-link>
+              <span class="custom-tooltip-2">Maternal Perinatal and Child Death Review. </span>
+            </div>
           </b-list-group>
         </div>
         <div class="col mb-3">
