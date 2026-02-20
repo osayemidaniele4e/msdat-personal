@@ -28,11 +28,11 @@ export default {
           const rows = item.data.rows || [];
           const thead = document.createElement('thead');
           const thr = document.createElement('tr');
-          cols.forEach((c) => { const th = document.createElement('th'); th.innerText = c; th.style.border='1px solid #ccc'; th.style.padding='4px'; thr.appendChild(th); });
+          cols.forEach((c) => { const th = document.createElement('th'); th.innerText = c; th.style.border = '1px solid #ccc'; th.style.padding = '4px'; thr.appendChild(th); });
           thead.appendChild(thr);
           table.appendChild(thead);
           const tbody = document.createElement('tbody');
-          rows.forEach((r) => { const tr = document.createElement('tr'); cols.forEach((c) => { const td = document.createElement('td'); td.innerText = r[c] || ''; td.style.border='1px solid #ccc'; td.style.padding='4px'; tr.appendChild(td); }); tbody.appendChild(tr); });
+          rows.forEach((r) => { const tr = document.createElement('tr'); cols.forEach((c) => { const td = document.createElement('td'); td.innerText = r[c] || ''; td.style.border = '1px solid #ccc'; td.style.padding = '4px'; tr.appendChild(td); }); tbody.appendChild(tr); });
           table.appendChild(tbody);
           el.appendChild(table);
         } else if (item.type === 'chart') {
@@ -52,6 +52,7 @@ export default {
       try {
         const canvas = await html2canvas(container, { scale: 2 });
         const imgData = canvas.toDataURL('image/png');
+        // eslint-disable-next-line new-cap
         const pdf = new jsPDF({ unit: 'pt', format: 'a4' });
         const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
