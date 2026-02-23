@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Vue from 'vue';
-import store from '@/store';
+import store from '@/store'; // eslint-disable-line import/no-cycle
 import frontendAuthService from '@/modules/auth/services/frontendAuthService';
 
 const apiConfigs = {
@@ -11,9 +11,10 @@ const apiConfigs = {
 };
 
 const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => {
-  const instance = axios.create({ 
+  const instance = axios.create({
     baseURL,
-    withCredentials: true, 
+    withCredentials: true,
+    timeout: 60000, // 60s timeout — prevents indefinite hanging on 3G
   });
 
   if (!skipHeaders) {
@@ -49,49 +50,49 @@ const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => 
 
     // Add frontend JWT interceptor to all instances
     instance.interceptors.request.use(
-      async (config) => {
+      async (reqConfig) => {
         try {
           const token = await frontendAuthService.getValidToken();
-          config.headers = {
-            ...config.headers,
+          reqConfig.headers = { // eslint-disable-line no-param-reassign
+            ...reqConfig.headers,
             'X-Frontend-JWT': `Token ${token}`,
           };
         } catch (error) {
-          console.error('❌ Failed to add frontend JWT header:', error);
+          console.error('Failed to add frontend JWT header:', error);
         }
-        return config;
+        return reqConfig;
       },
       (error) => Promise.reject(error),
     );
   }
 
-  // Add response interceptor to handle 401 errors and retry with new token
+  /* eslint-disable no-underscore-dangle, no-param-reassign */
+  // Add response interceptor to handle 401 errors, timeouts and retry
   instance.interceptors.response.use(
     (response) => response, // Pass through successful responses
     async (error) => {
       const originalRequest = error.config;
-      
-   
+
+      // Handle timeout errors — retry once with a longer timeout on slow networks
+      if (error.code === 'ECONNABORTED' && !originalRequest._timeoutRetry) {
+        console.warn(`Request timed out: ${originalRequest.url}`);
+        originalRequest._timeoutRetry = true;
+        originalRequest.timeout = 120000; // 2 minute retry
+        console.log('Retrying timed-out request with extended timeout...');
+        return instance(originalRequest);
+      }
+
       if (error.response?.status === 401 && !originalRequest._retry) {
-        console.log('🔄 Received 401 error, attempting to refresh frontend token...');
-        
-        originalRequest._retry = true; // Mark request as retried
-        
+        console.log('Received 401 error, attempting to refresh frontend token...');
+        originalRequest._retry = true;
+
         try {
-          // Force refresh the frontend token
           const newToken = await frontendAuthService.refreshToken();
-          
-          // Update the failed request with new token
           originalRequest.headers['X-Frontend-JWT'] = `Token ${newToken}`;
-          
-          // Retry the original request
-          console.log('✓ Retrying request with new token...');
+          console.log('Retrying request with new token...');
           return instance(originalRequest);
-          
         } catch (refreshError) {
-          console.error('❌ Token refresh failed, cannot retry request:', refreshError);
-          
-          // Show error notification to user
+          console.error('Token refresh failed, cannot retry request:', refreshError);
           Vue.swal({
             toast: true,
             position: 'bottom',
@@ -101,12 +102,10 @@ const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => 
             title: 'Authentication Error',
             text: 'Failed to refresh authentication. Please reload the page.',
           });
-          
           return Promise.reject(refreshError);
         }
       }
-      
-    
+
       Vue.swal({
         toast: true,
         position: 'bottom',
@@ -116,10 +115,11 @@ const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => 
         title: 'Error Occurred',
         text: error.message,
       });
-      
+
       return Promise.reject(error);
     },
   );
+  /* eslint-enable no-underscore-dangle, no-param-reassign */
 
   return instance;
 };
