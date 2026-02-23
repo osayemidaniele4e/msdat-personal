@@ -176,26 +176,19 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
-import BaseZonalAnalysisSection from '../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue';
 import BaseIndicatorOverview from '../../components/sections/indicator-overview/BaseIndicatorOverview.vue';
 import IndicatorOverviewConfig from '../../components/sections/indicator-overview/control-panel-config';
 import IndicatorOverviewConfig2 from '../../components/sections/indicator-overview/disease-surveliance-control-panel-config';
 import ZonalAnalysisConfig from '../../components/sections/zonal-analysis/control-config';
 import ICSConfig from '../../components/sections/indicator-comparism/indicator-comparism-config';
-import ICS from '../../components/sections/indicator-comparism/ICS.vue';
 import DataSetComparisonConfig from '../../components/sections/dataset-comparison/control-panel-config';
-import DataSetComparison from '../../components/sections/dataset-comparison/datasetComparism.vue';
 import LazyLoading from '../../modules/onScroll/lazyLoading.vue';
 // import StaticConfig from '../../components/sections/dynamic-section/config/dashboard_config';
 import BaseMultiSourceConfig from '../../components/sections/multi-source-compare/control-config';
-import MultiSourceComponent from '../../components/sections/multi-source-compare/multi-source.vue';
-import DynamicSection from '../../components/sections/dynamic-section/DynamicSection.vue';
 import DynamicSectionConfig from '../../components/sections/dynamic-section/dynamic-section-config';
 import BaseDashboard from './BaseDashboard.vue';
 import ControlPanelConfiguration from '../../modules/control_setup/ControlPanelConfiguration.vue';
-import ScorecardSection from '../../components/sections/scorecard/ScorecardSection.vue';
 import ScorecardConfig from '../../components/sections/scorecard/scorecard-config';
-import EmbedDashboard from '../../components/sections/embed-section/EmbeddedSection.vue';
 import EmbedDashboardConfig from '../../components/sections/embed-section/embed-configs';
 // eslint-disable-next-line import/extensions
 // import PolicySimulatorConfiguration from '../../components/sections/policy-simulator/policy-simulator-config.js';
@@ -226,14 +219,15 @@ export default {
     BaseDashboard,
     BaseIndicatorOverview,
     ControlPanelConfiguration,
-    BaseZonalAnalysisSection,
     LazyLoading,
-    ICS,
-    DataSetComparison,
-    MultiSourceComponent,
-    DynamicSection,
-    ScorecardSection,
-    EmbedDashboard,
+    // Lazy-loaded section components for code-splitting
+    BaseZonalAnalysisSection: () => import('../../components/sections/zonal-analysis/BaseZonalSectionComponent.vue'),
+    ICS: () => import('../../components/sections/indicator-comparism/ICS.vue'),
+    DataSetComparison: () => import('../../components/sections/dataset-comparison/datasetComparism.vue'),
+    MultiSourceComponent: () => import('../../components/sections/multi-source-compare/multi-source.vue'),
+    DynamicSection: () => import('../../components/sections/dynamic-section/DynamicSection.vue'),
+    ScorecardSection: () => import('../../components/sections/scorecard/ScorecardSection.vue'),
+    EmbedDashboard: () => import('../../components/sections/embed-section/EmbeddedSection.vue'),
     // PolicySimulator,
   },
   props: {

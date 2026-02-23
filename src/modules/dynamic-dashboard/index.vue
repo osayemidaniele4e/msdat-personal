@@ -1,6 +1,7 @@
 <template>
   <div class="mb-3 index-app">
     <!-- <h1>HELLOOOOO</h1> -->
+    <keep-alive :max="3">
     <MSDAT
       v-if="
         Object.entries(configObject).length > 0 &&
@@ -8,7 +9,10 @@
         isGIS === false &&
         loading === false
       "
+      :key="$route.params.name"
     />
+    </keep-alive>
+    <keep-alive :max="3">
     <AdvanceMSDAT
       v-if="
         Object.entries(configObject).length > 0 &&
@@ -27,7 +31,10 @@
           ? configObject.showTableRelatedIndicator
           : true
       "
+      :key="$route.params.name"
     />
+    </keep-alive>
+    <keep-alive :max="3">
     <GisMSDAT
       v-if="
         Object.entries(configObject).length > 0 &&
@@ -46,7 +53,9 @@
           ? configObject.showTableRelatedIndicator
           : true
       "
+      :key="$route.params.name"
     />
+    </keep-alive>
     <!-- <ClearDBModal style="z-index: 1500" v-if="showClearDataModal" /> -->
     <div class="preview" v-if="$route.query.prev">
       <b-button
@@ -156,9 +165,170 @@ export default {
       'CLEAR_CONTROL_PANEL',
       'SET_CONFIGURATIONS',
       'SET_SELECTED_CONFIG',
+      'SET_DASHBOARDS',
     ]),
     ...mapActions('AUTH_STORE', ['LOGIN_USER', 'SAVE_USER_DASHBOARD']),
     ...mapActions(['SET_DASHBOARD_LOCATION']),
+    /**
+     * Fetch dashboards from API and cache in Vuex store.
+     * Subsequent calls return the cached list without hitting the API.
+     */
+    async getCachedDashboards() {
+      const cached = this.$store.state.MSDAT_STORE.dashboards;
+      if (cached && cached.length > 0) {
+        return cached;
+      }
+      const response = await apiServices.getDashboard();
+      const results = response.data.results;
+      this.SET_DASHBOARDS(results);
+      return results;
+    },
+    /**
+     * Extracted dashboard initialization logic so it can be called
+     * both from created() and from the $route watcher without a full page reload.
+     */
+    async initDashboard(dashboardName) {
+      const name = dashboardName || this.$route.params.name;
+
+      if (this.$store.getters.customDashboard && name === 'Health_Outcomes_and_Service_Coverage') {
+        this.$store.dispatch('customDashboard', false);
+        await this.$store.dispatch('DL/CLEAR_DB');
+      }
+
+      // CUSTOM-DASHBOARD flow
+      if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
+        this.isCustomDashboard = true;
+        sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
+        sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
+        sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
+        sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
+        sessionStorage.setItem('setEmbedUrlTitle', JSON.stringify(this.$store.getters.getNewEmbedUrlTitle));
+        sessionStorage.setItem('setEmbedIframeTitle', JSON.stringify(this.$store.getters.getNewEmbedIframeTitle));
+        sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
+        sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
+        sessionStorage.setItem('embedIframeTitle', JSON.stringify(this.$store.getters.getEmbedIframeTitle));
+        sessionStorage.setItem('setEmbedDashboardDesc', JSON.stringify(this.$store.getters.getNewEmbedDashboardDescription));
+
+        const ids = [];
+        const sourcesID = [];
+        this.$store.getters.getprogramArea.map((element) => {
+          if (element.parent.isChildSelected === true) {
+            element.children.map((child) => {
+              if (child.selected === true) {
+                ids.push(child.id);
+              }
+              return child;
+            });
+          }
+          return element;
+        });
+
+        this.$store.getters.getDataSource.map((element) => {
+          element.children.map((child) => {
+            if (child.selected === true) {
+              sourcesID.push(child.id);
+            }
+            return child;
+          });
+          return element;
+        });
+
+        const formattedConfig = {
+          name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+            .replace(/\s+/g, '_')
+            .toLowerCase(),
+          title: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
+            .replace(/\s+/g, '_')
+            .toLowerCase(),
+          indicators: ids,
+          defaultIndicators: ids.slice(0, 3),
+          dataSources: sourcesID,
+          initialIndicator: ids[0],
+          initialDataSource: sourcesID[0],
+          initialLocation: 1,
+        };
+        VueCookies.set('customDashboardConfig', formattedConfig);
+        const getFormattedConfig = VueCookies.get('customDashboardConfig');
+        this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
+        this.SET_CONFIGURATIONS(getFormattedConfig || this.configObject);
+        localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
+        localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
+        window.document.title = 'MSDAT Nigeria | Custom Dashboard';
+        return;
+      }
+
+      localStorage.setItem('customDashboardStatus', JSON.stringify(false));
+
+      if (name === 'Advanced_Analytics') {
+        this.$store.dispatch('customDashboard', false);
+      }
+
+      if (name === 'GIS_Mapping_Dashboard') {
+        this.isCustomDashboard = false;
+        this.$store.dispatch('customDashboard', false);
+        const results = await this.getCachedDashboards();
+        const dashboard = results.find((item) => item?.name === name);
+        if (dashboard === undefined) {
+          this.$router.push('/*');
+          return;
+        }
+        this.isGIS = true;
+        this.configObject = '';
+        this.configObject = dashboard;
+        localStorage.setItem('activeDashboardID', dashboard.id);
+        this.SET_CONFIGURATIONS(dashboard);
+        return;
+      }
+
+      // Standard dashboard flow
+      if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
+        this.isCustomDashboard = false;
+        try {
+          this.loading = true;
+          this.$store.dispatch('customDashboard', false);
+          const results = await this.getCachedDashboards();
+          const dashboard = results.find((item) => item?.name === name);
+          if (dashboard === undefined) {
+            this.$router.push('/*');
+            return;
+          }
+          this.configObject = '';
+          this.configObject = {
+            id: dashboard.id,
+            name: dashboard.name,
+            title: dashboard.title,
+            indicators: dashboard.indicators,
+            defaultIndicators: dashboard.defaultIndicators,
+            dataSources: dashboard.dataSources,
+            initialIndicator: dashboard.initialIndicator,
+            sections: dashboard.sections,
+            initialDataSource: dashboard.initialDataSource,
+            initialLocation: dashboard.initialLocation,
+            showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
+          };
+          localStorage.setItem('activeDashboardID', dashboard.id);
+          this.SET_CONFIGURATIONS(this.configObject);
+          this.isAdvanced = false;
+          this.isGIS = false;
+          if (name === 'Advanced_Analytics') {
+            this.isAdvanced = true;
+          }
+        } catch (err) {
+          console.log(
+            err,
+            '%c Welcome to MSDAT!, An error occurred on the Dashboard Instance',
+            'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
+          );
+        } finally {
+          this.loading = false;
+        }
+      }
+
+      if (this.$store.state.MSDAT_STORE.configObject.title) {
+        this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
+        window.document.title = `MSDAT Nigeria | ${this.$store.state.MSDAT_STORE.configObject.title}`;
+      }
+    },
     /**
      * @function clearData
      * @author davebenard
@@ -338,232 +508,25 @@ export default {
     // }
   },
   async created() {
-    // this.saveIndicatorToStorage();
-    // this.saveDataSourceToStorage();
-    // const formData = {
-    //   username: 'ummi',
-    //   password: 'ummi',
-    // };
-
-    // const response = await this.LOGIN_USER(formData);
-    // console.log(response);
-
-    const { name } = this.$route.params;
-
-    if (this.$store.getters.customDashboard && name === 'Health_Outcomes_and_Service_Coverage') {
-      this.$store.dispatch('customDashboard', false);
-      await this.$store.dispatch('DL/CLEAR_DB');
-    }
-    /**
-     * @description CUSTOM-DASHBOARD
-     * @description reformat selected data into msdat config structure
-     * @author chisom.chima
-     */
-    if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === true) {
-      this.isCustomDashboard = true;
-      // this.isCustom = true; // this variable doesn't exist
-      sessionStorage.setItem('composedData', JSON.stringify(this.$store.getters.getprogramArea));
-      sessionStorage.setItem('surveyArray', JSON.stringify(this.$store.getters.getDataSource));
-      sessionStorage.setItem('sectionsArray', JSON.stringify(this.$store.getters.arrangedSections));
-      sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
-      sessionStorage.setItem('setEmbedUrlTitle', JSON.stringify(this.$store.getters.getNewEmbedUrlTitle));
-      sessionStorage.setItem('setEmbedIframeTitle', JSON.stringify(this.$store.getters.getNewEmbedIframeTitle));
-      sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
-      sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
-      sessionStorage.setItem('embedIframeTitle', JSON.stringify(this.$store.getters.getEmbedIframeTitle));
-      sessionStorage.setItem('setEmbedDashboardDesc', JSON.stringify(this.$store.getters.getNewEmbedDashboardDescription));
-      // * FOR Indicators
-      const ids = [];
-      const sourcesID = [];
-      this.$store.getters.getprogramArea.map((element) => {
-        if (element.parent.isChildSelected === true) {
-          element.children.map((child) => {
-            if (child.selected === true) {
-              ids.push(child.id);
-            }
-            // console.log(child, 'ind');
-            return child;
-          });
-        }
-        return element;
-      });
-
-      // * For DataSources
-      this.$store.getters.getDataSource.map((element) => {
-        element.children.map((child) => {
-          if (child.selected === true) {
-            sourcesID.push(child.id);
-          }
-          // console.log(child, 'dat');
-          return child;
-        });
-        return element;
-      });
-      // try {
-      //   const response = await apiServices.getDashboard();
-      //   const results = response.data;
-      //   console.log({ results }, 'dashboard results')
-      //   // const dashboard = results.find((item) => item?.name === name);
-      // } catch (e) {
-      //   console.log({ e });
-      // }
-
-      // * create the config object
-      const formattedConfig = {
-        name: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-          .replace(/\s+/g, '_')
-          .toLowerCase(),
-        title: this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-          .replace(/\s+/g, '_')
-          .toLowerCase(),
-        indicators: ids,
-        // sections: dashboard.sections,
-        defaultIndicators: ids.slice(0, 3),
-        dataSources: sourcesID,
-        initialIndicator: ids[0],
-        initialDataSource: sourcesID[0],
-        initialLocation: 1,
-      };
-      // this.saveDashboard(
-      //   ids,
-      //   sourcesID,
-      //   // eslint-disable-next-line comma-dangle
-      //   this.$store.state.CUSTOM_DASHBOARD_STORE.dashboardDetails.name
-      // );
-      VueCookies.set('customDashboardConfig', formattedConfig);
-      const getFormattedConfig = VueCookies.get('customDashboardConfig');
-      this.configObject = formattedConfig?.name === '' ? getFormattedConfig : formattedConfig;
-      this.SET_CONFIGURATIONS(getFormattedConfig || this.configObject); // make use of the new state implementation to avoid prop drilling
-      localStorage.setItem('lsDataSourceCount', this.configObject.dataSources.length);
-      localStorage.setItem('lsIndicatorCount', this.configObject.indicators.length);
-
-      window.document.title = 'MSDAT Nigeria | Custom Dashboard';
-
-      return;
-    }
-    // if it is not custom dashboard for safety reasons set it to false
-    localStorage.setItem('customDashboardStatus', JSON.stringify(false));
-    // =======================
-    /**
-     * @author davebenard
-     * @description check the route params if it is advanced analytics then fetch from the config file
-     */
-    if (name === 'Advanced_Analytics') {
-      this.$store.dispatch('customDashboard', false);
-      this.$store.dispatch('resetState');
-      localStorage.removeItem('vuex');
-      // const dashboard = config.find((el) => el.name === 'Advanced_Analytics');
-      // if (dashboard === undefined) {
-      //   this.$router.push('/*');
-      //   return;
-      // }s
-      // this.isAdvanced = true;
-      //   this.configObject = '';
-      //   this.configObject = dashboard;
-      //   this.SET_CONFIGURATIONS(dashboard);
-    }
-
-    if (name === 'GIS_Mapping_Dashboard') {
-      this.isCustomDashboard = false;
-      this.$store.dispatch('customDashboard', false);
-      this.$store.dispatch('resetState');
-      localStorage.removeItem('vuex');
-      // const dashboard = config.find((el) => el.name === 'GIS_Mapping_Dashboard');
-
-      const response = await apiServices.getDashboard();
-      const results = response.data.results;
-      const dashboard = results.find((item) => item?.name === name);
-
-      if (dashboard === undefined) {
-        this.$router.push('/*');
-        return;
-      }
-
-      console.log(dashboard, 'dashboard@');
-
-      this.isGIS = true;
-      this.configObject = '';
-      this.configObject = dashboard;
-      localStorage.setItem('activeDashboardID', dashboard.id);
-      this.SET_CONFIGURATIONS(dashboard);
-      return;
-    }
-    // =======================
-    /**
-     * @description Msdat Api-Config for Dashboard
-     * @description get dashboard config based on route name from the msdat api
-     * @author sami56
-     */
-    if (this.$store.state.CUSTOM_DASHBOARD_STORE.customDashboard === false) {
-      this.isCustomDashboard = false;
-      try {
-        this.loading = true;
-        this.$store.dispatch('customDashboard', false);
-        this.$store.dispatch('resetState');
-        localStorage.removeItem('vuex');
-        // ============
-
-        const response = await apiServices.getDashboard();
-        const results = response.data.results;
-        const dashboard = results.find((item) => item?.name === name);
-        if (dashboard === undefined) {
-          this.$router.push('/*');
-          return;
-        }
-        console.log(dashboard, 'dashboard@ 1');
-        this.configObject = '';
-        this.configObject = {
-          id: dashboard.id,
-          name: dashboard.name,
-          title: dashboard.title,
-          indicators: dashboard.indicators,
-          defaultIndicators: dashboard.defaultIndicators,
-          dataSources: dashboard.dataSources,
-          initialIndicator: dashboard.initialIndicator,
-          sections: dashboard.sections,
-          initialDataSource: dashboard.initialDataSource,
-          initialLocation: dashboard.initialLocation,
-          showTableRelatedIndicator: dashboard.showTableRelatedIndicator,
-        };
-        localStorage.setItem('activeDashboardID', dashboard.id);
-        this.SET_CONFIGURATIONS(this.configObject);
-        this.isAdvanced = false;
-        this.isGIS = false;
-
-        if (name === 'Advanced_Analytics') {
-          this.isAdvanced = true;
-        } else {
-          this.isAdvanced = false;
-        }
-      } catch (err) {
-        console.log(
-          err,
-          '%c 👋🏽, Welcome to MSDAT!, An error occurred on the Dashboard Instance, \n\n \r\r',
-          // eslint-disable-next-line comma-dangle
-          'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem'
-        );
-      } finally {
-        this.loading = false;
-      }
-    }
-    // =======================
-    // set the title from the config as the route title
-    if (this.$store.state.MSDAT_STORE.configObject.title) {
-      this.$route.meta.title = this.$store.state.MSDAT_STORE.configObject.title;
-      window.document.title = `MSDAT Nigeria | ${this.$store.state.MSDAT_STORE.configObject.title}`;
-    }
-
-    // this.$nextTick(() => {
-    //   if (this.modalShown !== true) {
-    //     this.$root.$emit('bv::show::modal', 'modal-newsLetter');
-    //   }
-    // });
+    await this.initDashboard();
   },
   watch: {
-    $route(to, from) {
-      // react to route changes...
-      if (to !== from) {
-        window.location.reload();
+    async $route(to, from) {
+      // react to route changes — re-initialize dashboard without full page reload
+      if (to.params.name !== from.params.name) {
+        this.loading = true;
+        this.configObject = {
+          name: '',
+          title: '',
+          indicators: [],
+          defaultIndicators: [],
+          dataSources: [],
+          initialIndicator: 0,
+          initialDataSource: 0,
+          initialLocation: 1,
+          showTableRelatedIndicator: true,
+        };
+        await this.initDashboard(to.params.name);
       }
     },
   },

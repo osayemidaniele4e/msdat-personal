@@ -71,6 +71,8 @@ export default class DataLayer {
 
   /**
    * data layer initialization
+   * Caches global reference data (locations, indicators, etc.) in the DL store.
+   * On subsequent calls, skips re-fetching if data already exists.
    */
   async init(object) {
     try {
@@ -80,30 +82,37 @@ export default class DataLayer {
       console.time('fetching');
 
       /**
+       * Check if global reference data is already cached in the store.
+       * These datasets (locations, indicators, datasources, etc.) are
+       * identical across all dashboards and don't need to be re-fetched.
+       */
+      const existingState = this.store.state.DL;
+      const hasGlobalData = existingState.indicators.length > 0
+        && existingState.location.length > 0
+        && existingState.datasources.length > 0;
+
+      if (!hasGlobalData) {
+        /**
          * The apiServices returns all the and array of response for the
          * axios call of all other apiEndpoints.getOtherEndpoint
          * it uses and {Promise.all()}
          *
          * @see {@link apiServices.getOtherEndpoint()}
          */
-      const data = await apiServices.getOtherEndpoint();
-      /**
-       * we would also need to created a component
-       * then display the activities  of the service layer
-       * per time
-       */
+        const data = await apiServices.getOtherEndpoint();
 
-      /**
-       * now initializing other tables in the store from the database directly as against the
-       * previous implementation
-       */
-      this.setDataInStore(data[6].data.results, DSI);
-      this.setDataInStore(data[0].data.results, LOCATION);
-      this.setDataInStore(data[1].data.results, INDICATORS);
-      this.setDataInStore(data[3].data.results, VALUE_TYPES);
-      this.setDataInStore(data[5].data.results, FACTORS);
-      this.setDataInStore(data[7].data.results, DATA_SOURCE);
-      this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
+        /**
+         * now initializing other tables in the store from the database directly as against the
+         * previous implementation
+         */
+        this.setDataInStore(data[6].data.results, DSI);
+        this.setDataInStore(data[0].data.results, LOCATION);
+        this.setDataInStore(data[1].data.results, INDICATORS);
+        this.setDataInStore(data[3].data.results, VALUE_TYPES);
+        this.setDataInStore(data[5].data.results, FACTORS);
+        this.setDataInStore(data[7].data.results, DATA_SOURCE);
+        this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
+      }
 
       let filteredIndicatorIDArray = [];
 
@@ -113,7 +122,7 @@ export default class DataLayer {
         const dashboardIndicatorIDs = dashboardIndicators.data.indicators.map((item) => item.id);
 
         filteredIndicatorIDArray = dashboardIndicatorIDs.filter(
-          (value) => value !== undefined && !Number.isNaN(value)
+          (value) => value !== undefined && !Number.isNaN(value),
         );
 
         if (filteredIndicatorIDArray.length !== 0) {
@@ -220,13 +229,14 @@ export default class DataLayer {
   }
 
   /**
-   * set dashboard available  indicator in store
+   * set dashboard available indicator in store
+   * Uses already-loaded indicators from the DL store instead of
+   * re-fetching all 4000+ indicators from the API.
    */
   async setAvailableDashboardIndicator() {
-    // const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
-    const response = await apiServices.fetchAllIndicators()
-
-    const dashboardIndicatorIDs = response.data.results.map((item) => item.id);
+    // Use the indicators already fetched and cached in the DL store
+    const allIndicators = this.store.state.DL.indicators;
+    const dashboardIndicatorIDs = allIndicators.map((item) => item.id);
 
     const dashboardIndicators = dashboardIndicatorIDs.filter((item) => this.indicatorList.includes(item));
 

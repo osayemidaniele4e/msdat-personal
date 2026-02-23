@@ -276,6 +276,14 @@ const mutations: MutationTree<State> = {
     state.controlConfig = [];
   },
 
+  /**
+   * Cache the full list of dashboards fetched from the API
+   * so subsequent navigations don't require re-fetching.
+   */
+  SET_DASHBOARDS: (state, payload) => {
+    state.dashboards = payload;
+  },
+
   toggleShowDataSourceList: (state) => {
     state.showDataSourceList = true;
   },

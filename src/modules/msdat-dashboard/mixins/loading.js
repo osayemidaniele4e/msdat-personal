@@ -17,12 +17,13 @@ export default {
   },
   methods: {
     changeLoadingData() {
-      for (let i = 1; i < 1; i += 1) {
-        setInterval(() => {
-          // console.log(i);
-          this.loadingData = i;
-        }, i * 1000);
-      }
+      // Progress through loading phases tied to actual elapsed time
+      const phases = [1, 2, 3];
+      phases.forEach((phase, index) => {
+        setTimeout(() => {
+          this.loadingData = phase;
+        }, (index + 1) * 1500);
+      });
     },
   },
   watch: {
