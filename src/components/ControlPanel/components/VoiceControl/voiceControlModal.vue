@@ -5,7 +5,11 @@
       <div class="voice-assistant-container p-3">
         <!-- Title and introduction -->
         <div class="text-center mb-4">
-          <p class="">Hello! Welcome to the MSDAT Platform. How can I help you?</p>
+          <p class="">
+            Hello! I’m your voice assistant, here to help you navigate dashboards, find indicators,
+            and retrieve data or metadata from MSDAT.
+          </p>
+          <p>Just tell me what you need.</p>
         </div>
 
         <!-- Transcript display -->
