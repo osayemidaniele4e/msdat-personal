@@ -1,11 +1,10 @@
-
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 
 // helper to safely parse JSON
 const safeJSONParse = (value, fallback = null) => {
-  if (!value || value === "undefined") return fallback;
+  if (!value || value === 'undefined') return fallback;
   try {
     return JSON.parse(value);
   } catch {
@@ -68,6 +67,8 @@ const store = {
     embedIframe: '',
     embedIframeTitle: '',
     allDataSources: [],
+    selectedLevels: [],
+    selectedYears: [],
   },
 
   mutations,
@@ -76,4 +77,3 @@ const store = {
 };
 
 export default store;
-
