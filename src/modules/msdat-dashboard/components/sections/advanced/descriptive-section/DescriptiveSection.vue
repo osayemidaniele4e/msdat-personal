@@ -7,12 +7,13 @@
       </div>
     </div>
     <div style="max-width: 1400px; width: 100%">
-      <b-embed
+      <h2 class="text-center text-muted py-5">Coming Soon</h2>
+      <!-- <b-embed
         type="iframe"
         :src="url"
         :width="width"
         :height="height"
-      ></b-embed>
+      ></b-embed> -->
     </div>
   </div>
 </template>
@@ -27,28 +28,28 @@ export default {
   },
   data() {
     return {
-      isLoading: true,
+      isLoading: false,
       url: 'https://public.tableau.com/views/Descriptiveanalytics_17060149555940/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
       width: '100%',
       height: '400',
     };
   },
   methods: {
-    isLoaded() {
-      const canvas = document.querySelector('.embed-responsive-item');
-      const content = canvas.contentDocument || canvas.contentWindow.document;
-      const intervalId = setInterval(() => {
-        if (content.readyState === 'complete') {
-          this.isLoading = false;
-          clearInterval(intervalId);
-        } else {
-          console.error('canvas not found', canvas);
-        }
-      }, 1000);
-    },
+    // isLoaded() {
+    //   const canvas = document.querySelector('.embed-responsive-item');
+    //   const content = canvas.contentDocument || canvas.contentWindow.document;
+    //   const intervalId = setInterval(() => {
+    //     if (content.readyState === 'complete') {
+    //       this.isLoading = false;
+    //       clearInterval(intervalId);
+    //     } else {
+    //       console.error('canvas not found', canvas);
+    //     }
+    //   }, 1000);
+    // },
   },
   mounted() {
-    this.isLoaded();
+    // this.isLoaded();
   },
 };
 </script>
