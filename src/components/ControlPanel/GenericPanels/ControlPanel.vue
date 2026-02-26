@@ -728,7 +728,7 @@ button {
 }
 
 .voice-wrapper .exp {
-  margin-top: -1px;
+  margin-top: -5px;
   font-size: 10px;
 }
 
@@ -739,5 +739,13 @@ button {
 
 .voice-wrapper:hover span {
   color: #fff;
+}
+
+.voice-item span {
+  font-size: 14px;
+}
+
+.voice-item svg {
+  font-size: 14px;
 }
 </style>
