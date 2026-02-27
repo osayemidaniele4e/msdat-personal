@@ -116,7 +116,13 @@ export default {
     return state.publicDashboard;
   },
 
-  getAllSources(state){
-    return state.allDataSources
-  }
+  getAllSources(state) {
+    return state.allDataSources;
+  },
+  getSelectedLevels(state) {
+    return state.selectedLevels;
+  },
+  getSelectedYears(state) {
+    return state.selectedYears;
+  },
 };

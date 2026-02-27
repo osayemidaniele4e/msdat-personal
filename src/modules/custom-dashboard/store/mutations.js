@@ -139,6 +139,14 @@ export default {
     state.isNotExistYear.push(payload);
   },
 
+  setLevels(state, payload) {
+    state.selectedLevels = payload;
+  },
+
+  setYears(state, payload) {
+    state.selectedYears = payload;
+  },
+
   // For selection of Single Indicator
   selectionIndicator(state, payload) {
     let found = false;

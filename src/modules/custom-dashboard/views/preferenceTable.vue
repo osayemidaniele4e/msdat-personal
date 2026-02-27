@@ -1,13 +1,12 @@
- <!-- Auther: Ghufran Ahmed -->
+<!-- Auther: Ghufran Ahmed -->
 <template>
   <b-container class="text-justify px-5" fluid>
-    <div class="top-cont" >
-      <p style="font-size: 28px; font-weight: 700; color: #035C6E; font-family: Work Sans">
+    <div class="top-cont">
+      <p style="font-size: 28px; font-weight: 700; color: #035c6e; font-family: Work Sans">
         <b>Select your preferences</b>
       </p>
       <p style="font-size: 16px; font-family: Work Sans; margin-top: -17px">
-        Select the Program Areas, Data Sources, Period and Coverage Levels you are
-        interested in.
+        Select the Program Areas, Data Sources, Period and Coverage Levels you are interested in.
       </p>
     </div>
     <div class="d-flex align-items-center justify-content-between">
@@ -21,24 +20,43 @@
 
         <b-col sm="12" lg="4">
           <div class="d-flex row justify-content-between preferences">
-            <p style="font-size: 18px; font-weight: 700; color: #035C6E; font-family: Work Sans; margin-top: 10px; align-items: center; margin: 0">Selection</p>
+            <p
+              style="
+                font-size: 18px;
+                font-weight: 700;
+                color: #035c6e;
+                font-family: Work Sans;
+                margin-top: 10px;
+                align-items: center;
+                margin: 0;
+              "
+            >
+              Selection
+            </p>
             <!-- advanved search btn -->
             <b-button
-             @click="showModal = true"
-            style="font-size: 12.000004px; font-family: Work Sans; border-color:#3f8994; color: #3f8994; background-color: #ffffff;"
-              >Advanced Search</b-button>
+              @click="showModal = true"
+              style="
+                font-size: 12.000004px;
+                font-family: Work Sans;
+                border-color: #3f8994;
+                color: #3f8994;
+                background-color: #ffffff;
+              "
+              >Advanced Search</b-button
+            >
 
-    <!-- Advanced Search Modal -->
-    <AdvancedSearchModal
-      v-if="showModal"
-      @close="showModal = false"
-       @apply="updateSelections"
-    />
-            </div>
+            <!-- Advanced Search Modal -->
+            <AdvancedSearchModal
+              v-if="showModal"
+              @close="showModal = false"
+              @apply="updateSelections"
+            />
+          </div>
 
           <indicators-selection
-           :selected-indicators.sync="selectedIndicators"
-      :selected-program-area.sync="selectedProgramArea"
+            :selected-indicators.sync="selectedIndicators"
+            :selected-program-area.sync="selectedProgramArea"
           />
           <br />
           <data-source />
@@ -57,17 +75,26 @@
         <!-- ****** Selected Items Table ****** -->
 
         <b-col sm="12" lg="8">
-          <div style="display: flex; justify-content: space-between; padding: 0px 15px;">
-            <p style="font-size: 20px; font-weight: 700; color: #035C6E; font-family: Work Sans">Selected Preferences</p>
+          <div style="display: flex; justify-content: space-between; padding: 0px 15px">
+            <p style="font-size: 20px; font-weight: 700; color: #035c6e; font-family: Work Sans">
+              Selected Preferences
+            </p>
             <span class="approve"
-            ><b-button
-              @click="approveData"
-              style="font-size: 12.000004px; font-family: Work Sans; background-color:#035C6E;
-  color:#ffffff;"
-              >approve Data</b-button
-            ></span>
+              ><b-button
+                @click="approveData"
+                style="
+                  font-size: 12.000004px;
+                  font-family: Work Sans;
+                  background-color: #035c6e;
+                  color: #ffffff;
+                "
+                >approve Data</b-button
+              ></span
+            >
           </div>
-          <data-table class="data-table" />
+          <!-- <data-table class="data-table" /> -->
+          <SelectedInfoTable :selected-levels="selectedLevels" />
+
           <b-row align-h="end" class="text-right">
             <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
               >Indicators: <b>{{ indicatorsCount }} Selected</b></b-col
@@ -79,28 +106,17 @@
               >Period: <b>{{ yearsCount }} Years</b></b-col
             >
             <b-col cols="auto" style="font-size: 13px; font-family: Work Sans"
-              >Levels:
-              <b v-for="level in selectedLevel" :key="level"
-                >{{ level }},</b
-              ></b-col
+              >Levels: <b v-for="level in selectedLevel" :key="level">{{ level }},</b></b-col
             >
           </b-row>
           <div class="d-flex align-self-end justify-content-end w-100">
             <b-row
               align-h="end"
               class="mt-5 mr-5 text-right"
-              v-if="
-                indicatorsCount &&
-                dataSourceCount &&
-                yearsCount &&
-                selectedLevel.length > 0
-              "
+              v-if="indicatorsCount && dataSourceCount && yearsCount && selectedLevel.length > 0"
             >
               <b-col class="align-baseline" cols="auto" style=""
-                ><p
-                  class="baseline mt-5"
-                  style="font-size: 12.000004px; font-family: Work Sans"
-                >
+                ><p class="baseline mt-5" style="font-size: 12.000004px; font-family: Work Sans">
                   <!-- Save for Later -->
                 </p>
               </b-col>
@@ -129,6 +145,7 @@ import YearsSelection from '../components/preferences/selection/YearsSelection.v
 import LevelSelection from '../components/preferences/selection/LevelSelection.vue';
 import DataTable from '../components/preferences/dataTable/DataTable.vue';
 import Notes from '../components/preferences/notes/Notes.vue';
+import SelectedInfoTable from './SelectedInfo.vue';
 
 export default {
   name: 'data-preferences',
@@ -140,6 +157,7 @@ export default {
     LevelSelection,
     DataTable,
     Notes,
+    SelectedInfoTable,
   },
   mounted() {
     this.$store.commit('updateStep', 2);
@@ -154,7 +172,6 @@ export default {
       showModal: false,
       selectedProgramArea: null,
       selectedIndicators: [],
-
     };
   },
   beforeDestroy() {
@@ -236,6 +253,7 @@ export default {
         }
         return dyear;
       });
+
       return count;
     },
     // Count Number of Levels Selected
@@ -261,11 +279,11 @@ export default {
         return element;
       });
       selectedLevels = [...new Set(selectedLevels)];
+      this.$store.commit('setLevels', selectedLevels);
       return selectedLevels;
     },
   },
   methods: {
-
     // handleApply(selectedData) {
     //   // Process the selected data
     //   console.log("Selected Indicators:", selectedData);
@@ -294,10 +312,10 @@ export default {
     // The below function is called when approve button is clicked at Table maker page.
     approveData() {
       if (
-        this.indicatorsCount
-        && this.dataSourceCount
-        && this.yearsCount
-        && this.selectedLevel.length > 0
+        this.indicatorsCount &&
+        this.dataSourceCount &&
+        this.yearsCount &&
+        this.selectedLevel.length > 0
       ) {
         this.$router.push('data-table');
         this.destroyPage = true;
@@ -321,7 +339,7 @@ export default {
   font-size: 12.000003px;
 }
 
-.preferences{
+.preferences {
   padding: 0 10px;
 }
 .indicators {
@@ -337,7 +355,7 @@ input {
 .baseline {
   margin-top: auto !important;
 }
-.top-cont{
+.top-cont {
   display: flex;
   flex-direction: column;
   align-items: center;
