@@ -219,7 +219,7 @@ export default {
         'Scorecard',
         // 'Embedded Dashboard',
       ],
-      customTitle: ''
+      customTitle: '',
     };
   },
   components: {
@@ -254,6 +254,8 @@ export default {
     showIndicatorRelationship() {
       const allowedDashboards = [
         '/dashboard/Demographics',
+        '/dashboard/Health_Facility',
+        '/dashboard/Health_Workforce',
         '/dashboard/Health_Outcomes_and_Service_Coverage',
       ];
       return allowedDashboards.includes(this.$route.path);
@@ -316,15 +318,17 @@ export default {
         this.ADD_CONTROL_PANEL(field);
       });
       const { embeddedIframeTitle, embeddedUrlTitle } = this.$store.state.CUSTOM_DASHBOARD_STORE;
-     
+
+      let label = 'Dashboard';
+      if (embeddedIframeTitle && embeddedIframeTitle.trim() !== '') {
+        label = embeddedIframeTitle;
+      } else if (embeddedUrlTitle && embeddedUrlTitle.trim() !== '') {
+        label = embeddedUrlTitle;
+      }
+
       const newEmbedConfig = {
         ...EmbedDashboardConfig,
-        label:
-          embeddedIframeTitle && embeddedIframeTitle.trim() !== ''
-            ? embeddedIframeTitle
-            : embeddedUrlTitle && embeddedUrlTitle.trim() !== ''
-            ? embeddedUrlTitle
-            : 'Dashoard',
+        label,
       };
       this.allSections.push(newEmbedConfig.label);
       this.customTitle = newEmbedConfig.label;

@@ -5,7 +5,11 @@
       <div class="voice-assistant-container p-3">
         <!-- Title and introduction -->
         <div class="text-center mb-4">
-          <p class="">Hello! Welcome to the MSDAT Platform. How can I help you?</p>
+          <p class="">
+            Hello! I’m your voice assistant, here to help you navigate dashboards, find indicators,
+            and retrieve data or metadata from MSDAT.
+          </p>
+          <p>Just tell me what you need.</p>
         </div>
 
         <!-- Transcript display -->
@@ -63,21 +67,21 @@
           <b-button
             :variant="micButtonVariant"
             class="rounded-circle mic-button d-flex align-items-center justify-content-center"
-            :class="{ 'listening': isListening }"
+            :class="{ listening: isListening }"
             style="width: 80px; height: 80px"
             :disabled="!recognitionSupported || status === 'processing'"
             @click="micPermission !== 'granted' ? requestMicrophoneAccess() : toggleListening()"
           >
-            <b-icon 
-              :icon="isListening ? 'stop-fill' : 'mic-fill'" 
-              font-scale="2" 
+            <b-icon
+              :icon="isListening ? 'stop-fill' : 'mic-fill'"
+              font-scale="2"
               class="text-white"
             ></b-icon>
           </b-button>
           <small class="text-muted mt-2 d-block">
             {{ isListening ? 'Click to stop' : 'Click to start speaking' }}
           </small>
-          
+
           <!-- Sound wave animation -->
           <div v-if="isListening" class="sound-wave d-flex justify-content-center mt-3">
             <span class="wave-bar"></span>
@@ -217,7 +221,7 @@ export default {
       const payload = JSON.stringify({ command });
       addDebugInfo(`API request payload: ${payload}`);
       textResponse.value = ''; // Clear previous text response
-      
+
       // Create new AbortController for this request
       abortController.value = new AbortController();
 
@@ -256,26 +260,33 @@ export default {
           throw new Error(`Failed to parse response: ${err.message}`);
         }
 
+        console.log(data, '@@@ NAVigation');
+
         // ✅ Handle navigation type
-        if (data && data.type === 'Navigation' && data.route) {
+        if (data?.type === 'Navigation' && data?.route) {
           addDebugInfo(`Navigation detected — redirecting to ${data.route}`);
 
-          // Build the full URL based on the current site origin
-          let targetUrl = data.route.trim();
+          const rawRoute = data.route.trim();
 
-          // If route doesn't start with "http", prepend the current origin
-          if (!/^https?:\/\//i.test(targetUrl)) {
-            // Remove any accidental double slashes
-            targetUrl = `${window.location.origin}/dashboard/${targetUrl.replace(/^\/+/, '')}`;
+          let targetUrl;
+
+          try {
+            // Try to construct URL directly (handles full URLs correctly)
+            const parsedUrl = new URL(rawRoute);
+
+            // If it's already a valid absolute URL, use it directly
+            targetUrl = parsedUrl.href;
+          } catch {
+            // If it fails, it's a relative path — build from origin
+            const cleanPath = rawRoute.replace(/^\/+/, '');
+            targetUrl = new URL(cleanPath, window.location.origin).href;
           }
 
           addDebugInfo(`Final navigation URL: ${targetUrl}`);
 
-          // Redirect in the same tab
-          window.location.href = targetUrl;
+          window.location.assign(targetUrl);
           return;
         }
-
         // ✅ Continue normal response flow
         addDebugInfo(`API response data: ${JSON.stringify(data)}`);
 
@@ -318,82 +329,93 @@ export default {
           recognitionRef.value.interimResults = true; // Show results as user speaks
           recognitionRef.value.maxAlternatives = 3; // Get multiple alternatives for better accuracy
           recognitionRef.value.lang = 'en-US';
-          
+
           // Set up event handlers
           recognitionRef.value.onstart = () => {
             addDebugInfo('Speech recognition started');
             isListening.value = true;
           };
-          
+
           recognitionRef.value.onresult = (event) => {
             let interim = '';
             let final = finalTranscript.value;
-            
+
             // Process all results
             for (let i = event.resultIndex; i < event.results.length; i++) {
               const result = event.results[i];
               const transcriptText = result[0].transcript;
               const confidence = result[0].confidence;
-              
+
               if (result.isFinal) {
                 // Log alternatives for debugging
                 if (result.length > 1) {
-                  const alternatives = Array.from(result).map((alt, idx) => 
-                    `Alt ${idx + 1}: "${alt.transcript}" (${(alt.confidence * 100).toFixed(1)}%)`
-                  ).join(', ');
+                  const alternatives = Array.from(result)
+                    .map(
+                      (alt, idx) =>
+                        `Alt ${idx + 1}: "${alt.transcript}" (${(alt.confidence * 100).toFixed(
+                          1
+                        )}%)`
+                    )
+                    .join(', ');
                   addDebugInfo(`Alternatives: ${alternatives}`);
                 }
-                
+
                 final += transcriptText + ' ';
-                addDebugInfo(`Final result: "${transcriptText}" (confidence: ${(confidence * 100).toFixed(1)}%)`);
+                addDebugInfo(
+                  `Final result: "${transcriptText}" (confidence: ${(confidence * 100).toFixed(
+                    1
+                  )}%)`
+                );
               } else {
                 interim += transcriptText;
               }
             }
-            
+
             finalTranscript.value = final;
             interimTranscript.value = interim;
-            
+
             // Update display transcript (final + interim)
             transcript.value = (final + interim).trim();
             addDebugInfo(`Current transcript: "${transcript.value}"`);
           };
-          
+
           recognitionRef.value.onspeechend = () => {
             addDebugInfo('Speech ended (silence detected)');
           };
-          
+
           recognitionRef.value.onerror = (event) => {
             addDebugInfo(`Speech recognition error: ${event.error}`);
-            
+
             // Handle specific errors
             if (event.error === 'no-speech') {
               addDebugInfo('No speech detected - continuing to listen...');
               // Don't stop on no-speech, let user keep trying
               return;
             }
-            
+
             if (event.error === 'aborted') {
               addDebugInfo('Recognition aborted');
               return;
             }
-            
+
             if (event.error === 'network') {
               addDebugInfo('Network error - check your connection');
             }
-            
+
             isListening.value = false;
             status.value = 'idle';
           };
-          
+
           recognitionRef.value.onend = () => {
-            addDebugInfo(`Speech recognition ended. Manual stop: ${manualStop.value}, isListening: ${isListening.value}`);
-            
+            addDebugInfo(
+              `Speech recognition ended. Manual stop: ${manualStop.value}, isListening: ${isListening.value}`
+            );
+
             // If user manually stopped, process the transcript
             if (manualStop.value) {
               manualStop.value = false;
               isListening.value = false;
-              
+
               const fullTranscript = finalTranscript.value.trim();
               if (fullTranscript) {
                 addDebugInfo(`Processing final transcript: "${fullTranscript}"`);
@@ -405,7 +427,7 @@ export default {
                 addDebugInfo('No transcript to process');
                 status.value = 'idle';
               }
-            } 
+            }
             // If recognition ended but user didn't stop, restart it
             else if (isListening.value && status.value === 'listening') {
               addDebugInfo('Recognition ended unexpectedly, restarting...');
@@ -428,7 +450,7 @@ export default {
               }
             }
           };
-          
+
           recognitionSupported.value = true;
         } else {
           addDebugInfo('Speech recognition is NOT supported in this browser');
@@ -509,7 +531,7 @@ export default {
       try {
         addDebugInfo('Attempting to start speech recognition');
         recognitionRef.value.start();
-        
+
         // Auto-stop after 30 seconds to prevent endless listening
         listeningTimeout.value = setTimeout(() => {
           if (isListening.value) {
@@ -517,7 +539,6 @@ export default {
             stopListening();
           }
         }, 30000);
-        
       } catch (error) {
         addDebugInfo(`Error starting speech recognition: ${error}`);
         // If already started, stop and restart
@@ -538,16 +559,16 @@ export default {
     // Stop listening function
     const stopListening = () => {
       addDebugInfo('Stopping listening (manual stop)...');
-      
+
       // Set manual stop flag so onend handler knows to process transcript
       manualStop.value = true;
-      
+
       // Clear the auto-stop timeout
       if (listeningTimeout.value) {
         clearTimeout(listeningTimeout.value);
         listeningTimeout.value = null;
       }
-      
+
       if (recognitionRef.value) {
         try {
           recognitionRef.value.stop();
@@ -636,17 +657,17 @@ export default {
 
     onBeforeUnmount(() => {
       addDebugInfo('Cleaning up voice assistant...');
-      
+
       // Clear any pending timeouts
       if (listeningTimeout.value) {
         clearTimeout(listeningTimeout.value);
       }
-      
+
       // Cancel any pending API requests
       if (abortController.value) {
         abortController.value.abort();
       }
-      
+
       if (recognitionRef.value) {
         try {
           recognitionRef.value.abort();
@@ -738,15 +759,30 @@ export default {
   animation: wave 0.5s ease-in-out infinite;
 }
 
-.wave-bar:nth-child(1) { animation-delay: 0s; }
-.wave-bar:nth-child(2) { animation-delay: 0.1s; }
-.wave-bar:nth-child(3) { animation-delay: 0.2s; }
-.wave-bar:nth-child(4) { animation-delay: 0.3s; }
-.wave-bar:nth-child(5) { animation-delay: 0.4s; }
+.wave-bar:nth-child(1) {
+  animation-delay: 0s;
+}
+.wave-bar:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.wave-bar:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.wave-bar:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.wave-bar:nth-child(5) {
+  animation-delay: 0.4s;
+}
 
 @keyframes wave {
-  0%, 100% { height: 10px; }
-  50% { height: 25px; }
+  0%,
+  100% {
+    height: 10px;
+  }
+  50% {
+    height: 25px;
+  }
 }
 
 .mic-control {

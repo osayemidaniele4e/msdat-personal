@@ -20,19 +20,31 @@
         </div>
         <div class="card-body">
           <div class="text-center"></div>
-          <form action="" v-on:submit.prevent="newsLetter()" class="subscribe-form">
+          <form
+            class="subscribe-form"
+            @submit.prevent="newsLetter"
+          >
             <div class="form-group mb-0">
               <label for="name" class="sr-only">Email address</label>
               <input
                 type="email"
                 class="form-control"
-                name="email"
-                id="email"
+                name="EMAIL"
+                id="mce-EMAIL"
                 aria-describedby="helpId"
                 placeholder="Email address"
                 v-model="email"
                 required
                 autocomplete="email"
+              />
+            </div>
+
+            <div aria-hidden="true" style="position: absolute; left: -5000px;">
+              <input
+                type="text"
+                name="b_78b4bf71f180a0ed0b6d72aad_2e22273e05"
+                tabindex="-1"
+                value=""
               />
             </div>
 
@@ -53,7 +65,6 @@
 
 <script>
 import './style.scss';
-import axios from 'axios';
 
 export default {
   name: 'NewsLetterModal',
@@ -77,30 +88,49 @@ export default {
       this.$root.$emit('bv::hide::modal', 'modal-newsLetter', '#btnShow');
       localStorage.setItem('modalShown', 'true');
     },
+    newsLetter() {
+      if (!this.email) return;
 
-    async newsLetter() {
       this.loading = true;
-      const url = `${process.env.VUE_APP_API_BASE_URL}mailchimp/`;
-      const data = {
-        email: this.email,
-      };
-      try {
-        const response = await axios.post(url, data);
-        if (response.data) {
-          this.email = '';
-          this.$swal({
-            toast: true,
-            position: 'top-right',
-            showConfirmButton: false,
-            timer: 5000,
-            icon: 'success',
-            title: 'Success',
-            text: 'You have successfully subscribed to our newsletter.',
-          });
-          this.hideModal();
-          this.modalHasShown();
+      const callbackName = `mcCallback_${Date.now()}`;
+      const baseUrl
+        = 'https://fmohconnect.us18.list-manage.com/subscribe/post-json?u=78b4bf71f180a0ed0b6d72aad&id=2e22273e05&f_id=00a4aae6f0';
+      const script = document.createElement('script');
+
+      const cleanup = () => {
+        delete window[callbackName];
+        if (script && script.parentNode) {
+          script.parentNode.removeChild(script);
         }
-      } catch (error) {
+      };
+
+      window[callbackName] = (response) => {
+        this.loading = false;
+        const isSuccess = response && response.result === 'success';
+
+        this.$swal({
+          toast: true,
+          position: 'top-right',
+          showConfirmButton: false,
+          timer: 5000,
+          icon: isSuccess ? 'success' : 'info',
+          title: isSuccess ? 'Success' : 'Attention',
+          text: isSuccess
+            ? 'You have successfully subscribed to our newsletter.'
+            : (response && response.msg) || 'An Error Occured, Please try again',
+        });
+
+        if (isSuccess) {
+          this.email = '';
+          this.hideModal();
+          this.modalhasShown();
+        }
+
+        cleanup();
+      };
+
+      script.onerror = () => {
+        this.loading = false;
         this.$swal({
           toast: true,
           position: 'top-right',
@@ -108,13 +138,17 @@ export default {
           timer: 5000,
           icon: 'info',
           title: 'Attention',
-          text: 'An Error Occured, Please try again' || `${error.message}`,
+          text: 'An Error Occured, Please try again',
         });
-      } finally {
-        this.loading = false;
-      }
+        cleanup();
+      };
+
+      script.src = `${baseUrl}&EMAIL=${encodeURIComponent(this.email)}&c=${callbackName}`;
+      document.body.appendChild(script);
     },
+
     modalhasShown() {
+      this.loading = false;
       // eslint-disable-next-line no-unused-expressions
       localStorage.setItem('modalShown', 'true');
     },
