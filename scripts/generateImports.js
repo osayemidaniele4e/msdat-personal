@@ -234,7 +234,7 @@ export default {
         // Hide after 1 minute
         this.hideTimeout = setTimeout(() => {
           this.showFunFact = false;
-        }, 60 * 2 * 1000);
+        }, 20 * 1000);
       } catch (error) {
         console.error('Fun fact webhook error:', error);
         this.showFunFact = false;
