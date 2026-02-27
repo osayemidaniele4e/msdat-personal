@@ -1,18 +1,18 @@
 <template>
-  <div class="position-relative" id="app">
+ <div class="position-relative" id="app">
     <router-view />
     <feedback />
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-    <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
+      <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
     <div v-if="showShareSectionComponent" class="position-fixed whats-new">
       <ShareSection />
     </div>
 
-    <transition name="fun-fact-slide">
+     <transition name="fun-fact-slide">
       <div v-if="showFunFact" class="fun-fact">
         <button class="fun-fact-close" aria-label="Close fun fact" @click="closeFunFact">×</button>
         <div class="fun-fact-icon">
@@ -39,9 +39,9 @@
     <!-- Global Chatbot - Commented out -->
     <!-- <div class="global-chatbot-wrapper">
       <ChatBot ref="globalChatBot" />
-      <button 
-        class="global-chat-trigger" 
-        @click="$refs.globalChatBot.toggleChat()" 
+      <button
+        class="global-chat-trigger"
+        @click="$refs.globalChatBot.toggleChat()"
         title="Metadata Chatbot"
         aria-label="Open AI Chatbot"
       >
@@ -51,6 +51,7 @@
       </button>
     </div> -->
   </div>
+
 </template>
 
 <script>
@@ -59,7 +60,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
-import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue'; // import ChatBot from './modules/msdat-dashboard/components/ChatBot.vue';
+import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue';// import ChatBot from './modules/msdat-dashboard/components/ChatBot.vue';
 import ApiServices from './modules/data-layer/services/ApiServices';
 import accessibilityPlugin from './modules/plugins/accessibilityPlugin';
 import contextPlugin from './modules/plugins/contextPlugin';
@@ -352,7 +353,6 @@ export default {
   destroyed() {
     this.$root.$off('plugins:changed', this.onPluginsChanged);
   },
-
   beforeDestroy() {
     // Cleanup timers
     if (this.showInterval) clearInterval(this.showInterval);
@@ -518,7 +518,7 @@ export default {
   height: 28px;
 }
 
-.light {
+  .light {
   background-color: #ffffff;
   color: #000000;
 }
@@ -559,9 +559,9 @@ html.large {
 }
 
 [data-theme='neutral'] {
-  --primary-color: #ea4700;
-  --secondary-color: #ee6c33;
-  --background-color: #fbdacc;
+  --primary-color: #EA4700;
+  --secondary-color: #EE6C33;
+  --background-color: #FBDACC;
 }
 
 /* Dark Mode Styles */
@@ -646,9 +646,9 @@ html.large {
   color: var(--text-muted);
 }
 
-[data-theme='dark'] input[type='text'],
-[data-theme='dark'] input[type='email'],
-[data-theme='dark'] input[type='password'],
+[data-theme='dark'] input[type="text"],
+[data-theme='dark'] input[type="email"],
+[data-theme='dark'] input[type="password"],
 [data-theme='dark'] textarea,
 [data-theme='dark'] select {
   background-color: var(--input-bg);
@@ -1034,4 +1034,5 @@ html.large {
     background: white !important;
   }
 }
+
 </style>

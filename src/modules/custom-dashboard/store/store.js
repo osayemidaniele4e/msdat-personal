@@ -45,11 +45,21 @@ const store = {
     visibility: 'private',
     editMode: false,
     ArrangedSections: safeJSONParse(SectionsArray, [
-      { id: 0, name: 'Indicator Overview', active: false, isShow: false },
-      { id: 1, name: 'Zonal analysis', active: false, isShow: false },
-      { id: 2, name: 'Indicator Comparison', active: false, isShow: false },
-      { id: 3, name: 'Dataset Comparison', active: false, isShow: false },
-      { id: 4, name: 'Multi-source Comparison', active: false, isShow: false },
+      {
+        id: 0, name: 'Indicator Overview', active: false, isShow: false,
+      },
+      {
+        id: 1, name: 'Zonal analysis', active: false, isShow: false,
+      },
+      {
+        id: 2, name: 'Indicator Comparison', active: false, isShow: false,
+      },
+      {
+        id: 3, name: 'Dataset Comparison', active: false, isShow: false,
+      },
+      {
+        id: 4, name: 'Multi-source Comparison', active: false, isShow: false,
+      },
     ]),
     dashboardRequest: {},
     publicDashboard: false,
