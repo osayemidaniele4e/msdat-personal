@@ -388,7 +388,9 @@ export default {
      * checks if the array has NHMIS-DHIS2 with id of 6
      */
     saveNewActivity(newValue) {
-      const { indicator, datasource, location, year } = newValue;
+      const {
+        indicator, datasource, location, year,
+      } = newValue;
       // eslint-disable-next-line camelcase
       const ind = Array.isArray(indicator)
         ? // eslint-disable-next-line operator-linebreak
@@ -402,8 +404,8 @@ export default {
       const dat = Array.isArray(datasource)
         ? datasource[datasource.length - 1]?.item
         : datasource.datasource
-        ? datasource.datasource
-        : datasource?.item;
+          ? datasource.datasource
+          : datasource?.item;
       const loc = location?.name === 'Nigeria' ? 'National' : location?.name;
       if (ind && dat && this.getUser.id) {
         const activityObject = {
@@ -415,10 +417,10 @@ export default {
         };
         const lastActivity = JSON.parse(localStorage.getItem('lastActivity') || '{}');
         const hold = (Date.now() - lastActivity.datetime || 0) >= 5000;
-        const diff =
-          lastActivity.page !== activityObject.page ||
-          lastActivity.section !== activityObject.section ||
-          lastActivity.parameters !== activityObject.parameters;
+        const diff
+          = lastActivity.page !== activityObject.page
+          || lastActivity.section !== activityObject.section
+          || lastActivity.parameters !== activityObject.parameters;
         if (hold && diff) {
           // send activity post request to backend
           console.log('activity', activityObject);
@@ -467,8 +469,8 @@ export default {
 
       const { name } = this.$route.params;
       if (
-        name === 'Advanced_Analytics' &&
-        this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison'
+        name === 'Advanced_Analytics'
+        && this.$store.getters.getSectionTitle === 'Multisource Inidcator Comparison'
       ) {
         return data?.filter((item) => item.program_area === this.indicatorList);
       }
@@ -571,8 +573,8 @@ export default {
 
       // normal search
       return (
-        option.full_name.toLowerCase().includes(search.toLowerCase()) ||
-        option.short_name.toLowerCase().includes(search.toLowerCase())
+        option.full_name.toLowerCase().includes(search.toLowerCase())
+        || option.short_name.toLowerCase().includes(search.toLowerCase())
       );
     },
   },
@@ -591,10 +593,10 @@ export default {
     },
     disableTarget() {
       if (
-        this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage' ||
-        this.$route.path === '/dashboard/Health_Financing' ||
-        this.$route.path === '/dashboard/Health_Service_Access' ||
-        this.$route.path === '/dashboard/Demographics'
+        this.$route.path === '/dashboard/Health_Outcomes_and_Service_Coverage'
+        || this.$route.path === '/dashboard/Health_Financing'
+        || this.$route.path === '/dashboard/Health_Service_Access'
+        || this.$route.path === '/dashboard/Demographics'
       ) {
         return true;
       }

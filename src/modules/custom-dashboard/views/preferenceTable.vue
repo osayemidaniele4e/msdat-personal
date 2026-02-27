@@ -312,10 +312,10 @@ export default {
     // The below function is called when approve button is clicked at Table maker page.
     approveData() {
       if (
-        this.indicatorsCount &&
-        this.dataSourceCount &&
-        this.yearsCount &&
-        this.selectedLevel.length > 0
+        this.indicatorsCount
+        && this.dataSourceCount
+        && this.yearsCount
+        && this.selectedLevel.length > 0
       ) {
         this.$router.push('data-table');
         this.destroyPage = true;

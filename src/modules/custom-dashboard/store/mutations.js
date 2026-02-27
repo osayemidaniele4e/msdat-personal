@@ -46,37 +46,37 @@ function getDefaultState() {
     ArrangedSections: SectionsArray
       ? JSON.parse(SectionsArray)
       : [
-          {
-            id: 0,
-            name: 'Indicator Overview',
-            active: false,
-            isShow: false,
-          },
-          {
-            id: 1,
-            name: 'Zonal Analysis',
-            active: false,
-            isShow: false,
-          },
-          {
-            id: 2,
-            name: 'Indicator Comparison',
-            active: false,
-            isShow: false,
-          },
-          {
-            id: 3,
-            name: 'Dataset Comparison',
-            active: false,
-            isShow: false,
-          },
-          {
-            id: 4,
-            name: 'Multi-source Comparison',
-            active: false,
-            isShow: false,
-          },
-        ],
+        {
+          id: 0,
+          name: 'Indicator Overview',
+          active: false,
+          isShow: false,
+        },
+        {
+          id: 1,
+          name: 'Zonal Analysis',
+          active: false,
+          isShow: false,
+        },
+        {
+          id: 2,
+          name: 'Indicator Comparison',
+          active: false,
+          isShow: false,
+        },
+        {
+          id: 3,
+          name: 'Dataset Comparison',
+          active: false,
+          isShow: false,
+        },
+        {
+          id: 4,
+          name: 'Multi-source Comparison',
+          active: false,
+          isShow: false,
+        },
+      ],
     embedUrl: '',
     embedIframe: '',
   };
@@ -84,10 +84,10 @@ function getDefaultState() {
 
 const showLoaderTrue = (sta) => {
   if (
-    sta.levels === true ||
-    sta.indicator === true ||
-    sta.datasource === true ||
-    sta.years === true
+    sta.levels === true
+    || sta.indicator === true
+    || sta.datasource === true
+    || sta.years === true
   ) {
     sta.show = true;
   } else {
