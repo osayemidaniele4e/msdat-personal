@@ -208,14 +208,21 @@ export default {
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 
      async showFunFactTemporarily() {
+      if (this.getConfigObject.id === undefined) {
+        return;
+      }
       try {
-        const result = await ApiServices.getFunFact();
+      const payload = {
+          dashboard_id: this.getConfigObject.id,
+        };
+
+        const result = await ApiServices.getFunFact(payload);
 
         // ✅ Only show when webhook responds successfully
         if (!result) return;
 
         console.log(result, 'result @@');
-        this.nugget = result.output;
+        this.nugget = result.content;
 
         this.showFunFact = true;
 
@@ -227,7 +234,7 @@ export default {
         // Hide after 1 minute
         this.hideTimeout = setTimeout(() => {
           this.showFunFact = false;
-        }, 15 * 1000);
+        }, 60 * 2 * 1000);
       } catch (error) {
         console.error('Fun fact webhook error:', error);
         this.showFunFact = false;
