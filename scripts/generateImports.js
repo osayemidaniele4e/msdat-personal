@@ -191,7 +191,7 @@ export default {
     // Repeat every 2 minutes
     this.showInterval = setInterval(() => {
       this.showFunFactTemporarily();
-    }, 2 * 60 * 1000);
+    }, 30 * 1000);
 
 
   // eslint-disable-next-line
@@ -234,7 +234,7 @@ export default {
         // Hide after 1 minute
         this.hideTimeout = setTimeout(() => {
           this.showFunFact = false;
-        }, 60 * 2 * 1000);
+        }, 20 * 1000);
       } catch (error) {
         console.error('Fun fact webhook error:', error);
         this.showFunFact = false;
