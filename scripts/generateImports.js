@@ -191,7 +191,7 @@ export default {
     // Repeat every 2 minutes
     this.showInterval = setInterval(() => {
       this.showFunFactTemporarily();
-    }, 30 * 1000);
+    }, 2 * 60 * 1000);
 
 
   // eslint-disable-next-line
