@@ -39,8 +39,6 @@ export default {
       const value = data[0].value;
       const healthIndicator = this.payload.indicator.full_name;
       const location = this.payload.location.name;
-
-      console.log(data, value, healthIndicator, location);
       const { response } = await PolicySimulatorInstance.generateResponse(
         healthIndicator,
         location,

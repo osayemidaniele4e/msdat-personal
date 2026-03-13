@@ -140,7 +140,6 @@ export default {
   },
   watch: {
     submitForm() {
-      console.log('submitting form');
       this.conformSend();
     },
   },
@@ -170,8 +169,6 @@ export default {
        && this.validEmail(this.contactFormFields.email)
 
       ) {
-        console.log('passed validation ish');
-
         this.errormessage = false;
         this.nofields = false;
         if (
@@ -179,8 +176,6 @@ export default {
           && this.contactFormFields.email
         ) {
           this.contactFormFields.name = `${this.firstName} ${this.lastName}`;
-          console.log(this.contactFormFields.name);
-          console.log(`bout to post${this.contactFormFields}`);
           axios
             .post(
               'http://209.182.232.228:7000/api/account/contact/',
@@ -192,16 +187,13 @@ export default {
                 this.noInputs();
               } else {
                 this.errormessage = true;
-                console.log('failed to post');
               }
             })
-            .catch((e) => {
-              console.log(e);
+            .catch(() => {
               this.errormessage = true;
             });
         } else {
           this.nofields = true;
-          console.log('failed to post');
         }
       } else {
         this.nofields = true;

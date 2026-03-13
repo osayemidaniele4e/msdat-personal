@@ -30,12 +30,12 @@ const jsFiles = findJSFiles(basePath).filter((fp) => path.basename(fp) === 'inde
 
 // Derive unique plugin folder names from the index.js files
 const pluginFolders = Array.from(
-  new Set(jsFiles.map((filePath) => path.basename(path.dirname(filePath))))
+  new Set(jsFiles.map((filePath) => path.basename(path.dirname(filePath)))),
 );
 
 // Generate plugin import statements and conditions
 const pluginImports = pluginFolders.map(
-  (folderName) => `import ${folderName} from './modules/plugins/${folderName}';`
+  (folderName) => `import ${folderName} from './modules/plugins/${folderName}';`,
 );
 
 const pluginInstalls = pluginFolders.map(
@@ -48,7 +48,7 @@ const pluginInstalls = pluginFolders.map(
   if (localStorage.getItem('${folderName}') === 'true') {
     Vue.use(${folderName});
   }
-`
+`,
 );
 
 // Build a registry mapping for live toggling
@@ -221,7 +221,7 @@ export default {
         // ✅ Only show when webhook responds successfully
         if (!result) return;
 
-        console.log(result, 'result @@');
+      
         this.nugget = result.content;
 
         this.showFunFact = true;
@@ -263,7 +263,6 @@ export default {
     },
 
     handleAppUnload() {
-      console.log('Application is being unloaded.');
       localStorage.removeItem('firstTimeExecution');
     },
 

@@ -62,7 +62,6 @@ export default [
     beforeEnter: (to, from, next) => {
       // const token = sessionStorage.getItem('username');
       const { tokens } = VueCookies.get('msdat-user-details');
-      console.log('In before Enter', tokens);
       if (!tokens) {
         next('/custom/login');
       } else {

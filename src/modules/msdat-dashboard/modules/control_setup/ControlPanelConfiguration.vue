@@ -11,9 +11,9 @@ import moment from 'moment';
 import { eventBus } from '@/main';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 // import { time } from 'highcharts';
+import { groupIndicator } from '@/util/helper';
 import controlSetup from '../../mixins/control-panel-setup';
 import updateQueryParams from './paramsMixin';
-import { groupIndicator } from '@/util/helper';
 // import nhmisMonthlyPeriod from './nhmis-monthly-period.json';
 
 export default {
@@ -90,7 +90,7 @@ export default {
       const available = await this.setYearDropdown(
         this.payload?.indicator?.id,
         this.payload?.datasource?.id,
-        this.payload?.location?.id
+        this.payload?.location?.id,
       );
       return available;
     },
@@ -151,7 +151,7 @@ export default {
         Array.isArray(this.payload?.indicator)
           ? this.payload?.indicator.map((i) => i.id)
           : this.payload?.indicator?.id,
-        this.controlIndex
+        this.controlIndex,
       );
     },
   },
@@ -216,7 +216,6 @@ export default {
               }),
             });
             const availableDS = await this.getDataSourcesFromIndicator(this.payload?.indicator?.id);
-            console.log(availableDS, 'availableDS');
 
             this.SET_INDICATOR_DATASOURCES(availableDS);
             await this.SETUP_CONTROL_OPTIONS1({
@@ -272,11 +271,8 @@ export default {
           console.log(this.payload?.datasource);
           const response = await apiServices.getDashboardIndicator(dashboardID);
 
+          // eslint-disable-next-line no-unused-vars
           const indicators = response.data;
-
-          const formattedData = groupIndicator(indicators, 'program_area');
-
-          console.log(formattedData, 'formattedData');
 
           // sending to the api
 

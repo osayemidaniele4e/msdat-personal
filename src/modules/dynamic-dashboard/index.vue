@@ -314,11 +314,7 @@ export default {
             this.isAdvanced = true;
           }
         } catch (err) {
-          console.log(
-            err,
-            '%c Welcome to MSDAT!, An error occurred on the Dashboard Instance',
-            'color: #ccc; font-family:sans-serif; font-size: 1rem; padding-left: 1rem',
-          );
+          // intentionally suppressed
         } finally {
           this.loading = false;
         }
@@ -414,7 +410,6 @@ export default {
           },
           (error) => {
             this.error = error.message;
-            console.log('Geolocation error:', error.message);
             // eslint-disable-next-line comma-dangle
           }
         );
@@ -467,8 +462,7 @@ export default {
         };
 
         this.SET_DASHBOARD_LOCATION(data);
-      }, (error) => {
-        console.log('Location access denied or failed:', error.message);
+      }, () => {
         // Continue without location data
         this.clearData();
       });
