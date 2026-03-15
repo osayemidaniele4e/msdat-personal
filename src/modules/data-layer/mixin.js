@@ -1,5 +1,7 @@
 import { createNamespacedHelpers } from 'vuex';
-import { filter, omit, matches, isObject } from 'lodash';
+import {
+  filter, omit, matches, isObject,
+} from 'lodash';
 import formatter from '../msdat-dashboard/mixins/formatter';
 // import SampleData from './sample_data';
 // import { MSDAT } from '@/config/dashboardGroups';
@@ -156,8 +158,6 @@ export default {
         const { location } = query;
         const baseQuery = omit(query, ['location']);
         const locationValues = this.dlGetLocation(location);
-
-        console.log(locationValues, '@@<HHH>@@');
 
         const locationID = locationValues.map((item) => item.id);
         // Map each location ID to an API call

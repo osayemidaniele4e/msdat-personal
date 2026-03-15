@@ -423,7 +423,7 @@ export default {
           || lastActivity.parameters !== activityObject.parameters;
         if (hold && diff) {
           // send activity post request to backend
-          console.log('activity', activityObject);
+          // console.log('activity', activityObject);
         }
         localStorage.setItem('lastActivity', JSON.stringify(activityObject));
       }

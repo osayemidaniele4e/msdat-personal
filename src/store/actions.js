@@ -1,6 +1,5 @@
 /* eslint no-use-before-define: 0 */
 import axiosInstance from '@/config/axios';
-import axios from 'axios';
 
 export default {
   async SET_INTERACTIONS({ commit }, payload) {
@@ -14,7 +13,7 @@ export default {
   // eslint-disable-next-line no-unused-vars
   async SET_INDICATOR_TIME_SPENT({ commit }, payload) {
     try {
-      await axios.post('http://172.93.52.240:3001/api/indicator_timespent/', payload);
+      await axiosInstance.post('/indicator_timespent/', payload);
     } catch (error) {
       console.log(error);
     }
@@ -22,14 +21,14 @@ export default {
   // eslint-disable-next-line no-unused-vars
   async SET_DATASOURCE_TIME_SPENT({ commit }, payload) {
     try {
-      await axios.post('http://172.93.52.240:3001/api/datasource_timespent/', payload);
+      await axiosInstance.post('/datasource_timespent/', payload);
     } catch (error) {
       console.log(error);
     }
   },
   async SET_DATASOURCE_DASHBOARD_LOCATION(payload) {
     try {
-      await axios.post('http://172.93.52.240:3001/api/user_dashboard_location/', payload);
+      await axiosInstance.post('/user_dashboard_location/', payload);
     } catch (error) {
       console.log(error);
     }
@@ -60,8 +59,8 @@ export default {
   async SUBMIT_PLUGIN({ commit }, payload) {
     console.log('submit payload', payload);
     try {
-      const { data } = await axios.post(
-        'https://msdat2api.e4eweb.space/api/plugin-submissions/',
+      const { data } = await axiosInstance.post(
+        '/plugin-submissions/',
         payload,
         {
           headers: {
@@ -81,8 +80,8 @@ export default {
   async APPROVE_PLUGIN({ commit }, payload) {
     try {
       // eslint-disable-next-line no-unused-vars
-      const { data } = await axios.post(
-        'https://msdat2api.e4eweb.space/api/plugin-submissions/approval/',
+      const { data } = await axiosInstance.post(
+        '/plugin-submissions/approval/',
         payload,
       );
       // commit();
@@ -95,9 +94,7 @@ export default {
   // eslint-disable-next-line no-unused-vars
   async GET_PLUGINS({ commit }, payload) {
     try {
-      const response = await axiosInstance.get(
-        'https://msdat2api.e4eweb.space/api/plugin-submissions/',
-      );
+      const response = await axiosInstance.get('/plugin-submissions/');
       const { results } = response.data;
       commit('setSubmittedPlugins', results);
     } catch (error) {
@@ -108,9 +105,7 @@ export default {
   // delete plug-in
   async DELETE_PLUGIN({ commit }, payload) {
     try {
-      const response = await axiosInstance.delete(
-        `http://msdat2api.e4eweb.space/api/plugins/${payload}/`,
-      );
+      const response = await axiosInstance.delete(`/plugins/${payload}/`);
       commit('set_success', response);
     } catch (error) {
       console.log(error);
@@ -119,8 +114,8 @@ export default {
 
   async SET_DASHBOARD_LOCATION(payload) {
     try {
-      const { data } = await axios.post(
-        'https://msdat-api.fmohconnect.gov.ng/api/user_dashboard_location/',
+      const { data } = await axiosInstance.post(
+        '/user_dashboard_location/',
         payload,
       );
       console.log(data);

@@ -6,7 +6,6 @@ export default {
   },
   methods: {
     async register(userData) {
-      console.log('printing user data', userData);
       const url = '/user/';
       const config = {
         headers: {
@@ -16,7 +15,7 @@ export default {
       try {
         const response = await axios.post(url, userData, config);
         if (response.data) {
-          console.log(response.data);
+
           // this.$swal({
           //   toast: true,
           //   position: 'bottom-right',
@@ -27,7 +26,6 @@ export default {
           // });
         }
       } catch (error) {
-        console.log(error);
         this.$swal({
           toast: true,
           position: 'top-right',

@@ -99,7 +99,6 @@ export default {
     show: {
       immediate: true,
       handler(newVal) {
-        console.log('ChartAnalysisModal show prop changed:', newVal);
         if (newVal) {
           console.log('Triggering getAnalysis');
           this.getAnalysis();

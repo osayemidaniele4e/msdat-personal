@@ -159,8 +159,8 @@ export default {
           });
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     close() {
@@ -172,10 +172,9 @@ export default {
       // Notify any chart components to reflow
       this.$emit('card-layout-changed');
       window.dispatchEvent(new Event('resize'));
-    }
+    },
   },
   mounted() {
-    console.log(this.showDropdown, 'showDropdown prop value');
     // Trigger initial resize to ensure chart layout is correct
     this.$nextTick(() => {
       this.notifyChartToReflow();

@@ -143,8 +143,7 @@ export default {
                 this.$swal('something went wrong, confirm username and password');
               }
             })
-            .catch((err) => {
-              console.log(err);
+            .catch(() => {
               this.$swal('confirm username and password');
             });
           this.isLoading = false;
@@ -154,7 +153,6 @@ export default {
         this.formIsValid = false;
         this.$swal('user not found, confirm username and password');
         this.msg = 'user not found, confirm username and password';
-        console.log(err.message);
       }
     },
 
@@ -186,8 +184,7 @@ export default {
             }
             this.$router.push({ path: '/my-dashboard/details' });
           })
-          .catch((err) => {
-            console.log('res', err);
+          .catch(() => {
             this.$swal({
               toast: true,
               position: 'bottom',

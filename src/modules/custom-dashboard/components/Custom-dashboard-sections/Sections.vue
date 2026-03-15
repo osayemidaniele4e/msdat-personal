@@ -216,8 +216,8 @@ export default {
     setState(val) {
       this.selectedMapName = val;
     },
-    async log(optionsObject, index, index2) {
-      console.log({ optionsObject, index, index2 });
+    // eslint-disable-next-line no-empty-function
+    async log() {
     },
   },
 

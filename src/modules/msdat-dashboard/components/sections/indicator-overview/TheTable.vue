@@ -103,6 +103,7 @@ import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.vue';
 import html2canvas from 'html2canvas';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
+import { validateDataValue } from '@/util/dataValidation';
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
@@ -202,7 +203,25 @@ export default {
               });
               data.push(ab);
             }
-            formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
+            const formatted = this.tableComponentDataFormatter(indicatorObject, data);
+
+            // Validate each value and attach anomaly flags per cell
+            const factorObj = this.dlGetFactor(indicatorObject.factor);
+            const isPercentage = factorObj && factorObj.display_factor && (factorObj.display_factor === 'in percentage' || factorObj.display_factor.includes('%'));
+            const validationContext = {
+              is_percentage: isPercentage,
+              indicator_name: indicatorObject.full_name,
+            };
+            let rawIdx = 0;
+            data.forEach((rawItem) => {
+              if (rawItem && rawIdx < formatted.values.length) {
+                const flags = validateDataValue(Number(rawItem.value), validationContext);
+                formatted.values[rawIdx].anomalyFlags = flags;
+                rawIdx += 1;
+              }
+            });
+
+            formattedData.push(formatted);
           }
         }
 
@@ -213,6 +232,7 @@ export default {
 
         this.TableData = [...formattedData];
         this.setTableSelected = datasource;
+
         this.loading = false;
       },
       deep: true,
@@ -436,7 +456,25 @@ export default {
             });
             data.push(ab);
           }
-          formattedData.push(this.tableComponentDataFormatter(indicatorObject, data));
+          const formatted = this.tableComponentDataFormatter(indicatorObject, data);
+
+          // Validate each value and attach anomaly flags per cell
+          const factorObj = this.dlGetFactor(indicatorObject.factor);
+          const isPercentage = factorObj && factorObj.display_factor && (factorObj.display_factor === 'in percentage' || factorObj.display_factor.includes('%'));
+          const validationContext = {
+            is_percentage: isPercentage,
+            indicator_name: indicatorObject.full_name,
+          };
+          let rawIdx = 0;
+          data.forEach((rawItem) => {
+            if (rawItem && rawIdx < formatted.values.length) {
+              const flags = validateDataValue(Number(rawItem.value), validationContext);
+              formatted.values[rawIdx].anomalyFlags = flags;
+              rawIdx += 1;
+            }
+          });
+
+          formattedData.push(formatted);
         }
         this.TableData = [...formattedData];
         this.loading = false;

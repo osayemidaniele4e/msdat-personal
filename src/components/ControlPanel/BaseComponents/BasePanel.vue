@@ -46,9 +46,9 @@
 import { mapGetters, mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
 // import ShareSection from '@/modules/msdat-dashboard/components/ShareSection.vue';
-import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import { groupIndicator } from '@/util/helper';
+import controlSetup from '../../../modules/msdat-dashboard/mixins/control-panel-setup';
 
 export default {
   name: 'BasePanel',
@@ -100,7 +100,7 @@ export default {
 
     filterModifiedControls() {
       const section = this.modifiedControls.filter(
-        (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection
+        (item) => item?.title === this.$store.state.MSDAT_STORE.selectedSection,
       );
 
       this.changeControl(section[0].index, section[0].title);
@@ -159,21 +159,18 @@ export default {
       }
 
       if (
-        index === 2 &&
-        this.getConfigObject().name !== 'GIS_Mapping_Dashboard' &&
-        title === 'Indicator Comparison'
+        index === 2
+        && this.getConfigObject().name !== 'GIS_Mapping_Dashboard'
+        && title === 'Indicator Comparison'
       ) {
         const dashboardID = localStorage.getItem('activeDashboardID');
 
-        const availableIndicator = await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
+        await this.setIDCIndicatorDropdown(selectedConfig.dataSource.id);
 
         const response = await apiServices.getDashboardIndicator(dashboardID);
 
-        console.log(availableIndicator, 'availableIndicator@');
-
         const indicators = response.data;
         const formattedData = groupIndicator(indicators, 'program_area');
-        console.log(selectedConfig.dataSource, 'availableIndicator@ 2');
 
         this.$store.commit('MSDAT_STORE/SET_IDC_INDICATOR_OPTIONS', {
           value: formattedData,
@@ -209,8 +206,6 @@ export default {
     },
 
     async setAllICSDatasources() {
-      console.log(this.getConfigObject(), '@@@Payload');
-
       const datasourcesIDs = this.getConfigObject().dataSources;
 
       const requests = datasourcesIDs.map((id) => apiServices.getSingleDataSourceObj(id));
@@ -219,7 +214,6 @@ export default {
 
       // Extract `data` from each response
       const results = responses.map((res) => res.data);
-      console.log(results, 'defaultDataSourceDropdown');
       this.UPDATE_IDC_DATASOURCEs(results);
 
       // return results;
@@ -320,8 +314,6 @@ export default {
     this.$nextTick(() => {
       if (this.modifiedControls.length > 0) {
         this.filterModifiedControls();
-      } else {
-        console.log('modifiedControls is still empty after nextTick');
       }
     });
     // this.setAllICSDatasources();

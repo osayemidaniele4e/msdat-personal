@@ -5,6 +5,12 @@
         <div>
           <h5 class="font-weight-bold cell-value" :style="`color: ${dataColors.split(' ')[0]}`">
             {{ cellData.value }}{{ cellData.factor }}
+            <DataAnomalyFlag
+              v-if="cellData.anomalyFlags && cellData.anomalyFlags.length > 0"
+              :flags="cellData.anomalyFlags"
+              :uniqueId="cellUniqueId"
+              :inline="true"
+            />
           </h5>
         </div>
         <div :style="`color: ${dataColors.split(' ')[1]}`">
@@ -19,7 +25,12 @@
 </template>
 
 <script>
+import DataAnomalyFlag from '@/components/ui-components/DataAnomalyFlag.vue';
+
 export default {
+  components: {
+    DataAnomalyFlag,
+  },
   props: {
     cellData: {
       type: Object,
@@ -28,6 +39,14 @@ export default {
     },
     dataColors: {
       type: String,
+    },
+  },
+  computed: {
+    cellUniqueId() {
+      if (!this.cellData) return '';
+      const ds = this.cellData.dataSources?.id || this.cellData.dataSources?.datasource || 'ds';
+      const yr = this.cellData.year || 'yr';
+      return `cell-${ds}-${yr}-${Math.random().toString(36).substr(2, 5)}`;
     },
   },
 };
