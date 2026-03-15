@@ -1,5 +1,6 @@
 import VueCookies from 'vue-cookies';
 import axios from 'axios';
+// eslint-disable-next-line import/no-cycle
 import ApiServices from '@/modules/data-layer/services/ApiServices';
 import axiosInstance from '../config/axios';
 import authInstance from '../config/axiosAuth';
@@ -22,7 +23,6 @@ export default {
     try {
       const response = await axiosInstance.get('/users/');
       commit('setUsers', response.data.results);
-      console.log(response.data.results);
       return response;
     } catch (err) {
       // console.log(err);
@@ -112,13 +112,12 @@ export default {
         auth_token: payload.auth_token,
       });
       const user = response.data.data;
-      console.log('this userrrr', user);
 
       VueCookies.set('msdat-user-details', user);
       commit('setUser', user);
       return response;
     } catch (err) {
-      console.log(err);
+      // authentication operation failed
     }
     return null;
   },
@@ -129,14 +128,13 @@ export default {
         'https://msdat2api.e4eweb.space/api/social/auth/linkedin/',
         payload,
       );
-      console.log('linkedln login', response);
       const user = response.data.data;
 
       VueCookies.set('msdat-user-details', user);
       commit('setUser', user);
       return response;
     } catch (err) {
-      console.log(err);
+      // authentication operation failed
     }
     return null;
   },

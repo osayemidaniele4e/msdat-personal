@@ -80,7 +80,7 @@ const getFunFact = async (payload) => {
   const response = await fetch(
     'https://n8n.e4eweb.space/webhook/99f746a7-2f1b-435a-aaaa-32096bb5baca',
     {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -93,7 +93,9 @@ const getFunFact = async (payload) => {
     throw new Error(`Webhook error ${response.status}: ${text}`);
   }
 
-  return response.json(); // or response.text()
+  const data = await response.json(); // ✅ await once
+
+  return data;
 };
 
 const getDataWithPeriod = async (obj) => {

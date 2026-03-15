@@ -39,9 +39,9 @@
     <!-- Global Chatbot - Commented out -->
     <!-- <div class="global-chatbot-wrapper">
       <ChatBot ref="globalChatBot" />
-      <button 
-        class="global-chat-trigger" 
-        @click="$refs.globalChatBot.toggleChat()" 
+      <button
+        class="global-chat-trigger"
+        @click="$refs.globalChatBot.toggleChat()"
         title="Metadata Chatbot"
         aria-label="Open AI Chatbot"
       >
@@ -227,14 +227,20 @@ export default {
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 
     async showFunFactTemporarily() {
+      if (this.getConfigObject.id === undefined) {
+        return;
+      }
       try {
-        const result = await ApiServices.getFunFact();
+        const payload = {
+          dashboard_id: this.getConfigObject.id,
+        };
+
+        const result = await ApiServices.getFunFact(payload);
 
         // ✅ Only show when webhook responds successfully
         if (!result) return;
 
-        console.log(result, 'result @@');
-        this.nugget = result.output;
+        this.nugget = result.content;
 
         this.showFunFact = true;
 
@@ -243,10 +249,10 @@ export default {
           clearTimeout(this.hideTimeout);
         }
 
-        // Hide after 1 minute
+        // Hide after 2 minute
         this.hideTimeout = setTimeout(() => {
           this.showFunFact = false;
-        }, 15 * 1000);
+        }, 20 * 1000);
       } catch (error) {
         console.error('Fun fact webhook error:', error);
         this.showFunFact = false;
@@ -352,7 +358,6 @@ export default {
   destroyed() {
     this.$root.$off('plugins:changed', this.onPluginsChanged);
   },
-
   beforeDestroy() {
     // Cleanup timers
     if (this.showInterval) clearInterval(this.showInterval);

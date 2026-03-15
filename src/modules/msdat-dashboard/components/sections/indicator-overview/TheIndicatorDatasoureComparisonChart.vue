@@ -129,6 +129,7 @@ import mixin from '@/modules/data-layer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
 
+import { validateDataValue } from '@/util/dataValidation';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
 import SmartNarrativeModal from './SmartNarrativeModal.vue';
@@ -307,6 +308,68 @@ export default {
 
         if (this.ChartOptions.chart) {
           this.ChartOptions.chart.type = 'line';
+        }
+
+        // Validate data points and flag anomalies inside the chart
+        const factorObj = this.dlGetFactor(this.values.indicator.factor);
+        const isPercentage = factorObj && factorObj.display_factor && (factorObj.display_factor === 'in percentage' || factorObj.display_factor.includes('%'));
+        const validationContext = {
+          is_percentage: isPercentage,
+          indicator_name: this.values.indicator.full_name,
+        };
+        if (this.ChartOptions.series) {
+          this.ChartOptions.series.forEach((series) => {
+            if (series.data) {
+              // eslint-disable-next-line no-param-reassign
+              series.data = series.data.map((point) => {
+                // Data points are [period, value] arrays or objects
+                let val;
+                if (Array.isArray(point)) {
+                  val = point[1];
+                } else {
+                  val = point.y !== undefined ? point.y : point;
+                }
+                const flags = validateDataValue(val, validationContext);
+                if (flags.length > 0) {
+                  if (Array.isArray(point)) {
+                    return {
+                      name: point[0],
+                      y: point[1],
+                      anomalyFlags: flags,
+                      marker: {
+                        enabled: true, symbol: 'triangle', fillColor: '#ffc107', lineColor: '#ffc107', radius: 5,
+                      },
+                    };
+                  }
+                  if (typeof point === 'object') {
+                    // eslint-disable-next-line no-param-reassign
+                    point.anomalyFlags = flags;
+                    // eslint-disable-next-line no-param-reassign
+                    point.marker = {
+                      enabled: true, symbol: 'triangle', fillColor: '#ffc107', lineColor: '#ffc107', radius: 5,
+                    };
+                  }
+                }
+                return point;
+              });
+            }
+          });
+
+          // Add custom tooltip that shows anomaly info
+          this.ChartOptions.tooltip = {
+            ...this.ChartOptions.tooltip,
+            useHTML: true,
+            pointFormatter() {
+              let html = `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y}</b><br/>`;
+              if (this.anomalyFlags && this.anomalyFlags.length > 0) {
+                html += '<br/><span style="color:#ffc107;font-weight:bold;">&#9888; Anomaly Detected:</span><br/>';
+                this.anomalyFlags.forEach((flag) => {
+                  html += `<span style="font-size:11px;">\u2022 ${flag.message}</span><br/>`;
+                });
+              }
+              return html;
+            },
+          };
         }
       } finally {
         // Only update loading state if this is still the current request

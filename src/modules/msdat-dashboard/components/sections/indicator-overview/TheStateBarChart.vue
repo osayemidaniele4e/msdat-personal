@@ -31,11 +31,13 @@
                 {{ values.datasource.datasource }} {{ values.year }}</b
               >
             </p>
-            <div class="summary-btn"
-                 @click.prevent="openSmartNarrative"
-                 title="Smart Summary"
-            >
-              <img src="@/assets/icons/smart-narrative-icon.svg" alt="Smart Summary" class="smart-narrative-icon" />
+            <div class="d-flex align-items-center">
+              <div class="summary-btn"
+                   @click.prevent="openSmartNarrative"
+                   title="Smart Summary"
+              >
+                <img src="@/assets/icons/smart-narrative-icon.svg" alt="Smart Summary" class="smart-narrative-icon" />
+              </div>
             </div>
           </div>
         </template>
@@ -106,6 +108,7 @@ import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import { eventBus } from '@/main';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
 import BaseMap from '@/components/maps/ZonalBaseMap.vue';
+import { validateDataValue } from '@/util/dataValidation';
 import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
 import NoAvailableData from '../../NoData2.vue';
@@ -414,36 +417,70 @@ export default {
         await ndData,
         this.values.numdenum,
       );
+
+      // Validate and flag anomalous data points inside the chart
+      const factorObj = this.dlGetFactor(this.values.indicator.factor);
+      const isPercentage = factorObj && factorObj.display_factor && (factorObj.display_factor === 'in percentage' || factorObj.display_factor.includes('%'));
+      const validationContext = {
+        is_percentage: isPercentage,
+        indicator_name: this.values.indicator.full_name,
+      };
+      if (chartOptions.series) {
+        chartOptions.series.forEach((series) => {
+          if (series.data) {
+            series.data.forEach((point) => {
+              if (point && typeof point === 'object' && point.y !== undefined) {
+                const flags = validateDataValue(point.y, validationContext);
+                if (flags.length > 0) {
+                  // eslint-disable-next-line no-param-reassign
+                  point.anomalyFlags = flags;
+                }
+              }
+            });
+          }
+        });
+      }
+
       chartOptions.plotOptions = {
         series: {
           dataLabels: {
             enabled: true,
+            useHTML: true,
             formatter() {
-              // Check if the value is an integer (no decimals)
+              let label;
               if (Number.isInteger(this.y)) {
-                // If the value is over 1000, add a thousand separator
-                return this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y;
+                label = this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y;
+              } else {
+                label = this.y;
               }
-              // Return the value as is for decimal numbers
-              return this.y;
+              if (this.point.anomalyFlags && this.point.anomalyFlags.length > 0) {
+                return `${label} <span style="color:#ffc107;font-size:12px;" title="Data anomaly detected">&#9888;</span>`;
+              }
+              return label;
             },
           },
-          pointWidth: 10, // Fixes the width of each point
+          pointWidth: 10,
         },
       };
 
-      // Adding tooltip formatter
+      // Adding tooltip formatter with anomaly info
       chartOptions.tooltip = {
+        useHTML: true,
         pointFormatter() {
-          // Check if the value is an integer (no decimals)
+          let valueLabel;
           if (Number.isInteger(this.y)) {
-            // If the value is over 1000, add a thousand separator
-            return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${
-              this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y
-            }</b><br/>`;
+            valueLabel = this.y >= 1000 ? Highcharts.numberFormat(this.y, 0, '.', ',') : this.y;
+          } else {
+            valueLabel = this.y;
           }
-          // Return the value as is for decimal numbers
-          return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y}</b><br/>`;
+          let html = `<span style="color:${this.color}">\u25CF</span> ${this.series.name}: <b>${valueLabel}</b><br/>`;
+          if (this.anomalyFlags && this.anomalyFlags.length > 0) {
+            html += '<br/><span style="color:#ffc107;font-weight:bold;">&#9888; Anomaly Detected:</span><br/>';
+            this.anomalyFlags.forEach((flag) => {
+              html += `<span style="font-size:11px;">• ${flag.message}</span><br/>`;
+            });
+          }
+          return html;
         },
       };
 

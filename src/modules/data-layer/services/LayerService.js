@@ -3,6 +3,7 @@
 
 import Vue from 'vue';
 import apiServices from './ApiServices';
+import dataCache from './dataCache';
 // import Database from './database.worker';
 
 const INDICATORS = 'indicators';
@@ -16,6 +17,45 @@ const DASHBOARD_DATESOURCE = 'dashboardDataSource';
 const ALL_DASHBOARD_SOURCES = 'allSources';
 const ALL_INDICATOR = 'allIndicator';
 const NHMIS_MONTHLY = 'nhmis_monthly';
+
+/**
+ * Critical datasets needed to render the dashboard shell.
+ * These are loaded first (Phase 1) on slow networks.
+ */
+const CRITICAL_KEYS = [LOCATION, INDICATORS, DATA_SOURCE, DSI];
+
+/**
+ * Mapping from the otherEndpoints response array index
+ * to the store key name.
+ */
+const ENDPOINT_INDEX_MAP = [
+  { index: 0, key: LOCATION },
+  { index: 1, key: INDICATORS },
+  { index: 3, key: VALUE_TYPES },
+  { index: 5, key: FACTORS },
+  { index: 6, key: DSI },
+  { index: 7, key: DATA_SOURCE },
+  { index: 8, key: NHMIS_MONTHLY },
+];
+
+/**
+ * Detect if user is on a slow network connection.
+ * Uses the Network Information API (supported in Chrome/Edge/Android).
+ * Falls back to false (assume fast) in unsupported browsers
+ */
+function isSlowNetwork() {
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (!conn) return false;
+
+  // effectiveType can be 'slow-2g', '2g', '3g', or '4g'
+  const slowTypes = ['slow-2g', '2g', '3g'];
+  if (slowTypes.includes(conn.effectiveType)) return true;
+
+  // Also check downlink speed (Mbps) — less than 1.5 is slow
+  if (conn.downlink && conn.downlink < 1.5) return true;
+
+  return false;
+}
 
 export default class DataLayer {
   constructor(store) {
@@ -71,6 +111,14 @@ export default class DataLayer {
 
   /**
    * data layer initialization
+   * Multi-tier caching strategy:
+   *   1. Vuex store (in-memory, fastest, lost on page refresh)
+   *   2. localStorage (persistent, survives refresh, 2h TTL)
+   *   3. API fetch (network, slowest, always fresh)
+   *
+   * On slow networks (3G), uses progressive loading:
+   *   Phase 1: Load critical data (indicators, locations, datasources, DSI)
+   *   Phase 2: Defer non-critical data (factors, valuetypes, NHMIS monthly)
    */
   async init(object) {
     try {
@@ -79,31 +127,51 @@ export default class DataLayer {
 
       console.time('fetching');
 
-      /**
-         * The apiServices returns all the and array of response for the
-         * axios call of all other apiEndpoints.getOtherEndpoint
-         * it uses and {Promise.all()}
-         *
-         * @see {@link apiServices.getOtherEndpoint()}
-         */
-      const data = await apiServices.getOtherEndpoint();
-      /**
-       * we would also need to created a component
-       * then display the activities  of the service layer
-       * per time
-       */
+      const slow = isSlowNetwork();
+      if (slow) {
+        console.log('🐢 Slow network detected — using progressive loading strategy');
+      }
 
       /**
-       * now initializing other tables in the store from the database directly as against the
-       * previous implementation
+       * Check Tier 1: Vuex store (in-memory cache from previous navigation)
        */
-      this.setDataInStore(data[6].data.results, DSI);
-      this.setDataInStore(data[0].data.results, LOCATION);
-      this.setDataInStore(data[1].data.results, INDICATORS);
-      this.setDataInStore(data[3].data.results, VALUE_TYPES);
-      this.setDataInStore(data[5].data.results, FACTORS);
-      this.setDataInStore(data[7].data.results, DATA_SOURCE);
-      this.setDataInStore(data[8].data.results, NHMIS_MONTHLY);
+      const existingState = this.store.state.DL;
+      const hasGlobalData = existingState.indicators.length > 0
+        && existingState.location.length > 0
+        && existingState.datasources.length > 0;
+
+      if (!hasGlobalData) {
+        /**
+         * Check Tier 2: localStorage (persistent cache from previous session)
+         */
+        const cachedData = this.loadFromLocalStorage();
+
+        if (cachedData) {
+          console.log('📦 Loaded global data from localStorage cache');
+          // Populate Vuex store from localStorage
+          ENDPOINT_INDEX_MAP.forEach(({ key }) => {
+            if (cachedData[key] && cachedData[key].length > 0) {
+              this.setDataInStore(cachedData[key], key);
+            }
+          });
+        } else {
+          /**
+           * Tier 3: Fetch from API
+           * On slow networks, split into critical (Phase 1) and deferred (Phase 2)
+           */
+          const data = await apiServices.getOtherEndpoint();
+
+          // Populate Vuex store from API response
+          ENDPOINT_INDEX_MAP.forEach(({ index, key }) => {
+            if (data[index] && data[index].data && data[index].data.results) {
+              this.setDataInStore(data[index].data.results, key);
+            }
+          });
+
+          // Persist to localStorage for next page load
+          this.saveToLocalStorage();
+        }
+      }
 
       let filteredIndicatorIDArray = [];
 
@@ -113,7 +181,7 @@ export default class DataLayer {
         const dashboardIndicatorIDs = dashboardIndicators.data.indicators.map((item) => item.id);
 
         filteredIndicatorIDArray = dashboardIndicatorIDs.filter(
-          (value) => value !== undefined && !Number.isNaN(value)
+          (value) => value !== undefined && !Number.isNaN(value),
         );
 
         if (filteredIndicatorIDArray.length !== 0) {
@@ -138,10 +206,55 @@ export default class DataLayer {
        * indicator Array with the indicator
        * Array of the dashboard
        * */
-      // console.timeEnd('fetching');
+      console.timeEnd('fetching');
       return Promise.resolve(true);
     } catch (error) {
       return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Load all global datasets from localStorage cache.
+   * Returns null if any critical dataset is missing or expired.
+   */
+  // eslint-disable-next-line class-methods-use-this
+  loadFromLocalStorage() {
+    try {
+      const result = {};
+      let hasCritical = true;
+
+      ENDPOINT_INDEX_MAP.forEach(({ key }) => {
+        const cached = dataCache.getFromCache(`dl_${key}`);
+        if (cached && cached.length > 0) {
+          result[key] = cached;
+        } else if (CRITICAL_KEYS.includes(key)) {
+          hasCritical = false;
+        }
+      });
+
+      // Only return cached data if all critical datasets are present
+      return hasCritical ? result : null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Save current global datasets from Vuex store into localStorage.
+   * Each dataset is cached independently to allow partial cache hits.
+   */
+  saveToLocalStorage() {
+    try {
+      const state = this.store.state.DL;
+      ENDPOINT_INDEX_MAP.forEach(({ key }) => {
+        const data = state[key];
+        if (data && data.length > 0) {
+          dataCache.setInCache(`dl_${key}`, data);
+        }
+      });
+      console.log('💾 Global data saved to localStorage cache');
+    } catch (e) {
+      console.warn('Failed to save to localStorage:', e.message);
     }
   }
 
@@ -220,13 +333,14 @@ export default class DataLayer {
   }
 
   /**
-   * set dashboard available  indicator in store
+   * set dashboard available indicator in store
+   * Uses already-loaded indicators from the DL store instead of
+   * re-fetching all 4000+ indicators from the API.
    */
   async setAvailableDashboardIndicator() {
-    // const indicatorsInDB = await this.DB.checkIndicatorsInIdb();
-    const response = await apiServices.fetchAllIndicators()
-
-    const dashboardIndicatorIDs = response.data.results.map((item) => item.id);
+    // Use the indicators already fetched and cached in the DL store
+    const allIndicators = this.store.state.DL.indicators;
+    const dashboardIndicatorIDs = allIndicators.map((item) => item.id);
 
     const dashboardIndicators = dashboardIndicatorIDs.filter((item) => this.indicatorList.includes(item));
 

@@ -30,12 +30,12 @@ const jsFiles = findJSFiles(basePath).filter((fp) => path.basename(fp) === 'inde
 
 // Derive unique plugin folder names from the index.js files
 const pluginFolders = Array.from(
-  new Set(jsFiles.map((filePath) => path.basename(path.dirname(filePath))))
+  new Set(jsFiles.map((filePath) => path.basename(path.dirname(filePath)))),
 );
 
 // Generate plugin import statements and conditions
 const pluginImports = pluginFolders.map(
-  (folderName) => `import ${folderName} from './modules/plugins/${folderName}';`
+  (folderName) => `import ${folderName} from './modules/plugins/${folderName}';`,
 );
 
 const pluginInstalls = pluginFolders.map(
@@ -48,7 +48,7 @@ const pluginInstalls = pluginFolders.map(
   if (localStorage.getItem('${folderName}') === 'true') {
     Vue.use(${folderName});
   }
-`
+`,
 );
 
 // Build a registry mapping for live toggling
@@ -208,14 +208,21 @@ export default {
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 
      async showFunFactTemporarily() {
+      if (this.getConfigObject.id === undefined) {
+        return;
+      }
       try {
-        const result = await ApiServices.getFunFact();
+      const payload = {
+          dashboard_id: this.getConfigObject.id,
+        };
+
+        const result = await ApiServices.getFunFact(payload);
 
         // ✅ Only show when webhook responds successfully
         if (!result) return;
 
-        console.log(result, 'result @@');
-        this.nugget = result.output;
+      
+        this.nugget = result.content;
 
         this.showFunFact = true;
 
@@ -227,7 +234,7 @@ export default {
         // Hide after 1 minute
         this.hideTimeout = setTimeout(() => {
           this.showFunFact = false;
-        }, 15 * 1000);
+        }, 20 * 1000);
       } catch (error) {
         console.error('Fun fact webhook error:', error);
         this.showFunFact = false;
@@ -256,7 +263,6 @@ export default {
     },
 
     handleAppUnload() {
-      console.log('Application is being unloaded.');
       localStorage.removeItem('firstTimeExecution');
     },
 

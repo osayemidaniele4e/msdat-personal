@@ -9,6 +9,8 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import VueSocialSharing from 'vue-social-sharing';
 import DataLayer from '@/modules/data-layer';
 import VTooltip from 'v-tooltip';
+import VueMeta from 'vue-meta';
+import frontendAuthService from '@/modules/auth/services/frontendAuthService';
 import App from './App.vue';
 import './registerServiceWorker';
 import './plugins/bootstrap-vue';
@@ -21,8 +23,13 @@ import store from './store';
 import 'regenerator-runtime';
 import './plugins/veevalidate';
 import './assets/styles/fonts.css';
-import VueMeta from "vue-meta";
 
+// Preload JWT token immediately on app boot.
+// This fires the token fetch in parallel with Vue initialization
+// so it's already cached by the time the first API call needs it.
+frontendAuthService.getValidToken().catch(() => {
+  // Silently fail — the interceptor will retry when needed
+});
 
 const gauthOption = {
   clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,

@@ -73,8 +73,6 @@ export default {
       console.log(this.indicator, ' XXXXX 0');
       const indicatorMetaData = await apiServices.getSingleIndicatorObj(this.indicator);
       this.indicatorData = indicatorMetaData.data;
-      console.log(indicatorMetaData, 'HAHAHAHAHXXX 1');
-      console.log(this.datasourcesObj, 'XXXXX 11');
 
       const tableDataPromises = this.datasourcesObj.map(async (item) => this.getValue(item, this.indicator, this.location));
       try {

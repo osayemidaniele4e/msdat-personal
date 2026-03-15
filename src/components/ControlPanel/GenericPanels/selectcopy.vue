@@ -73,7 +73,7 @@ export default {
           console.warn('Value is empty or null');
           return;
         }
-  
+
         if (typeof val === 'object' && val.id !== undefined && val.program_area !== undefined) {
           this.selectedOption = val;
           // this.indicatorId = val.id;
@@ -223,7 +223,6 @@ export default {
   },
   methods: {
     handleOpen(multiselectID) {
-      console.log('Multiselect opened, calling initialCSS...');
       this.initialCSS(multiselectID);
     },
     attachGroupLabelListeners() {
