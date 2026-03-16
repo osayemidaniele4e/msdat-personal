@@ -183,6 +183,10 @@ const mutations: MutationTree<State> = {
       }
     }
   },
+  SET_INDICATOR_DATASOURCES: (state, datasources) => {
+    state.indicatorDatasources = datasources;
+  },
+
   SET_URL_DATASOURCE: (state, text) => {
     state.urlDatasource = text;
   },

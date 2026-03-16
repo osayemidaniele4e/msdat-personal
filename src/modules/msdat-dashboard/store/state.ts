@@ -52,6 +52,7 @@ const state: State = {
   showWhatsNew: false,
   showShareSection: false,
   dashboards: [],
+  indicatorDatasources: [],
   urlDatasource: 1,
   urlLocation: 1,
   urlPeriod: '2023',

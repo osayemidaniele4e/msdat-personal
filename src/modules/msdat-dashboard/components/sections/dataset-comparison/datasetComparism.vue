@@ -48,11 +48,11 @@
         <div class="comparison" v-else>
           <div>
             <p v-if="this.value === 'N/A'">
-              The value of <strong>{{ indicatorOne }}</strong> cannot be compared with <strong>{{ indicatorTwo }}</strong> 
+              The value of <strong>{{ indicatorOne }}</strong> cannot be compared with <strong>{{ indicatorTwo }}</strong>
               due to zero values
             </p>
             <p v-else>
-              The value of <strong>{{ indicatorOne }}</strong> is 
+              The value of <strong>{{ indicatorOne }}</strong> is
               <span v-if="this.value > 1">
                 {{ (this.value).toFixed(2) }} times {{ this.positiveDifference === true ? 'HIGHER' : 'LOWER' }} than
               </span>
@@ -72,8 +72,12 @@
         </div>
       </div>
       </transition>
-      <BaseChart ref="BaseChart" :title="title" 
-      :categoryLabel="'Datasources'":chartOptions="chartConfig" />
+      <BaseChart
+        ref="BaseChart"
+        :title="title"
+        :categoryLabel="'Datasources'"
+        :chartOptions="chartConfig"
+      />
     </base-sub-card>
   </base-overlay>
 </template>
@@ -202,14 +206,14 @@ export default {
 
           this.chartConfig.series[0].data = updatedObj1;
           this.chartConfig.series[1].data = updatedObj2;
-          this.chartConfig.tooltip.pointFormatter = function() {
+          this.chartConfig.tooltip.pointFormatter = function pointFormatter() {
             let multiplierText = '';
             if (this.extraData === 'N/A') {
               multiplierText = 'N/A';
             } else if (this.extraData > 1) {
               multiplierText = `${this.extraData.toFixed(2)} times`;
             } else {
-              multiplierText = `${(1/this.extraData).toFixed(2)} times`;
+              multiplierText = `${(1 / this.extraData).toFixed(2)} times`;
             }
             return `${this.name}: <b>${Highcharts.numberFormat(this.y, 1)}</b><br>Multiplier: ${multiplierText}`;
           };
@@ -245,17 +249,17 @@ export default {
       const denominator = indicatorTwo.y;
       initial = indicatorTwo.y;
       final = indicatorOne.y;
-      
+
       // Handle zero values
       if (initial === 0 || final === 0) {
         return { value: 'N/A', isPositive: false };
       }
-      
+
       const isPositive = final >= initial;
-      
+
       // Calculate multiplier instead of percentage
       const multiplier = final / denominator;
-      
+
       return { value: multiplier, isPositive };
     },
     customRound(number) {
@@ -304,7 +308,7 @@ export default {
         }
       }
 
-        console.log(multiSelectGroup, 'multiSelectGroup@ 3');
+      console.log(multiSelectGroup, 'multiSelectGroup@ 3');
       return multiSelectGroup;
     },
   },
@@ -441,7 +445,7 @@ export default {
           },
           colors: ['#17606B', '#E85D58', '#58B74E'],
         };
-        const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+        const displayFactor = this.dlGetFactor(this.values.indicator?.factor).display_factor;
         this.chartConfig.yAxis.title.text = displayFactor;
         this.chartConfig.tooltip = {};
         this.chartConfig.plotOptions.series = {};

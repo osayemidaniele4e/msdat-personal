@@ -619,27 +619,42 @@ export default {
     const { name } = this.$route.params;
     this.dashboardName = name;
     const date = new Date();
-    const getYear = date.getFullYear + 1;
-    // pick one of the available years as the default years as opposed to the static 2016 year
-    const defaultYears = this.setup[3].options;
-    // console.log(defaultYears);
+    const getYear = date.getFullYear() + 1;
+
+    // Resolve year setup by key instead of hard-coded index so dashboards with
+    // different setup shapes don't crash on mount.
+    const yearSetup = Array.isArray(this.setup)
+      ? this.setup.find((item) => item && item.key === 'year')
+      : null;
+    const defaultYears = Array.isArray(yearSetup?.options) ? yearSetup.options : [];
+
     const newArr = [];
-    // console.log(this.setup, 'this.defaultYearDropdown');
-    defaultYears.map((el) => {
+    defaultYears.forEach((el) => {
       if (el < getYear) {
         newArr.push(el);
         this.defaultYearDropdown = newArr;
-        // console.log(this.defaultYearDropdown, 'this.defaultYearDropdown');
       }
-      return el;
     });
-    this.updatePayload(this.defaultIndicator, 'indicator');
-    this.updateMultiIndicatorPayload(this.defaultIndicator);
-    this.updatePayload(this.defaultDataSource, 'datasource');
-    this.updateMultiDatasourcePayload(this.defaultDataSource);
-    this.updatePayload(this.defaultLocation, 'location');
-    this.updatePayload(this.defaultYear, 'year');
-    this.updateMultiPeriodPayload(this.defaultYear);
+
+    if (this.defaultIndicator) {
+      this.updatePayload(this.defaultIndicator, 'indicator');
+      this.updateMultiIndicatorPayload(this.defaultIndicator);
+    }
+
+    if (this.defaultDataSource) {
+      this.updatePayload(this.defaultDataSource, 'datasource');
+      this.updateMultiDatasourcePayload(this.defaultDataSource);
+    }
+
+    if (this.defaultLocation) {
+      this.updatePayload(this.defaultLocation, 'location');
+    }
+
+    if (this.defaultYear) {
+      this.updatePayload(this.defaultYear, 'year');
+      this.updateMultiPeriodPayload(this.defaultYear);
+    }
+
     this.activeToggleButton = this.payload.visualization;
   },
 };

@@ -203,7 +203,6 @@ export default {
     document.documentElement.setAttribute('data-theme', this.theme);
   },
   methods: {
-    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 

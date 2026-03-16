@@ -65,6 +65,8 @@ export default {
     // Set the total time in minutes for the component data.
     this.previous_time = totalTimeInMinutes;
     this.previous_indicator = this.payload.indicator;
+    this.previous_time_datasource = totalTimeInMinutes;
+    this.previous_datasource = this.payload?.datasource || null;
     eventBus.$on('handleClick', (data) => {
       this.payload.location = data;
     });
@@ -177,14 +179,20 @@ export default {
           const diff = this.after_time - this.previous_time;
 
           // sending to the api
+          const previousIndicatorId = this.previous_indicator?.id;
+          const hasValidIndicator = Number.isInteger(previousIndicatorId) && previousIndicatorId > 0;
+          const hasValidDiff = Number.isFinite(diff) && diff >= 0;
+          const hasValidUser = Number.isInteger(this.getUser?.id) && this.getUser.id > 0;
 
-          const timespent = {
-            indicator: this.previous_indicator,
-            timeSpent: diff,
-            user: this.getUser.id,
-          };
+          if (hasValidIndicator && hasValidDiff && hasValidUser) {
+            const timespent = {
+              indicator: previousIndicatorId,
+              timeSpent: diff,
+              user: this.getUser.id,
+            };
 
-          this.SET_INDICATOR_TIME_SPENT(timespent);
+            this.SET_INDICATOR_TIME_SPENT(timespent);
+          }
 
           this.previous_time = this.after_time;
 
@@ -275,14 +283,20 @@ export default {
           const indicators = response.data;
 
           // sending to the api
+          const previousDatasourceId = this.previous_datasource?.id;
+          const hasValidDatasource = Number.isInteger(previousDatasourceId) && previousDatasourceId > 0;
+          const hasValidDiff = Number.isFinite(diff) && diff >= 0;
+          const hasValidUser = Number.isInteger(this.getUser?.id) && this.getUser.id > 0;
 
-          const timespent = {
-            datasource: this.previous_datasource,
-            timeSpent: diff,
-            user: this.getUser.id,
-          };
+          if (hasValidDatasource && hasValidDiff && hasValidUser) {
+            const timespent = {
+              datasource: previousDatasourceId,
+              timeSpent: diff,
+              user: this.getUser.id,
+            };
 
-          this.SET_DATASOURCE_TIME_SPENT(timespent);
+            this.SET_DATASOURCE_TIME_SPENT(timespent);
+          }
 
           this.previous_time_datasource = this.after_time_datasource;
 
