@@ -19,16 +19,16 @@
             <p class="work-sans mb-0 line-height sub-title" v-if="level === 1">
               Distribution of
               <!-- Made the setAcrossRegion dynamic to change whenever a user selects a state -->
-              <b>{{ values.indicator.short_name }}</b> across
-              <b>{{ visualization === 'map' ? 'Nigeria' : values.location.name }}.</b> Source:<b>
-                {{ values.datasource.datasource }} {{ values.year }}</b
+              <b>{{ indicatorLabel }}</b> across
+              <b>{{ visualization === 'map' ? 'Nigeria' : locationLabel }}.</b> Source:<b>
+                {{ datasourceLabel }} {{ yearLabel }}</b
               >
             </p>
             <p class="work-sans mb-0 line-height sub-title" v-if="level === 3">
               Distribution of
-              <b>{{ values.indicator.short_name }}</b> across
-              <b>{{ values.location.name }}.</b> Source:<b>
-                {{ values.datasource.datasource }} {{ values.year }}</b
+              <b>{{ indicatorLabel }}</b> across
+              <b>{{ locationLabel }}.</b> Source:<b>
+                {{ datasourceLabel }} {{ yearLabel }}</b
               >
             </p>
             <div class="d-flex align-items-center">
@@ -155,6 +155,8 @@ export default {
       capturedChartImage: null,
       // Request tracking to prevent race conditions
       requestId: 0,
+      // Prevent duplicate fetches when unrelated nested payload fields mutate
+      lastChartQueryKey: '',
     };
   },
   props: {
@@ -173,6 +175,18 @@ export default {
     ...mapState('MSDAT_STORE', ['selectedState', 'datasetComperision']),
     setAcrossRegion() {
       return this.acrossRegion;
+    },
+    indicatorLabel() {
+      return this.resolveDisplayText(this.values?.indicator, ['short_name', 'full_name', 'name']);
+    },
+    locationLabel() {
+      return this.resolveDisplayText(this.values?.location, ['name']);
+    },
+    datasourceLabel() {
+      return this.resolveDisplayText(this.values?.datasource, ['datasource', 'name', 'item']);
+    },
+    yearLabel() {
+      return this.resolveDisplayText(this.values?.year);
     },
   },
   watch: {
@@ -197,17 +211,44 @@ export default {
     },
     values: {
       async handler() {
+        const chartQueryKey = [
+          this.values?.indicator?.id,
+          this.values?.datasource?.id,
+          this.values?.location?.id,
+          this.values?.year,
+          this.values?.numdenum,
+          this.values?.target?.national,
+          this.values?.target?.sdg,
+          this.visualization,
+        ].join('|');
+
+        if (chartQueryKey === this.lastChartQueryKey) {
+          return;
+        }
+        this.lastChartQueryKey = chartQueryKey;
+
         await this.updateValue();
-        const factor = this.dlGetFactor(this.values.indicator.factor).display_factor;
-        const indicatorWithFactor = `${this.values.indicator.short_name}${factor.trim() ? ` (${factor})` : ''}`;
+        const factorObj = this.dlGetFactor(this.values.indicator?.factor);
+        const factor = factorObj.display_factor;
+        const indicatorWithFactor = `${this.indicatorLabel}${factor.trim() ? ` (${factor})` : ''}`;
         // For map: always show "across the country" (Nigeria), for bar chart it will show the selected location
-        this.title = `Distribution Of ${indicatorWithFactor} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+        this.title = `Distribution Of ${indicatorWithFactor} across the country. Source: ${this.datasourceLabel} ${this.yearLabel}`;
       },
       deep: true,
       immediate: true,
     },
     'BarChartOptions.series': {
       handler(newSeries) {
+        if (!Array.isArray(newSeries) || newSeries.length === 0) {
+          this.showNoSubNationalData = false;
+          return;
+        }
+
+        if (!newSeries[0] || !Array.isArray(newSeries[0].data)) {
+          this.showNoSubNationalData = false;
+          return;
+        }
+
         for (let i = 0; i < newSeries.length; i += 1) {
           if (newSeries[0].data.length <= 0) {
             this.showNoSubNationalData = true;
@@ -222,13 +263,6 @@ export default {
           }
         }
       },
-    },
-    updateData: {
-      async handler() {
-        await this.updateValue();
-      },
-      deep: true,
-      immediate: false,
     },
   },
   methods: {
@@ -382,7 +416,7 @@ export default {
       const { national_target, sdg_target, desirable_slope } = this.dlGetIndicator(
         this.values.indicator.id,
       );
-      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+      const displayFactor = this.dlGetFactor(this.values.indicator?.factor).display_factor;
       const national = await this.computeNationalND();
 
       // Check again after async operations
@@ -419,7 +453,7 @@ export default {
       );
 
       // Validate and flag anomalous data points inside the chart
-      const factorObj = this.dlGetFactor(this.values.indicator.factor);
+      const factorObj = this.dlGetFactor(this.values.indicator?.factor);
       const isPercentage = factorObj && factorObj.display_factor && (factorObj.display_factor === 'in percentage' || factorObj.display_factor.includes('%'));
       const validationContext = {
         is_percentage: isPercentage,
@@ -680,7 +714,7 @@ export default {
         // value_type: 5,
       });
 
-      if (data.length === 0 || data === undefined || data === null) {
+      if (!Array.isArray(data) || data.length === 0) {
         return [];
       }
 
@@ -811,6 +845,20 @@ export default {
       this.activeToggleButton = vis;
       this.updateValue();
     },
+    resolveDisplayText(value, preferredKeys = []) {
+      if (value == null) return '';
+      if (typeof value === 'string' || typeof value === 'number') return String(value);
+      if (Array.isArray(value)) return '';
+      if (typeof value === 'object') {
+        for (let i = 0; i < preferredKeys.length; i += 1) {
+          const key = preferredKeys[i];
+          if (typeof value[key] === 'string' || typeof value[key] === 'number') {
+            return String(value[key]);
+          }
+        }
+      }
+      return '';
+    },
     mapDownload(e) {
       if (this.visualization === 'bar') {
         this.downLoadType(e, {
@@ -835,8 +883,19 @@ export default {
       });
     },
     formatToHighChartOptionForMap(data, controlPanelObject) {
-      const factor = this.dlGetFactor(controlPanelObject.indicator.factor).display_factor;
-      const titleText = `${controlPanelObject.indicator.short_name}${factor.trim() ? ` (${factor})` : ''}`;
+      const factor = this.dlGetFactor(controlPanelObject.indicator?.factor).display_factor;
+      const indicatorText = this.resolveDisplayText(controlPanelObject?.indicator, [
+        'short_name',
+        'full_name',
+        'name',
+      ]);
+      const datasourceText = this.resolveDisplayText(controlPanelObject?.datasource, [
+        'datasource',
+        'name',
+        'item',
+      ]);
+      const yearText = this.resolveDisplayText(controlPanelObject?.year);
+      const titleText = `${indicatorText}${factor.trim() ? ` (${factor})` : ''}`;
 
       return {
         title: {
@@ -848,7 +907,7 @@ export default {
           },
         },
         subtitle: {
-          text: `${controlPanelObject.datasource.datasource} - ${controlPanelObject.year}`,
+          text: `${datasourceText} - ${yearText}`,
           style: {
             fontSize: '13px',
             fontFamily: '"Work Sans", sans-serif',
@@ -873,10 +932,9 @@ export default {
     },
   },
   mounted() {
-    this.updateData = +1;
-    const factor = this.dlGetFactor(this.values.indicator.factor).display_factor;
-    const indicatorWithFactor = `${this.values.indicator.short_name}${factor.trim() ? ` (${factor})` : ''}`;
-    this.title = `Distribution Of ${indicatorWithFactor} across the country. Source: ${this.values.datasource.datasource} ${this.values.year}`;
+    const factor = this.dlGetFactor(this.values.indicator?.factor).display_factor;
+    const indicatorWithFactor = `${this.indicatorLabel}${factor.trim() ? ` (${factor})` : ''}`;
+    this.title = `Distribution Of ${indicatorWithFactor} across the country. Source: ${this.datasourceLabel} ${this.yearLabel}`;
   },
 };
 </script>

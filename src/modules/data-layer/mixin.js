@@ -229,7 +229,8 @@ export default {
     },
     dlGetFactor(id) {
       const factor = this.dlFactors.find((item) => item.id === id);
-      if (factor && factor.display_factor === '1') factor.display_factor = ' ';
+      if (!factor) return { display_factor: '', multiplier_factor: null };
+      if (factor.display_factor === '1') factor.display_factor = ' ';
       return factor;
     },
     dlGetDataSource(id) {

@@ -77,6 +77,7 @@ export interface State {
   showWhatsNew: boolean;
   showShareSection: boolean;
   dashboards: DashboardEntry[]
+  indicatorDatasources: any[];
   urlDatasource: number;
   urlLocation: number;
   urlPeriod: string;

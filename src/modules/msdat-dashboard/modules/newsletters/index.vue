@@ -2,7 +2,7 @@
   <div id="newsLetter">
     <!-- <b-button @click="showModal" ref="btnShow">Launch news_letter modal</b-button> -->
 
-    <b-modal id="modal-newsLetter" class="newsLetter" centered="false" hide right title="">
+    <b-modal id="modal-newsLetter" class="newsLetter" :centered="false" hide right title="">
       <div class="card border-5 rounded-5">
         <div class="card-header pt-5 p-4 rounded-0">
           <button

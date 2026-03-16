@@ -157,6 +157,9 @@ export default {
       capturedChartImage: null,
       // Request tracking to prevent race conditions
       requestId: 0,
+      // Prevent duplicate reloads when payload object references change but
+      // effective query inputs remain the same
+      lastLoadKey: '',
     };
   },
   props: {
@@ -220,25 +223,32 @@ export default {
       deep: false,
       immediate: false,
     },
-    'values.indicator': {
+    'values.indicator.id': {
       async handler() {
         await this.loadChartData('indicator');
       },
-      deep: true,
+      deep: false,
       immediate: true,
     },
-    'values.target': {
+    'values.target.national': {
       async handler() {
         await this.loadChartData('target');
       },
-      deep: true,
+      deep: false,
       immediate: false,
     },
-    'values.location': {
+    'values.target.sdg': {
+      async handler() {
+        await this.loadChartData('target');
+      },
+      deep: false,
+      immediate: false,
+    },
+    'values.location.id': {
       async handler() {
         await this.loadChartData('location');
       },
-      deep: true,
+      deep: false,
       immediate: false,
     },
   },
@@ -248,6 +258,19 @@ export default {
      * to prevent race conditions when multiple selections change rapidly
      */
     async loadChartData(trigger) {
+      const loadKey = [
+        trigger,
+          this.values?.indicator?.id,
+          this.values?.location?.id,
+          this.values?.target?.national,
+          this.values?.target?.sdg,
+      ].join('|');
+
+      if (loadKey === this.lastLoadKey && trigger !== 'reset') {
+        return;
+      }
+      this.lastLoadKey = loadKey;
+
       // Increment request ID to track this specific request
       this.requestId += 1;
       const currentRequestId = this.requestId;
@@ -311,7 +334,7 @@ export default {
         }
 
         // Validate data points and flag anomalies inside the chart
-        const factorObj = this.dlGetFactor(this.values.indicator.factor);
+        const factorObj = this.dlGetFactor(this.values.indicator?.factor);
         const isPercentage = factorObj && factorObj.display_factor && (factorObj.display_factor === 'in percentage' || factorObj.display_factor.includes('%'));
         const validationContext = {
           is_percentage: isPercentage,
@@ -566,7 +589,7 @@ export default {
         },
       };
 
-      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+      const displayFactor = this.dlGetFactor(this.values.indicator?.factor).display_factor;
       this.ChartOptions.yAxis.title.text = displayFactor;
     },
     updateChart(e) {

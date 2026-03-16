@@ -84,7 +84,7 @@
             <div>
               <div class="grid1-left-text1">Multiplier Factor</div>
               <div class="grid1-left-text2">
-                {{ dlGetFactor(dlGetIndicator(indicatorSelectedID).factor).multiplier_factor }}
+                {{ (dlGetFactor(dlGetIndicator(indicatorSelectedID)?.factor) || {}).multiplier_factor }}
               </div>
             </div>
 

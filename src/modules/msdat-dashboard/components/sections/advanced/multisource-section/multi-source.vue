@@ -175,7 +175,7 @@ export default {
           },
         ],
       };
-      const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+      const displayFactor = this.dlGetFactor(this.values.indicator?.factor).display_factor;
       chartOptions.yAxis.title.text = displayFactor;
       return chartOptions;
     },
