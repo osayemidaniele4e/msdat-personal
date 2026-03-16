@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 <template>
   <!-- <base-overlay :show="loading"> -->
   <div id="the-table">
@@ -82,7 +81,7 @@
     <ChartAnalysisModal
       :show="showAnalysisModal"
       :chartImage="capturedChart"
-      :indicatorData="values.indicator"
+      :indicatorData="chartAnalysisIndicatorData"
       @close="closeAnalysisModal"
     />
     <SmartNarrativeModal
@@ -146,6 +145,8 @@ export default {
       capturedChartImage: null,
       // Request tracking to prevent race conditions
       requestId: 0,
+      // Prevent duplicate reloads when unrelated nested payload fields change
+      lastTableQueryKey: '',
     };
   },
   props: {
@@ -160,6 +161,29 @@ export default {
   watch: {
     values: {
       async handler({ indicator, location, datasource }) {
+        const tableQueryKey = [
+          indicator?.id,
+          indicator?.['first_related'],
+          indicator?.['second_related'],
+          location?.id,
+          this.getConfigObject?.showTableRelatedIndicator,
+        ].join('|');
+
+        // Avoid refetching the same dataset when only unrelated fields (e.g. year,
+        // datasource selection highlight) mutate in the shared control payload.
+        if (tableQueryKey === this.lastTableQueryKey) {
+          this.setTableSelected = datasource;
+          return;
+        }
+
+        this.lastTableQueryKey = tableQueryKey;
+
+        if (!indicator?.id || !location?.id) {
+          this.loading = false;
+          this.TableData = [];
+          return;
+        }
+
         // Increment request ID to track this specific request
         this.requestId += 1;
         const currentRequestId = this.requestId;
@@ -168,66 +192,62 @@ export default {
         this.loading = true;
         this.TableData = [];
 
-        const formattedData = [];
         let indicators = [indicator.id, indicator.first_related, indicator.second_related];
 
         if (!this.getConfigObject.showTableRelatedIndicator) {
           indicators = [indicator.id];
         }
 
-        for (let indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex += 1) {
-          // Check if this request is still the latest one
-          if (currentRequestId !== this.requestId) {
-            return; // A newer request has been made, discard this result
-          }
+        const dataSources = this.dlGetDashboardDataSource();
 
-          const indicatorID = indicators[indicatorIndex];
-          if (indicatorID) {
-            const data = [];
-            const dataSources = this.dlGetDashboardDataSource();
+        // Fetch all (indicator × datasource) combinations in parallel instead of
+        // serially — reduces wall-clock time from (N_indicators × N_sources × RTT)
+        // down to a single RTT for the slowest request.
+        const formattedData = (
+          await Promise.all(
+            indicators
+              .filter(Boolean)
+              .map(async (indicatorID) => {
+                const indicatorObject = this.dlGetIndicator(indicatorID);
 
-            // const temp = dataSources.filter((item) => item.id !== 30);
-            const indicatorObject = this.dlGetIndicator(indicatorID);
-            for (let index = 0; index < dataSources.length; index += 1) {
-              // Check if this request is still the latest one before each async call
-              if (currentRequestId !== this.requestId) {
-                return; // A newer request has been made, discard this result
-              }
+                const data = await Promise.all(
+                  dataSources.map((element) => this.dlGetLatestSourceAndIndicatorData({
+                    indicator: indicatorID,
+                    datasource: element.id,
+                    location: location.id,
+                  })),
+                );
 
-              const element = dataSources[index];
-              // eslint-disable-next-line no-await-in-loop
-              const ab = await this.dlGetLatestSourceAndIndicatorData({
-                indicator: indicatorID,
-                datasource: element.id,
-                location: location.id,
-              });
-              data.push(ab);
-            }
-            const formatted = this.tableComponentDataFormatter(indicatorObject, data);
+                const formatted = this.tableComponentDataFormatter(indicatorObject, data);
 
-            // Validate each value and attach anomaly flags per cell
-            const factorObj = this.dlGetFactor(indicatorObject.factor);
-            const isPercentage = factorObj && factorObj.display_factor && (factorObj.display_factor === 'in percentage' || factorObj.display_factor.includes('%'));
-            const validationContext = {
-              is_percentage: isPercentage,
-              indicator_name: indicatorObject.full_name,
-            };
-            let rawIdx = 0;
-            data.forEach((rawItem) => {
-              if (rawItem && rawIdx < formatted.values.length) {
-                const flags = validateDataValue(Number(rawItem.value), validationContext);
-                formatted.values[rawIdx].anomalyFlags = flags;
-                rawIdx += 1;
-              }
-            });
+                // Validate each value and attach anomaly flags per cell
+                const factorObj = this.dlGetFactor(indicatorObject?.factor);
+                const isPercentage
+                  = factorObj
+                  && factorObj.display_factor
+                  && (factorObj.display_factor === 'in percentage'
+                    || factorObj.display_factor.includes('%'));
+                const validationContext = {
+                  is_percentage: isPercentage,
+                  indicator_name: indicatorObject?.['full_name'],
+                };
+                let rawIdx = 0;
+                data.forEach((rawItem) => {
+                  if (rawItem && rawIdx < formatted.values.length) {
+                    const flags = validateDataValue(Number(rawItem.value), validationContext);
+                    formatted.values[rawIdx].anomalyFlags = flags;
+                    rawIdx += 1;
+                  }
+                });
 
-            formattedData.push(formatted);
-          }
-        }
+                return formatted;
+              }),
+          )
+        ).filter(Boolean);
 
-        // Final check before updating state
+        // Discard result if a newer control-panel selection arrived while fetching
         if (currentRequestId !== this.requestId) {
-          return; // A newer request has been made, discard this result
+          return;
         }
 
         this.TableData = [...formattedData];
@@ -282,6 +302,25 @@ export default {
   },
   computed: {
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
+    chartAnalysisIndicatorData() {
+      const indicator = this.values?.indicator;
+
+      if (indicator && typeof indicator === 'object' && !Array.isArray(indicator)) {
+        return indicator;
+      }
+
+      if (typeof indicator === 'string') {
+        return {
+          short_name: indicator,
+          description: '',
+        };
+      }
+
+      return {
+        short_name: '',
+        description: '',
+      };
+    },
   },
   methods: {
     async openSmartNarrative() {
@@ -569,7 +608,6 @@ export default {
   },
   mounted() {
     this.updateData += 1;
-    this.populateTableData();
   },
 };
 </script>

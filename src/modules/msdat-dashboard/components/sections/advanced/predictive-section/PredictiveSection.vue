@@ -362,7 +362,7 @@ export default {
             },
           };
         }
-        const displayFactor = this.dlGetFactor(this.values.indicator.factor).display_factor;
+        const displayFactor = this.dlGetFactor(this.values.indicator?.factor).display_factor;
         this.ChartOptions.yAxis.title.text = displayFactor;
         this.showNoAvailablePrediction = false;
       } catch (error) {

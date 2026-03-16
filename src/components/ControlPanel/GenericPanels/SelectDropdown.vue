@@ -5,11 +5,12 @@
       :id="formattedID"
       v-model="selected"
       :options="options"
+      :custom-label="renderOptionLabel"
       searchable
       close-on-select
       :allow-empty="allowEmpty"
       :placeholder="placeholder"
-      v-bind="multiSelectProps"
+      v-bind="effectiveMultiSelectProps"
       selectLabel=""
       data-visted="notVisited"
       deselectLabel=""
@@ -22,7 +23,7 @@
       <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
 
     <template slot="option" slot-scope="props">
-      <template v-if="multiSelectProps['group-values']">
+      <template v-if="isGroupedMode">
         <template v-if="props.option.$groupLabel">
           <span class="overflow-textg" :data-parent="props.option.$groupLabel">
             {{ props.option.$groupLabel }}
@@ -69,7 +70,6 @@
   </div>
 </template>
 <script>
-import { has } from 'lodash';
 import { mapMutations } from 'vuex';
 
 export default {
@@ -88,16 +88,42 @@ export default {
     };
   },
   computed: {
+    groupValuesKey() {
+      return this.multiSelectProps?.['group-values'];
+    },
+    groupLabelKey() {
+      return this.multiSelectProps?.['group-label'];
+    },
+    isGroupedMode() {
+      if (!this.groupValuesKey || !this.groupLabelKey || !Array.isArray(this.options)) {
+        return false;
+      }
+      return this.options.some(
+        (option) => option
+          && typeof option === 'object'
+          && Object.prototype.hasOwnProperty.call(option, this.groupLabelKey)
+          && Array.isArray(option[this.groupValuesKey]),
+      );
+    },
+    effectiveMultiSelectProps() {
+      if (this.isGroupedMode) {
+        return this.multiSelectProps;
+      }
+      const props = { ...this.multiSelectProps };
+      delete props['group-values'];
+      delete props['group-label'];
+      return props;
+    },
     selected: {
       get() {
         return this.value;
       },
       set(val) {
         if (
-          val &&
-          typeof val === 'object' &&
-          val.id !== undefined &&
-          val.program_area !== undefined
+          val
+          && typeof val === 'object'
+          && val.id !== undefined
+          && val.program_area !== undefined
         ) {
           this.selectedOption = val;
           // this.indicatorId = val.id;
@@ -114,10 +140,10 @@ export default {
           localStorage.setItem('indicatorSecondRelated', indicatorSecondRelated);
           this.SET_SELECTED_CONFIG(item);
         } else if (
-          val &&
-          typeof val === 'object' &&
-          val.id !== undefined &&
-          val.methodology !== undefined
+          val
+          && typeof val === 'object'
+          && val.id !== undefined
+          && val.methodology !== undefined
         ) {
           // this.saveDataSourceToStorage(val.id);
           const item = {
@@ -131,10 +157,10 @@ export default {
           };
           this.SET_ZONAL_DATASOURCE(item2);
         } else if (
-          val &&
-          typeof val !== 'object' &&
-          val.id === undefined &&
-          val.created_at === undefined
+          val
+          && typeof val !== 'object'
+          && val.id === undefined
+          && val.created_at === undefined
         ) {
           const item = {
             payload: val,
@@ -151,8 +177,8 @@ export default {
       },
     },
     formattedID() {
-      if (this.multiSelectProps['group-values']) {
-        if (this.multiSelectProps['group-label'] === 'datasource') {
+      if (this.isGroupedMode) {
+        if (this.groupLabelKey === 'datasource') {
           return 'groupedSources';
         }
 
@@ -192,14 +218,14 @@ export default {
         this.loading = true;
         if (this.options?.length > 0) {
           if (this.multiSelectProps['preselect-first']) {
-            if (has(this.multiSelectProps, 'group-values')) {
-              this.selected = newValue[0][this.multiSelectProps['group-values']][0];
+            if (this.isGroupedMode) {
+              this.selected = newValue[0][this.groupValuesKey][0];
             } else if (newValue.length > 0) {
               const { name } = this.$route.params;
               if (name === 'Demographics') {
                 this.selected = '';
                 const newArr = this.options.filter(
-                  (year) => parseInt(year, 10) < new Date().getFullYear() + 1
+                  (year) => parseInt(year, 10) < new Date().getFullYear() + 1,
                 );
 
                 this.selected = newArr[0];
@@ -218,7 +244,7 @@ export default {
                 const year = date.getFullYear() - 1;
                 this.selected = {};
                 const newArr = this.newValue.filter(
-                  (item) => parseInt(item, 10) < new Date().getFullYear() + 1
+                  (item) => parseInt(item, 10) < new Date().getFullYear() + 1,
                 );
 
                 this.selected = newArr[0] || year.toString();
@@ -347,7 +373,7 @@ export default {
     },
 
     openAllGroupLabels() {
-      if (this.multiSelectProps['group-values']) {
+      if (this.isGroupedMode) {
         this.groupLabelStates = {};
         this.options
           .filter((option) => option.$groupLabel)
@@ -392,7 +418,7 @@ export default {
       if (typeof option === 'string' || typeof option === 'number') {
         const year = parseInt(option, 10);
         const currentYear = new Date().getFullYear();
-        return !isNaN(year) && year > currentYear;
+        return !Number.isNaN(year) && year > currentYear;
       }
       return false;
     },
@@ -400,13 +426,34 @@ export default {
       if (typeof option === 'string') {
         return this.formatYear(option);
       }
+      if (option == null) {
+        return '';
+      }
+      if (typeof option !== 'object') {
+        return String(option);
+      }
+      if (option.item) {
+        return option.item;
+      }
       if (option.datasource) {
         return option.datasource;
+      }
+      if (option.full_name) {
+        return option.full_name;
+      }
+      if (option.short_name) {
+        return option.short_name;
       }
       if (option.name) {
         return option.name;
       }
-      return option;
+      if (option.value_type) {
+        return option.value_type;
+      }
+      return '';
+    },
+    renderOptionLabel(option) {
+      return this.getOptionLabel(option);
     },
 
     /**
@@ -459,7 +506,7 @@ export default {
      */
     initialCSS(multiselectID) {
       this.loading = true;
-      if (this.multiSelectProps['group-values']) {
+      if (this.isGroupedMode) {
         const specificPart = document.querySelector(`input#${multiselectID}`);
         if (this.options?.length !== 0 && specificPart) {
           const iterable = specificPart.parentNode.nextElementSibling.children[0]?.children;

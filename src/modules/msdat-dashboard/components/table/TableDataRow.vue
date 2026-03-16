@@ -215,7 +215,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
-import { integer } from 'vee-validate/dist/rules';
 
 export default {
   mixins: [formatter],
@@ -263,7 +262,7 @@ export default {
       required: true,
     },
     index: {
-      type: integer,
+      type: Number,
     },
   },
 
@@ -272,7 +271,7 @@ export default {
     ...mapGetters('MSDAT_STORE', ['getIndicators', 'getControlConfig']),
 
     factor() {
-      return this.dlGetFactor(this.rowData.indicator.factor).display_factor;
+      return this.dlGetFactor(this.rowData.indicator?.factor).display_factor;
     },
     // initialized the formattedID with the indicator id so it is unique
     formattedID() {
