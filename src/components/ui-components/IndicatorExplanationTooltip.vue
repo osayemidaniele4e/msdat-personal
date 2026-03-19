@@ -15,17 +15,17 @@ export default {
   props: {
     indicatorId: {
       type: [String, Number],
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     showModal() {
-      // Emit a global event to open the detached modal 
+      // Emit a global event to open the detached modal
       // preventing the dropdown from destroying our modal before it opens!
       this.$root.$emit('open-indicator-explanation', this.indicatorId);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

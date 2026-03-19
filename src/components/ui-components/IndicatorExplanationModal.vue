@@ -1,3 +1,4 @@
+
 <template>
   <b-modal
     id="indicator-explanation-modal-global"
@@ -14,20 +15,20 @@
     <div v-else-if="metadata" class="meta-modal bg-white">
       <div class="d-flex justify-content-between align-items-center" style="background-color: #f1f1f1; padding: 15px 24px; border-bottom: 1px solid #ddd;">
         <h5 class="mb-0 text-uppercase" style="font-size: 15px; letter-spacing: 0.2px; font-weight: 700;">{{ metadata.name }}</h5>
-        <b-icon-x 
-          class="cursor-pointer" 
-          style="width: 25px; height: 25px; color: #333;" 
+        <b-icon-x
+          class="cursor-pointer"
+          style="width: 25px; height: 25px; color: #333;"
           @click="closeModal"
         ></b-icon-x>
       </div>
-      
+
       <div class="p-4 pt-2">
         <div class="text1">Description</div>
       <div class="text2">{{ metadata.definition }}</div>
-      
+
       <div class="text1">Calculation Formula</div>
       <div class="text2">{{ metadata.formula }}</div>
-      
+
       <div class="text1">Data Source</div>
       <div class="text2">{{ metadata.source }}</div>
 
@@ -68,71 +69,70 @@ export default {
       if (!indicatorId) return;
       this.loading = true;
       this.metadata = null;
-      
+
       // Crucial: Fire the modal immediately from bootstrap registry
       this.$bvModal.show('indicator-explanation-modal-global');
-      
+
       try {
         // Fetch indicator natively from Vuex
         const indicatorObj = this.dlGetIndicator(indicatorId);
-        
+
         // Fetch available data sources for this indicator
         const dsList = await this.getDataSourcesFromIndicator(indicatorId);
-        
+
         let definition = 'No definition available for this indicator.';
         let formula = 'Formula not explicitly defined.';
         let sourceNames = 'Unavailable';
 
         if (dsList && dsList.length > 0) {
           // List all mapped standard sources to format beautifully
-          sourceNames = dsList.map(ds => ds.datasource).join(', ');
-          
+          sourceNames = dsList.map((ds) => ds.datasource).join(', ');
+
           // Use the primary/first data source to derive the standard definition
           // (Since MS-DAT groups indicators generically, definitions across sources are essentially identical)
           const specificItems = this.dlGetDataSourceSpecificIndicator({
-             indicator: indicatorId,
-             datasource: dsList[0].id
+            indicator: indicatorId,
+            datasource: dsList[0].id,
           });
-          
+
           if (specificItems && specificItems.length > 0) {
-             const specific = specificItems[0];
-             definition = specific.indicator_definition || definition;
-             
-             const num = specific.measurement_numerator;
-             const den = specific.measurement_denominator;
-             
-             const isValid = (val) => val && val.trim().toLowerCase() !== 'n/a' && val.trim().toLowerCase() !== 'not applicable';
-             
-             let formedFormula = '';
-             if (isValid(num)) formedFormula += `Numerator: ${num.trim()}\n`;
-             if (isValid(den)) formedFormula += `Denominator: ${den.trim()}`;
-             
-             formula = formedFormula.trim() || 'Formula not explicitly defined.';
+            const specific = specificItems[0];
+            definition = specific.indicator_definition || definition;
+
+            const num = specific.measurement_numerator;
+            const den = specific.measurement_denominator;
+
+            const isValid = (val) => val && val.trim().toLowerCase() !== 'n/a' && val.trim().toLowerCase() !== 'not applicable';
+
+            let formedFormula = '';
+            if (isValid(num)) formedFormula += `Numerator: ${num.trim()}\n`;
+            if (isValid(den)) formedFormula += `Denominator: ${den.trim()}`;
+
+            formula = formedFormula.trim() || 'Formula not explicitly defined.';
           }
         }
-        
+
         this.metadata = {
           name: indicatorObj ? indicatorObj.full_name : 'Indicator Definition',
-          definition: definition,
-          formula: formula,
-          source: sourceNames
+          definition,
+          formula,
+          source: sourceNames,
         };
-
       } catch (err) {
         console.error('Failed to inject indicator metadata', err);
         // Fallback safeguards
         this.metadata = {
-          name: "Indicator Explanation Details",
-          definition: "Data is currently resolving...",
-          formula: "N/A",
-          source: "N/A"
+          name: 'Indicator Explanation Details',
+          definition: 'Data is currently resolving...',
+          formula: 'N/A',
+          source: 'N/A',
         };
       } finally {
         this.loading = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

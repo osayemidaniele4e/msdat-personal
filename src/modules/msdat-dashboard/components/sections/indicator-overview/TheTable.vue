@@ -104,13 +104,13 @@ import TableLoader from '@/modules/msdat-dashboard/components/table/TableLoader.
 import html2canvas from 'html2canvas';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
 import { validateDataValue } from '@/util/dataValidation';
+import IndicatorExplanationTooltip from '@/components/ui-components/IndicatorExplanationTooltip.vue';
 import chartDownload from '../../../mixins/chart_download';
 import IndicatorMetaDataModal from './info_modal/IndicatorMetaDataModal.vue';
 import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
 import ShareCodeModal from './shareTableModal.vue';
 import ChartAnalysisModal from './ChartAnalysisModal.vue';
 import SmartNarrativeModal from './SmartNarrativeModal.vue';
-import IndicatorExplanationTooltip from '@/components/ui-components/IndicatorExplanationTooltip.vue';
 
 export default {
   mixins: [chartDownload, formatter],
