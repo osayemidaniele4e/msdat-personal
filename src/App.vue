@@ -1,18 +1,21 @@
 <template>
-  <div class="position-relative" id="app">
+ <div class="position-relative" id="app">
     <router-view />
     <feedback />
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
     </div>
-    <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
+      <div v-if="showWhatsNewComponent && whatsNewContent.length" class="position-fixed whats-new">
       <WhatsNew />
     </div>
     <div v-if="showShareSectionComponent" class="position-fixed whats-new">
       <ShareSection />
     </div>
 
-    <transition name="fun-fact-slide">
+    <!-- Global Modals -->
+    <IndicatorExplanationModal />
+
+     <transition name="fun-fact-slide">
       <div v-if="showFunFact" class="fun-fact">
         <button class="fun-fact-close" aria-label="Close fun fact" @click="closeFunFact">×</button>
         <div class="fun-fact-icon">
@@ -35,13 +38,13 @@
         </div>
       </div>
     </transition>
-
+    
     <!-- Global Chatbot - Commented out -->
     <!-- <div class="global-chatbot-wrapper">
       <ChatBot ref="globalChatBot" />
-      <button
-        class="global-chat-trigger"
-        @click="$refs.globalChatBot.toggleChat()"
+      <button 
+        class="global-chat-trigger" 
+        @click="$refs.globalChatBot.toggleChat()" 
         title="Metadata Chatbot"
         aria-label="Open AI Chatbot"
       >
@@ -51,6 +54,7 @@
       </button>
     </div> -->
   </div>
+
 </template>
 
 <script>
@@ -59,7 +63,8 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
-import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue'; // import ChatBot from './modules/msdat-dashboard/components/ChatBot.vue';
+import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue';// import ChatBot from './modules/msdat-dashboard/components/ChatBot.vue';
+import IndicatorExplanationModal from './components/ui-components/IndicatorExplanationModal.vue';
 import ApiServices from './modules/data-layer/services/ApiServices';
 import accessibilityPlugin from './modules/plugins/accessibilityPlugin';
 import contextPlugin from './modules/plugins/contextPlugin';
@@ -71,11 +76,12 @@ import testonePlugin from './modules/plugins/testonePlugin';
 import testPlugin from './modules/plugins/testPlugin';
 
 export default {
-  components: {
+ components: {
     feedback,
     ShowDataSourcesList,
     WhatsNew,
     ShareSection,
+    IndicatorExplanationModal,
     // ChatBot,
   },
   data() {
@@ -92,13 +98,13 @@ export default {
       nugget: null,
     };
   },
-  computed: {
+   computed: {
     ...mapGetters('appearance', ['viewMode', 'fontSize', 'theme']),
     ...mapGetters('MSDAT_STORE', ['getConfigObject']),
   },
   watch: {
     '$store.state.MSDAT_STORE.showDataSourceList': {
-      // eslint-disable-next-line no-unused-vars
+     // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
         this.showDataSourceListComponent = newVal;
       },
@@ -111,14 +117,14 @@ export default {
       },
       deep: true, // If you want to watch nested changes
     },
-    '$store.state.MSDAT_STORE.showShareSection': {
+     '$store.state.MSDAT_STORE.showShareSection': {
       // eslint-disable-next-line no-unused-vars
       handler(newVal, oldVal) {
         this.showShareSectionComponent = newVal;
       },
       deep: true, // If you want to watch nested changes
     },
-    viewMode(newMode) {
+     viewMode(newMode) {
       document.body.className = newMode;
     },
     fontSize(newSize) {
@@ -129,11 +135,11 @@ export default {
     },
   },
   async mounted() {
-    await this.getWhatsNew();
+   await this.getWhatsNew();
 
-    this.firstTimeExecution();
+   this.firstTimeExecution();
 
-    // Show immediately (optional)
+   // Show immediately (optional)
     this.showFunFactTemporarily();
 
     // Repeat every 2 minutes
@@ -141,80 +147,88 @@ export default {
       this.showFunFactTemporarily();
     }, 2 * 60 * 1000);
 
-    // eslint-disable-next-line
+
+  // eslint-disable-next-line
     let plugins_imported = [];
+    
+  this.pluginsImported.push('accessibilityPlugin')
+  if (!localStorage.getItem('accessibilityPlugin')) {
+    localStorage.setItem('accessibilityPlugin', 'false');
+  }
 
-    this.pluginsImported.push('accessibilityPlugin');
-    if (!localStorage.getItem('accessibilityPlugin')) {
-      localStorage.setItem('accessibilityPlugin', 'false');
-    }
+  if (localStorage.getItem('accessibilityPlugin') === 'true') {
+    Vue.use(accessibilityPlugin);
+  }
 
-    if (localStorage.getItem('accessibilityPlugin') === 'true') {
-      Vue.use(accessibilityPlugin);
-    }
 
-    this.pluginsImported.push('contextPlugin');
-    if (!localStorage.getItem('contextPlugin')) {
-      localStorage.setItem('contextPlugin', 'false');
-    }
+  this.pluginsImported.push('contextPlugin')
+  if (!localStorage.getItem('contextPlugin')) {
+    localStorage.setItem('contextPlugin', 'false');
+  }
 
-    if (localStorage.getItem('contextPlugin') === 'true') {
-      Vue.use(contextPlugin);
-    }
+  if (localStorage.getItem('contextPlugin') === 'true') {
+    Vue.use(contextPlugin);
+  }
 
-    this.pluginsImported.push('customReportBuilder');
-    if (!localStorage.getItem('customReportBuilder')) {
-      localStorage.setItem('customReportBuilder', 'false');
-    }
 
-    if (localStorage.getItem('customReportBuilder') === 'true') {
-      Vue.use(customReportBuilder);
-    }
+  this.pluginsImported.push('customReportBuilder')
+  if (!localStorage.getItem('customReportBuilder')) {
+    localStorage.setItem('customReportBuilder', 'false');
+  }
 
-    this.pluginsImported.push('indicatorPlugin');
-    if (!localStorage.getItem('indicatorPlugin')) {
-      localStorage.setItem('indicatorPlugin', 'false');
-    }
+  if (localStorage.getItem('customReportBuilder') === 'true') {
+    Vue.use(customReportBuilder);
+  }
 
-    if (localStorage.getItem('indicatorPlugin') === 'true') {
-      Vue.use(indicatorPlugin);
-    }
 
-    this.pluginsImported.push('reviewPlugin');
-    if (!localStorage.getItem('reviewPlugin')) {
-      localStorage.setItem('reviewPlugin', 'false');
-    }
+  this.pluginsImported.push('indicatorPlugin')
+  if (!localStorage.getItem('indicatorPlugin')) {
+    localStorage.setItem('indicatorPlugin', 'false');
+  }
 
-    if (localStorage.getItem('reviewPlugin') === 'true') {
-      Vue.use(reviewPlugin);
-    }
+  if (localStorage.getItem('indicatorPlugin') === 'true') {
+    Vue.use(indicatorPlugin);
+  }
 
-    this.pluginsImported.push('screenshotManager');
-    if (!localStorage.getItem('screenshotManager')) {
-      localStorage.setItem('screenshotManager', 'false');
-    }
 
-    if (localStorage.getItem('screenshotManager') === 'true') {
-      Vue.use(screenshotManager);
-    }
+  this.pluginsImported.push('reviewPlugin')
+  if (!localStorage.getItem('reviewPlugin')) {
+    localStorage.setItem('reviewPlugin', 'false');
+  }
 
-    this.pluginsImported.push('testonePlugin');
-    if (!localStorage.getItem('testonePlugin')) {
-      localStorage.setItem('testonePlugin', 'false');
-    }
+  if (localStorage.getItem('reviewPlugin') === 'true') {
+    Vue.use(reviewPlugin);
+  }
 
-    if (localStorage.getItem('testonePlugin') === 'true') {
-      Vue.use(testonePlugin);
-    }
 
-    this.pluginsImported.push('testPlugin');
-    if (!localStorage.getItem('testPlugin')) {
-      localStorage.setItem('testPlugin', 'false');
-    }
+  this.pluginsImported.push('screenshotManager')
+  if (!localStorage.getItem('screenshotManager')) {
+    localStorage.setItem('screenshotManager', 'false');
+  }
 
-    if (localStorage.getItem('testPlugin') === 'true') {
-      Vue.use(testPlugin);
-    }
+  if (localStorage.getItem('screenshotManager') === 'true') {
+    Vue.use(screenshotManager);
+  }
+
+
+  this.pluginsImported.push('testonePlugin')
+  if (!localStorage.getItem('testonePlugin')) {
+    localStorage.setItem('testonePlugin', 'false');
+  }
+
+  if (localStorage.getItem('testonePlugin') === 'true') {
+    Vue.use(testonePlugin);
+  }
+
+
+  this.pluginsImported.push('testPlugin')
+  if (!localStorage.getItem('testPlugin')) {
+    localStorage.setItem('testPlugin', 'false');
+  }
+
+  if (localStorage.getItem('testPlugin') === 'true') {
+    Vue.use(testPlugin);
+  }
 
     await this.SET_PLUGINS_IMPORTED(this.pluginsImported);
     document.body.className = this.viewMode;
@@ -222,16 +236,15 @@ export default {
     document.documentElement.setAttribute('data-theme', this.theme);
   },
   methods: {
-    ...mapGetters('MSDAT_STORE', ['getConfigObject']),
     ...mapActions(['SET_PLUGINS_IMPORTED']),
     ...mapMutations('MSDAT_STORE', ['toggleShowWhatsNew']),
 
-    async showFunFactTemporarily() {
+     async showFunFactTemporarily() {
       if (this.getConfigObject.id === undefined) {
         return;
       }
       try {
-        const payload = {
+      const payload = {
           dashboard_id: this.getConfigObject.id,
         };
 
@@ -240,6 +253,7 @@ export default {
         // ✅ Only show when webhook responds successfully
         if (!result) return;
 
+      
         this.nugget = result.content;
 
         this.showFunFact = true;
@@ -249,7 +263,7 @@ export default {
           clearTimeout(this.hideTimeout);
         }
 
-        // Hide after 2 minute
+        // Hide after 1 minute
         this.hideTimeout = setTimeout(() => {
           this.showFunFact = false;
         }, 20 * 1000);
@@ -281,7 +295,6 @@ export default {
     },
 
     handleAppUnload() {
-      console.log('Application is being unloaded.');
       localStorage.removeItem('firstTimeExecution');
     },
 
@@ -305,20 +318,21 @@ export default {
           this.toggleShowWhatsNew();
         }
       }, 60 * 1000);
-    },
 
+    },
+    
     // Live plugin toggling without reload
     onPluginsChanged({ plugin, value }) {
       const registry = {
-        accessibilityPlugin,
-        contextPlugin,
-        customReportBuilder,
-        indicatorPlugin,
-        reviewPlugin,
-        screenshotManager,
-        testonePlugin,
-        testPlugin,
-      };
+  accessibilityPlugin,
+  contextPlugin,
+  customReportBuilder,
+  indicatorPlugin,
+  reviewPlugin,
+  screenshotManager,
+  testonePlugin,
+  testPlugin,
+};
 
       const pkg = registry[plugin];
       if (!pkg) return;
@@ -346,7 +360,7 @@ export default {
       }
     },
   },
-
+   
   created() {
     // global plugin bus for cross-cutting enable/disable notifications
     if (!Vue.prototype.$pluginBus) {
@@ -523,7 +537,7 @@ export default {
   height: 28px;
 }
 
-.light {
+  .light {
   background-color: #ffffff;
   color: #000000;
 }
@@ -564,9 +578,9 @@ html.large {
 }
 
 [data-theme='neutral'] {
-  --primary-color: #ea4700;
-  --secondary-color: #ee6c33;
-  --background-color: #fbdacc;
+  --primary-color: #EA4700;
+  --secondary-color: #EE6C33;
+  --background-color: #FBDACC;
 }
 
 /* Dark Mode Styles */
@@ -651,9 +665,9 @@ html.large {
   color: var(--text-muted);
 }
 
-[data-theme='dark'] input[type='text'],
-[data-theme='dark'] input[type='email'],
-[data-theme='dark'] input[type='password'],
+[data-theme='dark'] input[type="text"],
+[data-theme='dark'] input[type="email"],
+[data-theme='dark'] input[type="password"],
 [data-theme='dark'] textarea,
 [data-theme='dark'] select {
   background-color: var(--input-bg);
@@ -1039,4 +1053,5 @@ html.large {
     background: white !important;
   }
 }
+
 </style>

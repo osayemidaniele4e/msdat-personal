@@ -22,6 +22,12 @@
     >
       <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
 
+      <template slot="singleLabel" slot-scope="props">
+        <span v-tooltip="getOptionLabel(props.option)">
+          {{ getOptionLabel(props.option) }}
+        </span>
+      </template>
+
     <template slot="option" slot-scope="props">
       <template v-if="isGroupedMode">
         <template v-if="props.option.$groupLabel">
@@ -53,10 +59,11 @@
         <template v-else-if="props.option.full_name">
           <div
             v-if="!props.option.$groupLabel"
-            class="overflow-text text-wrap"
+            class="overflow-text d-flex justify-content-between align-items-center w-100"
             :data-child="props.option.program_area"
           >
-            {{ props.option.full_name }}
+            <span class="text-truncate pr-2" style="flex: 1; min-width: 0;" v-tooltip="props.option.full_name">{{ props.option.full_name }}</span>
+            <IndicatorExplanationTooltip v-if="props.option.id" :indicatorId="props.option.id" @mousedown.native.stop @click.native.stop class="flex-shrink-0" />
           </div>
         </template>
       </template>
@@ -71,8 +78,10 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
+import IndicatorExplanationTooltip from '@/components/ui-components/IndicatorExplanationTooltip.vue';
 
 export default {
+  components: { IndicatorExplanationTooltip },
   data() {
     return {
       allowEmpty: true,
@@ -597,11 +606,15 @@ ul li.multiselect__element {
   transition: all 1.5s ease-in-out;
   cursor: pointer;
 }
+span.multiselect__single {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  cursor: pointer;
+}
 span.multiselect__single::-webkit-scrollbar {
-  border-radius: 30px;
-  height: 0.23rem;
-  background: transparent;
-  border: 1px solid gainsboro;
+  display: none;
 }
 span.multiselect__single::-webkit-scrollbar-thumb {
   background-color: #b3b3b3;

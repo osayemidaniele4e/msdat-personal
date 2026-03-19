@@ -70,6 +70,18 @@ app.use(morgan(IS_PRODUCTION ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Indicator Metadata Endpoint (Mock DB Fetch)
+app.get('/api/indicator/:id/metadata', (req, res) => {
+  const id = req.params.id;
+  // Fallback defaults / Mock DB result
+  res.json({
+    name: "Sample Indicator",
+    definition: "Total observed events as a proportion of the expected population.",
+    formula: "(Numerator / Denominator) * 100",
+    source: "National Health Information Server"
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({

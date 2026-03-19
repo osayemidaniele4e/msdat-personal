@@ -14,6 +14,7 @@
           >
             <p class="work-sans mb-0 line-height sub-title">
               <b>{{ values.indicator.short_name }}</b>
+              <IndicatorExplanationTooltip v-if="values.indicator && values.indicator.id" :indicatorId="values.indicator.id" />
               and related indicators (with year of latest values) across {{ values.location.name }}.
             </p>
 
@@ -109,6 +110,7 @@ import DataSourceMetaDataModal from './info_modal/DataSourceMetaDataModal.vue';
 import ShareCodeModal from './shareTableModal.vue';
 import ChartAnalysisModal from './ChartAnalysisModal.vue';
 import SmartNarrativeModal from './SmartNarrativeModal.vue';
+import IndicatorExplanationTooltip from '@/components/ui-components/IndicatorExplanationTooltip.vue';
 
 export default {
   mixins: [chartDownload, formatter],
@@ -120,6 +122,7 @@ export default {
     ShareCodeModal,
     ChartAnalysisModal,
     SmartNarrativeModal,
+    IndicatorExplanationTooltip,
   },
   data() {
     return {
