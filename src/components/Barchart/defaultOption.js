@@ -183,7 +183,7 @@ export default {
     rules: [
       {
         condition: {
-          callback: function () {
+          callback() {
             return true; // Always apply these rules
           },
         },

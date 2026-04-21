@@ -133,7 +133,7 @@ export default {
                       x.selected = true;
                       return x;
                     }
-                  }
+                  },
                 ),
                 parent: distItem.toUpperCase(),
               });
@@ -393,7 +393,7 @@ export default {
   // RETRIEVE DASHBOARD DETAILS
   async getDashboardDetails(_, id) {
     const { data } = await axios.get(
-      `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`
+      `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${id}.json`,
     );
     return { data };
   },
@@ -408,7 +408,7 @@ export default {
   updateDashboard(_, payload) {
     return axios.patch(
       `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/public/${payload.id}.json`,
-      payload
+      payload,
     );
   },
 };

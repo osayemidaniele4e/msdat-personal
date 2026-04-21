@@ -164,10 +164,10 @@ export default {
         if (byId.classList && byId.classList.contains('highcharts-data-table')) {
           byId.remove();
         } else if (
-          byId.tagName === 'TABLE' &&
-          byId.parentNode &&
-          byId.parentNode.classList &&
-          byId.parentNode.classList.contains('highcharts-data-table')
+          byId.tagName === 'TABLE'
+          && byId.parentNode
+          && byId.parentNode.classList
+          && byId.parentNode.classList.contains('highcharts-data-table')
         ) {
           byId.parentNode.remove();
         } else {
@@ -216,8 +216,8 @@ export default {
         const ret = originalView.apply(this, arguments);
         try {
           this.isDataTableVisible = true;
-          const table = document.getElementById(`highcharts-data-table-${this.index}`) ||
-            (this.renderTo && this.renderTo.parentNode && this.renderTo.parentNode.querySelector('.highcharts-data-table'));
+          const table = document.getElementById(`highcharts-data-table-${this.index}`)
+            || (this.renderTo && this.renderTo.parentNode && this.renderTo.parentNode.querySelector('.highcharts-data-table'));
           if (table && !table.parentNode.querySelector('.hc-data-close')) {
             const btn = document.createElement('button');
             btn.type = 'button';
@@ -243,7 +243,7 @@ export default {
               this.isDataTableVisible = false;
             });
             wrapper.insertBefore(btn, table);
-            
+
             // Customize the first column header
             const firstTh = table.querySelector('thead th:first-child');
             if (firstTh) {

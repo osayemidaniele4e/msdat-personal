@@ -12,13 +12,21 @@
       "
     >
       <template #title>
-        <p class="work-sans mb-0 line-height">
-          Distribution of
-          <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>across
-          <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
-          <span class="font-weight-bold"> {{ controlPanelProps.datasource.datasource }}</span>
-          {{ controlPanelProps.year }}
-        </p>
+        <div class="w-100 d-flex flex-column">
+          <p class="work-sans mb-0 line-height">
+            Distribution of
+            <span class="font-weight-bold">{{ controlPanelProps.indicator.full_name }} </span>across
+            <span class="font-weight-bold"> {{ controlPanelProps.location.name }}.</span> Source:
+            <span class="font-weight-bold"> {{ controlPanelProps.datasource.datasource }}</span>
+            {{ controlPanelProps.year }}
+          </p>
+          <!-- AI Confidence Score Placement -->
+          <ConfidenceScore
+            v-if="controlPanelProps.indicator"
+            :indicatorId="controlPanelProps.indicator.id"
+            :filters="controlPanelProps"
+          />
+        </div>
       </template>
       <BarChart ref="BaseChart" :title="title"  :categoryLabel="'Location'" :chartOptions="chart" class="barchart" />
     </base-sub-card>
@@ -30,6 +38,7 @@ import Highcharts from 'highcharts';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
+import ConfidenceScore from '@/components/ui-components/ConfidenceScore.vue';
 import chartDownload from '../../../mixins/chart_download';
 import { sortHighchartsDataInObjectFormat } from '../../../mixins/util';
 
@@ -49,6 +58,7 @@ export default {
   },
   components: {
     BarChart,
+    ConfidenceScore,
   },
   props: {
     mapSelectedState: {
@@ -276,7 +286,7 @@ export default {
           period: val.year,
         });
         const data = zonalResponse.data.results;
-        
+
         // const data = await this.dlQuery({
         //   indicator: val.indicator.id,
         //   datasource: val.datasource.id,

@@ -74,7 +74,7 @@ const mutations: MutationTree<State> = {
       state.controlConfig[obj.panelIndex].setup[obj.groupIndex][keyIndex].options = obj.values;
     } else {
       const keyIndex = state.controlConfig[obj.panelIndex].setup.findIndex(
-        (item) => item.key === obj.key
+        (item) => item.key === obj.key,
       );
       if (state.controlConfig[obj.panelIndex].setup[keyIndex] !== undefined) {
         state.controlConfig[obj.panelIndex].setup[keyIndex].options = obj?.values;
@@ -93,7 +93,9 @@ const mutations: MutationTree<State> = {
    */
   setControlOptions: (
     state,
-    { panelIndex, controlIndex, controlIndex2, values, multipleSetup }
+    {
+      panelIndex, controlIndex, controlIndex2, values, multipleSetup,
+    },
   ) => {
     if (multipleSetup) {
       state.controlConfig[panelIndex].setup[controlIndex][controlIndex2].options = values;
@@ -150,7 +152,6 @@ const mutations: MutationTree<State> = {
   //   }
   // },
   SET_DATASET_DATASOURCE_PAYLOAD: (state, obj: setPayload) => {
-
     const item = state.controlConfig?.[3];
     if (item && item.payload) {
       // eslint-disable-next-line no-param-reassign
@@ -343,13 +344,13 @@ const mutations: MutationTree<State> = {
   UPDATE_IDC_DATASOURCEs: (state, payload) => {
     console.log(payload, '@@@Payload');
 
-   state.controlConfig[2].setup[1].options = payload
+    state.controlConfig[2].setup[1].options = payload;
   },
 
-   UPDATE_IDC_INDICATORS: (state, payload) => {
+  UPDATE_IDC_INDICATORS: (state, payload) => {
     console.log(payload, '@@@Payload');
 
-   state.controlConfig[2].setup[5].options = payload
+    state.controlConfig[2].setup[5].options = payload;
   },
 
   SET_CONFIGURATIONS: (state, payload) => {
@@ -413,9 +414,9 @@ const mutations: MutationTree<State> = {
   UPDATE_ALL_YEARS: (state, payload) => {
     state.controlConfig.forEach((item) => {
       if (
-        item.label !== 'Multi-Source Comparison' &&
-        item.label !== 'Disaggregation' &&
-        item.label !== 'Dataset Comparison'
+        item.label !== 'Multi-Source Comparison'
+        && item.label !== 'Disaggregation'
+        && item.label !== 'Dataset Comparison'
       ) {
         item.setup.forEach((source) => {
           if (source.key === 'year') {

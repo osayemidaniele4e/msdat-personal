@@ -53,7 +53,7 @@ export default {
       this.latestDate = date;
     },
     async getConfigData() {
-      const  data  = await apiServices.getDashboard();
+      const data = await apiServices.getDashboard();
       this.dashboard = data.data.results.find((item) => item.title === this.$route.meta.title);
       this.indicatorCount = this.dashboard?.indicators.length || localStorage.getItem('lsIndicatorCount');
       this.dataSourceCount = this.dashboard?.dataSources.length || localStorage.getItem('lsDataSourceCount');

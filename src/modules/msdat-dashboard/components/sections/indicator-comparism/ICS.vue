@@ -35,22 +35,41 @@
         </template> -->
 
         <template #title>
-          <div class="d-flex align-items-center justify-content-between w-100">
-            <p class="work-sans mb-0 line-height">
-              Comparison of <b>selected indicators</b> according to the
-              <b> {{ values.datasource.datasource }} </b> across {{ values.compareBy.name }} in
-              <b> {{ values.location.name }} </b>
-            </p>
-            <button
-              v-if="showRelationshipFeature"
-              class="relationship-btn"
-              @click="showRelationshipPopup = true"
-              title="Show indicator relationships"
-              type="button"
-              aria-haspopup="dialog"
-            >
-              Show indicator relationships
-            </button>
+          <div class="w-100 d-flex flex-column">
+            <div class="d-flex align-items-center justify-content-between">
+              <p class="work-sans mb-0 line-height">
+                Comparison of <b>selected indicators</b> according to the
+                <b> {{ values.datasource.datasource }} </b> across {{ values.compareBy.name }} in
+                <b> {{ values.location.name }} </b>
+              </p>
+              <button
+                v-if="showRelationshipFeature"
+                class="relationship-btn"
+                @click="showRelationshipPopup = true"
+                title="Show indicator relationships"
+                type="button"
+                aria-haspopup="dialog"
+              >
+                Show indicator relationships
+              </button>
+            </div>
+            <!-- AI Confidence Score Placement -->
+            <div class="d-flex flex-wrap">
+              <template v-if="Array.isArray(values.indicator)">
+                <ConfidenceScore
+                  v-for="indicator in values.indicator"
+                  :key="indicator.id"
+                  :indicatorId="indicator.id"
+                  :filters="values"
+                  class="mr-3"
+                />
+              </template>
+              <ConfidenceScore
+                v-else-if="values.indicator"
+                :indicatorId="values.indicator.id"
+                :filters="values"
+              />
+            </div>
           </div>
         </template>
         <BarChart
@@ -96,10 +115,11 @@ import moment from 'moment';
 import ControlPanelSetup from '@/modules/msdat-dashboard/mixins/control-panel-setup';
 import BarChart from '@/components/Barchart/BaseBarChart.vue';
 import defaultOptions from '@/components/Barchart/defaultOption';
-import chartDownload from '../../../mixins/chart_download';
 import apiServices from '@/modules/data-layer/services/ApiServices';
 import { groupIndicator } from '@/util/helper';
+import ConfidenceScore from '@/components/ui-components/ConfidenceScore.vue';
 import IndicatorRelationshipPopup from '../advanced/indicator-comparison-section/IndicatorRelationshipPopup.vue';
+import chartDownload from '../../../mixins/chart_download';
 
 export default {
   name: 'ICS',
@@ -107,6 +127,7 @@ export default {
   components: {
     BarChart,
     IndicatorRelationshipPopup,
+    ConfidenceScore,
   },
   data() {
     return {
@@ -188,9 +209,7 @@ export default {
           return true;
         }
         // Find the series corresponding to the indicator
-        const indicatorSeries = this.chartOptions.series.find((series) =>
-          series.name.toLowerCase().includes(indicator.full_name.toLowerCase())
-        );
+        const indicatorSeries = this.chartOptions.series.find((series) => series.name.toLowerCase().includes(indicator.full_name.toLowerCase()));
 
         // Check if the indicatorSeries has data points
         return indicatorSeries?.data && indicatorSeries.data.length > 0;
@@ -244,9 +263,7 @@ export default {
 
     async fetchAllDataSources() {
       try {
-        const requests = this.dlDashboardDataSource.map((id) =>
-          apiServices.getSingleDataSourceObj(id)
-        );
+        const requests = this.dlDashboardDataSource.map((id) => apiServices.getSingleDataSourceObj(id));
         const responses = await Promise.all(requests);
 
         // Extract data from each response
@@ -302,15 +319,14 @@ export default {
       } else {
         indicators = values.indicator;
       }
-      const dataPromises = indicators?.map((item) =>
-        this.dlQuery({
-          indicator: item.id,
-          datasource: values.datasource.id,
-          period: values.year,
-          location: {
-            level: 3,
-          },
-        })
+      const dataPromises = indicators?.map((item) => this.dlQuery({
+        indicator: item.id,
+        datasource: values.datasource.id,
+        period: values.year,
+        location: {
+          level: 3,
+        },
+      })
       );
 
       const results = await Promise.all(dataPromises);
@@ -371,7 +387,8 @@ export default {
             },
           },
           // name: indicator.full_name,
-          name: `${getIndicatorById(data[0])?.full_name} ${
+          // eslint-disable-next-line camelcase
+          name: `${indicator.full_name} ${
             displayFactor.display_factor.trim() ? `(${displayFactor.display_factor})` : ''
           }`,
           data: toHighChartFormat,
@@ -411,15 +428,14 @@ export default {
       } else {
         indicators = values.indicator;
       }
-      const dataPromises = indicators?.map((item) =>
-        this.dlQuery({
-          indicator: item.id,
-          datasource: values.datasource.id,
-          period: values.year,
-          location: {
-            level: 1,
-          },
-        })
+      const dataPromises = indicators?.map((item) => this.dlQuery({
+        indicator: item.id,
+        datasource: values.datasource.id,
+        period: values.year,
+        location: {
+          level: 1,
+        },
+      })
       );
 
       const results = await Promise.all(dataPromises);
@@ -520,15 +536,14 @@ export default {
       } else {
         indicators = values.indicator;
       }
-      const dataPromises = indicators?.map((item) =>
-        this.dlQuery({
-          indicator: item.id,
-          datasource: values.datasource.id,
-          period: values.year,
-          location: {
-            level: 2,
-          },
-        })
+      const dataPromises = indicators?.map((item) => this.dlQuery({
+        indicator: item.id,
+        datasource: values.datasource.id,
+        period: values.year,
+        location: {
+          level: 2,
+        },
+      })
       );
 
       const results = await Promise.all(dataPromises);
@@ -735,12 +750,11 @@ export default {
         indicators = values.indicator;
       }
 
-      const dataPromises = indicators?.map((item) =>
-        this.dlQuery({
-          indicator: item.id,
-          datasource: values.datasource.id,
-          location: values.location.id,
-        })
+      const dataPromises = indicators?.map((item) => this.dlQuery({
+        indicator: item.id,
+        datasource: values.datasource.id,
+        location: values.location.id,
+      })
       );
 
       const results = await Promise.all(dataPromises);
@@ -809,8 +823,8 @@ export default {
         // this functions checks to make years apear from smallest to highest when the first selected indicator
         // year have higher values than that of the second selected indicator
         if (
-          highChartOptions.series.length > 1 &&
-          highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
+          highChartOptions.series.length > 1
+          && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
         ) {
           const temporary = highChartOptions.series[1];
           highChartOptions.series[1] = highChartOptions.series[0];
@@ -822,9 +836,7 @@ export default {
       for (let i = 0; i < results.length; i += 1) {
         const result = results[i];
         const indicator = indicators[i];
-        const filterOnlyYearlyValues = result.filter((item) =>
-          moment(item.period, 'YYYY', true).isValid()
-        );
+        const filterOnlyYearlyValues = result.filter((item) => moment(item.period, 'YYYY', true).isValid());
         const formatToHighChartFormat = filterOnlyYearlyValues?.map((item) => [
           item.period,
           Number.parseFloat(item.value),
@@ -875,8 +887,8 @@ export default {
       // this functions checks to make years apear from smallest to highest when the first selected indicator
       // year have higher values than that of the second selected indicator
       if (
-        highChartOptions.series.length > 1 &&
-        highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
+        highChartOptions.series.length > 1
+        && highChartOptions.series[0].data[0] > highChartOptions.series[1].data[0]
       ) {
         const temporary = highChartOptions.series[1];
         highChartOptions.series[1] = highChartOptions.series[0];
@@ -933,11 +945,10 @@ export default {
 
       // ✅ Accept 0 as a valid datasource ID
       if (
-        values.datasource?.id === undefined ||
-        values.datasource?.id === null ||
-        !values.indicator
-      )
-        return false;
+        values.datasource?.id === undefined
+        || values.datasource?.id === null
+        || !values.indicator
+      ) return false;
 
       // For Period comparison
       if (values.compareBy?.name === 'Period' && !values.location?.id) return false;

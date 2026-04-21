@@ -137,10 +137,10 @@
       <div class="col mb-3" v-if="isAuthenticated">
         <b-list-group>
           <h5 class="text-underline main-item">Custom Dashboards</h5>
-          <router-link 
-            v-for="dashboard in userDashboards" 
+          <router-link
+            v-for="dashboard in userDashboards"
             :key="dashboard.id"
-            :to="'/custom/public/' + dashboard.id" 
+            :to="'/custom/public/' + dashboard.id"
             target="_blank"
             class="sub-item"
           >

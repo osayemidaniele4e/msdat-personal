@@ -67,7 +67,7 @@ export default {
     setDefaults() {
       this.defaultIndicator = this.dlGetIndicator(this.$store.state.MSDAT_STORE.default.indicator);
       this.defaultDataSource = this.dlGetDataSource(
-        this.$store.state.MSDAT_STORE.default.datasource
+        this.$store.state.MSDAT_STORE.default.datasource,
       );
       this.defaultLocation = this.dlGetLocation(this.$store.state.MSDAT_STORE.default.location);
 
@@ -79,7 +79,7 @@ export default {
     async setYearDropdown(
       indicatorID = this.defaultIndicator.id,
       dataSourceID = this.defaultDataSource.id,
-      locationID = this.defaultLocation.id
+      locationID = this.defaultLocation.id,
     ) {
       const { data } = await ApiServices.getPeriod({
         indicator: indicatorID,
@@ -108,7 +108,7 @@ export default {
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
       // eslint-disable-next-line no-unused-vars
-      controlIndex = 0
+      controlIndex = 0,
     ) {
       if (!dataSourceID || !indicatorID) return;
       let data = [];

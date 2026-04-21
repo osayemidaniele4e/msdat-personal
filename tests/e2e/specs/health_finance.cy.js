@@ -48,8 +48,8 @@ describe('Health Financing Page', () => {
     cy.on('uncaught:exception', (err, runnable) => {
       // Handle the specific "find is not a function" error
       if (
-        err.message.includes('find is not a function') ||
-        err.message.includes('t.data.find is not a function')
+        err.message.includes('find is not a function')
+        || err.message.includes('t.data.find is not a function')
       ) {
         // Log the error but don't fail the test
         cy.log('Handled application error:', err.message);
@@ -57,19 +57,19 @@ describe('Health Financing Page', () => {
       }
       // Handle other common data loading errors
       if (
-        err.message.includes('Cannot read property') ||
-        err.message.includes('Cannot read properties') ||
-        err.message.includes('undefined')
+        err.message.includes('Cannot read property')
+        || err.message.includes('Cannot read properties')
+        || err.message.includes('undefined')
       ) {
         cy.log('Handled data loading error:', err.message);
         return false;
       }
       // Handle TLS/SSL errors
       if (
-        err.message.includes('isServer') ||
-        err.message.includes('TLS') ||
-        err.message.includes('SSL') ||
-        err.message.includes('CERT')
+        err.message.includes('isServer')
+        || err.message.includes('TLS')
+        || err.message.includes('SSL')
+        || err.message.includes('CERT')
       ) {
         cy.log('Handled TLS/SSL error:', err.message);
         return false;
@@ -136,10 +136,10 @@ describe('Health Financing Page', () => {
 
     // Verify page has loaded by checking for common elements
     cy.get('body').then(($body) => {
-      const hasContent =
-        $body.text().includes('Health') ||
-        $body.text().includes('Finance') ||
-        $body.find('[class*="chart"], [class*="table"], [class*="component"]').length > 0;
+      const hasContent
+        = $body.text().includes('Health')
+        || $body.text().includes('Finance')
+        || $body.find('[class*="chart"], [class*="table"], [class*="component"]').length > 0;
 
       if (hasContent) {
         cy.log('Page content loaded successfully');

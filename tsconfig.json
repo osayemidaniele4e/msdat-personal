@@ -14,12 +14,22 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "noEmit": true,
-    "baseUrl": ".",
-    "types": ["webpack-env", "jest"],
+    "baseUrl": "",
+    "types": [
+      "webpack-env",
+      "jest"
+    ],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
   },
   "include": [
     "src/**/*.ts",
@@ -29,6 +39,10 @@
     "tests/**/*.tsx",
     "src/modules/msdat-dashboard/store.js"
   ],
-  "exclude": ["node_modules"],
-  "types": ["vue-sweetalert2"]
+  "exclude": [
+    "node_modules"
+  ],
+  "types": [
+    "vue-sweetalert2"
+  ]
 }

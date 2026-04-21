@@ -86,7 +86,7 @@
             <template #title>
               <h5 class="font-weight-bold work-sans text-white">Health Facility Mapping </h5>
             </template>
-           
+
             <template>
               <LazyLoading>
                 <ControlPanelConfiguration :controlIndex="controlIndex">

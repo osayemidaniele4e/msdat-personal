@@ -251,8 +251,8 @@ describe('MultiSource.vue', () => {
       expect(result[0][0]).toBe('2020');
       expect(result[0][1]).toBe(62.0);
       // Check that all expected data points are present
-      expect(result.find(item => item[0] === '2021' && item[1] === 36.8)).toBeTruthy();
-      expect(result.find(item => item[0] === '2022' && item[1] === 38.9)).toBeTruthy();
+      expect(result.find((item) => item[0] === '2021' && item[1] === 36.8)).toBeTruthy();
+      expect(result.find((item) => item[0] === '2022' && item[1] === 38.9)).toBeTruthy();
     });
 
     it('sortData correctly sorts data by period', () => {
@@ -480,7 +480,7 @@ describe('MultiSource.vue', () => {
       });
 
       await emptyWrapper.vm.$nextTick();
-      
+
       // The component actually renders the sub-card when values has keys
       // So we test that it renders when values has proper structure
       expect(emptyWrapper.vm.values).toBeDefined();

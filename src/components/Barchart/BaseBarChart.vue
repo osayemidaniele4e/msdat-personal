@@ -64,7 +64,9 @@ export default {
     },
     watermarkPosition: {
       type: Object,
-      default: () => ({ x: '10%', y: '10%', textXPercent: 90, textYPercent: 100 }),
+      default: () => ({
+        x: '10%', y: '10%', textXPercent: 90, textYPercent: 100,
+      }),
     },
   },
   watch: {
@@ -102,12 +104,11 @@ export default {
 
         // Set watermark load event for export only
         if (
-          this.options.exporting &&
-          this.options.exporting.chartOptions &&
-          this.options.exporting.chartOptions.chart
+          this.options.exporting
+          && this.options.exporting.chartOptions
+          && this.options.exporting.chartOptions.chart
         ) {
-          if (!this.options.exporting.chartOptions.chart.events)
-            this.options.exporting.chartOptions.chart.events = {};
+          if (!this.options.exporting.chartOptions.chart.events) this.options.exporting.chartOptions.chart.events = {};
           this.options.exporting.chartOptions.chart.events.load = this.getLoadEvent();
         }
 
@@ -224,22 +225,22 @@ export default {
       const byId = document.getElementById(`highcharts-data-table-${chart.index}`);
       if (byId) {
         // Remove associated close button in the same container
-        const container =
-          byId.classList && byId.classList.contains('highcharts-data-table')
+        const container
+          = byId.classList && byId.classList.contains('highcharts-data-table')
             ? byId
             : byId.parentNode;
-        const closeBtn =
-          container && container.querySelector && container.querySelector('.hc-data-close');
+        const closeBtn
+          = container && container.querySelector && container.querySelector('.hc-data-close');
         if (closeBtn) closeBtn.remove();
 
         if (byId.classList && byId.classList.contains('highcharts-data-table')) {
           // ID is on the wrapper div
           byId.remove();
         } else if (
-          byId.tagName === 'TABLE' &&
-          byId.parentNode &&
-          byId.parentNode.classList &&
-          byId.parentNode.classList.contains('highcharts-data-table')
+          byId.tagName === 'TABLE'
+          && byId.parentNode
+          && byId.parentNode.classList
+          && byId.parentNode.classList.contains('highcharts-data-table')
         ) {
           // ID on table inside wrapper div
           byId.parentNode.remove();
@@ -309,11 +310,11 @@ export default {
         const ret = originalView.apply(this, arguments);
         try {
           this.isDataTableVisible = true;
-          const table =
-            document.getElementById(`highcharts-data-table-${this.index}`) ||
-            (this.renderTo &&
-              this.renderTo.parentNode &&
-              this.renderTo.parentNode.querySelector('.highcharts-data-table'));
+          const table
+            = document.getElementById(`highcharts-data-table-${this.index}`)
+            || (this.renderTo
+              && this.renderTo.parentNode
+              && this.renderTo.parentNode.querySelector('.highcharts-data-table'));
           if (table) {
             const wrapper = table.parentNode;
             if (wrapper) {

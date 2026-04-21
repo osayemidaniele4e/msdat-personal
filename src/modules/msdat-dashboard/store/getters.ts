@@ -10,7 +10,7 @@ const getters = {
   getControlConfig: (state) => state.controlConfig[0].payload,
   getSelectedSection: (state) => state.selectedSection,
   getCustomDashboards: (state) => state.dashboards,
-  getIDCDatasources: (state) => state.controlConfig[2].setup[1].options
+  getIDCDatasources: (state) => state.controlConfig[2].setup[1].options,
 };
 
 export default getters;

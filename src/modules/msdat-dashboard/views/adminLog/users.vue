@@ -537,7 +537,7 @@ export default {
       this.filterRole = '';
       this.filterType = 'active';
       this.currentPage = 1;
-      
+
       // Scroll to the user table
       this.$nextTick(() => {
         const tableElement = document.querySelector('.b-table');
@@ -553,7 +553,7 @@ export default {
       this.filterRole = 'admin';
       this.filterType = 'admin';
       this.currentPage = 1;
-      
+
       // Scroll to the user table
       this.$nextTick(() => {
         const tableElement = document.querySelector('.b-table');

@@ -172,13 +172,13 @@ export default {
       if (mode === 'system') {
         effectiveMode = this.systemPrefersDark ? 'dark' : 'light';
       }
-      
+
       // Remove existing mode classes and add new one
       document.body.classList.remove('light', 'dark');
       document.body.classList.add(effectiveMode);
       document.documentElement.classList.remove('light', 'dark');
       document.documentElement.classList.add(effectiveMode);
-      
+
       // Also set a data attribute for more styling options
       document.documentElement.setAttribute('data-view-mode', effectiveMode);
     },
@@ -208,7 +208,7 @@ export default {
       if (window.matchMedia) {
         this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         this.systemPrefersDark = this.mediaQuery.matches;
-        
+
         // Use addEventListener for modern browsers
         if (this.mediaQuery.addEventListener) {
           this.mediaQuery.addEventListener('change', this.handleSystemThemeChange);
@@ -232,12 +232,12 @@ export default {
   mounted() {
     // Initialize system theme detection
     this.initSystemThemeListener();
-    
+
     // Apply current settings from store
     this.localViewMode = this.storeViewMode || 'light';
     this.localFontSize = this.storeFontSize || 'small';
     this.localTheme = this.storeTheme || 'default';
-    
+
     // Apply all settings
     this.applyViewMode(this.localViewMode);
     this.applyFontSize(this.localFontSize);

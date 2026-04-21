@@ -94,9 +94,9 @@
 </template>
 
 <script>
+import apiServices from '@/modules/data-layer/services/ApiServices';
 import Header from '../about/layout/theHeader.vue';
 import Footer from '../about/layout/theFooter.vue';
-import apiServices from '@/modules/data-layer/services/ApiServices';
 import DropdownCheckbox from './components/DropdownCheckbox.vue';
 import CreateTagModal from './components/createTagModal.vue';
 
@@ -204,8 +204,8 @@ export default {
       const q = this.searchQuery.trim().toLowerCase();
       return q
         ? this.tags.filter(
-            (tag) => tag.name.toLowerCase().includes(q) || tag.description.toLowerCase().includes(q)
-          )
+          (tag) => tag.name.toLowerCase().includes(q) || tag.description.toLowerCase().includes(q),
+        )
         : this.tags;
     },
     totalPages() {

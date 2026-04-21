@@ -162,7 +162,7 @@ export default {
   },
   async mounted() {
     const { name, id } = this.$route.params;
-    
+
     console.log('<@@><@@> mounted');
     // Check if user has already provided location before
   },
@@ -170,12 +170,10 @@ export default {
     const { name, id } = this.$route.params;
 
     setTimeout(async () => {
-    const { name, id } = this.$route.params;
-    console.log('<@@><@@> mounted after 30s delay');
+      const { name, id } = this.$route.params;
+      console.log('<@@><@@> mounted after 30s delay');
     // your mounted logic here...
-  }, 30000);
-
-    
+    }, 30000);
 
     const composed = sessionStorage.getItem('composedData');
     console.log(composed, '@composed@');
@@ -213,21 +211,21 @@ export default {
       sessionStorage.setItem('embedUrl', JSON.stringify(this.$store.getters.getEmbedUrl));
       sessionStorage.setItem(
         'setEmbedUrlTitle',
-        JSON.stringify(this.$store.getters.getNewEmbedUrlTitle)
+        JSON.stringify(this.$store.getters.getNewEmbedUrlTitle),
       );
       sessionStorage.setItem(
         'setEmbedIframeTitle',
-        JSON.stringify(this.$store.getters.getNewEmbedIframeTitle)
+        JSON.stringify(this.$store.getters.getNewEmbedIframeTitle),
       );
       sessionStorage.setItem('embedIframe', JSON.stringify(this.$store.getters.getEmbedIframe));
       sessionStorage.setItem('embedUrlTitle', JSON.stringify(this.$store.getters.getEmbedUrlTitle));
       sessionStorage.setItem(
         'embedIframeTitle',
-        JSON.stringify(this.$store.getters.getEmbedIframeTitle)
+        JSON.stringify(this.$store.getters.getEmbedIframeTitle),
       );
       sessionStorage.setItem(
         'setEmbedDashboardDesc',
-        JSON.stringify(this.$store.getters.getNewEmbedDashboardDescription)
+        JSON.stringify(this.$store.getters.getNewEmbedDashboardDescription),
       );
       // * FOR Indicators
       const ids = [];

@@ -220,7 +220,7 @@ export default {
       submit: false,
       socialModal: false,
       showClearDataModal: false,
-  // pluginSearch removed
+      // pluginSearch removed
     };
 
     // Fetch the list of available plugins from the store
@@ -329,15 +329,15 @@ export default {
     },
     // Dynamically generated methods for plugin activation
     pluginActive(plugin, data) {
-  // Persist new desired state
-  localStorage.setItem(plugin, data);
+      // Persist new desired state
+      localStorage.setItem(plugin, data);
 
-  // Update this component's reactive flag: is{Plugin}Active -> 'true' | 'false'
-  const capitalized = plugin.charAt(0).toUpperCase() + plugin.slice(1);
-  this.$set(this, `is${capitalized}Active`, data);
+      // Update this component's reactive flag: is{Plugin}Active -> 'true' | 'false'
+      const capitalized = plugin.charAt(0).toUpperCase() + plugin.slice(1);
+      this.$set(this, `is${capitalized}Active`, data);
 
-  // Notify the app to (de)activate plugin runtime without a full reload
-  this.$root.$emit('plugins:changed', { plugin, value: data === 'true' });
+      // Notify the app to (de)activate plugin runtime without a full reload
+      this.$root.$emit('plugins:changed', { plugin, value: data === 'true' });
     },
     //
 
@@ -626,7 +626,7 @@ export default {
   color: #fff;
 }
 
-.plugin-toggle .custom-control-label::before, 
+.plugin-toggle .custom-control-label::before,
 .plugin-toggle .custom-control-label::after {
   cursor: pointer;
 }

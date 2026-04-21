@@ -22,21 +22,29 @@
         v-if="Object.keys(values).length && dataSourcesOptions.length === 0"
       >
         <template #title>
-          <div class="w-100 d-flex justify-content-between align-items-center">
-            <p v-if="hasOneDatasource" class="work-sans mb-0 line-height">
-              Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
-            </p>
-            <p v-else class="work-sans mb-0 line-height">
-              Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
-              {{ values.indicator.short_name }}) across different data sources.
-            </p>
-            <div class="summary-btn" @click.prevent="openSmartNarrative" title="Smart Summary">
-              <img
-                src="@/assets/icons/smart-narrative-icon.svg"
-                alt="Smart Summary"
-                class="smart-narrative-icon"
-              />
+          <div class="w-100 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-center">
+              <p v-if="hasOneDatasource" class="work-sans mb-0 line-height">
+                Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
+              </p>
+              <p v-else class="work-sans mb-0 line-height">
+                Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
+                {{ values.indicator.short_name }}) across different data sources.
+              </p>
+              <div class="summary-btn" @click.prevent="openSmartNarrative" title="Smart Summary">
+                <img
+                  src="@/assets/icons/smart-narrative-icon.svg"
+                  alt="Smart Summary"
+                  class="smart-narrative-icon"
+                />
+              </div>
             </div>
+            <!-- AI Confidence Score Placement -->
+            <ConfidenceScore
+              v-if="values.indicator"
+              :indicatorId="values.indicator.id"
+              :filters="values"
+            />
           </div>
         </template>
         <BarChart
@@ -69,21 +77,29 @@
         v-if="Object.keys(values).length && dataSourcesOptions.length !== 0"
       >
         <template #title>
-          <div class="w-100 d-flex justify-content-between align-items-center">
-            <p v-if="ChartOptions.series.length === 1" class="work-sans mb-0 line-height">
-              Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
-            </p>
-            <p v-else class="work-sans mb-0 line-height">
-              Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
-              {{ values.indicator.short_name }}) across different data sources.
-            </p>
-            <div class="summary-btn" @click.prevent="openSmartNarrative" title="Smart Summary">
-              <img
-                src="@/assets/icons/smart-narrative-icon.svg"
-                alt="Smart Summary"
-                class="smart-narrative-icon"
-              />
+          <div class="w-100 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-center">
+              <p v-if="ChartOptions.series.length === 1" class="work-sans mb-0 line-height">
+                Trend analysis of <b>{{ values.indicator.short_name }}</b> across periods
+              </p>
+              <p v-else class="work-sans mb-0 line-height">
+                Comparison of <b>{{ values.indicator.short_name }}</b> (Time-series comparison of
+                {{ values.indicator.short_name }}) across different data sources.
+              </p>
+              <div class="summary-btn" @click.prevent="openSmartNarrative" title="Smart Summary">
+                <img
+                  src="@/assets/icons/smart-narrative-icon.svg"
+                  alt="Smart Summary"
+                  class="smart-narrative-icon"
+                />
+              </div>
             </div>
+            <!-- AI Confidence Score Placement -->
+            <ConfidenceScore
+              v-if="values.indicator"
+              :indicatorId="values.indicator.id"
+              :filters="values"
+            />
           </div>
         </template>
 
@@ -128,6 +144,7 @@ import defaultOptions from '@/components/Barchart/defaultOption';
 import mixin from '@/modules/data-layer/mixin';
 import formatter from '@/modules/msdat-dashboard/mixins/formatter';
 import ApiServices from '@/modules/data-layer/services/ApiServices';
+import ConfidenceScore from '@/components/ui-components/ConfidenceScore.vue';
 
 import { validateDataValue } from '@/util/dataValidation';
 import chartDownload from '../../../mixins/chart_download';
@@ -139,6 +156,7 @@ export default {
   components: {
     BarChart,
     SmartNarrativeModal,
+    ConfidenceScore,
   },
   data() {
     return {

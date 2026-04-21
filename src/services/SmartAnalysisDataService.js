@@ -3,7 +3,6 @@ import store from '@/store';
 import { filter, matches } from 'lodash';
 
 class SmartAnalysisDataService {
-  
   get locations() {
     // Accessing the DL module state for locations
     return store.state.DL ? store.state.DL.location : [];
@@ -30,12 +29,12 @@ class SmartAnalysisDataService {
    */
   getFactorUnit(factorId) {
     if (!factorId) return { multiplier_factor: null, display_factor: 'Unknown' };
-    
-    const factor = this.factors.find(f => f.id === factorId);
+
+    const factor = this.factors.find((f) => f.id === factorId);
     if (factor) {
       return {
         multiplier_factor: factor.multiplier_factor,
-        display_factor: factor.display_factor
+        display_factor: factor.display_factor,
       };
     }
     return { multiplier_factor: null, display_factor: 'Unknown' };
@@ -47,7 +46,7 @@ class SmartAnalysisDataService {
    * @returns {Object|null} - Datasource object or null
    */
   getDatasourceById(datasourceId) {
-    return this.datasources.find(ds => ds.id === datasourceId) || null;
+    return this.datasources.find((ds) => ds.id === datasourceId) || null;
   }
 
   /**
@@ -57,16 +56,18 @@ class SmartAnalysisDataService {
    */
   async compileAnalysisData(values) {
     try {
-      const { indicator, datasource, year, location } = values;
-      
+      const {
+        indicator, datasource, year, location,
+      } = values;
+
       // Get unit from factor
       const factorUnit = this.getFactorUnit(indicator.factor);
-      
+
       // 1. Enhanced Metadata with all indicator fields
       const metadata = {
         id: indicator.id,
         name: indicator.full_name,
-        description: indicator.description || indicator.definition || ''  ,
+        description: indicator.description || indicator.definition || '',
         short_name: indicator.short_name,
         indicator_type: indicator.indicator_type || null,
         program_area: indicator.program_area || null,
@@ -78,7 +79,7 @@ class SmartAnalysisDataService {
       // Fetch related indicators and datasources
       const [relatedIndicators, availableDatasources] = await Promise.all([
         this.fetchRelatedIndicators(indicator),
-        this.fetchAvailableDatasources(indicator.id)
+        this.fetchAvailableDatasources(indicator.id),
       ]);
 
       metadata.related_indicators = relatedIndicators;
@@ -112,7 +113,7 @@ class SmartAnalysisDataService {
       // Fetch both years in parallel
       const [currentData, previousData] = await Promise.all([
         this.fetchDataForPeriod(indicator.id, datasource.id, currentYear),
-        this.fetchDataForPeriod(indicator.id, datasource.id, previousYear)
+        this.fetchDataForPeriod(indicator.id, datasource.id, previousYear),
       ]);
 
       // 6. Process National/Parent Value
@@ -122,22 +123,22 @@ class SmartAnalysisDataService {
       // 7. Process Sub-national Values (States or LGAs)
       let subLocations = this.getLocationsByQuery({ level: subNationalLevel });
       if (parentId) {
-        subLocations = subLocations.filter(l => l.parent === parentId);
+        subLocations = subLocations.filter((l) => l.parent === parentId);
       }
 
-      const dataPoints = subLocations.map(loc => {
+      const dataPoints = subLocations.map((loc) => {
         const curr = this.findValueForLocation(currentData, loc.id);
         const prev = this.findValueForLocation(previousData, loc.id);
-        
+
         // Only include if at least one value exists
         if (curr === null && prev === null) return null;
 
         return {
           location: loc.name,
           current_value: curr,
-          previous_value: prev
+          previous_value: prev,
         };
-      }).filter(item => item !== null);
+      }).filter((item) => item !== null);
 
       // 8. Construct Final Payload
       return {
@@ -146,18 +147,17 @@ class SmartAnalysisDataService {
         datasource: currentDatasource,
         period: {
           current: parseInt(currentYear),
-          previous: parseInt(previousYear)
+          previous: parseInt(previousYear),
         },
         scope: isNational ? 'National' : location.name,
         summary: {
           location: location.name,
           current_value: currentParentValue,
           previous_value: previousParentValue,
-          national_target: targets.national_target
+          national_target: targets.national_target,
         },
-        data_points: dataPoints
+        data_points: dataPoints,
       };
-
     } catch (error) {
       console.error('Error compiling analysis data:', error);
       throw error;
@@ -170,7 +170,7 @@ class SmartAnalysisDataService {
       const response = await ApiServices.getZonalData({
         indicator: indicatorId,
         datasource: datasourceId,
-        period: period
+        period,
       });
       return response.data.results || [];
     } catch (error) {
@@ -180,7 +180,7 @@ class SmartAnalysisDataService {
   }
 
   findValueForLocation(data, locationId) {
-    const item = data.find(d => d.location === locationId);
+    const item = data.find((d) => d.location === locationId);
     return item ? parseFloat(item.value) : null;
   }
 
@@ -190,8 +190,8 @@ class SmartAnalysisDataService {
       indicator.first_related,
       indicator.second_related,
       indicator.third_related,
-      indicator.fourth_related
-    ].filter(id => id); // Filter out null/undefined
+      indicator.fourth_related,
+    ].filter((id) => id); // Filter out null/undefined
 
     for (const id of relatedIds) {
       const ind = this.getIndicatorById(id);
@@ -200,7 +200,7 @@ class SmartAnalysisDataService {
           id: ind.id,
           short_name: ind.short_name,
           full_name: ind.full_name,
-          program_area: ind.program_area || null
+          program_area: ind.program_area || null,
         });
       }
     }
@@ -208,8 +208,8 @@ class SmartAnalysisDataService {
   }
 
   getIndicatorById(id) {
-    return store.state.DL && store.state.DL.indicators 
-      ? store.state.DL.indicators.find(i => i.id === id) 
+    return store.state.DL && store.state.DL.indicators
+      ? store.state.DL.indicators.find((i) => i.id === id)
       : null;
   }
 
@@ -217,12 +217,12 @@ class SmartAnalysisDataService {
     try {
       const response = await ApiServices.getIndicatorDatasources(indicatorId);
       // Return detailed datasource info
-      return response.data.map(ds => {
+      return response.data.map((ds) => {
         const datasourceDetails = this.getDatasourceById(ds.datasource);
         return {
           id: ds.datasource,
           name: datasourceDetails ? datasourceDetails.full_name || datasourceDetails.datasource : `Datasource ${ds.datasource}`,
-          classification: datasourceDetails ? datasourceDetails.classification : null
+          classification: datasourceDetails ? datasourceDetails.classification : null,
         };
       });
     } catch (error) {

@@ -248,9 +248,19 @@ module.exports = {
       },
       ...config.module.rules,
     ];
-    // if (process.env.NODE_ENV === 'production') {
-    //   config.plugins.push(...plugins);
-    // }
   },
-
+  devServer: {
+    proxy: {
+      '/api/indicator/.*/confidence': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api': {
+        target: 'https://msdat2api.e4eweb.space/api/',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' },
+      },
+    },
+    disableHostCheck: true,
+  },
 };

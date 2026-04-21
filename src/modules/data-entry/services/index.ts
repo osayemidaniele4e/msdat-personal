@@ -79,7 +79,7 @@ class DataEntryService {
     const result = [];
     try {
       const response = await instance.get(`dmi/fileuploads/${id}/get_data/`);
-      console.log(response,'response');
+      console.log(response, 'response');
       // ============================================================
       // STEP 1 :  getting indicators, location and datasource data and return the result 3 array
       // getting indicators, location and datasource data

@@ -616,7 +616,7 @@ export default {
     removeUndefined(obj = {}) {
       return Object.fromEntries(
         // eslint-disable-next-line no-unused-vars
-        Object.entries(obj).filter(([_, value]) => value !== undefined)
+        Object.entries(obj).filter(([_, value]) => value !== undefined),
       );
     },
 
@@ -648,12 +648,14 @@ export default {
     cleanObject(obj) {
       return Object.fromEntries(
         // eslint-disable-next-line no-unused-vars
-        Object.entries(obj).filter(([_, value]) => value != null)
+        Object.entries(obj).filter(([_, value]) => value != null),
       );
     },
 
     async triangulate() {
-      const { primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation } = this;
+      const {
+        primaryDataSource, dataSourcesCompare, selectedIndicator, selectedLocation,
+      } = this;
 
       const obj = {
         primary: primaryDataSource?.id,
@@ -734,11 +736,10 @@ export default {
             return Object.keys(objItem);
           })
           .filter(
-            (header, index, self) =>
-              header &&
-              header !== 'null' &&
-              header !== 'undefined' &&
-              self.indexOf(header) === index
+            (header, index, self) => header
+              && header !== 'null'
+              && header !== 'undefined'
+              && self.indexOf(header) === index,
           );
       } catch (error) {
         console.error('@Triangulation Error:', error);

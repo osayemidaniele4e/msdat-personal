@@ -30,7 +30,7 @@
               {{ area }}
             </option>
           </select>
-          
+
         </div>
 
         <div class="mb-3 d-flex flex-column">

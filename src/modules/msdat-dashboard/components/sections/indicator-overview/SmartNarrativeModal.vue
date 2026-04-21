@@ -35,12 +35,12 @@
                 <h4 class="section-title">{{ indicatorOverview.title }}</h4>
                 <div class="section-content" v-html="formatSectionContent(indicatorOverview.content)"></div>
               </div>
-              
+
               <!-- Remaining sections - shown when expanded -->
               <template v-if="isExpanded && remainingSections">
-                <div 
-                  v-for="(section, index) in remainingSections" 
-                  :key="index" 
+                <div
+                  v-for="(section, index) in remainingSections"
+                  :key="index"
                   class="section-block"
                 >
                   <h4 class="section-title">{{ section.title }}</h4>
@@ -48,7 +48,7 @@
                 </div>
               </template>
             </template>
-            
+
             <!-- Fallback: Legacy display for non-structured responses -->
             <template v-else>
               <div class="summary-paragraph" v-html="summaryParagraph"></div>
@@ -59,16 +59,16 @@
 
         <!-- Footer Button -->
         <div class="sn-footer">
-          <button 
-            v-if="!isExpanded && hasDetailedContent" 
-            @click="toggleExpand" 
+          <button
+            v-if="!isExpanded && hasDetailedContent"
+            @click="toggleExpand"
             class="action-btn"
           >
             Read More
           </button>
-          <button 
-            v-else 
-            @click="closeModal" 
+          <button
+            v-else
+            @click="closeModal"
             class="action-btn"
           >
             Okay
@@ -92,12 +92,12 @@ export default {
     },
     values: {
       type: Object,
-      required: true
+      required: true,
     },
     chartImage: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
@@ -123,24 +123,24 @@ export default {
     // Legacy computed props for fallback
     summaryParagraph() {
       if (!this.analysis) return '';
-      
+
       const paragraphs = this.analysis.split(/\n\n|\n/);
       const firstParagraph = paragraphs[0] || '';
-      
+
       return this.formatText(firstParagraph);
     },
     detailedContent() {
       if (!this.analysis) return '';
-      
+
       const paragraphs = this.analysis.split(/\n\n|\n/);
       if (paragraphs.length <= 1) return '';
-      
+
       const rest = paragraphs.slice(1).join('\n');
       return this.formatText(rest);
     },
     hasDetailedContent() {
       return this.hasRemainingSections || (this.detailedContent && this.detailedContent.trim().length > 0);
-    }
+    },
   },
   watch: {
     show(val) {
@@ -163,8 +163,8 @@ export default {
         this.error = null;
         this.isExpanded = false;
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     parseModelResponse(text) {
@@ -173,13 +173,13 @@ export default {
       // 1. Markdown h3: "### Section" (preferred - used with ## main title)
       // 2. Markdown h2: "## Section"
       // 3. Numbered: "1. **Section:**"
-      
-      let sections = [];
+
+      const sections = [];
       let match;
-      
+
       // First, try h3 markdown heading format (### Heading) - model uses this with ## as main title
       const h3Regex = /###\s*([^\n]+)\n([\s\S]*?)(?=\n###\s|$)/g;
-      
+
       while ((match = h3Regex.exec(text)) !== null) {
         const title = match[1].trim().replace(/\*\*/g, ''); // Remove any bold markers
         const content = match[2].trim();
@@ -187,11 +187,11 @@ export default {
           sections.push({ title, content });
         }
       }
-      
+
       // If h3 parsing didn't work, try h2 format (## Heading)
       if (sections.length === 0) {
         const h2Regex = /##\s*([^\n]+)\n([\s\S]*?)(?=\n##\s|$)/g;
-        
+
         while ((match = h2Regex.exec(text)) !== null) {
           const title = match[1].trim().replace(/\*\*/g, '');
           const content = match[2].trim();
@@ -200,34 +200,32 @@ export default {
           }
         }
       }
-      
+
       // If markdown parsing didn't work, try numbered format
       if (sections.length === 0) {
         const numberedRegex = /(\d+)\.\s*\*\*([^:*]+):\*\*\s*([\s\S]*?)(?=\n\d+\.\s*\*\*|$)/g;
-        
+
         while ((match = numberedRegex.exec(text)) !== null) {
           sections.push({
             number: match[1],
             title: match[2].trim(),
-            content: match[3].trim()
+            content: match[3].trim(),
           });
         }
       }
-      
+
       if (sections.length === 0) {
         // Fallback: couldn't parse, return null to use legacy display
         return null;
       }
-      
+
       // Find Indicator Overview section (usually first)
-      const overviewIndex = sections.findIndex(s => 
-        s.title.toLowerCase().includes('indicator overview') || 
-        s.title.toLowerCase().includes('overview')
-      );
-      
+      const overviewIndex = sections.findIndex((s) => s.title.toLowerCase().includes('indicator overview')
+        || s.title.toLowerCase().includes('overview'));
+
       let indicatorOverview = null;
       let remaining = [...sections];
-      
+
       if (overviewIndex !== -1) {
         indicatorOverview = sections[overviewIndex];
         remaining = sections.filter((_, i) => i !== overviewIndex);
@@ -236,7 +234,7 @@ export default {
         indicatorOverview = sections[0];
         remaining = sections.slice(1);
       }
-      
+
       return { indicatorOverview, remaining };
     },
     formatSectionContent(content) {
@@ -267,20 +265,20 @@ export default {
     async generateAnalysis() {
       this.loading = true;
       this.error = null;
-      
+
       try {
         const compiledData = await SmartAnalysisDataService.compileAnalysisData(this.values);
-        
+
         // console.log('--- SMART NARRATIVE PAYLOAD ---');
         // console.log(JSON.stringify(compiledData, null, 2));
         // console.log('-------------------------------');
 
         const result = await analysisService.generateChartAnalysis(
-          this.values.indicator, 
+          this.values.indicator,
           this.chartImage || 'placeholder',
-          compiledData
+          compiledData,
         );
-        
+
         this.analysis = result;
         this.parsedSections = this.parseModelResponse(result);
       } catch (err) {
@@ -289,7 +287,7 @@ export default {
       } finally {
         this.loading = false;
       }
-    }
+    },
   },
   mounted() {
     // Move modal to body to escape any positioned parent containers
@@ -301,7 +299,7 @@ export default {
     if (this.$el && this.$el.parentNode === document.body) {
       document.body.removeChild(this.$el);
     }
-  }
+  },
 };
 </script>
 
@@ -409,7 +407,7 @@ export default {
   color: #dc3545;
   border-radius: 4px;
   cursor: pointer;
-  
+
   &:hover {
     background: #dc3545;
     color: white;
@@ -422,7 +420,7 @@ export default {
 
 .section-block {
   margin-bottom: 1.25rem;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -525,5 +523,3 @@ export default {
   transform: scale(0.95);
 }
 </style>
-
-

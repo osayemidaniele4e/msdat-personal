@@ -215,7 +215,8 @@ export default {
 
         if (options.nationalTarget.value !== null) {
           // Determine colors based on slope
-          let aboveColor, onColor, belowColor;
+          let aboveColor; let onColor; let
+            belowColor;
           if (options.nationalTarget.slope === 'Positive') {
             aboveColor = this.color.green;
             onColor = this.color.blue;

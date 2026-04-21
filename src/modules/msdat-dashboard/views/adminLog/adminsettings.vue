@@ -31,12 +31,12 @@
               <b-progress-bar :value="passwordStrength" class="progress-bar"></b-progress-bar>
             </b-progress>
             <span :class="passwordStrengthClass">{{ passwordStrengthText }}</span>
-            
+
             <!-- Password Requirements -->
             <div v-if="newPassword" class="password-requirements mt-2">
-              <div 
-                v-for="(requirement, index) in passwordRequirements" 
-                :key="index" 
+              <div
+                v-for="(requirement, index) in passwordRequirements"
+                :key="index"
                 class="requirement-item"
                 :class="{ 'requirement-met': requirement.met, 'requirement-unmet': !requirement.met }"
               >
@@ -258,7 +258,7 @@ export default {
       ];
     },
     isPasswordValid() {
-      return this.passwordRequirements.every(req => req.met);
+      return this.passwordRequirements.every((req) => req.met);
     },
     passwordsMatch() {
       return this.newPassword === this.confirmPassword;
@@ -280,12 +280,12 @@ export default {
     },
 
     togglePlugin(plugin) {
-  // Persist state
-  const pluginState = plugin.enabled ? 'true' : 'false';
-  localStorage.setItem(plugin.key, pluginState);
+      // Persist state
+      const pluginState = plugin.enabled ? 'true' : 'false';
+      localStorage.setItem(plugin.key, pluginState);
 
-  // Notify root to (de)activate plugin at runtime without reload
-  this.$root.$emit('plugins:changed', { plugin: plugin.key, value: plugin.enabled });
+      // Notify root to (de)activate plugin at runtime without reload
+      this.$root.$emit('plugins:changed', { plugin: plugin.key, value: plugin.enabled });
     },
 
     async changePassword() {
@@ -301,17 +301,15 @@ export default {
             <div style="text-align: left;">
               <p>Password must meet all the following requirements:</p>
               <ul style="list-style: none; padding-left: 0;">
-                ${this.passwordRequirements.map(req => 
-                  `<li style="color: ${req.met ? '#28a745' : '#dc3545'}; margin: 5px 0;">
+                ${this.passwordRequirements.map((req) => `<li style="color: ${req.met ? '#28a745' : '#dc3545'}; margin: 5px 0;">
                     <i class="fas ${req.met ? 'fa-check-circle' : 'fa-times-circle'}"></i>
                     ${req.text}
-                  </li>`
-                ).join('')}
+                  </li>`).join('')}
               </ul>
             </div>
           `,
           icon: 'warning',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
         });
         return;
       }

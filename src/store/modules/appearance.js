@@ -15,12 +15,12 @@ const getSystemPreference = () => {
 // Helper function to apply view mode to DOM
 const applyViewModeToDOM = (mode) => {
   if (typeof document === 'undefined') return;
-  
+
   let effectiveMode = mode;
   if (mode === 'system') {
     effectiveMode = getSystemPreference() ? 'dark' : 'light';
   }
-  
+
   document.body.classList.remove('light', 'dark');
   document.body.classList.add(effectiveMode);
   document.documentElement.classList.remove('light', 'dark');
@@ -31,7 +31,7 @@ const applyViewModeToDOM = (mode) => {
 // Helper function to apply font size to DOM
 const applyFontSizeToDOM = (size) => {
   if (typeof document === 'undefined') return;
-  
+
   const fontSizeMap = {
     small: '14px',
     medium: '18px',

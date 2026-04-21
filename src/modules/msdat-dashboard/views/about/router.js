@@ -2,7 +2,7 @@ import index from './index.vue';
 // import IndicatorTable from '../../components/sections/indicator-overview/IndicatorTable.vue';
 import Testimonials from './Testimonials.vue';
 import DataTriangulationDashboard from '../dashboard/DataTriangulationDashboard.vue';
-import IndicatorTaggingSystem from '../indicator-tagging-system/index.vue'
+import IndicatorTaggingSystem from '../indicator-tagging-system/index.vue';
 
 export default [
   {

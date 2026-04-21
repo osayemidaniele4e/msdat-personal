@@ -538,7 +538,6 @@ export default {
           key: 'datasource',
           value: data,
         };
-        
 
         if ([0, 1, 2, 5].includes(index)) {
           this.SET_SECTION_PAYLOAD(obj);

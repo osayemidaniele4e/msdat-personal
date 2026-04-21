@@ -154,7 +154,7 @@ export default {
     async setYearDropdown(
       indicatorID = this.defaultIndicator.id,
       dataSourceID = this.defaultDataSource.id,
-      locationID = this.defaultLocation.id
+      locationID = this.defaultLocation.id,
     ) {
       const { data } = await ApiServices.getPeriod({
         indicator: indicatorID,
@@ -193,7 +193,7 @@ export default {
       dataSourceID = this.defaultDataSource.id,
       indicatorID = this.defaultIndicator.id,
       // eslint-disable-next-line no-unused-vars
-      controlIndex = 0
+      controlIndex = 0,
     ) {
       // Return if either dataSourceID or indicatorID is not provided
       if (!dataSourceID || !indicatorID) return;

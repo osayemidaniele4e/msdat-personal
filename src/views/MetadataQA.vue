@@ -15,9 +15,9 @@
         >
           <b-icon icon="chat-left-text"></b-icon>
           <span>{{ history.title }}</span>
-          <b-icon 
-            icon="trash" 
-            class="delete-icon" 
+          <b-icon
+            icon="trash"
+            class="delete-icon"
             @click.stop="deleteSession(history.id)"
           ></b-icon>
         </div>
@@ -60,7 +60,7 @@
               <div class="sender-name">{{ message.type === 'bot' ? 'Soma' : 'You' }}</div>
               <div class="markdown-body" v-if="message.type === 'bot'" v-html="renderMarkdown(message.text)"></div>
               <div class="text-body" v-else>{{ message.text }}</div>
-              
+
               <div v-if="message.suggestions && message.suggestions.length > 0" class="suggestions">
                 <button
                   v-for="(suggestion, sIndex) in message.suggestions"
@@ -159,9 +159,9 @@ export default {
 
       // Get all sessions from localStorage
       let allSessions = this.getAllSessions();
-      
+
       // Update or add current session
-      const existingIndex = allSessions.findIndex(s => s.id === this.sessionId);
+      const existingIndex = allSessions.findIndex((s) => s.id === this.sessionId);
       if (existingIndex !== -1) {
         allSessions[existingIndex] = currentSession;
       } else {
@@ -175,7 +175,7 @@ export default {
 
       // Save to localStorage
       localStorage.setItem('metadata_qa_sessions', JSON.stringify(allSessions));
-      
+
       // Update chatHistory
       this.loadChatHistory();
     },
@@ -185,10 +185,10 @@ export default {
     },
     getSessionTitle() {
       // Generate title from first user message or use default
-      const firstUserMessage = this.messages.find(m => m.type === 'user');
+      const firstUserMessage = this.messages.find((m) => m.type === 'user');
       if (firstUserMessage) {
         const text = firstUserMessage.text.trim();
-        return text.length > 40 ? text.substring(0, 40) + '...' : text;
+        return text.length > 40 ? `${text.substring(0, 40)}...` : text;
       }
       return `Chat ${new Date().toLocaleDateString()}`;
     },
@@ -199,8 +199,8 @@ export default {
       if (sessionId === this.sessionId) return;
 
       const sessions = this.getAllSessions();
-      const session = sessions.find(s => s.id === sessionId);
-      
+      const session = sessions.find((s) => s.id === sessionId);
+
       if (session) {
         this.sessionId = session.id;
         this.messages = session.messages || [];
@@ -210,7 +210,7 @@ export default {
     deleteSession(sessionId) {
       if (confirm('Are you sure you want to delete this conversation?')) {
         let sessions = this.getAllSessions();
-        sessions = sessions.filter(s => s.id !== sessionId);
+        sessions = sessions.filter((s) => s.id !== sessionId);
         localStorage.setItem('metadata_qa_sessions', JSON.stringify(sessions));
         this.loadChatHistory();
 
@@ -248,23 +248,23 @@ export default {
         }
       } else {
         // Initialize with welcome message if no history
-         this.messages = [
-            {
+        this.messages = [
+          {
             type: 'bot',
             text: "👋 Hi there! I'm <span class='soma-name'>**Soma**</span> — **MSDAT Data Assistant**.\n\nI can help you explore Nigeria's health data on the MSDAT platform.\n\nAsk me about **metadata, indicators, data sources**, reporting periods, or even how to interpret key health metrics.",
-            },
+          },
         ];
       }
-      
+
       // Load chat history first
       this.loadChatHistory();
 
       // Try to restore last active session from localStorage
       const lastSessionId = localStorage.getItem('metadata_qa_last_session');
-      
+
       if (lastSessionId && this.chatHistory.length > 0) {
-        const lastSession = this.chatHistory.find(s => s.id === lastSessionId);
-        
+        const lastSession = this.chatHistory.find((s) => s.id === lastSessionId);
+
         if (lastSession) {
           this.sessionId = lastSession.id;
           this.messages = lastSession.messages || [];
@@ -282,7 +282,7 @@ export default {
         // Only persist new session if we created it fresh
         this.persistSession();
       }
-      
+
       // Remember last active session
       localStorage.setItem('metadata_qa_last_session', this.sessionId);
     },
@@ -299,10 +299,10 @@ export default {
       const userMessage = this.userInput;
       this.userInput = '';
       this.isLoading = true;
-      
+
       // Reset height
       this.$nextTick(() => {
-          if (this.$refs.chatInput) this.$refs.chatInput.style.height = 'auto';
+        if (this.$refs.chatInput) this.$refs.chatInput.style.height = 'auto';
       });
 
       try {
@@ -463,7 +463,7 @@ export default {
     transition: opacity 0.2s;
     cursor: pointer;
     flex-shrink: 0;
-    
+
     &:hover {
       color: #ff4444;
     }
@@ -471,7 +471,7 @@ export default {
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    
+
     .delete-icon {
       opacity: 1;
     }
@@ -534,7 +534,7 @@ export default {
   justify-content: center;
   height: 100%;
   color: #333;
-  
+
   .logo-container {
     background: #ffffff;
     padding: 20px;
@@ -591,7 +591,7 @@ export default {
 
 .bot-avatar {
   background-color: #10a37f; /* OpenAI green-ish, or use MSDAT green */
-  background-color: transparent; 
+  background-color: transparent;
   img {
       width: 100%;
       height: 100%;
@@ -749,7 +749,7 @@ export default {
 ::v-deep .markdown-body {
   font-size: 1.25rem !important;
   line-height: 1.7;
-  
+
   p {
     margin-bottom: 1rem;
     &:last-child { margin-bottom: 0; }
@@ -784,13 +784,13 @@ export default {
     border-radius: 0.5rem;
     overflow-x: auto;
     margin-bottom: 1rem;
-    
+
     code {
       background-color: transparent;
       padding: 0;
     }
   }
-  
+
   .soma-name {
      color: #007d53;
      font-weight: 700;

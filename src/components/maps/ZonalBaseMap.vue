@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     getLoadEvent() {
-      return function() {
+      return function () {
         // Watermark Image - Top Left
         this.renderer
           .image('https://i.imgur.com/yyqklZM.png', 150, 62, 230, 53)
@@ -151,8 +151,8 @@ export default {
         // Source Text - Top Left under image
         const chartWidth = this.chartWidth;
         const chartHeight = this.chartHeight;
-        
-        const x = (chartWidth / 100) * 2; 
+
+        const x = (chartWidth / 100) * 2;
         const y = (chartHeight / 100) * 7;
 
         this.renderer
@@ -199,10 +199,10 @@ export default {
         if (byId.classList && byId.classList.contains('highcharts-data-table')) {
           byId.remove();
         } else if (
-          byId.tagName === 'TABLE' &&
-          byId.parentNode &&
-          byId.parentNode.classList &&
-          byId.parentNode.classList.contains('highcharts-data-table')
+          byId.tagName === 'TABLE'
+          && byId.parentNode
+          && byId.parentNode.classList
+          && byId.parentNode.classList.contains('highcharts-data-table')
         ) {
           byId.parentNode.remove();
         } else {
@@ -251,8 +251,8 @@ export default {
         const ret = originalView.apply(this, arguments);
         try {
           this.isDataTableVisible = true;
-          const table = document.getElementById(`highcharts-data-table-${this.index}`) ||
-            (this.renderTo && this.renderTo.parentNode && this.renderTo.parentNode.querySelector('.highcharts-data-table'));
+          const table = document.getElementById(`highcharts-data-table-${this.index}`)
+            || (this.renderTo && this.renderTo.parentNode && this.renderTo.parentNode.querySelector('.highcharts-data-table'));
           if (table && !table.parentNode.querySelector('.hc-data-close')) {
             const btn = document.createElement('button');
             btn.type = 'button';
@@ -380,7 +380,7 @@ export default {
           this.defaultOptions.exporting.chartOptions.title.text = this.sanitizedExportTitle(newTitle);
         }
       },
-      { immediate: false }
+      { immediate: false },
     );
     // Add fullscreen change listener
     window.addEventListener('fullscreenchange', this.handleFullscreenChange);

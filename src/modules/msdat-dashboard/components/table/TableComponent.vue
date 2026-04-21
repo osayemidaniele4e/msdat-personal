@@ -368,9 +368,7 @@ export default {
      *
      */
     getDataSourcesClassification() {
-      const countClassification = this.dataArray.map((e) =>
-        e.values.map((et) => et.classification)
-      );
+      const countClassification = this.dataArray.map((e) => e.values.map((et) => et.classification));
       const counted = countClassification.map((e) => countBy(e));
       const classic = {};
       counted.forEach((e) => {
@@ -390,7 +388,7 @@ export default {
       const result = Object.keys(classic).map((key) => [key, classic[key]]);
 
       const resultSorted = result.sort(
-        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0])
+        (a, b) => this.classificationOrder.indexOf(a[0]) - this.classificationOrder.indexOf(b[0]),
       );
       // console.log(resultSorted, 'resultsorted');
       this.classify = resultSorted;
@@ -420,9 +418,8 @@ export default {
        * order AvailableSources according to the classification order: Routine, Survey, Estimate
        */
       const sortedSource = allAvailableSources.sort(
-        (a, b) =>
-          this.classificationOrder.indexOf(a.classification) -
-          this.classificationOrder.indexOf(b.classification)
+        (a, b) => this.classificationOrder.indexOf(a.classification)
+          - this.classificationOrder.indexOf(b.classification),
       );
       const reordered = [
         ...sortedSource.filter((item) => item.id === 30),
@@ -476,7 +473,9 @@ export default {
      */
     async getNumDenumData() {
       if (this.values?.datasource.id !== undefined) {
-        const { indicator, year, location, datasource } = this.values;
+        const {
+          indicator, year, location, datasource,
+        } = this.values;
 
         const numeratorData = await this.dlQuery({
           datasource: datasource.id,
@@ -530,7 +529,7 @@ export default {
 
       // Sort the target array based on the extracted order
       return targetArray.sort(
-        (a, b) => indicatorOrder.indexOf(a.indicator) - indicatorOrder.indexOf(b.indicator)
+        (a, b) => indicatorOrder.indexOf(a.indicator) - indicatorOrder.indexOf(b.indicator),
       );
     },
     async getNhmisMonthly() {
@@ -555,13 +554,13 @@ export default {
           const updatedData = data
             ? { ...data, value: parseFloat(data.value).toFixed(1) }
             : {
-                indicator: el.indicator,
-                value: null,
-              };
+              indicator: el.indicator,
+              value: null,
+            };
 
           // this.nhmisMonthData.unshift(updatedData);
           tempData.push(updatedData);
-        })
+        }),
       );
       const sortedArray = this.sortByIndicatorOrder(temp, tempData);
       this.nhmisMonthData = sortedArray;
