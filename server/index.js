@@ -40,14 +40,14 @@ app.use(helmet({
 }));
 
 // CORS configuration
+const ALLOWED_ORIGINS = [
+  'https://msdat.fmohconnect.gov.ng',
+  'https://www.msdat.fmohconnect.gov.ng',
+  'https://msdat2-staging.e4eweb.space',
+  ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim()) : []),
+];
 app.use(cors({
-  origin: IS_PRODUCTION
-    ? [
-      'https://msdat.fmohconnect.gov.ng',
-      'https://www.msdat.fmohconnect.gov.ng',
-      'https://msdat2-staging.e4eweb.space',
-    ]
-    : true,
+  origin: IS_PRODUCTION ? ALLOWED_ORIGINS : true,
   credentials: true,
 }));
 
@@ -72,7 +72,6 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Indicator Metadata Endpoint (Mock DB Fetch)
 app.get('/api/indicator/:id/metadata', (req, res) => {
-  const id = req.params.id;
   // Fallback defaults / Mock DB result
   res.json({
     name: 'Sample Indicator',
@@ -122,14 +121,12 @@ app.get('/api/indicator/:id/confidence', (req, res) => {
 
   // Deterministic "Random" values derived from seed
   let completeness = 0.5 + (seed % 50) / 100; // 0.5 to 1.0
-  let volatility = (seed % 30) / 100; // 0.0 to 0.3
   let sources = (seed % 2 === 0) ? ['NHMIS', 'DHS'] : ['NHMIS'];
   let hasLargeSampleSize = (seed % 3 !== 0);
 
   // Introduce specific variations
   if (seed < 15 || id.includes('low')) {
     completeness = 0.3 + (seed % 15) / 100;
-    volatility = 0.5 + (seed % 20) / 100;
     sources = ['NHMIS'];
     hasLargeSampleSize = false;
   }
