@@ -128,5 +128,6 @@
   },
   "resolutions": {
     "minimatch": "^3.0.8"
-  }
+  },
+  "packageManager": "npm@10.8.2"
 }
