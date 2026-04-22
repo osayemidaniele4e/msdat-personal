@@ -3,6 +3,9 @@
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "env": {
+    "NPM_FLAGS": "--legacy-peer-deps"
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
