@@ -12,6 +12,9 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const https = require('https');
+const http = require('http');
+const { URL } = require('url');
 const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -150,6 +153,70 @@ app.get('/api/indicator/:id/confidence', (req, res) => {
 
   const result = calculateConfidence(id, mockContext);
   res.json(result);
+});
+
+// ============================================================
+// API PROXY - Forwards /proxy/* requests to backend servers
+// This avoids browser CORS issues with credentials
+// ============================================================
+const PROXY_TARGETS = {
+  '/proxy/msdat': 'https://msdatapi.e4eweb.space',
+  '/proxy/dtri': 'https://dtriapi.e4eweb.space',
+  '/proxy/login': 'https://msdatlogin.e4eweb.space',
+  '/proxy/gpt': 'https://e4egpt.e4eweb.space',
+};
+
+function forwardRequest(req, res, targetBase, stripPrefix) {
+  const targetUrl = new URL(
+    req.url.replace(stripPrefix, '') || '/',
+    targetBase,
+  );
+
+  const options = {
+    hostname: targetUrl.hostname,
+    port: targetUrl.port || (targetUrl.protocol === 'https:' ? 443 : 80),
+    path: targetUrl.pathname + targetUrl.search,
+    method: req.method,
+    headers: {
+      ...req.headers,
+      host: targetUrl.hostname,
+      origin: targetBase,
+    },
+  };
+
+  // Remove headers that could cause issues
+  delete options.headers['x-forwarded-for'];
+
+  const protocol = targetUrl.protocol === 'https:' ? https : http;
+
+  const proxyReq = protocol.request(options, (proxyRes) => {
+    // Strip CORS headers from upstream — our server owns CORS now
+    const headers = { ...proxyRes.headers };
+    delete headers['access-control-allow-origin'];
+    delete headers['access-control-allow-credentials'];
+
+    res.writeHead(proxyRes.statusCode, headers);
+    proxyRes.pipe(res, { end: true });
+  });
+
+  proxyReq.on('error', (err) => {
+    console.error('Proxy error:', err.message);
+    if (!res.headersSent) {
+      res.status(502).json({ error: 'Bad gateway', detail: err.message });
+    }
+  });
+
+  if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
+    req.pipe(proxyReq, { end: true });
+  } else {
+    proxyReq.end();
+  }
+}
+
+Object.entries(PROXY_TARGETS).forEach(([prefix, target]) => {
+  app.all(`${prefix}/*`, (req, res) => {
+    forwardRequest(req, res, target, prefix);
+  });
 });
 
 // ============================================================
