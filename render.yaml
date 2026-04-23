@@ -40,6 +40,8 @@ services:
         sync: false
       - key: VUE_APP_API_BASE_URL1
         sync: false
+      - key: VUE_APP_API_BASE_URL3
+        sync: false
       - key: VUE_APP_API_STAGING_BASE_URL
         sync: false
       - key: VUE_APP_API_TOKEN
