@@ -1,6 +1,7 @@
 <template>
  <div class="position-relative" id="app">
     <router-view />
+    <IndicatorExplanationModal />
     <feedback />
     <div v-if="showDataSourceListComponent" class="position-fixed datasource-list">
       <ShowDataSourcesList />
@@ -11,7 +12,6 @@
     <div v-if="showShareSectionComponent" class="position-fixed whats-new">
       <ShareSection />
     </div>
-
      <transition name="fun-fact-slide">
       <div v-if="showFunFact" class="fun-fact">
         <button class="fun-fact-close" aria-label="Close fun fact" @click="closeFunFact">×</button>
@@ -61,6 +61,7 @@ import feedback from './views/feedback.vue';
 import ShowDataSourcesList from './modules/dynamic_dashboard/components/ShowDataSourcesList.vue';
 import WhatsNew from './modules/dynamic_dashboard/components/WhatsNew.vue';
 import ShareSection from './modules/dynamic_dashboard/components/ShareSection.vue';// import ChatBot from './modules/msdat-dashboard/components/ChatBot.vue';
+import IndicatorExplanationModal from './components/ui-components/IndicatorExplanationModal.vue';
 import ApiServices from './modules/data-layer/services/ApiServices';
 import accessibilityPlugin from './modules/plugins/accessibilityPlugin';
 import contextPlugin from './modules/plugins/contextPlugin';
@@ -77,6 +78,7 @@ export default {
     ShowDataSourcesList,
     WhatsNew,
     ShareSection,
+    IndicatorExplanationModal,
     // ChatBot,
   },
   data() {
@@ -146,6 +148,10 @@ export default {
     let plugins_imported = [];
 
     this.pluginsImported.push('accessibilityPlugin');
+    this.pluginsImported.push('accessibilityPlugin');
+    if (!localStorage.getItem('accessibilityPlugin')) {
+      localStorage.setItem('accessibilityPlugin', 'false');
+    }
     if (!localStorage.getItem('accessibilityPlugin')) {
       localStorage.setItem('accessibilityPlugin', 'false');
     }
@@ -160,6 +166,10 @@ export default {
     }
 
     if (localStorage.getItem('contextPlugin') === 'true') {
+    this.pluginsImported.push('customReportBuilder');
+    if (!localStorage.getItem('customReportBuilder')) {
+      localStorage.setItem('customReportBuilder', 'false');
+    }
       Vue.use(contextPlugin);
     }
 
@@ -170,6 +180,9 @@ export default {
 
     if (localStorage.getItem('customReportBuilder') === 'true') {
       Vue.use(customReportBuilder);
+    if (localStorage.getItem('indicatorPlugin') === 'true') {
+      Vue.use(indicatorPlugin);
+    }
     }
 
     this.pluginsImported.push('indicatorPlugin');
@@ -179,6 +192,10 @@ export default {
 
     if (localStorage.getItem('indicatorPlugin') === 'true') {
       Vue.use(indicatorPlugin);
+    }
+    this.pluginsImported.push('screenshotManager');
+    if (!localStorage.getItem('screenshotManager')) {
+      localStorage.setItem('screenshotManager', 'false');
     }
 
     this.pluginsImported.push('reviewPlugin');
@@ -190,6 +207,9 @@ export default {
       Vue.use(reviewPlugin);
     }
 
+    if (localStorage.getItem('testonePlugin') === 'true') {
+      Vue.use(testonePlugin);
+    }
     this.pluginsImported.push('screenshotManager');
     if (!localStorage.getItem('screenshotManager')) {
       localStorage.setItem('screenshotManager', 'false');
@@ -283,7 +303,6 @@ export default {
     handleAppUnload() {
       localStorage.removeItem('firstTimeExecution');
     },
-
     startSixHourInterval() {
       const checkAndExecute = () => {
         const now = new Date();
