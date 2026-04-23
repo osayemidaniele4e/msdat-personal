@@ -43,8 +43,8 @@
             </div>
             <!-- AI Confidence Score Placement -->
             <ConfidenceScore
-              v-if="values.indicator"
-              :indicatorId="values.indicator.id"
+              v-if="values.indicator && resolvedConfidenceIndicatorId"
+              :indicatorId="resolvedConfidenceIndicatorId"
               :filters="values"
             />
           </div>
@@ -122,9 +122,10 @@ import chartDownload from '../../../mixins/chart_download';
 import NoSubNationalData from '../../NoData.vue';
 import NoAvailableData from '../../NoData2.vue';
 import SmartNarrativeModal from './SmartNarrativeModal.vue';
+import confidenceIndicatorId from '../../../mixins/confidence-indicator-id';
 
 export default {
-  mixins: [chartDownload, formatter],
+  mixins: [chartDownload, formatter, confidenceIndicatorId],
   components: {
     BarChart,
     NoSubNationalData,

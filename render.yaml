@@ -1,0 +1,68 @@
+# Render blueprint for MSDAT
+# Docs: https://render.com/docs/blueprint-spec
+#
+# This deploys the Vue SPA + Express server in server/index.js as a single
+# Web Service. The Express server serves the built dist/ folder and also
+# runs the social-media crawler middleware.
+#
+# After editing this file, commit & push, then in Render go to:
+#   Blueprints -> New Blueprint Instance -> point at this repo.
+#
+# IMPORTANT:
+#   VUE_APP_* variables are consumed at BUILD TIME by Vue CLI and baked
+#   into the static bundle. Set them in Render's dashboard (or below with
+#   real values) BEFORE the first deploy, otherwise the frontend will
+#   ship with empty config values.
+
+services:
+  - type: web
+    name: msdat
+    runtime: node
+    plan: free                 # change to 'starter' or higher for production
+    region: oregon             # change to frankfurt / singapore / etc. if closer
+    branch: main
+    autoDeploy: true
+    healthCheckPath: /health
+    buildCommand: |
+      npm ci --include=dev && NODE_OPTIONS=--openssl-legacy-provider npm run build
+    startCommand: node server/index.js
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.1
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+
+      # ---- Build-time (Vue) variables ----
+      # Fill these in via the Render dashboard (sync: false keeps them out of git).
+      - key: VUE_APP_API_BASE_URL
+        sync: false
+      - key: VUE_APP_API_BASE_URL1
+        sync: false
+      - key: VUE_APP_API_STAGING_BASE_URL
+        sync: false
+      - key: VUE_APP_API_TOKEN
+        sync: false
+      - key: VUE_APP_GOOGLE_CLIENT_ID
+        sync: false
+      - key: VUE_APP_FACEBOOK_APP_ID
+        sync: false
+      - key: VUE_APP_API_LINKEDIN_ID
+        sync: false
+      - key: VUE_APP_LINKEDIN_REDIRECT_URI
+        sync: false
+      - key: VUE_APP_LINKEDIN_SECRET
+        sync: false
+      - key: VUE_APP_API_LOGIN_URL
+        sync: false
+      - key: VUE_APP_API_GPT_URL
+        sync: false
+      - key: VUE_APP_INDICATOR_SEARCH_USERNAME
+        sync: false
+      - key: VUE_APP_INDICATOR_SEARCH_PASSWORD
+        sync: false
+      - key: VUE_APP_FRONTEND_KEY_ID
+        sync: false
+      - key: VUE_APP_FRONTEND_AUTH
+        sync: false

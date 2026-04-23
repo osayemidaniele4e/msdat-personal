@@ -22,8 +22,8 @@
           </p>
           <!-- AI Confidence Score Placement -->
           <ConfidenceScore
-            v-if="controlPanelProps.indicator"
-            :indicatorId="controlPanelProps.indicator.id"
+            v-if="controlPanelProps.indicator && resolvedConfidenceIndicatorId"
+            :indicatorId="resolvedConfidenceIndicatorId"
             :filters="controlPanelProps"
           />
         </div>
@@ -41,10 +41,11 @@ import ApiServices from '@/modules/data-layer/services/ApiServices';
 import ConfidenceScore from '@/components/ui-components/ConfidenceScore.vue';
 import chartDownload from '../../../mixins/chart_download';
 import { sortHighchartsDataInObjectFormat } from '../../../mixins/util';
+import confidenceIndicatorId from '../../../mixins/confidence-indicator-id';
 
 export default {
   name: 'ZonalSectionChart',
-  mixins: [chartDownload, formatter],
+  mixins: [chartDownload, formatter, confidenceIndicatorId],
   data() {
     return {
       // later someone can add the name property

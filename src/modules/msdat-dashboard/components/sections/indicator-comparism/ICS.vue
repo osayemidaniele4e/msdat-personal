@@ -65,8 +65,8 @@
                 />
               </template>
               <ConfidenceScore
-                v-else-if="values.indicator"
-                :indicatorId="values.indicator.id"
+                v-else-if="values.indicator && resolvedConfidenceIndicatorId"
+                :indicatorId="resolvedConfidenceIndicatorId"
                 :filters="values"
               />
             </div>
@@ -120,10 +120,11 @@ import { groupIndicator } from '@/util/helper';
 import ConfidenceScore from '@/components/ui-components/ConfidenceScore.vue';
 import IndicatorRelationshipPopup from '../advanced/indicator-comparison-section/IndicatorRelationshipPopup.vue';
 import chartDownload from '../../../mixins/chart_download';
+import confidenceIndicatorId from '../../../mixins/confidence-indicator-id';
 
 export default {
   name: 'ICS',
-  mixins: [chartDownload, ControlPanelSetup],
+  mixins: [chartDownload, ControlPanelSetup, confidenceIndicatorId],
   components: {
     BarChart,
     IndicatorRelationshipPopup,

@@ -41,8 +41,8 @@
             </div>
             <!-- AI Confidence Score Placement -->
             <ConfidenceScore
-              v-if="values.indicator"
-              :indicatorId="values.indicator.id"
+              v-if="values.indicator && resolvedConfidenceIndicatorId"
+              :indicatorId="resolvedConfidenceIndicatorId"
               :filters="values"
             />
           </div>
@@ -96,8 +96,8 @@
             </div>
             <!-- AI Confidence Score Placement -->
             <ConfidenceScore
-              v-if="values.indicator"
-              :indicatorId="values.indicator.id"
+              v-if="values.indicator && resolvedConfidenceIndicatorId"
+              :indicatorId="resolvedConfidenceIndicatorId"
               :filters="values"
             />
           </div>
@@ -150,9 +150,10 @@ import { validateDataValue } from '@/util/dataValidation';
 import chartDownload from '../../../mixins/chart_download';
 import controlSetup from '../../../mixins/control-panel-setup';
 import SmartNarrativeModal from './SmartNarrativeModal.vue';
+import confidenceIndicatorId from '../../../mixins/confidence-indicator-id';
 
 export default {
-  mixins: [chartDownload, mixin, formatter, controlSetup],
+  mixins: [chartDownload, mixin, formatter, controlSetup, confidenceIndicatorId],
   components: {
     BarChart,
     SmartNarrativeModal,

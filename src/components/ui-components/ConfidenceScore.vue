@@ -1,5 +1,5 @@
 <template>
-  <div class="confidence-score-container" v-if="isVisible">
+  <div class="confidence-score-container" v-if="isVisible && indicatorId != null && indicatorId !== ''">
     <div v-if="loading" class="confidence-loading">
       <b-spinner small variant="secondary" class="mr-1"></b-spinner>
       <span class="text-muted small">Loading reliability score...</span>
@@ -43,7 +43,8 @@ export default {
   props: {
     indicatorId: {
       type: [String, Number],
-      required: true,
+      required: false,
+      default: null,
     },
     filters: {
       type: Object,

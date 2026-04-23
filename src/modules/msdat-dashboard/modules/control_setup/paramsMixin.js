@@ -12,10 +12,22 @@ export default {
         //  year,
       } = this.payload;
 
+      const coalesceId = (fromPayload, queryKey) => {
+        const raw = fromPayload?.id;
+        if (raw !== undefined && raw !== null && raw !== '') {
+          const n = Number(raw);
+          return Number.isFinite(n) ? n : undefined;
+        }
+        const q = this.$route.query[queryKey];
+        if (q === undefined || q === null || q === '') return undefined;
+        const n = Number(Array.isArray(q) ? q[0] : q);
+        return Number.isFinite(n) ? n : undefined;
+      };
+
       const params = {
-        indicator: indicator?.id,
-        datasource: datasource?.id,
-        location: location?.id,
+        indicator: coalesceId(indicator, 'indicator'),
+        datasource: coalesceId(datasource, 'datasource'),
+        location: coalesceId(location, 'location'),
         // year,
       };
 

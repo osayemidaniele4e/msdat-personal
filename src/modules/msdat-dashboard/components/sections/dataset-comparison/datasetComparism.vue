@@ -23,8 +23,8 @@
           </p>
           <!-- AI Confidence Score Placement -->
           <ConfidenceScore
-            v-if="values.indicator"
-            :indicatorId="values.indicator.id"
+            v-if="values.indicator && resolvedConfidenceIndicatorId"
+            :indicatorId="resolvedConfidenceIndicatorId"
             :filters="values"
           />
         </div>
@@ -101,9 +101,10 @@ import BaseChart from '../../../../../components/Barchart/BaseBarChart.vue';
 import defaultOptions from '../../../../../components/Barchart/defaultOption';
 import dataPipelineMixin from '../../../mixins/dataPipeline';
 import chartDownload from '../../../mixins/chart_download';
+import confidenceIndicatorId from '../../../mixins/confidence-indicator-id';
 
 export default {
-  mixins: [chartDownload, dataPipelineMixin, ControlPanelSetup],
+  mixins: [chartDownload, dataPipelineMixin, ControlPanelSetup, confidenceIndicatorId],
   components: {
     BaseChart,
     ConfidenceScore,

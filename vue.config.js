@@ -251,16 +251,18 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      '/api/indicator/.*/confidence': {
+      '/api/indicator': {
         target: 'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api': {
-        target: 'https://msdat2api.e4eweb.space/api/',
+      '/api/version': {
+        target: 'http://localhost:3000',
         changeOrigin: true,
-        pathRewrite: { '^/api': '' },
+      },
+      '/health': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       },
     },
-    disableHostCheck: true,
   },
 };
