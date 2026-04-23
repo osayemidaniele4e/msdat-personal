@@ -1,3 +1,5 @@
+import axios from 'axios';
+/* eslint-disable camelcase */
 import axiosInstance, { noHeadersInstance, authInstance } from '@/plugins/axios';
 import apiEndpoints from '../config/endpoint';
 
@@ -99,6 +101,7 @@ const getDataWithPeriod = async (obj) => {
   }
 
   // do nothing if validation fails
+  return null;
 };
 
 // const getDataWithPeriod = async (obj) =>
@@ -117,6 +120,7 @@ const getZonalData = async (obj) => {
   }
 
   // do nothing if validation fails
+  return null;
 };
 const getZonalData2 = async (obj) => axiosInstance.get(
   `data/?size=3000&indicator=${obj.indicator}&datasource=${obj.datasource}&period=${obj.period}&location=${obj.location}`,
@@ -135,6 +139,7 @@ const getPeriod = async (obj) => {
   }
 
   // do nothing if validation fails
+  return null;
 };
 
 // const getPeriod = async (obj) =>
@@ -263,10 +268,9 @@ export default {
    * @param {Object} params - Query parameters (location, datasource, year)
    * @returns {Promise}
    */
-  getIndicatorConfidence: async (id, params = {}) =>
-    // If we're in development and want to hit the local server, we might need a full URL if proxy isn't set
-    // But typically we use relative paths and let the proxy or environment variables handle it.
-    // For this implementation, we use the standard axios instance.
-    axiosInstance.get(`indicator/${id}/confidence`, { params }),
+  // Confidence endpoint lives on the same-origin Express server (server/index.js),
+  // NOT on the external data API. Use a plain axios call with a leading slash so it
+  // hits window.location.origin (Render in prod, webpack-dev-server proxy in dev).
+  getIndicatorConfidence: async (id, params = {}) => axios.get(`/api/indicator/${id}/confidence`, { params }),
 
 };
