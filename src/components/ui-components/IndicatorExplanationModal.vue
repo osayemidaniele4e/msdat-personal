@@ -52,10 +52,25 @@ export default {
     };
   },
   mounted() {
-    this.$root.$on('open-indicator-explanation', this.loadMetadata);
+    // Bind once and store the references on the instance (not in data, because
+    // Vue 2 doesn't proxy underscore-prefixed data keys)
+    this.$_boundLoad = (id) => this.loadMetadata(id);
+    this.$_windowHandler = (ev) => {
+      const id = ev && ev.detail != null ? ev.detail : null;
+      if (id != null) this.loadMetadata(id);
+    };
+    this.$root.$on('open-indicator-explanation', this.$_boundLoad);
+    // Also listen on window as a belt-and-suspenders fallback in case $root
+    // differs (e.g., multi-root apps, HMR reloads, or detached trees)
+    window.addEventListener('open-indicator-explanation', this.$_windowHandler);
   },
   beforeDestroy() {
-    this.$root.$off('open-indicator-explanation', this.loadMetadata);
+    if (this.$_boundLoad) {
+      this.$root.$off('open-indicator-explanation', this.$_boundLoad);
+    }
+    if (this.$_windowHandler) {
+      window.removeEventListener('open-indicator-explanation', this.$_windowHandler);
+    }
   },
   methods: {
     closeModal() {
@@ -65,12 +80,17 @@ export default {
       this.metadata = null;
     },
     async loadMetadata(indicatorId) {
-      if (!indicatorId) return;
+      if (indicatorId == null || indicatorId === '') return;
       this.loading = true;
       this.metadata = null;
 
       // Crucial: Fire the modal immediately from bootstrap registry
-      this.$bvModal.show('indicator-explanation-modal-global');
+      try {
+        this.$bvModal.show('indicator-explanation-modal-global');
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('[IndicatorExplanationModal] $bvModal.show failed', e);
+      }
 
       try {
         // Fetch indicator natively from Vuex
