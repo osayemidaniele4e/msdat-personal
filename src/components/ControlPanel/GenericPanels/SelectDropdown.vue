@@ -23,8 +23,20 @@
       <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
 
       <template slot="singleLabel" slot-scope="props">
-        <span v-tooltip="getOptionLabel(props.option)" class="text-truncate d-block">
-          {{ getOptionLabel(props.option) }}
+        <span class="select-single-with-info d-flex align-items-center w-100" style="min-width: 0;">
+          <span
+            v-tooltip="getOptionLabel(props.option)"
+            class="text-truncate flex-grow-1 d-block"
+            style="min-width: 0;"
+          >
+            {{ getOptionLabel(props.option) }}
+          </span>
+          <IndicatorExplanationTooltip
+            v-if="placeholder === 'Select indicator' && props.option && props.option.id != null"
+            :indicatorId="props.option.id"
+            class="flex-shrink-0 ml-1 indicator-dd-info-icon"
+            @mousedown.native.stop
+          />
         </span>
       </template>
 
@@ -63,7 +75,12 @@
             :data-child="props.option.program_area"
           >
             <span class="text-truncate pr-2" style="flex: 1; min-width: 0;" v-tooltip="props.option.full_name">{{ props.option.full_name }}</span>
-            <IndicatorExplanationTooltip v-if="props.option.id" :indicatorId="props.option.id" @mousedown.native.stop @click.native.stop class="flex-shrink-0" />
+            <IndicatorExplanationTooltip
+              v-if="props.option.id"
+              :indicatorId="props.option.id"
+              class="flex-shrink-0 indicator-dd-info-icon"
+              @mousedown.native.stop
+            />
           </div>
         </template>
       </template>
@@ -645,11 +662,19 @@ input::placeholder {
 }
 
 .multiselect {
+  position: relative;
+  z-index: 1;
+
+  .indicator-dd-info-icon {
+    position: relative;
+    z-index: 4;
+  }
+
   .multiselect__select {
     z-index: 1;
   }
   .multiselect__content-wrapper {
-    z-index: 2;
+    z-index: 50;
   }
 }
 </style>

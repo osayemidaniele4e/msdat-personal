@@ -1,7 +1,12 @@
 import axios from 'axios';
 import Vue from 'vue';
-import store from '@/store'; // eslint-disable-line import/no-cycle
 import frontendAuthService from '@/modules/auth/services/frontendAuthService';
+
+/** Lazy Vuex store — avoids static cycle: plugins/axios → store → auth → ApiServices → axios */
+function getStore() {
+  // eslint-disable-next-line global-require
+  return require('@/store').default;
+}
 
 const apiConfigs = {
   default: process.env.VUE_APP_API_BASE_URL,
@@ -23,7 +28,7 @@ const createAxiosInstance = (baseURL, withAuth = false, skipHeaders = false) => 
         (config) => {
           const newConfig = { ...config };
           // eslint-disable-next-line camelcase
-          const token = store.getters['AUTH_STORE/getToken'];
+          const token = getStore().getters['AUTH_STORE/getToken'];
           if (token) {
             newConfig.headers = {
               ...newConfig.headers,

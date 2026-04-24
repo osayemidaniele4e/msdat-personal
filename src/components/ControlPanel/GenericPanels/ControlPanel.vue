@@ -1,13 +1,3 @@
-async addCurrentToReport() { // Demo helper: build a context from current payload to add a chart and
-table const payload = this.payload; // Example: send table with current payload as query const
-tableQuery = { indicator: payload.indicator, datasource: payload.datasource, location:
-payload.location, year: payload.year, }; if (this.$customreportbuilder && typeof
-this.$customreportbuilder.addItemWithContext === 'function') { // add a table item await
-this.$customreportbuilder.addItemWithContext('table', { query: tableQuery }); // try to snapshot a
-chart container if present - host pages should pass real selector // here we attempt a common chart
-container id '#main-chart' as an example await this.$customreportbuilder.addItemWithContext('chart',
-{ chartSelector: '#main-chart' }); } else { // eslint-disable-next-line no-console
-console.warn('Report builder plugin not available'); } },
 <template>
   <div class="row" id="control-panel">
     <!-- <pre>{{ setup }}</pre> -->
@@ -661,6 +651,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* Keep filters above chart/card overlays so indicator (i) stays clickable */
+#control-panel {
+  position: relative;
+  z-index: 12;
+}
+
 .label-text {
   padding-top: 6px;
   font-weight: bold;

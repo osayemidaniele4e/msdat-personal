@@ -41,6 +41,7 @@
 
 <script>
 import mixin from '@/modules/data-layer/mixin';
+import ApiServices from '@/modules/data-layer/services/ApiServices';
 
 export default {
   name: 'IndicatorExplanationModal',
@@ -84,7 +85,8 @@ export default {
       this.loading = true;
       this.metadata = null;
 
-      // Crucial: Fire the modal immediately from bootstrap registry
+      // Defer show until after Vue flushes DOM (more reliable in production / after navigation)
+      await this.$nextTick();
       try {
         this.$bvModal.show('indicator-explanation-modal-global');
       } catch (e) {
@@ -141,6 +143,26 @@ export default {
           formula,
           source: sourceNames,
         };
+
+        // NEW: Try to fetch enhanced metadata from the same-origin Express server.
+        // This is much more reliable on Render than hitting external APIs.
+        try {
+          const { data: enhanced } = await ApiServices.getIndicatorMetadata(indicatorId);
+          if (enhanced && (enhanced.definition || enhanced.formula)) {
+            this.metadata = {
+              ...this.metadata,
+              definition: enhanced.definition || this.metadata.definition,
+              formula: enhanced.formula || this.metadata.formula,
+              source: enhanced.source || this.metadata.source,
+              // Use the enhanced name if it's more than just a placeholder
+              name: (enhanced.name && enhanced.name !== 'Sample Indicator')
+                ? enhanced.name
+                : this.metadata.name,
+            };
+          }
+        } catch (e) {
+          console.warn('[IndicatorExplanationModal] Enhanced metadata fetch failed', e);
+        }
       } catch (err) {
         console.error('Failed to inject indicator metadata', err);
         // Fallback safeguards

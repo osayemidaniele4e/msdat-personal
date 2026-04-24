@@ -14,7 +14,12 @@
           >
             <p class="work-sans mb-0 line-height sub-title">
               <b>{{ values.indicator.short_name }}</b>
-              <IndicatorExplanationTooltip v-if="values.indicator && values.indicator.id" :indicatorId="values.indicator.id" />
+              <span class="indicator-explanation-anchor d-inline-flex align-items-center">
+                <IndicatorExplanationTooltip
+                  v-if="values.indicator && values.indicator.id"
+                  :indicatorId="values.indicator.id"
+                />
+              </span>
               and related indicators (with year of latest values) across {{ values.location.name }}.
             </p>
 
@@ -616,6 +621,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* Above Highcharts / sibling overlays so the (i) receives clicks */
+.indicator-explanation-anchor {
+  position: relative;
+  z-index: 20;
+  vertical-align: middle;
+}
+
 .modal-title {
   font-weight: 700;
   color: black;

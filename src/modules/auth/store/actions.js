@@ -1,6 +1,5 @@
 import VueCookies from 'vue-cookies';
 import axios from 'axios';
-// eslint-disable-next-line import/no-cycle
 import ApiServices from '@/modules/data-layer/services/ApiServices';
 import axiosInstance from '../config/axios';
 import authInstance from '../config/axiosAuth';
@@ -32,7 +31,6 @@ export default {
   // eslint-disable-next-line consistent-return, no-unused-vars
   async SAVE_USER_DASHBOARD({ commit }, payload) {
     try {
-      // const response = await axiosInstance.post('/dashboards/', payload);
       const res = await ApiServices.saveCustomDashboard(payload);
       // const response = await axios.put(
       //   `https://msdat-fmoh-default-rtdb.firebaseio.com/custom/private/${payload.id}.json`,

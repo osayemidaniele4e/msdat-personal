@@ -272,5 +272,5 @@ export default {
   // NOT on the external data API. Use a plain axios call with a leading slash so it
   // hits window.location.origin (Render in prod, webpack-dev-server proxy in dev).
   getIndicatorConfidence: async (id, params = {}) => axios.get(`/api/indicator/${id}/confidence`, { params }),
-
+  getIndicatorMetadata: async (id) => axios.get(`/api/indicator/${id}/metadata`),
 };

@@ -208,7 +208,8 @@ export default {
      * @return {indicatorObjectType}
      */
     dlGetIndicator(id) {
-      return this.dlIndicator.find((item) => item.id === id);
+      // eslint-disable-next-line eqeqeq
+      return this.dlIndicator.find((item) => item.id == id);
     },
     /**
      * @param {number|array} values The Location ID or and Object you like to get
@@ -219,7 +220,8 @@ export default {
       if (typeof values === 'object') {
         return filter(this.dlLocation, matches(values));
       }
-      return this.dlLocation.find((item) => item.id === values);
+      // eslint-disable-next-line eqeqeq
+      return this.dlLocation.find((item) => item.id == values);
     },
     dlGetLocationsByLevel(value) {
       return this.dlLocation.filter((item) => item.level === value);
@@ -234,7 +236,8 @@ export default {
       return factor;
     },
     dlGetDataSource(id) {
-      return this.dlDatasource.find((item) => item.id === id);
+      // eslint-disable-next-line eqeqeq
+      return this.dlDatasource.find((item) => item.id == id);
     },
     dlGetValueTypes(values) {
       if (typeof values === 'object') {
@@ -246,7 +249,8 @@ export default {
       if (typeof values === 'object') {
         return filter(this.dlDataSourceSpecificIndicator, matches(values));
       }
-      return this.dlDataSourceSpecificIndicator.find((item) => item.id === values);
+      // eslint-disable-next-line eqeqeq
+      return this.dlDataSourceSpecificIndicator.find((item) => item.id == values);
     },
     /**
      *

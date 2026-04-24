@@ -4,7 +4,7 @@
     tabindex="0"
     role="button"
     aria-label="Open indicator explanation"
-    @mousedown.stop.prevent="showModal"
+    @mousedown.stop
     @click.stop.prevent="showModal"
     @keydown.enter.stop.prevent="showModal"
     @keydown.space.stop.prevent="showModal"
@@ -53,6 +53,13 @@ export default {
 .indicator-tooltip-wrapper {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  min-width: 26px;
+  min-height: 26px;
+  box-sizing: content-box;
 }
 
 .indicator-info-icon {
