@@ -121,7 +121,11 @@ export default {
             const num = specific.measurement_numerator;
             const den = specific.measurement_denominator;
 
-            const isValid = (val) => val && val.trim().toLowerCase() !== 'n/a' && val.trim().toLowerCase() !== 'not applicable';
+            const isValid = (val) => {
+              if (val == null) return false;
+              const s = String(val).trim().toLowerCase();
+              return s !== '' && s !== 'n/a' && s !== 'not applicable' && s !== '0' && s !== 'none';
+            };
 
             let formedFormula = '';
             if (isValid(num)) formedFormula += `Numerator: ${num.trim()}\n`;

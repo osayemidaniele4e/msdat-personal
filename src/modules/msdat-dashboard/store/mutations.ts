@@ -109,10 +109,7 @@ const mutations: MutationTree<State> = {
     const keyIndex = state.controlConfig[panelIndex].setup.findIndex((item) => item.key === key);
     state.controlConfig[panelIndex].setup[keyIndex].visibility = value;
   },
-  // set default on individual control panel
-  //   SET_DEFAULT: (state, { controlIndex, key, value }) => {
-  //     state.controlConfig[controlIndex].defaults[key] = value;
-  //   },
+  // set default on individual control panel (Removed broken SET_DEFAULT as it used non-existent properties)
   SET_PAYLOAD: (state, obj: setPayload) => {
     if (state.controlConfig[obj.controlIndex].payload !== null) {
       if (!Array.isArray(state.controlConfig[obj.controlIndex].payload)) {

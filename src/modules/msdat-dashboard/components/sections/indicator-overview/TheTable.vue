@@ -439,9 +439,9 @@ export default {
      */
 
     updateControlPanel(datasourceObject) {
-      this.$store.commit('MSDAT_STORE/SET_DEFAULT', {
+      this.$store.commit('MSDAT_STORE/SET_SECTION_PAYLOAD', {
         controlIndex: 0,
-        key: 'dataSource',
+        key: 'datasource',
         value: datasourceObject,
       });
     },

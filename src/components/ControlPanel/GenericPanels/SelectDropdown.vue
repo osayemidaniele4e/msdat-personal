@@ -23,7 +23,7 @@
       <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
 
       <template slot="singleLabel" slot-scope="props">
-        <span v-tooltip="getOptionLabel(props.option)">
+        <span v-tooltip="getOptionLabel(props.option)" class="text-truncate d-block">
           {{ getOptionLabel(props.option) }}
         </span>
       </template>
