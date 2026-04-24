@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+const { handleGetMetadata, handleGetConfidence } = require('./server/indicatorApiHandlers');
 // const WorkerPlugin = require('worker-plugin');
 
 // const path = require('path');
@@ -250,11 +251,14 @@ module.exports = {
     ];
   },
   devServer: {
+    // Indicator API is implemented in server/indicatorApiHandlers.js (used by server/index.js
+    // on port 3000 in production). Register it here so `npm run dev` alone does not proxy
+    // to :3000 and get ECONNREFUSED for confidence/metadata.
+    before(app) {
+      app.get('/api/indicator/:id/metadata', handleGetMetadata);
+      app.get('/api/indicator/:id/confidence', handleGetConfidence);
+    },
     proxy: {
-      '/api/indicator': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
       '/api/version': {
         target: 'http://localhost:3000',
         changeOrigin: true,

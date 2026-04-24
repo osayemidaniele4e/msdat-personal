@@ -70,16 +70,10 @@ app.use(morgan(IS_PRODUCTION ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+const { handleGetMetadata, handleGetConfidence } = require('./indicatorApiHandlers');
+
 // Indicator Metadata Endpoint (Mock DB Fetch)
-app.get('/api/indicator/:id/metadata', (req, res) => {
-  // Fallback defaults / Mock DB result
-  res.json({
-    name: 'Sample Indicator',
-    definition: 'Total observed events as a proportion of the expected population.',
-    formula: '(Numerator / Denominator) * 100',
-    source: 'National Health Information Server',
-  });
-});
+app.get('/api/indicator/:id/metadata', handleGetMetadata);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -99,58 +93,8 @@ app.get('/api/version', (req, res) => {
   });
 });
 
-// Import confidence engine
-const { calculateConfidence } = require('./confidenceEngine');
-
 // AI Confidence & Reliability Score for Indicators
-app.get('/api/indicator/:id/confidence', (req, res) => {
-  const id = req.params.id;
-  const { location, datasource, year } = req.query;
-
-  /**
-   * Deterministic Mock Data Quality Engine
-   * Generates persistent data quality profiles based on Indicator ID, Location, and Year.
-   */
-  const idInt = parseInt(id, 10) || (id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0));
-  const yearInt = parseInt(year, 10) || 2024;
-  const locInt = parseInt(location, 10) || 0;
-
-  // Create a persistent seed that includes year if provided (for snapshots)
-  // If year is missing (Trend charts), it defaults to a global profile.
-  const seed = (idInt * 13 + locInt * 7 + (year ? yearInt : 99)) % 100;
-
-  // Deterministic "Random" values derived from seed
-  let completeness = 0.5 + (seed % 50) / 100; // 0.5 to 1.0
-  let sources = (seed % 2 === 0) ? ['NHMIS', 'DHS'] : ['NHMIS'];
-  let hasLargeSampleSize = (seed % 3 !== 0);
-
-  // Introduce specific variations
-  if (seed < 15 || id.includes('low')) {
-    completeness = 0.3 + (seed % 15) / 100;
-    sources = ['NHMIS'];
-    hasLargeSampleSize = false;
-  }
-
-  const mockContext = {
-    indicatorId: id,
-    location: location || 'National',
-    datasource: datasource || 'NHMIS',
-    year: year || '2024',
-    // Generate deterministic time series
-    timeSeries: Array.from({ length: 6 }, (_, i) => {
-      const p = (2019 + i).toString();
-      const valSeed = (seed + i * 11) % 100;
-      // If valSeed matches a threshold based on completeness, show point
-      return (valSeed / 100 < completeness) ? { period: p, value: 50 + valSeed } : null;
-    }).filter(Boolean),
-    reportingPeriods: ['2019', '2020', '2021', '2022', '2023', '2024'],
-    sources,
-    metadata: { hasLargeSampleSize },
-  };
-
-  const result = calculateConfidence(id, mockContext);
-  res.json(result);
-});
+app.get('/api/indicator/:id/confidence', handleGetConfidence);
 
 // ============================================================
 // CRAWLER MIDDLEWARE - Must come before static file serving

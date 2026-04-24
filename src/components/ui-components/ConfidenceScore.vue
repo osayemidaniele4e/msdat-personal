@@ -50,6 +50,15 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    /**
+     * When the comparison chart has confidence range bands (IHME/NNHS),
+     * pass stats so the score uses the same datasource and lines up with the range.
+     * { active: boolean, pointCount?: number, avgRelativeWidth?: number }
+     */
+    rangeContext: {
+      type: Object,
+      default: null,
+    },
   },
   data() {
     return {
@@ -80,15 +89,25 @@ export default {
       handler: 'fetchConfidence',
       deep: true,
     },
+    rangeContext: {
+      handler: 'fetchConfidence',
+      deep: true,
+    },
   },
   methods: {
     async fetchConfidence() {
       if (!this.indicatorId) return;
 
-      // Extract parameters safely
-      const locationId = this.filters?.location?.id || this.filters?.location;
-      const datasourceId = this.filters?.datasource?.id || this.filters?.datasource;
-      const year = this.filters?.year;
+      const f = this.filters || {};
+      const loc = f.location;
+      const locationId = (loc && typeof loc === 'object' && loc.id != null)
+        ? loc.id
+        : loc;
+      const ds = f.datasource;
+      const datasourceId = (ds && typeof ds === 'object' && ds.id != null)
+        ? ds.id
+        : ds;
+      const year = f.year;
 
       // Early exit if crucial parameters are not yet hydrated
       if (!datasourceId && !locationId) {
@@ -102,11 +121,22 @@ export default {
       this.loading = true;
       this.error = false;
 
+      const rc = this.rangeContext;
+      const rangeParams = (rc && rc.active)
+        ? {
+          rangeActive: '1',
+          ...(rc.pointCount > 0 ? { rangeN: rc.pointCount } : {}),
+          ...(Number.isFinite(rc.avgRelativeWidth) && rc.avgRelativeWidth >= 0
+            ? { rangeSpread: rc.avgRelativeWidth } : {}),
+        }
+        : {};
+
       try {
         const response = await ApiServices.getIndicatorConfidence(this.indicatorId, {
           location: locationId,
           datasource: datasourceId,
           year,
+          ...rangeParams,
         });
 
         // Only commit changes if this is still the most recent request

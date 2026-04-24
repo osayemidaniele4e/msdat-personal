@@ -43,7 +43,8 @@
             <ConfidenceScore
               v-if="values.indicator && resolvedConfidenceIndicatorId"
               :indicatorId="resolvedConfidenceIndicatorId"
-              :filters="values"
+              :filters="confidenceScoreFilters"
+              :range-context="confidenceRangeContext"
             />
           </div>
         </template>
@@ -98,7 +99,8 @@
             <ConfidenceScore
               v-if="values.indicator && resolvedConfidenceIndicatorId"
               :indicatorId="resolvedConfidenceIndicatorId"
-              :filters="values"
+              :filters="confidenceScoreFilters"
+              :range-context="confidenceRangeContext"
             />
           </div>
         </template>
@@ -195,6 +197,58 @@ export default {
     },
     closeOverlay: {
       type: Boolean,
+    },
+  },
+  computed: {
+    /** Same datasource the confidence-range chart is using (side panel + radio), not only control panel. */
+    confidenceScoreFilters() {
+      const v = this.values;
+      if (!v || !Object.keys(v).length) return {};
+      if (this.selectedDS && this.selectedDS.id != null) {
+        return {
+          ...v,
+          datasource: { id: this.selectedDS.id, datasource: this.selectedDS.datasource },
+        };
+      }
+      return v;
+    },
+    /**
+     * Stats from the visible Highcharts arearange series so the API score matches the range band.
+     */
+    confidenceRangeContext() {
+      const active = Boolean(this.selectedDS && this.selectedDS.id != null);
+      if (!active) {
+        return { active: false };
+      }
+      const series = this.ChartOptions?.series;
+      if (!Array.isArray(series)) {
+        return { active: true };
+      }
+      const arearange = series.find(
+        (s) => s && s.type === 'arearange' && Array.isArray(s.data) && s.data.length,
+      );
+      if (!arearange) {
+        return { active: true };
+      }
+      let spreadSum = 0;
+      let count = 0;
+      arearange.data.forEach((pt) => {
+        if (Array.isArray(pt) && pt.length >= 3) {
+          const low = Number(pt[1]);
+          const high = Number(pt[2]);
+          const mid = (low + high) / 2;
+          const w = high - low;
+          if (Number.isFinite(mid) && mid > 0 && Number.isFinite(w) && w >= 0) {
+            spreadSum += w / mid;
+            count += 1;
+          }
+        }
+      });
+      return {
+        active: true,
+        pointCount: arearange.data.length,
+        avgRelativeWidth: count > 0 ? spreadSum / count : null,
+      };
     },
   },
   async mounted() {
@@ -885,6 +939,7 @@ export default {
       );
       const seriesArr = await this.Reformat(seriesArray);
       this.setUpHighChartConfig(seriesArr, years);
+      this.selectedDS = datasourceArray;
       this.loading = false;
     },
     async onConfidenceRangeClicked(e) {

@@ -23,20 +23,12 @@
       <span class="text-capitalize" slot="noOptions">{{ NoDataLabel }}</span>
 
       <template slot="singleLabel" slot-scope="props">
-        <span class="select-single-with-info d-flex align-items-center w-100" style="min-width: 0;">
-          <span
-            v-tooltip="getOptionLabel(props.option)"
-            class="text-truncate flex-grow-1 d-block"
-            style="min-width: 0;"
-          >
-            {{ getOptionLabel(props.option) }}
-          </span>
-          <IndicatorExplanationTooltip
-            v-if="placeholder === 'Select indicator' && props.option && props.option.id != null"
-            :indicatorId="props.option.id"
-            class="flex-shrink-0 ml-1 indicator-dd-info-icon"
-            @mousedown.native.stop
-          />
+        <span
+          v-tooltip="getOptionLabel(props.option)"
+          class="text-truncate d-block w-100"
+          style="min-width: 0;"
+        >
+          {{ getOptionLabel(props.option) }}
         </span>
       </template>
 
@@ -71,16 +63,10 @@
         <template v-else-if="props.option.full_name">
           <div
             v-if="!props.option.$groupLabel"
-            class="overflow-text d-flex justify-content-between align-items-center w-100"
+            class="overflow-text w-100"
             :data-child="props.option.program_area"
           >
-            <span class="text-truncate pr-2" style="flex: 1; min-width: 0;" v-tooltip="props.option.full_name">{{ props.option.full_name }}</span>
-            <IndicatorExplanationTooltip
-              v-if="props.option.id"
-              :indicatorId="props.option.id"
-              class="flex-shrink-0 indicator-dd-info-icon"
-              @mousedown.native.stop
-            />
+            <span class="text-truncate d-block" v-tooltip="props.option.full_name">{{ props.option.full_name }}</span>
           </div>
         </template>
       </template>
@@ -95,10 +81,8 @@
 </template>
 <script>
 import { mapMutations } from 'vuex';
-import IndicatorExplanationTooltip from '@/components/ui-components/IndicatorExplanationTooltip.vue';
 
 export default {
-  components: { IndicatorExplanationTooltip },
   data() {
     return {
       allowEmpty: true,
@@ -664,11 +648,6 @@ input::placeholder {
 .multiselect {
   position: relative;
   z-index: 1;
-
-  .indicator-dd-info-icon {
-    position: relative;
-    z-index: 4;
-  }
 
   .multiselect__select {
     z-index: 1;
